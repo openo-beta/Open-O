@@ -32,6 +32,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Servlet filter that ensures the correct per-patient RxSessionBean
@@ -43,9 +44,10 @@ import java.io.IOException;
  * The filter:
  * <ol>
  *   <li>Extracts demographicNo from the request parameter</li>
+ *   <li>Falls back to the current legacy bean's demographicNo if not in params</li>
  *   <li>Looks up the per-patient RxSessionBean (RxSessionBean_{demographicNo})</li>
- *   <li>Sets it as the legacy "RxSessionBean" key</li>
- *   <li>Allows the request to proceed with the correct bean</li>
+ *   <li>Sets it as the legacy "RxSessionBean" key for this request</li>
+ *   <li>Periodically cleans up stale beans (1% of requests)</li>
  * </ol>
  * <p>
  * This solves the bug where opening a different patient's Medications tab
@@ -58,6 +60,9 @@ public class RxSessionFilter implements Filter {
 
     private static final Logger logger = MiscUtils.getLogger();
     private static final String LEGACY_KEY = "RxSessionBean";
+
+    /** Probability of running cleanup on each request (1% = 0.01) */
+    private static final double CLEANUP_PROBABILITY = 0.01;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -73,6 +78,17 @@ public class RxSessionFilter implements Filter {
         if (session != null) {
             int demographicNo = RxSessionBean.extractDemographicNo(request);
 
+            // Fallback: if demographicNo not in request params, check current legacy bean
+            if (demographicNo <= 0) {
+                RxSessionBean currentBean = (RxSessionBean) session.getAttribute(LEGACY_KEY);
+                if (currentBean != null) {
+                    demographicNo = currentBean.getDemographicNo();
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("RxSessionFilter: Using demographicNo from current bean: " + demographicNo);
+                    }
+                }
+            }
+
             if (demographicNo > 0) {
                 RxSessionBean perPatientBean = RxSessionBean.getPerPatient(session, demographicNo);
 
@@ -82,6 +98,19 @@ public class RxSessionFilter implements Filter {
                     if (logger.isDebugEnabled()) {
                         logger.debug("RxSessionFilter: Swapped in bean for demographic " + demographicNo);
                     }
+                }
+            }
+
+            // Periodic cleanup: ~1% of requests trigger stale bean cleanup
+            if (ThreadLocalRandom.current().nextDouble() < CLEANUP_PROBABILITY) {
+                try {
+                    RxSessionBean.cleanupStaleBeans(session);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("RxSessionFilter: Performed periodic cleanup of stale beans");
+                    }
+                } catch (Exception e) {
+                    // Don't let cleanup errors affect the request
+                    logger.warn("RxSessionFilter: Error during stale bean cleanup", e);
                 }
             }
         }

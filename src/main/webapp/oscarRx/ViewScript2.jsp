@@ -261,6 +261,30 @@
                 });
             }
 
+            /**
+             * Clears the stash synchronously and then closes the window.
+             * This ensures the server-side session is cleared before the browser tab closes.
+             */
+            function resetStashAndClose() {
+                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
+                var url2 = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
+
+                // Use synchronous requests to ensure completion before window closes
+                new Ajax.Request(url, {
+                    method: 'post',
+                    asynchronous: false,
+                    parameters: ''
+                });
+                new Ajax.Request(url2, {
+                    method: 'post',
+                    asynchronous: false,
+                    parameters: ''
+                });
+
+                // Now safe to close
+                clearPending('close');
+                parent.window.close();
+            }
 
             function onPrint2(method, scriptId) {
                 var useSC = false;
@@ -648,7 +672,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
+							data-rx-src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>
@@ -839,7 +863,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 210px"
-                                                             onClick="javascript:clearPending('close');parent.window.close();"/></span>
+                                                             onClick="resetStashAndClose();"/></span>
                                             </td>
                                         </tr>
                                         <%

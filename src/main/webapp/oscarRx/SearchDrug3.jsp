@@ -2221,108 +2221,78 @@
 
   }
 
-  function saveCustomName(element) {
-    let elemId = element.id;
-    let ar = elemId.split("_");
-    let rand = ar[1];
-    let url = ctx + "/oscarRx/WriteScript.do?parameterValue=saveCustomName";
-    let data = "customName=" + encodeURIComponent(element.value) + "&randomId=" + rand + "&demographicNo=" + currentDemographicNo;
-    let instruction = "instructions_" + rand;
-    let quantity = "quantity_" + rand;
-    let repeat = "repeats_" + rand;
-    new Ajax.Request(url, {
-      method: 'get', parameters: data, onSuccess: function (transport) {
+            }});
+}
+function updateDeleteOnCloseRxBox(){
+    $('deleteOnCloseRxBox').value='true';
+}
 
-      }
-    });
-  }
+// Flag to track if stash should be cleared when lightwindow closes (set by Save & Print)
+var clearStashOnLightwindowClose = false;
 
-  function updateDeleteOnCloseRxBox() {
-    $('deleteOnCloseRxBox').value = 'true';
-  }
+function handleLightwindowClose() {
+    updateDeleteOnCloseRxBox();
+    if (clearStashOnLightwindowClose) {
+        clearStashOnLightwindowClose = false;
+        resetStash();
+    }
+}
+function popForm2(scriptId){
+        try{
+            //oscarLog("popForm2 called");
+            var url1=ctx+"/oscarRx/WriteScript.do?parameterValue=checkNoStashItem&rand="+ Math.floor(Math.random()*10001);
+            var data="";
+            var h=900;
+					console.log(url1);
+            new Ajax.Request(url1, {method: 'get',parameters:data, onSuccess:function(transport){
+                //output default instructions
+                var json=transport.responseText.evalJSON();
+                var n=json.NoStashItem;
+                if(n>4){
+                    h=h+(n-4)*100;
+                }
+                //oscarLog("h="+h+"--n="+n);
+                var url;
+                var json = jQuery("#Calcs").val();
+                // Get demographicNo for multi-patient tab support
+                var demoNo = (typeof currentDemographicNo !== 'undefined') ? currentDemographicNo : '';
+                //oscarLog(json);
+                if( json != null && json != "" ) {
+                var editRxMsg = '<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.Preview.EditRx"/>';
+                $('lightwindow_title_bar_close_link').update(editRxMsg);
+                $('lightwindow_title_bar_close_link').onclick=handleLightwindowClose;
+            }});
 
-  function popForm2(scriptId) {
-      try {
-        const modalElement = document.getElementById('rxPreviewBootstrapModal');
-        const modalBodyElement = document.getElementById('rxPreviewBootstrapModalBody');
-        let editRxButton = document.getElementById('rxPreviewBootstrapEditRxButton');
-
-        modalBodyElement.innerHTML = ' <div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
-
-        let pharmacyData = JSON.parse(document.getElementById('Calcs').value || '{}');
-        let pharmacyId = pharmacyData.id ? pharmacyData.id : null;
-        let url = ctx + '/oscarRx/printPreview.do?method=printPreview&scriptId=' + scriptId + '&pharmacyId=' + pharmacyId;
-        fetch(url)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not OK');
-            }
-            return response.text();
-          })
-          .then(html => {
-            modalBodyElement.innerHTML = html;
-
-            const modalBodySignaturePadElements = modalBodyElement.getElementsByClassName('signatureClass');
-            if (modalBodySignaturePadElements && modalBodySignaturePadElements.length > 0) {
-              // Initialize the signature pad if the showSignatureBlock is true
-              setTimeout(function () {
-                oscarSignaturePad.initializeSignaturePad({
-                  onSignaturePadEvent(eventType, data) {
-                    if (eventType === SignatureEventType.SAVE) {
-                      signatureHandler(data, '${ctx}', scriptId);
-                    }
-                  }
-                });
-              }, SIGNATURE_PAD_INIT_DELAY_MS);
-            }
-          })
-          .catch(error => {
-            modalBodyElement.innerHTML = '<p>Error loading print preview content.</p>';
-          });
-
-        // Set up Edit Rx button
-        editRxButton.innerHTML = '<fmt:message key="oscarRx.Preview.EditRx"/>';
-        const newEditRxButton = editRxButton.cloneNode(true);
-        editRxButton.parentNode.replaceChild(newEditRxButton, editRxButton);
-        editRxButton = newEditRxButton;
-
-        editRxButton.onclick = function () {
-          const modalInstance = bootstrap.Modal.getInstance(modalElement);
-          if (modalInstance) {
-            modalInstance.hide();
-          }
-        };
-
-        let bsModal = bootstrap.Modal.getInstance(modalElement);
-        if (!bsModal) {
-          bsModal = new bootstrap.Modal(modalElement);
         }
-        bsModal.show();
-
-        modalElement.addEventListener('hidden.bs.modal', function () {
-          modalBodyElement.innerHTML = '';
-        }, {once: true});
-
-      } catch (er) {
-        console.error(er);
-      }
-  }
-
-  function callTreatments(textId, id) {
-      let ele = $(textId);
-      let url = ctx + "/oscarRx/TreatmentMyD.jsp"
-      let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&cond=" + encodeURIComponent(ele.value) + "&rand=" + ran_number;
-      new Ajax.Updater(id, url, {
-        method: 'get',
-        parameters: params,
-        asynchronous: true,
-        onFailure: function (transport) {
-          console.error('Treatments call failed with status: ' + (transport.status || 'unknown'));
+        catch(er){
+            oscarLog(er);
         }
-      });
-      $('treatmentsMyD').toggle();
-  }
+        //oscarLog("bottom of popForm");
+    }
+
+     function callTreatments(textId,id){
+         var ele = $(textId);
+         var url = ctx + "/oscarRx/TreatmentMyD.jsp"
+         var ran_number=Math.round(Math.random()*1000000);
+         var params = "demographicNo=<%=demoNo%>&cond="+encodeURIComponent(ele.value)+"&rand="+ran_number;  //hack to get around ie caching the page
+         new Ajax.Updater(id,url, {method:'get',parameters:params,asynchronous:true});
+         $('treatmentsMyD').toggle();
+     }
+
+     function callAdditionWebService(url,id){
+         var contextPath = '<c:out value="${ctx}"/>';
+         if (url.indexOf(contextPath) !== 0) {
+             url = contextPath + "/oscarRx/" + url;
+         }
+         var ran_number=Math.round(Math.random()*1000000);
+         var params = "demographicNo=<%=demoNo%>&rand="+ran_number;  //hack to get around ie caching the page
+         var updater=new Ajax.Updater(id,url, {method:'get',parameters:params,insertion: Insertion.Bottom,evalScripts:true});
+     }
+
+			function callReplacementWebService(url, id) {
+            var contextPath = '<c:out value="${ctx}"/>';
+            if (url.indexOf(contextPath) !== 0) {
+                url = contextPath + "/oscarRx/" + url;
 
   //  Drug profile legend view-switching
   //
@@ -3451,36 +3421,55 @@
       return false;
     }
 
-    function updateSaveAllDrugsContinue() {
-      if (!validateWrittenDate()) {
-        return false;
-      }
-      if (!validateRxDate()) {
-        return false;
-      }
+    function buildConfirmationMessage(count) {
+        const statusMessage = count === 1
+            ? CONFIRMATION_MESSAGE.SINGLE
+            : CONFIRMATION_MESSAGE.MULTIPLE(count);
+        return "There " + statusMessage + ".\n" + SAVE_WARNING + "\n" + SAVE_PROMPT;
+    }
 
-      <%if (OscarProperties.getInstance().isPropertyActive("rx_strict_med_term")) {%>
-      if (!checkMedTerm()) {
-        return false;
-      }
-      <%}%>
-      setPharmacyId();
-      let data = Form.serialize($('drugForm')) + "&demographicNo=" + currentDemographicNo;
-      let url = ctx + "/oscarRx/WriteScript.do?parameterValue=updateSaveAllDrugs&rand=" + Math.floor(Math.random() * 10001);
-      new Ajax.Request(url,
-        {
-          method: 'post', postBody: data, asynchronous: false,
-          requestHeaders: {'Accept': 'application/json'},
-          onSuccess: function (transport) {
+<%--	<%--%>
+<%--		ArrayList<Object> args = new ArrayList<Object>();--%>
+<%--		args.add(String.valueOf(demoNo));--%>
+<%--		args.add(providerNo);--%>
 
-            callReplacementWebService("ListDrugs.jsp", 'drugProfile');
+<%--		Study myMeds = StudyFactory.getFactoryInstance().makeStudy(Study.MYMEDS, args);--%>
+<%--		out.write(myMeds.printInitcode());--%>
+<%--	%>--%>
 
-            resetReRxDrugList();
 
-            resetStash();
-          }
-        });
-      return false;
+    function updateSaveAllDrugsPrintContinue(){
+    	if(!validateWrittenDate()) {
+    		return false;
+    	}
+		if(!validateRxDate()) {
+    		return false;
+    	}
+
+		<%if (OscarProperties.getInstance().isPropertyActive("rx_strict_med_term")) {%>
+		if(!checkMedTerm()){
+			return false;
+		}
+		<%}%>
+		setPharmacyId();
+        var data=Form.serialize($('drugForm'));
+        var url= ctx + "/oscarRx/WriteScript.do?parameterValue=updateSaveAllDrugs&rand="+ Math.floor(Math.random()*10001);
+        new Ajax.Request(url,
+        {method: 'post',postBody:data,asynchronous:false,
+          requestHeaders: { 'Accept': 'application/json' },
+            onSuccess:function(transport){
+
+                callReplacementWebService("ListDrugs.jsp",'drugProfile');
+                const hasDrugs = jQuery("[id^='drugName_']").length > 0;
+                if (hasDrugs) {
+                    // Set flag to clear stash when lightwindow closes
+                    clearStashOnLightwindowClose = true;
+                    popForm2(null);
+                } else {
+                    alert("Please add at least one drug first");
+                }
+                resetReRxDrugList();
+            }});
     }
 
     /**

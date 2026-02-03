@@ -77,23 +77,34 @@ public class RxSessionBean implements java.io.Serializable {
         long now = System.currentTimeMillis();
         List<String> keysToRemove = new ArrayList<>();
 
-        Enumeration<String> names = session.getAttributeNames();
-        while (names.hasMoreElements()) {
-            String name = names.nextElement();
-            if (name.startsWith(SESSION_KEY_PREFIX)) {
-                Object attr = session.getAttribute(name);
-                if (attr instanceof RxSessionBean) {
-                    RxSessionBean bean = (RxSessionBean) attr;
-                    if (now - bean.getLastAccessTime() > maxAgeMs) {
-                        keysToRemove.add(name);
+        try {
+            // Copy attribute names to avoid ConcurrentModificationException
+            List<String> attributeNames = new ArrayList<>();
+            Enumeration<String> names = session.getAttributeNames();
+            while (names.hasMoreElements()) {
+                attributeNames.add(names.nextElement());
+            }
+
+            for (String name : attributeNames) {
+                if (name.startsWith(SESSION_KEY_PREFIX)) {
+                    Object attr = session.getAttribute(name);
+                    if (attr instanceof RxSessionBean) {
+                        RxSessionBean bean = (RxSessionBean) attr;
+                        // Only cleanup if stale AND has no staged prescriptions
+                        if (now - bean.getLastAccessTime() > maxAgeMs && bean.getStashSize() == 0) {
+                            keysToRemove.add(name);
+                        }
                     }
                 }
             }
-        }
 
-        for (String key : keysToRemove) {
-            logger.debug("Cleaning up stale RxSessionBean: " + key);
-            session.removeAttribute(key);
+            for (String key : keysToRemove) {
+                logger.debug("Cleaning up stale RxSessionBean: {}", key);
+                session.removeAttribute(key);
+            }
+        } catch (Exception e) {
+            // Don't let cleanup errors affect the application
+            logger.warn("Error during RxSessionBean cleanup: {}", e.getMessage());
         }
     }
 
@@ -223,20 +234,23 @@ public class RxSessionBean implements java.io.Serializable {
      * The per-patient key ensures multiple patients' data doesn't interfere.
      * The legacy key maintains backward compatibility with JSPs that use
      * ${sessionScope.RxSessionBean}.
+     * <p>
+     * Note: Both keys point to the same object instance, so no memory duplication occurs.
+     * The RxSessionFilter ensures the correct bean is swapped into the legacy key
+     * at the start of each request when switching between patients.
      *
      * @param session the HTTP session
      * @param bean the RxSessionBean to save
      */
     public static void saveToSession(HttpSession session, RxSessionBean bean) {
-        // Clean up stale beans to prevent session bloat
-        cleanupStaleBeans(session);
-
         // Update access time
         bean.touch();
 
         // Save with per-patient key (preserves data across multiple patient tabs)
         session.setAttribute(getSessionKey(bean.getDemographicNo()), bean);
+
         // Also save with legacy key for JSP backward compatibility
+        // (same object reference, no memory duplication)
         session.setAttribute(LEGACY_SESSION_KEY, bean);
     }
 
