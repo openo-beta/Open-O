@@ -66,6 +66,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -808,9 +809,10 @@ public final class RxWriteScript2Action extends ActionSupport {
                 } catch (NumberFormatException e) {
                     logger.error("Invalid randomId parameter: {}", Encode.forJava(randomId));
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.setContentType("application/json;charset=UTF-8");
                     ObjectNode errorResponse = objectMapper.createObjectNode();
                     errorResponse.put("error", "Invalid prescription identifier.");
-                    response.getOutputStream().write(errorResponse.toString().getBytes());
+                    response.getOutputStream().write(errorResponse.toString().getBytes(StandardCharsets.UTF_8));
                     return null;
                 }
                 RxPrescriptionData.Prescription rx = bean.getStashItem2(randomIdInt);
@@ -819,9 +821,10 @@ public final class RxWriteScript2Action extends ActionSupport {
                                  "Session may have been reset or prescription was not properly staged.",
                                  Encode.forJava(randomId));
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.setContentType("application/json;charset=UTF-8");
                     ObjectNode errorResponse = objectMapper.createObjectNode();
                     errorResponse.put("error", "Prescription not found. Please refresh and try again.");
-                    response.getOutputStream().write(errorResponse.toString().getBytes());
+                    response.getOutputStream().write(errorResponse.toString().getBytes(StandardCharsets.UTF_8));
                     return null;
                 }
                 if (quantity == null || quantity.equalsIgnoreCase("null")) {

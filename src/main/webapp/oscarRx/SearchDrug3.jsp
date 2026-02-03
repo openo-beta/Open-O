@@ -1977,7 +1977,7 @@
 
   //represcribe long term meds
   function RePrescribeLongTerm() {
-    let demoNo = '<%=patient.getDemographicNo()%>';
+    let demoNo = '<%=demoNo%>';
     let data = "demoNo=" + demoNo + "&showall=<%=showall%>&rand=" + Math.floor(Math.random() * 10001);
     let url = ctx + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
     new Ajax.Updater('rxText', url, {
