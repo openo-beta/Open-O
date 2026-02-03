@@ -46,10 +46,12 @@
         return params;
     }
 
-    // Intercept Prototype.js Ajax.Request
-    if (typeof Ajax !== 'undefined' && Ajax.Request) {
-        var OriginalRequest = Ajax.Request;
-        Ajax.Request = function(url, options) {
+    // Intercept Prototype.js Ajax.Request by wrapping initialize on the
+    // prototype instead of replacing the constructor. This preserves static
+    // properties like Ajax.Request.Events that prototype.js depends on.
+    if (typeof Ajax !== 'undefined' && Ajax.Request && Ajax.Request.prototype.initialize) {
+        var origRequestInit = Ajax.Request.prototype.initialize;
+        Ajax.Request.prototype.initialize = function(url, options) {
             options = options || {};
             if (!hasDemographicNo(options.parameters)) {
                 options.parameters = addDemographicNo(options.parameters);
@@ -57,22 +59,22 @@
             if (options.postBody && !hasDemographicNo(options.postBody)) {
                 options.postBody = addDemographicNo(options.postBody);
             }
-            return new OriginalRequest(url, options);
+            origRequestInit.call(this, url, options);
         };
-        Ajax.Request.prototype = OriginalRequest.prototype;
     }
 
-    // Intercept Prototype.js Ajax.Updater
-    if (typeof Ajax !== 'undefined' && Ajax.Updater) {
-        var OriginalUpdater = Ajax.Updater;
-        Ajax.Updater = function(container, url, options) {
+    // Intercept Prototype.js Ajax.Updater (extends Ajax.Request, so wrapping
+    // Ajax.Request.prototype.initialize covers most cases, but Updater has
+    // its own initialize that calls Ajax.Request with modified options)
+    if (typeof Ajax !== 'undefined' && Ajax.Updater && Ajax.Updater.prototype.initialize) {
+        var origUpdaterInit = Ajax.Updater.prototype.initialize;
+        Ajax.Updater.prototype.initialize = function(container, url, options) {
             options = options || {};
             if (!hasDemographicNo(options.parameters)) {
                 options.parameters = addDemographicNo(options.parameters);
             }
-            return new OriginalUpdater(container, url, options);
+            origUpdaterInit.call(this, container, url, options);
         };
-        Ajax.Updater.prototype = OriginalUpdater.prototype;
     }
 
     // Intercept jQuery AJAX

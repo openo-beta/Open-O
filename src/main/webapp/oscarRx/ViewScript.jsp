@@ -177,6 +177,15 @@
 
         <script type="text/javascript">
 
+            function resetStash() {
+                var url = "<%= request.getContextPath() %>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
+                new Ajax.Request(url, {
+                    method: 'post',
+                    parameters: '',
+                    asynchronous: false
+                });
+            }
+
             function setComment() {
                 frames['preview'].document.getElementById('additNotes').innerHTML = '<%=comment%>';
             }

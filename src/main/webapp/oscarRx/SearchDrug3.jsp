@@ -2010,46 +2010,20 @@
     return false;
   }
 
-  function checkAllergy(id, atcCode) {
-    const url = ctx + "/oscarRx/showAllergy.do"
-    const data = "method=allergyData&atcCode=" + encodeURIComponent(atcCode) + "&id=" + encodeURIComponent(id) + "&rand=" + generateSecureRandomId();
-    new Ajax.Request(url, {
-      method: 'post', postBody: data,
-      requestHeaders: {'Accept': 'application/json'},
-      onSuccess: function (transport) {
-        try {
-          let json = JSON.parse(transport.responseText);
-          if (json != null && json.results && json.results.length > 0) {
-            // Pick the first allergy warning found
-            let allergy = json.results[0];
-            let element = document.getElementById('alleg_' + json.id);
-            if (element) {
-              // Create structured elements instead of HTML string
-              element.innerHTML = '';
-              let allergyLabel = document.createElement('label');
-              allergyLabel.style.color = 'red';
-              allergyLabel.textContent = ' Allergy: ';
-              let allergyText = document.createTextNode(allergy.DESCRIPTION || 'Unknown');
-              let reactionLabel = document.createElement('label');
-              reactionLabel.style.color = 'red';
-              reactionLabel.textContent = ' Reaction: ';
-              let reactionText = document.createTextNode(allergy.reaction || 'Unknown');
-              element.appendChild(allergyLabel);
-              element.appendChild(allergyText);
-              element.appendChild(reactionLabel);
-              element.appendChild(reactionText);
-              document.getElementById('alleg_tbl_' + json.id).style.display = 'block';
-            }
-          }
-        } catch (e) {
-          console.error('Failed to parse allergy data');
-        }
-      },
-      onFailure: function (transport) {
-        console.error('Allergy check failed with status: ' + (transport.status || 'unknown'));
-      }
-    });
-  }
+    function Discontinue2(id,reason,comment,drugSpecial){
+        var url=ctx + "/oscarRx/deleteRx.do?parameterValue=Discontinue"  ;
+        var demoNo='<%=demoNo%>';
+        var data="drugId="+encodeURIComponent(id)+"&reason="+encodeURIComponent(reason)+"&comment="+encodeURIComponent(comment)+"&demoNo="+demoNo+"&drugSpecial="+encodeURIComponent(drugSpecial)+"&rand="+ Math.floor(Math.random()*10001);
+            new Ajax.Request(url,{method: 'post',postBody:data,onSuccess:function(transport){
+                  var json=transport.responseText.evalJSON();
+                  $('discontinueUI').hide();
+                  $('rxDate_'+json.id).style.textDecoration='line-through';
+                  $('reRx_'+json.id).style.textDecoration='line-through';
+                  $('del_'+json.id).style.textDecoration='line-through';
+                  $('discont_'+json.id).innerHTML = json.reason;
+                  $('prescrip_'+json.id).style.textDecoration='line-through';
+				}
+			});
 
   function checkIfInactive(id, dinNumber) {
     let url = ctx + "/oscarRx/searchDrug.do";
@@ -2157,22 +2131,17 @@
     });
   }
 
-  //represcribe long term meds
-  function RePrescribeLongTerm() {
-    let demoNo = '<%=patient.getDemographicNo()%>';
-    let data = "demoNo=" + demoNo + "&showall=<%=showall%>&rand=" + Math.floor(Math.random() * 10001);
-    let url = ctx + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
-    new Ajax.Updater('rxText', url, {
-      method: 'get',
-      parameters: data,
-      asynchronous: true,
-      insertion: Insertion.Bottom,
-      onSuccess: function (transport) {
-        renderRxStage();
-      }
-    });
-    return false;
-  }
+//represcribe long term meds
+    function RePrescribeLongTerm(){
+       var demoNo='<%=demoNo%>';
+        var data="demoNo="+demoNo+"&showall=<%=showall%>&rand=" +  Math.floor(Math.random()*10001);
+        var url= ctx + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
+        new Ajax.Updater('rxText',url, {method:'get',parameters:data,asynchronous:true,insertion: Insertion.Bottom,onSuccess:function(transport){
+		        renderRxStage();
+					}
+				});
+        return false;
+    }
 
   function customNoteWarning() {
     if (confirm('This feature will allow you to manually enter a prescription.'

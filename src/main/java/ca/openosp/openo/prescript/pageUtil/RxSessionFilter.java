@@ -77,7 +77,11 @@ public class RxSessionFilter implements Filter {
                         RxSessionBean.getSessionKey(demographicNo));
                 if (perPatientBean != null) {
                     session.setAttribute(LEGACY_KEY, perPatientBean);
-                } else if (usedFallback) {
+                } else if (!usedFallback) {
+                    // demographicNo was explicitly provided but no per-patient bean exists.
+                    // Clear the legacy key to prevent cross-patient leakage from a stale bean.
+                    session.removeAttribute(LEGACY_KEY);
+                } else {
                     logger.warn("RxSessionFilter: No demographicNo param and no per-patient bean " +
                             "found for {}. Using legacy bean as-is.",
                             Encode.forJava(request.getRequestURI()));
