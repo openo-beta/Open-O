@@ -456,7 +456,13 @@ public class CaseManagementView2Action extends ActionSupport {
             request.setAttribute("Prescriptions", prescriptions);
 
             // Setup RX bean start - use per-patient session key
-            int demographicNoInt = Integer.parseInt(demoNo);
+            int demographicNoInt;
+            try {
+                demographicNoInt = Integer.parseInt(demoNo);
+            } catch (NumberFormatException e) {
+                logger.error("Invalid demographicNo for RxSessionBean setup");
+                return "domain-error";
+            }
             RxSessionBean bean = RxSessionBean.getFromSession(request, demographicNoInt);
             if (bean == null) {
                 bean = new RxSessionBean();

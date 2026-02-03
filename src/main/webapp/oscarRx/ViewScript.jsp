@@ -31,6 +31,7 @@
 <%@page import="ca.openosp.openo.commn.model.Appointment" %>
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
@@ -170,7 +171,7 @@
 
         <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls and iframes --%>
         <script type="text/javascript">
-            var currentDemographicNo = '<%= bean.getDemographicNo() %>';
+            var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(bean.getDemographicNo())) %>';
         </script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/oscarRx/js/rxSessionInterceptor.js"></script>
 
@@ -314,14 +315,14 @@
                                 <td width=440px>
                                     <div class="DivContentPadding">
                                         <iframe id=preview name=preview width=440px height=580px
-                                                src="oscarRx/Preview.jsp?rePrint=<%=reprint%>&demographicNo=<%=bean.getDemographicNo()%>"
+                                                src="oscarRx/Preview.jsp?rePrint=<%=reprint%>&demographicNo=<%=Encode.forUriComponent(Integer.toString(bean.getDemographicNo()))%>"
                                                 align=center border=0 frameborder=0></iframe>
                                     </div>
                                 </td>
 
                                 <td valign=top><form name="RxClearPendingForm" action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
                                     <input type="hidden" name="action" id="action" value=""/>
-                                    <input type="hidden" name="demographicNo" value="${bean.demographicNo}"/>
+                                    <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(bean.getDemographicNo()))%>"/>
                                 </form>
                                     <script language=javascript>
                                         function clearPending(action) {

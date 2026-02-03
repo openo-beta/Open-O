@@ -32,6 +32,14 @@
             return params + '&demographicNo=' + demoNo;
         }
         if (typeof params === 'object') {
+            if (typeof FormData !== 'undefined' && params instanceof FormData) {
+                if (!params.has('demographicNo')) params.append('demographicNo', demoNo);
+                return params;
+            }
+            if (typeof URLSearchParams !== 'undefined' && params instanceof URLSearchParams) {
+                if (!params.has('demographicNo')) params.set('demographicNo', demoNo);
+                return params;
+            }
             params.demographicNo = demoNo;
             return params;
         }

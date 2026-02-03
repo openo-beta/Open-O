@@ -82,10 +82,15 @@ public final class RxChoosePatient2Action extends ActionSupport {
         user_no = (String) request.getSession().getAttribute("user");
         // p("user_no",user_no);
         // p("frm",frm.toString());
-        // Setup bean - use per-patient session key to allow multiple patients' Medications tabs
-        int demographicNoInt = Integer.parseInt(this.getDemographicNo());
-        RxSessionBean bean = RxSessionBean.getFromSession(request, demographicNoInt);
+        int demographicNoInt;
+        try {
+            demographicNoInt = Integer.parseInt(this.getDemographicNo());
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().error("Invalid demographicNo in RxChoosePatient");
+            return redirect;
+        }
 
+        RxSessionBean bean = RxSessionBean.getFromSession(request, demographicNoInt);
         if (bean == null) {
             bean = new RxSessionBean();
             bean.setDemographicNo(demographicNoInt);

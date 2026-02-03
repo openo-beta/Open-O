@@ -1657,10 +1657,9 @@ public class RxPrescriptionData {
             // clean up fields
             if (this.takeMin > this.takeMax) this.takeMax = this.takeMin;
 
-            String specialValue = getSpecial();
-            if (specialValue == null || specialValue.length() < 6) {
+            if (this.special == null || this.special.length() < 6) {
                 logger.warn("drug special appears to be null or empty (length={})",
-                        specialValue == null ? 0 : specialValue.length());
+                        this.special == null ? 0 : this.special.length());
             }
 
             DrugDao dao = SpringUtils.getBean(DrugDao.class);

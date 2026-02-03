@@ -235,7 +235,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
 
         <script type="text/javascript">
-            var currentDemographicNo = '<%=bean.getDemographicNo()%>';
+            var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(bean.getDemographicNo())) %>';
         </script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/oscarRx/js/rxSessionInterceptor.js"></script>
         <script type="text/javascript">
@@ -665,14 +665,14 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>&demographicNo=<%=bean.getDemographicNo()%>"
+							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>&demographicNo=<%=Encode.forUriComponent(Integer.toString(bean.getDemographicNo()))%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>
 
                                 <td valign=top><form action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
                                     <input type="hidden" name="action" id="action" value=""/>
-                                    <input type="hidden" name="demographicNo" value="<%=bean.getDemographicNo()%>"/>
+                                    <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(bean.getDemographicNo()))%>"/>
                                     <div class="warning-note" id="faxWarningNote">
                                         <strong>Warning:</strong> faxing is disabled because no pharmacy fax number is
                                         available.</br></br>To enable faxing, close this window and select a pharmacy

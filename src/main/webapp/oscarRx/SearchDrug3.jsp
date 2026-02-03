@@ -65,6 +65,7 @@
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="ca.openosp.openo.casemgmt.model.Issue" %>
 <%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
@@ -294,6 +295,15 @@
         Effect.BlindUp(elementId);
       }
     }
+  </script>
+
+  <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls --%>
+  <script type="text/javascript">
+    var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(rxSessionBean.getDemographicNo())) %>';
+  </script>
+  <script type="text/javascript" src="${ctx}/oscarRx/js/rxSessionInterceptor.js"></script>
+
+  <script type="text/javascript">
 
     function resetReRxDrugList() {
       let rand = Math.floor(Math.random() * 10001);
