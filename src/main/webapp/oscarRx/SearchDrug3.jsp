@@ -65,6 +65,7 @@
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="ca.openosp.openo.casemgmt.model.Issue" %>
 <%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>

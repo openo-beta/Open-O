@@ -172,7 +172,13 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (demo_no == null) {
             return "failure";
         }
-        int demographicNoInt = Integer.parseInt(demo_no);
+        int demographicNoInt;
+        try {
+            demographicNoInt = Integer.parseInt(demo_no);
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().error("Invalid demographicNo in RxShowAllergy");
+            return "failure";
+        }
         RxSessionBean bean = RxSessionBean.getFromSession(request.getSession(), demographicNoInt);
 
         if (bean == null) {
