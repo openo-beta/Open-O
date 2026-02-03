@@ -261,6 +261,23 @@
                 });
             }
 
+            function resetStashAndClose() {
+                var url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearStash";
+                var url2 = ctx + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
+
+                new Ajax.Request(url, {
+                    method: 'post', parameters: '',
+                    onComplete: function() {
+                        new Ajax.Request(url2, {
+                            method: 'post', parameters: '',
+                            onComplete: function() {
+                                clearPending('close');
+                                parent.window.close();
+                            }
+                        });
+                    }
+                });
+            }
 
             function onPrint2(method, scriptId) {
                 var useSC = false;

@@ -172,9 +172,8 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (demo_no == null) {
             return "failure";
         }
-        // Setup bean - use per-patient session key for multi-tab support
         int demographicNoInt = Integer.parseInt(demo_no);
-        RxSessionBean bean = RxSessionBean.getPerPatient(request.getSession(), demographicNoInt);
+        RxSessionBean bean = RxSessionBean.getFromSession(request.getSession(), demographicNoInt);
 
         if (bean == null) {
             bean = new RxSessionBean();
