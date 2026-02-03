@@ -168,6 +168,12 @@
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
 
+        <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls and iframes --%>
+        <script type="text/javascript">
+            var currentDemographicNo = '<%= bean.getDemographicNo() %>';
+        </script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/oscarRx/js/rxSessionInterceptor.js"></script>
+
         <script type="text/javascript">
 
             function setComment() {
@@ -308,7 +314,7 @@
                                 <td width=440px>
                                     <div class="DivContentPadding">
                                         <iframe id=preview name=preview width=440px height=580px
-                                                src="oscarRx/Preview.jsp?rePrint=<%=reprint%>"
+                                                data-rx-src="oscarRx/Preview.jsp?rePrint=<%=reprint%>"
                                                 align=center border=0 frameborder=0></iframe>
                                     </div>
                                 </td>
@@ -382,7 +388,7 @@
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 200px"
-                                                             onClick="javascript:clearPending('close');"/></span></td>
+                                                             onClick="resetStash();javascript:clearPending('close');"/></span></td>
                                         </tr>
 
                                         <%if (request.getAttribute("rePrint") == null) {%>
