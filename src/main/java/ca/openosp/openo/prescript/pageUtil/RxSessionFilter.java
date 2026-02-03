@@ -62,11 +62,13 @@ public class RxSessionFilter implements Filter {
 
         if (session != null) {
             int demographicNo = parseDemographicNo(request.getParameter("demographicNo"));
+            boolean usedFallback = false;
 
             if (demographicNo <= 0) {
                 RxSessionBean currentBean = (RxSessionBean) session.getAttribute(LEGACY_KEY);
                 if (currentBean != null) {
                     demographicNo = currentBean.getDemographicNo();
+                    usedFallback = true;
                 }
             }
 
@@ -75,6 +77,10 @@ public class RxSessionFilter implements Filter {
                         RxSessionBean.getSessionKey(demographicNo));
                 if (perPatientBean != null) {
                     session.setAttribute(LEGACY_KEY, perPatientBean);
+                } else if (usedFallback) {
+                    logger.warn("RxSessionFilter: No demographicNo param and no per-patient bean " +
+                            "found for {} (demographic={}). Using legacy bean as-is.",
+                            request.getRequestURI(), demographicNo);
                 }
             }
         }
