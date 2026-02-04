@@ -55,6 +55,10 @@ public interface TicklerDao extends AbstractDao<Tickler> {
 
     public List<Tickler> search_tickler_bydemo(Integer demographicNo, String status, Date beginDate, Date endDate);
 
+    public List<Tickler> search_tickler_bydemo(Integer demographicNo, String status, Date beginDate, Date endDate, int offset, int limit);
+
+    public int count_tickler_bydemo(Integer demographicNo, String status, Date beginDate, Date endDate);
+
     public List<Tickler> search_tickler(Integer demographicNo, Date endDate);
 
     public List<Tickler> listTicklers(Integer demographicNo, Date beginDate, Date endDate);

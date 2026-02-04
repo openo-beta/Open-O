@@ -145,6 +145,12 @@ public interface TicklerManager {
     public List<Tickler> search_tickler_bydemo(LoggedInInfo loggedInInfo, Integer demographicNo, String status,
                                                Date beginDate, Date endDate);
 
+    public List<Tickler> search_tickler_bydemo(LoggedInInfo loggedInInfo, Integer demographicNo, String status,
+                                               Date beginDate, Date endDate, int offset, int limit);
+
+    public int count_tickler_bydemo(LoggedInInfo loggedInInfo, Integer demographicNo, String status,
+                                    Date beginDate, Date endDate);
+
     public List<Tickler> search_tickler(LoggedInInfo loggedInInfo, Integer demographicNo, Date endDate);
 
     public List<TicklerTextSuggest> getActiveTextSuggestions(LoggedInInfo loggedInInfo);

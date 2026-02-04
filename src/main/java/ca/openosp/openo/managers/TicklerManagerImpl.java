@@ -707,6 +707,29 @@ public class TicklerManagerImpl implements TicklerManager {
     }
 
     @Override
+    public List<Tickler> search_tickler_bydemo(LoggedInInfo loggedInInfo, Integer demographicNo, String status,
+                                               Date beginDate, Date endDate, int offset, int limit) {
+        checkPrivilege(loggedInInfo, PRIVILEGE_READ);
+
+        List<Tickler> result = ticklerDao.search_tickler_bydemo(demographicNo, status, beginDate, endDate, offset, limit);
+
+        for (Tickler tmp : result) {
+            LogAction.addLogSynchronous(loggedInInfo, "TicklerManager.search_tickler_bydemo",
+                    "ticklerId=" + tmp.getId());
+        }
+
+        return result;
+    }
+
+    @Override
+    public int count_tickler_bydemo(LoggedInInfo loggedInInfo, Integer demographicNo, String status,
+                                    Date beginDate, Date endDate) {
+        checkPrivilege(loggedInInfo, PRIVILEGE_READ);
+
+        return ticklerDao.count_tickler_bydemo(demographicNo, status, beginDate, endDate);
+    }
+
+    @Override
     public List<Tickler> search_tickler(LoggedInInfo loggedInInfo, Integer demographicNo, Date endDate) {
         checkPrivilege(loggedInInfo, PRIVILEGE_READ);
 

@@ -156,6 +156,35 @@ public class TicklerDaoImpl extends AbstractDaoImpl<Tickler> implements TicklerD
 
     @SuppressWarnings("unchecked")
     @Override
+    public List<Tickler> search_tickler_bydemo(Integer demographicNo, String status, Date beginDate, Date endDate, int offset, int limit) {
+        Query query = entityManager.createQuery("SELECT t FROM Tickler t WHERE t.demographicNo = ?1 and t.status = ?2 and t.serviceDate >= ?3 and t.serviceDate <= ?4 order by t.serviceDate desc");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, this.convertStatus(status));
+        query.setParameter(3, beginDate);
+        query.setParameter(4, endDate);
+        query.setFirstResult(offset);
+        setLimit(query, limit);
+
+        List<Tickler> results = query.getResultList();
+
+        return results;
+    }
+
+    @Override
+    public int count_tickler_bydemo(Integer demographicNo, String status, Date beginDate, Date endDate) {
+        Query query = entityManager.createQuery("SELECT count(t) FROM Tickler t WHERE t.demographicNo = ?1 and t.status = ?2 and t.serviceDate >= ?3 and t.serviceDate <= ?4");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, this.convertStatus(status));
+        query.setParameter(3, beginDate);
+        query.setParameter(4, endDate);
+
+        Long result = (Long) query.getSingleResult();
+
+        return result.intValue();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
     public List<Tickler> search_tickler(Integer demographicNo, Date endDate) {
         Query query = entityManager.createQuery("SELECT t FROM Tickler t WHERE t.demographicNo = ?1 and t.status = 'A' and t.serviceDate <= ?2 order by t.serviceDate desc");
         query.setParameter(1, demographicNo);

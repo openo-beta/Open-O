@@ -96,74 +96,17 @@ public class TicklerList2Action extends ActionSupport {
         int length = parseIntParam("length", 50);
         boolean showAll = (length <= 0);
 
-        String ticklerview = getStringParam("ticklerview", "A");
-        String providerview = getStringParam("providerview", "all");
-        String assignedTo = getStringParam("assignedTo", "all");
-        String mrpview = getStringParam("mrpview", "all");
-        String dateBegin = getStringParam("xml_vdate", "1950-01-01");
-        String dateEnd = getStringParam("xml_appointment_date", "");
-        String demographicNo = getStringParam("demographic_no", "0");
-
         String userNo = (String) request.getSession().getAttribute("user");
         Locale locale = request.getLocale();
         String contextPath = request.getContextPath();
 
-        CustomFilter filter = new CustomFilter();
-        filter.setPriority(null);
-        filter.setStatus(ticklerview);
-        filter.setStartDateWeb(dateBegin);
-        filter.setEndDateWeb(dateEnd);
-        filter.setPriority(null);
+        CustomFilter filter = buildFilterFromRequest();
+        int targetDemographic = parseIntParam("demographic_no", 0);
+        String ticklerview = getStringParam("ticklerview", "A");
 
-        if (!mrpview.isEmpty() && !"all".equals(mrpview)) {
-            filter.setMrp(mrpview);
-        }
-        if (!providerview.isEmpty() && !"all".equals(providerview)) {
-            filter.setProvider(providerview);
-        }
-        if (!assignedTo.isEmpty() && !"all".equals(assignedTo)) {
-            filter.setAssignee(assignedTo);
-        }
+        FetchResult fetchResult = fetchTicklers(loggedInInfo, filter, ticklerview, targetDemographic, start, length, showAll);
 
-        filter.setSort_order("desc");
-
-        int targetDemographic = 0;
-        try {
-            targetDemographic = Integer.parseInt(demographicNo);
-        } catch (NumberFormatException e) {
-            // default to 0
-        }
-
-        int totalRecords;
-        List<Tickler> ticklers;
-
-        if (targetDemographic > 0) {
-            ticklers = ticklerManager.search_tickler_bydemo(loggedInInfo, targetDemographic,
-                    ticklerview, filter.getStartDate(), filter.getEndDate());
-            totalRecords = ticklers.size();
-            if (!showAll) {
-                int end = Math.min(start + length, ticklers.size());
-                if (start < ticklers.size()) {
-                    ticklers = ticklers.subList(start, end);
-                } else {
-                    ticklers = java.util.Collections.emptyList();
-                }
-            }
-        } else {
-            totalRecords = ticklerManager.getNumTicklers(loggedInInfo, filter);
-            if (showAll) {
-                // Use non-paginated method for "Show All" (like original JSP)
-                ticklers = ticklerManager.getTicklers(loggedInInfo, filter);
-            } else {
-                ticklers = ticklerManager.getTicklers(loggedInInfo, filter, start, length);
-            }
-        }
-
-        String numDaysUntilWarn = OscarProperties.getInstance().getProperty("tickler_warn_period");
-        if (numDaysUntilWarn == null || numDaysUntilWarn.isEmpty()) {
-            numDaysUntilWarn = "0";
-        }
-        long ticklerWarnDays = Long.parseLong(numDaysUntilWarn);
+        long ticklerWarnDays = getTicklerWarnDays();
         boolean ignoreWarning = (ticklerWarnDays <= 0);
 
         DateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale);
@@ -172,7 +115,7 @@ public class TicklerList2Action extends ActionSupport {
 
         ArrayNode dataArray = objectMapper.createArrayNode();
 
-        for (Tickler tickler : ticklers) {
+        for (Tickler tickler : fetchResult.ticklers) {
             Demographic demo = tickler.getDemographic();
             LocalDateTime serviceDate = tickler.getServiceDate().toInstant()
                     .atZone(ZoneId.systemDefault()).toLocalDateTime();
@@ -321,8 +264,8 @@ public class TicklerList2Action extends ActionSupport {
 
         ObjectNode result = objectMapper.createObjectNode();
         result.put("draw", draw);
-        result.put("recordsTotal", totalRecords);
-        result.put("recordsFiltered", totalRecords);
+        result.put("recordsTotal", fetchResult.totalRecords);
+        result.put("recordsFiltered", fetchResult.totalRecords);
         result.set("data", dataArray);
 
         response.setContentType("application/json");
@@ -330,6 +273,92 @@ public class TicklerList2Action extends ActionSupport {
         response.getWriter().write(result.toString());
 
         return null;
+    }
+
+    /**
+     * Parses request parameters and constructs a CustomFilter for the tickler query.
+     *
+     * @return CustomFilter populated from request parameters
+     */
+    private CustomFilter buildFilterFromRequest() {
+        String ticklerview = getStringParam("ticklerview", "A");
+        String providerview = getStringParam("providerview", "all");
+        String assignedTo = getStringParam("assignedTo", "all");
+        String mrpview = getStringParam("mrpview", "all");
+        String dateBegin = getStringParam("xml_vdate", "1950-01-01");
+        String dateEnd = getStringParam("xml_appointment_date", "");
+
+        CustomFilter filter = new CustomFilter();
+        filter.setPriority(null);
+        filter.setStatus(ticklerview);
+        filter.setStartDateWeb(dateBegin);
+        filter.setEndDateWeb(dateEnd);
+
+        if (!mrpview.isEmpty() && !"all".equals(mrpview)) {
+            filter.setMrp(mrpview);
+        }
+        if (!providerview.isEmpty() && !"all".equals(providerview)) {
+            filter.setProvider(providerview);
+        }
+        if (!assignedTo.isEmpty() && !"all".equals(assignedTo)) {
+            filter.setAssignee(assignedTo);
+        }
+
+        filter.setSort_order("desc");
+        return filter;
+    }
+
+    /**
+     * Fetches ticklers using either the demographic-specific or general query path,
+     * applying server-side pagination.
+     *
+     * @param loggedInInfo      the logged-in user info
+     * @param filter            the CustomFilter for general queries
+     * @param ticklerview       the status filter (A/C/D)
+     * @param targetDemographic the demographic number, or 0 for general queries
+     * @param start             the pagination offset
+     * @param length            the page size
+     * @param showAll           true if all records should be returned without pagination
+     * @return FetchResult containing the tickler list and total record count
+     */
+    private FetchResult fetchTicklers(LoggedInInfo loggedInInfo, CustomFilter filter, String ticklerview,
+                                      int targetDemographic, int start, int length, boolean showAll) {
+        int totalRecords;
+        List<Tickler> ticklers;
+
+        if (targetDemographic > 0) {
+            totalRecords = ticklerManager.count_tickler_bydemo(loggedInInfo, targetDemographic,
+                    ticklerview, filter.getStartDate(), filter.getEndDate());
+            if (showAll) {
+                ticklers = ticklerManager.search_tickler_bydemo(loggedInInfo, targetDemographic,
+                        ticklerview, filter.getStartDate(), filter.getEndDate());
+            } else {
+                ticklers = ticklerManager.search_tickler_bydemo(loggedInInfo, targetDemographic,
+                        ticklerview, filter.getStartDate(), filter.getEndDate(), start, length);
+            }
+        } else {
+            totalRecords = ticklerManager.getNumTicklers(loggedInInfo, filter);
+            if (showAll) {
+                ticklers = ticklerManager.getTicklers(loggedInInfo, filter);
+            } else {
+                ticklers = ticklerManager.getTicklers(loggedInInfo, filter, start, length);
+            }
+        }
+
+        return new FetchResult(ticklers, totalRecords);
+    }
+
+    /**
+     * Reads the tickler warning period from application properties.
+     *
+     * @return the number of days after which a tickler triggers a warning, or 0 if not configured
+     */
+    private long getTicklerWarnDays() {
+        String numDaysUntilWarn = OscarProperties.getInstance().getProperty("tickler_warn_period");
+        if (numDaysUntilWarn == null || numDaysUntilWarn.isEmpty()) {
+            numDaysUntilWarn = "0";
+        }
+        return Long.parseLong(numDaysUntilWarn);
     }
 
     /**
@@ -394,5 +423,19 @@ public class TicklerList2Action extends ActionSupport {
             return defaultValue;
         }
         return val;
+    }
+
+    /**
+     * Holds the result of a tickler fetch operation, including the list of ticklers
+     * and the total record count for pagination.
+     */
+    private static class FetchResult {
+        final List<Tickler> ticklers;
+        final int totalRecords;
+
+        FetchResult(List<Tickler> ticklers, int totalRecords) {
+            this.ticklers = ticklers;
+            this.totalRecords = totalRecords;
+        }
     }
 }
