@@ -523,13 +523,8 @@ public class EctConsultationFormRequestUtil {
     }
 
     public String getServiceName(String id) {
-        String retval = new String();
-        ConsultationServices cs = consultationServiceDao.find(Integer.parseInt(id));
-        if (cs != null) {
-            retval = cs.getServiceDesc();
-        }
-
-        return retval;
+        String desc = consultationServiceDao.getServiceDescription(Integer.parseInt(id));
+        return desc != null ? desc : "";
     }
 
     public String getClinicName() {
