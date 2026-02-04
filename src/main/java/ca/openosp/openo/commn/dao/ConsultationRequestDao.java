@@ -62,8 +62,9 @@ public interface ConsultationRequestDao extends AbstractDao<ConsultationRequest>
 
     /**
      * Retrieves all consultation requests for a specific patient as lightweight DTOs, ordered by
-     * referral date descending. Uses the same DTO projection and batch extension loading as
-     * {@link #getConsultationDTOs}.
+     * referral date ascending. The ascending order is intentional because {@code EctDisplayConsult2Action}
+     * iterates the result list in reverse, producing a newest-first display.
+     * Uses the same DTO projection and batch extension loading as {@link #getConsultationDTOs}.
      *
      * @param demoNo Integer the demographic number of the patient
      * @return List of ConsultationListDTO for the specified patient
