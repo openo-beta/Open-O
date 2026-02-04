@@ -120,7 +120,13 @@ public class EctConsultationFormRequestUtil {
 
     public boolean estPatient(LoggedInInfo loggedInInfo, String demographicNo) {
 
-        int demographic_number = Integer.parseInt(demographicNo);
+        int demographic_number;
+        try {
+            demographic_number = Integer.parseInt(demographicNo);
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().error("Invalid demographic number: non-numeric value provided", e);
+            return false;
+        }
         Demographic demographic = demographicManager.getDemographic(loggedInInfo, demographic_number);
         boolean estPatient = false;
         DemographicExt demographicExt = demographicManager.getDemographicExt(loggedInInfo, demographic_number, DemographicProperty.demo_cell);
@@ -217,7 +223,15 @@ public class EctConsultationFormRequestUtil {
 
         boolean verdict = true;
 
-		ConsultationRequest cr = consultationRequestDao.find(Integer.parseInt(id));
+        int requestId;
+        try {
+            requestId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().error("Invalid consultation request ID: non-numeric value provided", e);
+            return false;
+        }
+
+		ConsultationRequest cr = consultationRequestDao.find(requestId);
 		
 		if (cr != null) {
 			fdid = cr.getFdid();
@@ -289,6 +303,11 @@ public class EctConsultationFormRequestUtil {
                 if (specFax.equals("null")) { specFax = ""; }
                 if (specAddr.equals("null")) { specAddr = ""; }
                 if (specEmail.equalsIgnoreCase("null")) { specEmail = ""; }
+            } else {
+                specPhone = "";
+                specFax = "";
+                specAddr = "";
+                specEmail = "";
             }
 
 			Date appointmentTime = cr.getAppointmentTime();
@@ -303,7 +322,7 @@ public class EctConsultationFormRequestUtil {
 			setAppointmentInstructionsLabel( cr.getAppointmentInstructionsLabel() );
 			letterheadName = cr.getLetterheadName();
 
-			List<ConsultationRequestExt> allExts = consultationRequestExtDao.getConsultationRequestExts(Integer.parseInt(id));
+			List<ConsultationRequestExt> allExts = consultationRequestExtDao.getConsultationRequestExts(requestId);
 			Map<String, String> extMap = new HashMap<>();
 			for (ConsultationRequestExt ext : allExts) {
 				extMap.put(ext.getKey(), ext.getValue());

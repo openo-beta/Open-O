@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.itextpdf.text.DocumentException;
 import org.apache.logging.log4j.Logger;
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.commn.dao.ClinicDAO;
 import ca.openosp.openo.commn.dao.ConsultDocsDao;
 import ca.openosp.openo.commn.dao.ConsultRequestDao;
@@ -702,7 +703,7 @@ public class ConsultationManagerImpl implements ConsultationManager {
                     result.add(map);
                 }
             } catch (Exception e) {
-                MiscUtils.getLogger().warn("Failed to load HRM document " + attachedDoc.getDocumentNo() + " attached to consultation request " + requestId, e);
+                MiscUtils.getLogger().warn("Failed to load HRM document " + attachedDoc.getDocumentNo() + " attached to consultation request " + Encode.forJava(requestId), e);
             }
         }
         return result;

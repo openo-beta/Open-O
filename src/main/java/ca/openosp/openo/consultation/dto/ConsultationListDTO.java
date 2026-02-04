@@ -242,9 +242,9 @@ public class ConsultationListDTO implements Serializable {
             return NOT_APPLICABLE;
         }
         if (appointmentTime == null) {
-            return DateFormatUtils.ISO_DATE_FORMAT.format(appointmentDate) + "T00:00:00";
+            return DateFormatUtils.ISO_DATE_FORMAT.format(appointmentDate) + " T00:00:00";
         }
-        return DateFormatUtils.ISO_DATE_FORMAT.format(appointmentDate) + DateFormatUtils.ISO_TIME_FORMAT.format(appointmentTime);
+        return DateFormatUtils.ISO_DATE_FORMAT.format(appointmentDate) + " " + DateFormatUtils.ISO_TIME_FORMAT.format(appointmentTime);
     }
 
     /**

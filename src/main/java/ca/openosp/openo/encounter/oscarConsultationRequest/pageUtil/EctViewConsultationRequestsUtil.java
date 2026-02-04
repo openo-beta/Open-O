@@ -121,7 +121,7 @@ public class EctViewConsultationRequestsUtil {
           List<ConsultationListDTO> dtos = consultReqDao.getConsultationDTOs(team, showCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit);
 
           for (ConsultationListDTO dto : dtos) {
-              ids.add(dto.getId().toString());
+              ids.add(dto.getId() != null ? dto.getId().toString() : "");
               status.add(dto.getStatus());
               patient.add(dto.getPatientFormattedName());
               provider.add(dto.getMrpFormattedName());
@@ -130,7 +130,7 @@ public class EctViewConsultationRequestsUtil {
               vSpecialist.add(dto.getSpecialistFormattedName());
               urgency.add(dto.getUrgency());
               date.add(dto.getReferralDateFormatted());
-              demographicNo.add(dto.getDemographicNo().toString());
+              demographicNo.add(dto.getDemographicNo() != null ? dto.getDemographicNo().toString() : "0");
               siteName.add(dto.getSiteName());
               teams.add(dto.getSendTo());
               eReferral.add(dto.isEReferral());
@@ -143,6 +143,7 @@ public class EctViewConsultationRequestsUtil {
               cProv.setFirstName(dto.getConsultProviderFirstName());
               consultProvider.add(cProv);
           }
+
       } catch(Exception e) {
          MiscUtils.getLogger().error("Error", e);
          verdict = false;
@@ -167,11 +168,12 @@ public class EctViewConsultationRequestsUtil {
 
       boolean verdict = true;
       try {
+          int demographicId = Integer.parseInt(demoNo);
           ConsultationRequestDao consultReqDao = SpringUtils.getBean(ConsultationRequestDao.class);
-          List<ConsultationListDTO> dtos = consultReqDao.getConsultationDTOsByDemographic(Integer.parseInt(demoNo));
+          List<ConsultationListDTO> dtos = consultReqDao.getConsultationDTOsByDemographic(demographicId);
 
           for (ConsultationListDTO dto : dtos) {
-              ids.add(dto.getId().toString());
+              ids.add(dto.getId() != null ? dto.getId().toString() : "");
               status.add(dto.getStatus());
               patient.add(dto.getPatientFormattedName());
               provider.add(dto.getMrpFormattedName());
@@ -186,6 +188,10 @@ public class EctViewConsultationRequestsUtil {
               cProv.setFirstName(dto.getConsultProviderFirstName());
               consultProvider.add(cProv);
           }
+
+      } catch (NumberFormatException e) {
+         MiscUtils.getLogger().error("Invalid demographic number: non-numeric value provided", e);
+         verdict = false;
       } catch(Exception e) {
          MiscUtils.getLogger().error("Error", e);
          verdict = false;

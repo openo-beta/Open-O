@@ -106,6 +106,11 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
         return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @since 2026-02-03
+     */
     @SuppressWarnings("unchecked")
     @Override
     public List<FaxJob> findByIds(List<Integer> ids) {
