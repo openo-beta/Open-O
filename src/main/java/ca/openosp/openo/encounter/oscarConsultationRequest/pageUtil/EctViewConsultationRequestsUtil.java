@@ -82,15 +82,15 @@ public class EctViewConsultationRequestsUtil {
    }
    /** @see #estConsultationVecByTeam(LoggedInInfo, String, boolean, Date, Date, String, String, String, Integer, Integer) */
    public boolean estConsultationVecByTeam(LoggedInInfo loggedInInfo, String team,boolean showCompleted,Date startDate, Date endDate) {
-      return estConsultationVecByTeam(loggedInInfo,team,showCompleted,null,null,null);
+      return estConsultationVecByTeam(loggedInInfo,team,showCompleted,startDate,endDate,null);
    }
    /** @see #estConsultationVecByTeam(LoggedInInfo, String, boolean, Date, Date, String, String, String, Integer, Integer) */
    public boolean estConsultationVecByTeam(LoggedInInfo loggedInInfo, String team,boolean showCompleted,Date startDate, Date endDate,String orderby) {
-      return estConsultationVecByTeam(loggedInInfo,team,showCompleted,null,null,null,null);
+      return estConsultationVecByTeam(loggedInInfo,team,showCompleted,startDate,endDate,orderby,null);
    }
    /** @see #estConsultationVecByTeam(LoggedInInfo, String, boolean, Date, Date, String, String, String, Integer, Integer) */
    public boolean estConsultationVecByTeam(LoggedInInfo loggedInInfo, String team,boolean showCompleted,Date startDate, Date endDate,String orderby,String desc) {
-      return estConsultationVecByTeam(loggedInInfo,team,showCompleted,null,null,null,null,null,null,null);
+      return estConsultationVecByTeam(loggedInInfo,team,showCompleted,startDate,endDate,orderby,desc,null,null,null);
    }
 
    /**

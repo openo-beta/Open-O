@@ -86,30 +86,23 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
             }
         }
 
-        String orderDesc = desc != null && desc.equals("1") ? "DESC" : "";
-        String service = ", service.serviceDesc";
         if (orderby == null) {
             sql.append("order by cr.referralDate desc ");
-        } else if (orderby.equals("1")) {               //1 = msgStatus
-            sql.append("order by cr.status " + orderDesc + service);
-        } else if (orderby.equals("2")) {               //2 = msgTeam
-            sql.append("order by cr.sendTo " + orderDesc + service);
-        } else if (orderby.equals("3")) {               //3 = msgPatient
-            sql.append("order by d.LastName " + orderDesc + service);
-        } else if (orderby.equals("4")) {               //4 = msgProvider
-            sql.append("order by p.LastName " + orderDesc + service);
-        } else if (orderby.equals("5")) {               //5 = msgService Desc
-            sql.append("order by service.serviceDesc " + orderDesc);
-        } else if (orderby.equals("6")) {               //6 = msgSpecialist Name
-            sql.append("order by specialist.lastName " + orderDesc + service);
-        } else if (orderby.equals("7")) {               //7 = msgRefDate
-            sql.append("order by cr.referralDate " + orderDesc);
-        } else if (orderby.equals("8")) {               //8 = Appointment Date
-            sql.append("order by cr.appointmentDate " + orderDesc);
-        } else if (orderby.equals("9")) {               //9 = FollowUp Date
-            sql.append("order by cr.followUpDate " + orderDesc);
         } else {
-            sql.append("order by cr.referralDate desc");
+            String orderDesc = desc != null && desc.equals("1") ? "DESC" : "";
+            String service = ", service.serviceDesc";
+            switch (orderby) {
+                case "1": sql.append("order by cr.status ").append(orderDesc).append(service); break;
+                case "2": sql.append("order by cr.sendTo ").append(orderDesc).append(service); break;
+                case "3": sql.append("order by d.LastName ").append(orderDesc).append(service); break;
+                case "4": sql.append("order by p.LastName ").append(orderDesc).append(service); break;
+                case "5": sql.append("order by service.serviceDesc ").append(orderDesc); break;
+                case "6": sql.append("order by specialist.lastName ").append(orderDesc).append(service); break;
+                case "7": sql.append("order by cr.referralDate ").append(orderDesc); break;
+                case "8": sql.append("order by cr.appointmentDate ").append(orderDesc); break;
+                case "9": sql.append("order by cr.followUpDate ").append(orderDesc); break;
+                default: sql.append("order by cr.referralDate desc"); break;
+            }
         }
 
 
@@ -318,30 +311,23 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
             paramList.add(endDate);
         }
 
-        String orderDesc = desc != null && desc.equals("1") ? "DESC" : "";
-        String svcSort = ", svc.serviceDesc";
         if (orderby == null) {
             sql.append("ORDER BY cr.referralDate DESC ");
-        } else if (orderby.equals("1")) {
-            sql.append("ORDER BY cr.status ").append(orderDesc).append(svcSort);
-        } else if (orderby.equals("2")) {
-            sql.append("ORDER BY cr.sendTo ").append(orderDesc).append(svcSort);
-        } else if (orderby.equals("3")) {
-            sql.append("ORDER BY d.LastName ").append(orderDesc).append(svcSort);
-        } else if (orderby.equals("4")) {
-            sql.append("ORDER BY mrp.LastName ").append(orderDesc).append(svcSort);
-        } else if (orderby.equals("5")) {
-            sql.append("ORDER BY svc.serviceDesc ").append(orderDesc);
-        } else if (orderby.equals("6")) {
-            sql.append("ORDER BY specialist.lastName ").append(orderDesc).append(svcSort);
-        } else if (orderby.equals("7")) {
-            sql.append("ORDER BY cr.referralDate ").append(orderDesc);
-        } else if (orderby.equals("8")) {
-            sql.append("ORDER BY cr.appointmentDate ").append(orderDesc);
-        } else if (orderby.equals("9")) {
-            sql.append("ORDER BY cr.followUpDate ").append(orderDesc);
         } else {
-            sql.append("ORDER BY cr.referralDate DESC");
+            String orderDesc = desc != null && desc.equals("1") ? "DESC" : "";
+            String svcSort = ", svc.serviceDesc";
+            switch (orderby) {
+                case "1": sql.append("ORDER BY cr.status ").append(orderDesc).append(svcSort); break;
+                case "2": sql.append("ORDER BY cr.sendTo ").append(orderDesc).append(svcSort); break;
+                case "3": sql.append("ORDER BY d.LastName ").append(orderDesc).append(svcSort); break;
+                case "4": sql.append("ORDER BY mrp.LastName ").append(orderDesc).append(svcSort); break;
+                case "5": sql.append("ORDER BY svc.serviceDesc ").append(orderDesc); break;
+                case "6": sql.append("ORDER BY specialist.lastName ").append(orderDesc).append(svcSort); break;
+                case "7": sql.append("ORDER BY cr.referralDate ").append(orderDesc); break;
+                case "8": sql.append("ORDER BY cr.appointmentDate ").append(orderDesc); break;
+                case "9": sql.append("ORDER BY cr.followUpDate ").append(orderDesc); break;
+                default: sql.append("ORDER BY cr.referralDate DESC"); break;
+            }
         }
 
         return sql.toString();
