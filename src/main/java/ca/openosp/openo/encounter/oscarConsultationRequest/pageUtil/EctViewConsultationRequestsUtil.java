@@ -125,7 +125,7 @@ public class EctViewConsultationRequestsUtil {
               status.add(dto.getStatus());
               patient.add(dto.getPatientFormattedName());
               provider.add(dto.getMrpFormattedName());
-              providerNo.add(dto.getDemographicProviderNo() != null ? dto.getDemographicProviderNo() : "-1");
+              providerNo.add(isBlank(dto.getDemographicProviderNo()) ? "-1" : dto.getDemographicProviderNo());
               service.add(dto.getEffectiveServiceDescription());
               vSpecialist.add(dto.getSpecialistFormattedName());
               urgency.add(dto.getUrgency());
@@ -138,14 +138,11 @@ public class EctViewConsultationRequestsUtil {
               patientWillBook.add(String.valueOf(dto.isPatientWillBook()));
               followUpDate.add(dto.getFollowUpDateFormatted());
 
-              Provider cProv = new Provider();
-              cProv.setLastName(dto.getConsultProviderLastName());
-              cProv.setFirstName(dto.getConsultProviderFirstName());
-              consultProvider.add(cProv);
+              consultProvider.add(buildConsultProvider(dto));
           }
 
       } catch(Exception e) {
-         MiscUtils.getLogger().error("Error", e);
+         MiscUtils.getLogger().error("Error loading consultation list for team: " + (team != null ? team : "all"), e);
          verdict = false;
       }
       return verdict;
@@ -177,26 +174,48 @@ public class EctViewConsultationRequestsUtil {
               status.add(dto.getStatus());
               patient.add(dto.getPatientFormattedName());
               provider.add(dto.getMrpFormattedName());
+              providerNo.add(isBlank(dto.getDemographicProviderNo()) ? "-1" : dto.getDemographicProviderNo());
               service.add(dto.getEffectiveServiceDescription());
               vSpecialist.add(dto.getSpecialistFormattedName());
               urgency.add(dto.getUrgency());
               patientWillBook.add(String.valueOf(dto.isPatientWillBook()));
               date.add(dto.getReferralDateFormatted());
+              demographicNo.add(dto.getDemographicNo() != null ? dto.getDemographicNo().toString() : "0");
+              siteName.add(dto.getSiteName());
+              teams.add(dto.getSendTo());
+              eReferral.add(dto.isEReferral());
+              apptDate.add(dto.getAppointmentDateFormatted());
+              followUpDate.add(dto.getFollowUpDateFormatted());
 
-              Provider cProv = new Provider();
-              cProv.setLastName(dto.getConsultProviderLastName());
-              cProv.setFirstName(dto.getConsultProviderFirstName());
-              consultProvider.add(cProv);
+              consultProvider.add(buildConsultProvider(dto));
           }
 
       } catch (NumberFormatException e) {
          MiscUtils.getLogger().error("Invalid demographic number: non-numeric value provided", e);
          verdict = false;
       } catch(Exception e) {
-         MiscUtils.getLogger().error("Error", e);
+         MiscUtils.getLogger().error("Error loading consultations for demographic: " + demoNo, e);
          verdict = false;
       }
       return verdict;
+   }
+
+   /**
+    * Builds a Provider object from DTO consulting provider fields, returning null when no provider data exists
+    * so JSPs can render blank instead of "null, null".
+    */
+   private Provider buildConsultProvider(ConsultationListDTO dto) {
+      if (dto.getConsultProviderLastName() == null && dto.getConsultProviderFirstName() == null) {
+         return null;
+      }
+      Provider cProv = new Provider();
+      cProv.setLastName(dto.getConsultProviderLastName() != null ? dto.getConsultProviderLastName() : "");
+      cProv.setFirstName(dto.getConsultProviderFirstName() != null ? dto.getConsultProviderFirstName() : "");
+      return cProv;
+   }
+
+   private boolean isBlank(String value) {
+      return value == null || value.trim().isEmpty();
    }
 
    /**

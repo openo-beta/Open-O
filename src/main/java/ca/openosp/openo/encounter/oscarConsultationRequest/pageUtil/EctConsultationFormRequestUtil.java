@@ -523,8 +523,16 @@ public class EctConsultationFormRequestUtil {
     }
 
     public String getServiceName(String id) {
-        String desc = consultationServiceDao.getServiceDescription(Integer.parseInt(id));
-        return desc != null ? desc : "";
+        if (id == null || id.isEmpty()) {
+            return "";
+        }
+        try {
+            String desc = consultationServiceDao.getServiceDescription(Integer.parseInt(id));
+            return desc != null ? desc : "";
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().warn("Invalid service ID: non-numeric value provided");
+            return "";
+        }
     }
 
     public String getClinicName() {

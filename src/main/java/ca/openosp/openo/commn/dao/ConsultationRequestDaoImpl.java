@@ -254,7 +254,7 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
     public List<ConsultationListDTO> getConsultationDTOsByDemographic(Integer demoNo) {
         String sql = DTO_SELECT + DTO_FROM +
                 "WHERE cr.demographicId = ?1 " +
-                "ORDER BY cr.referralDate DESC";
+                "ORDER BY cr.referralDate ASC";
 
         Query query = entityManager.createQuery(sql, ConsultationListDTO.class);
         query.setParameter(1, demoNo);

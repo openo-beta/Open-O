@@ -20,6 +20,8 @@ package ca.openosp.openo.consultation.dto;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import ca.openosp.openo.commn.model.enumerator.ConsultationRequestExtKey;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -264,9 +266,9 @@ public class ConsultationListDTO implements Serializable {
      */
     public void applyExtensions(Map<String, String> extMap) {
         if (extMap == null) return;
-        this.eReferral = extMap.containsKey("ereferral_ref");
-        this.ereferralService = extMap.getOrDefault("ereferral_service", null);
-        this.ereferralDoctor = extMap.getOrDefault("ereferral_doctor", null);
+        this.eReferral = extMap.containsKey(ConsultationRequestExtKey.EREFERRAL_REF.getKey());
+        this.ereferralService = extMap.getOrDefault(ConsultationRequestExtKey.EREFERRAL_SERVICE.getKey(), null);
+        this.ereferralDoctor = extMap.getOrDefault(ConsultationRequestExtKey.EREFERRAL_DOCTOR.getKey(), null);
     }
 
     public Integer getId() { return id; }
