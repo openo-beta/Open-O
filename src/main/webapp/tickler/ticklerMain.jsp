@@ -36,6 +36,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Site" %>
 <%@ page import="ca.openosp.openo.commn.dao.SiteDao" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -205,7 +206,7 @@
 
 
             const ctx = '${pageContext.request.contextPath}';
-            const userNo = '<%=user_no%>';
+            const userNo = '<%=Encode.forJavaScript(user_no)%>';
 
             function escapeHtml(text) {
                 if (!text) return '';
@@ -687,12 +688,12 @@
                     <div class="form-group">
                         <label for="xml_vdate">From</label>
                         <input type="date" class="form-control" name="xml_vdate" id="xml_vdate"
-                               value="<%=xml_vdate%>">
+                               value="<%=Encode.forHtmlAttribute(xml_vdate)%>">
                     </div>
                     <div class="form-group">
                         <label for="xml_appointment_date">To</label>
                         <input type="date" class="form-control" name="xml_appointment_date" id="xml_appointment_date"
-                               value="<%=xml_appointment_date%>">
+                               value="<%=Encode.forHtmlAttribute(xml_appointment_date)%>">
                     </div>
 
                     <div class="form-group">
@@ -704,8 +705,8 @@
                                 List<Provider> providers = providerDao.getActiveProviders();
                                 for (Provider p : providers) {
                             %>
-                            <option value="<%=p.getProviderNo()%>" <%=mrpview.equals(p.getProviderNo()) ? "selected" : ""%>><%=p.getLastName()%>
-                                ,<%=p.getFirstName()%>
+                            <option value="<%=Encode.forHtmlAttribute(p.getProviderNo())%>" <%=mrpview.equals(p.getProviderNo()) ? "selected" : ""%>><%=Encode.forHtml(p.getLastName())%>
+                                ,<%=Encode.forHtml(p.getFirstName())%>
                             </option>
                             <%
                                 }
@@ -720,8 +721,8 @@
                             <%
                                 for (Provider p : providers) {
                             %>
-                            <option value="<%=p.getProviderNo()%>" <%=providerview.equals(p.getProviderNo()) ? "selected" : ""%>><%=p.getLastName()%>
-                                ,<%=p.getFirstName()%>
+                            <option value="<%=Encode.forHtmlAttribute(p.getProviderNo())%>" <%=providerview.equals(p.getProviderNo()) ? "selected" : ""%>><%=Encode.forHtml(p.getLastName())%>
+                                ,<%=Encode.forHtml(p.getFirstName())%>
                             </option>
                             <%
                                 }
@@ -738,10 +739,10 @@
                         <script>
                             let _providers = [];
                             <%for (int i=0; i<sites.size(); i++) {%>
-                            _providers["<%=sites.get(i).getSiteId()%>"] = "<%Iterator<Provider> iter = sites.get(i).getProviders().iterator();
+                            _providers["<%=Encode.forJavaScript(sites.get(i).getSiteId().toString())%>"] = "<%Iterator<Provider> iter = sites.get(i).getProviders().iterator();
 							while (iter.hasNext()) {
 								Provider p=iter.next();
-								if ("1".equals(p.getStatus())) {%><option value='<%=p.getProviderNo()%>'><%=p.getLastName()%>, <%=p.getFirstName()%></option><%}%>";
+								if ("1".equals(p.getStatus())) {%><option value='<%=Encode.forJavaScript(p.getProviderNo())%>'><%=Encode.forJavaScript(p.getLastName())%>, <%=Encode.forJavaScript(p.getFirstName())%><\/option><%}%>";
                             <%}}%>
 
                             function changeSite(sel) {
@@ -753,7 +754,7 @@
                             <%
                                 for (int i = 0; i < sites.size(); i++) {
                             %>
-                            <option value="<%=sites.get(i).getSiteId()%>" <%=sites.get(i).getSiteId().toString().equals(request.getParameter("site")) ? "selected" : ""%>><%=sites.get(i).getName()%>
+                            <option value="<%=Encode.forHtmlAttribute(sites.get(i).getSiteId().toString())%>" <%=sites.get(i).getSiteId().toString().equals(request.getParameter("site")) ? "selected" : ""%>><%=Encode.forHtml(sites.get(i).getName())%>
                             </option>
                             <%
                                 }
@@ -765,7 +766,7 @@
                         %>
                         <script>
                             changeSite(document.getElementById("site"));
-                            document.getElementById("assignedTo").value = '<%=request.getParameter("assignedTo")%>';
+                            document.getElementById("assignedTo").value = '<%=Encode.forJavaScript(request.getParameter("assignedTo"))%>';
                         </script>
                         <%
                             }
@@ -786,8 +787,8 @@
                                 List<Provider> providersActive = providerDao.getActiveProviders();
                                 for (Provider p : providersActive) {
                             %>
-                            <option value="<%=p.getProviderNo()%>" <%=assignedTo.equals(p.getProviderNo()) ? "selected" : ""%>><%=p.getLastName()%>
-                                , <%=p.getFirstName()%>
+                            <option value="<%=Encode.forHtmlAttribute(p.getProviderNo())%>" <%=assignedTo.equals(p.getProviderNo()) ? "selected" : ""%>><%=Encode.forHtml(p.getLastName())%>
+                                , <%=Encode.forHtml(p.getFirstName())%>
                             </option>
                             <%
                                 }
