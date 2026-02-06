@@ -216,12 +216,10 @@
             }
 
             function renderCheckbox(data, type, row) {
-                if (row.rowType === 'comment') return '';
                 return '<input type="checkbox" name="checkbox" value="' + row.id + '" class="noprint">';
             }
 
             function renderEditIcon(data, type, row) {
-                if (row.rowType === 'comment') return '';
                 return '<a href="javascript:void(0)" title="Edit Tickler" ' +
                     'onClick="window.open(\'' + ctx + '/tickler/ticklerEdit.jsp?tickler_no=' + row.id +
                     '\', \'edit_tickler\', \'width=800, height=650\')">' +
@@ -230,7 +228,6 @@
 
             function renderDemoName(data, type, row) {
                 var name = escapeHtml(row.demoLastName) + ',' + escapeHtml(row.demoFirstName);
-                if (row.rowType === 'comment') return name;
                 return '<a href="javascript:void(0)" ' +
                     'onClick="popupPage(600,800,\'' + ctx +
                     '/demographic/demographiccontrol.jsp?demographic_no=' +
@@ -244,7 +241,7 @@
 
             function renderMessage(data, type, row) {
                 var html = '<span style="white-space:pre-wrap">' + escapeHtml(row.message) + '</span>';
-                if (row.rowType === 'tickler' && row.links) {
+                if (row.links) {
                     for (var i = 0; i < row.links.length; i++) {
                         html += buildAttachmentLink(row.links[i].tableName, row.links[i].tableId);
                     }
@@ -253,7 +250,6 @@
             }
 
             function renderNoteIcon(data, type, row) {
-                if (row.rowType === 'comment') return '';
                 return '<a href="javascript:void(0)" class="noteDialogLink noprint" ' +
                     'onClick="openNoteDialog(\'' + row.demoNo + '\',\'' + row.id + '\')" ' +
                     'title="Add Encounter Note">' +
@@ -305,8 +301,8 @@
                 //
                 //     }
                 // });
-                let groupColumn = 11;
-                let rowTypeColumn = 12;
+                let idColumn = 11;
+                let lastComments = {};
                 ticklerResultsTable = jQuery("#ticklerResults").dataTable({
                     "searching": false,
                     "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
@@ -322,6 +318,10 @@
                             d.xml_vdate = jQuery("#xml_vdate").val() || "";
                             d.xml_appointment_date = jQuery("#xml_appointment_date").val() || "";
                             d.demographic_no = jQuery("input[name='demoview']").val() || "0";
+                        },
+                        "dataSrc": function (json) {
+                            lastComments = json.comments || {};
+                            return json.data;
                         }
                     },
                     "columns": [
@@ -336,33 +336,42 @@
                         {data: "status", orderable: false, render: renderText},
                         {data: null, orderable: false, render: renderMessage},
                         {data: null, orderable: false, render: renderNoteIcon},
-                        {data: "id", orderable: false},
-                        {data: "rowType", orderable: false}
+                        {data: "id", orderable: false}
                     ],
                     "columnDefs": [
-                        {visible: false, targets: groupColumn},
-                        {visible: false, targets: rowTypeColumn}
+                        {visible: false, targets: idColumn}
                     ],
                     "createdRow": function (row, data, dataIndex) {
                         if (data.warning === true) {
                             jQuery(row).addClass('error');
-                        } else if (data.rowType === 'comment') {
-                            jQuery(row).addClass('followup-comment-' + data.id + ' comment-row no-sort');
                         }
                     },
                     "drawCallback": function (settings) {
                         let api = this.api();
                         let rows = api.rows({page: 'current'}).nodes();
-                        let last = null;
+                        let numCols = jQuery('#ticklerResults thead th').length;
 
-                        api.column(groupColumn, {page: 'current'})
+                        api.column(idColumn, {page: 'current'})
                             .data()
-                            .each(function (group, i) {
-                                if (last !== group) {
-                                    jQuery(rows)
-                                        .eq(i)
-                                        .after(jQuery(".followup-comment-" + group))
-                                    last = group;
+                            .each(function (ticklerId, i) {
+                                let comments = lastComments[String(ticklerId)];
+                                if (comments) {
+                                    for (var c = comments.length - 1; c >= 0; c--) {
+                                        var tc = comments[c];
+                                        var commentTr = jQuery('<tr class="comment-row no-sort"></tr>');
+                                        commentTr.append('<td></td>');
+                                        commentTr.append('<td></td>');
+                                        commentTr.append('<td>' + escapeHtml(api.row(i).data().demoLastName) + ',' + escapeHtml(api.row(i).data().demoFirstName) + '</td>');
+                                        commentTr.append('<td>' + escapeHtml(tc.creator) + '</td>');
+                                        commentTr.append('<td>' + escapeHtml(api.row(i).data().serviceDate) + '</td>');
+                                        commentTr.append('<td>' + escapeHtml(tc.createDate) + '</td>');
+                                        commentTr.append('<td>' + escapeHtml(api.row(i).data().priority) + '</td>');
+                                        commentTr.append('<td></td>');
+                                        commentTr.append('<td></td>');
+                                        commentTr.append('<td style="white-space:pre-wrap">' + escapeHtml(tc.message) + '</td>');
+                                        commentTr.append('<td></td>');
+                                        jQuery(rows).eq(i).after(commentTr);
+                                    }
                                 }
                             });
                     },
@@ -870,7 +879,6 @@
                     <th>
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgMessage"/>
                     </th>
-                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
