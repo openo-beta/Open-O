@@ -685,7 +685,8 @@
                             href="javascript:void(0)" id="dateRange" onClick="allYear()"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnViewAll"/></a></label>
                     <div class="form-group">
                         <label for="xml_vdate">From</label>
-                        <input type="date" class="form-control" name="xml_vdate" id="xml_vdate">
+                        <input type="date" class="form-control" name="xml_vdate" id="xml_vdate"
+                               value="<%=xml_vdate%>">
                     </div>
                     <div class="form-group">
                         <label for="xml_appointment_date">To</label>
