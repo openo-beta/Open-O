@@ -261,7 +261,7 @@
                 var safeTableId = encodeURIComponent(tableId);
                 var href;
                 if (type === 'MDS') {
-                    href = "javascript:reportWindow('SegmentDisplay.jsp?segmentID=" + safeTableId +
+                    href = "javascript:reportWindow('" + ctx + "/oscarMDS/SegmentDisplay.jsp?segmentID=" + safeTableId +
                         "&providerNo=" + uNo + "&searchProviderNo=" + uNo + "&status=')";
                 } else if (type === 'CML') {
                     href = "javascript:reportWindow('" + ctx + "/lab/CA/ON/CMLDisplay.jsp?segmentID=" + safeTableId +
