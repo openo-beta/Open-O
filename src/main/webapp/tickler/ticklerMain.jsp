@@ -307,16 +307,9 @@
                 let groupColumn = 11;
                 let warningColumn = 12;
                 ticklerResultsTable = jQuery("#ticklerResults").dataTable({
-                    "bStateSave": true,
-                    "fnStateSave": function (oSettings, oData) {
-                        localStorage.setItem('ticklerDataTable', JSON.stringify(oData));
-                    },
-                    "fnStateLoad": function () {
-                        return JSON.parse(localStorage.getItem('ticklerDataTable'));
-                    },
                     "searching": false,
                     "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-                    "iDisplayLength": 50,
+                    "iDisplayLength": parseInt(localStorage.getItem('ticklerPageLength')) || 50,
                     "serverSide": true,
                     "ajax": {
                         "url": ctx + "/tickler/ListTicklers.do",
@@ -335,7 +328,7 @@
                         {data: null, orderable: false, render: renderEditIcon},
                         {data: null, orderable: false, render: renderDemoName},
                         {data: "creator", orderable: false, render: renderText},
-                        {data: "serviceDate", orderable: false},
+                        {data: "serviceDate"},
                         {data: "createDate", orderable: false},
                         {data: "priority", orderable: false},
                         {data: "assignee", orderable: false, render: renderText},
@@ -372,8 +365,16 @@
                                 }
                             });
                     },
-                    "order": [[4, 'desc']]
+                    "order": JSON.parse(localStorage.getItem('ticklerSortOrder')) || [[4, 'desc']]
                 })
+
+                ticklerResultsTable.api().on('length.dt', function (e, settings, len) {
+                    localStorage.setItem('ticklerPageLength', len);
+                });
+
+                ticklerResultsTable.api().on('order.dt', function () {
+                    localStorage.setItem('ticklerSortOrder', JSON.stringify(ticklerResultsTable.api().order()));
+                });
 
                 /*
                  * Reload the search results when the Tickler status is changed.

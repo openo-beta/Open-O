@@ -228,7 +228,11 @@ public class TicklerList2Action extends ActionSupport {
             }
         }
 
-        filter.setSort_order("desc");
+        String sortDir = getStringParam("order[0][dir]", "desc");
+        if (!"asc".equalsIgnoreCase(sortDir)) {
+            sortDir = "desc";
+        }
+        filter.setSort_order(sortDir);
         return filter;
     }
 
