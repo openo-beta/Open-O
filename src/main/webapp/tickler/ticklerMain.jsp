@@ -258,24 +258,25 @@
 
             function buildAttachmentLink(type, tableId) {
                 var uNo = encodeURIComponent(userNo);
+                var safeTableId = encodeURIComponent(tableId);
                 var href;
                 if (type === 'MDS') {
-                    href = "javascript:reportWindow('SegmentDisplay.jsp?segmentID=" + tableId +
+                    href = "javascript:reportWindow('SegmentDisplay.jsp?segmentID=" + safeTableId +
                         "&providerNo=" + uNo + "&searchProviderNo=" + uNo + "&status=')";
                 } else if (type === 'CML') {
-                    href = "javascript:reportWindow('" + ctx + "/lab/CA/ON/CMLDisplay.jsp?segmentID=" + tableId +
+                    href = "javascript:reportWindow('" + ctx + "/lab/CA/ON/CMLDisplay.jsp?segmentID=" + safeTableId +
                         "&providerNo=" + uNo + "&searchProviderNo=" + uNo + "&status=')";
                 } else if (type === 'HL7') {
-                    href = "javascript:reportWindow('" + ctx + "/lab/CA/ALL/labDisplay.jsp?segmentID=" + tableId +
+                    href = "javascript:reportWindow('" + ctx + "/lab/CA/ALL/labDisplay.jsp?segmentID=" + safeTableId +
                         "&providerNo=" + uNo + "&searchProviderNo=" + uNo + "&status=')";
                 } else if (type === 'DOC') {
-                    href = "javascript:reportWindow('" + ctx + "/documentManager/ManageDocument.do?method=display&doc_no=" + tableId +
+                    href = "javascript:reportWindow('" + ctx + "/documentManager/ManageDocument.do?method=display&doc_no=" + safeTableId +
                         "&providerNo=" + uNo + "&searchProviderNo=" + uNo + "&status=')";
                 } else if (type === 'HRM') {
-                    href = "javascript:reportWindow('" + ctx + "/hospitalReportManager/Display.do?id=" + tableId +
-                        "&segmentID=" + tableId + "')";
+                    href = "javascript:reportWindow('" + ctx + "/hospitalReportManager/Display.do?id=" + safeTableId +
+                        "&segmentID=" + safeTableId + "')";
                 } else {
-                    href = "javascript:reportWindow('" + ctx + "/lab/CA/BC/labDisplay.jsp?segmentID=" + tableId +
+                    href = "javascript:reportWindow('" + ctx + "/lab/CA/BC/labDisplay.jsp?segmentID=" + safeTableId +
                         "&providerNo=" + uNo + "&searchProviderNo=" + uNo + "&status=')";
                 }
                 return ' <a title="View attachment" href="' + href +
@@ -350,6 +351,8 @@
                         let api = this.api();
                         let rows = api.rows({page: 'current'}).nodes();
                         let numCols = jQuery('#ticklerResults thead th').length;
+
+                        jQuery('#ticklerResults tbody tr.comment-row').remove();
 
                         api.column(idColumn, {page: 'current'})
                             .data()
@@ -751,8 +754,8 @@
                             _providers["<%=Encode.forJavaScript(sites.get(i).getSiteId().toString())%>"] = "<%Iterator<Provider> iter = sites.get(i).getProviders().iterator();
 							while (iter.hasNext()) {
 								Provider p=iter.next();
-								if ("1".equals(p.getStatus())) {%><option value='<%=Encode.forJavaScript(p.getProviderNo())%>'><%=Encode.forJavaScript(p.getLastName())%>, <%=Encode.forJavaScript(p.getFirstName())%><\/option><%}%>";
-                            <%}}%>
+								if ("1".equals(p.getStatus())) {%><option value='<%=Encode.forJavaScript(Encode.forHtmlAttribute(p.getProviderNo()))%>'><%=Encode.forJavaScript(Encode.forHtml(p.getLastName()))%>, <%=Encode.forJavaScript(Encode.forHtml(p.getFirstName()))%><\/option><%}}%>";
+                            <%}%>
 
                             function changeSite(sel) {
                                 sel.form.assignedTo.innerHTML = sel.value == "none" ? "" : _providers[sel.value];
