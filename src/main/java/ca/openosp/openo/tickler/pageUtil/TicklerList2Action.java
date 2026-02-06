@@ -21,6 +21,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.commn.model.CustomFilter;
+import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.managers.TicklerManager;
 import ca.openosp.openo.tickler.dto.TicklerCommentDTO;
@@ -38,10 +39,8 @@ import ca.openosp.openo.utility.SpringUtils;
  */
 public class TicklerList2Action extends ActionSupport {
 
-    HttpServletRequest request = ServletActionContext.getRequest();
-    HttpServletResponse response = ServletActionContext.getResponse();
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final int MAX_PAGE_SIZE = 500;
 
     private TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
@@ -56,35 +55,47 @@ public class TicklerList2Action extends ActionSupport {
      */
     @Override
     public String execute() throws IOException {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletResponse response = ServletActionContext.getResponse();
+
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", "r", null)) {
-            throw new SecurityException("missing required sec object (_tickler)");
+            writeJsonError(response, HttpServletResponse.SC_FORBIDDEN, "Access denied");
+            return null;
         }
 
-        int draw = parseIntParam("draw", 1);
-        int start = Math.max(0, parseIntParam("start", 0));
-        int length = parseIntParam("length", 50);
+        int draw = parseIntParam(request, "draw", 1);
+        int start = Math.max(0, parseIntParam(request, "start", 0));
+        int length = parseIntParam(request, "length", 50);
         if (length > 0) {
-            length = Math.min(length, 500);
+            length = Math.min(length, MAX_PAGE_SIZE);
         }
-        boolean showAll = (length <= 0);
 
         Locale locale = request.getLocale();
 
-        CustomFilter filter = buildFilterFromRequest();
+        CustomFilter filter;
+        try {
+            filter = buildFilterFromRequest(request);
+        } catch (IllegalArgumentException e) {
+            writeJsonError(response, HttpServletResponse.SC_BAD_REQUEST,
+                    "Invalid date format, use yyyy-MM-dd");
+            return null;
+        }
 
         int totalRecords = ticklerManager.getNumTicklers(loggedInInfo, filter);
+
         List<TicklerListDTO> ticklers;
-        if (showAll) {
-            ticklers = ticklerManager.getTicklerDTOs(loggedInInfo, filter);
+        if (length <= 0) {
+            ticklers = ticklerManager.getTicklerDTOs(loggedInInfo, filter, 0, totalRecords);
         } else {
             ticklers = ticklerManager.getTicklerDTOs(loggedInInfo, filter, start, length);
         }
 
-        long ticklerWarnDays = getTicklerWarnDays();
-        boolean ignoreWarning = (ticklerWarnDays <= 0);
+        LogAction.addLogSynchronous(loggedInInfo, "TicklerList2Action.execute",
+                "ticklers=" + ticklers.size() + ",total=" + totalRecords);
 
+        long ticklerWarnDays = getTicklerWarnDays();
         DateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale);
         DateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", locale);
         DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss", locale);
@@ -93,59 +104,13 @@ public class TicklerList2Action extends ActionSupport {
         ObjectNode commentsMap = objectMapper.createObjectNode();
 
         for (TicklerListDTO tickler : ticklers) {
-            boolean warning = false;
-            if (!ignoreWarning && tickler.getServiceDate() != null) {
-                LocalDateTime serviceDate = tickler.getServiceDate().toInstant()
-                        .atZone(ZoneId.systemDefault()).toLocalDateTime();
-                long daysDifference = Duration.between(serviceDate, LocalDateTime.now()).toDays();
-                warning = (daysDifference >= ticklerWarnDays);
-            }
-
-            ObjectNode row = objectMapper.createObjectNode();
-            row.put("id", tickler.getId());
-            row.put("demoNo", tickler.getDemographicNo());
-            row.put("demoLastName", tickler.getDemographicLastName());
-            row.put("demoFirstName", tickler.getDemographicFirstName());
-            row.put("creator", tickler.getCreatorFormattedName());
-            row.put("serviceDate", tickler.getServiceDate() != null ? dateOnlyFormat.format(tickler.getServiceDate()) : "");
-            row.put("createDate", tickler.getCreateDate() != null ? datetimeFormat.format(tickler.getCreateDate()) : "");
-            row.put("priority", String.valueOf(tickler.getPriority()));
-            row.put("assignee", tickler.getAssigneeFormattedName());
-            row.put("status", tickler.getStatusDesc(locale));
-            row.put("message", tickler.getMessage());
-            row.put("warning", warning);
-
-            ArrayNode linksArray = objectMapper.createArrayNode();
-            List<TicklerLinkDTO> linkList = tickler.getLinks();
-            if (linkList != null) {
-                for (TicklerLinkDTO tl : linkList) {
-                    ObjectNode linkNode = objectMapper.createObjectNode();
-                    linkNode.put("tableName", tl.getTableName());
-                    linkNode.put("tableId", tl.getTableId());
-                    linksArray.add(linkNode);
-                }
-            }
-            row.set("links", linksArray);
-
-            dataArray.add(row);
+            boolean warning = isWarning(tickler.getServiceDate(), ticklerWarnDays);
+            dataArray.add(buildTicklerRow(tickler, warning, datetimeFormat, dateOnlyFormat, locale));
 
             List<TicklerCommentDTO> tcomments = tickler.getComments();
             if (tcomments != null && !tcomments.isEmpty()) {
-                ArrayNode commentArray = objectMapper.createArrayNode();
-                for (TicklerCommentDTO tc : tcomments) {
-                    ObjectNode commentObj = objectMapper.createObjectNode();
-                    commentObj.put("creator", tc.getProviderFormattedName());
-                    if (tc.getUpdateDate() == null) {
-                        commentObj.put("createDate", "");
-                    } else if (tc.isUpdateDateToday()) {
-                        commentObj.put("createDate", timeOnlyFormat.format(tc.getUpdateDate()));
-                    } else {
-                        commentObj.put("createDate", datetimeFormat.format(tc.getUpdateDate()));
-                    }
-                    commentObj.put("message", tc.getMessage());
-                    commentArray.add(commentObj);
-                }
-                commentsMap.set(String.valueOf(tickler.getId()), commentArray);
+                commentsMap.set(String.valueOf(tickler.getId()),
+                        buildCommentsArray(tcomments, datetimeFormat, timeOnlyFormat));
             }
         }
 
@@ -164,19 +129,109 @@ public class TicklerList2Action extends ActionSupport {
     }
 
     /**
+     * Checks whether a tickler's service date exceeds the configured warning period.
+     *
+     * @param serviceDate Date the tickler service date
+     * @param warnDays long the warning threshold in days, 0 or negative disables warnings
+     * @return boolean true if the service date is past the warning threshold
+     */
+    private boolean isWarning(java.util.Date serviceDate, long warnDays) {
+        if (serviceDate == null || warnDays <= 0) {
+            return false;
+        }
+        LocalDateTime service = serviceDate.toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime();
+        long daysDifference = Duration.between(service, LocalDateTime.now()).toDays();
+        return daysDifference >= warnDays;
+    }
+
+    /**
+     * Builds a JSON object node representing a single tickler data row.
+     *
+     * @param tickler TicklerListDTO the tickler data
+     * @param warning boolean whether this tickler has triggered a warning
+     * @param datetimeFormat DateFormat for full datetime display
+     * @param dateOnlyFormat DateFormat for date-only display
+     * @param locale Locale for localized status text
+     * @return ObjectNode the JSON row
+     */
+    private ObjectNode buildTicklerRow(TicklerListDTO tickler, boolean warning,
+                                       DateFormat datetimeFormat, DateFormat dateOnlyFormat,
+                                       Locale locale) {
+        ObjectNode row = objectMapper.createObjectNode();
+        row.put("id", tickler.getId());
+        row.put("demoNo", tickler.getDemographicNo());
+        row.put("demoLastName", tickler.getDemographicLastName());
+        row.put("demoFirstName", tickler.getDemographicFirstName());
+        row.put("creator", tickler.getCreatorFormattedName());
+        row.put("serviceDate",
+                tickler.getServiceDate() != null ? dateOnlyFormat.format(tickler.getServiceDate()) : "");
+        row.put("createDate",
+                tickler.getCreateDate() != null ? datetimeFormat.format(tickler.getCreateDate()) : "");
+        row.put("priority", String.valueOf(tickler.getPriority()));
+        row.put("assignee", tickler.getAssigneeFormattedName());
+        row.put("status", tickler.getStatusDesc(locale));
+        row.put("message", tickler.getMessage());
+        row.put("warning", warning);
+
+        ArrayNode linksArray = objectMapper.createArrayNode();
+        List<TicklerLinkDTO> linkList = tickler.getLinks();
+        if (linkList != null) {
+            for (TicklerLinkDTO tl : linkList) {
+                ObjectNode linkNode = objectMapper.createObjectNode();
+                linkNode.put("tableName", tl.getTableName());
+                linkNode.put("tableId", tl.getTableId());
+                linksArray.add(linkNode);
+            }
+        }
+        row.set("links", linksArray);
+
+        return row;
+    }
+
+    /**
+     * Builds a JSON array of comment objects for a tickler.
+     *
+     * @param comments List of TicklerCommentDTO the comments to serialize
+     * @param datetimeFormat DateFormat for full datetime display
+     * @param timeOnlyFormat DateFormat for time-only display (used for today's comments)
+     * @return ArrayNode the JSON array of comments
+     */
+    private ArrayNode buildCommentsArray(List<TicklerCommentDTO> comments,
+                                         DateFormat datetimeFormat, DateFormat timeOnlyFormat) {
+        ArrayNode commentArray = objectMapper.createArrayNode();
+        for (TicklerCommentDTO tc : comments) {
+            ObjectNode commentObj = objectMapper.createObjectNode();
+            commentObj.put("creator", tc.getProviderFormattedName());
+            if (tc.getUpdateDate() == null) {
+                commentObj.put("createDate", "");
+            } else if (tc.isUpdateDateToday()) {
+                commentObj.put("createDate", timeOnlyFormat.format(tc.getUpdateDate()));
+            } else {
+                commentObj.put("createDate", datetimeFormat.format(tc.getUpdateDate()));
+            }
+            commentObj.put("message", tc.getMessage());
+            commentArray.add(commentObj);
+        }
+        return commentArray;
+    }
+
+    /**
      * Parses request parameters and constructs a CustomFilter for the tickler query.
      * Handles both general and demographic-specific filtering through a single path.
      *
+     * @param request HttpServletRequest the current request
      * @return CustomFilter populated from request parameters
+     * @throws IllegalArgumentException if date parameters are in an invalid format
      */
-    private CustomFilter buildFilterFromRequest() {
-        String ticklerview = getStringParam("ticklerview", "A");
-        String providerview = getStringParam("providerview", "all");
-        String assignedTo = getStringParam("assignedTo", "all");
-        String mrpview = getStringParam("mrpview", "all");
-        String dateBegin = getStringParam("xml_vdate", "1950-01-01");
-        String dateEnd = getStringParam("xml_appointment_date", "");
-        int targetDemographic = parseIntParam("demographic_no", 0);
+    private CustomFilter buildFilterFromRequest(HttpServletRequest request) {
+        String ticklerview = getStringParam(request, "ticklerview", "A");
+        String providerview = getStringParam(request, "providerview", "all");
+        String assignedTo = getStringParam(request, "assignedTo", "all");
+        String mrpview = getStringParam(request, "mrpview", "all");
+        String dateBegin = getStringParam(request, "xml_vdate", "1950-01-01");
+        String dateEnd = getStringParam(request, "xml_appointment_date", "");
+        int targetDemographic = parseIntParam(request, "demographic_no", 0);
 
         if (targetDemographic > 0) {
             if (dateEnd.isEmpty()) {
@@ -196,8 +251,6 @@ public class TicklerList2Action extends ActionSupport {
 
         if (targetDemographic > 0) {
             filter.setDemographicNo(String.valueOf(targetDemographic));
-            // When viewing a specific demographic's ticklers, only filter by
-            // demographic, status, and date range (matches old search_tickler_bydemo behavior)
             filter.setMrp(null);
             filter.setProvider(null);
             filter.setAssignee(null);
@@ -213,12 +266,30 @@ public class TicklerList2Action extends ActionSupport {
             }
         }
 
-        String sortDir = getStringParam("order[0][dir]", "desc");
+        String sortDir = getStringParam(request, "order[0][dir]", "desc");
         if (!"asc".equalsIgnoreCase(sortDir)) {
             sortDir = "desc";
         }
         filter.setSort_order(sortDir);
         return filter;
+    }
+
+    /**
+     * Writes a JSON error response with the given HTTP status code.
+     *
+     * @param response HttpServletResponse the response to write to
+     * @param statusCode int the HTTP status code
+     * @param message String the error message
+     * @throws IOException if writing fails
+     */
+    private void writeJsonError(HttpServletResponse response, int statusCode,
+                                String message) throws IOException {
+        response.setStatus(statusCode);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        ObjectNode error = objectMapper.createObjectNode();
+        error.put("error", message);
+        response.getWriter().write(error.toString());
     }
 
     /**
@@ -238,7 +309,7 @@ public class TicklerList2Action extends ActionSupport {
         }
     }
 
-    private int parseIntParam(String name, int defaultValue) {
+    private int parseIntParam(HttpServletRequest request, String name, int defaultValue) {
         String val = request.getParameter(name);
         if (val == null || val.isEmpty()) {
             return defaultValue;
@@ -250,7 +321,7 @@ public class TicklerList2Action extends ActionSupport {
         }
     }
 
-    private String getStringParam(String name, String defaultValue) {
+    private String getStringParam(HttpServletRequest request, String name, String defaultValue) {
         String val = request.getParameter(name);
         if (val == null || val.isEmpty()) {
             return defaultValue;
