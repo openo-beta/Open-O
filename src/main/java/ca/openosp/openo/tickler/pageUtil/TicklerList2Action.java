@@ -90,6 +90,7 @@ public class TicklerList2Action extends ActionSupport {
         DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss", locale);
 
         ArrayNode dataArray = objectMapper.createArrayNode();
+        ObjectNode commentsMap = objectMapper.createObjectNode();
 
         for (TicklerListDTO tickler : ticklers) {
             boolean warning = false;
@@ -113,7 +114,6 @@ public class TicklerList2Action extends ActionSupport {
             row.put("status", tickler.getStatusDesc(locale));
             row.put("message", tickler.getMessage());
             row.put("warning", warning);
-            row.put("rowType", "tickler");
 
             ArrayNode linksArray = objectMapper.createArrayNode();
             List<TicklerLinkDTO> linkList = tickler.getLinks();
@@ -130,31 +130,22 @@ public class TicklerList2Action extends ActionSupport {
             dataArray.add(row);
 
             List<TicklerCommentDTO> tcomments = tickler.getComments();
-            if (tcomments != null) {
+            if (tcomments != null && !tcomments.isEmpty()) {
+                ArrayNode commentArray = objectMapper.createArrayNode();
                 for (TicklerCommentDTO tc : tcomments) {
-                    ObjectNode commentRow = objectMapper.createObjectNode();
-                    commentRow.put("id", tickler.getId());
-                    commentRow.put("demoNo", tickler.getDemographicNo());
-                    commentRow.put("demoLastName", tickler.getDemographicLastName());
-                    commentRow.put("demoFirstName", tickler.getDemographicFirstName());
-                    commentRow.put("creator", tc.getProviderFormattedName());
-                    commentRow.put("serviceDate", tickler.getServiceDate() != null ? dateOnlyFormat.format(tickler.getServiceDate()) : "");
+                    ObjectNode commentObj = objectMapper.createObjectNode();
+                    commentObj.put("creator", tc.getProviderFormattedName());
                     if (tc.getUpdateDate() == null) {
-                        commentRow.put("createDate", "");
+                        commentObj.put("createDate", "");
                     } else if (tc.isUpdateDateToday()) {
-                        commentRow.put("createDate", timeOnlyFormat.format(tc.getUpdateDate()));
+                        commentObj.put("createDate", timeOnlyFormat.format(tc.getUpdateDate()));
                     } else {
-                        commentRow.put("createDate", datetimeFormat.format(tc.getUpdateDate()));
+                        commentObj.put("createDate", datetimeFormat.format(tc.getUpdateDate()));
                     }
-                    commentRow.put("priority", String.valueOf(tickler.getPriority()));
-                    commentRow.put("assignee", "");
-                    commentRow.put("status", "");
-                    commentRow.put("message", tc.getMessage());
-                    commentRow.put("warning", false);
-                    commentRow.put("rowType", "comment");
-
-                    dataArray.add(commentRow);
+                    commentObj.put("message", tc.getMessage());
+                    commentArray.add(commentObj);
                 }
+                commentsMap.set(String.valueOf(tickler.getId()), commentArray);
             }
         }
 
@@ -163,6 +154,7 @@ public class TicklerList2Action extends ActionSupport {
         result.put("recordsTotal", totalRecords);
         result.put("recordsFiltered", totalRecords);
         result.set("data", dataArray);
+        result.set("comments", commentsMap);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
