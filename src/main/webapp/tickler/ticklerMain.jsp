@@ -306,7 +306,7 @@
                 //     }
                 // });
                 let groupColumn = 11;
-                let warningColumn = 12;
+                let rowTypeColumn = 12;
                 ticklerResultsTable = jQuery("#ticklerResults").dataTable({
                     "searching": false,
                     "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
@@ -341,7 +341,7 @@
                     ],
                     "columnDefs": [
                         {visible: false, targets: groupColumn},
-                        {visible: false, targets: warningColumn}
+                        {visible: false, targets: rowTypeColumn}
                     ],
                     "createdRow": function (row, data, dataIndex) {
                         if (data.warning === true) {
@@ -366,7 +366,7 @@
                                 }
                             });
                     },
-                    "order": JSON.parse(localStorage.getItem('ticklerSortOrder')) || [[4, 'desc']]
+                    "order": (function() { try { return JSON.parse(localStorage.getItem('ticklerSortOrder')) || [[4, 'desc']]; } catch(e) { return [[4, 'desc']]; } })()
                 })
 
                 ticklerResultsTable.api().on('length.dt', function (e, settings, len) {

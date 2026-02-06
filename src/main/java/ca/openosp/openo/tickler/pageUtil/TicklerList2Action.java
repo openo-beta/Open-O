@@ -54,6 +54,7 @@ public class TicklerList2Action extends ActionSupport {
      * @return null since the response is written directly
      * @throws IOException if writing the JSON response fails
      */
+    @Override
     public String execute() throws IOException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
@@ -62,8 +63,11 @@ public class TicklerList2Action extends ActionSupport {
         }
 
         int draw = parseIntParam("draw", 1);
-        int start = parseIntParam("start", 0);
+        int start = Math.max(0, parseIntParam("start", 0));
         int length = parseIntParam("length", 50);
+        if (length > 0) {
+            length = Math.min(length, 500);
+        }
         boolean showAll = (length <= 0);
 
         Locale locale = request.getLocale();
@@ -88,10 +92,13 @@ public class TicklerList2Action extends ActionSupport {
         ArrayNode dataArray = objectMapper.createArrayNode();
 
         for (TicklerListDTO tickler : ticklers) {
-            LocalDateTime serviceDate = tickler.getServiceDate().toInstant()
-                    .atZone(ZoneId.systemDefault()).toLocalDateTime();
-            long daysDifference = Duration.between(serviceDate, LocalDateTime.now()).toDays();
-            boolean warning = !ignoreWarning && (daysDifference >= ticklerWarnDays);
+            boolean warning = false;
+            if (!ignoreWarning && tickler.getServiceDate() != null) {
+                LocalDateTime serviceDate = tickler.getServiceDate().toInstant()
+                        .atZone(ZoneId.systemDefault()).toLocalDateTime();
+                long daysDifference = Duration.between(serviceDate, LocalDateTime.now()).toDays();
+                warning = (daysDifference >= ticklerWarnDays);
+            }
 
             ObjectNode row = objectMapper.createObjectNode();
             row.put("id", tickler.getId());
@@ -99,8 +106,8 @@ public class TicklerList2Action extends ActionSupport {
             row.put("demoLastName", tickler.getDemographicLastName());
             row.put("demoFirstName", tickler.getDemographicFirstName());
             row.put("creator", tickler.getCreatorFormattedName());
-            row.put("serviceDate", dateOnlyFormat.format(tickler.getServiceDate()));
-            row.put("createDate", datetimeFormat.format(tickler.getCreateDate()));
+            row.put("serviceDate", tickler.getServiceDate() != null ? dateOnlyFormat.format(tickler.getServiceDate()) : "");
+            row.put("createDate", tickler.getCreateDate() != null ? datetimeFormat.format(tickler.getCreateDate()) : "");
             row.put("priority", String.valueOf(tickler.getPriority()));
             row.put("assignee", tickler.getAssigneeFormattedName());
             row.put("status", tickler.getStatusDesc(locale));
@@ -131,8 +138,10 @@ public class TicklerList2Action extends ActionSupport {
                     commentRow.put("demoLastName", tickler.getDemographicLastName());
                     commentRow.put("demoFirstName", tickler.getDemographicFirstName());
                     commentRow.put("creator", tc.getProviderFormattedName());
-                    commentRow.put("serviceDate", dateOnlyFormat.format(tickler.getServiceDate()));
-                    if (tc.isUpdateDateToday()) {
+                    commentRow.put("serviceDate", tickler.getServiceDate() != null ? dateOnlyFormat.format(tickler.getServiceDate()) : "");
+                    if (tc.getUpdateDate() == null) {
+                        commentRow.put("createDate", "");
+                    } else if (tc.isUpdateDateToday()) {
                         commentRow.put("createDate", timeOnlyFormat.format(tc.getUpdateDate()));
                     } else {
                         commentRow.put("createDate", datetimeFormat.format(tc.getUpdateDate()));
@@ -177,6 +186,16 @@ public class TicklerList2Action extends ActionSupport {
         String dateEnd = getStringParam("xml_appointment_date", "");
         int targetDemographic = parseIntParam("demographic_no", 0);
 
+        if (targetDemographic > 0) {
+            if (dateEnd.isEmpty()) {
+                dateEnd = "8888-12-31";
+            }
+        } else {
+            if (dateEnd.isEmpty()) {
+                dateEnd = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+            }
+        }
+
         CustomFilter filter = new CustomFilter();
         filter.setPriority(null);
         filter.setStatus(ticklerview);
@@ -190,9 +209,6 @@ public class TicklerList2Action extends ActionSupport {
             filter.setMrp(null);
             filter.setProvider(null);
             filter.setAssignee(null);
-            if (dateEnd.isEmpty()) {
-                filter.setEndDateWeb("8888-12-31");
-            }
         } else {
             if (!mrpview.isEmpty() && !"all".equals(mrpview)) {
                 filter.setMrp(mrpview);
@@ -221,9 +237,13 @@ public class TicklerList2Action extends ActionSupport {
     private long getTicklerWarnDays() {
         String numDaysUntilWarn = OscarProperties.getInstance().getProperty("tickler_warn_period");
         if (numDaysUntilWarn == null || numDaysUntilWarn.isEmpty()) {
-            numDaysUntilWarn = "0";
+            return 0;
         }
-        return Long.parseLong(numDaysUntilWarn);
+        try {
+            return Long.parseLong(numDaysUntilWarn);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
     private int parseIntParam(String name, int defaultValue) {
