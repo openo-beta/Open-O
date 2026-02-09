@@ -87,7 +87,7 @@ public class TicklerList2Action extends ActionSupport {
 
         List<TicklerListDTO> ticklers;
         if (length <= 0) {
-            ticklers = ticklerManager.getTicklerDTOs(loggedInInfo, filter, 0, totalRecords);
+            ticklers = ticklerManager.getTicklerDTOs(loggedInInfo, filter, 0, 0);
         } else {
             ticklers = ticklerManager.getTicklerDTOs(loggedInInfo, filter, start, length);
         }

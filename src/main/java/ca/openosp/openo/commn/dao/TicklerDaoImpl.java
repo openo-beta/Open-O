@@ -439,7 +439,9 @@ public class TicklerDaoImpl extends AbstractDaoImpl<Tickler> implements TicklerD
             query.setParameter(x + 1, paramList.get(x));
         }
         query.setFirstResult(offset);
-        setLimit(query, limit);
+        if (limit > 0) {
+            setLimit(query, limit);
+        }
 
         List<TicklerListDTO> ticklerDTOs = query.getResultList();
 
