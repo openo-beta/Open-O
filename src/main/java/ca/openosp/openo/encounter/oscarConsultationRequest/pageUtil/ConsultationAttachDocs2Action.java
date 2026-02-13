@@ -105,6 +105,7 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         //Get all DOCUMENT information for demographic, along with which are already attached
         List<String> attachedDocumentIds = new ArrayList<String>();
         List<EDoc> allDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
+        List<EDoc> allPublicDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PUBLIC, EDocUtil.EDocSort.OBSERVATIONDATE);
         List<EDoc> attachedDocuments = EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED);
         if (attachedDocuments != null) {
             for (EDoc document : attachedDocuments) {
@@ -159,6 +160,7 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
 
 
         request.setAttribute("allDocuments", allDocuments);
+        request.setAttribute("allPublicDocuments", allPublicDocuments);
         request.setAttribute("allLabs", allLabs);
         request.setAttribute("allForms", allForms);
         request.setAttribute("allEForms", allEForms);

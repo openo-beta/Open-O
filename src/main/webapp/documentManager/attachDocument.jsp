@@ -366,6 +366,42 @@
                     </tr>
                 </c:if>
 
+                <c:if test="${not empty allPublicDocuments }">
+                    <tr>
+                        <td><h2>Private Documents</h2></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul id="publicDocumentList" style="list-style-type: none;padding:0px;">
+                                <li class="selectAllHeading ${allPublicDocuments.size() > 20 ? 'flex' : ''}">
+                                    <input id="selectAllPublicDocuments" type="checkbox"
+                                           onclick="toggleSelectAll(this, 'publicDocument_');" value="publicDocument_check"
+                                           title="Select/un-select all private documents."/>
+                                    <label for="selectAllPublicDocuments">Select all</label>
+                                    <button class="show-all-button ${allPublicDocuments.size() > 20 ? '' : 'hide'}"
+                                            type="button" title="Show ${allPublicDocuments.size() - 20} More Private Documents"
+                                            onclick="showAll(this, 'publicDoc')">Show ${allPublicDocuments.size() - 20} More
+                                        Private Documents
+                                    </button>
+                                </li>
+                                <c:forEach items="${ allPublicDocuments }" var="document" varStatus="loop">
+                                    <li class="publicDoc ${loop.index > 19 ? 'hide' : ''}">
+                                        <input class="publicDocument_check document_check" type="checkbox" name="docNo"
+                                               id="publicDocNo${document.docId}" value="${document.docId}"
+                                               title="${ document.description }"/>
+                                        <label for="publicDocNo${document.docId}"><c:out
+                                                value="${ document.description } ${ document.observationDate }"/></label>
+                                        <button class="preview-button" type="button" title="Preview"
+                                                onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
+                                            Preview
+                                        </button>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                    </tr>
+                </c:if>
+
                 <c:if test="${not empty allLabsSortedByVersions }">
                     <tr>
                         <td><h2>Labs</h2></td>
