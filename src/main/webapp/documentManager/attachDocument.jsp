@@ -332,7 +332,7 @@
 
                 <c:if test="${not empty allDocuments }">
                     <tr>
-                        <td><h2>Documents</h2></td>
+                        <td><h2>Patient Documents</h2></td>
                     </tr>
                     <tr>
                         <td>
@@ -368,7 +368,7 @@
 
                 <c:if test="${not empty providerPrivateDocs }">
                     <tr>
-                        <td><h2>Private Documents</h2></td>
+                        <td><h2>Provider Documents</h2></td>
                     </tr>
                     <tr>
                         <td>
