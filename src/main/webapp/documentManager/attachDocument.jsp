@@ -340,12 +340,12 @@
                                 <li class="selectAllHeading ${allDocuments.size() > 20 ? 'flex' : ''}">
                                     <input id="selectAllDocuments" type="checkbox"
                                            onclick="toggleSelectAll(this, 'document_');" value="document_check"
-                                           title="Select/un-select all documents."/>
+                                           title="Select/un-select all patient documents."/>
                                     <label for="selectAllDocuments">Select all</label>
                                     <button class="show-all-button ${allDocuments.size() > 20 ? '' : 'hide'}"
-                                            type="button" title="Show ${allDocuments.size() - 20} More Documents"
+                                            type="button" title="Show ${allDocuments.size() - 20} More Patient Documents"
                                             onclick="showAll(this, 'doc')">Show ${allDocuments.size() - 20} More
-                                        Documents
+                                        Patient Documents
                                     </button>
                                 </li>
                                 <c:forEach items="${ allDocuments }" var="document" varStatus="loop">
@@ -376,12 +376,12 @@
                                 <li class="selectAllHeading ${providerPrivateDocs.size() > 20 ? 'flex' : ''}">
                                     <input id="selectAllProviderDocuments" type="checkbox"
                                            onclick="toggleSelectAll(this, 'providerDocument_');" value="providerDocument_check"
-                                           title="Select/un-select all private documents."/>
+                                           title="Select/un-select all provider documents."/>
                                     <label for="selectAllProviderDocuments">Select all</label>
                                     <button class="show-all-button ${providerPrivateDocs.size() > 20 ? '' : 'hide'}"
-                                            type="button" title="Show ${providerPrivateDocs.size() - 20} More Private Documents"
+                                            type="button" title="Show ${providerPrivateDocs.size() - 20} More Provider Documents"
                                             onclick="showAll(this, 'providerDoc')">Show ${providerPrivateDocs.size() - 20} More
-                                        Private Documents
+                                        Provider Documents
                                     </button>
                                 </li>
                                 <c:forEach items="${ providerPrivateDocs }" var="document" varStatus="loop">
