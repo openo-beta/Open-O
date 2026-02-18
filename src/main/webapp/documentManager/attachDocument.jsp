@@ -47,6 +47,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <!DOCTYPE html >
 <html>
@@ -352,7 +353,7 @@
                                     <li class="doc ${loop.index > 19 ? 'hide' : ''}">
                                         <input class="document_check" type="checkbox" name="docNo"
                                                id="docNo${document.docId}" value="${document.docId}"
-                                               title="${ document.description }"/>
+                                               title="${e:forHtmlAttribute(document.description)}"/>
                                         <label for="docNo${document.docId}"><c:out
                                                 value="${ document.description } ${ document.observationDate }"/></label>
                                         <button class="preview-button" type="button" title="Preview"
@@ -386,9 +387,9 @@
                                 </li>
                                 <c:forEach items="${ providerPrivateDocs }" var="document" varStatus="loop">
                                     <li class="providerDoc ${loop.index > 19 ? 'hide' : ''}">
-                                        <input class="providerDocument_check document_check" type="checkbox" name="docNo"
+                                        <input class="providerDocument_check" type="checkbox" name="docNo"
                                                id="providerDocNo${document.docId}" value="${document.docId}"
-                                               title="${ document.description }"/>
+                                               title="${e:forHtmlAttribute(document.description)}"/>
                                         <label for="providerDocNo${document.docId}"><c:out
                                                 value="${ document.description } ${ document.observationDate }"/></label>
                                         <button class="preview-button" type="button" title="Preview"

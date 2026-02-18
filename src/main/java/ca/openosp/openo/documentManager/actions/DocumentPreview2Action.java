@@ -273,8 +273,7 @@ public class DocumentPreview2Action extends ActionSupport {
      */
     private void populateCommonDocs(LoggedInInfo loggedInInfo, String demographicNo) {
         List<EDoc> allDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        List<EDoc> providerPrivateDocs = EDocUtil.listDocs(loggedInInfo, "providers", providerNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
+        List<EDoc> providerPrivateDocs = EDocUtil.getProviderPrivateDocs(loggedInInfo);
         ArrayList<HashMap<String,? extends Object>> allHRMDocuments = HRMUtil.listHRMDocuments(loggedInInfo, "report_date", false, demographicNo,false);
         List<AttachmentLabResultData> allLabsSortedByVersions = documentAttachmentManager.getAllLabsSortedByVersions(loggedInInfo, demographicNo);
         List<EctFormData.PatientForm> allForms = formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, Integer.parseInt(demographicNo), false, true);

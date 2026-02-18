@@ -3174,6 +3174,9 @@ if (userAgent != null) {
                         $mainForm.find(".delegateAttachment").each(function (index, data) {
                             let delegate = "#" + this.id.split("_")[1];
                             let element = jQuery('#attachDocumentsForm').find(delegate);
+                            if (element.length === 0 && delegate.startsWith('#docNo')) {
+                                element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerDocNo'));
+                            }
                             if (element.length === 0) {
                                 element = addFormIfNotFound(data, '<%=demo%>', delegate);
                             }
@@ -3214,7 +3217,7 @@ if (userAgent != null) {
                         // before the dialog is closed:
 
                         // pass the checked elements to the consultation request form
-                        jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
+                        jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
                         ).each(function (index, data) {
                             var element = jQuery(this);
                             var input = jQuery("<input />", {
@@ -3251,7 +3254,7 @@ if (userAgent != null) {
                         });
 
                         // remove unchecked elements from the request form.
-                        jQuery('#attachDocumentsForm').find(".document_pre_check:not(input[disabled='disabled']), .lab_pre_check:not(input[disabled='disabled']), .form_pre_check:not(input[disabled='disabled']), .eForm_pre_check:not(input[disabled='disabled']), .hrm_pre_check:not(input[disabled='disabled'])").each(function (index, data) {
+                        jQuery('#attachDocumentsForm').find(".document_pre_check:not(input[disabled='disabled']), .providerDocument_pre_check:not(input[disabled='disabled']), .lab_pre_check:not(input[disabled='disabled']), .form_pre_check:not(input[disabled='disabled']), .eForm_pre_check:not(input[disabled='disabled']), .hrm_pre_check:not(input[disabled='disabled'])").each(function (index, data) {
                             var checkedElement = jQuery(this);
 
                             if (!checkedElement.is(':checked')) {
