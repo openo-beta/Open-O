@@ -105,8 +105,7 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         //Get all DOCUMENT information for demographic, along with which are already attached
         List<String> attachedDocumentIds = new ArrayList<String>();
         List<EDoc> allDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        List<EDoc> providerPrivateDocs = EDocUtil.listDocs(loggedInInfo, "providers", providerNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
+        List<EDoc> providerPrivateDocs = EDocUtil.getProviderPrivateDocs(loggedInInfo);
         List<EDoc> attachedDocuments = EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED);
         if (attachedDocuments != null) {
             for (EDoc document : attachedDocuments) {

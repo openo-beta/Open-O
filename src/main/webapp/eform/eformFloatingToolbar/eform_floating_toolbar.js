@@ -220,6 +220,9 @@ jQuery(document).on('click', '*[data-poload]', function () {
             jQuery('#attachDocumentList').find(".delegateAttachment").each(function (index, data) {
                 let delegate = "#" + this.id.split("_")[1];
                 let element = jQuery('#attachDocumentsForm').find(delegate);
+                if (element.length === 0 && delegate.startsWith('#docNo')) {
+                    element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerDocNo'));
+                }
                 if (element.length === 0) {
                     element = addFormIfNotFound(data, demographicNo, delegate);
                 }
@@ -261,7 +264,7 @@ jQuery(document).on('click', '*[data-poload]', function () {
             jQuery('#attachDocumentList').empty();
 
             // pass the checked documents to the eForm document list(attachDocumentList)
-            jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
+            jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
             ).each(function (index, data) {
                 let element = jQuery(this);
                 let input = jQuery("<input />", {

@@ -517,6 +517,22 @@ public final class EDocUtil {
         return listDocs(loggedInInfo, module, moduleid, docType, publicDoc, sort, "active");
     }
 
+    /**
+     * Retrieves private documents belonging to the currently logged-in provider.
+     *
+     * @param loggedInInfo LoggedInInfo the logged-in user's session information
+     * @return List&lt;EDoc&gt; list of the provider's private documents sorted by observation date,
+     *         or an empty list if the provider number is null
+     * @since 2026-02-18
+     */
+    public static List<EDoc> getProviderPrivateDocs(LoggedInInfo loggedInInfo) {
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        if (providerNo == null) {
+            return java.util.Collections.emptyList();
+        }
+        return listDocs(loggedInInfo, "providers", providerNo, null, PRIVATE, EDocSort.OBSERVATIONDATE);
+    }
+
     public static EDoc getEDocFromDocId(String docId) {
         DocumentDao dao = SpringUtils.getBean(DocumentDao.class);
         EDoc currentdoc = new EDoc();
