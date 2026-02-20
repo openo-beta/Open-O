@@ -106,6 +106,7 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         List<String> attachedDocumentIds = new ArrayList<String>();
         List<EDoc> allDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
         List<EDoc> providerPrivateDocs = EDocUtil.getProviderPrivateDocs(loggedInInfo);
+        List<EDoc> providerPublicDocs = EDocUtil.getProviderPublicDocs(loggedInInfo);
         List<EDoc> attachedDocuments = EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED);
         if (attachedDocuments != null) {
             for (EDoc document : attachedDocuments) {
@@ -161,6 +162,7 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
 
         request.setAttribute("allDocuments", allDocuments);
         request.setAttribute("providerPrivateDocs", providerPrivateDocs);
+        request.setAttribute("providerPublicDocs", providerPublicDocs);
         request.setAttribute("allLabs", allLabs);
         request.setAttribute("allForms", allForms);
         request.setAttribute("allEForms", allEForms);

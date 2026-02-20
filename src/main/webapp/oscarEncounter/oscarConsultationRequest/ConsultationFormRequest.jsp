@@ -3175,7 +3175,10 @@ if (userAgent != null) {
                             let delegate = "#" + this.id.split("_")[1];
                             let element = jQuery('#attachDocumentsForm').find(delegate);
                             if (element.length === 0 && delegate.startsWith('#docNo')) {
-                                element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerDocNo'));
+                                element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerPrivateDocNo'));
+                            }
+                            if (element.length === 0 && delegate.startsWith('#docNo')) {
+                                element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerPublicDocNo'));
                             }
                             if (element.length === 0) {
                                 element = addFormIfNotFound(data, '<%=demo%>', delegate);
@@ -3216,8 +3219,21 @@ if (userAgent != null) {
                     beforeClose: function (event, ui) {
                         // before the dialog is closed:
 
+                        // warn if private provider documents are selected
+                        var privateProviderDocsChecked = jQuery('#attachDocumentsForm')
+                            .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled']), .providerPrivateDocument_pre_check:checked:not(input[disabled='disabled'])");
+                        if (privateProviderDocsChecked.length > 0) {
+                            if (!confirm("You have selected " + privateProviderDocsChecked.length +
+                                " private provider document(s) for attachment.\n\n" +
+                                "Private documents are personal to your account. " +
+                                "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
+                                "Are you sure you want to attach these private documents?")) {
+                                return false;
+                            }
+                        }
+
                         // pass the checked elements to the consultation request form
-                        jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
+                        jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerPrivateDocument_check:checked:not(input[disabled='disabled']), .providerPublicDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
                         ).each(function (index, data) {
                             var element = jQuery(this);
                             var input = jQuery("<input />", {
@@ -3227,7 +3243,7 @@ if (userAgent != null) {
                                 id: "delegate_" + element.attr('id'),
                                 class: 'delegateAttachment'
                             });
-                            var row = jQuery("<tr>", {id: "entry_" + element.attr("name") + element.val()});
+                            var row = jQuery("<tr>", {id: "entry_" + element.attr("id")});
                             var column = jQuery("<td>");
                             var target = "#attachedDocumentsTable";
 
@@ -3254,7 +3270,7 @@ if (userAgent != null) {
                         });
 
                         // remove unchecked elements from the request form.
-                        jQuery('#attachDocumentsForm').find(".document_pre_check:not(input[disabled='disabled']), .providerDocument_pre_check:not(input[disabled='disabled']), .lab_pre_check:not(input[disabled='disabled']), .form_pre_check:not(input[disabled='disabled']), .eForm_pre_check:not(input[disabled='disabled']), .hrm_pre_check:not(input[disabled='disabled'])").each(function (index, data) {
+                        jQuery('#attachDocumentsForm').find(".document_pre_check:not(input[disabled='disabled']), .providerPrivateDocument_pre_check:not(input[disabled='disabled']), .providerPublicDocument_pre_check:not(input[disabled='disabled']), .lab_pre_check:not(input[disabled='disabled']), .form_pre_check:not(input[disabled='disabled']), .eForm_pre_check:not(input[disabled='disabled']), .hrm_pre_check:not(input[disabled='disabled'])").each(function (index, data) {
                             var checkedElement = jQuery(this);
 
                             if (!checkedElement.is(':checked')) {
