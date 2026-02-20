@@ -583,6 +583,7 @@ public final class EDocUtil {
             currentdoc.setDateTimeStampAsDate(d.getUpdatedatetime());
             currentdoc.setDateTimeStamp(ConversionUtils.toTimestampString(d.getUpdatedatetime()));
             currentdoc.setFileName(d.getDocfilename());
+            currentdoc.setDocPublic("" + d.getPublic1());
             currentdoc.setStatus(d.getStatus());
             currentdoc.setContentType(d.getContenttype());
             currentdoc.setObservationDate(d.getObservationdate());

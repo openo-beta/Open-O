@@ -267,7 +267,7 @@ jQuery(document).on('click', '*[data-poload]', function () {
                     " private provider document(s) for attachment.\n\n" +
                     "Private documents are personal to your account. " +
                     "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
-                    "Are you sure you want to attach these private documents?")) {
+                    "Select OK to confirm, or Cancel to go back.")) {
                     return false;
                 }
             }
