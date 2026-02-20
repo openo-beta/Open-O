@@ -230,6 +230,7 @@ jQuery(document).on('click', '*[data-poload]', function () {
                     element = addFormIfNotFound(data, demographicNo, delegate);
                 }
                 element.attr("checked", true);
+                element.data("pre-attached", true);
 
                 // Expand list if selected lab is older version
                 if (element.attr('data-version')) {
@@ -259,9 +260,10 @@ jQuery(document).on('click', '*[data-poload]', function () {
         beforeClose: function (event, ui) {
             // before the dialog is closed:
 
-            // warn if private provider documents are selected
+            // warn if NEW private provider documents are selected (not pre-attached ones)
             var privateProviderDocsChecked = jQuery('#attachDocumentsForm')
-                .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])");
+                .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])")
+                .filter(function() { return !jQuery(this).data("pre-attached"); });
             if (privateProviderDocsChecked.length > 0) {
                 if (!confirm("You have selected " + privateProviderDocsChecked.length +
                     " private provider document(s) for attachment.\n\n" +

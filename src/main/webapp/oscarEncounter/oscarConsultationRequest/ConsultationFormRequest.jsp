@@ -3219,7 +3219,7 @@ if (userAgent != null) {
 
                         // warn if private provider documents are selected
                         var privateProviderDocsChecked = jQuery('#attachDocumentsForm')
-                            .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled']), .providerPrivateDocument_pre_check:checked:not(input[disabled='disabled'])");
+                            .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])");
                         if (privateProviderDocsChecked.length > 0) {
                             if (!confirm("You have selected " + privateProviderDocsChecked.length +
                                 " private provider document(s) for attachment.\n\n" +
