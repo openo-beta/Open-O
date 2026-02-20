@@ -533,6 +533,28 @@ public final class EDocUtil {
         return listDocs(loggedInInfo, "providers", providerNo, null, PRIVATE, EDocSort.OBSERVATIONDATE);
     }
 
+    /**
+     * Retrieves public (shared) documents uploaded by any provider.
+     *
+     * <p>When {@code PUBLIC} is passed to {@link #listDocs}, the underlying
+     * {@code DocumentDaoImpl.findDocuments()} queries {@code d.public1 = 1}
+     * without filtering by {@code moduleId}, so all public provider documents
+     * across every provider are returned. The {@code providerNo} parameter is
+     * still required for the method signature but does not restrict results.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the logged-in user's session information
+     * @return List&lt;EDoc&gt; list of all public provider documents sorted by observation date,
+     *         or an empty list if the provider number is null
+     * @since 2026-02-20
+     */
+    public static List<EDoc> getProviderPublicDocs(LoggedInInfo loggedInInfo) {
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        if (providerNo == null) {
+            return java.util.Collections.emptyList();
+        }
+        return listDocs(loggedInInfo, "providers", providerNo, null, PUBLIC, EDocSort.OBSERVATIONDATE);
+    }
+
     public static EDoc getEDocFromDocId(String docId) {
         DocumentDao dao = SpringUtils.getBean(DocumentDao.class);
         EDoc currentdoc = new EDoc();

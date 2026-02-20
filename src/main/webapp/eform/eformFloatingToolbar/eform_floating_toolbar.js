@@ -221,7 +221,10 @@ jQuery(document).on('click', '*[data-poload]', function () {
                 let delegate = "#" + this.id.split("_")[1];
                 let element = jQuery('#attachDocumentsForm').find(delegate);
                 if (element.length === 0 && delegate.startsWith('#docNo')) {
-                    element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerDocNo'));
+                    element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerPrivateDocNo'));
+                }
+                if (element.length === 0 && delegate.startsWith('#docNo')) {
+                    element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerPublicDocNo'));
                 }
                 if (element.length === 0) {
                     element = addFormIfNotFound(data, demographicNo, delegate);
@@ -256,6 +259,19 @@ jQuery(document).on('click', '*[data-poload]', function () {
         beforeClose: function (event, ui) {
             // before the dialog is closed:
 
+            // warn if private provider documents are selected
+            var privateProviderDocsChecked = jQuery('#attachDocumentsForm')
+                .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])");
+            if (privateProviderDocsChecked.length > 0) {
+                if (!confirm("You have selected " + privateProviderDocsChecked.length +
+                    " private provider document(s) for attachment.\n\n" +
+                    "Private documents are personal to your account. " +
+                    "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
+                    "Are you sure you want to attach these private documents?")) {
+                    return false;
+                }
+            }
+
             // check if list exists, if yes then empty it otherwise create new
             if (jQuery('#attachDocumentList').length === 0) {
                 const attachDocumentList = jQuery('<div>', {'id': 'attachDocumentList'});
@@ -264,7 +280,7 @@ jQuery(document).on('click', '*[data-poload]', function () {
             jQuery('#attachDocumentList').empty();
 
             // pass the checked documents to the eForm document list(attachDocumentList)
-            jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
+            jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerPrivateDocument_check:checked:not(input[disabled='disabled']), .providerPublicDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
             ).each(function (index, data) {
                 let element = jQuery(this);
                 let input = jQuery("<input />", {

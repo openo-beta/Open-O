@@ -369,28 +369,64 @@
 
                 <c:if test="${not empty providerPrivateDocs }">
                     <tr>
-                        <td><h2>Provider Documents</h2></td>
+                        <td><h2>Private Provider Documents</h2></td>
                     </tr>
                     <tr>
                         <td>
-                            <ul id="providerDocumentList" style="list-style-type: none;padding:0px;">
+                            <ul id="providerPrivateDocumentList" style="list-style-type: none;padding:0px;">
                                 <li class="selectAllHeading ${providerPrivateDocs.size() > 20 ? 'flex' : ''}">
-                                    <input id="selectAllProviderDocuments" type="checkbox"
-                                           onclick="toggleSelectAll(this, 'providerDocument_');" value="providerDocument_check"
-                                           title="Select/un-select all provider documents."/>
-                                    <label for="selectAllProviderDocuments">Select all</label>
+                                    <input id="selectAllProviderPrivateDocuments" type="checkbox"
+                                           onclick="toggleSelectAll(this, 'providerPrivateDocument_');" value="providerPrivateDocument_check"
+                                           title="Select/un-select all private provider documents."/>
+                                    <label for="selectAllProviderPrivateDocuments">Select all</label>
                                     <button class="show-all-button ${providerPrivateDocs.size() > 20 ? '' : 'hide'}"
-                                            type="button" title="Show ${providerPrivateDocs.size() - 20} More Provider Documents"
-                                            onclick="showAll(this, 'providerDoc')">Show ${providerPrivateDocs.size() - 20} More
-                                        Provider Documents
+                                            type="button" title="Show ${providerPrivateDocs.size() - 20} More Private Provider Documents"
+                                            onclick="showAll(this, 'providerPrivateDoc')">Show ${providerPrivateDocs.size() - 20} More
+                                        Private Provider Documents
                                     </button>
                                 </li>
                                 <c:forEach items="${ providerPrivateDocs }" var="document" varStatus="loop">
-                                    <li class="providerDoc ${loop.index > 19 ? 'hide' : ''}">
-                                        <input class="providerDocument_check" type="checkbox" name="docNo"
-                                               id="providerDocNo${document.docId}" value="${document.docId}"
+                                    <li class="providerPrivateDoc ${loop.index > 19 ? 'hide' : ''}">
+                                        <input class="providerPrivateDocument_check" type="checkbox" name="docNo"
+                                               id="providerPrivateDocNo${document.docId}" value="${document.docId}"
                                                title="${e:forHtmlAttribute(document.description)}"/>
-                                        <label for="providerDocNo${document.docId}"><c:out
+                                        <label for="providerPrivateDocNo${document.docId}"><c:out
+                                                value="${ document.description } ${ document.observationDate }"/></label>
+                                        <button class="preview-button" type="button" title="Preview"
+                                                onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
+                                            Preview
+                                        </button>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                    </tr>
+                </c:if>
+
+                <c:if test="${not empty providerPublicDocs }">
+                    <tr>
+                        <td><h2>Public Provider Documents</h2></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul id="providerPublicDocumentList" style="list-style-type: none;padding:0px;">
+                                <li class="selectAllHeading ${providerPublicDocs.size() > 20 ? 'flex' : ''}">
+                                    <input id="selectAllProviderPublicDocuments" type="checkbox"
+                                           onclick="toggleSelectAll(this, 'providerPublicDocument_');" value="providerPublicDocument_check"
+                                           title="Select/un-select all public provider documents."/>
+                                    <label for="selectAllProviderPublicDocuments">Select all</label>
+                                    <button class="show-all-button ${providerPublicDocs.size() > 20 ? '' : 'hide'}"
+                                            type="button" title="Show ${providerPublicDocs.size() - 20} More Public Provider Documents"
+                                            onclick="showAll(this, 'providerPublicDoc')">Show ${providerPublicDocs.size() - 20} More
+                                        Public Provider Documents
+                                    </button>
+                                </li>
+                                <c:forEach items="${ providerPublicDocs }" var="document" varStatus="loop">
+                                    <li class="providerPublicDoc ${loop.index > 19 ? 'hide' : ''}">
+                                        <input class="providerPublicDocument_check" type="checkbox" name="docNo"
+                                               id="providerPublicDocNo${document.docId}" value="${document.docId}"
+                                               title="${e:forHtmlAttribute(document.description)}"/>
+                                        <label for="providerPublicDocNo${document.docId}"><c:out
                                                 value="${ document.description } ${ document.observationDate }"/></label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
