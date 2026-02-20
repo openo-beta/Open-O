@@ -187,6 +187,11 @@
         .attachmentContainer .caret-down {
             transform: rotate(45deg) !important;
         }
+
+        .deleted-doc label {
+            color: #888 !important;
+            font-style: italic;
+        }
     </style>
 
     <script type="text/javascript">
@@ -350,12 +355,13 @@
                                     </button>
                                 </li>
                                 <c:forEach items="${ allDocuments }" var="document" varStatus="loop">
-                                    <li class="doc ${loop.index > 19 ? 'hide' : ''}">
+                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
+                                    <li class="doc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
                                         <input class="document_check" type="checkbox" name="docNo"
                                                id="docNo${document.docId}" value="${document.docId}"
                                                title="${e:forHtmlAttribute(document.description)}"/>
                                         <label for="docNo${document.docId}"><c:out
-                                                value="${ document.description } ${ document.observationDate }"/></label>
+                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if></label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
                                             Preview
@@ -386,12 +392,13 @@
                                     </button>
                                 </li>
                                 <c:forEach items="${ providerPrivateDocs }" var="document" varStatus="loop">
-                                    <li class="providerPrivateDoc ${loop.index > 19 ? 'hide' : ''}">
+                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
+                                    <li class="providerPrivateDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
                                         <input class="providerPrivateDocument_check" type="checkbox" name="docNo"
                                                id="providerPrivateDocNo${document.docId}" value="${document.docId}"
                                                title="${e:forHtmlAttribute(document.description)}"/>
                                         <label for="providerPrivateDocNo${document.docId}"><c:out
-                                                value="${ document.description } ${ document.observationDate }"/></label>
+                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if></label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
                                             Preview
@@ -422,12 +429,13 @@
                                     </button>
                                 </li>
                                 <c:forEach items="${ providerPublicDocs }" var="document" varStatus="loop">
-                                    <li class="providerPublicDoc ${loop.index > 19 ? 'hide' : ''}">
+                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
+                                    <li class="providerPublicDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
                                         <input class="providerPublicDocument_check" type="checkbox" name="docNo"
                                                id="providerPublicDocNo${document.docId}" value="${document.docId}"
                                                title="${e:forHtmlAttribute(document.description)}"/>
                                         <label for="providerPublicDocNo${document.docId}"><c:out
-                                                value="${ document.description } ${ document.observationDate }"/></label>
+                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if></label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
                                             Preview

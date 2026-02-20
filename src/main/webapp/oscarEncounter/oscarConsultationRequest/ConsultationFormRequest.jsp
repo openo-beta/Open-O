@@ -3227,7 +3227,7 @@ if (userAgent != null) {
                                 " private provider document(s) for attachment.\n\n" +
                                 "Private documents are personal to your account. " +
                                 "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
-                                "Are you sure you want to attach these private documents?")) {
+                                "Select OK to confirm, or Cancel to go back.")) {
                                 return false;
                             }
                         }
@@ -3243,7 +3243,7 @@ if (userAgent != null) {
                                 id: "delegate_" + element.attr('id'),
                                 class: 'delegateAttachment'
                             });
-                            var row = jQuery("<tr>", {id: "entry_" + element.attr("id")});
+                            var row = jQuery("<tr>", {id: "entry_" + element.attr("name") + element.val()});
                             var column = jQuery("<td>");
                             var target = "#attachedDocumentsTable";
 
@@ -3275,7 +3275,7 @@ if (userAgent != null) {
 
                             if (!checkedElement.is(':checked')) {
                                 var checkedElementClass = checkedElement.attr("class");
-                                $mainForm.find("#entry_" + checkedElement.attr("id")).remove();
+                                $mainForm.find("#entry_" + checkedElement.attr("name") + checkedElement.val()).remove();
                                 checkedElement.attr("class", checkedElementClass.split("_")[0] + "_check");
                             }
                         });

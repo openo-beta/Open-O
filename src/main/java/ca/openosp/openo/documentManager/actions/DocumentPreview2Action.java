@@ -222,10 +222,13 @@ public class DocumentPreview2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
+        String requestId = StringUtils.isNullOrEmpty(request.getParameter("requestId")) ? null : request.getParameter("requestId");
 
         populateCommonDocs(loggedInInfo, demographicNo);
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         request.setAttribute("allEForms", allEForms);
+
+        mergeSoftDeletedAttachedDocs(loggedInInfo, demographicNo, requestId, null);
 
         return "fetchDocuments";
     }
@@ -239,6 +242,8 @@ public class DocumentPreview2Action extends ActionSupport {
         populateCommonDocs(loggedInInfo, demographicNo);
 		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdid));
 		request.setAttribute("allEForms", allEForms);
+
+        mergeSoftDeletedAttachedDocs(loggedInInfo, demographicNo, null, fdid);
 
         return "fetchDocuments";
     }
@@ -267,14 +272,64 @@ public class DocumentPreview2Action extends ActionSupport {
     }
 
     /**
+     * Merges soft-deleted attached documents into the existing document lists so
+     * they render naturally in the attachment manager JSP in the correct section.
+     *
+     * @param loggedInInfo LoggedInInfo the logged-in user's session information
+     * @param demographicNo String the patient's demographic number
+     * @param requestId String the consultation request ID, or null for eForm context
+     * @param fdid String the eForm data ID, or null for consultation context
+     * @since 2026-02-20
+     */
+    @SuppressWarnings("unchecked")
+    private void mergeSoftDeletedAttachedDocs(LoggedInInfo loggedInInfo, String demographicNo, String requestId, String fdid) {
+        List<EDoc> attachedDocs;
+        if (requestId != null) {
+            attachedDocs = EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED);
+        } else if (fdid != null) {
+            attachedDocs = EDocUtil.listDocsAttachedToEForm(loggedInInfo, demographicNo, fdid, EDocUtil.ATTACHED);
+        } else {
+            return;
+        }
+
+        if (attachedDocs == null || attachedDocs.isEmpty()) {
+            return;
+        }
+
+        List<EDoc> allDocuments = (List<EDoc>) request.getAttribute("allDocuments");
+        List<EDoc> providerPrivateDocs = (List<EDoc>) request.getAttribute("providerPrivateDocs");
+        List<EDoc> providerPublicDocs = (List<EDoc>) request.getAttribute("providerPublicDocs");
+
+        // Only soft-deleted docs need merging — active docs are already in the lists
+        for (EDoc attachedDoc : attachedDocs) {
+            if (attachedDoc.getStatus() != 'D') {
+                continue;
+            }
+            EDoc fullDoc = EDocUtil.getEDocFromDocId(attachedDoc.getDocId());
+            if (fullDoc.getDocId() == null || fullDoc.getDocId().isEmpty()) {
+                continue;
+            }
+            if (EDocUtil.isProviderModule(fullDoc.getModule())) {
+                if ("1".equals(fullDoc.getDocPublic())) {
+                    providerPublicDocs.add(fullDoc);
+                } else {
+                    providerPrivateDocs.add(fullDoc);
+                }
+            } else {
+                allDocuments.add(fullDoc);
+            }
+        }
+    }
+
+    /**
      * Populate common documents like EDocs, Labs, Forms, HRM documents
      * @param loggedInInfo Information about the logged-in user
      * @param demographicNo Demographic number of the patient
      */
     private void populateCommonDocs(LoggedInInfo loggedInInfo, String demographicNo) {
         List<EDoc> allDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
-        List<EDoc> providerPrivateDocs = EDocUtil.getProviderPrivateDocs(loggedInInfo);
-        List<EDoc> providerPublicDocs = EDocUtil.getProviderPublicDocs(loggedInInfo);
+        List<EDoc> providerPrivateDocs = new ArrayList<>(EDocUtil.getProviderPrivateDocs(loggedInInfo));
+        List<EDoc> providerPublicDocs = new ArrayList<>(EDocUtil.getProviderPublicDocs(loggedInInfo));
         ArrayList<HashMap<String,? extends Object>> allHRMDocuments = HRMUtil.listHRMDocuments(loggedInInfo, "report_date", false, demographicNo,false);
         List<AttachmentLabResultData> allLabsSortedByVersions = documentAttachmentManager.getAllLabsSortedByVersions(loggedInInfo, demographicNo);
         List<EctFormData.PatientForm> allForms = formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, Integer.parseInt(demographicNo), false, true);
