@@ -300,6 +300,10 @@ public class DocumentPreview2Action extends ActionSupport {
         List<EDoc> providerPrivateDocs = (List<EDoc>) request.getAttribute("providerPrivateDocs");
         List<EDoc> providerPublicDocs = (List<EDoc>) request.getAttribute("providerPublicDocs");
 
+        if (allDocuments == null || providerPrivateDocs == null || providerPublicDocs == null) {
+            return;
+        }
+
         // Only soft-deleted docs need merging — active docs are already in the lists
         for (EDoc attachedDoc : attachedDocs) {
             if (attachedDoc.getStatus() != 'D') {
@@ -327,7 +331,7 @@ public class DocumentPreview2Action extends ActionSupport {
      * @param demographicNo Demographic number of the patient
      */
     private void populateCommonDocs(LoggedInInfo loggedInInfo, String demographicNo) {
-        List<EDoc> allDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
+        List<EDoc> allDocuments = new ArrayList<>(EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE));
         List<EDoc> providerPrivateDocs = new ArrayList<>(EDocUtil.getProviderPrivateDocs(loggedInInfo));
         List<EDoc> providerPublicDocs = new ArrayList<>(EDocUtil.getProviderPublicDocs(loggedInInfo));
         ArrayList<HashMap<String,? extends Object>> allHRMDocuments = HRMUtil.listHRMDocuments(loggedInInfo, "report_date", false, demographicNo,false);
