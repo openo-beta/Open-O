@@ -220,12 +220,6 @@ jQuery(document).on('click', '*[data-poload]', function () {
             jQuery('#attachDocumentList').find(".delegateAttachment").each(function (index, data) {
                 let delegate = "#" + this.id.split("_")[1];
                 let element = jQuery('#attachDocumentsForm').find(delegate);
-                if (element.length === 0 && delegate.startsWith('#docNo')) {
-                    element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerPrivateDocNo'));
-                }
-                if (element.length === 0 && delegate.startsWith('#docNo')) {
-                    element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerPublicDocNo'));
-                }
                 if (element.length === 0) {
                     element = addFormIfNotFound(data, demographicNo, delegate);
                 }

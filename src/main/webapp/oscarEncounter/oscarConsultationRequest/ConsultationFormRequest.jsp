@@ -3172,12 +3172,6 @@ if (userAgent != null) {
                         $mainForm.find(".delegateAttachment").each(function (index, data) {
                             let delegate = "#" + this.id.split("_")[1];
                             let element = jQuery('#attachDocumentsForm').find(delegate);
-                            if (element.length === 0 && delegate.startsWith('#docNo')) {
-                                element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerPrivateDocNo'));
-                            }
-                            if (element.length === 0 && delegate.startsWith('#docNo')) {
-                                element = jQuery('#attachDocumentsForm').find(delegate.replace('#docNo', '#providerPublicDocNo'));
-                            }
                             if (element.length === 0) {
                                 element = addFormIfNotFound(data, '<%=demo%>', delegate);
                             }
@@ -3273,7 +3267,7 @@ if (userAgent != null) {
 
                             if (!checkedElement.is(':checked')) {
                                 var checkedElementClass = checkedElement.attr("class");
-                                $mainForm.find("#entry_" + checkedElement.attr("name") + checkedElement.val()).remove();
+                                $mainForm.find("#entry_" + checkedElement.attr("id")).remove();
                                 checkedElement.attr("class", checkedElementClass.split("_")[0] + "_check");
                             }
                         });
