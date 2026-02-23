@@ -414,7 +414,7 @@ public class CommonLabResultData {
 				if (!skipCommentOnUpdate) {
 					String currentComment = Optional.ofNullable(providerLabRoutingModel.getComment()).orElse("").trim();
 					if (!comment.isEmpty() && !comment.equalsIgnoreCase(currentComment)) {
-						providerLabRoutingModel.setComment(comment.replaceAll(currentComment, currentComment));
+						providerLabRoutingModel.setComment(comment);
 					}
 				}
                 
