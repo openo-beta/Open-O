@@ -47,6 +47,7 @@ import ca.openosp.openo.commn.model.Hl7TextMessage;
 import ca.openosp.openo.commn.model.PatientLabRouting;
 import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
 import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.utility.PDFGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,6 +83,9 @@ public class LabManagerImpl implements LabManager {
 
     @Autowired
     SecurityInfoManager securityInfoManager;
+
+    @Autowired
+    ProviderManager2 providerManager2;
 
     public List<Hl7TextMessage> getHl7Messages(LoggedInInfo loggedInInfo, Integer demographicNo, int offset, int limit) {
         checkPrivilege(loggedInInfo, "r");
@@ -173,6 +177,11 @@ public class LabManagerImpl implements LabManager {
 
         // Gets lab IDs in order from oldest to latest (e.g., v1, v2, ..., vn)
         String labs = commonLabResultData.getMatchingLabs(flaggedLabId, labType);
+
+        // The UI disables the checkbox, but this guards against crafted requests.
+        if (onBehalfOfOtherProvider && !providerManager2.isHl7AllowOthersFileForYou(loggedInInfo, providerNo)) {
+            throw new SecurityException("Provider " + providerNo + " has not allowed others to file on their behalf");
+        }
 
         // Filter labs: if fileUpToLabNo is true, include only those <= flaggedLabId
         List<Integer> filteredLabs = Arrays.stream(labs.split(","))
