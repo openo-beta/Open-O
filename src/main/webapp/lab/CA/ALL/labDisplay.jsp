@@ -986,14 +986,12 @@ request.setAttribute("missingTests", missingTests);
                             console.log("Adding comment. Formid: " + formid + " labid: " + labid);
                             addComment(formid, labid);
                         } else if (action === 'ackLabAndFileForOther') {
-                            fileOnBehalfOfMultipleProviders().then(() => {
-                                console.log("Acknowledging lab results");
-                                if(confirmAck()){
-                                    console.log("Acknowledge confirmed. Labid: " + labid);
-                                    jQuery("#labStatus_"+labid).val("A")
-                                    updateStatus(formid,labid);
-                                }
-                            });
+                            console.log("Acknowledging lab results");
+                            if(confirmAck()){
+                                console.log("Acknowledge confirmed. Labid: " + labid);
+                                jQuery("#labStatus_"+labid).val("A")
+                                updateStatus(formid,labid);
+                            }
                         }
 
                     } else {
@@ -1148,16 +1146,16 @@ request.setAttribute("missingTests", missingTests);
         //   Otherwise (skipComment=false): opens the combined "Acknowledge/File Document"
         //   modal so the provider can enter a comment. When isHl7OfferFileForOthers=true,
         //   the modal also allows optionally filing for other linked providers.
-        function openFileDialog(isFileOnly) {
+        function openFileDialog(isFileOnly, segmentId, labType) {
             if (isFileOnly) {
-                openFileOnlyDialog();
+                openFileOnlyDialog(segmentId, labType);
                 return;
             }
             if (jQuery("#skipAckComment").val() === "true") {
                 jQuery('#tempAckBtn').click();
                 return;
             }
-            openCombinedAckFileDialog(false);
+            openCombinedAckFileDialog(false, segmentId, labType);
         }
 
         // Opens the "File Document" dialog (#fileDialog) for the "File for..." button flow.
@@ -1168,7 +1166,7 @@ request.setAttribute("missingTests", missingTests);
         // is called for each selected provider in parallel, then the page reloads to reflect
         // the updated filing status. The OK button starts disabled and enables only once
         // at least one provider is checked.
-        function openFileOnlyDialog() {
+        function openFileOnlyDialog(segmentId, labType) {
             jQuery("#fileDialog").dialog({
                 autoOpen: false,
                 modal: true,
@@ -1190,7 +1188,7 @@ request.setAttribute("missingTests", missingTests);
                                 return jQuery(this).val();
                             }).get();
                             jQuery("#fileDialog").dialog("close");
-                            fileOnBehalfOfMultipleProviders(selectedProviders).then(function() {
+                            fileOnBehalfOfMultipleProviders(selectedProviders, segmentId, labType).then(function() {
                                 location.reload();
                             });
                         },
@@ -1212,8 +1210,7 @@ request.setAttribute("missingTests", missingTests);
         //   - Providers selected: files for each via FileLabs.do, then acknowledges.
         //   - No providers selected: acknowledges with the entered comment directly.
         //   - Cancel: closes the modal without acknowledging or filing.
-        function openCombinedAckFileDialog(isFileOnly) {
-            const segmentId = jQuery("#segmentID").val();
+        function openCombinedAckFileDialog(isFileOnly, segmentId, labType) {
 
             // Pre-populate the comment field with any comment the provider has already saved for this lab.
             const textEl = document.getElementById(providerNo + "_" + segmentId + "commentText");
@@ -1243,7 +1240,7 @@ request.setAttribute("missingTests", missingTests);
 
                             if (selectedProviders.length > 0) {
                                 // File on behalf of selected providers, then acknowledge if needed.
-                                fileOnBehalfOfMultipleProviders(selectedProviders).then(function() {
+                                fileOnBehalfOfMultipleProviders(selectedProviders, segmentId, labType).then(function() {
                                     if (!isFileOnly) {
                                         acknowledgeWithComment(comment, segmentId);
                                     } else {
@@ -1293,13 +1290,12 @@ request.setAttribute("missingTests", missingTests);
         // step (acknowledge or page reload) regardless of individual filing outcomes.
         //
         // @param {string[]} selectedProviders - provider numbers to file the lab on behalf of
-        function fileOnBehalfOfMultipleProviders(selectedProviders) {
+        function fileOnBehalfOfMultipleProviders(selectedProviders, segmentId, labType) {
             if (!selectedProviders || selectedProviders.length === 0) {
                 return Promise.reject(new Error("No providers selected"));
             }
 
-            const flaggedLabId = jQuery("#segmentID").val();
-            const labType = jQuery("#labType").val();
+            const flaggedLabId = segmentId;
             const loggedInProviderNo = jQuery("#loggedInProviderNo").val();
             const loggedInProviderName = jQuery("#loggedInProviderName").val();
 
@@ -1541,11 +1537,8 @@ request.setAttribute("missingTests", missingTests);
         <c:forEach var="report" items="${ackList}" varStatus="status">
             <c:choose>
                 <c:when test="${report.oscarProviderNo == sessionScope.user}">
-                    <!-- The logged-in provider's details are also stored as top-level hidden inputs
-                         outside this dialog (see #loggedInProviderNo / #loggedInProviderName above).
-                         These inner values mirror those and are retained for historical reasons. -->
-                    <input type="hidden" id="loggedInProviderNo" value="${e:forHtml(report.oscarProviderNo)}" />
-                    <input type="hidden" id="loggedInProviderName" value="${e:forHtml(report.providerName)}" />
+                    <!-- The logged-in provider's details are stored in the top-level hidden inputs
+                         #loggedInProviderNo / #loggedInProviderName outside this dialog. -->
                 </c:when>
                 <c:otherwise>
                     <!-- Show only providers that have not already filed or ack (status != 'F' && status != 'A') -->
@@ -1762,7 +1755,7 @@ request.setAttribute("missingTests", missingTests);
 
                                 <input type="button"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>"
-                                       onclick="openFileDialog(false)" />
+                                       onclick="openFileDialog(false, '<%=Encode.forJavaScript(segmentID)%>', 'HL7')" />
                                 <% } else if (isLabNotFiledOrAckFlag) {
                                     // The logged-in provider has acknowledged, at least one other linked
                                     // provider has not yet filed or acknowledged. Show "File for..." so they can file
@@ -1770,7 +1763,7 @@ request.setAttribute("missingTests", missingTests);
                                 %>
                                 <input type="button"
                                     value="File for..."
-                                    onclick="openFileDialog(true)" />
+                                    onclick="openFileDialog(true, '<%=Encode.forJavaScript(segmentID)%>', 'HL7')" />
                                 <% } %>
                                 <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment"/>"
                                        onclick="return getComment('addComment',<%=Encode.forJavaScript(segmentID)%>);">
@@ -3181,7 +3174,7 @@ request.setAttribute("missingTests", missingTests);
                         // The logged-in provider has not yet acknowledged this lab. Show "Acknowledge".
                     %>
                     <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>"
-                           onclick="openFileDialog(false)" />
+                           onclick="openFileDialog(false, '<%=Encode.forJavaScript(segmentID)%>', 'HL7')" />
                     <% } else if (isLabNotFiledOrAckFlag) {
                         // The logged-in provider has acknowledged, at least one other linked provider
                         // has not yet filed or acknowledged. Show "File for..." so they can file the result on behalf
@@ -3189,7 +3182,7 @@ request.setAttribute("missingTests", missingTests);
                     %>
                     <input type="button"
                         value="File for..."
-                        onclick="openFileDialog(true)" />
+                        onclick="openFileDialog(true, '<%=Encode.forJavaScript(segmentID)%>', 'HL7')" />
                     <% } %>
                     <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment"/>"
                            onclick="return getComment('addComment',<%=Encode.forJavaScript(segmentID)%>);">
