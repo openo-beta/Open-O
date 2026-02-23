@@ -203,6 +203,8 @@ public class LabManagerImpl implements LabManager {
             // Update report status and remove it from the queue
             CommonLabResultData.updateReportStatus(labId, providerNo, ProviderLabRoutingDao.STATUS.F.name().charAt(0),comment, labType, skipCommentOnUpdate);
             CommonLabResultData.removeFromQueue(labId);
+            LogAction.addLogSynchronous(loggedInInfo, "LabManager.fileLabsForProviderUpToFlaggedLab",
+                    "labId=" + labId + ", filedForProviderNo=" + providerNo + ", onBehalf=" + onBehalfOfOtherProvider);
         }
     }
 
