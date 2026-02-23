@@ -150,6 +150,17 @@ public class LabManagerImpl implements LabManager {
         return path;
     }
 
+    /**
+     * Returns all {@link ProviderLabRoutingModel} records that match the given lab number,
+     * lab type, and provider number.
+     *
+     * @param loggedInInfo LoggedInInfo the currently logged-in user; used to enforce {@code _lab} read privilege
+     * @param labId        Integer the unique lab segment ID to look up
+     * @param labType      String the lab type (e.g. {@code "HL7"}, {@code "MDS"})
+     * @param providerNo   String the provider number to filter routing records by
+     * @return List&lt;ProviderLabRoutingModel&gt; matching routing records; empty list if none exist
+     * @throws RuntimeException if the logged-in user lacks {@code _lab} read privilege
+     */
     @Override
     public List<ProviderLabRoutingModel> findByLabNoAndLabTypeAndProviderNo(LoggedInInfo loggedInInfo, Integer labId, String labType, String providerNo) {
         checkPrivilege(loggedInInfo, "r");
