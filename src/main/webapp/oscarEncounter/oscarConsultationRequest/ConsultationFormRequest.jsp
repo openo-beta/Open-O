@@ -103,6 +103,25 @@
 
     <%
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        // --- PATHWAYS INTEGRATION: DYNAMIC LAUNCH URL ---
+        String pathwaysLaunchUrl = "http://localhost:3000/smart/launch";
+        try {
+            String contextPath = request.getContextPath(); // e.g., "/oscar"
+            String scheme = request.getScheme();           // e.g., "http" or "https"
+            String serverName = request.getServerName();   // e.g., "localhost"
+            int serverPort = request.getServerPort();      // e.g., 8080
+            
+            String issUrl = scheme + "://" + serverName;
+            if ((scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443)) {
+                issUrl += ":" + serverPort;
+            }
+            issUrl += contextPath;
+            pathwaysLaunchUrl += "?iss=" + java.net.URLEncoder.encode(issUrl, "UTF-8");
+        } catch (Exception e) {
+            org.apache.log4j.Logger.getLogger("oscar").error("Error constructing Pathways launch URL", e);
+        }
+        // ------------------------------------------------
         DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
         displayServiceUtil.estSpecialist();
 
@@ -2068,6 +2087,26 @@ if (userAgent != null) {
                         <% if (thisForm.geteReferralId() == null) { %>
                         <tr>
                             <td class="tite4 controlPanel" colspan=2>
+                                <!-- PATHWAYS INTEGRATION: LAUNCH BUTTON -->
+                                <button type="button" id="pathwaysLaunchBtnTop"
+                                        style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer; font-weight: bold; margin-right: 10px;"
+                                        title="Find specialists and services right for your patient in Pathways"
+                                        onclick="window.open('<%= pathwaysLaunchUrl %>', '_blank', 'width=1000,height=800');">
+                                    Find in Pathways
+                                </button>
+                                &nbsp;<input type="button" class="oscarButton" name="refreshListButton" value="Refresh List" onclick="refreshConsultantLists()" style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-weight: bold;">
+                                <script type="text/javascript">
+                                    function refreshConsultantLists() {
+                                        services = new Array(); // clear the JS cache
+                                        var serviceDropdown = document.getElementById('service');
+                                        if (serviceDropdown && serviceDropdown.selectedIndex > 0) {
+                                            fillSpecialistSelect(serviceDropdown);
+                                        } else {
+                                            populateSpecialistDropdown(null, null);
+                                        }
+                                    }
+                                </script>
+                                <!-- ----------------------------------- -->
 
                                 <% if (request.getAttribute("id") != null) { %>
                                 <input name="update" type="button"
@@ -2909,6 +2948,14 @@ if (userAgent != null) {
                         <tr>
 
                             <td colspan=2 class="tite4 controlPanel">
+                                <!-- PATHWAYS INTEGRATION: LAUNCH BUTTON -->
+                                <button type="button" id="pathwaysLaunchBtnBottom"
+                                        style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer; font-weight: bold; margin-right: 10px;"
+                                        title="Find specialists and services right for your patient in Pathways"
+                                        onclick="window.open('<%= pathwaysLaunchUrl %>', '_blank', 'width=1000,height=800');">
+                                    Find in Pathways
+                                </button>
+                                <!-- ----------------------------------- -->
                                 <input type="hidden" name="submission" value=""/>
 
                                 <%if (request.getAttribute("id") != null) {%>
