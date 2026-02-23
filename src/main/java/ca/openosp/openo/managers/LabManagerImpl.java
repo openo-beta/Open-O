@@ -48,7 +48,9 @@ import ca.openosp.openo.commn.model.PatientLabRouting;
 import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.managers.ProviderManager2;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PDFGenerationException;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +65,7 @@ import ca.openosp.openo.util.StringUtils;
 @Service
 public class LabManagerImpl implements LabManager {
 
+    private static final Logger logger = MiscUtils.getLogger();
     private static final String TEMP_PDF_DIRECTORY = "hl7PDF";
     private static final String DEFAULT_FILE_SUFFIX = ".pdf";
 
@@ -173,10 +176,23 @@ public class LabManagerImpl implements LabManager {
     public void fileLabsForProviderUpToFlaggedLab(LoggedInInfo loggedInInfo, String providerNo, String flaggedLabId, String labType, String comment, boolean fileUpToLabNo, boolean onBehalfOfOtherProvider) {
         checkPrivilege(loggedInInfo, "w");
 
+        int parsedFlaggedLabId;
+        try {
+            parsedFlaggedLabId = Integer.parseInt(flaggedLabId.trim());
+        } catch (NumberFormatException e) {
+            logger.error("fileLabsForProviderUpToFlaggedLab: invalid flaggedLabId='" + flaggedLabId + "'");
+            return;
+        }
+
         CommonLabResultData commonLabResultData = new CommonLabResultData();
 
         // Gets lab IDs in order from oldest to latest (e.g., v1, v2, ..., vn)
         String labs = commonLabResultData.getMatchingLabs(flaggedLabId, labType);
+
+        if (labs == null || labs.trim().isEmpty()) {
+            logger.warn("fileLabsForProviderUpToFlaggedLab: no matching labs for flaggedLabId=" + flaggedLabId + ", labType=" + labType);
+            return;
+        }
 
         // The UI disables the checkbox, but this guards against crafted requests.
         if (onBehalfOfOtherProvider && !providerManager2.isHl7AllowOthersFileForYou(loggedInInfo, providerNo)) {
@@ -187,7 +203,7 @@ public class LabManagerImpl implements LabManager {
         List<Integer> filteredLabs = Arrays.stream(labs.split(","))
                 .map(String::trim)
                 .map(Integer::parseInt)
-                .filter(labId -> !fileUpToLabNo || labId <= Integer.parseInt(flaggedLabId))
+                .filter(labId -> !fileUpToLabNo || labId <= parsedFlaggedLabId)
                 .collect(Collectors.toList());
 
         for (Integer labId : filteredLabs) {

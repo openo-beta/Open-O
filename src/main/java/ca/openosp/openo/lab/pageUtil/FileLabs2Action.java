@@ -147,7 +147,10 @@ public class FileLabs2Action extends ActionSupport {
         boolean fileUpToLabNo = Boolean.valueOf(request.getParameter("fileUpToLabNo"));
         boolean onBehalfOfOtherProvider = Boolean.valueOf(request.getParameter("onBehalfOfOtherProvider"));
 
-        if (providerNo == null || flaggedLab == null) { return null; }
+        if (providerNo == null || flaggedLab == null || labType == null) { return null; }
+        flaggedLab = flaggedLab.trim();
+        labType = labType.trim();
+        if (flaggedLab.isEmpty() || labType.isEmpty()) { return null; }
 
         labManager.fileLabsForProviderUpToFlaggedLab(loggedInInfo, providerNo, flaggedLab, labType, comment, fileUpToLabNo, onBehalfOfOtherProvider);
 
