@@ -51,6 +51,7 @@ import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PDFGenerationException;
 import org.apache.logging.log4j.Logger;
+import org.owasp.encoder.Encode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -191,7 +192,7 @@ public class LabManagerImpl implements LabManager {
         try {
             parsedFlaggedLabId = Integer.parseInt(flaggedLabId.trim());
         } catch (NumberFormatException e) {
-            logger.error("fileLabsForProviderUpToFlaggedLab: invalid flaggedLabId='" + flaggedLabId + "'");
+            logger.error("fileLabsForProviderUpToFlaggedLab: invalid flaggedLabId='" + Encode.forJava(flaggedLabId) + "'");
             return;
         }
 
@@ -201,7 +202,7 @@ public class LabManagerImpl implements LabManager {
         String labs = commonLabResultData.getMatchingLabs(flaggedLabId, labType);
 
         if (labs == null || labs.trim().isEmpty()) {
-            logger.warn("fileLabsForProviderUpToFlaggedLab: no matching labs for flaggedLabId=" + flaggedLabId + ", labType=" + labType);
+            logger.warn("fileLabsForProviderUpToFlaggedLab: no matching labs for flaggedLabId=" + Encode.forJava(flaggedLabId) + ", labType=" + Encode.forJava(labType));
             return;
         }
 
