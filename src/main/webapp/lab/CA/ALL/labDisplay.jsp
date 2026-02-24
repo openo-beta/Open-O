@@ -1555,9 +1555,9 @@ request.setAttribute("missingTests", missingTests);
                             class="ackProviderCheckbox${isDisabled ? ' disabled-checkbox' : ''}"
                             ${isDisabled ? 'disabled' : ''} />
                         
-                        <label for="${providerId}" 
+                        <label for="${providerId}"
                             style="${isDisabled ? 'color: gray; cursor: not-allowed;' : ''}">
-                            <e:forHtml value="${providerName}${isDisabled ? ' (opted out by user preference)' : ''}" />
+                            <c:out value="${providerName}${isDisabled ? ' (opted out by user preference)' : ''}" escapeXml="false" />
                         </label>
                         
                         <input type="hidden"
@@ -1618,7 +1618,7 @@ request.setAttribute("missingTests", missingTests);
 
                         <label for="${combinedProviderId}"
                             style="${isDisabled ? 'color: gray; cursor: not-allowed;' : ''}">
-                            <e:forHtml value="${combinedProviderName}${isDisabled ? ' (opted out by user preference)' : ''}" />
+                            <c:out value="${combinedProviderName}${isDisabled ? ' (opted out by user preference)' : ''}" escapeXml="false" />
                         </label>
 
                         <input type="hidden"
