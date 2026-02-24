@@ -1500,9 +1500,9 @@ request.setAttribute("missingTests", missingTests);
 </script>
 
 <!-- Save logged-in provider details -->
-<input type="hidden" id="loggedInProviderNo" value="${e:forHtml(sessionScope.user)}" />
-<input type="hidden" id="loggedInProviderName" value="${e:forHtml(loggedInProviderName)}" />
-<input type="hidden" id="isHl7OfferFileForOthers" value="${e:forHtml(isHl7OfferFileForOthers)}" />
+<input type="hidden" id="loggedInProviderNo" value="${e:forHtmlAttribute(sessionScope.user)}" />
+<input type="hidden" id="loggedInProviderName" value="${e:forHtmlAttribute(loggedInProviderName)}" />
+<input type="hidden" id="isHl7OfferFileForOthers" value="${e:forHtmlAttribute(isHl7OfferFileForOthers)}" />
 
 <!--
     Hidden button used by the legacy fallback acknowledge flow (isHl7OfferFileForOthers=false).
@@ -1510,7 +1510,7 @@ request.setAttribute("missingTests", missingTests);
     comment via getComment() or acknowledges directly via handleLab(), depending on the
     provider's lab_ack_comment preference (skipComment).
 -->
-<button id="tempAckBtn" onclick="${e:forHtml(ackLabFunc)}" style="display:none;"></button>
+<button id="tempAckBtn" onclick="${e:forJavaScriptAttribute(ackLabFunc)}" style="display:none;"></button>
 
 <!--
     "File Document" dialog (#fileDialog) — opened by the "File for..." button.
@@ -1524,7 +1524,7 @@ request.setAttribute("missingTests", missingTests);
     <!-- skipAckComment: mirrors the server-side skipComment flag. When "true", the legacy
          #tempAckBtn flow acknowledges without prompting for a comment. Unused in the
          combined modal flow. -->
-    <input id="skipAckComment" type="hidden" value="${e:forHtml(skipComment)}" />
+    <input id="skipAckComment" type="hidden" value="${e:forHtmlAttribute(skipComment)}" />
 
     <!-- Form that lists providers to file on behalf of -->
     <form id="fileForm">
@@ -1545,7 +1545,7 @@ request.setAttribute("missingTests", missingTests);
                     <c:if test="${report.status != 'F' && report.status != 'A'}">
                         <c:set var="isDisabled" value="${!report.isHl7AllowOthersFileForYou()}" />
                         <c:set var="providerId" value="ackProvider${status.index}" />
-                        <c:set var="providerNo" value="${e:forHtml(report.oscarProviderNo)}" />
+                        <c:set var="providerNo" value="${e:forHtmlAttribute(report.oscarProviderNo)}" />
                         <c:set var="providerName" value="${e:forHtml(report.providerName)}" />
                         
                         <input type="checkbox"
@@ -1563,7 +1563,7 @@ request.setAttribute("missingTests", missingTests);
                         <input type="hidden"
                             class="ackProviderName"
                             data-provider-no="${providerNo}"
-                            value="${e:forHtml(report.providerName)}" /><br/>
+                            value="${e:forHtmlAttribute(report.providerName)}" /><br/>
                     </c:if>
                 </c:otherwise>
             </c:choose>
@@ -1606,7 +1606,7 @@ request.setAttribute("missingTests", missingTests);
                     <c:if test="${report.oscarProviderNo != sessionScope.user && report.status != 'F' && report.status != 'A'}">
                         <c:set var="isDisabled" value="${!report.isHl7AllowOthersFileForYou()}" />
                         <c:set var="combinedProviderId" value="combinedAckProvider${status.index}" />
-                        <c:set var="combinedProviderNo" value="${e:forHtml(report.oscarProviderNo)}" />
+                        <c:set var="combinedProviderNo" value="${e:forHtmlAttribute(report.oscarProviderNo)}" />
                         <c:set var="combinedProviderName" value="${e:forHtml(report.providerName)}" />
 
                         <input type="checkbox"
@@ -1624,7 +1624,7 @@ request.setAttribute("missingTests", missingTests);
                         <input type="hidden"
                             class="combinedAckProviderName"
                             data-provider-no="${combinedProviderNo}"
-                            value="${e:forHtml(report.providerName)}" /><br/>
+                            value="${e:forHtmlAttribute(report.providerName)}" /><br/>
                     </c:if>
                 </c:forEach>
 
