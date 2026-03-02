@@ -1510,7 +1510,7 @@ request.setAttribute("missingTests", missingTests);
     comment via getComment() or acknowledges directly via handleLab(), depending on the
     provider's lab_ack_comment preference (skipComment).
 -->
-<button id="tempAckBtn" onclick="${e:forJavaScriptAttribute(ackLabFunc)}" style="display:none;"></button>
+<button id="tempAckBtn" onclick="${e:forHtmlAttribute(ackLabFunc)}" style="display:none;"></button>
 
 <!--
     "File Document" dialog (#fileDialog) — opened by the "File for..." button.
