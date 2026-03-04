@@ -40,6 +40,51 @@ document.addEventListener("DOMContentLoaded", function(){
 	if (isSuccessAndAutoclose) {
 		showSuccessAlert(remoteClose);
 	}
+
+	// Tickler integration: wrap toolbar actions if eForm has tickler tags
+	var ticklerMode = hasTicklerTags();
+	if (ticklerMode) {
+		initTicklerDialogs();
+
+		// _ticklerHandled stays true during one action chain (e.g. Print→Save)
+		// so Save doesn't re-trigger the dialog when called internally by Print.
+		// resetTicklerHandled() clears it after the chain completes or is canceled.
+		var _ticklerHandled = false;
+		window.resetTicklerHandled = function() { _ticklerHandled = false; };
+
+		var _origSave = remoteSave;
+		var _origPrint = remotePrint;
+		var _origDownload = remoteDownload;
+		var _origFax = remoteFax;
+		var _origEmail = remoteEmail;
+		var _origEdocument = remoteEdocument;
+
+		function wrapWithTicklerCheck(originalFn) {
+			return function() {
+				if (_ticklerHandled) {
+					return originalFn.apply(this, arguments);
+				}
+				_ticklerHandled = true;
+				var args = arguments;
+				var self = this;
+				var proceedCallback = function() {
+					originalFn.apply(self, args);
+				};
+				if (ticklerMode === "autoOpen") {
+					promptTicklerAutoOpen(proceedCallback);
+				} else if (ticklerMode === "autoSave") {
+					promptTicklerAutoSave(proceedCallback);
+				}
+			};
+		}
+
+		window.remoteSave = wrapWithTicklerCheck(_origSave);
+		window.remotePrint = wrapWithTicklerCheck(_origPrint);
+		window.remoteDownload = wrapWithTicklerCheck(_origDownload);
+		window.remoteFax = wrapWithTicklerCheck(_origFax);
+		window.remoteEmail = wrapWithTicklerCheck(_origEmail);
+		window.remoteEdocument = wrapWithTicklerCheck(_origEdocument);
+	}
 	});
 
 window.onerror = function uncaughtExceptionHandler(message, source, lineNumber, colno, error) {
@@ -481,6 +526,345 @@ function remoteEdocument() {
  */
 function remoteClose() {
     window.close();
+}
+
+// ============================================================
+// Tickler Integration for eForms
+// Supports two modes via hidden input tags in the eForm HTML:
+//   - ticklerAutoOpen: interactive popup (ticklerAdd.jsp)
+//   - ticklerAutoSave: silent REST creation with confirmation
+// ============================================================
+
+/**
+ * Detects whether this eForm has tickler integration tags.
+ * Returns "autoOpen", "autoSave", or null.
+ * Skips if the eForm Generator's tickler function is present (conflict guard).
+ */
+function hasTicklerTags() {
+    if (typeof setAtickler === 'function') {
+        return null;
+    }
+    var autoOpen = document.getElementById("ticklerAutoOpen");
+    if (autoOpen && autoOpen.value && autoOpen.value.toLowerCase() === "true") {
+        return "autoOpen";
+    }
+    var autoSave = document.getElementById("ticklerAutoSave");
+    if (autoSave && autoSave.value && autoSave.value.toLowerCase() === "true") {
+        return "autoSave";
+    }
+    return null;
+}
+
+/**
+ * Reads a hidden input value from the eForm, returning a default if not found.
+ */
+function getTicklerFieldValue(fieldId, defaultValue) {
+    var el = document.getElementById(fieldId);
+    if (el && el.value && el.value.trim() !== "") {
+        return el.value.trim();
+    }
+    return defaultValue;
+}
+
+/**
+ * Collects tickler data from hidden inputs in the eForm.
+ */
+function collectTicklerData() {
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var dd = String(today.getDate()).padStart(2, '0');
+    var todayStr = yyyy + '-' + mm + '-' + dd;
+
+    return {
+        demographicNo: getTicklerFieldValue("demographicNo", ""),
+        serviceDate: getTicklerFieldValue("ticklerServiceDate", todayStr),
+        priority: getTicklerFieldValue("ticklerPriority", "Normal"),
+        taskAssignedTo: getTicklerFieldValue("ticklerTaskAssignedTo", getTicklerFieldValue("providerNo", "")),
+        message: getTicklerFieldValue("ticklerMessage", "")
+    };
+}
+
+/**
+ * Creates a DOM element with text content and optional child elements.
+ */
+function createDialogDiv(id, title) {
+    var div = document.createElement("div");
+    div.id = id;
+    div.title = title;
+    return div;
+}
+
+/**
+ * Creates and initializes the jQuery UI dialogs used by the tickler integration.
+ */
+function initTicklerDialogs() {
+    var promptMessage = getTicklerFieldValue("ticklerPromptMessage", "Do you want to create a tickler for this eForm?");
+
+    // Confirm dialog (auto-open mode)
+    var confirmDiv = createDialogDiv("ticklerConfirmDialog", "Create Tickler");
+    var confirmP = document.createElement("p");
+    confirmP.textContent = promptMessage;
+    confirmDiv.appendChild(confirmP);
+    document.body.appendChild(confirmDiv);
+
+    // Proceed dialog (after popup closes)
+    var proceedDiv = createDialogDiv("ticklerProceedDialog", "Continue");
+    var proceedP = document.createElement("p");
+    proceedP.textContent = "The tickler window has closed. Ready to proceed with saving?";
+    proceedDiv.appendChild(proceedP);
+    document.body.appendChild(proceedDiv);
+
+    // Auto-save success dialog
+    var successDiv = createDialogDiv("ticklerAutoSaveSuccessDialog", "Tickler Created");
+    var successP1 = document.createElement("p");
+    successP1.textContent = "A tickler has been automatically created. ";
+    var viewLink = document.createElement("a");
+    viewLink.id = "ticklerViewLink";
+    viewLink.href = "#";
+    viewLink.target = "_blank";
+    viewLink.textContent = "Click here to view it.";
+    successP1.appendChild(viewLink);
+    successDiv.appendChild(successP1);
+    var successP2 = document.createElement("p");
+    successP2.textContent = "Click OK to proceed.";
+    successDiv.appendChild(successP2);
+    document.body.appendChild(successDiv);
+
+    // Auto-save error dialog
+    var errorDiv = createDialogDiv("ticklerAutoSaveErrorDialog", "Tickler Error");
+    var errorP1 = document.createElement("p");
+    errorP1.textContent = "Tickler creation failed: ";
+    var errorDetail = document.createElement("span");
+    errorDetail.id = "ticklerErrorDetail";
+    errorP1.appendChild(errorDetail);
+    errorDiv.appendChild(errorP1);
+    var errorP2 = document.createElement("p");
+    errorP2.textContent = "Click OK to proceed anyway, or Cancel to stop.";
+    errorDiv.appendChild(errorP2);
+    document.body.appendChild(errorDiv);
+
+    // _ticklerDialogButtonClicked tracks whether a dialog was closed by a
+    // button callback (true) vs the X button or Escape key (false).
+    // Only the X/Escape path should reset the handled flag.
+    window._ticklerDialogButtonClicked = false;
+
+    function ticklerDialogClose() {
+        if (!window._ticklerDialogButtonClicked) {
+            resetTicklerHandled();
+        }
+        window._ticklerDialogButtonClicked = false;
+    }
+
+    jQuery("#ticklerConfirmDialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 400,
+        buttons: {},
+        close: ticklerDialogClose
+    });
+
+    jQuery("#ticklerProceedDialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 400,
+        buttons: {},
+        close: ticklerDialogClose
+    });
+
+    jQuery("#ticklerAutoSaveSuccessDialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 420,
+        buttons: {},
+        close: ticklerDialogClose
+    });
+
+    jQuery("#ticklerAutoSaveErrorDialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 420,
+        buttons: {},
+        close: ticklerDialogClose
+    });
+
+    // Style dialog close (X) buttons to fix Bootstrap/jQuery UI CSS conflict
+    styleTicklerDialogCloseButton("#ticklerConfirmDialog");
+    styleTicklerDialogCloseButton("#ticklerProceedDialog");
+    styleTicklerDialogCloseButton("#ticklerAutoSaveSuccessDialog");
+    styleTicklerDialogCloseButton("#ticklerAutoSaveErrorDialog");
+}
+
+/**
+ * Styles a jQuery UI dialog close button with an X character instead of the
+ * default icon sprite. Resolves the Bootstrap/jQuery UI CSS conflict where
+ * the close icon renders as an empty square.
+ */
+function styleTicklerDialogCloseButton(dialogSelector) {
+    jQuery(dialogSelector).on("dialogopen", function() {
+        var closeBtn = jQuery(this).parent().find(".ui-dialog-titlebar-close");
+        closeBtn.empty().css({
+            "background": "none",
+            "border": "none",
+            "font-size": "21px",
+            "font-weight": "bold",
+            "line-height": "1",
+            "color": "#000",
+            "opacity": "0.2",
+            "padding": "0",
+            "width": "auto",
+            "height": "auto",
+            "cursor": "pointer",
+            "position": "absolute",
+            "right": "10px",
+            "top": "50%",
+            "transform": "translateY(-50%)"
+        }).text("\u00D7").hover(
+            function() { jQuery(this).css("opacity", "0.5"); },
+            function() { jQuery(this).css("opacity", "0.2"); }
+        );
+    });
+}
+
+/**
+ * Auto-open flow: shows a confirm dialog, then opens ticklerAdd.jsp in a popup.
+ * After the popup closes, asks the user if they want to proceed with the original action.
+ */
+function promptTicklerAutoOpen(proceedCallback) {
+    jQuery("#ticklerConfirmDialog").dialog("option", "buttons", {
+        "Yes": function() {
+            window._ticklerDialogButtonClicked = true;
+            jQuery(this).dialog("close");
+            openTicklerPopup(proceedCallback);
+        },
+        "No": function() {
+            window._ticklerDialogButtonClicked = true;
+            jQuery(this).dialog("close");
+            proceedCallback();
+        }
+    });
+    jQuery("#ticklerConfirmDialog").dialog("open");
+}
+
+/**
+ * Opens ticklerAdd.jsp in a popup window with pre-populated params.
+ * Passes updateParent=false so that dbTicklerAdd.jsp does not reload the
+ * opener window (which would destroy our poll timer and proceed callback).
+ * Polls for popup close, then shows the proceed dialog.
+ */
+function openTicklerPopup(proceedCallback) {
+    var data = collectTicklerData();
+    var contextPath = getTicklerFieldValue("context", "");
+    var params = "demographic_no=" + encodeURIComponent(data.demographicNo)
+        + "&ticklerMessage=" + encodeURIComponent(data.message)
+        + "&taskTo=" + encodeURIComponent(data.taskAssignedTo)
+        + "&priority=" + encodeURIComponent(data.priority)
+        + "&updateParent=false";
+
+    var url = contextPath + "/tickler/ticklerAdd.jsp?" + params;
+    var popup = window.open(url, "ticklerPopup", "height=600,width=800,scrollbars=yes,resizable=yes");
+
+    var pollTimer = setInterval(function() {
+        if (!popup || popup.closed) {
+            clearInterval(pollTimer);
+            showProceedDialog(proceedCallback);
+        }
+    }, 500);
+}
+
+/**
+ * After the tickler popup closes, asks the user if they want to proceed.
+ */
+function showProceedDialog(proceedCallback) {
+    jQuery("#ticklerProceedDialog").dialog("option", "buttons", {
+        "Yes, proceed": function() {
+            window._ticklerDialogButtonClicked = true;
+            jQuery(this).dialog("close");
+            proceedCallback();
+        },
+        "No, cancel": function() {
+            window._ticklerDialogButtonClicked = true;
+            jQuery(this).dialog("close");
+            resetTicklerHandled();
+        }
+    });
+    jQuery("#ticklerProceedDialog").dialog("open");
+}
+
+/**
+ * Auto-save flow: silently creates a tickler via REST, then shows success or error dialog.
+ */
+function promptTicklerAutoSave(proceedCallback) {
+    var data = collectTicklerData();
+    var contextPath = getTicklerFieldValue("context", "");
+
+    var serviceDate = new Date(data.serviceDate + "T00:00:00");
+
+    var payload = {
+        demographicNo: data.demographicNo,
+        message: data.message,
+        taskAssignedTo: data.taskAssignedTo,
+        priority: data.priority,
+        serviceDate: serviceDate.toISOString(),
+        status: "A"
+    };
+
+    jQuery.ajax({
+        url: contextPath + "/ws/rs/tickler/add",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(payload),
+        dataType: "json",
+        success: function(resp) {
+            if (resp && resp.success) {
+                var ticklerId = resp.message;
+                var viewUrl = contextPath + "/tickler/ticklerEdit.jsp?tickler_no=" + encodeURIComponent(ticklerId);
+                jQuery("#ticklerViewLink").attr("href", viewUrl);
+                jQuery("#ticklerAutoSaveSuccessDialog").dialog("option", "buttons", {
+                    "OK": function() {
+                        window._ticklerDialogButtonClicked = true;
+                        jQuery(this).dialog("close");
+                        proceedCallback();
+                    }
+                });
+                jQuery("#ticklerAutoSaveSuccessDialog").dialog("open");
+            } else {
+                showTicklerError("Server returned unsuccessful response.", proceedCallback);
+            }
+        },
+        error: function(xhr) {
+            var detail = "HTTP " + xhr.status;
+            if (xhr.responseText) {
+                try {
+                    var errResp = JSON.parse(xhr.responseText);
+                    if (errResp.message) detail = errResp.message;
+                } catch (e) {
+                    // use default detail
+                }
+            }
+            showTicklerError(detail, proceedCallback);
+        }
+    });
+}
+
+/**
+ * Shows the error dialog for auto-save failures.
+ */
+function showTicklerError(detail, proceedCallback) {
+    jQuery("#ticklerErrorDetail").text(detail);
+    jQuery("#ticklerAutoSaveErrorDialog").dialog("option", "buttons", {
+        "OK (proceed anyway)": function() {
+            window._ticklerDialogButtonClicked = true;
+            jQuery(this).dialog("close");
+            proceedCallback();
+        },
+        "Cancel": function() {
+            window._ticklerDialogButtonClicked = true;
+            jQuery(this).dialog("close");
+            resetTicklerHandled();
+        }
+    });
+    jQuery("#ticklerAutoSaveErrorDialog").dialog("open");
 }
 
 /**

@@ -145,6 +145,9 @@
     if (request.getParameter("priority") != null) priority = request.getParameter("priority");
     if (request.getParameter("recall") != null) recall = true;
 
+    String ticklerMessage = request.getParameter("ticklerMessage");
+    if (ticklerMessage == null) ticklerMessage = "";
+
     UserProperty prop = propertyDao.getProp(user_no, UserProperty.TICKLER_TASK_ASSIGNEE);
     //don't override taskTo query param
     if (request.getParameter("taskTo") == null) {
@@ -723,7 +726,7 @@
                       <label for="ticklerMessage"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formReminder"/>:</label>
                       </td>
                     <td>
-                      <textarea name="ticklerMessage" id="ticklerMessage" class="form-control"></textarea>
+                      <textarea name="ticklerMessage" id="ticklerMessage" class="form-control"><%=Encode.forHtmlContent(ticklerMessage)%></textarea>
                     </td>
                 </tr>
                 <tr>

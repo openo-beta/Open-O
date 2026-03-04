@@ -142,6 +142,7 @@
     thisEForm.addHiddenInputElement("fid", fid);
     thisEForm.addHiddenInputElement("fdid", request.getParameter("fdid"));
     thisEForm.addHiddenInputElement("newForm", "true");
+    thisEForm.addHiddenInputElement("providerNo", provider_no);
 
     // Add email consent properties
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
