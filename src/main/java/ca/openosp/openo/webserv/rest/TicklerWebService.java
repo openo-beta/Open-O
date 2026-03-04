@@ -400,6 +400,7 @@ public class TicklerWebService extends AbstractServiceImpl {
         }
 
         response.setSuccess(ticklerManager.addTickler(getLoggedInInfo(), tickler));
+        response.setMessage(String.valueOf(tickler.getId()));
 
         return response;
     }

@@ -102,6 +102,9 @@
     if (request.getParameter("priority") != null) priority = request.getParameter("priority");
     if (request.getParameter("recall") != null) recall = true;
 
+    String ticklerMessage = request.getParameter("ticklerMessage");
+    if (ticklerMessage == null) ticklerMessage = "";
+
     UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
     UserProperty prop = propertyDao.getProp(user_no, "tickler_task_assignee");
 
@@ -627,7 +630,7 @@
                 </tr>
                 <tr>
                     <td class="tickler-label"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formReminder"/>:</td>
-                    <td><textarea name="ticklerMessage" id="ticklerMessage" class="form-control"></textarea></td>
+                    <td><textarea name="ticklerMessage" id="ticklerMessage" class="form-control"><%=Encode.forHtmlContent(ticklerMessage)%></textarea></td>
                 </tr>
                 <INPUT TYPE="hidden" name="user_no" VALUE="<%=user_no%>">
                 <input type="hidden" name="writeToEncounter" value="<%=writeToEncounter%>"/>
