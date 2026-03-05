@@ -399,8 +399,11 @@ public class TicklerWebService extends AbstractServiceImpl {
             tickler.setProgramId(pp.getProgramId().intValue());
         }
 
-        response.setSuccess(ticklerManager.addTickler(getLoggedInInfo(), tickler));
-        response.setMessage(String.valueOf(tickler.getId()));
+        boolean created = ticklerManager.addTickler(getLoggedInInfo(), tickler);
+        response.setSuccess(created);
+        if (created) {
+            response.setMessage(String.valueOf(tickler.getId()));
+        }
 
         return response;
     }
