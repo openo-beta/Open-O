@@ -580,7 +580,7 @@ function collectTicklerData() {
         demographicNo: getTicklerFieldValue("demographicNo", ""),
         serviceDate: getTicklerFieldValue("ticklerServiceDate", todayStr),
         priority: getTicklerFieldValue("ticklerPriority", "Normal"),
-        taskAssignedTo: getTicklerFieldValue("ticklerTaskAssignedTo", getTicklerFieldValue("providerNo", "")),
+        taskAssignedTo: getTicklerFieldValue("ticklerAssignedTo", getTicklerFieldValue("providerNo", "")),
         message: getTicklerFieldValue("ticklerMessage", "")
     };
 }
@@ -599,7 +599,7 @@ function createDialogDiv(id, title) {
  * Creates and initializes the jQuery UI dialogs used by the tickler integration.
  */
 function initTicklerDialogs() {
-    var promptMessage = getTicklerFieldValue("ticklerPromptMessage", "Do you want to create a tickler for this eForm?");
+    var promptMessage = getTicklerFieldValue("ticklerPromptMessage", "Do you want to create a tickler first?");
 
     // Confirm dialog (auto-open mode)
     var confirmDiv = createDialogDiv("ticklerConfirmDialog", "Create Tickler");
@@ -609,7 +609,7 @@ function initTicklerDialogs() {
     document.body.appendChild(confirmDiv);
 
     // Proceed dialog (after popup closes)
-    var proceedDiv = createDialogDiv("ticklerProceedDialog", "Continue");
+    var proceedDiv = createDialogDiv("ticklerProceedDialog", "Tickler Created");
     var proceedP = document.createElement("p");
     proceedP.textContent = "The tickler window has closed. Ready to proceed with saving?";
     proceedDiv.appendChild(proceedP);
@@ -727,6 +727,7 @@ function promptTicklerAutoOpen(proceedCallback) {
             window._ticklerDialogButtonClicked = true;
             jQuery(this).dialog("close");
             proceedCallback();
+            resetTicklerHandled();
         }
     });
     jQuery("#ticklerConfirmDialog").dialog("open");
@@ -745,6 +746,7 @@ function openTicklerPopup(proceedCallback) {
         + "&ticklerMessage=" + encodeURIComponent(data.message)
         + "&taskTo=" + encodeURIComponent(data.taskAssignedTo)
         + "&priority=" + encodeURIComponent(data.priority)
+        + "&xml_appointment_date=" + encodeURIComponent(data.serviceDate)
         + "&updateParent=false";
 
     var url = contextPath + "/tickler/ticklerAdd.jsp?" + params;
@@ -784,14 +786,12 @@ function promptTicklerAutoSave(proceedCallback) {
     var data = collectTicklerData();
     var contextPath = getTicklerFieldValue("context", "");
 
-    var serviceDate = new Date(data.serviceDate + "T00:00:00");
-
     var payload = {
         demographicNo: data.demographicNo,
         message: data.message,
         taskAssignedTo: data.taskAssignedTo,
         priority: data.priority,
-        serviceDate: serviceDate.toISOString(),
+        serviceDate: data.serviceDate + "T00:00:00",
         status: "A"
     };
 
