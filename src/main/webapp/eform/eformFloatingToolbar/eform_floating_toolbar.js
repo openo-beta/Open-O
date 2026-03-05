@@ -703,26 +703,12 @@ function initTicklerDialogs() {
 function styleTicklerDialogCloseButton(dialogSelector) {
     jQuery(dialogSelector).on("dialogopen", function() {
         var closeBtn = jQuery(this).parent().find(".ui-dialog-titlebar-close");
-        closeBtn.empty().css({
-            "background": "none",
-            "border": "none",
-            "font-size": "21px",
-            "font-weight": "bold",
-            "line-height": "1",
-            "color": "#000",
-            "opacity": "0.2",
-            "padding": "0",
-            "width": "auto",
-            "height": "auto",
-            "cursor": "pointer",
+        closeBtn.empty().removeClass().addClass("btn-close").css({
             "position": "absolute",
-            "right": "10px",
+            "right": "12px",
             "top": "50%",
             "transform": "translateY(-50%)"
-        }).text("\u00D7").hover(
-            function() { jQuery(this).css("opacity", "0.5"); },
-            function() { jQuery(this).css("opacity", "0.2"); }
-        );
+        });
     });
 }
 
