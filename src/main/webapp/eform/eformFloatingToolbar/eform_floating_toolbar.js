@@ -629,6 +629,11 @@ function createDialogDiv(id, title) {
 function initTicklerDialogs() {
     if (document.getElementById("ticklerConfirmDialog")) return;
 
+    // Fix near-invisible modal overlay (theme CSS sets opacity to .003)
+    const overlayStyle = document.createElement("style");
+    overlayStyle.textContent = ".ui-widget-overlay { background: #000 !important; opacity: 0.4 !important; }";
+    document.head.appendChild(overlayStyle);
+
     // Confirm dialog (auto-open mode)
     const confirmDiv = createDialogDiv("ticklerConfirmDialog", "Create Tickler");
     const confirmP = document.createElement("p");
