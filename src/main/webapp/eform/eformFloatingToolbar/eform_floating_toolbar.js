@@ -623,12 +623,10 @@ function createDialogDiv(id, title) {
 function initTicklerDialogs() {
     if (document.getElementById("ticklerConfirmDialog")) return;
 
-    const promptMessage = getTicklerFieldValue("ticklerPromptMessage", "Do you want to create a tickler first?");
-
     // Confirm dialog (auto-open mode)
     const confirmDiv = createDialogDiv("ticklerConfirmDialog", "Create Tickler");
     const confirmP = document.createElement("p");
-    confirmP.textContent = promptMessage;
+    confirmP.id = "ticklerConfirmMessage";
     confirmDiv.appendChild(confirmP);
     document.body.appendChild(confirmDiv);
 
@@ -759,6 +757,8 @@ function promptTicklerAutoOpen(proceedCallback) {
             _ticklerIntegration.resetHandled();
         }
     });
+    document.getElementById("ticklerConfirmMessage").textContent =
+        getTicklerFieldValue("ticklerPromptMessage", "Do you want to create a tickler first?");
     jQuery("#ticklerConfirmDialog").dialog("open");
 }
 
@@ -776,7 +776,8 @@ function openTicklerPopup(proceedCallback) {
         + "&taskTo=" + encodeURIComponent(data.taskAssignedTo)
         + "&priority=" + encodeURIComponent(data.priority)
         + "&xml_appointment_date=" + encodeURIComponent(data.serviceDate)
-        + "&updateParent=false";
+        + "&updateParent=false"
+        + "&parentAjaxId=";
 
     const url = contextPath + "/tickler/ticklerAdd.jsp?" + params;
     const popup = window.open(url, "ticklerPopup", "height=600,width=800,scrollbars=yes,resizable=yes");
@@ -804,6 +805,7 @@ function showProceedDialog(proceedCallback) {
             _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
             proceedCallback();
+            _ticklerIntegration.resetHandled();
         },
         "No, cancel": function() {
             _ticklerIntegration.markDialogButton();
@@ -846,6 +848,7 @@ function promptTicklerAutoSave(proceedCallback) {
                         _ticklerIntegration.markDialogButton();
                         jQuery(this).dialog("close");
                         proceedCallback();
+                        _ticklerIntegration.resetHandled();
                     }
                 });
                 jQuery("#ticklerAutoSaveSuccessDialog").dialog("open");
@@ -878,6 +881,7 @@ function showTicklerError(detail, proceedCallback) {
             _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
             proceedCallback();
+            _ticklerIntegration.resetHandled();
         },
         "Cancel": function() {
             _ticklerIntegration.markDialogButton();
