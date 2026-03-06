@@ -42,17 +42,23 @@ document.addEventListener("DOMContentLoaded", function(){
 	}
 
 	// Tickler integration: wrap toolbar actions if eForm has tickler tags
-	const ticklerMode = hasTicklerTags();
-	if (ticklerMode) {
-		initTicklerDialogs();
-
+	if (hasTicklerTags()) {
 		// _ticklerHandled stays true during one action chain (e.g. Print→Save)
 		// so Save doesn't re-trigger the dialog when called internally by Print.
 		// Every successful path ends in a form submission that reloads the page,
-		// so the flag is naturally cleared. resetTicklerHandled() is only needed
+		// so the flag is naturally cleared. _ticklerIntegration.resetHandled() is only needed
 		// for cancellation paths (X button, "No", "Cancel") to allow re-trigger.
 		let _ticklerHandled = false;
-		window.resetTicklerHandled = function() { _ticklerHandled = false; };
+
+		// Minimal API for dialog handlers to interact with tickler state.
+		// Single window property to avoid polluting the global namespace.
+		// Must be defined before initTicklerDialogs() which references it.
+		window._ticklerIntegration = {
+			resetHandled: function() { _ticklerHandled = false; },
+			markDialogButton: null // set by initTicklerDialogs closure
+		};
+
+		initTicklerDialogs();
 
 		const _origSave = remoteSave;
 		const _origPrint = remotePrint;
@@ -66,19 +72,20 @@ document.addEventListener("DOMContentLoaded", function(){
 				if (_ticklerHandled) {
 					return originalFn.apply(this, arguments);
 				}
+				// Check mode at action time so dynamically toggled tags are respected
+				const currentMode = getTicklerMode();
+				if (!currentMode) {
+					return originalFn.apply(this, arguments);
+				}
 				_ticklerHandled = true;
 				const args = arguments;
 				const self = this;
 				const proceedCallback = function() {
-					try {
-						originalFn.apply(self, args);
-					} finally {
-						resetTicklerHandled();
-					}
+					originalFn.apply(self, args);
 				};
-				if (ticklerMode === "autoOpen") {
+				if (currentMode === "autoOpen") {
 					promptTicklerAutoOpen(proceedCallback);
-				} else if (ticklerMode === "autoSave") {
+				} else if (currentMode === "autoSave") {
 					promptTicklerAutoSave(proceedCallback);
 				}
 			};
@@ -543,13 +550,22 @@ function remoteClose() {
 
 /**
  * Detects whether this eForm has tickler integration tags.
- * Returns "autoOpen", "autoSave", or null.
- * Skips if the eForm Generator's tickler function is present (conflict guard).
+ * Returns true if either ticklerAutoOpen or ticklerAutoSave elements exist,
+ * false otherwise. Skips if the eForm Generator's tickler function is present.
  */
 function hasTicklerTags() {
     if (typeof setAtickler === 'function') {
-        return null;
+        return false;
     }
+    return !!(document.getElementById("ticklerAutoOpen") || document.getElementById("ticklerAutoSave"));
+}
+
+/**
+ * Returns the current tickler mode by checking hidden input values at call time.
+ * This allows eForms to toggle tickler mode dynamically (e.g. via a checkbox)
+ * after page load. Returns "autoOpen", "autoSave", or null.
+ */
+function getTicklerMode() {
     const autoOpen = document.getElementById("ticklerAutoOpen");
     if (autoOpen && autoOpen.value && autoOpen.value.toLowerCase() === "true") {
         return "autoOpen";
@@ -605,6 +621,8 @@ function createDialogDiv(id, title) {
  * Creates and initializes the jQuery UI dialogs used by the tickler integration.
  */
 function initTicklerDialogs() {
+    if (document.getElementById("ticklerConfirmDialog")) return;
+
     const promptMessage = getTicklerFieldValue("ticklerPromptMessage", "Do you want to create a tickler first?");
 
     // Confirm dialog (auto-open mode)
@@ -654,11 +672,11 @@ function initTicklerDialogs() {
     // X button or Escape key (false). Scoped to this closure to avoid globals.
     let _dialogButtonClicked = false;
 
-    window.markTicklerDialogButton = function() { _dialogButtonClicked = true; };
+    _ticklerIntegration.markDialogButton = function() { _dialogButtonClicked = true; };
 
     function ticklerDialogClose() {
         if (!_dialogButtonClicked) {
-            resetTicklerHandled();
+            _ticklerIntegration.resetHandled();
         }
         _dialogButtonClicked = false;
     }
@@ -713,6 +731,7 @@ function styleTicklerDialogCloseButton(dialogSelector) {
         closeBtn.empty()
             .removeClass("ui-button-icon-only ui-button-icon ui-icon ui-icon-closethick")
             .addClass("btn-close")
+            .attr("aria-label", "Close")
             .css({
                 "position": "absolute",
                 "right": "12px",
@@ -729,15 +748,15 @@ function styleTicklerDialogCloseButton(dialogSelector) {
 function promptTicklerAutoOpen(proceedCallback) {
     jQuery("#ticklerConfirmDialog").dialog("option", "buttons", {
         "Yes": function() {
-            markTicklerDialogButton();
+            _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
             openTicklerPopup(proceedCallback);
         },
         "No": function() {
-            markTicklerDialogButton();
+            _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
             proceedCallback();
-            resetTicklerHandled();
+            _ticklerIntegration.resetHandled();
         }
     });
     jQuery("#ticklerConfirmDialog").dialog("open");
@@ -764,7 +783,7 @@ function openTicklerPopup(proceedCallback) {
 
     if (!popup) {
         alert("The tickler popup was blocked by your browser. Please allow popups for this site and try again.");
-        resetTicklerHandled();
+        _ticklerIntegration.resetHandled();
         return;
     }
 
@@ -782,14 +801,14 @@ function openTicklerPopup(proceedCallback) {
 function showProceedDialog(proceedCallback) {
     jQuery("#ticklerProceedDialog").dialog("option", "buttons", {
         "Yes, proceed": function() {
-            markTicklerDialogButton();
+            _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
             proceedCallback();
         },
         "No, cancel": function() {
-            markTicklerDialogButton();
+            _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
-            resetTicklerHandled();
+            _ticklerIntegration.resetHandled();
         }
     });
     jQuery("#ticklerProceedDialog").dialog("open");
@@ -824,7 +843,7 @@ function promptTicklerAutoSave(proceedCallback) {
                 jQuery("#ticklerViewLink").attr("href", viewUrl);
                 jQuery("#ticklerAutoSaveSuccessDialog").dialog("option", "buttons", {
                     "OK": function() {
-                        markTicklerDialogButton();
+                        _ticklerIntegration.markDialogButton();
                         jQuery(this).dialog("close");
                         proceedCallback();
                     }
@@ -856,14 +875,14 @@ function showTicklerError(detail, proceedCallback) {
     jQuery("#ticklerErrorDetail").text(detail);
     jQuery("#ticklerAutoSaveErrorDialog").dialog("option", "buttons", {
         "OK (proceed anyway)": function() {
-            markTicklerDialogButton();
+            _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
             proceedCallback();
         },
         "Cancel": function() {
-            markTicklerDialogButton();
+            _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
-            resetTicklerHandled();
+            _ticklerIntegration.resetHandled();
         }
     });
     jQuery("#ticklerAutoSaveErrorDialog").dialog("open");
