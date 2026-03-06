@@ -43,18 +43,19 @@ document.addEventListener("DOMContentLoaded", function(){
 
 	// Tickler integration: wrap toolbar actions if eForm has tickler tags
 	if (hasTicklerTags()) {
-		// _ticklerHandled stays true during one action chain (e.g. Print→Save)
-		// so Save doesn't re-trigger the dialog when called internally by Print.
-		// Every successful path ends in a form submission that reloads the page,
-		// so the flag is naturally cleared. _ticklerIntegration.resetHandled() is only needed
-		// for cancellation paths (X button, "No", "Cancel") to allow re-trigger.
-		let _ticklerHandled = false;
+		// Tickler flow state: "idle", "inProgress", or "proceeding".
+		// - "idle": no tickler flow active, next action triggers the dialog
+		// - "inProgress": dialog is open, block any new toolbar actions
+		// - "proceeding": dialog completed, allow the original action through
+		//   (e.g. Print→Save chain where Save is called internally by Print)
+		// Resets to "idle" on cancellation. Page reload naturally resets via new JS context.
+		let _ticklerState = "idle";
 
 		// Minimal API for dialog handlers to interact with tickler state.
 		// Single window property to avoid polluting the global namespace.
 		// Must be defined before initTicklerDialogs() which references it.
 		window._ticklerIntegration = {
-			resetHandled: function() { _ticklerHandled = false; },
+			resetHandled: function() { _ticklerState = "idle"; },
 			markDialogButton: null // set by initTicklerDialogs closure
 		};
 
@@ -69,19 +70,24 @@ document.addEventListener("DOMContentLoaded", function(){
 
 		function wrapWithTicklerCheck(originalFn) {
 			return function() {
-				if (_ticklerHandled) {
+				if (_ticklerState === "proceeding") {
 					return originalFn.apply(this, arguments);
+				}
+				if (_ticklerState === "inProgress") {
+					return; // block — tickler dialog is still open
 				}
 				// Check mode at action time so dynamically toggled tags are respected
 				const currentMode = getTicklerMode();
 				if (!currentMode) {
 					return originalFn.apply(this, arguments);
 				}
-				_ticklerHandled = true;
+				_ticklerState = "inProgress";
 				const args = arguments;
 				const self = this;
 				const proceedCallback = function() {
+					_ticklerState = "proceeding";
 					originalFn.apply(self, args);
+					_ticklerIntegration.resetHandled();
 				};
 				if (currentMode === "autoOpen") {
 					promptTicklerAutoOpen(proceedCallback);
@@ -631,9 +637,9 @@ function initTicklerDialogs() {
     document.body.appendChild(confirmDiv);
 
     // Proceed dialog (after popup closes)
-    const proceedDiv = createDialogDiv("ticklerProceedDialog", "Tickler Created");
+    const proceedDiv = createDialogDiv("ticklerProceedDialog", "Tickler Window Closed");
     const proceedP = document.createElement("p");
-    proceedP.textContent = "The tickler window has closed. Ready to proceed with saving?";
+    proceedP.textContent = "The tickler window has closed. Ready to proceed?";
     proceedDiv.appendChild(proceedP);
     document.body.appendChild(proceedDiv);
 
@@ -726,13 +732,15 @@ function initTicklerDialogs() {
 function styleTicklerDialogCloseButton(dialogSelector) {
     jQuery(dialogSelector).on("dialogopen", function() {
         const closeBtn = jQuery(this).parent().find(".ui-dialog-titlebar-close");
+        const titlebar = jQuery(this).parent().find(".ui-dialog-titlebar");
+        titlebar.css("padding", "10px 14px");
         closeBtn.empty()
             .removeClass("ui-button-icon-only ui-button-icon ui-icon ui-icon-closethick")
             .addClass("btn-close")
             .attr("aria-label", "Close")
             .css({
                 "position": "absolute",
-                "right": "12px",
+                "right": "14px",
                 "top": "50%",
                 "transform": "translateY(-50%)"
             });
@@ -754,7 +762,6 @@ function promptTicklerAutoOpen(proceedCallback) {
             _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
             proceedCallback();
-            _ticklerIntegration.resetHandled();
         }
     });
     document.getElementById("ticklerConfirmMessage").textContent =
@@ -805,7 +812,6 @@ function showProceedDialog(proceedCallback) {
             _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
             proceedCallback();
-            _ticklerIntegration.resetHandled();
         },
         "No, cancel": function() {
             _ticklerIntegration.markDialogButton();
@@ -823,12 +829,20 @@ function promptTicklerAutoSave(proceedCallback) {
     const data = collectTicklerData();
     const contextPath = getTicklerFieldValue("context", "");
 
+    // Append local timezone offset so Jackson interprets the date as local midnight,
+    // not UTC midnight (which would shift to the previous day in negative UTC offsets).
+    const tzOffset = new Date().getTimezoneOffset();
+    const tzSign = tzOffset <= 0 ? "+" : "-";
+    const tzHours = String(Math.floor(Math.abs(tzOffset) / 60)).padStart(2, '0');
+    const tzMinutes = String(Math.abs(tzOffset) % 60).padStart(2, '0');
+    const serviceDateWithTz = data.serviceDate + "T00:00:00" + tzSign + tzHours + ":" + tzMinutes;
+
     const payload = {
         demographicNo: data.demographicNo,
         message: data.message,
         taskAssignedTo: data.taskAssignedTo,
         priority: data.priority,
-        serviceDate: data.serviceDate + "T00:00:00",
+        serviceDate: serviceDateWithTz,
         status: "A"
     };
 
@@ -848,7 +862,6 @@ function promptTicklerAutoSave(proceedCallback) {
                         _ticklerIntegration.markDialogButton();
                         jQuery(this).dialog("close");
                         proceedCallback();
-                        _ticklerIntegration.resetHandled();
                     }
                 });
                 jQuery("#ticklerAutoSaveSuccessDialog").dialog("open");
@@ -881,7 +894,6 @@ function showTicklerError(detail, proceedCallback) {
             _ticklerIntegration.markDialogButton();
             jQuery(this).dialog("close");
             proceedCallback();
-            _ticklerIntegration.resetHandled();
         },
         "Cancel": function() {
             _ticklerIntegration.markDialogButton();
