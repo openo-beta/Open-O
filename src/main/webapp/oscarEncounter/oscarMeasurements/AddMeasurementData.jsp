@@ -486,10 +486,16 @@
                                         name="<%= "inputValue-" + ctr %>">
                                     <option value=""></option>
                                     <% String[] opts = validations.getName().contains("/") ? validations.getName().split("/") : validations.getRegularExp().split("\\|");
-                                        for (String opt : opts) {%>
+                                        boolean valFoundInOpts = false;
+                                        for (String opt : opts) {
+                                            if (opt.equals(val)) valFoundInOpts = true;%>
                                     <option value="<%=opt%>"  <%=sel(opt, val)%>><%=opt%>
                                     </option>
-                                    <% }%>
+                                    <% }
+                                        if (val != null && !val.isEmpty() && !valFoundInOpts) { %>
+                                    <option value="<%=Encode.forHtmlAttribute(val)%>" selected disabled><%=Encode.forHtmlContent(val)%>
+                                    </option>
+                                    <% } %>
                                 </select>
                                 <%} else if (validations != null && validations.getName().startsWith("Integer")) { %>
                                 <select id="<%= "inputValue-" + ctr %>"
