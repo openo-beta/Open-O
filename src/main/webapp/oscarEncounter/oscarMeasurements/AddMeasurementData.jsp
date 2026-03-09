@@ -488,7 +488,7 @@
                                     <% String[] opts = validations.getName().contains("/") ? validations.getName().split("/") : validations.getRegularExp().split("\\|");
                                         boolean valFoundInOpts = false;
                                         for (String opt : opts) {
-                                            if (opt.equals(val)) valFoundInOpts = true;%>
+                                            if (val != null && opt.equals(val)) valFoundInOpts = true;%>
                                     <option value="<%=Encode.forHtmlAttribute(opt)%>"  <%=sel(opt, val)%>><%=Encode.forHtmlContent(opt)%>
                                     </option>
                                     <% }
