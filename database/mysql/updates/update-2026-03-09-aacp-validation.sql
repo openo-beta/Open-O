@@ -6,10 +6,10 @@
 INSERT INTO validations (name, regularExp)
 SELECT 'Provided/Revised/Reviewed', 'Provided|Revised|Reviewed'
 WHERE NOT EXISTS (
-    SELECT 1 FROM validations WHERE name = 'Provided/Revised/Reviewed'
+    SELECT 1 FROM validations WHERE name = 'Provided/Revised/Reviewed' AND regularExp = 'Provided|Revised|Reviewed'
 );
 
 -- Point AACP to the Provided/Revised/Reviewed validation instead of the generic Yes/No/NA
 UPDATE measurementType
-SET validation = (SELECT id FROM validations WHERE name = 'Provided/Revised/Reviewed' ORDER BY id LIMIT 1)
+SET validation = (SELECT id FROM validations WHERE name = 'Provided/Revised/Reviewed' AND regularExp = 'Provided|Revised|Reviewed' ORDER BY id LIMIT 1)
 WHERE type = 'AACP';
