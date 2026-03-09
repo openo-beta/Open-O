@@ -26,7 +26,6 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -34,8 +33,8 @@ import ca.openosp.openo.commn.dao.ConsultationServiceDao;
 import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
 import ca.openosp.openo.commn.dao.ServiceSpecialistsDao;
 import ca.openosp.openo.commn.model.ConsultationServices;
-import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 import ca.openosp.openo.commn.model.ServiceSpecialists;
+import ca.openosp.openo.consultation.dto.SpecialistListDTO;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
@@ -49,13 +48,9 @@ public class EctConDisplayServiceUtil {
     public Vector<String> addressVec;
     public Vector<String> phoneVec;
     public Vector<String> faxVec;
-    public Vector<String> websiteVec;
-    public Vector<String> emailVec;
-    public Vector<String> specTypeVec;
     public Vector<String> specIdVec;
     public Vector<String> serviceName;
     public Vector<String> serviceId;
-    public ArrayList<String> referralNoVec;
 
     public String getServiceDesc(String serId) {
         String retval = new String();
@@ -79,24 +74,17 @@ public class EctConDisplayServiceUtil {
         addressVec = new Vector<String>();
         phoneVec = new Vector<String>();
         faxVec = new Vector<String>();
-        websiteVec = new Vector<String>();
-        emailVec = new Vector<String>();
-        specTypeVec = new Vector<String>();
         specIdVec = new Vector<String>();
-        referralNoVec = new ArrayList<String>();
 
         ProfessionalSpecialistDao dao = SpringUtils.getBean(ProfessionalSpecialistDao.class);
-        for (ProfessionalSpecialist ps : dao.findAll()) {
-            fNameVec.add(ps.getFirstName());
-            lNameVec.add(ps.getLastName());
-            proLettersVec.add(ps.getProfessionalLetters());
-            addressVec.add(ps.getStreetAddress());
-            phoneVec.add(ps.getPhoneNumber());
-            faxVec.add(ps.getFaxNumber());
-            websiteVec.add(ps.getWebSite());
-            emailVec.add(ps.getEmailAddress());
-            specTypeVec.add(ps.getSpecialtyType());
-            specIdVec.add(ps.getId().toString());
+        for (SpecialistListDTO dto : dao.findAllListDTOs()) {
+            fNameVec.add(dto.getFirstName());
+            lNameVec.add(dto.getLastName());
+            proLettersVec.add(dto.getProfessionalLetters());
+            addressVec.add(dto.getStreetAddress());
+            phoneVec.add(dto.getPhoneNumber());
+            faxVec.add(dto.getFaxNumber());
+            specIdVec.add(dto.getId().toString());
         }
     }
 
