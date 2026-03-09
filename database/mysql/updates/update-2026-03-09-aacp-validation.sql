@@ -11,5 +11,5 @@ WHERE NOT EXISTS (
 
 -- Point AACP to the Provided/Revised/Reviewed validation instead of the generic Yes/No/NA
 UPDATE measurementType
-SET validation = (SELECT id FROM validations WHERE name = 'Provided/Revised/Reviewed' LIMIT 1)
+SET validation = (SELECT id FROM validations WHERE name = 'Provided/Revised/Reviewed' ORDER BY id LIMIT 1)
 WHERE type = 'AACP';
