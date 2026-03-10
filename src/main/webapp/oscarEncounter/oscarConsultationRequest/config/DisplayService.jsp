@@ -41,6 +41,7 @@
 
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.consultation.dto.SpecialistListDTO" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -52,7 +53,7 @@
     <jsp:useBean id="displayServiceUtil" scope="request"
                  class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil"/>
     <%
-        displayServiceUtil.estSpecialistVector();
+        displayServiceUtil.loadSpecialists();
         String serviceId = (String) request.getAttribute("serviceId");
         String serviceDesc = displayServiceUtil.getServiceDesc(serviceId);
     %>
@@ -145,15 +146,14 @@
                                     </tr>
                                     <%
                                         java.util.Vector specialistInField = displayServiceUtil.getSpecialistInField(serviceId);
-                                        for (int i = 0; i < displayServiceUtil.specIdVec.size(); i++) {
-                                            String specId = displayServiceUtil.specIdVec.elementAt(i);
-                                            String fName = displayServiceUtil.fNameVec.elementAt(i);
-                                            String lName = displayServiceUtil.lNameVec.elementAt(i);
-                                            String proLetters = displayServiceUtil.proLettersVec.elementAt(i);
-                                            String address = displayServiceUtil.addressVec.elementAt(i);
-                                            String phone = displayServiceUtil.phoneVec.elementAt(i);
-                                            String fax = displayServiceUtil.faxVec.elementAt(i);
-
+                                        for (SpecialistListDTO dto : displayServiceUtil.getSpecialists()) {
+                                            String specId = dto.getId().toString();
+                                            String fName = dto.getFirstName();
+                                            String lName = dto.getLastName();
+                                            String proLetters = dto.getProfessionalLetters();
+                                            String address = dto.getStreetAddress();
+                                            String phone = dto.getPhoneNumber();
+                                            String fax = dto.getFaxNumber();
                                     %>
                                     <tr>
                                         <td>
@@ -164,8 +164,7 @@
                                             <%}%>
                                         </td>
                                         <td>
-                                            <%
-                                                out.print(Encode.forHtmlContent(lName + " " + fName + (proLetters == null ? "" : " " + proLetters))); %>
+                                            <%=Encode.forHtmlContent(lName + " " + fName + (proLetters == null ? "" : " " + proLetters))%>
                                         </td>
                                         <td><%=Encode.forHtmlContent(address) %>
                                         </td>

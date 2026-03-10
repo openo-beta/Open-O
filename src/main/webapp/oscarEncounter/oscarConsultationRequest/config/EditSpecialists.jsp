@@ -26,6 +26,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page import="java.util.List" %>
+<%@ page import="ca.openosp.openo.consultation.dto.SpecialistListDTO" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -45,7 +46,7 @@
     <jsp:useBean id="displayServiceUtil" scope="request"
                  class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil"/>
     <%
-        displayServiceUtil.estSpecialistVector();
+        displayServiceUtil.loadSpecialists();
     %>
     <head>
 
@@ -132,28 +133,22 @@
 
                                     </tr>
                                     <%
-
-                                        for (int i = 0; i < displayServiceUtil.specIdVec.size(); i++) {
-                                            String specId = displayServiceUtil.specIdVec.elementAt(i);
-                                            String fName = displayServiceUtil.fNameVec.elementAt(i);
-                                            String lName = displayServiceUtil.lNameVec.elementAt(i);
-                                            String proLetters = displayServiceUtil.proLettersVec.elementAt(i);
-                                            String address = displayServiceUtil.addressVec.elementAt(i);
-                                            String phone = displayServiceUtil.phoneVec.elementAt(i);
-                                            String fax = displayServiceUtil.faxVec.elementAt(i);
+                                        String contextPath = request.getContextPath();
+                                        for (SpecialistListDTO dto : displayServiceUtil.getSpecialists()) {
+                                            String specId = dto.getId().toString();
+                                            String fName = dto.getFirstName();
+                                            String lName = dto.getLastName();
+                                            String proLetters = dto.getProfessionalLetters();
+                                            String address = dto.getStreetAddress();
+                                            String phone = dto.getPhoneNumber();
+                                            String fax = dto.getFaxNumber();
                                     %>
 
                                     <tr>
                                         <td><input type="checkbox" name="specialists"
                                                    value="<%=specId%>"></td>
                                         <td>
-                                            <%
-                                                String contextPath = request.getContextPath();
-                                                String url = contextPath + "/oscarEncounter/EditSpecialists.do?specId=" + specId;
-                                                out.print("<a href=\"" + url + "\">");
-                                                out.print(Encode.forHtmlContent(lName + " " + fName + " " + (proLetters == null ? "" : proLetters)));
-                                                out.print("</a>");
-                                            %>
+                                            <a href="<%=contextPath%>/oscarEncounter/EditSpecialists.do?specId=<%=specId%>"><%=Encode.forHtmlContent(lName + " " + fName + " " + (proLetters == null ? "" : proLetters))%></a>
                                         </td>
                                         <td><%=Encode.forHtmlContent(address) %>
                                         </td>

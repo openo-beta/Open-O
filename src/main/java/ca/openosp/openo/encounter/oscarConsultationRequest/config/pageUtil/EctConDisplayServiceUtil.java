@@ -26,6 +26,7 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -42,15 +43,18 @@ import ca.openosp.openo.util.ConversionUtils;
 public class EctConDisplayServiceUtil {
     private ConsultationServiceDao consultationServiceDao = (ConsultationServiceDao) SpringUtils.getBean(ConsultationServiceDao.class);
 
-    public Vector<String> fNameVec;
-    public Vector<String> lNameVec;
-    public Vector<String> proLettersVec;
-    public Vector<String> addressVec;
-    public Vector<String> phoneVec;
-    public Vector<String> faxVec;
-    public Vector<String> specIdVec;
+    private List<SpecialistListDTO> specialists = Collections.emptyList();
     public Vector<String> serviceName;
     public Vector<String> serviceId;
+
+    /**
+     * Returns the lightweight specialist list loaded by {@link #loadSpecialists()}.
+     *
+     * @return List&lt;SpecialistListDTO&gt; specialists ordered by last name, first name
+     */
+    public List<SpecialistListDTO> getSpecialists() {
+        return specialists;
+    }
 
     public String getServiceDesc(String serId) {
         String retval = new String();
@@ -64,28 +68,19 @@ public class EctConDisplayServiceUtil {
     }
 
     public void estSpecialist() {
-        estSpecialistVector();
+        loadSpecialists();
     }
 
     public void estSpecialistVector() {
-        fNameVec = new Vector<String>();
-        lNameVec = new Vector<String>();
-        proLettersVec = new Vector<String>();
-        addressVec = new Vector<String>();
-        phoneVec = new Vector<String>();
-        faxVec = new Vector<String>();
-        specIdVec = new Vector<String>();
+        loadSpecialists();
+    }
 
+    /**
+     * Loads all specialists as lightweight DTO projections for list display.
+     */
+    public void loadSpecialists() {
         ProfessionalSpecialistDao dao = SpringUtils.getBean(ProfessionalSpecialistDao.class);
-        for (SpecialistListDTO dto : dao.findAllListDTOs()) {
-            fNameVec.add(dto.getFirstName());
-            lNameVec.add(dto.getLastName());
-            proLettersVec.add(dto.getProfessionalLetters());
-            addressVec.add(dto.getStreetAddress());
-            phoneVec.add(dto.getPhoneNumber());
-            faxVec.add(dto.getFaxNumber());
-            specIdVec.add(dto.getId().toString());
-        }
+        specialists = dao.findAllListDTOs();
     }
 
     public Vector<String> getSpecialistInField(String serviceId) {
