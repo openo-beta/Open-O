@@ -26,35 +26,18 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
 import ca.openosp.openo.commn.dao.ConsultationServiceDao;
-import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
-import ca.openosp.openo.commn.dao.ServiceSpecialistsDao;
 import ca.openosp.openo.commn.model.ConsultationServices;
-import ca.openosp.openo.commn.model.ServiceSpecialists;
-import ca.openosp.openo.consultation.dto.SpecialistListDTO;
 import ca.openosp.openo.utility.SpringUtils;
-
-import ca.openosp.openo.util.ConversionUtils;
 
 public class EctConDisplayServiceUtil {
     private ConsultationServiceDao consultationServiceDao = (ConsultationServiceDao) SpringUtils.getBean(ConsultationServiceDao.class);
 
-    private List<SpecialistListDTO> specialists = Collections.emptyList();
     public Vector<String> serviceName;
     public Vector<String> serviceId;
-
-    /**
-     * Returns the lightweight specialist list loaded by {@link #loadSpecialists()}.
-     *
-     * @return List&lt;SpecialistListDTO&gt; specialists ordered by last name, first name
-     */
-    public List<SpecialistListDTO> getSpecialists() {
-        return specialists;
-    }
 
     public String getServiceDesc(String serId) {
         String retval = new String();
@@ -65,32 +48,6 @@ public class EctConDisplayServiceUtil {
         }
 
         return retval;
-    }
-
-    public void estSpecialist() {
-        loadSpecialists();
-    }
-
-    public void estSpecialistVector() {
-        loadSpecialists();
-    }
-
-    /**
-     * Loads all specialists as lightweight DTO projections for list display.
-     */
-    public void loadSpecialists() {
-        ProfessionalSpecialistDao dao = SpringUtils.getBean(ProfessionalSpecialistDao.class);
-        specialists = dao.findAllListDTOs();
-    }
-
-    public Vector<String> getSpecialistInField(String serviceId) {
-        Vector<String> vector = new Vector<String>();
-        ServiceSpecialistsDao dao = SpringUtils.getBean(ServiceSpecialistsDao.class);
-
-        for (ServiceSpecialists ss : dao.findByServiceId(ConversionUtils.fromIntString(serviceId))) {
-            vector.add("" + ss.getId().getSpecId());
-        }
-        return vector;
     }
 
     public void estServicesVectors() {
