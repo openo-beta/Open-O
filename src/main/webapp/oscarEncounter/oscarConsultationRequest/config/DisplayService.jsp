@@ -40,8 +40,6 @@
 %>
 
 <%@ page import="java.util.ResourceBundle" %>
-<%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.consultation.dto.SpecialistListDTO" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -53,7 +51,6 @@
     <jsp:useBean id="displayServiceUtil" scope="request"
                  class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil"/>
     <%
-        displayServiceUtil.loadSpecialists();
         String serviceId = (String) request.getAttribute("serviceId");
         String serviceDesc = displayServiceUtil.getServiceDesc(serviceId);
     %>
@@ -74,15 +71,8 @@
     </head>
     <body class="BodyStyle" vlink="#0000FF">
     <jsp:include page="/images/spinner.jsp" flush="true"/>
-    <script>
-        ShowSpin(true);
-        document.onreadystatechange = function () {
-            if (document.readyState === "interactive") {
-                HideSpin();
-            }
-        }
-    </script>
-    <% 
+    <script>ShowSpin(true);</script>
+    <%
     java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
     if (actionErrors != null && !actionErrors.isEmpty()) {
 %>
@@ -144,37 +134,7 @@
                                         </th>
 
                                     </tr>
-                                    <%
-                                        java.util.Vector specialistInField = displayServiceUtil.getSpecialistInField(serviceId);
-                                        for (SpecialistListDTO dto : displayServiceUtil.getSpecialists()) {
-                                            String specId = dto.getId().toString();
-                                            String fName = dto.getFirstName();
-                                            String lName = dto.getLastName();
-                                            String proLetters = dto.getProfessionalLetters();
-                                            String address = dto.getStreetAddress();
-                                            String phone = dto.getPhoneNumber();
-                                            String fax = dto.getFaxNumber();
-                                    %>
-                                    <tr>
-                                        <td>
-                                            <%if (specialistInField.contains(specId)) { %> <input type=checkbox
-                                                                                                  name="specialists"
-                                                                                                  value=<%=specId%> checked> <%} else {%>
-                                            <input type=checkbox name="specialists" value=<%=specId%>>
-                                            <%}%>
-                                        </td>
-                                        <td>
-                                            <%=Encode.forHtmlContent(lName + " " + fName + (proLetters == null ? "" : " " + proLetters))%>
-                                        </td>
-                                        <td><%=Encode.forHtmlContent(address) %>
-                                        </td>
-                                        <td><%=Encode.forHtmlContent(phone)%>
-                                        </td>
-                                        <td><%=Encode.forHtmlContent(fax)%>
-                                        </td>
-                                    </tr>
-                                    <%}%>
-
+                                    <tbody id="specialistBody"></tbody>
                                 </table>
 
                             </form></td>
@@ -188,5 +148,65 @@
             </tr>
         </table>
     </div>
+    <script>
+        (function() {
+            var BATCH_SIZE = 1000;
+            var tbody = document.getElementById("specialistBody");
+
+            function createCell(text) {
+                var td = document.createElement("td");
+                td.textContent = text;
+                return td;
+            }
+
+            function renderBatch(data, idx) {
+                var end = Math.min(idx + BATCH_SIZE, data.length);
+                var fragment = document.createDocumentFragment();
+                for (; idx < end; idx++) {
+                    var s = data[idx];
+                    var tr = document.createElement("tr");
+
+                    var cbTd = document.createElement("td");
+                    var cb = document.createElement("input");
+                    cb.type = "checkbox";
+                    cb.name = "specialists";
+                    cb.value = s[0];
+                    if (s[5]) cb.checked = true;
+                    cbTd.appendChild(cb);
+                    tr.appendChild(cbTd);
+
+                    tr.appendChild(createCell(s[1]));
+                    tr.appendChild(createCell(s[2]));
+                    tr.appendChild(createCell(s[3]));
+                    tr.appendChild(createCell(s[4]));
+
+                    fragment.appendChild(tr);
+                }
+                tbody.appendChild(fragment);
+                if (idx === Math.min(BATCH_SIZE, data.length)) {
+                    HideSpin();
+                }
+                if (idx < data.length) {
+                    requestAnimationFrame(function() { renderBatch(data, idx); });
+                }
+            }
+
+            fetch("<%= request.getContextPath() %>/oscarEncounter/SpecialistList.do?method=getSpecialistsForService&serviceId=<%=serviceId %>", {
+                method: "POST"
+            })
+            .then(function(resp) { return resp.json(); })
+            .then(function(data) {
+                if (data.length === 0) {
+                    HideSpin();
+                } else {
+                    renderBatch(data, 0);
+                }
+            })
+            .catch(function(err) {
+                HideSpin();
+                console.error("Error loading specialists:", err);
+            });
+        })();
+    </script>
     </body>
 </html>
