@@ -27,6 +27,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -140,7 +141,8 @@
     </div>
     <script>
         (function() {
-            var editUrlPrefix = "<%= org.owasp.encoder.Encode.forJavaScript(request.getContextPath()) %>/oscarEncounter/EditSpecialists.do?specId=";
+            var ctxPath = "<%= Encode.forJavaScript(request.getContextPath()) %>";
+            var editUrlPrefix = ctxPath + "/oscarEncounter/EditSpecialists.do?specId=";
 
             function createCell(text) {
                 var td = document.createElement("td");
@@ -149,7 +151,7 @@
             }
 
             renderSpecialistList({
-                url: "<%= org.owasp.encoder.Encode.forJavaScript(request.getContextPath()) %>/oscarEncounter/SpecialistList.do?method=getSpecialists",
+                url: ctxPath + "/oscarEncounter/SpecialistList.do?method=getSpecialists",
                 tbodyId: "specialistBody",
                 csrfTokenName: "<csrf:tokenname/>",
                 csrfTokenValue: "<csrf:tokenvalue/>",
