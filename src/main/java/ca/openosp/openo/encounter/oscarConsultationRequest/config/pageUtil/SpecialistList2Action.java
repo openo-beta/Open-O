@@ -33,7 +33,7 @@ import ca.openosp.openo.utility.SpringUtils;
  * shell first, then fetch data via {@code fetch()} POST. This decouples the page shell
  * from the data payload, reducing perceived load time and keeping the HTML response small.</p>
  *
- * <p>Endpoints (all POST):</p>
+ * <p>Endpoints (all POST, CSRF-protected via CsrfGuard token header):</p>
  * <ul>
  *   <li>{@code method=getSpecialists} - Returns all specialists for the EditSpecialists page.
  *       Each row: {@code [id, "name", "address", "phone", "fax"]}</li>
@@ -73,7 +73,12 @@ public class SpecialistList2Action extends ActionSupport {
         }
 
         MiscUtils.getLogger().warn("SpecialistList2Action: invalid method parameter: " + method);
-        return NONE;
+        try {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid or missing method parameter");
+        } catch (IOException e) {
+            MiscUtils.getLogger().error("Error sending 400 response", e);
+        }
+        return null;
     }
 
     /**
@@ -173,7 +178,12 @@ public class SpecialistList2Action extends ActionSupport {
         String lName = StringUtils.defaultString(dto.getLastName());
         String fName = StringUtils.defaultString(dto.getFirstName());
         String proLetters = dto.getProfessionalLetters();
-        return lName + " " + fName + (proLetters == null ? "" : " " + proLetters);
+        StringBuilder name = new StringBuilder();
+        name.append(lName).append(" ").append(fName);
+        if (StringUtils.isNotBlank(proLetters)) {
+            name.append(" ").append(proLetters);
+        }
+        return name.toString();
     }
 
     /**
