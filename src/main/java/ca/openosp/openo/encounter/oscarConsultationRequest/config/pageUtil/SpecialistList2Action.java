@@ -60,6 +60,15 @@ public class SpecialistList2Action extends ActionSupport {
      */
     @Override
     public String execute() {
+        if (!"POST".equals(request.getMethod())) {
+            try {
+                response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "POST required");
+            } catch (IOException e) {
+                MiscUtils.getLogger().error("Error sending 405 response", e);
+            }
+            return null;
+        }
+
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
             throw new SecurityException("missing required security object (_con)");
         }
@@ -90,21 +99,8 @@ public class SpecialistList2Action extends ActionSupport {
     private String getSpecialists() {
         try {
             List<SpecialistListDTO> specialists = professionalSpecialistDao.findAllListDTOs();
-
-            ArrayNode array = MAPPER.createArrayNode();
-            for (SpecialistListDTO dto : specialists) {
-                ArrayNode row = MAPPER.createArrayNode();
-                row.add(dto.getId());
-                row.add(buildDisplayName(dto));
-                row.add(StringUtils.defaultString(dto.getStreetAddress()));
-                row.add(StringUtils.defaultString(dto.getPhoneNumber()));
-                row.add(StringUtils.defaultString(dto.getFaxNumber()));
-                array.add(row);
-            }
-
-            writeJsonResponse(array);
+            writeSpecialistRows(specialists, null);
             return null;
-
         } catch (Exception e) {
             return handleServerError("Error loading specialist list", e);
         }
@@ -131,25 +127,47 @@ public class SpecialistList2Action extends ActionSupport {
 
             List<SpecialistListDTO> specialists = professionalSpecialistDao.findAllListDTOs();
             Set<String> assignedIds = loadAssignedSpecialistIds(serviceId);
-
-            ArrayNode array = MAPPER.createArrayNode();
-            for (SpecialistListDTO dto : specialists) {
-                ArrayNode row = MAPPER.createArrayNode();
-                row.add(dto.getId());
-                row.add(buildDisplayName(dto));
-                row.add(StringUtils.defaultString(dto.getStreetAddress()));
-                row.add(StringUtils.defaultString(dto.getPhoneNumber()));
-                row.add(StringUtils.defaultString(dto.getFaxNumber()));
-                row.add(assignedIds.contains(dto.getId().toString()));
-                array.add(row);
-            }
-
-            writeJsonResponse(array);
+            writeSpecialistRows(specialists, assignedIds);
             return null;
-
         } catch (Exception e) {
             return handleServerError("Error loading specialist list for service", e);
         }
+    }
+
+    /**
+     * Builds a JSON row for a single specialist DTO.
+     *
+     * @param dto SpecialistListDTO the specialist data
+     * @return ArrayNode row: {@code [id, "name", "address", "phone", "fax"]}
+     */
+    private static ArrayNode buildRow(SpecialistListDTO dto) {
+        ArrayNode row = MAPPER.createArrayNode();
+        row.add(dto.getId());
+        row.add(buildDisplayName(dto));
+        row.add(StringUtils.defaultString(dto.getStreetAddress()));
+        row.add(StringUtils.defaultString(dto.getPhoneNumber()));
+        row.add(StringUtils.defaultString(dto.getFaxNumber()));
+        return row;
+    }
+
+    /**
+     * Writes a JSON array of specialist rows to the response.
+     *
+     * @param specialists List&lt;SpecialistListDTO&gt; the specialist data
+     * @param assignedIds Set&lt;String&gt; specialist IDs assigned to a service, or null if not applicable
+     * @throws IOException if writing to response fails
+     */
+    private void writeSpecialistRows(List<SpecialistListDTO> specialists,
+                                     Set<String> assignedIds) throws IOException {
+        ArrayNode array = MAPPER.createArrayNode();
+        for (SpecialistListDTO dto : specialists) {
+            ArrayNode row = buildRow(dto);
+            if (assignedIds != null) {
+                row.add(assignedIds.contains(dto.getId().toString()));
+            }
+            array.add(row);
+        }
+        writeJsonResponse(array);
     }
 
     /**
