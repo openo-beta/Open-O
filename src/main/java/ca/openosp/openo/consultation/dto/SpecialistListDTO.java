@@ -48,11 +48,24 @@ public class SpecialistListDTO implements Serializable {
         this.faxNumber = faxNumber;
     }
 
+    /** @return Integer the specialist ID (maps to {@code specId} column) */
     public Integer getId() { return id; }
+
+    /** @return String the specialist's first name */
     public String getFirstName() { return firstName; }
+
+    /** @return String the specialist's last name */
     public String getLastName() { return lastName; }
+
+    /** @return String professional designation letters (e.g. "MD, FRCPC"), may be null */
     public String getProfessionalLetters() { return professionalLetters; }
+
+    /** @return String the specialist's street address, may be null */
     public String getStreetAddress() { return streetAddress; }
+
+    /** @return String the specialist's phone number, may be null */
     public String getPhoneNumber() { return phoneNumber; }
+
+    /** @return String the specialist's fax number, may be null */
     public String getFaxNumber() { return faxNumber; }
 }

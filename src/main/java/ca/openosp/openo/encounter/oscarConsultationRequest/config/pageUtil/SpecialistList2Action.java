@@ -72,7 +72,6 @@ public class SpecialistList2Action extends ActionSupport {
             return getSpecialistsForService();
         }
 
-        MiscUtils.getLogger().warn("SpecialistList2Action: invalid method parameter: " + method);
         try {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid or missing method parameter");
         } catch (IOException e) {
