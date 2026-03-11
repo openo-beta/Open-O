@@ -177,13 +177,10 @@
 
         <script type="text/javascript">
 
-            function resetStash() {
+            function resetStashAndClose() {
                 var url = "<%= request.getContextPath() %>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
-                new Ajax.Request(url, {
-                    method: 'post',
-                    parameters: '',
-                    asynchronous: false
-                });
+                fetch(url, { method: 'POST', credentials: 'same-origin' })
+                    .then(function() { clearPending('close'); });
             }
 
             function setComment() {
@@ -398,7 +395,7 @@
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 200px"
-                                                             onClick="resetStash();javascript:clearPending('close');"/></span></td>
+                                                             onClick="resetStashAndClose();"/></span></td>
                                         </tr>
 
                                         <%if (request.getAttribute("rePrint") == null) {%>

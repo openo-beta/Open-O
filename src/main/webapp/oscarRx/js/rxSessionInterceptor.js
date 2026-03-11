@@ -1,8 +1,8 @@
 /**
  * AJAX Interceptor for Rx per-patient session isolation.
  *
- * Adds demographicNo to Prototype.js AJAX calls, jQuery AJAX calls, and
- * Rx-related form submissions so that RxSessionFilter (server-side) can
+ * Adds demographicNo to Prototype.js AJAX calls, jQuery AJAX calls, fetch
+ * requests, and Rx-related form submissions so that RxSessionFilter (server-side) can
  * swap in the correct per-patient RxSessionBean for each request.
  *
  * Requires: var currentDemographicNo defined before this script loads.
@@ -74,6 +74,20 @@
                 options.parameters = addDemographicNo(options.parameters);
             }
             origUpdaterInit.call(this, container, url, options);
+        };
+    }
+
+    // Intercept fetch API
+    if (typeof window.fetch === 'function') {
+        var originalFetch = window.fetch;
+        window.fetch = function(url, options) {
+            options = options || {};
+            var urlStr = (url instanceof Request) ? url.url : String(url);
+            if (urlStr.indexOf('demographicNo=') === -1) {
+                var separator = urlStr.indexOf('?') === -1 ? '?' : '&';
+                url = urlStr + separator + 'demographicNo=' + encodeURIComponent(demoNo);
+            }
+            return originalFetch.call(this, url, options);
         };
     }
 
