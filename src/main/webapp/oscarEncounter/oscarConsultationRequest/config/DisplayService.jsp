@@ -25,6 +25,7 @@
 --%>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -68,6 +69,7 @@
         </script>
 
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/encounterStyles.css">
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/specialistListRenderer.js"></script>
     </head>
     <body class="BodyStyle" vlink="#0000FF">
     <jsp:include page="/images/spinner.jsp" flush="true"/>
@@ -150,20 +152,18 @@
     </div>
     <script>
         (function() {
-            var BATCH_SIZE = 1000;
-            var tbody = document.getElementById("specialistBody");
-
             function createCell(text) {
                 var td = document.createElement("td");
                 td.textContent = text;
                 return td;
             }
 
-            function renderBatch(data, idx) {
-                var end = Math.min(idx + BATCH_SIZE, data.length);
-                var fragment = document.createDocumentFragment();
-                for (; idx < end; idx++) {
-                    var s = data[idx];
+            renderSpecialistList({
+                url: "<%= org.owasp.encoder.Encode.forJavaScript(request.getContextPath()) %>/oscarEncounter/SpecialistList.do?method=getSpecialistsForService&serviceId=" + encodeURIComponent("<%= org.owasp.encoder.Encode.forJavaScript(serviceId) %>"),
+                tbodyId: "specialistBody",
+                csrfTokenName: "<csrf:tokenname/>",
+                csrfTokenValue: "<csrf:tokenvalue/>",
+                buildRow: function(s) {
                     var tr = document.createElement("tr");
 
                     var cbTd = document.createElement("td");
@@ -180,31 +180,8 @@
                     tr.appendChild(createCell(s[3]));
                     tr.appendChild(createCell(s[4]));
 
-                    fragment.appendChild(tr);
+                    return tr;
                 }
-                tbody.appendChild(fragment);
-                if (idx === Math.min(BATCH_SIZE, data.length)) {
-                    HideSpin();
-                }
-                if (idx < data.length) {
-                    requestAnimationFrame(function() { renderBatch(data, idx); });
-                }
-            }
-
-            fetch("<%= request.getContextPath() %>/oscarEncounter/SpecialistList.do?method=getSpecialistsForService&serviceId=<%=serviceId %>", {
-                method: "POST"
-            })
-            .then(function(resp) { return resp.json(); })
-            .then(function(data) {
-                if (data.length === 0) {
-                    HideSpin();
-                } else {
-                    renderBatch(data, 0);
-                }
-            })
-            .catch(function(err) {
-                HideSpin();
-                console.error("Error loading specialists:", err);
             });
         })();
     </script>
