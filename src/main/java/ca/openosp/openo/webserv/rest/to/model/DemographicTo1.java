@@ -32,6 +32,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @XmlRootElement
 public class DemographicTo1 implements Serializable {
 
@@ -81,7 +83,10 @@ public class DemographicTo1 implements Serializable {
     private String displayName;
     private ProviderTo1 provider;
     private String lastUpdateUser;
+
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date lastUpdateDate;
+
     private String title;
     private String officialLanguage;
     private String countryOfOrigin;
