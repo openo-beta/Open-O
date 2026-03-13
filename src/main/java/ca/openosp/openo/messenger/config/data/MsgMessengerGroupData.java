@@ -26,12 +26,12 @@
 package ca.openosp.openo.messenger.config.data;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.jsp.JspWriter;
 
-import org.apache.commons.beanutils.BeanComparator;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.GroupMembersDao;
 import ca.openosp.openo.commn.dao.GroupsDao;
@@ -199,7 +199,7 @@ public class MsgMessengerGroupData {
      * @param locale The locale for internationalization (currently unused but kept for compatibility)
      * @param grpNo The group number/ID as a String to check membership against
      * @param out The JspWriter to output the generated HTML directly to the response
-     * @throws IOException if there's an error writing to the JspWriter (caught internally)
+     * @throws RuntimeException if there's an error writing to the JspWriter (caught internally)
      */
     @SuppressWarnings("unchecked")
     public void printAllProvidersWithMembers(Locale locale, String grpNo, JspWriter out) {
@@ -208,7 +208,7 @@ public class MsgMessengerGroupData {
         ProviderDao dao = SpringUtils.getBean(ProviderDao.class);
         List<Provider> ps = dao.getProviders();
         // Sort providers by last name for display
-        Collections.sort(ps, new BeanComparator("lastName"));
+        Collections.sort(ps, Comparator.comparing(Provider::getLastName));
         try {
             // Generate HTML table row for each provider
             for (Provider p : ps) {

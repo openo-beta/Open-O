@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="java.nio.charset.StandardCharsets" %>
 <%@page import="com.fasterxml.jackson.databind.ObjectMapper" %>
 <%@page import="com.fasterxml.jackson.databind.node.ObjectNode" %>
 <%@page import="com.fasterxml.jackson.databind.node.ArrayNode" %>
@@ -294,9 +295,6 @@ request.setAttribute("missingTests", missingTests);
     <script language="javascript" type="text/javascript"
             src="${pageContext.request.contextPath}/share/javascript/Oscar.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/scriptaculous.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/effects.js"></script>
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/library/jquery/jquery-1.12.0.min.js"></script>
     <script type="text/javascript"
@@ -307,7 +305,6 @@ request.setAttribute("missingTests", missingTests);
     <script type="text/javascript" charset="utf-8">
         var contextpath = "${pageContext.servletContext.contextPath}";
         const ctx = contextpath;
-        jQuery.noConflict();
     </script>
 
 
@@ -844,20 +841,25 @@ request.setAttribute("missingTests", missingTests);
             var ret = true;
             var comment = "";
             var text = providerNo + "_" + segmentId + "commentText";
-            if ($(text) != null) {
-                comment = $(text).innerHTML;
+            var textEl = document.getElementById(text);
+            if (textEl != null) {
+                comment = textEl.innerHTML;
                 if (comment == null) {
                     comment = "";
                 }
             }
             var commentVal = prompt('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.msgComment"/>', comment);
 
+            var ackForm = document.forms['acknowledgeForm_' + segmentId];
             if (commentVal == null) {
                 ret = false;
-            } else if (commentVal != null && commentVal.length > 0)
-                document.forms['acknowledgeForm_' + segmentId].comment.value = commentVal;
-            else
-                document.forms['acknowledgeForm_' + segmentId].comment.value = comment;
+            } else if (ackForm && ackForm.comment) {
+                if (commentVal.length > 0) {
+                    ackForm.comment.value = commentVal;
+                } else {
+                    ackForm.comment.value = comment;
+                }
+            }
 
             if (ret) handleLab('acknowledgeForm_' + segmentId, segmentId, action);
 
@@ -866,8 +868,11 @@ request.setAttribute("missingTests", missingTests);
 
         function printPDF(labid) {
             var frm = "acknowledgeForm_" + labid;
-            document.forms[frm].action = "lab/CA/ALL/PrintPDF.do";
-            document.forms[frm].submit();
+            var form = document.forms[frm];
+            if (form) {
+                form.action = "lab/CA/ALL/PrintPDF.do";
+                form.submit();
+            }
         }
 
         function linkreq(rptId, reqId) {
@@ -878,7 +883,7 @@ request.setAttribute("missingTests", missingTests);
 
         function matchMe() {
             <% if ( !isLinkedToDemographic) { %>
-            popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'searchPatientWindow');
+            popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName(), StandardCharsets.UTF_8)%>', 'searchPatientWindow');
             <% } %>
         }
 
@@ -886,64 +891,66 @@ request.setAttribute("missingTests", missingTests);
         function handleLab(formid, labid, action) {
             var url = '<%= request.getContextPath() %>/documentManager/inboxManage.do';
             var data = 'method=isLabLinkedToDemographic&labid=' + labid;
-            new Ajax.Request(url, {
-                method: 'post', parameters: data, onSuccess: function (transport) {
+            fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: data
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(json) {
+                if (json != null) {
+                    var success = json.isLinkedToDemographic;
+                    var demoid = '';
+                    //check if lab is linked to a providers
+                    if (success) {
+                        console.log("Lab IS linked to demographic: " + success);
+                        console.log("Processing action: " + action);
 
-                    var json = transport.responseText.evalJSON();
-                    if (json != null) {
-                        var success = json.isLinkedToDemographic;
-                        var demoid = '';
-                        //check if lab is linked to a providers
-                        if (success) {
-                            console.log("Lab IS linked to demographic: " + success);
-                            console.log("Processing action: " + action);
+                        if (action === 'ackLab') {
+                            console.log("Acknowledging lab results");
+                            if (confirmAck()) {
+                                console.log("Acknowledge confirmed. Labid: " + labid);
+                                document.getElementById("labStatus_" + labid).value = "A";
+                                updateStatus(formid, labid);
+                            }
+                        } else if (action === 'msgLab') {
+                            console.log("Sending message about lab. Demoid: " + demoid);
+                            demoid = json.demoId;
+                            if (demoid != null && demoid.length > 0) {
+                                window.popup(700, 960, '${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=' + demoid, 'msg');
+                            }
+                        } else if (action === 'msgLabRecall') {
+                            demoid = json.demoId;
+                            if (demoid != null && demoid.length > 0) {
+                                window.popup(700, 980, '${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=' + demoid + "&recall", 'msgRecall');
+                                window.popup(450, 600, '${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=ticklerAssignee%>&priority=<%=recallTicklerPriority%>&recall', 'ticklerRecall');
+                            }
+                        } else if (action === 'ticklerLab') {
+                            console.log("Setting lab Tickler. Labid: " + labid + " Demoid: " + demoid);
+                            demoid = json.demoId;
+                            if (demoid != null && demoid.length > 0) {
+                                window.popup(450, 600, '${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid, 'tickler')
+                            }
+                        } else if (action === 'addComment') {
+                            console.log("Adding comment. Formid: " + formid + " labid: " + labid);
+                            addComment(formid, labid);
+                        }
 
-                            if (action === 'ackLab') {
-                                console.log("Acknowledging lab results");
-                                if (confirmAck()) {
-                                    console.log("Acknowledge confirmed. Labid: " + labid);
-                                    jQuery("#labStatus_" + labid).val("A")
-                                    updateStatus(formid, labid);
-                                }
-                            } else if (action === 'msgLab') {
-                                console.log("Sending message about lab. Demoid: " + demoid);
-                                demoid = json.demoId;
-                                if (demoid != null && demoid.length > 0) {
-                                    window.popup(700, 960, '${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=' + demoid, 'msg');
-                                }
-                            } else if (action === 'msgLabRecall') {
-                                demoid = json.demoId;
-                                if (demoid != null && demoid.length > 0) {
-                                    window.popup(700, 980, '${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=' + demoid + "&recall", 'msgRecall');
-                                    window.popup(450, 600, '${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=ticklerAssignee%>&priority=<%=recallTicklerPriority%>&recall', 'ticklerRecall');
-                                }
-                            } else if (action === 'ticklerLab') {
-                                console.log("Setting lab Tickler. Labid: " + labid + " Demoid: " + demoid);
-                                demoid = json.demoId;
-                                if (demoid != null && demoid.length > 0) {
-                                    window.popup(450, 600, '${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid, 'tickler')
-                                }
-                            } else if (action === 'addComment') {
-                                console.log("Adding comment. Formid: " + formid + " labid: " + labid);
-                                addComment(formid, labid);
+                    } else {
+                        console.log("Lab is NOT linked to demographic: " + success);
+                        console.log("Processing action: " + action);
+
+                        if (action === 'ackLab') {
+                            if (confirmAckUnmatched()) {
+                                document.getElementById("labStatus_" + labid).value = "A";
+                                updateStatus(formid, labid);
+                            } else {
+                                matchMe();
                             }
 
                         } else {
-                            console.log("Lab is NOT linked to demographic: " + success);
-                            console.log("Processing action: " + action);
-
-                            if (action === 'ackLab') {
-                                if (confirmAckUnmatched()) {
-                                    jQuery("#labStatus_" + labid).val("A")
-                                    updateStatus(formid, labid);
-                                } else {
-                                    matchMe();
-                                }
-
-                            } else {
-                                alert("Please relate lab to a patient");
-                                matchMe();
-                            }
+                            alert("Please relate lab to a patient");
+                            matchMe();
                         }
                     }
                 }
@@ -976,18 +983,19 @@ request.setAttribute("missingTests", missingTests);
             }
 
             var urlStr = '<%=request.getContextPath()%>' + "/lab/CA/ALL/UnlinkDemographic.do";
-            var dataStr = "reason=" + reason + "&labNo=" + labNo;
-            jQuery.ajax({
-                type: "POST",
-                url: urlStr,
-                data: dataStr,
-                success: function (data) {
-                    if (data.success) {
-                        // refresh the opening page with new results
-                        top.opener.location.reload();
-                        // refresh the lab display page and offer dialog to rematch.
-                        window.location.reload();
-                    }
+            var dataStr = "reason=" + encodeURIComponent(reason) + "&labNo=" + labNo;
+            fetch(urlStr, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: dataStr
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    // refresh the opening page with new results
+                    top.opener.location.reload();
+                    // refresh the lab display page and offer dialog to rematch.
+                    window.location.reload();
                 }
             });
         }
@@ -995,22 +1003,37 @@ request.setAttribute("missingTests", missingTests);
         function addComment(formid, labid) {
             var url = '<%=request.getContextPath()%>' + "/oscarMDS/UpdateStatus.do?method=addComment";
 
-            if (jQuery("#labStatus_" + labid).val() === "") {
-                jQuery("#labStatus_" + labid).val("N");
+            var labStatusEl = document.getElementById("labStatus_" + labid);
+            if (labStatusEl && labStatusEl.value === "") {
+                labStatusEl.value = "N";
             }
 
-            var data = $(formid).serialize(true);
+            var formEl = document.getElementById(formid);
+            if (!formEl) {
+                console.error("Form not found: " + formid);
+                return;
+            }
+            var data = new URLSearchParams(new FormData(formEl)).toString();
             console.log(url);
             console.log(data);
-            jQuery.post(url, data).success(function () {
+            fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: data
+            })
+            .then(function() {
                 window.location.reload();
             });
         }
 
         function submitLabel(lblval, segmentID) {
-            let newlabelvalue = document.forms['acknowledgeForm_' + segmentID].label.value;
-            if (newlabelvalue.length > 1) {
-                document.forms['TDISLabelForm_' + segmentID].label.value = newlabelvalue;
+            var ackForm = document.forms['acknowledgeForm_' + segmentID];
+            var tdisForm = document.forms['TDISLabelForm_' + segmentID];
+            if (ackForm && ackForm.label && tdisForm && tdisForm.label) {
+                let newlabelvalue = ackForm.label.value;
+                if (newlabelvalue.length > 1) {
+                    tdisForm.label.value = newlabelvalue;
+                }
             }
         }
     </script>
@@ -1075,7 +1098,8 @@ request.setAttribute("missingTests", missingTests);
                 }
             })
             jQuery("#labelspan_<%=Encode.forJavaScript(segmentID)%> i").text(jQuery("#label_<%=Encode.forJavaScript(segmentID)%>").val());
-            document.forms['acknowledgeForm_<%=Encode.forJavaScript(segmentID)%>'].label.value = "";
+            var ackForm = document.forms['acknowledgeForm_<%=Encode.forJavaScript(segmentID)%>'];
+            if (ackForm && ackForm.label) ackForm.label.value = "";
         });
     });
 
@@ -1089,30 +1113,37 @@ request.setAttribute("missingTests", missingTests);
     function runMacro(name, formid, closeOnSuccess) {
         var url = '<%=request.getContextPath()%>/documentManager/inboxManage.do';
         var data = 'method=isLabLinkedToDemographic&labid=<%= Encode.forJavaScript(segmentID) %>';
-        new Ajax.Request(url, {
-            method: 'post', parameters: data, onSuccess: function (transport) {
-                var json = transport.responseText.evalJSON();
-                if (json != null) {
-                    var success = json.isLinkedToDemographic;
-                    var demoid = '';
-                    if (success) {
-                        demoid = json.demoId;
-                    }
-                    runMacroInternal(name, formid, closeOnSuccess, demoid);
+        fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: data
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(json) {
+            if (json != null) {
+                var success = json.isLinkedToDemographic;
+                var demoid = '';
+                if (success) {
+                    demoid = json.demoId;
                 }
+                runMacroInternal(name, formid, closeOnSuccess, demoid);
             }
         });
     }
 
     function runMacroInternal(name, formid, closeOnSuccess, demographicNo) {
         var url = '<%=request.getContextPath()%>' + "/oscarMDS/RunMacro.do?name=" + name + (demographicNo.length > 0 ? "&demographicNo=" + demographicNo : "");
-        var data = $(formid).serialize(true);
+        var formEl = document.getElementById(formid);
+        var data = new URLSearchParams(new FormData(formEl)).toString();
 
-        new Ajax.Request(url, {
-            method: 'post', parameters: data, onSuccess: function (data) {
-                if (closeOnSuccess) {
-                    window.close();
-                }
+        fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: data
+        })
+        .then(function() {
+            if (closeOnSuccess) {
+                window.close();
             }
         });
     }
@@ -1259,7 +1290,7 @@ request.setAttribute("missingTests", missingTests);
 
                                 <% if (searchProviderNo != null) { // null if we were called from e-chart%>
                                 <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/>"
-                                       onClick="popupStart(360, 680, '<%= request.getContextPath() %>/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'encounter')">
+                                       onClick="popupStart(360, 680, '<%= request.getContextPath() %>/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName(), StandardCharsets.UTF_8)%>', 'encounter')">
                                 <% } %>
                                 <input type="button" value="Req# <%=reqTableID%>" title="Link to Requisition"
                                        onclick="linkreq('<%=Encode.forJavaScript(segmentID)%>','<%=reqID%>');"/>
@@ -1396,7 +1427,7 @@ request.setAttribute("missingTests", missingTests);
                                                                         <% if (searchProviderNo == null) { // we were called from e-chart%>
                                                                         <a href="javascript:window.close()">
                                                                                 <% } else { // we were called from lab module%>
-                                                                            <a href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'searchPatientWindow')">
+                                                                            <a href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName(), StandardCharsets.UTF_8)%>', 'searchPatientWindow')">
                                                                                 <% } %>
                                                                                 <%=handler.getPatientName()%>
                                                                             </a>
@@ -2658,7 +2689,7 @@ request.setAttribute("missingTests", missingTests);
                            onClick="printPDF('<%=Encode.forJavaScript(segmentID)%>')">
                     <% if (searchProviderNo != null) { // we were called from e-chart %>
                     <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                           onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'encounter')">
+                           onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName(), StandardCharsets.UTF_8)%>', 'encounter')">
 
                     <% } %>
                 </td>

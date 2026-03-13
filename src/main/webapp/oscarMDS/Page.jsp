@@ -73,7 +73,11 @@
 <% if (isListView && pageNum == 0) { %>
 <script type="text/javascript">
     function submitLabel(lblval) {
-        document.forms['TDISLabelForm'].label.value = document.forms['acknowledgeForm'].label.value;
+        var tdisForm = document.forms['TDISLabelForm'];
+        var ackForm = document.forms['acknowledgeForm'];
+        if (tdisForm && tdisForm.label && ackForm && ackForm.label) {
+            tdisForm.label.value = ackForm.label.value;
+        }
     }
 </script>
 
@@ -163,10 +167,11 @@
                         Integer total_row_index = labdocs.size() - 1;
                         if (total_row_index < 0 || (totalNoPages != null && totalNoPages.intValue() == (pageNum + 1))) {
                     %>
-                    <input type="hidden" name="NoMoreItems" value="true"/> <%
+                    <%
                         if (isListView) { %>
                     <tr>
                         <td colspan="10" align="center">
+                            <input type="hidden" name="NoMoreItems" value="true"/>
                             <i><% if (pageNum == 1) { %>
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgNoReports"/>
                                 <% } else { %>
@@ -180,6 +185,7 @@
                     %>
 
                     <div>
+                        <input type="hidden" name="NoMoreItems" value="true"/>
                         <% if (pageNum == 1) { %>
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.msgNoReports"/>
                         <% } else { %>
@@ -233,9 +239,6 @@
                     <form id="frmDocumentDisplay_<%=segmentID%>">
                         <input type="hidden" name="segmentID" value="<%=segmentID%>"/>
                         <input type="hidden" name="demoName" value="<%=demoName%>"/>
-                        <input type="hidden" name="providerNo" value="<%=providerNo%>"/>
-                        <input type="hidden" name="searchProviderNo" value="<%=searchProviderNo%>"/>
-                        <input type="hidden" name="status" value="<%=status%>"/>
                     </form>
                     <div id="document_<%=segmentID%>">
                         <jsp:include page="/documentManager/showDocument.jsp" flush="true">
@@ -339,12 +342,6 @@
                                 StringBuilder url = new StringBuilder(request.getContextPath());
                                 url.append("/documentManager/showDocument.jsp?inWindow=true&segmentID=");
                                 url.append(segmentID);
-                                url.append("&providerNo=");
-                                url.append(providerNo);
-                                url.append("&searchProviderNo=");
-                                url.append(searchProviderNo);
-                                url.append("&status=");
-                                url.append(status);
                                 url.append("&demoName=");
 
                                 //the browser html parser does not understand javascript so we need to account for the opening

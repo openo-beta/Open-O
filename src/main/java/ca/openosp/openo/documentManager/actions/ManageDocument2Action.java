@@ -42,8 +42,6 @@ import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
-import org.jpedal.PdfDecoder;
-import org.jpedal.fonts.FontMappings;
 import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import ca.openosp.openo.PMmodule.model.ProgramProvider;
@@ -61,6 +59,7 @@ import ca.openosp.openo.managers.ProgramManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -126,6 +125,10 @@ public class ManageDocument2Action extends ActionSupport {
         ACTIONS.put("displayIncomingDocs", ctx -> { ctx.displayIncomingDocs(); return null; });
         ACTIONS.put("documentUpdate", ctx -> { ctx.documentUpdate(); return null; });
         ACTIONS.put("documentUpdateAjax", ctx -> { ctx.documentUpdateAjax(); return null; });
+        ACTIONS.put("getDemoNameAjax", ctx -> { ctx.getDemoNameAjax(); return null; });
+        ACTIONS.put("showPage", ctx -> { ctx.showPage(); return null; });
+        ACTIONS.put("view", ctx -> { ctx.view(); return null; });
+        ACTIONS.put("addIncomingDocument", ctx -> ctx.addIncomingDocument());
         //  Enable calling the method to remove providers
         ACTIONS.put("removeLinkFromDocument", new ActionHandler() {
             public String handle(ManageDocument2Action action) {
@@ -133,6 +136,7 @@ public class ManageDocument2Action extends ActionSupport {
                 return null;
             }
         });
+        ACTIONS.put("viewDocumentInfo", ctx -> { ctx.viewDocumentInfo(); return null; });
     }
 
     // Called on default by struts.xml, finds the correct method to use by finding what the URL "method" param is equal to
@@ -504,7 +508,11 @@ public class ManageDocument2Action extends ActionSupport {
         String documentDirName = docDir.getName();
         File parentDir = docDir.getParentFile();
 
-        File cacheDir = new File(parentDir, documentDirName + "_cache");
+        // Sanitize the cache directory name to prevent path traversal
+        String safeCacheDirName = MiscUtils.sanitizeFileName(documentDirName + "_cache");
+
+        // Use validatePath to create a validated cache directory path
+        File cacheDir = PathValidationUtils.validatePath(safeCacheDirName, parentDir);
 
         if (!cacheDir.exists()) {
             cacheDir.mkdir();
@@ -544,9 +552,24 @@ public class ManageDocument2Action extends ActionSupport {
             parser.parse();
             PDDocument pdf = parser.getPDDocument();
 
+            // Validate page number is within bounds
+            if (pageNum == null) {
+                log.error("Page number is null for document " + d.getDocfilename());
+                pdf.close();
+                return null;
+            }
+
+            int pageIndex = pageNum - 1;
+            int totalPages = pdf.getNumberOfPages();
+            if (pageIndex < 0 || pageIndex >= totalPages) {
+                log.error("Invalid page number " + pageNum + " for document " + d.getDocfilename() + " with " + totalPages + " pages");
+                pdf.close();
+                return null;
+            }
+
             PDFRenderer rend = new PDFRenderer(pdf);
             //Page index starts at 0, subtracts 1 to account for that
-            BufferedImage image = rend.renderImageWithDPI(pageNum - 1, 90, ImageType.RGB);
+            BufferedImage image = rend.renderImageWithDPI(pageIndex, 96, ImageType.RGB);
 
             // write cache file
             ImageIO.write(image, "png", pngFile.toFile());
@@ -1077,19 +1100,21 @@ public class ManageDocument2Action extends ActionSupport {
         destFilePath = savePath + sanitizedFileName;
         String doc_no = "";
 
-        // Validate destination path is within allowed directory
-        File finalDestFile = new File(destFilePath);
-        String canonicalDest = finalDestFile.getCanonicalPath();
+        // Validate destination path is within allowed directory using PathValidationUtils
         File saveDir = new File(savePath);
-        String canonicalSaveDir = saveDir.getCanonicalPath();
-        
-        if (!canonicalDest.equals(canonicalSaveDir) && 
-            !canonicalDest.startsWith(canonicalSaveDir + File.separator)) {
-            throw new SecurityException("Access denied: destination file outside allowed directory");
-        }
+        File finalDestFile = PathValidationUtils.validatePath(sanitizedFileName, saveDir);
+        destFilePath = finalDestFile.getPath();
 
         newDoc.setContentType(docType);
         File f1 = new File(sourceFilePath);
+
+        // Validate source file is within INCOMINGDOCUMENT_DIR to prevent path traversal
+        String incomingDocDir = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
+        if (incomingDocDir != null && !incomingDocDir.isEmpty()) {
+            File incomingDir = new File(incomingDocDir);
+            f1 = PathValidationUtils.validateExistingPath(f1, incomingDir);
+        }
+
         boolean success = f1.renameTo(new File(destFilePath));
         if (!success) {
             log.error("Not able to move " + f1.getName() + " to " + destFilePath);
@@ -1196,31 +1221,16 @@ public class ManageDocument2Action extends ActionSupport {
             throw new IllegalStateException("INCOMINGDOCUMENT_DIR not configured");
         }
         
-        // Get canonical paths for validation before any file operations
+        // Validate file path using PathValidationUtils
         File baseDir = new File(incomingDocDir);
-        String canonicalBase = baseDir.getCanonicalPath();
-        
-        // Create the file object and immediately get its canonical path
-        // without performing any operations on it first
         File file = new File(filePath);
-        String canonicalFile = file.getCanonicalPath();
-        
-        // Validate that the canonical path is within the allowed directory
-        // This must be done before ANY file operations to prevent path traversal attacks
-        if (!canonicalFile.startsWith(canonicalBase + File.separator)) {
-            throw new SecurityException("Access denied: file outside allowed directory");
-        }
-        
-        // Only after validation, check if the file exists and is a regular file
-        if (!file.exists() || !file.isFile()) {
-            throw new FileNotFoundException("File not found");
-        }
-        
+        PathValidationUtils.validateExistingPath(file, baseDir);
+
         Locale locale = request.getLocale();
         ResourceBundle props = ResourceBundle.getBundle("oscarResources", locale);
 
         if (pageNum == null) {
-            pageNum = "0";
+            pageNum = "1";
         }
 
         int pageNumber = Integer.parseInt(pageNum);
@@ -1230,8 +1240,21 @@ public class ManageDocument2Action extends ActionSupport {
 
         try {
             PDDocument reader = PDDocument.load(file);
+
+            // Validate page number is within bounds
+            int pageIndex = pageNumber - 1;
+            int totalPages = reader.getNumberOfPages();
+            if (pageIndex < 0 || pageIndex >= totalPages) {
+                log.error("Invalid page number " + pageNumber + " for PDF " + sanitizedPdfName + " with " + totalPages + " pages");
+                reader.close();
+                response.setContentType("text/html");
+                response.getWriter().print(props.getString("dms.incomingDocs.errorInOpening") + Encode.forHtml(sanitizedPdfName));
+                response.getWriter().print("<br>Invalid page number");
+                return;
+            }
+
             PDDocument extractedPage = new PDDocument();
-            extractedPage.addPage(reader.getDocumentCatalog().getPages().get(pageNumber - 1));
+            extractedPage.addPage(reader.getDocumentCatalog().getPages().get(pageIndex));
             extractedPage.save(response.getOutputStream());
             extractedPage.close();
             reader.close();
@@ -1302,25 +1325,10 @@ public class ManageDocument2Action extends ActionSupport {
             throw new IllegalStateException("INCOMINGDOCUMENT_DIR not configured");
         }
         
-        // Get canonical paths for validation before any file operations
+        // Validate file path using PathValidationUtils
         File baseDir = new File(incomingDocDir);
-        String canonicalBase = baseDir.getCanonicalPath();
-        
-        // Create the file object and immediately get its canonical path
-        // without performing any operations on it first
         File file = new File(filePath);
-        String canonicalFile = file.getCanonicalPath();
-        
-        // Validate that the canonical path is within the allowed directory
-        // This must be done before ANY file operations to prevent path traversal attacks
-        if (!canonicalFile.startsWith(canonicalBase + File.separator)) {
-            throw new SecurityException("Access denied: file outside allowed directory");
-        }
-        
-        // Only after validation, check if the file exists and is a regular file
-        if (!file.exists() || !file.isFile()) {
-            throw new FileNotFoundException("File not found");
-        }
+        PathValidationUtils.validateExistingPath(file, baseDir);
 
         String contentType = "application/pdf";
         response.setContentType(contentType);
@@ -1331,8 +1339,9 @@ public class ManageDocument2Action extends ActionSupport {
         ServletOutputStream outs = response.getOutputStream();
 
         try {
-
-            bfis = new BufferedInputStream(new FileInputStream(file));
+            // Re-validate file path at point of use for static analysis visibility
+            File validatedFile = PathValidationUtils.validateExistingPath(file, baseDir);
+            bfis = new BufferedInputStream(new FileInputStream(validatedFile));
 
             org.apache.commons.io.IOUtils.copy(bfis, outs);
             outs.flush();
@@ -1376,7 +1385,7 @@ public class ManageDocument2Action extends ActionSupport {
         }
 
         if (pageNum == null) {
-            pageNum = "0";
+            pageNum = "1";
         }
 
         BufferedInputStream bfis = null;
@@ -1443,68 +1452,48 @@ public class ManageDocument2Action extends ActionSupport {
             throw new IllegalStateException("INCOMINGDOCUMENT_DIR not configured");
         }
         
-        // Get canonical paths for validation before any file operations
+        // Validate file path using PathValidationUtils
         File baseDir = new File(incomingDocDir);
-        String canonicalBase = baseDir.getCanonicalPath();
-        
-        // Create directory and file objects
         File documentDir = new File(incomingDocPath);
         File documentCacheDir = getDocumentCacheDir(incomingDocPath);
         File file = new File(documentDir, sanitizedPdfName);
-        
-        // Immediately get canonical path without performing any operations first
-        String fileCanonical = file.getCanonicalPath();
-        
-        // Validate that the canonical path is within the allowed directory
-        // This must be done before ANY file operations to prevent path traversal attacks
-        if (!fileCanonical.startsWith(canonicalBase + File.separator)) {
-            throw new SecurityException("Access denied: file outside allowed directory");
-        }
-        
-        // Only after validation, check if the file exists and is a regular file
-        if (!file.exists() || !file.isFile()) {
-            throw new FileNotFoundException("File not found or is not a regular file");
-        }
-        
-        PdfDecoder decode_pdf = new PdfDecoder(true);
+        PathValidationUtils.validateExistingPath(file, baseDir);
 
-        try (FileInputStream is = new FileInputStream(file)) {
+        // Re-validate file path at point of use for static analysis visibility
+        File validatedFile = PathValidationUtils.validateExistingPath(file, baseDir);
 
-            FontMappings.setFontReplacements();
+        try (PDDocument document = PDDocument.load(validatedFile)) {
+            PDFRenderer renderer = new PDFRenderer(document);
 
-            decode_pdf.useHiResScreenDisplay(true);
-
-            decode_pdf.setExtractionMode(0, 96, 96 / 72f);
-
-            decode_pdf.openPdfFileFromInputStream(is, false);
-
-            BufferedImage image_to_save = decode_pdf.getPageAsImage(pageNum);
-
-            // Use sanitized filename for cache file
-            String cacheFileName = sanitizedPdfName.substring(0, sanitizedPdfName.lastIndexOf('.')) + "_" + pageNum + ".png";
-            File cacheFile = new File(documentCacheDir, cacheFileName);
-            
-            // Validate the cache file path before saving
-            String cacheDirCanonical = documentCacheDir.getCanonicalPath();
-            String cacheFileCanonical = cacheFile.getCanonicalPath();
-            
-            if (!cacheFileCanonical.startsWith(cacheDirCanonical + File.separator) && 
-                !cacheFileCanonical.equals(cacheDirCanonical)) {
-                throw new SecurityException("Invalid cache file path - potential path traversal detected");
+            // Validate page number is within bounds
+            if (pageNum == null) {
+                log.error("Page number is null for PDF " + pdfDir + File.separator + sanitizedPdfName);
+                return null;
             }
-            
-            decode_pdf.getObjectStore().saveStoredImage(cacheFileCanonical, image_to_save, true, false, "png");
 
-            decode_pdf.flushObjectValues(true);
+            int pageIndex = pageNum - 1;
+            int totalPages = document.getNumberOfPages();
+            if (pageIndex < 0 || pageIndex >= totalPages) {
+                log.error("Invalid page number " + pageNum + " for PDF " + pdfDir + File.separator + sanitizedPdfName + " with " + totalPages + " pages");
+                return null;
+            }
+
+            // Render at 96 DPI to match jpedal settings (96 DPI / 72 DPI = 1.33 scale)
+            // Note: PDFBox uses 0-based page indexing, jpedal uses 1-based
+            BufferedImage image_to_save = renderer.renderImageWithDPI(pageIndex, 96, ImageType.RGB);
+
+            // Use sanitized filename for cache file and validate path
+            String cacheFileName = sanitizedPdfName.substring(0, sanitizedPdfName.lastIndexOf('.')) + "_" + pageNum + ".png";
+            File cacheFile = PathValidationUtils.validatePath(cacheFileName, documentCacheDir);
+
+            // Write PNG using standard ImageIO
+            ImageIO.write(image_to_save, "png", cacheFile);
+            image_to_save.flush();
 
             return cacheFile;
         } catch (Exception e) {
-            log.error("Error decoding pdf file " + pdfDir + sanitizedPdfName);
+            log.error("Error decoding pdf file " + pdfDir + File.separator + sanitizedPdfName, e);
             return null;
-        } finally {
-            if (decode_pdf != null) {
-                decode_pdf.closePdfFile();
-            }
         }
     }
 
@@ -1541,48 +1530,28 @@ public class ManageDocument2Action extends ActionSupport {
         if (file == null) {
             throw new SecurityException("File is null");
         }
-        
-        try {
-            String canonicalPath = file.getCanonicalPath();
-            
-            // Get the allowed base directories
-            String documentDir = new File(DOCUMENT_DIR).getCanonicalPath();
-            String documentCacheDir = new File(getDocumentCacheDir()).getCanonicalPath();
-            
-            // Also check incoming document directories which may be configured differently
-            String incomingDir = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
-            String incomingCanonical = new File(incomingDir).getCanonicalPath();
-            
-            // File must be within one of the allowed directories
-            boolean isInDocumentDir = canonicalPath.startsWith(documentDir + File.separator) || 
-                                     canonicalPath.equals(documentDir);
-            boolean isInCacheDir = canonicalPath.startsWith(documentCacheDir + File.separator) || 
-                                  canonicalPath.equals(documentCacheDir);
-            boolean isInIncomingDir = canonicalPath.startsWith(incomingCanonical + File.separator) ||
-                                     canonicalPath.equals(incomingCanonical);
-            
-            // Also check if it's in a cache subdirectory of incoming
-            File incomingCacheDir = getDocumentCacheDir(incomingDir);
-            String incomingCacheCanonical = incomingCacheDir.getCanonicalPath();
-            boolean isInIncomingCacheDir = canonicalPath.startsWith(incomingCacheCanonical + File.separator) ||
-                                          canonicalPath.equals(incomingCacheCanonical);
-            
-            if (!isInDocumentDir && !isInCacheDir && !isInIncomingDir && !isInIncomingCacheDir) {
-                throw new SecurityException("File path is outside allowed directories");
+
+        // Get all allowed directories
+        File documentDir = new File(DOCUMENT_DIR);
+        File documentCacheDir = new File(getDocumentCacheDir());
+        String incomingDir = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
+        File incomingDirFile = new File(incomingDir);
+        File incomingCacheDir = getDocumentCacheDir(incomingDir);
+
+        // Try each directory - file must be in at least one
+        File[] allowedDirs = {documentDir, documentCacheDir, incomingDirFile, incomingCacheDir};
+
+        for (File allowedDir : allowedDirs) {
+            try {
+                PathValidationUtils.validateExistingPath(file, allowedDir);
+                return; // Valid if we get here without exception
+            } catch (SecurityException e) {
+                // File not in this directory, try next
             }
-            
-            // Additional validation: ensure file exists and is a regular file
-            if (!file.exists()) {
-                throw new SecurityException("File does not exist");
-            }
-            
-            if (!file.isFile()) {
-                throw new SecurityException("Path is not a regular file");
-            }
-            
-        } catch (IOException e) {
-            throw new SecurityException("Unable to validate file path");
         }
+
+        // If we get here, file wasn't in any allowed directory
+        throw new SecurityException("File path is outside allowed directories");
     }
     
     /**

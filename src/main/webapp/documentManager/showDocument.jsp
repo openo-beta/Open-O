@@ -49,6 +49,7 @@
 <%@page import="org.owasp.encoder.Encode"%>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ page import="ca.openosp.openo.log.*" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
@@ -88,8 +89,6 @@
     String demoName = request.getParameter("demoName");
     String documentNo = request.getParameter("segmentID");
     
-    String searchProviderNo = request.getParameter("searchProviderNo");
-    String status = request.getParameter("status");
     String inQueue = request.getParameter("inQueue");
 
     boolean inQueueB = false;
@@ -117,7 +116,7 @@
         Demographic demographic = demographicDao.getDemographic(demographicID);  
 				demoName = demographic.getLastName()+","+demographic.getFirstName();
         mrpProviderName = demographic.getProviderNo() == null || demographic.getProviderNo().isEmpty() ? "Unknown" : providerDao.getProviderNameLastFirst(demographic.getProviderNo());
-        mrpProviderName = " (MRP: " + Encode.forHtmlContent(mrpProviderName) + ")";
+        mrpProviderName = " (MRP: " + mrpProviderName + ")";
     } else {
       demoName = EDocUtil.getProviderName(providerNo);
     }
@@ -184,12 +183,6 @@
         <!-- calendar stylesheet -->
         <link rel="stylesheet" type="text/css" media="all"
               href="${pageContext.servletContext.contextPath}/share/calendar/calendar.css" title="win2k-cold-1"/>
-        <script type="text/javascript"
-                src="${pageContext.servletContext.contextPath}/share/javascript/prototype.js"></script>
-        <script type="text/javascript"
-                src="${pageContext.servletContext.contextPath}/share/javascript/effects.js"></script>
-        <script type="text/javascript"
-                src="${pageContext.servletContext.contextPath}/share/javascript/controls.js"></script>
         <!-- jquery -->
         <script language="javascript" type="text/javascript"
                 src="${pageContext.servletContext.contextPath}/share/javascript/Oscar.js"></script>
@@ -211,25 +204,36 @@
 
             function handleDocSave(docid, action) {
                 var url = contextpath + "/documentManager/inboxManage.do";
-                var data = 'method=isDocumentLinkedToDemographic&docId=' + docid;
-                new Ajax.Request(url, {
-                    method: 'post', parameters: data, onSuccess: function (transport) {
-                        var json = transport.responseText.evalJSON();
-                        if (json != null) {
-                            var success = json.isLinkedToDemographic;
-                            var demoid = '';
+                var data = 'method=isDocumentLinkedToDemographic&docId=' + encodeURIComponent(docid);
 
-                            if (success) {
-                                if (action == 'addTickler') {
-                                    demoid = json.demoId;
-                                    if (demoid != null && demoid.length > 0)
-                                        popupStart(450, 600, contextpath + '/tickler/ForwardDemographicTickler.do?docType=DOC&docId=' + docid + '&demographic_no=' + demoid, 'tickler')
-                                }
-                            } else {
-                                alert("Make sure demographic is linked and document changes saved!");
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: data
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(json) {
+                    if (json != null) {
+                        var success = json.isLinkedToDemographic;
+                        var demoid = '';
+
+                        if (success) {
+                            if (action == 'addTickler') {
+                                demoid = json.demoId;
+                                if (demoid != null && demoid.length > 0)
+                                    popupStart(450, 600, contextpath + '/tickler/ForwardDemographicTickler.do?docType=DOC&docId=' + encodeURIComponent(docid) + '&demographic_no=' + encodeURIComponent(demoid), 'tickler')
                             }
+                        } else {
+                            alert("Make sure demographic is linked and document changes saved!");
                         }
                     }
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
                 });
             }
 
@@ -237,12 +241,20 @@
             function rotate90(id) {
                 jQuery("#rotate90btn_" + id).attr('disabled', 'disabled');
 
-                new Ajax.Request(contextpath + "/documentManager/SplitDocument.do", {
-                    method: 'post', parameters: "method=rotate90&document=" + id, onSuccess: function (data) {
-                        jQuery("#rotate90btn_" + id).removeAttr('disabled');
-                        jQuery("#docImg_" + id).attr('src', contextpath + "/documentManager/ManageDocument.do?method=showPage&doc_no=" + id + "&page=1&rand=" + (new Date().getTime()));
-
-                    }
+                fetch(contextpath + "/documentManager/SplitDocument.do", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: "method=rotate90&document=" + encodeURIComponent(id)
+                })
+                .then(function(response) {
+                    jQuery("#rotate90btn_" + id).removeAttr('disabled');
+                    jQuery("#docImg_" + id).attr('src', contextpath + "/documentManager/ManageDocument.do?method=showPage&doc_no=" + encodeURIComponent(id) + "&page=1&rand=" + (new Date().getTime()));
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                    jQuery("#rotate90btn_" + id).removeAttr('disabled');
                 });
             }
 
@@ -253,7 +265,7 @@
                 loc = loc + id;
                 loc = loc + "&queueID=";
                 loc = loc + "<%=inQueue%>";
-                loc = loc + "&demoName=" + demoName;
+                loc = loc + "&demoName=" + encodeURIComponent(demoName);
                 popupStart(1400, 1400, loc, "Splitter");
             }
 
@@ -305,7 +317,7 @@
         <% if (demographicID != null && !demographicID.equals("") && !demographicID.equalsIgnoreCase("null") && !ackedOrFiled) {%>
         <input type="submit" id="ackBtn_<%=docId%>"
                value="<fmt:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>">
-        <input type="button" value="Comment" onclick="addDocComment('<%=docId%>','<%=providerNo%>',true)"/>
+        <input type="button" value="Comment" onclick="addDocComment('<%=docId%>','<%=providerNo%>')"/>
         <%}%>
         <input type="button" id="fwdBtn_<%=docId%>" value="<fmt:message key="oscarMDS.index.btnForward"/>"
                onClick="ForwardSelectedRows(<%=docId%> + ':DOC', null, null);">
@@ -403,7 +415,7 @@
             <td valign="top" class="pdfAssignmentToolsColumn">
                 <fieldset>
                     <legend><fmt:message key="inboxmanager.document.PatientMsg"/><span
-                            id="assignedPId_<%=docId%>"><%=demoName%></span></legend>
+                            id="assignedPId_<%=docId%>"><e:forHtmlContent value='${demoName}' /></span></legend>
                     <table>
                         <tr>
                             <td><fmt:message key="inboxmanager.document.DocumentUploaded"/></td>
@@ -441,7 +453,7 @@
                                     %>
                                 </oscar:oscarPropertiesCheck>
                                 <div style="<%=updatableContent==true?"":"visibility: hidden"%>">
-                                    <input onclick="split('<%=docId%>','<%=StringEscapeUtils.escapeEcmaScript(demoName) %>')"
+                                    <input onclick="split('<%=docId%>','${e:forJavaScript(demoName)}')"
                                            type="button" value="<fmt:message key="inboxmanager.document.split"/>"/>
                                     <input id="rotate180btn_<%=docId %>" onclick="rotate180('<%=docId %>')"
                                            type="button"
@@ -515,13 +527,13 @@
                                     <input id="saved<%=docId%>" type="hidden" name="saved" value="true"/>
                                     <input type="hidden" value="<%=demographicID%>" name="demog"
                                            id="demofind<%=docId%>"/>
-                                    <input type="hidden" name="demofindName" value="<%=demoName%>"
+                                    <input type="hidden" name="demofindName" value="${e:forHtmlAttribute(demoName)}"
                                            id="demofindName<%=docId%>"/>
-                                    <%=demoName%><%} else {%>
+                                    <e:forHtmlContent value='${demoName}' /><e:forHtmlContent value='${mrpProviderName}' /><%} else {%>
                                     <input id="saved<%=docId%>" type="hidden" name="saved" value="false"/>
                                     <input type="hidden" name="demog" value="<%=demographicID%>"
                                            id="demofind<%=docId%>"/>
-                                    <input type="hidden" name="demofindName" value="<%=demoName%>"
+                                    <input type="hidden" name="demofindName" value="${e:forHtmlAttribute(demoName)}"
                                            id="demofindName<%=docId%>"/>
 
                                     <input type="checkbox" id="activeOnly<%=docId%>" name="activeOnly" checked="checked"
@@ -725,7 +737,8 @@
 <script type="text/javascript" src="showDocument.js"></script>
 <script type="text/javascript">
 
-    if ($('displayDocumentAs_<%=docId%>').value == "<%=UserProperty.PDF%>") {
+    var displayDocAsEl = document.getElementById('displayDocumentAs_<%=docId%>');
+    if (displayDocAsEl && displayDocAsEl.value == "<%=UserProperty.PDF%>") {
         showPDF('<%=docId%>', contextpath);
     }
 

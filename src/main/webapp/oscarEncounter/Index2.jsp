@@ -30,6 +30,7 @@
     The selection logic is in ca.openosp.openo.encounter.pageUtil.EctIncomingEncounter2Action.java
 --%>
 
+<%@ page import="java.nio.charset.StandardCharsets" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
@@ -136,15 +137,13 @@
         EctProgram prgrmMgr = new EctProgram(session);
         session.setAttribute("case_program_id", prgrmMgr.getProgram(bean.providerNo));
         session.setAttribute("casemgmt_oscar_baseurl", request.getContextPath());
-        String strBeanName = "casemgmt_oscar_bean" + bean.getDemographicNo();
-        session.setAttribute(strBeanName, bean);
         session.setAttribute("casemgmt_bean_flag", "true");
         String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view" +
         "&demographicNo=" + bean.demographicNo +
         "&providerNo=" + bean.providerNo +
-        "&providerName=" + URLEncoder.encode(bean.userName) +
+        "&providerName=" + URLEncoder.encode(bean.userName, StandardCharsets.UTF_8) +
         "&appointmentNo=" + (bean.appointmentNo != null ? bean.appointmentNo : "") +
-        "&reason=" + URLEncoder.encode(bean.reason != null ? bean.reason : "") +
+        "&reason=" + URLEncoder.encode(bean.reason != null ? bean.reason : "", StandardCharsets.UTF_8) +
         "&reasonCode=" + (bean.reasonCode != null ? bean.reasonCode : "") +
         "&appointmentDate=" + (bean.appointmentDate != null ? bean.appointmentDate : "") +
         "&start_time=" + (bean.startTime != null ? bean.startTime : "") +
@@ -174,8 +173,6 @@
 <caisi:isModuleLoad moduleName="caisi">
     <%
         session.setAttribute("casemgmt_oscar_baseurl", request.getContextPath());
-        String strBeanName = "casemgmt_oscar_bean" + bean.getDemographicNo();
-        session.setAttribute(strBeanName, bean);
         session.setAttribute("casemgmt_oscar_bean", bean);
         session.setAttribute("casemgmt_bean_flag", "true");
         String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view&demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&providerName=" + bean.userName;

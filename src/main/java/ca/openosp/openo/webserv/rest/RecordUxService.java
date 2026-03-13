@@ -64,7 +64,6 @@ import ca.openosp.openo.webserv.rest.to.EncounterTemplateResponse;
 import ca.openosp.openo.webserv.rest.to.model.EncounterTemplateTo1;
 import ca.openosp.openo.webserv.rest.to.model.MenuItemTo1;
 import ca.openosp.openo.webserv.rest.to.model.SummaryTo1;
-import ca.openosp.openo.webserv.rest.util.ClinicalConnectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -142,8 +141,6 @@ public class RecordUxService extends AbstractServiceImpl {
         //	menulist.add(MenuItemTo1.generateStateMenuItem(idCounter++, "Labs/Docs", "record.labsdocs"));
         //}
 
-        menulist.add(MenuItemTo1.generateStateMenuItem(idCounter++, "Health Tracker", "record.tracker"));
-
         if (securityInfoManager.hasPrivilege(loggedInInfo, "_newCasemgmt.prescriptions", "r", null)) {
             menulist.add(new MenuItemTo1(idCounter++, "Rx", "../oscarRx/choosePatient.do?demographicNo=" + demographicNo));
         }
@@ -214,14 +211,6 @@ public class RecordUxService extends AbstractServiceImpl {
             morelist.add(new MenuItemTo1(idCounter++, "DS Guidelines", "../oscarEncounter/decisionSupport/guidelineAction.do?method=list&provider_no=" + loggedInInfo.getLoggedInProviderNo() + "&demographic_no=" + demographicNo));
         }
 
-        if (securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", "r", null)) {
-            if (ClinicalConnectUtil.isReady(loggedInInfo.getLoggedInProviderNo())) {
-                //Launch ClinicalConnect and open patient record
-                String url = ClinicalConnectUtil.getLaunchURL(loggedInInfo, demographicNo.toString());
-                morelist.add(new MenuItemTo1(idCounter++, "Launch ClinicalConnect", url));
-            }
-        }
-		
 		/*measurements,<a onclick="popupPage(600,1000,'measurements69','/oscar/oscarEncounter/oscarMeasurements/SetupHistoryIndex.do'); return false;" href="#">Measurements</a>
 		 <a onclick="popupPage(500,900,'episode69','/oscar/Episode.do?method=list&amp;demographicNo=69'); return false;" href="#">Episodes</a>
 		 <a onclick="popupPage(500,900,'pregnancy69','/oscar/Pregnancy.do?method=list&amp;demographicNo=69'); return false;" href="#">Pregnancies</a>
@@ -485,6 +474,7 @@ public class RecordUxService extends AbstractServiceImpl {
         final boolean printRx = getBoolean(jsonobject, "rx");
         final boolean printLabs = getBoolean(jsonobject, "labs");
         final boolean printPreventions = getBoolean(jsonobject, "preventions");
+        final boolean printAllergies = getBoolean(jsonobject, "allergies");
         final boolean useDates = jsonobject.has("dates");
 
         final ArrayNode keyArray = (ArrayNode) jsonobject.get("selectedList");
@@ -500,7 +490,7 @@ public class RecordUxService extends AbstractServiceImpl {
                     throws IOException, WebApplicationException {
                 try {
                     CaseManagementPrint cmp = new CaseManagementPrint();
-                    cmp.doPrint(loggedInInfo, demographicNof, printAllNotes, noteIds, printCPP, printRx, printLabs, printPreventions, useDates, startCalf, endCalf, requestf, os);
+                    cmp.doPrint(loggedInInfo, demographicNof, printAllNotes, noteIds, printCPP, printRx, printLabs, printPreventions, printAllergies, useDates, startCalf, endCalf, requestf, os);
                 } catch (Exception e) {
                     logger.error("error streaming", e);
                 } finally {

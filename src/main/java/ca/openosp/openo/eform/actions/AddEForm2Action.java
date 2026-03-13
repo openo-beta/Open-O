@@ -64,6 +64,7 @@ import java.util.*;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.owasp.encoder.Encode;
 
 public class AddEForm2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
@@ -337,7 +338,7 @@ public class AddEForm2Action extends ActionSupport {
 
                 return "download";
             } else if (isEmailEForm) {
-                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer";
+                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer&fid=" + Encode.forUriComponent(fid);
                 EmailAttachmentSettings settings = EmailAttachmentSettings.of(
                     request,
                     fdid,
@@ -431,7 +432,7 @@ public class AddEForm2Action extends ActionSupport {
 
                 return "download";
             } else if (isEmailEForm) {
-                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer";
+                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer&fid=" + Encode.forUriComponent(fid);
                 EmailAttachmentSettings settings = EmailAttachmentSettings.of(
                     request,
                     prev_fdid,
@@ -532,6 +533,11 @@ public class AddEForm2Action extends ActionSupport {
         session.setAttribute("attachedForms", settings.attachedForms());
         session.setAttribute("emailPDFPassword", settings.emailPDFPassword());
         session.setAttribute("emailPDFPasswordClue", settings.emailPDFPasswordClue());
+        session.setAttribute("senderEmail", settings.senderEmail());
+        session.setAttribute("subjectEmail", settings.subjectEmail());
+        session.setAttribute("bodyEmail", settings.bodyEmail());
+        session.setAttribute("encryptedMessageEmail", settings.encryptedMessageEmail());
+        session.setAttribute("emailPatientChartOption", settings.emailPatientChartOption());
     }
 
     /**
@@ -548,6 +554,8 @@ public class AddEForm2Action extends ActionSupport {
         request.setAttribute("isEmailAutoSend", settings.isEmailAutoSend());
         request.setAttribute("openEFormAfterEmail", settings.openAfterEmail());
         request.setAttribute("attachEFormItSelf", settings.attachEFormItSelf());
+        request.setAttribute("fdid", settings.fdid());
+        request.setAttribute("demographicId", settings.demographicNo());
         request.setAttribute("attachedEForms", settings.attachedEForms());
         request.setAttribute("attachedDocuments", settings.attachedDocuments());
         request.setAttribute("attachedLabs", settings.attachedLabs());
@@ -555,6 +563,11 @@ public class AddEForm2Action extends ActionSupport {
         request.setAttribute("attachedForms", settings.attachedForms());
         request.setAttribute("emailPDFPassword", settings.emailPDFPassword());
         request.setAttribute("emailPDFPasswordClue", settings.emailPDFPasswordClue());
+        request.setAttribute("senderEmail", settings.senderEmail());
+        request.setAttribute("subjectEmail", settings.subjectEmail());
+        request.setAttribute("bodyEmail", settings.bodyEmail());
+        request.setAttribute("encryptedMessageEmail", settings.encryptedMessageEmail());
+        request.setAttribute("emailPatientChartOption", settings.emailPatientChartOption());
     }
 
     private void attachToEForm(LoggedInInfo loggedInInfo, String[] attachedEForms, String[] attachedDocuments, String[] attachedLabs, String[] attachedHRMDocuments, String[] attachedForms, String fdid, String demographic_no, String providerNo) {
