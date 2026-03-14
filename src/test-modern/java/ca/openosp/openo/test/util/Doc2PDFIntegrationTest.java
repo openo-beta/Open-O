@@ -23,7 +23,7 @@
  * Ontario, Canada
  */
 
-package ca.openosp.openo.util;
+package ca.openosp.openo.test.util;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +33,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import ca.openosp.openo.test.base.OpenOTestBase;
+import ca.openosp.openo.util.Doc2PDF;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
