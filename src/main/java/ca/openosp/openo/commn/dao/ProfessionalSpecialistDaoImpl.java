@@ -33,9 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.StringUtils;
 import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.consultation.dto.SpecialistListDTO;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -53,6 +55,20 @@ public class ProfessionalSpecialistDaoImpl extends AbstractDaoImpl<ProfessionalS
         List<ProfessionalSpecialist> results = query.getResultList();
 
         return (results);
+    }
+
+    @Override
+    public List<SpecialistListDTO> findAllListDTOs() {
+        TypedQuery<SpecialistListDTO> query = entityManager.createQuery(
+                "SELECT NEW ca.openosp.openo.consultation.dto.SpecialistListDTO("
+                        + "x.id, x.firstName, x.lastName, x.professionalLetters, "
+                        + "x.streetAddress, x.phoneNumber, x.faxNumber) "
+                        + "FROM ProfessionalSpecialist x "
+                        + "ORDER BY x.lastName, x.firstName",
+                SpecialistListDTO.class
+        );
+
+        return query.getResultList();
     }
 
     /**

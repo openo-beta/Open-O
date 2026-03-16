@@ -29,10 +29,20 @@ package ca.openosp.openo.commn.dao;
 import java.util.List;
 
 import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.consultation.dto.SpecialistListDTO;
 
 public interface ProfessionalSpecialistDao extends AbstractDao<ProfessionalSpecialist> {
 
     List<ProfessionalSpecialist> findAll();
+
+    /**
+     * Returns lightweight projections of all specialists for list display,
+     * fetching only the columns needed (id, name, letters, address, phone, fax).
+     * Avoids full entity hydration of heavy text fields.
+     *
+     * @return List&lt;SpecialistListDTO&gt; specialists ordered by last name, first name
+     */
+    List<SpecialistListDTO> findAllListDTOs();
 
     List<ProfessionalSpecialist> findByEDataUrlNotNull();
 
