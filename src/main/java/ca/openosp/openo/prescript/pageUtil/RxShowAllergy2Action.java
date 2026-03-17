@@ -172,26 +172,22 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (demo_no == null) {
             return "failure";
         }
-        int demographicNoInt;
-        try {
-            demographicNoInt = Integer.parseInt(demo_no);
-        } catch (NumberFormatException e) {
-            MiscUtils.getLogger().error("Invalid demographicNo in RxShowAllergy");
-            return "failure";
-        }
-        RxSessionBean bean = RxSessionBean.getFromSession(request.getSession(), demographicNoInt);
-
-        if (bean == null) {
+        RxSessionBean bean;
+        if (request.getSession().getAttribute("RxSessionBean") != null) {
+            bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+            if ((bean.getProviderNo() != user_no) || (bean.getDemographicNo() != Integer.parseInt(demo_no))) {
+                bean = new RxSessionBean();
+            }
+        } else {
             bean = new RxSessionBean();
-            bean.setDemographicNo(demographicNoInt);
         }
 
         bean.setProviderNo(user_no);
+        bean.setDemographicNo(Integer.parseInt(demo_no));
         if (view != null) {
             bean.setView(view);
         }
 
-        // Save with per-patient key for multi-tab support
         RxSessionBean.saveToSession(request.getSession(), bean);
 
         if (request.getParameter("method") != null && request.getParameter("method").equals("reorder")) {
