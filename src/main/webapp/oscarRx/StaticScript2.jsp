@@ -81,7 +81,7 @@
                 rxBean.setProviderNo((String) session.getAttribute("user"));
                 rxBean.setDemographicNo(Integer.parseInt(request.getParameter("demographicNo")));
 
-                request.getSession().setAttribute("RxSessionBean", rxBean);
+                RxSessionBean.saveToSession(request.getSession(), rxBean);
             }
         %>
 
