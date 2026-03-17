@@ -2,6 +2,8 @@ package ca.openosp.openo.prescript.pageUtil;
 
 import org.apache.logging.log4j.Logger;
 import org.owasp.encoder.Encode;
+import ca.openosp.openo.prescript.data.RxPatientData;
+import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 
 import javax.servlet.*;
@@ -27,6 +29,7 @@ public class RxSessionFilter implements Filter {
 
     private static final Logger logger = MiscUtils.getLogger();
     private static final String LEGACY_KEY = "RxSessionBean";
+    private static final String PATIENT_KEY = "Patient";
 
     /**
      * {@inheritDoc}
@@ -62,6 +65,9 @@ public class RxSessionFilter implements Filter {
 
         if (session != null) {
             int demographicNo = parseDemographicNo(request.getParameter("demographicNo"));
+            if (demographicNo <= 0) {
+                demographicNo = parseDemographicNo(request.getParameter("demographic_no"));
+            }
             boolean usedFallback = false;
 
             if (demographicNo <= 0) {
@@ -85,6 +91,19 @@ public class RxSessionFilter implements Filter {
                     logger.warn("RxSessionFilter: No demographicNo param and no per-patient bean " +
                             "found for {}. Using legacy bean as-is.",
                             Encode.forJava(request.getRequestURI()));
+                }
+
+                // Swap the Patient session attribute to match the requested demographic
+                RxPatientData.Patient currentPatient =
+                        (RxPatientData.Patient) session.getAttribute(PATIENT_KEY);
+                if (currentPatient == null || currentPatient.getDemographicNo() != demographicNo) {
+                    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+                    if (loggedInInfo != null) {
+                        RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, demographicNo);
+                        if (patient != null && patient.getDemographic() != null) {
+                            session.setAttribute(PATIENT_KEY, patient);
+                        }
+                    }
                 }
             }
         }
