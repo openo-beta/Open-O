@@ -131,6 +131,22 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
         return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @since 2026-02-03
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<FaxJob> findByIds(List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Query query = entityManager.createQuery("SELECT f FROM FaxJob f WHERE f.id IN (:ids)");
+        query.setParameter("ids", ids);
+        return query.getResultList();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public List<FaxJob> getInprogressFaxesByJobId() {

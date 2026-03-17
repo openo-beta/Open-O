@@ -35,6 +35,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import ca.openosp.openo.commn.model.ConsultationServices;
+import ca.openosp.openo.encounter.oscarConsultationRequest.config.data.ConsultationServiceDto;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -89,6 +90,29 @@ public class ConsultationServiceDaoImpl extends AbstractDaoImpl<ConsultationServ
         query.setParameter(2, description);
 
         return this.getSingleResultOrNull(query);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<ConsultationServiceDto> findActiveServiceSummaries() {
+        Query query = entityManager.createQuery("SELECT NEW ca.openosp.openo.encounter.oscarConsultationRequest.config.data.ConsultationServiceDto(cs.serviceId, cs.serviceDesc) FROM ConsultationServices cs WHERE cs.active = :active ORDER BY cs.serviceDesc");
+        query.setParameter("active", ACTIVE);
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getServiceDescription(Integer serviceId) {
+        Query query = entityManager.createQuery("SELECT cs.serviceDesc FROM ConsultationServices cs WHERE cs.serviceId = :id");
+        query.setParameter("id", serviceId);
+        @SuppressWarnings("unchecked")
+        List<String> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
     }
 
     public ConsultationServices findReferringDoctorService(boolean activeOnly) {

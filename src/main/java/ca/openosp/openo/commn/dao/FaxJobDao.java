@@ -42,4 +42,13 @@ public interface FaxJobDao extends AbstractDao<FaxJob> {
 
     public List<FaxJob> getInprogressFaxesByJobId();
 
+    /**
+     * Retrieves fax jobs by a list of IDs in a single batch query.
+     *
+     * @param ids List&lt;Integer&gt; the fax job IDs to retrieve
+     * @return List&lt;FaxJob&gt; the matching fax jobs, or an empty list if ids is null or empty
+     * @since 2026-02-03
+     */
+    public List<FaxJob> findByIds(List<Integer> ids);
+
 }

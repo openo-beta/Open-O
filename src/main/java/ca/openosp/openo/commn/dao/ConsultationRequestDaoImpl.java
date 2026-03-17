@@ -28,14 +28,21 @@
 package ca.openosp.openo.commn.dao;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import ca.openosp.openo.commn.NativeSql;
 import ca.openosp.openo.commn.model.ConsultationRequest;
+import ca.openosp.openo.commn.model.ConsultationRequestExt;
+import ca.openosp.openo.consultation.dto.ConsultationListDTO;
 
 @SuppressWarnings("unchecked")
 public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequest> implements ConsultationRequestDao {
@@ -103,30 +110,23 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
             }
         }
 
-        String orderDesc = desc != null && desc.equals("1") ? "DESC" : "";
-        String service = ", service.serviceDesc";
         if (orderby == null) {
             sql.append("order by cr.referralDate desc ");
-        } else if (orderby.equals("1")) {               //1 = msgStatus
-            sql.append("order by cr.status " + orderDesc + service);
-        } else if (orderby.equals("2")) {               //2 = msgTeam
-            sql.append("order by cr.sendTo " + orderDesc + service);
-        } else if (orderby.equals("3")) {               //3 = msgPatient
-            sql.append("order by d.LastName " + orderDesc + service);
-        } else if (orderby.equals("4")) {               //4 = msgProvider
-            sql.append("order by p.LastName " + orderDesc + service);
-        } else if (orderby.equals("5")) {               //5 = msgService Desc
-            sql.append("order by service.serviceDesc " + orderDesc);
-        } else if (orderby.equals("6")) {               //6 = msgSpecialist Name
-            sql.append("order by specialist.lastName " + orderDesc + service);
-        } else if (orderby.equals("7")) {               //7 = msgRefDate
-            sql.append("order by cr.referralDate " + orderDesc);
-        } else if (orderby.equals("8")) {               //8 = Appointment Date
-            sql.append("order by cr.appointmentDate " + orderDesc);
-        } else if (orderby.equals("9")) {               //9 = FollowUp Date
-            sql.append("order by cr.followUpDate " + orderDesc);
         } else {
-            sql.append("order by cr.referralDate desc");
+            String orderDesc = desc != null && desc.equals("1") ? "DESC" : "";
+            String service = ", service.serviceDesc";
+            switch (orderby) {
+                case "1": sql.append("order by cr.status ").append(orderDesc).append(service); break;
+                case "2": sql.append("order by cr.sendTo ").append(orderDesc).append(service); break;
+                case "3": sql.append("order by d.LastName ").append(orderDesc).append(service); break;
+                case "4": sql.append("order by p.LastName ").append(orderDesc).append(service); break;
+                case "5": sql.append("order by service.serviceDesc ").append(orderDesc); break;
+                case "6": sql.append("order by specialist.lastName ").append(orderDesc).append(service); break;
+                case "7": sql.append("order by cr.referralDate ").append(orderDesc); break;
+                case "8": sql.append("order by cr.appointmentDate ").append(orderDesc); break;
+                case "9": sql.append("order by cr.followUpDate ").append(orderDesc); break;
+                default: sql.append("order by cr.referralDate desc"); break;
+            }
         }
 
 
@@ -212,5 +212,185 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, keyName);
         return query.getResultList();
+    }
+
+    /**
+     * JPQL SELECT clause for DTO constructor projection. Field order must exactly match
+     * the {@link ConsultationListDTO} constructor parameter order.
+     */
+    private static final String DTO_SELECT = "SELECT NEW ca.openosp.openo.consultation.dto.ConsultationListDTO(" +
+            "cr.id, cr.status, cr.urgency, " +
+            "cr.demographicId, d.LastName, d.FirstName, " +
+            "d.ProviderNo, mrp.LastName, mrp.FirstName, " +
+            "cr.providerNo, cp.LastName, cp.FirstName, " +
+            "cr.serviceId, svc.serviceDesc, " +
+            "specialist.lastName, specialist.firstName, " +
+            "cr.referralDate, cr.appointmentDate, cr.appointmentTime, " +
+            "cr.patientWillBook, cr.followUpDate, " +
+            "cr.sendTo, cr.siteName) ";
+
+    /**
+     * JPQL FROM clause with LEFT JOINs for DTO projection. Joins:
+     * <ul>
+     *   <li>Demographic (patient name, provider number)</li>
+     *   <li>Provider as mrp (Most Responsible Provider from demographic)</li>
+     *   <li>Provider as cp (consulting provider from consultation request)</li>
+     *   <li>ConsultationServices (service description)</li>
+     *   <li>ProfessionalSpecialist (specialist name via entity relationship)</li>
+     * </ul>
+     */
+    private static final String DTO_FROM = "FROM ConsultationRequest cr " +
+            "LEFT JOIN Demographic d ON d.DemographicNo = cr.demographicId " +
+            "LEFT JOIN Provider mrp ON mrp.ProviderNo = d.ProviderNo " +
+            "LEFT JOIN Provider cp ON cp.ProviderNo = cr.providerNo " +
+            "LEFT JOIN ConsultationServices svc ON svc.serviceId = cr.serviceId " +
+            "LEFT JOIN cr.professionalSpecialist specialist ";
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since 2026-02-03
+     */
+    @Override
+    public List<ConsultationListDTO> getConsultationDTOs(String team, boolean showCompleted, Date startDate, Date endDate, String orderby, String desc, String searchDate, Integer offset, Integer limit) {
+        List<Object> paramList = new ArrayList<>();
+        String sql = buildConsultationDTOQuery(paramList, team, showCompleted, startDate, endDate, orderby, desc, searchDate);
+
+        Query query = entityManager.createQuery(sql, ConsultationListDTO.class);
+        for (int i = 0; i < paramList.size(); i++) {
+            query.setParameter(i + 1, paramList.get(i));
+        }
+        query.setFirstResult(offset != null ? offset : 0);
+        int myLimit = limit != null ? limit : DEFAULT_CONSULT_REQUEST_RESULTS_LIMIT;
+        query.setMaxResults(Math.min(myLimit, MAX_LIST_RETURN_SIZE));
+
+        List<ConsultationListDTO> dtos = query.getResultList();
+        loadExtensionsForDTOs(dtos);
+        return dtos;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since 2026-02-03
+     */
+    @Override
+    public List<ConsultationListDTO> getConsultationDTOsByDemographic(Integer demoNo) {
+        String sql = DTO_SELECT + DTO_FROM +
+                "WHERE cr.demographicId = ?1 " +
+                "ORDER BY cr.referralDate ASC";
+
+        Query query = entityManager.createQuery(sql, ConsultationListDTO.class);
+        query.setParameter(1, demoNo);
+
+        List<ConsultationListDTO> dtos = query.getResultList();
+        loadExtensionsForDTOs(dtos);
+        return dtos;
+    }
+
+    /**
+     * Builds the complete JPQL query string for DTO projection with parameterized filters and sorting.
+     * Uses positional parameters to prevent SQL injection (replacing the previous string concatenation pattern).
+     *
+     * @param paramList List to populate with positional query parameter values
+     * @param team String the team filter (null or empty to skip)
+     * @param showCompleted boolean whether to include completed consultations
+     * @param startDate Date the start date bound (null to skip)
+     * @param endDate Date the end date bound (null to skip)
+     * @param orderby String the sort column identifier (1-9)
+     * @param desc String "1" for descending, otherwise ascending
+     * @param searchDate String "1" to filter on appointment date instead of referral date
+     * @return String the complete JPQL query
+     */
+    private String buildConsultationDTOQuery(List<Object> paramList, String team, boolean showCompleted, Date startDate, Date endDate, String orderby, String desc, String searchDate) {
+        int paramIndex = 1;
+        StringBuilder sql = new StringBuilder(DTO_SELECT);
+        sql.append(DTO_FROM);
+        sql.append("WHERE 1=1 ");
+
+        if (!showCompleted) {
+            sql.append("AND cr.status != '4' ");
+        }
+
+        if (team != null && !team.isEmpty()) {
+            sql.append("AND cr.sendTo = ?").append(paramIndex++).append(" ");
+            paramList.add(team);
+        }
+
+        if (startDate != null) {
+            if ("1".equals(searchDate)) {
+                sql.append("AND cr.appointmentDate >= ?").append(paramIndex++).append(" ");
+            } else {
+                sql.append("AND cr.referralDate >= ?").append(paramIndex++).append(" ");
+            }
+            paramList.add(startDate);
+        }
+
+        if (endDate != null) {
+            if ("1".equals(searchDate)) {
+                sql.append("AND cr.appointmentDate <= ?").append(paramIndex++).append(" ");
+            } else {
+                sql.append("AND cr.referralDate <= ?").append(paramIndex++).append(" ");
+            }
+            paramList.add(endDate);
+        }
+
+        if (orderby == null) {
+            sql.append("ORDER BY cr.referralDate DESC ");
+        } else {
+            String orderDesc = desc != null && desc.equals("1") ? "DESC" : "";
+            String svcSort = ", svc.serviceDesc";
+            switch (orderby) {
+                case "1": sql.append("ORDER BY cr.status ").append(orderDesc).append(svcSort); break;
+                case "2": sql.append("ORDER BY cr.sendTo ").append(orderDesc).append(svcSort); break;
+                case "3": sql.append("ORDER BY d.LastName ").append(orderDesc).append(svcSort); break;
+                case "4": sql.append("ORDER BY mrp.LastName ").append(orderDesc).append(svcSort); break;
+                case "5": sql.append("ORDER BY svc.serviceDesc ").append(orderDesc); break;
+                case "6": sql.append("ORDER BY specialist.lastName ").append(orderDesc).append(svcSort); break;
+                case "7": sql.append("ORDER BY cr.referralDate ").append(orderDesc); break;
+                case "8": sql.append("ORDER BY cr.appointmentDate ").append(orderDesc); break;
+                case "9": sql.append("ORDER BY cr.followUpDate ").append(orderDesc); break;
+                default: sql.append("ORDER BY cr.referralDate DESC"); break;
+            }
+        }
+
+        return sql.toString();
+    }
+
+    /**
+     * Batch-loads all {@link ConsultationRequestExt} records for the given DTOs in a single
+     * {@code IN(:ids)} query, then groups them by request ID and applies each group to its
+     * corresponding DTO via {@link ConsultationListDTO#applyExtensions(Map)}.
+     * <p>
+     * This handles eReferral extension fields (ereferral_ref, ereferral_service, ereferral_doctor)
+     * that were previously fetched individually per consultation request in the N+1 loop.
+     * </p>
+     *
+     * @param dtos List of ConsultationListDTO to enrich with extension data
+     */
+    private void loadExtensionsForDTOs(List<ConsultationListDTO> dtos) {
+        if (dtos == null || dtos.isEmpty()) {
+            return;
+        }
+
+        List<Integer> consultIds = dtos.stream()
+                .map(ConsultationListDTO::getId)
+                .collect(Collectors.toList());
+
+        List<ConsultationRequestExt> allExts = entityManager
+                .createQuery("SELECT e FROM ConsultationRequestExt e WHERE e.requestId IN (:ids)", ConsultationRequestExt.class)
+                .setParameter("ids", consultIds)
+                .getResultList();
+
+        Map<Integer, Map<String, String>> extsByRequest = new HashMap<>();
+        for (ConsultationRequestExt ext : allExts) {
+            extsByRequest
+                    .computeIfAbsent(ext.getRequestId(), k -> new HashMap<>())
+                    .put(ext.getKey(), ext.getValue());
+        }
+
+        for (ConsultationListDTO dto : dtos) {
+            dto.applyExtensions(extsByRequest.getOrDefault(dto.getId(), Collections.emptyMap()));
+        }
     }
 }
