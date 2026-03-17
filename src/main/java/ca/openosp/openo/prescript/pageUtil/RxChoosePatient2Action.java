@@ -82,9 +82,16 @@ public final class RxChoosePatient2Action extends ActionSupport {
         user_no = (String) request.getSession().getAttribute("user");
         // p("user_no",user_no);
         // p("frm",frm.toString());
+        int demographicNoInt;
+        try {
+            demographicNoInt = Integer.parseInt(this.getDemographicNo());
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().error("Invalid demographicNo in RxChoosePatient");
+            return redirect;
+        }
         RxSessionBean bean = new RxSessionBean();
         bean.setProviderNo(user_no);
-        bean.setDemographicNo(Integer.parseInt(this.getDemographicNo()));
+        bean.setDemographicNo(demographicNoInt);
         RxSessionBean.saveToSession(request, bean);
 
         RxPatientData rx = null;

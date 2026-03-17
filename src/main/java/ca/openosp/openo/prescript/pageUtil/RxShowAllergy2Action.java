@@ -53,6 +53,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Struts 2 action for displaying and managing patient allergies.
@@ -172,10 +173,17 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (demo_no == null) {
             return "failure";
         }
+        int demographicNoInt;
+        try {
+            demographicNoInt = Integer.parseInt(demo_no);
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().error("Invalid demographicNo in RxShowAllergy");
+            return "failure";
+        }
         RxSessionBean bean;
         if (request.getSession().getAttribute("RxSessionBean") != null) {
             bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
-            if ((bean.getProviderNo() != user_no) || (bean.getDemographicNo() != Integer.parseInt(demo_no))) {
+            if (!Objects.equals(bean.getProviderNo(), user_no) || (bean.getDemographicNo() != demographicNoInt)) {
                 bean = new RxSessionBean();
             }
         } else {
@@ -183,7 +191,7 @@ public final class RxShowAllergy2Action extends ActionSupport {
         }
 
         bean.setProviderNo(user_no);
-        bean.setDemographicNo(Integer.parseInt(demo_no));
+        bean.setDemographicNo(demographicNoInt);
         if (view != null) {
             bean.setView(view);
         }
