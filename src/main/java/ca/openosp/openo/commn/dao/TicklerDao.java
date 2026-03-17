@@ -80,7 +80,7 @@ public interface TicklerDao extends AbstractDao<Tickler> {
      *
      * @param filter CustomFilter the filter criteria including status, provider, date range, etc.
      * @param offset int the starting position for pagination (0-based)
-     * @param limit int the maximum number of results to return
+     * @param limit int the maximum number of results to return, or &lt;= 0 for no limit
      * @return List&lt;TicklerListDTO&gt; matching the filter with comments and links populated,
      *         or empty list if no matches found
      * @since 2026-01-30
