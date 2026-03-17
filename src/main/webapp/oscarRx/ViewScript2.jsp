@@ -261,20 +261,6 @@
                 });
             }
 
-            function resetStashAndClose() {
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
-                var url2 = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
-
-                fetch(url, { method: 'POST', credentials: 'same-origin' })
-                    .then(function() {
-                        return fetch(url2, { method: 'POST', credentials: 'same-origin' });
-                    })
-                    .then(function() {
-                        clearPending('close');
-                        parent.window.close();
-                    });
-            }
-
             function onPrint2(method, scriptId) {
                 var useSC = false;
                 var scAddress = "";
@@ -852,7 +838,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 210px"
-                                                             onClick="resetStashAndClose();"/></span>
+                                                             onClick="clearPending('close');parent.window.close();"/></span>
                                             </td>
                                         </tr>
                                         <%

@@ -39,18 +39,6 @@
         <filter-name>RxSessionFilter</filter-name>
         <filter-class>ca.openosp.openo.prescript.pageUtil.RxSessionFilter</filter-class>
     </filter>
-    <filter-mapping>
-        <filter-name>RxSessionFilter</filter-name>
-        <url-pattern>/oscarRx/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>RxSessionFilter</filter-name>
-        <url-pattern>/CaseManagementView.do</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>RxSessionFilter</filter-name>
-        <url-pattern>/messenger/generatePreviewPDF.jsp</url-pattern>
-    </filter-mapping>
 
 	<filter>
 		<filter-name>struts2</filter-name>
@@ -166,6 +154,18 @@
     <filter-name>LoginFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+    <filter-mapping>
+        <filter-name>RxSessionFilter</filter-name>
+        <url-pattern>/oscarRx/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>RxSessionFilter</filter-name>
+        <url-pattern>/CaseManagementView.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>RxSessionFilter</filter-name>
+        <url-pattern>/messenger/generatePreviewPDF.jsp</url-pattern>
+    </filter-mapping>
 
 	<listener>
        	<listener-class>net.bull.javamelody.SessionListener</listener-class>

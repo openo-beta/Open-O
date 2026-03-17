@@ -81,13 +81,18 @@
     if (typeof window.fetch === 'function') {
         var originalFetch = window.fetch;
         window.fetch = function(url, options) {
-            options = options || {};
-            var urlStr = (url instanceof Request) ? url.url : String(url);
+            var isRequest = url instanceof Request;
+            var urlStr = isRequest ? url.url : String(url);
             if (urlStr.indexOf('demographicNo=') === -1) {
                 var separator = urlStr.indexOf('?') === -1 ? '?' : '&';
-                url = urlStr + separator + 'demographicNo=' + encodeURIComponent(demoNo);
+                var newUrl = urlStr + separator + 'demographicNo=' + encodeURIComponent(demoNo);
+                if (isRequest) {
+                    url = new Request(newUrl, url);
+                } else {
+                    url = newUrl;
+                }
             }
-            return originalFetch.call(this, url, options);
+            return originalFetch.call(this, url, options || {});
         };
     }
 

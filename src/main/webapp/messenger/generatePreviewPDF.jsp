@@ -413,9 +413,11 @@
                                             } catch (NumberFormatException e) {
                                                 throw new ServletException("Invalid demographic_no parameter");
                                             }
-                                            RxSessionBean Rxbean = RxSessionBean.getFromSession(request.getSession(), demoNoInt);
+                                            RxSessionBean Rxbean;
 
-                                            if (Rxbean == null) {
+                                            if (request.getSession().getAttribute("RxSessionBean") != null) {
+                                                Rxbean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+                                            } else {
                                                 Rxbean = new RxSessionBean();
                                             }
 
