@@ -87,7 +87,7 @@
                 var separator = urlStr.indexOf('?') === -1 ? '?' : '&';
                 var newUrl = urlStr + separator + 'demographicNo=' + encodeURIComponent(demoNo);
                 if (isRequest) {
-                    url = new Request(newUrl, url);
+                    url = new Request(newUrl, url.clone());
                 } else {
                     url = newUrl;
                 }
