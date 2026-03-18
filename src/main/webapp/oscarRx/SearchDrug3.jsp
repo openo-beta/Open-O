@@ -1015,7 +1015,6 @@
                         <div id="rxText"></div>
                         <%-- Prescriptions are staged here via the prescribe.jsp widget --%>
 
-                        <input type="hidden" id="deleteOnCloseRxBox" value="false"/>
                         <input type="hidden" property="demographicNo" value="<%=patient.getDemographicNo()%>"/>
 
                       </div>
@@ -1728,10 +1727,6 @@
     new Ajax.Request(url, {
       method: 'get', parameters: data, onSuccess: function (transport) {
         // updateCurrentInteractions();
-        if ($('deleteOnCloseRxBox').value == 'true') {
-          deleteRxOnCloseRxBox(randomId);
-        }
-
         jQuery("#set_" + randomId).remove();
         jQuery("#prescriptionMoreLessLink_" + randomId).remove();
         jQuery("#deleteMedicationFromPrescription_" + randomId).remove();
@@ -1739,31 +1734,6 @@
     });
   }
 
-  function deleteRxOnCloseRxBox(randomId) {
-
-    let data = "randomId=" + randomId;
-    let url = ctx + "/oscarRx/deleteRx.do?parameterValue=DeleteRxOnCloseRxBox";
-    new Ajax.Request(url, {
-      method: 'get', parameters: data, onSuccess: function (transport) {
-        let json = transport.responseText.evalJSON();
-        if (json != null) {
-          let id = json.drugId;
-          let rxDate = "rxDate_" + id;
-          let reRx = "reRx_" + id;
-          let del = "del_" + id;
-          let discont = "discont_" + id;
-          let prescrip = "prescrip_" + id;
-          $(rxDate).style.textDecoration = 'line-through';
-          $(reRx).style.textDecoration = 'line-through';
-          $(del).style.textDecoration = 'line-through';
-          $(discont).style.textDecoration = 'line-through';
-          $(prescrip).style.textDecoration = 'line-through';
-          // updateCurrentInteractions();
-        }
-      }
-    });
-
-  }
 
   skipParseInstr = false;
 
@@ -2047,10 +2017,6 @@
     });
   }
 
-  function updateDeleteOnCloseRxBox() {
-    $('deleteOnCloseRxBox').value = 'true';
-  }
-
   function popForm2(scriptId) {
       try {
         const modalElement = document.getElementById('rxPreviewBootstrapModal');
@@ -2097,7 +2063,6 @@
         editRxButton = newEditRxButton;
 
         editRxButton.onclick = function () {
-          updateDeleteOnCloseRxBox();
           const modalInstance = bootstrap.Modal.getInstance(modalElement);
           if (modalInstance) {
             modalInstance.hide();
@@ -2641,18 +2606,17 @@
      */
     function removePrescribingDrug(cardId, drugId) {
       const uiRefId = cardId.id.split('_')[1];
-      this.deletePrescribingDrugFromUI(uiRefId, drugId);
+      this.deletePrescribingDrugFromUI(uiRefId);
       this.uncheckReRxForExistingPrescribedDrug(drugId)
     }
 
     /**
      * Deletes a prescribing drug from UI and calls deletePrescribe.
      * @param uiRefId The unique id for referencing the UI element.
-     * @param drugId The id of the drug to delete.
      */
-    function deletePrescribingDrugFromUI(uiRefId, drugId) {
+    function deletePrescribingDrugFromUI(uiRefId) {
       this.removeElementFromUI(this.getPrescribingDrugCardByUiRefId(uiRefId));
-      this.deletePrescribe(drugId);
+      this.deletePrescribe(uiRefId);
     }
 
     /**
