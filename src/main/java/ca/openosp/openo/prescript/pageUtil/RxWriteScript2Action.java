@@ -590,11 +590,11 @@ public final class RxWriteScript2Action extends ActionSupport {
             String text = request.getParameter("text");
 
 			if(text != null) {
-				text = Encode.forJava(text);
+				text = text.trim();
 			}
 
 			if(drugId != null) {
-				drugId = Encode.forJava(drugId);
+				drugId = drugId.trim();
 			}
 
             logger.debug("requesting drug from drugref id=" + drugId);
