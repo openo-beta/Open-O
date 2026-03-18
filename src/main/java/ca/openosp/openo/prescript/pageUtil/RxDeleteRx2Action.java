@@ -99,7 +99,8 @@ public final class RxDeleteRx2Action extends ActionSupport {
      * <li>Discontinue() - Discontinue prescription with reason</li>
      * </ul>
      * <p>
-     * If no method parameter is provided, performs bulk deletion using the drugList parameter.
+     * If no recognized method is provided, falls through to bulk deletion using the drugList parameter.
+     * If drugList is also absent, logs a warning and returns null.
      *
      * Expected request parameters:
      * <ul>
@@ -130,6 +131,10 @@ public final class RxDeleteRx2Action extends ActionSupport {
         RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
+            return null;
+        }
+        if (drugList == null || drugList.isBlank()) {
+            MiscUtils.getLogger().warn("RxDeleteRx2Action: no drugList provided for bulk deletion (parameterValue=" + method + ")");
             return null;
         }
         String ip = request.getRemoteAddr();

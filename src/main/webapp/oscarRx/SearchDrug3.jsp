@@ -23,6 +23,27 @@
     Ontario, Canada
 
 --%>
+<%--
+    SearchDrug3.jsp - Prescription drug search and staging interface
+
+    Purpose: Primary interface for searching, staging, and managing prescription drugs.
+    Handles the full prescription workflow including drug search, staging drugs for
+    prescribing, re-prescribing (ReRx), saving prescriptions, and print preview.
+
+    Features:
+    - Drug search with auto-complete and interaction checking
+    - Prescription staging area with add/remove drug cards
+    - Re-prescribe (ReRx) checkbox workflow for existing medications
+    - Save & Print and Save Only prescription workflows
+    - Print preview modal with Edit Rx support
+    - Drug favorites management
+    - Allergy and interaction warnings
+
+    Requires:
+    - RxSessionBean in HTTP session (contains demographicNo, providerNo, stash state)
+
+    @since 2009-09-18
+--%>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -1723,7 +1744,7 @@
 
   function deletePrescribe(randomId) {
     let url = ctx + "/oscarRx/rxStashDelete.do";
-    let headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    let headers = {'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'};
     headers['<csrf:tokenname/>'] = document.querySelector('#drugForm input[name="<csrf:tokenname/>"]').value;
 
     fetch(url, {
