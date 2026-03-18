@@ -68,6 +68,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -1246,6 +1247,7 @@ public final class RxWriteScript2Action extends ActionSupport {
             }
         }
         List<Integer> deletedIndex = allIndex;
+        Collections.sort(deletedIndex, Collections.reverseOrder());
         // remove closed Rx from stash
         for (Integer n : deletedIndex) {
             bean.removeStashItem(n);

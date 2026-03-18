@@ -27,6 +27,7 @@
 package ca.openosp.openo.prescript.pageUtil;
 
 import ca.openosp.openo.prescript.data.*;
+import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.model.Allergy;
@@ -225,7 +226,7 @@ public class RxSessionBean implements java.io.Serializable {
             } else {
                 if (rx.getBrandName() != null && item.getBrandName() != null) {
                     if (rx.getBrandName().equals(item.getBrandName())
-                            && rx.getGCN_SEQNO() == item.getGCN_SEQNO()) {
+                            && Objects.equals(rx.getGCN_SEQNO(), item.getGCN_SEQNO())) {
                         ret = i;
                         break;
                     }
