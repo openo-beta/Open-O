@@ -49,6 +49,7 @@ import ca.openosp.openo.commn.model.SecRole;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -134,7 +135,7 @@ public final class RxDeleteRx2Action extends ActionSupport {
             return null;
         }
         if (drugList == null || drugList.isBlank()) {
-            MiscUtils.getLogger().warn("RxDeleteRx2Action: no drugList provided for bulk deletion (parameterValue=" + method + ")");
+            MiscUtils.getLogger().warn("RxDeleteRx2Action: no drugList provided for bulk deletion (parameterValue=" + Encode.forJava(String.valueOf(method)) + ")");
             return null;
         }
         String ip = request.getRemoteAddr();
