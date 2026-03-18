@@ -1246,7 +1246,7 @@ public final class RxWriteScript2Action extends ActionSupport {
                 allIndex.remove(n);
             }
         }
-        List<Integer> deletedIndex = allIndex;
+        List<Integer> deletedIndex = new ArrayList<>(allIndex);
         Collections.sort(deletedIndex, Collections.reverseOrder());
         // remove closed Rx from stash
         for (Integer n : deletedIndex) {

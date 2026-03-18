@@ -27,7 +27,6 @@
 package ca.openosp.openo.prescript.pageUtil;
 
 import ca.openosp.openo.prescript.data.*;
-import java.util.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.model.Allergy;
