@@ -1722,15 +1722,23 @@
 
 
   function deletePrescribe(randomId) {
-    let data = "randomId=" + randomId;
-    let url = ctx + "/oscarRx/rxStashDelete.do?parameterValue=deletePrescribe";
-    new Ajax.Request(url, {
-      method: 'get', parameters: data, onSuccess: function (transport) {
-        // updateCurrentInteractions();
-        jQuery("#set_" + randomId).remove();
-        jQuery("#prescriptionMoreLessLink_" + randomId).remove();
-        jQuery("#deleteMedicationFromPrescription_" + randomId).remove();
+    let url = ctx + "/oscarRx/rxStashDelete.do";
+    let headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    headers['<csrf:tokenname/>'] = document.querySelector('#drugForm input[name="<csrf:tokenname/>"]').value;
+
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: new URLSearchParams({parameterValue: 'deletePrescribe', randomId: randomId})
+    }).then(function (response) {
+      if (!response.ok) {
+        console.error('Failed to remove drug from stash (HTTP ' + response.status + ')');
       }
+      document.getElementById("set_" + randomId)?.remove();
+      document.getElementById("prescriptionMoreLessLink_" + randomId)?.remove();
+      document.getElementById("deleteMedicationFromPrescription_" + randomId)?.remove();
+    }).catch(function (error) {
+      console.error('deletePrescribe error:', error);
     });
   }
 
@@ -2630,8 +2638,7 @@
 
     /**
      * Unchecks the "re-prescribe" checkbox for an existing prescribed drug and removes its ID from the re-prescribe list.
-     * @param uiRefId The UI reference ID for the drug.
-     * @param drugId The ID of the drug.
+     * @param drugId The database ID of the prescribed drug.
      */
     function uncheckReRxForExistingPrescribedDrug(drugId) {
       const checkbox = this.getReRxCheckboxByUiRefId(drugId);
