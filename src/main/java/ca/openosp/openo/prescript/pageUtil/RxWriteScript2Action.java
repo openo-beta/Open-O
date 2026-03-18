@@ -589,13 +589,6 @@ public final class RxWriteScript2Action extends ActionSupport {
             String drugId = request.getParameter("drugId");
             String text = request.getParameter("text");
 
-			if(text != null) {
-				text = text.trim();
-			}
-
-			if(drugId != null) {
-				drugId = drugId.trim();
-			}
 
             logger.debug("requesting drug from drugref id=" + drugId);
             RxDrugData.DrugMonograph dmono = drugData.getDrug2(drugId);
