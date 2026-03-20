@@ -85,6 +85,10 @@ public class BillingONItem extends AbstractModel<Integer> implements Serializabl
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getTranscId() {
         return transcId;
     }

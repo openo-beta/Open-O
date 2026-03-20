@@ -120,6 +120,10 @@ public class EmailLog extends AbstractModel<Integer> implements Comparable<Email
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public EmailConfig getEmailConfig() {
         return emailConfig;
     }

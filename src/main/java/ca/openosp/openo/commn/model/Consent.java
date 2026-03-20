@@ -87,6 +87,10 @@ public class Consent extends AbstractModel<Integer> {
         return this.id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getDemographicNo() {
         return demographicNo;
     }
