@@ -281,6 +281,10 @@ public class AppointmentArchive extends AbstractModel<Integer> {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @PreUpdate
     protected void jpaUpdateLastUpdateTime() {
         this.updateDateTime = new Date();

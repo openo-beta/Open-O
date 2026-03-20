@@ -195,6 +195,10 @@ public class EmailLog extends AbstractModel<Integer> implements Comparable<Email
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     /**
      * Gets the email configuration used to send this email.
      * 

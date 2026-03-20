@@ -90,6 +90,10 @@ public class PreventionExt extends AbstractModel<Integer> implements Serializabl
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Prevention getPrevention() {
         return this.prevention;
     }

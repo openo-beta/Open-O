@@ -70,6 +70,10 @@ public class FormBCAR2020 extends AbstractModel<Integer> implements Serializable
         return formId;
     }
 
+    public void setId(Integer id) {
+        this.formId = id;
+    }
+
     @PrePersist
     public void prePersist() {
         if (formCreated == null) {

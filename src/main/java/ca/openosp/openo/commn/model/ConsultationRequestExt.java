@@ -65,6 +65,10 @@ public class ConsultationRequestExt extends AbstractModel<Integer> implements Se
         return (id);
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public int getRequestId() {
         return requestId;
     }

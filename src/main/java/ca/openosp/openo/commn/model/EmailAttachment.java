@@ -59,6 +59,10 @@ public class EmailAttachment extends AbstractModel<Integer> {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public EmailLog getEmailLog() {
         return emailLog;
     }

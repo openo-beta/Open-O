@@ -122,4 +122,8 @@ public class PatientLabRouting extends AbstractModel<Integer> {
     public Integer getId() {
         return id;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
