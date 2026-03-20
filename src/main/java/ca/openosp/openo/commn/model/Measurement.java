@@ -164,6 +164,10 @@ public class Measurement extends AbstractModel<Integer> implements Serializable 
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     /**
      * Gets the measurement type identifier.
      * 

@@ -113,6 +113,10 @@ public class ConsultationRequest extends AbstractModel<Integer> implements Seria
         return (id);
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Date getReferralDate() {
         return referralDate;
     }

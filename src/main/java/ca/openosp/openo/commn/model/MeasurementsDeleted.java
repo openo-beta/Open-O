@@ -88,6 +88,10 @@ public class MeasurementsDeleted extends AbstractModel<Integer> implements Seria
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getDemographicNo() {
         return demographicNo;
     }

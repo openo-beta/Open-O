@@ -58,6 +58,10 @@ public class OLISQueryLog extends AbstractModel<Integer> {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 
     public String getInitiatingProviderNo() {
         return initiatingProviderNo;
