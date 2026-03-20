@@ -60,6 +60,10 @@ public class OLISResults extends AbstractModel<Integer> {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 
     public String getProviderNo() {
         return providerNo;

@@ -141,6 +141,10 @@ public class BillingONCHeader2 extends AbstractModel<Integer> {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getCh1Id() {
         return ch1Id;
     }
