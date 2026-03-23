@@ -853,10 +853,24 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
     @Override
     public void copyEreferGroup(Integer sourceDemoNo, Integer targetDemoNo) {
-        copyEntityRows(EReferAttachment.class, "EReferAttachment", "demographicNo",
+        // erefer_attachment (parent)
+        Map<Long, Long> attachPkMap = copyEntityRows(EReferAttachment.class, "EReferAttachment", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
+
+        if (attachPkMap.isEmpty()) return;
+
+        // erefer_attachment_data — composite PK (erefer_attachment_id, lab_id, lab_type); no auto-increment.
+        // JDBC INSERT...SELECT remapping erefer_attachment_id to the new parent PK.
+        for (Map.Entry<Long, Long> entry : attachPkMap.entrySet()) {
+            jdbcTemplate.update(
+                "INSERT INTO erefer_attachment_data (erefer_attachment_id, lab_id, lab_type) " +
+                "SELECT ?, lab_id, lab_type FROM erefer_attachment_data WHERE erefer_attachment_id = ?",
+                entry.getValue().intValue(), entry.getKey().intValue());
+        }
+
+        logger.debug("copyEreferGroup: source={}, target={}, attachment rows={}", sourceDemoNo, targetDemoNo, attachPkMap.size());
     }
 
     @Override
