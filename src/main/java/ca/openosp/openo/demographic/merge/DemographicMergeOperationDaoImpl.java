@@ -302,8 +302,27 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     // -------------------------------------------------------------------------
-    // T4c — copyClinicalDirectRecords
+    // T4c — copyAppointments + copyClinicalDirectRecords
     // -------------------------------------------------------------------------
+
+    @Override
+    public Map<Long, Long> copyAppointments(Integer sourceDemoNo, Integer targetDemoNo) {
+        // appointment
+        Map<Long, Long> apptPkMap = copyEntityRows(Appointment.class, "Appointment", "demographicNo",
+                sourceDemoNo, targetDemoNo,
+                e -> (long) e.getId(), e -> e.setId(null),
+                (e, d) -> e.setDemographicNo(d));
+
+        // appointmentArchive — archive PKs are not linked from casemgmt_note_link but copy here
+        // for completeness; return value is ignored
+        copyEntityRows(AppointmentArchive.class, "AppointmentArchive", "demographicNo",
+                sourceDemoNo, targetDemoNo,
+                e -> (long) e.getId(), e -> e.setId(null),
+                (e, d) -> e.setDemographicNo(d));
+
+        logger.debug("copyAppointments: source={}, target={}, appt rows={}", sourceDemoNo, targetDemoNo, apptPkMap.size());
+        return apptPkMap;
+    }
 
     @Override
     public void copyClinicalDirectRecords(Integer sourceDemoNo, Integer targetDemoNo) {
@@ -313,17 +332,8 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        // appointment
-        copyEntityRows(Appointment.class, "Appointment", "demographicNo",
-                sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
-                (e, d) -> e.setDemographicNo(d));
-
-        // appointmentArchive
-        copyEntityRows(AppointmentArchive.class, "AppointmentArchive", "demographicNo",
-                sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
-                (e, d) -> e.setDemographicNo(d));
+        // appointment and appointmentArchive are handled by copyAppointments() so the PK map
+        // can be passed to copyCasemgmtNoteGroup for note-link remap
 
         // casemgmt_cpp — demo field is String (varchar in DB); handled inline
         List<CaseMgmtCpp> cppRows = entityManager.createQuery(
@@ -1041,7 +1051,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     @Override
-    public Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+    public Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> appointmentPkMap) {
         // casemgmt_note (parent) — demo field is "demographicNo"
         Map<Long, Long> notePkMap = copyEntityRows(CaseMgmtNote.class, "CaseMgmtNote", "demographicNo",
                 sourceDemoNo, targetDemoNo,
@@ -1063,6 +1073,21 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> e.setId(null),
                 (e, fk) -> e.setNoteId(fk),
                 null, null);
+
+        // Remap table_id for appointment links (table_name = 11) using the appointment PK map.
+        // Without this, note-appointment associations point to the source patient's old appointment PKs.
+        if (appointmentPkMap != null && !appointmentPkMap.isEmpty()) {
+            for (Map.Entry<Long, Long> newNote : notePkMap.entrySet()) {
+                for (Map.Entry<Long, Long> appt : appointmentPkMap.entrySet()) {
+                    jdbcTemplate.update(
+                        "UPDATE casemgmt_note_link SET table_id = ? " +
+                        "WHERE note_id = ? AND table_name = 11 AND table_id = ?",
+                        appt.getValue().intValue(),
+                        newNote.getValue().intValue(),
+                        appt.getKey().intValue());
+                }
+            }
+        }
 
         logger.debug("copyCasemgmtNoteGroup: source={}, target={}, note rows={}", sourceDemoNo, targetDemoNo, notePkMap.size());
         return notePkMap;

@@ -64,10 +64,23 @@ public interface DemographicMergeOperationDao {
     // -------------------------------------------------------------------------
 
     /**
-     * Copies all clinical tables that map directly to a single {@code demographicNo} column
-     * with no derived child tables:
-     * {@code allergies}, {@code appointment}, {@code appointmentArchive},
-     * {@code casemgmt_cpp}, {@code Consent}, {@code ctl_document} (JDBC),
+     * Copies {@code appointment} and {@code appointmentArchive} rows and returns the
+     * old-to-new appointment PK map. This is extracted from {@link #copyClinicalDirectRecords}
+     * so the manager can pass the map to {@link #copyCasemgmtNoteGroup} for remapping
+     * {@code casemgmt_note_link} rows that reference appointment PKs ({@code table_name = 11}).
+     *
+     * @param sourceDemographicNo Integer the source patient demographic number
+     * @param targetDemographicNo Integer the target patient demographic number
+     * @return Map&lt;Long, Long&gt; mapping of old {@code appointment.appointment_no} to new value
+     */
+    Map<Long, Long> copyAppointments(Integer sourceDemographicNo, Integer targetDemographicNo);
+
+    /**
+     * Copies all remaining clinical tables that map directly to a single {@code demographicNo}
+     * column with no derived child tables. {@code appointment} and {@code appointmentArchive}
+     * are excluded — call {@link #copyAppointments} first and pass its result to
+     * {@link #copyCasemgmtNoteGroup}:
+     * {@code allergies}, {@code casemgmt_cpp}, {@code Consent}, {@code ctl_document} (JDBC),
      * {@code demographicArchive}, {@code DemographicContact}, {@code demographicPharmacy},
      * {@code DigitalSignature}, {@code dxresearch}, {@code Episode}, {@code faxes},
      * {@code flowsheet_drug}, {@code flowsheet_dx}, {@code HRMDocumentToDemographic},
@@ -225,13 +238,18 @@ public interface DemographicMergeOperationDao {
     /**
      * Copies {@code casemgmt_note} rows with their child tables
      * ({@code casemgmt_note_ext}, {@code casemgmt_note_link}).
+     * After copying note links, remaps {@code table_id} for rows where
+     * {@code table_name = 11} (APPOINTMENT) using the provided appointment PK map so that
+     * note-appointment associations point to the target patient's new appointment rows.
      * Returns the old-to-new note PK map (note_id) needed by {@link #copyIssueNotesGroup}.
      *
      * @param sourceDemographicNo Integer the source patient demographic number
      * @param targetDemographicNo Integer the target patient demographic number
+     * @param appointmentPkMap    Map&lt;Long, Long&gt; old appointment PK → new appointment PK
+     *                            (returned by {@link #copyAppointments})
      * @return Map&lt;Long, Long&gt; mapping of old {@code note_id} to new {@code note_id}
      */
-    Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
+    Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemographicNo, Integer targetDemographicNo, Map<Long, Long> appointmentPkMap);
 
     /**
      * Copies {@code casemgmt_issue} rows with deduplication (skips rows where the target
