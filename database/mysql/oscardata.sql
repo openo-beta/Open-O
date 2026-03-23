@@ -1221,7 +1221,7 @@ INSERT INTO `measurementType` (`type`, `typeDisplayName`, `typeDescription`, `me
 ( 'NERF', 'Neuropathic Features?', 'Neuropathic Features?', 'null', '15', '2013-05-07 00:00:00'),
 ( 'NOSK', 'Number of Cigarettes per day', 'Smoking', 'Cigarettes per day', '5', '2013-02-01 00:00:00'),
 ( 'NOVS', 'Need for nocturnal ventilated support', 'Need for nocturnal ventilated support', 'Yes/No', '7', '2013-02-01 00:00:00'),
-( 'NRTF', 'Neurological Exam 128Hz Tuning Fork D1', 'Neurological Exam 128Hz Tuning Fork D1', 'Normal', '7', '2026-03-23 00:00:00'),
+( 'NRTF', 'Neurological exam: 128Hz tuning fork D1', 'Neurological exam: 128Hz tuning fork D1', 'Normal', '7', '2026-03-23 00:00:00'),
 ( 'NtrC', 'Diet/Nutrition Counseling Given', 'Diet/Nutrition Counseling Given', 'Yes/No', '7', '2013-02-01 00:00:00'),
 ( 'NYHA', 'NYHA Functional Capacity Classification', 'NYHA Functional Capacity Classification', 'Class 1-4', '9', '2013-02-01 00:00:00'),
 ( 'OPAE', 'Opioid Adverse Effects', 'Opioid Adverse Effects', 'null', '17', '2014-11-27 13:00:00'),

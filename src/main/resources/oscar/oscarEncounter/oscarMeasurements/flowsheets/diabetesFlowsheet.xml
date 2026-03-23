@@ -408,8 +408,8 @@
 
     <measurement
         type="NRTF"
-        typeDesc="Neurological Exam 128Hz Tuning Fork D1"
-        typeDisplayName="Neurological Exam 128Hz Tuning Fork D1"
+        typeDesc="Neurological exam: 128Hz tuning fork D1"
+        typeDisplayName="Neurological exam: 128Hz tuning fork D1"
         measuringInstrc="Normal">
         <validationRule
            name="Yes/No"

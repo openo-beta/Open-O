@@ -707,7 +707,7 @@
 		<validationRule name="Yes/No" maxValue="" minValue="" isDate="" isNumeric="" regularExp="YES|yes|Yes|Y|NO|no|No|N" maxLength="" minLength="" />
 	</measurement>
 
-	<measurement type="NRTF" typeDesc="Neurological Exam 128Hz Tuning Fork D1" typeDisplayName="Neurological Exam 128Hz Tuning Fork D1" measuringInstrc="Normal">
+	<measurement type="NRTF" typeDesc="Neurological exam: 128Hz tuning fork D1" typeDisplayName="Neurological exam: 128Hz tuning fork D1" measuringInstrc="Normal">
 		<validationRule name="Yes/No" maxValue="" minValue="" isDate="" isNumeric="" regularExp="YES|yes|Yes|Y|NO|no|No|N" maxLength="" minLength="" />
 	</measurement>
 
