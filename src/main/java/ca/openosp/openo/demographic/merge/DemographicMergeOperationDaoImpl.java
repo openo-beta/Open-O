@@ -1067,8 +1067,16 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         Map<Long, Long> issuePkMap = new HashMap<>();
         for (CaseMgmtIssue issue : sourceIssues) {
             if (existingIssueIds.contains(issue.getIssueId())) {
-                // Skip duplicate — target already has this issue
-                logger.debug("copyCasemgmtIssueGroup: skipping duplicate issueId={} for target={}", issue.getIssueId(), targetDemoNo);
+                // Duplicate: target already has this issue. Map the source PK → existing target PK
+                // so copyIssueNotesGroup can still link any copied notes to the correct issue row.
+                Integer existingPk = entityManager.createQuery(
+                        "SELECT e.id FROM CaseMgmtIssue e WHERE e.demographicNo = :demo AND e.issueId = :iid",
+                        Integer.class)
+                    .setParameter("demo", targetDemoNo)
+                    .setParameter("iid", issue.getIssueId())
+                    .getSingleResult();
+                issuePkMap.put((long) issue.getId(), (long) existingPk);
+                logger.debug("copyCasemgmtIssueGroup: duplicate issueId={} mapped source pk={} → existing target pk={}", issue.getIssueId(), issue.getId(), existingPk);
                 continue;
             }
             long oldPk = (long) issue.getId();
