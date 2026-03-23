@@ -1101,17 +1101,18 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 (e, fk) -> e.setNoteId(fk),
                 null, null);
 
-        // Remap table_id for appointment links (table_name = 11) using the appointment PK map.
+        // Remap tableId for appointment links (tableName = 11) using the appointment PK map.
         // Without this, note-appointment associations point to the source patient's old appointment PKs.
         if (appointmentPkMap != null && !appointmentPkMap.isEmpty()) {
             for (Map.Entry<Long, Long> newNote : notePkMap.entrySet()) {
                 for (Map.Entry<Long, Long> appt : appointmentPkMap.entrySet()) {
-                    jdbcTemplate.update(
-                        "UPDATE casemgmt_note_link SET table_id = ? " +
-                        "WHERE note_id = ? AND table_name = 11 AND table_id = ?",
-                        appt.getValue().intValue(),
-                        newNote.getValue().intValue(),
-                        appt.getKey().intValue());
+                    entityManager.createQuery(
+                            "UPDATE CaseMgmtNoteLink e SET e.tableId = :newApptId " +
+                            "WHERE e.noteId = :noteId AND e.tableName = 11 AND e.tableId = :oldApptId")
+                        .setParameter("newApptId", appt.getValue().intValue())
+                        .setParameter("noteId", newNote.getValue().intValue())
+                        .setParameter("oldApptId", appt.getKey().intValue())
+                        .executeUpdate();
                 }
             }
         }
