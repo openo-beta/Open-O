@@ -29,6 +29,8 @@ import ca.openosp.openo.commn.model.Allergy;
 import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.commn.model.AppointmentArchive;
 import ca.openosp.openo.commn.model.Consent;
+import ca.openosp.openo.commn.model.CtlDocument;
+import ca.openosp.openo.commn.model.CtlDocumentPK;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.DemographicArchive;
 import ca.openosp.openo.commn.model.DemographicContact;
@@ -145,9 +147,8 @@ import java.util.function.Function;
  * {@code GenerationType.IDENTITY} assigns fresh PKs. The old→new PK map is captured from the
  * returned entity after {@code flush()}, which is safe under concurrent inserts.
  * <p>
- * JDBC is used only for three targeted exceptions:
+ * JDBC is used only for two targeted exceptions:
  * <ul>
- *   <li>{@code ctl_document} — composite {@code @EmbeddedId} (module + documentNo)</li>
  *   <li>{@code formBCAR2020Text} — composite {@code @IdClass} (formId + pageNo + field)</li>
  *   <li>{@code formONAREnhancedRecord*} — 100+ column tables with no entity classes</li>
  * </ul>
@@ -356,12 +357,22 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        // ctl_document — JDBC: composite @EmbeddedId (module + documentNo); module_id = demographicNo
-        jdbcTemplate.update(
-            "INSERT INTO ctl_document (module, module_id, document_no, status) " +
-            "SELECT module, ?, document_no, status FROM ctl_document " +
-            "WHERE module_id = ? AND module = 'demographic'",
-            targetDemoNo, sourceDemoNo);
+        // ctl_document — composite @EmbeddedId (module + documentNo); module_id = demographicNo.
+        // New-object pattern: construct a fresh transient CtlDocument so Hibernate issues a direct INSERT.
+        List<CtlDocument> sourceDocs = entityManager.createQuery(
+                "SELECT d FROM CtlDocument d WHERE d.id.module = 'demographic' AND d.id.moduleId = :mid",
+                CtlDocument.class)
+            .setParameter("mid", sourceDemoNo)
+            .getResultList();
+        for (CtlDocument src : sourceDocs) {
+            CtlDocument copy = new CtlDocument();
+            copy.setId(new CtlDocumentPK("demographic", targetDemoNo, src.getId().getDocumentNo()));
+            copy.setStatus(src.getStatus());
+            entityManager.persist(copy);
+        }
+        if (!sourceDocs.isEmpty()) {
+            entityManager.flush();
+        }
 
         // demographicArchive — Long PK
         copyEntityRows(DemographicArchive.class, "DemographicArchive", "demographicNo",
