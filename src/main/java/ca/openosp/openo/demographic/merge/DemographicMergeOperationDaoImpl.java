@@ -753,17 +753,21 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 null, null);
 
         // billing_on_transaction — child of cheader1 via ch1Id; also has demographicNo
-        // After copy, remap ch1_id via JDBC UPDATE
+        // Copy rows first, then remap ch1Id to target cheader1 PKs via JPQL bulk UPDATE.
         copyEntityRows(BillingOnTransaction.class, "BillingOnTransaction", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(0),
                 (e, d) -> e.setDemographicNo(d));
 
-        // Remap ch1_id in newly copied transaction rows (all rows for targetDemoNo)
+        // Remap ch1Id in newly copied transaction rows using JPQL bulk UPDATE
         for (Map.Entry<Long, Long> ch1 : ch1PkMap.entrySet()) {
-            jdbcTemplate.update(
-                "UPDATE billing_on_transaction SET ch1_id = ? WHERE demographic_no = ? AND ch1_id = ?",
-                ch1.getValue().intValue(), targetDemoNo, ch1.getKey().intValue());
+            entityManager.createQuery(
+                    "UPDATE BillingOnTransaction e SET e.ch1Id = :newCh1Id " +
+                    "WHERE e.demographicNo = :demo AND e.ch1Id = :oldCh1Id")
+                .setParameter("newCh1Id", ch1.getValue().intValue())
+                .setParameter("demo", targetDemoNo)
+                .setParameter("oldCh1Id", ch1.getKey().intValue())
+                .executeUpdate();
         }
 
         logger.debug("copyBillingGroup: source={}, target={}, ch1 rows={}", sourceDemoNo, targetDemoNo, ch1PkMap.size());
