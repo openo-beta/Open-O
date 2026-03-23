@@ -994,11 +994,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         if (archivePkMap.isEmpty()) return;
 
-        // consultationRequestExtArchive — dual FK: id (archive FK) + requestId
-        // Load all ext-archive rows for the source, remap both FKs
+        // consultationRequestExtArchive — dual FK: consultationRequestArchiveId + requestId
+        // Query by consultationRequestArchiveId (the FK to the archive parent), not by id (the PK)
         for (Map.Entry<Long, Long> archEntry : archivePkMap.entrySet()) {
             List<ConsultationRequestExtArchive> extArchives = entityManager.createQuery(
-                    "SELECT e FROM ConsultationRequestExtArchive e WHERE e.id = :aid",
+                    "SELECT e FROM ConsultationRequestExtArchive e WHERE e.consultationRequestArchiveId = :aid",
                     ConsultationRequestExtArchive.class)
                 .setParameter("aid", archEntry.getKey().intValue())
                 .getResultList();
@@ -1008,6 +1008,8 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 Long newRequestId = requestPkMap.get(oldRequestId);
                 entityManager.detach(ext);
                 ext.setId(null);
+                // Remap archive FK to the new archive row
+                ext.setConsultationRequestArchiveId(archEntry.getValue().intValue());
                 ext.setRequestId(newRequestId != null ? newRequestId.intValue() : ext.getRequestId());
                 entityManager.persist(ext);
                 entityManager.flush();
