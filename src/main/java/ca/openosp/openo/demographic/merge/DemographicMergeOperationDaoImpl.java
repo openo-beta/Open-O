@@ -1006,11 +1006,18 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             for (ConsultationRequestExtArchive ext : extArchives) {
                 long oldRequestId = ext.getRequestId();
                 Long newRequestId = requestPkMap.get(oldRequestId);
+                if (newRequestId == null) {
+                    // No mapping means the live request was never copied (e.g. it belonged to a
+                    // different demographic). Persisting the stale source requestId would create a
+                    // cross-patient FK. Skip and warn instead.
+                    logger.warn("copyConsultationArchiveGroup: no requestId mapping for oldRequestId={}; skipping ext archive row for archiveId={}", oldRequestId, archEntry.getKey());
+                    continue;
+                }
                 entityManager.detach(ext);
                 ext.setId(null);
                 // Remap archive FK to the new archive row
                 ext.setConsultationRequestArchiveId(archEntry.getValue().intValue());
-                ext.setRequestId(newRequestId != null ? newRequestId.intValue() : ext.getRequestId());
+                ext.setRequestId(newRequestId.intValue());
                 entityManager.persist(ext);
                 entityManager.flush();
             }
