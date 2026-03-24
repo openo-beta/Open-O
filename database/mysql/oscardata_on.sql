@@ -12615,7 +12615,8 @@ INSERT INTO ctl_billingservice (servicetype_name,servicetype,service_code,servic
      ('PRIVATE','PRI','_OMA_N01','Forms','Group1','A',9),
      ('PRIVATE','PRI','_OMA_N02','Forms','Group1','A',10),
      ('PRIVATE','PRI','_OMA_RECOR','Forms','Group1','A',1),
-     ('PRIVATE','PRI','_OMA_RX','Procedures','Group3','A',1);
+     ('PRIVATE','PRI','_OMA_RX','Procedures','Group3','A',1),
+     ('PRIVATE','PRI','_OMA_C01','Assessments','Group2','A',18);
 
 --
 -- Dumping data for table 'ctl_billingservice_premium'
