@@ -6,4 +6,8 @@
 
 INSERT INTO `measurementType` (`type`, `typeDisplayName`, `typeDescription`, `measuringInstruction`, `validation`, `createDate`)
 VALUES ('NRTF', 'Neurological exam: 128Hz tuning fork D1', 'Neurological exam: 128Hz tuning fork D1', 'Normal', '7', '2026-03-23 00:00:00')
-ON DUPLICATE KEY UPDATE `typeDisplayName`='Neurological exam: 128Hz tuning fork D1';
+ON DUPLICATE KEY UPDATE
+  `typeDisplayName`='Neurological exam: 128Hz tuning fork D1',
+  `typeDescription`='Neurological exam: 128Hz tuning fork D1',
+  `measuringInstruction`='Normal',
+  `validation`='7';
