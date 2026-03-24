@@ -149,4 +149,14 @@ public class HRMDocumentToDemographicDao extends AbstractDaoImpl<HRMDocumentToDe
         return attachedHRMDocumentToDemographics;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Integer> findHrmIdsForDemographic(Integer demographicNo, List<Integer> hrmIds) {
+        Query query = entityManager.createQuery(
+                "SELECT x.hrmDocumentId FROM HRMDocumentToDemographic x " +
+                "WHERE x.demographicNo = :demographicNo AND x.hrmDocumentId IN :hrmIds");
+        query.setParameter("demographicNo", demographicNo);
+        query.setParameter("hrmIds", hrmIds);
+        return query.getResultList();
+    }
+
 }

@@ -369,4 +369,15 @@ public class PatientLabRoutingDaoImpl extends AbstractDaoImpl<PatientLabRouting>
         return results;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Integer> findLabNosForDemographic(Integer demographicNo, List<Integer> labNos) {
+        Query query = entityManager.createQuery(
+                "SELECT r.labNo FROM PatientLabRouting r " +
+                "WHERE r.demographicNo = :demographicNo AND r.labNo IN :labNos");
+        query.setParameter("demographicNo", demographicNo);
+        query.setParameter("labNos", labNos);
+        return query.getResultList();
+    }
+
 }

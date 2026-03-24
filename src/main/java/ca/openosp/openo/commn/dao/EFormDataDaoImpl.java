@@ -598,4 +598,15 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
         }
         return null;
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Integer> findFdidsForDemographic(Integer demographicNo, List<Integer> fdids) {
+        Query query = entityManager.createQuery(
+                "SELECT x.id FROM EFormData x " +
+                "WHERE x.demographicId = :demographicNo AND x.id IN :fdids");
+        query.setParameter("demographicNo", demographicNo);
+        query.setParameter("fdids", fdids);
+        return query.getResultList();
+    }
 }

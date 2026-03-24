@@ -34,20 +34,38 @@ jQuery(document).ready(function () {
     });
 });
 
+function validateAttachments(demographicNo, docs) {
+    let valid = false;
+    jQuery.ajax({
+        type: 'POST',
+        async: false,
+        url: document.getElementById("contextPath").value + '/oscarEncounter/eRefer.do',
+        data: "demographicNo=" + demographicNo + "&method=validateDocuments&" + jQuery.param({documents: docs}, true),
+        dataType: 'json',
+        success: function (response) { valid = response.valid; }
+    });
+    if (!valid) {
+        alert("Something went wrong. Please close this window and restart the process from the beginning.");
+    }
+    return valid;
+}
+
 // This code will be executed when a user sends a new e-refer to OceanMD from the consult request form.
 // It involves saving attachments in the 'EreferAttachment' table by sending the selected attachments (documents)
 // and demographic information to the EreferAction.java class.
 function eRefer(event) {
     let demographicNo = document.getElementById("demographicNo").serialize();
     let documents = getDocuments(event);
-    let data = demographicNo + "&" + documents + "&method=attachOceanEReferralConsult";
+    let docs = documents.replace('documents=', '').split('|').filter(Boolean);
+    if (!validateAttachments(document.getElementById("demographicNo").value, docs)) {
+        throw new Error("Document validation failed");
+    }
+
     jQuery.ajax({
         type: 'POST',
         url: document.getElementById("contextPath").value + '/oscarEncounter/eRefer.do',
-        data: data,
-        success: function (response) {
-            console.log(response);
-        }
+        data: demographicNo + "&" + documents + "&method=attachOceanEReferralConsult",
+        success: function (response) { console.log(response); }
     });
 }
 
@@ -80,13 +98,15 @@ function attachOceanAttachments() {
     let demographicNo = document.getElementById("demographicNo").serialize();
     let requestId = document.getElementById("requestId").serialize();
     let documents = getDocuments();
-    let data = demographicNo + "&" + requestId + "&" + documents + "&method=editOceanEReferralConsult";
+    let docs = documents.replace('documents=', '').split('|').filter(Boolean);
+    if (!validateAttachments(document.getElementById("demographicNo").value, docs)) {
+        throw new Error("Document validation failed");
+    }
+
     jQuery.ajax({
         type: 'POST',
         url: document.getElementById("contextPath").value + '/oscarEncounter/eRefer.do',
-        data: data,
-        success: function (response) {
-            console.log(response);
-        }
+        data: demographicNo + "&" + requestId + "&" + documents + "&method=editOceanEReferralConsult",
+        success: function (response) { console.log(response); }
     });
 }
