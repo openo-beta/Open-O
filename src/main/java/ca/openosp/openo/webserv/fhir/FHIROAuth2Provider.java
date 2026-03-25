@@ -16,6 +16,9 @@ import org.apache.cxf.rs.security.oauth2.provider.OAuthServiceException;
 import org.apache.cxf.rs.security.oauth2.utils.OAuthConstants;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +31,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Uses JSON serialization to store complex objects in the BLOB columns.
  */
 public class FHIROAuth2Provider implements AuthorizationCodeDataProvider {
+
+    private static final ThreadLocal<Boolean> PKCE_REQUEST = new ThreadLocal<>();
+
+    public static void setPkceRequest(boolean isPkce) {
+        if (isPkce) {
+            PKCE_REQUEST.set(true);
+        } else {
+            PKCE_REQUEST.remove();
+        }
+    }
 
     private JdbcTemplate jdbcTemplate;
     private ObjectMapper objectMapper = new ObjectMapper()
@@ -44,8 +57,18 @@ public class FHIROAuth2Provider implements AuthorizationCodeDataProvider {
                 "SELECT client_id, client_secret, web_server_redirect_uri, scope FROM oauth_client_details WHERE client_id = ?",
                 new Object[]{clientId},
                 (rs, rowNum) -> {
-                    Client c = new Client(rs.getString("client_id"), rs.getString("client_secret"), true);
-                    c.setConfidential(true); // Assuming all are confidential for now
+                    String secret = rs.getString("client_secret");
+                    boolean isConfidential = (secret != null && !secret.trim().isEmpty());
+
+                    // Dynamic PKCE check: If the request is flagged as PKCE by the OAuth2Service ThreadLocal, treat as public client dynamically
+                    if (Boolean.TRUE.equals(PKCE_REQUEST.get())) {
+                        System.out.println("[FHIR-OAUTH-DEBUG] Bypassing secret check via ThreadLocal! isConfidential -> false");
+                        isConfidential = false;
+                        secret = null; // CXF 3.5 exactly requires getClientSecret() == null for isValidPublicClient to pass
+                    }
+
+                    Client c = new Client(rs.getString("client_id"), secret, isConfidential);
+                    c.setConfidential(isConfidential);
                     
                     String uri = rs.getString("web_server_redirect_uri");
                     if (uri != null && !uri.isEmpty()) {

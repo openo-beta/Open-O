@@ -52,6 +52,7 @@ public class OAuth2Service {
         // Initialize Authorization Service with Auto-Approval
         authService = new AutoApprovedAuthorizationCodeGrantService();
         authService.setDataProvider(dataProvider);
+        authService.setCanSupportPublicClients(true);
         
         // Use SubjectCreator to create the UserSubject from the session
         authService.setSubjectCreator(new org.apache.cxf.rs.security.oauth2.provider.SubjectCreator() {
@@ -75,9 +76,12 @@ public class OAuth2Service {
         // Initialize Token Service
         tokenService = new AccessTokenService();
         tokenService.setDataProvider(dataProvider);
+        tokenService.setCanSupportPublicClients(true);
         // Register the grant handler
         AuthorizationCodeGrantHandler handler = new AuthorizationCodeGrantHandler();
         handler.setDataProvider(dataProvider);
+        handler.setCanSupportPublicClients(true);
+        handler.setCodeVerifierTransformer(new org.apache.cxf.rs.security.oauth2.grants.code.DigestCodeVerifier());
         tokenService.setGrantHandlers(Collections.singletonList(handler));
     }
 
@@ -92,13 +96,6 @@ public class OAuth2Service {
         Object sessionUser = request.getSession().getAttribute("user");
         System.out.println("[FHIR-OAUTH-DEBUG] authorize: user in session=" + sessionUser);
         
-        SecurityContext sc = mc.getSecurityContext();
-        if (sc != null) {
-             System.out.println("[FHIR-OAUTH-DEBUG] authorize: SecurityContext Principal=" + sc.getUserPrincipal());
-        } else {
-             System.out.println("[FHIR-OAUTH-DEBUG] authorize: No SecurityContext");
-        }
-
         // 1. Check if logged in
         if (sessionUser == null) {
              try {
@@ -115,9 +112,17 @@ public class OAuth2Service {
              }
         }
         
-        // 2. Delegate to CXF
-        authService.setMessageContext(mc);
-        return authService.authorize();
+        // --- PKCE Bypass Check ---
+        boolean isPkce = request.getParameter(org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.AUTHORIZATION_CODE_CHALLENGE) != null;
+        ca.openosp.openo.webserv.fhir.FHIROAuth2Provider.setPkceRequest(isPkce);
+
+        try {
+            // 2. Delegate to CXF
+            authService.setMessageContext(mc);
+            return authService.authorize();
+        } finally {
+            ca.openosp.openo.webserv.fhir.FHIROAuth2Provider.setPkceRequest(false);
+        }
     }
     
     @POST
@@ -133,36 +138,45 @@ public class OAuth2Service {
     @Produces(MediaType.APPLICATION_JSON)
     public Response token(MultivaluedMap<String, String> params) {
         tokenService.setMessageContext(mc);
-        Response cxfResponse = tokenService.handleTokenRequest(params);
         
-        // CXF returns ClientAccessToken with Java field names (tokenKey, tokenType, etc.)
-        // but OAuth 2.0 RFC 6749 requires standard names (access_token, token_type, etc.)
-        if (cxfResponse.getStatus() == 200 && cxfResponse.getEntity() instanceof org.apache.cxf.rs.security.oauth2.common.ClientAccessToken) {
-            org.apache.cxf.rs.security.oauth2.common.ClientAccessToken cat = 
-                (org.apache.cxf.rs.security.oauth2.common.ClientAccessToken) cxfResponse.getEntity();
+        // --- PKCE Bypass Check ---
+        boolean isPkce = params.containsKey(org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.AUTHORIZATION_CODE_VERIFIER);
+        ca.openosp.openo.webserv.fhir.FHIROAuth2Provider.setPkceRequest(isPkce);
+
+        try {
+            Response cxfResponse = tokenService.handleTokenRequest(params);
             
-            Map<String, Object> oauthResponse = new HashMap<>();
-            oauthResponse.put("access_token", cat.getTokenKey());
-            oauthResponse.put("token_type", cat.getTokenType());
-            oauthResponse.put("expires_in", cat.getExpiresIn());
-            if (cat.getApprovedScope() != null) {
-                oauthResponse.put("scope", cat.getApprovedScope());
-            }
-            if (cat.getRefreshToken() != null) {
-                oauthResponse.put("refresh_token", cat.getRefreshToken());
-            }
-            // Copy any extra parameters (e.g., patient context)
-            if (cat.getParameters() != null) {
-                oauthResponse.putAll(cat.getParameters());
+            // CXF returns ClientAccessToken with Java field names (tokenKey, tokenType, etc.)
+            // but OAuth 2.0 RFC 6749 requires standard names (access_token, token_type, etc.)
+            if (cxfResponse.getStatus() == 200 && cxfResponse.getEntity() instanceof org.apache.cxf.rs.security.oauth2.common.ClientAccessToken) {
+                org.apache.cxf.rs.security.oauth2.common.ClientAccessToken cat = 
+                    (org.apache.cxf.rs.security.oauth2.common.ClientAccessToken) cxfResponse.getEntity();
+                
+                Map<String, Object> oauthResponse = new HashMap<>();
+                oauthResponse.put("access_token", cat.getTokenKey());
+                oauthResponse.put("token_type", cat.getTokenType());
+                oauthResponse.put("expires_in", cat.getExpiresIn());
+                if (cat.getApprovedScope() != null) {
+                    oauthResponse.put("scope", cat.getApprovedScope());
+                }
+                if (cat.getRefreshToken() != null) {
+                    oauthResponse.put("refresh_token", cat.getRefreshToken());
+                }
+                // Copy any extra parameters (e.g., patient context)
+                if (cat.getParameters() != null) {
+                    oauthResponse.putAll(cat.getParameters());
+                }
+                
+                return Response.ok(oauthResponse)
+                    .header("Cache-Control", "no-store")
+                    .header("Pragma", "no-cache")
+                    .build();
             }
             
-            return Response.ok(oauthResponse)
-                .header("Cache-Control", "no-store")
-                .header("Pragma", "no-cache")
-                .build();
+            return cxfResponse;
+        } finally {
+            ca.openosp.openo.webserv.fhir.FHIROAuth2Provider.setPkceRequest(false);
         }
-        
-        return cxfResponse;
     }
     
     /**

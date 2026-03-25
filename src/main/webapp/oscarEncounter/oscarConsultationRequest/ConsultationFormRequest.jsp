@@ -105,21 +105,54 @@
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         // --- PATHWAYS INTEGRATION: DYNAMIC LAUNCH URL ---
-        String pathwaysLaunchUrl = "http://localhost:3000/smart/launch";
+        String pathwaysLaunchUrl = null;
+        String pathwaysClientId = null;
         try {
-            String contextPath = request.getContextPath(); // e.g., "/oscar"
-            String scheme = request.getScheme();           // e.g., "http" or "https"
-            String serverName = request.getServerName();   // e.g., "localhost"
-            int serverPort = request.getServerPort();      // e.g., 8080
-            
-            String issUrl = scheme + "://" + serverName;
-            if ((scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443)) {
-                issUrl += ":" + serverPort;
+            org.springframework.jdbc.core.JdbcTemplate jdbcTemplate = new org.springframework.jdbc.core.JdbcTemplate(SpringUtils.getBean(javax.sql.DataSource.class));
+            java.util.List<java.util.Map<String, Object>> clients = jdbcTemplate.queryForList("SELECT clientKey, uri FROM ServiceClient WHERE name = 'pathways-smart-fhir' ORDER BY id DESC LIMIT 1");
+            if (!clients.isEmpty()) {
+                pathwaysClientId = (String) clients.get(0).get("clientKey");
+                String configuredUri = (String) clients.get(0).get("uri");
+                if (configuredUri != null && !configuredUri.trim().isEmpty()) {
+                    // Extract base URL if it's a callback URL or use it directly
+                    // It's safest to just let the user set the launch URL or base URL in the REST Client UI.
+                    // If it ends with /callback, we can replace it with /launch.
+                    if (configuredUri.endsWith("/callback")) {
+                        pathwaysLaunchUrl = configuredUri.substring(0, configuredUri.length() - "/callback".length()) + "/launch";
+                    } else if (configuredUri.endsWith("/smart/callback")) {
+                        pathwaysLaunchUrl = configuredUri.substring(0, configuredUri.length() - "/smart/callback".length()) + "/smart/launch";
+                    } else {
+                        pathwaysLaunchUrl = configuredUri; // Fallback to provided URI
+                    }
+                } else {
+                    pathwaysLaunchUrl = "http://localhost:3000/smart/launch"; // Fallback default
+                }
             }
-            issUrl += contextPath;
-            pathwaysLaunchUrl += "?iss=" + java.net.URLEncoder.encode(issUrl, "UTF-8");
         } catch (Exception e) {
-            org.apache.log4j.Logger.getLogger("oscar").error("Error constructing Pathways launch URL", e);
+            org.apache.log4j.Logger.getLogger("oscar").error("Error checking for pathways-smart-fhir client", e);
+        }
+
+        if (pathwaysClientId != null && pathwaysLaunchUrl != null) {
+            try {
+                String contextPath = request.getContextPath(); // e.g., "/oscar"
+                String scheme = request.getScheme();           // e.g., "http" or "https"
+                String serverName = request.getServerName();   // e.g., "localhost"
+                int serverPort = request.getServerPort();      // e.g., 8080
+                
+                String issUrl = scheme + "://" + serverName;
+                if ((scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443)) {
+                    issUrl += ":" + serverPort;
+                }
+                issUrl += contextPath;
+                
+                if (pathwaysLaunchUrl.contains("?")) {
+                    pathwaysLaunchUrl += "&client_id=" + java.net.URLEncoder.encode(pathwaysClientId, "UTF-8") + "&iss=" + java.net.URLEncoder.encode(issUrl, "UTF-8");
+                } else {
+                    pathwaysLaunchUrl += "?client_id=" + java.net.URLEncoder.encode(pathwaysClientId, "UTF-8") + "&iss=" + java.net.URLEncoder.encode(issUrl, "UTF-8");
+                }
+            } catch (Exception e) {
+                org.apache.log4j.Logger.getLogger("oscar").error("Error constructing Pathways launch URL", e);
+            }
         }
         // ------------------------------------------------
         DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
@@ -2088,12 +2121,14 @@ if (userAgent != null) {
                         <tr>
                             <td class="tite4 controlPanel" colspan=2>
                                 <!-- PATHWAYS INTEGRATION: LAUNCH BUTTON -->
+                                <% if (pathwaysClientId != null) { %>
                                 <button type="button" id="pathwaysLaunchBtnTop"
                                         style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer; font-weight: bold; margin-right: 10px;"
                                         title="Find specialists and services right for your patient in Pathways"
                                         onclick="window.open('<%= pathwaysLaunchUrl %>', '_blank', 'width=1000,height=800');">
                                     Find in Pathways
                                 </button>
+                                <% } %>
                                 &nbsp;<input type="button" class="oscarButton" name="refreshListButton" value="Refresh List" onclick="refreshConsultantLists()" style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-weight: bold;">
                                 <script type="text/javascript">
                                     function refreshConsultantLists() {
@@ -2949,12 +2984,14 @@ if (userAgent != null) {
 
                             <td colspan=2 class="tite4 controlPanel">
                                 <!-- PATHWAYS INTEGRATION: LAUNCH BUTTON -->
+                                <% if (pathwaysClientId != null) { %>
                                 <button type="button" id="pathwaysLaunchBtnBottom"
                                         style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer; font-weight: bold; margin-right: 10px;"
                                         title="Find specialists and services right for your patient in Pathways"
                                         onclick="window.open('<%= pathwaysLaunchUrl %>', '_blank', 'width=1000,height=800');">
                                     Find in Pathways
                                 </button>
+                                <% } %>
                                 <!-- ----------------------------------- -->
                                 <input type="hidden" name="submission" value=""/>
 
