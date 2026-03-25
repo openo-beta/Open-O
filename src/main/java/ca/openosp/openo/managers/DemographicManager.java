@@ -233,4 +233,32 @@ public interface DemographicManager {
     public String getNextAppointmentDate(LoggedInInfo loggedInInfo, Integer demographicNo);
 
     public String getNextAppointmentDate(LoggedInInfo loggedInInfo, Demographic demographic);
+
+    /**
+     * Searches active (non-merged) patients for the merge workflow.
+     * Dispatches to the appropriate DAO method based on {@code searchMode}.
+     *
+     * @param loggedInInfo LoggedInInfo the authenticated provider
+     * @param keyword      String the search term
+     * @param searchMode   String one of: search_name, search_dob, search_phone, search_hin, search_address
+     * @param limit        int maximum number of results to return
+     * @param offset       int pagination offset
+     * @return List&lt;Demographic&gt; matching active patients
+     */
+    public List<Demographic> searchDemographicsForMerge(LoggedInInfo loggedInInfo, String keyword,
+                                                        String searchMode, int limit, int offset);
+
+    /**
+     * Searches patients with MERGED status for the unmerge workflow.
+     * Dispatches to the appropriate DAO method based on {@code searchMode}.
+     *
+     * @param loggedInInfo LoggedInInfo the authenticated provider
+     * @param keyword      String the search term
+     * @param searchMode   String one of: search_name, search_dob, search_phone, search_hin, search_address
+     * @param limit        int maximum number of results to return
+     * @param offset       int pagination offset
+     * @return List&lt;Demographic&gt; matching MERGED patients
+     */
+    public List<Demographic> searchMergedDemographicsForUnmerge(LoggedInInfo loggedInInfo, String keyword,
+                                                                String searchMode, int limit, int offset);
 }
