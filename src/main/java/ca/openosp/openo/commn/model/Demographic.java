@@ -146,7 +146,7 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
     private String nextAppointment;
 
     public enum PatientStatus {
-        AC, IN, DE, IC, ID, MO, FI
+        AC, IN, DE, IC, ID, MO, FI, MERGED
     }
 
     /**
