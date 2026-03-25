@@ -24,7 +24,9 @@
  */
 package ca.openosp.openo.demographic.pageUtil;
 
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.demographic.merge.DemographicMergeManager;
+import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -41,9 +43,11 @@ import java.util.List;
 /**
  * Struts2 action for the demographic merge/unmerge workflow.
  * <p>
- * Routes both merge and unmerge operations through a single {@code execute()} method,
- * using the {@code method} request parameter to distinguish them. Delegates all
- * business logic to {@link DemographicMergeManager}.
+ * Handles all operations — search display, primary selection, merge, and unmerge —
+ * routing via the {@code method} request parameter. Display methods populate request
+ * attributes consumed by the JSPs (no server-side logic in JSPs).
+ * Delegates all business logic to {@link DemographicMergeManager} and
+ * {@link DemographicManager}.
  * <p>
  * Requires {@code _demographic} write privilege. Throws {@link SecurityException}
  * if the logged-in provider lacks this privilege.
@@ -54,16 +58,20 @@ public class DemographicMergeAction extends ActionSupport {
 
     private static final Logger logger = MiscUtils.getLogger();
 
-    HttpServletRequest request = ServletActionContext.getRequest();
+    private static final int DEFAULT_LIMIT  = 10;
+    private static final int DEFAULT_OFFSET = 0;
+
+    HttpServletRequest  request  = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    private DemographicMergeManager demographicMergeManager = SpringUtils.getBean(DemographicMergeManager.class);
+    private SecurityInfoManager    securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private DemographicMergeManager mergeManager       = SpringUtils.getBean(DemographicMergeManager.class);
+    private DemographicManager     demographicManager  = SpringUtils.getBean(DemographicManager.class);
 
     /**
-     * Routes to merge or unmerge based on the {@code method} request parameter.
+     * Entry point — routes by {@code method} parameter; defaults to the search/display page.
      *
-     * @return String Struts2 result name: {@code "success"}, {@code "successUnMerge"}, or {@code "failure"}
+     * @return String Struts2 result name
      */
     @Override
     public String execute() {
@@ -75,23 +83,103 @@ public class DemographicMergeAction extends ActionSupport {
 
         String mtd = request.getParameter("method");
 
-        if ("merge".equals(mtd)) {
-            return doMerge(loggedInInfo);
-        } else if ("unmerge".equals(mtd)) {
-            return doUnmerge(loggedInInfo);
+        if ("merge".equals(mtd))         return doMerge(loggedInInfo);
+        if ("unmerge".equals(mtd))       return doUnmerge(loggedInInfo);
+        if ("selectPrimary".equals(mtd)) return doSelectPrimary(loggedInInfo);
+
+        return doSearch(loggedInInfo);
+    }
+
+    // -------------------------------------------------------------------------
+    // Display methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Runs the patient search and populates request attributes for
+     * {@code demographicMergeRecord.jsp}.
+     *
+     * @param loggedInInfo LoggedInInfo the authenticated provider
+     * @return String {@code "search"}
+     */
+    private String doSearch(LoggedInInfo loggedInInfo) {
+        String keyword    = request.getParameter("keyword");
+        String searchMode = request.getParameter("search_mode");
+        String mode       = request.getParameter("mode");
+        String outcome    = request.getParameter("outcome");
+
+        if (searchMode == null) searchMode = "search_name";
+        if (mode == null)       mode = "merge";
+
+        int offset      = parseIntOrDefault(request.getParameter("limit1"), DEFAULT_OFFSET);
+        int limit       = parseIntOrDefault(request.getParameter("limit2"), DEFAULT_LIMIT);
+        boolean unmerge = "unmerge".equals(mode);
+
+        List<Demographic> demoList = null;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            try {
+                if (unmerge) {
+                    demoList = demographicManager.searchMergedDemographicsForUnmerge(loggedInInfo, keyword, searchMode, limit, offset);
+                } else {
+                    demoList = demographicManager.searchDemographicsForMerge(loggedInInfo, keyword, searchMode, limit, offset);
+                }
+            } catch (Exception e) {
+                logger.error("DemographicMergeAction.doSearch: search failed", e);
+            }
         }
 
-        return "failure";
+        request.setAttribute("demoList",    demoList);
+        request.setAttribute("keyword",     keyword);
+        request.setAttribute("searchMode",  searchMode);
+        request.setAttribute("mode",        mode);
+        request.setAttribute("outcome",     outcome);
+        request.setAttribute("offset",      offset);
+        request.setAttribute("limit",       limit);
+        request.setAttribute("unmergeMode", unmerge);
+        request.setAttribute("resultCount", demoList != null ? demoList.size() : 0);
+
+        return "search";
     }
 
     /**
-     * Handles the merge operation.
-     * <p>
-     * Reads {@code primaryDemographicNo} and {@code secondaryDemographicNo[]} from the
-     * request, validates both, then delegates to {@link DemographicMergeManager#merge}.
+     * Loads the selected demographics and populates request attributes for
+     * {@code demographicMergePrimarySelect.jsp}.
      *
      * @param loggedInInfo LoggedInInfo the authenticated provider
-     * @return String {@code "success"} on success, {@code "failure"} on validation error or exception
+     * @return String {@code "selectPrimary"} on success, {@code "search"} if fewer than 2 IDs supplied
+     */
+    private String doSelectPrimary(LoggedInInfo loggedInInfo) {
+        String[] selectedParams = request.getParameterValues("demographicNo");
+
+        if (selectedParams == null || selectedParams.length < 2) {
+            logger.warn("DemographicMergeAction.doSelectPrimary: fewer than 2 demographicNo values received");
+            return doSearch(loggedInInfo);
+        }
+
+        List<Integer> selectedIds = new ArrayList<>();
+        for (String s : selectedParams) {
+            try { selectedIds.add(Integer.parseInt(s)); } catch (NumberFormatException ignored) {}
+        }
+
+        if (selectedIds.size() < 2) {
+            return doSearch(loggedInInfo);
+        }
+
+        List<Demographic> demographics = demographicManager.getDemographics(loggedInInfo, selectedIds);
+        request.setAttribute("demographics", demographics);
+        request.setAttribute("selectedIds",  selectedIds);
+
+        return "selectPrimary";
+    }
+
+    // -------------------------------------------------------------------------
+    // Operation methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Performs the merge and returns a result for redirect.
+     *
+     * @param loggedInInfo LoggedInInfo the authenticated provider
+     * @return String {@code "success"} or {@code "failure"}
      */
     private String doMerge(LoggedInInfo loggedInInfo) {
         try {
@@ -108,7 +196,7 @@ public class DemographicMergeAction extends ActionSupport {
                 secondaryNos.add(Integer.parseInt(s));
             }
 
-            demographicMergeManager.merge(loggedInInfo, primaryNo, secondaryNos);
+            mergeManager.merge(loggedInInfo, primaryNo, secondaryNos);
             return "success";
         } catch (Exception e) {
             logger.error("DemographicMergeAction.doMerge: merge failed", e);
@@ -117,22 +205,35 @@ public class DemographicMergeAction extends ActionSupport {
     }
 
     /**
-     * Handles the unmerge operation.
-     * <p>
-     * Reads {@code mergedDemographicNo} from the request, validates it, then delegates
-     * to {@link DemographicMergeManager#unmerge}.
+     * Performs the unmerge and returns a result for redirect.
      *
      * @param loggedInInfo LoggedInInfo the authenticated provider
-     * @return String {@code "successUnMerge"} on success, {@code "failure"} on validation error or exception
+     * @return String {@code "successUnMerge"} or {@code "failure"}
      */
     private String doUnmerge(LoggedInInfo loggedInInfo) {
         try {
             Integer mergedNo = Integer.parseInt(request.getParameter("mergedDemographicNo"));
-            demographicMergeManager.unmerge(loggedInInfo, mergedNo);
+            mergeManager.unmerge(loggedInInfo, mergedNo);
             return "successUnMerge";
         } catch (Exception e) {
             logger.error("DemographicMergeAction.doUnmerge: unmerge failed", e);
             return "failure";
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
+
+    /**
+     * Parses an integer from a string, returning a default value if null or unparseable.
+     *
+     * @param value        String the string to parse
+     * @param defaultValue int the fallback value
+     * @return int parsed value or default
+     */
+    private int parseIntOrDefault(String value, int defaultValue) {
+        if (value == null) return defaultValue;
+        try { return Integer.parseInt(value); } catch (NumberFormatException e) { return defaultValue; }
     }
 }
