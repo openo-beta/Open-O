@@ -150,7 +150,7 @@ public class OAuth2Service {
             // CXF returns ClientAccessToken with Java field names (tokenKey, tokenType, etc.)
             // but OAuth 2.0 RFC 6749 requires standard names (access_token, token_type, etc.)
             if (cxfResponse.getStatus() == 200 && cxfResponse.getEntity() instanceof org.apache.cxf.rs.security.oauth2.common.ClientAccessToken) {
-                org.apache.cxf.rs.security.oauth2.common.ClientAccessToken cat = 
+                org.apache.cxf.rs.security.oauth2.common.ClientAccessToken cat =
                     (org.apache.cxf.rs.security.oauth2.common.ClientAccessToken) cxfResponse.getEntity();
 
                 Map<String, Object> oauthResponse = new HashMap<>();
