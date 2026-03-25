@@ -416,10 +416,11 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
     @Override
     public boolean validateDocumentsBelongToPatient(LoggedInInfo loggedInInfo, Integer demographicNo, String[] documents) {
-        List<Integer> docIds = new ArrayList<>();
-        List<Integer> labIds = new ArrayList<>();
-        List<Integer> eformIds = new ArrayList<>();
-        List<Integer> hrmIds = new ArrayList<>();
+        // Use Set to automatically deduplicate IDs — duplicate entries would cause size-based validation to fail incorrectly
+        Set<Integer> docIds = new HashSet<>();
+        Set<Integer> labIds = new HashSet<>();
+        Set<Integer> eformIds = new HashSet<>();
+        Set<Integer> hrmIds = new HashSet<>();
 
         for (String doc : documents) {
             if (doc == null || doc.length() < 2) continue;
@@ -438,20 +439,20 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
         }
 
         if (!docIds.isEmpty()) {
-            List<Integer> found = documentDao.findDocumentNosForDemographic(demographicNo, docIds);
-            if (found.size() != docIds.size()) return false;
+            List<Integer> found = documentDao.findDocumentNosForDemographic(demographicNo, new ArrayList<>(docIds));
+            if (!found.containsAll(docIds)) return false;
         }
         if (!labIds.isEmpty()) {
-            List<Integer> found = patientLabRoutingDao.findLabNosForDemographic(demographicNo, labIds);
-            if (found.size() != labIds.size()) return false;
+            List<Integer> found = patientLabRoutingDao.findLabNosForDemographic(demographicNo, new ArrayList<>(labIds));
+            if (!found.containsAll(labIds)) return false;
         }
         if (!eformIds.isEmpty()) {
-            List<Integer> found = eFormDataDao.findFdidsForDemographic(demographicNo, eformIds);
-            if (found.size() != eformIds.size()) return false;
+            List<Integer> found = eFormDataDao.findFdidsForDemographic(demographicNo, new ArrayList<>(eformIds));
+            if (!found.containsAll(eformIds)) return false;
         }
         if (!hrmIds.isEmpty()) {
-            List<Integer> found = HRMUtil.findHRMDocumentIdsForPatient(demographicNo, hrmIds);
-            if (found.size() != hrmIds.size()) return false;
+            List<Integer> found = HRMUtil.findHRMDocumentIdsForPatient(demographicNo, new ArrayList<>(hrmIds));
+            if (!found.containsAll(hrmIds)) return false;
         }
 
         return true;

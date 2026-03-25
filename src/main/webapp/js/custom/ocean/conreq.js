@@ -54,10 +54,10 @@ function validateAttachments(demographicNo, docs) {
 // It involves saving attachments in the 'EreferAttachment' table by sending the selected attachments (documents)
 // and demographic information to the EreferAction.java class.
 function eRefer(event) {
-    let demographicNo = document.getElementById("demographicNo").serialize();
+    let demographicNo = jQuery("#demographicNo").serialize();
     let documents = getDocuments(event);
     let docs = documents.replace('documents=', '').split('|').filter(Boolean);
-    if (!validateAttachments(document.getElementById("demographicNo").value, docs)) {
+    if (!validateAttachments(jQuery("#demographicNo").val(), docs)) {
         throw new Error("Document validation failed");
     }
 
@@ -95,11 +95,11 @@ function getDocuments(event) {
 // It will update the attachments in the consult request and send those attachments to OceanMD
 // by saving them into the 'EreferAttachment' table.
 function attachOceanAttachments() {
-    let demographicNo = document.getElementById("demographicNo").serialize();
-    let requestId = document.getElementById("requestId").serialize();
+    let demographicNo = jQuery("#demographicNo").serialize();
+    let requestId = jQuery("#requestId").serialize();
     let documents = getDocuments();
     let docs = documents.replace('documents=', '').split('|').filter(Boolean);
-    if (!validateAttachments(document.getElementById("demographicNo").value, docs)) {
+    if (!validateAttachments(jQuery("#demographicNo").val(), docs)) {
         throw new Error("Document validation failed");
     }
 

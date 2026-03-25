@@ -11,6 +11,7 @@
 package ca.openosp.openo.hospitalReportManager.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -149,8 +150,22 @@ public class HRMDocumentToDemographicDao extends AbstractDaoImpl<HRMDocumentToDe
         return attachedHRMDocumentToDemographics;
     }
 
+    /**
+     * Returns the subset of the given HRM document IDs that are linked to the specified patient.
+     *
+     * <p>Used to validate that HRM document attachments belong to the correct patient before
+     * an Ocean eReferral submission. Returns an empty list immediately when {@code hrmIds} is
+     * {@code null} or empty to avoid JPA provider exceptions on empty {@code IN} clauses.
+     *
+     * @param demographicNo Integer the patient's demographic number
+     * @param hrmIds        List&lt;Integer&gt; the HRM document IDs to validate; may be {@code null} or empty
+     * @return List&lt;Integer&gt; the HRM document IDs from {@code hrmIds} that belong to the patient,
+     *         or an empty list if {@code hrmIds} is {@code null} or empty
+     * @since 2026-03-24
+     */
     @SuppressWarnings("unchecked")
     public List<Integer> findHrmIdsForDemographic(Integer demographicNo, List<Integer> hrmIds) {
+        if (hrmIds == null || hrmIds.isEmpty()) return Collections.emptyList();
         Query query = entityManager.createQuery(
                 "SELECT x.hrmDocumentId FROM HRMDocumentToDemographic x " +
                 "WHERE x.demographicNo = :demographicNo AND x.hrmDocumentId IN :hrmIds");

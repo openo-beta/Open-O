@@ -273,6 +273,7 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
     @SuppressWarnings("unchecked")
     @Override
     public List<Integer> findDocumentNosForDemographic(Integer demographicNo, List<Integer> docNos) {
+        if (docNos == null || docNos.isEmpty()) return Collections.emptyList();
         Query query = entityManager.createQuery(
                 "SELECT c.id.documentNo FROM CtlDocument c " +
                 "WHERE c.id.module = 'demographic' AND c.id.moduleId = :demographicNo " +
