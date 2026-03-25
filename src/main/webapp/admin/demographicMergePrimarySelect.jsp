@@ -44,7 +44,7 @@
         Choose which record will be the <strong>primary (A)</strong>. Its identity fields (name, DOB, HIN, address) will be used for the new merged record. All clinical data from every record below will be copied into the merged record.
     </p>
 
-    <form method="post" action="${pageContext.request.contextPath}/DemographicMerge.do"
+    <form method="post" action="${pageContext.request.contextPath}/admin/DemographicMerge.do"
           id="mergeForm" onsubmit="return buildMergeForm()">
         <input type="hidden" name="method" value="merge">
 
@@ -84,7 +84,7 @@
 
         <div class="d-flex gap-2 mt-3">
             <button type="submit" class="btn btn-danger">Merge Records</button>
-            <a href="${pageContext.request.contextPath}/DemographicMerge.do" class="btn btn-outline-secondary">
+            <a href="${pageContext.request.contextPath}/admin/DemographicMerge.do" class="btn btn-outline-secondary">
                 &larr; Back
             </a>
         </div>

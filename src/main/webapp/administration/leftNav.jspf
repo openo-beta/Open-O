@@ -897,6 +897,8 @@ String curProvider_no = (String)session.getAttribute("user");
 					<li><a href='javascript:void(0);'
 						class="xlink" rel="${ctx}/admin/demographicmergerecord.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.mergeRec"/></a></li>
 					<li><a href='javascript:void(0);'
+						class="xlink" rel="${ctx}/admin/DemographicMerge.do"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.mergeDemographic"/></a></li>
+					<li><a href='javascript:void(0);'
 						class="xlink" rel="${ctx}/admin/updatedemographicprovider.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnUpdatePatientProvider"/></a></li>
 				   <li><a href='javascript:void(0);'
 						class="xlink" rel="${ctx}/admin/productDispensing/products.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnInventory"/></a></li>
