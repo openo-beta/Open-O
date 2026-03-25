@@ -81,13 +81,13 @@
     <ul class="nav nav-tabs mb-3">
         <li class="nav-item">
             <a class="nav-link ${not unmergeMode ? 'active' : ''}"
-               href="${pageContext.request.contextPath}/DemographicMerge.do?mode=merge&search_mode=<e:forUriComponent value='${searchMode}'/>">
+               href="${pageContext.request.contextPath}/admin/DemographicMerge.do?mode=merge&search_mode=<e:forUriComponent value='${searchMode}'/>">
                 Find Records to Merge
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link ${unmergeMode ? 'active' : ''}"
-               href="${pageContext.request.contextPath}/DemographicMerge.do?mode=unmerge&search_mode=<e:forUriComponent value='${searchMode}'/>">
+               href="${pageContext.request.contextPath}/admin/DemographicMerge.do?mode=unmerge&search_mode=<e:forUriComponent value='${searchMode}'/>">
                 Find Merged Records (Unmerge)
             </a>
         </li>
@@ -95,7 +95,7 @@
 
     <%-- Search form --%>
     <div class="search-bar">
-        <form method="get" action="${pageContext.request.contextPath}/DemographicMerge.do" class="row g-2 align-items-center">
+        <form method="get" action="${pageContext.request.contextPath}/admin/DemographicMerge.do" class="row g-2 align-items-center">
             <input type="hidden" name="mode" value="<e:forHtmlAttribute value='${mode}'/>">
             <div class="col-auto">
                 <div class="btn-group btn-group-sm" role="group">
@@ -137,7 +137,7 @@
         <c:choose>
             <%-- UNMERGE MODE --%>
             <c:when test="${unmergeMode}">
-                <form method="post" action="${pageContext.request.contextPath}/DemographicMerge.do">
+                <form method="post" action="${pageContext.request.contextPath}/admin/DemographicMerge.do">
                     <input type="hidden" name="method" value="unmerge">
                     <table class="table table-sm table-striped table-bordered">
                         <thead class="table-light">
@@ -181,7 +181,7 @@
 
             <%-- MERGE MODE --%>
             <c:otherwise>
-                <form method="post" action="${pageContext.request.contextPath}/DemographicMerge.do"
+                <form method="post" action="${pageContext.request.contextPath}/admin/DemographicMerge.do"
                       onsubmit="return validateMergeSelection()">
                     <input type="hidden" name="method" value="selectPrimary">
                     <input type="hidden" name="search_mode" value="<e:forHtmlAttribute value='${searchMode}'/>">
@@ -232,13 +232,13 @@
         <div class="pagination-bar">
             <c:if test="${offset > 0}">
                 <a class="btn btn-outline-secondary btn-sm"
-                   href="${pageContext.request.contextPath}/DemographicMerge.do?mode=<e:forUriComponent value='${mode}'/>&keyword=<e:forUriComponent value='${keyword}'/>&search_mode=<e:forUriComponent value='${searchMode}'/>&limit1=${offset - limit}&limit2=${limit}">
+                   href="${pageContext.request.contextPath}/admin/DemographicMerge.do?mode=<e:forUriComponent value='${mode}'/>&keyword=<e:forUriComponent value='${keyword}'/>&search_mode=<e:forUriComponent value='${searchMode}'/>&limit1=${offset - limit}&limit2=${limit}">
                     &laquo; Previous
                 </a>
             </c:if>
             <c:if test="${resultCount >= limit}">
                 <a class="btn btn-outline-secondary btn-sm"
-                   href="${pageContext.request.contextPath}/DemographicMerge.do?mode=<e:forUriComponent value='${mode}'/>&keyword=<e:forUriComponent value='${keyword}'/>&search_mode=<e:forUriComponent value='${searchMode}'/>&limit1=${offset + limit}&limit2=${limit}">
+                   href="${pageContext.request.contextPath}/admin/DemographicMerge.do?mode=<e:forUriComponent value='${mode}'/>&keyword=<e:forUriComponent value='${keyword}'/>&search_mode=<e:forUriComponent value='${searchMode}'/>&limit1=${offset + limit}&limit2=${limit}">
                     Next &raquo;
                 </a>
             </c:if>
