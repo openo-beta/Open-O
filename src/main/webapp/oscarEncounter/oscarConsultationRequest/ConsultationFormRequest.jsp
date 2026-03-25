@@ -138,13 +138,13 @@
                 String scheme = request.getScheme();           // e.g., "http" or "https"
                 String serverName = request.getServerName();   // e.g., "localhost"
                 int serverPort = request.getServerPort();      // e.g., 8080
-                
+
                 String issUrl = scheme + "://" + serverName;
                 if ((scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443)) {
                     issUrl += ":" + serverPort;
                 }
                 issUrl += contextPath;
-                
+
                 if (pathwaysLaunchUrl.contains("?")) {
                     pathwaysLaunchUrl += "&client_id=" + java.net.URLEncoder.encode(pathwaysClientId, "UTF-8") + "&iss=" + java.net.URLEncoder.encode(issUrl, "UTF-8");
                 } else {

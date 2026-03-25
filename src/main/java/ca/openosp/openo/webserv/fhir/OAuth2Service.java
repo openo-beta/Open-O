@@ -37,7 +37,7 @@ import org.apache.cxf.rs.security.oauth2.provider.ResourceOwnerNameProvider;
 public class OAuth2Service {
 
     private OAuthDataProvider dataProvider;
-    
+
     // CXF Services
     private AuthorizationCodeGrantService authService;
     private AccessTokenService tokenService;
@@ -53,26 +53,27 @@ public class OAuth2Service {
         authService = new AutoApprovedAuthorizationCodeGrantService();
         authService.setDataProvider(dataProvider);
         authService.setCanSupportPublicClients(true);
-        
+
         // Use SubjectCreator to create the UserSubject from the session
         authService.setSubjectCreator(new org.apache.cxf.rs.security.oauth2.provider.SubjectCreator() {
             @Override
-            public UserSubject createUserSubject(org.apache.cxf.jaxrs.ext.MessageContext mc, 
-                                                 MultivaluedMap<String, String> params) 
+            public UserSubject createUserSubject(org.apache.cxf.jaxrs.ext.MessageContext mc,
+                                                 MultivaluedMap<String, String> params)
                                                  throws org.apache.cxf.rs.security.oauth2.provider.OAuthServiceException {
                  System.out.println("[FHIR-OAUTH-DEBUG] SubjectCreator.createUserSubject called");
                  HttpServletRequest req = mc.getHttpServletRequest();
                  Object user = req.getSession().getAttribute("user");
                  System.out.println("[FHIR-OAUTH-DEBUG] user in session: " + user);
-                 
+
                  if (user != null) {
                      return new UserSubject(user.toString());
                  }
+
                  System.out.println("[FHIR-OAUTH-DEBUG] SubjectCreator: User not authenticated (returning null / throwing)");
                  throw new org.apache.cxf.rs.security.oauth2.provider.OAuthServiceException("User not authenticated");
             }
         });
-        
+
         // Initialize Token Service
         tokenService = new AccessTokenService();
         tokenService.setDataProvider(dataProvider);
@@ -95,7 +96,7 @@ public class OAuth2Service {
         System.out.println("[FHIR-OAUTH-DEBUG] OAuth2Service.authorize() called");
         Object sessionUser = request.getSession().getAttribute("user");
         System.out.println("[FHIR-OAUTH-DEBUG] authorize: user in session=" + sessionUser);
-        
+
         // 1. Check if logged in
         if (sessionUser == null) {
              try {
@@ -105,13 +106,13 @@ public class OAuth2Service {
                          .replacePath(request.getContextPath() + "/login.jsp")
                          .replaceQueryParam("next", currentUri)
                          .build();
-                 
+
                  return Response.seeOther(loginUri).build();
              } catch (Exception e) {
                  return Response.serverError().entity("Error encoding redirect").build();
              }
         }
-        
+
         // --- PKCE Bypass Check ---
         boolean isPkce = request.getParameter(org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.AUTHORIZATION_CODE_CHALLENGE) != null;
         ca.openosp.openo.webserv.fhir.FHIROAuth2Provider.setPkceRequest(isPkce);
@@ -124,7 +125,7 @@ public class OAuth2Service {
             ca.openosp.openo.webserv.fhir.FHIROAuth2Provider.setPkceRequest(false);
         }
     }
-    
+
     @POST
     @Path("/authorize/decision")
     public Response authorizeDecision() {
@@ -138,20 +139,20 @@ public class OAuth2Service {
     @Produces(MediaType.APPLICATION_JSON)
     public Response token(MultivaluedMap<String, String> params) {
         tokenService.setMessageContext(mc);
-        
+
         // --- PKCE Bypass Check ---
         boolean isPkce = params.containsKey(org.apache.cxf.rs.security.oauth2.utils.OAuthConstants.AUTHORIZATION_CODE_VERIFIER);
         ca.openosp.openo.webserv.fhir.FHIROAuth2Provider.setPkceRequest(isPkce);
 
         try {
             Response cxfResponse = tokenService.handleTokenRequest(params);
-            
+
             // CXF returns ClientAccessToken with Java field names (tokenKey, tokenType, etc.)
             // but OAuth 2.0 RFC 6749 requires standard names (access_token, token_type, etc.)
             if (cxfResponse.getStatus() == 200 && cxfResponse.getEntity() instanceof org.apache.cxf.rs.security.oauth2.common.ClientAccessToken) {
                 org.apache.cxf.rs.security.oauth2.common.ClientAccessToken cat = 
                     (org.apache.cxf.rs.security.oauth2.common.ClientAccessToken) cxfResponse.getEntity();
-                
+
                 Map<String, Object> oauthResponse = new HashMap<>();
                 oauthResponse.put("access_token", cat.getTokenKey());
                 oauthResponse.put("token_type", cat.getTokenType());
@@ -166,26 +167,26 @@ public class OAuth2Service {
                 if (cat.getParameters() != null) {
                     oauthResponse.putAll(cat.getParameters());
                 }
-                
+
                 return Response.ok(oauthResponse)
                     .header("Cache-Control", "no-store")
                     .header("Pragma", "no-cache")
                     .build();
             }
-            
+
             return cxfResponse;
         } finally {
             ca.openosp.openo.webserv.fhir.FHIROAuth2Provider.setPkceRequest(false);
         }
     }
-    
+
     /**
      * Custom AuthorizationCodeGrantService that skips the confirmation form.
      */
     public static class AutoApprovedAuthorizationCodeGrantService extends AuthorizationCodeGrantService {
 
         @Override
-        protected UserSubject createUserSubject(org.apache.cxf.security.SecurityContext sc, 
+        protected UserSubject createUserSubject(org.apache.cxf.security.SecurityContext sc,
                                               MultivaluedMap<String, String> params) {
             System.out.println("[FHIR-OAUTH-DEBUG] AutoApproved...createUserSubject override called");
             // We need the request to get the session, which isn't in SecurityContext
@@ -200,11 +201,11 @@ public class OAuth2Service {
         }
 
         @Override
-        protected Response startAuthorization(MultivaluedMap<String, String> params, 
+        protected Response startAuthorization(MultivaluedMap<String, String> params,
                                               UserSubject userSubject,
-                                              org.apache.cxf.rs.security.oauth2.common.Client client,    
+                                              org.apache.cxf.rs.security.oauth2.common.Client client,
                                               String redirectUri) {
-            
+
             System.out.println("[FHIR-OAUTH-DEBUG] startAuthorization called. userSubject=" + userSubject);
 
             // Fallback: If UserSubject is null, try to create it from the session
@@ -221,15 +222,15 @@ public class OAuth2Service {
                      System.out.println("[FHIR-OAUTH-DEBUG] startAuthorization: Error creating fallback subject: " + e.getMessage());
                 }
             }
-            
+
             // Call super to validate params and create the state/data
             Response response = super.startAuthorization(params, userSubject, client, redirectUri);
-            
+
             // Check if super wants to show the form (returns OAuthAuthorizationData)
             if (response.getEntity() instanceof org.apache.cxf.rs.security.oauth2.common.OAuthAuthorizationData) {
-                org.apache.cxf.rs.security.oauth2.common.OAuthAuthorizationData data = 
+                org.apache.cxf.rs.security.oauth2.common.OAuthAuthorizationData data =
                     (org.apache.cxf.rs.security.oauth2.common.OAuthAuthorizationData) response.getEntity();
-                
+
                 // Auto-approve: directly create the grant
                 // We assume all requested scopes are approved
                 List<String> requestedScope = org.apache.cxf.rs.security.oauth2.utils.OAuthUtils.parseScope(params.getFirst("scope"));
@@ -242,7 +243,7 @@ public class OAuth2Service {
                 // Call createGrant directly
                 return createGrant(data, client, requestedScope, requestedScope, userSubject, null);
             }
-            
+
             return response;
         }
     }

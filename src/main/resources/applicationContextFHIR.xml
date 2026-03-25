@@ -10,8 +10,8 @@
             http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
             http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
 
-    <!-- 
-      FHIR Server + SMART on FHIR OAuth 2.0 Configuration 
+    <!--
+      FHIR Server + SMART on FHIR OAuth 2.0 Configuration
       Implements a minimal OAuth 2.0 provider using existing tables.
     -->
 
@@ -46,7 +46,7 @@
             <ref bean="fhirOrganizationService"/>
             <ref bean="oauth2Service"/>
         </jaxrs:serviceBeans>
-        
+
         <jaxrs:providers>
             <ref bean="fhirJsonProvider"/>
             <ref bean="ignorableOAuthFilter"/>
@@ -55,7 +55,7 @@
             <!-- Accept x-www-form-urlencoded bodies for token endpoint -->
             <bean class="org.apache.cxf.jaxrs.provider.FormEncodingProvider"/>
         </jaxrs:providers>
-        
+
         <jaxrs:features>
             <cxf:logging/>
         </jaxrs:features>

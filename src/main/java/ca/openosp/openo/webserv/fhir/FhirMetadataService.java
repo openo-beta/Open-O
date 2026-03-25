@@ -35,7 +35,6 @@ public class FhirMetadataService {
     @Path("metadata")
     @Produces({"application/fhir+json", "application/json"})
     public CapabilityStatement getMetadata(@Context HttpServletRequest request, @Context UriInfo uriInfo) {
-        
         CapabilityStatement cs = new CapabilityStatement();
         cs.setStatus(PublicationStatus.ACTIVE);
         cs.setDate(new java.util.Date());
@@ -48,7 +47,7 @@ public class FhirMetadataService {
 
         CapabilityStatementRestComponent rest = cs.addRest();
         rest.setMode(CapabilityStatement.RestfulCapabilityMode.SERVER);
-        
+
         // Security configuration (SMART on FHIR)
         CapabilityStatementRestSecurityComponent security = rest.getSecurity();
         CodeableConcept service = new CodeableConcept();
@@ -57,16 +56,16 @@ public class FhirMetadataService {
         coding.setCode("SMART-on-FHIR");
         coding.setDisplay("SMART-on-FHIR");
         security.addService(service);
-        
+
         Extension oauthUris = new Extension();
         oauthUris.setUrl("http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris");
-        
+
         // Dynamic construction of OAuth URLs based on request context
         String baseUrl = uriInfo.getBaseUri().toString();
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
-        
+
         // Use the new OAuth 2.0 endpoints under /ws/fhir/auth
         oauthUris.addExtension("authorize", new UriType(baseUrl + "auth/authorize"));
         oauthUris.addExtension("token", new UriType(baseUrl + "auth/token"));

@@ -76,9 +76,9 @@ public class FhirPractitionerService {
     public Bundle searchPractitioners(
             @QueryParam("name") String name,
             @QueryParam("identifier") String identifier) {
-        
+
         List<ProfessionalSpecialist> specialists = new ArrayList<>();
-        
+
         if (StringUtils.isNotBlank(identifier)) {
              // System|Value or just Value
              String value = identifier;
@@ -90,7 +90,7 @@ public class FhirPractitionerService {
                      // system| (no value)
                      value = "";
                  }
-                 
+
                  if (value.isEmpty()) {
                      // Return all with external ID (eDataOscarKey)
                      specialists = professionalSpecialistDao.findByEDataOscarKeyNotNull();
@@ -107,9 +107,9 @@ public class FhirPractitionerService {
                      specialists = professionalSpecialistDao.findByReferralNo(value);
                  }
              }
-             
+
              if (specialists == null) specialists = new ArrayList<>();
-             
+
         } else if (StringUtils.isNotBlank(name)) {
             specialists = professionalSpecialistDao.search(name);
         } else {
@@ -119,11 +119,11 @@ public class FhirPractitionerService {
              specialists = professionalSpecialistDao.search(""); // returns all if keyword empty? check DAO impl
              // Actually search("") in manager usually returns all.
         }
-        
+
         Bundle bundle = new Bundle();
         bundle.setType(Bundle.BundleType.SEARCHSET);
         bundle.setTotal(specialists.size());
-        
+
         // Cap results to 50 for safety
         int count = 0;
         for (ProfessionalSpecialist ps : specialists) {
@@ -132,7 +132,7 @@ public class FhirPractitionerService {
             entry.setResource(mapToFhir(ps));
             entry.setFullUrl("Practitioner/" + ps.getId());
         }
-        
+
         return bundle;
     }
 
@@ -141,12 +141,11 @@ public class FhirPractitionerService {
     public Response createPractitioner(Practitioner fhirPractitioner, @Context UriInfo uriInfo) {
         ProfessionalSpecialist ps = new ProfessionalSpecialist();
         mapToEntity(fhirPractitioner, ps);
-        
         professionalSpecialistDao.persist(ps);
-        
+
         // Auto-map to ConsultationServices
         autoMapSpecialistToServices(ps);
-        
+
         URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(ps.getId())).build();
         return Response.created(location).entity(mapToFhir(ps)).build();
     }
@@ -156,29 +155,30 @@ public class FhirPractitionerService {
     @Transactional
     public Practitioner updatePractitioner(@PathParam("id") Integer id, Practitioner fhirPractitioner) {
         ProfessionalSpecialist ps = professionalSpecialistDao.find(id);
+
         if (ps == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        
+
         mapToEntity(fhirPractitioner, ps);
         professionalSpecialistDao.merge(ps);
-        
+
         // Auto-map to ConsultationServices
         autoMapSpecialistToServices(ps);
-        
+
         return mapToFhir(ps);
     }
 
     private Practitioner mapToFhir(ProfessionalSpecialist ps) {
         Practitioner pract = new Practitioner();
         pract.setId(new IdType("Practitioner", String.valueOf(ps.getId())));
-        
+
         // Name
         HumanName name = pract.addName();
         if (ps.getLastName() != null) name.setFamily(ps.getLastName());
         if (ps.getFirstName() != null) name.addGiven(ps.getFirstName());
         if (ps.getProfessionalLetters() != null) name.addSuffix(ps.getProfessionalLetters());
-        
+
         // Telecoms
         if (StringUtils.isNotBlank(ps.getPhoneNumber())) {
             pract.addTelecom().setSystem(ContactPointSystem.PHONE).setValue(ps.getPhoneNumber()).setUse(ContactPointUse.WORK);
@@ -196,7 +196,7 @@ public class FhirPractitionerService {
         // Address
         Address address = pract.addAddress();
         address.setUse(Address.AddressUse.WORK);
-        
+
         String[] addressArray = ps.getAddressArray();
         if (addressArray.length > 0 && StringUtils.isNotBlank(addressArray[0])) {
             // Street address is often comma separated in the first element or spread
@@ -207,13 +207,13 @@ public class FhirPractitionerService {
         if (addressArray.length > 2) address.setPostalCode(StringUtils.trimToEmpty(addressArray[2]).replace(",", ""));
         if (addressArray.length > 3) address.setState(StringUtils.trimToEmpty(addressArray[3]).replace(",", ""));
         // Country is index 4 but rarely used correctly
-        
+
         // Qualification / Specialty
         if (StringUtils.isNotBlank(ps.getSpecialtyType())) {
             PractitionerQualificationComponent qual = pract.addQualification();
             qual.getCode().setText(ps.getSpecialtyType());
         }
-        
+
         // Identifiers
         if (StringUtils.isNotBlank(ps.getReferralNo())) {
             pract.addIdentifier().setSystem("http://oscar/referralNo").setValue(ps.getReferralNo());
@@ -224,7 +224,7 @@ public class FhirPractitionerService {
                  .setSystem("https://pathwaysbc.ca/fhir/NamingSystem/specialist-id")
                  .setValue(ps.geteDataOscarKey());
         }
-        
+
         return pract;
     }
 
@@ -236,7 +236,7 @@ public class FhirPractitionerService {
             if (name.hasGiven()) ps.setFirstName(name.getGivenAsSingleString());
             if (!name.getSuffix().isEmpty()) ps.setProfessionalLetters(name.getSuffix().get(0).getValue());
         }
-        
+
         // Telecoms
         for (ContactPoint cp : fhirPractitioner.getTelecom()) {
             if (cp.getSystem() == ContactPointSystem.PHONE) ps.setPhoneNumber(cp.getValue());
@@ -244,7 +244,7 @@ public class FhirPractitionerService {
             else if (cp.getSystem() == ContactPointSystem.EMAIL) ps.setEmailAddress(cp.getValue());
             else if (cp.getSystem() == ContactPointSystem.URL) ps.setWebSite(cp.getValue());
         }
-        
+
         // Address
         if (!fhirPractitioner.getAddress().isEmpty()) {
             Address addr = fhirPractitioner.getAddressFirstRep();
@@ -253,12 +253,12 @@ public class FhirPractitionerService {
             ps.setPostal(addr.getPostalCode());
             ps.setProvince(addr.getState());
         }
-        
+
         // Qualification
         if (!fhirPractitioner.getQualification().isEmpty()) {
             ps.setSpecialtyType(fhirPractitioner.getQualificationFirstRep().getCode().getText());
         }
-        
+
         // Identifier
         for (Identifier id : fhirPractitioner.getIdentifier()) {
             if ("http://oscar/referralNo".equals(id.getSystem())) {
@@ -275,24 +275,24 @@ public class FhirPractitionerService {
 
     private void autoMapSpecialistToServices(ProfessionalSpecialist ps) {
         if (ps == null || ps.getId() == null) return;
-        
+
         Integer specId = ps.getId();
-        
+
         // 1. Always map to "All Services" (serviceId = 0)
         createServiceSpecialistLink(0, specId);
-        
+
         // 2. Map to specific specialty if it exists
         String specialtyType = ps.getSpecialtyType();
         if (StringUtils.isNotBlank(specialtyType)) {
             String searchStr = specialtyType.trim().toLowerCase();
-            
+
             // First try exact match
             ConsultationServices exactMatch = consultationServiceDao.findByDescription(specialtyType.trim());
             if (exactMatch != null && exactMatch.getId() != null) {
                 createServiceSpecialistLink(exactMatch.getId(), specId);
                 return;
             }
-            
+
             // If no exact match, try partial match against active services
             java.util.List<ConsultationServices> activeServices = consultationServiceDao.findActive();
             for (ConsultationServices service : activeServices) {
@@ -304,11 +304,11 @@ public class FhirPractitionerService {
             }
         }
     }
-    
+
     private void createServiceSpecialistLink(Integer serviceId, Integer specId) {
         // Build composite key
         ServiceSpecialistsPK pk = new ServiceSpecialistsPK(serviceId, specId);
-        
+
         // Check if linkage already exists
         ServiceSpecialists existing = serviceSpecialistsDao.find(pk);
         if (existing == null) {

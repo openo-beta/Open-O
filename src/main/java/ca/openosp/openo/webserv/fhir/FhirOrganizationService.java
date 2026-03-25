@@ -64,16 +64,16 @@ public class FhirOrganizationService {
     @Transactional(readOnly = true)
     public Bundle searchOrganizations(@QueryParam("identifier") String identifier) {
         List<ConsultationServices> services;
-        
+
         if (identifier != null && !identifier.isEmpty()) {
             // Check for system|value
             String val = identifier;
             if (identifier.contains("|")) {
                  String[] parts = identifier.split("\\|");
                  if (parts.length > 1) val = parts[1];
-                 else val = ""; 
+                 else val = "";
             }
-            
+
             if (val.isEmpty()) {
                 // Return all with external ID
                 services = consultationServiceDao.findByExternalIdNotNull();
@@ -89,7 +89,7 @@ public class FhirOrganizationService {
         Bundle bundle = new Bundle();
         bundle.setType(Bundle.BundleType.SEARCHSET);
         bundle.setTotal(services.size());
-        
+
         for (ConsultationServices cs : services) {
             BundleEntryComponent entry = bundle.addEntry();
             entry.setResource(mapToFhir(cs));
@@ -103,12 +103,11 @@ public class FhirOrganizationService {
     public Response createOrganization(Organization fhirOrg, @Context UriInfo uriInfo) {
         ConsultationServices cs = new ConsultationServices();
         mapToEntity(fhirOrg, cs);
-        
         consultationServiceDao.persist(cs);
-        
+
         // Auto-create and map a Consultant entry for this Clinic
         createOrUpdateClinicSpecialist(cs, fhirOrg);
-        
+
         URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(cs.getId())).build();
         return Response.created(location).entity(mapToFhir(cs)).build();
     }
@@ -121,13 +120,13 @@ public class FhirOrganizationService {
         if (cs == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        
+
         mapToEntity(fhirOrg, cs);
         consultationServiceDao.merge(cs);
-        
+
         // Auto-create and map a Consultant entry for this Clinic
         createOrUpdateClinicSpecialist(cs, fhirOrg);
-        
+
         return mapToFhir(cs);
     }
 
@@ -136,13 +135,13 @@ public class FhirOrganizationService {
         org.setId(new IdType("Organization", String.valueOf(cs.getId())));
         org.setName(cs.getServiceDesc());
         org.setActive("1".equals(cs.getActive()));
-        
+
         if (cs.getExternalId() != null && !cs.getExternalId().isEmpty()) {
             org.addIdentifier()
                .setSystem("https://pathwaysbc.ca/fhir/NamingSystem/clinic-id")
                .setValue(cs.getExternalId());
         }
-        
+
         return org;
     }
 
@@ -150,14 +149,14 @@ public class FhirOrganizationService {
         if (fhirOrg.hasName()) {
             cs.setServiceDesc(fhirOrg.getName());
         }
-        
+
         if (fhirOrg.hasActive()) {
             cs.setActive(fhirOrg.getActive() ? "1" : "0");
         } else {
             // Default to active if not specified
             cs.setActive("1");
         }
-        
+
         // Map identifier to externalId
         if (fhirOrg.hasIdentifier()) {
             // Just take the first one or prioritize specific system
@@ -196,9 +195,9 @@ public class FhirOrganizationService {
         } else {
             ps.setLastName(cs.getServiceDesc());
         }
-        
+
         ps.setSpecialtyType("Clinic / Organization");
-        
+
         if (ps.getId() == null) {
             professionalSpecialistDao.persist(ps);
         } else {
