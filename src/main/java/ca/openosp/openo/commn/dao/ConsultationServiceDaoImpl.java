@@ -92,18 +92,18 @@ public class ConsultationServiceDaoImpl extends AbstractDaoImpl<ConsultationServ
 
     public ConsultationServices findByExternalId(String externalId) {
         if (externalId == null || externalId.trim().isEmpty()) return null;
-        
+
         String sql = "select x from ConsultationServices x where x.externalId=?1";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, externalId);
-        
+
         return this.getSingleResultOrNull(query);
     }
 
     public List<ConsultationServices> findByExternalIdNotNull() {
         String sql = "select x from ConsultationServices x where x.externalId is not null order by x.serviceDesc";
         Query query = entityManager.createQuery(sql);
-        
+
         @SuppressWarnings("unchecked")
         List<ConsultationServices> results = query.getResultList();
         return results;

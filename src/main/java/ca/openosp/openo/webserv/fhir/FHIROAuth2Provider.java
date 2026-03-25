@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * OAuth 2.0 Data Provider for SMART on FHIR.
  * Persists tokens to existing 'oauth_access_token' and 'oauth_code' tables
  * (originally intended for Spring Security OAuth, but reused here for CXF).
- * 
+ *
  * Uses JSON serialization to store complex objects in the BLOB columns.
  */
 public class FHIROAuth2Provider implements AuthorizationCodeDataProvider {
@@ -69,12 +69,12 @@ public class FHIROAuth2Provider implements AuthorizationCodeDataProvider {
 
                     Client c = new Client(rs.getString("client_id"), secret, isConfidential);
                     c.setConfidential(isConfidential);
-                    
+
                     String uri = rs.getString("web_server_redirect_uri");
                     if (uri != null && !uri.isEmpty()) {
                         c.setRedirectUris(Collections.singletonList(uri));
                     }
-                    
+
                     String scope = rs.getString("scope");
                     if (scope != null && !scope.isEmpty()) {
                         List<String> scopes = new ArrayList<>();
@@ -97,41 +97,41 @@ public class FHIROAuth2Provider implements AuthorizationCodeDataProvider {
     public ServerAccessToken createAccessToken(org.apache.cxf.rs.security.oauth2.common.AccessTokenRegistration reg) throws OAuthServiceException {
         try {
             // Create a default BearerAccessToken
-            org.apache.cxf.rs.security.oauth2.tokens.bearer.BearerAccessToken token = 
+            org.apache.cxf.rs.security.oauth2.tokens.bearer.BearerAccessToken token =
                 new org.apache.cxf.rs.security.oauth2.tokens.bearer.BearerAccessToken(reg.getClient(), 3600L);
-            
+
             token.setSubject(reg.getSubject());
             token.setGrantType(reg.getGrantType());
             token.setAudiences(reg.getAudiences());
             token.setScopes(convertScopeToPermissions(reg.getClient(), reg.getRequestedScope()));
-            
+
             // Generate IDs
             // BearerAccessToken constructor generates tokenKey
-            
+
             saveAccessToken(token);
             return token;
         } catch (Exception e) {
             throw new OAuthServiceException("Error creating access token", e);
         }
     }
-    
+
     private void saveAccessToken(ServerAccessToken accessToken) {
         try {
             String tokenId = accessToken.getTokenKey();
             String tokenJson = objectMapper.writeValueAsString(accessToken);
             String authId = java.util.UUID.randomUUID().toString();
-            
+
             String username = (accessToken.getSubject() != null) ? accessToken.getSubject().getLogin() : null;
             String clientId = accessToken.getClient().getClientId();
             String refreshToken = (accessToken.getRefreshToken() != null) ? accessToken.getRefreshToken() : null;
 
             jdbcTemplate.update(
                 "INSERT INTO oauth_access_token (token_id, token, authentication_id, user_name, client_id, refresh_token) VALUES (?, ?, ?, ?, ?, ?)",
-                tokenId, 
-                tokenJson.getBytes("UTF-8"), 
-                authId, 
-                username, 
-                clientId, 
+                tokenId,
+                tokenJson.getBytes("UTF-8"),
+                authId,
+                username,
+                clientId,
                 refreshToken
             );
         } catch (Exception e) {
@@ -148,7 +148,7 @@ public class FHIROAuth2Provider implements AuthorizationCodeDataProvider {
                 new Object[]{accessToken},
                 byte[].class
             );
-            
+
             if (blob == null) {
                 System.out.println("[FHIR-OAUTH-DEBUG] getAccessToken: blob is null");
                 return null;
@@ -184,7 +184,7 @@ public class FHIROAuth2Provider implements AuthorizationCodeDataProvider {
             grant.setClientCodeChallenge(reg.getClientCodeChallenge());
             grant.setClientCodeChallengeMethod(reg.getClientCodeChallengeMethod());
             grant.setNonce(reg.getNonce());
-            
+
             String code = grant.getCode();
             System.out.println("[FHIR-OAUTH-DEBUG] createCodeGrant called, code=" + code + ", subject=" + reg.getSubject());
             String json = objectMapper.writeValueAsString(grant);
@@ -207,7 +207,7 @@ public class FHIROAuth2Provider implements AuthorizationCodeDataProvider {
                 new Object[]{code},
                 byte[].class
             );
-            
+
             if (blob != null) {
                 System.out.println("[FHIR-OAUTH-DEBUG] Code found in DB, deleting and deserializing");
                 jdbcTemplate.update("DELETE FROM oauth_code WHERE code = ?", code);
@@ -243,7 +243,7 @@ public class FHIROAuth2Provider implements AuthorizationCodeDataProvider {
     public List<ServerAuthorizationCodeGrant> getCodeGrants(Client c, UserSubject subject) {
         return Collections.emptyList();
     }
-    
+
     @Override
     public ServerAccessToken getPreauthorizedToken(Client client, List<String> requestedScopes,
             UserSubject subject, String grantType) throws OAuthServiceException {
