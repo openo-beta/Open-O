@@ -1419,4 +1419,44 @@ public class DemographicManagerImpl implements DemographicManager {
         return appointmentString;
     }
 
+    @Override
+    public List<Demographic> searchDemographicsForMerge(LoggedInInfo loggedInInfo, String keyword,
+                                                        String searchMode, int limit, int offset) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        List<Demographic> results;
+        switch (searchMode == null ? "search_name" : searchMode) {
+            case "search_dob":     results = demographicDao.searchDemographicByDOB(keyword, limit, offset, providerNo, true);     break;
+            case "search_phone":   results = demographicDao.searchDemographicByPhone(keyword, limit, offset, providerNo, true);   break;
+            case "search_hin":     results = demographicDao.searchDemographicByHIN(keyword, limit, offset, providerNo, true);     break;
+            case "search_address": results = demographicDao.searchDemographicByAddress(keyword, limit, offset, providerNo, true); break;
+            default:               results = demographicDao.searchDemographicByName(keyword, limit, offset, providerNo, true);    break;
+        }
+        for (Demographic d : results) {
+            LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.searchDemographicsForMerge result",
+                    "demographicId=" + d.getDemographicNo());
+        }
+        return results;
+    }
+
+    @Override
+    public List<Demographic> searchMergedDemographicsForUnmerge(LoggedInInfo loggedInInfo, String keyword,
+                                                                String searchMode, int limit, int offset) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        List<Demographic> results;
+        switch (searchMode == null ? "search_name" : searchMode) {
+            case "search_dob":     results = demographicDao.searchMergedDemographicByDOB(keyword, limit, offset, providerNo, true);     break;
+            case "search_phone":   results = demographicDao.searchMergedDemographicByPhone(keyword, limit, offset, providerNo, true);   break;
+            case "search_hin":     results = demographicDao.searchMergedDemographicByHIN(keyword, limit, offset, providerNo, true);     break;
+            case "search_address": results = demographicDao.searchMergedDemographicByAddress(keyword, limit, offset, providerNo, true); break;
+            default:               results = demographicDao.searchMergedDemographicByName(keyword, limit, offset, providerNo, true);    break;
+        }
+        for (Demographic d : results) {
+            LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.searchMergedDemographicsForUnmerge result",
+                    "demographicId=" + d.getDemographicNo());
+        }
+        return results;
+    }
+
 }
