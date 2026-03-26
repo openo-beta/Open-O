@@ -149,11 +149,14 @@ public interface DemographicMergeOperationDao {
     /**
      * Copies drug tables:
      * {@code drugs} (parent) → {@code drugReason} (child with extra {@code demographicNo} column).
+     * Returns the old-to-new drug PK map needed for {@code casemgmt_note_link}
+     * {@code table_name = 2} (DRUGS) {@code tableId} remap in {@link #copyCasemgmtNoteGroup}.
      *
      * @param sourceDemographicNo Integer the source patient demographic number
      * @param targetDemographicNo Integer the target patient demographic number
+     * @return Map&lt;Long, Long&gt; mapping of old {@code drugs.drugid} to new {@code drugs.drugid}
      */
-    void copyDrugsGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
+    Map<Long, Long> copyDrugsGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
 
     /**
      * Copies eForm tables:
