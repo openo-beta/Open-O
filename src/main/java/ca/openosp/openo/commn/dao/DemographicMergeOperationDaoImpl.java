@@ -771,14 +771,14 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     @Override
-    public void copyDrugsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+    public Map<Long, Long> copyDrugsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         // drugs (parent) — demo field is "demographicId"
         Map<Long, Long> drugPkMap = copyEntityRows(Drug.class, "Drug", "demographicId",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicId(d));
 
-        if (drugPkMap.isEmpty()) return;
+        if (drugPkMap.isEmpty()) return drugPkMap;
 
         // drugReason — child, FK is drugId; also has a extra demographicNo column
         copyChildRows(DrugReason.class, "DrugReason", "drugId",
@@ -789,6 +789,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 targetDemoNo);
 
         logger.debug("copyDrugsGroup: source={}, target={}, drug rows={}", sourceDemoNo, targetDemoNo, drugPkMap.size());
+        return drugPkMap;
     }
 
     @Override
