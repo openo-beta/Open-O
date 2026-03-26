@@ -237,11 +237,14 @@ public interface DemographicMergeOperationDao {
     /**
      * Copies tickler tables:
      * {@code tickler} (parent) → {@code tickler_link} (child).
+     * Returns the old-to-new tickler PK map needed for {@code casemgmt_note_link}
+     * {@code table_name = 10} (TICKLER) {@code tableId} remap in {@link #copyCasemgmtNoteGroup}.
      *
      * @param sourceDemographicNo Integer the source patient demographic number
      * @param targetDemographicNo Integer the target patient demographic number
+     * @return Map&lt;Long, Long&gt; mapping of old {@code tickler.id} to new {@code tickler.id}
      */
-    void copyTicklerGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
+    Map<Long, Long> copyTicklerGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
 
     // -------------------------------------------------------------------------
     // Part 2c — special-case tables

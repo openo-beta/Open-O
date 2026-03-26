@@ -992,14 +992,14 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     @Override
-    public void copyTicklerGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+    public Map<Long, Long> copyTicklerGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         // tickler (parent)
         Map<Long, Long> ticklerPkMap = copyEntityRows(Tickler.class, "Tickler", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        if (ticklerPkMap.isEmpty()) return;
+        if (ticklerPkMap.isEmpty()) return ticklerPkMap;
 
         // tickler_link — child, FK is ticklerNo
         copyChildRows(TicklerLink.class, "TicklerLink", "ticklerNo",
@@ -1009,6 +1009,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 null, null);
 
         logger.debug("copyTicklerGroup: source={}, target={}, tickler rows={}", sourceDemoNo, targetDemoNo, ticklerPkMap.size());
+        return ticklerPkMap;
     }
 
     // -------------------------------------------------------------------------
