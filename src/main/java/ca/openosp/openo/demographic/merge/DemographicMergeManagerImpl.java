@@ -137,6 +137,13 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
                     "No MERGE event found for demographic " + mergedDemographicNo + " — cannot unmerge");
         }
 
+        // Guard against double-unmerge before making any status changes
+        Demographic demographicC = loadAndValidateExists(mergedDemographicNo, "Merged");
+        if (!STATUS_ACTIVE.equals(demographicC.getPatientStatus())) {
+            throw new IllegalStateException(
+                    "Merged demographic " + mergedDemographicNo + " is not active — already unmerged?");
+        }
+
         // Restore primary A → AC
         Demographic demographicA = loadAndValidateExists(event.getPrimaryDemographicNo(), "Primary");
         markActive(demographicA);
@@ -147,12 +154,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
             markActive(secondary);
         }
 
-        // Deactivate the merged record C (guard against double-unmerge)
-        Demographic demographicC = loadAndValidateExists(mergedDemographicNo, "Merged");
-        if (!STATUS_ACTIVE.equals(demographicC.getPatientStatus())) {
-            throw new IllegalStateException(
-                    "Merged demographic " + mergedDemographicNo + " is not active — already unmerged?");
-        }
+        // Deactivate the merged record C
         demographicC.setPatientStatus(STATUS_INACTIVE);
         demographicC.setPatientStatusDate(new Date());
         demographicDao.save(demographicC);
