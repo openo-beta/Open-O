@@ -1102,19 +1102,22 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 (e, fk) -> e.setNoteId(fk),
                 null, null);
 
-        // Remap tableId for appointment links (tableName = 11) using the appointment PK map.
+        // Remap tableId for appointment links (tableName = 11 = APPOINTMENT) using the appointment PK map.
         // Without this, note-appointment associations point to the source patient's old appointment PKs.
+        // One UPDATE per appointment (outer loop), matching all copied note PKs via IN clause — O(appointments).
         if (appointmentPkMap != null && !appointmentPkMap.isEmpty()) {
-            for (Map.Entry<Long, Long> newNote : notePkMap.entrySet()) {
-                for (Map.Entry<Long, Long> appt : appointmentPkMap.entrySet()) {
-                    entityManager.createQuery(
-                            "UPDATE CaseMgmtNoteLink e SET e.tableId = :newApptId " +
-                            "WHERE e.noteId = :noteId AND e.tableName = 11 AND e.tableId = :oldApptId")
-                        .setParameter("newApptId", appt.getValue().intValue())
-                        .setParameter("noteId", newNote.getValue().intValue())
-                        .setParameter("oldApptId", appt.getKey().intValue())
-                        .executeUpdate();
-                }
+            List<Integer> newNoteIds = new ArrayList<>();
+            for (Long v : notePkMap.values()) {
+                newNoteIds.add(v.intValue());
+            }
+            for (Map.Entry<Long, Long> appt : appointmentPkMap.entrySet()) {
+                entityManager.createQuery(
+                        "UPDATE CaseMgmtNoteLink e SET e.tableId = :newApptId " +
+                        "WHERE e.noteId IN :noteIds AND e.tableName = 11 AND e.tableId = :oldApptId")
+                    .setParameter("newApptId", appt.getValue().intValue())
+                    .setParameter("noteIds", newNoteIds)
+                    .setParameter("oldApptId", appt.getKey().intValue())
+                    .executeUpdate();
             }
         }
 
