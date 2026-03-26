@@ -22,9 +22,9 @@
  * Hamilton
  * Ontario, Canada
  */
-package ca.openosp.openo.demographic.merge;
+package ca.openosp.openo.commn.dao;
 
-import ca.openosp.openo.commn.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.model.DemographicMergeEvent;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;

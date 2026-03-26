@@ -22,7 +22,7 @@
  * Hamilton
  * Ontario, Canada
  */
-package ca.openosp.openo.demographic.merge;
+package ca.openosp.openo.commn.model;
 
 import ca.openosp.openo.commn.model.AbstractModel;
 
