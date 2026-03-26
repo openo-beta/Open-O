@@ -46,9 +46,10 @@ public class DemographicMergeEventDaoImpl extends AbstractDaoImpl<DemographicMer
     public DemographicMergeEvent findLatestMergeEventByMergedDemographicNo(Integer mergedDemographicNo) {
         Query q = entityManager.createQuery(
                 "select e from DemographicMergeEvent e " +
-                "where e.mergedDemographicNo = ?1 and e.eventType = 'MERGE' " +
+                "where e.mergedDemographicNo = ?1 and e.eventType = ?2 " +
                 "order by e.eventDate desc");
         q.setParameter(1, mergedDemographicNo);
+        q.setParameter(2, DemographicMergeEvent.EventType.MERGE);
         q.setMaxResults(1);
 
         @SuppressWarnings("unchecked")
