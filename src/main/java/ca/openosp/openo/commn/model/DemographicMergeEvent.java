@@ -24,10 +24,10 @@
  */
 package ca.openosp.openo.commn.model;
 
-import ca.openosp.openo.commn.model.AbstractModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,6 +51,15 @@ import java.util.stream.Collectors;
 @Table(name = "demographic_merge_event")
 public class DemographicMergeEvent extends AbstractModel<Integer> {
 
+    /**
+     * Discriminator for the {@code event_type} column.
+     * Stored as a VARCHAR using the enum name (e.g. {@code "MERGE"}, {@code "UNMERGE"}).
+     */
+    public enum EventType {
+        MERGE,
+        UNMERGE
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -64,8 +73,9 @@ public class DemographicMergeEvent extends AbstractModel<Integer> {
     @Column(name = "merged_demographic_no")
     private int mergedDemographicNo;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
-    private String eventType;
+    private EventType eventType;
 
     @Column(name = "provider_no")
     private String providerNo;
@@ -118,11 +128,11 @@ public class DemographicMergeEvent extends AbstractModel<Integer> {
         this.mergedDemographicNo = mergedDemographicNo;
     }
 
-    public String getEventType() {
+    public EventType getEventType() {
         return eventType;
     }
 
-    public void setEventType(String eventType) {
+    public void setEventType(EventType eventType) {
         this.eventType = eventType;
     }
 
