@@ -945,6 +945,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         // Copy main table via shared helper; capture old→new PK map for child remapping
         Map<Long, Long> onarPkMap = copyFormJdbcWithMap("formONAREnhancedRecord", "ID", sourceDemoNo, targetDemoNo);
+        if (onarPkMap.isEmpty()) return;
 
         // formONAREnhancedRecordExt1 and Ext2 — child rows keyed by parent id
         for (String extTable : new String[]{"formONAREnhancedRecordExt1", "formONAREnhancedRecordExt2"}) {
