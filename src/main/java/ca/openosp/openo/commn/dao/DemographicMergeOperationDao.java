@@ -174,11 +174,14 @@ public interface DemographicMergeOperationDao {
      * Copies email tables:
      * {@code emailLog} (parent, {@code @ManyToOne Demographic}) →
      * {@code emailAttachment} (child, {@code @ManyToOne EmailLog}).
+     * Returns the old-to-new email log PK map needed for {@code casemgmt_note_link}
+     * {@code table_name = 12} (EMAIL) {@code tableId} remap in {@link #copyCasemgmtNoteGroup}.
      *
      * @param sourceDemographicNo Integer the source patient demographic number
      * @param targetDemographicNo Integer the target patient demographic number
+     * @return Map&lt;Long, Long&gt; mapping of old {@code emailLog.id} to new {@code emailLog.id}
      */
-    void copyEmailGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
+    Map<Long, Long> copyEmailGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
 
     /**
      * Copies eReferral tables:

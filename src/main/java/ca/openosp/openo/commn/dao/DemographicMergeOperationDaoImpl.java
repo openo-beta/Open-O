@@ -815,12 +815,15 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     @Override
-    public void copyEmailGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+    public Map<Long, Long> copyEmailGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         // emailLog — @ManyToOne Demographic; query by demographic.id
         List<EmailLog> logs = entityManager.createQuery("SELECT e FROM EmailLog e WHERE e.demographic.id = :demo", EmailLog.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
+        if (logs.isEmpty()) return Collections.emptyMap();
+
+        Map<Long, Long> emailPkMap = new HashMap<>();
         Demographic targetRef = entityManager.getReference(Demographic.class, targetDemoNo);
 
         for (EmailLog log : logs) {
@@ -835,6 +838,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             entityManager.flush();
 
             int newLogId = log.getId();
+            emailPkMap.put((long) oldLogId, (long) newLogId);
 
             // Copy attachments for this log
             List<EmailAttachment> attachments = entityManager.createQuery("SELECT a FROM EmailAttachment a WHERE a.emailLog.id = :lid", EmailAttachment.class)
@@ -851,6 +855,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         logger.debug("copyEmailGroup: source={}, target={}, log rows={}", sourceDemoNo, targetDemoNo, logs.size());
+        return emailPkMap;
     }
 
     @Override
