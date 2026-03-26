@@ -80,12 +80,12 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * <p>
      * Execution order for each source demographic (primary first, then secondaries):
      * <ol>
-     *   <li>Identity tables (Part 1) — gap-fill on secondary passes</li>
+     *   <li>Identity tables — gap-fill on secondary passes</li>
      *   <li>Appointments — extracted so the PK map is available for note-link remap</li>
-     *   <li>All remaining clinical direct-copy records (Part 2a)</li>
-     *   <li>All form tables (Part 2 form section)</li>
-     *   <li>All parent + derived group tables (Part 2b)</li>
-     *   <li>Special-case tables requiring cross-group PK maps (Part 2c)</li>
+     *   <li>All remaining clinical direct-copy records</li>
+     *   <li>All form tables</li>
+     *   <li>All parent + derived group tables</li>
+     *   <li>Special-case tables requiring cross-group PK maps</li>
      * </ol>
      */
     @Override
@@ -174,7 +174,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
 
     /**
      * Copies all clinical data from {@code sourceNo} into {@code targetNo}.
-     * This method encapsulates the full Part 1 + Part 2 copy sequence for one source
+     * This method encapsulates the full copy sequence for one source
      * demographic. It is called once for the primary and once per secondary.
      *
      * @param sourceNo    Integer the source patient demographic_no
@@ -185,19 +185,19 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         logger.debug("DemographicMergeManager: copying data source={} → target={} isSecondary={}",
                 sourceNo, targetNo, isSecondary);
 
-        // Part 1 — identity / demographic extension tables
+        // Identity / demographic extension tables
         operationDao.copyIdentityTables(sourceNo, targetNo, isSecondary);
 
         // Appointments are extracted so the PK map is available for casemgmt_note_link remap
         Map<Long, Long> appointmentPkMap = operationDao.copyAppointments(sourceNo, targetNo);
 
-        // Part 2a — remaining clinical direct-copy records (appointments excluded)
+        // Remaining clinical direct-copy records (appointments excluded)
         operationDao.copyClinicalDirectRecords(sourceNo, targetNo);
 
         // Form tables
         operationDao.copyAllForms(sourceNo, targetNo);
 
-        // Part 2b — parent + derived group tables
+        // Parent + derived group tables
         operationDao.copyBillingGroup(sourceNo, targetNo);
         Map<Long, Long> requestPkMap = operationDao.copyConsultationsGroup(sourceNo, targetNo);
         operationDao.copyDrugsGroup(sourceNo, targetNo);
@@ -210,7 +210,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         operationDao.copyPreventionsGroup(sourceNo, targetNo);
         operationDao.copyTicklerGroup(sourceNo, targetNo);
 
-        // Part 2c — special-case tables requiring cross-group PK maps
+        // Special-case tables requiring cross-group PK maps
         operationDao.copyConsultationArchiveGroup(sourceNo, targetNo, requestPkMap);
         Map<Long, Long> notePkMap = operationDao.copyCasemgmtNoteGroup(sourceNo, targetNo, appointmentPkMap);
         Map<Long, Long> issuePkMap = operationDao.copyCasemgmtIssueGroup(sourceNo, targetNo);
