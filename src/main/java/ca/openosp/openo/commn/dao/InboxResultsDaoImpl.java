@@ -1,6 +1,6 @@
 //CHECKSTYLE:OFF
 /**
- * Copyright (c) 2024. Magenta Health. All Rights Reserved.
+
  * Copyright (c) 2008-2012 Indivica Inc.
  * <p>
  * This software is made available under the terms of the
@@ -8,7 +8,7 @@
  * License details are available via "indivica.ca/gplv2"
  * and "gnu.org/licenses/gpl-2.0.html".
  * <p>
- * Modifications made by Magenta Health in 2024.
+ * Modifications made by Magenta Health in collaboration with Open OSP in 2024.
  */
 
 package ca.openosp.openo.commn.dao;
@@ -275,7 +275,7 @@ public class InboxResultsDaoImpl implements InboxResultsDao {
                         + isDocAbnormalSql
                         + dateSql
                         + " GROUP BY doc.document_no"
-                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC," : "doc.observationdate DESC,") + " doc.document_no DESC "
+                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC") + ", doc.document_no DESC "
                         + (isPaged ? "	LIMIT " + (page * pageSize) + "," + pageSize : "");
 
                 } else if (demographicNo != null && !"".equals(demographicNo)) {
@@ -316,7 +316,7 @@ public class InboxResultsDaoImpl implements InboxResultsDao {
                         + isDocAbnormalSql
                         + dateSql
                         + " GROUP BY doc.document_no"
-                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC," : "doc.observationdate DESC,") + " doc.document_no DESC "
+                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC") + ", doc.document_no DESC "
                         + (isPaged ? "	LIMIT " + (page * pageSize) + "," + pageSize : "");
                 } else if (patientSearch) { // N arg
                     docNoLoc = 1;
@@ -361,7 +361,7 @@ public class InboxResultsDaoImpl implements InboxResultsDao {
                         + isDocAbnormalSql
                         + dateSql
                         + " GROUP BY doc.document_no"
-                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC," : "doc.observationdate DESC,") + " doc.document_no DESC "
+                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC") + ", doc.document_no DESC "
                         + (isPaged ? "	LIMIT " + (page * pageSize) + "," + pageSize : "");
 
                 } else {
@@ -390,7 +390,7 @@ public class InboxResultsDaoImpl implements InboxResultsDao {
                         + isDocAbnormalSql
                         + dateSql
                         + " GROUP BY doc.document_no "
-                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC")
+                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC") + ", doc.document_no DESC"
                         + (isPaged ? " LIMIT " + (page * pageSize) + "," + pageSize : "");
                 }
             } else { // Don't mix labs and docs.
@@ -418,7 +418,7 @@ public class InboxResultsDaoImpl implements InboxResultsDao {
                         + isDocAbnormalSql
                         + dateSql
                         + " GROUP BY doc.document_no"
-                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC")
+                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC") + ", doc.document_no DESC"
                         + (isPaged ? "	LIMIT " + (page * pageSize) + "," + pageSize : "");
                 } else if (demographicNo != null && !"".equals(demographicNo)) {
                     docNoLoc = 1;
@@ -445,7 +445,7 @@ public class InboxResultsDaoImpl implements InboxResultsDao {
                         + isDocAbnormalSql
                         + dateSql
                         + " GROUP BY doc.document_no"
-                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC " : "doc.observationdate DESC ")
+                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC") + ", doc.document_no DESC"
                         + (isPaged ? "	LIMIT " + (page * pageSize) + "," + pageSize : "");
                 } else if (patientSearch) {
                     docNoLoc = 1;
@@ -472,7 +472,7 @@ public class InboxResultsDaoImpl implements InboxResultsDao {
                         + isDocAbnormalSql
                         + dateSql
                         + " GROUP BY doc.document_no"
-                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC")
+                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "doc.contentdatetime DESC" : "doc.observationdate DESC") + ", doc.document_no DESC"
                         + (isPaged ? "	LIMIT " + (page * pageSize) + "," + pageSize : "");
                 } else {
                     docNoLoc = 1;
@@ -515,7 +515,7 @@ public class InboxResultsDaoImpl implements InboxResultsDao {
                         + " ON d.demographic_no = -1"
                         + ") AS X "
                         + " GROUP BY document_no"
-                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "contentdatetime DESC" : "observationdate DESC")
+                        + " ORDER BY " + (dateSearchType.equals("receivedCreated") ? "contentdatetime DESC" : "observationdate DESC") + ", document_no DESC"
                         + (isPaged ? "	LIMIT " + (page * pageSize) + "," + pageSize : "");
                 }
             }

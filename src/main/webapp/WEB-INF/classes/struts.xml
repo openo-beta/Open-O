@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 6.0//EN" "https://struts.apache.org/dtds/struts-6.0.dtd">
 <struts>
     <constant name="struts.mapper.action.prefix.enabled" value="false"/>
 	<constant name="struts.action.extension" value="do" />
@@ -22,6 +22,7 @@
             <result name="success">/admin/lookUpLists/</result>
         </action>
         <action name="admin/oncallClinic" class="ca.openosp.openo.admin.reports.SaveOnCallClinic2Action"/>
+        <action name="providerLinkingRules" class="ca.openosp.openo.dashboard.admin.ProviderLinkingRulesAction" />
         <action name="web/dashboard/display/DashboardDisplay" class="ca.openosp.openo.dashboard.display.DisplayDashboard2Action">
             <result name="success">/web/dashboard/display/DashboardDisplay.jsp</result>
             <result name="unauthorized">/securityError.jsp</result>
@@ -229,11 +230,7 @@
             <result name="addAnother">/oscarRx/SearchDrug.jsp</result>
             <result name="viewScript">/oscarRx/ViewScript.jsp</result>
         </action>
-        <action name="oscarRx/writeScript" class="ca.openosp.openo.prescript.pageUtil.RxWriteScript2Action">
-            <result name="refresh">/oscarRx/WriteScript.jsp</result>
-            <result name="addAnother">/oscarRx/SearchDrug.jsp</result>
-            <result name="viewScript">/oscarRx/ViewScript.jsp</result>
-        </action>
+
         <action name="oscarRx/stash" class="ca.openosp.openo.prescript.pageUtil.RxStash2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
         </action>
@@ -1151,7 +1148,13 @@
             <result name="addDSHTML">/oscarEncounter/oscarMeasurements/MeasurementGroupDSadd.jsp</result>
             <result name="removeDSHTML">/oscarEncounter/oscarMeasurements/MeasurementGroupDSremove.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupEditMeasurementGroup" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupEditMeasurementGroup2Action">
+      <action name="oscarRx/printPreview" class="ca.openosp.openo.rx.RxPrintPreview2Action" >
+        <result name="success">/oscarRx/printRx/PrintPreview.jsp</result>
+      </action>
+
+    <action name="digitalSignature" class="ca.openosp.openo.digitalsignature.DigitalSignature2Action" />
+
+    <action name="oscarEncounter/oscarMeasurements/SetupEditMeasurementGroup" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupEditMeasurementGroup2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/EditMeasurementGroup.jsp</result>
         </action>
         <action name="oscarEncounter/oscarMeasurements/EditMeasurementGroup" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctEditMeasurementGroup2Action">

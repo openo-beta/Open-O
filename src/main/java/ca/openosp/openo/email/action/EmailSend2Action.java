@@ -18,7 +18,7 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -210,7 +210,7 @@ public class EmailSend2Action extends ActionSupport {
      *         ready for processing by EmailManager
      */
     private EmailData prepareEmailFields(HttpServletRequest request) {
-        String fromEmail = request.getParameter("senderEmailAddress");
+        String senderConfigId = request.getParameter("senderConfigId");
         String[] receiverEmails = request.getParameterValues("receiverEmailAddress");
         String subject = request.getParameter("subjectEmail");
         String body = request.getParameter("bodyEmail");
@@ -230,7 +230,7 @@ public class EmailSend2Action extends ActionSupport {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         EmailData emailData = new EmailData();
-        emailData.setSender(fromEmail);
+        emailData.setSenderConfigId(senderConfigId);
         emailData.setRecipients(receiverEmails);
         emailData.setSubject(subject);
         emailData.setBody(body);

@@ -39,7 +39,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -56,32 +56,33 @@
 <div class="PropSheetMenu">
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
-
-        <p class="PropSheetLevel1CurrentItem<%=alle%>">
+        <dl>
+        <dt class="PropSheetLevel1CurrentItem<%=alle%>">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/>
-            <a href="javascript:void(0);" name="cmdAllergies"
-               onclick="javascript:window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=request.getParameter("demographicNo")%>';"
+            <a href="javascript:void(0);"
+               onclick="window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=request.getParameter("demographicNo")%>';"
                style="width: 200px">+</a>
-        </p>
-        <p class="PropSheetMenuItemLevel1">
+        </dt>
+
                     <%
 
         for (int j=0; j<allergies.length; j++){%>
 
-        <p class="PropSheetMenuItemLevel1"><a
+        <dd><a
                 title="<%= allergies[j].getDescription() %> - <%= allergies[j].getReaction() %>">
             <%=allergies[j].getShortDesc(13, 8, "...")%>
-        </a></p>
+        </a>
+        </dd>
         <%}%>
-
+        </dl>
 
     </security:oscarSec>
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_rxresearch" rights="r" reverse="<%=false%>">
-
-        <p class="PropSheetLevel1CurrentItem">
+<dl>
+        <dt>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgDiseases"/>
-        </p>
+        </dt>
         <%
             DxresearchDAO dxreasearchDao = SpringUtils.getBean(DxresearchDAO.class);
             CodingSystemManager codingSystemManager = SpringUtils.getBean(CodingSystemManager.class);
@@ -99,20 +100,20 @@
 
                 if (codeDescr != null) {
         %>
-        <p class="PropSheetMenuItemLevel1"><%=StringEscapeUtils.escapeHtml4(codeDescr)%>
-        </p>
+        <dd><%=StringEscapeUtils.escapeHtml4(codeDescr)%>
+        </dd>
         <%
                 }
             }
         %>
-
+</dl>
     </security:oscarSec>
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="r" reverse="<%=false%>">
-
-        <p class="PropSheetLevel1CurrentItem">
+<dl>
+        <dt>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgMedHistory"/>
-        </p>
+        </dt>
         <%
             CaseManagementManager cmgmtMgr1 = SpringUtils.getBean(CaseManagementManager.class);
             List<Issue> issues1 = cmgmtMgr1.getIssueInfoByCode(bean2.getProviderNo(), "MedHistory");
@@ -122,34 +123,34 @@
                 if (!note.isLocked() && !note.isArchived()) {
 
         %>
-        <p class="PropSheetMenuItemLevel1"><%=StringEscapeUtils.escapeHtml4(note.getNote()) %>
-        </p>
+        <dd><%=StringEscapeUtils.escapeHtml4(note.getNote()) %>
+        </dd>
         <%
                 }
             }
         %>
 
-
+</dl>
     </security:oscarSec>
-
-    <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/>
+<dl>
+    <dt><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/>
         <a href="${pageContext.request.contextPath}/oscarRx/EditFavorites2.jsp">edit</a>
         <a href="${pageContext.request.contextPath}/oscarRx/CopyFavorites2.jsp">copy</a> <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="rx.sideLinks.msgCopyFavorites"/> --%>
-    </p>
-    <p class="PropSheetMenuItemLevel1">
+    </dt>
+
             <%
         RxPrescriptionData.Favorite[] favorites
             = new RxPrescriptionData().getFavorites(bean2.getProviderNo());
 
         for (int j=0; j<favorites.length; j++){%>
 
-    <p class="PropSheetMenuItemLevel1"><a
+    <dd><a
             href="javascript:void(0);" onclick="useFav2('<%= favorites[j].getFavoriteId() %>');"
             title="<%= favorites[j].getFavoriteName() %>"><%if (favorites[j].getFavoriteName().length() > 13) {%>
         <%= favorites[j].getFavoriteName().substring(0, 10) + "..." %> <%} else {%>
-        <%= favorites[j].getFavoriteName() %> <%}%></a></p>
+        <%= favorites[j].getFavoriteName() %> <%}%></a></dd>
     <%}%>
-
+</dl>
 </div>
 
 <script type="text/javascript">

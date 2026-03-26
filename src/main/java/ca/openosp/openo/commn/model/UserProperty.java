@@ -164,7 +164,6 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
 
     public static final String SCHEDULE_WEEK_VIEW_WEEKENDS = "schedule.week_view_weekends";
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
