@@ -58,9 +58,9 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
 
     private static final Logger logger = MiscUtils.getLogger();
 
-    private static final String STATUS_MERGED   = Demographic.PatientStatus.MERGED.name();
+    private static final String STATUS_MERGED = Demographic.PatientStatus.MERGED.name();
     private static final String STATUS_INACTIVE = Demographic.PatientStatus.IN.name();
-    private static final String STATUS_ACTIVE   = Demographic.PatientStatus.AC.name();
+    private static final String STATUS_ACTIVE = Demographic.PatientStatus.AC.name();
 
     @Autowired
     private DemographicDao demographicDao;
