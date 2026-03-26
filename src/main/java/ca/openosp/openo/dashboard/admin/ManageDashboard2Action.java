@@ -26,6 +26,8 @@
 package ca.openosp.openo.dashboard.admin;
 
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.logging.log4j.Logger;
@@ -63,7 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageDashboard2Action extends ActionSupport {
+public class ManageDashboard2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -112,13 +114,14 @@ public class ManageDashboard2Action extends ActionSupport {
 
         byte[] filebytes = null;
         ObjectNode json = null;
+        File templateFile = indicatorTemplateFile != null ? PathValidationUtils.toFile(indicatorTemplateFile) : null;
 
-        if (indicatorTemplateFile != null) {
+        if (templateFile != null) {
             try {
                 // Validate uploaded file before any file operations
-                PathValidationUtils.validateUpload(indicatorTemplateFile);
+                PathValidationUtils.validateUpload(templateFile);
 
-                filebytes = Files.readAllBytes(indicatorTemplateFile.toPath());
+                filebytes = Files.readAllBytes(templateFile.toPath());
             } catch (Exception e) {
                 json = objectMapper.createObjectNode();
                 json.put("status", "error");
@@ -166,7 +169,7 @@ public class ManageDashboard2Action extends ActionSupport {
                 builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
                 // Build the JDOM2 document
-                Document xmlDocument = builder.build(indicatorTemplateFile);
+                Document xmlDocument = builder.build(templateFile);
 
                 // Setup XSD validation
                 SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -435,14 +438,13 @@ public class ManageDashboard2Action extends ActionSupport {
         }
     }
 
-    private File indicatorTemplateFile;
+    private UploadedFile indicatorTemplateFile;
 
-    public File getIndicatorTemplateFile() {
-        return indicatorTemplateFile;
-    }
-
-    public void setIndicatorTemplateFile(File indicatorTemplateFile) {
-        this.indicatorTemplateFile = indicatorTemplateFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.indicatorTemplateFile = uploadedFiles.get(0);
+        }
     }
     
     /**

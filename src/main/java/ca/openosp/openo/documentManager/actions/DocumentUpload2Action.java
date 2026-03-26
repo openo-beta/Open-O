@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,8 +55,10 @@ import ca.openosp.openo.log.LogConst;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
-public class DocumentUpload2Action extends ActionSupport {
+public class DocumentUpload2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -75,7 +78,7 @@ public class DocumentUpload2Action extends ActionSupport {
         }
 
         HashMap<String, Object> map = new HashMap<String, Object>();
-        File docFile = this.getFiledata();
+        File docFile = this.filedata != null ? PathValidationUtils.toFile(this.filedata) : null;
         String destination = request.getParameter("destination");
         ResourceBundle props = ResourceBundle.getBundle("oscarResources");
         if (docFile == null) {
@@ -374,9 +377,9 @@ public class DocumentUpload2Action extends ActionSupport {
     private String docCreator = "";
     private String responsibleId = "";
     private String source = "";
-    private File docFile;
+    private UploadedFile docFile;
 
-    private File filedata;
+    private UploadedFile filedata;
     private String filedataFileName;
     private String filedataContentType;
 
@@ -445,14 +448,6 @@ public class DocumentUpload2Action extends ActionSupport {
         this.source = source;
     }
 
-    public File getDocFile() {
-        return docFile;
-    }
-
-    public void setDocFile(File docFile) {
-        this.docFile = docFile;
-    }
-
     public String getMode() {
         return mode;
     }
@@ -509,27 +504,18 @@ public class DocumentUpload2Action extends ActionSupport {
         this.html = html;
     }
 
-    public File getFiledata() {
-        return filedata;
-    }
-
-    public void setFiledata(File Filedata) {
-        this.filedata = Filedata;
-    }
-
-    public String getFiledataFileName() {
-        return filedataFileName;
-    }
-
-    public void setFiledataFileName(String filedataFileName) {
-        this.filedataFileName = filedataFileName;
-    }
-
-    public String getFiledataContentType() {
-        return filedataContentType;
-    }
-
-    public void setFiledataContentType(String filedataContentType) {
-        this.filedataContentType = filedataContentType;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            for (UploadedFile uf : uploadedFiles) {
+                if ("docFile".equals(uf.getInputName())) {
+                    this.docFile = uf;
+                } else if ("filedata".equals(uf.getInputName())) {
+                    this.filedata = uf;
+                    this.filedataFileName = uf.getOriginalName();
+                    this.filedataContentType = uf.getContentType();
+                }
+            }
+        }
     }
 }

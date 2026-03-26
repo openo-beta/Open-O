@@ -38,6 +38,8 @@ package ca.openosp.openo.report.reportByTemplate.actions;
 
 import ca.openosp.openo.services.security.SecurityManager;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
@@ -49,8 +51,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
-public class UploadTemplates2Action extends ActionSupport {
+public class UploadTemplates2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -67,8 +70,9 @@ public class UploadTemplates2Action extends ActionSupport {
         
         if (templateFile != null) {
             try {
-                // Validate the uploaded temp file is from an allowed source
-                File validatedTemplateFile = PathValidationUtils.validateUpload(templateFile);
+                // Extract File from UploadedFile and validate
+                File rawTemplateFile = PathValidationUtils.toFile(templateFile);
+                File validatedTemplateFile = PathValidationUtils.validateUpload(rawTemplateFile);
 
                 // Read the file content
                 byte[] bytes = Files.readAllBytes(validatedTemplateFile.toPath());
@@ -100,13 +104,12 @@ public class UploadTemplates2Action extends ActionSupport {
         return SUCCESS;
     }
 
-    private File templateFile;
+    private UploadedFile templateFile;
 
-    public File getTemplateFile() {
-        return templateFile;
-    }
-
-    public void setTemplateFile(File templateFile) {
-        this.templateFile = templateFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.templateFile = uploadedFiles.get(0);
+        }
     }
 }

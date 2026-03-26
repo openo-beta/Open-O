@@ -26,9 +26,13 @@
 
 package ca.openosp.openo.eform.upload;
 
+import java.util.List;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -39,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.nio.file.Files;
 
-public class HtmlUpload2Action extends ActionSupport {
+public class HtmlUpload2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -51,9 +55,10 @@ public class HtmlUpload2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_eform)");
         }
         try {
-            String formHtmlStr = new String(Files.readAllBytes(formHtml.toPath()));
+            File formHtmlFile = PathValidationUtils.toFile(formHtml);
+            String formHtmlStr = new String(Files.readAllBytes(formHtmlFile.toPath()));
             formHtmlStr = formHtmlStr.replaceAll("\\\\n", "\\\\\\\\n");
-            String fileName = formHtml.getName();
+            String fileName = formHtmlFileName;
             EFormUtil.saveEForm(formName, subject, fileName, formHtmlStr, showLatestFormOnly, patientIndependent, roleType);
             request.setAttribute("status", "success");
             return SUCCESS;
@@ -64,37 +69,20 @@ public class HtmlUpload2Action extends ActionSupport {
 
     }
 
-    private File formHtml; // 上传的文件
-    private String formHtmlContentType; // 文件的 MIME 类型
-    private String formHtmlFileName; // 文件的原始名称
+    private UploadedFile formHtml;
+    private String formHtmlFileName;
     private String formName;
     private String subject;
     private boolean showLatestFormOnly;
     private boolean patientIndependent;
     private String roleType;
 
-    public File getFormHtml() {
-        return formHtml;
-    }
-
-    public void setFormHtml(File formHtml) {
-        this.formHtml = formHtml;
-    }
-
-    public String getFormHtmlContentType() {
-        return formHtmlContentType;
-    }
-
-    public void setFormHtmlContentType(String formHtmlContentType) {
-        this.formHtmlContentType = formHtmlContentType;
-    }
-
-    public String getFormHtmlFileName() {
-        return formHtmlFileName;
-    }
-
-    public void setFormHtmlFileName(String formHtmlFileName) {
-        this.formHtmlFileName = formHtmlFileName;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.formHtml = uploadedFiles.get(0);
+            this.formHtmlFileName = formHtml.getOriginalName();
+        }
     }
 
     public String getFormName() {

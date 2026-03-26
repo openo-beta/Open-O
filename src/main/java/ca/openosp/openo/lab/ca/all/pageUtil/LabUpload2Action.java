@@ -36,6 +36,8 @@
 package ca.openosp.openo.lab.ca.all.pageUtil;
 
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
@@ -70,8 +72,9 @@ import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
+import java.util.List;
 
-public class LabUpload2Action extends ActionSupport {
+public class LabUpload2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -93,7 +96,7 @@ public class LabUpload2Action extends ActionSupport {
         String type = (String) clientInfo.get(1);
 
         try {
-            // Validate the uploaded file to prevent path traversal attacks
+            // Extract File from UploadedFile
             if (importFile == null) {
                 logger.error("No file provided for upload");
                 outcome = "exception";
@@ -103,11 +106,13 @@ public class LabUpload2Action extends ActionSupport {
                 return SUCCESS;
             }
 
+            File rawImportFile = PathValidationUtils.toFile(importFile);
+
             // Validate file is from an allowed temp directory
             try {
-                importFile = PathValidationUtils.validateUpload(importFile);
+                rawImportFile = PathValidationUtils.validateUpload(rawImportFile);
             } catch (SecurityException e) {
-                logger.error("Invalid upload source - potential path traversal: " + importFile.getPath());
+                logger.error("Invalid upload source - potential path traversal: " + rawImportFile.getPath());
                 outcome = "exception";
                 httpCode = HttpServletResponse.SC_FORBIDDEN;
                 request.setAttribute("outcome", outcome);
@@ -115,8 +120,8 @@ public class LabUpload2Action extends ActionSupport {
                 return SUCCESS;
             }
 
-            InputStream is = decryptMessage(Files.newInputStream(importFile.toPath()), key, clientKey);
-            String fileName = importFile.getName();
+            InputStream is = decryptMessage(Files.newInputStream(rawImportFile.toPath()), key, clientKey);
+            String fileName = rawImportFile.getName();
             String filePath = null;
             if (type.equals("PDFDOC")) {
                 filePath = Utilities.savePdfFile(is, fileName);
@@ -305,13 +310,12 @@ public class LabUpload2Action extends ActionSupport {
         return (Key);
     }
 
-    private File importFile;
+    private UploadedFile importFile;
 
-    public File getImportFile() {
-        return importFile;
-    }
-
-    public void setImportFile(File importFile) {
-        this.importFile = importFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.importFile = uploadedFiles.get(0);
+        }
     }
 }

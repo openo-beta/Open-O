@@ -26,10 +26,14 @@ import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
 import ca.openosp.openo.lab.ca.all.upload.handlers.DefaultHandler;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 
+import java.util.List;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
+import ca.openosp.openo.utility.PathValidationUtils;
 
-public class HRMUploadKey2Action extends ActionSupport {
+public class HRMUploadKey2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -42,7 +46,8 @@ public class HRMUploadKey2Action extends ActionSupport {
         String outcome = "failure";
 
         try {
-            InputStream is = Files.newInputStream(importFile.toPath());
+            File importFileOnDisk = PathValidationUtils.toFile(importFile);
+            InputStream is = Files.newInputStream(importFileOnDisk.toPath());
 
             String type = request.getParameter("type");
 
@@ -81,8 +86,14 @@ public class HRMUploadKey2Action extends ActionSupport {
         return SUCCESS;
     }
 
-    private File importFile; // Uploaded file
-    private String importFileFileName; // Name of the uploaded file
-    private String importFileContentType; // Content type of the uploaded file
+    private UploadedFile importFile;
+    private String importFileFileName;
 
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.importFile = uploadedFiles.get(0);
+            this.importFileFileName = importFile.getOriginalName();
+        }
+    }
 }

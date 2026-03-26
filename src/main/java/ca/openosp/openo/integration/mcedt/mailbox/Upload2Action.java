@@ -25,12 +25,15 @@ package ca.openosp.openo.integration.mcedt.mailbox;
 
 import ca.ontario.health.edt.*;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.cxf.helpers.FileUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.integration.mcedt.DelegateFactory;
 import ca.openosp.openo.integration.mcedt.McedtMessageCreator;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.OscarProperties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +49,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class Upload2Action extends ActionSupport {
+public class Upload2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -332,8 +335,9 @@ public class Upload2Action extends ActionSupport {
         } else {
             OscarProperties props = OscarProperties.getInstance();
             File myFile = new File(props.getProperty("ONEDT_OUTBOX", "") + this.getFileName());
+            File rawUploadFile = PathValidationUtils.toFile(this.addUploadFile);
             try (FileOutputStream outputStream = new FileOutputStream(myFile)) {
-                outputStream.write(Files.readAllBytes(this.getAddUploadFile().toPath()));
+                outputStream.write(Files.readAllBytes(rawUploadFile.toPath()));
                 outputStream.close();
                 addActionMessage(getText("uploadAction.upload.add.success", new String[]{this.getFileName() + " is succesfully added to the uploads list!"}));
             } catch (IOException e) {
@@ -405,9 +409,7 @@ public class Upload2Action extends ActionSupport {
     private String resourceType;
     private String fileName;
     private BigInteger resourceId;
-    private File addUploadFile;
-    private String addUploadFileFileName;
-    private String addUploadFileContentType;
+    private UploadedFile addUploadFile;
 
     public String getDescription() {
         return description;
@@ -441,27 +443,12 @@ public class Upload2Action extends ActionSupport {
         this.resourceId = resourceId;
     }
 
-    public File getAddUploadFile() {
-        return addUploadFile;
-    }
 
-    public void setAddUploadFile(File addUploadFile) {
-        this.addUploadFile = addUploadFile;
-    }
-
-    public String getAddUploadFileFileName() {
-        return addUploadFileFileName;
-    }
-    public void setAddUploadFileFileName(String addUploadFileFileName) {
-        this.addUploadFileFileName = addUploadFileFileName;
-        this.setFileName(addUploadFileFileName); // set the file name to the upload file name
-    }
-
-    public String getAddUploadFileContentType() {
-        return addUploadFileContentType;
-    }
-    public void setAddUploadFileContentType(String addUploadFileContentType) {
-        this.addUploadFileContentType = addUploadFileContentType;
-        this.setResourceType(addUploadFileContentType); // set the resource type to the upload file content type
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.addUploadFile = uploadedFiles.get(0);
+            this.fileName = addUploadFile.getOriginalName();
+        }
     }
 }

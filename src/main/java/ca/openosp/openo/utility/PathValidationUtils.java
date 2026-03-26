@@ -3,6 +3,7 @@ package ca.openosp.openo.utility;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,13 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Utility class for validating file paths to prevent path traversal attacks.
+ * Utility class for validating file paths and uploaded files to prevent path traversal attacks.
+ *
+ * <p>Usage for extracting a {@link java.io.File} from a Struts 2 {@link UploadedFile}:</p>
+ * <pre>
+ * File rawFile = PathValidationUtils.toFile(uploadedFile);
+ * // Now safe to pass to validation or read methods
+ * </pre>
  *
  * <p>Usage for validating a user-provided filename (sanitizes and constructs safe path):</p>
  * <pre>
@@ -110,6 +117,28 @@ public final class PathValidationUtils {
     // ========================================================================
     // UPLOAD VALIDATION - For validating uploaded files
     // ========================================================================
+
+    /**
+     * Extracts the underlying {@link java.io.File} from a Struts 2 {@link UploadedFile}.
+     *
+     * <p>The {@link UploadedFile} interface returns {@link Object} from {@link UploadedFile#getContent()},
+     * requiring a cast to {@link java.io.File}. This method centralizes that cast with a safety check
+     * via {@link UploadedFile#isFile()}, avoiding raw casts scattered across action classes.</p>
+     *
+     * <p>The returned {@link java.io.File} points to a temporary file created by the Struts 2
+     * {@code ActionFileUploadInterceptor}. It should be passed to the {@code validateUpload} methods
+     * in this class before being used for file operations.</p>
+     *
+     * @param uploadedFile the Struts 2 uploaded file wrapper
+     * @return File the underlying temporary file
+     * @throws IllegalStateException if uploadedFile is null or its content is not a File
+     */
+    public static File toFile(UploadedFile uploadedFile) {
+        if (uploadedFile == null || !uploadedFile.isFile()) {
+            throw new IllegalStateException("UploadedFile content is not a File");
+        }
+        return (File) uploadedFile.getContent();
+    }
 
     /**
      * Validates an uploaded source file is from an allowed temp location.

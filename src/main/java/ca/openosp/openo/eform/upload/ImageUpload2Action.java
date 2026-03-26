@@ -26,7 +26,10 @@
 
 package ca.openosp.openo.eform.upload;
 
+import java.util.List;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -43,7 +46,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 
-public class ImageUpload2Action extends ActionSupport {
+public class ImageUpload2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -83,11 +86,14 @@ public class ImageUpload2Action extends ActionSupport {
                 return ERROR;
             }
 
+            // Extract File from UploadedFile for validation and I/O
+            File imageFile = PathValidationUtils.toFile(image);
+
             // Validate upload: source file location + destination path traversal protection
-            File destinationFile = PathValidationUtils.validateUpload(image, imageFileName, imageFolder);
+            File destinationFile = PathValidationUtils.validateUpload(imageFile, imageFileName, imageFolder);
 
             // Upload the file
-            try (InputStream fis = Files.newInputStream(image.toPath());
+            try (InputStream fis = Files.newInputStream(imageFile.toPath());
                  OutputStream fos = Files.newOutputStream(destinationFile.toPath())) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
@@ -122,24 +128,14 @@ public class ImageUpload2Action extends ActionSupport {
         return imageFolder;
     }
 
-    private File image;
+    private UploadedFile image;
+    private String imageFileName;
 
-    public File getImage() {
-        return image;
-    }
-
-    public void setImage(File image) {
-        this.image = image;
-    }
-
-    private String imageFileName;    
-    private String imageFileContentType; 
-
-    public void setImageFileName(String imageFileName) {
-        this.imageFileName = imageFileName;
-    }
-
-    public void setImageFileContentType(String imageFileContentType) {
-        this.imageFileContentType = imageFileContentType;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.image = uploadedFiles.get(0);
+            this.imageFileName = image.getOriginalName();
+        }
     }
 }

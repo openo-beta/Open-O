@@ -25,9 +25,13 @@
 package ca.openosp.openo.integration.mcedt;
 
 import ca.ontario.health.edt.*;
+import java.util.List;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -41,7 +45,7 @@ import java.util.List;
 import static ca.openosp.openo.integration.mcedt.ActionUtils.*;
 import static ca.openosp.openo.integration.mcedt.McedtConstants.SESSION_KEY_UPLOAD_DETAILS;
 
-public class Update2Action extends ActionSupport {
+public class Update2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -129,7 +133,7 @@ public class Update2Action extends ActionSupport {
     }
 
     private String resourceId;
-    private File content;
+    private UploadedFile content;
 
     public String getResourceId() {
         return resourceId;
@@ -139,19 +143,19 @@ public class Update2Action extends ActionSupport {
         this.resourceId = resourceId;
     }
 
-    public File getContent() {
-        return content;
-    }
-
-    public void setContent(File content) {
-        this.content = content;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.content = uploadedFiles.get(0);
+        }
     }
 
     public UpdateRequest toUpdateRequest() {
         UpdateRequest result = new UpdateRequest();
         result.setResourceID(BigInteger.valueOf(ConversionUtils.fromIntString(resourceId)));
         try {
-            result.setContent(Files.readAllBytes(content.toPath()));
+            File contentFile = PathValidationUtils.toFile(content);
+            result.setContent(Files.readAllBytes(contentFile.toPath()));
         } catch (Exception e) {
             throw new RuntimeException("Unable to read upload data", e);
         }

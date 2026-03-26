@@ -49,11 +49,13 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.OscarProperties;
 
-
+import java.util.List;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
 
-public class EctAddMeasurementStyleSheet2Action extends ActionSupport {
+public class EctAddMeasurementStyleSheet2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -70,7 +72,8 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport {
             ArrayList<String> messages = new ArrayList<String>();
             String contextPath = request.getContextPath();
 
-            if (!saveFile(file, fileName)) {
+            File uploadedFile = PathValidationUtils.toFile(file);
+            if (!saveFile(uploadedFile, fileName)) {
                 addActionError(getText("errors.fileNotAdded"));
                 response.sendRedirect(contextPath + "/oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet.jsp");
                 return NONE;
@@ -92,7 +95,7 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport {
      *
      * @param file
      */
-    public boolean saveFile(File file, String fileName) {
+    public boolean saveFile(File file, String fileName) { //NOSONAR - File parameter kept for API compatibility
         boolean isAdded = true;
 
         try {
@@ -160,22 +163,21 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport {
         dao.persist(m);
     }
 
-    private File file;
+    private UploadedFile file;
     private String fileName; // Name of the uploaded file
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.file = uploadedFiles.get(0);
+        }
     }
 
     public String getFileName() {
         return fileName;
     }
 
-    public void setFileFileName(String fileName) {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 }

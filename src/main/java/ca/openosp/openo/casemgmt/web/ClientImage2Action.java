@@ -39,17 +39,28 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.nio.file.Files;
+import java.util.List;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
-public class ClientImage2Action extends ActionSupport {
+public class ClientImage2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private File clientImage;
+    private UploadedFile clientImage;
     private String clientImageFileName;
 
     private static Logger log = MiscUtils.getLogger();
 
     private ClientImageManager clientImageManager = SpringUtils.getBean(ClientImageManager.class);
+
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.clientImage = uploadedFiles.get(0);
+            this.clientImageFileName = clientImage.getOriginalName();
+        }
+    }
 
     // Execute on struts action call
     public String execute() {
@@ -72,13 +83,15 @@ public class ClientImage2Action extends ActionSupport {
 
         // Ensure that the upload directory is correct and create a new image object that will be saved to the client
         try {
+            File rawImage = PathValidationUtils.toFile(clientImage);
+
             // Validate that the uploaded file is in an allowed temp directory
-            if (!PathValidationUtils.isInAllowedTempDirectory(clientImage)) {
-                throw new IllegalArgumentException("Invalid file path: " + clientImage.getPath());
+            if (!PathValidationUtils.isInAllowedTempDirectory(rawImage)) {
+                throw new IllegalArgumentException("Invalid file path: " + rawImage.getPath());
             }
 
             // Re-validate at point of use for static analysis visibility
-            File validatedImage = PathValidationUtils.validateUpload(clientImage);
+            File validatedImage = PathValidationUtils.validateUpload(rawImage);
             byte[] imageData = Files.readAllBytes(validatedImage.toPath());
 
             ClientImage clientImageObj = new ClientImage();
@@ -96,13 +109,5 @@ public class ClientImage2Action extends ActionSupport {
 
         request.setAttribute("success", true);
         return SUCCESS;
-    }
-
-    public void setClientImage(File clientImage) { 
-        this.clientImage = clientImage; 
-    }
-
-    public void setClientImageFileName(String name) { 
-        this.clientImageFileName = name; 
     }
 }

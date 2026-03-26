@@ -28,6 +28,8 @@ package ca.openosp.openo.login;
 
 import ca.openosp.OscarProperties;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.commn.dao.PropertyDao;
@@ -36,6 +38,7 @@ import ca.openosp.openo.commn.service.AcceptableUseAgreementManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,8 +47,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.List;
 
-public class UploadLoginText2Action extends ActionSupport {
+public class UploadLoginText2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -104,8 +108,9 @@ public class UploadLoginText2Action extends ActionSupport {
 
 
         try {
-            if (importFile.getName().length() > 0) {
-                fis = Files.newInputStream(importFile.toPath());
+            File rawImportFile = PathValidationUtils.toFile(importFile);
+            if (rawImportFile.getName().length() > 0) {
+                fis = Files.newInputStream(rawImportFile.toPath());
                 String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/OSCARloginText.txt";
                 fos = new FileOutputStream(savePath);
                 byte[] buf = new byte[128 * 1024];
@@ -124,13 +129,12 @@ public class UploadLoginText2Action extends ActionSupport {
         return SUCCESS;
     }
 
-    private File importFile;
+    private UploadedFile importFile;
 
-    public File getImportFile() {
-        return importFile;
-    }
-
-    public void setImportFile(File importFile) {
-        this.importFile = importFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.importFile = uploadedFiles.get(0);
+        }
     }
 }
