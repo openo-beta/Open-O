@@ -308,12 +308,19 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     @Override
-    public void copyClinicalDirectRecords(Integer sourceDemoNo, Integer targetDemoNo) {
-        // allergies
-        copyEntityRows(Allergy.class, "Allergy", "demographicNo",
+    public Map<Long, Long> copyAllergies(Integer sourceDemoNo, Integer targetDemoNo) {
+        Map<Long, Long> allergyPkMap = copyEntityRows(Allergy.class, "Allergy", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
+        logger.debug("copyAllergies: source={}, target={}, allergy rows={}", sourceDemoNo, targetDemoNo, allergyPkMap.size());
+        return allergyPkMap;
+    }
+
+    @Override
+    public void copyClinicalDirectRecords(Integer sourceDemoNo, Integer targetDemoNo) {
+        // allergies — copied by copyAllergies(); the manager calls that separately so the
+        // PK map is available for casemgmt_note_link tableId remap (table_name = 3)
 
         // appointment and appointmentArchive are handled by copyAppointments() so the PK map
         // can be passed to copyCasemgmtNoteGroup for note-link remap
