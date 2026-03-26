@@ -58,15 +58,15 @@ public class DemographicMergeAction extends ActionSupport {
 
     private static final Logger logger = MiscUtils.getLogger();
 
-    private static final int DEFAULT_LIMIT  = 10;
+    private static final int DEFAULT_LIMIT = 10;
     private static final int DEFAULT_OFFSET = 0;
 
-    HttpServletRequest  request  = ServletActionContext.getRequest();
+    HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private SecurityInfoManager    securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    private DemographicMergeManager mergeManager       = SpringUtils.getBean(DemographicMergeManager.class);
-    private DemographicManager     demographicManager  = SpringUtils.getBean(DemographicManager.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private DemographicMergeManager mergeManager = SpringUtils.getBean(DemographicMergeManager.class);
+    private DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
 
     /**
      * Entry point — routes by {@code method} parameter; defaults to the search/display page.
@@ -83,9 +83,13 @@ public class DemographicMergeAction extends ActionSupport {
 
         String mtd = request.getParameter("method");
 
-        if ("merge".equals(mtd))         return doMerge(loggedInInfo);
-        if ("unmerge".equals(mtd))       return doUnmerge(loggedInInfo);
-        if ("selectPrimary".equals(mtd)) return doSelectPrimary(loggedInInfo);
+        if ("merge".equals(mtd)) {
+            return doMerge(loggedInInfo);
+        } else if ("unmerge".equals(mtd)) {
+            return doUnmerge(loggedInInfo);
+        } else if ("selectPrimary".equals(mtd)) {
+            return doSelectPrimary(loggedInInfo);
+        }
 
         return doSearch(loggedInInfo);
     }
@@ -102,16 +106,16 @@ public class DemographicMergeAction extends ActionSupport {
      * @return String {@code "search"}
      */
     private String doSearch(LoggedInInfo loggedInInfo) {
-        String keyword    = request.getParameter("keyword");
+        String keyword = request.getParameter("keyword");
         String searchMode = request.getParameter("search_mode");
-        String mode       = request.getParameter("mode");
-        String outcome    = request.getParameter("outcome");
+        String mode = request.getParameter("mode");
+        String outcome = request.getParameter("outcome");
 
         if (searchMode == null) searchMode = "search_name";
-        if (mode == null)       mode = "merge";
+        if (mode == null) mode = "merge";
 
-        int offset      = DEFAULT_OFFSET;
-        int limit       = DEFAULT_LIMIT;
+        int offset = DEFAULT_OFFSET;
+        int limit = DEFAULT_LIMIT;
         boolean unmerge = "unmerge".equals(mode);
 
         List<Demographic> demoList = null;
@@ -127,13 +131,13 @@ public class DemographicMergeAction extends ActionSupport {
             }
         }
 
-        request.setAttribute("demoList",    demoList);
-        request.setAttribute("keyword",     keyword);
-        request.setAttribute("searchMode",  searchMode);
-        request.setAttribute("mode",        mode);
-        request.setAttribute("outcome",     outcome);
-        request.setAttribute("offset",      offset);
-        request.setAttribute("limit",       limit);
+        request.setAttribute("demoList", demoList);
+        request.setAttribute("keyword", keyword);
+        request.setAttribute("searchMode", searchMode);
+        request.setAttribute("mode", mode);
+        request.setAttribute("outcome", outcome);
+        request.setAttribute("offset", offset);
+        request.setAttribute("limit", limit);
         request.setAttribute("unmergeMode", unmerge);
         request.setAttribute("resultCount", demoList != null ? demoList.size() : 0);
 
@@ -166,7 +170,7 @@ public class DemographicMergeAction extends ActionSupport {
 
         List<Demographic> demographics = demographicManager.getDemographics(loggedInInfo, selectedIds);
         request.setAttribute("demographics", demographics);
-        request.setAttribute("selectedIds",  selectedIds);
+        request.setAttribute("selectedIds", selectedIds);
 
         return "selectPrimary";
     }
