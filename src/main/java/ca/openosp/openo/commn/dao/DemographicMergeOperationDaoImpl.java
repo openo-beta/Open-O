@@ -713,13 +713,14 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
      */
     private void copyFormBooleanValues(Map<Long, Long> pkMap, String formName) {
         if (pkMap.isEmpty()) return;
+        String sql = "INSERT INTO form_boolean_value (form_name, form_id, field_name, field_value) " +
+                     "SELECT form_name, ?, field_name, field_value " +
+                     "FROM form_boolean_value WHERE form_name = ? AND form_id = ?";
+        List<Object[]> batchArgs = new ArrayList<>();
         for (Map.Entry<Long, Long> entry : pkMap.entrySet()) {
-            jdbcTemplate.update(
-                "INSERT INTO form_boolean_value (form_name, form_id, field_name, field_value) " +
-                "SELECT form_name, ?, field_name, field_value " +
-                "FROM form_boolean_value WHERE form_name = ? AND form_id = ?",
-                entry.getValue(), formName, entry.getKey());
+            batchArgs.add(new Object[]{entry.getValue(), formName, entry.getKey()});
         }
+        jdbcTemplate.batchUpdate(sql, batchArgs);
     }
 
     // -------------------------------------------------------------------------
