@@ -284,6 +284,29 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         logger.debug("copyChildRows: entity='{}', parent entries={}", jpqlName, parentPkMap.size());
     }
 
+    /**
+     * Issues one bulk JPQL UPDATE per entry in {@code pkMap}, remapping
+     * {@code casemgmt_note_link.table_id} from the old entity PK to the new entity PK
+     * for all copied note rows ({@code note_id IN newNoteIds}) of the given {@code linkType}.
+     * <p>
+     * O(entities of that type) — one UPDATE per entity, filtering by the full set of copied
+     * note PKs via {@code IN} clause. No entities are loaded into memory.
+     *
+     * @param newNoteIds list of new note PKs (the target patient's copied notes)
+     * @param linkType   Integer the {@code CaseManagementNoteLink} integer constant
+     * @param pkMap      Map&lt;Long, Long&gt; old entity PK → new entity PK
+     */
+    private void remapNoteLinkTableIds(List<Integer> newNoteIds, Integer linkType, Map<Long, Long> pkMap) {
+        for (Map.Entry<Long, Long> entry : pkMap.entrySet()) {
+            entityManager.createQuery("UPDATE CaseMgmtNoteLink e SET e.tableId = :newId WHERE e.noteId IN :noteIds AND e.tableName = :type AND e.tableId = :oldId")
+                .setParameter("newId",   entry.getValue().intValue())
+                .setParameter("noteIds", newNoteIds)
+                .setParameter("type",    linkType)
+                .setParameter("oldId",   entry.getKey().intValue())
+                .executeUpdate();
+        }
+    }
+
     // -------------------------------------------------------------------------
     // ── Appointments + clinical direct-copy records
     // -------------------------------------------------------------------------
@@ -1057,7 +1080,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     @Override
-    public Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> appointmentPkMap) {
+    public Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> appointmentPkMap, Map<Integer, Map<Long, Long>> linkedEntityPkMaps) {
         // casemgmt_note (parent) — demo field is "demographicNo"
         Map<Long, Long> notePkMap = copyEntityRows(CaseMgmtNote.class, "CaseMgmtNote", "demographicNo",
                 sourceDemoNo, targetDemoNo,
@@ -1073,28 +1096,36 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 (e, fk) -> e.setNoteId(fk),
                 null, null);
 
-        // casemgmt_note_link — child, FK is noteId
+        // casemgmt_note_link — child, FK is noteId; tableId remapped below for all copied entity types
         copyChildRows(CaseMgmtNoteLink.class, "CaseMgmtNoteLink", "noteId",
                 notePkMap,
                 e -> e.setId(null),
                 (e, fk) -> e.setNoteId(fk),
                 null, null);
 
-        // Remap tableId for appointment links using the appointment PK map.
-        // Without this, note-appointment associations point to the source patient's old appointment PKs.
-        // One UPDATE per appointment (outer loop), matching all copied note PKs via IN clause — O(appointments).
+        // Build the list of new note PKs once — reused by every remap call below.
+        // One UPDATE per entity entry (outer loop), matching all copied note PKs via IN clause — O(entities).
+        List<Integer> newNoteIds = new ArrayList<>();
+        for (Long v : notePkMap.values()) {
+            newNoteIds.add(v.intValue());
+        }
+
+        // Remap CASEMGMTNOTE (1) self-links: a note that references another note on the same
+        // source patient. Both notes are now on the target with new PKs; fix tableId using notePkMap.
+        remapNoteLinkTableIds(newNoteIds, CaseManagementNoteLink.CASEMGMTNOTE, notePkMap);
+
+        // Remap APPOINTMENT (11) links to point to the target patient's new appointment PKs.
         if (appointmentPkMap != null && !appointmentPkMap.isEmpty()) {
-            List<Integer> newNoteIds = new ArrayList<>();
-            for (Long v : notePkMap.values()) {
-                newNoteIds.add(v.intValue());
-            }
-            for (Map.Entry<Long, Long> appt : appointmentPkMap.entrySet()) {
-                entityManager.createQuery("UPDATE CaseMgmtNoteLink e SET e.tableId = :newApptId WHERE e.noteId IN :noteIds AND e.tableName = :linkType AND e.tableId = :oldApptId")
-                    .setParameter("newApptId", appt.getValue().intValue())
-                    .setParameter("noteIds", newNoteIds)
-                    .setParameter("linkType", CaseManagementNoteLink.APPOINTMENT)
-                    .setParameter("oldApptId", appt.getKey().intValue())
-                    .executeUpdate();
+            remapNoteLinkTableIds(newNoteIds, CaseManagementNoteLink.APPOINTMENT, appointmentPkMap);
+        }
+
+        // Remap all other copied-entity link types supplied by the manager
+        // (ALLERGIES=3, DRUGS=2, EFORMDATA=6, EMAIL=12, PREVENTIONS=8, TICKLER=10).
+        if (linkedEntityPkMaps != null) {
+            for (Map.Entry<Integer, Map<Long, Long>> entry : linkedEntityPkMaps.entrySet()) {
+                if (!entry.getValue().isEmpty()) {
+                    remapNoteLinkTableIds(newNoteIds, entry.getKey(), entry.getValue());
+                }
             }
         }
 
