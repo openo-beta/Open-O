@@ -265,18 +265,29 @@ public interface DemographicMergeOperationDao {
     /**
      * Copies {@code casemgmt_note} rows with their child tables
      * ({@code casemgmt_note_ext}, {@code casemgmt_note_link}).
-     * After copying note links, remaps {@code table_id} for rows where
-     * {@code table_name = 11} (APPOINTMENT) using the provided appointment PK map so that
-     * note-appointment associations point to the target patient's new appointment rows.
+     * After copying note links, remaps {@code table_id} for all link types whose entities
+     * were also copied during merge, so associations point to the target patient's new records:
+     * <ul>
+     *   <li>{@code table_name = 1} (CASEMGMTNOTE) — remapped using the note PK map produced
+     *       by this method itself (self-links between notes)</li>
+     *   <li>{@code table_name = 11} (APPOINTMENT) — remapped using {@code appointmentPkMap}</li>
+     *   <li>All types present in {@code linkedEntityPkMaps} — remapped using the supplied maps</li>
+     * </ul>
+     * Types not copied during merge (LABTEST=4, DOCUMENT=5, DEMOGRAPHIC=7, LABTEST2=9) are
+     * intentionally excluded — their {@code table_id} values remain valid after merge.
      * Returns the old-to-new note PK map (note_id) needed by {@link #copyIssueNotesGroup}.
      *
-     * @param sourceDemographicNo Integer the source patient demographic number
-     * @param targetDemographicNo Integer the target patient demographic number
-     * @param appointmentPkMap    Map&lt;Long, Long&gt; old appointment PK → new appointment PK
-     *                            (returned by {@link #copyAppointments})
+     * @param sourceDemographicNo  Integer the source patient demographic number
+     * @param targetDemographicNo  Integer the target patient demographic number
+     * @param appointmentPkMap     Map&lt;Long, Long&gt; old appointment PK → new appointment PK
+     *                             (returned by {@link #copyAppointments})
+     * @param linkedEntityPkMaps   Map&lt;Integer, Map&lt;Long, Long&gt;&gt; keyed by
+     *                             {@code CaseManagementNoteLink} integer constant; each value is
+     *                             the old→new PK map for that entity type. Only non-empty maps
+     *                             need to be included. Pass an empty map if none apply.
      * @return Map&lt;Long, Long&gt; mapping of old {@code note_id} to new {@code note_id}
      */
-    Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemographicNo, Integer targetDemographicNo, Map<Long, Long> appointmentPkMap);
+    Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemographicNo, Integer targetDemographicNo, Map<Long, Long> appointmentPkMap, Map<Integer, Map<Long, Long>> linkedEntityPkMaps);
 
     /**
      * Copies {@code casemgmt_issue} rows with deduplication (skips rows where the target
