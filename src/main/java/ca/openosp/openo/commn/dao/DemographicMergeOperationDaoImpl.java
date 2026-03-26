@@ -305,7 +305,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     // -------------------------------------------------------------------------
-    // T4c — copyAppointments + copyClinicalDirectRecords
+    // ── Appointments + clinical direct-copy records
     // -------------------------------------------------------------------------
 
     @Override
@@ -510,19 +510,12 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     // -------------------------------------------------------------------------
-    // T4d — copyAllForms
+    // ── Form tables
     // -------------------------------------------------------------------------
 
     @Override
     public void copyAllForms(Integer sourceDemoNo, Integer targetDemoNo) {
-        // TODO T4d: Verify each form entity class name in ca.openosp.openo.form.model.*
-        // before implementing. All entities follow the pattern:
-        //   copyEntityRows(FormXxx.class, "FormXxx", "demographicNo", sourceDemoNo, targetDemoNo,
-        //       e -> (long) e.getId(), e -> e.setId(null), (e, d) -> e.setDemographicNo(d));
-        // followed by a JDBC form_boolean_value copy for each form:
-        //   copyFormBooleanValues(oldPkMap, "formXxx")
-        //
-        // Tables with [form_bv]: form, form2MinWalk, formAdf, formAdfV2, formAlpha, formAnnual,
+        // Tables covered: form, form2MinWalk, formAdf, formAdfV2, formAlpha, formAnnual,
         //   formAnnualV2, formAR, formBCAR[BC], formBCAR2007[BC], formBCAR2012[BC],
         //   formBCBirthSumMo[BC], formBCBirthSumMo2008[BC], formBCClientChartChecklist[BC],
         //   formBCHP[BC], formBCINR[BC], formBCNewBorn[BC], formBCNewBorn2008[BC], formBPMH[BC],
@@ -725,7 +718,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     // -------------------------------------------------------------------------
-    // T4e — Part 2b group methods
+    // ── Parent + derived group copy methods
     // -------------------------------------------------------------------------
 
     @Override
@@ -1034,7 +1027,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     // -------------------------------------------------------------------------
-    // T4f — Part 2c special-case methods
+    // ── Special-case group methods
     // -------------------------------------------------------------------------
 
     @Override
@@ -1203,7 +1196,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     // -------------------------------------------------------------------------
-    // T4g — copyIdentityTables
+    // ── Identity tables
     // -------------------------------------------------------------------------
 
     @Override
