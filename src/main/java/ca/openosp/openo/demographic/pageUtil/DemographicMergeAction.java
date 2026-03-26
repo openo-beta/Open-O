@@ -87,8 +87,6 @@ public class DemographicMergeAction extends ActionSupport {
             return doMerge(loggedInInfo);
         } else if ("unmerge".equals(mtd)) {
             return doUnmerge(loggedInInfo);
-        } else if ("selectPrimary".equals(mtd)) {
-            return doSelectPrimary(loggedInInfo);
         }
 
         return doSearch(loggedInInfo);
@@ -151,37 +149,6 @@ public class DemographicMergeAction extends ActionSupport {
         request.setAttribute("resultCount", demoList != null ? demoList.size() : 0);
 
         return "search";
-    }
-
-    /**
-     * Loads the selected demographics and populates request attributes for
-     * {@code demographicMergePrimarySelect.jsp}.
-     *
-     * @param loggedInInfo LoggedInInfo the authenticated provider
-     * @return String {@code "selectPrimary"} on success, {@code "search"} if fewer than 2 IDs supplied
-     */
-    private String doSelectPrimary(LoggedInInfo loggedInInfo) {
-        String[] selectedParams = request.getParameterValues("demographicNo");
-
-        if (selectedParams == null || selectedParams.length < 2) {
-            logger.warn("DemographicMergeAction.doSelectPrimary: fewer than 2 demographicNo values received");
-            return doSearch(loggedInInfo);
-        }
-
-        List<Integer> selectedIds = new ArrayList<>();
-        for (String s : selectedParams) {
-            try { selectedIds.add(Integer.parseInt(s)); } catch (NumberFormatException ignored) {}
-        }
-
-        if (selectedIds.size() < 2) {
-            return doSearch(loggedInInfo);
-        }
-
-        List<Demographic> demographics = demographicManager.getDemographics(loggedInInfo, selectedIds);
-        request.setAttribute("demographics", demographics);
-        request.setAttribute("selectedIds", selectedIds);
-
-        return "selectPrimary";
     }
 
     // -------------------------------------------------------------------------
