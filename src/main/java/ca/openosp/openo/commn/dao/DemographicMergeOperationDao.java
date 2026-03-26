@@ -121,7 +121,7 @@ public interface DemographicMergeOperationDao {
     void copyAllForms(Integer sourceDemographicNo, Integer targetDemographicNo);
 
     // -------------------------------------------------------------------------
-    // Part 2b — parent + derived group tables
+    // Parent + derived group tables
     // -------------------------------------------------------------------------
 
     /**
@@ -247,7 +247,7 @@ public interface DemographicMergeOperationDao {
     Map<Long, Long> copyTicklerGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
 
     // -------------------------------------------------------------------------
-    // Part 2c — special-case tables
+    // Special-case tables
     // -------------------------------------------------------------------------
 
     /**
