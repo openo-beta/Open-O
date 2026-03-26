@@ -220,18 +220,9 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
      * @param setDemoNo     BiConsumer that sets the demographic FK to the target value
      * @return Map&lt;Long, Long&gt; mapping old PK to new PK for every copied row
      */
-    private <T> Map<Long, Long> copyEntityRows(
-            Class<T> entityClass,
-            String jpqlName,
-            String demoField,
-            Integer sourceDemoNo,
-            Integer targetDemoNo,
-            Function<T, Long> getPk,
-            Consumer<T> clearPk,
-            BiConsumer<T, Integer> setDemoNo) {
+    private <T> Map<Long, Long> copyEntityRows(Class<T> entityClass, String jpqlName, String demoField, Integer sourceDemoNo, Integer targetDemoNo, Function<T, Long> getPk, Consumer<T> clearPk, BiConsumer<T, Integer> setDemoNo) {
 
-        List<T> rows = entityManager.createQuery(
-                "SELECT e FROM " + jpqlName + " e WHERE e." + demoField + " = :demo", entityClass)
+        List<T> rows = entityManager.createQuery("SELECT e FROM " + jpqlName + " e WHERE e." + demoField + " = :demo", entityClass)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
@@ -250,8 +241,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             pkMap.put(oldPk, getPk.apply(row));
         }
 
-        logger.debug("copyEntityRows: entity='{}', source={}, target={}, rows={}",
-                jpqlName, sourceDemoNo, targetDemoNo, pkMap.size());
+        logger.debug("copyEntityRows: entity='{}', source={}, target={}, rows={}", jpqlName, sourceDemoNo, targetDemoNo, pkMap.size());
         return pkMap;
     }
 
@@ -272,21 +262,12 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
      * @param extraDemoField BiConsumer to set an extra demographic column; pass {@code null} if unused
      * @param targetDemoNo   Integer target demographic number for the extra demo field; ignored if null
      */
-    private <T> void copyChildRows(
-            Class<T> entityClass,
-            String jpqlName,
-            String fkField,
-            Map<Long, Long> parentPkMap,
-            Consumer<T> clearPk,
-            BiConsumer<T, Integer> setFk,
-            BiConsumer<T, Integer> extraDemoField,
-            Integer targetDemoNo) {
+    private <T> void copyChildRows(Class<T> entityClass, String jpqlName, String fkField, Map<Long, Long> parentPkMap, Consumer<T> clearPk, BiConsumer<T, Integer> setFk, BiConsumer<T, Integer> extraDemoField, Integer targetDemoNo) {
 
         if (parentPkMap == null || parentPkMap.isEmpty()) return;
 
         for (Map.Entry<Long, Long> entry : parentPkMap.entrySet()) {
-            List<T> children = entityManager.createQuery(
-                    "SELECT e FROM " + jpqlName + " e WHERE e." + fkField + " = :fk", entityClass)
+            List<T> children = entityManager.createQuery("SELECT e FROM " + jpqlName + " e WHERE e." + fkField + " = :fk", entityClass)
                 .setParameter("fk", entry.getKey().intValue())
                 .getResultList();
 
@@ -300,8 +281,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             }
         }
 
-        logger.debug("copyChildRows: entity='{}', parent entries={}",
-                jpqlName, parentPkMap.size());
+        logger.debug("copyChildRows: entity='{}', parent entries={}", jpqlName, parentPkMap.size());
     }
 
     // -------------------------------------------------------------------------
@@ -339,8 +319,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         // can be passed to copyCasemgmtNoteGroup for note-link remap
 
         // casemgmt_cpp — demo field is String (varchar in DB); handled inline
-        List<CaseMgmtCpp> cppRows = entityManager.createQuery(
-                "SELECT e FROM CaseMgmtCpp e WHERE e.demographicNo = :demo", CaseMgmtCpp.class)
+        List<CaseMgmtCpp> cppRows = entityManager.createQuery("SELECT e FROM CaseMgmtCpp e WHERE e.demographicNo = :demo", CaseMgmtCpp.class)
             .setParameter("demo", String.valueOf(sourceDemoNo))
             .getResultList();
         for (CaseMgmtCpp cpp : cppRows) {
@@ -360,9 +339,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         // ctl_document — composite @EmbeddedId (module + documentNo); module_id = demographicNo.
         // New-object pattern: construct a fresh transient CtlDocument so Hibernate issues a direct INSERT.
-        List<CtlDocument> sourceDocs = entityManager.createQuery(
-                "SELECT d FROM CtlDocument d WHERE d.id.module = 'demographic' AND d.id.moduleId = :mid",
-                CtlDocument.class)
+        List<CtlDocument> sourceDocs = entityManager.createQuery("SELECT d FROM CtlDocument d WHERE d.id.module = 'demographic' AND d.id.moduleId = :mid", CtlDocument.class)
             .setParameter("mid", sourceDemoNo)
             .getResultList();
         for (CtlDocument src : sourceDocs) {
@@ -505,8 +482,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        logger.debug("copyClinicalDirectRecords: source={}, target={} — complete",
-                sourceDemoNo, targetDemoNo);
+        logger.debug("copyClinicalDirectRecords: source={}, target={} — complete", sourceDemoNo, targetDemoNo);
     }
 
     // -------------------------------------------------------------------------
@@ -756,9 +732,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         // Remap ch1Id in newly copied transaction rows using JPQL bulk UPDATE
         for (Map.Entry<Long, Long> ch1 : ch1PkMap.entrySet()) {
-            entityManager.createQuery(
-                    "UPDATE BillingOnTransaction e SET e.ch1Id = :newCh1Id " +
-                    "WHERE e.demographicNo = :demo AND e.ch1Id = :oldCh1Id")
+            entityManager.createQuery("UPDATE BillingOnTransaction e SET e.ch1Id = :newCh1Id WHERE e.demographicNo = :demo AND e.ch1Id = :oldCh1Id")
                 .setParameter("newCh1Id", ch1.getValue().intValue())
                 .setParameter("demo", targetDemoNo)
                 .setParameter("oldCh1Id", ch1.getKey().intValue())
@@ -834,8 +808,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     @Override
     public void copyEmailGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         // emailLog — @ManyToOne Demographic; query by demographic.id
-        List<EmailLog> logs = entityManager.createQuery(
-                "SELECT e FROM EmailLog e WHERE e.demographic.id = :demo", EmailLog.class)
+        List<EmailLog> logs = entityManager.createQuery("SELECT e FROM EmailLog e WHERE e.demographic.id = :demo", EmailLog.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
@@ -855,8 +828,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             int newLogId = log.getId();
 
             // Copy attachments for this log
-            List<EmailAttachment> attachments = entityManager.createQuery(
-                    "SELECT a FROM EmailAttachment a WHERE a.emailLog.id = :lid", EmailAttachment.class)
+            List<EmailAttachment> attachments = entityManager.createQuery("SELECT a FROM EmailAttachment a WHERE a.emailLog.id = :lid", EmailAttachment.class)
                 .setParameter("lid", oldLogId)
                 .getResultList();
 
@@ -886,9 +858,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         // Use the new-object Hibernate pattern: construct a brand-new transient instance per row so
         // Hibernate classifies it as TRANSIENT immediately (no DB snapshot SELECT) and issues a direct INSERT.
         for (Map.Entry<Long, Long> entry : attachPkMap.entrySet()) {
-            List<EReferAttachmentData> sourceRows = entityManager.createQuery(
-                    "SELECT e FROM EReferAttachmentData e WHERE e.eReferAttachment.id = :pid",
-                    EReferAttachmentData.class)
+            List<EReferAttachmentData> sourceRows = entityManager.createQuery("SELECT e FROM EReferAttachmentData e WHERE e.eReferAttachment.id = :pid", EReferAttachmentData.class)
                 .setParameter("pid", entry.getKey().intValue())
                 .getResultList();
 
@@ -1043,9 +1013,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         // consultationRequestExtArchive — dual FK: consultationRequestArchiveId + requestId
         // Query by consultationRequestArchiveId (the FK to the archive parent), not by id (the PK)
         for (Map.Entry<Long, Long> archEntry : archivePkMap.entrySet()) {
-            List<ConsultationRequestExtArchive> extArchives = entityManager.createQuery(
-                    "SELECT e FROM ConsultationRequestExtArchive e WHERE e.consultationRequestArchiveId = :aid",
-                    ConsultationRequestExtArchive.class)
+            List<ConsultationRequestExtArchive> extArchives = entityManager.createQuery("SELECT e FROM ConsultationRequestExtArchive e WHERE e.consultationRequestArchiveId = :aid", ConsultationRequestExtArchive.class)
                 .setParameter("aid", archEntry.getKey().intValue())
                 .getResultList();
 
@@ -1105,9 +1073,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 newNoteIds.add(v.intValue());
             }
             for (Map.Entry<Long, Long> appt : appointmentPkMap.entrySet()) {
-                entityManager.createQuery(
-                        "UPDATE CaseMgmtNoteLink e SET e.tableId = :newApptId " +
-                        "WHERE e.noteId IN :noteIds AND e.tableName = :linkType AND e.tableId = :oldApptId")
+                entityManager.createQuery("UPDATE CaseMgmtNoteLink e SET e.tableId = :newApptId WHERE e.noteId IN :noteIds AND e.tableName = :linkType AND e.tableId = :oldApptId")
                     .setParameter("newApptId", appt.getValue().intValue())
                     .setParameter("noteIds", newNoteIds)
                     .setParameter("linkType", CaseManagementNoteLink.APPOINTMENT)
@@ -1122,8 +1088,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
     @Override
     public Map<Long, Long> copyCasemgmtIssueGroup(Integer sourceDemoNo, Integer targetDemoNo) {
-        List<CaseMgmtIssue> sourceIssues = entityManager.createQuery(
-                "SELECT e FROM CaseMgmtIssue e WHERE e.demographicNo = :demo", CaseMgmtIssue.class)
+        List<CaseMgmtIssue> sourceIssues = entityManager.createQuery("SELECT e FROM CaseMgmtIssue e WHERE e.demographicNo = :demo", CaseMgmtIssue.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
@@ -1132,8 +1097,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         // Dedup: collect issue_id values already on the target to avoid duplicates
-        List<Integer> existingIssueIds = entityManager.createQuery(
-                "SELECT e.issueId FROM CaseMgmtIssue e WHERE e.demographicNo = :demo", Integer.class)
+        List<Integer> existingIssueIds = entityManager.createQuery("SELECT e.issueId FROM CaseMgmtIssue e WHERE e.demographicNo = :demo", Integer.class)
             .setParameter("demo", targetDemoNo)
             .getResultList();
 
@@ -1142,9 +1106,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             if (existingIssueIds.contains(issue.getIssueId())) {
                 // Duplicate: target already has this issue. Map the source PK → existing target PK
                 // so copyIssueNotesGroup can still link any copied notes to the correct issue row.
-                Integer existingPk = entityManager.createQuery(
-                        "SELECT e.id FROM CaseMgmtIssue e WHERE e.demographicNo = :demo AND e.issueId = :iid",
-                        Integer.class)
+                Integer existingPk = entityManager.createQuery("SELECT e.id FROM CaseMgmtIssue e WHERE e.demographicNo = :demo AND e.issueId = :iid", Integer.class)
                     .setParameter("demo", targetDemoNo)
                     .setParameter("iid", issue.getIssueId())
                     .getSingleResult();
@@ -1170,9 +1132,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         if (issuePkMap.isEmpty() || notePkMap.isEmpty()) return;
 
         for (Long oldIssueId : issuePkMap.keySet()) {
-            List<CaseMgmtIssueNotes> junctionRows = entityManager.createQuery(
-                    "SELECT e FROM CaseMgmtIssueNotes e WHERE e.id = :issueId",
-                    CaseMgmtIssueNotes.class)
+            List<CaseMgmtIssueNotes> junctionRows = entityManager.createQuery("SELECT e FROM CaseMgmtIssueNotes e WHERE e.id = :issueId", CaseMgmtIssueNotes.class)
                 .setParameter("issueId", oldIssueId.intValue())
                 .getResultList();
 
@@ -1210,13 +1170,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                     (e, d) -> e.setDemographicNo(d));
         } else {
             // Secondary pass: skip rows whose key_val already exists for the target
-            List<String> existingKeys = entityManager.createQuery(
-                    "SELECT e.key FROM DemographicExt e WHERE e.demographicNo = :demo", String.class)
+            List<String> existingKeys = entityManager.createQuery("SELECT e.key FROM DemographicExt e WHERE e.demographicNo = :demo", String.class)
                 .setParameter("demo", targetDemoNo)
                 .getResultList();
 
-            List<DemographicExt> sourceExts = entityManager.createQuery(
-                    "SELECT e FROM DemographicExt e WHERE e.demographicNo = :demo", DemographicExt.class)
+            List<DemographicExt> sourceExts = entityManager.createQuery("SELECT e FROM DemographicExt e WHERE e.demographicNo = :demo", DemographicExt.class)
                 .setParameter("demo", sourceDemoNo)
                 .getResultList();
 
@@ -1234,14 +1192,12 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         // demographiccust — one row per patient; PK IS the demographicNo
-        List<DemographicCust> sourceCust = entityManager.createQuery(
-                "SELECT e FROM DemographicCust e WHERE e.id = :demo", DemographicCust.class)
+        List<DemographicCust> sourceCust = entityManager.createQuery("SELECT e FROM DemographicCust e WHERE e.id = :demo", DemographicCust.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
         if (!sourceCust.isEmpty()) {
-            List<DemographicCust> targetCustList = entityManager.createQuery(
-                    "SELECT e FROM DemographicCust e WHERE e.id = :demo", DemographicCust.class)
+            List<DemographicCust> targetCustList = entityManager.createQuery("SELECT e FROM DemographicCust e WHERE e.id = :demo", DemographicCust.class)
                 .setParameter("demo", targetDemoNo)
                 .getResultList();
 
@@ -1284,8 +1240,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         // other_id — FK is tableId (String) representing demographicNo
         if (!isSecondary) {
             // Primary pass: copy all rows
-            List<OtherId> otherIds = entityManager.createQuery(
-                    "SELECT e FROM OtherId e WHERE e.tableId = :tid", OtherId.class)
+            List<OtherId> otherIds = entityManager.createQuery("SELECT e FROM OtherId e WHERE e.tableId = :tid", OtherId.class)
                 .setParameter("tid", String.valueOf(sourceDemoNo))
                 .getResultList();
             for (OtherId oid : otherIds) {
@@ -1297,13 +1252,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             }
         } else {
             // Secondary pass: skip rows whose otherKey already exists for the target
-            List<String> existingOtherKeys = entityManager.createQuery(
-                    "SELECT e.otherKey FROM OtherId e WHERE e.tableId = :tid", String.class)
+            List<String> existingOtherKeys = entityManager.createQuery("SELECT e.otherKey FROM OtherId e WHERE e.tableId = :tid", String.class)
                 .setParameter("tid", String.valueOf(targetDemoNo))
                 .getResultList();
 
-            List<OtherId> sourceOtherIds = entityManager.createQuery(
-                    "SELECT e FROM OtherId e WHERE e.tableId = :tid", OtherId.class)
+            List<OtherId> sourceOtherIds = entityManager.createQuery("SELECT e FROM OtherId e WHERE e.tableId = :tid", OtherId.class)
                 .setParameter("tid", String.valueOf(sourceDemoNo))
                 .getResultList();
 
@@ -1332,7 +1285,6 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        logger.debug("copyIdentityTables: source={}, target={}, isSecondary={} — complete",
-                sourceDemoNo, targetDemoNo, isSecondary);
+        logger.debug("copyIdentityTables: source={}, target={}, isSecondary={} — complete", sourceDemoNo, targetDemoNo, isSecondary);
     }
 }
