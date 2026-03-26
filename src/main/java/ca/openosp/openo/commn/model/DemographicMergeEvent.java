@@ -68,7 +68,7 @@ public class DemographicMergeEvent extends AbstractModel<Integer> {
     @Column(name = "primary_demographic_no")
     private int primaryDemographicNo;
 
-    @Column(name = "secondary_demographic_no")
+    @Column(name = "secondary_demographic_no", length = 500)
     private String secondaryDemographicNo;
 
     @Column(name = "merged_demographic_no")
