@@ -1230,7 +1230,6 @@
         </action>
         <action name="admin/DemographicMerge" class="ca.openosp.openo.demographic.pageUtil.DemographicMergeAction">
             <result name="search">/admin/demographicMergeRecord.jsp</result>
-            <result name="selectPrimary">/admin/demographicMergePrimarySelect.jsp</result>
             <result name="success" type="redirect">/admin/DemographicMerge.do?outcome=success</result>
             <result name="successUnMerge" type="redirect">/admin/DemographicMerge.do?outcome=successUnMerge&amp;mode=unmerge</result>
             <result name="failure" type="redirect">/admin/DemographicMerge.do?outcome=failure</result>
