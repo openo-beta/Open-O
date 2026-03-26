@@ -76,11 +76,23 @@ public interface DemographicMergeOperationDao {
     Map<Long, Long> copyAppointments(Integer sourceDemographicNo, Integer targetDemographicNo);
 
     /**
+     * Copies {@code allergies} rows for the source patient to the target patient.
+     * Extracted from {@link #copyClinicalDirectRecords} so the returned PK map can be
+     * threaded into {@link #copyCasemgmtNoteGroup} for {@code casemgmt_note_link}
+     * {@code table_name = 3} (ALLERGIES) {@code tableId} remap.
+     *
+     * @param sourceDemographicNo Integer the source patient demographic number
+     * @param targetDemographicNo Integer the target patient demographic number
+     * @return Map&lt;Long, Long&gt; mapping of old {@code allergies.id} to new {@code allergies.id}
+     */
+    Map<Long, Long> copyAllergies(Integer sourceDemographicNo, Integer targetDemographicNo);
+
+    /**
      * Copies all remaining clinical tables that map directly to a single {@code demographicNo}
-     * column with no derived child tables. {@code appointment} and {@code appointmentArchive}
-     * are excluded — call {@link #copyAppointments} first and pass its result to
-     * {@link #copyCasemgmtNoteGroup}:
-     * {@code allergies}, {@code casemgmt_cpp}, {@code Consent}, {@code ctl_document} (JDBC),
+     * column with no derived child tables. {@code appointment}, {@code appointmentArchive}, and
+     * {@code allergies} are excluded — call {@link #copyAppointments} and {@link #copyAllergies}
+     * first so their PK maps are available for {@link #copyCasemgmtNoteGroup}:
+     * {@code casemgmt_cpp}, {@code Consent}, {@code ctl_document} (JDBC),
      * {@code demographicArchive}, {@code DemographicContact}, {@code demographicPharmacy},
      * {@code DigitalSignature}, {@code dxresearch}, {@code Episode}, {@code faxes},
      * {@code flowsheet_drug}, {@code flowsheet_dx}, {@code HRMDocumentToDemographic},
