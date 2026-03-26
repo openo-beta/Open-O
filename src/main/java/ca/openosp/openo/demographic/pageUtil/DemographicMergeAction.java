@@ -116,15 +116,24 @@ public class DemographicMergeAction extends ActionSupport {
 
         int offset = DEFAULT_OFFSET;
         int limit = DEFAULT_LIMIT;
+        try {
+            String p1 = request.getParameter("limit1");
+            String p2 = request.getParameter("limit2");
+            if (p1 != null) offset = Integer.parseInt(p1);
+            if (p2 != null) limit  = Integer.parseInt(p2);
+        } catch (NumberFormatException ignored) {}
+
         boolean unmerge = "unmerge".equals(mode);
 
+        // Search whenever the form has been submitted (keyword may be blank = search all)
         List<Demographic> demoList = null;
-        if (keyword != null && !keyword.trim().isEmpty()) {
+        if (keyword != null) {
             try {
+                String kw = keyword.trim();
                 if (unmerge) {
-                    demoList = demographicManager.searchMergedDemographicsForUnmerge(loggedInInfo, keyword, searchMode, limit, offset);
+                    demoList = demographicManager.searchMergedDemographicsForUnmerge(loggedInInfo, kw, searchMode, limit, offset);
                 } else {
-                    demoList = demographicManager.searchDemographicsForMerge(loggedInInfo, keyword, searchMode, limit, offset);
+                    demoList = demographicManager.searchDemographicsForMerge(loggedInInfo, kw, searchMode, limit, offset);
                 }
             } catch (Exception e) {
                 logger.error("DemographicMergeAction.doSearch: search failed", e);
