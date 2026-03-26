@@ -24,6 +24,7 @@
  */
 package ca.openosp.openo.demographic.merge;
 
+import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.dao.DemographicMergeEventDao;
 import ca.openosp.openo.commn.dao.DemographicMergeOperationDao;
@@ -39,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -186,31 +188,45 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         // Identity / demographic extension tables
         operationDao.copyIdentityTables(sourceNo, targetNo, isSecondary);
 
-        // Appointments are extracted so the PK map is available for casemgmt_note_link remap
+        // Appointments extracted so the PK map is available for casemgmt_note_link remap
         Map<Long, Long> appointmentPkMap = operationDao.copyAppointments(sourceNo, targetNo);
 
-        // Remaining clinical direct-copy records (appointments excluded)
+        // Allergies extracted so the PK map is available for casemgmt_note_link remap (table_name = 3)
+        Map<Long, Long> allergyPkMap = operationDao.copyAllergies(sourceNo, targetNo);
+
+        // Remaining clinical direct-copy records (appointments and allergies excluded)
         operationDao.copyClinicalDirectRecords(sourceNo, targetNo);
 
         // Form tables
         operationDao.copyAllForms(sourceNo, targetNo);
 
-        // Parent + derived group tables
+        // Parent + derived group tables — capture PK maps for casemgmt_note_link tableId remap
         operationDao.copyBillingGroup(sourceNo, targetNo);
         Map<Long, Long> requestPkMap = operationDao.copyConsultationsGroup(sourceNo, targetNo);
-        operationDao.copyDrugsGroup(sourceNo, targetNo);
-        operationDao.copyEformGroup(sourceNo, targetNo);
-        operationDao.copyEmailGroup(sourceNo, targetNo);
+        Map<Long, Long> drugPkMap = operationDao.copyDrugsGroup(sourceNo, targetNo);
+        Map<Long, Long> eformPkMap = operationDao.copyEformGroup(sourceNo, targetNo);
+        Map<Long, Long> emailPkMap = operationDao.copyEmailGroup(sourceNo, targetNo);
         operationDao.copyEreferGroup(sourceNo, targetNo);
         operationDao.copyFormBCAR2020Group(sourceNo, targetNo);
         operationDao.copyFormONAREnhancedGroup(sourceNo, targetNo);
         operationDao.copyMeasurementsGroup(sourceNo, targetNo);
-        operationDao.copyPreventionsGroup(sourceNo, targetNo);
-        operationDao.copyTicklerGroup(sourceNo, targetNo);
+        Map<Long, Long> prevPkMap = operationDao.copyPreventionsGroup(sourceNo, targetNo);
+        Map<Long, Long> ticklerPkMap = operationDao.copyTicklerGroup(sourceNo, targetNo);
+
+        // Build combined map of copied-entity PK maps for casemgmt_note_link tableId remap.
+        // Only non-empty maps are added — the remap helper skips empty maps, but excluding
+        // them here avoids allocating unnecessary map entries.
+        Map<Integer, Map<Long, Long>> linkedEntityPkMaps = new HashMap<>();
+        if (!allergyPkMap.isEmpty()) linkedEntityPkMaps.put(CaseManagementNoteLink.ALLERGIES, allergyPkMap);
+        if (!drugPkMap.isEmpty()) linkedEntityPkMaps.put(CaseManagementNoteLink.DRUGS, drugPkMap);
+        if (!eformPkMap.isEmpty()) linkedEntityPkMaps.put(CaseManagementNoteLink.EFORMDATA, eformPkMap);
+        if (!emailPkMap.isEmpty()) linkedEntityPkMaps.put(CaseManagementNoteLink.EMAIL, emailPkMap);
+        if (!prevPkMap.isEmpty()) linkedEntityPkMaps.put(CaseManagementNoteLink.PREVENTIONS, prevPkMap);
+        if (!ticklerPkMap.isEmpty()) linkedEntityPkMaps.put(CaseManagementNoteLink.TICKLER, ticklerPkMap);
 
         // Special-case tables requiring cross-group PK maps
         operationDao.copyConsultationArchiveGroup(sourceNo, targetNo, requestPkMap);
-        Map<Long, Long> notePkMap = operationDao.copyCasemgmtNoteGroup(sourceNo, targetNo, appointmentPkMap);
+        Map<Long, Long> notePkMap = operationDao.copyCasemgmtNoteGroup(sourceNo, targetNo, appointmentPkMap, linkedEntityPkMaps);
         Map<Long, Long> issuePkMap = operationDao.copyCasemgmtIssueGroup(sourceNo, targetNo);
         operationDao.copyIssueNotesGroup(issuePkMap, notePkMap);
 
