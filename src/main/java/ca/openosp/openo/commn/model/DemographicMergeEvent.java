@@ -35,6 +35,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -110,10 +111,14 @@ public class DemographicMergeEvent extends AbstractModel<Integer> {
 
     /**
      * Parses the comma-separated secondary demographic IDs into a list of integers.
+     * Returns an empty list if the field is null or blank.
      *
      * @return List&lt;Integer&gt; list of secondary demographic numbers
      */
     public List<Integer> getSecondaryDemographicNos() {
+        if (secondaryDemographicNo == null || secondaryDemographicNo.isBlank()) {
+            return Collections.emptyList();
+        }
         return Arrays.stream(secondaryDemographicNo.split(","))
                 .map(String::trim)
                 .map(Integer::parseInt)
