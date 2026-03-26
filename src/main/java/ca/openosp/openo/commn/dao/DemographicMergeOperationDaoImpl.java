@@ -25,6 +25,7 @@
 package ca.openosp.openo.commn.dao;
 
 // --- Clinical direct-copy entities ---
+import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.commn.model.Allergy;
 import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.commn.model.AppointmentArchive;
@@ -1102,7 +1103,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 (e, fk) -> e.setNoteId(fk),
                 null, null);
 
-        // Remap tableId for appointment links (tableName = 11 = APPOINTMENT) using the appointment PK map.
+        // Remap tableId for appointment links using the appointment PK map.
         // Without this, note-appointment associations point to the source patient's old appointment PKs.
         // One UPDATE per appointment (outer loop), matching all copied note PKs via IN clause — O(appointments).
         if (appointmentPkMap != null && !appointmentPkMap.isEmpty()) {
@@ -1113,9 +1114,10 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             for (Map.Entry<Long, Long> appt : appointmentPkMap.entrySet()) {
                 entityManager.createQuery(
                         "UPDATE CaseMgmtNoteLink e SET e.tableId = :newApptId " +
-                        "WHERE e.noteId IN :noteIds AND e.tableName = 11 AND e.tableId = :oldApptId")
+                        "WHERE e.noteId IN :noteIds AND e.tableName = :linkType AND e.tableId = :oldApptId")
                     .setParameter("newApptId", appt.getValue().intValue())
                     .setParameter("noteIds", newNoteIds)
+                    .setParameter("linkType", CaseManagementNoteLink.APPOINTMENT)
                     .setParameter("oldApptId", appt.getKey().intValue())
                     .executeUpdate();
             }
