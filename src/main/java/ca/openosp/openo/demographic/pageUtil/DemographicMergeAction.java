@@ -110,8 +110,8 @@ public class DemographicMergeAction extends ActionSupport {
         if (searchMode == null) searchMode = "search_name";
         if (mode == null)       mode = "merge";
 
-        int offset      = parseIntOrDefault(request.getParameter("limit1"), DEFAULT_OFFSET);
-        int limit       = parseIntOrDefault(request.getParameter("limit2"), DEFAULT_LIMIT);
+        int offset      = DEFAULT_OFFSET;
+        int limit       = DEFAULT_LIMIT;
         boolean unmerge = "unmerge".equals(mode);
 
         List<Demographic> demoList = null;
@@ -221,19 +221,4 @@ public class DemographicMergeAction extends ActionSupport {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Helpers
-    // -------------------------------------------------------------------------
-
-    /**
-     * Parses an integer from a string, returning a default value if null or unparseable.
-     *
-     * @param value        String the string to parse
-     * @param defaultValue int the fallback value
-     * @return int parsed value or default
-     */
-    private int parseIntOrDefault(String value, int defaultValue) {
-        if (value == null) return defaultValue;
-        try { return Integer.parseInt(value); } catch (NumberFormatException e) { return defaultValue; }
-    }
 }
