@@ -107,7 +107,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         // Record the merge event before copying data so the audit row is always
         // written as part of the same transaction; it rolls back with everything
         // else if an error occurs.
-        saveMergeEvent("MERGE", primaryDemographicNo, secondaryDemographicNos,
+        saveMergeEvent(DemographicMergeEvent.EventType.MERGE, primaryDemographicNo, secondaryDemographicNos,
                 targetDemographicNo, loggedInInfo.getLoggedInProviderNo());
 
         // Primary (A → C): full copy + mark merged
@@ -157,7 +157,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         demographicDao.save(demographicC);
 
         // Record the unmerge event
-        saveMergeEvent("UNMERGE", event.getPrimaryDemographicNo(),
+        saveMergeEvent(DemographicMergeEvent.EventType.UNMERGE, event.getPrimaryDemographicNo(),
                 event.getSecondaryDemographicNos(), mergedDemographicNo,
                 loggedInInfo.getLoggedInProviderNo());
 
@@ -438,7 +438,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * @param mergedDemographicNo    Integer the merged record's demographic number
      * @param providerNo             String the provider performing the operation
      */
-    private void saveMergeEvent(String eventType, Integer primaryDemographicNo,
+    private void saveMergeEvent(DemographicMergeEvent.EventType eventType, Integer primaryDemographicNo,
                                 List<Integer> secondaryDemographicNos,
                                 Integer mergedDemographicNo, String providerNo) {
         DemographicMergeEvent event = new DemographicMergeEvent();
