@@ -101,8 +101,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         demographicDao.save(demographicC);
         Integer targetDemographicNo = demographicC.getDemographicNo();
 
-        logger.debug("DemographicMergeManager.merge: created merged demographic C={} from primary A={}",
-                targetDemographicNo, primaryDemographicNo);
+        logger.debug("DemographicMergeManager.merge: created merged demographic C={} from primary A={}", targetDemographicNo, primaryDemographicNo);
 
         // Record the merge event before copying data so the audit row is always
         // written as part of the same transaction; it rolls back with everything
@@ -182,8 +181,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * @param isSecondary boolean false for primary A pass; true for each secondary pass
      */
     private void copyAllDataForSource(Integer sourceNo, Integer targetNo, boolean isSecondary) {
-        logger.debug("DemographicMergeManager: copying data source={} → target={} isSecondary={}",
-                sourceNo, targetNo, isSecondary);
+        logger.debug("DemographicMergeManager: copying data source={} → target={} isSecondary={}", sourceNo, targetNo, isSecondary);
 
         // Identity / demographic extension tables
         operationDao.copyIdentityTables(sourceNo, targetNo, isSecondary);
