@@ -971,14 +971,14 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     @Override
-    public void copyPreventionsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+    public Map<Long, Long> copyPreventionsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         // preventions (parent) — demo field is "demographicId"
         Map<Long, Long> prevPkMap = copyEntityRows(Prevention.class, "Prevention", "demographicId",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicId(d));
 
-        if (prevPkMap.isEmpty()) return;
+        if (prevPkMap.isEmpty()) return prevPkMap;
 
         // preventionsExt — child, FK is preventionId
         copyChildRows(PreventionExt.class, "PreventionExt", "preventionId",
@@ -988,6 +988,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 null, null);
 
         logger.debug("copyPreventionsGroup: source={}, target={}, prevention rows={}", sourceDemoNo, targetDemoNo, prevPkMap.size());
+        return prevPkMap;
     }
 
     @Override

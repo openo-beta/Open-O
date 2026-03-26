@@ -225,11 +225,14 @@ public interface DemographicMergeOperationDao {
     /**
      * Copies prevention tables:
      * {@code preventions} (parent) → {@code preventionsExt} (child).
+     * Returns the old-to-new prevention PK map needed for {@code casemgmt_note_link}
+     * {@code table_name = 8} (PREVENTIONS) {@code tableId} remap in {@link #copyCasemgmtNoteGroup}.
      *
      * @param sourceDemographicNo Integer the source patient demographic number
      * @param targetDemographicNo Integer the target patient demographic number
+     * @return Map&lt;Long, Long&gt; mapping of old {@code preventions.id} to new {@code preventions.id}
      */
-    void copyPreventionsGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
+    Map<Long, Long> copyPreventionsGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
 
     /**
      * Copies tickler tables:
