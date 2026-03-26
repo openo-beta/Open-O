@@ -1864,6 +1864,7 @@
                 <param name="actionFileUpload.allowedTypes">image/jpeg,image/gif</param>
             </interceptor-ref>
             <result name="success">/casemgmt/uploadimage.jsp</result>
+            <result name="input">/casemgmt/uploadimage.jsp</result>
         </action>
         <action name="OnCallQuestionnaire" class="ca.openosp.openo.casemgmt.web.OnCallQuestionnaire2Action">
             <result name="form">/casemgmt/OnCallQuestionnaireForm.jsp</result>
