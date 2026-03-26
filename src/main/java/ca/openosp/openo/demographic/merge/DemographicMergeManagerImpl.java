@@ -25,7 +25,10 @@
 package ca.openosp.openo.demographic.merge;
 
 import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DemographicMergeEventDao;
+import ca.openosp.openo.commn.dao.DemographicMergeOperationDao;
 import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicMergeEvent;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;

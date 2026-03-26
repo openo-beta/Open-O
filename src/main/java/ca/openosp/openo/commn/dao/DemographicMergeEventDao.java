@@ -22,9 +22,9 @@
  * Hamilton
  * Ontario, Canada
  */
-package ca.openosp.openo.demographic.merge;
+package ca.openosp.openo.commn.dao;
 
-import ca.openosp.openo.commn.dao.AbstractDao;
+import ca.openosp.openo.commn.model.DemographicMergeEvent;
 
 /**
  * DAO interface for {@link DemographicMergeEvent}.

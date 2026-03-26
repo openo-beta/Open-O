@@ -22,7 +22,7 @@
  * Hamilton
  * Ontario, Canada
  */
-package ca.openosp.openo.demographic.merge;
+package ca.openosp.openo.commn.dao;
 
 // --- Clinical direct-copy entities ---
 import ca.openosp.openo.commn.model.Allergy;
@@ -105,12 +105,12 @@ import ca.openosp.openo.commn.model.Tickler;
 import ca.openosp.openo.commn.model.TicklerLink;
 
 // --- CaseMgmt special entities ---
-import ca.openosp.openo.demographic.merge.model.CaseMgmtCpp;
-import ca.openosp.openo.demographic.merge.model.CaseMgmtIssue;
-import ca.openosp.openo.demographic.merge.model.CaseMgmtIssueNotes;
-import ca.openosp.openo.demographic.merge.model.CaseMgmtNote;
-import ca.openosp.openo.demographic.merge.model.CaseMgmtNoteExt;
-import ca.openosp.openo.demographic.merge.model.CaseMgmtNoteLink;
+import ca.openosp.openo.commn.model.CaseMgmtCpp;
+import ca.openosp.openo.commn.model.CaseMgmtIssue;
+import ca.openosp.openo.commn.model.CaseMgmtIssueNotes;
+import ca.openosp.openo.commn.model.CaseMgmtNote;
+import ca.openosp.openo.commn.model.CaseMgmtNoteExt;
+import ca.openosp.openo.commn.model.CaseMgmtNoteLink;
 
 import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
