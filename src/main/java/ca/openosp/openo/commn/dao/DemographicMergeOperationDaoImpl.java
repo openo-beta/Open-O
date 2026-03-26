@@ -793,14 +793,14 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     @Override
-    public void copyEformGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+    public Map<Long, Long> copyEformGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         // eform_data (parent) — demo field is "demographicId"
         Map<Long, Long> eformPkMap = copyEntityRows(EFormData.class, "EFormData", "demographicId",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicId(d));
 
-        if (eformPkMap.isEmpty()) return;
+        if (eformPkMap.isEmpty()) return eformPkMap;
 
         // eform_values — child, FK is formDataId; also has extra demographicId column
         copyChildRows(EFormValue.class, "EFormValue", "formDataId",
@@ -811,6 +811,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 targetDemoNo);
 
         logger.debug("copyEformGroup: source={}, target={}, eform rows={}", sourceDemoNo, targetDemoNo, eformPkMap.size());
+        return eformPkMap;
     }
 
     @Override

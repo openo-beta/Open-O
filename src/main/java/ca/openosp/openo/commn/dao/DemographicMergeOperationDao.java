@@ -161,11 +161,14 @@ public interface DemographicMergeOperationDao {
     /**
      * Copies eForm tables:
      * {@code eform_data} (parent) → {@code eform_values} (child with extra {@code demographicId} column).
+     * Returns the old-to-new eform PK map needed for {@code casemgmt_note_link}
+     * {@code table_name = 6} (EFORMDATA) {@code tableId} remap in {@link #copyCasemgmtNoteGroup}.
      *
      * @param sourceDemographicNo Integer the source patient demographic number
      * @param targetDemographicNo Integer the target patient demographic number
+     * @return Map&lt;Long, Long&gt; mapping of old {@code eform_data.id} to new {@code eform_data.id}
      */
-    void copyEformGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
+    Map<Long, Long> copyEformGroup(Integer sourceDemographicNo, Integer targetDemographicNo);
 
     /**
      * Copies email tables:
