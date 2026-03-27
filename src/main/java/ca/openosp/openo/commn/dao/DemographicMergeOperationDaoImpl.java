@@ -70,6 +70,7 @@ import ca.openosp.openo.commn.model.ConsultationRequest;
 import ca.openosp.openo.commn.model.ConsultationRequestArchive;
 import ca.openosp.openo.commn.model.ConsultationRequestExt;
 import ca.openosp.openo.commn.model.ConsultationRequestExtArchive;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 
 // --- Drug group ---
 import ca.openosp.openo.commn.model.Drug;
@@ -1137,9 +1138,18 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyConsultationArchiveGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> requestPkMap) {
         System.out.println("\n=== COPY CONSULTATION ARCHIVE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // consultationRequestsArchive (parent) — demo field is "demographicId"
+        // ProfessionalSpecialist is a shared reference entity (not patient-owned); after detach it appears
+        // detached to Hibernate's cascade logic. getReference() returns a managed proxy using only the PK
+        // (zero extra SELECT) so cascade=ALL on the @ManyToOne becomes a no-op for persist.
         Map<Long, Long> archivePkMap = copyEntityRows(ConsultationRequestArchive.class, "ConsultationRequestArchive", "demographicId",
                 sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
+                e -> (long) e.getId(), e -> {
+                    ProfessionalSpecialist ps = e.getProfessionalSpecialist();
+                    e.setId(null);
+                    if (ps != null && ps.getId() != null) {
+                        e.setProfessionalSpecialist(entityManager.getReference(ProfessionalSpecialist.class, ps.getId()));
+                    }
+                },
                 (e, d) -> e.setDemographicId(d));
 
         if (archivePkMap.isEmpty()) {
