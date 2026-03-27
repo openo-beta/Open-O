@@ -135,7 +135,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -1139,36 +1138,36 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyConsultationArchiveGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> requestPkMap) {
         System.out.println("\n=== COPY CONSULTATION ARCHIVE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // consultationRequestsArchive (parent) — demo field is "demographicId"
-        // ProfessionalSpecialist has @ManyToOne(cascade=ALL); detach(archive) cascades DETACH to PS,
-        // evicting it from the L1 cache. Pre-detaching all unique PS instances before the copy loop
-        // ensures the cascade from detach(archive) finds PS already absent → no-op → getReference()
-        // proxies placed in the loop are never evicted by later iterations. Zero extra SQL.
+        // ProfessionalSpecialist has @ManyToOne(cascade=ALL). Because cascade=ALL includes
+        // cascade=PERSIST, persisting the archive copy would attempt to cascade-persist PS.
+        // If PS is detached at that point, Hibernate throws "detached entity passed to persist".
+        // The fix: use entityManager.find() to ensure PS is always in a properly managed state
+        // before persist. Results are cached in managedPsCache so each unique PS is fetched
+        // at most once per call (L1 cache hit on subsequent lookups for the same PS id).
         List<ConsultationRequestArchive> archiveRows = entityManager.createQuery(
                 "SELECT e FROM ConsultationRequestArchive e WHERE e.demographicId = :demo",
                 ConsultationRequestArchive.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
-        // Pre-detach every unique ProfessionalSpecialist loaded with the archive rows.
-        // Use identity set (IdentityHashMap as a set) to avoid double-detach of the same proxy.
-        IdentityHashMap<ProfessionalSpecialist, Boolean> seenPs = new IdentityHashMap<>();
-        for (ConsultationRequestArchive a : archiveRows) {
-            ProfessionalSpecialist ps = a.getProfessionalSpecialist();
-            if (ps != null && seenPs.put(ps, Boolean.TRUE) == null) {
-                entityManager.detach(ps);
-            }
-        }
+        // Cache managed ProfessionalSpecialist instances by id to avoid redundant SELECT calls.
+        Map<Integer, ProfessionalSpecialist> managedPsCache = new HashMap<>();
 
         Map<Long, Long> archivePkMap = new HashMap<>();
         for (ConsultationRequestArchive a : archiveRows) {
             long oldPk = (long) a.getId();
-            ProfessionalSpecialist ps = a.getProfessionalSpecialist();
-            entityManager.detach(a);  // cascade DETACH to PS is now a no-op (already absent)
+            // Capture PS id before detach so we can re-fetch a managed instance after detach.
+            Integer psId = a.getSpecialistId();
+            entityManager.detach(a);
             a.setId(null);
             a.setDemographicId(targetDemoNo);
-            if (ps != null && ps.getId() != null) {
-                // getReference() places a lightweight proxy in the L1 cache — zero SELECT
-                a.setProfessionalSpecialist(entityManager.getReference(ProfessionalSpecialist.class, ps.getId()));
+            if (psId != null) {
+                // find() guarantees a managed entity (loads from DB if not in L1 cache).
+                // This is necessary because cascade=ALL on professionalSpecialist would cause
+                // Hibernate to cascade PERSIST to PS on flush — a detached PS would fail.
+                ProfessionalSpecialist managedPs = managedPsCache.computeIfAbsent(
+                    psId, id -> entityManager.find(ProfessionalSpecialist.class, id));
+                a.setProfessionalSpecialist(managedPs);
             }
             entityManager.persist(a);
             entityManager.flush();
