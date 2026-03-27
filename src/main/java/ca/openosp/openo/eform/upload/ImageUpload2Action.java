@@ -128,6 +128,7 @@ public class ImageUpload2Action extends ActionSupport implements UploadedFilesAw
     private UploadedFile image;
     private File imageOnDisk;
     private String imageFileName;
+    private String imageContentType;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
@@ -135,6 +136,7 @@ public class ImageUpload2Action extends ActionSupport implements UploadedFilesAw
             this.image = uploadedFiles.get(0);
             this.imageOnDisk = PathValidationUtils.toFile(image);
             this.imageFileName = image.getOriginalName();
+            this.imageContentType = image.getContentType();
         }
     }
 }

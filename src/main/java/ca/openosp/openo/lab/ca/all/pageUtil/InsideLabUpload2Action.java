@@ -98,7 +98,7 @@ public class InsideLabUpload2Action extends ActionSupport implements UploadedFil
             String fileName = uf.getOriginalName();
 
             // Process each file
-            FileStatus status = processUploadedFile(loggedInInfo, file, fileName, null);
+            FileStatus status = processUploadedFile(loggedInInfo, file, fileName, uf.getContentType());
             filesStatusMap.put(fileName, status);
         }
         

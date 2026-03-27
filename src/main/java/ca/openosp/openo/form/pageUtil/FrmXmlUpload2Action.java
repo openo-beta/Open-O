@@ -109,12 +109,16 @@ public class FrmXmlUpload2Action extends ActionSupport implements UploadedFilesA
 
     private UploadedFile file1;
     private File file1OnDisk;
+    private String file1FileName;
+    private String file1ContentType;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.file1 = uploadedFiles.get(0);
             this.file1OnDisk = PathValidationUtils.toFile(file1);
+            this.file1FileName = file1.getOriginalName();
+            this.file1ContentType = file1.getContentType();
         }
     }
 }

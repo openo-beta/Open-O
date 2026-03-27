@@ -450,6 +450,7 @@ public class Upload2Action extends ActionSupport implements UploadedFilesAware {
             this.addUploadFile = uploadedFiles.get(0);
             this.addUploadFileOnDisk = PathValidationUtils.toFile(addUploadFile);
             this.fileName = addUploadFile.getOriginalName();
+            this.resourceType = addUploadFile.getContentType();
         }
     }
 }

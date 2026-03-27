@@ -498,6 +498,7 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         } finally {
+            if (is != null) is.close();
             if (fos != null) fos.close();
         }
         return file;
@@ -768,6 +769,9 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
                     this.docFileContentType = docFile.getContentType();
                 } else if ("filedata".equals(uploadedFile.getInputName())) {
                     this.filedata = uploadedFile;
+                    this.docFileOnDisk = PathValidationUtils.toFile(uploadedFile);
+                    this.docFileFileName = uploadedFile.getOriginalName();
+                    this.docFileContentType = uploadedFile.getContentType();
                 }
             }
         }

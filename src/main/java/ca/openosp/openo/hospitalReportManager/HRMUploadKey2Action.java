@@ -88,6 +88,7 @@ public class HRMUploadKey2Action extends ActionSupport implements UploadedFilesA
     private UploadedFile importFile;
     private File importFileOnDisk;
     private String importFileFileName;
+    private String importFileContentType;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
@@ -95,6 +96,7 @@ public class HRMUploadKey2Action extends ActionSupport implements UploadedFilesA
             this.importFile = uploadedFiles.get(0);
             this.importFileOnDisk = PathValidationUtils.toFile(importFile);
             this.importFileFileName = importFile.getOriginalName();
+            this.importFileContentType = importFile.getContentType();
         }
     }
 }

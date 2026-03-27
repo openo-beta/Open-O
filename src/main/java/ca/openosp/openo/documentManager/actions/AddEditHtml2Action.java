@@ -368,7 +368,13 @@ public class AddEditHtml2Action extends ActionSupport implements UploadedFilesAw
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
-            this.docFile = uploadedFiles.get(0);
+            for (UploadedFile uploadedFile : uploadedFiles) {
+                if ("docFile".equals(uploadedFile.getInputName())) {
+                    this.docFile = uploadedFile;
+                } else if ("filedata".equals(uploadedFile.getInputName())) {
+                    this.filedata = uploadedFile;
+                }
+            }
         }
     }
 

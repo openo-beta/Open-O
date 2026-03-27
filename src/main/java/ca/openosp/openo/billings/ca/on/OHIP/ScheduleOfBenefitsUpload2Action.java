@@ -161,6 +161,8 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport implements Up
 
     private UploadedFile importFile;
     private File importFileOnDisk;
+    private String importFileFileName;
+    private String importFileContentType;
     private boolean updateAssistantFees;
     private boolean updateAnaesthetistFees;
     private BigDecimal updateAssistantFeesValue;
@@ -171,6 +173,8 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport implements Up
         if (!uploadedFiles.isEmpty()) {
             this.importFile = uploadedFiles.get(0);
             this.importFileOnDisk = PathValidationUtils.toFile(importFile);
+            this.importFileFileName = importFile.getOriginalName();
+            this.importFileContentType = importFile.getContentType();
         }
     }
 

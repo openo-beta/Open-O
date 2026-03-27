@@ -49,7 +49,6 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.OscarProperties;
 
-import java.util.List;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.action.UploadedFilesAware;
 import org.apache.struts2.dispatcher.multipart.UploadedFile;
@@ -175,11 +174,4 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport implements
         }
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
 }

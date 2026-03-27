@@ -390,6 +390,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport imple
     private UploadedFile file1; // Uploaded file
     private File file1OnDisk;
     private String file1FileName; // Name of the uploaded file
+    private String file1ContentType;
 
     private String filename; // Filename parameter from request
 
@@ -399,6 +400,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport imple
             this.file1 = uploadedFiles.get(0);
             this.file1OnDisk = PathValidationUtils.toFile(file1);
             this.file1FileName = file1.getOriginalName();
+            this.file1ContentType = file1.getContentType();
         }
     }
 

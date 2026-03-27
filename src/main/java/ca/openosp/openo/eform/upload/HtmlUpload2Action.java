@@ -71,6 +71,7 @@ public class HtmlUpload2Action extends ActionSupport implements UploadedFilesAwa
     private UploadedFile formHtml;
     private File formHtmlOnDisk;
     private String formHtmlFileName;
+    private String formHtmlContentType;
     private String formName;
     private String subject;
     private boolean showLatestFormOnly;
@@ -83,6 +84,7 @@ public class HtmlUpload2Action extends ActionSupport implements UploadedFilesAwa
             this.formHtml = uploadedFiles.get(0);
             this.formHtmlOnDisk = PathValidationUtils.toFile(formHtml);
             this.formHtmlFileName = formHtml.getOriginalName();
+            this.formHtmlContentType = formHtml.getContentType();
         }
     }
 

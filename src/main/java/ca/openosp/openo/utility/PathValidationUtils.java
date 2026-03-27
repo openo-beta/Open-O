@@ -14,10 +14,10 @@ import java.util.Set;
 /**
  * Utility class for validating file paths and uploaded files to prevent path traversal attacks.
  *
- * <p>Usage for extracting a {@link java.io.File} from a Struts 2 {@link UploadedFile}:</p>
+ * <p>Usage for extracting and validating a {@link java.io.File} from a Struts 2 {@link UploadedFile}:</p>
  * <pre>
- * File rawFile = PathValidationUtils.toFile(uploadedFile);
- * // Now safe to pass to validation or read methods
+ * File validatedFile = PathValidationUtils.toFile(uploadedFile);
+ * // File is validated — safe for direct use in file operations
  * </pre>
  *
  * <p>Usage for validating a user-provided filename (sanitizes and constructs safe path):</p>
@@ -119,25 +119,29 @@ public final class PathValidationUtils {
     // ========================================================================
 
     /**
-     * Extracts the underlying {@link java.io.File} from a Struts 2 {@link UploadedFile}.
+     * Extracts and validates the underlying {@link java.io.File} from a Struts 2 {@link UploadedFile}.
      *
      * <p>The {@link UploadedFile} interface returns {@link Object} from {@link UploadedFile#getContent()},
      * requiring a cast to {@link java.io.File}. This method centralizes that cast with a safety check
      * via {@link UploadedFile#isFile()}, avoiding raw casts scattered across action classes.</p>
      *
-     * <p>The returned {@link java.io.File} points to a temporary file created by the Struts 2
-     * {@code ActionFileUploadInterceptor}. It should be passed to the {@code validateUpload} methods
-     * in this class before being used for file operations.</p>
+     * <p>The returned {@link java.io.File} has been validated via {@link #validateUpload(File)} to
+     * confirm it resides in an allowed temp directory. Callers can use the result directly for
+     * file operations without additional source validation.</p>
      *
      * @param uploadedFile the Struts 2 uploaded file wrapper
-     * @return File the underlying temporary file
+     * @return File the validated underlying temporary file
      * @throws IllegalStateException if uploadedFile is null or its content is not a File
+     * @throws SecurityException if the file is not in an allowed temp directory
      */
     public static File toFile(UploadedFile uploadedFile) {
-        if (uploadedFile == null || !uploadedFile.isFile()) {
-            throw new IllegalStateException("UploadedFile content is not a File");
+        if (uploadedFile == null) {
+            throw new IllegalStateException("UploadedFile is null");
         }
-        return (File) uploadedFile.getContent();
+        if (!uploadedFile.isFile()) {
+            throw new IllegalStateException("UploadedFile content is not a File: " + uploadedFile.getOriginalName());
+        }
+        return validateUpload((File) uploadedFile.getContent());
     }
 
     /**

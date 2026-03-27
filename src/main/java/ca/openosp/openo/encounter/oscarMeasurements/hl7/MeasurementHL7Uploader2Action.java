@@ -106,7 +106,13 @@ public class MeasurementHL7Uploader2Action extends ActionSupport implements Uplo
             boolean checkPassword = StringUtils.isNotBlank(hl7UploadPassword);
 
             // file is encrypted using RSA public keys if no password enforced
-            hl7msg = checkPassword ? IOUtils.toString(Files.newInputStream(importFileOnDisk.toPath())) : extractEncryptedMessage(importFileOnDisk, request);
+            if (checkPassword) {
+                try (InputStream is = Files.newInputStream(importFileOnDisk.toPath())) {
+                    hl7msg = IOUtils.toString(is);
+                }
+            } else {
+                hl7msg = extractEncryptedMessage(importFileOnDisk, request);
+            }
 
             if (checkPassword && hl7UploadPassword.length() < 16)
                 throw new RuntimeException("Upload password length is too weak, please check oscar property file and make sure it's more than 16 letters.");

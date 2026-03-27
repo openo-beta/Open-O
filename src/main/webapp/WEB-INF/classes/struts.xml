@@ -23,7 +23,9 @@
                 remapping the interceptor name is insufficient because inherited stacks resolve names
                 against the defining package (struts-default), not the extending package.
 
-                Fix: Redefine defaultStack locally so the "fileUpload" ref resolves to the safe class.
+                Fix: Redefine defaultStack locally, removing the "fileUpload" ref entirely and keeping
+                only "actionFileUpload". The interceptor name remap above is retained as a safety net
+                in case any action config explicitly references "fileUpload" by name.
                 This stack mirrors struts-default.xml from Struts 6.8.0 — must be reviewed on upgrade.
 
                 Additional mitigation: all 30 upload actions implement UploadedFilesAware, old File
@@ -46,7 +48,6 @@
                 <interceptor-ref name="chain"/>
                 <interceptor-ref name="scopedModelDriven"/>
                 <interceptor-ref name="modelDriven"/>
-                <interceptor-ref name="fileUpload"/>
                 <interceptor-ref name="actionFileUpload"/>
                 <interceptor-ref name="checkbox"/>
                 <interceptor-ref name="datetime"/>
