@@ -382,18 +382,28 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         // ctl_document — composite @EmbeddedId (module + documentNo); module_id = demographicNo.
         // New-object pattern: construct a fresh transient CtlDocument so Hibernate issues a direct INSERT.
+        // Dedup: if both the primary and a secondary patient link to the same documentNo, the primary
+        // pass already inserted [documentNo,demographic,targetDemoNo]. Skip duplicates to avoid
+        // EntityExistsException ("different object with same identifier already in session").
         List<CtlDocument> sourceDocs = entityManager.createQuery("SELECT d FROM CtlDocument d WHERE d.id.module = 'demographic' AND d.id.moduleId = :mid", CtlDocument.class)
             .setParameter("mid", sourceDemoNo)
             .getResultList();
+        int ctlDocCopied = 0;
         for (CtlDocument src : sourceDocs) {
+            CtlDocumentPK newPk = new CtlDocumentPK("demographic", targetDemoNo, src.getId().getDocumentNo());
+            if (entityManager.find(CtlDocument.class, newPk) != null) {
+                logger.debug("copyClinicalDirectRecords: CtlDocument documentNo={} already linked to target={}, skipping", src.getId().getDocumentNo(), targetDemoNo);
+                continue;
+            }
             CtlDocument copy = new CtlDocument();
-            copy.setId(new CtlDocumentPK("demographic", targetDemoNo, src.getId().getDocumentNo()));
+            copy.setId(newPk);
             copy.setStatus(src.getStatus());
             entityManager.persist(copy);
+            ctlDocCopied++;
         }
-        if (!sourceDocs.isEmpty()) {
+        if (ctlDocCopied > 0) {
             entityManager.flush();
-            System.out.println("    [CtlDocument] copied " + sourceDocs.size() + " row(s)");
+            System.out.println("    [CtlDocument] copied " + ctlDocCopied + " row(s)");
         }
 
         // demographicArchive — Long PK
