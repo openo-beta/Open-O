@@ -56,8 +56,9 @@ public interface DemographicMergeManager {
      * @throws IllegalArgumentException if secondaryDemographicNos is null or empty, or if
      *                                  any referenced demographic does not exist
      * @throws IllegalStateException    if the primary or any secondary is already {@code MERGED}
+     * @return Integer the demographic_no of the newly created merged record (C)
      */
-    void merge(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos);
+    Integer merge(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos);
 
     /**
      * Marks the primary and all secondary demographics as {@code MERGED} in a separate,

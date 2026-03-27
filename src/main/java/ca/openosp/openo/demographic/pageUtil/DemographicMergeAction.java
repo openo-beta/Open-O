@@ -61,6 +61,11 @@ public class DemographicMergeAction extends ActionSupport {
     private static final int DEFAULT_LIMIT = 10;
     private static final int DEFAULT_OFFSET = 0;
 
+    /** Demographic number of the newly created merged record — used in the success redirect. */
+    private Integer mergedDemoNo;
+
+    public Integer getMergedDemoNo() { return mergedDemoNo; }
+
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -108,6 +113,7 @@ public class DemographicMergeAction extends ActionSupport {
         String searchMode = request.getParameter("search_mode");
         String mode = request.getParameter("mode");
         String outcome = request.getParameter("outcome");
+        String mergedDemoNoParam = request.getParameter("mergedDemoNo");
 
         if (searchMode == null) searchMode = "search_name";
         if (mode == null) mode = "merge";
@@ -143,6 +149,7 @@ public class DemographicMergeAction extends ActionSupport {
         request.setAttribute("searchMode", searchMode);
         request.setAttribute("mode", mode);
         request.setAttribute("outcome", outcome);
+        request.setAttribute("mergedDemoNo", mergedDemoNoParam);
         request.setAttribute("offset", offset);
         request.setAttribute("limit", limit);
         request.setAttribute("unmergeMode", unmerge);
@@ -176,7 +183,7 @@ public class DemographicMergeAction extends ActionSupport {
                 secondaryNos.add(Integer.parseInt(s));
             }
 
-            mergeManager.merge(loggedInInfo, primaryNo, secondaryNos);
+            mergedDemoNo = mergeManager.merge(loggedInInfo, primaryNo, secondaryNos);
             // Status updates run in a separate short transaction to avoid the legacy
             // Hibernate session connection timing out during the long data-copy above.
             mergeManager.applyMergeStatuses(primaryNo, secondaryNos);
