@@ -135,6 +135,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -1138,19 +1139,42 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyConsultationArchiveGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> requestPkMap) {
         System.out.println("\n=== COPY CONSULTATION ARCHIVE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // consultationRequestsArchive (parent) — demo field is "demographicId"
-        // ProfessionalSpecialist is a shared reference entity (not patient-owned); after detach it appears
-        // detached to Hibernate's cascade logic. getReference() returns a managed proxy using only the PK
-        // (zero extra SELECT) so cascade=ALL on the @ManyToOne becomes a no-op for persist.
-        Map<Long, Long> archivePkMap = copyEntityRows(ConsultationRequestArchive.class, "ConsultationRequestArchive", "demographicId",
-                sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> {
-                    ProfessionalSpecialist ps = e.getProfessionalSpecialist();
-                    e.setId(null);
-                    if (ps != null && ps.getId() != null) {
-                        e.setProfessionalSpecialist(entityManager.getReference(ProfessionalSpecialist.class, ps.getId()));
-                    }
-                },
-                (e, d) -> e.setDemographicId(d));
+        // ProfessionalSpecialist has @ManyToOne(cascade=ALL); detach(archive) cascades DETACH to PS,
+        // evicting it from the L1 cache. Pre-detaching all unique PS instances before the copy loop
+        // ensures the cascade from detach(archive) finds PS already absent → no-op → getReference()
+        // proxies placed in the loop are never evicted by later iterations. Zero extra SQL.
+        List<ConsultationRequestArchive> archiveRows = entityManager.createQuery(
+                "SELECT e FROM ConsultationRequestArchive e WHERE e.demographicId = :demo",
+                ConsultationRequestArchive.class)
+            .setParameter("demo", sourceDemoNo)
+            .getResultList();
+
+        // Pre-detach every unique ProfessionalSpecialist loaded with the archive rows.
+        // Use identity set (IdentityHashMap as a set) to avoid double-detach of the same proxy.
+        IdentityHashMap<ProfessionalSpecialist, Boolean> seenPs = new IdentityHashMap<>();
+        for (ConsultationRequestArchive a : archiveRows) {
+            ProfessionalSpecialist ps = a.getProfessionalSpecialist();
+            if (ps != null && seenPs.put(ps, Boolean.TRUE) == null) {
+                entityManager.detach(ps);
+            }
+        }
+
+        Map<Long, Long> archivePkMap = new HashMap<>();
+        for (ConsultationRequestArchive a : archiveRows) {
+            long oldPk = (long) a.getId();
+            ProfessionalSpecialist ps = a.getProfessionalSpecialist();
+            entityManager.detach(a);  // cascade DETACH to PS is now a no-op (already absent)
+            a.setId(null);
+            a.setDemographicId(targetDemoNo);
+            if (ps != null && ps.getId() != null) {
+                // getReference() places a lightweight proxy in the L1 cache — zero SELECT
+                a.setProfessionalSpecialist(entityManager.getReference(ProfessionalSpecialist.class, ps.getId()));
+            }
+            entityManager.persist(a);
+            entityManager.flush();
+            archivePkMap.put(oldPk, (long) a.getId());
+        }
+        System.out.println("    [ConsultationRequestArchive] copied " + archivePkMap.size() + " rows  (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ")");
 
         if (archivePkMap.isEmpty()) {
             System.out.println("=== COPY CONSULTATION ARCHIVE GROUP DONE: no archive rows found for source=" + sourceDemoNo + " ===");
