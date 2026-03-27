@@ -753,9 +753,12 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         // billing_on_cheader1 (parent)
+        // Clear billingItems before persist: the @OneToMany(cascade=ALL) collection holds old detached
+        // BillingONItem entities that would trigger "detached entity passed to persist" on cascade.
+        // Items are copied separately below via copyChildRows.
         Map<Long, Long> ch1PkMap = copyEntityRows(BillingONCHeader1.class, "BillingONCHeader1", "demographicNo",
                 sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
+                e -> (long) e.getId(), e -> { e.setId(null); e.getBillingItems().clear(); },
                 (e, d) -> e.setDemographicNo(d));
 
         if (ch1PkMap.isEmpty()) {
