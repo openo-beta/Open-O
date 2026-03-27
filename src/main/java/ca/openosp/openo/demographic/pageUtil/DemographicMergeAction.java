@@ -177,6 +177,9 @@ public class DemographicMergeAction extends ActionSupport {
             }
 
             mergeManager.merge(loggedInInfo, primaryNo, secondaryNos);
+            // Status updates run in a separate short transaction to avoid the legacy
+            // Hibernate session connection timing out during the long data-copy above.
+            mergeManager.applyMergeStatuses(primaryNo, secondaryNos);
             return "success";
         } catch (Exception e) {
             logger.error("DemographicMergeAction.doMerge: merge failed", e);

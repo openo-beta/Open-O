@@ -123,19 +123,17 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
                 targetDemographicNo, loggedInInfo.getLoggedInProviderNo());
         System.out.println("  [OK] Merge event recorded in audit table");
 
-        // Primary (A → C): full copy + mark merged
+        // Primary (A → C): full copy — status update deferred to applyMergeStatuses()
         System.out.println("\n--- COPYING PRIMARY: A=" + primaryDemographicNo + " -> C=" + targetDemographicNo + " ---");
         copyAllDataForSource(primaryDemographicNo, targetDemographicNo, false);
-        markMerged(demographicA);
-        System.out.println("--- PRIMARY A=" + primaryDemographicNo + " marked as MERGED ---");
+        System.out.println("--- PRIMARY A=" + primaryDemographicNo + " data copied ---");
 
-        // Each secondary (S → C): gap-fill identity + full clinical copy + mark merged
+        // Each secondary (S → C): gap-fill identity + full clinical copy
         int secIdx = 1;
         for (Demographic secondary : secondaries) {
             System.out.println("\n--- COPYING SECONDARY " + secIdx + "/" + secondaries.size() + ": S=" + secondary.getDemographicNo() + " -> C=" + targetDemographicNo + " ---");
             copyAllDataForSource(secondary.getDemographicNo(), targetDemographicNo, true);
-            markMerged(secondary);
-            System.out.println("--- SECONDARY S=" + secondary.getDemographicNo() + " marked as MERGED ---");
+            System.out.println("--- SECONDARY S=" + secondary.getDemographicNo() + " data copied ---");
             secIdx++;
         }
 
@@ -143,9 +141,35 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         writeAuditEntriesForMerge(loggedInInfo, primaryDemographicNo, secondaries, targetDemographicNo);
         System.out.println("\n  [OK] Audit log entries written");
         System.out.println("╔══════════════════════════════════════════════════════════════╗");
-        System.out.println("║  DEMOGRAPHIC MERGE COMPLETE                                 ║");
+        System.out.println("║  DEMOGRAPHIC MERGE DATA COPY COMPLETE                       ║");
         System.out.println("╚══════════════════════════════════════════════════════════════╝");
         System.out.println("  Result: A=" + primaryDemographicNo + " + " + secondaries.size() + " secondary(s) -> C=" + targetDemographicNo);
+        System.out.println("  (Status updates will be applied in a separate transaction)");
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This runs in its own short transaction so it does not participate in the
+     * long-running data-copy transaction. The legacy Hibernate session connection
+     * used by {@code DemographicDaoImpl} is acquired fresh here, used for milliseconds,
+     * and released — no risk of MySQL {@code wait_timeout} expiry.
+     */
+    @Override
+    @Transactional
+    public void applyMergeStatuses(Integer primaryDemographicNo, List<Integer> secondaryDemographicNos) {
+        System.out.println("\n--- APPLYING MERGE STATUSES ---");
+        Demographic demographicA = loadAndValidateExists(primaryDemographicNo, "Primary");
+        markMerged(demographicA);
+        System.out.println("--- PRIMARY A=" + primaryDemographicNo + " marked as MERGED ---");
+
+        for (Integer secNo : secondaryDemographicNos) {
+            Demographic secondary = loadAndValidateExists(secNo, "Secondary");
+            markMerged(secondary);
+            System.out.println("--- SECONDARY S=" + secNo + " marked as MERGED ---");
+        }
+        System.out.println("--- MERGE STATUSES APPLIED ---");
+        logger.debug("applyMergeStatuses: primary={}, secondaries={}", primaryDemographicNo, secondaryDemographicNos);
     }
 
     /**
