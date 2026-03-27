@@ -189,8 +189,7 @@
                         </tbody>
                     </table>
                     <c:if test="${not empty demoList}">
-                        <button type="submit" class="btn btn-warning"
-                                onclick="return confirm('Unmerge the selected record? This will restore the original patients.')">
+                        <button type="submit" class="btn btn-warning" onclick="return handleUnmergeClick()">
                             Unmerge Selected
                         </button>
                     </c:if>
@@ -284,6 +283,8 @@
 
 </div>
 
+<jsp:include page="/images/spinner.jsp" flush="true"/>
+
 <script>
     // ── Popup to patient chart ────────────────────────────────────────────────
     function popupWindow(url) {
@@ -334,6 +335,16 @@
             }
         });
 
+        ShowSpin(true);
+        return true;
+    }
+
+    // ── Unmerge confirm + spinner ────────────────────────────────────────────
+    function handleUnmergeClick() {
+        if (!confirm('Unmerge the selected record? This will restore the original patients.')) {
+            return false;
+        }
+        ShowSpin(true);
         return true;
     }
 
