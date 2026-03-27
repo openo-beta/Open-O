@@ -933,9 +933,12 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyEreferGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY EREFER GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // erefer_attachment (parent)
+        // Clear attachments before persist: the @OneToMany(cascade=PERSIST) collection holds old detached
+        // EReferAttachmentData rows that Hibernate would try to reassign via UPDATE FK — those rows don't
+        // exist under the new parent ID yet. Data rows are copied separately below via the new-object pattern.
         Map<Long, Long> attachPkMap = copyEntityRows(EReferAttachment.class, "EReferAttachment", "demographicNo",
                 sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
+                e -> (long) e.getId(), e -> { e.setId(null); if (e.getAttachments() != null) e.getAttachments().clear(); },
                 (e, d) -> e.setDemographicNo(d));
 
         if (attachPkMap.isEmpty()) {
