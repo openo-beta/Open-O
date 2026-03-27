@@ -92,7 +92,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      */
     @Override
     @Transactional
-    public void merge(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos) {
+    public Integer merge(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos) {
         System.out.println("\n");
         System.out.println("╔══════════════════════════════════════════════════════════════╗");
         System.out.println("║            DEMOGRAPHIC MERGE STARTED                        ║");
@@ -145,6 +145,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         System.out.println("╚══════════════════════════════════════════════════════════════╝");
         System.out.println("  Result: A=" + primaryDemographicNo + " + " + secondaries.size() + " secondary(s) -> C=" + targetDemographicNo);
         System.out.println("  (Status updates will be applied in a separate transaction)");
+        return targetDemographicNo;
     }
 
     /**
