@@ -175,17 +175,15 @@ public class dxResearchLoadAssociations2Action extends ActionSupport implements 
             return ERROR;
         }
 
-        File uploadedFile = PathValidationUtils.toFile(file);
-
         // Validate that the file is a valid uploaded file and prevent path traversal
-        if (!isValidUploadedFile(uploadedFile)) {
+        if (!isValidUploadedFile(fileOnDisk)) {
             MiscUtils.getLogger().error("SECURITY WARNING: Invalid file path detected for file upload");
             addActionError("Invalid file upload.");
             return ERROR;
         }
 
         // Re-validate at point of use for static analysis visibility
-        File validatedFile = PathValidationUtils.validateUpload(uploadedFile);
+        File validatedFile = PathValidationUtils.validateUpload(fileOnDisk);
         String[][] data = ExcelCSVParser.parse(new FileReader(validatedFile));
 
         int rowsInserted = 0;
@@ -279,12 +277,14 @@ public class dxResearchLoadAssociations2Action extends ActionSupport implements 
     }
 
     private UploadedFile file; // Uploaded file
+    private File fileOnDisk;
     private boolean replace = true; // Flag for replacement
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.file = uploadedFiles.get(0);
+            this.fileOnDisk = PathValidationUtils.toFile(file);
         }
     }
 

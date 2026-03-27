@@ -46,7 +46,6 @@ public class HRMUploadKey2Action extends ActionSupport implements UploadedFilesA
         String outcome = "failure";
 
         try {
-            File importFileOnDisk = PathValidationUtils.toFile(importFile);
             InputStream is = Files.newInputStream(importFileOnDisk.toPath());
 
             String type = request.getParameter("type");
@@ -87,12 +86,14 @@ public class HRMUploadKey2Action extends ActionSupport implements UploadedFilesA
     }
 
     private UploadedFile importFile;
+    private File importFileOnDisk;
     private String importFileFileName;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
             this.importFileFileName = importFile.getOriginalName();
         }
     }

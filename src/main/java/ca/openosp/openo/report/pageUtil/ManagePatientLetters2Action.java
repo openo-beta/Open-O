@@ -89,22 +89,20 @@ public class ManagePatientLetters2Action extends ActionSupport implements Upload
                 return SUCCESS;
             }
 
-            File rawReportFile = PathValidationUtils.toFile(reportFile);
-
             // Use PathValidationUtils to validate the uploaded file is in temp directory
-            if (!PathValidationUtils.isInAllowedTempDirectory(rawReportFile)) {
-                log.error("Attempted path traversal attack detected for file: " + rawReportFile.getPath());
+            if (!PathValidationUtils.isInAllowedTempDirectory(reportFileOnDisk)) {
+                log.error("Attempted path traversal attack detected for file: " + reportFileOnDisk.getPath());
                 throw new SecurityException("Invalid file upload - path traversal detected");
             }
 
             // Additional validation: ensure the file exists and is a regular file
-            if (!rawReportFile.exists() || !rawReportFile.isFile()) {
+            if (!reportFileOnDisk.exists() || !reportFileOnDisk.isFile()) {
                 log.error("Invalid file upload: File does not exist or is not a regular file");
                 return SUCCESS;
             }
 
             // Re-validate at point of use for static analysis visibility
-            File validatedReportFile = PathValidationUtils.validateUpload(rawReportFile);
+            File validatedReportFile = PathValidationUtils.validateUpload(reportFileOnDisk);
             fileData = Files.readAllBytes(validatedReportFile.toPath());
             String reportName = request.getParameter("reportName");
 
@@ -115,7 +113,7 @@ public class ManagePatientLetters2Action extends ActionSupport implements Upload
             JasperReport jasperReport = JasperCompileManager.compileReport(new ByteArrayInputStream(fileData));
 
             ManageLetters manageLetters = new ManageLetters();
-            manageLetters.saveReport((String) request.getSession().getAttribute("user"), reportName, rawReportFile.getName(), fileData);
+            manageLetters.saveReport((String) request.getSession().getAttribute("user"), reportName, reportFileOnDisk.getName(), fileData);
         } catch (FileNotFoundException ex) {
             MiscUtils.getLogger().error("Error", ex);
         } catch (IOException ex) {
@@ -135,11 +133,13 @@ public class ManagePatientLetters2Action extends ActionSupport implements Upload
     }
 
     private UploadedFile reportFile;
+    private File reportFileOnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.reportFile = uploadedFiles.get(0);
+            this.reportFileOnDisk = PathValidationUtils.toFile(reportFile);
         }
     }
 }

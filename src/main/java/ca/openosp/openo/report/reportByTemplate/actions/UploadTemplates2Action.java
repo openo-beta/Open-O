@@ -70,9 +70,8 @@ public class UploadTemplates2Action extends ActionSupport implements UploadedFil
         
         if (templateFile != null) {
             try {
-                // Extract File from UploadedFile and validate
-                File rawTemplateFile = PathValidationUtils.toFile(templateFile);
-                File validatedTemplateFile = PathValidationUtils.validateUpload(rawTemplateFile);
+                // Validate uploaded file
+                File validatedTemplateFile = PathValidationUtils.validateUpload(templateFileOnDisk);
 
                 // Read the file content
                 byte[] bytes = Files.readAllBytes(validatedTemplateFile.toPath());
@@ -105,11 +104,13 @@ public class UploadTemplates2Action extends ActionSupport implements UploadedFil
     }
 
     private UploadedFile templateFile;
+    private File templateFileOnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.templateFile = uploadedFiles.get(0);
+            this.templateFileOnDisk = PathValidationUtils.toFile(templateFile);
         }
     }
 }

@@ -86,14 +86,11 @@ public class ImageUpload2Action extends ActionSupport implements UploadedFilesAw
                 return ERROR;
             }
 
-            // Extract File from UploadedFile for validation and I/O
-            File imageFile = PathValidationUtils.toFile(image);
-
             // Validate upload: source file location + destination path traversal protection
-            File destinationFile = PathValidationUtils.validateUpload(imageFile, imageFileName, imageFolder);
+            File destinationFile = PathValidationUtils.validateUpload(imageOnDisk, imageFileName, imageFolder);
 
             // Upload the file
-            try (InputStream fis = Files.newInputStream(imageFile.toPath());
+            try (InputStream fis = Files.newInputStream(imageOnDisk.toPath());
                  OutputStream fos = Files.newOutputStream(destinationFile.toPath())) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
@@ -129,12 +126,14 @@ public class ImageUpload2Action extends ActionSupport implements UploadedFilesAw
     }
 
     private UploadedFile image;
+    private File imageOnDisk;
     private String imageFileName;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.image = uploadedFiles.get(0);
+            this.imageOnDisk = PathValidationUtils.toFile(image);
             this.imageFileName = image.getOriginalName();
         }
     }

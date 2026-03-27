@@ -114,14 +114,13 @@ public class ManageDashboard2Action extends ActionSupport implements UploadedFil
 
         byte[] filebytes = null;
         ObjectNode json = null;
-        File templateFile = indicatorTemplateFile != null ? PathValidationUtils.toFile(indicatorTemplateFile) : null;
 
-        if (templateFile != null) {
+        if (indicatorTemplateFileOnDisk != null) {
             try {
                 // Validate uploaded file before any file operations
-                PathValidationUtils.validateUpload(templateFile);
+                PathValidationUtils.validateUpload(indicatorTemplateFileOnDisk);
 
-                filebytes = Files.readAllBytes(templateFile.toPath());
+                filebytes = Files.readAllBytes(indicatorTemplateFileOnDisk.toPath());
             } catch (Exception e) {
                 json = objectMapper.createObjectNode();
                 json.put("status", "error");
@@ -169,7 +168,7 @@ public class ManageDashboard2Action extends ActionSupport implements UploadedFil
                 builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
                 // Build the JDOM2 document
-                Document xmlDocument = builder.build(templateFile);
+                Document xmlDocument = builder.build(indicatorTemplateFileOnDisk);
 
                 // Setup XSD validation
                 SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -439,11 +438,13 @@ public class ManageDashboard2Action extends ActionSupport implements UploadedFil
     }
 
     private UploadedFile indicatorTemplateFile;
+    private File indicatorTemplateFileOnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.indicatorTemplateFile = uploadedFiles.get(0);
+            this.indicatorTemplateFileOnDisk = PathValidationUtils.toFile(indicatorTemplateFile);
         }
     }
     

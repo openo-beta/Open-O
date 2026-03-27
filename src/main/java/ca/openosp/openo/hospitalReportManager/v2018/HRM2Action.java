@@ -1032,11 +1032,11 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         this.hrm_file = new ArrayList<>();
         this.privateKeyFile = new ArrayList<>();
         if (!uploadedFiles.isEmpty()) {
-            for (UploadedFile uf : uploadedFiles) {
-                if ("hrm_file".equals(uf.getInputName())) {
-                    this.hrm_file.add(uf);
-                } else if ("privateKeyFile".equals(uf.getInputName())) {
-                    this.privateKeyFile.add(uf);
+            for (UploadedFile uploadedFile : uploadedFiles) {
+                if ("hrm_file".equals(uploadedFile.getInputName())) {
+                    this.hrm_file.add(uploadedFile);
+                } else if ("privateKeyFile".equals(uploadedFile.getInputName())) {
+                    this.privateKeyFile.add(uploadedFile);
                 }
             }
         }

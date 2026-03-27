@@ -106,13 +106,11 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
                 return SUCCESS;
             }
 
-            File rawImportFile = PathValidationUtils.toFile(importFile);
-
             // Validate file is from an allowed temp directory
             try {
-                rawImportFile = PathValidationUtils.validateUpload(rawImportFile);
+                importFileOnDisk = PathValidationUtils.validateUpload(importFileOnDisk);
             } catch (SecurityException e) {
-                logger.error("Invalid upload source - potential path traversal: " + rawImportFile.getPath());
+                logger.error("Invalid upload source - potential path traversal: " + importFileOnDisk.getPath());
                 outcome = "exception";
                 httpCode = HttpServletResponse.SC_FORBIDDEN;
                 request.setAttribute("outcome", outcome);
@@ -120,8 +118,8 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
                 return SUCCESS;
             }
 
-            InputStream is = decryptMessage(Files.newInputStream(rawImportFile.toPath()), key, clientKey);
-            String fileName = rawImportFile.getName();
+            InputStream is = decryptMessage(Files.newInputStream(importFileOnDisk.toPath()), key, clientKey);
+            String fileName = importFileOnDisk.getName();
             String filePath = null;
             if (type.equals("PDFDOC")) {
                 filePath = Utilities.savePdfFile(is, fileName);
@@ -311,11 +309,13 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
     }
 
     private UploadedFile importFile;
+    private File importFileOnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
         }
     }
 }

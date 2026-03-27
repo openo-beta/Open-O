@@ -335,9 +335,8 @@ public class Upload2Action extends ActionSupport implements UploadedFilesAware {
         } else {
             OscarProperties props = OscarProperties.getInstance();
             File myFile = new File(props.getProperty("ONEDT_OUTBOX", "") + this.getFileName());
-            File rawUploadFile = PathValidationUtils.toFile(this.addUploadFile);
             try (FileOutputStream outputStream = new FileOutputStream(myFile)) {
-                outputStream.write(Files.readAllBytes(rawUploadFile.toPath()));
+                outputStream.write(Files.readAllBytes(addUploadFileOnDisk.toPath()));
                 outputStream.close();
                 addActionMessage(getText("uploadAction.upload.add.success", new String[]{this.getFileName() + " is succesfully added to the uploads list!"}));
             } catch (IOException e) {
@@ -410,6 +409,7 @@ public class Upload2Action extends ActionSupport implements UploadedFilesAware {
     private String fileName;
     private BigInteger resourceId;
     private UploadedFile addUploadFile;
+    private File addUploadFileOnDisk;
 
     public String getDescription() {
         return description;
@@ -448,6 +448,7 @@ public class Upload2Action extends ActionSupport implements UploadedFilesAware {
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.addUploadFile = uploadedFiles.get(0);
+            this.addUploadFileOnDisk = PathValidationUtils.toFile(addUploadFile);
             this.fileName = addUploadFile.getOriginalName();
         }
     }

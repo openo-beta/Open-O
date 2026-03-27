@@ -108,9 +108,8 @@ public class UploadLoginText2Action extends ActionSupport implements UploadedFil
 
 
         try {
-            File rawImportFile = PathValidationUtils.toFile(importFile);
-            if (rawImportFile.getName().length() > 0) {
-                fis = Files.newInputStream(rawImportFile.toPath());
+            if (importFileOnDisk.getName().length() > 0) {
+                fis = Files.newInputStream(importFileOnDisk.toPath());
                 String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/OSCARloginText.txt";
                 fos = new FileOutputStream(savePath);
                 byte[] buf = new byte[128 * 1024];
@@ -130,11 +129,13 @@ public class UploadLoginText2Action extends ActionSupport implements UploadedFil
     }
 
     private UploadedFile importFile;
+    private File importFileOnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
         }
     }
 }

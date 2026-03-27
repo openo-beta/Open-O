@@ -72,8 +72,7 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport implements
             ArrayList<String> messages = new ArrayList<String>();
             String contextPath = request.getContextPath();
 
-            File uploadedFile = PathValidationUtils.toFile(file);
-            if (!saveFile(uploadedFile, fileName)) {
+            if (!saveFile(fileOnDisk, fileName)) {
                 addActionError(getText("errors.fileNotAdded"));
                 response.sendRedirect(contextPath + "/oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet.jsp");
                 return NONE;
@@ -95,7 +94,7 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport implements
      *
      * @param file
      */
-    public boolean saveFile(File file, String fileName) { //NOSONAR - File parameter kept for API compatibility
+    public boolean saveFile(File file, String fileName) {
         boolean isAdded = true;
 
         try {
@@ -164,12 +163,15 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport implements
     }
 
     private UploadedFile file;
+    private File fileOnDisk;
     private String fileName; // Name of the uploaded file
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.file = uploadedFiles.get(0);
+            this.fileOnDisk = PathValidationUtils.toFile(file);
+            this.fileName = file.getOriginalName();
         }
     }
 

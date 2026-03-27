@@ -75,23 +75,21 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
                 return SUCCESS;
             }
 
-            File rawImportFile = PathValidationUtils.toFile(importFile);
-
             // Validate file is from an allowed temp directory
             try {
-                rawImportFile = PathValidationUtils.validateUpload(rawImportFile);
+                importFileOnDisk = PathValidationUtils.validateUpload(importFileOnDisk);
             } catch (SecurityException e) {
-                _logger.error("Invalid upload source - potential path traversal: " + rawImportFile.getPath());
+                _logger.error("Invalid upload source - potential path traversal: " + importFileOnDisk.getPath());
                 outcome = "exception";
                 request.setAttribute("outcome", outcome);
                 return SUCCESS;
             }
 
-            MiscUtils.getLogger().debug("Lab Upload content type = " + rawImportFile.getName());
+            MiscUtils.getLogger().debug("Lab Upload content type = " + importFileOnDisk.getName());
             // Re-validate at point of use for static analysis visibility
-            File validatedImportFile = PathValidationUtils.validateUpload(rawImportFile);
+            File validatedImportFile = PathValidationUtils.validateUpload(importFileOnDisk);
             InputStream is = Files.newInputStream(validatedImportFile.toPath());
-            filename = rawImportFile.getName();
+            filename = importFileOnDisk.getName();
 
             int check = FileUploadCheck.addFile(filename, is, proNo);
             is.reset();
@@ -196,11 +194,13 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
     }
 
     private UploadedFile importFile;
+    private File importFileOnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
         }
     }
 }

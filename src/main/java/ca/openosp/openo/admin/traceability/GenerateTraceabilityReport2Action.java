@@ -60,6 +60,7 @@ public class GenerateTraceabilityReport2Action extends ActionSupport implements 
     public static int BUFFER_SIZE = 8192;
 
     private UploadedFile file;
+    private File fileOnDisk;
 
     @Override
     public String execute() throws Exception {
@@ -81,7 +82,7 @@ public class GenerateTraceabilityReport2Action extends ActionSupport implements 
             pipedOutputStream = new PipedOutputStream(pipedInputStream);
             executor = Executors.newFixedThreadPool(2);
 
-            TraceabilityReportProcessor traceabilityReportProcessor = new TraceabilityReportProcessor(pipedOutputStream, PathValidationUtils.toFile(file), request);
+            TraceabilityReportProcessor traceabilityReportProcessor = new TraceabilityReportProcessor(pipedOutputStream, fileOnDisk, request);
             TraceabilityReportConsumer traceabilityReportConsumer = new TraceabilityReportConsumer(pipedInputStream, response);
 
             futureTRP = executor.submit(traceabilityReportProcessor);
@@ -105,6 +106,7 @@ public class GenerateTraceabilityReport2Action extends ActionSupport implements 
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.file = uploadedFiles.get(0);
+            this.fileOnDisk = PathValidationUtils.toFile(file);
         }
     }
 }

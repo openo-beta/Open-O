@@ -134,6 +134,7 @@ public class Update2Action extends ActionSupport implements UploadedFilesAware {
 
     private String resourceId;
     private UploadedFile content;
+    private File contentOnDisk;
 
     public String getResourceId() {
         return resourceId;
@@ -147,6 +148,7 @@ public class Update2Action extends ActionSupport implements UploadedFilesAware {
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.content = uploadedFiles.get(0);
+            this.contentOnDisk = PathValidationUtils.toFile(content);
         }
     }
 
@@ -154,8 +156,7 @@ public class Update2Action extends ActionSupport implements UploadedFilesAware {
         UpdateRequest result = new UpdateRequest();
         result.setResourceID(BigInteger.valueOf(ConversionUtils.fromIntString(resourceId)));
         try {
-            File contentFile = PathValidationUtils.toFile(content);
-            result.setContent(Files.readAllBytes(contentFile.toPath()));
+            result.setContent(Files.readAllBytes(contentOnDisk.toPath()));
         } catch (Exception e) {
             throw new RuntimeException("Unable to read upload data", e);
         }

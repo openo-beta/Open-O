@@ -229,8 +229,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport implement
          * thread to close gracefully while the import is being processed.
          */
         String filename = importFileFileName;
-        File importFileRaw = PathValidationUtils.toFile(importFile);
-        Path filePath = importFileRaw.toPath().normalize();
+        Path filePath = importFileOnDisk.toPath().normalize();
 
         // Get context of the temp directory, get the file path to the the temp directory
         ServletContext servletContext = ServletActionContext.getServletContext();
@@ -4847,6 +4846,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport implement
     }
 
     private UploadedFile importFile = null;
+    private File importFileOnDisk;
     private String importFileFileName;
     private boolean matchProviderNames = true;
     private int timeshiftInDays;
@@ -4856,6 +4856,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport implement
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
             this.importFileFileName = importFile.getOriginalName();
         }
     }

@@ -85,8 +85,7 @@ public class ManageEForm2Action extends ActionSupport implements UploadedFilesAw
         }
 
         List<String> errors = Collections.emptyList();
-        File zippedFormFile = PathValidationUtils.toFile(zippedForm);
-        try (InputStream zippedFormStream = Files.newInputStream(zippedFormFile.toPath())) {
+        try (InputStream zippedFormStream = Files.newInputStream(zippedFormOnDisk.toPath())) {
             request.setAttribute("input", "import");
             EFormExportZip eFormExportZip = new EFormExportZip();
             errors = eFormExportZip.importForm(zippedFormStream);
@@ -101,11 +100,13 @@ public class ManageEForm2Action extends ActionSupport implements UploadedFilesAw
     }
 
     private UploadedFile zippedForm;
+    private File zippedFormOnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.zippedForm = uploadedFiles.get(0);
+            this.zippedFormOnDisk = PathValidationUtils.toFile(zippedForm);
         }
     }
 }

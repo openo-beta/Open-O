@@ -78,7 +78,7 @@ public class DocumentUpload2Action extends ActionSupport implements UploadedFile
         }
 
         HashMap<String, Object> map = new HashMap<String, Object>();
-        File docFile = this.filedata != null ? PathValidationUtils.toFile(this.filedata) : null;
+        File docFile = filedataOnDisk;
         String destination = request.getParameter("destination");
         ResourceBundle props = ResourceBundle.getBundle("oscarResources");
         if (docFile == null) {
@@ -380,6 +380,7 @@ public class DocumentUpload2Action extends ActionSupport implements UploadedFile
     private UploadedFile docFile;
 
     private UploadedFile filedata;
+    private File filedataOnDisk;
     private String filedataFileName;
     private String filedataContentType;
 
@@ -507,13 +508,14 @@ public class DocumentUpload2Action extends ActionSupport implements UploadedFile
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
-            for (UploadedFile uf : uploadedFiles) {
-                if ("docFile".equals(uf.getInputName())) {
-                    this.docFile = uf;
-                } else if ("filedata".equals(uf.getInputName())) {
-                    this.filedata = uf;
-                    this.filedataFileName = uf.getOriginalName();
-                    this.filedataContentType = uf.getContentType();
+            for (UploadedFile uploadedFile : uploadedFiles) {
+                if ("docFile".equals(uploadedFile.getInputName())) {
+                    this.docFile = uploadedFile;
+                } else if ("filedata".equals(uploadedFile.getInputName())) {
+                    this.filedata = uploadedFile;
+                    this.filedataOnDisk = PathValidationUtils.toFile(filedata);
+                    this.filedataFileName = filedata.getOriginalName();
+                    this.filedataContentType = filedata.getContentType();
                 }
             }
         }

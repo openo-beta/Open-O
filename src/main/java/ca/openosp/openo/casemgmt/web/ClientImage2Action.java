@@ -48,6 +48,7 @@ public class ClientImage2Action extends ActionSupport implements UploadedFilesAw
     HttpServletResponse response = ServletActionContext.getResponse();
 
     private UploadedFile clientImage;
+    private File clientImageOnDisk;
     private String clientImageFileName;
 
     private static Logger log = MiscUtils.getLogger();
@@ -58,6 +59,7 @@ public class ClientImage2Action extends ActionSupport implements UploadedFilesAw
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.clientImage = uploadedFiles.get(0);
+            this.clientImageOnDisk = PathValidationUtils.toFile(clientImage);
             this.clientImageFileName = clientImage.getOriginalName();
         }
     }
@@ -83,15 +85,13 @@ public class ClientImage2Action extends ActionSupport implements UploadedFilesAw
 
         // Ensure that the upload directory is correct and create a new image object that will be saved to the client
         try {
-            File rawImage = PathValidationUtils.toFile(clientImage);
-
             // Validate that the uploaded file is in an allowed temp directory
-            if (!PathValidationUtils.isInAllowedTempDirectory(rawImage)) {
-                throw new IllegalArgumentException("Invalid file path: " + rawImage.getPath());
+            if (!PathValidationUtils.isInAllowedTempDirectory(clientImageOnDisk)) {
+                throw new IllegalArgumentException("Invalid file path: " + clientImageOnDisk.getPath());
             }
 
             // Re-validate at point of use for static analysis visibility
-            File validatedImage = PathValidationUtils.validateUpload(rawImage);
+            File validatedImage = PathValidationUtils.validateUpload(clientImageOnDisk);
             byte[] imageData = Files.readAllBytes(validatedImage.toPath());
 
             ClientImage clientImageObj = new ClientImage();

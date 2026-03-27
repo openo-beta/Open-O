@@ -83,24 +83,22 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
                     return SUCCESS;
                 }
 
-                File rawImportFile = PathValidationUtils.toFile(importFile);
-
                 try {
                     // Validates source file is from an allowed temp location
-                    rawImportFile = PathValidationUtils.validateUpload(rawImportFile);
+                    importFileOnDisk = PathValidationUtils.validateUpload(importFileOnDisk);
                 } catch (SecurityException e) {
-                    _logger.error("Invalid upload source: " + rawImportFile.getPath());
+                    _logger.error("Invalid upload source: " + importFileOnDisk.getPath());
                     outcome = "accessDenied";
                     request.setAttribute("outcome", outcome);
                     return SUCCESS;
                 }
 
-                MiscUtils.getLogger().debug("Lab Upload content type = " + rawImportFile.getName());
-                File validatedImportFile = PathValidationUtils.validateUpload(rawImportFile);
+                MiscUtils.getLogger().debug("Lab Upload content type = " + importFileOnDisk.getName());
+                File validatedImportFile = PathValidationUtils.validateUpload(importFileOnDisk);
                 InputStream is = Files.newInputStream(validatedImportFile.toPath());
 
                 // Get sanitized filename from the validated source
-                filename = rawImportFile.getName();
+                filename = importFileOnDisk.getName();
 
                 String localFileName = saveFile(is, filename);
                 is.close();
@@ -226,11 +224,13 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
     }
 
     private UploadedFile importFile;
+    private File importFileOnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
         }
     }
 }

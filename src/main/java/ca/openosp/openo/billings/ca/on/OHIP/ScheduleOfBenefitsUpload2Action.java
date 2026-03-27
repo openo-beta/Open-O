@@ -75,7 +75,7 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport implements Up
         BigDecimal updateAnaesthetistFeesValue = updateAnaesthetistFees ? getBDValue(request.getParameter("updateAnaesthetistFeesValue")) : null;
         try {
 
-            InputStream is = new java.io.FileInputStream(PathValidationUtils.toFile(importFile));
+            InputStream is = new java.io.FileInputStream(importFileOnDisk);
 
             ScheduleOfBenefits sob = new ScheduleOfBenefits();
             String codeChanges = request.getParameter("showChangedCodes");
@@ -160,6 +160,7 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport implements Up
     }
 
     private UploadedFile importFile;
+    private File importFileOnDisk;
     private boolean updateAssistantFees;
     private boolean updateAnaesthetistFees;
     private BigDecimal updateAssistantFeesValue;
@@ -169,6 +170,7 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport implements Up
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
         }
     }
 

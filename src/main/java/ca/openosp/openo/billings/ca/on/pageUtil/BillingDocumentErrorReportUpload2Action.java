@@ -72,7 +72,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport imple
         String filename = request.getParameter("filename");
 
         if (StringUtils.isBlank(filename)) {
-            if (!saveFile(PathValidationUtils.toFile(file1), file1FileName)) {
+            if (!saveFile(file1OnDisk, file1FileName)) {
                 addActionError(getText("errors.fileNotAdded"));
                 return ERROR;
             } else {
@@ -388,6 +388,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport imple
         return hd;
     }
     private UploadedFile file1; // Uploaded file
+    private File file1OnDisk;
     private String file1FileName; // Name of the uploaded file
 
     private String filename; // Filename parameter from request
@@ -396,6 +397,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport imple
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.file1 = uploadedFiles.get(0);
+            this.file1OnDisk = PathValidationUtils.toFile(file1);
             this.file1FileName = file1.getOriginalName();
         }
     }

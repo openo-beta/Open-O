@@ -75,7 +75,6 @@ public class FrmXmlUpload2Action extends ActionSupport implements UploadedFilesA
             throw new IllegalStateException("Temporary directory attribute is not set.");
         }
         
-        File file1OnDisk = PathValidationUtils.toFile(file1);
         File normalizedFile = file1OnDisk.toPath().normalize().toFile();
 
         // Validate file path using PathValidationUtils
@@ -109,11 +108,13 @@ public class FrmXmlUpload2Action extends ActionSupport implements UploadedFilesA
     }
 
     private UploadedFile file1;
+    private File file1OnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.file1 = uploadedFiles.get(0);
+            this.file1OnDisk = PathValidationUtils.toFile(file1);
         }
     }
 }

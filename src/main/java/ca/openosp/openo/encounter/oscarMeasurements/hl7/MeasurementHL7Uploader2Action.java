@@ -105,8 +105,6 @@ public class MeasurementHL7Uploader2Action extends ActionSupport implements Uplo
         try {
             boolean checkPassword = StringUtils.isNotBlank(hl7UploadPassword);
 
-            File importFileOnDisk = PathValidationUtils.toFile(importFile);
-
             // file is encrypted using RSA public keys if no password enforced
             hl7msg = checkPassword ? IOUtils.toString(Files.newInputStream(importFileOnDisk.toPath())) : extractEncryptedMessage(importFileOnDisk, request);
 
@@ -247,11 +245,13 @@ public class MeasurementHL7Uploader2Action extends ActionSupport implements Uplo
     }
 
     private UploadedFile importFile;
+    private File importFileOnDisk;
 
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
             this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
         }
     }
 }
