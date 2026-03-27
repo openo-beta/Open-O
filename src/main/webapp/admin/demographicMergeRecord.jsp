@@ -173,7 +173,7 @@
                  UNMERGE MODE — one radio per row, submit directly
                  ════════════════════════════════════════════════════════════ --%>
             <c:when test="${unmergeMode}">
-                <form method="post" action="${pageContext.request.contextPath}/admin/DemographicMerge.do">
+                <form id="unmergeForm" method="post" action="${pageContext.request.contextPath}/admin/DemographicMerge.do">
                     <input type="hidden" name="method" value="unmerge">
                     <table class="table table-sm table-striped table-bordered" id="unmergeTable">
                         <thead class="table-light">
@@ -213,7 +213,7 @@
                         </tbody>
                     </table>
                     <c:if test="${not empty demoList}">
-                        <button type="submit" class="btn btn-warning" onclick="return handleUnmergeClick()">
+                        <button type="button" class="btn btn-warning" onclick="showUnmergeConfirm()">
                             Unmerge Selected
                         </button>
                     </c:if>
@@ -305,6 +305,62 @@
         <p class="text-center text-muted mt-4">Enter a search term above to find patient records, or click Search to show all.</p>
     </c:if>
 
+    <%-- ── BS5 modals ─────────────────────────────────────────────────────── --%>
+
+    <%-- Validation error modal --%>
+    <div class="modal fade" id="mergeValidationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">Cannot Merge</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="mergeValidationMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%-- Merge confirmation modal --%>
+    <div class="modal fade" id="mergeConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Merge</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You are about to merge duplicate patient records. This action is irreversible. Do you want to proceed?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="mergeConfirmBtn">Merge Records</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%-- Unmerge confirmation modal --%>
+    <div class="modal fade" id="unmergeConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Unmerge</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Unmerge the selected record? This will restore the original patients.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-warning" id="unmergeConfirmBtn">Unmerge</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <jsp:include page="/images/spinner.jsp" flush="true"/>
@@ -312,72 +368,93 @@
 <script>
     // ── Popup to patient chart ────────────────────────────────────────────────
     function popupWindow(url) {
-        var props = "height=660,width=960,location=no,scrollbars=yes,menubar=no,toolbar=no,resizable=yes,top=0,left=0";
-        var popup = window.open(url, "patientchart", props);
+        const props = "height=660,width=960,location=no,scrollbars=yes,menubar=no,toolbar=no,resizable=yes,top=0,left=0";
+        const popup = window.open(url, "patientchart", props);
         if (popup) popup.focus();
     }
 
-    // ── Merge form: validate + build hidden inputs before submit ─────────────
+    // ── Merge form: validate then show confirmation modal ────────────────────
+    // Returns false always — the actual submit is triggered by the modal confirm button.
     function buildAndSubmit() {
-        var checked = Array.from(document.querySelectorAll('input.demo-check:checked'));
+        const checked = Array.from(document.querySelectorAll('input.demo-check:checked'));
         if (checked.length < 2) {
-            alert('Please select at least 2 records to merge.');
+            showMergeValidationError('Please select at least 2 records to merge.');
             return false;
         }
 
-        var primaryRadio = document.querySelector('input.primary-radio:checked');
+        const primaryRadio = document.querySelector('input.primary-radio:checked');
         if (!primaryRadio) {
-            alert('Please select a Primary record (the record whose identity will be used for the merged record).');
+            showMergeValidationError('Please select a Primary record (the record whose identity will be used for the merged record).');
             return false;
         }
 
-        var checkedValues = checked.map(function (cb) { return cb.value; });
+        const checkedValues = checked.map(function (cb) { return cb.value; });
         if (checkedValues.indexOf(primaryRadio.value) === -1) {
-            alert('The Primary record must be one of the selected (checked) records.');
+            showMergeValidationError('The Primary record must be one of the selected (checked) records.');
             return false;
         }
 
-        if (!confirm('You are about to merge duplicate patient records. This action is permanent and cannot be undone. Do you want to proceed?')) {
-            return false;
-        }
-
-        var form = document.getElementById('mergeForm');
-
-        var pi    = document.createElement('input');
-        pi.type   = 'hidden';
-        pi.name   = 'primaryDemographicNo';
-        pi.value  = primaryRadio.value;
-        form.appendChild(pi);
-
-        checked.forEach(function (cb) {
-            if (cb.value !== primaryRadio.value) {
-                var si   = document.createElement('input');
-                si.type  = 'hidden';
-                si.name  = 'secondaryDemographicNo';
-                si.value = cb.value;
-                form.appendChild(si);
-            }
-        });
-
-        ShowSpin(true);
-        return true;
+        // Validation passed — open the confirmation modal; submit handled by modal button
+        new bootstrap.Modal(document.getElementById('mergeConfirmModal')).show();
+        return false;
     }
 
-    // ── Unmerge confirm + spinner ────────────────────────────────────────────
-    function handleUnmergeClick() {
-        if (!confirm('Unmerge the selected record? This will restore the original patients.')) {
-            return false;
-        }
-        ShowSpin(true);
-        return true;
+    function showMergeValidationError(msg) {
+        document.getElementById('mergeValidationMessage').textContent = msg;
+        new bootstrap.Modal(document.getElementById('mergeValidationModal')).show();
     }
 
-    // ── Auto-check a row when its Primary radio is selected ──────────────────
+    // ── Unmerge: show confirmation modal ─────────────────────────────────────
+    function showUnmergeConfirm() {
+        new bootstrap.Modal(document.getElementById('unmergeConfirmModal')).show();
+    }
+
+    // ── Wire modal confirm buttons + auto-check on primary radio change ───────
     document.addEventListener('DOMContentLoaded', function () {
+
+        // Merge confirm button: build hidden inputs then submit
+        const mergeConfirmBtn = document.getElementById('mergeConfirmBtn');
+        if (mergeConfirmBtn) {
+            mergeConfirmBtn.addEventListener('click', function () {
+                const form = document.getElementById('mergeForm');
+                const primaryRadio = document.querySelector('input.primary-radio:checked');
+                const checked = Array.from(document.querySelectorAll('input.demo-check:checked'));
+
+                const pi   = document.createElement('input');
+                pi.type  = 'hidden';
+                pi.name  = 'primaryDemographicNo';
+                pi.value = primaryRadio.value;
+                form.appendChild(pi);
+
+                checked.forEach(function (cb) {
+                    if (cb.value !== primaryRadio.value) {
+                        const si   = document.createElement('input');
+                        si.type  = 'hidden';
+                        si.name  = 'secondaryDemographicNo';
+                        si.value = cb.value;
+                        form.appendChild(si);
+                    }
+                });
+
+                ShowSpin(true);
+                form.submit();
+            });
+        }
+
+        // Unmerge confirm button: submit the unmerge form
+        const unmergeConfirmBtn = document.getElementById('unmergeConfirmBtn');
+        if (unmergeConfirmBtn) {
+            unmergeConfirmBtn.addEventListener('click', function () {
+                ShowSpin(true);
+                document.getElementById('unmergeForm').submit();
+            });
+        }
+
+        // Auto-check a row when its Primary radio is selected
         document.querySelectorAll('input.primary-radio').forEach(function (radio) {
             radio.addEventListener('change', function () {
-                var row = radio.closest('tr');
-                var cb  = row ? row.querySelector('input.demo-check') : null;
+                const row = radio.closest('tr');
+                const cb  = row ? row.querySelector('input.demo-check') : null;
                 if (cb && !cb.checked) cb.checked = true;
             });
         });
@@ -387,26 +464,27 @@
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('th.sortable').forEach(function (th) {
             th.addEventListener('click', function () {
-                var table = th.closest('table');
-                var tbody = table.querySelector('tbody');
-                var col   = parseInt(th.getAttribute('data-col'), 10);
-                var asc   = th.getAttribute('data-asc') !== 'true';
+                const table = th.closest('table');
+                const tbody = table.querySelector('tbody');
+                const col   = parseInt(th.getAttribute('data-col'), 10);
+                const asc   = th.getAttribute('data-asc') !== 'true';
                 th.setAttribute('data-asc', asc ? 'true' : 'false');
 
                 table.querySelectorAll('th.sortable .sort-icon').forEach(function (ic) {
                     ic.classList.remove('active');
                     ic.textContent = '\u2195';
                 });
-                var icon = th.querySelector('.sort-icon');
+                const icon = th.querySelector('.sort-icon');
                 icon.classList.add('active');
                 icon.textContent = asc ? '\u2191' : '\u2193';
 
-                var rows = Array.from(tbody.querySelectorAll('tr'));
+                const rows = Array.from(tbody.querySelectorAll('tr'));
                 rows.sort(function (a, b) {
-                    var at = ((a.querySelectorAll('td')[col] || {}).textContent || '').trim();
-                    var bt = ((b.querySelectorAll('td')[col] || {}).textContent || '').trim();
-                    var n1 = parseFloat(at), n2 = parseFloat(bt);
-                    var cmp = (!isNaN(n1) && !isNaN(n2)) ? (n1 - n2) : at.localeCompare(bt);
+                    const at  = ((a.querySelectorAll('td')[col] || {}).textContent || '').trim();
+                    const bt  = ((b.querySelectorAll('td')[col] || {}).textContent || '').trim();
+                    const n1  = parseFloat(at);
+                    const n2  = parseFloat(bt);
+                    const cmp = (!isNaN(n1) && !isNaN(n2)) ? (n1 - n2) : at.localeCompare(bt);
                     return asc ? cmp : -cmp;
                 });
                 rows.forEach(function (r) { tbody.appendChild(r); });
@@ -418,7 +496,7 @@
 <c:if test="${outcome eq 'success'}">
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var el = document.getElementById('mergeSuccessModal');
+        const el = document.getElementById('mergeSuccessModal');
         if (el) { new bootstrap.Modal(el).show(); }
     });
 </script>
