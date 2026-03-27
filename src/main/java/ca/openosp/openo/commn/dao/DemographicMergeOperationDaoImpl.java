@@ -241,6 +241,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             pkMap.put(oldPk, getPk.apply(row));
         }
 
+        System.out.println("    [" + jpqlName + "] copied " + pkMap.size() + " rows  (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ")");
         logger.debug("copyEntityRows: entity='{}', source={}, target={}, rows={}", jpqlName, sourceDemoNo, targetDemoNo, pkMap.size());
         return pkMap;
     }
@@ -266,6 +267,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         if (parentPkMap == null || parentPkMap.isEmpty()) return;
 
+        int totalChildrenCopied = 0;
         for (Map.Entry<Long, Long> entry : parentPkMap.entrySet()) {
             List<T> children = entityManager.createQuery("SELECT e FROM " + jpqlName + " e WHERE e." + fkField + " = :fk", entityClass)
                 .setParameter("fk", entry.getKey().intValue())
@@ -278,9 +280,13 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 if (extraDemoField != null) extraDemoField.accept(child, targetDemoNo);
                 entityManager.persist(child);
                 entityManager.flush();
+                totalChildrenCopied++;
             }
         }
 
+        if (totalChildrenCopied > 0) {
+            System.out.println("    [" + jpqlName + " (child)] copied " + totalChildrenCopied + " child rows across " + parentPkMap.size() + " parent(s)");
+        }
         logger.debug("copyChildRows: entity='{}', parent entries={}", jpqlName, parentPkMap.size());
     }
 
@@ -313,6 +319,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
     @Override
     public Map<Long, Long> copyAppointments(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY APPOINTMENTS: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // appointment
         Map<Long, Long> apptPkMap = copyEntityRows(Appointment.class, "Appointment", "demographicNo",
                 sourceDemoNo, targetDemoNo,
@@ -327,21 +334,25 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 (e, d) -> e.setDemographicNo(d));
 
         logger.debug("copyAppointments: source={}, target={}, appt rows={}", sourceDemoNo, targetDemoNo, apptPkMap.size());
+        System.out.println("=== COPY APPOINTMENTS DONE: " + apptPkMap.size() + " appointment(s) copied ===");
         return apptPkMap;
     }
 
     @Override
     public Map<Long, Long> copyAllergies(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY ALLERGIES: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         Map<Long, Long> allergyPkMap = copyEntityRows(Allergy.class, "Allergy", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
         logger.debug("copyAllergies: source={}, target={}, allergy rows={}", sourceDemoNo, targetDemoNo, allergyPkMap.size());
+        System.out.println("=== COPY ALLERGIES DONE: " + allergyPkMap.size() + " allergy record(s) copied ===");
         return allergyPkMap;
     }
 
     @Override
     public void copyClinicalDirectRecords(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY CLINICAL DIRECT RECORDS: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // allergies — copied by copyAllergies(); the manager calls that separately so the
         // PK map is available for casemgmt_note_link tableId remap (table_name = 3)
 
@@ -359,6 +370,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             entityManager.persist(cpp);
             entityManager.flush();
         }
+        System.out.println("    [CaseMgmtCpp] copied " + cppRows.size() + " row(s)");
         logger.debug("copyClinicalDirectRecords: CaseMgmtCpp rows={}", cppRows.size());
 
         // Consent
@@ -380,6 +392,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
         if (!sourceDocs.isEmpty()) {
             entityManager.flush();
+            System.out.println("    [CtlDocument] copied " + sourceDocs.size() + " row(s)");
         }
 
         // demographicArchive — Long PK
@@ -513,6 +526,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 (e, d) -> e.setDemographicNo(d));
 
         logger.debug("copyClinicalDirectRecords: source={}, target={} — complete", sourceDemoNo, targetDemoNo);
+        System.out.println("=== COPY CLINICAL DIRECT RECORDS DONE (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ") ===");
     }
 
     // -------------------------------------------------------------------------
@@ -521,6 +535,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
     @Override
     public void copyAllForms(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY ALL FORMS: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // Tables covered: form, form2MinWalk, formAdf, formAdfV2, formAlpha, formAnnual,
         //   formAnnualV2, formAR, formBCAR[BC], formBCAR2007[BC], formBCAR2012[BC],
         //   formBCBirthSumMo[BC], formBCBirthSumMo2008[BC], formBCClientChartChecklist[BC],
@@ -624,6 +639,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         copyFormJdbc("formPositionHazard", "ID", sourceDemoNo, targetDemoNo, true);
 
         logger.debug("copyAllForms: source={}, target={} — complete", sourceDemoNo, targetDemoNo);
+        System.out.println("=== COPY ALL FORMS DONE (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ") ===");
     }
 
     /**
@@ -645,6 +661,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             copyFormBooleanValues(pkMap, tableName);
         }
         if (!pkMap.isEmpty()) {
+            System.out.println("    [form: " + tableName + "] copied " + pkMap.size() + " row(s)  (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ")");
             logger.debug("copyFormJdbc: table='{}', source={}, target={}, rows={}", tableName, sourceDemoNo, targetDemoNo, pkMap.size());
         }
     }
@@ -729,7 +746,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
     @Override
     public void copyBillingGroup(Integer sourceDemoNo, Integer targetDemoNo) {
-        if (!tableExists("billing_on_cheader1")) return;
+        System.out.println("\n=== COPY BILLING GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
+        if (!tableExists("billing_on_cheader1")) {
+            System.out.println("=== COPY BILLING GROUP DONE: billing_on_cheader1 table not present, skipped ===");
+            return;
+        }
 
         // billing_on_cheader1 (parent)
         Map<Long, Long> ch1PkMap = copyEntityRows(BillingONCHeader1.class, "BillingONCHeader1", "demographicNo",
@@ -737,7 +758,10 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        if (ch1PkMap.isEmpty()) return;
+        if (ch1PkMap.isEmpty()) {
+            System.out.println("=== COPY BILLING GROUP DONE: no billing header rows found for source=" + sourceDemoNo + " ===");
+            return;
+        }
 
         // billing_on_cheader2 — child of cheader1, FK is ch1Id
         copyChildRows(BillingONCHeader2.class, "BillingONCHeader2", "ch1Id",
@@ -770,17 +794,22 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         logger.debug("copyBillingGroup: source={}, target={}, ch1 rows={}", sourceDemoNo, targetDemoNo, ch1PkMap.size());
+        System.out.println("=== COPY BILLING GROUP DONE: " + ch1PkMap.size() + " billing header(s) + children copied ===");
     }
 
     @Override
     public Map<Long, Long> copyConsultationsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY CONSULTATIONS GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // consultationRequests (parent) — demo field is "demographicId"
         Map<Long, Long> requestPkMap = copyEntityRows(ConsultationRequest.class, "ConsultationRequest", "demographicId",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicId(d));
 
-        if (requestPkMap.isEmpty()) return requestPkMap;
+        if (requestPkMap.isEmpty()) {
+            System.out.println("=== COPY CONSULTATIONS GROUP DONE: no consultation requests found for source=" + sourceDemoNo + " ===");
+            return requestPkMap;
+        }
 
         // consultationRequestExt — child, FK is requestId
         copyChildRows(ConsultationRequestExt.class, "ConsultationRequestExt", "requestId",
@@ -790,18 +819,23 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 null, null);
 
         logger.debug("copyConsultationsGroup: source={}, target={}, request rows={}", sourceDemoNo, targetDemoNo, requestPkMap.size());
+        System.out.println("=== COPY CONSULTATIONS GROUP DONE: " + requestPkMap.size() + " consultation request(s) + ext rows copied ===");
         return requestPkMap;
     }
 
     @Override
     public Map<Long, Long> copyDrugsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY DRUGS GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // drugs (parent) — demo field is "demographicId"
         Map<Long, Long> drugPkMap = copyEntityRows(Drug.class, "Drug", "demographicId",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicId(d));
 
-        if (drugPkMap.isEmpty()) return drugPkMap;
+        if (drugPkMap.isEmpty()) {
+            System.out.println("=== COPY DRUGS GROUP DONE: no drug records found for source=" + sourceDemoNo + " ===");
+            return drugPkMap;
+        }
 
         // drugReason — child, FK is drugId; also has a extra demographicNo column
         copyChildRows(DrugReason.class, "DrugReason", "drugId",
@@ -812,18 +846,23 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 targetDemoNo);
 
         logger.debug("copyDrugsGroup: source={}, target={}, drug rows={}", sourceDemoNo, targetDemoNo, drugPkMap.size());
+        System.out.println("=== COPY DRUGS GROUP DONE: " + drugPkMap.size() + " drug(s) + drug reasons copied ===");
         return drugPkMap;
     }
 
     @Override
     public Map<Long, Long> copyEformGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY EFORM GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // eform_data (parent) — demo field is "demographicId"
         Map<Long, Long> eformPkMap = copyEntityRows(EFormData.class, "EFormData", "demographicId",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicId(d));
 
-        if (eformPkMap.isEmpty()) return eformPkMap;
+        if (eformPkMap.isEmpty()) {
+            System.out.println("=== COPY EFORM GROUP DONE: no eform data found for source=" + sourceDemoNo + " ===");
+            return eformPkMap;
+        }
 
         // eform_values — child, FK is formDataId; also has extra demographicId column
         copyChildRows(EFormValue.class, "EFormValue", "formDataId",
@@ -834,17 +873,22 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 targetDemoNo);
 
         logger.debug("copyEformGroup: source={}, target={}, eform rows={}", sourceDemoNo, targetDemoNo, eformPkMap.size());
+        System.out.println("=== COPY EFORM GROUP DONE: " + eformPkMap.size() + " eform record(s) + values copied ===");
         return eformPkMap;
     }
 
     @Override
     public Map<Long, Long> copyEmailGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY EMAIL GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // emailLog — @ManyToOne Demographic; query by demographic.id
         List<EmailLog> logs = entityManager.createQuery("SELECT e FROM EmailLog e WHERE e.demographic.id = :demo", EmailLog.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
-        if (logs.isEmpty()) return Collections.emptyMap();
+        if (logs.isEmpty()) {
+            System.out.println("=== COPY EMAIL GROUP DONE: no email logs found for source=" + sourceDemoNo + " ===");
+            return Collections.emptyMap();
+        }
 
         Map<Long, Long> emailPkMap = new HashMap<>();
         Demographic targetRef = entityManager.getReference(Demographic.class, targetDemoNo);
@@ -878,18 +922,23 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         logger.debug("copyEmailGroup: source={}, target={}, log rows={}", sourceDemoNo, targetDemoNo, logs.size());
+        System.out.println("=== COPY EMAIL GROUP DONE: " + logs.size() + " email log(s) + attachments copied ===");
         return emailPkMap;
     }
 
     @Override
     public void copyEreferGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY EREFER GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // erefer_attachment (parent)
         Map<Long, Long> attachPkMap = copyEntityRows(EReferAttachment.class, "EReferAttachment", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        if (attachPkMap.isEmpty()) return;
+        if (attachPkMap.isEmpty()) {
+            System.out.println("=== COPY EREFER GROUP DONE: no eRefer attachments found for source=" + sourceDemoNo + " ===");
+            return;
+        }
 
         // erefer_attachment_data — composite PK (erefer_attachment_id, lab_id, lab_type); no auto-increment.
         // Use the new-object Hibernate pattern: construct a brand-new transient instance per row so
@@ -910,11 +959,16 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         logger.debug("copyEreferGroup: source={}, target={}, attachment rows={}", sourceDemoNo, targetDemoNo, attachPkMap.size());
+        System.out.println("=== COPY EREFER GROUP DONE: " + attachPkMap.size() + " eRefer attachment(s) + data rows copied ===");
     }
 
     @Override
     public void copyFormBCAR2020Group(Integer sourceDemoNo, Integer targetDemoNo) {
-        if (!tableExists("formBCAR2020")) return;
+        System.out.println("\n=== COPY FORM BCAR2020 GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
+        if (!tableExists("formBCAR2020")) {
+            System.out.println("=== COPY FORM BCAR2020 GROUP DONE: table not present, skipped ===");
+            return;
+        }
 
         // formBCAR2020 (parent) — Hibernate copy; PK java field is "formId"
         Map<Long, Long> formPkMap = copyEntityRows(FormBCAR2020.class, "FormBCAR2020", "demographicNo",
@@ -922,7 +976,10 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        if (formPkMap.isEmpty()) return;
+        if (formPkMap.isEmpty()) {
+            System.out.println("=== COPY FORM BCAR2020 GROUP DONE: no rows found for source=" + sourceDemoNo + " ===");
+            return;
+        }
 
         // formBCAR2020Text — composite IdClass (formId + pageNo + field); JDBC INSERT...SELECT
         for (Map.Entry<Long, Long> entry : formPkMap.entrySet()) {
@@ -934,22 +991,31 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         logger.debug("copyFormBCAR2020Group: source={}, target={}, form rows={}", sourceDemoNo, targetDemoNo, formPkMap.size());
+        System.out.println("=== COPY FORM BCAR2020 GROUP DONE: " + formPkMap.size() + " form(s) + text rows copied ===");
     }
 
     @Override
     public void copyFormONAREnhancedGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY FORM ONAR ENHANCED GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // All three tables have 400–1400 columns — no entity classes; reuse copyFormJdbc for parent.
         // Ext1/Ext2 are child tables keyed by the parent id (not demographic_no), so they need
         // a separate inline copy using the parent PK map.
-        if (!tableExists("formONAREnhancedRecord")) return;
+        if (!tableExists("formONAREnhancedRecord")) {
+            System.out.println("=== COPY FORM ONAR ENHANCED GROUP DONE: table not present, skipped ===");
+            return;
+        }
 
         // Copy main table via shared helper; capture old→new PK map for child remapping
         Map<Long, Long> onarPkMap = copyFormJdbcWithMap("formONAREnhancedRecord", "ID", sourceDemoNo, targetDemoNo);
-        if (onarPkMap.isEmpty()) return;
+        if (onarPkMap.isEmpty()) {
+            System.out.println("=== COPY FORM ONAR ENHANCED GROUP DONE: no rows found for source=" + sourceDemoNo + " ===");
+            return;
+        }
 
         // formONAREnhancedRecordExt1 and Ext2 — child rows keyed by parent id
         for (String extTable : new String[]{"formONAREnhancedRecordExt1", "formONAREnhancedRecordExt2"}) {
             if (!tableExists(extTable)) continue;
+            int extRowsCopied = 0;
             for (Map.Entry<Long, Long> entry : onarPkMap.entrySet()) {
                 List<Map<String, Object>> extRows = jdbcTemplate.queryForList(
                     "SELECT * FROM `" + extTable + "` WHERE id = ?", entry.getKey().intValue());
@@ -967,22 +1033,31 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                     }
                     ei.append(")"); ev.append(")");
                     jdbcTemplate.update(ei.toString() + ev.toString(), ep);
+                    extRowsCopied++;
                 }
+            }
+            if (extRowsCopied > 0) {
+                System.out.println("    [" + extTable + "] copied " + extRowsCopied + " child row(s)");
             }
         }
 
         logger.debug("copyFormONAREnhancedGroup: source={}, target={}, record rows={}", sourceDemoNo, targetDemoNo, onarPkMap.size());
+        System.out.println("=== COPY FORM ONAR ENHANCED GROUP DONE: " + onarPkMap.size() + " record(s) + Ext1/Ext2 rows copied ===");
     }
 
     @Override
     public void copyMeasurementsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY MEASUREMENTS GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // measurements (parent) — demo field is "demographicId"
         Map<Long, Long> measurePkMap = copyEntityRows(Measurement.class, "Measurement", "demographicId",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicId(d));
 
-        if (measurePkMap.isEmpty()) return;
+        if (measurePkMap.isEmpty()) {
+            System.out.println("=== COPY MEASUREMENTS GROUP DONE: no measurement records found for source=" + sourceDemoNo + " ===");
+            return;
+        }
 
         // measurementsExt — child, FK is measurementId
         copyChildRows(MeasurementsExt.class, "MeasurementsExt", "measurementId",
@@ -992,17 +1067,22 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 null, null);
 
         logger.debug("copyMeasurementsGroup: source={}, target={}, measure rows={}", sourceDemoNo, targetDemoNo, measurePkMap.size());
+        System.out.println("=== COPY MEASUREMENTS GROUP DONE: " + measurePkMap.size() + " measurement(s) + ext rows copied ===");
     }
 
     @Override
     public Map<Long, Long> copyPreventionsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY PREVENTIONS GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // preventions (parent) — demo field is "demographicId"
         Map<Long, Long> prevPkMap = copyEntityRows(Prevention.class, "Prevention", "demographicId",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicId(d));
 
-        if (prevPkMap.isEmpty()) return prevPkMap;
+        if (prevPkMap.isEmpty()) {
+            System.out.println("=== COPY PREVENTIONS GROUP DONE: no prevention records found for source=" + sourceDemoNo + " ===");
+            return prevPkMap;
+        }
 
         // preventionsExt — child, FK is preventionId
         copyChildRows(PreventionExt.class, "PreventionExt", "preventionId",
@@ -1012,18 +1092,23 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 null, null);
 
         logger.debug("copyPreventionsGroup: source={}, target={}, prevention rows={}", sourceDemoNo, targetDemoNo, prevPkMap.size());
+        System.out.println("=== COPY PREVENTIONS GROUP DONE: " + prevPkMap.size() + " prevention(s) + ext rows copied ===");
         return prevPkMap;
     }
 
     @Override
     public Map<Long, Long> copyTicklerGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY TICKLER GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // tickler (parent)
         Map<Long, Long> ticklerPkMap = copyEntityRows(Tickler.class, "Tickler", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        if (ticklerPkMap.isEmpty()) return ticklerPkMap;
+        if (ticklerPkMap.isEmpty()) {
+            System.out.println("=== COPY TICKLER GROUP DONE: no ticklers found for source=" + sourceDemoNo + " ===");
+            return ticklerPkMap;
+        }
 
         // tickler_link — child, FK is ticklerNo
         copyChildRows(TicklerLink.class, "TicklerLink", "ticklerNo",
@@ -1033,6 +1118,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 null, null);
 
         logger.debug("copyTicklerGroup: source={}, target={}, tickler rows={}", sourceDemoNo, targetDemoNo, ticklerPkMap.size());
+        System.out.println("=== COPY TICKLER GROUP DONE: " + ticklerPkMap.size() + " tickler(s) + links copied ===");
         return ticklerPkMap;
     }
 
@@ -1042,13 +1128,17 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
     @Override
     public void copyConsultationArchiveGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> requestPkMap) {
+        System.out.println("\n=== COPY CONSULTATION ARCHIVE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // consultationRequestsArchive (parent) — demo field is "demographicId"
         Map<Long, Long> archivePkMap = copyEntityRows(ConsultationRequestArchive.class, "ConsultationRequestArchive", "demographicId",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicId(d));
 
-        if (archivePkMap.isEmpty()) return;
+        if (archivePkMap.isEmpty()) {
+            System.out.println("=== COPY CONSULTATION ARCHIVE GROUP DONE: no archive rows found for source=" + sourceDemoNo + " ===");
+            return;
+        }
 
         // consultationRequestExtArchive — dual FK: consultationRequestArchiveId + requestId
         // Query by consultationRequestArchiveId (the FK to the archive parent), not by id (the PK)
@@ -1078,17 +1168,22 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         logger.debug("copyConsultationArchiveGroup: source={}, target={}, archive rows={}", sourceDemoNo, targetDemoNo, archivePkMap.size());
+        System.out.println("=== COPY CONSULTATION ARCHIVE GROUP DONE: " + archivePkMap.size() + " archive row(s) + ext archives copied ===");
     }
 
     @Override
     public Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> appointmentPkMap, Map<Integer, Map<Long, Long>> linkedEntityPkMaps) {
+        System.out.println("\n=== COPY CASEMGMT NOTE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // casemgmt_note (parent) — demo field is "demographicNo"
         Map<Long, Long> notePkMap = copyEntityRows(CaseMgmtNote.class, "CaseMgmtNote", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setNoteId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        if (notePkMap.isEmpty()) return notePkMap;
+        if (notePkMap.isEmpty()) {
+            System.out.println("=== COPY CASEMGMT NOTE GROUP DONE: no notes found for source=" + sourceDemoNo + " ===");
+            return notePkMap;
+        }
 
         // casemgmt_note_ext — child, FK is noteId
         copyChildRows(CaseMgmtNoteExt.class, "CaseMgmtNoteExt", "noteId",
@@ -1131,18 +1226,22 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         logger.debug("copyCasemgmtNoteGroup: source={}, target={}, note rows={}", sourceDemoNo, targetDemoNo, notePkMap.size());
+        System.out.println("=== COPY CASEMGMT NOTE GROUP DONE: " + notePkMap.size() + " note(s) + ext/link rows copied and remapped ===");
         return notePkMap;
     }
 
     @Override
     public Map<Long, Long> copyCasemgmtIssueGroup(Integer sourceDemoNo, Integer targetDemoNo) {
+        System.out.println("\n=== COPY CASEMGMT ISSUE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         List<CaseMgmtIssue> sourceIssues = entityManager.createQuery("SELECT e FROM CaseMgmtIssue e WHERE e.demographicNo = :demo", CaseMgmtIssue.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
         if (sourceIssues.isEmpty()) {
+            System.out.println("=== COPY CASEMGMT ISSUE GROUP DONE: no issues found for source=" + sourceDemoNo + " ===");
             return Collections.emptyMap();
         }
+        System.out.println("    Found " + sourceIssues.size() + " issue(s) for source=" + sourceDemoNo);
 
         // Dedup: collect issue_id values already on the target to avoid duplicates
         List<Integer> existingIssueIds = entityManager.createQuery("SELECT e.issueId FROM CaseMgmtIssue e WHERE e.demographicNo = :demo", Integer.class)
@@ -1172,12 +1271,17 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         logger.debug("copyCasemgmtIssueGroup: source={}, target={}, issue rows copied={}", sourceDemoNo, targetDemoNo, issuePkMap.size());
+        System.out.println("=== COPY CASEMGMT ISSUE GROUP DONE: " + issuePkMap.size() + " issue mapping(s) resolved (new + deduped) ===");
         return issuePkMap;
     }
 
     @Override
     public void copyIssueNotesGroup(Map<Long, Long> issuePkMap, Map<Long, Long> notePkMap) {
-        if (issuePkMap.isEmpty() || notePkMap.isEmpty()) return;
+        System.out.println("\n=== COPY ISSUE-NOTES JUNCTION (casemgmt_issue_notes): " + issuePkMap.size() + " issue(s), " + notePkMap.size() + " note(s) ===");
+        if (issuePkMap.isEmpty() || notePkMap.isEmpty()) {
+            System.out.println("=== COPY ISSUE-NOTES DONE: empty maps, nothing to copy ===");
+            return;
+        }
 
         for (Long oldIssueId : issuePkMap.keySet()) {
             List<CaseMgmtIssueNotes> junctionRows = entityManager.createQuery("SELECT e FROM CaseMgmtIssueNotes e WHERE e.id = :issueId", CaseMgmtIssueNotes.class)
@@ -1201,6 +1305,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         logger.debug("copyIssueNotesGroup: issue entries={}", issuePkMap.size());
+        System.out.println("=== COPY ISSUE-NOTES DONE ===");
     }
 
     // -------------------------------------------------------------------------
@@ -1209,6 +1314,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
     @Override
     public void copyIdentityTables(Integer sourceDemoNo, Integer targetDemoNo, boolean isSecondary) {
+        System.out.println("\n=== COPY IDENTITY TABLES: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " (isSecondary=" + isSecondary + ") ===");
         // demographicExt
         if (!isSecondary) {
             // Primary pass: copy all rows
@@ -1334,5 +1440,6 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 (e, d) -> e.setDemographicNo(d));
 
         logger.debug("copyIdentityTables: source={}, target={}, isSecondary={} — complete", sourceDemoNo, targetDemoNo, isSecondary);
+        System.out.println("=== COPY IDENTITY TABLES DONE (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ", isSecondary=" + isSecondary + ") ===");
     }
 }

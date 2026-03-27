@@ -93,16 +93,27 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     @Override
     @Transactional
     public void merge(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos) {
+        System.out.println("\n");
+        System.out.println("╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║            DEMOGRAPHIC MERGE STARTED                        ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+        System.out.println("  Primary:     " + primaryDemographicNo);
+        System.out.println("  Secondaries: " + secondaryDemographicNos);
+        System.out.println("  Provider:    " + loggedInInfo.getLoggedInProviderNo());
+
         validateMergeInputs(primaryDemographicNo, secondaryDemographicNos);
+        System.out.println("  [OK] Inputs validated");
 
         Demographic demographicA = loadAndValidateNotMerged(primaryDemographicNo, "Primary");
         List<Demographic> secondaries = loadAndValidateSecondaries(secondaryDemographicNos);
+        System.out.println("  [OK] Loaded primary (A=" + primaryDemographicNo + ") and " + secondaries.size() + " secondary(s) — all active");
 
         // Clone A → C and obtain C's auto-generated demographic_no
         Demographic demographicC = cloneDemographic(demographicA, loggedInInfo.getLoggedInProviderNo());
         demographicDao.save(demographicC);
         Integer targetDemographicNo = demographicC.getDemographicNo();
 
+        System.out.println("  [OK] Created merged demographic C=" + targetDemographicNo + " (cloned from A=" + primaryDemographicNo + ")");
         logger.debug("DemographicMergeManager.merge: created merged demographic C={} from primary A={}", targetDemographicNo, primaryDemographicNo);
 
         // Record the merge event before copying data so the audit row is always
@@ -110,19 +121,31 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         // else if an error occurs.
         saveMergeEvent(DemographicMergeEvent.EventType.MERGE, primaryDemographicNo, secondaryDemographicNos,
                 targetDemographicNo, loggedInInfo.getLoggedInProviderNo());
+        System.out.println("  [OK] Merge event recorded in audit table");
 
         // Primary (A → C): full copy + mark merged
+        System.out.println("\n--- COPYING PRIMARY: A=" + primaryDemographicNo + " -> C=" + targetDemographicNo + " ---");
         copyAllDataForSource(primaryDemographicNo, targetDemographicNo, false);
         markMerged(demographicA);
+        System.out.println("--- PRIMARY A=" + primaryDemographicNo + " marked as MERGED ---");
 
         // Each secondary (S → C): gap-fill identity + full clinical copy + mark merged
+        int secIdx = 1;
         for (Demographic secondary : secondaries) {
+            System.out.println("\n--- COPYING SECONDARY " + secIdx + "/" + secondaries.size() + ": S=" + secondary.getDemographicNo() + " -> C=" + targetDemographicNo + " ---");
             copyAllDataForSource(secondary.getDemographicNo(), targetDemographicNo, true);
             markMerged(secondary);
+            System.out.println("--- SECONDARY S=" + secondary.getDemographicNo() + " marked as MERGED ---");
+            secIdx++;
         }
 
         // Audit
         writeAuditEntriesForMerge(loggedInInfo, primaryDemographicNo, secondaries, targetDemographicNo);
+        System.out.println("\n  [OK] Audit log entries written");
+        System.out.println("╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║  DEMOGRAPHIC MERGE COMPLETE                                 ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+        System.out.println("  Result: A=" + primaryDemographicNo + " + " + secondaries.size() + " secondary(s) -> C=" + targetDemographicNo);
     }
 
     /**
@@ -131,44 +154,66 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     @Override
     @Transactional
     public void unmerge(LoggedInInfo loggedInInfo, Integer mergedDemographicNo) {
+        System.out.println("\n");
+        System.out.println("╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║            DEMOGRAPHIC UNMERGE STARTED                      ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+        System.out.println("  Merged demographic C: " + mergedDemographicNo);
+        System.out.println("  Provider:             " + loggedInInfo.getLoggedInProviderNo());
+
         DemographicMergeEvent event = mergeEventDao.findLatestMergeEventByMergedDemographicNo(mergedDemographicNo);
         if (event == null) {
+            System.out.println("  [ERROR] No MERGE event found for C=" + mergedDemographicNo + " — aborting");
             throw new IllegalStateException(
                     "No MERGE event found for demographic " + mergedDemographicNo + " — cannot unmerge");
         }
+        System.out.println("  [OK] Found original MERGE event: primary=A=" + event.getPrimaryDemographicNo()
+                + ", secondaries=" + event.getSecondaryDemographicNos());
 
         // Guard against double-unmerge before making any status changes
         Demographic demographicC = loadAndValidateExists(mergedDemographicNo, "Merged");
         if (!STATUS_ACTIVE.equals(demographicC.getPatientStatus())) {
+            System.out.println("  [ERROR] C=" + mergedDemographicNo + " is not AC (status=" + demographicC.getPatientStatus() + ") — already unmerged?");
             throw new IllegalStateException(
                     "Merged demographic " + mergedDemographicNo + " is not active — already unmerged?");
         }
+        System.out.println("  [OK] Merged demographic C=" + mergedDemographicNo + " is active — proceeding");
 
         // Restore primary A → AC
         Demographic demographicA = loadAndValidateExists(event.getPrimaryDemographicNo(), "Primary");
         markActive(demographicA);
+        System.out.println("  [OK] Restored primary A=" + event.getPrimaryDemographicNo() + " -> AC");
 
         // Restore each secondary → AC
         for (Integer secondaryNo : event.getSecondaryDemographicNos()) {
             Demographic secondary = loadAndValidateExists(secondaryNo, "Secondary");
             markActive(secondary);
+            System.out.println("  [OK] Restored secondary S=" + secondaryNo + " -> AC");
         }
 
         // Deactivate the merged record C
         demographicC.setPatientStatus(STATUS_INACTIVE);
         demographicC.setPatientStatusDate(new Date());
         demographicDao.save(demographicC);
+        System.out.println("  [OK] Deactivated merged demographic C=" + mergedDemographicNo + " -> IN");
 
         // Record the unmerge event
         saveMergeEvent(DemographicMergeEvent.EventType.UNMERGE, event.getPrimaryDemographicNo(),
                 event.getSecondaryDemographicNos(), mergedDemographicNo,
                 loggedInInfo.getLoggedInProviderNo());
+        System.out.println("  [OK] Unmerge event recorded in audit table");
 
         logger.debug("DemographicMergeManager.unmerge: restored primary={} and {} secondaries; deactivated C={}",
                 event.getPrimaryDemographicNo(), event.getSecondaryDemographicNos().size(), mergedDemographicNo);
 
         // Audit
         writeAuditEntriesForUnmerge(loggedInInfo, event, mergedDemographicNo);
+        System.out.println("  [OK] Audit log entries written");
+        System.out.println("╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║  DEMOGRAPHIC UNMERGE COMPLETE                               ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+        System.out.println("  Result: C=" + mergedDemographicNo + " deactivated; A=" + event.getPrimaryDemographicNo()
+                + " + " + event.getSecondaryDemographicNos().size() + " secondary(s) restored");
     }
 
     // -------------------------------------------------------------------------
@@ -185,6 +230,10 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * @param isSecondary boolean false for primary A pass; true for each secondary pass
      */
     private void copyAllDataForSource(Integer sourceNo, Integer targetNo, boolean isSecondary) {
+        System.out.println("\n┌──────────────────────────────────────────────────────────────");
+        System.out.println("│ BEGIN DATA COPY: source=" + sourceNo + " -> target=" + targetNo
+                + "  [" + (isSecondary ? "SECONDARY pass" : "PRIMARY pass") + "]");
+        System.out.println("└──────────────────────────────────────────────────────────────");
         logger.debug("DemographicMergeManager: copying data source={} → target={} isSecondary={}", sourceNo, targetNo, isSecondary);
 
         // Identity / demographic extension tables
@@ -203,6 +252,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         operationDao.copyAllForms(sourceNo, targetNo);
 
         // Parent + derived group tables — capture PK maps for casemgmt_note_link tableId remap
+        System.out.println("\n  [GROUP TABLES]");
         operationDao.copyBillingGroup(sourceNo, targetNo);
         Map<Long, Long> requestPkMap = operationDao.copyConsultationsGroup(sourceNo, targetNo);
         Map<Long, Long> drugPkMap = operationDao.copyDrugsGroup(sourceNo, targetNo);
@@ -225,14 +275,19 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         if (!emailPkMap.isEmpty()) linkedEntityPkMaps.put(CaseManagementNoteLink.EMAIL, emailPkMap);
         if (!prevPkMap.isEmpty()) linkedEntityPkMaps.put(CaseManagementNoteLink.PREVENTIONS, prevPkMap);
         if (!ticklerPkMap.isEmpty()) linkedEntityPkMaps.put(CaseManagementNoteLink.TICKLER, ticklerPkMap);
+        System.out.println("  Note-link remap will cover " + linkedEntityPkMaps.size() + " entity type(s) with data");
 
         // Special-case tables requiring cross-group PK maps
+        System.out.println("\n  [SPECIAL-CASE / NOTE TABLES]");
         operationDao.copyConsultationArchiveGroup(sourceNo, targetNo, requestPkMap);
         Map<Long, Long> notePkMap = operationDao.copyCasemgmtNoteGroup(sourceNo, targetNo, appointmentPkMap, linkedEntityPkMaps);
         Map<Long, Long> issuePkMap = operationDao.copyCasemgmtIssueGroup(sourceNo, targetNo);
         operationDao.copyIssueNotesGroup(issuePkMap, notePkMap);
 
         logger.debug("DemographicMergeManager: finished copying source={} → target={}", sourceNo, targetNo);
+        System.out.println("\n┌──────────────────────────────────────────────────────────────");
+        System.out.println("│ END DATA COPY: source=" + sourceNo + " -> target=" + targetNo + " COMPLETE");
+        System.out.println("└──────────────────────────────────────────────────────────────");
     }
 
     // -------------------------------------------------------------------------
