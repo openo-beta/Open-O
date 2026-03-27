@@ -1138,33 +1138,38 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyConsultationArchiveGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> requestPkMap) {
         System.out.println("\n=== COPY CONSULTATION ARCHIVE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         // consultationRequestsArchive (parent) — demo field is "demographicId"
-        // ProfessionalSpecialist has @ManyToOne(cascade=ALL). Because cascade=ALL includes
-        // cascade=PERSIST, persisting the archive copy would attempt to cascade-persist PS.
-        // If PS is detached at that point, Hibernate throws "detached entity passed to persist".
-        // The fix: use entityManager.find() to ensure PS is always in a properly managed state
-        // before persist. Results are cached in managedPsCache so each unique PS is fetched
-        // at most once per call (L1 cache hit on subsequent lookups for the same PS id).
+        // ProfessionalSpecialist has @ManyToOne(cascade=ALL). The query below loads all archive
+        // rows as managed entities. If any of them remain managed during a subsequent flush(),
+        // Hibernate will cascade PERSIST_ON_FLUSH from each managed row to its PS field.
+        // If PS was detached by the cascade from an earlier detach(a) inside the copy loop,
+        // the flush throws "detached entity passed to persist: ProfessionalSpecialist".
+        // Fix: detach every archive row immediately after loading, before the copy loop.
+        // This ensures only newly-persisted copies (with managed PS from find()) are in session.
         List<ConsultationRequestArchive> archiveRows = entityManager.createQuery(
                 "SELECT e FROM ConsultationRequestArchive e WHERE e.demographicId = :demo",
                 ConsultationRequestArchive.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
-        // Cache managed ProfessionalSpecialist instances by id to avoid redundant SELECT calls.
+        // Upfront batch-detach: removes every loaded archive row from the session.
+        // cascade=ALL on professionalSpecialist means detach(a) also cascade-detaches
+        // the PS instance held by the first archive row that references each unique PS.
+        // Subsequent detach(a) calls for the same PS are no-ops (already absent).
+        for (ConsultationRequestArchive a : archiveRows) {
+            entityManager.detach(a);
+        }
+
+        // Cache managed ProfessionalSpecialist instances to avoid a SELECT per row.
+        // find() guarantees a managed entity (L1 cache hit if already loaded, DB SELECT otherwise).
         Map<Integer, ProfessionalSpecialist> managedPsCache = new HashMap<>();
 
         Map<Long, Long> archivePkMap = new HashMap<>();
         for (ConsultationRequestArchive a : archiveRows) {
             long oldPk = (long) a.getId();
-            // Capture PS id before detach so we can re-fetch a managed instance after detach.
             Integer psId = a.getSpecialistId();
-            entityManager.detach(a);
             a.setId(null);
             a.setDemographicId(targetDemoNo);
             if (psId != null) {
-                // find() guarantees a managed entity (loads from DB if not in L1 cache).
-                // This is necessary because cascade=ALL on professionalSpecialist would cause
-                // Hibernate to cascade PERSIST to PS on flush — a detached PS would fail.
                 ProfessionalSpecialist managedPs = managedPsCache.computeIfAbsent(
                     psId, id -> entityManager.find(ProfessionalSpecialist.class, id));
                 a.setProfessionalSpecialist(managedPs);
