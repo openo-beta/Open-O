@@ -65,9 +65,33 @@
     <%-- Outcome alerts --%>
     <c:choose>
         <c:when test="${outcome eq 'success'}">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Records merged successfully.
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <%-- BS5 success modal — auto-opened by JS below --%>
+            <div class="modal fade" id="mergeSuccessModal" tabindex="-1" aria-labelledby="mergeSuccessModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="mergeSuccessModalLabel">Merge Successful</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>The patient records have been successfully merged into a new combined record.</p>
+                            <c:if test="${not empty mergedDemoNo}">
+                                <p class="mb-0">
+                                    <strong>New patient ID:</strong> <e:forHtml value="${mergedDemoNo}"/>
+                                </p>
+                            </c:if>
+                        </div>
+                        <div class="modal-footer">
+                            <c:if test="${not empty mergedDemoNo}">
+                                <button type="button" class="btn btn-success"
+                                        onclick="popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=<e:forUriComponent value='${mergedDemoNo}'/>&amp;displaymode=edit&amp;dboperation=search_detail'); document.getElementById('mergeSuccessModal').querySelector('[data-bs-dismiss=modal]').click();">
+                                    Open New Patient Chart
+                                </button>
+                            </c:if>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </c:when>
         <c:when test="${outcome eq 'successUnMerge'}">
@@ -391,5 +415,13 @@
     });
 </script>
 <script src="${pageContext.request.contextPath}/library/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+<c:if test="${outcome eq 'success'}">
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var el = document.getElementById('mergeSuccessModal');
+        if (el) { new bootstrap.Modal(el).show(); }
+    });
+</script>
+</c:if>
 </body>
 </html>
