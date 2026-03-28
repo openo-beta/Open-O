@@ -1446,11 +1446,11 @@ public class DemographicManagerImpl implements DemographicManager {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         List<Demographic> results;
         switch (searchMode == null ? "search_name" : searchMode) {
-            case "search_dob":     results = demographicDao.searchMergedDemographicByDOB(keyword, limit, offset, providerNo, true);     break;
-            case "search_phone":   results = demographicDao.searchMergedDemographicByPhone(keyword, limit, offset, providerNo, true);   break;
-            case "search_hin":     results = demographicDao.searchMergedDemographicByHIN(keyword, limit, offset, providerNo, true);     break;
-            case "search_address": results = demographicDao.searchMergedDemographicByAddress(keyword, limit, offset, providerNo, true); break;
-            default:               results = demographicDao.searchMergedDemographicByName(keyword, limit, offset, providerNo, true);    break;
+            case "search_dob":     results = demographicDao.findActiveMergedDemographicByDOB(keyword, limit, offset);     break;
+            case "search_phone":   results = demographicDao.findActiveMergedDemographicByPhone(keyword, limit, offset);   break;
+            case "search_hin":     results = demographicDao.findActiveMergedDemographicByHIN(keyword, limit, offset);     break;
+            case "search_address": results = demographicDao.findActiveMergedDemographicByAddress(keyword, limit, offset); break;
+            default:               results = demographicDao.findActiveMergedDemographicByName(keyword, limit, offset);    break;
         }
         for (Demographic d : results) {
             LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.searchMergedDemographicsForUnmerge result",
