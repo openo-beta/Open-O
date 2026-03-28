@@ -65,7 +65,6 @@ import ca.openosp.openo.commn.model.BillingOnTransaction;
 // --- Consultation group ---
 import ca.openosp.openo.commn.model.ConsultationRequest;
 import ca.openosp.openo.commn.model.ConsultationRequestArchive;
-import ca.openosp.openo.commn.model.ConsultationRequestExt;
 import ca.openosp.openo.commn.model.ConsultationRequestExtArchive;
 import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 
@@ -849,12 +848,18 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return requestPkMap;
         }
 
-        // consultationRequestExt — child, FK is requestId
-        copyChildRows(ConsultationRequestExt.class, "ConsultationRequestExt", "requestId",
-                requestPkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setRequestId(fk),
-                null, null);
+        // consultationRequestExt — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        // Only parent requestPkMap flows to copyConsultationArchiveGroup — not these child PKs.
+        // Expected: ~267 rows across both passes → ~3.9 sec → < 1 sec.
+        for (Map.Entry<Long, Long> entry : requestPkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO ConsultationRequestExt (requestId, key, value, dateCreated) " +
+                "SELECT :newId, e.key, e.value, e.dateCreated " +
+                "FROM ConsultationRequestExt e WHERE e.requestId = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
         logger.debug("copyConsultationsGroup: source={}, target={}, request rows={}", sourceDemoNo, targetDemoNo, requestPkMap.size());
         System.out.println("=== COPY CONSULTATIONS GROUP DONE: " + requestPkMap.size() + " consultation request(s) + ext rows copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
