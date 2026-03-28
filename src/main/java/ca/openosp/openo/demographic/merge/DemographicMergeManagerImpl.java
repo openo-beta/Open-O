@@ -242,6 +242,46 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     }
 
     // -------------------------------------------------------------------------
+    // Unmerge tab — merge history queries
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Integer, DemographicMergeEvent> findMergeEventsForDemographics(List<Integer> mergedDemographicNos) {
+        Map<Integer, DemographicMergeEvent> result = new HashMap<>();
+        for (Integer no : mergedDemographicNos) {
+            DemographicMergeEvent event = mergeEventDao.findLatestMergeEventByMergedDemographicNo(no);
+            if (event != null) {
+                result.put(no, event);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Integer, List<Demographic>> findMergeSourcesForDemographics(List<Integer> mergedDemographicNos) {
+        Map<Integer, List<Demographic>> result = new HashMap<>();
+        for (Integer no : mergedDemographicNos) {
+            DemographicMergeEvent event = mergeEventDao.findLatestMergeEventByMergedDemographicNo(no);
+            if (event == null) continue;
+            List<Demographic> sources = new ArrayList<>();
+            Demographic primary = demographicDao.getClientByDemographicNo(event.getPrimaryDemographicNo());
+            if (primary != null) sources.add(primary);
+            for (Integer secNo : event.getSecondaryDemographicNos()) {
+                Demographic sec = demographicDao.getClientByDemographicNo(secNo);
+                if (sec != null) sources.add(sec);
+            }
+            result.put(no, sources);
+        }
+        return result;
+    }
+
+    // -------------------------------------------------------------------------
     // Data copy orchestration
     // -------------------------------------------------------------------------
 
