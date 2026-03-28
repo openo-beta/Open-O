@@ -75,7 +75,6 @@ import ca.openosp.openo.commn.model.DrugReason;
 
 // --- EForm group ---
 import ca.openosp.openo.commn.model.EFormData;
-import ca.openosp.openo.commn.model.EFormValue;
 
 // --- Email group ---
 import ca.openosp.openo.commn.model.EmailAttachment;
@@ -906,13 +905,19 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return eformPkMap;
         }
 
-        // eform_values — child, FK is formDataId; also has extra demographicId column
-        copyChildRows(EFormValue.class, "EFormValue", "formDataId",
-                eformPkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setFormDataId(fk),
-                (e, d) -> e.setDemographicId(d),
-                targetDemoNo);
+        // eform_values — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        // demographicId is also remapped to targetDemoNo in the same statement.
+        // Expected: ~15,559 rows across both passes → ~195 sec → < 5 sec.
+        for (Map.Entry<Long, Long> entry : eformPkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO EFormValue (formDataId, formId, demographicId, varName, varValue) " +
+                "SELECT :newId, e.formId, :targetDemo, e.varName, e.varValue " +
+                "FROM EFormValue e WHERE e.formDataId = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("targetDemo", targetDemoNo)
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
         logger.debug("copyEformGroup: source={}, target={}, eform rows={}", sourceDemoNo, targetDemoNo, eformPkMap.size());
         System.out.println("=== COPY EFORM GROUP DONE: " + eformPkMap.size() + " eform record(s) + values copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
