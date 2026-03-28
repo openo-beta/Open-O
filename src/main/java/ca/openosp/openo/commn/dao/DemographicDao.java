@@ -306,6 +306,59 @@ public interface DemographicDao {
     public List<Demographic> searchMergedDemographicByAddress(String addressStr, int limit, int offset,
                                                               String providerNo, boolean outOfDomain);
 
+    /**
+     * Finds active merged demographics (C records created by the merge engine) whose
+     * last name matches the given search string. Only records that appear in
+     * {@code demographic_merge_event} with {@code event_type = 'MERGE'} and have
+     * {@code patient_status = 'AC'} are returned.
+     *
+     * @param searchStr String last name prefix, or "last,first" for combined search
+     * @param limit     int maximum number of results to return
+     * @param offset    int pagination offset
+     * @return List&lt;Demographic&gt; matched active merged demographics
+     */
+    public List<Demographic> findActiveMergedDemographicByName(String searchStr, int limit, int offset);
+
+    /**
+     * Finds active merged demographics (C records) by date of birth.
+     *
+     * @param dobStr String date of birth in yyyy-MM-dd format
+     * @param limit  int maximum number of results
+     * @param offset int pagination offset
+     * @return List&lt;Demographic&gt; matched active merged demographics
+     */
+    public List<Demographic> findActiveMergedDemographicByDOB(String dobStr, int limit, int offset);
+
+    /**
+     * Finds active merged demographics (C records) by phone number.
+     *
+     * @param phoneStr String phone number substring to match
+     * @param limit    int maximum number of results
+     * @param offset   int pagination offset
+     * @return List&lt;Demographic&gt; matched active merged demographics
+     */
+    public List<Demographic> findActiveMergedDemographicByPhone(String phoneStr, int limit, int offset);
+
+    /**
+     * Finds active merged demographics (C records) by health insurance number.
+     *
+     * @param hinStr String HIN prefix to match
+     * @param limit  int maximum number of results
+     * @param offset int pagination offset
+     * @return List&lt;Demographic&gt; matched active merged demographics
+     */
+    public List<Demographic> findActiveMergedDemographicByHIN(String hinStr, int limit, int offset);
+
+    /**
+     * Finds active merged demographics (C records) by address.
+     *
+     * @param addressStr String address prefix to match
+     * @param limit      int maximum number of results
+     * @param offset     int pagination offset
+     * @return List&lt;Demographic&gt; matched active merged demographics
+     */
+    public List<Demographic> findActiveMergedDemographicByAddress(String addressStr, int limit, int offset);
+
     public List<Demographic> findDemographicByChartNo(String chartNoStr, int limit, int offset, String providerNo,
                                                       boolean outOfDomain);
 
