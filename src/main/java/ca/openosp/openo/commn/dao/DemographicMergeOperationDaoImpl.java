@@ -47,7 +47,6 @@ import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.commn.model.FlowSheetDrug;
 import ca.openosp.openo.commn.model.FlowSheetDx;
 import ca.openosp.openo.commn.model.Immunizations;
-import ca.openosp.openo.commn.model.MeasurementsDeleted;
 import ca.openosp.openo.commn.model.MsgDemoMap;
 import ca.openosp.openo.commn.model.MsgIntegratorDemoMap;
 import ca.openosp.openo.commn.model.OLISQueryLog;
@@ -479,11 +478,21 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        // measurementsDeleted
-        copyEntityRows(MeasurementsDeleted.class, "MeasurementsDeleted", "demographicNo",
-                sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
-                (e, d) -> e.setDemographicNo(d));
+        // measurementsDeleted — HQL bulk INSERT: leaf table, PK never captured, no child FK.
+        // Replaces N × IDENTITY-flush round-trips with one server-side SQL statement.
+        // Expected: ~40,000 rows across both passes → ~19.7 min → < 1 sec.
+        long tMd = System.currentTimeMillis();
+        int mdCount = entityManager.createQuery(
+            "INSERT INTO MeasurementsDeleted (demographicNo, type, providerNo, dataField, measuringInstruction, " +
+            "comments, dateObserved, dateEntered, dateDeleted, originalId) " +
+            "SELECT :targetDemo, m.type, m.providerNo, m.dataField, m.measuringInstruction, " +
+            "m.comments, m.dateObserved, m.dateEntered, m.dateDeleted, m.originalId " +
+            "FROM MeasurementsDeleted m WHERE m.demographicNo = :sourceDemo")
+            .setParameter("targetDemo", targetDemoNo)
+            .setParameter("sourceDemo", sourceDemoNo)
+            .executeUpdate();
+        System.out.println("    [MeasurementsDeleted] copied " + mdCount + " rows  (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ")  [HQL bulk]  [" + (System.currentTimeMillis() - tMd) + "ms]");
+        logger.debug("copyClinicalDirectRecords: MeasurementsDeleted rows={} [HQL bulk]", mdCount);
 
         // msgDemoMap — Long PK, demo field is "demographic_no"
         copyEntityRows(MsgDemoMap.class, "MsgDemoMap", "demographic_no",
