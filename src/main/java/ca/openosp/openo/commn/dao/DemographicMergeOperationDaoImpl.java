@@ -38,7 +38,6 @@ import ca.openosp.openo.commn.model.DemographicContact;
 import ca.openosp.openo.commn.model.DemographicCust;
 import ca.openosp.openo.commn.model.DemographicCustArchive;
 import ca.openosp.openo.commn.model.DemographicExt;
-import ca.openosp.openo.commn.model.DemographicExtArchive;
 import ca.openosp.openo.commn.model.DemographicPharmacy;
 import ca.openosp.openo.commn.model.DigitalSignature;
 import ca.openosp.openo.commn.model.Dxresearch;
@@ -1516,11 +1515,18 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             }
         }
 
-        // demographicExtArchive — copy all rows regardless of pass
-        copyEntityRows(DemographicExtArchive.class, "DemographicExtArchive", "demographicNo",
-                sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
-                (e, d) -> e.setDemographicNo(d));
+        // demographicExtArchive — HQL bulk INSERT: leaf table, PK never captured, no child FK.
+        // Expected: ~825 rows across both passes → ~1.6 sec → < 50 ms.
+        long tDea = System.currentTimeMillis();
+        int deaCount = entityManager.createQuery(
+            "INSERT INTO DemographicExtArchive (archiveId, demographicNo, providerNo, key, value, dateCreated, hidden) " +
+            "SELECT e.archiveId, :targetDemo, e.providerNo, e.key, e.value, e.dateCreated, e.hidden " +
+            "FROM DemographicExtArchive e WHERE e.demographicNo = :sourceDemo")
+            .setParameter("targetDemo", targetDemoNo)
+            .setParameter("sourceDemo", sourceDemoNo)
+            .executeUpdate();
+        System.out.println("    [DemographicExtArchive] copied " + deaCount + " rows  (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ")  [HQL bulk]  [" + (System.currentTimeMillis() - tDea) + "ms]");
+        logger.debug("copyIdentityTables: DemographicExtArchive rows={} [HQL bulk]", deaCount);
 
         // demographiccustArchive — copy all rows regardless of pass
         copyEntityRows(DemographicCustArchive.class, "DemographicCustArchive", "demographicNo",
