@@ -95,7 +95,6 @@ import ca.openosp.openo.commn.model.Measurement;
 
 // --- Prevention group ---
 import ca.openosp.openo.commn.model.Prevention;
-import ca.openosp.openo.commn.model.PreventionExt;
 
 // --- Tickler group ---
 import ca.openosp.openo.commn.model.Tickler;
@@ -1147,12 +1146,18 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return prevPkMap;
         }
 
-        // preventionsExt — child, FK is preventionId
-        copyChildRows(PreventionExt.class, "PreventionExt", "preventionId",
-                prevPkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setPreventionId(fk),
-                null, null);
+        // preventionsExt — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        // The @ManyToOne prevention field is insertable=false — only preventionId is written.
+        // Expected: ~508 rows across both passes → ~14.7 sec → < 1 sec.
+        for (Map.Entry<Long, Long> entry : prevPkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO PreventionExt (preventionId, keyval, val) " +
+                "SELECT :newId, e.keyval, e.val " +
+                "FROM PreventionExt e WHERE e.preventionId = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
         logger.debug("copyPreventionsGroup: source={}, target={}, prevention rows={}", sourceDemoNo, targetDemoNo, prevPkMap.size());
         System.out.println("=== COPY PREVENTIONS GROUP DONE: " + prevPkMap.size() + " prevention(s) + ext rows copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
