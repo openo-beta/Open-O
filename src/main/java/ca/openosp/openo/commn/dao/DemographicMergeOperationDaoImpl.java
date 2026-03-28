@@ -93,7 +93,6 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 
 // --- Measurements group ---
 import ca.openosp.openo.commn.model.Measurement;
-import ca.openosp.openo.commn.model.MeasurementsExt;
 
 // --- Prevention group ---
 import ca.openosp.openo.commn.model.Prevention;
@@ -1111,12 +1110,18 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return;
         }
 
-        // measurementsExt — child, FK is measurementId
-        copyChildRows(MeasurementsExt.class, "MeasurementsExt", "measurementId",
-                measurePkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setMeasurementId(fk),
-                null, null);
+        // measurementsExt — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        // One SQL statement per parent replaces N × IDENTITY-flush round-trips per child row.
+        // Expected: ~17,730 rows across both passes → ~465 sec → < 5 sec.
+        for (Map.Entry<Long, Long> entry : measurePkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO MeasurementsExt (measurementId, keyVal, val) " +
+                "SELECT :newId, e.keyVal, e.val " +
+                "FROM MeasurementsExt e WHERE e.measurementId = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
         logger.debug("copyMeasurementsGroup: source={}, target={}, measure rows={}", sourceDemoNo, targetDemoNo, measurePkMap.size());
         System.out.println("=== COPY MEASUREMENTS GROUP DONE: " + measurePkMap.size() + " measurement(s) + ext rows copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
