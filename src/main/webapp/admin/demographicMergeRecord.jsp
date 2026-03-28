@@ -55,6 +55,10 @@
         .sort-icon.active { color: #0d6efd; }
         .pagination-bar { margin-top: .75rem; }
         .ineligible-row { color: #adb5bd; font-style: italic; }
+        /* Bootstrap collapse sets display:block, which breaks <tr> layout — override */
+        tr.collapse.show { display: table-row; }
+        .history-toggle { transition: transform 0.2s; }
+        .history-toggle[aria-expanded="true"] { transform: rotate(90deg); }
     </style>
 </head>
 <body>
@@ -173,29 +177,40 @@
         <c:choose>
 
             <%-- ════════════════════════════════════════════════════════════
-                 UNMERGE MODE — one radio per row, submit directly
+                 UNMERGE MODE — radio per row + collapsible merge-history accordion.
+                 Sorting is intentionally omitted: reordering rows would detach each
+                 main row from its paired accordion row.
                  ════════════════════════════════════════════════════════════ --%>
             <c:when test="${unmergeMode}">
                 <form id="unmergeForm" method="post" action="${pageContext.request.contextPath}/admin/DemographicMerge.do">
                     <input type="hidden" name="method" value="unmerge">
-                    <table class="table table-sm table-striped table-bordered" id="unmergeTable">
+                    <table class="table table-sm table-bordered">
                         <thead class="table-light">
                         <tr>
-                            <th></th>
-                            <th class="sortable" data-col="1">ID <span class="sort-icon">&#8597;</span></th>
-                            <th class="sortable" data-col="2">Last Name <span class="sort-icon">&#8597;</span></th>
-                            <th class="sortable" data-col="3">First Name <span class="sort-icon">&#8597;</span></th>
-                            <th class="sortable" data-col="4">Age <span class="sort-icon">&#8597;</span></th>
-                            <th class="sortable" data-col="5">DOB <span class="sort-icon">&#8597;</span></th>
-                            <th class="sortable" data-col="6">Sex <span class="sort-icon">&#8597;</span></th>
-                            <th class="sortable" data-col="7">HIN <span class="sort-icon">&#8597;</span></th>
+                            <th title="Select record to unmerge">Select</th>
+                            <th title="Show merge history">History</th>
+                            <th>ID</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Age</th>
+                            <th>DOB</th>
+                            <th>Sex</th>
+                            <th>HIN</th>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach var="demo" items="${demoList}">
+                            <%-- Main result row --%>
                             <tr>
                                 <td class="text-center">
                                     <input type="radio" name="mergedDemographicNo" value="${demo.demographicNo}">
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-link btn-sm p-0 history-toggle"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#history-${demo.demographicNo}"
+                                            aria-expanded="false"
+                                            title="Show merge history">&#9654;</button>
                                 </td>
                                 <td>
                                     <a href="javascript:popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=${demo.demographicNo}&amp;displaymode=edit&amp;dboperation=search_detail')">
@@ -209,9 +224,63 @@
                                 <td><e:forHtml value="${demo.sex}"/></td>
                                 <td><e:forHtml value="${demo.hin}"/></td>
                             </tr>
+                            <%-- Accordion row — hidden until toggle is clicked --%>
+                            <tr class="collapse" id="history-${demo.demographicNo}">
+                                <td colspan="9" class="p-0">
+                                    <div class="bg-light border-bottom px-3 py-2">
+                                        <c:set var="sources" value="${mergeSourcesMap[demo.demographicNo]}"/>
+                                        <c:set var="event"   value="${mergeEventMap[demo.demographicNo]}"/>
+                                        <c:choose>
+                                            <c:when test="${not empty sources}">
+                                                <strong class="d-block mb-2">Merged from:</strong>
+                                                <table class="table table-sm table-bordered mb-0">
+                                                    <thead class="table-secondary">
+                                                    <tr>
+                                                        <th>Role</th>
+                                                        <th>ID</th>
+                                                        <th>Last Name</th>
+                                                        <th>First Name</th>
+                                                        <th>DOB</th>
+                                                        <th>HIN</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <c:forEach var="src" items="${sources}">
+                                                        <tr>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${src.demographicNo == event.primaryDemographicNo}">
+                                                                        <span class="badge bg-primary">Primary</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="badge bg-secondary">Secondary</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                            <td>
+                                                                <a href="javascript:popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=${src.demographicNo}&amp;displaymode=edit&amp;dboperation=search_detail')">
+                                                                    <e:forHtml value="${src.demographicNo}"/>
+                                                                </a>
+                                                            </td>
+                                                            <td><e:forHtml value="${src.lastName}"/></td>
+                                                            <td><e:forHtml value="${src.firstName}"/></td>
+                                                            <td><e:forHtml value="${src.formattedDob}"/></td>
+                                                            <td><e:forHtml value="${src.hin}"/></td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="text-muted fst-italic">Merge history not available.</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </td>
+                            </tr>
                         </c:forEach>
                         <c:if test="${empty demoList}">
-                            <tr><td colspan="8" class="text-center text-muted">No merged records found.</td></tr>
+                            <tr><td colspan="9" class="text-center text-muted">No merged records found.</td></tr>
                         </c:if>
                         </tbody>
                     </table>
