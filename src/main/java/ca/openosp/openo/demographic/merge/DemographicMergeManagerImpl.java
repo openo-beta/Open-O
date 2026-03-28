@@ -60,7 +60,6 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
 
     private static final Logger logger = MiscUtils.getLogger();
 
-    private static final String STATUS_MERGED = Demographic.PatientStatus.MERGED.name();
     private static final String STATUS_INACTIVE = Demographic.PatientStatus.IN.name();
     private static final String STATUS_ACTIVE = Demographic.PatientStatus.AC.name();
 
@@ -161,13 +160,13 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     public void applyMergeStatuses(Integer primaryDemographicNo, List<Integer> secondaryDemographicNos) {
         System.out.println("\n--- APPLYING MERGE STATUSES ---");
         Demographic demographicA = loadAndValidateExists(primaryDemographicNo, "Primary");
-        markMerged(demographicA);
-        System.out.println("--- PRIMARY A=" + primaryDemographicNo + " marked as MERGED ---");
+        markInactive(demographicA);
+        System.out.println("--- PRIMARY A=" + primaryDemographicNo + " marked as IN ---");
 
         for (Integer secNo : secondaryDemographicNos) {
             Demographic secondary = loadAndValidateExists(secNo, "Secondary");
-            markMerged(secondary);
-            System.out.println("--- SECONDARY S=" + secNo + " marked as MERGED ---");
+            markInactive(secondary);
+            System.out.println("--- SECONDARY S=" + secNo + " marked as IN ---");
         }
         System.out.println("--- MERGE STATUSES APPLIED ---");
         logger.debug("applyMergeStatuses: primary={}, secondaries={}", primaryDemographicNo, secondaryDemographicNos);
@@ -490,8 +489,8 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     }
 
     /**
-     * Loads a demographic and verifies it exists and has not already been merged.
-     * Patients with status MERGED or IN cannot participate in a new merge.
+     * Loads a demographic and verifies it exists and is active.
+     * Patients with status IN cannot participate in a new merge.
      *
      * @param demographicNo Integer the demographic to load
      * @param label         String a human-readable label used in exception messages
@@ -499,7 +498,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      */
     private Demographic loadAndValidateNotMerged(Integer demographicNo, String label) {
         Demographic demo = loadAndValidateExists(demographicNo, label);
-        if (STATUS_MERGED.equals(demo.getPatientStatus()) || STATUS_INACTIVE.equals(demo.getPatientStatus())) {
+        if (STATUS_INACTIVE.equals(demo.getPatientStatus())) {
             throw new IllegalStateException(
                     label + " demographic " + demographicNo + " is not active and cannot be merged");
         }
@@ -540,12 +539,13 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     // -------------------------------------------------------------------------
 
     /**
-     * Marks a demographic as MERGED and persists it.
+     * Marks a demographic as inactive (IN) and persists it.
+     * Used when deactivating source demographics (A and B) after a merge.
      *
-     * @param demographic Demographic the demographic to mark as merged
+     * @param demographic Demographic the demographic to deactivate
      */
-    private void markMerged(Demographic demographic) {
-        demographic.setPatientStatus(STATUS_MERGED);
+    private void markInactive(Demographic demographic) {
+        demographic.setPatientStatus(STATUS_INACTIVE);
         demographic.setPatientStatusDate(new Date());
         demographicDao.save(demographic);
     }

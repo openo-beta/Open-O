@@ -8,7 +8,7 @@
                             form submits directly to DemographicMerge.do?method=merge.
              Unmerge mode — results table shows a single radio per row;
                             form submits to DemographicMerge.do?method=unmerge.
-             Checkbox and radio are suppressed for records with patientStatus=MERGED or IN
+             Checkbox and radio are suppressed for records with patientStatus=IN
              (not eligible to participate in a new merge).
     Request attributes (set by DemographicMergeAction):
         demoList        - List<Demographic> search results (null = form not yet submitted)
@@ -296,7 +296,7 @@
 
             <%-- ════════════════════════════════════════════════════════════
                  MERGE MODE — checkbox (select) + radio (primary) in same row.
-                 Records with patientStatus MERGED or IN show no checkbox/radio.
+                 Records with patientStatus IN show no checkbox/radio.
                  ════════════════════════════════════════════════════════════ --%>
             <c:otherwise>
                 <form method="post" action="${pageContext.request.contextPath}/admin/DemographicMerge.do"
@@ -319,7 +319,7 @@
                         </thead>
                         <tbody>
                         <c:forEach var="demo" items="${demoList}">
-                            <c:set var="eligible" value="${demo.patientStatus ne 'MERGED' and demo.patientStatus ne 'IN'}"/>
+                            <c:set var="eligible" value="${demo.patientStatus ne 'IN'}"/>
                             <tr class="${not eligible ? 'ineligible-row' : ''}">
                                 <td class="text-center">
                                     <c:if test="${eligible}">
