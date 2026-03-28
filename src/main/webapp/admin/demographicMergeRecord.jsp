@@ -11,15 +11,18 @@
              Checkbox and radio are suppressed for records with patientStatus=MERGED or IN
              (not eligible to participate in a new merge).
     Request attributes (set by DemographicMergeAction):
-        demoList    - List<Demographic> search results (null = form not yet submitted)
-        keyword     - String search term (null = form not yet submitted; "" = search-all)
-        searchMode  - String search_name | search_phone | search_dob | search_address | search_hin
-        mode        - String merge | unmerge
-        unmergeMode - Boolean true when in unmerge mode
-        outcome     - String success | failure | successUnMerge (from prior redirect)
-        offset      - int pagination offset
-        limit       - int page size
-        resultCount - int number of results
+        demoList        - List<Demographic> search results (null = form not yet submitted)
+        keyword         - String search term (null = form not yet submitted; "" = search-all)
+        searchMode      - String search_name | search_phone | search_dob | search_address | search_hin
+        mode            - String merge | unmerge
+        unmergeMode     - Boolean true when in unmerge mode
+        outcome         - String success | failure | successUnMerge (from prior redirect)
+        mergedDemoNo    - String demographic_no of newly created merged record C (on success redirect)
+        offset          - int pagination offset
+        limit           - int page size
+        resultCount     - int number of results
+        mergeEventMap   - Map<Integer,DemographicMergeEvent> keyed by merged demographic_no (unmerge mode only)
+        mergeSourcesMap - Map<Integer,List<Demographic>> keyed by merged demographic_no; primary first, then secondaries (unmerge mode only)
     @since 2026-03-25
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
