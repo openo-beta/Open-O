@@ -28,7 +28,6 @@ package ca.openosp.openo.commn.dao;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.commn.model.Allergy;
 import ca.openosp.openo.commn.model.Appointment;
-import ca.openosp.openo.commn.model.AppointmentArchive;
 import ca.openosp.openo.commn.model.Consent;
 import ca.openosp.openo.commn.model.CtlDocument;
 import ca.openosp.openo.commn.model.CtlDocumentPK;
@@ -328,12 +327,21 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        // appointmentArchive — archive PKs are not linked from casemgmt_note_link but copy here
-        // for completeness; return value is ignored
-        copyEntityRows(AppointmentArchive.class, "AppointmentArchive", "demographicNo",
-                sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
-                (e, d) -> e.setDemographicNo(d));
+        // appointmentArchive — HQL bulk INSERT: archive PKs are not linked from casemgmt_note_link;
+        // leaf table, PK never captured. One SQL statement replaces N × IDENTITY-flush round-trips.
+        entityManager.createQuery(
+            "INSERT INTO AppointmentArchive (appointmentNo, providerNo, appointmentDate, startTime, endTime, " +
+            "name, demographicNo, programId, notes, reason, location, resources, type, style, billing, status, " +
+            "createDateTime, updateDateTime, creator, lastUpdateUser, remarks, importedStatus, urgency, " +
+            "creatorSecurityId, bookingSource) " +
+            "SELECT a.appointmentNo, a.providerNo, a.appointmentDate, a.startTime, a.endTime, " +
+            "a.name, :targetDemo, a.programId, a.notes, a.reason, a.location, a.resources, a.type, a.style, " +
+            "a.billing, a.status, a.createDateTime, a.updateDateTime, a.creator, a.lastUpdateUser, a.remarks, " +
+            "a.importedStatus, a.urgency, a.creatorSecurityId, a.bookingSource " +
+            "FROM AppointmentArchive a WHERE a.demographicNo = :sourceDemo")
+            .setParameter("targetDemo", targetDemoNo)
+            .setParameter("sourceDemo", sourceDemoNo)
+            .executeUpdate();
 
         logger.debug("copyAppointments: source={}, target={}, appt rows={}", sourceDemoNo, targetDemoNo, apptPkMap.size());
         System.out.println("=== COPY APPOINTMENTS DONE: " + apptPkMap.size() + " appointment(s) copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
