@@ -224,7 +224,7 @@ public interface DemographicManager {
                                                         String searchMode, int limit, int offset);
 
     /**
-     * Searches patients with MERGED status for the unmerge workflow.
+     * Searches merged result demographics (AC status, present in merge event table) for the unmerge workflow.
      * Dispatches to the appropriate DAO method based on {@code searchMode}.
      *
      * @param loggedInInfo LoggedInInfo the authenticated provider
@@ -232,7 +232,7 @@ public interface DemographicManager {
      * @param searchMode   String one of: search_name, search_dob, search_phone, search_hin, search_address
      * @param limit        int maximum number of results to return
      * @param offset       int pagination offset
-     * @return List&lt;Demographic&gt; matching MERGED patients
+     * @return List&lt;Demographic&gt; merged result (C) patients eligible for unmerge
      */
     public List<Demographic> searchMergedDemographicsForUnmerge(LoggedInInfo loggedInInfo, String keyword,
                                                                 String searchMode, int limit, int offset);

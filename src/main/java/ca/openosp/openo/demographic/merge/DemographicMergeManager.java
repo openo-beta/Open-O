@@ -36,8 +36,8 @@ import java.util.Map;
  * <p>
  * A merge combines two or more patient records into a single new record (C):
  * all clinical data from the primary (A) and each secondary (B, D, ...) is
- * copied into C, then A and all secondaries are marked {@code MERGED} so they
- * no longer appear in active patient search results.
+ * copied into C, then A and all secondaries are marked inactive ({@code IN})
+ * so they no longer appear in active patient search results.
  * <p>
  * An unmerge reverses this: A and all secondaries are restored to {@code AC},
  * C is deactivated, and a new event row is written to the audit log.
@@ -49,7 +49,7 @@ public interface DemographicMergeManager {
     /**
      * Merges one or more secondary patients into a new patient record cloned
      * from the primary. All clinical data is copied; source records are marked
-     * {@code MERGED} and left untouched otherwise.
+     * inactive ({@code IN}) and left untouched otherwise.
      *
      * @param loggedInInfo           LoggedInInfo the authenticated provider performing the merge
      * @param primaryDemographicNo   Integer the demographic_no of the primary patient (A);
@@ -58,13 +58,13 @@ public interface DemographicMergeManager {
      *                               patients whose clinical data is also copied into C
      * @throws IllegalArgumentException if secondaryDemographicNos is null or empty, or if
      *                                  any referenced demographic does not exist
-     * @throws IllegalStateException    if the primary or any secondary is already {@code MERGED}
+     * @throws IllegalStateException    if the primary or any secondary is already inactive ({@code IN})
      * @return Integer the demographic_no of the newly created merged record (C)
      */
     Integer merge(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos);
 
     /**
-     * Marks the primary and all secondary demographics as {@code MERGED} in a separate,
+     * Marks the primary and all secondary demographics as inactive ({@code IN}) in a separate,
      * short-lived transaction.
      * <p>
      * This method must be called immediately after {@link #merge} returns successfully.
