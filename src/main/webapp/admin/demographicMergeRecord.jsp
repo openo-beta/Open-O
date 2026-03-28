@@ -46,6 +46,8 @@
     <link href="${pageContext.request.contextPath}/library/bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { padding-top: 1rem; }
+        a { text-decoration: none; }
+        a:hover { text-decoration: underline; }
         .search-bar { background: #f8f9fa; border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
         .results-header { font-size: .85rem; color: #6c757d; margin-bottom: .5rem; }
         .table th { white-space: nowrap; }
