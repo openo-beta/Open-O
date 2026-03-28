@@ -3102,10 +3102,15 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
      */
 
 
-    /** Shared SQL fragment: restricts to active C records created by the new merge engine. */
+    /**
+     * Shared SQL fragment: restricts to active C records created by the new merge engine.
+     * Uses alias "de" — must match the alias used in the SELECT clause. Do NOT use "d"
+     * as that alias is already used inside the HeadRecord formula subquery in Demographic.hbm.xml,
+     * which would shadow the outer-table correlation and cause "Subquery returns more than 1 row".
+     */
     private static final String ACTIVE_MERGED_SUBQUERY =
-            "AND d.patient_status = 'AC' "
-            + "AND d.demographic_no IN ("
+            "AND de.patient_status = 'AC' "
+            + "AND de.demographic_no IN ("
             + "SELECT merged_demographic_no FROM demographic_merge_event WHERE event_type = 'MERGE'"
             + ") ";
 
@@ -3113,12 +3118,12 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     @Override
     public List<Demographic> findActiveMergedDemographicByName(String searchStr, int limit, int offset) {
         String[] name = searchStr.split(",");
-        String sql = "SELECT {d.*} FROM demographic d "
-                + "WHERE d.last_name LIKE :lastName "
+        String sql = "SELECT {de.*} FROM demographic de "
+                + "WHERE de.last_name LIKE :lastName "
                 + ACTIVE_MERGED_SUBQUERY
-                + (name.length == 2 ? "AND d.first_name LIKE :firstName " : "")
-                + "ORDER BY d.last_name, d.first_name";
-        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("d", Demographic.class);
+                + (name.length == 2 ? "AND de.first_name LIKE :firstName " : "")
+                + "ORDER BY de.last_name, de.first_name";
+        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("de", Demographic.class);
         q.setFirstResult(offset);
         q.setMaxResults(limit);
         q.setParameter("lastName", name[0].trim() + "%");
@@ -3133,12 +3138,12 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     public List<Demographic> findActiveMergedDemographicByDOB(String dobStr, int limit, int offset) {
         String[] params = dobStr.split("-");
         if (params.length != 3) return new ArrayList<>();
-        String sql = "SELECT {d.*} FROM demographic d "
-                + "WHERE d.year_of_birth LIKE :yearOfBirth "
-                + "AND d.month_of_birth LIKE :monthOfBirth "
-                + "AND d.date_of_birth LIKE :dateOfBirth "
+        String sql = "SELECT {de.*} FROM demographic de "
+                + "WHERE de.year_of_birth LIKE :yearOfBirth "
+                + "AND de.month_of_birth LIKE :monthOfBirth "
+                + "AND de.date_of_birth LIKE :dateOfBirth "
                 + ACTIVE_MERGED_SUBQUERY;
-        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("d", Demographic.class);
+        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("de", Demographic.class);
         q.setFirstResult(offset);
         q.setMaxResults(limit);
         q.setParameter("yearOfBirth", params[0].trim() + "%");
@@ -3150,10 +3155,10 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     @SuppressWarnings("unchecked")
     @Override
     public List<Demographic> findActiveMergedDemographicByPhone(String phoneStr, int limit, int offset) {
-        String sql = "SELECT {d.*} FROM demographic d "
-                + "WHERE d.phone LIKE :phone "
+        String sql = "SELECT {de.*} FROM demographic de "
+                + "WHERE de.phone LIKE :phone "
                 + ACTIVE_MERGED_SUBQUERY;
-        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("d", Demographic.class);
+        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("de", Demographic.class);
         q.setFirstResult(offset);
         q.setMaxResults(limit);
         q.setParameter("phone", "%" + phoneStr.trim() + "%");
@@ -3163,10 +3168,10 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     @SuppressWarnings("unchecked")
     @Override
     public List<Demographic> findActiveMergedDemographicByHIN(String hinStr, int limit, int offset) {
-        String sql = "SELECT {d.*} FROM demographic d "
-                + "WHERE d.hin LIKE :hin "
+        String sql = "SELECT {de.*} FROM demographic de "
+                + "WHERE de.hin LIKE :hin "
                 + ACTIVE_MERGED_SUBQUERY;
-        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("d", Demographic.class);
+        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("de", Demographic.class);
         q.setFirstResult(offset);
         q.setMaxResults(limit);
         q.setParameter("hin", hinStr.trim() + "%");
@@ -3176,10 +3181,10 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     @SuppressWarnings("unchecked")
     @Override
     public List<Demographic> findActiveMergedDemographicByAddress(String addressStr, int limit, int offset) {
-        String sql = "SELECT {d.*} FROM demographic d "
-                + "WHERE d.address LIKE :address "
+        String sql = "SELECT {de.*} FROM demographic de "
+                + "WHERE de.address LIKE :address "
                 + ACTIVE_MERGED_SUBQUERY;
-        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("d", Demographic.class);
+        SQLQuery q = currentSession().createSQLQuery(sql).addEntity("de", Demographic.class);
         q.setFirstResult(offset);
         q.setMaxResults(limit);
         q.setParameter("address", addressStr.trim() + "%");
