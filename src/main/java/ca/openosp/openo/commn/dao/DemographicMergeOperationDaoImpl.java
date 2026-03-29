@@ -67,7 +67,6 @@ import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 
 // --- Drug group ---
 import ca.openosp.openo.commn.model.Drug;
-import ca.openosp.openo.commn.model.DrugReason;
 
 // --- EForm group ---
 import ca.openosp.openo.commn.model.EFormData;
@@ -887,13 +886,19 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return drugPkMap;
         }
 
-        // drugReason — child, FK is drugId; also has a extra demographicNo column
-        copyChildRows(DrugReason.class, "DrugReason", "drugId",
-                drugPkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setDrugId(fk),
-                (e, d) -> e.setDemographicNo(d),
-                targetDemoNo);
+        // drugReason — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        // demographicNo also remapped to targetDemoNo in the same statement.
+        // Expected: ~9 rows → minor, but eliminates flush overhead.
+        for (Map.Entry<Long, Long> entry : drugPkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO DrugReason (drugId, codingSystem, code, comments, primaryReasonFlag, archivedFlag, archivedReason, providerNo, demographicNo, dateCoded) " +
+                "SELECT :newId, e.codingSystem, e.code, e.comments, e.primaryReasonFlag, e.archivedFlag, e.archivedReason, e.providerNo, :targetDemo, e.dateCoded " +
+                "FROM DrugReason e WHERE e.drugId = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("targetDemo", targetDemoNo)
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
         logger.debug("copyDrugsGroup: source={}, target={}, drug rows={}", sourceDemoNo, targetDemoNo, drugPkMap.size());
         System.out.println("=== COPY DRUGS GROUP DONE: " + drugPkMap.size() + " drug(s) + drug reasons copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
