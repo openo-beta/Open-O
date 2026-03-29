@@ -57,9 +57,7 @@ import ca.openosp.openo.commn.model.TableModification;
 import ca.openosp.openo.commn.model.WaitingList;
 
 // --- Billing group ---
-import ca.openosp.openo.billing.CA.ON.model.BillingONCHeader2;
 import ca.openosp.openo.commn.model.BillingONCHeader1;
-import ca.openosp.openo.commn.model.BillingONItem;
 import ca.openosp.openo.commn.model.BillingOnTransaction;
 
 // --- Consultation group ---
@@ -798,19 +796,28 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return;
         }
 
-        // billing_on_cheader2 — child of cheader1, FK is ch1Id
-        copyChildRows(BillingONCHeader2.class, "BillingONCHeader2", "ch1Id",
-                ch1PkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setCh1Id(fk),
-                null, null);
+        // billing_on_cheader2 — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        for (Map.Entry<Long, Long> entry : ch1PkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO BillingONCHeader2 (ch1Id, transactionId, recordId, hin, lastName, firstName, sex, province, timestamp) " +
+                "SELECT :newId, e.transactionId, e.recordId, e.hin, e.lastName, e.firstName, e.sex, e.province, e.timestamp " +
+                "FROM BillingONCHeader2 e WHERE e.ch1Id = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
-        // billing_on_item — child of cheader1, FK is ch1Id
-        copyChildRows(BillingONItem.class, "BillingONItem", "ch1Id",
-                ch1PkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setCh1Id(fk),
-                null, null);
+        // billing_on_item — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        // @PrePersist lifecycle callback does not fire on HQL bulk operations — lastEditDT copied as-is.
+        for (Map.Entry<Long, Long> entry : ch1PkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO BillingONItem (ch1Id, transcId, recId, serviceCode, fee, serviceCount, serviceDate, dx, dx1, dx2, status, lastEditDT) " +
+                "SELECT :newId, e.transcId, e.recId, e.serviceCode, e.fee, e.serviceCount, e.serviceDate, e.dx, e.dx1, e.dx2, e.status, e.lastEditDT " +
+                "FROM BillingONItem e WHERE e.ch1Id = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
         // billing_on_transaction — child of cheader1 via ch1Id; also has demographicNo
         // Copy rows first, then remap ch1Id to target cheader1 PKs via JPQL bulk UPDATE.
