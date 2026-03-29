@@ -76,7 +76,6 @@ import ca.openosp.openo.commn.model.EmailLog;
 
 // --- ERefer group ---
 import ca.openosp.openo.commn.model.EReferAttachment;
-import ca.openosp.openo.commn.model.EReferAttachmentData;
 
 // --- BCAR 2020 group ---
 import ca.openosp.openo.form.model.FormBCAR2020;
@@ -1006,21 +1005,16 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         // erefer_attachment_data — composite PK (erefer_attachment_id, lab_id, lab_type); no auto-increment.
-        // Use the new-object Hibernate pattern: construct a brand-new transient instance per row so
-        // Hibernate classifies it as TRANSIENT immediately (no DB snapshot SELECT) and issues a direct INSERT.
+        // Native INSERT-SELECT per parent: bypasses per-row persist+flush round-trips.
+        // Native query used because the @ManyToOne FK on the composite PK makes HQL INSERT complex.
         for (Map.Entry<Long, Long> entry : attachPkMap.entrySet()) {
-            List<EReferAttachmentData> sourceRows = entityManager.createQuery("SELECT e FROM EReferAttachmentData e WHERE e.eReferAttachment.id = :pid", EReferAttachmentData.class)
-                .setParameter("pid", entry.getKey().intValue())
-                .getResultList();
-
-            EReferAttachment newParentRef = entityManager.getReference(EReferAttachment.class, entry.getValue().intValue());
-
-            for (EReferAttachmentData src : sourceRows) {
-                // Brand-new object — never been in any session, so always TRANSIENT; persist() → direct INSERT
-                EReferAttachmentData copy = new EReferAttachmentData(newParentRef, src.getLabId(), src.getLabType());
-                entityManager.persist(copy);
-                entityManager.flush();
-            }
+            entityManager.createNativeQuery(
+                "INSERT INTO erefer_attachment_data (erefer_attachment_id, lab_id, lab_type) " +
+                "SELECT :newId, e.lab_id, e.lab_type " +
+                "FROM erefer_attachment_data e WHERE e.erefer_attachment_id = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
         }
 
         logger.debug("copyEreferGroup: source={}, target={}, attachment rows={}", sourceDemoNo, targetDemoNo, attachPkMap.size());
