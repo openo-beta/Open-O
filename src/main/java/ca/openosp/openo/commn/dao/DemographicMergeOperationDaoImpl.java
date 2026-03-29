@@ -98,8 +98,6 @@ import ca.openosp.openo.commn.model.CaseMgmtCpp;
 import ca.openosp.openo.commn.model.CaseMgmtIssue;
 import ca.openosp.openo.commn.model.CaseMgmtIssueNotes;
 import ca.openosp.openo.commn.model.CaseMgmtNote;
-import ca.openosp.openo.commn.model.CaseMgmtNoteExt;
-import ca.openosp.openo.commn.model.CaseMgmtNoteLink;
 
 import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
@@ -1315,19 +1313,28 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return notePkMap;
         }
 
-        // casemgmt_note_ext — child, FK is noteId
-        copyChildRows(CaseMgmtNoteExt.class, "CaseMgmtNoteExt", "noteId",
-                notePkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setNoteId(fk),
-                null, null);
+        // casemgmt_note_ext — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        for (Map.Entry<Long, Long> entry : notePkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO CaseMgmtNoteExt (noteId, keyVal, value, dateValue) " +
+                "SELECT :newId, e.keyVal, e.value, e.dateValue " +
+                "FROM CaseMgmtNoteExt e WHERE e.noteId = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
-        // casemgmt_note_link — child, FK is noteId; tableId remapped below for all copied entity types
-        copyChildRows(CaseMgmtNoteLink.class, "CaseMgmtNoteLink", "noteId",
-                notePkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setNoteId(fk),
-                null, null);
+        // casemgmt_note_link — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        // tableId values are copied as-is from source; remapNoteLinkTableIds corrects them below.
+        for (Map.Entry<Long, Long> entry : notePkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO CaseMgmtNoteLink (noteId, tableName, tableId, otherId) " +
+                "SELECT :newId, e.tableName, e.tableId, e.otherId " +
+                "FROM CaseMgmtNoteLink e WHERE e.noteId = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
         // Build the list of new note PKs once — reused by every remap call below.
         // One UPDATE per entity entry (outer loop), matching all copied note PKs via IN clause — O(entities).
