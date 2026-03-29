@@ -65,7 +65,6 @@ import ca.openosp.openo.commn.model.BillingOnTransaction;
 // --- Consultation group ---
 import ca.openosp.openo.commn.model.ConsultationRequest;
 import ca.openosp.openo.commn.model.ConsultationRequestArchive;
-import ca.openosp.openo.commn.model.ConsultationRequestExtArchive;
 import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 
 // --- Drug group ---
@@ -1252,30 +1251,33 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return;
         }
 
-        // consultationRequestExtArchive — dual FK: consultationRequestArchiveId + requestId
-        // Query by consultationRequestArchiveId (the FK to the archive parent), not by id (the PK)
-        for (Map.Entry<Long, Long> archEntry : archivePkMap.entrySet()) {
-            List<ConsultationRequestExtArchive> extArchives = entityManager.createQuery("SELECT e FROM ConsultationRequestExtArchive e WHERE e.consultationRequestArchiveId = :aid", ConsultationRequestExtArchive.class)
-                .setParameter("aid", archEntry.getKey().intValue())
-                .getResultList();
+        // consultationRequestExtArchive — dual FK: consultationRequestArchiveId + requestId.
+        // Per-archive-entry HQL bulk INSERT with CASE WHEN for the requestId remap.
+        // Rows whose requestId has no mapping in requestPkMap are excluded by the IN clause
+        // (same skip semantics as the previous per-row warn-and-continue).
+        // O(archivePkMap.size) queries instead of O(archivePkMap × rows) persist+flush calls.
+        if (!requestPkMap.isEmpty()) {
+            // Build CASE WHEN for requestId remap — values are controlled Long integers, not user input.
+            StringBuilder caseExpr = new StringBuilder("CASE e.requestId");
+            List<Integer> oldReqIds = new ArrayList<>();
+            for (Map.Entry<Long, Long> reqEntry : requestPkMap.entrySet()) {
+                caseExpr.append(" WHEN ").append(reqEntry.getKey().intValue())
+                        .append(" THEN ").append(reqEntry.getValue().intValue());
+                oldReqIds.add(reqEntry.getKey().intValue());
+            }
+            caseExpr.append(" END");
 
-            for (ConsultationRequestExtArchive ext : extArchives) {
-                long oldRequestId = ext.getRequestId();
-                Long newRequestId = requestPkMap.get(oldRequestId);
-                if (newRequestId == null) {
-                    // No mapping means the live request was never copied (e.g. it belonged to a
-                    // different demographic). Persisting the stale source requestId would create a
-                    // cross-patient FK. Skip and warn instead.
-                    logger.warn("copyConsultationArchiveGroup: no requestId mapping for oldRequestId={}; skipping ext archive row for archiveId={}", oldRequestId, archEntry.getKey());
-                    continue;
-                }
-                entityManager.detach(ext);
-                ext.setId(null);
-                // Remap archive FK to the new archive row
-                ext.setConsultationRequestArchiveId(archEntry.getValue().intValue());
-                ext.setRequestId(newRequestId.intValue());
-                entityManager.persist(ext);
-                entityManager.flush();
+            for (Map.Entry<Long, Long> archEntry : archivePkMap.entrySet()) {
+                entityManager.createQuery(
+                    "INSERT INTO ConsultationRequestExtArchive " +
+                    "(consultationRequestArchiveId, originalId, requestId, key, value, dateCreated) " +
+                    "SELECT :newArchId, e.originalId, " + caseExpr + ", e.key, e.value, e.dateCreated " +
+                    "FROM ConsultationRequestExtArchive e " +
+                    "WHERE e.consultationRequestArchiveId = :oldArchId AND e.requestId IN :oldReqIds")
+                    .setParameter("newArchId", archEntry.getValue().intValue())
+                    .setParameter("oldArchId", archEntry.getKey().intValue())
+                    .setParameter("oldReqIds", oldReqIds)
+                    .executeUpdate();
             }
         }
 
