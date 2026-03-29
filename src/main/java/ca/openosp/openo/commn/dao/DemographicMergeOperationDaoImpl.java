@@ -97,7 +97,6 @@ import ca.openosp.openo.commn.model.Tickler;
 // --- CaseMgmt special entities ---
 import ca.openosp.openo.commn.model.CaseMgmtCpp;
 import ca.openosp.openo.commn.model.CaseMgmtIssue;
-import ca.openosp.openo.commn.model.CaseMgmtIssueNotes;
 import ca.openosp.openo.commn.model.CaseMgmtNote;
 
 import ca.openosp.openo.utility.MiscUtils;
@@ -1488,24 +1487,33 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return;
         }
 
-        for (Long oldIssueId : issuePkMap.keySet()) {
-            List<CaseMgmtIssueNotes> junctionRows = entityManager.createQuery("SELECT e FROM CaseMgmtIssueNotes e WHERE e.id = :issueId", CaseMgmtIssueNotes.class)
-                .setParameter("issueId", oldIssueId.intValue())
-                .getResultList();
+        // Both the issue PK and the note PK must be remapped to the new target values.
+        // For each issue, one HQL INSERT-SELECT per chunk of 500 note mappings is issued.
+        // The CASE WHEN expression remaps noteId inline; the IN clause naturally skips
+        // any junction rows whose old noteId has no mapping (same skip semantics as before).
+        // Note PKs are integer DB identifiers — safe to inline in the HQL string.
+        List<Map.Entry<Long, Long>> noteEntries = new ArrayList<>(notePkMap.entrySet());
+        for (Map.Entry<Long, Long> issueEntry : issuePkMap.entrySet()) {
+            long oldIssueId = issueEntry.getKey();
+            long newIssueId = issueEntry.getValue();
 
-            Long newIssueId = issuePkMap.get(oldIssueId);
+            for (int i = 0; i < noteEntries.size(); i += 500) {
+                List<Map.Entry<Long, Long>> chunk = noteEntries.subList(i, Math.min(i + 500, noteEntries.size()));
 
-            for (CaseMgmtIssueNotes row : junctionRows) {
-                Long newNoteId = notePkMap.get((long) row.getNoteId());
-                if (newNoteId == null) {
-                    logger.warn("copyIssueNotesGroup: no note mapping for old noteId={}; skipping row", row.getNoteId());
-                    continue;
+                StringBuilder hql = new StringBuilder(
+                    "INSERT INTO CaseMgmtIssueNotes (id, noteId) " +
+                    "SELECT " + newIssueId + ", CASE n.noteId");
+                List<Long> oldNoteIds = new ArrayList<>(chunk.size());
+                for (Map.Entry<Long, Long> noteEntry : chunk) {
+                    hql.append(" WHEN ").append(noteEntry.getKey()).append(" THEN ").append(noteEntry.getValue());
+                    oldNoteIds.add(noteEntry.getKey());
                 }
-                entityManager.detach(row);
-                row.setId(newIssueId.intValue());
-                row.setNoteId(newNoteId.intValue());
-                entityManager.persist(row);
-                entityManager.flush();
+                hql.append(" END FROM CaseMgmtIssueNotes n WHERE n.id = :oldIssueId AND n.noteId IN :oldNoteIds");
+
+                entityManager.createQuery(hql.toString())
+                    .setParameter("oldIssueId", (int) oldIssueId)
+                    .setParameter("oldNoteIds", oldNoteIds)
+                    .executeUpdate();
             }
         }
 
