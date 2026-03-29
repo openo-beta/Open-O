@@ -224,7 +224,12 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             setDemoNo.accept(row, targetDemoNo);
             entityManager.persist(row);
             entityManager.flush();
+            // Capture PK before clear() — clear() evicts all L1-cached entities so dirty-check
+            // cost stays flat instead of growing O(n) as the session accumulates flushed rows.
             pkMap.put(oldPk, getPk.apply(row));
+            if (pkMap.size() % 50 == 0) {
+                entityManager.clear();
+            }
         }
 
         System.out.println("    [" + jpqlName + "] copied " + pkMap.size() + " rows  (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ")  [" + (System.currentTimeMillis() - t0) + "ms]");
