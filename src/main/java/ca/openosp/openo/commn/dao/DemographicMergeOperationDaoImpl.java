@@ -261,10 +261,10 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             // Build: CASE e.tableId WHEN <old> THEN <new> ... END
             // PKs are integer DB identifiers — safe to inline.
             StringBuilder hql = new StringBuilder("UPDATE CaseMgmtNoteLink e SET e.tableId = CASE e.tableId");
-            List<Long> oldIds = new ArrayList<>(chunk.size());
+            List<Integer> oldIds = new ArrayList<>(chunk.size());
             for (Map.Entry<Long, Long> entry : chunk) {
                 hql.append(" WHEN ").append(entry.getKey()).append(" THEN ").append(entry.getValue());
-                oldIds.add(entry.getKey());
+                oldIds.add(entry.getKey().intValue());
             }
             hql.append(" END WHERE e.noteId IN :noteIds AND e.tableName = :type AND e.tableId IN :oldIds");
 
