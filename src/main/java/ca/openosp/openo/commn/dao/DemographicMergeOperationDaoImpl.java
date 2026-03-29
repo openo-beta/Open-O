@@ -233,51 +233,6 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     /**
-     * Generic Hibernate copy for child/derived tables (FK mapped to a parent PK map).
-     * <p>
-     * For each old parent PK in {@code parentPkMap}, loads all child rows by FK value,
-     * detaches, optionally clears the child PK, sets the FK to the new parent PK,
-     * optionally sets an extra demographic field, re-persists, and flushes.
-     *
-     * @param <T>            the entity type
-     * @param entityClass    Class&lt;T&gt; entity class token
-     * @param jpqlName       String JPQL entity name
-     * @param fkField        String the JPQL field name for the FK to the parent
-     * @param parentPkMap    Map&lt;Long, Long&gt; mapping old parent PK → new parent PK
-     * @param clearPk        Consumer that nulls the child PK; pass {@code null} if PK is not auto-increment
-     * @param setFk          BiConsumer to set the FK to the new parent PK (Integer)
-     * @param extraDemoField BiConsumer to set an extra demographic column; pass {@code null} if unused
-     * @param targetDemoNo   Integer target demographic number for the extra demo field; ignored if null
-     */
-    private <T> void copyChildRows(Class<T> entityClass, String jpqlName, String fkField, Map<Long, Long> parentPkMap, Consumer<T> clearPk, BiConsumer<T, Integer> setFk, BiConsumer<T, Integer> extraDemoField, Integer targetDemoNo) {
-
-        if (parentPkMap == null || parentPkMap.isEmpty()) return;
-
-        int totalChildrenCopied = 0;
-        long t0 = System.currentTimeMillis();
-        for (Map.Entry<Long, Long> entry : parentPkMap.entrySet()) {
-            List<T> children = entityManager.createQuery("SELECT e FROM " + jpqlName + " e WHERE e." + fkField + " = :fk", entityClass)
-                .setParameter("fk", entry.getKey().intValue())
-                .getResultList();
-
-            for (T child : children) {
-                entityManager.detach(child);
-                if (clearPk != null) clearPk.accept(child);
-                setFk.accept(child, entry.getValue().intValue());
-                if (extraDemoField != null) extraDemoField.accept(child, targetDemoNo);
-                entityManager.persist(child);
-                entityManager.flush();
-                totalChildrenCopied++;
-            }
-        }
-
-        if (totalChildrenCopied > 0) {
-            System.out.println("    [" + jpqlName + " (child)] copied " + totalChildrenCopied + " child rows across " + parentPkMap.size() + " parent(s)  [" + (System.currentTimeMillis() - t0) + "ms]");
-        }
-        logger.debug("copyChildRows: entity='{}', parent entries={}", jpqlName, parentPkMap.size());
-    }
-
-    /**
      * Issues one bulk JPQL UPDATE per entry in {@code pkMap}, remapping
      * {@code casemgmt_note_link.table_id} from the old entity PK to the new entity PK
      * for all copied note rows ({@code note_id IN newNoteIds}) of the given {@code linkType}.
@@ -779,7 +734,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         // billing_on_cheader1 (parent)
         // Clear billingItems before persist: the @OneToMany(cascade=ALL) collection holds old detached
         // BillingONItem entities that would trigger "detached entity passed to persist" on cascade.
-        // Items are copied separately below via copyChildRows.
+        // Items are copied separately below via HQL bulk INSERT.
         Map<Long, Long> ch1PkMap = copyEntityRows(BillingONCHeader1.class, "BillingONCHeader1", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> { e.setId(null); e.getBillingItems().clear(); },
