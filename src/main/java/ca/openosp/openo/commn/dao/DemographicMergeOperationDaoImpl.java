@@ -93,7 +93,6 @@ import ca.openosp.openo.commn.model.Prevention;
 
 // --- Tickler group ---
 import ca.openosp.openo.commn.model.Tickler;
-import ca.openosp.openo.commn.model.TicklerLink;
 
 // --- CaseMgmt special entities ---
 import ca.openosp.openo.commn.model.CaseMgmtCpp;
@@ -1195,12 +1194,16 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return ticklerPkMap;
         }
 
-        // tickler_link — child, FK is ticklerNo
-        copyChildRows(TicklerLink.class, "TicklerLink", "ticklerNo",
-                ticklerPkMap,
-                e -> e.setId(null),
-                (e, fk) -> e.setTicklerNo(fk),
-                null, null);
+        // tickler_link — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        for (Map.Entry<Long, Long> entry : ticklerPkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO TicklerLink (ticklerNo, tableName, tableId) " +
+                "SELECT :newId, e.tableName, e.tableId " +
+                "FROM TicklerLink e WHERE e.ticklerNo = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
 
         logger.debug("copyTicklerGroup: source={}, target={}, tickler rows={}", sourceDemoNo, targetDemoNo, ticklerPkMap.size());
         System.out.println("=== COPY TICKLER GROUP DONE: " + ticklerPkMap.size() + " tickler(s) + links copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
