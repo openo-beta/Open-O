@@ -72,7 +72,6 @@ import ca.openosp.openo.commn.model.Drug;
 import ca.openosp.openo.commn.model.EFormData;
 
 // --- Email group ---
-import ca.openosp.openo.commn.model.EmailAttachment;
 import ca.openosp.openo.commn.model.EmailLog;
 
 // --- ERefer group ---
@@ -954,6 +953,8 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         Map<Long, Long> emailPkMap = new HashMap<>();
         Demographic targetRef = entityManager.getReference(Demographic.class, targetDemoNo);
+        int totalAttachmentsCopied = 0;
+        long tLogCopy = System.currentTimeMillis();
 
         for (EmailLog log : logs) {
             int oldLogId = log.getId();
@@ -969,22 +970,21 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             int newLogId = log.getId();
             emailPkMap.put((long) oldLogId, (long) newLogId);
 
-            // Copy attachments for this log
-            List<EmailAttachment> attachments = entityManager.createQuery("SELECT a FROM EmailAttachment a WHERE a.emailLog.id = :lid", EmailAttachment.class)
-                .setParameter("lid", oldLogId)
-                .getResultList();
-
-            for (EmailAttachment att : attachments) {
-                entityManager.detach(att);
-                att.setId(null);
-                att.setEmailLog(log); // log now carries the new id
-                entityManager.persist(att);
-                entityManager.flush();
-            }
+            // EmailAttachment — native INSERT-SELECT: @ManyToOne FK (logId) is a plain integer
+            // column; fileSize is @Transient so it has no DB column. Child PKs not needed downstream.
+            totalAttachmentsCopied += entityManager.createNativeQuery(
+                "INSERT INTO emailAttachment (logId, fileName, filePath, documentType, documentId) " +
+                "SELECT :newLogId, fileName, filePath, documentType, documentId " +
+                "FROM emailAttachment WHERE logId = :oldLogId")
+                .setParameter("newLogId", newLogId)
+                .setParameter("oldLogId", oldLogId)
+                .executeUpdate();
         }
 
-        logger.debug("copyEmailGroup: source={}, target={}, log rows={}", sourceDemoNo, targetDemoNo, logs.size());
-        System.out.println("=== COPY EMAIL GROUP DONE: " + logs.size() + " email log(s) + attachments copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
+        System.out.println("    [EmailLog] copied " + logs.size() + " rows  [" + (System.currentTimeMillis() - tLogCopy) + "ms]");
+        System.out.println("    [EmailAttachment (child)] copied " + totalAttachmentsCopied + " rows  [native bulk]");
+        logger.debug("copyEmailGroup: source={}, target={}, log rows={}, attachment rows={}", sourceDemoNo, targetDemoNo, logs.size(), totalAttachmentsCopied);
+        System.out.println("=== COPY EMAIL GROUP DONE: " + logs.size() + " email log(s) + " + totalAttachmentsCopied + " attachment(s) copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
         return emailPkMap;
     }
 
