@@ -285,6 +285,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyAppointments(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY APPOINTMENTS: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // appointment
         Map<Long, Long> apptPkMap = copyEntityRows(Appointment.class, "Appointment", "demographicNo",
                 sourceDemoNo, targetDemoNo,
@@ -316,6 +321,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyAllergies(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY ALLERGIES: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         Map<Long, Long> allergyPkMap = copyEntityRows(Allergy.class, "Allergy", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> e.setId(null),
@@ -329,6 +339,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyClinicalDirectRecords(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY CLINICAL DIRECT RECORDS: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // allergies — copied by copyAllergies(); the manager calls that separately so the
         // PK map is available for casemgmt_note_link tableId remap (table_name = 3)
 
@@ -535,6 +550,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyAllForms(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY ALL FORMS: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // Tables covered: form, form2MinWalk, formAdf, formAdfV2, formAlpha, formAnnual,
         //   formAnnualV2, formAR, formBCAR[BC], formBCAR2007[BC], formBCAR2012[BC],
         //   formBCBirthSumMo[BC], formBCBirthSumMo2008[BC], formBCClientChartChecklist[BC],
@@ -748,6 +768,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyBillingGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY BILLING GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         if (!tableExists("billing_on_cheader1")) {
             System.out.println("=== COPY BILLING GROUP DONE: billing_on_cheader1 table not present, skipped  [" + (System.currentTimeMillis() - t0) + "ms] ===");
             return;
@@ -814,6 +839,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyConsultationsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY CONSULTATIONS GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // consultationRequests (parent) — demo field is "demographicId"
         Map<Long, Long> requestPkMap = copyEntityRows(ConsultationRequest.class, "ConsultationRequest", "demographicId",
                 sourceDemoNo, targetDemoNo,
@@ -847,6 +877,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyDrugsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY DRUGS GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // drugs (parent) — demo field is "demographicId"
         Map<Long, Long> drugPkMap = copyEntityRows(Drug.class, "Drug", "demographicId",
                 sourceDemoNo, targetDemoNo,
@@ -881,6 +916,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyEformGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY EFORM GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // eform_data (parent) — demo field is "demographicId"
         Map<Long, Long> eformPkMap = copyEntityRows(EFormData.class, "EFormData", "demographicId",
                 sourceDemoNo, targetDemoNo,
@@ -915,6 +955,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyEmailGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY EMAIL GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // emailLog — @ManyToOne Demographic; query by demographic.id
         List<EmailLog> logs = entityManager.createQuery("SELECT e FROM EmailLog e WHERE e.demographic.id = :demo", EmailLog.class)
             .setParameter("demo", sourceDemoNo)
@@ -966,6 +1011,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyEreferGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY EREFER GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // erefer_attachment (parent)
         // Replace attachments with a fresh empty list before persist: the @OneToMany(cascade=PERSIST) collection
         // is LAZY — calling clear() on the uninitialized PersistentBag after detach throws LazyInitializationException.
@@ -1002,6 +1052,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyFormBCAR2020Group(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY FORM BCAR2020 GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         if (!tableExists("formBCAR2020")) {
             System.out.println("=== COPY FORM BCAR2020 GROUP DONE: table not present, skipped  [" + (System.currentTimeMillis() - t0) + "ms] ===");
             return;
@@ -1035,6 +1090,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyFormONAREnhancedGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY FORM ONAR ENHANCED GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // All three tables have 400–1400 columns — no entity classes; reuse copyFormJdbc for parent.
         // Ext1/Ext2 are child tables keyed by the parent id (not demographic_no), so they need
         // a separate inline copy using the parent PK map.
@@ -1087,6 +1147,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyMeasurementsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY MEASUREMENTS GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // measurements (parent) — demo field is "demographicId"
         Map<Long, Long> measurePkMap = copyEntityRows(Measurement.class, "Measurement", "demographicId",
                 sourceDemoNo, targetDemoNo,
@@ -1119,6 +1184,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyPreventionsGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY PREVENTIONS GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // preventions (parent) — demo field is "demographicId"
         Map<Long, Long> prevPkMap = copyEntityRows(Prevention.class, "Prevention", "demographicId",
                 sourceDemoNo, targetDemoNo,
@@ -1152,6 +1222,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyTicklerGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY TICKLER GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // tickler (parent)
         Map<Long, Long> ticklerPkMap = copyEntityRows(Tickler.class, "Tickler", "demographicNo",
                 sourceDemoNo, targetDemoNo,
@@ -1187,6 +1262,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyConsultationArchiveGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> requestPkMap) {
         System.out.println("\n=== COPY CONSULTATION ARCHIVE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // consultationRequestsArchive (parent) — demo field is "demographicId"
         // ProfessionalSpecialist has @ManyToOne(cascade=ALL). The query below loads all archive
         // rows as managed entities. If any of them remain managed during a subsequent flush(),
@@ -1273,6 +1353,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> appointmentPkMap, Map<Integer, Map<Long, Long>> linkedEntityPkMaps) {
         System.out.println("\n=== COPY CASEMGMT NOTE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         // casemgmt_note (parent) — demo field is "demographicNo"
         Map<Long, Long> notePkMap = copyEntityRows(CaseMgmtNote.class, "CaseMgmtNote", "demographicNo",
                 sourceDemoNo, targetDemoNo,
@@ -1342,6 +1427,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public Map<Long, Long> copyCasemgmtIssueGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY CASEMGMT ISSUE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         List<CaseMgmtIssue> sourceIssues = entityManager.createQuery("SELECT e FROM CaseMgmtIssue e WHERE e.demographicNo = :demo", CaseMgmtIssue.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
@@ -1388,6 +1478,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyIssueNotesGroup(Map<Long, Long> issuePkMap, Map<Long, Long> notePkMap) {
         System.out.println("\n=== COPY ISSUE-NOTES JUNCTION (casemgmt_issue_notes): " + issuePkMap.size() + " issue(s), " + notePkMap.size() + " note(s) ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+
         if (issuePkMap.isEmpty() || notePkMap.isEmpty()) {
             System.out.println("=== COPY ISSUE-NOTES DONE: empty maps, nothing to copy  [" + (System.currentTimeMillis() - t0) + "ms] ===");
             return;
@@ -1426,6 +1521,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     public void copyIdentityTables(Integer sourceDemoNo, Integer targetDemoNo, boolean isSecondary) {
         System.out.println("\n=== COPY IDENTITY TABLES: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " (isSecondary=" + isSecondary + ") ===");
         long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+        
         // demographicExt
         if (!isSecondary) {
             // Primary pass: copy all rows
