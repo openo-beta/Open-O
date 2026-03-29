@@ -24,6 +24,8 @@
  */
 package ca.openosp.openo.commn.dao;
 
+import org.hibernate.query.Query;
+
 // --- Clinical direct-copy entities ---
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.commn.model.Allergy;
@@ -209,6 +211,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         List<T> rows = entityManager.createQuery("SELECT e FROM " + jpqlName + " e WHERE e." + demoField + " = :demo", entityClass)
             .setParameter("demo", sourceDemoNo)
+            .unwrap(Query.class).setFetchSize(1000)
             .getResultList();
 
         if (rows.isEmpty()) {
