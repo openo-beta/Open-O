@@ -1503,10 +1503,10 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 StringBuilder hql = new StringBuilder(
                     "INSERT INTO CaseMgmtIssueNotes (id, noteId) " +
                     "SELECT " + newIssueId + ", CASE n.noteId");
-                List<Long> oldNoteIds = new ArrayList<>(chunk.size());
+                List<Integer> oldNoteIds = new ArrayList<>(chunk.size());
                 for (Map.Entry<Long, Long> noteEntry : chunk) {
                     hql.append(" WHEN ").append(noteEntry.getKey()).append(" THEN ").append(noteEntry.getValue());
-                    oldNoteIds.add(noteEntry.getKey());
+                    oldNoteIds.add(noteEntry.getKey().intValue());
                 }
                 hql.append(" END FROM CaseMgmtIssueNotes n WHERE n.id = :oldIssueId AND n.noteId IN :oldNoteIds");
 
