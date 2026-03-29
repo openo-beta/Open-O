@@ -241,24 +241,38 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     /**
-     * Issues one bulk JPQL UPDATE per entry in {@code pkMap}, remapping
-     * {@code casemgmt_note_link.table_id} from the old entity PK to the new entity PK
-     * for all copied note rows ({@code note_id IN newNoteIds}) of the given {@code linkType}.
+     * Remaps {@code casemgmt_note_link.table_id} from old entity PKs to new entity PKs
+     * for all copied note rows of the given {@code linkType}, using a single CASE WHEN
+     * UPDATE per chunk of 500 entries instead of one UPDATE per PK pair.
      * <p>
-     * O(entities of that type) — one UPDATE per entity, filtering by the full set of copied
-     * note PKs via {@code IN} clause. No entities are loaded into memory.
+     * PKs are integer database identifiers — inlining them is safe and avoids
+     * parameter-count limits on large maps. Chunked at 500 to stay within SQL length limits.
      *
      * @param newNoteIds list of new note PKs (the target patient's copied notes)
      * @param linkType   Integer the {@code CaseManagementNoteLink} integer constant
      * @param pkMap      Map&lt;Long, Long&gt; old entity PK → new entity PK
      */
     private void remapNoteLinkTableIds(List<Integer> newNoteIds, Integer linkType, Map<Long, Long> pkMap) {
-        for (Map.Entry<Long, Long> entry : pkMap.entrySet()) {
-            entityManager.createQuery("UPDATE CaseMgmtNoteLink e SET e.tableId = :newId WHERE e.noteId IN :noteIds AND e.tableName = :type AND e.tableId = :oldId")
-                .setParameter("newId",   entry.getValue().intValue())
+        if (pkMap.isEmpty() || newNoteIds.isEmpty()) return;
+
+        List<Map.Entry<Long, Long>> entries = new ArrayList<>(pkMap.entrySet());
+        for (int i = 0; i < entries.size(); i += 500) {
+            List<Map.Entry<Long, Long>> chunk = entries.subList(i, Math.min(i + 500, entries.size()));
+
+            // Build: CASE e.tableId WHEN <old> THEN <new> ... END
+            // PKs are integer DB identifiers — safe to inline.
+            StringBuilder hql = new StringBuilder("UPDATE CaseMgmtNoteLink e SET e.tableId = CASE e.tableId");
+            List<Long> oldIds = new ArrayList<>(chunk.size());
+            for (Map.Entry<Long, Long> entry : chunk) {
+                hql.append(" WHEN ").append(entry.getKey()).append(" THEN ").append(entry.getValue());
+                oldIds.add(entry.getKey());
+            }
+            hql.append(" END WHERE e.noteId IN :noteIds AND e.tableName = :type AND e.tableId IN :oldIds");
+
+            entityManager.createQuery(hql.toString())
                 .setParameter("noteIds", newNoteIds)
                 .setParameter("type",    linkType)
-                .setParameter("oldId",   entry.getKey().intValue())
+                .setParameter("oldIds",  oldIds)
                 .executeUpdate();
         }
     }
