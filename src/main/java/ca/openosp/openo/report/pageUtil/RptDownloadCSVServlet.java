@@ -122,6 +122,10 @@ public class RptDownloadCSVServlet extends HttpServlet {
             Vector vecFieldCaption = vecField[1];
 
 
+            // SQL Injection Note: reportSql is built by RptFormQuery.getQueryStr() from admin-configured
+            // report templates in the database. User-supplied parameter values are validated via regex
+            // (^[a-zA-Z0-9_ \-/:.,%]*$) in RptFormQuery.getQueryValue(). reportId is validated as
+            // numeric-only above. This is a controlled, admin-only reporting execution path.
             Vector vecFieldValue = (new RptReportCreator()).query(reportSql, vecFieldCaption);
 
             StringWriter swr = new StringWriter();

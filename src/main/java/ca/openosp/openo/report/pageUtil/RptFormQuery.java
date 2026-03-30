@@ -86,7 +86,10 @@ public class RptFormQuery {
             reportSql += ",demographic ";
         }
 
-        // get subQuery result
+        // SQL Injection Note: subQuery is built entirely from admin-configured report definitions
+        // (table names, field names from RptReportCreator) and user-supplied parameter values that
+        // are validated via regex (^[a-zA-Z0-9_ \-/:.,%]*$) in getQueryValue() above.
+        // The report structure (tables, joins, grouping) comes from the database, not user input.
         String rltSubQuery = reportCreator.getRltSubQuery(subQuery);
 
         reportSql += " where " + tableName + ".ID in (" + rltSubQuery + ")";

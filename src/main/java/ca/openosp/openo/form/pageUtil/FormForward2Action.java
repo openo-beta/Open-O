@@ -71,6 +71,12 @@ public class FormForward2Action extends ActionSupport {
         String appointmentNo = request.getParameter("appointmentNo");
         String formId = request.getParameter("formId");
         String provNo = request.getParameter("provNo");
+
+        // Validate demographicNo is numeric to prevent SQL injection in downstream queries
+        if (demographicNo == null || !demographicNo.matches("^[0-9]+$")) {
+            throw new SecurityException("Invalid demographic number parameter");
+        }
+
         String strFrm = URLDecoder.decode(formName, CharEncoding.UTF_8);
         int requestedForm = 0;
         int latestForm = 0;
@@ -81,6 +87,8 @@ public class FormForward2Action extends ActionSupport {
          */
         try {
             FrmData frmData = new FrmData();
+            // demographicNo validated as numeric above; strFrm is looked up via parameterized
+            // EncounterFormDao.findByFormName(); table names come from DB config, not user input
             formPath = frmData.getShortcutFormValue(demographicNo, strFrm);
             formPath[0] = formPath[0].trim();
 

@@ -2546,31 +2546,54 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         return (List<Demographic>) this.getHibernateTemplate().find(sSQL, c.getAll(true));
     }
 
+    /**
+     * SQL for flu report without provider filter.
+     * Finds demographics age >= 65, active/UHIP, with rostered status.
+     */
+    private static final String FLU_REPORT_SQL =
+        "select demographic_no, CONCAT(last_name,',',first_name) as demoname, phone, roster_status, patient_status, "
+        + "DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth), '-',(date_of_birth)),'%Y-%m-%d') as dob, "
+        + "(YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
+        + "(RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) as age "
+        + "from demographic  where (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth),'-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
+        + "(RIGHT(CURRENT_DATE,5)<"
+        + "RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) >= 65 "
+        + "and (patient_status = 'AC' or patient_status = 'UHIP') "
+        + "and (roster_status='RO' or roster_status='NR' or roster_status='FS' or roster_status='RF' or roster_status='PL') "
+        + "order by last_name";
+
+    /**
+     * SQL for flu report with provider filter (parameterized :providerNo).
+     */
+    private static final String FLU_REPORT_SQL_WITH_PROVIDER =
+        "select demographic_no, CONCAT(last_name,',',first_name) as demoname, phone, roster_status, patient_status, "
+        + "DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth), '-',(date_of_birth)),'%Y-%m-%d') as dob, "
+        + "(YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
+        + "(RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) as age "
+        + "from demographic  where (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth),'-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
+        + "(RIGHT(CURRENT_DATE,5)<"
+        + "RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) >= 65 "
+        + "and (patient_status = 'AC' or patient_status = 'UHIP') "
+        + "and (roster_status='RO' or roster_status='NR' or roster_status='FS' or roster_status='RF' or roster_status='PL') "
+        + "and provider_no = :providerNo "
+        + "order by last_name";
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Object[]> findDemographicsForFluReport(String providerNo) {
-        String sql = "select demographic_no, CONCAT(last_name,',',first_name) as demoname, phone, roster_status, patient_status, "
-            + "DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth), '-',(date_of_birth)),'%Y-%m-%d') as dob, "
-            + "(YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
-            + "(RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) as age "
-            + "from demographic  where (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth),'-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
-            + "(RIGHT(CURRENT_DATE,5)<"
-            + "RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) >= 65 "
-            + "and (patient_status = 'AC' or patient_status = 'UHIP') "
-            + "and (roster_status='RO' or roster_status='NR' or roster_status='FS' or roster_status='RF' or roster_status='PL')";
-        if (providerNo != null && !providerNo.equals("-1")) {
-            sql = sql + " and provider_no = '" + providerNo + "' ";
-        }
-        sql = sql + " order by last_name ";
+        boolean filterByProvider = providerNo != null && !providerNo.equals("-1");
 
-        // Session session = getSession();
         Session session = currentSession();
         try {
-            SQLQuery sqlQuery = session.createSQLQuery(sql);
+            SQLQuery sqlQuery = filterByProvider
+                ? session.createSQLQuery(FLU_REPORT_SQL_WITH_PROVIDER)
+                : session.createSQLQuery(FLU_REPORT_SQL);
+            if (filterByProvider) {
+                sqlQuery.setParameter("providerNo", providerNo);
+            }
             return sqlQuery.list();
         } finally {
-            // this.releaseSession(session);
-            //session.close();
+            // session lifecycle managed by Spring
         }
     }
 

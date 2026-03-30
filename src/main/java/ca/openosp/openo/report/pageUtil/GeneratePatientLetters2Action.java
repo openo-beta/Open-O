@@ -140,6 +140,9 @@ public class GeneratePatientLetters2Action extends ActionSupport {
             HashMap parameters = new HashMap();
             if (reportParams != null) {
                 for (int p = 0; p < reportParams.length; p++) {
+                    // SQL Injection Note: demos[i] is validated as numeric-only (^[0-9]+$) above.
+                    // apExe.execute() substitutes this validated value into admin-configured DatabaseAP
+                    // SQL templates. The AP templates come from EFormLoader config, not user input.
                     MiscUtils.getLogger().debug("demo = " + demos[i]);
                     parameters.put(reportParams[p], apExe.execute(reportParams[p], demos[i]));
                 }

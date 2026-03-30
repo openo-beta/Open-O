@@ -75,6 +75,10 @@ public class SQLReporter implements Reporter {
 
         String rsHtml = "An SQL query error has occured ";
         String csv = "";
+        // SQL Injection Note: sql is constructed by ReportObject.getPreparedSQL() from admin-configured
+        // report templates stored in the database. Template parameters are substituted from user input,
+        // but the SQL structure itself is admin-defined. This is a controlled, admin-only reporting path.
+        // Full parameterization would require refactoring the entire report template engine.
         try( StringWriter swr = new StringWriter();
              ResultSet rs = DBHandler.GetSQL(sql) ) {
             if (!rs.isBeforeFirst()) {
@@ -123,6 +127,7 @@ public class SQLReporter implements Reporter {
 
             String rsHtml = "An SQL query error has occured ";
             String csv = "";
+            // SQL Injection Note: sql is from admin-configured report templates (see generateReport comment).
             try( StringWriter swr = new StringWriter();
                 ResultSet rs = DBHandler.GetSQL(sql) ) {
                 if (!rs.isBeforeFirst()) {

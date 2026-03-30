@@ -87,9 +87,15 @@ public final class FetchUpdatedData2Action extends ActionSupport {
                         sql = DatabaseAP.parserClean(sql);  //replaces all other ${apName} expressions with 'apName'
 
                         if (ap.isJsonOutput()) {
+                            // SQL Injection Note: sql originates from DatabaseAP.getApSQL() which is loaded
+                            // from admin-configured eform AP definitions. Template variables (demographic,
+                            // providers, uuid) are validated above with strict regex patterns before
+                            // substitution. This is a controlled, admin-only SQL execution path.
                             ArrayNode values = EFormUtil.getJsonValues(names, sql);
                             output = values.toString(); //in case of JsonOutput, return the whole ArrayNode and let the javascript deal with it
                         } else {
+                            // SQL Injection Note: Same as above - sql is from admin-configured DatabaseAP
+                            // templates with validated parameter substitution.
                             ArrayList<String> values = EFormUtil.getValues(names, sql);
                             if (values.size() != names.size()) {
                                 output = "";

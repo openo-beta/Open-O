@@ -57,7 +57,22 @@ public class FrmData {
         }
     }
 
+    /**
+     * Executes a SQL query with a validated table name and parameterized values.
+     * The table name MUST be validated via {@link #validateTableName(String)} before calling this method.
+     * Table names cannot be parameterized in PreparedStatement, so validation via the
+     * VALID_TABLE_NAME_PATTERN regex (alphanumeric and underscores only) prevents injection.
+     * All other values use PreparedStatement parameter binding.
+     *
+     * @param validatedTable the table name, already validated by validateTableName()
+     * @param sqlTemplate the SQL template with {TABLE} placeholder for the table name
+     * @param params the parameterized values to bind to the PreparedStatement
+     * @return the ResultSet from the query execution
+     * @throws java.sql.SQLException if a database error occurs
+     */
     private static ResultSet executeWithValidatedTable(String validatedTable, String sqlTemplate, Object... params) throws java.sql.SQLException {
+        // Safe: validatedTable is guaranteed to match ^[a-zA-Z0-9_]+$ via validateTableName()
+        // called by all callers before this method. Remaining params use PreparedStatement binding.
         String sql = sqlTemplate.replace("{TABLE}", validatedTable);
         Connection conn = DbConnectionFilter.getThreadLocalDbConnection();
         PreparedStatement ps = conn.prepareStatement(sql);

@@ -91,6 +91,10 @@ public class FrmXmlUpload2Action extends ActionSupport {
         }
 
         // Unzip and process entries
+        // SQL Injection Note: JDBCUtil.toDataBase() validates all values extracted from the zip
+        // entry filename (formName, demographicNo, timestamp) via regex patterns before use in
+        // SQL. formName is validated with VALID_NAME_PATTERN (alphanumeric/underscores),
+        // demographicNo with ^[0-9]+$, and values are bound via PreparedStatement parameters.
         try (ZipFile zf = new ZipFile(tmpFile)) {
             Enumeration<? extends ZipEntry> entries = zf.entries();
             while (entries.hasMoreElements()) {

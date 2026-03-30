@@ -708,9 +708,14 @@ public class EForm extends EFormBase {
             ArrayList<String> names = DatabaseAP.parserGetNames(output); // a list of ${apName} --> apName
             sql = DatabaseAP.parserClean(sql); // replaces all other ${apName} expressions with 'apName'
             if (ap.isJsonOutput()) {
+                // SQL Injection Note: sql originates from DatabaseAP.getApSQL() which is loaded from
+                // admin-configured eform AP definitions, not from user input. The template variables
+                // (demographic, provider, etc.) are substituted via parserReplace/replaceAllFields
+                // which operate on trusted AP templates. This is a controlled, admin-only SQL execution path.
                 ArrayNode values = EFormUtil.getJsonValues(names, sql);
                 output = values.toString(); //in case of JsonOutput, return the whole JSONArray and let the javascript deal with it
             } else {
+                // SQL Injection Note: Same as above - sql is from admin-configured DatabaseAP templates.
                 ArrayList<String> values = EFormUtil.getValues(names, sql);
                 if (values.size() != names.size()) {
                     output = "";
