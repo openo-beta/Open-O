@@ -741,6 +741,17 @@ public class EForm extends EFormBase {
     }
 
     public String replaceAllFields(String sql) {
+        // Validate numeric inputs before substitution into SQL templates to prevent injection.
+        // demographicNo and providerNo should always be numeric; appt_no may be numeric or empty.
+        if (demographicNo != null && !demographicNo.matches("^[0-9]*$")) {
+            throw new SecurityException("Invalid demographicNo for SQL template substitution");
+        }
+        if (providerNo != null && !providerNo.matches("^[a-zA-Z0-9_]*$")) {
+            throw new SecurityException("Invalid providerNo for SQL template substitution");
+        }
+        if (appointment_no != null && !appointment_no.matches("^[0-9]*$")) {
+            throw new SecurityException("Invalid appointment_no for SQL template substitution");
+        }
         sql = DatabaseAP.parserReplace("demographic", demographicNo, sql);
         sql = DatabaseAP.parserReplace("provider", providerNo, sql);
         sql = DatabaseAP.parserReplace("providers", providerNo, sql);

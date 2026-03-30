@@ -26,15 +26,19 @@
 
 package ca.openosp.openo.form.data;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import java.util.List;
 
 import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.dao.EncounterFormDao;
 import ca.openosp.openo.commn.model.EncounterForm;
+import ca.openosp.openo.utility.DbConnectionFilter;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
@@ -44,6 +48,24 @@ import ca.openosp.openo.util.UtilDateUtilities;
 public class FrmData {
     private static final Logger _log = MiscUtils.getLogger();
     private static EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
+
+    private static final Pattern VALID_TABLE_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_]+$");
+
+    private static void validateTableName(String tableName) {
+        if (tableName == null || tableName.isEmpty() || !VALID_TABLE_NAME_PATTERN.matcher(tableName).matches()) {
+            throw new SecurityException("Invalid table name");
+        }
+    }
+
+    private static ResultSet executeWithValidatedTable(String validatedTable, String sqlTemplate, Object... params) throws java.sql.SQLException {
+        String sql = sqlTemplate.replace("{TABLE}", validatedTable);
+        Connection conn = DbConnectionFilter.getThreadLocalDbConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        for (int i = 0; i < params.length; i++) {
+            ps.setObject(i + 1, params[i]);
+        }
+        return ps.executeQuery();
+    }
 
     public class Form {
         private String formName;
@@ -116,9 +138,10 @@ public class FrmData {
         ArrayList<PatientForm> forms = new ArrayList<PatientForm>();
 
 
-        String sql = "SELECT ID, demographic_no, formCreated, formEdited FROM " + table
-                + " WHERE demographic_no=" + demoNo + " ORDER BY ID DESC";
-        ResultSet rs = DBHandler.GetSQL(sql);
+        validateTableName(table);
+        ResultSet rs = executeWithValidatedTable(table,
+                "SELECT ID, demographic_no, formCreated, formEdited FROM {TABLE} WHERE demographic_no=? ORDER BY ID DESC",
+                demoNo);
         while (rs.next()) {
             PatientForm frm = new PatientForm(Misc.getString(rs, "ID"), Misc.getString(rs, "demographic_no"),
                     UtilDateUtilities.DateToString(rs.getDate("formCreated"), "yy/MM/dd"), UtilDateUtilities.DateToString(rs.getDate("formEdited"), "yy/MM/dd"));
@@ -135,16 +158,19 @@ public class FrmData {
         PatientForm frm = null;
 
 
-        String sql = "SELECT e.form_table from encounterForm e, study s where e.form_name = s.form_name and s.study_no = " + studyNo;
         String table = "";
-        ResultSet rs = DBHandler.GetSQL(sql);
+        ResultSet rs = DBHandler.GetPreSQL(
+                "SELECT e.form_table from encounterForm e, study s where e.form_name = s.form_name and s.study_no = ?",
+                studyNo);
         while (rs.next()) {
             table = Misc.getString(rs, "form_table");
         }
         rs = null;
 
-        sql = "SELECT ID, demographic_no, formCreated, formEdited FROM " + table + " WHERE demographic_no=" + demoNo + " ORDER BY ID DESC limit 0,1";
-        rs = DBHandler.GetSQL(sql);
+        validateTableName(table);
+        rs = executeWithValidatedTable(table,
+                "SELECT ID, demographic_no, formCreated, formEdited FROM {TABLE} WHERE demographic_no=? ORDER BY ID DESC limit 0,1",
+                demoNo);
         while (rs.next()) {
             frm = new PatientForm(Misc.getString(rs, "ID"), Misc.getString(rs, "demographic_no"),
                     UtilDateUtilities.DateToString(rs.getDate("formCreated"), "yy/MM/dd"), UtilDateUtilities.DateToString(rs.getDate("formEdited"), "yy/MM/dd"));
@@ -158,8 +184,7 @@ public class FrmData {
         String[] ret = new String[2];
 
 
-        String sql = "SELECT study_name, study_link FROM study WHERE study_no=" + studyNo;
-        ResultSet rs = DBHandler.GetSQL(sql);
+        ResultSet rs = DBHandler.GetPreSQL("SELECT study_name, study_link FROM study WHERE study_no=?", studyNo);
         while (rs.next()) {
             ret[0] = Misc.getString(rs, "study_name");
             ret[1] = Misc.getString(rs, "study_link");
@@ -192,8 +217,9 @@ public class FrmData {
             if (searchFormName.equals("AR1"))
                 searchFormName = "ar1_99_12"; // quick hack for ease of migration from old forms to new
             if (searchFormName.equals("AR2")) searchFormName = "ar2_99_08"; // ditto
-            sql = "SELECT form_no FROM " + table + " WHERE demographic_no=" + demoNo + " AND form_name='" + searchFormName + "' order by form_no desc limit 0,1";
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(
+                    "SELECT form_no FROM form WHERE demographic_no=? AND form_name=? order by form_no desc limit 0,1",
+                    demoNo, searchFormName);
             while (rs.next()) {
                 ret[1] = Misc.getString(rs, "form_no");
             }
@@ -248,8 +274,10 @@ public class FrmData {
             rs = null;
             ret[1] = "0";
         } else {
-            sql = "SELECT ID FROM " + table + " WHERE demographic_no=" + demoNo + " order by formEdited desc limit 0,1";
-            rs = DBHandler.GetSQL(sql);
+            validateTableName(table);
+            rs = executeWithValidatedTable(table,
+                    "SELECT ID FROM {TABLE} WHERE demographic_no=? order by formEdited desc limit 0,1",
+                    demoNo);
             while (rs.next()) {
                 ret[1] = Misc.getString(rs, "ID");
             }
@@ -282,8 +310,7 @@ public class FrmData {
         String ret = "";
 
 
-        String sql = "SELECT value FROM property WHERE name='" + name + "'";
-        ResultSet rs = DBHandler.GetSQL(sql);
+        ResultSet rs = DBHandler.GetPreSQL("SELECT value FROM property WHERE name=?", name);
         while (rs.next()) {
             ret = Misc.getString(rs, "value");
         }

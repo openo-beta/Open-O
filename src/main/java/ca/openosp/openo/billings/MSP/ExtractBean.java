@@ -39,10 +39,13 @@ import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
+
+import ca.openosp.openo.utility.DbConnectionFilter;
 
 
 public class ExtractBean extends Object implements Serializable {
@@ -250,9 +253,11 @@ public class ExtractBean extends Object implements Serializable {
 
 
                     invCount = 0;
-                    query2 = "select * from billingmaster where billing_no='" + invNo + "' and billingstatus='O'";
+                    query2 = "select * from billingmaster where billing_no=? and billingstatus='O'";
 
-                    ResultSet rs2 = dbExt.executeQuery2(query2);
+                    PreparedStatement ps2 = DbConnectionFilter.getThreadLocalDbConnection().prepareStatement(query2);
+                    ps2.setString(1, invNo);
+                    ResultSet rs2 = ps2.executeQuery();
                     while (rs2.next()) {
                         recordCount = recordCount + 1;
 

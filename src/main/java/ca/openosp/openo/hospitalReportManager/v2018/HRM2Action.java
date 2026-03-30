@@ -825,6 +825,10 @@ public class HRM2Action extends ActionSupport {
 
         String orderingColumnIndex = request.getParameter("order[0][column]"); //idx (eg 0)
         String orderingColumnDirection = request.getParameter("order[0][dir]"); //asc,desc
+        // Validate ordering direction to prevent SQL injection - whitelist to ASC/DESC only
+        if (orderingColumnDirection != null && !"ASC".equalsIgnoreCase(orderingColumnDirection) && !"DESC".equalsIgnoreCase(orderingColumnDirection)) {
+            orderingColumnDirection = "ASC";
+        }
 
 
         String providerNo = request.getParameter("providerNo");

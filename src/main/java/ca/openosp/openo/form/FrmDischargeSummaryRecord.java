@@ -47,10 +47,10 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
         Properties props = new Properties();
         if (existingID <= 0) {
 
-            String sql0 = "SELECT name AS programName FROM program WHERE id='" + programNo + "'";
+            String sql0 = "SELECT name AS programName FROM program WHERE id=?";
 
             try {
-                ResultSet rs0 = DBHandler.GetSQL(sql0);
+                ResultSet rs0 = DBHandler.GetPreSQL(sql0, programNo);
                 if (rs0.next()) {
                     props.setProperty("programName", Misc.getString(rs0, "programName"));
                 }
@@ -61,12 +61,11 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
             }
 
 
-            String sql = "SELECT demographic_no, CONCAT(CONCAT(last_name, ', '), first_name) AS clientName, year_of_birth, month_of_birth, date_of_birth, CONCAT(hin,ver) AS ohip FROM demographic WHERE demographic_no = "
-                    + demographicNo;
+            String sql = "SELECT demographic_no, CONCAT(CONCAT(last_name, ', '), first_name) AS clientName, year_of_birth, month_of_birth, date_of_birth, CONCAT(hin,ver) AS ohip FROM demographic WHERE demographic_no = ?";
 
 
             try {
-                ResultSet rs = DBHandler.GetSQL(sql);
+                ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo);
                 if (rs.next()) {
                     Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"),
                             Misc.getString(rs, "date_of_birth"));
@@ -87,11 +86,11 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
             }
 
 
-            String sql1 = "SELECT CONCAT(CONCAT(last_name,', '),first_name) AS providerName FROM provider WHERE provider_no='" + providerNo + "'";
+            String sql1 = "SELECT CONCAT(CONCAT(last_name,', '),first_name) AS providerName FROM provider WHERE provider_no=?";
 
 
             try {
-                ResultSet rs1 = DBHandler.GetSQL(sql1);
+                ResultSet rs1 = DBHandler.GetPreSQL(sql1, providerNo);
                 if (rs1.next()) {
                     props.setProperty("providerName", rs1.getString("providerName"));
                 }
@@ -102,11 +101,11 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
             }
 
 
-            String sql2 = "SELECT admission_date,discharge_date,admission_notes FROM admission where client_id=" + demographicNo + " and program_id=" + programNo + " and admission_status='current' ORDER BY admission_date DESC ";
+            String sql2 = "SELECT admission_date,discharge_date,admission_notes FROM admission where client_id=? and program_id=? and admission_status='current' ORDER BY admission_date DESC ";
 
 
             try {
-                ResultSet rs2 = DBHandler.GetSQL(sql2);
+                ResultSet rs2 = DBHandler.GetPreSQL(sql2, demographicNo, programNo);
                 if (rs2.next()) {
                     if (rs2.isFirst()) {
                         String admitDate = Misc.getString(rs2, "admission_date").substring(0, 10);
@@ -138,16 +137,16 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
             StringBuilder issues = new StringBuilder();
 
 
-            String sql4 = "SELECT issue_id from casemgmt_issue where demographic_no=" + demographicNo + " and resolved=0";
+            String sql4 = "SELECT issue_id from casemgmt_issue where demographic_no=? and resolved=0";
 
             ResultSet rs4 = null;
 
             try {
-                rs4 = DBHandler.GetSQL(sql4);
+                rs4 = DBHandler.GetPreSQL(sql4, demographicNo);
                 while (rs4.next()) {
 
-                    String sql5 = "SELECT description from issue where issue_id=" + Misc.getString(rs4, "issue_id");
-                    ResultSet rs5 = DBHandler.GetSQL(sql5);
+                    String sql5 = "SELECT description from issue where issue_id=?";
+                    ResultSet rs5 = DBHandler.GetPreSQL(sql5, Misc.getString(rs4, "issue_id"));
                     if (rs5.next()) {
                         if (rs4.isFirst()) {
                             issues.append(Misc.getString(rs5, "description"));

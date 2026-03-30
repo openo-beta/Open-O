@@ -2485,13 +2485,28 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     public List<Demographic> findByField(String fieldName, Object fieldValue, String orderBy, int offset) {
         boolean isFieldValueEmpty = fieldValue == null || fieldValue.equals("");
 
-        String sql = "FROM Demographic d WHERE d." + fieldName + " LIKE :fieldValue";
+        // Whitelist valid Demographic field names to prevent HQL injection
+        Set<String> validFields = Set.of(
+            "LastName", "FirstName", "DemographicNo", "ChartNo", "Hin",
+            "Address", "Phone", "Sex", "DateOfBirth",
+            "last_name", "first_name", "demographic_no", "chart_no", "hin",
+            "address", "phone", "sex", "date_of_birth"
+        );
+        if (fieldName != null && !validFields.contains(fieldName)) {
+            fieldName = "LastName";
+        }
+        if (orderBy != null && !validFields.contains(orderBy)) {
+            orderBy = "LastName";
+        }
+
+        String safeField = fieldName;
+        String sql = "FROM Demographic d WHERE d.".concat(safeField).concat(" LIKE :fieldValue");
         if (isFieldValueEmpty) {
             sql = "FROM Demographic d";
         }
 
         if (orderBy != null && !orderBy.isEmpty()) {
-            sql = sql + " ORDER BY d." + orderBy;
+            sql = sql.concat(" ORDER BY d.").concat(orderBy);
         }
 
         // Session s = getSession();

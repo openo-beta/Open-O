@@ -101,6 +101,48 @@ public class SqlUtils {
     }
 
     /**
+     * Returns a List of String[] which contain the results of the specified parameterized query.
+     */
+    public static List<String[]> getQueryResultsList(String qry, Object... params) {
+        ArrayList<String[]> records = null;
+        ResultSet rs = null;
+        try {
+            records = new ArrayList<String[]>();
+            rs = DBHandler.GetPreSQL(qry, params);
+            int cols = rs.getMetaData().getColumnCount();
+            while (rs.next()) {
+                String[] record = new String[cols];
+                for (int i = 0; i < cols; i++) {
+                    record[i] = Misc.getString(rs, i + 1);
+                }
+                records.add(record);
+            }
+        } catch (SQLException e) {
+            records = null;
+            MiscUtils.getLogger().error("Error", e);
+        }
+        if (rs != null) {
+            try { rs.close(); } catch (SQLException ex1) { MiscUtils.getLogger().error("Error", ex1); }
+        }
+        if (records != null) {
+            records = records.isEmpty() ? null : records;
+        }
+        return records;
+    }
+
+    /**
+     * Returns a single row from a parameterized query result.
+     */
+    public static String[] getRow(String qry, Object... params) {
+        String ret[] = null;
+        List<String[]> list = getQueryResultsList(qry, params);
+        if (list != null) {
+            ret = list.get(0);
+        }
+        return ret;
+    }
+
+    /**
      * Returns a List of Map objects which contain the results of the specified arbitrary query. The key contains the field names of the table and the value, the field value of the
      * record
      *

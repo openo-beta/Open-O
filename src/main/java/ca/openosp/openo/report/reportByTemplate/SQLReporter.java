@@ -54,6 +54,11 @@ public class SQLReporter implements Reporter {
 
     public boolean generateReport(HttpServletRequest request) {
         String templateId = request.getParameter("templateId");
+        // Validate templateId is numeric to prevent injection into template lookup
+        if (templateId == null || !templateId.matches("^[0-9]+$")) {
+            request.setAttribute("errormsg", "Error: Invalid template ID.");
+            return false;
+        }
         ReportObject curReport = (new ReportManager()).getReportTemplateNoParam(templateId);
         Map parameterMap = request.getParameterMap();
 
@@ -99,6 +104,11 @@ public class SQLReporter implements Reporter {
 
     public boolean generateSequencedReport(HttpServletRequest request) {
         String templateId = request.getParameter("templateId");
+        // Validate templateId is numeric to prevent injection into template lookup
+        if (templateId == null || !templateId.matches("^[0-9]+$")) {
+            request.setAttribute("errormsg", "Error: Invalid template ID.");
+            return false;
+        }
         ReportObject curReport = (new ReportManager()).getReportTemplateNoParam(templateId);
         Map parameterMap = request.getParameterMap();
 

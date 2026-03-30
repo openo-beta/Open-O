@@ -54,6 +54,17 @@ public final class FetchUpdatedData2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_eform)");
         }
 
+        // Validate inputs to prevent SQL injection via DatabaseAP template substitution.
+        // These values are substituted directly into SQL templates; they must be safe.
+        if (demographic != null && !demographic.matches("^[0-9]+$")) {
+            throw new SecurityException("Invalid demographic parameter");
+        }
+        if (provider != null && !provider.matches("^[a-zA-Z0-9_,]+$")) {
+            throw new SecurityException("Invalid provider parameter");
+        }
+        if (uuid != null && !uuid.matches("^[a-fA-F0-9\\-]+$")) {
+            throw new SecurityException("Invalid uuid parameter");
+        }
 
         HashMap<String, String> outValues = new HashMap<String, String>();
 

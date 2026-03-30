@@ -98,7 +98,7 @@
         ResultSet rsdemo = null;
         if (!form_no.equals("0")) {
             //we don't have forms converted at this time
-            rsdemo = DBHandler.GetSQL("select * from formONAR where ID = " + form_no);
+            rsdemo = DBHandler.GetPreSQL("select * from formONAR where ID = ?", Integer.parseInt(form_no));
 
             ResultSetMetaData resultsetmetadata = rsdemo.getMetaData();
             while (rsdemo.next()) {

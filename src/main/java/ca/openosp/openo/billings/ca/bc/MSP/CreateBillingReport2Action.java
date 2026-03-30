@@ -126,9 +126,17 @@ public class CreateBillingReport2Action extends ActionSupport {
                 reportParams.put("payee", payeeProv.getFullName());
                 reportParams.put("payeeno", payee);
                 String s21id = request.getParameter("rano");
+                // Validate s21id is numeric to prevent SQL injection
+                if (s21id != null && !s21id.matches("^[0-9]+$")) {
+                    throw new SecurityException("Invalid S21 record ID");
+                }
                 osc.fillDocumentStream(reportParams, outputStream, docFmt, reportInstream, msp.getMSPRemittanceQuery(payee, s21id));
             } else if (repType.equals(MSPReconcile.REP_MSPREMSUM)) {
                 String s21id = request.getParameter("rano");
+                // Validate s21id is numeric to prevent SQL injection
+                if (s21id != null && !s21id.matches("^[0-9]+$")) {
+                    throw new SecurityException("Invalid S21 record ID");
+                }
                 S21 s21 = msp.getS21Record(s21id);
 
                 Provider payeeProv = msp.getProvider(provider, 1);

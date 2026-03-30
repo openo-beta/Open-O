@@ -255,10 +255,10 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             }
         }
         sql += " from " + tableName + " s";
-        sql += " where " + idFieldName + "='" + code + "'";
+        sql += " where " + idFieldName + "=?"; // idFieldName from DB config, code is parameterized
         DBPreparedHandler db = new DBPreparedHandler();
         try {
-            ResultSet rs = db.queryResults(sql);
+            ResultSet rs = db.queryResults(sql, code);
             if (rs.next()) {
                 for (int i = 0; i < fs.size(); i++) {
                     FieldDefValue fdv = (FieldDefValue) fs.get(i);
@@ -697,15 +697,14 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
     @Override
     public int getCountOfActiveClient(String orgCd) throws SQLException {
-        String sql = "select count(*) from admission where admission_status='" + KeyConstants.INTAKE_STATUS_ADMITTED
-                + "' and  'P' || program_id in (" + " select code from lst_orgcd  where codecsv like '%' || '" + orgCd
-                + ",' || '%')";
-        String sql1 = "select count(*) from program_queue where  'P' || program_id in ("
-                + " select code from lst_orgcd  where codecsv like '%' || '" + orgCd + ",' || '%')";
+        String admissionSql = "select count(*) from admission where admission_status=? and CONCAT('P', program_id) in (select code from lst_orgcd where codecsv like CONCAT('%', ?, '%'))";
+        String queueSql = "select count(*) from program_queue where CONCAT('P', program_id) in (select code from lst_orgcd where codecsv like CONCAT('%', ?, '%'))";
+
+        String orgCdPattern = orgCd + ",";
 
         DBPreparedHandler db = new DBPreparedHandler();
 
-        ResultSet rs = db.queryResults(sql);
+        ResultSet rs = db.queryResults(admissionSql, new String[]{KeyConstants.INTAKE_STATUS_ADMITTED, orgCdPattern});
         int id = 0;
         if (rs.next())
             id = rs.getInt(1);
@@ -713,7 +712,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             return id;
 
         rs.close();
-        rs = db.queryResults(sql1);
+        rs = db.queryResults(queueSql, new String[]{orgCdPattern});
         if (rs.next())
             id = rs.getInt(1);
         rs.close();

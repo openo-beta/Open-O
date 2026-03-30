@@ -1165,8 +1165,8 @@ public class MSPReconcile {
 
                 // WCB SECTION ---------------------------------------------------------
                 if (b.isWCB()) {
-                    String wcbQry = "select bill_amount,w_feeitem,w_icd9 from wcb where billing_no = '" + b.billing_no + "'";
-                    String[] wcbRow = SqlUtils.getRow(wcbQry);
+                    String wcbQry = "select bill_amount,w_feeitem,w_icd9 from wcb where billing_no = ?";
+                    String[] wcbRow = SqlUtils.getRow(wcbQry, b.billing_no);
                     if (wcbRow != null) {
                         b.amount = wcbRow[0];
                         b.code = wcbRow[1];
@@ -1195,7 +1195,7 @@ public class MSPReconcile {
                         }
                     }
 
-                    ResultSet rsDemo = DBHandler.GetSQL("select phone,phone2 from demographic where demographic_no = " + b.demoNo);
+                    ResultSet rsDemo = DBHandler.GetPreSQL("select phone,phone2 from demographic where demographic_no = ?", b.demoNo);
                     if (rsDemo.next()) {
                         b.demoPhone = rsDemo.getString("phone");
                         b.demoPhone2 = rsDemo.getString("phone2");
@@ -1618,7 +1618,7 @@ public class MSPReconcile {
         }
         if (providerNo != null && !providerNo.trim().equalsIgnoreCase("all")) {
             if (MSPReconcile.REP_PAYREF.equals(repType)) {
-                String[] row = SqlUtils.getRow("select ohip_no from provider where provider_no = " + providerNo);
+                String[] row = SqlUtils.getRow("select ohip_no from provider where provider_no = ?", providerNo);
                 if (row != null && row.length > 0) {
                     String ohip_no = row[0];
                     criteriaQry += " and t_practitionerno = '" + ohip_no + "'";
@@ -1746,13 +1746,20 @@ public class MSPReconcile {
      */
     public ResultSet getMSPRemittanceQuery(String payeeNo, String s21Id) {
         MiscUtils.getLogger().debug(new java.util.Date() + ":MSPReconcile.getMSPRemittanceQuery(payeeNo, s21Id)");
-        String qry = "SELECT billing_code,provider.first_name,provider.last_name,t_practitionerno,t_s00type,billingmaster.service_date as 't_servicedate',t_payment," + "t_datacenter,billing.demographic_name,billing.demographic_no,teleplanS00.t_paidamt,t_exp1,t_exp2,t_exp3,t_exp4,t_exp5,t_exp6,t_dataseq " + " from teleplanS00,billing,billingmaster,provider " + " where teleplanS00.t_officeno = billingmaster.billingmaster_no " + " and teleplanS00.s21_id = " + s21Id
-                + " and billingmaster.billing_no = billing.billing_no " + " and provider.ohip_no= teleplanS00.t_practitionerno " + " and teleplanS00.t_practitionerno NOT LIKE '' and teleplanS00.t_payeeno LIKE '" + payeeNo + "' order by provider.first_name,t_servicedate,billing.demographic_name";
+        String qry = "SELECT billing_code,provider.first_name,provider.last_name,t_practitionerno,t_s00type,billingmaster.service_date as 't_servicedate',t_payment,"
+                + "t_datacenter,billing.demographic_name,billing.demographic_no,teleplanS00.t_paidamt,t_exp1,t_exp2,t_exp3,t_exp4,t_exp5,t_exp6,t_dataseq "
+                + " from teleplanS00,billing,billingmaster,provider "
+                + " where teleplanS00.t_officeno = billingmaster.billingmaster_no "
+                + " and teleplanS00.s21_id = ?"
+                + " and billingmaster.billing_no = billing.billing_no "
+                + " and provider.ohip_no= teleplanS00.t_practitionerno "
+                + " and teleplanS00.t_practitionerno NOT LIKE '' and teleplanS00.t_payeeno LIKE ?"
+                + " order by provider.first_name,t_servicedate,billing.demographic_name";
 
         ResultSet rs = null;
         try {
 
-            rs = DBHandler.GetSQL(qry);
+            rs = DBHandler.GetPreSQL(qry, s21Id, payeeNo);
         } catch (SQLException ex) {
             MiscUtils.getLogger().error("Error", ex);
         }

@@ -128,12 +128,19 @@ public class RptFormQuery {
             Vector vecVarValue = new Vector();
             for (int j = 0; j < vecVar.size(); j++) {
                 // conver date format if needed
+                String paramValue;
                 if (((String) vecVar.get(j)).matches(VARNAME_FORMAT) && ((String) vecDateFormat.get(i)).length() > 1) {
-                    vecVarValue.add(RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
-                            (String) vecDateFormat.get(i), "yyyy-MM-dd"));
+                    paramValue = RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
+                            (String) vecDateFormat.get(i), "yyyy-MM-dd");
                 } else {
-                    vecVarValue.add(request.getParameter((String) vecVar.get(j)));
+                    paramValue = request.getParameter((String) vecVar.get(j));
                 }
+                // Validate parameter values to prevent SQL injection via template substitution.
+                // Values are substituted directly into SQL WHERE clause templates from admin-defined reports.
+                if (paramValue != null && !paramValue.matches("^[a-zA-Z0-9_ \\-/:.,%]*$")) {
+                    throw new SecurityException("Invalid characters in report query parameter");
+                }
+                vecVarValue.add(paramValue);
             }
             ret.add(RptReportCreator.getWhereValueClause(tempVal, vecVarValue));
         }

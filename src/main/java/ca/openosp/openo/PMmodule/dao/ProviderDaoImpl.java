@@ -439,8 +439,8 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         Session session = currentSession();
         try {
             SQLQuery query = session.createSQLQuery(
-                    "select facility_id from provider_facility,Facility where Facility.id=provider_facility.facility_id and Facility.disabled=0 and provider_no=\'"
-                            + provider_no + "\'");
+                    "select facility_id from provider_facility,Facility where Facility.id=provider_facility.facility_id and Facility.disabled=0 and provider_no=?");
+            query.setParameter(0, provider_no);
             List<Integer> results = query.list();
             return results;
         } finally {
@@ -451,16 +451,14 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
 
     @Override
     public List<String> getProviderIds(int facilityId) {
-        // Session session = getSession();
         Session session = currentSession();
         try {
             SQLQuery query = session
-                    .createSQLQuery("select provider_no from provider_facility where facility_id=" + facilityId);
+                    .createSQLQuery("select provider_no from provider_facility where facility_id=?");
+            query.setParameter(0, facilityId);
             List<String> results = query.list();
             return results;
         } finally {
-            // this.releaseSession(session);
-            //session.close();
         }
 
     }
