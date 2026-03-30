@@ -71,7 +71,7 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport implements
             ArrayList<String> messages = new ArrayList<String>();
             String contextPath = request.getContextPath();
 
-            if (!saveFile(fileOnDisk, fileName)) {
+            if (fileOnDisk == null || fileName == null || fileName.trim().isEmpty() || !saveFile(fileOnDisk, fileName)) {
                 addActionError(getText("errors.fileNotAdded"));
                 response.sendRedirect(contextPath + "/oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet.jsp");
                 return NONE;

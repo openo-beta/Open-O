@@ -45,19 +45,24 @@ public class HRMUploadKey2Action extends ActionSupport implements UploadedFilesA
         String proNo = (String) request.getSession().getAttribute("user");
         String outcome = "failure";
 
-        try {
-            InputStream is = Files.newInputStream(importFileOnDisk.toPath());
+        if (importFileOnDisk == null) {
+            request.setAttribute("outcome", "failure");
+            return SUCCESS;
+        }
 
+        try {
             String type = request.getParameter("type");
 
-
-            String filePath = Utilities.saveFile(is, filename);
-            is.close();
+            String filePath;
+            try (InputStream is = Files.newInputStream(importFileOnDisk.toPath())) {
+                filePath = Utilities.saveFile(is, filename);
+            }
             File file = new File(filePath);
 
-            is = new FileInputStream(filePath);
-            int checkFileUploadedSuccessfully = FileUploadCheck.addFile(file.getName(), is, proNo);
-            is.close();
+            int checkFileUploadedSuccessfully;
+            try (InputStream is2 = new FileInputStream(filePath)) {
+                checkFileUploadedSuccessfully = FileUploadCheck.addFile(file.getName(), is2, proNo);
+            }
 
             if (checkFileUploadedSuccessfully != FileUploadCheck.UNSUCCESSFUL_SAVE) {
                 logger.debug("filePath" + filePath);

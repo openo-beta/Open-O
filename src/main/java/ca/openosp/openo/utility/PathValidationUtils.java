@@ -139,7 +139,7 @@ public final class PathValidationUtils {
             throw new IllegalStateException("UploadedFile is null");
         }
         if (!uploadedFile.isFile()) {
-            throw new IllegalStateException("UploadedFile content is not a File: " + uploadedFile.getOriginalName());
+            throw new IllegalStateException("UploadedFile content is not a File");
         }
         return validateUpload((File) uploadedFile.getContent());
     }

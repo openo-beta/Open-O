@@ -228,6 +228,11 @@ public class ImportDemographicDataAction42Action extends ActionSupport implement
          * save the upload stream to a temp directory.  This should allow the HTTP
          * thread to close gracefully while the import is being processed.
          */
+        if (importFileOnDisk == null || importFileFileName == null || importFileFileName.trim().isEmpty()) {
+            addActionError("No upload file was provided.");
+            return ERROR;
+        }
+
         String filename = importFileFileName;
         Path filePath = importFileOnDisk.toPath().normalize();
 

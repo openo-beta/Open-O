@@ -26,6 +26,7 @@
 <%@page import="java.net.URLEncoder" %>
 <%@ page import="ca.openosp.openo.eform.data.*, ca.openosp.openo.eform.*, java.util.*" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
@@ -186,7 +187,7 @@
                                 HashMap<String, ? extends Object> curForm = eForms.get(i);
                 %>
                 <tr rel="popover" data-html="true" data-title="<%=curForm.get("formName")%>"
-                    data-content="<strong><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnSubject"/>:</strong><br> <%=curForm.get("formSubject")%> <br> <small><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnFile"/>: <%=curForm.get("formFileName")%></small>"
+                    data-content="<strong><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnSubject"/>:</strong><br> <%=Encode.forHtmlContent(curForm.get("formSubject") != null ? curForm.get("formSubject").toString() : "")%> <br> <small><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnFile"/>: <%=Encode.forHtmlContent(curForm.get("formFileName") != null ? curForm.get("formFileName").toString() : "")%></small>"
                     data-trigger="hover" data-placement="bottom">
 
                     <td>

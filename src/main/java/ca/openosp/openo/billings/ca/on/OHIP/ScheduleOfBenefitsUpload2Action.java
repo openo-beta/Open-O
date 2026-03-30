@@ -73,6 +73,12 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport implements Up
         boolean updateAnaesthetistFees = checkBox(request.getParameter("updateAnaesthetistFees"));
         BigDecimal updateAssistantFeesValue = updateAssistantFees ? getBDValue(request.getParameter("updateAssistantFeesValue")) : null;
         BigDecimal updateAnaesthetistFeesValue = updateAnaesthetistFees ? getBDValue(request.getParameter("updateAnaesthetistFeesValue")) : null;
+        if (importFileOnDisk == null) {
+            request.setAttribute("outcome", "exception");
+            request.setAttribute("warnings", warnings);
+            return SUCCESS;
+        }
+
         try {
 
             InputStream is = new java.io.FileInputStream(importFileOnDisk);

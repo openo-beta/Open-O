@@ -72,7 +72,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport imple
         String filename = request.getParameter("filename");
 
         if (StringUtils.isBlank(filename)) {
-            if (!saveFile(file1OnDisk, file1FileName)) {
+            if (file1OnDisk == null || file1FileName == null || file1FileName.trim().isEmpty() || !saveFile(file1OnDisk, file1FileName)) {
                 addActionError(getText("errors.fileNotAdded"));
                 return ERROR;
             } else {

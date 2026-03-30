@@ -62,8 +62,6 @@ public class UploadLoginText2Action extends ActionSupport implements UploadedFil
             throw new SecurityException("missing required sec object (_admin)");
         }
 
-        InputStream fis = null;
-        FileOutputStream fos = null;
         boolean error = false;
 
         String validDurationNumber = request.getParameter("validDurationNumber");// verify it's a number
@@ -108,14 +106,15 @@ public class UploadLoginText2Action extends ActionSupport implements UploadedFil
 
 
         try {
-            if (importFileOnDisk.getName().length() > 0) {
-                fis = Files.newInputStream(importFileOnDisk.toPath());
+            if (importFileOnDisk != null && importFileOnDisk.getName().length() > 0) {
                 String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/OSCARloginText.txt";
-                fos = new FileOutputStream(savePath);
-                byte[] buf = new byte[128 * 1024];
-                int i = 0;
-                while ((i = fis.read(buf)) != -1) {
-                    fos.write(buf, 0, i);
+                try (InputStream fis2 = Files.newInputStream(importFileOnDisk.toPath());
+                     FileOutputStream fos2 = new FileOutputStream(savePath)) {
+                    byte[] buf = new byte[128 * 1024];
+                    int i = 0;
+                    while ((i = fis2.read(buf)) != -1) {
+                        fos2.write(buf, 0, i);
+                    }
                 }
                 error = false;
             }
