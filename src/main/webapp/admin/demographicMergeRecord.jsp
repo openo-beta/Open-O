@@ -316,6 +316,7 @@
                             <th class="sortable" data-col="7">Sex <span class="sort-icon">&#8597;</span></th>
                             <th class="sortable" data-col="8">Roster <span class="sort-icon">&#8597;</span></th>
                             <th class="sortable" data-col="9">HIN <span class="sort-icon">&#8597;</span></th>
+                            <th class="sortable" data-col="10">Patient Status <span class="sort-icon">&#8597;</span></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -344,10 +345,11 @@
                                 <td><e:forHtml value="${demo.sex}"/></td>
                                 <td><e:forHtml value="${demo.rosterStatus}"/></td>
                                 <td><e:forHtml value="${demo.hin}"/></td>
+                                <td><e:forHtml value="${demo.patientStatus}"/></td>
                             </tr>
                         </c:forEach>
                         <c:if test="${empty demoList}">
-                            <tr><td colspan="10" class="text-center text-muted">No records found.</td></tr>
+                            <tr><td colspan="11" class="text-center text-muted">No records found.</td></tr>
                         </c:if>
                         </tbody>
                     </table>
