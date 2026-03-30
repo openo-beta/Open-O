@@ -54,6 +54,11 @@ public class HtmlUpload2Action extends ActionSupport implements UploadedFilesAwa
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
             throw new SecurityException("missing required sec object (_eform)");
         }
+        if (formHtmlOnDisk == null) {
+            addFieldError("formHtml", "Form HTML file is required.");
+            return INPUT;
+        }
+
         try {
             String formHtmlStr = new String(Files.readAllBytes(formHtmlOnDisk.toPath()));
             formHtmlStr = formHtmlStr.replaceAll("\\\\n", "\\\\\\\\n");

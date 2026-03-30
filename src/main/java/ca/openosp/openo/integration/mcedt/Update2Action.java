@@ -155,6 +155,9 @@ public class Update2Action extends ActionSupport implements UploadedFilesAware {
     public UpdateRequest toUpdateRequest() {
         UpdateRequest result = new UpdateRequest();
         result.setResourceID(BigInteger.valueOf(ConversionUtils.fromIntString(resourceId)));
+        if (contentOnDisk == null) {
+            throw new RuntimeException("No upload file was provided");
+        }
         try {
             result.setContent(Files.readAllBytes(contentOnDisk.toPath()));
         } catch (Exception e) {

@@ -77,6 +77,11 @@ public class GenerateTraceabilityReport2Action extends ActionSupport implements 
         ExecutorService executor = null;
         Future<String> futureTRP = null;
         Future<String> futureTRC = null;
+        if (fileOnDisk == null) {
+            MiscUtils.getLogger().error("No traceability file was uploaded");
+            return null;
+        }
+
         try {
             pipedInputStream = new PipedInputStream(BUFFER_SIZE);
             pipedOutputStream = new PipedOutputStream(pipedInputStream);

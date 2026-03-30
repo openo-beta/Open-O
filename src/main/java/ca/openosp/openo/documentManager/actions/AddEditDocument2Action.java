@@ -99,6 +99,12 @@ public class AddEditDocument2Action extends ActionSupport implements UploadedFil
             throw new SecurityException("missing required sec object (_edoc)");
         }
 
+        if (docFileOnDisk == null) {
+            response.setHeader("oscar_error", props.getString("dms.addDocument.errorZeroSize"));
+            response.sendError(500, props.getString("dms.addDocument.errorZeroSize"));
+            return null;
+        }
+
         int numberOfPages = 0;
         String fileName = MiscUtils.sanitizeFileName(docFileOnDisk.getName());
         String user = (String) request.getSession().getAttribute("user");

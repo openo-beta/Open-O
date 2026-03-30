@@ -75,6 +75,11 @@ public class FrmXmlUpload2Action extends ActionSupport implements UploadedFilesA
             throw new IllegalStateException("Temporary directory attribute is not set.");
         }
         
+        if (file1OnDisk == null) {
+            addActionError("No file was uploaded.");
+            return ERROR;
+        }
+
         File normalizedFile = file1OnDisk.toPath().normalize().toFile();
 
         // Validate file path using PathValidationUtils
