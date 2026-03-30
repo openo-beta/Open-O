@@ -47,7 +47,7 @@
     <style>
         body { padding-top: 1rem; }
         a { text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        a:hover { text-decoration: none; }
         .search-bar { background: #f8f9fa; border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
         .results-header { font-size: .85rem; color: #6c757d; margin-bottom: .5rem; }
         .table th { white-space: nowrap; }
@@ -61,6 +61,7 @@
         tr.collapse.show { display: table-row; }
         .history-toggle { transition: transform 0.2s; }
         .history-toggle[aria-expanded="true"] { transform: rotate(90deg); }
+        .btn-link, .btn-link:hover, .btn-link:focus { text-decoration: none; }
     </style>
 </head>
 <body>
@@ -76,7 +77,7 @@
         <c:when test="${outcome eq 'success'}">
             <%-- BS5 success modal — auto-opened by JS below --%>
             <div class="modal fade" id="mergeSuccessModal" tabindex="-1" aria-labelledby="mergeSuccessModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-success text-white">
                             <h5 class="modal-title" id="mergeSuccessModalLabel">Merge Successful</h5>
@@ -189,8 +190,8 @@
                     <table class="table table-sm table-bordered">
                         <thead class="table-light">
                         <tr>
+                            <th style="width:1rem;"></th>
                             <th title="Select record to unmerge">Select</th>
-                            <th title="Show merge history">History</th>
                             <th>ID</th>
                             <th>Last Name</th>
                             <th>First Name</th>
@@ -205,14 +206,14 @@
                             <%-- Main result row --%>
                             <tr>
                                 <td class="text-center">
-                                    <input type="radio" name="mergedDemographicNo" value="${demo.demographicNo}">
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-link btn-sm p-0 history-toggle"
+                                    <button type="button" class="btn btn-link btn-sm history-toggle"
                                             data-bs-toggle="collapse"
                                             data-bs-target="#history-${demo.demographicNo}"
                                             aria-expanded="false"
-                                            title="Show merge history">&#9654;</button>
+                                            title="Show merge history">&#10095;</button>
+                                </td>
+                                <td class="text-center">
+                                    <input type="radio" name="mergedDemographicNo" value="${demo.demographicNo}">
                                 </td>
                                 <td>
                                     <a href="javascript:popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=${demo.demographicNo}&amp;displaymode=edit&amp;dboperation=search_detail')">
@@ -383,7 +384,7 @@
 
     <%-- Validation error modal --%>
     <div class="modal fade" id="mergeValidationModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-warning">
                     <h5 class="modal-title">Cannot Merge</h5>
@@ -399,7 +400,7 @@
 
     <%-- Merge confirmation modal --%>
     <div class="modal fade" id="mergeConfirmModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirm Merge</h5>
@@ -418,7 +419,7 @@
 
     <%-- Unmerge confirmation modal --%>
     <div class="modal fade" id="unmergeConfirmModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirm Unmerge</h5>
@@ -510,8 +511,17 @@
                     }
                 });
 
-                ShowSpin(true);
-                form.submit();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('mergeConfirmModal'));
+                if (modal) {
+                    document.getElementById('mergeConfirmModal').addEventListener('hidden.bs.modal', function () {
+                        ShowSpin(true);
+                        form.submit();
+                    }, { once: true });
+                    modal.hide();
+                } else {
+                    ShowSpin(true);
+                    form.submit();
+                }
             });
         }
 
