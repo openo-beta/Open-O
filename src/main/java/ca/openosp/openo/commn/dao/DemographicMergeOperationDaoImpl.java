@@ -867,6 +867,17 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 .executeUpdate();
         }
 
+        // consultdocs — per-parent HQL bulk INSERT: child PKs not needed downstream (leaf table).
+        for (Map.Entry<Long, Long> entry : requestPkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO ConsultDocs (requestId, documentNo, docType, deleted, attachDate, providerNo) " +
+                "SELECT :newId, e.documentNo, e.docType, e.deleted, e.attachDate, e.providerNo " +
+                "FROM ConsultDocs e WHERE e.requestId = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
+
         logger.debug("copyConsultationsGroup: source={}, target={}, request rows={}", sourceDemoNo, targetDemoNo, requestPkMap.size());
         System.out.println("=== COPY CONSULTATIONS GROUP DONE: " + requestPkMap.size() + " consultation request(s) + ext rows copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
         return requestPkMap;
