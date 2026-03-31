@@ -587,6 +587,7 @@ public class EFormUtil {
         setFormStatus(fid, true);
     }
 
+    /** @deprecated Use {@link #getValues(ArrayList, String, Object...)} with parameterized SQL instead. */
     @Deprecated
     public static ArrayList<String> getValues(ArrayList<String> names, String sql) {
         // gets the values for each column name in the sql (used by DatabaseAP)
@@ -612,11 +613,72 @@ public class EFormUtil {
         return (values);
     }
 
+    /**
+     * Gets values for each column name using a parameterized SQL query.
+     * @param names column names to extract from the result set
+     * @param sql parameterized SQL with ? placeholders
+     * @param params bind parameter values in order
+     * @return list of values corresponding to column names
+     */
+    public static ArrayList<String> getValues(ArrayList<String> names, String sql, Object... params) {
+        ArrayList<String> values = new ArrayList<String>();
+        try {
+            ResultSet rs = DBHandler.GetPreSQL(sql, params);
+            while (rs.next()) {
+                values = new ArrayList<String>();
+                for (int i = 0; i < names.size(); i++) {
+                    try {
+                        values.add(Misc.getString(rs, names.get(i)));
+                    } catch (Exception sqe) {
+                        values.add("<(" + names.get(i) + ")NotFound>");
+                        logger.error("Error", sqe);
+                    }
+                }
+            }
+            rs.close();
+        } catch (SQLException sqe) {
+            logger.error("Error", sqe);
+        }
+        return values;
+    }
+
+    /** @deprecated Use {@link #getJsonValues(ArrayList, String, Object...)} with parameterized SQL instead. */
+    @Deprecated
     public static ArrayNode getJsonValues(ArrayList<String> names, String sql) {
         // gets the values for each column name in the sql (used by DatabaseAP)
         ResultSet rs = getSQL(sql);
         ArrayNode values = objectMapper.createArrayNode();
         try {
+            while (rs.next()) {
+                ObjectNode value = objectMapper.createObjectNode();
+                for (int i = 0; i < names.size(); i++) {
+                    try {
+                        value.put(names.get(i), Misc.getString(rs, names.get(i)));
+                    } catch (Exception sqe) {
+                        value.put(names.get(i), "<(" + names.get(i) + ")NotFound>");
+                        logger.error("Error", sqe);
+                    }
+                }
+                values.add(value);
+            }
+            rs.close();
+        } catch (SQLException sqe) {
+            logger.error("Error", sqe);
+        }
+        return values;
+    }
+
+    /**
+     * Gets JSON values for each column name using a parameterized SQL query.
+     * @param names column names to extract from the result set
+     * @param sql parameterized SQL with ? placeholders
+     * @param params bind parameter values in order
+     * @return ArrayNode containing result objects
+     */
+    public static ArrayNode getJsonValues(ArrayList<String> names, String sql, Object... params) {
+        ArrayNode values = objectMapper.createArrayNode();
+        try {
+            ResultSet rs = DBHandler.GetPreSQL(sql, params);
             while (rs.next()) {
                 ObjectNode value = objectMapper.createObjectNode();
                 for (int i = 0; i < names.size(); i++) {

@@ -79,6 +79,7 @@ public class FrmRecordHelp {
     @Deprecated
     public Properties getFormRecord(String sql) //int demographicNo, int existingID)
             throws SQLException {
+        MiscUtils.getLogger().warn("SECURITY: deprecated getFormRecord(String) called with unparameterized SQL. Migrate caller to parameterized overload.");
         Properties props = new Properties();
 
 
@@ -128,7 +129,7 @@ public class FrmRecordHelp {
     /** @deprecated Use {@link #saveFormRecord(Properties, String, Object...)} with parameterized SQL instead. */
     @Deprecated
     public synchronized int saveFormRecord(Properties props, String sql) throws SQLException {
-
+        MiscUtils.getLogger().warn("SECURITY: deprecated saveFormRecord(Properties, String) called with unparameterized SQL. Migrate caller to parameterized overload.");
 
         ResultSet rs = DBHandler.GetSQL(sql, true);
         rs.moveToInsertRow();
@@ -294,7 +295,7 @@ public class FrmRecordHelp {
     /** @deprecated Use {@link #updateFormRecord(Properties, String, Object...)} with parameterized SQL instead. */
     @Deprecated
     public void updateFormRecord(Properties props, String sql) throws SQLException {
-
+        MiscUtils.getLogger().warn("SECURITY: deprecated updateFormRecord(Properties, String) called with unparameterized SQL. Migrate caller to parameterized overload.");
 
         ResultSet rs = DBHandler.GetSQL(sql, true);
         //rs.relative(0);
@@ -315,6 +316,7 @@ public class FrmRecordHelp {
     /** @deprecated Use {@link #getPrintRecord(String, Object...)} with parameterized SQL instead. */
     @Deprecated
     public Properties getPrintRecord(String sql) throws SQLException {
+        MiscUtils.getLogger().warn("SECURITY: deprecated getPrintRecord(String) called with unparameterized SQL. Migrate caller to parameterized overload.");
         Properties props = new Properties();
 
         ResultSet rs = DBHandler.GetSQL(sql);
@@ -337,6 +339,7 @@ public class FrmRecordHelp {
     /** @deprecated Use {@link #getPrintRecords(String, Object...)} with parameterized SQL instead. */
     @Deprecated
     public List<Properties> getPrintRecords(String sql) throws SQLException {
+        MiscUtils.getLogger().warn("SECURITY: deprecated getPrintRecords(String) called with unparameterized SQL. Migrate caller to parameterized overload.");
         ArrayList<Properties> results = new ArrayList<Properties>();
 
         ResultSet rs = DBHandler.GetSQL(sql);

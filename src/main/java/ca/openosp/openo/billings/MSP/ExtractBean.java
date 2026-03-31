@@ -153,9 +153,9 @@ public class ExtractBean extends Object implements Serializable {
             MiscUtils.getLogger().debug("1st billing query d");
 
             dbExt.openConnection();
-            query = "select * from billing where provider_ohip_no='" + providerNo + "' and (status='O' or status='W') " + dateRange;
-            MiscUtils.getLogger().debug("1st billing query " + query);
-            ResultSet rs = dbExt.executeQuery(query);
+            query = "select * from billing where provider_ohip_no=? and (status='O' or status='W')";
+            MiscUtils.getLogger().debug("1st billing query providerNo=" + providerNo);
+            ResultSet rs = dbExt.executePreparedQuery(query, providerNo);
             if (rs != null) {
                 while (rs.next()) {
                     patientCount = patientCount + 1;

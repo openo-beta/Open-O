@@ -36,6 +36,22 @@ import org.hibernate.SessionFactory;
 
 public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
+    /** Regex pattern for validating field/table names from DB config to prevent injection. */
+    private static final java.util.regex.Pattern SAFE_SQL_IDENTIFIER = java.util.regex.Pattern.compile("^[a-zA-Z0-9_()., ]+$");
+
+    /**
+     * Validates that a field name from DB config is safe for use in queries.
+     * @param fieldSql the field name or expression from FieldDefValue
+     * @return the validated field name
+     * @throws IllegalArgumentException if the field name contains unsafe characters
+     */
+    private static String validateFieldSql(String fieldSql) {
+        if (fieldSql == null || !SAFE_SQL_IDENTIFIER.matcher(fieldSql).matches()) {
+            throw new IllegalArgumentException("Invalid field name from config");
+        }
+        return fieldSql;
+    }
+
     /*
      * Column property mappings defined by the generic idx
      * 1 - Code 2 - Description 3 Active
@@ -77,6 +93,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         LookupTableDefValue tableDef = GetLookupTableDef(tableId);
         if (tableDef == null)
             return (new ArrayList<LookupCodeValue>());
+        validateFieldSql(tableDef.getTableName());
         List fields = LoadFieldDefList(tableId);
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[100];
         String fieldNames[] = new String[17];
@@ -88,12 +105,14 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             for (int j = 0; j < fields.size(); j++) {
                 FieldDefValue fdef = (FieldDefValue) fields.get(j);
                 if (fdef.getGenericIdx() == i) {
-                    if (fdef.getFieldSQL().indexOf('(') >= 0) {
-                        sSQL += fdef.getFieldSQL() + " " + fdef.getFieldName() + ",";
-                        fieldNames[i - 1] = fdef.getFieldName();
+                    String validatedField = validateFieldSql(fdef.getFieldSQL());
+                    String validatedName = validateFieldSql(fdef.getFieldName());
+                    if (validatedField.indexOf('(') >= 0) {
+                        sSQL += validatedField + " " + validatedName + ",";
+                        fieldNames[i - 1] = validatedName;
                     } else {
-                        sSQL += "s." + fdef.getFieldSQL() + ",";
-                        fieldNames[i - 1] = fdef.getFieldSQL();
+                        sSQL += "s." + validatedField + ",";
+                        fieldNames[i - 1] = validatedField;
                     }
                     ok = true;
                     break;
@@ -234,12 +253,21 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         paramList.add(tableId);
         Object params[] = paramList.toArray(new Object[paramList.size()]);
 
-        return getHibernateTemplate().find(sSql, params);
+        List results = getHibernateTemplate().find(sSql, params);
+        // Validate all field SQL values from DB config to prevent second-order SQL injection
+        for (Object obj : results) {
+            FieldDefValue fdv = (FieldDefValue) obj;
+            validateFieldSql(fdv.getFieldSQL());
+            if (fdv.getFieldName() != null) {
+                validateFieldSql(fdv.getFieldName());
+            }
+        }
+        return results;
     }
 
     @Override
     public List GetCodeFieldValues(LookupTableDefValue tableDef, String code) {
-        String tableName = tableDef.getTableName();
+        String tableName = validateFieldSql(tableDef.getTableName());
         List fs = LoadFieldDefList(tableDef.getTableId());
         String idFieldName = "";
 
@@ -289,7 +317,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
     @Override
     public List<List> GetCodeFieldValues(LookupTableDefValue tableDef) {
-        String tableName = tableDef.getTableName();
+        String tableName = validateFieldSql(tableDef.getTableName());
         List fs = LoadFieldDefList(tableDef.getTableId());
         ArrayList<List> codes = new ArrayList<List>();
         String sql = "select ";
@@ -431,7 +459,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
     }
 
     private String InsertCodeValue(LookupTableDefValue tableDef, List fieldDefList) throws SQLException {
-        String tableName = tableDef.getTableName();
+        String tableName = validateFieldSql(tableDef.getTableName());
         String idFieldVal = "";
 
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[fieldDefList.size()];
@@ -475,7 +503,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
     }
 
     private String UpdateCodeValue(LookupTableDefValue tableDef, List fieldDefList) throws SQLException {
-        String tableName = tableDef.getTableName();
+        String tableName = validateFieldSql(tableDef.getTableName());
         String idFieldName = "";
         String idFieldVal = "";
 

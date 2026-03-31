@@ -133,6 +133,12 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
         this.demographic_no = request.getParameter("demographic_no");
         this.from = "encounter"; // Set 'from' parameter as in the original action
 
+        // Validate messagePosition is a non-negative integer
+        if (this.messagePosition == null || !this.messagePosition.matches("^[0-9]+$")) {
+            addActionError("Invalid message position.");
+            return ERROR;
+        }
+
         // Resolve to a safe SQL using only validated, whitelisted ORDER BY clauses
         String sql = resolveMessageQueryWithSafeOrderBy(orderByParam);
 

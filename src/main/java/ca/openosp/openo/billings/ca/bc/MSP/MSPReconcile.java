@@ -1644,8 +1644,11 @@ public class MSPReconcile {
         List<Object> params = new ArrayList<>();
         String dateField = MSPReconcile.REP_PAYREF.equals(repType) ? "t_payment" : "service_date";
 
+        // Whitelist validation for dateField to prevent SQL injection
         if ("creation_date".equals(dateFieldOption)) {
             dateField = "creation_date";
+        } else if (dateFieldOption != null && !dateFieldOption.isEmpty()) {
+            throw new IllegalArgumentException("Invalid dateFieldOption: " + dateFieldOption);
         }
         if (providerNo != null && !providerNo.trim().equalsIgnoreCase("all")) {
             if (MSPReconcile.REP_PAYREF.equals(repType)) {

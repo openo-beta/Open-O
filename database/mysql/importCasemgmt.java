@@ -129,40 +129,40 @@ public class importCasemgmt {
                         }
                         
                         rs.close();
-                        sql = "select provider_no, role_name from secUserRole where provider_no in (select provider_no from provider) ";
-                        if( secObjs.size() > 0 )
-                            sql += "and ";
-                        
-                        for( int idx = 0; idx < secObjs.size(); ++idx ) {
-                            sql += "role_name = '" + secObjs.get(idx) + "'";
-                            if( idx <= secObjs.size() - 2)
-                                sql += " or ";
+                        sql = "select provider_no, role_name from secUserRole where provider_no in (select provider_no from provider)";
+                        if( secObjs.size() > 0 ) {
+                            String placeholders = String.join(",", java.util.Collections.nCopies(secObjs.size(), "?"));
+                            sql += " and role_name in (" + placeholders + ")";
                         }
-                        
                         sql += " order by role_name";
-                        rs = stmt.executeQuery(sql);
+                        PreparedStatement secPs = con.prepareStatement(sql);
+                        for( int idx = 0; idx < secObjs.size(); ++idx ) {
+                            secPs.setString(idx + 1, secObjs.get(idx));
+                        }
+                        rs = secPs.executeQuery();
                         
                         //we got to watch out for duplicate entries
                         //right now we default to first record as they are alpha sorted i.e. doctor locum nurse
                         ArrayList<String> providers = new ArrayList<String>();
                         String role_name, prov;
                         int role_id;
-                        PreparedStatement insert = con.prepareStatement("insert into program_provider (program_id,provider_no,role_id) Values('" + programId + "',?,?)");
+                        PreparedStatement insert = con.prepareStatement("insert into program_provider (program_id,provider_no,role_id) Values(?,?,?)");
                         PreparedStatement pcheck = con.prepareStatement("select id from program_provider where provider_no = ?");
-                        while( rs.next() ) {                            
+                        while( rs.next() ) {
                             prov = rs.getString("provider_no");
                             pcheck.setString(1,prov);
                             rs1 = pcheck.executeQuery();
                             if( !rs1.next() ) {
-                                role_name = rs.getString("role_name");                                
-                                insert.setString(1, prov);
+                                role_name = rs.getString("role_name");
+                                insert.setString(1, programId);
+                                insert.setString(2, prov);
                                 
                                 if( role_name.equalsIgnoreCase("nurse") )
                                     role_id = 2;
                                 else
                                     role_id = 1;
 
-                                insert.setInt(2, role_id);
+                                insert.setInt(3, role_id);
 
                                 if( insert.executeUpdate() != 1 )
                                     throw new SQLException("insert into program_provider failed" + prov);
@@ -178,16 +178,18 @@ public class importCasemgmt {
                         rs.close();
                         insert.close();
                         System.out.println("Checking CAISI role permissions");
-                        sql = "Select program_id from program_access where program_id = " + programId;
-                        rs1 = stmt.executeQuery(sql);
+                        PreparedStatement paCheck = con.prepareStatement("Select program_id from program_access where program_id = ?");
+                        paCheck.setString(1, programId);
+                        rs1 = paCheck.executeQuery();
                         if( !rs1.next() ) {
                             System.out.println("Setting up CAISI role permissions");
                             String id;                        
-                            insert = con.prepareStatement("insert into program_access (program_id,access_type_id,all_roles) Values(" + programId + ",?,false)", PreparedStatement.RETURN_GENERATED_KEYS);
+                            insert = con.prepareStatement("insert into program_access (program_id,access_type_id,all_roles) Values(?,?,false)", PreparedStatement.RETURN_GENERATED_KEYS);
                             PreparedStatement roleInsert = con.prepareStatement("insert into program_access_roles (id,role_id) Values(?,1),(?,2)");
                             for( int idx = 1; idx < 9; ++idx ) {
 
-                                insert.setString(1, String.valueOf(idx));
+                                insert.setString(1, programId);
+                                insert.setString(2, String.valueOf(idx));
 
                                 if( insert.executeUpdate() != 1 )
                                         throw new SQLException("Setting up CAISI role permissions failed");
@@ -216,7 +218,7 @@ public class importCasemgmt {
                         
                         sql = "select demographic_no, date_joined, provider_no from demographic";
                         rs = stmt.executeQuery(sql);
-                        insert = con.prepareStatement("insert into admission (client_id,program_id,provider_no,admission_date,admission_status,team_id,temporary_admission_flag) Values(?,'" + programId +"',?,?,'current',0,0)");
+                        insert = con.prepareStatement("insert into admission (client_id,program_id,provider_no,admission_date,admission_status,team_id,temporary_admission_flag) Values(?,?,?,?,'current',0,0)");
                         pcheck = con.prepareStatement("select client_id from admission where client_id = ?");
                         int i = 1;
                         while( rs.next() ) {                            
@@ -224,8 +226,9 @@ public class importCasemgmt {
                             rs1 = pcheck.executeQuery();
                             if( !rs1.next() ) {
                                 insert.setInt(1, rs.getInt("demographic_no"));
-                                insert.setString(2, rs.getString("provider_no"));
-                                insert.setDate(3, rs.getDate("date_joined"));
+                                insert.setString(2, programId);
+                                insert.setString(3, rs.getString("provider_no"));
+                                insert.setDate(4, rs.getDate("date_joined"));
                             
                                 if( insert.executeUpdate() != 1 )
                                        throw new SQLException("insert into admission failed " + rs.getString("demographic_no"));
@@ -272,10 +275,10 @@ public class importCasemgmt {
                         pstmt.close();
 
                         PreparedStatement pstmt2 = con.prepareStatement("select id from casemgmt_issue where demographic_no = ? and issue_id = ?");
-                        PreparedStatement pstmt3 = con.prepareStatement("insert into casemgmt_issue (demographic_no,issue_id, program_id,type,update_date) values(?,?," + programId + ",'nurse',now())",PreparedStatement.RETURN_GENERATED_KEYS);
+                        PreparedStatement pstmt3 = con.prepareStatement("insert into casemgmt_issue (demographic_no,issue_id, program_id,type,update_date) values(?,?,?,'nurse',now())",PreparedStatement.RETURN_GENERATED_KEYS);
                         PreparedStatement pstmt4 = con.prepareStatement("insert into casemgmt_note (update_date, demographic_no, provider_no, note,  signed, signing_provider_no, include_issue_innote, program_no, " +
                                 "reporter_caisi_role, reporter_program_team, history, password, locked, uuid, observation_date) Values(?,?,?,?,true,'000000'," +
-                                "false," + programId + ",'1','0',?,'','0',?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                                "false,?,'1','0',?,'','0',?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
                         PreparedStatement pstmt5 = con.prepareStatement("insert into casemgmt_issue_notes (id, note_id) Values(?,?)");
                         
                         
@@ -285,7 +288,7 @@ public class importCasemgmt {
                         rs = stmt.executeQuery(sql);
                         insert = con.prepareStatement("insert into casemgmt_note (update_date, demographic_no, provider_no, note,  signed, signing_provider_no, include_issue_innote, program_no, " +
                                 "reporter_caisi_role, reporter_program_team, history, password, locked, uuid, observation_date) Values(?,?,?,?,true,'000000'," +
-                                "false,'" + programId + "','1','0',?,'','0',?,?)");
+                                "false,?,'1','0',?,'','0',?,?)");
                         PreparedStatement cppInsert = con.prepareStatement("insert into casemgmt_cpp (demographic_no,provider_no,socialHistory,familyHistory,medicalHistory,ongoingConcerns," +
                                 "reminders,update_date) Values(?,?,?,?,?,?,?,?)");
                         pcheck = con.prepareStatement("select note_id from casemgmt_note where demographic_no = ? and (signing_provider_no = '000000' or (note = ? and update_date = ?))");
@@ -318,9 +321,10 @@ public class importCasemgmt {
                             note = formatNote(new StringBuffer(rs.getString("encounter")));
                             note = "LAST CHART\n" + note;
                             insert.setString(4, note);
-                            insert.setString(5, note);
-                            insert.setString(6, uuid.toString());
-                            insert.setTimestamp(7, time);
+                            insert.setString(5, programId);
+                            insert.setString(6, note);
+                            insert.setString(7, uuid.toString());
+                            insert.setTimestamp(8, time);
                             
                             if( insert.executeUpdate() != 1 )
                                     throw new SQLException("inserting case note for " + rs.getString("demographicNo") + " failed");
@@ -353,6 +357,7 @@ public class importCasemgmt {
                                 if( !rs3.next() ) {
                                         pstmt3.setString(1,rs.getString("demographicNo"));
                                         pstmt3.setLong(2,issueIds[1]);
+                                        pstmt3.setString(3, programId);
                                         pstmt3.executeUpdate();
                                         rs4 = pstmt3.getGeneratedKeys();
                                         rs4.next();
@@ -367,9 +372,10 @@ public class importCasemgmt {
                                 pstmt4.setString(2,rs.getString("demographicNo"));
                                 pstmt4.setString(3,rs.getString("providerNo"));
                                 pstmt4.setString(4,note);
-                                pstmt4.setString(5,note);
-                                pstmt4.setString(6,uuid.toString());
-                                pstmt4.setTimestamp(7,rs.getTimestamp("timeStamp"));
+                                pstmt4.setString(5, programId);
+                                pstmt4.setString(6,note);
+                                pstmt4.setString(7,uuid.toString());
+                                pstmt4.setTimestamp(8,rs.getTimestamp("timeStamp"));
                                 pstmt4.executeUpdate();
                                 rs4 = pstmt4.getGeneratedKeys();
                                 rs4.next();
@@ -390,6 +396,7 @@ public class importCasemgmt {
                                 if( !rs3.next() ) {
                                         pstmt3.setString(1,rs.getString("demographicNo"));
                                         pstmt3.setLong(2,issueIds[0]);
+                                        pstmt3.setString(3, programId);
                                         pstmt3.executeUpdate();
                                         rs4 = pstmt3.getGeneratedKeys();
                                         rs4.next();
@@ -404,9 +411,10 @@ public class importCasemgmt {
                                 pstmt4.setString(2,rs.getString("demographicNo"));
                                 pstmt4.setString(3,rs.getString("providerNo"));
                                 pstmt4.setString(4,note);
-                                pstmt4.setString(5,note);
-                                pstmt4.setString(6,uuid.toString());
-                                pstmt4.setTimestamp(7,rs.getTimestamp("timeStamp"));
+                                pstmt4.setString(5, programId);
+                                pstmt4.setString(6,note);
+                                pstmt4.setString(7,uuid.toString());
+                                pstmt4.setTimestamp(8,rs.getTimestamp("timeStamp"));
                                 pstmt4.executeUpdate();
                                 rs4 = pstmt4.getGeneratedKeys();
                                 rs4.next();
@@ -426,6 +434,7 @@ public class importCasemgmt {
                                 if( !rs3.next() ) {
                                         pstmt3.setString(1,rs.getString("demographicNo"));
                                         pstmt3.setLong(2,issueIds[2]);
+                                        pstmt3.setString(3, programId);
                                         pstmt3.executeUpdate();
                                         rs4 = pstmt3.getGeneratedKeys();
                                         rs4.next();
@@ -440,9 +449,10 @@ public class importCasemgmt {
                                 pstmt4.setString(2,rs.getString("demographicNo"));
                                 pstmt4.setString(3,rs.getString("providerNo"));
                                 pstmt4.setString(4,note);
-                                pstmt4.setString(5,note);
-                                pstmt4.setString(6,uuid.toString());
-                                pstmt4.setTimestamp(7,rs.getTimestamp("timeStamp"));
+                                pstmt4.setString(5, programId);
+                                pstmt4.setString(6,note);
+                                pstmt4.setString(7,uuid.toString());
+                                pstmt4.setTimestamp(8,rs.getTimestamp("timeStamp"));
                                 pstmt4.executeUpdate();
                                 rs4 = pstmt4.getGeneratedKeys();
                                 rs4.next();
@@ -462,6 +472,7 @@ public class importCasemgmt {
                                 if( !rs3.next() ) {
                                         pstmt3.setString(1,rs.getString("demographicNo"));
                                         pstmt3.setLong(2,issueIds[3]);
+                                        pstmt3.setString(3, programId);
                                         pstmt3.executeUpdate();
                                         rs4 = pstmt3.getGeneratedKeys();
                                         rs4.next();
@@ -476,9 +487,10 @@ public class importCasemgmt {
                                 pstmt4.setString(2,rs.getString("demographicNo"));
                                 pstmt4.setString(3,rs.getString("providerNo"));
                                 pstmt4.setString(4,note);
-                                pstmt4.setString(5,note);
-                                pstmt4.setString(6,uuid.toString());
-                                pstmt4.setTimestamp(7,rs.getTimestamp("timeStamp"));
+                                pstmt4.setString(5, programId);
+                                pstmt4.setString(6,note);
+                                pstmt4.setString(7,uuid.toString());
+                                pstmt4.setTimestamp(8,rs.getTimestamp("timeStamp"));
                                 pstmt4.executeUpdate();
                                 rs4 = pstmt4.getGeneratedKeys();
                                 rs4.next();
@@ -498,6 +510,7 @@ public class importCasemgmt {
                                 if( !rs3.next() ) {
                                         pstmt3.setString(1,rs.getString("demographicNo"));
                                         pstmt3.setLong(2,issueIds[4]);
+                                        pstmt3.setString(3, programId);
                                         pstmt3.executeUpdate();
                                         rs4 = pstmt3.getGeneratedKeys();
                                         rs4.next();
@@ -512,9 +525,10 @@ public class importCasemgmt {
                                 pstmt4.setString(2,rs.getString("demographicNo"));
                                 pstmt4.setString(3,rs.getString("providerNo"));
                                 pstmt4.setString(4,note);
-                                pstmt4.setString(5,note);
-                                pstmt4.setString(6,uuid.toString());
-                                pstmt4.setTimestamp(7,rs.getTimestamp("timeStamp"));
+                                pstmt4.setString(5, programId);
+                                pstmt4.setString(6,note);
+                                pstmt4.setString(7,uuid.toString());
+                                pstmt4.setTimestamp(8,rs.getTimestamp("timeStamp"));
                                 pstmt4.executeUpdate();
                                 rs4 = pstmt4.getGeneratedKeys();
                                 rs4.next();
@@ -555,9 +569,10 @@ public class importCasemgmt {
                             note = formatNote(new StringBuffer(rs.getString("encounter")));
                             note = "SPLIT CHART...\n" + note;
                             insert.setString(4, note);
-                            insert.setString(5, note);
-                            insert.setString(6, uuid.toString());
-                            insert.setTimestamp(7, rs.getTimestamp("timeStamp"));
+                            insert.setString(5, programId);
+                            insert.setString(6, note);
+                            insert.setString(7, uuid.toString());
+                            insert.setTimestamp(8, rs.getTimestamp("timeStamp"));
                             
                             if( insert.executeUpdate() != 1 )
                                     throw new SQLException(sql);

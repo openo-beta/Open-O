@@ -262,15 +262,13 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         Set<Demographic> archivedClients = new java.util.LinkedHashSet<Demographic>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sqlQuery = "select distinct d.demographic_no,d.first_name,d.last_name,(select count(*) from admission a where client_id=d.demographic_no and admission_status='current' and program_id="
-            + programId + " and admission_date<='" + sdf.format(dt)
-            + "') as is_active from admission a,demographic d where a.client_id=d.demographic_no and (d.patient_status='AC' or d.patient_status='' or d.patient_status=null) and program_id="
-            + programId
-            + " and (d.anonymous is null or d.anonymous != 'one-time-anonymous') ORDER BY d.last_name,d.first_name";
-        // Session session = this.getSession();
+        String sqlQuery = "select distinct d.demographic_no,d.first_name,d.last_name,(select count(*) from admission a where client_id=d.demographic_no and admission_status='current' and program_id=? and admission_date<=?) as is_active from admission a,demographic d where a.client_id=d.demographic_no and (d.patient_status='AC' or d.patient_status='' or d.patient_status=null) and program_id=? and (d.anonymous is null or d.anonymous != 'one-time-anonymous') ORDER BY d.last_name,d.first_name";
         Session session = currentSession();
 
         SQLQuery q = session.createSQLQuery(sqlQuery);
+        q.setParameter(0, programId);
+        q.setParameter(1, sdf.format(dt));
+        q.setParameter(2, programId);
         q.addScalar("d.demographic_no");
         q.addScalar("d.first_name");
         q.addScalar("d.last_name");
@@ -2788,8 +2786,13 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         try {
             SQLQuery sqlQuery = session.createSQLQuery(demographicQuery);
             for (String key : params.keySet()) {
-                sqlQuery.setParameter(key, params.get(key));
-                MiscUtils.getLogger().warn(key + "=" + params.get(key));
+                Object val = params.get(key);
+                if (val instanceof java.util.Collection) {
+                    sqlQuery.setParameterList(key, (java.util.Collection) val);
+                } else {
+                    sqlQuery.setParameter(key, val);
+                }
+                MiscUtils.getLogger().warn(key + "=" + val);
             }
             Integer result = ((BigInteger) sqlQuery.uniqueResult()).intValue();
             return result;
@@ -2816,7 +2819,12 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             SQLQuery sqlQuery = session.createSQLQuery(demographicQuery);
 
             for (String key : params.keySet()) {
-                sqlQuery.setParameter(key, params.get(key));
+                Object val = params.get(key);
+                if (val instanceof java.util.Collection) {
+                    sqlQuery.setParameterList(key, (java.util.Collection) val);
+                } else {
+                    sqlQuery.setParameter(key, val);
+                }
             }
 
             sqlQuery.setFirstResult(startIndex);
@@ -2922,12 +2930,16 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         String ptstatusexp = "";
 
         if (searchRequest.isActive()) {
-            ptstatusexp = " and d.patient_status not in ("
-                + props.getProperty("inactive_statuses", "'IN','DE','IC', 'ID', 'MO', 'FI'") + ") ";
+            ptstatusexp = " and d.patient_status not in (:inactiveStatuses) ";
         } else {
-            ptstatusexp = " and d.patient_status in ("
-                + props.getProperty("inactive_statuses", "'IN','DE','IC', 'ID', 'MO', 'FI'") + ") ";
+            ptstatusexp = " and d.patient_status in (:inactiveStatuses) ";
         }
+        String inactiveStatusesProp = props.getProperty("inactive_statuses", "'IN','DE','IC', 'ID', 'MO', 'FI'");
+        List<String> inactiveStatusList = new java.util.ArrayList<>();
+        for (String s : inactiveStatusesProp.split(",")) {
+            inactiveStatusList.add(s.trim().replace("'", ""));
+        }
+        params.put("inactiveStatuses", inactiveStatusList);
 
         String domainRestriction = "";
         if (!searchRequest.isOutOfDomain()) {

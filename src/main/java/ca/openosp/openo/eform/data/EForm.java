@@ -703,20 +703,16 @@ public class EForm extends EFormBase {
         String sql = ap.getApSQL();
         String output = ap.getApOutput();
         if (!StringUtils.isBlank(sql)) {
-            sql = replaceAllFields(sql);
+            SqlWithParams swp = parameterizeFields(sql);
+            sql = swp.getSql();
             log.debug("SQL----" + sql);
             ArrayList<String> names = DatabaseAP.parserGetNames(output); // a list of ${apName} --> apName
             sql = DatabaseAP.parserClean(sql); // replaces all other ${apName} expressions with 'apName'
             if (ap.isJsonOutput()) {
-                // SQL Injection Note: sql originates from DatabaseAP.getApSQL() which is loaded from
-                // admin-configured eform AP definitions, not from user input. The template variables
-                // (demographic, provider, etc.) are substituted via parserReplace/replaceAllFields
-                // which operate on trusted AP templates. This is a controlled, admin-only SQL execution path.
-                ArrayNode values = EFormUtil.getJsonValues(names, sql);
+                ArrayNode values = EFormUtil.getJsonValues(names, sql, swp.getParamsArray());
                 output = values.toString(); //in case of JsonOutput, return the whole JSONArray and let the javascript deal with it
             } else {
-                // SQL Injection Note: Same as above - sql is from admin-configured DatabaseAP templates.
-                ArrayList<String> values = EFormUtil.getValues(names, sql);
+                ArrayList<String> values = EFormUtil.getValues(names, sql, swp.getParamsArray());
                 if (values.size() != names.size()) {
                     output = "";
                 } else {
@@ -772,6 +768,64 @@ public class EForm extends EFormBase {
         sql = DatabaseAP.parserReplace(TABLE_ID, getSqlParams(TABLE_ID), sql);
         sql = DatabaseAP.parserReplace(OTHER_KEY, getSqlParams(OTHER_KEY), sql);
         return sql;
+    }
+
+    /**
+     * Replaces all ${name} template placeholders in the SQL with ? parameter markers
+     * and collects the corresponding values in order for PreparedStatement binding.
+     *
+     * @param sql the SQL template containing ${name} placeholders
+     * @return a SqlWithParams containing the parameterized SQL and ordered parameter values
+     */
+    public SqlWithParams parameterizeFields(String sql) {
+        List<Object> params = new ArrayList<>();
+
+        // Replace known template variables with ? and collect values
+        sql = parameterizeToken(sql, "demographic", demographicNo, params);
+        sql = parameterizeToken(sql, "provider", providerNo, params);
+        sql = parameterizeToken(sql, "providers", providerNo, params);
+        sql = parameterizeToken(sql, "appt_no", appointment_no, params);
+        sql = parameterizeToken(sql, EFORM_DEMOGRAPHIC, getSqlParams(EFORM_DEMOGRAPHIC), params);
+        sql = parameterizeToken(sql, REF_FID, getSqlParams(REF_FID), params);
+        sql = parameterizeToken(sql, VAR_NAME, getSqlParams(VAR_NAME), params);
+        sql = parameterizeToken(sql, VAR_VALUE, getSqlParams(VAR_VALUE), params);
+        sql = parameterizeToken(sql, REF_VAR_NAME, getSqlParams(REF_VAR_NAME), params);
+        sql = parameterizeToken(sql, REF_VAR_VALUE, getSqlParams(REF_VAR_VALUE), params);
+        sql = parameterizeToken(sql, TABLE_NAME, getSqlParams(TABLE_NAME), params);
+        sql = parameterizeToken(sql, TABLE_ID, getSqlParams(TABLE_ID), params);
+        sql = parameterizeToken(sql, OTHER_KEY, getSqlParams(OTHER_KEY), params);
+
+        return new SqlWithParams(sql, params);
+    }
+
+    /**
+     * Replaces all occurrences of ${name} in sql with ? and adds value to params list.
+     */
+    private static String parameterizeToken(String sql, String name, String value, List<Object> params) {
+        String token = "${" + name + "}";
+        int idx;
+        while ((idx = sql.indexOf(token)) >= 0) {
+            sql = sql.substring(0, idx) + "?" + sql.substring(idx + token.length());
+            params.add(value);
+        }
+        return sql;
+    }
+
+    /**
+     * Holds a parameterized SQL string and its ordered bind parameters.
+     */
+    public static class SqlWithParams {
+        private final String sql;
+        private final List<Object> params;
+
+        public SqlWithParams(String sql, List<Object> params) {
+            this.sql = sql;
+            this.params = params;
+        }
+
+        public String getSql() { return sql; }
+        public List<Object> getParams() { return params; }
+        public Object[] getParamsArray() { return params.toArray(); }
     }
 
     private String getSqlParams(String key) {

@@ -78,25 +78,21 @@ public final class FetchUpdatedData2Action extends ActionSupport {
                     String output = ap.getApOutput();
                     //replace ${demographic} with demogrpahicNo
                     if (sql != null) {
-                        sql = DatabaseAP.parserReplace("demographic", demographic, sql);
-                        sql = DatabaseAP.parserReplace("providers", provider, sql);
-                        sql = DatabaseAP.parserReplace("uuid", uuid, sql);
-                        //sql = replaceAllFields(sql);
+                        // Parameterize template variables instead of string substitution
+                        List<Object> params = new ArrayList<>();
+                        sql = parameterizeToken(sql, "demographic", demographic, params);
+                        sql = parameterizeToken(sql, "providers", provider, params);
+                        sql = parameterizeToken(sql, "uuid", uuid, params);
 
                         ArrayList<String> names = DatabaseAP.parserGetNames(output); //a list of ${apName} --> apName
                         sql = DatabaseAP.parserClean(sql);  //replaces all other ${apName} expressions with 'apName'
+                        Object[] paramArray = params.toArray();
 
                         if (ap.isJsonOutput()) {
-                            // SQL Injection Note: sql originates from DatabaseAP.getApSQL() which is loaded
-                            // from admin-configured eform AP definitions. Template variables (demographic,
-                            // providers, uuid) are validated above with strict regex patterns before
-                            // substitution. This is a controlled, admin-only SQL execution path.
-                            ArrayNode values = EFormUtil.getJsonValues(names, sql);
+                            ArrayNode values = EFormUtil.getJsonValues(names, sql, paramArray);
                             output = values.toString(); //in case of JsonOutput, return the whole ArrayNode and let the javascript deal with it
                         } else {
-                            // SQL Injection Note: Same as above - sql is from admin-configured DatabaseAP
-                            // templates with validated parameter substitution.
-                            ArrayList<String> values = EFormUtil.getValues(names, sql);
+                            ArrayList<String> values = EFormUtil.getValues(names, sql, paramArray);
                             if (values.size() != names.size()) {
                                 output = "";
                             } else {
@@ -116,5 +112,18 @@ public final class FetchUpdatedData2Action extends ActionSupport {
         response.getOutputStream().write(json.toString().getBytes());
 
         return null;
+    }
+
+    /**
+     * Replaces all occurrences of ${name} in sql with ? and adds value to params list.
+     */
+    private static String parameterizeToken(String sql, String name, String value, List<Object> params) {
+        String token = "${" + name + "}";
+        int idx;
+        while ((idx = sql.indexOf(token)) >= 0) {
+            sql = sql.substring(0, idx) + "?" + sql.substring(idx + token.length());
+            params.add(value);
+        }
+        return sql;
     }
 }
