@@ -134,13 +134,21 @@ import java.util.function.Function;
  * {@code GenerationType.IDENTITY} assigns fresh PKs. The old→new PK map is captured from the
  * returned entity after {@code flush()}, which is safe under concurrent inserts.
  * <p>
- * JDBC is used only for two targeted exceptions:
+ * JDBC is used only for the following targeted exceptions:
  * <ul>
- *   <li>{@code formBCAR2020Text} — composite {@code @IdClass} (formId + pageNo + field)</li>
- *   <li>{@code formONAREnhancedRecord*} — 100+ column tables with no entity classes</li>
+ *   <li>{@code copyAllForms()} — 60+ {@code form*} tables (100–1200 columns each, no entity classes);
+ *       uses {@code copyFormJdbcWithMap()} with {@code GeneratedKeyHolder} per row to capture new PKs
+ *       needed for child FK remapping</li>
+ *   <li>{@code copyFormBooleanValues()} — {@code form_boolean_value} table (no entity class);
+ *       uses {@code jdbcTemplate.batchUpdate()} since no generated-key dependency exists</li>
+ *   <li>{@code formBCAR2020Text} — composite {@code @IdClass} (formId + pageNo + field);
+ *       no single auto-increment PK so the Hibernate detach/persist pattern does not apply</li>
+ *   <li>{@code formONAREnhancedRecord} Ext1/Ext2 — 100+ column extension tables with no entity classes</li>
  * </ul>
- * Optional-module tables ({@code [BC]}, {@code [ON]}) are guarded by {@link #tableExists(String)}.
- *
+ * <p>
+ * {@code tableExists()} — {@code DatabaseMetaData} schema guard for optional-module tables
+ * ({@code [BC]}, {@code [ON]}); read-only, no data written
+ * 
  * @since 2026-03-19
  */
 @Repository
@@ -159,10 +167,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    // -------------------------------------------------------------------------
-    // Schema cache — DatabaseMetaData lookups cached in-process
-    // -------------------------------------------------------------------------
-
+    // Schema cache - DatabaseMetaData lookups cached in-process
     private final ConcurrentHashMap<String, Boolean> tableExistsCache = new ConcurrentHashMap<>();
 
     /**
@@ -206,12 +211,13 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
      * @param setDemoNo     BiConsumer that sets the demographic FK to the target value
      * @return Map&lt;Long, Long&gt; mapping old PK to new PK for every copied row
      */
+    @SuppressWarnings("unchecked")
     private <T> Map<Long, Long> copyEntityRows(Class<T> entityClass, String jpqlName, String demoField, Integer sourceDemoNo, Integer targetDemoNo, Function<T, Long> getPk, Consumer<T> clearPk, BiConsumer<T, Integer> setDemoNo) {
 
         List<T> rows = entityManager.createQuery("SELECT e FROM " + jpqlName + " e WHERE e." + demoField + " = :demo", entityClass)
-            .setParameter("demo", sourceDemoNo)
-            .unwrap(Query.class).setFetchSize(1000)
-            .getResultList();
+                            .setParameter("demo", sourceDemoNo)
+                            .unwrap(Query.class).setFetchSize(1000)
+                            .getResultList();
 
         if (rows.isEmpty()) {
             return Collections.emptyMap();
@@ -349,7 +355,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         // appointment and appointmentArchive are handled by copyAppointments() so the PK map
         // can be passed to copyCasemgmtNoteGroup for note-link remap
 
-        // casemgmt_cpp — demo field is String (varchar in DB); handled inline
+        // casemgmt_cpp
         long tCpp = System.currentTimeMillis();
         List<CaseMgmtCpp> cppRows = entityManager.createQuery("SELECT e FROM CaseMgmtCpp e WHERE e.demographicNo = :demo", CaseMgmtCpp.class)
             .setParameter("demo", String.valueOf(sourceDemoNo))
@@ -463,9 +469,13 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 e -> (long) e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
 
-        // measurementsDeleted — HQL bulk INSERT: leaf table, PK never captured, no child FK.
-        // Replaces N × IDENTITY-flush round-trips with one server-side SQL statement.
-        // Expected: ~40,000 rows across both passes → ~19.7 min → < 1 sec.
+        // measurementsDeleted — uses HQL bulk INSERT instead of the normal Hibernate copy pattern.
+        // Why: this table can have ~20,000 rows per patient. The normal pattern (load entity → detach →
+        // null PK → persist → flush) does one DB round-trip per row, which at ~20,000 rows would take
+        // roughly 19+ minutes. A single HQL INSERT...SELECT copies all rows in one server-side SQL
+        // statement regardless of row count, reducing that to under 1 second.
+        // This is safe here because measurementsDeleted is a leaf table — its PK is never referenced
+        // as a foreign key by any child table, so we don't need to capture the old→new PK mapping.
         long tMd = System.currentTimeMillis();
         int mdCount = entityManager.createQuery(
             "INSERT INTO MeasurementsDeleted (demographicNo, type, providerNo, dataField, measuringInstruction, " +
@@ -554,29 +564,6 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         // previously run group methods do not inflate dirty-check cost during this group's flushes.
         entityManager.clear();
 
-        // Tables covered: form, form2MinWalk, formAdf, formAdfV2, formAlpha, formAnnual,
-        //   formAnnualV2, formAR, formBCAR[BC], formBCAR2007[BC], formBCAR2012[BC],
-        //   formBCBirthSumMo[BC], formBCBirthSumMo2008[BC], formBCClientChartChecklist[BC],
-        //   formBCHP[BC], formBCINR[BC], formBCNewBorn[BC], formBCNewBorn2008[BC], formBPMH[BC],
-        //   formCaregiver, formCESD, formchf, formConsult, formCostQuestionnaire, formCounseling,
-        //   formDischargeSummary (bigint PK), formECARES[BC], formFalls, formfollowup (bigint PK),
-        //   formGripStrength, formGrowth0_36, formGrowthChart, formHomeFalls, formImmunAllergy,
-        //   formIntakeHx, formIntakeInfo, formintakea, formintakeb, formintakec,
-        //   formInternetAccess, formLabReq, formLabReq07[ON], formLabReq10[ON],
-        //   formLateLifeFDIDisability, formLateLifeFDIFunction, formMentalHealth,
-        //   formMentalHealthForm1 (bigint), formMentalHealthForm14 (bigint), formMentalHealthForm42 (bigint),
-        //   formMMSE, formNoShowPolicy, formONAR[ON], formONAREnhanced[ON], formovulation[ON] (bigint),
-        //   formPalliativeCare, formPeriMenopausal, formPositionHazard[ON],
-        //   formreceptionassessment, formRhImmuneGlobulin, formRourke, formRourke2006,
-        //   formRourke2009[BC], formRourke2017, formRourke2020, formSatisfactionScale,
-        //   formSelfAdministered, formSelfAssessment, formSelfEfficacy, formSelfManagement,
-        //   formSF36, formSF36Caregiver, formTreatmentPref, formType2Diabetes, formVTForm
-        // Universal form tables — all use JDBC row-by-row INSERT with GeneratedKeyHolder.
-        // tableExists() guards every call so missing optional tables are silently skipped.
-        // formBCAR2020 is omitted here — handled by copyFormBCAR2020Group() which also copies formBCAR2020Text.
-        // formONAREnhancedRecord/Ext1/Ext2 are omitted — handled by copyFormONAREnhancedGroup().
-
-        // --- core / generic forms ---
         copyFormJdbc("form", "form_no", sourceDemoNo, targetDemoNo, true);
         copyFormJdbc("form2MinWalk", "ID", sourceDemoNo, targetDemoNo, true);
         copyFormJdbc("formAdf", "ID", sourceDemoNo, targetDemoNo, true);
@@ -856,7 +843,6 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         // consultationRequestExt — per-parent HQL bulk INSERT: child PKs not needed downstream.
         // Only parent requestPkMap flows to copyConsultationArchiveGroup — not these child PKs.
-        // Expected: ~267 rows across both passes → ~3.9 sec → < 1 sec.
         for (Map.Entry<Long, Long> entry : requestPkMap.entrySet()) {
             entityManager.createQuery(
                 "INSERT INTO ConsultationRequestExt (requestId, key, value, dateCreated) " +
@@ -905,7 +891,6 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
         // drugReason — per-parent HQL bulk INSERT: child PKs not needed downstream.
         // demographicNo also remapped to targetDemoNo in the same statement.
-        // Expected: ~9 rows → minor, but eliminates flush overhead.
         for (Map.Entry<Long, Long> entry : drugPkMap.entrySet()) {
             entityManager.createQuery(
                 "INSERT INTO DrugReason (drugId, codingSystem, code, comments, primaryReasonFlag, archivedFlag, archivedReason, providerNo, demographicNo, dateCoded) " +
@@ -1027,10 +1012,14 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         entityManager.clear();
 
         // erefer_attachment (parent)
-        // Replace attachments with a fresh empty list before persist: the @OneToMany(cascade=PERSIST) collection
-        // is LAZY — calling clear() on the uninitialized PersistentBag after detach throws LazyInitializationException.
-        // Setting a new ArrayList avoids touching the PersistentBag entirely and prevents cascade persist of old rows.
-        // Data rows are copied separately below via the new-object pattern.
+        // EReferAttachment has a @OneToMany child collection (attachments) that is LAZY-loaded.
+        // Problem: after we detach the entity, that collection is still an uninitialized Hibernate
+        // PersistentBag. If we try to clear() it, Hibernate throws a LazyInitializationException
+        // because there is no active session to load it from. And if we leave it as-is and persist,
+        // Hibernate's cascade=PERSIST would try to re-insert the old child rows, causing duplicates.
+        // Fix: replace the collection with a plain new ArrayList() before persist. This sidesteps
+        // both problems — no lazy load triggered, no accidental cascade. The child rows
+        // (erefer_attachment_data) are copied separately below using the new-object pattern.
         Map<Long, Long> attachPkMap = copyEntityRows(EReferAttachment.class, "EReferAttachment", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> (long) e.getId(), e -> { e.setId(null); e.setAttachments(new ArrayList<>()); },
@@ -1173,9 +1162,10 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return;
         }
 
-        // measurementsExt — per-parent HQL bulk INSERT: child PKs not needed downstream.
-        // One SQL statement per parent replaces N × IDENTITY-flush round-trips per child row.
-        // Expected: ~17,730 rows across both passes → ~465 sec → < 5 sec.
+        // MeasurementsExt can have a very large number of rows per patient, so the normal
+        // Hibernate approach of loading, detaching, and re-inserting each entity one-by-one
+        // is too slow. Instead, we use an HQL bulk INSERT ... SELECT to copy all ext rows
+        // for each parent Measurement in a single SQL statement per parent.
         for (Map.Entry<Long, Long> entry : measurePkMap.entrySet()) {
             entityManager.createQuery(
                 "INSERT INTO MeasurementsExt (measurementId, keyVal, val) " +
@@ -1210,9 +1200,9 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return prevPkMap;
         }
 
-        // preventionsExt — per-parent HQL bulk INSERT: child PKs not needed downstream.
-        // The @ManyToOne prevention field is insertable=false — only preventionId is written.
-        // Expected: ~508 rows across both passes → ~14.7 sec → < 1 sec.
+        // PreventionsExt rows are copied using HQL bulk INSERT ... SELECT rather than
+        // loading and re-inserting each entity, because there can be many ext rows per
+        // prevention and the one-by-one Hibernate approach is too slow at scale.
         for (Map.Entry<Long, Long> entry : prevPkMap.entrySet()) {
             entityManager.createQuery(
                 "INSERT INTO PreventionExt (preventionId, keyval, val) " +
@@ -1277,30 +1267,24 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         // previously run group methods do not inflate dirty-check cost during this group's flushes.
         entityManager.clear();
 
-        // consultationRequestsArchive (parent) — demo field is "demographicId"
-        // ProfessionalSpecialist has @ManyToOne(cascade=ALL). The query below loads all archive
-        // rows as managed entities. If any of them remain managed during a subsequent flush(),
-        // Hibernate will cascade PERSIST_ON_FLUSH from each managed row to its PS field.
-        // If PS was detached by the cascade from an earlier detach(a) inside the copy loop,
-        // the flush throws "detached entity passed to persist: ProfessionalSpecialist".
-        // Fix: detach every archive row immediately after loading, before the copy loop.
-        // This ensures only newly-persisted copies (with managed PS from find()) are in session.
+        // Load all archived consultation requests belonging to the source patient.
         List<ConsultationRequestArchive> archiveRows = entityManager.createQuery(
                 "SELECT e FROM ConsultationRequestArchive e WHERE e.demographicId = :demo",
                 ConsultationRequestArchive.class)
             .setParameter("demo", sourceDemoNo)
             .getResultList();
 
-        // Upfront batch-detach: removes every loaded archive row from the session.
-        // cascade=ALL on professionalSpecialist means detach(a) also cascade-detaches
-        // the PS instance held by the first archive row that references each unique PS.
-        // Subsequent detach(a) calls for the same PS are no-ops (already absent).
+        // Detach every loaded row from the Hibernate session before we start copying.
+        // ConsultationRequestArchive has a cascade=ALL relationship to ProfessionalSpecialist,
+        // which means if we leave these rows in the session while inserting new ones,
+        // Hibernate tries to cascade-persist the specialist again and throws an error
+        // ("detached entity passed to persist"). Detaching upfront avoids that.
         for (ConsultationRequestArchive a : archiveRows) {
             entityManager.detach(a);
         }
 
-        // Cache managed ProfessionalSpecialist instances to avoid a SELECT per row.
-        // find() guarantees a managed entity (L1 cache hit if already loaded, DB SELECT otherwise).
+        // Keep a local cache of ProfessionalSpecialist entities so we don't hit the database
+        // for the same specialist multiple times if several archive rows share one.
         Map<Integer, ProfessionalSpecialist> managedPsCache = new HashMap<>();
 
         Map<Long, Long> archivePkMap = new HashMap<>();
@@ -1325,13 +1309,13 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             return;
         }
 
-        // consultationRequestExtArchive — dual FK: consultationRequestArchiveId + requestId.
-        // Per-archive-entry HQL bulk INSERT with CASE WHEN for the requestId remap.
-        // Rows whose requestId has no mapping in requestPkMap are excluded by the IN clause
-        // (same skip semantics as the previous per-row warn-and-continue).
-        // O(archivePkMap.size) queries instead of O(archivePkMap × rows) persist+flush calls.
+        // Copy the ConsultationRequestExtArchive child rows for each newly inserted archive entry.
+        // Each ext row references both the archive entry and the original consultation request,
+        // so both IDs need to be remapped to their new values.
+        // We use HQL bulk INSERT ... SELECT with a CASE WHEN to remap the requestId in one query
+        // per archive entry, rather than loading and re-inserting each ext row individually.
         if (!requestPkMap.isEmpty()) {
-            // Build CASE WHEN for requestId remap — values are controlled Long integers, not user input.
+            // Build a CASE WHEN expression to translate old requestId values to new ones inline.
             StringBuilder caseExpr = new StringBuilder("CASE e.requestId");
             List<Integer> oldReqIds = new ArrayList<>();
             for (Map.Entry<Long, Long> reqEntry : requestPkMap.entrySet()) {
