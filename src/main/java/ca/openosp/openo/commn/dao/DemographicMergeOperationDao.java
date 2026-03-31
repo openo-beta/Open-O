@@ -236,7 +236,13 @@ public interface DemographicMergeOperationDao {
 
     /**
      * Copies tickler tables:
-     * {@code tickler} (parent) → {@code tickler_link} (child).
+     * {@code tickler} (parent) → {@code tickler_link}, {@code tickler_comments} (children).
+     * <p>
+     * {@code tickler_link} records which clinical entities (appointments, notes, etc.) are
+     * linked to a tickler. {@code tickler_comments} stores the free-text comment history
+     * written against each tickler; it has no {@code demographicNo} column and is linked to
+     * the patient only through {@code ticklerNo}.
+     * <p>
      * Returns the old-to-new tickler PK map needed for {@code casemgmt_note_link}
      * {@code table_name = 10} (TICKLER) {@code tableId} remap in {@link #copyCasemgmtNoteGroup}.
      *
