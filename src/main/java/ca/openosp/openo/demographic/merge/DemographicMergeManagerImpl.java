@@ -72,10 +72,6 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     @Autowired
     private DemographicMergeOperationDao operationDao;
 
-    // -------------------------------------------------------------------------
-    // Public API
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      * <p>
@@ -118,8 +114,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         // Record the merge event before copying data so the audit row is always
         // written as part of the same transaction; it rolls back with everything
         // else if an error occurs.
-        saveMergeEvent(DemographicMergeEvent.EventType.MERGE, primaryDemographicNo, secondaryDemographicNos,
-                targetDemographicNo, loggedInInfo.getLoggedInProviderNo());
+        saveMergeEvent(DemographicMergeEvent.EventType.MERGE, primaryDemographicNo, secondaryDemographicNos, targetDemographicNo, loggedInInfo.getLoggedInProviderNo());
         System.out.println("  [OK] Merge event recorded in audit table");
 
         // Primary (A → C): full copy — status update deferred to applyMergeStatuses()
@@ -239,10 +234,6 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         System.out.println("  Result: C=" + mergedDemographicNo + " deactivated; A=" + event.getPrimaryDemographicNo()
                 + " + " + event.getSecondaryDemographicNos().size() + " secondary(s) restored");
     }
-
-    // -------------------------------------------------------------------------
-    // Unmerge tab — merge history queries
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -371,43 +362,31 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      */
     private Demographic cloneDemographic(Demographic source, String providerNo) {
         Demographic c = new Demographic();
-
-        // Name
         c.setFirstName(source.getFirstName());
         c.setLastName(source.getLastName());
         c.setMiddleNames(source.getMiddleNames());
         c.setPrefName(source.getPrefName());
         c.setAlias(source.getAlias());
         c.setTitle(source.getTitle());
-
-        // Sex / gender / pronoun
         c.setSex(source.getSex());
         c.setSexDesc(source.getSexDesc());
         c.setGender(source.getGender());
         c.setPronoun(source.getPronoun());
         c.setGenderId(source.getGenderId());
         c.setPronounId(source.getPronounId());
-
-        // Date of birth
         c.setYearOfBirth(source.getYearOfBirth());
         c.setMonthOfBirth(source.getMonthOfBirth());
         c.setDateOfBirth(source.getDateOfBirth());
-
-        // Health card
         c.setHin(source.getHin());
         c.setVer(source.getVer());
         c.setHcType(source.getHcType());
         c.setHcRenewDate(source.getHcRenewDate());
-
-        // Contact
         c.setPhone(source.getPhone());
         c.setPhone2(source.getPhone2());
         c.setCellPhone(source.getCellPhone());
         c.setPhoneComment(source.getPhoneComment());
         c.setEmail(source.getEmail());
         c.setConsentToUseEmailForCare(source.getConsentToUseEmailForCare());
-
-        // Address
         c.setAddress(source.getAddress());
         c.setCity(source.getCity());
         c.setProvince(source.getProvince());
@@ -417,8 +396,6 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         c.setResidentialCity(source.getResidentialCity());
         c.setResidentialProvince(source.getResidentialProvince());
         c.setResidentialPostal(source.getResidentialPostal());
-
-        // Provider / roster
         c.setProviderNo(source.getProviderNo());
         c.setRosterStatus(source.getRosterStatus());
         c.setRosterDate(source.getRosterDate());
@@ -428,18 +405,12 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         c.setPcnIndicator(source.getPcnIndicator());
         c.setFamilyDoctor(source.getFamilyDoctor());
         c.setFamilyPhysician(source.getFamilyPhysician());
-
-        // Dates
         c.setDateJoined(source.getDateJoined());
         c.setEffDate(source.getEffDate());
         c.setEndDate(source.getEndDate());
-
-        // Administrative
         c.setChartNo(source.getChartNo());
         c.setLinks(source.getLinks());
         c.setPatientType(source.getPatientType());
-
-        // Socioeconomic / personal
         c.setChildren(source.getChildren());
         c.setSourceOfIncome(source.getSourceOfIncome());
         c.setCitizenship(source.getCitizenship());
