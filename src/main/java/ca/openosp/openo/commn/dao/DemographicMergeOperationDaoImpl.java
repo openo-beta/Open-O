@@ -283,6 +283,154 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     }
 
     // -------------------------------------------------------------------------
+    // ── Identity tables
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void copyIdentityTables(Integer sourceDemoNo, Integer targetDemoNo, boolean isSecondary) {
+        System.out.println("\n=== COPY IDENTITY TABLES: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " (isSecondary=" + isSecondary + ") ===");
+        long t0 = System.currentTimeMillis();
+
+        // Clear the Hibernate session cache before starting so that accumulated entities from
+        // previously run group methods do not inflate dirty-check cost during this group's flushes.
+        entityManager.clear();
+        
+        // demographicExt
+        if (!isSecondary) {
+            // Primary pass: copy all rows
+            copyEntityRows(DemographicExt.class, "DemographicExt", "demographicNo",
+                    sourceDemoNo, targetDemoNo,
+                    e -> (long) e.getId(), e -> e.setId(null),
+                    (e, d) -> e.setDemographicNo(d));
+        } else {
+            // Secondary pass: skip rows whose key_val already exists for the target
+            List<String> existingKeys = entityManager.createQuery("SELECT e.key FROM DemographicExt e WHERE e.demographicNo = :demo", String.class)
+                .setParameter("demo", targetDemoNo)
+                .getResultList();
+
+            List<DemographicExt> sourceExts = entityManager.createQuery("SELECT e FROM DemographicExt e WHERE e.demographicNo = :demo", DemographicExt.class)
+                .setParameter("demo", sourceDemoNo)
+                .getResultList();
+
+            for (DemographicExt ext : sourceExts) {
+                if (existingKeys.contains(ext.getKey())) {
+                    logger.debug("copyIdentityTables: skipping DemographicExt key='{}' already on target={}", ext.getKey(), targetDemoNo);
+                    continue;
+                }
+                entityManager.detach(ext);
+                ext.setId(null);
+                ext.setDemographicNo(targetDemoNo);
+                entityManager.persist(ext);
+                entityManager.flush();
+            }
+        }
+
+        // demographiccust — one row per patient; PK IS the demographicNo
+        List<DemographicCust> sourceCust = entityManager.createQuery("SELECT e FROM DemographicCust e WHERE e.id = :demo", DemographicCust.class)
+            .setParameter("demo", sourceDemoNo)
+            .getResultList();
+
+        if (!sourceCust.isEmpty()) {
+            List<DemographicCust> targetCustList = entityManager.createQuery("SELECT e FROM DemographicCust e WHERE e.id = :demo", DemographicCust.class)
+                .setParameter("demo", targetDemoNo)
+                .getResultList();
+
+            if (targetCustList.isEmpty()) {
+                // Primary pass (or secondary where target has no cust row): insert a fresh copy
+                DemographicCust cust = sourceCust.get(0);
+                entityManager.detach(cust);
+                cust.setId(targetDemoNo);
+                entityManager.persist(cust);
+                entityManager.flush();
+            } else if (isSecondary) {
+                // Secondary pass: field-level merge — fill NULL/empty fields from this secondary
+                DemographicCust src = sourceCust.get(0);
+                DemographicCust target = targetCustList.get(0);
+                boolean dirty = false;
+                if ((target.getNurse() == null || target.getNurse().isEmpty()) && src.getNurse() != null && !src.getNurse().isEmpty()) {
+                    target.setNurse(src.getNurse()); dirty = true;
+                }
+                if ((target.getResident() == null || target.getResident().isEmpty()) && src.getResident() != null && !src.getResident().isEmpty()) {
+                    target.setResident(src.getResident()); dirty = true;
+                }
+                if ((target.getAlert() == null || target.getAlert().isEmpty()) && src.getAlert() != null && !src.getAlert().isEmpty()) {
+                    target.setAlert(src.getAlert()); dirty = true;
+                }
+                if ((target.getMidwife() == null || target.getMidwife().isEmpty()) && src.getMidwife() != null && !src.getMidwife().isEmpty()) {
+                    target.setMidwife(src.getMidwife()); dirty = true;
+                }
+                if ((target.getNotes() == null || target.getNotes().isEmpty()) && src.getNotes() != null && !src.getNotes().isEmpty()) {
+                    target.setNotes(src.getNotes()); dirty = true;
+                }
+                if (dirty) {
+                    entityManager.flush();
+                    logger.debug("copyIdentityTables: DemographicCust field-level merge applied from source={} to target={}", sourceDemoNo, targetDemoNo);
+                }
+            } else {
+                logger.debug("copyIdentityTables: target={} already has DemographicCust row, skipping primary insert", targetDemoNo);
+            }
+        }
+
+        // other_id — FK is tableId (String) representing demographicNo
+        if (!isSecondary) {
+            // Primary pass: copy all rows
+            List<OtherId> otherIds = entityManager.createQuery("SELECT e FROM OtherId e WHERE e.tableId = :tid", OtherId.class)
+                .setParameter("tid", String.valueOf(sourceDemoNo))
+                .getResultList();
+            for (OtherId oid : otherIds) {
+                entityManager.detach(oid);
+                oid.setId(null);
+                oid.setTableId(String.valueOf(targetDemoNo));
+                entityManager.persist(oid);
+                entityManager.flush();
+            }
+        } else {
+            // Secondary pass: skip rows whose otherKey already exists for the target
+            List<String> existingOtherKeys = entityManager.createQuery("SELECT e.otherKey FROM OtherId e WHERE e.tableId = :tid", String.class)
+                .setParameter("tid", String.valueOf(targetDemoNo))
+                .getResultList();
+
+            List<OtherId> sourceOtherIds = entityManager.createQuery("SELECT e FROM OtherId e WHERE e.tableId = :tid", OtherId.class)
+                .setParameter("tid", String.valueOf(sourceDemoNo))
+                .getResultList();
+
+            for (OtherId oid : sourceOtherIds) {
+                if (existingOtherKeys.contains(oid.getOtherKey())) {
+                    logger.debug("copyIdentityTables: skipping OtherId otherKey='{}' already on target={}", oid.getOtherKey(), targetDemoNo);
+                    continue;
+                }
+                entityManager.detach(oid);
+                oid.setId(null);
+                oid.setTableId(String.valueOf(targetDemoNo));
+                entityManager.persist(oid);
+                entityManager.flush();
+            }
+        }
+
+        // demographicExtArchive — HQL bulk INSERT: leaf table, PK never captured, no child FK.
+        // Expected: ~825 rows across both passes → ~1.6 sec → < 50 ms.
+        long tDea = System.currentTimeMillis();
+        int deaCount = entityManager.createQuery(
+            "INSERT INTO DemographicExtArchive (archiveId, demographicNo, providerNo, key, value, dateCreated, hidden) " +
+            "SELECT e.archiveId, :targetDemo, e.providerNo, e.key, e.value, e.dateCreated, e.hidden " +
+            "FROM DemographicExtArchive e WHERE e.demographicNo = :sourceDemo")
+            .setParameter("targetDemo", targetDemoNo)
+            .setParameter("sourceDemo", sourceDemoNo)
+            .executeUpdate();
+        System.out.println("    [DemographicExtArchive] copied " + deaCount + " rows  (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ")  [HQL bulk]  [" + (System.currentTimeMillis() - tDea) + "ms]");
+        logger.debug("copyIdentityTables: DemographicExtArchive rows={} [HQL bulk]", deaCount);
+
+        // demographiccustArchive — copy all rows regardless of pass
+        copyEntityRows(DemographicCustArchive.class, "DemographicCustArchive", "demographicNo",
+                sourceDemoNo, targetDemoNo,
+                e -> (long) e.getId(), e -> e.setId(null),
+                (e, d) -> e.setDemographicNo(d));
+
+        logger.debug("copyIdentityTables: source={}, target={}, isSecondary={} — complete", sourceDemoNo, targetDemoNo, isSecondary);
+        System.out.println("=== COPY IDENTITY TABLES DONE (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ", isSecondary=" + isSecondary + ")  [" + (System.currentTimeMillis() - t0) + "ms] ===");
+    }
+
+    // -------------------------------------------------------------------------
     // ── Appointments + clinical direct-copy records
     // -------------------------------------------------------------------------
 
@@ -1516,151 +1664,4 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         System.out.println("=== COPY ISSUE-NOTES DONE  [" + (System.currentTimeMillis() - t0) + "ms] ===");
     }
 
-    // -------------------------------------------------------------------------
-    // ── Identity tables
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void copyIdentityTables(Integer sourceDemoNo, Integer targetDemoNo, boolean isSecondary) {
-        System.out.println("\n=== COPY IDENTITY TABLES: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " (isSecondary=" + isSecondary + ") ===");
-        long t0 = System.currentTimeMillis();
-
-        // Clear the Hibernate session cache before starting so that accumulated entities from
-        // previously run group methods do not inflate dirty-check cost during this group's flushes.
-        entityManager.clear();
-        
-        // demographicExt
-        if (!isSecondary) {
-            // Primary pass: copy all rows
-            copyEntityRows(DemographicExt.class, "DemographicExt", "demographicNo",
-                    sourceDemoNo, targetDemoNo,
-                    e -> (long) e.getId(), e -> e.setId(null),
-                    (e, d) -> e.setDemographicNo(d));
-        } else {
-            // Secondary pass: skip rows whose key_val already exists for the target
-            List<String> existingKeys = entityManager.createQuery("SELECT e.key FROM DemographicExt e WHERE e.demographicNo = :demo", String.class)
-                .setParameter("demo", targetDemoNo)
-                .getResultList();
-
-            List<DemographicExt> sourceExts = entityManager.createQuery("SELECT e FROM DemographicExt e WHERE e.demographicNo = :demo", DemographicExt.class)
-                .setParameter("demo", sourceDemoNo)
-                .getResultList();
-
-            for (DemographicExt ext : sourceExts) {
-                if (existingKeys.contains(ext.getKey())) {
-                    logger.debug("copyIdentityTables: skipping DemographicExt key='{}' already on target={}", ext.getKey(), targetDemoNo);
-                    continue;
-                }
-                entityManager.detach(ext);
-                ext.setId(null);
-                ext.setDemographicNo(targetDemoNo);
-                entityManager.persist(ext);
-                entityManager.flush();
-            }
-        }
-
-        // demographiccust — one row per patient; PK IS the demographicNo
-        List<DemographicCust> sourceCust = entityManager.createQuery("SELECT e FROM DemographicCust e WHERE e.id = :demo", DemographicCust.class)
-            .setParameter("demo", sourceDemoNo)
-            .getResultList();
-
-        if (!sourceCust.isEmpty()) {
-            List<DemographicCust> targetCustList = entityManager.createQuery("SELECT e FROM DemographicCust e WHERE e.id = :demo", DemographicCust.class)
-                .setParameter("demo", targetDemoNo)
-                .getResultList();
-
-            if (targetCustList.isEmpty()) {
-                // Primary pass (or secondary where target has no cust row): insert a fresh copy
-                DemographicCust cust = sourceCust.get(0);
-                entityManager.detach(cust);
-                cust.setId(targetDemoNo);
-                entityManager.persist(cust);
-                entityManager.flush();
-            } else if (isSecondary) {
-                // Secondary pass: field-level merge — fill NULL/empty fields from this secondary
-                DemographicCust src = sourceCust.get(0);
-                DemographicCust target = targetCustList.get(0);
-                boolean dirty = false;
-                if ((target.getNurse() == null || target.getNurse().isEmpty()) && src.getNurse() != null && !src.getNurse().isEmpty()) {
-                    target.setNurse(src.getNurse()); dirty = true;
-                }
-                if ((target.getResident() == null || target.getResident().isEmpty()) && src.getResident() != null && !src.getResident().isEmpty()) {
-                    target.setResident(src.getResident()); dirty = true;
-                }
-                if ((target.getAlert() == null || target.getAlert().isEmpty()) && src.getAlert() != null && !src.getAlert().isEmpty()) {
-                    target.setAlert(src.getAlert()); dirty = true;
-                }
-                if ((target.getMidwife() == null || target.getMidwife().isEmpty()) && src.getMidwife() != null && !src.getMidwife().isEmpty()) {
-                    target.setMidwife(src.getMidwife()); dirty = true;
-                }
-                if ((target.getNotes() == null || target.getNotes().isEmpty()) && src.getNotes() != null && !src.getNotes().isEmpty()) {
-                    target.setNotes(src.getNotes()); dirty = true;
-                }
-                if (dirty) {
-                    entityManager.flush();
-                    logger.debug("copyIdentityTables: DemographicCust field-level merge applied from source={} to target={}", sourceDemoNo, targetDemoNo);
-                }
-            } else {
-                logger.debug("copyIdentityTables: target={} already has DemographicCust row, skipping primary insert", targetDemoNo);
-            }
-        }
-
-        // other_id — FK is tableId (String) representing demographicNo
-        if (!isSecondary) {
-            // Primary pass: copy all rows
-            List<OtherId> otherIds = entityManager.createQuery("SELECT e FROM OtherId e WHERE e.tableId = :tid", OtherId.class)
-                .setParameter("tid", String.valueOf(sourceDemoNo))
-                .getResultList();
-            for (OtherId oid : otherIds) {
-                entityManager.detach(oid);
-                oid.setId(null);
-                oid.setTableId(String.valueOf(targetDemoNo));
-                entityManager.persist(oid);
-                entityManager.flush();
-            }
-        } else {
-            // Secondary pass: skip rows whose otherKey already exists for the target
-            List<String> existingOtherKeys = entityManager.createQuery("SELECT e.otherKey FROM OtherId e WHERE e.tableId = :tid", String.class)
-                .setParameter("tid", String.valueOf(targetDemoNo))
-                .getResultList();
-
-            List<OtherId> sourceOtherIds = entityManager.createQuery("SELECT e FROM OtherId e WHERE e.tableId = :tid", OtherId.class)
-                .setParameter("tid", String.valueOf(sourceDemoNo))
-                .getResultList();
-
-            for (OtherId oid : sourceOtherIds) {
-                if (existingOtherKeys.contains(oid.getOtherKey())) {
-                    logger.debug("copyIdentityTables: skipping OtherId otherKey='{}' already on target={}", oid.getOtherKey(), targetDemoNo);
-                    continue;
-                }
-                entityManager.detach(oid);
-                oid.setId(null);
-                oid.setTableId(String.valueOf(targetDemoNo));
-                entityManager.persist(oid);
-                entityManager.flush();
-            }
-        }
-
-        // demographicExtArchive — HQL bulk INSERT: leaf table, PK never captured, no child FK.
-        // Expected: ~825 rows across both passes → ~1.6 sec → < 50 ms.
-        long tDea = System.currentTimeMillis();
-        int deaCount = entityManager.createQuery(
-            "INSERT INTO DemographicExtArchive (archiveId, demographicNo, providerNo, key, value, dateCreated, hidden) " +
-            "SELECT e.archiveId, :targetDemo, e.providerNo, e.key, e.value, e.dateCreated, e.hidden " +
-            "FROM DemographicExtArchive e WHERE e.demographicNo = :sourceDemo")
-            .setParameter("targetDemo", targetDemoNo)
-            .setParameter("sourceDemo", sourceDemoNo)
-            .executeUpdate();
-        System.out.println("    [DemographicExtArchive] copied " + deaCount + " rows  (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ")  [HQL bulk]  [" + (System.currentTimeMillis() - tDea) + "ms]");
-        logger.debug("copyIdentityTables: DemographicExtArchive rows={} [HQL bulk]", deaCount);
-
-        // demographiccustArchive — copy all rows regardless of pass
-        copyEntityRows(DemographicCustArchive.class, "DemographicCustArchive", "demographicNo",
-                sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
-                (e, d) -> e.setDemographicNo(d));
-
-        logger.debug("copyIdentityTables: source={}, target={}, isSecondary={} — complete", sourceDemoNo, targetDemoNo, isSecondary);
-        System.out.println("=== COPY IDENTITY TABLES DONE (source=" + sourceDemoNo + " -> target=" + targetDemoNo + ", isSecondary=" + isSecondary + ")  [" + (System.currentTimeMillis() - t0) + "ms] ===");
-    }
 }
