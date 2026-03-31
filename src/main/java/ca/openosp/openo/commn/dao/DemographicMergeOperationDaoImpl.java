@@ -1387,6 +1387,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         }
 
         // tickler_link — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        // Stores which clinical entities (appointments, notes, etc.) are linked to each tickler.
         for (Map.Entry<Long, Long> entry : ticklerPkMap.entrySet()) {
             entityManager.createQuery(
                 "INSERT INTO TicklerLink (ticklerNo, tableName, tableId) " +
@@ -1397,8 +1398,21 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 .executeUpdate();
         }
 
+        // tickler_comments — per-parent HQL bulk INSERT: child PKs not needed downstream.
+        // Stores the free-text comment history written against each tickler (FK: ticklerNo → tickler.id).
+        // No demographicNo column on this table — it is linked to the patient only through ticklerNo.
+        for (Map.Entry<Long, Long> entry : ticklerPkMap.entrySet()) {
+            entityManager.createQuery(
+                "INSERT INTO TicklerComment (ticklerNo, message, providerNo, updateDate) " +
+                "SELECT :newId, e.message, e.providerNo, e.updateDate " +
+                "FROM TicklerComment e WHERE e.ticklerNo = :oldId")
+                .setParameter("newId", entry.getValue().intValue())
+                .setParameter("oldId", entry.getKey().intValue())
+                .executeUpdate();
+        }
+
         logger.debug("copyTicklerGroup: source={}, target={}, tickler rows={}", sourceDemoNo, targetDemoNo, ticklerPkMap.size());
-        System.out.println("=== COPY TICKLER GROUP DONE: " + ticklerPkMap.size() + " tickler(s) + links copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
+        System.out.println("=== COPY TICKLER GROUP DONE: " + ticklerPkMap.size() + " tickler(s) + links + comments copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
         return ticklerPkMap;
     }
 
