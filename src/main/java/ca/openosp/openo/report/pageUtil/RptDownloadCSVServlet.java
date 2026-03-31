@@ -297,13 +297,18 @@ public class RptDownloadCSVServlet extends HttpServlet {
             Vector vecVar = RptReportCreator.getVarVec(tempVal);
             Vector vecVarValue = new Vector();
             for (int j = 0; j < vecVar.size(); j++) {
+                String paramValue;
                 // conver date format if needed
                 if (((String) vecVar.get(j)).matches(VARNAME_FORMAT) && ((String) vecDateFormat.get(i)).length() > 1) {
-                    vecVarValue.add(RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
-                            (String) vecDateFormat.get(i), "yyyy-MM-dd"));
+                    paramValue = RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
+                            (String) vecDateFormat.get(i), "yyyy-MM-dd");
                 } else {
-                    vecVarValue.add(request.getParameter((String) vecVar.get(j)));
+                    paramValue = request.getParameter((String) vecVar.get(j));
                 }
+                if (paramValue != null && !paramValue.matches("^[a-zA-Z0-9_ \\-/:.,%]*$")) {
+                    throw new SecurityException("Invalid characters in report query parameter");
+                }
+                vecVarValue.add(paramValue);
             }
             String strFilter = RptReportCreator.getWhereValueClause(tempVal, vecVarValue);
             if (strFilter.indexOf("demographic.") >= 0) {

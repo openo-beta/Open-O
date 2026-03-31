@@ -1100,7 +1100,7 @@ public class MSPReconcile {
         BillSearch billSearch = new BillSearch();
         HashMap<String, Vector<String>> rejDetails = null;
         boolean skipBill = false;
-        String criteriaQry = createCriteriaString(account, payeeNo, providerNo, startDate, endDate, excludeWCB, excludeMSP, excludePrivate, exludeICBC, type, "");
+        ParameterizedCriteria criteria = createParameterizedCriteria(account, payeeNo, providerNo, startDate, endDate, excludeWCB, excludeMSP, excludePrivate, exludeICBC, type, "");
         Properties c12 = new Properties();
         String orderByClause = "order by billingstatus";
 
@@ -1110,8 +1110,15 @@ public class MSPReconcile {
             orderByClause = "order by b.provider_no,bt.sortOrder,bm.service_date,b.demographic_name";
             c12 = currentC12Records();
         }
-        String p = "select provider.first_name,provider.last_name,b.billingtype, b.update_date, bm.billingmaster_no,b.billing_no, " + " b.demographic_name,b.demographic_no,bm.billing_unit,bm.billing_code,bm.bill_amount,bm.billingstatus,bm.mva_claim_code,bm.service_location," + " bm.phn,bm.service_end_time,service_start_time,bm.service_to_day,bm.service_date,bm.oin_sex_code,b.dob,dx_code1,b.provider_no,apptProvider_no,bt.sortOrder "
-                + " from demographic,provider,billing as b left join billingtypes bt on b.billingtype = bt.billingtype ,billingmaster as bm left join billingstatus_types bs on bm.billingstatus = bs.billingstatus" + " where bm.billing_no=b.billing_no " + " and b.provider_no = provider.provider_no " + " and demographic.demographic_no = b.demographic_no " + criteriaQry + " " + orderByClause;
+        String baseSelect = """
+                select provider.first_name,provider.last_name,b.billingtype, b.update_date, bm.billingmaster_no,b.billing_no,
+                b.demographic_name,b.demographic_no,bm.billing_unit,bm.billing_code,bm.bill_amount,bm.billingstatus,bm.mva_claim_code,bm.service_location,
+                bm.phn,bm.service_end_time,service_start_time,bm.service_to_day,bm.service_date,bm.oin_sex_code,b.dob,dx_code1,b.provider_no,apptProvider_no,bt.sortOrder
+                from demographic,provider,billing as b left join billingtypes bt on b.billingtype = bt.billingtype ,billingmaster as bm left join billingstatus_types bs on bm.billingstatus = bs.billingstatus
+                where bm.billing_no=b.billing_no
+                and b.provider_no = provider.provider_no
+                and demographic.demographic_no = b.demographic_no\s""";
+        String fullQuery = baseSelect + criteria.sql + " " + orderByClause;
 
         if (type.equals(REP_REJ)) {
             rejDetails = this.getRejectionDetails();
@@ -1122,10 +1129,9 @@ public class MSPReconcile {
         billSearch.justBillingMaster = new ArrayList<String>();
 
         ResultSet rs = null;
-        MiscUtils.getLogger().debug("p=" + p);
         try {
 
-            rs = DBHandler.GetSQL(p);
+            rs = DBHandler.GetPreSQL(fullQuery, criteria.params.toArray());
 
             while (rs.next()) {
                 MSPBill b = new MSPBill();
@@ -1329,9 +1335,15 @@ public class MSPReconcile {
      */
     public MSPReconcile.BillSearch getPayments(String account, String payeeNo, String providerNo, String startDate, String endDate, boolean excludeWCB, boolean excludeMSP, boolean excludePrivate, boolean exludeICBC) {
         BillSearch billSearch = new BillSearch();
-        String criteriaQry = createCriteriaString(account, payeeNo, providerNo, UtilMisc.replace(startDate, "-", ""), UtilMisc.replace(endDate, "-", ""), excludeWCB, excludeMSP, excludePrivate, exludeICBC, MSPReconcile.REP_PAYREF, "");
-        String p = "SELECT teleplanS00.t_payment,b.billingtype,b.demographic_name,apptProvider_no,provider_no,payee_no,b.demographic_no,teleplanS00.t_paidamt,t_exp1,t_exp2,t_dataseq,bm.service_date,bm.paymentMethod,teleplanS00.t_ajc1," + " teleplanS00.t_aja1,teleplanS00.t_aja2,teleplanS00.t_aja3,teleplanS00.t_aja4,teleplanS00.t_aja5,teleplanS00.t_aja6,teleplanS00.t_aja7,bm.billingmaster_no,teleplanS00.t_practitionerno"
-                + " FROM teleplanS00 left join billingmaster as bm on teleplanS00.t_officeno = bm.billingmaster_no,billing as b" + " where b.billing_no = bm.billing_no" + criteriaQry + " and bm.billingstatus != 'D'" + " order by t_payment";
+        ParameterizedCriteria criteria = createParameterizedCriteria(account, payeeNo, providerNo, UtilMisc.replace(startDate, "-", ""), UtilMisc.replace(endDate, "-", ""), excludeWCB, excludeMSP, excludePrivate, exludeICBC, MSPReconcile.REP_PAYREF, "");
+        String baseSelect = """
+                SELECT teleplanS00.t_payment,b.billingtype,b.demographic_name,apptProvider_no,provider_no,payee_no,b.demographic_no,
+                teleplanS00.t_paidamt,t_exp1,t_exp2,t_dataseq,bm.service_date,bm.paymentMethod,teleplanS00.t_ajc1,
+                teleplanS00.t_aja1,teleplanS00.t_aja2,teleplanS00.t_aja3,teleplanS00.t_aja4,teleplanS00.t_aja5,teleplanS00.t_aja6,teleplanS00.t_aja7,
+                bm.billingmaster_no,teleplanS00.t_practitionerno
+                FROM teleplanS00 left join billingmaster as bm on teleplanS00.t_officeno = bm.billingmaster_no,billing as b
+                where b.billing_no = bm.billing_no\s""";
+        String fullQuery = baseSelect + criteria.sql + " and bm.billingstatus != 'D' order by t_payment";
 
         billSearch.list = new ArrayList<Object>();
         billSearch.count = 0;
@@ -1340,7 +1352,7 @@ public class MSPReconcile {
         ResultSet rs = null;
         try {
 
-            rs = DBHandler.GetSQL(p);
+            rs = DBHandler.GetPreSQL(fullQuery, criteria.params.toArray());
             while (rs.next()) {
                 MSPBill b = new MSPBill();
                 b.billingtype = rs.getString("b.billingtype");
@@ -1455,15 +1467,19 @@ public class MSPReconcile {
 
         endDate = UtilMisc.replace(endDate, "-", "");
         BillSearch billSearch = new BillSearch();
-        String criteriaQry = createCriteriaString(account, payeeNo, providerNo, startDate, endDate, true, true, false, true, "", "creation_date");
-        String p = "SELECT b.billingtype,bm.billingmaster_no,b.demographic_no,b.demographic_name,bm.service_date,b.apptProvider_no ,b.provider_no,bm.payee_no," + " bh.creation_date,bh.amount_received,payment_type_id" + " FROM billing_history bh left join billingmaster bm on bh.billingmaster_no = bm.billingmaster_no ,billing b" + " where bm.billing_no = b.billing_no " + " and bh.payment_type_id != " + MSPReconcile.PAYTYPE_IA + " " + criteriaQry + " and bm.billingstatus != '" + MSPReconcile.DELETED + "'";
-        MiscUtils.getLogger().debug(p);
+        ParameterizedCriteria criteria = createParameterizedCriteria(account, payeeNo, providerNo, startDate, endDate, true, true, false, true, "", "creation_date");
+        String baseSelect = """
+                SELECT b.billingtype,bm.billingmaster_no,b.demographic_no,b.demographic_name,bm.service_date,
+                b.apptProvider_no,b.provider_no,bm.payee_no,bh.creation_date,bh.amount_received,payment_type_id
+                FROM billing_history bh left join billingmaster bm on bh.billingmaster_no = bm.billingmaster_no, billing b
+                where bm.billing_no = b.billing_no\s""";
+        String fullQuery = baseSelect + " and bh.payment_type_id != " + MSPReconcile.PAYTYPE_IA + " " + criteria.sql + " and bm.billingstatus != '" + MSPReconcile.DELETED + "'";
         billSearch.list = new ArrayList<Object>();
 
         ResultSet rs = null;
         try {
 
-            rs = DBHandler.GetSQL(p);
+            rs = DBHandler.GetPreSQL(fullQuery, criteria.params.toArray());
             while (rs.next()) {
                 MSPBill b = new MSPBill();
                 b.billMasterNo = rs.getString("bm.billingmaster_no");
@@ -1517,15 +1533,19 @@ public class MSPReconcile {
 
         endDate = UtilMisc.replace(endDate, "-", "");
         BillSearch billSearch = new BillSearch();
-        String criteriaQry = createCriteriaString(account, payeeNo, providerNo, startDate, endDate, true, true, false, true, "", "creation_date");
-        String p = "SELECT b.billingtype,bm.billingmaster_no,b.demographic_no,b.demographic_name,bm.service_date,b.apptProvider_no ,b.provider_no,bm.payee_no," + " bh.creation_date,bh.amount_received,payment_type_id" + " FROM billing_history bh left join billingmaster bm on bh.billingmaster_no = bm.billingmaster_no ,billing b" + " where bm.billing_no = b.billing_no " + " and bh.payment_type_id != " + MSPReconcile.PAYTYPE_IA + " " + criteriaQry + " and bm.billingstatus != '" + MSPReconcile.DELETED + "'";
-        MiscUtils.getLogger().debug(p);
+        ParameterizedCriteria criteria = createParameterizedCriteria(account, payeeNo, providerNo, startDate, endDate, true, true, false, true, "", "creation_date");
+        String baseSelect = """
+                SELECT b.billingtype,bm.billingmaster_no,b.demographic_no,b.demographic_name,bm.service_date,
+                b.apptProvider_no,b.provider_no,bm.payee_no,bh.creation_date,bh.amount_received,payment_type_id
+                FROM billing_history bh left join billingmaster bm on bh.billingmaster_no = bm.billingmaster_no, billing b
+                where bm.billing_no = b.billing_no\s""";
+        String fullQuery = baseSelect + " and bh.payment_type_id != " + MSPReconcile.PAYTYPE_IA + " " + criteria.sql + " and bm.billingstatus != '" + MSPReconcile.DELETED + "'";
         billSearch.list = new ArrayList<Object>();
 
         ResultSet rs = null;
         try {
 
-            rs = DBHandler.GetSQL(p);
+            rs = DBHandler.GetPreSQL(fullQuery, criteria.params.toArray());
             while (rs.next()) {
                 MSPBill b = new MSPBill();
                 b.billMasterNo = rs.getString("bm.billingmaster_no");
@@ -1607,11 +1627,22 @@ public class MSPReconcile {
      * @param dateFieldOption String
      * @return String
      */
-    private String createCriteriaString(String account, String payeeNo, String providerNo, String startDate, String endDate, boolean excludeWCB, boolean excludeMSP, boolean excludePrivate, boolean exludeICBC, String repType, String dateFieldOption) {
-        String criteriaQry = "";
-        String dateField = MSPReconcile.REP_PAYREF.equals(repType) ? "t_payment" : "service_date";
+    /**
+     * Holds a parameterized WHERE clause fragment and its bind parameters.
+     */
+    private static class ParameterizedCriteria {
+        final String sql;
+        final List<Object> params;
+        ParameterizedCriteria(String sql, List<Object> params) {
+            this.sql = sql;
+            this.params = params;
+        }
+    }
 
-        //This class in need of significant refactoring,(especially this gawd-aweful section which was extracted from the getBills method purely to avoid code duplication
+    private ParameterizedCriteria createParameterizedCriteria(String account, String payeeNo, String providerNo, String startDate, String endDate, boolean excludeWCB, boolean excludeMSP, boolean excludePrivate, boolean exludeICBC, String repType, String dateFieldOption) {
+        StringBuilder criteriaQry = new StringBuilder();
+        List<Object> params = new ArrayList<>();
+        String dateField = MSPReconcile.REP_PAYREF.equals(repType) ? "t_payment" : "service_date";
 
         if ("creation_date".equals(dateFieldOption)) {
             dateField = "creation_date";
@@ -1620,56 +1651,57 @@ public class MSPReconcile {
             if (MSPReconcile.REP_PAYREF.equals(repType)) {
                 String[] row = SqlUtils.getRow("select ohip_no from provider where provider_no = ?", providerNo);
                 if (row != null && row.length > 0) {
-                    String ohip_no = row[0];
-                    criteriaQry += " and t_practitionerno = '" + ohip_no + "'";
+                    criteriaQry.append(" and t_practitionerno = ?");
+                    params.add(row[0]);
                 } else {
                     throw new RuntimeException("Provider must have ohip no!");
                 }
             } else {
-                criteriaQry += " and b.apptProvider_no = '" + providerNo + "'";
+                criteriaQry.append(" and b.apptProvider_no = ?");
+                params.add(providerNo);
             }
         }
 
         if (payeeNo != null && !payeeNo.trim().equalsIgnoreCase("all")) {
-            criteriaQry += " and bm.payee_no LIKE '" + payeeNo + "'";
+            criteriaQry.append(" and bm.payee_no LIKE ?");
+            params.add(payeeNo);
         }
         if (account != null && !account.trim().equalsIgnoreCase("all")) {
-            criteriaQry += " and b.provider_no LIKE '" + account + "'";
+            criteriaQry.append(" and b.provider_no LIKE ?");
+            params.add(account);
         }
         if (startDate != null && !startDate.trim().equalsIgnoreCase("")) {
-            criteriaQry += " and ( to_days(" + dateField + ") >= to_days('" + startDate + "')) ";
+            criteriaQry.append(" and ( to_days(").append(dateField).append(") >= to_days(?)) ");
+            params.add(startDate);
         }
 
         if (endDate != null && !endDate.trim().equalsIgnoreCase("")) {
-            criteriaQry += " and ( to_days(" + dateField + ") <= to_days('" + endDate + "')) ";
+            criteriaQry.append(" and ( to_days(").append(dateField).append(") <= to_days(?)) ");
+            params.add(endDate);
         }
-        //put this crap in a Map and use an 'in' clause instead
         if (excludeWCB) {
-            criteriaQry += " and b.billingType != 'WCB' ";
+            criteriaQry.append(" and b.billingType != 'WCB' ");
         }
-
         if (excludeMSP) {
-            criteriaQry += " and b.billingType != 'MSP' ";
+            criteriaQry.append(" and b.billingType != 'MSP' ");
         }
-
         if (excludePrivate) {
-            criteriaQry += " and b.billingType != 'Pri' ";
+            criteriaQry.append(" and b.billingType != 'Pri' ");
         }
-
         if (exludeICBC) {
-            criteriaQry += " and b.billingType != 'ICBC' ";
+            criteriaQry.append(" and b.billingType != 'ICBC' ");
         }
 
         if (repType.equals(MSPReconcile.REP_REJ)) {
-            criteriaQry += " and bm.billingstatus = '" + MSPReconcile.REJECTED + "'";
+            criteriaQry.append(" and bm.billingstatus = '").append(MSPReconcile.REJECTED).append("'");
         } else if (repType.equals(MSPReconcile.REP_INVOICE)) {
-            criteriaQry += " and bm.billingstatus != '" + MSPReconcile.DELETED + "'";
+            criteriaQry.append(" and bm.billingstatus != '").append(MSPReconcile.DELETED).append("'");
         } else if (repType.equals(MSPReconcile.REP_ACCOUNT_REC)) {
-            criteriaQry += " and bm.billingstatus not in('" + MSPReconcile.DELETED + "','" + MSPReconcile.BADDEBT + "')";
+            criteriaQry.append(" and bm.billingstatus not in('").append(MSPReconcile.DELETED).append("','").append(MSPReconcile.BADDEBT).append("')");
         } else if (repType.equals(MSPReconcile.REP_WO)) {
-            criteriaQry += " and bm.billingstatus = '" + MSPReconcile.BADDEBT + "'";
+            criteriaQry.append(" and bm.billingstatus = '").append(MSPReconcile.BADDEBT).append("'");
         }
-        return criteriaQry;
+        return new ParameterizedCriteria(criteriaQry.toString(), params);
     }
 
     /**
@@ -1776,24 +1808,27 @@ public class MSPReconcile {
     public ResultSet getAdjustmentsMSPRemittanceQuery(String payeeNo, String s21Id) {
         MiscUtils.getLogger().debug(new java.util.Date() + ":MSPReconcile.getAdjustmentsMSPRemittanceQuery(payeeNo, s21Id)");
 
-        String qry = "SELECT b.billing_no, bm.billingmaster_no, bm.billing_code,p.first_name,p.last_name,ts00.t_practitionerno,ts00.t_s00type,ts00.t_msprcddate, bm.service_date,ts00.t_payment, ts00.t_datacenter,b.demographic_name,b.demographic_no,\n" +
-                "IF(t_paidamt/100>bm.bill_amount, \"+\", IF(t_paidamt/100<bm.bill_amount,\"-\",\"\")) as differential,ts00.t_paidamt,bm.bill_amount,\n" +
-                "ts00.t_exp1,ts00.t_exp2,ts00.t_exp3,ts00.t_exp4,ts00.t_exp5,ts00.t_exp6,ts00.t_dataseq,\n" +
-                "t_ajc1, t_aja1, t_ajc2, t_aja2, t_ajc3, t_aja3, t_ajc4, t_aja4, t_ajc5, t_aja5, t_ajc6, t_aja6, t_ajc7, t_aja7\n" +
-                "\n" +
-                "from teleplanS00 ts00\n" +
-                "join billingmaster bm on ts00.t_officeno = bm.billingmaster_no\n" +
-                "join billing b on bm.billing_no = b.billing_no\n" +
-                "join provider p on p.ohip_no= ts00.t_practitionerno\n" +
-                "where ts00.s21_id = " + s21Id + "\n" +
-                "and ts00.t_practitionerno != '' \n" +
-                "and ts00.t_payeeno = '" + payeeNo + "'\n" +
-                "order by p.first_name,bm.service_date,b.demographic_name;";
+        String qry = """
+                SELECT b.billing_no, bm.billingmaster_no, bm.billing_code,p.first_name,p.last_name,
+                ts00.t_practitionerno,ts00.t_s00type,ts00.t_msprcddate, bm.service_date,ts00.t_payment,
+                ts00.t_datacenter,b.demographic_name,b.demographic_no,
+                IF(t_paidamt/100>bm.bill_amount, '+', IF(t_paidamt/100<bm.bill_amount,'-','')) as differential,
+                ts00.t_paidamt,bm.bill_amount,
+                ts00.t_exp1,ts00.t_exp2,ts00.t_exp3,ts00.t_exp4,ts00.t_exp5,ts00.t_exp6,ts00.t_dataseq,
+                t_ajc1, t_aja1, t_ajc2, t_aja2, t_ajc3, t_aja3, t_ajc4, t_aja4, t_ajc5, t_aja5, t_ajc6, t_aja6, t_ajc7, t_aja7
+                from teleplanS00 ts00
+                join billingmaster bm on ts00.t_officeno = bm.billingmaster_no
+                join billing b on bm.billing_no = b.billing_no
+                join provider p on p.ohip_no= ts00.t_practitionerno
+                where ts00.s21_id = ?
+                and ts00.t_practitionerno != ''
+                and ts00.t_payeeno = ?
+                order by p.first_name,bm.service_date,b.demographic_name""";
 
         ResultSet rs = null;
         try {
 
-            rs = DBHandler.GetSQL(qry);
+            rs = DBHandler.GetPreSQL(qry, s21Id, payeeNo);
         } catch (SQLException ex) {
             MiscUtils.getLogger().error("Error", ex);
         }
@@ -1811,19 +1846,20 @@ public class MSPReconcile {
     public boolean hasMatchingBillingRecord(String billingmasterNo, String receivedDate, String dataCenterNo) {
         MiscUtils.getLogger().debug(new java.util.Date() + ":MSPReconcile.hasMatchingBillingRecord(String billingmasterNo, String receivedDate, String dataCenterNo)");
 
-        String qry = "SELECT tsl.id \n" +
-                "FROM teleplan_submission_link tsl \n" +
-                "JOIN billingmaster bm on bm.billingmaster_no = tsl.billingmaster_no\n" +
-                "JOIN billactivity ba on ba.id = tsl.bill_activity_id\n" +
-                "WHERE tsl.billingmaster_no = " + billingmasterNo + "\n" +
-                "AND bm.datacenter = '" + dataCenterNo + "'\n" +
-                "AND ba.sentdate like '" + receivedDate + "';";
+        String qry = """
+                SELECT tsl.id
+                FROM teleplan_submission_link tsl
+                JOIN billingmaster bm on bm.billingmaster_no = tsl.billingmaster_no
+                JOIN billactivity ba on ba.id = tsl.bill_activity_id
+                WHERE tsl.billingmaster_no = ?
+                AND bm.datacenter = ?
+                AND ba.sentdate like ?""";
 
         ResultSet rs = null;
         boolean hasResults = false;
         try {
 
-            rs = DBHandler.GetSQL(qry);
+            rs = DBHandler.GetPreSQL(qry, billingmasterNo, dataCenterNo, receivedDate);
             hasResults = rs.next();
         } catch (SQLException ex) {
             MiscUtils.getLogger().error("Error", ex);

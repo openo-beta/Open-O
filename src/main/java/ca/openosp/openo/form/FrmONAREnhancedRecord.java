@@ -81,8 +81,8 @@ public class FrmONAREnhancedRecord extends FrmRecord {
             props.setProperty("pg1_formDate", UtilDateUtilities.DateToString(new Date(), dateFormat));
         } else {
             //join it up so the resulting props have values from all 3 tables
-            String sql = "SELECT * FROM formONAREnhancedRecord rec, formONAREnhancedRecordExt1 ext1, formONAREnhancedRecordExt2 ext2 WHERE rec.ID = ext1.ID and rec.ID = ext2.ID and rec.demographic_no = " + demographicNo + " AND rec.ID = " + existingID;
-            props = (new FrmRecordHelp()).getFormRecord(sql);
+            String sql = "SELECT * FROM formONAREnhancedRecord rec, formONAREnhancedRecordExt1 ext1, formONAREnhancedRecordExt2 ext2 WHERE rec.ID = ext1.ID and rec.ID = ext2.ID and rec.demographic_no = ? AND rec.ID = ?";
+            props = (new FrmRecordHelp()).getFormRecord(sql, demographicNo, existingID);
         }
 
         return props;
@@ -104,8 +104,8 @@ public class FrmONAREnhancedRecord extends FrmRecord {
 
     public Properties getPrintRecord(int demographicNo, int existingID) throws SQLException {
         //join the 3 tables
-        String sql = "SELECT * FROM formONAREnhancedRecord rec, formONAREnhancedRecordExt1 ext1, formONAREnhancedRecordExt2 ext2 WHERE rec.ID = ext1.ID and rec.ID = ext2.ID and rec.demographic_no = " + demographicNo + " AND rec.ID = " + existingID;
-        return ((new FrmRecordHelp()).getPrintRecord(sql));
+        String sql = "SELECT * FROM formONAREnhancedRecord rec, formONAREnhancedRecordExt1 ext1, formONAREnhancedRecordExt2 ext2 WHERE rec.ID = ext1.ID and rec.ID = ext2.ID and rec.demographic_no = ? AND rec.ID = ?";
+        return ((new FrmRecordHelp()).getPrintRecord(sql, demographicNo, existingID));
     }
 
     public String findActionValue(String submit) throws SQLException {

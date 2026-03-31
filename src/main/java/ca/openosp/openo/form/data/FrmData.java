@@ -308,8 +308,8 @@ public class FrmData {
         String ret = "";
 
 
-        String sql = "SELECT value FROM property WHERE name='resource'";
-        ResultSet rs = DBHandler.GetSQL(sql);
+        String sql = "SELECT value FROM property WHERE name = ?";
+        ResultSet rs = DBHandler.GetPreSQL(sql, "resource");
         while (rs.next()) {
             ret = Misc.getString(rs, "value");
         }

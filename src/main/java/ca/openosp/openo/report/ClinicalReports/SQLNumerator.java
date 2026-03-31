@@ -96,7 +96,7 @@ public class SQLNumerator implements Numerator {
 
         try {
 
-            ResultSet rs = DBHandler.GetSQL(sql.replaceAll("\\$\\{" + processString + "\\}", demographicNo));
+            ResultSet rs = DBHandler.GetPreSQL(sql.replaceAll("\\$\\{" + processString + "\\}", "?"), demographicNo);
             MiscUtils.getLogger().debug("SQL Statement: " + sql);
             while (rs.next()) {
                 int count = rs.getInt(identifier);
@@ -124,7 +124,7 @@ public class SQLNumerator implements Numerator {
         outputValues = null;
         try {
 
-            ResultSet rs = DBHandler.GetSQL(sql.replaceAll("\\$\\{" + processString + "\\}", demographicNo));
+            ResultSet rs = DBHandler.GetPreSQL(sql.replaceAll("\\$\\{" + processString + "\\}", "?"), demographicNo);
             MiscUtils.getLogger().debug("SQL Statement: " + sql);
             if (rs.next()) {
                 evalTrue = true;

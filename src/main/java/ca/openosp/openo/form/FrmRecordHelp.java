@@ -75,6 +75,8 @@ public class FrmRecordHelp {
         _dateFormat = s;
     }
 
+    /** @deprecated Use {@link #getFormRecord(String, Object...)} with parameterized SQL instead. */
+    @Deprecated
     public Properties getFormRecord(String sql) //int demographicNo, int existingID)
             throws SQLException {
         Properties props = new Properties();
@@ -82,31 +84,49 @@ public class FrmRecordHelp {
 
         ResultSet rs = DBHandler.GetSQL(sql);
         if (rs.next()) {
-            ResultSetMetaData md = rs.getMetaData();
-            for (int i = 1; i <= md.getColumnCount(); i++) {
-                String name = md.getColumnName(i);
-                String value;
-
-                if (md.getColumnTypeName(i).toUpperCase().startsWith("TINYINT") || md.getColumnTypeName(i).equalsIgnoreCase("bit")) {
-                    if (rs.getInt(i) == 1)
-                        value = "checked='checked'";
-                    else
-                        value = "";
-                } else if (md.getColumnTypeName(i).equalsIgnoreCase("date"))
-                    value = UtilDateUtilities.DateToString(rs.getDate(i), _dateFormat);
-                else if (md.getColumnTypeName(i).equalsIgnoreCase("timestamp"))
-                    value = UtilDateUtilities.DateToString(rs.getTimestamp(i), "yyyy/MM/dd HH:mm:ss");
-                else
-                    value = Misc.getString(rs, i);
-
-                if (value != null)
-                    props.setProperty(name, value);
-            }
+            props = extractFormProperties(rs);
         }
         rs.close();
         return props;
     }
 
+    public Properties getFormRecord(String sql, Object... params) throws SQLException {
+        Properties props = new Properties();
+        ResultSet rs = DBHandler.GetPreSQL(sql, params);
+        if (rs.next()) {
+            props = extractFormProperties(rs);
+        }
+        rs.close();
+        return props;
+    }
+
+    private Properties extractFormProperties(ResultSet rs) throws SQLException {
+        Properties props = new Properties();
+        ResultSetMetaData md = rs.getMetaData();
+        for (int i = 1; i <= md.getColumnCount(); i++) {
+            String name = md.getColumnName(i);
+            String value;
+
+            if (md.getColumnTypeName(i).toUpperCase().startsWith("TINYINT") || md.getColumnTypeName(i).equalsIgnoreCase("bit")) {
+                if (rs.getInt(i) == 1)
+                    value = "checked='checked'";
+                else
+                    value = "";
+            } else if (md.getColumnTypeName(i).equalsIgnoreCase("date"))
+                value = UtilDateUtilities.DateToString(rs.getDate(i), _dateFormat);
+            else if (md.getColumnTypeName(i).equalsIgnoreCase("timestamp"))
+                value = UtilDateUtilities.DateToString(rs.getTimestamp(i), "yyyy/MM/dd HH:mm:ss");
+            else
+                value = Misc.getString(rs, i);
+
+            if (value != null)
+                props.setProperty(name, value);
+        }
+        return props;
+    }
+
+    /** @deprecated Use {@link #saveFormRecord(Properties, String, Object...)} with parameterized SQL instead. */
+    @Deprecated
     public synchronized int saveFormRecord(Properties props, String sql) throws SQLException {
 
 
@@ -228,7 +248,51 @@ public class FrmRecordHelp {
         return rs;
     }
 
+    public synchronized int saveFormRecord(Properties props, String sql, Object... params) throws SQLException {
+        ResultSet rs = DBHandler.GetPreSQLUpdatable(sql, params);
+        rs.moveToInsertRow();
+        rs = updateResultSet(props, rs, true);
+        rs.insertRow();
+        String saveAsXml = OscarProperties.getInstance().getProperty("save_as_xml", "false");
+
+        if (saveAsXml.equalsIgnoreCase("true")) {
+            String demographicNo = props.getProperty("demographic_no");
+            int index = sql.indexOf("form");
+            int spaceIndex = sql.indexOf(" ", index);
+            String formClass = sql.substring(index, spaceIndex);
+            Date d = new Date();
+            String now = UtilDateUtilities.DateToString(d, "yyyyMMddHHmmss");
+            String place = OscarProperties.getInstance().getProperty("form_record_path", "/root");
+            if (!place.endsWith(System.getProperty("file.separator")))
+                place = place + System.getProperty("file.separator");
+            String fileName = place + formClass + "_" + demographicNo + "_" + now + ".xml";
+            try {
+                Document doc = JDBCUtil.toDocument(rs);
+                JDBCUtil.saveAsXML(doc, fileName);
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
+            }
+        }
+        rs.close();
+
+        int ret = 0;
+        String idSql = "SELECT LAST_INSERT_ID()";
+        String db_type = OscarProperties.getInstance() != null ? OscarProperties.getInstance().getProperty("db_type", "") : "";
+        if (db_type.equalsIgnoreCase("postgresql")) {
+            idSql = "SELECT CURRVAL('?')";
+        } else if (!db_type.equals("") && !db_type.equalsIgnoreCase("mysql")) {
+            throw new SQLException("ERROR: Database " + db_type + " unrecognized.");
+        }
+        rs = DBHandler.GetPreSQL(idSql);
+        if (rs.next())
+            ret = rs.getInt(1);
+        rs.close();
+        return ret;
+    }
+
     //for page form
+    /** @deprecated Use {@link #updateFormRecord(Properties, String, Object...)} with parameterized SQL instead. */
+    @Deprecated
     public void updateFormRecord(Properties props, String sql) throws SQLException {
 
 
@@ -241,6 +305,15 @@ public class FrmRecordHelp {
         rs.close();
     }
 
+    public void updateFormRecord(Properties props, String sql, Object... params) throws SQLException {
+        ResultSet rs = DBHandler.GetPreSQLUpdatable(sql, params);
+        rs = updateResultSet(props, rs, false);
+        rs.updateRow();
+        rs.close();
+    }
+
+    /** @deprecated Use {@link #getPrintRecord(String, Object...)} with parameterized SQL instead. */
+    @Deprecated
     public Properties getPrintRecord(String sql) throws SQLException {
         Properties props = new Properties();
 
@@ -251,6 +324,18 @@ public class FrmRecordHelp {
         return props;
     }
 
+    public Properties getPrintRecord(String sql, Object... params) throws SQLException {
+        Properties props = new Properties();
+        ResultSet rs = DBHandler.GetPreSQL(sql, params);
+        if (rs.next()) {
+            props = getResultsAsProperties(rs);
+        }
+        rs.close();
+        return props;
+    }
+
+    /** @deprecated Use {@link #getPrintRecords(String, Object...)} with parameterized SQL instead. */
+    @Deprecated
     public List<Properties> getPrintRecords(String sql) throws SQLException {
         ArrayList<Properties> results = new ArrayList<Properties>();
 
@@ -260,6 +345,17 @@ public class FrmRecordHelp {
             results.add(p);
         }
 
+        return results;
+    }
+
+    public List<Properties> getPrintRecords(String sql, Object... params) throws SQLException {
+        ArrayList<Properties> results = new ArrayList<Properties>();
+        ResultSet rs = DBHandler.GetPreSQL(sql, params);
+        while (rs.next()) {
+            Properties p = getResultsAsProperties(rs);
+            results.add(p);
+        }
+        rs.close();
         return results;
     }
 
@@ -287,6 +383,8 @@ public class FrmRecordHelp {
         return (p);
     }
 
+    /** @deprecated Use {@link #getDemographicIds(String, Object...)} with parameterized SQL instead. */
+    @Deprecated
     public List<Integer> getDemographicIds(String sql) throws SQLException {
         List<Integer> results = new ArrayList<Integer>();
 
@@ -295,6 +393,16 @@ public class FrmRecordHelp {
             results.add(rs.getInt("demographic_no"));
         }
 
+        return results;
+    }
+
+    public List<Integer> getDemographicIds(String sql, Object... params) throws SQLException {
+        List<Integer> results = new ArrayList<Integer>();
+        ResultSet rs = DBHandler.GetPreSQL(sql, params);
+        while (rs.next()) {
+            results.add(rs.getInt("demographic_no"));
+        }
+        rs.close();
         return results;
     }
 

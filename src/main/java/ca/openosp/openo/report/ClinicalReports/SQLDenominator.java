@@ -80,7 +80,7 @@ public class SQLDenominator implements Denominator {
                 MiscUtils.getLogger().debug("sql " + sql);
             }
 
-            ResultSet rs = DBHandler.GetSQL(exeSql);
+            ResultSet rs = DBHandler.GetPreSQL(exeSql);
             MiscUtils.getLogger().debug("SQL Statement: " + exeSql);
             while (rs.next()) {
                 String toAdd = Misc.getString(rs, resultString);

@@ -43,11 +43,30 @@ public interface ReportObject {
 
     public String getPreparedSQL(Map parameters);
 
+    /**
+     * Builds a parameterized SQL statement from the report template, replacing {param} markers
+     * with ? placeholders and collecting user-supplied values as bind parameters.
+     *
+     * @param parameters request parameter map from the user
+     * @return PreparedSQL with the parameterized query and bind values, or
+     *         PreparedSQL.MISSING_PARAMS if a required template parameter is absent
+     */
+    public PreparedSQL getParameterizedSQL(Map parameters);
+
     public int getActive();
 
     public boolean isSequence();
 
     public String getPreparedSQL(int sequenceNo, Map parameters);
+
+    /**
+     * Sequenced variant of {@link #getParameterizedSQL(Map)}.
+     *
+     * @param sequenceNo zero-based index of the SQL statement in a semicolon-delimited template
+     * @param parameters request parameter map
+     * @return PreparedSQL for the given sequence, or null if sequenceNo is past the end
+     */
+    public PreparedSQL getParameterizedSQL(int sequenceNo, Map parameters);
 
     public String getUuid();
 

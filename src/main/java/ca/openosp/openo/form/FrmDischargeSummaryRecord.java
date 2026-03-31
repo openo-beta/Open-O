@@ -175,11 +175,11 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
 
 
             StringBuilder prescriptions = new StringBuilder();
-            String sql5 = "SELECT special from drugs where demographic_no=" + demographicNo + " and archived=0 ORDER BY rx_date DESC, drugid DESC";
+            String sql5 = "SELECT special from drugs where demographic_no = ? and archived = 0 ORDER BY rx_date DESC, drugid DESC";
             ResultSet rs5 = null;
 
             try {
-                rs5 = DBHandler.GetSQL(sql5);
+                rs5 = DBHandler.GetPreSQL(sql5, demographicNo);
                 while (rs5.next()) {
                     if (rs5.isFirst()) {
                         prescriptions.append(Misc.getString(rs5, "special"));
@@ -209,11 +209,10 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
         } else {
 
 
-            String sql = "SELECT * FROM formDischargeSummary WHERE demographic_no = " + demographicNo + " AND ID = "
-                    + existingID;
+            String sql = "SELECT * FROM formDischargeSummary WHERE demographic_no = ? AND ID = ?";
 
             try {
-                props = (new FrmRecordHelp()).getFormRecord(sql);
+                props = (new FrmRecordHelp()).getFormRecord(sql, demographicNo, existingID);
             } catch (SQLException e) {
                 logger.error("", e);
             }
@@ -229,9 +228,8 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
         Properties props = new Properties();
         if (existingID <= 0) {
 
-            String sql = "SELECT demographic_no, CONCAT(CONCAT(last_name, ', '), first_name) AS clientName, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = "
-                    + demographicNo;
-            ResultSet rs = DBHandler.GetSQL(sql);
+            String sql = "SELECT demographic_no, CONCAT(CONCAT(last_name, ', '), first_name) AS clientName, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo);
             if (rs.next()) {
                 Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"),
                         Misc.getString(rs, "date_of_birth"));
@@ -246,9 +244,8 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
             }
             rs.close();
         } else {
-            String sql = "SELECT * FROM formDischargeSummary WHERE demographic_no = " + demographicNo + " AND ID = "
-                    + existingID;
-            props = (new FrmRecordHelp()).getFormRecord(sql);
+            String sql = "SELECT * FROM formDischargeSummary WHERE demographic_no = ? AND ID = ?";
+            props = (new FrmRecordHelp()).getFormRecord(sql, demographicNo, existingID);
         }
 
         return props;
@@ -257,9 +254,9 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
         //
-        String sql = "SELECT * FROM formDischargeSummary WHERE demographic_no=" + demographic_no + " AND ID=0";
+        String sql = "SELECT * FROM formDischargeSummary WHERE demographic_no = ? AND ID = 0";
 
-        return ((new FrmRecordHelp()).saveFormRecord(props, sql));
+        return ((new FrmRecordHelp()).saveFormRecord(props, sql, demographic_no));
     }
 
     public String findActionValue(String submit) throws SQLException {
