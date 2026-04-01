@@ -78,7 +78,6 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * Execution order for each source demographic (primary first, then secondaries):
      * <ol>
      *   <li>Identity tables — gap-fill on secondary passes</li>
-     *   <li>Appointments — extracted so the PK map is available for note-link remap</li>
      *   <li>All remaining clinical direct-copy records</li>
      *   <li>All form tables</li>
      *   <li>All parent + derived group tables</li>
