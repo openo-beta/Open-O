@@ -25,6 +25,8 @@
 --%>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -40,7 +42,6 @@
 %>
 
 <%@ page import="java.util.ResourceBundle" %>
-<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -52,7 +53,6 @@
     <jsp:useBean id="displayServiceUtil" scope="request"
                  class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil"/>
     <%
-        displayServiceUtil.estSpecialistVector();
         String serviceId = (String) request.getAttribute("serviceId");
         String serviceDesc = displayServiceUtil.getServiceDesc(serviceId);
     %>
@@ -70,18 +70,12 @@
         </script>
 
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/encounterStyles.css">
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/specialistListRenderer.js"></script>
     </head>
     <body class="BodyStyle" vlink="#0000FF">
     <jsp:include page="/images/spinner.jsp" flush="true"/>
-    <script>
-        ShowSpin(true);
-        document.onreadystatechange = function () {
-            if (document.readyState === "interactive") {
-                HideSpin();
-            }
-        }
-    </script>
-    <% 
+    <script>ShowSpin(true);</script>
+    <%
     java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
     if (actionErrors != null && !actionErrors.isEmpty()) {
 %>
@@ -143,39 +137,7 @@
                                         </th>
 
                                     </tr>
-                                    <%
-                                        java.util.Vector specialistInField = displayServiceUtil.getSpecialistInField(serviceId);
-                                        for (int i = 0; i < displayServiceUtil.specIdVec.size(); i++) {
-                                            String specId = displayServiceUtil.specIdVec.elementAt(i);
-                                            String fName = displayServiceUtil.fNameVec.elementAt(i);
-                                            String lName = displayServiceUtil.lNameVec.elementAt(i);
-                                            String proLetters = displayServiceUtil.proLettersVec.elementAt(i);
-                                            String address = displayServiceUtil.addressVec.elementAt(i);
-                                            String phone = displayServiceUtil.phoneVec.elementAt(i);
-                                            String fax = displayServiceUtil.faxVec.elementAt(i);
-
-                                    %>
-                                    <tr>
-                                        <td>
-                                            <%if (specialistInField.contains(specId)) { %> <input type=checkbox
-                                                                                                  name="specialists"
-                                                                                                  value=<%=specId%> checked> <%} else {%>
-                                            <input type=checkbox name="specialists" value=<%=specId%>>
-                                            <%}%>
-                                        </td>
-                                        <td>
-                                            <%
-                                                out.print(Encode.forHtmlContent(lName + " " + fName + (proLetters == null ? "" : " " + proLetters))); %>
-                                        </td>
-                                        <td><%=Encode.forHtmlContent(address) %>
-                                        </td>
-                                        <td><%=Encode.forHtmlContent(phone)%>
-                                        </td>
-                                        <td><%=Encode.forHtmlContent(fax)%>
-                                        </td>
-                                    </tr>
-                                    <%}%>
-
+                                    <tbody id="specialistBody"></tbody>
                                 </table>
 
                             </form></td>
@@ -189,5 +151,43 @@
             </tr>
         </table>
     </div>
+    <script>
+        (function() {
+            var ctxPath = "<%= Encode.forJavaScript(request.getContextPath()) %>";
+            var serviceId = "<%= Encode.forJavaScript(serviceId) %>";
+
+            function createCell(text) {
+                var td = document.createElement("td");
+                td.textContent = text;
+                return td;
+            }
+
+            renderSpecialistList({
+                url: ctxPath + "/oscarEncounter/SpecialistList.do?method=getSpecialistsForService&serviceId=" + encodeURIComponent(serviceId),
+                tbodyId: "specialistBody",
+                csrfTokenName: "<csrf:tokenname/>",
+                csrfTokenValue: "<csrf:tokenvalue/>",
+                buildRow: function(s) {
+                    var tr = document.createElement("tr");
+
+                    var cbTd = document.createElement("td");
+                    var cb = document.createElement("input");
+                    cb.type = "checkbox";
+                    cb.name = "specialists";
+                    cb.value = s[0];
+                    if (s[5]) cb.checked = true;
+                    cbTd.appendChild(cb);
+                    tr.appendChild(cbTd);
+
+                    tr.appendChild(createCell(s[1]));
+                    tr.appendChild(createCell(s[2]));
+                    tr.appendChild(createCell(s[3]));
+                    tr.appendChild(createCell(s[4]));
+
+                    return tr;
+                }
+            });
+        })();
+    </script>
     </body>
 </html>

@@ -28,6 +28,7 @@
         <class>ca.openosp.openo.commn.model.Facility</class>
         <class>ca.openosp.openo.commn.model.DemographicMerged</class>
         <class>ca.openosp.openo.PMmodule.model.ProgramQueue</class>
+        <class>ca.openosp.openo.commn.model.ProfessionalSpecialist</class>
         <!-- HBM.XML mapped entities -->
         <mapping-file>ca/openosp/openo/commn/model/Provider.hbm.xml</mapping-file>
         <mapping-file>ca/openosp/openo/commn/model/Demographic.hbm.xml</mapping-file>
