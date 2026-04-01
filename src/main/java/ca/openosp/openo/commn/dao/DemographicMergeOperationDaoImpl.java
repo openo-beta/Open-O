@@ -130,25 +130,36 @@ import java.util.function.Function;
 /**
  * Hibernate-based implementation of {@link DemographicMergeOperationDao}.
  * <p>
- * Uses the load → detach → null-PK → set-demo → persist pattern for all parent tables so that
- * {@code GenerationType.IDENTITY} assigns fresh PKs. The old→new PK map is captured from the
- * returned entity after {@code flush()}, which is safe under concurrent inserts.
+ * Three data-access patterns are used depending on the table:
+ * <ol>
+ *   <li><b>Hibernate load → detach → null-PK → set-demo → persist → flush</b> — used for all
+ *       parent tables that have an auto-increment ({@code IDENTITY}) PK. Detaching removes
+ *       Hibernate's identity tracking; nulling the PK causes Hibernate to issue an INSERT
+ *       instead of an UPDATE; flushing forces the DB to assign the new PK, which is then
+ *       read back from the entity to build the old→new PK map. This map is passed to child
+ *       copy steps so foreign keys point to the new parent rows.</li>
+ *   <li><b>HQL bulk INSERT … SELECT</b> — used for leaf tables and high-volume child tables
+ *       where the new PK is not needed downstream. One server-side SQL statement copies all
+ *       rows, avoiding the per-row flush overhead of pattern 1.</li>
+ *   <li><b>JDBC INSERT per row with {@link org.springframework.jdbc.support.GeneratedKeyHolder}</b>
+ *       — used only for the 60+ {@code form*} tables (no JPA entity classes, 100–1200 columns
+ *       each). The {@code GeneratedKeyHolder} captures each new auto-increment PK so that
+ *       {@code form_boolean_value} child rows can be linked to the correct new form row.</li>
+ * </ol>
  * <p>
- * JDBC is used only for the following targeted exceptions:
+ * Additional JDBC-only exceptions (no entity classes or composite-PK constraints):
  * <ul>
- *   <li>{@code copyAllForms()} — 60+ {@code form*} tables (100–1200 columns each, no entity classes);
- *       uses {@code copyFormJdbcWithMap()} with {@code GeneratedKeyHolder} per row to capture new PKs
- *       needed for child FK remapping</li>
- *   <li>{@code copyFormBooleanValues()} — {@code form_boolean_value} table (no entity class);
+ *   <li>{@code copyFormBooleanValues()} — {@code form_boolean_value} (no entity class);
  *       uses {@code jdbcTemplate.batchUpdate()} since no generated-key dependency exists</li>
  *   <li>{@code formBCAR2020Text} — composite {@code @IdClass} (formId + pageNo + field);
- *       no single auto-increment PK so the Hibernate detach/persist pattern does not apply</li>
- *   <li>{@code formONAREnhancedRecord} Ext1/Ext2 — 100+ column extension tables with no entity classes</li>
+ *       no single auto-increment PK so the Hibernate detach/persist pattern cannot apply</li>
+ *   <li>{@code formONAREnhancedRecord} Ext1/Ext2 — 400–1400-column extension tables with no entity classes</li>
  * </ul>
  * <p>
- * {@code tableExists()} — {@code DatabaseMetaData} schema guard for optional-module tables
- * ({@code [BC]}, {@code [ON]}); read-only, no data written
- * 
+ * {@code tableExists()} performs a {@code DatabaseMetaData} schema check used to guard
+ * optional-module tables ({@code [BC]}, {@code [ON]}). Results are cached in-process so
+ * repeated calls within a single merge are cheap.
+ *
  * @since 2026-03-19
  */
 @Repository
@@ -232,6 +243,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             setDemoNo.accept(row, targetDemoNo);
             entityManager.persist(row);
             entityManager.flush();
+            
             // Capture PK before clear() — clear() evicts all L1-cached entities so dirty-check
             // cost stays flat instead of growing O(n) as the session accumulates flushed rows.
             pkMap.put(oldPk, getPk.apply(row));
@@ -247,15 +259,24 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
     /**
      * Remaps {@code casemgmt_note_link.table_id} from old entity PKs to new entity PKs
-     * for all copied note rows of the given {@code linkType}, using a single CASE WHEN
-     * UPDATE per chunk of 500 entries instead of one UPDATE per PK pair.
+     * for all copied note rows of the given {@code linkType}.
      * <p>
-     * PKs are integer database identifiers — inlining them is safe and avoids
-     * parameter-count limits on large maps. Chunked at 500 to stay within SQL length limits.
+     * {@code casemgmt_note_link} is a polymorphic association table that links a clinical note
+     * to another entity (an appointment, a drug, an allergy, etc.). Each row stores an integer
+     * type discriminator ({@code table_name}) and the PK of the linked entity ({@code table_id}).
+     * After a merge all copied entities have new PKs, so every {@code table_id} that pointed
+     * at a source-patient entity must be updated to point at the corresponding target-patient entity.
+     * <p>
+     * Uses a single {@code CASE WHEN} bulk UPDATE per chunk of 500 PK pairs instead of one
+     * UPDATE per pair, reducing SQL round-trips from O(n) to O(n/500).
+     * PKs are integer database identifiers — inlining them in the HQL string is safe and avoids
+     * JDBC parameter-count limits on large maps. Chunked at 500 to stay within SQL length limits.
      *
-     * @param newNoteIds list of new note PKs (the target patient's copied notes)
-     * @param linkType   Integer the {@code CaseManagementNoteLink} integer constant
-     * @param pkMap      Map&lt;Long, Long&gt; old entity PK → new entity PK
+     * @param newNoteIds list of new note PKs (the target patient's copied notes); scopes the
+     *                   UPDATE to only rows belonging to this merge pass
+     * @param linkType   Integer the {@code CaseManagementNoteLink} integer type constant
+     *                   (e.g. {@code APPOINTMENT = 11}, {@code DRUGS = 2}, {@code ALLERGIES = 3})
+     * @param pkMap      Map&lt;Long, Long&gt; old entity PK → new entity PK for the given link type
      */
     private void remapNoteLinkTableIds(List<Integer> newNoteIds, Integer linkType, Map<Long, Long> pkMap) {
         if (pkMap.isEmpty() || newNoteIds.isEmpty()) return;
@@ -286,6 +307,21 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     // ── Identity tables
     // -------------------------------------------------------------------------
 
+    // Copies patient identity and demographic extension tables:
+    //   demographicExt        — key/value extensions on the core demographic record
+    //   demographiccust       — provider-assigned groupings (nurse, resident, midwife, alert, notes).
+    //                           Special case: its PK IS the demographicNo (one row per patient), so
+    //                           the copy sets id=targetDemoNo rather than null. Secondary pass does a
+    //                           field-level merge instead of a full copy because the row already exists.
+    //   other_id              — alternate patient identifiers (provincial HINs, integration system IDs).
+    //                           FK tableId is stored as a String (String.valueOf(demographicNo)).
+    //                           Secondary pass skips rows whose otherKey already exists on the target.
+    //   demographicExtArchive — archived ext rows; copied wholesale on primary pass, gap-filled on secondary
+    //   demographiccustArchive — archived cust rows; same strategy as demographicExtArchive
+    //
+    // isSecondary=false (primary A pass): all rows are copied unconditionally.
+    // isSecondary=true  (secondary pass): gap-fill only — rows whose key/type already exists on the
+    //                                     target are skipped so the primary patient's values win.
     @Override
     public void copyIdentityTables(Integer sourceDemoNo, Integer targetDemoNo, boolean isSecondary) {
         System.out.println("\n=== COPY IDENTITY TABLES: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " (isSecondary=" + isSecondary + ") ===");
@@ -1420,6 +1456,13 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
     // ── Special-case group methods
     // -------------------------------------------------------------------------
 
+    // Copies archived consultation rows using the live-request PK map from copyConsultationsGroup:
+    //   consultationRequestsArchive  — archived referral request headers; uses requestPkMap to remap
+    //                                  the archivedRequestId FK back to the new live request PK
+    //   consultationRequestExtArchive — key/value extensions on the archive; child FK is
+    //                                   consultationRequestId, which must also be remapped from
+    //                                   the old archived request PK to the new one via archivePkMap.
+    // Called after copyConsultationsGroup so that requestPkMap is already populated.
     @Override
     public void copyConsultationArchiveGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> requestPkMap) {
         System.out.println("\n=== COPY CONSULTATION ARCHIVE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
@@ -1505,6 +1548,23 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         System.out.println("=== COPY CONSULTATION ARCHIVE GROUP DONE: " + archivePkMap.size() + " archive row(s) + ext archives copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
     }
 
+    // Copies casemgmt_note (clinical encounter notes) with two child tables:
+    //   casemgmt_note_ext  — key/value metadata extensions per note (no demographicNo column; FK: note_id)
+    //   casemgmt_note_link — polymorphic link table attaching a note to another entity via
+    //                        (table_name int type-discriminator, table_id int entity PK).
+    //
+    // After copying, table_id values are remapped for every link type whose target entities were
+    // also copied during this merge (so links point to the new PKs, not the old ones):
+    //   table_name=1  (CASEMGMTNOTE)  — self-links between notes; remapped using the note PK map
+    //                                   produced by this method itself
+    //   table_name=11 (APPOINTMENT)   — remapped using appointmentPkMap
+    //   All types in linkedEntityPkMaps (DRUGS=2, ALLERGIES=3, EFORMDATA=6, PREVENTIONS=8,
+    //                                    TICKLER=10, EMAIL=12) — remapped using supplied maps
+    //
+    // Intentionally NOT remapped (their PKs do not change during merge):
+    //   table_name=4/9 (LABTEST/LABTEST2), table_name=5 (DOCUMENT), table_name=7 (DEMOGRAPHIC)
+    //
+    // Returns the old→new note PK map (note_id) required by copyIssueNotesGroup.
     @Override
     public Map<Long, Long> copyCasemgmtNoteGroup(Integer sourceDemoNo, Integer targetDemoNo, Map<Long, Long> appointmentPkMap, Map<Integer, Map<Long, Long>> linkedEntityPkMaps) {
         System.out.println("\n=== COPY CASEMGMT NOTE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
@@ -1579,6 +1639,12 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         return notePkMap;
     }
 
+    // Copies casemgmt_issue rows, which link a patient to a problem list entry (issue table).
+    // The same issueId can appear on both primary and secondary — dedup skips any row whose
+    // issueId already exists on the target patient. Skipped rows are still written into
+    // issuePkMap as source_pk → existing_target_pk so that copyIssueNotesGroup can correctly
+    // remap casemgmt_issue_notes junction rows referencing those issues.
+    // Returns the old→new issue PK map required by copyIssueNotesGroup.
     @Override
     public Map<Long, Long> copyCasemgmtIssueGroup(Integer sourceDemoNo, Integer targetDemoNo) {
         System.out.println("\n=== COPY CASEMGMT ISSUE GROUP: source=" + sourceDemoNo + " -> target=" + targetDemoNo + " ===");
@@ -1630,6 +1696,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         return issuePkMap;
     }
 
+    // Copies casemgmt_issue_notes, the junction table connecting a problem list entry to a
+    // clinical note. Each row has two FK columns: id (→ casemgmt_issue.id) and note_id
+    // (→ casemgmt_note.note_id). Both must be remapped simultaneously — issuePkMap from
+    // copyCasemgmtIssueGroup and notePkMap from copyCasemgmtNoteGroup supply the mappings.
+    // Rows whose source issue or note PK has no entry in either map are skipped.
     @Override
     public void copyIssueNotesGroup(Map<Long, Long> issuePkMap, Map<Long, Long> notePkMap) {
         System.out.println("\n=== COPY ISSUE-NOTES JUNCTION (casemgmt_issue_notes): " + issuePkMap.size() + " issue(s), " + notePkMap.size() + " note(s) ===");
