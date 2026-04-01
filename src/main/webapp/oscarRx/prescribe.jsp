@@ -237,7 +237,7 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
                 String fieldSetId = "set_" + rand;
 %>
 
-<fieldset style="margin-top:2px;" id="<%=fieldSetId%>">
+<fieldset style="margin-top:2px;" id="<%=fieldSetId%>" data-drug-ref-id="<%=Encode.forHtmlAttribute(String.valueOf(DrugReferenceId))%>">
     <a tabindex="-1" href="javascript:void(0);"  style="float:right;margin-left:5px;margin-top:0px;padding-top:0px;" onclick="removePrescribingDrug(<%=fieldSetId%>, <%=DrugReferenceId%>);"><img src='<c:out value="${ctx}/images/close.png"/>' border="0"></a>
     <a tabindex="-1" href="javascript:void(0);"  style="float:right;;margin-left:5px;margin-top:0px;padding-top:0px;" title="Add to Favorites" onclick="addFav('<%=rand%>','<%=Encode.forJavaScript(drugName)%>')">F</a>
     <a tabindex="-1" href="javascript:void(0);" style="float:right;margin-top:0px;padding-top:0px;" onclick="$('rx_more_<%=rand%>').toggle();">  <span id="moreLessWord_<%=rand%>" onclick="updateMoreLess(id)" >more</span> </a>

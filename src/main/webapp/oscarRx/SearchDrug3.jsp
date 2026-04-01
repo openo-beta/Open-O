@@ -2536,7 +2536,7 @@
         this.addDrugToReRxList(uiRefId, drugId);
         selectedReRxIDs.push(drugId);
       } else {
-        this.removeDrugFromReRxList(uiRefId, drugId);
+        this.removeDrugFromReRxList(drugId);
         selectedReRxIDs = selectedReRxIDs.filter(id => id !== drugId);
       }
       this.updateReRxStageConfirmBoxVisibility();
@@ -2620,11 +2620,11 @@
     /**
      * Removes a drug from the re-prescribe list and updates the UI.
      *
-     * @param uiRefId The unique ID used in the UI to reference this drug.
      * @param drugId The ID of the drug to remove.
      */
-    function removeDrugFromReRxList(uiRefId, drugId) {
-      this.removeElementFromUI(this.getPrescribingDrugCardByUiRefId(uiRefId));
+    function removeDrugFromReRxList(drugId) {
+      const card = document.querySelector('#rxText fieldset[data-drug-ref-id="' + drugId + '"]');
+      this.removeElementFromUI(card);
       this.removeReRxDrugId(drugId);
     }
 
