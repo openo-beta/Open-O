@@ -56,7 +56,7 @@
         .sort-icon { font-size: .75rem; margin-left: 3px; color: #adb5bd; }
         .sort-icon.active { color: #0d6efd; }
         .pagination-bar { margin-top: .75rem; }
-        .ineligible-row { color: #adb5bd !important; }
+        .ineligible-row { color: #7c7c7c !important; }
         /* Bootstrap collapse sets display:block, which breaks <tr> layout — override */
         tr.collapse.show { display: table-row; }
         .history-toggle { transition: transform 0.2s; }
