@@ -987,7 +987,7 @@ INSERT INTO `measurementType` (`type`, `typeDisplayName`, `typeDescription`, `me
 ( '24UR', '24-hr Urine cr clearance & albuminuria', 'Renal 24-hr Urine cr clearance & albuminuria', 'q 6-12 months, unit mg', '3', '2013-02-01 00:00:00'),
 ( '5DAA', '5 Day Adherence if on ART', '5 Day Adherence if on ART', 'number', '4', '2013-02-01 00:00:00'),
 ( 'A1C', 'A1C', 'A1C', 'Range:0.040-0.200', '3', '2013-02-01 00:00:00'),
-( 'AACP', 'Asthma Action Plan ', 'Asthma Action Plan ', 'Yes/No', '7', '2013-02-01 00:00:00'),
+( 'AACP', 'Asthma Action Plan ', 'Asthma Action Plan ', 'Provided/Revised/Reviewed', '18', '2013-02-01 00:00:00'),
 ( 'ABO', 'Blood Group', 'ABO RhD blood type group', 'Blood Type', '11', '2014-05-09 00:00:00'),
 ( 'ACOS', 'Asthma Coping Strategies', 'Asthma Coping Strategies', 'Yes/No', '7', '2013-02-01 00:00:00'),
 ( 'ACR', 'Alb creat ratio', 'ACR', 'in mg/mmol', '5', '2013-02-01 00:00:00'),
@@ -1455,7 +1455,8 @@ INSERT INTO `validations` (`id`, `name`, `regularExp`, `maxValue1`, `minValue`, 
 (14,'Numeric Value greater than or equal to 0',NULL,0,0,0,0,1,NULL,0),
 (15, 'Yes/No/Maybe', 'YES|yes|Yes|Y|NO|no|No|N|MAYBE|maybe|Maybe', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (16, 'Review', 'REVIEWED|reviewed|Reviewed', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(17,'pos or neg', 'pos|neg|positive|negative', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(17,'pos or neg', 'pos|neg|positive|negative', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(18,'Provided/Revised/Reviewed', 'Provided|Revised|Reviewed', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
 insert into `secRole` values(1, 'receptionist', 'receptionist');
