@@ -27,6 +27,7 @@
 package ca.openosp.openo.eform;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -34,6 +35,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.eform.data.DatabaseAP;
+import ca.openosp.openo.util.PreparedSQL;
 
 /**
  * @author jay
@@ -52,23 +54,24 @@ public class APExecute {
     public String execute(String ap, String demographicNo) {
         EFormLoader.getInstance();
         DatabaseAP dap = EFormLoader.getAP(ap);
-        
+
         if (dap == null) {
             MiscUtils.getLogger().error("DatabaseAP not found for ap: " + ap);
             return "";
         }
-        
-        String sql = DatabaseAP.parserReplace("demographic", demographicNo, dap.getApSQL());
+
+        PreparedSQL prepared = parameterizeTemplate(dap.getApSQL(), "demographic", demographicNo);
+        String sql = prepared.getSql();
         String output = dap.getApOutput();
         MiscUtils.getLogger().debug("SQL----" + sql);
-        ArrayList<String> names = DatabaseAP.parserGetNames(output); //a list of ${apName} --> apName
-        sql = DatabaseAP.parserClean(sql);  //replaces all other ${apName} expressions with 'apName'
+        ArrayList<String> names = DatabaseAP.parserGetNames(output);
+        sql = DatabaseAP.parserClean(sql);
 
         if (dap.isJsonOutput()) {
-            ArrayNode values = EFormUtil.getJsonValues(names, sql);
-            output = values.toString(); //in case of JsonOutput, return the whole JSONArray and let the javascript deal with it
+            ArrayNode values = EFormUtil.getJsonValues(names, sql, prepared.getParamsArray());
+            output = values.toString();
         } else {
-            ArrayList<String> values = EFormUtil.getValues(names, sql);
+            ArrayList<String> values = EFormUtil.getValues(names, sql, prepared.getParamsArray());
             if (values.size() != names.size()) {
                 output = "";
             } else {
@@ -83,15 +86,17 @@ public class APExecute {
     public String execute(String ap, String demographicNo, Integer invoiceNo) {
         EFormLoader.getInstance();
         DatabaseAP dap = EFormLoader.getAP(ap);
-        
+
         if (dap == null) {
             MiscUtils.getLogger().error("DatabaseAP not found for ap: " + ap);
             return "";
         }
-        
+
         MiscUtils.getLogger().debug("AP:" + ap);
-        String sql = DatabaseAP.parserReplace("invoiceNo", String.valueOf(invoiceNo), dap.getApSQL());
-        sql = DatabaseAP.parserReplace("demographic", demographicNo, sql);
+        List<Object> params = new ArrayList<>();
+        String sql = dap.getApSQL();
+        sql = parameterizeToken(sql, "invoiceNo", String.valueOf(invoiceNo), params);
+        sql = parameterizeToken(sql, "demographic", demographicNo, params);
 
         String output = dap.getApOutput();
         MiscUtils.getLogger().debug("SQL----" + sql);
@@ -99,7 +104,7 @@ public class APExecute {
         ArrayList<String> names = DatabaseAP.parserGetNames(output);
         sql = DatabaseAP.parserClean(sql);
 
-        ArrayList<String> values = EFormUtil.getValues(names, sql);
+        ArrayList<String> values = EFormUtil.getValues(names, sql, params.toArray());
         if (values.size() != names.size()) {
             output = "";
         } else {
@@ -109,5 +114,28 @@ public class APExecute {
         }
 
         return output;
+    }
+
+    /**
+     * Parameterizes a single ${name} token in a SQL template.
+     * Replaces all occurrences of ${name} with ? and collects values for PreparedStatement binding.
+     */
+    private static String parameterizeToken(String sql, String name, String value, List<Object> params) {
+        String token = "${" + name + "}";
+        int idx;
+        while ((idx = sql.indexOf(token)) >= 0) {
+            sql = sql.substring(0, idx) + "?" + sql.substring(idx + token.length());
+            params.add(value);
+        }
+        return sql;
+    }
+
+    /**
+     * Convenience method to parameterize a template with a single named variable.
+     */
+    private static PreparedSQL parameterizeTemplate(String sql, String name, String value) {
+        List<Object> params = new ArrayList<>();
+        sql = parameterizeToken(sql, name, value, params);
+        return new PreparedSQL(sql, params);
     }
 }
