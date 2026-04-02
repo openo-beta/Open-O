@@ -58,6 +58,7 @@ import ca.openosp.openo.eform.APExecute;
 import ca.openosp.openo.prevention.reports.FollowupManagement;
 import ca.openosp.openo.report.data.ManageLetters;
 import ca.openosp.openo.util.ConcatPDF;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
@@ -90,14 +91,14 @@ public class GeneratePatientLetters2Action extends ActionSupport {
         // Validate demographic numbers are numeric to prevent SQL injection via AP template substitution
         if (demos != null) {
             for (String demo : demos) {
-                if (demo != null && !demo.matches("^[0-9]+$")) {
-                    throw new SecurityException("Invalid demographic number parameter");
+                if (demo != null) {
+                    SqlUtils.validateNumericId(demo, "demographic_no");
                 }
             }
         }
         // Validate reportLetter id is numeric
-        if (id != null && !id.matches("^[0-9]+$")) {
-            throw new SecurityException("Invalid report letter ID");
+        if (id != null) {
+            SqlUtils.validateNumericId(id, "reportLetter");
         }
 
         if (log.isTraceEnabled()) {

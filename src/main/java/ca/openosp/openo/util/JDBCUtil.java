@@ -141,9 +141,7 @@ public class JDBCUtil {
             if (!VALID_NAME_PATTERN.matcher(formName).matches()) {
                 throw new SecurityException("Invalid form name in zip entry");
             }
-            if (!demographicNo.matches("^[0-9]+$")) {
-                throw new SecurityException("Invalid demographic number in zip entry");
-            }
+            SqlUtils.validateNumericId(demographicNo, "demographic_no");
             if (!timeStamp.matches("^[0-9 :\\-]+$")) {
                 throw new SecurityException("Invalid timestamp in zip entry");
             }

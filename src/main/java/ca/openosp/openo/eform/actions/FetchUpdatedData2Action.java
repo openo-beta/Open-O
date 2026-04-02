@@ -26,6 +26,7 @@ import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.eform.data.DatabaseAP;
@@ -56,8 +57,8 @@ public final class FetchUpdatedData2Action extends ActionSupport {
 
         // Validate inputs to prevent SQL injection via DatabaseAP template substitution.
         // These values are substituted directly into SQL templates; they must be safe.
-        if (demographic != null && !demographic.matches("^[0-9]+$")) {
-            throw new SecurityException("Invalid demographic parameter");
+        if (demographic != null) {
+            SqlUtils.validateNumericId(demographic, "demographic");
         }
         if (provider != null && !provider.matches("^[a-zA-Z0-9_,]+$")) {
             throw new SecurityException("Invalid provider parameter");

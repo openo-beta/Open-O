@@ -41,6 +41,7 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.form.data.FrmData;
+import ca.openosp.openo.util.SqlUtils;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -73,9 +74,7 @@ public class FormForward2Action extends ActionSupport {
         String provNo = request.getParameter("provNo");
 
         // Validate demographicNo is numeric to prevent SQL injection in downstream queries
-        if (demographicNo == null || !demographicNo.matches("^[0-9]+$")) {
-            throw new SecurityException("Invalid demographic number parameter");
-        }
+        SqlUtils.validateNumericId(demographicNo, "demographic_no");
 
         String strFrm = URLDecoder.decode(formName, CharEncoding.UTF_8);
         int requestedForm = 0;

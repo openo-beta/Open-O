@@ -38,6 +38,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.ActionSupport;
 
 import ca.openosp.openo.commn.dao.ProviderDataDao;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.commn.dao.forms.FormsDao;
 import ca.openosp.openo.commn.model.ProviderData;
 import ca.openosp.openo.managers.SecurityInfoManager;
@@ -134,7 +135,7 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
         this.from = "encounter"; // Set 'from' parameter as in the original action
 
         // Validate messagePosition is a non-negative integer
-        if (this.messagePosition == null || !this.messagePosition.matches("^[0-9]+$")) {
+        if (!SqlUtils.isNumericId(this.messagePosition)) {
             addActionError("Invalid message position.");
             return ERROR;
         }

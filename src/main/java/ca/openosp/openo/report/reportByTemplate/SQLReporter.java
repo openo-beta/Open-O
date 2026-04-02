@@ -33,6 +33,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import ca.openosp.openo.util.PreparedSQL;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
@@ -55,8 +56,7 @@ public class SQLReporter implements Reporter {
 
     public boolean generateReport(HttpServletRequest request) {
         String templateId = request.getParameter("templateId");
-        // Validate templateId is numeric to prevent injection into template lookup
-        if (templateId == null || !templateId.matches("^[0-9]+$")) {
+        if (!SqlUtils.isNumericId(templateId)) {
             request.setAttribute("errormsg", "Error: Invalid template ID.");
             return false;
         }
@@ -111,8 +111,7 @@ public class SQLReporter implements Reporter {
 
     public boolean generateSequencedReport(HttpServletRequest request) {
         String templateId = request.getParameter("templateId");
-        // Validate templateId is numeric to prevent injection into template lookup
-        if (templateId == null || !templateId.matches("^[0-9]+$")) {
+        if (!SqlUtils.isNumericId(templateId)) {
             request.setAttribute("errormsg", "Error: Invalid template ID.");
             return false;
         }

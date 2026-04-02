@@ -40,6 +40,7 @@ import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.login.DBHelp;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.report.data.RptReportConfigData;
 import ca.openosp.openo.report.data.RptReportCreator;
 import ca.openosp.openo.report.data.RptReportItem;
@@ -106,7 +107,7 @@ public class RptDownloadCSVServlet extends HttpServlet {
         String SAVE_AS = "default";
         String reportId = request.getParameter("id") != null ? request.getParameter("id") : "0";
         // Validate reportId is numeric to prevent SQL injection
-        if (!reportId.matches("^[0-9]+$")) {
+        if (!SqlUtils.isNumericId(reportId)) {
             return "";
         }
         // get form name

@@ -50,6 +50,53 @@ public class SqlUtils {
     /** Matches safe SQL identifiers: alphanumeric and underscores only. */
     private static final Pattern VALID_IDENTIFIER = Pattern.compile("^[a-zA-Z0-9_]+$");
 
+    /** Matches numeric-only strings (one or more digits). */
+    private static final Pattern NUMERIC_ID = Pattern.compile("^[0-9]+$");
+
+    /**
+     * Validates that a value contains only digits (one or more).
+     * Use for request parameters that represent numeric IDs before use in SQL.
+     *
+     * @param value the value to validate
+     * @param label a descriptive label for error messages (e.g. "demographic_no")
+     * @return the validated value
+     * @throws SecurityException if the value is null, empty, or non-numeric
+     */
+    public static String validateNumericId(String value, String label) {
+        if (value == null || value.isEmpty() || !NUMERIC_ID.matcher(value).matches()) {
+            throw new SecurityException("Invalid numeric identifier for " + label);
+        }
+        return value;
+    }
+
+    /**
+     * Checks whether a value contains only digits (one or more).
+     * Unlike {@link #validateNumericId}, this does not throw — use it when
+     * custom error handling (e.g. return ERROR, setAttribute) is needed.
+     *
+     * @param value the value to check
+     * @return true if the value is non-null, non-empty, and numeric
+     */
+    public static boolean isNumericId(String value) {
+        return value != null && !value.isEmpty() && NUMERIC_ID.matcher(value).matches();
+    }
+
+    /**
+     * Validates that a value is either null, empty, or contains only digits.
+     * Use for optional numeric fields that may legitimately be blank.
+     *
+     * @param value the value to validate (null and empty are allowed)
+     * @param label a descriptive label for error messages
+     * @return the validated value
+     * @throws SecurityException if the value is non-empty and non-numeric
+     */
+    public static String validateOptionalNumericId(String value, String label) {
+        if (value != null && !value.isEmpty() && !NUMERIC_ID.matcher(value).matches()) {
+            throw new SecurityException("Invalid numeric identifier for " + label);
+        }
+        return value;
+    }
+
     /**
      * Validates that a table name is safe for direct inclusion in SQL.
      * Table names cannot be parameterized in PreparedStatement, so this

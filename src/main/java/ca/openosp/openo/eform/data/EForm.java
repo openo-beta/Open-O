@@ -51,6 +51,7 @@ import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
 import ca.openosp.openo.util.PreparedSQL;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.util.StringBuilderUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -743,16 +744,11 @@ public class EForm extends EFormBase {
     }
 
     public String replaceAllFields(String sql) {
-        // Validate numeric inputs before substitution into SQL templates to prevent injection.
-        // demographicNo and providerNo should always be numeric; appt_no may be numeric or empty.
-        if (demographicNo != null && !demographicNo.matches("^[0-9]*$")) {
-            throw new SecurityException("Invalid demographicNo for SQL template substitution");
-        }
+        // Validate inputs before substitution into SQL templates to prevent injection.
+        SqlUtils.validateOptionalNumericId(demographicNo, "demographicNo");
+        SqlUtils.validateOptionalNumericId(appointment_no, "appointment_no");
         if (providerNo != null && !providerNo.matches("^[a-zA-Z0-9_]*$")) {
             throw new SecurityException("Invalid providerNo for SQL template substitution");
-        }
-        if (appointment_no != null && !appointment_no.matches("^[0-9]*$")) {
-            throw new SecurityException("Invalid appointment_no for SQL template substitution");
         }
         sql = DatabaseAP.parserReplace("demographic", demographicNo, sql);
         sql = DatabaseAP.parserReplace("provider", providerNo, sql);
