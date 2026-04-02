@@ -201,17 +201,24 @@
 
         // get detail ra for the billing no
         String tempStr = "";
-        for (int i = 0; i < vecBillingNo.size(); i++) {
-            tempStr += ("".equals(tempStr) ? "" : ",") + (String) vecBillingNo.get(i);
+        if (vecBillingNo.isEmpty()) {
+            tempStr = "-1";
         }
-        tempStr = "".equals(tempStr) ? "-1" : tempStr;
-
-        // change tempStr to '75980, 75982, 75990' for testing
-        //tempStr = "75980, 75982, 75990,79571,79066";
+        StringBuilder placeholders = new StringBuilder();
+        Object[] inParams = new Object[vecBillingNo.size()];
+        for (int i = 0; i < vecBillingNo.size(); i++) {
+            if (i > 0) placeholders.append(",");
+            placeholders.append("?");
+            inParams[i] = Integer.parseInt((String) vecBillingNo.get(i));
+        }
+        if (vecBillingNo.isEmpty()) {
+            placeholders.append("-1");
+            inParams = new Object[0];
+        }
 
         sql = "select billing_no, amountclaim, amountpay, hin, service_date from radetail where billing_no in ("
-                + tempStr + ") and raheader_no !=0 order by billing_no, radetail_no";
-        rs = dbObj.searchDBRecord(sql);
+                + placeholders.toString() + ") and raheader_no !=0 order by billing_no, radetail_no";
+        rs = DBHandler.GetPreSQL(sql, inParams);
         String sAmountclaim = "", sAmountpay = "", hin = "";
         int nNo = 0;
         while (rs.next()) {

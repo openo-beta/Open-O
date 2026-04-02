@@ -266,9 +266,9 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         Session session = currentSession();
 
         SQLQuery q = session.createSQLQuery(sqlQuery);
-        q.setParameter(0, programId);
-        q.setParameter(1, sdf.format(dt));
-        q.setParameter(2, programId);
+        q.setParameter(1, programId);
+        q.setParameter(2, sdf.format(dt));
+        q.setParameter(3, programId);
         q.addScalar("d.demographic_no");
         q.addScalar("d.first_name");
         q.addScalar("d.last_name");
