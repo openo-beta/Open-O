@@ -255,7 +255,7 @@ public class ExtractBean extends Object implements Serializable {
                     invCount = 0;
                     query2 = "select * from billingmaster where billing_no=? and billingstatus='O'";
 
-                    PreparedStatement ps2 = DbConnectionFilter.getThreadLocalDbConnection().prepareStatement(query2);
+                    try (PreparedStatement ps2 = DbConnectionFilter.getThreadLocalDbConnection().prepareStatement(query2)) {
                     ps2.setString(1, invNo);
                     ResultSet rs2 = ps2.executeQuery();
                     while (rs2.next()) {
@@ -291,6 +291,7 @@ public class ExtractBean extends Object implements Serializable {
                             setAsBilledMaster(rs2.getString("billingmaster_no"));
                         }
                     }
+                    } // close try-with-resources for ps2
                     if (eFlag.compareTo("1") == 0) {
                         setAsBilled(invNo);
                     }

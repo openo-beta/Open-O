@@ -149,33 +149,35 @@ public class JDBCUtil {
             //check if the data existed in the database already...
             // formName validated above; demographicNo and timeStamp are parameterized
             java.sql.Connection conn = ca.openosp.openo.utility.DbConnectionFilter.getThreadLocalDbConnection();
-            java.sql.PreparedStatement psCheck = prepareWithValidatedTable(conn, formName,
+            try (java.sql.PreparedStatement psCheck = prepareWithValidatedTable(conn, formName,
                     "SELECT * FROM {TABLE} WHERE demographic_no=? AND formEdited=?",
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY,
-                    demographicNo, timeStamp);
-            ResultSet rs = psCheck.executeQuery();
-            if (!rs.first()) {
+                    demographicNo, timeStamp)) {
+                ResultSet rs = psCheck.executeQuery();
+                if (!rs.first()) {
+                    rs.close();
+                    try (java.sql.PreparedStatement psInsert = prepareWithValidatedTable(conn, formName,
+                            "SELECT * FROM {TABLE} WHERE demographic_no=? AND ID=?",
+                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
+                            demographicNo, "0")) {
+                        rs = psInsert.executeQuery();
+                        rs.moveToInsertRow();
+                        //To validate or not
+                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                        factory.setXIncludeAware(false);
+                        factory.setExpandEntityReferences(false);
+                        factory.setValidating(validation);
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        doc = builder.parse(source);
+                        rs = toResultSet(doc, rs);
+                        rs.insertRow();
+                    }
+                }
                 rs.close();
-                java.sql.PreparedStatement psInsert = prepareWithValidatedTable(conn, formName,
-                        "SELECT * FROM {TABLE} WHERE demographic_no=? AND ID=?",
-                        ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
-                        demographicNo, "0");
-                rs = psInsert.executeQuery();
-                rs.moveToInsertRow();
-                //To validate or not
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-                factory.setXIncludeAware(false);
-                factory.setExpandEntityReferences(false);
-                factory.setValidating(validation);
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                doc = builder.parse(source);
-                rs = toResultSet(doc, rs);
-                rs.insertRow();
             }
-            rs.close();
         } catch (Exception e) {
             MiscUtils.getLogger().debug("Errors " + e);
 

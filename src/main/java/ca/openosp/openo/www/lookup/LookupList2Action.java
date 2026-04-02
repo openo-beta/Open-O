@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Set;
 
 import ca.openosp.openo.model.LookupTableDefValue;
 import ca.openosp.openo.model.security.NoAccessException;
@@ -72,7 +73,7 @@ public class LookupList2Action extends ActionSupport {
     private String list() throws NoAccessException {
         String tableId = request.getParameter("tableId");
         validateTableId(tableId);
-        if ("PRP,SIT,LKT,QGV,RPG".indexOf(tableId) > 0) throw new NoAccessException();
+        if (Set.of("PRP", "SIT", "LKT", "QGV", "RPG").contains(tableId)) throw new NoAccessException();
 
         String parentCode = request.getParameter("parentCode");
         request.setAttribute("parentCode", parentCode);

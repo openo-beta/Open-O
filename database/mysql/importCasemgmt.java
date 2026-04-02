@@ -177,6 +177,8 @@ public class importCasemgmt {
                         
                         rs.close();
                         insert.close();
+                        pcheck.close();
+                        secPs.close();
                         System.out.println("Checking CAISI role permissions");
                         PreparedStatement paCheck = con.prepareStatement("Select program_id from program_access where program_id = ?");
                         paCheck.setString(1, programId);
@@ -213,7 +215,8 @@ public class importCasemgmt {
                         else
                             System.out.println("skipping CAISI role permissions already done");
                         rs1.close();
-                        
+                        paCheck.close();
+
                         System.out.println("Importing OSCAR patients into CAISI");
                         
                         sql = "select demographic_no, date_joined, provider_no from demographic";

@@ -277,14 +277,8 @@ public class FrmRecordHelp {
         rs.close();
 
         int ret = 0;
-        String idSql = "SELECT LAST_INSERT_ID()";
-        String db_type = OscarProperties.getInstance() != null ? OscarProperties.getInstance().getProperty("db_type", "") : "";
-        if (db_type.equalsIgnoreCase("postgresql")) {
-            idSql = "SELECT CURRVAL('?')";
-        } else if (!db_type.equals("") && !db_type.equalsIgnoreCase("mysql")) {
-            throw new SQLException("ERROR: Database " + db_type + " unrecognized.");
-        }
-        rs = DBHandler.GetPreSQL(idSql);
+        // This system only supports MySQL/MariaDB
+        rs = DBHandler.GetPreSQL("SELECT LAST_INSERT_ID()");
         if (rs.next())
             ret = rs.getInt(1);
         rs.close();

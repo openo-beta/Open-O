@@ -151,7 +151,7 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
             query.setParameter("demographic_no", this.demographic_no);
             query.setFirstResult(Integer.parseInt(this.messagePosition));
             query.setMaxResults(1);
-            Integer messageIdResult = (Integer) query.getSingleResult();
+            Integer messageIdResult = ((Number) query.getSingleResult()).intValue();
 
             if (messageIdResult != null) {
                 this.messageID = messageIdResult.toString();
@@ -223,7 +223,7 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
         } else if ("sentto".equals(key)) {
             column = "sentto";
         } else if ("linked".equals(key)) {
-            column = "isnull";
+            column = "m.messageid is null";
         } else {
             // Default: date -> thedate
             column = "thedate";
