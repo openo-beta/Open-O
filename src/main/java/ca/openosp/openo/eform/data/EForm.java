@@ -50,6 +50,7 @@ import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
+import ca.openosp.openo.util.PreparedSQL;
 import ca.openosp.openo.util.StringBuilderUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -703,7 +704,7 @@ public class EForm extends EFormBase {
         String sql = ap.getApSQL();
         String output = ap.getApOutput();
         if (!StringUtils.isBlank(sql)) {
-            SqlWithParams swp = parameterizeFields(sql);
+            PreparedSQL swp = parameterizeFields(sql);
             sql = swp.getSql();
             log.debug("SQL----" + sql);
             ArrayList<String> names = DatabaseAP.parserGetNames(output); // a list of ${apName} --> apName
@@ -775,9 +776,9 @@ public class EForm extends EFormBase {
      * and collects the corresponding values in order for PreparedStatement binding.
      *
      * @param sql the SQL template containing ${name} placeholders
-     * @return a SqlWithParams containing the parameterized SQL and ordered parameter values
+     * @return a PreparedSQL containing the parameterized SQL and ordered parameter values
      */
-    public SqlWithParams parameterizeFields(String sql) {
+    public PreparedSQL parameterizeFields(String sql) {
         List<Object> params = new ArrayList<>();
 
         // Replace known template variables with ? and collect values
@@ -795,7 +796,7 @@ public class EForm extends EFormBase {
         sql = parameterizeToken(sql, TABLE_ID, getSqlParams(TABLE_ID), params);
         sql = parameterizeToken(sql, OTHER_KEY, getSqlParams(OTHER_KEY), params);
 
-        return new SqlWithParams(sql, params);
+        return new PreparedSQL(sql, params);
     }
 
     /**
@@ -812,20 +813,13 @@ public class EForm extends EFormBase {
     }
 
     /**
-     * Holds a parameterized SQL string and its ordered bind parameters.
+     * @deprecated Use {@link ca.openosp.openo.util.PreparedSQL} directly instead.
      */
-    public static class SqlWithParams {
-        private final String sql;
-        private final List<Object> params;
-
+    @Deprecated
+    public static class SqlWithParams extends PreparedSQL {
         public SqlWithParams(String sql, List<Object> params) {
-            this.sql = sql;
-            this.params = params;
+            super(sql, params);
         }
-
-        public String getSql() { return sql; }
-        public List<Object> getParams() { return params; }
-        public Object[] getParamsArray() { return params.toArray(); }
     }
 
     private String getSqlParams(String key) {

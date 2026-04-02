@@ -23,16 +23,18 @@
  * Ontario, Canada
  */
 
-package ca.openosp.openo.report.reportByTemplate;
+package ca.openosp.openo.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Holds a parameterized SQL statement and its bind parameter values.
- * Used by the report template engine to separate SQL structure from user-supplied values,
+ * Holds a parameterized SQL statement and its ordered bind parameter values.
+ * Used to separate SQL structure from user-supplied values,
  * enabling safe execution via PreparedStatement.
+ *
+ * @since 2026-04-02
  */
 public class PreparedSQL {
 
@@ -40,18 +42,20 @@ public class PreparedSQL {
     public static final PreparedSQL MISSING_PARAMS = new PreparedSQL("", Collections.emptyList());
 
     private final String sql;
-    private final List<String> params;
+    private final List<Object> params;
 
-    public PreparedSQL(String sql, List<String> params) {
+    public PreparedSQL(String sql, List<?> params) {
         this.sql = sql;
-        this.params = params != null ? Collections.unmodifiableList(new ArrayList<>(params)) : Collections.emptyList();
+        this.params = params != null
+                ? Collections.unmodifiableList(new ArrayList<>(params))
+                : Collections.emptyList();
     }
 
     public String getSql() {
         return sql;
     }
 
-    public List<String> getParams() {
+    public List<Object> getParams() {
         return params;
     }
 
@@ -60,7 +64,7 @@ public class PreparedSQL {
     }
 
     public boolean isMissingParams() {
-        return this == MISSING_PARAMS;
+        return (sql == null || sql.isEmpty()) && params.isEmpty();
     }
 
     public boolean isNullOrEmpty() {

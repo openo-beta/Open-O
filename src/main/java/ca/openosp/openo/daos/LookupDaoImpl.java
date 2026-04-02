@@ -30,23 +30,29 @@ import ca.openosp.openo.model.LookupCodeValue;
 import ca.openosp.openo.model.LookupTableDefValue;
 import ca.openosp.openo.model.LstOrgcd;
 import ca.openosp.openo.model.security.SecProvider;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.SessionFactory;
 
 public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
-    /** Regex pattern for validating field/table names from DB config to prevent injection. */
-    private static final java.util.regex.Pattern SAFE_SQL_IDENTIFIER = java.util.regex.Pattern.compile("^[a-zA-Z0-9_()., ]+$");
+    /**
+     * More permissive pattern for DB-configured field expressions that may contain
+     * SQL functions like {@code concat(first_name, ' ', last_name)}.
+     * For simple table/column names, use {@link SqlUtils#validateTableName(String)} or
+     * {@link SqlUtils#validateColumnName(String)} instead.
+     */
+    private static final java.util.regex.Pattern SAFE_SQL_EXPRESSION = java.util.regex.Pattern.compile("^[a-zA-Z0-9_()., ]+$");
 
     /**
-     * Validates that a field name from DB config is safe for use in queries.
+     * Validates that a field expression from DB config is safe for use in queries.
      * @param fieldSql the field name or expression from FieldDefValue
-     * @return the validated field name
-     * @throws IllegalArgumentException if the field name contains unsafe characters
+     * @return the validated field expression
+     * @throws IllegalArgumentException if the expression contains unsafe characters
      */
     private static String validateFieldSql(String fieldSql) {
-        if (fieldSql == null || !SAFE_SQL_IDENTIFIER.matcher(fieldSql).matches()) {
+        if (fieldSql == null || !SAFE_SQL_EXPRESSION.matcher(fieldSql).matches()) {
             throw new IllegalArgumentException("Invalid field name from config");
         }
         return fieldSql;
@@ -93,7 +99,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         LookupTableDefValue tableDef = GetLookupTableDef(tableId);
         if (tableDef == null)
             return (new ArrayList<LookupCodeValue>());
-        validateFieldSql(tableDef.getTableName());
+        SqlUtils.validateTableName(tableDef.getTableName());
         List fields = LoadFieldDefList(tableId);
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[100];
         String fieldNames[] = new String[17];
@@ -267,7 +273,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
     @Override
     public List GetCodeFieldValues(LookupTableDefValue tableDef, String code) {
-        String tableName = validateFieldSql(tableDef.getTableName());
+        String tableName = SqlUtils.validateTableName(tableDef.getTableName());
         List fs = LoadFieldDefList(tableDef.getTableId());
         String idFieldName = "";
 
@@ -317,7 +323,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
     @Override
     public List<List> GetCodeFieldValues(LookupTableDefValue tableDef) {
-        String tableName = validateFieldSql(tableDef.getTableName());
+        String tableName = SqlUtils.validateTableName(tableDef.getTableName());
         List fs = LoadFieldDefList(tableDef.getTableId());
         ArrayList<List> codes = new ArrayList<List>();
         String sql = "select ";
@@ -459,7 +465,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
     }
 
     private String InsertCodeValue(LookupTableDefValue tableDef, List fieldDefList) throws SQLException {
-        String tableName = validateFieldSql(tableDef.getTableName());
+        String tableName = SqlUtils.validateTableName(tableDef.getTableName());
         String idFieldVal = "";
 
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[fieldDefList.size()];
@@ -503,7 +509,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
     }
 
     private String UpdateCodeValue(LookupTableDefValue tableDef, List fieldDefList) throws SQLException {
-        String tableName = validateFieldSql(tableDef.getTableName());
+        String tableName = SqlUtils.validateTableName(tableDef.getTableName());
         String idFieldName = "";
         String idFieldVal = "";
 

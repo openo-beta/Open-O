@@ -31,7 +31,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 import java.util.List;
 
 import ca.openosp.Misc;
@@ -43,35 +42,28 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.db.DBHandler;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 public class FrmData {
     private static final Logger _log = MiscUtils.getLogger();
     private static EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
 
-    private static final Pattern VALID_TABLE_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_]+$");
-
-    private static void validateTableName(String tableName) {
-        if (tableName == null || tableName.isEmpty() || !VALID_TABLE_NAME_PATTERN.matcher(tableName).matches()) {
-            throw new SecurityException("Invalid table name");
-        }
-    }
-
     /**
      * Executes a SQL query with a validated table name and parameterized values.
-     * The table name MUST be validated via {@link #validateTableName(String)} before calling this method.
-     * Table names cannot be parameterized in PreparedStatement, so validation via the
-     * VALID_TABLE_NAME_PATTERN regex (alphanumeric and underscores only) prevents injection.
+     * The table name MUST be validated via {@link SqlUtils#validateTableName(String)} before calling this method.
+     * Table names cannot be parameterized in PreparedStatement, so validation via
+     * SqlUtils (alphanumeric and underscores only) prevents injection.
      * All other values use PreparedStatement parameter binding.
      *
-     * @param validatedTable the table name, already validated by validateTableName()
+     * @param validatedTable the table name, already validated by SqlUtils.validateTableName()
      * @param sqlTemplate the SQL template with {TABLE} placeholder for the table name
      * @param params the parameterized values to bind to the PreparedStatement
      * @return the ResultSet from the query execution
      * @throws java.sql.SQLException if a database error occurs
      */
     private static ResultSet executeWithValidatedTable(String validatedTable, String sqlTemplate, Object... params) throws java.sql.SQLException {
-        // Safe: validatedTable is guaranteed to match ^[a-zA-Z0-9_]+$ via validateTableName()
+        // Safe: validatedTable is guaranteed to match ^[a-zA-Z0-9_]+$ via SqlUtils.validateTableName()
         // called by all callers before this method. Remaining params use PreparedStatement binding.
         String sql = sqlTemplate.replace("{TABLE}", validatedTable);
         Connection conn = DbConnectionFilter.getThreadLocalDbConnection();
@@ -153,7 +145,7 @@ public class FrmData {
         ArrayList<PatientForm> forms = new ArrayList<PatientForm>();
 
 
-        validateTableName(table);
+        SqlUtils.validateTableName(table);
         ResultSet rs = executeWithValidatedTable(table,
                 "SELECT ID, demographic_no, formCreated, formEdited FROM {TABLE} WHERE demographic_no=? ORDER BY ID DESC",
                 demoNo);
@@ -182,7 +174,7 @@ public class FrmData {
         }
         rs = null;
 
-        validateTableName(table);
+        SqlUtils.validateTableName(table);
         rs = executeWithValidatedTable(table,
                 "SELECT ID, demographic_no, formCreated, formEdited FROM {TABLE} WHERE demographic_no=? ORDER BY ID DESC limit 0,1",
                 demoNo);
@@ -289,7 +281,7 @@ public class FrmData {
             rs = null;
             ret[1] = "0";
         } else {
-            validateTableName(table);
+            SqlUtils.validateTableName(table);
             rs = executeWithValidatedTable(table,
                     "SELECT ID FROM {TABLE} WHERE demographic_no=? order by formEdited desc limit 0,1",
                     demoNo);

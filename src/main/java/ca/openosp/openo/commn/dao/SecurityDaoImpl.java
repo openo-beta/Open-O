@@ -15,9 +15,15 @@ public class SecurityDaoImpl extends AbstractDaoImpl<Security> implements Securi
         super(Security.class);
     }
 
+    @Deprecated
     @Override
     public List<Security> findAllOrderBy(String columnName) {
-        Query query = entityManager.createQuery("SELECT s FROM Security s ORDER BY " + columnName);
+        return findAllOrderByUserName();
+    }
+
+    @Override
+    public List<Security> findAllOrderByUserName() {
+        Query query = entityManager.createQuery("SELECT s FROM Security s ORDER BY s.userName");
         @SuppressWarnings("unchecked")
         List<Security> secList = query.getResultList();
         return secList;

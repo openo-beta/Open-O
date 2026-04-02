@@ -31,8 +31,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
@@ -43,6 +46,72 @@ import ca.openosp.openo.db.DBHandler;
 
 public class SqlUtils {
     private static Logger logger = MiscUtils.getLogger();
+
+    /** Matches safe SQL identifiers: alphanumeric and underscores only. */
+    private static final Pattern VALID_IDENTIFIER = Pattern.compile("^[a-zA-Z0-9_]+$");
+
+    /**
+     * Validates that a table name is safe for direct inclusion in SQL.
+     * Table names cannot be parameterized in PreparedStatement, so this
+     * method ensures the name contains only alphanumeric characters and underscores.
+     *
+     * @param tableName the table name to validate
+     * @return the validated table name
+     * @throws SecurityException if the name is null, empty, or contains unsafe characters
+     */
+    public static String validateTableName(String tableName) {
+        if (tableName == null || tableName.isEmpty() || !VALID_IDENTIFIER.matcher(tableName).matches()) {
+            throw new SecurityException("Invalid table name: " + tableName);
+        }
+        return tableName;
+    }
+
+    /**
+     * Validates that a column name is safe for direct inclusion in SQL.
+     * Column names cannot be parameterized in PreparedStatement, so this
+     * method ensures the name contains only alphanumeric characters and underscores.
+     *
+     * @param columnName the column name to validate
+     * @return the validated column name
+     * @throws SecurityException if the name is null, empty, or contains unsafe characters
+     */
+    public static String validateColumnName(String columnName) {
+        if (columnName == null || columnName.isEmpty() || !VALID_IDENTIFIER.matcher(columnName).matches()) {
+            throw new SecurityException("Invalid column name: " + columnName);
+        }
+        return columnName;
+    }
+
+    /**
+     * Validates a sort column against an explicit whitelist of allowed column names.
+     * Use this when the column value comes from user input (e.g. request parameters).
+     *
+     * @param column the column name to validate
+     * @param allowed the set of allowed column names
+     * @return the validated column name
+     * @throws SecurityException if the column is not in the allowed set
+     */
+    public static String validateSortColumn(String column, Set<String> allowed) {
+        if (column == null || !allowed.contains(column)) {
+            throw new SecurityException("Invalid sort column: " + column);
+        }
+        return column;
+    }
+
+    /**
+     * Generates a comma-separated string of ? placeholders for use in SQL IN clauses.
+     * Example: {@code inClausePlaceholders(3)} returns {@code "?,?,?"}.
+     *
+     * @param count the number of placeholders (must be &gt; 0)
+     * @return a string of comma-separated ? placeholders
+     * @throws IllegalArgumentException if count is less than 1
+     */
+    public static String inClausePlaceholders(int count) {
+        if (count < 1) {
+            throw new IllegalArgumentException("IN clause placeholder count must be >= 1, got: " + count);
+        }
+        return String.join(",", Collections.nCopies(count, "?"));
+    }
 
 
     /**
@@ -195,7 +264,9 @@ public class SqlUtils {
      * @param criteria  String[] - he string array of criteria used to construct the query segment
      * @param useQuotes boolean - a value of true indicates that the clause components are enclosed in quotes
      * @return String - The constructed sql 'in' clause String
+     * @deprecated Vulnerable to SQL injection. Use {@link #inClausePlaceholders(int)} with parameterized queries instead.
      */
+    @Deprecated
     public static String constructInClauseString(String[] criteria, boolean useQuotes) {
         StringBuilder ret = new StringBuilder();
         String quote = useQuotes == true ? "'" : "";
@@ -215,7 +286,9 @@ public class SqlUtils {
     /**
      * This method will return a string similar to "(1,3,5,7)". The intent is that this method will be used to build "in clauses" like select * from foo where x in (1,3,5,7) for
      * statements. This only works for primitives unless you pre-quote strings.
+     * @deprecated Vulnerable to SQL injection. Use {@link #inClausePlaceholders(int)} with parameterized queries instead.
      */
+    @Deprecated
     public static String constructInClauseForStatements(Object[] items) {
         return (constructInClauseForStatements(items, false));
     }
@@ -223,7 +296,9 @@ public class SqlUtils {
     /**
      * This method will return a string similar to "(1,3,5,7)". The intent is that this method will be used to build "in clauses" like select * from foo where x in (1,3,5,7) for
      * statements. This only works for primitives unless you pre-quote strings.
+     * @deprecated Vulnerable to SQL injection. Use {@link #inClausePlaceholders(int)} with parameterized queries instead.
      */
+    @Deprecated
     public static String constructInClauseForStatements(Object[] items, boolean quoteItems) {
         if (items.length <= 0)
             throw (new IllegalArgumentException("Don't call this method if the items for the in clause is <1 it doesn't make sense."));

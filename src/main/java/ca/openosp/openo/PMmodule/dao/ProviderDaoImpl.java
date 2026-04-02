@@ -439,8 +439,8 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         Session session = currentSession();
         try {
             SQLQuery query = session.createSQLQuery(
-                    "select facility_id from provider_facility,Facility where Facility.id=provider_facility.facility_id and Facility.disabled=0 and provider_no = :providerNo");
-            query.setParameter("providerNo", provider_no);
+                    "select facility_id from provider_facility,Facility where Facility.id=provider_facility.facility_id and Facility.disabled=0 and provider_no = ?1");
+            query.setParameter(1, provider_no);
             List<Integer> results = query.list();
             return results;
         } finally {
@@ -454,8 +454,8 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         Session session = currentSession();
         try {
             SQLQuery query = session
-                    .createSQLQuery("select provider_no from provider_facility where facility_id = :facilityId");
-            query.setParameter("facilityId", facilityId);
+                    .createSQLQuery("select provider_no from provider_facility where facility_id = ?1");
+            query.setParameter(1, facilityId);
             List<String> results = query.list();
             return results;
         } finally {
@@ -595,8 +595,8 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         try {
             // providersite is not mapped in hibernate - this can be rewritten w.o.
             // subselect with a cross product IHMO
-            SQLQuery query = session.createSQLQuery("select distinct team from provider p inner join providersite s on s.provider_no = p.provider_no where s.site_id in (select site_id from providersite where provider_no = :providerNo) order by team");
-            query.setParameter("providerNo", providerNo);
+            SQLQuery query = session.createSQLQuery("select distinct team from provider p inner join providersite s on s.provider_no = p.provider_no where s.site_id in (select site_id from providersite where provider_no = ?1) order by team");
+            query.setParameter(1, providerNo);
             return query.list();
         } finally {
             // this.releaseSession(session);
@@ -726,8 +726,8 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         Session session = currentSession();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            SQLQuery query = session.createSQLQuery("SELECT p.provider_no FROM provider p WHERE p.provider_no IN (SELECT DISTINCT a.provider_no FROM appointment a WHERE a.appointment_date = :appointmentDate) AND p.Status='1'");
-            query.setParameter("appointmentDate", sdf.format(appointmentDate));
+            SQLQuery query = session.createSQLQuery("SELECT p.provider_no FROM provider p WHERE p.provider_no IN (SELECT DISTINCT a.provider_no FROM appointment a WHERE a.appointment_date = ?1) AND p.Status='1'");
+            query.setParameter(1, sdf.format(appointmentDate));
             return query.list();
         } finally {
             // this.releaseSession(session);

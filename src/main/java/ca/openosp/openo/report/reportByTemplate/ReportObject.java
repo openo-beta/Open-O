@@ -30,6 +30,8 @@ package ca.openosp.openo.report.reportByTemplate;
 import java.util.ArrayList;
 import java.util.Map;
 
+import ca.openosp.openo.util.PreparedSQL;
+
 public interface ReportObject {
     public String getTemplateId();
 

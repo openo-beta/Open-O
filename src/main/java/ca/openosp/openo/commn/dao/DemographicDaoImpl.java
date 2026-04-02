@@ -262,7 +262,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         Set<Demographic> archivedClients = new java.util.LinkedHashSet<Demographic>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sqlQuery = "select distinct d.demographic_no,d.first_name,d.last_name,(select count(*) from admission a where client_id=d.demographic_no and admission_status='current' and program_id=? and admission_date<=?) as is_active from admission a,demographic d where a.client_id=d.demographic_no and (d.patient_status='AC' or d.patient_status='' or d.patient_status=null) and program_id=? and (d.anonymous is null or d.anonymous != 'one-time-anonymous') ORDER BY d.last_name,d.first_name";
+        String sqlQuery = "select distinct d.demographic_no,d.first_name,d.last_name,(select count(*) from admission a where client_id=d.demographic_no and admission_status='current' and program_id=?1 and admission_date<=?2) as is_active from admission a,demographic d where a.client_id=d.demographic_no and (d.patient_status='AC' or d.patient_status='' or d.patient_status=null) and program_id=?3 and (d.anonymous is null or d.anonymous != 'one-time-anonymous') ORDER BY d.last_name,d.first_name";
         Session session = currentSession();
 
         SQLQuery q = session.createSQLQuery(sqlQuery);
@@ -1607,19 +1607,25 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
     }
 
+    private static final java.util.Map<String, String> NATIVE_ORDER_FIELDS = java.util.Map.of(
+        "last_name", "de.last_name, de.first_name",
+        "last_name, first_name", "de.last_name, de.first_name",
+        "demographic_no", "de.demographic_no",
+        "chart_no", "de.chart_no",
+        "sex", "de.sex",
+        "dob", "de.year_of_birth, de.month_of_birth, de.date_of_birth",
+        "provider_no", "de.provider_no",
+        "roster_status", "de.roster_status",
+        "patient_status", "de.patient_status",
+        "phone", "de.phone"
+    );
+
     @Override
     public String getOrderField(String orderBy, boolean nativeQuery) {
         if (!nativeQuery) {
-            orderBy = getOrderField(orderBy);
-        } else {
-            if (orderBy.equals("dob")) {
-                orderBy = "de.year_of_birth, de.month_of_birth, de.date_of_birth ";
-            } else {
-                orderBy = "de." + orderBy;
-            }
+            return getOrderField(orderBy);
         }
-
-        return orderBy;
+        return NATIVE_ORDER_FIELDS.getOrDefault(orderBy, "de.last_name, de.first_name");
     }
 
     @Override

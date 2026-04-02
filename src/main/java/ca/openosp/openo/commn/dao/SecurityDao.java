@@ -7,7 +7,13 @@ import java.util.List;
 import ca.openosp.openo.commn.model.Security;
 
 public interface SecurityDao extends AbstractDao<Security> {
+    /**
+     * @deprecated Use {@link #findAllOrderByUserName()} instead. Dynamic column names in ORDER BY are unsafe.
+     */
+    @Deprecated
     List<Security> findAllOrderBy(String columnName);
+
+    List<Security> findAllOrderByUserName();
 
     List<Security> findByProviderNo(String providerNo);
 
