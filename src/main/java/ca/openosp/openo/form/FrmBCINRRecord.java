@@ -113,6 +113,7 @@ public class FrmBCINRRecord extends FrmRecord {
                 props.setProperty("c_phone1_cur", Misc.getString(rs, "phone"));
                 props.setProperty("c_phone2_cur", Misc.getString(rs, "phone2"));
             }
+            rs.close();
         }
         return props;
     }
@@ -144,6 +145,7 @@ public class FrmBCINRRecord extends FrmRecord {
             if (rs.next()) {
                 cId = rs.getInt("ID");
             }
+            rs.close();
         } else {
             cId = existingID;
         }
@@ -215,7 +217,9 @@ public class FrmBCINRRecord extends FrmRecord {
                         ret.add(result);
                     }
                 }
+                rs2.close();
             }
+            rs1.close();
         }
 
         rs.close();

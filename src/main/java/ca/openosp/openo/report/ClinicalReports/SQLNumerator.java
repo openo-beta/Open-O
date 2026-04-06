@@ -27,6 +27,7 @@
 package ca.openosp.openo.report.ClinicalReports;
 
 import java.sql.ResultSet;
+import java.util.Collections;
 import java.util.Hashtable;
 
 import ca.openosp.Misc;
@@ -90,13 +91,23 @@ public class SQLNumerator implements Numerator {
     }
 
 
+    /**
+     * Parameterizes the SQL template by replacing all ${processString} occurrences with ?
+     * and binding the demographicNo value for each occurrence.
+     */
+    private ResultSet executeParameterizedSQL(String demographicNo) throws Exception {
+        String pattern = "\\$\\{" + processString + "\\}";
+        int paramCount = sql.split(pattern, -1).length - 1;
+        Object[] params = Collections.nCopies(paramCount, demographicNo).toArray();
+        return DBHandler.GetPreSQL(sql.replaceAll(pattern, "?"), params);
+    }
+
     //TODO:Do i change this to pull fields out of the query?
     public boolean evaluateOLD(String demographicNo) {
         boolean evalTrue = false;
 
         try {
-
-            ResultSet rs = DBHandler.GetPreSQL(sql.replaceAll("\\$\\{" + processString + "\\}", "?"), demographicNo);
+            ResultSet rs = executeParameterizedSQL(demographicNo);
             MiscUtils.getLogger().debug("SQL Statement: " + sql);
             while (rs.next()) {
                 int count = rs.getInt(identifier);
@@ -123,8 +134,7 @@ public class SQLNumerator implements Numerator {
 
         outputValues = null;
         try {
-
-            ResultSet rs = DBHandler.GetPreSQL(sql.replaceAll("\\$\\{" + processString + "\\}", "?"), demographicNo);
+            ResultSet rs = executeParameterizedSQL(demographicNo);
             MiscUtils.getLogger().debug("SQL Statement: " + sql);
             if (rs.next()) {
                 evalTrue = true;

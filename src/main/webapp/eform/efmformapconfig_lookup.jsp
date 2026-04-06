@@ -13,6 +13,7 @@
 <%@ page import="ca.openosp.openo.eform.data.DatabaseAP" %>
 <%@ page import="ca.openosp.openo.eform.data.EForm" %>
 <%@ page import="ca.openosp.openo.eform.EFormLoader" %>
+<%@ page import="ca.openosp.openo.util.PreparedSQL" %>
 <input type="hidden" name="oscarAPCacheLookupType" value="<%= request.getParameter("oscarAPCacheLookupType") %>"/><%
     String[] keys = request.getParameterValues("key");
     if (keys == null) {
@@ -36,7 +37,7 @@
                 String output = ap.getApOutput();
                 //replace ${demographic} with demogrpahicNo
                 if (sql != null) {
-                    EForm.SqlWithParams swp = form.parameterizeFields(sql);
+                    PreparedSQL swp = form.parameterizeFields(sql);
                     sql = swp.getSql();
 
                     ArrayList<String> names = DatabaseAP.parserGetNames(output); //a list of ${apName} --> apName
