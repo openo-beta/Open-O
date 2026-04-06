@@ -38,12 +38,13 @@ import org.hibernate.SessionFactory;
 public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
     /**
-     * More permissive pattern for DB-configured field expressions that may contain
+     * Pattern for DB-configured field expressions that may contain
      * SQL functions like {@code concat(first_name, ' ', last_name)}.
-     * For simple table/column names, use {@link SqlUtils#validateTableName(String)} or
-     * {@link SqlUtils#validateColumnName(String)} instead.
+     * Allows alphanumeric, underscores, parentheses, commas, dots, spaces, and single quotes
+     * (needed for string literals in SQL functions). These values come from admin DB config,
+     * not user input, so this is defense-in-depth against second-order injection.
      */
-    private static final java.util.regex.Pattern SAFE_SQL_EXPRESSION = java.util.regex.Pattern.compile("^[a-zA-Z0-9_()., ]+$");
+    private static final java.util.regex.Pattern SAFE_SQL_EXPRESSION = java.util.regex.Pattern.compile("^[a-zA-Z0-9_()'., ]+$");
 
     /**
      * Validates that a field expression from DB config is safe for use in queries.

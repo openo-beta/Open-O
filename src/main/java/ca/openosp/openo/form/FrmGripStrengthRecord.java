@@ -66,14 +66,6 @@ public class FrmGripStrengthRecord extends FrmRecord {
                 props.setProperty("studyID", "N/A");
             }
             rs.close();
-            sql = "SELECT studyID FROM rehabStudy2004 WHERE demographic_no = ?";
-            rs = DBHandler.GetPreSQL(sql, demographicNo);
-            if (rs.next()) {
-                props.setProperty("studyID", Misc.getString(rs, "studyID"));
-            } else {
-                props.setProperty("studyID", "N/A");
-            }
-            rs.close();
         } else {
             sql = "SELECT * FROM formGripStrength WHERE demographic_no = ? AND ID = ?";
             rs = DBHandler.GetPreSQL(sql, demographicNo, existingID);

@@ -52,6 +52,7 @@ public class FrmGrowth0_36Record extends FrmRecord {
                 props.setProperty("patientSex", Misc.getString(rs, "sex"));
                 props.setProperty("dateOfBirth", UtilDateUtilities.DateToString(date, _dateFormat));
             }
+            rs.close();
         }
         return props;
     }

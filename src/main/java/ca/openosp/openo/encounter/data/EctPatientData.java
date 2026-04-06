@@ -55,7 +55,7 @@ public class EctPatientData {
             if (rs.next())
                 ret = Misc.getString(rs, "provider_no");
 
-        } catch (SQLException e) {
+        } catch (SQLException | NumberFormatException e) {
             MiscUtils.getLogger().debug("error - EctPatientData.getProviderNo");
         } finally {
             if (rs != null) {
@@ -86,7 +86,7 @@ public class EctPatientData {
                         Misc.getString(rs, "address"), Misc.getString(rs, "city"), Misc.getString(rs, "postal"), Misc.getString(rs, "phone"),
                         Misc.getString(rs, "roster_status"));
 
-        } catch (SQLException e) {
+        } catch (SQLException | NumberFormatException e) {
             MiscUtils.getLogger().error("Error", e);
         } finally {
             if (rs != null) {

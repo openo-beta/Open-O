@@ -2503,7 +2503,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             orderBy = "LastName";
         }
 
-        String safeField = fieldName;
+        String safeField = (fieldName == null || fieldName.isEmpty()) ? "LastName" : fieldName;
         String sql = "FROM Demographic d WHERE d.".concat(safeField).concat(" LIKE :fieldValue");
         if (isFieldValueEmpty) {
             sql = "FROM Demographic d";

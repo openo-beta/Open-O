@@ -111,7 +111,6 @@ public class EFormUtil {
      */
     private static final Set<String> VALID_SORT_COLUMNS = Set.of(
             NAME, SUBJECT, DATE, FILE_NAME, PROVIDER,
-            "form_name", "subject", "form_date DESC, form_time DESC", "file_name", "form_provider",
             "form_date", "form_time"
     );
 
