@@ -238,12 +238,13 @@ public class ReportObjectGeneric implements ReportObject {
                     && (sql.charAt(cursor1 - 1) == '\'' || sql.charAt(cursor1 - 1) == '\"');
 
             if (substValues.length == 0) {
-                // Checkbox with no value — remove the placeholder (and surrounding quotes if present)
+                // Checkbox with no value — use a NULL placeholder to keep SQL valid.
+                // e.g. WHERE status = '{check}' becomes WHERE status = NULL
                 int start = hasQuote ? cursor1 - 1 : cursor1;
                 boolean hasTrailingQuote = hasQuote && cursor2 + 1 < sql.length()
                         && sql.charAt(cursor2 + 1) == sql.charAt(cursor1 - 1);
                 int end = hasTrailingQuote ? cursor2 + 2 : cursor2 + 1;
-                sql = sql.substring(0, start) + sql.substring(end);
+                sql = sql.substring(0, start) + "NULL" + sql.substring(end);
             } else if (substValues.length == 1) {
                 // Single value — replace {param} (and surrounding quotes) with a single ?
                 int start = hasQuote ? cursor1 - 1 : cursor1;

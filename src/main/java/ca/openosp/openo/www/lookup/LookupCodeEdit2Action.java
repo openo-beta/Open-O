@@ -35,7 +35,6 @@ import ca.openosp.openo.commons.KeyConstants;
 import ca.openosp.openo.model.FieldDefValue;
 import ca.openosp.openo.model.LookupTableDefValue;
 import ca.openosp.openo.services.LookupManager;
-import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.utils.Utility;
 
 import org.apache.struts2.ActionSupport;
@@ -69,7 +68,11 @@ public class LookupCodeEdit2Action extends ActionSupport {
         boolean isNew = true;
         if (codeIds.length > 1) {
             code = codeIds[1];
-            SqlUtils.validateNumericId(code, "lookup code");
+            // Lookup codes can be alphanumeric (e.g., LKT, ISS, P1, AC).
+            // The value is parameterized downstream via GetCodeFieldValues, so no SQLi risk.
+            if (!VALID_TABLE_ID_PATTERN.matcher(code).matches()) {
+                throw new SecurityException("Invalid lookup code identifier");
+            }
             isNew = false;
         }
 

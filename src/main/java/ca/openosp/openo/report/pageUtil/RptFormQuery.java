@@ -140,8 +140,8 @@ public class RptFormQuery {
                 }
                 // Validate parameter values to prevent SQL injection via template substitution.
                 // Values are substituted directly into SQL WHERE clause templates from admin-defined reports.
-                // Whitelist: alphanumeric, spaces, hyphens, slashes, colons, dots only.
-                if (paramValue != null && !paramValue.matches("^[a-zA-Z0-9_ \\-/:. ]*$")) {
+                // Whitelist: alphanumeric, spaces, hyphens, slashes, colons, dots, commas, percent only.
+                if (paramValue != null && !paramValue.matches("^[a-zA-Z0-9_ \\-/:.,%]*$")) {
                     throw new SecurityException("Invalid characters in report query parameter");
                 }
                 vecVarValue.add(paramValue);

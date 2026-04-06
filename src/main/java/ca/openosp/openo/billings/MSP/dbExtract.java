@@ -80,28 +80,6 @@ public class dbExtract implements Serializable {
         }
     }
 
-    /**
-     * Executes a parameterized SQL query using PreparedStatement to prevent SQL injection.
-     *
-     * @param sql the SQL string with ? placeholders
-     * @param params the parameter values to bind
-     * @return ResultSet with query results
-     */
-    public ResultSet executePreparedQuery(String sql, Object... params) {
-        try {
-            prep = con.prepareStatement(sql);
-            for (int i = 0; i < params.length; i++) {
-                prep.setObject(i + 1, params[i]);
-            }
-            resultSet = prep.executeQuery();
-            return resultSet;
-        } catch (SQLException e) {
-            MiscUtils.getLogger().debug("Cannot get connection ");
-            MiscUtils.getLogger().debug("Exception is: " + e);
-            return resultSet;
-        }
-    }
-
     public ResultSet executeQuery2(String sql) {
         try {
             String SQLString = sql;
