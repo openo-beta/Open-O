@@ -1412,9 +1412,15 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         entityManager.clear();
 
         // tickler (parent)
+        // Clear the EAGER-loaded comments collection before persisting the copy so that Hibernate
+        // does not issue an UPDATE tickler_comments SET tickler_no = <newId> for the source rows.
+        // Without this, the @OneToMany relationship would silently "move" the source comments to
+        // the new Tickler, leaving the source Tickler with no comments and causing the HQL
+        // INSERT SELECT below to copy zero rows.
         Map<Long, Long> ticklerPkMap = copyEntityRows(Tickler.class, "Tickler", "demographicNo",
                 sourceDemoNo, targetDemoNo,
-                e -> (long) e.getId(), e -> e.setId(null),
+                e -> (long) e.getId(),
+                e -> { e.setId(null); e.setComments(new java.util.HashSet<>()); },
                 (e, d) -> e.setDemographicNo(d));
 
         if (ticklerPkMap.isEmpty()) {
