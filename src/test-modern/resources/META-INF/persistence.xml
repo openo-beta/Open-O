@@ -28,6 +28,60 @@
         <class>ca.openosp.openo.commn.model.Facility</class>
         <class>ca.openosp.openo.commn.model.DemographicMerged</class>
         <class>ca.openosp.openo.PMmodule.model.ProgramQueue</class>
+        <class>ca.openosp.openo.commn.model.ProfessionalSpecialist</class>
+        <!-- Demographic merge operation entities -->
+        <class>ca.openosp.openo.commn.model.DemographicMergeEvent</class>
+        <class>ca.openosp.openo.commn.model.CaseMgmtIssue</class>
+        <class>ca.openosp.openo.commn.model.CaseMgmtIssueNotes</class>
+        <class>ca.openosp.openo.commn.model.CaseMgmtNote</class>
+        <class>ca.openosp.openo.commn.model.CaseMgmtNoteLink</class>
+        <class>ca.openosp.openo.commn.model.CaseMgmtNoteExt</class>
+        <class>ca.openosp.openo.commn.model.CaseMgmtCpp</class>
+        <class>ca.openosp.openo.commn.model.DemographicExt</class>
+        <class>ca.openosp.openo.commn.model.DemographicCust</class>
+        <class>ca.openosp.openo.commn.model.DemographicExtArchive</class>
+        <class>ca.openosp.openo.commn.model.ConsultationRequestArchive</class>
+        <class>ca.openosp.openo.commn.model.ConsultationRequestExtArchive</class>
+        <class>ca.openosp.openo.commn.model.LookupListItem</class>
+        <class>ca.openosp.openo.commn.model.Appointment</class>
+        <class>ca.openosp.openo.commn.model.BillingONCHeader1</class>
+        <class>ca.openosp.openo.commn.model.BillingOnTransaction</class>
+        <class>ca.openosp.openo.commn.model.BillingONItem</class>
+        <class>ca.openosp.openo.billing.CA.ON.model.BillingONCHeader2</class>
+        <class>ca.openosp.openo.commn.model.CtlDocument</class>
+        <class>ca.openosp.openo.commn.model.Drug</class>
+        <class>ca.openosp.openo.commn.model.DrugReason</class>
+        <class>ca.openosp.openo.commn.model.EmailLog</class>
+        <class>ca.openosp.openo.commn.model.EmailAttachment</class>
+        <class>ca.openosp.openo.commn.model.EmailConfig</class>
+        <class>ca.openosp.openo.commn.model.EReferAttachment</class>
+        <class>ca.openosp.openo.commn.model.EReferAttachmentData</class>
+        <!-- copyClinicalDirectRecords entities -->
+        <class>ca.openosp.openo.commn.model.Consent</class>
+        <class>ca.openosp.openo.commn.model.ConsentType</class>
+        <class>ca.openosp.openo.commn.model.DemographicArchive</class>
+        <class>ca.openosp.openo.commn.model.DemographicContact</class>
+        <class>ca.openosp.openo.commn.model.DemographicPharmacy</class>
+        <class>ca.openosp.openo.commn.model.DigitalSignature</class>
+        <class>ca.openosp.openo.commn.model.Dxresearch</class>
+        <class>ca.openosp.openo.commn.model.Episode</class>
+        <class>ca.openosp.openo.commn.model.FaxJob</class>
+        <class>ca.openosp.openo.commn.model.FlowSheetDrug</class>
+        <class>ca.openosp.openo.commn.model.FlowSheetDx</class>
+        <class>ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic</class>
+        <class>ca.openosp.openo.commn.model.Immunizations</class>
+        <class>ca.openosp.openo.commn.model.MeasurementsDeleted</class>
+        <class>ca.openosp.openo.commn.model.MsgDemoMap</class>
+        <class>ca.openosp.openo.commn.model.MsgIntegratorDemoMap</class>
+        <class>ca.openosp.openo.commn.model.OLISQueryLog</class>
+        <class>ca.openosp.openo.commn.model.OLISResults</class>
+        <class>ca.openosp.openo.commn.model.PatientLabRouting</class>
+        <class>ca.openosp.openo.commn.model.Prescription</class>
+        <class>ca.openosp.openo.commn.model.Relationships</class>
+        <class>ca.openosp.openo.commn.model.TableModification</class>
+        <class>ca.openosp.openo.commn.model.WaitingList</class>
+        <class>ca.openosp.openo.commn.model.OtherId</class>
+        <class>ca.openosp.openo.commn.model.DemographicCustArchive</class>
         <!-- HBM.XML mapped entities -->
         <mapping-file>ca/openosp/openo/commn/model/Provider.hbm.xml</mapping-file>
         <mapping-file>ca/openosp/openo/commn/model/Demographic.hbm.xml</mapping-file>
