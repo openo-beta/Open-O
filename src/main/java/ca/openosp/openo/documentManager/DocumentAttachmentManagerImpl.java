@@ -40,6 +40,12 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
     private ConsultDocsDao consultDocsDao;
     @Autowired
     private EFormDocsDao eFormDocsDao;
+    @Autowired
+    private ca.openosp.openo.commn.dao.DocumentDao documentDao;
+    @Autowired
+    private ca.openosp.openo.commn.dao.PatientLabRoutingDao patientLabRoutingDao;
+    @Autowired
+    private ca.openosp.openo.commn.dao.EFormDataDao eFormDataDao;
 
     @Autowired
     private ConsultationManager consultationManager;
@@ -406,5 +412,49 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
         } catch (IOException e) {
             throw new PDFGenerationException("Error while flattening the " + pdfPath.getFileName() + " file. " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public boolean validateDocumentsBelongToPatient(LoggedInInfo loggedInInfo, Integer demographicNo, String[] documents) {
+        // Use Set to automatically deduplicate IDs — duplicate entries would cause size-based validation to fail incorrectly
+        Set<Integer> docIds = new HashSet<>();
+        Set<Integer> labIds = new HashSet<>();
+        Set<Integer> eformIds = new HashSet<>();
+        Set<Integer> hrmIds = new HashSet<>();
+
+        for (String doc : documents) {
+            if (doc == null || doc.length() < 2) continue;
+            char type = doc.charAt(0);
+            try {
+                int id = Integer.parseInt(doc.substring(1));
+                switch (type) {
+                    case 'D': docIds.add(id); break;
+                    case 'L': labIds.add(id); break;
+                    case 'E': eformIds.add(id); break;
+                    case 'H': hrmIds.add(id); break;
+                }
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        if (!docIds.isEmpty()) {
+            List<Integer> found = documentDao.findDocumentNosForDemographic(demographicNo, new ArrayList<>(docIds));
+            if (!found.containsAll(docIds)) return false;
+        }
+        if (!labIds.isEmpty()) {
+            List<Integer> found = patientLabRoutingDao.findLabNosForDemographic(demographicNo, new ArrayList<>(labIds));
+            if (!found.containsAll(labIds)) return false;
+        }
+        if (!eformIds.isEmpty()) {
+            List<Integer> found = eFormDataDao.findFdidsForDemographic(demographicNo, new ArrayList<>(eformIds));
+            if (!found.containsAll(eformIds)) return false;
+        }
+        if (!hrmIds.isEmpty()) {
+            List<Integer> found = HRMUtil.findHRMDocumentIdsForPatient(demographicNo, new ArrayList<>(hrmIds));
+            if (!found.containsAll(hrmIds)) return false;
+        }
+
+        return true;
     }
 }
