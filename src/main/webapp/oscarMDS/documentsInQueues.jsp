@@ -1825,13 +1825,26 @@
 //console.log('foundQ='+foundQ);
             //descrease the queue's doc number by 1
             if (foundQ.length > 0) {
-                var n = $('docNo_' + foundQ).innerHTML;
-                //console.log('not found11');
+                const el = document.getElementById('docNo_' + foundQ);
+
+                if (!el) {
+                    console.warn("Element not found for:", 'docNo_' + foundQ);
+                    return;
+                }
+
+                const n = el.innerHTML;
+                console.log("Current count:", n);
+
                 n = parseInt(n);
-                //console.log('not found22');
+
+                if (isNaN(n)) {
+                    console.warn("Count is not a number:", el.innerHTML);
+                    return;
+                }
+
                 if (n > 0) {
-                    //console.log('not found33');
-                    $('docNo_' + foundQ).innerHTML = n - 1;
+                    el.innerHTML = n - 1;
+                    console.log("Updated count:", el.innerHTML);
                 }
             }
             //console.log('not found44');
