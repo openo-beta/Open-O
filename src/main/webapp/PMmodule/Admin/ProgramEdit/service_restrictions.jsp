@@ -1,4 +1,3 @@
-<%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el" %>
 <%@ page import="ca.openosp.openo.PMmodule.model.ProgramClientRestriction" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 
@@ -97,13 +96,13 @@ Please define the following parameters control the behaviour of new service rest
 </script>
 <input type="hidden" name="id" id="id"/>
 
-<display-el:table class="simple" cellspacing="2" cellpadding="3" id="restriction" name="service_restrictions"
+<display:table class="simple" cellspacing="2" cellpadding="3" id="restriction" name="service_restrictions"
                   export="false" pagesize="0" requestURI="/PMmodule/ProgramManager.do">
-    <display-el:setProperty name="paging.banner.placement" value="bottom"/>
-    <display-el:setProperty name="basic.msg.empty_list"
+    <display:setProperty name="paging.banner.placement" value="bottom"/>
+    <display:setProperty name="basic.msg.empty_list"
                             value="No service restrictions currently in place for this program."/>
 
-    <display-el:column sortable="false">
+    <display:column sortable="false">
         <%
             String demographicNo = "" + ((ProgramClientRestriction) pageContext.getAttribute("restriction")).getDemographicNo();
         %>
@@ -113,14 +112,14 @@ Please define the following parameters control the behaviour of new service rest
             <a onclick="disableRestriction('<c:out value="${restriction.id}"/>');return false;"
                href="javascript:void(0);"> Disable </a>
         </caisirole:SecurityAccess>
-    </display-el:column>
-    <display-el:column property="id" sortable="true" title="Id"/>
-    <display-el:column property="client.formattedName" sortable="true" title="Client"/>
-    <display-el:column property="provider.formattedName" sortable="true" title="Restricted By"/>
-    <display-el:column property="comments" sortable="true" title="Comments"/>
-    <display-el:column property="startDate" sortable="true" title="Start date"/>
-    <display-el:column property="endDate" sortable="true" title="End date"/>
-</display-el:table>
+    </display:column>
+    <display:column property="id" sortable="true" title="Id"/>
+    <display:column property="client.formattedName" sortable="true" title="Client"/>
+    <display:column property="provider.formattedName" sortable="true" title="Restricted By"/>
+    <display:column property="comments" sortable="true" title="Comments"/>
+    <display:column property="startDate" sortable="true" title="Start date"/>
+    <display:column property="endDate" sortable="true" title="End date"/>
+</display:table>
 
 <br/>
 <div class="tabs" id="tabs">
@@ -131,13 +130,13 @@ Please define the following parameters control the behaviour of new service rest
     </table>
 </div>
 
-<display-el:table class="simple" cellspacing="2" cellpadding="3" id="restriction" name="disabled_service_restrictions"
+<display:table class="simple" cellspacing="2" cellpadding="3" id="restriction" name="disabled_service_restrictions"
                   export="false" pagesize="0" requestURI="/PMmodule/ProgramManager.do">
-    <display-el:setProperty name="paging.banner.placement" value="bottom"/>
-    <display-el:setProperty name="basic.msg.empty_list"
+    <display:setProperty name="paging.banner.placement" value="bottom"/>
+    <display:setProperty name="basic.msg.empty_list"
                             value="No service restrictions currently in place for this program."/>
 
-    <display-el:column sortable="false">
+    <display:column sortable="false">
         <%
             String demographicNo = "" + ((ProgramClientRestriction) pageContext.getAttribute("restriction")).getDemographicNo();
         %>
@@ -147,11 +146,11 @@ Please define the following parameters control the behaviour of new service rest
             <a onclick="enableRestriction('<c:out value="${restriction.id}"/>');return false;"
                href="javascript:void(0);"> Enable </a>
         </caisirole:SecurityAccess>
-    </display-el:column>
-    <display-el:column property="id" sortable="true" title="Id"/>
-    <display-el:column property="client.formattedName" sortable="true" title="Client"/>
-    <display-el:column property="provider.formattedName" sortable="true" title="Restricted By"/>
-    <display-el:column property="comments" sortable="true" title="Comments"/>
-    <display-el:column property="startDate" sortable="true" title="Start date"/>
-    <display-el:column property="endDate" sortable="true" title="End date"/>
-</display-el:table>
+    </display:column>
+    <display:column property="id" sortable="true" title="Id"/>
+    <display:column property="client.formattedName" sortable="true" title="Client"/>
+    <display:column property="provider.formattedName" sortable="true" title="Restricted By"/>
+    <display:column property="comments" sortable="true" title="Comments"/>
+    <display:column property="startDate" sortable="true" title="Start date"/>
+    <display:column property="endDate" sortable="true" title="End date"/>
+</display:table>

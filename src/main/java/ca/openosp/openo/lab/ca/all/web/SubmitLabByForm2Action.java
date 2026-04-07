@@ -50,7 +50,7 @@ import ca.openosp.openo.lab.ca.all.util.GDMLLabHL7Generator;
 import ca.openosp.openo.lab.ca.all.util.MDSLabHL7Generator;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 public class SubmitLabByForm2Action extends ActionSupport {

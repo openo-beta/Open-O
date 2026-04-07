@@ -13,6 +13,38 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $CLAUDE_PROJECT_DIR/.claude/hooks/inject-test-context.py",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $CLAUDE_PROJECT_DIR/.claude/hooks/validate-sql-safety.py",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $CLAUDE_PROJECT_DIR/.claude/hooks/validate-owasp-encoding.py",
+            "timeout": 5
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {
@@ -91,6 +123,7 @@
       "Bash(gh run view *)",
       "Bash(gh run list *)",
       "Bash(gh run watch *)",
+      "Bash(gh issue create *)",
       "Bash(git status *)",
       "Bash(git branch *)",
       "Bash(git checkout *)",
@@ -214,7 +247,6 @@
     "ask": [
       "Bash(gh pr close *)",
       "Bash(gh issue close *)",
-      "Bash(gh issue create *)",
       "Bash(gh issue edit *)",
       "Bash(gh label *)",
       "Bash(gh run rerun *)",

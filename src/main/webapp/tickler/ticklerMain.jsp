@@ -188,9 +188,9 @@
                 text-underline: none !important;
             }
 
-            *:not(h2) {
-                line-height: 1 !important;
-                font-size: 12px !important;
+            *:not(h2):not(.btn) {
+              line-height: 1 !important;
+              font-size: 12px !important;
             }
 
             tr.comment-row td {
@@ -893,8 +893,13 @@
             <table id="tablefoot">
 
                 <tr class="noprint">
-                    <td class="white"><a id="checkAllLink" name="checkAllLink"
-                                         href="javascript:CheckAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnCheckAll"/></a> - <a href="javascript:ClearAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnClearAll"/></a>
+                    <td class="white">
+                      <a id="checkAllLink" class="btn btn-link" href="javascript:CheckAll();"><fmt:setBundle basename="oscarResources"/>
+                        <fmt:message key="tickler.ticklerMain.btnCheckAll"/>
+                      </a>
+                      <a href="javascript:ClearAll();" class="btn btn-link">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnClearAll"/>
+                      </a>
 
                         <input type="hidden" name="submit_form" value="">
                         <%

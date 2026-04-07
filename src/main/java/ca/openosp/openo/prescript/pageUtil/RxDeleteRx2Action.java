@@ -49,6 +49,7 @@ import ca.openosp.openo.commn.model.SecRole;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -59,7 +60,7 @@ import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.encounter.data.EctProgram;
 
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -94,13 +95,13 @@ public final class RxDeleteRx2Action extends ActionSupport {
      * Routes to:
      * <ul>
      * <li>Delete2() - Single prescription deletion by ID</li>
-     * <li>DeleteRxOnCloseRxBox() - Delete prescription when closing dialog</li>
      * <li>clearStash() - Clear prescription stash</li>
      * <li>clearReRxDrugList() - Clear re-prescription list</li>
      * <li>Discontinue() - Discontinue prescription with reason</li>
      * </ul>
      * <p>
-     * If no method parameter is provided, performs bulk deletion using the drugList parameter.
+     * If no recognized method is provided, falls through to bulk deletion using the drugList parameter.
+     * If drugList is also absent, logs a warning and returns null.
      *
      * Expected request parameters:
      * <ul>
@@ -118,8 +119,6 @@ public final class RxDeleteRx2Action extends ActionSupport {
         String method = request.getParameter("parameterValue");
         if ("Delete2".equals(method)) {
             return Delete2();
-        } else if ("DeleteRxOnCloseRxBox".equals(method)) {
-            return DeleteRxOnCloseRxBox();
         } else if ("clearStash".equals(method)) {
             return clearStash();
         } else if ("clearReRxDrugList".equals(method)) {
@@ -133,6 +132,10 @@ public final class RxDeleteRx2Action extends ActionSupport {
         RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
+            return null;
+        }
+        if (drugList == null || drugList.isBlank()) {
+            MiscUtils.getLogger().warn("RxDeleteRx2Action: no drugList provided for bulk deletion (parameterValue=" + Encode.forJava(String.valueOf(method)) + ")");
             return null;
         }
         String ip = request.getRemoteAddr();
@@ -214,60 +217,6 @@ public final class RxDeleteRx2Action extends ActionSupport {
             MiscUtils.getLogger().error("Error", e);
         }
         MiscUtils.getLogger().debug("===========================END Delete2 RxDeleteRx2Action========================");
-        return null;
-    }
-
-    /**
-     * Deletes a prescription when the prescription dialog box is closed.
-     * <p>
-     * Uses a random ID to look up the actual drug ID from the session's random ID mapping,
-     * then archives the prescription and returns the drug ID as JSON.
-     *
-     * Expected request parameters:
-     * <ul>
-     * <li>randomId - String random identifier mapped to the actual drug ID in the session</li>
-     * </ul>
-     *
-     * @return null (writes JSON response with drug ID directly to output stream)
-     * @throws IOException if response writing fails
-     */
-    public String DeleteRxOnCloseRxBox()
-            throws IOException {
-
-        MiscUtils.getLogger().debug("===========================DeleteRxOnCloseRxBox RxDeleteRx2Action========================");
-        checkPrivilege(request, PRIVILEGE_UPDATE);
-
-        String randomId = request.getParameter("randomId");
-
-
-        // Setup variables
-        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
-        if (bean == null) {
-            response.sendRedirect("error.html");
-            return null;
-        }
-        if (randomId != null) {
-            HashMap rd = bean.getRandomIdDrugIdPair();
-            Integer drugId = (Integer) rd.get(Long.parseLong(randomId));
-            MiscUtils.getLogger().debug("111drugId=" + drugId + "--randomId=" + randomId);
-            if (drugId != null) {
-                String ip = request.getRemoteAddr();
-                try {
-                    Drug drug = drugDao.find(drugId);
-                    setDrugDelete(drug);
-                    drugDao.merge(drug);
-                    LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.DELETE, LogConst.CON_PRESCRIPTION, drugId.toString(), ip, "" + bean.getDemographicNo(), drug.getAuditString());
-                } catch (Exception e) {
-                    MiscUtils.getLogger().error("Error", e);
-                }
-            }
-            HashMap hm = new HashMap();
-            hm.put("drugId", drugId);
-            ObjectNode jsonObject = objectMapper.valueToTree(hm);
-            MiscUtils.getLogger().debug("jsonObject=" + jsonObject.toString());
-            response.getOutputStream().write(jsonObject.toString().getBytes());
-        }
-        MiscUtils.getLogger().debug("===========================END DeleteRxOnCloseRxBox RxDeleteRx2Action========================");
         return null;
     }
 
