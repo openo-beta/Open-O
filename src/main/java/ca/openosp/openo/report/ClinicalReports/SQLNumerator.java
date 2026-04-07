@@ -27,14 +27,16 @@
 package ca.openosp.openo.report.ClinicalReports;
 
 import java.sql.ResultSet;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import ca.openosp.Misc;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  * The class should evaluate a query that has a count returned.  If the count is = 0 then false is returned if >0 is returned true
@@ -94,12 +96,13 @@ public class SQLNumerator implements Numerator {
     /**
      * Parameterizes the SQL template by replacing all ${processString} occurrences with ?
      * and binding the demographicNo value for each occurrence.
+     * Strips surrounding quotes (e.g., '${demographic_no}' becomes ?) since
+     * PreparedStatement handles string quoting automatically.
      */
     private ResultSet executeParameterizedSQL(String demographicNo) throws Exception {
-        String pattern = "\\$\\{" + processString + "\\}";
-        int paramCount = sql.split(pattern, -1).length - 1;
-        Object[] params = Collections.nCopies(paramCount, demographicNo).toArray();
-        return DBHandler.GetPreSQL(sql.replaceAll(pattern, "?"), params);
+        List<Object> params = new ArrayList<>();
+        String paramSql = SqlUtils.parameterizeToken(sql, processString, demographicNo, params);
+        return DBHandler.GetPreSQL(paramSql, params.toArray());
     }
 
     //TODO:Do i change this to pull fields out of the query?

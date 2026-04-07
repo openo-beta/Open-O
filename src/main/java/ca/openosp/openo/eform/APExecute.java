@@ -36,6 +36,7 @@ import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.eform.data.DatabaseAP;
 import ca.openosp.openo.util.PreparedSQL;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  * @author jay
@@ -121,13 +122,7 @@ public class APExecute {
      * Replaces all occurrences of ${name} with ? and collects values for PreparedStatement binding.
      */
     private static String parameterizeToken(String sql, String name, String value, List<Object> params) {
-        String token = "${" + name + "}";
-        int idx;
-        while ((idx = sql.indexOf(token)) >= 0) {
-            sql = sql.substring(0, idx) + "?" + sql.substring(idx + token.length());
-            params.add(value);
-        }
-        return sql;
+        return SqlUtils.parameterizeToken(sql, name, value, params);
     }
 
     /**

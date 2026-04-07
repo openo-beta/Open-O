@@ -162,6 +162,41 @@ public class SqlUtils {
 
 
     /**
+     * Replaces all occurrences of ${name} in a SQL template with ? and adds the value to the
+     * params list for PreparedStatement binding. Strips surrounding single or double quotes
+     * if present (e.g., '${provider}' becomes ?), since PreparedStatement handles string
+     * quoting automatically. Legacy SQL templates (apconfig.xml, ClinicalReports.xml) include
+     * quotes for the old string-substitution path, but parameterized queries must not have
+     * the placeholder inside quotes or JDBC treats it as a literal '?'.
+     *
+     * @param sql    the SQL template containing ${name} placeholders
+     * @param name   the placeholder name (without ${ } wrapper)
+     * @param value  the value to bind
+     * @param params the list to collect bind parameter values into
+     * @return the SQL with ${name} replaced by ?
+     */
+    public static String parameterizeToken(String sql, String name, String value, List<Object> params) {
+        String token = "${" + name + "}";
+        int idx;
+        while ((idx = sql.indexOf(token)) >= 0) {
+            int start = idx;
+            int end = idx + token.length();
+            // Strip surrounding single or double quotes: '${token}' or "${token}" → ?
+            if (start > 0 && end < sql.length()) {
+                char before = sql.charAt(start - 1);
+                char after = sql.charAt(end);
+                if ((before == '\'' && after == '\'') || (before == '"' && after == '"')) {
+                    start--;
+                    end++;
+                }
+            }
+            sql = sql.substring(0, start) + "?" + sql.substring(end);
+            params.add(value);
+        }
+        return sql;
+    }
+
+    /**
      * Returns a List of String[] which contain the results of the specified arbitrary query.
      *
      * @param qry String - The String SQL Query

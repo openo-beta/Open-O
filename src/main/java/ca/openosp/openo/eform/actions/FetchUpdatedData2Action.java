@@ -119,12 +119,6 @@ public final class FetchUpdatedData2Action extends ActionSupport {
      * Replaces all occurrences of ${name} in sql with ? and adds value to params list.
      */
     private static String parameterizeToken(String sql, String name, String value, List<Object> params) {
-        String token = "${" + name + "}";
-        int idx;
-        while ((idx = sql.indexOf(token)) >= 0) {
-            sql = sql.substring(0, idx) + "?" + sql.substring(idx + token.length());
-            params.add(value);
-        }
-        return sql;
+        return SqlUtils.parameterizeToken(sql, name, value, params);
     }
 }

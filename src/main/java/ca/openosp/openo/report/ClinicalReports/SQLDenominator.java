@@ -35,6 +35,7 @@ import ca.openosp.Misc;
 import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  * This is for straight SQLDenominators  not sure if it should return a more specialised list
@@ -123,18 +124,15 @@ public class SQLDenominator implements Denominator {
 
     /**
      * Replaces ${key} placeholders with ? and collects the corresponding values as bind parameters.
+     * Strips surrounding quotes (e.g., '${key}' becomes ?) since PreparedStatement handles
+     * string quoting automatically.
      */
     private String parameterizeAll(String str, Hashtable replacers, List<Object> bindParams) {
         Enumeration e = replacers.keys();
         while (e.hasMoreElements()) {
             String key = (String) e.nextElement();
             String value = (String) replacers.get(key);
-            String pattern = "\\$\\{" + key + "\\}";
-            int count = str.split(pattern, -1).length - 1;
-            for (int i = 0; i < count; i++) {
-                bindParams.add(value);
-            }
-            str = str.replaceAll(pattern, "?");
+            str = SqlUtils.parameterizeToken(str, key, value, bindParams);
         }
         return str;
     }
