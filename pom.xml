@@ -55,9 +55,10 @@
             <url>https://repo.maven.apache.org/maven2</url>
         </repository>
 
-        <!-- for the com.github.openosp htmltopdf dependency only. Upgrades
-        from this dependency are welcome. Listed last to avoid JitPack intercepting
-        Maven Central artifacts (JitPack is queried for all groupIds, not just com.github.*) -->
+        <!-- Primarily needed for com.github.openosp:ultrabuk-htmltopdf-java.
+        Listed last so Maven Central is queried first — Maven resolves repositories
+        in declaration order and JitPack will be queried for all groupIds, not just
+        com.github.*. Upgrades from this dependency are welcome. -->
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
