@@ -7,6 +7,7 @@ import ca.openosp.openo.commn.model.EReferAttachment;
 import ca.openosp.openo.commn.model.EReferAttachmentData;
 import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -29,6 +30,7 @@ public class ERefer2Action extends ActionSupport {
 
     private static final Logger logger = MiscUtils.getLogger();
     private final DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
+    private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() {
         String method = request.getParameter("method");
@@ -38,15 +40,48 @@ public class ERefer2Action extends ActionSupport {
                 attachOceanEReferralConsult();
             else if (method.equalsIgnoreCase("editOceanEReferralConsult"))
                 editOceanEReferralConsult();
+            else if (method.equalsIgnoreCase("validateDocuments"))
+                validateDocuments();
         }
 
         return SUCCESS;
+    }
+
+    private void writeResponse(boolean valid) {
+        try (PrintWriter writer = response.getWriter()) {
+            response.setContentType("application/json");
+            writer.write(valid ? "{\"valid\":true}" : "{\"valid\":false}");
+        } catch (IOException e) {
+            logger.error("Failed to write validation response", e);
+        }
+    }
+
+    public void validateDocuments() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.READ, null)) {
+            writeResponse(false);
+            return;
+        }
+        String demographicNo = request.getParameter("demographicNo");
+        String[] documents = request.getParameterValues("documents");
+        if (StringUtils.isNullOrEmpty(demographicNo) || documents == null || documents.length == 0) {
+            // Nothing to validate - return true
+            writeResponse(true);
+            return;
+        }
+        boolean valid = documentAttachmentManager.validateDocumentsBelongToPatient(
+                loggedInInfo, Integer.parseInt(demographicNo), documents);
+        writeResponse(valid);
     }
 
     // Documents (attachments) originate from the consult request window.
     // Users can attach these documents using the attachment GUI on the consult request form.
     // All documents are internal to Oscar.
     public void attachOceanEReferralConsult() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.READ, null)) {
+            throw new SecurityException("missing required sec object (_con)");
+        }
         String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "" : request.getParameter("demographicNo");
         String documents = StringUtils.isNullOrEmpty(request.getParameter("documents")) ? "" : request.getParameter("documents");
         if (documents.isEmpty() || demographicNo.isEmpty()) {

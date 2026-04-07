@@ -74,6 +74,18 @@ public interface DocumentAttachmentManager {
     public String convertPDFToBase64(Path renderedDocument) throws PDFGenerationException;
 
     public void flattenPDFFormFields(Path pdfPath) throws PDFGenerationException;
+
+    /**
+     * Validates that all documents in the array belong to the specified patient demographic.
+     * Each entry is prefixed with a type letter (D, L, E, H) followed by the document ID
+     * (e.g. "D42", "L7").
+     *
+     * @param loggedInInfo  The logged-in provider context
+     * @param demographicNo The patient's demographic number
+     * @param documents     Array of typed document ID strings
+     * @return {@code true} if every document belongs to the patient; {@code false} otherwise
+     */
+    public boolean validateDocumentsBelongToPatient(LoggedInInfo loggedInInfo, Integer demographicNo, String[] documents);
 }
 
 	
