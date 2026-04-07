@@ -23,6 +23,27 @@
     Ontario, Canada
 
 --%>
+<%--
+    SearchDrug3.jsp - Prescription drug search and staging interface
+
+    Purpose: Primary interface for searching, staging, and managing prescription drugs.
+    Handles the full prescription workflow including drug search, staging drugs for
+    prescribing, re-prescribing (ReRx), saving prescriptions, and print preview.
+
+    Features:
+    - Drug search with auto-complete and interaction checking
+    - Prescription staging area with add/remove drug cards
+    - Re-prescribe (ReRx) checkbox workflow for existing medications
+    - Save & Print and Save Only prescription workflows
+    - Print preview modal with Edit Rx support
+    - Drug favorites management
+    - Allergy and interaction warnings
+
+    Requires:
+    - RxSessionBean in HTTP session (contains demographicNo, providerNo, stash state)
+
+    @since 2009-09-18
+--%>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -1015,7 +1036,6 @@
                         <div id="rxText"></div>
                         <%-- Prescriptions are staged here via the prescribe.jsp widget --%>
 
-                        <input type="hidden" id="deleteOnCloseRxBox" value="false"/>
                         <input type="hidden" property="demographicNo" value="<%=patient.getDemographicNo()%>"/>
 
                       </div>
@@ -1723,47 +1743,26 @@
 
 
   function deletePrescribe(randomId) {
-    let data = "randomId=" + randomId;
-    let url = ctx + "/oscarRx/rxStashDelete.do?parameterValue=deletePrescribe";
-    new Ajax.Request(url, {
-      method: 'get', parameters: data, onSuccess: function (transport) {
-        // updateCurrentInteractions();
-        if ($('deleteOnCloseRxBox').value == 'true') {
-          deleteRxOnCloseRxBox(randomId);
-        }
+    let url = ctx + "/oscarRx/rxStashDelete.do";
+    let headers = {'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'};
+    headers['<csrf:tokenname/>'] = document.querySelector('#drugForm input[name="<csrf:tokenname/>"]').value;
 
-        jQuery("#set_" + randomId).remove();
-        jQuery("#prescriptionMoreLessLink_" + randomId).remove();
-        jQuery("#deleteMedicationFromPrescription_" + randomId).remove();
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: new URLSearchParams({parameterValue: 'deletePrescribe', randomId: randomId})
+    }).then(function (response) {
+      if (!response.ok) {
+        console.error('Failed to remove drug from stash (HTTP ' + response.status + ')');
       }
+      document.getElementById("set_" + randomId)?.remove();
+      document.getElementById("prescriptionMoreLessLink_" + randomId)?.remove();
+      document.getElementById("deleteMedicationFromPrescription_" + randomId)?.remove();
+    }).catch(function (error) {
+      console.error('deletePrescribe error:', error);
     });
   }
 
-  function deleteRxOnCloseRxBox(randomId) {
-
-    let data = "randomId=" + randomId;
-    let url = ctx + "/oscarRx/deleteRx.do?parameterValue=DeleteRxOnCloseRxBox";
-    new Ajax.Request(url, {
-      method: 'get', parameters: data, onSuccess: function (transport) {
-        let json = transport.responseText.evalJSON();
-        if (json != null) {
-          let id = json.drugId;
-          let rxDate = "rxDate_" + id;
-          let reRx = "reRx_" + id;
-          let del = "del_" + id;
-          let discont = "discont_" + id;
-          let prescrip = "prescrip_" + id;
-          $(rxDate).style.textDecoration = 'line-through';
-          $(reRx).style.textDecoration = 'line-through';
-          $(del).style.textDecoration = 'line-through';
-          $(discont).style.textDecoration = 'line-through';
-          $(prescrip).style.textDecoration = 'line-through';
-          // updateCurrentInteractions();
-        }
-      }
-    });
-
-  }
 
   skipParseInstr = false;
 
@@ -2047,10 +2046,6 @@
     });
   }
 
-  function updateDeleteOnCloseRxBox() {
-    $('deleteOnCloseRxBox').value = 'true';
-  }
-
   function popForm2(scriptId) {
       try {
         const modalElement = document.getElementById('rxPreviewBootstrapModal');
@@ -2097,7 +2092,6 @@
         editRxButton = newEditRxButton;
 
         editRxButton.onclick = function () {
-          updateDeleteOnCloseRxBox();
           const modalInstance = bootstrap.Modal.getInstance(modalElement);
           if (modalInstance) {
             modalInstance.hide();
@@ -2641,18 +2635,17 @@
      */
     function removePrescribingDrug(cardId, drugId) {
       const uiRefId = cardId.id.split('_')[1];
-      this.deletePrescribingDrugFromUI(uiRefId, drugId);
+      this.deletePrescribingDrugFromUI(uiRefId);
       this.uncheckReRxForExistingPrescribedDrug(drugId)
     }
 
     /**
      * Deletes a prescribing drug from UI and calls deletePrescribe.
      * @param uiRefId The unique id for referencing the UI element.
-     * @param drugId The id of the drug to delete.
      */
-    function deletePrescribingDrugFromUI(uiRefId, drugId) {
+    function deletePrescribingDrugFromUI(uiRefId) {
       this.removeElementFromUI(this.getPrescribingDrugCardByUiRefId(uiRefId));
-      this.deletePrescribe(drugId);
+      this.deletePrescribe(uiRefId);
     }
 
     /**
@@ -2666,8 +2659,7 @@
 
     /**
      * Unchecks the "re-prescribe" checkbox for an existing prescribed drug and removes its ID from the re-prescribe list.
-     * @param uiRefId The UI reference ID for the drug.
-     * @param drugId The ID of the drug.
+     * @param drugId The database ID of the prescribed drug.
      */
     function uncheckReRxForExistingPrescribedDrug(drugId) {
       const checkbox = this.getReRxCheckboxByUiRefId(drugId);
