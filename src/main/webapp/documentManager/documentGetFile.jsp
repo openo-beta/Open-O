@@ -30,6 +30,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DocumentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Document" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="ca.openosp.openo.utility.PathValidationUtils" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -57,7 +58,10 @@
         filename = request.getParameter("document");
         filetype = request.getParameter("type");
         doc_no = request.getParameter("doc_no");
-        String filePath = docdownload + '/' + filename;
+        File docDir = new File(docdownload);
+        File validatedFile = PathValidationUtils.validatePath(filename, docDir);
+        filename = validatedFile.getName();
+        String filePath = validatedFile.getPath();
         if (filetype.compareTo("active") == 0) {
             if (downloadMethod == null) {
                 filePath = request.getContextPath() + "/OscarDocument/document/" + filename;

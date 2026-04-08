@@ -59,6 +59,9 @@ import ca.openosp.openo.prevention.reports.FollowupManagement;
 import ca.openosp.openo.report.data.ManageLetters;
 import ca.openosp.openo.util.ConcatPDF;
 import ca.openosp.openo.util.UtilDateUtilities;
+import ca.openosp.openo.utility.PathValidationUtils;
+
+import java.io.File;
 
 /**
  * @author jay
@@ -161,7 +164,9 @@ public class GeneratePatientLetters2Action extends ActionSupport {
                 }
 
                 fileName = newDoc.getFileName();
-                String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/" + fileName;
+                File docDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+                File saveFile = PathValidationUtils.validatePath(fileName, docDir);
+                String savePath = saveFile.getPath();
                 if (log.isTraceEnabled()) {
                     log.trace("writing report to disk location " + savePath);
                 }
