@@ -85,7 +85,11 @@ public class PrintLabs2Action extends ActionSupport {
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + handler.getPatientName().replaceAll("\\s", "_") + "_LabReport.pdf\"");
 
                 //first write to a file
-                File f = File.createTempFile("lab" + request.getParameter("segmentID"), "pdf");
+                String segmentID = request.getParameter("segmentID");
+                if (segmentID == null || !segmentID.matches("^[0-9]+$")) {
+                    throw new IllegalArgumentException("Invalid segmentID");
+                }
+                File f = File.createTempFile("lab" + segmentID, "pdf");
                 FileOutputStream fos = new FileOutputStream(f);
                 LabPDFCreator pdf = new LabPDFCreator(request, fos);
                 pdf.printPdf();

@@ -255,12 +255,6 @@ public class DocumentUpload2Action extends ActionSupport implements UploadedFile
             return false;
         }
 
-        // Check that filename doesn't contain path traversal sequences
-        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
-            logger.error("Filename contains invalid path characters");
-            return false;
-        }
-
         String parentPath = IncomingDocUtil.getIncomingDocumentFilePath(queueId, PdfDir);
         if (!new File(parentPath).exists()) {
             return false;

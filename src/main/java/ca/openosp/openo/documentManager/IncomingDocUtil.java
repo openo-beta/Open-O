@@ -54,46 +54,6 @@ import org.apache.logging.log4j.Logger;
 public final class IncomingDocUtil {
     private static final Logger logger = MiscUtils.getLogger();
     
-    /**
-     * Validates that a path component does not contain path traversal sequences.
-     * Delegates to PathValidationUtils for consistent validation.
-     * @param pathComponent The path component to validate
-     * @return true if the component is safe, false otherwise
-     */
-    private static boolean isValidPathComponent(String pathComponent) {
-        if (pathComponent == null || pathComponent.isEmpty()) {
-            return false;
-        }
-
-        // Use PathValidationUtils to validate - try to construct a safe path
-        try {
-            File tempDir = new File(System.getProperty("java.io.tmpdir"));
-            PathValidationUtils.validatePath(pathComponent, tempDir);
-            return true;
-        } catch (SecurityException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Validates that a constructed path is within the allowed base directory.
-     * Delegates to PathValidationUtils for consistent validation.
-     * @param basePath The base directory path
-     * @param targetPath The path to validate
-     * @return true if the path is within bounds, false otherwise
-     */
-    private static boolean isPathWithinBounds(String basePath, String targetPath) {
-        try {
-            File baseDir = new File(basePath).getCanonicalFile();
-            File targetFile = new File(targetPath).getCanonicalFile();
-            PathValidationUtils.validateExistingPath(targetFile, baseDir);
-            return true;
-        } catch (SecurityException | IOException e) {
-            logger.error("Error validating path bounds", e);
-            return false;
-        }
-    }
-
     private ArrayList<String> pdfListModifiedDate = new ArrayList<String>();
     private static final Comparator<File> lastModified = new Comparator<File>() {
         @Override
@@ -161,63 +121,35 @@ public final class IncomingDocUtil {
     }
 
     public static String getIncomingDocumentFilePathName(String queueId, String pdfDir, String pdfName) {
-        // Validate pdfName to prevent path traversal
-        if (!isValidPathComponent(pdfName)) {
-            throw new IllegalArgumentException("Invalid pdfName: contains illegal characters or path traversal sequences");
-        }
-        
         String filePathName = getIncomingDocumentFilePath(queueId, pdfDir);
-        
-        // Use File constructor to safely combine paths
-        File file = new File(filePathName, pdfName);
-        
-        // Validate the final path is within bounds
-        String baseDir = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
-        if (!isPathWithinBounds(baseDir, file.getPath())) {
-            throw new SecurityException("Attempted path traversal detected in file path");
-        }
-        
-        return file.getPath();
+
+        File baseDir = new File(filePathName);
+        File validatedFile = PathValidationUtils.validatePath(pdfName, baseDir);
+
+        return validatedFile.getPath();
     }
 
     public static String getAndCreateIncomingDocumentFilePathName(String queueId, String pdfDir, String pdfName) {
-        // Validate pdfName to prevent path traversal
-        if (!isValidPathComponent(pdfName)) {
-            throw new IllegalArgumentException("Invalid pdfName: contains illegal characters or path traversal sequences");
-        }
-        
         String filePathName = getAndCreateIncomingDocumentFilePath(queueId, pdfDir);
-        
-        // Use File constructor to safely combine paths
-        File file = new File(filePathName, pdfName);
-        
-        // Validate the final path is within bounds
-        String baseDir = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
-        if (!isPathWithinBounds(baseDir, file.getPath())) {
-            throw new SecurityException("Attempted path traversal detected in file path");
-        }
-        
-        return file.getPath();
+
+        File baseDir = new File(filePathName);
+        File validatedFile = PathValidationUtils.validatePath(pdfName, baseDir);
+
+        return validatedFile.getPath();
     }
 
     public static String getIncomingDocumentDeletedFilePath(String queueId, String pdfDir) {
         String filePath;
 
-        filePath = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
-        if (filePath == null || filePath.isEmpty()) {
+        String basePath = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
+        if (basePath == null || basePath.isEmpty()) {
             throw new IllegalStateException("INCOMINGDOCUMENT_DIR property not configured");
         }
 
-        if (!filePath.endsWith(File.separator)) {
-            filePath += File.separator;
-        }
-        
-        // Validate queueId to prevent path traversal
-        if (!isValidPathComponent(queueId)) {
-            throw new IllegalArgumentException("Invalid queueId: contains illegal characters or path traversal sequences");
-        }
-        
-        filePath += queueId + File.separator;
+        // Validate queueId as a path component within INCOMINGDOCUMENT_DIR
+        File baseDir = new File(basePath);
+        File queueDir = PathValidationUtils.validatePath(queueId, baseDir);
+        filePath = queueDir.getPath() + File.separator;
         
         // Validate pdfDir and restrict to allowed values
         if (pdfDir != null && (pdfDir.equals("Fax")
@@ -226,11 +158,11 @@ public final class IncomingDocUtil {
                 || pdfDir.equals("Refile"))) {
             
             try {
-                File baseDir = new File(OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR"));
+                File incomingDir = new File(OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR"));
                 File deletedPathDir = new File(filePath, pdfDir + "_deleted");
 
                 // Validate path is within bounds using PathValidationUtils
-                PathValidationUtils.validateExistingPath(deletedPathDir, baseDir);
+                PathValidationUtils.validateExistingPath(deletedPathDir, incomingDir);
 
                 File canonicalDeletedDir = deletedPathDir.getCanonicalFile();
 
@@ -250,73 +182,43 @@ public final class IncomingDocUtil {
     }
 
     public static String getIncomingDocumentFilePath(String queueId, String pdfDir) {
-        String filePath;
+        String basePath = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
 
-        filePath = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
-        
-        if (filePath == null || filePath.isEmpty()) {
+        if (basePath == null || basePath.isEmpty()) {
             throw new IllegalStateException("INCOMINGDOCUMENT_DIR property not configured");
         }
 
-        if (!filePath.endsWith(File.separator)) {
-            filePath += File.separator;
-        }
-        
-        // Validate queueId to prevent path traversal
-        if (!isValidPathComponent(queueId)) {
-            throw new IllegalArgumentException("Invalid queueId: contains illegal characters or path traversal sequences");
-        }
-
-        filePath += queueId + File.separator;
+        // Validate queueId as a path component within INCOMINGDOCUMENT_DIR
+        File baseDir = new File(basePath);
+        File queueDir = PathValidationUtils.validatePath(queueId, baseDir);
 
         // Validate pdfDir and restrict to allowed values
         if (pdfDir != null && (pdfDir.equals("Fax")
                 || pdfDir.equals("Mail")
                 || pdfDir.equals("File")
                 || pdfDir.equals("Refile"))) {
-            filePath = filePath + pdfDir;
+            return PathValidationUtils.validatePath(pdfDir, queueDir).getPath();
         } else if (pdfDir != null && !pdfDir.isEmpty()) {
-            // If pdfDir is provided but not in allowed list, throw exception
             throw new IllegalArgumentException("Invalid pdfDir: must be one of Fax, Mail, File, or Refile");
         }
 
-        return filePath;
+        return queueDir.getPath();
     }
 
     public static String getAndCreateIncomingDocumentFilePath(String queueId, String pdfDir) {
+        // getIncomingDocumentFilePath already validates via PathValidationUtils.validatePath
         String filePath = getIncomingDocumentFilePath(queueId, pdfDir);
-        
-        // Get the base directory for validation
-        String baseDir = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
-        if (baseDir == null || baseDir.isEmpty()) {
-            throw new IllegalStateException("INCOMINGDOCUMENT_DIR property not configured");
-        }
-        
-        // Validate the constructed path is within bounds
-        if (!isPathWithinBounds(baseDir, filePath)) {
-            throw new SecurityException("Attempted path traversal detected");
-        }
-        
+
         File filePathDir = new File(filePath);
-        
-        // Validate path is within bounds using PathValidationUtils
-        try {
-            File baseDirFile = new File(baseDir);
-            PathValidationUtils.validateExistingPath(filePathDir, baseDirFile);
 
-            File canonicalDir = filePathDir.getCanonicalFile();
-
-            if (!canonicalDir.exists()) {
-                boolean created = canonicalDir.mkdirs();
-                if (!created) {
-                    logger.warn("Failed to create directory: " + canonicalDir.getPath());
-                }
+        if (!filePathDir.exists()) {
+            boolean created = filePathDir.mkdirs();
+            if (!created) {
+                logger.warn("Failed to create directory: " + filePathDir.getPath());
             }
-
-            return canonicalDir.getPath();
-        } catch (IOException e) {
-            throw new SecurityException("Failed to validate directory path", e);
         }
+
+        return filePathDir.getPath();
     }
 
     public static void rotatePage(String queueId, String myPdfDir, String myPdfName, String MyPdfPageNumber, int degrees) throws Exception {
@@ -325,13 +227,9 @@ public final class IncomingDocUtil {
         int rot;
         int rotatedegrees;
 
-        // Validate myPdfName for temp file
-        if (!isValidPathComponent(myPdfName)) {
-            throw new IllegalArgumentException("Invalid myPdfName: contains illegal characters or path traversal sequences");
-        }
-        
         String basePath = getIncomingDocumentFilePath(queueId, myPdfDir);
-        File tempFile = new File(basePath, "T" + myPdfName);
+        File baseDir = new File(basePath);
+        File tempFile = PathValidationUtils.validatePath("T" + myPdfName, baseDir);
         tempFilePathName = tempFile.getPath();
         filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, myPdfName);
 
@@ -388,13 +286,9 @@ public final class IncomingDocUtil {
         int rot;
         int rotatedegrees;
 
-        // Validate myPdfName for temp file
-        if (!isValidPathComponent(myPdfName)) {
-            throw new IllegalArgumentException("Invalid myPdfName: contains illegal characters or path traversal sequences");
-        }
-        
         String basePath = getIncomingDocumentFilePath(queueId, myPdfDir);
-        File tempFile = new File(basePath, "T" + myPdfName);
+        File baseDir = new File(basePath);
+        File tempFile = PathValidationUtils.validatePath("T" + myPdfName, baseDir);
         tempFilePathName = tempFile.getPath();
         filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, myPdfName);
 
@@ -450,13 +344,9 @@ public final class IncomingDocUtil {
         long lastModified;
         String filePathName, tempFilePathName;
 
-        // Validate myPdfName for temp file
-        if (!isValidPathComponent(myPdfName)) {
-            throw new IllegalArgumentException("Invalid myPdfName: contains illegal characters or path traversal sequences");
-        }
-        
         String basePath = getIncomingDocumentFilePath(queueId, myPdfDir);
-        File tempFile = new File(basePath, "T" + myPdfName);
+        File baseDir = new File(basePath);
+        File tempFile = PathValidationUtils.validatePath("T" + myPdfName, baseDir);
         tempFilePathName = tempFile.getPath();
         filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, myPdfName);
 
@@ -542,13 +432,9 @@ public final class IncomingDocUtil {
         long lastModified;
         String filePathName, tempFilePathName;
 
-        // Validate myPdfName for temp file
-        if (!isValidPathComponent(myPdfName)) {
-            throw new IllegalArgumentException("Invalid myPdfName: contains illegal characters or path traversal sequences");
-        }
-        
         String basePath = getIncomingDocumentFilePath(queueId, myPdfDir);
-        File tempFile = new File(basePath, "T" + myPdfName);
+        File baseDir = new File(basePath);
+        File tempFile = PathValidationUtils.validatePath("T" + myPdfName, baseDir);
         tempFilePathName = tempFile.getPath();
         filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, myPdfName);
 
@@ -574,11 +460,8 @@ public final class IncomingDocUtil {
         try {
             reader = new PdfReader(filePathName);
             String extractFileName = myPdfNameF + "E" + Integer.toString(reader.getNumberOfPages()) + myPdfNameExt;
-            // Validate the extract filename
-            if (!isValidPathComponent(extractFileName)) {
-                throw new IllegalArgumentException("Invalid extract filename: contains illegal characters or path traversal sequences");
-            }
-            File extractFile = new File(extractBasePath, extractFileName);
+            File extractBaseDir = new File(extractBasePath);
+            File extractFile = PathValidationUtils.validatePath(extractFileName, extractBaseDir);
             extractPath = extractFile.getPath();
 
             for (int pgIndex = 0; pgIndex <= reader.getNumberOfPages(); pgIndex++) {
@@ -696,13 +579,9 @@ public final class IncomingDocUtil {
         filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, myPdfName);
         File f = new File(filePathName);
 
-        // Validate myPdfName to prevent path traversal
-        if (!isValidPathComponent(myPdfName)) {
-            throw new IllegalArgumentException("Invalid myPdfName: contains illegal characters or path traversal sequences");
-        }
-        
         String deletedPath = getIncomingDocumentDeletedFilePath(queueId, myPdfDir);
-        File deleteFile = new File(deletedPath, myPdfName);
+        File deletedDir = new File(deletedPath);
+        File deleteFile = PathValidationUtils.validatePath(myPdfName, deletedDir);
         String deletePathName = deleteFile.getPath();
 
         File deletef = new File(deletePathName);

@@ -208,6 +208,9 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         //      to eforms and ticklers
 
         String segmentID = request.getParameter("segmentID");
+        if (segmentID == null || !segmentID.matches("^[0-9]+$")) {
+            throw new IllegalArgumentException("Invalid segmentID");
+        }
         request.setAttribute("segmentID", segmentID);
         try {
             File tempLabPDF = File.createTempFile("lab" + segmentID, "pdf");

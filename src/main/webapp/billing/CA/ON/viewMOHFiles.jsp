@@ -123,8 +123,8 @@
                 try {
                     if (zname != null && !zname.equals("")) {
                         File folderDir = new File(folderPath);
-                        PathValidationUtils.validatePath(zname, folderDir);
-                        Boolean unzipDone = zip.unzipXML(folderPath, zname);
+                        File validatedZip = PathValidationUtils.validatePath(zname, folderDir);
+                        Boolean unzipDone = zip.unzipXML(folderPath, validatedZip.getName());
                         if (!unzipDone) {
                             unzipMSG = "(Cannot unzip)";
                         }

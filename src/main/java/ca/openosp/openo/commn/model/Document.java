@@ -58,6 +58,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.utility.PathValidationUtils;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -423,8 +424,9 @@ public class Document extends AbstractModel<Integer> implements Serializable {
      * @returns a string representing the path of the file on disk, i.e. document_dir+'/'+filename
      */
     public String getDocumentFileFullPath() {
-        String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
-        return (docDir + '/' + docfilename);
+        File docDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+        File validatedFile = PathValidationUtils.validatePath(this.docfilename, docDir);
+        return validatedFile.getPath();
     }
 
     public byte[] getDocumentFileContentsAsBytes() throws IOException {

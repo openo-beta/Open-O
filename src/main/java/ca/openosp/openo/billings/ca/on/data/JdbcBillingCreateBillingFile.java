@@ -54,6 +54,7 @@ import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.utility.DateRange;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.OscarProperties;
@@ -952,9 +953,10 @@ public class JdbcBillingCreateBillingFile {
     // write OHIP file to it
     public void writeFile(String value1) {
         try {
-            String home_dir;
-            home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
-            FileOutputStream out = new FileOutputStream(home_dir + ohipFilename);
+            String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(ohipFilename, homeDir);
+            FileOutputStream out = new FileOutputStream(validatedFile);
             PrintStream p = new PrintStream(out);
             p.println(value1);
 
@@ -969,15 +971,15 @@ public class JdbcBillingCreateBillingFile {
     // OscarDocument/.../billing/download/, and then write to it
     public void writeHtml(String htmlvalue1) {
         try {
-            String home_dir1;
-            home_dir1 = OscarProperties.getInstance().getProperty("HOME_DIR");
+            String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(htmlFilename, homeDir);
+            FileOutputStream out = new FileOutputStream(validatedFile);
+            PrintStream p = new PrintStream(out);
+            p.println(htmlvalue1);
 
-            FileOutputStream out1 = new FileOutputStream(home_dir1 + htmlFilename);
-            PrintStream p1 = new PrintStream(out1);
-            p1.println(htmlvalue1);
-
-            p1.close();
-            out1.close();
+            p.close();
+            out.close();
         } catch (Exception e) {
             _logger.error("Write HTML File Error!!!", e);
         }
