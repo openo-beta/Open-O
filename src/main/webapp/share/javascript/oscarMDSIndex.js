@@ -1538,6 +1538,15 @@ function updateGlobalDataAndSideNav(doclabid, patientId) {
             na.splice(index, 1);
             addIdToPatient(doclabid, patientId);//add to patient
         }
+
+        // Update queue side nav count and remove from queue data if in queue context
+        if (typeof updateSideNavInQueue === 'function') {
+            updateSideNavInQueue(doclabid);
+        }
+        if (typeof removeDocFromQueue === 'function') {
+            removeDocFromQueue(doclabid);
+        }
+
         return true;
     }
 }
