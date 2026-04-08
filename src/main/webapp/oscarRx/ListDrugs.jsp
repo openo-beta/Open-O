@@ -252,29 +252,29 @@
                     isPrevAnnotation = true;
                 }
 
-//                if (request.getParameter("status") != null) { //TODO: Redo this in a better way
-//                    String stat = request.getParameter("status");
-//                    if (stat.equals("active") && !prescriptDrug.isLongTerm() && !prescriptDrug.isCurrent()) {
-//                        continue;
-//                    } else if (stat.equals("inactive") && prescriptDrug.isCurrent()) {
-//                        continue;
-//                    }
-//                }
-//                if (request.getParameter("longTermOnly") != null && request.getParameter("longTermOnly").equals("true")) {
-//                    if (!prescriptDrug.isLongTerm()) {
-//                        continue;
-//                    }
-//                }
-//
-//                if (request.getParameter("longTermOnly") != null && request.getParameter("longTermOnly").equals("acute")) {
-//                    if (prescriptDrug.isLongTerm()) {
-//                        continue;
-//                    }
-//                }
-//                if (request.getParameter("drugLocation") != null && request.getParameter("drugLocation").equals("external")) {
-//                    if (!prescriptDrug.isExternal())
-//                        continue;
-//                }
+                if (request.getParameter("status") != null) { //TODO: Redo this in a better way
+                    String stat = request.getParameter("status");
+                    if (stat.equals("active") && !prescriptDrug.isLongTerm() && !prescriptDrug.isCurrent()) {
+                        continue;
+                    } else if (stat.equals("inactive") && prescriptDrug.isCurrent()) {
+                        continue;
+                    }
+                }
+                if (request.getParameter("longTermOnly") != null && request.getParameter("longTermOnly").equals("true")) {
+                    if (!prescriptDrug.isLongTerm()) {
+                        continue;
+                    }
+                }
+
+                if (request.getParameter("longTermOnly") != null && request.getParameter("longTermOnly").equals("acute")) {
+                    if (prescriptDrug.isLongTerm()) {
+                        continue;
+                    }
+                }
+                if (request.getParameter("drugLocation") != null && request.getParameter("drugLocation").equals("external")) {
+                    if (!prescriptDrug.isExternal())
+                        continue;
+                }
 //add all long term med drugIds to an array.
                 styleColor = getClassColour(prescriptDrug, now, month);
                 String specialText = prescriptDrug.getSpecial();

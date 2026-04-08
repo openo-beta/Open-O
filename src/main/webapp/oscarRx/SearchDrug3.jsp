@@ -1217,6 +1217,99 @@
     <table>
       <tr>
         <td>
+          <table class="legend">
+            <tr>
+              <td class="legend-change-view">
+                <a href="#"
+                   title="<fmt:setBundle basename="oscarResources"/><fmt:message key='provider.rxChangeProfileViewMessage'/>"
+                   onclick="popupPage(230,860,'../setProviderStaleDate.do?method=viewRxProfileView');"
+                   class="link-red-no-decoration">
+                  <fmt:message key="provider.rxChangeProfileView"/>
+                </a>
+              </td>
+
+              <td>
+
+                <table class="legend_items" align="left">
+                  <tr>
+                    <%if (show_current) {%>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="callReplacementWebService('ListDrugs.jsp','drugProfile');CngClass(this);"
+                         id="selected_default" class="link-default-selected"
+                         TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgShowCurrentDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgShowCurrent"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (show_all) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="callReplacementWebService('ListDrugs.jsp?show=all','drugProfile');CngClass(this);"
+                         Title="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgShowAllDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgShowAll"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (active) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="callReplacementWebService('ListDrugs.jsp?status=active','drugProfile');CngClass(this);"
+                         TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgActiveDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgActive"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (inactive) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="callReplacementWebService('ListDrugs.jsp?status=inactive','drugProfile');CngClass(this);"
+                         TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgInactiveDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgInactive"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (!OscarProperties.getInstance().getProperty("rx.profile_legend.hide", "false").equals("true")) {
+
+                        if (longterm_acute) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="callReplacementWebService('ListDrugs.jsp?longTermOnly=true&heading=Long Term Meds','drugProfile'); callAdditionWebService('ListDrugs.jsp?longTermOnly=acute&heading=Acute','drugProfile');CngClass(this);"
+                         TITLE="<fmt:setBundle basename='oscarResources'/><fmt:message key='SearchDrug.msgLongTermAcuteDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgLongTermAcute"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (longterm_acute_inactive_external) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="callReplacementWebService('ListDrugs.jsp?longTermOnly=true&heading=Long Term Meds','drugProfile'); callAdditionWebService('ListDrugs.jsp?longTermOnly=acute&heading=Acute&status=active','drugProfile');callAdditionWebService('ListDrugs.jsp?longTermOnly=acute&heading=Inactive&status=inactive','drugProfile');callAdditionWebService('ListDrugs.jsp?heading=External&drugLocation=external','drugProfile');CngClass(this);"
+                         TITLE="<fmt:setBundle basename='oscarResources'/><fmt:message key='SearchDrug.msgLongTermAcuteInactiveExternalDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message
+                        key="SearchDrug.msgLongTermAcuteInactiveExternal"/>
+                      </a>
+                    </td>
+                    <%
+                        }
+                      }
+                    %>
+                  </tr>
+                </table>
+
+              </td>
+
+            </tr>
+          </table>
           <div id="drugProfile"></div>
 
           <div id="themeLegend">
