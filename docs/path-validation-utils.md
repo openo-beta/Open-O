@@ -231,6 +231,30 @@ Run tests with:
 mvn test -Dtest=PathValidationUtilsTest
 ```
 
+## SAST False Positives (Snyk Code)
+
+Snyk Code flags path traversal findings (CWE-22) in files that use `PathValidationUtils` because its inter-procedural taint analysis does not propagate sanitization through custom utility method boundaries. Internally, `PathValidationUtils` uses `File.getCanonicalPath()` + `String.startsWith()` — a pattern Snyk recognizes as a sanitizer — but only when inlined at the call site, not when called through a wrapper method.
+
+**These findings are false positives.** The validation is present and effective; Snyk simply cannot see it.
+
+For per-finding triage details, see `docs/security/snyk-false-positives.md`.
+
+### Recommended triage process
+
+1. **New Snyk Code scan** — filter for Path Traversal (CWE-22) findings
+2. **Check the call site** — if the file operation is guarded by a `PathValidationUtils` method, a `IncomingDocUtil` validated path, or a hardcoded whitelist/map lookup, mark as ignored with reason: *"Sanitized by PathValidationUtils — see docs/path-validation-utils.md"*
+3. **Investigate unguarded sites** — any file operation using HTTP params without `PathValidationUtils` is a real finding and should be fixed
+4. **Snyk web UI** — mark false positives as ignored there so the dashboard stays clean across scans (finding IDs in `.snyk` files can drift after code changes)
+
+### If Snyk Custom Rules are available (Team/Enterprise plan)
+
+Register `PathValidationUtils` methods as sanitizers in the Snyk web UI                                                                   (**Org Settings → Snyk Code → Custom Rules**) to eliminate false positives at the engine level. Create sanitizer rules for:
+
+- `PathValidationUtils.validatePath()`                                                                                                               
+- `PathValidationUtils.validateExistingPath()`                                                                                                       
+- `PathValidationUtils.validateUpload()`
+- `PathValidationUtils.isInAllowedTempDirectory()`
+
 ## Related Documentation
 
 - [OWASP Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal)
