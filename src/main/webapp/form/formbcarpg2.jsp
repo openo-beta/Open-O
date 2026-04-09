@@ -22,6 +22,7 @@
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ page import="ca.openosp.openo.form.graphic.FrmGraphicAR" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 
 <%
@@ -930,8 +931,8 @@ if (!fedb.equals("") && fedb.length()==10 ) {
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formId" value="<%=formId%>"/>
         <input type="hidden" name="ID" value="<%= props.getProperty("ID", "0") %>"/>
-        <input type="hidden" name="provider_no" value=<%=request.getParameter("provNo")%>/>
-        <input type="hidden" name="provNo" value="<%= request.getParameter("provNo") %>"/>
+        <input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+        <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table class="Head" class="hidePrint">

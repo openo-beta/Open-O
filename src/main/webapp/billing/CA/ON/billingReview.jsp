@@ -38,6 +38,7 @@
 <%@page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
 <%@page import="ca.openosp.openo.commn.model.BillingService" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     ClinicLocationDao clinicLocationDao = (ClinicLocationDao) SpringUtils.getBean(ClinicLocationDao.class);
@@ -301,7 +302,7 @@
 
     <table width="80%" border="0" cellspacing="2" cellpadding="1">
         <tr bgcolor="#EEEEFF">
-            <td width="54%">Patient : <b><%=request.getParameter("demographic_name")%>
+            <td width="54%">Patient : <b><%=Encode.forHtml(request.getParameter("demographic_name"))%>
             </b></td>
             <td width="46%">Health# : <b><%=demoHIN%>
             </b></td>
@@ -309,7 +310,7 @@
         <tr>
             <td width="54%">Billing Type: <b><%=billtype%>
             </b></td>
-            <td width="46%">Service Date: <b><%=request.getParameter("xml_appointment_date")%>
+            <td width="46%">Service Date: <b><%=Encode.forHtml(request.getParameter("xml_appointment_date"))%>
             </b></td>
         </tr>
         <%
@@ -321,7 +322,7 @@
             }
         %>
         <tr bgcolor="#EEEEFF">
-            <td width="54%">Visit Type Code: <b><%=request.getParameter("xml_visittype")%>
+            <td width="54%">Visit Type Code: <b><%=Encode.forHtml(request.getParameter("xml_visittype"))%>
             </b></td>
             <td width="46%">Billing Physician: <b><%=proFirst%> <%=proLast%>
             </b></td>
@@ -993,7 +994,7 @@
     </p>
     <% session.setAttribute("content", content); %>
     <form><input type=button name=back value='Go Back and Change'
-                 onClick='javascript:location.href="billingOB.jsp?billForm=<%=request.getParameter("billForm")%>&hotclick=<%=URLEncoder.encode("", StandardCharsets.UTF_8)%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname, StandardCharsets.UTF_8)%>&demographic_no=<%=request.getParameter("demographic_no")%>&user_no=<%=request.getParameter("user_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("xml_appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=0"'>
+                 onClick='javascript:location.href="billingOB.jsp?billForm=<%=Encode.forJavaScript(request.getParameter("billForm"))%>&hotclick=<%=URLEncoder.encode("", StandardCharsets.UTF_8)%>&appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_name=<%=URLEncoder.encode(demoname, StandardCharsets.UTF_8)%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&user_no=<%=Encode.forJavaScript(request.getParameter("user_no"))%>&providerview=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&apptProvider_no=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("xml_appointment_date"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&start_time=<%=Encode.forJavaScript(request.getParameter("start_time"))%>&bNewForm=0"'>
     </form>
 
     <%
@@ -1029,9 +1030,9 @@
 
     <tr bgcolor="#EEEEFF">
         <td width="22%"><font size="2"><b>Research Code</b></td>
-        <td colspan="2"><font size="2"><%=request.getParameter("xml_research1")%>
-                <%=request.getParameter("xml_research2").compareTo("")==0?"":", "+request.getParameter("xml_research2")%>
-                <%=request.getParameter("xml_research3").compareTo("") == 0 ? "" : ", " + request.getParameter("xml_research3")%>
+        <td colspan="2"><font size="2"><%=Encode.forHtml(request.getParameter("xml_research1"))%>
+                <%=Encode.forHtml(request.getParameter("xml_research2").compareTo("")==0?"":", "+request.getParameter("xml_research2"))%>
+                <%=Encode.forHtml(request.getParameter("xml_research3").compareTo("") == 0 ? "" : ", " + request.getParameter("xml_research3"))%>
         </td>
         <td width="14%">
             <div align="right"><font size="2"></div>
@@ -1063,31 +1064,31 @@
             type="hidden" name="record" value="<%=counter%>"> <input
             type="hidden" name="diagcode" value="<%=diagcode%>"> <input
             type="hidden" name="visittype"
-            value="<%=request.getParameter("xml_visittype").substring(0,2)%>">
+            value="<%=Encode.forHtmlAttribute(request.getParameter("xml_visittype").substring(0,2))%>">
         <input type="hidden" name="billtype"
                value="<%=billtype.substring(0,1)%>"> <!--input type="hidden" name="content" value="<%--=content--%>"-->
         <input type="hidden" name="provider_no" value="<%=proNO%>"> <input
             type="hidden" name="clinic_no"
-            value="<%=request.getParameter("clinic_no")%>"> <input
+            value="<%=Encode.forHtmlAttribute(request.getParameter("clinic_no"))%>"> <input
             type="hidden" name="demographic_no"
-            value="<%=request.getParameter("demographic_no")%>"> <input
+            value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>"> <input
             type="hidden" name="billing_name" value="OB2">
-        <!--input type="hidden" name="user_no" value="<%=request.getParameter("user_no")%>"-->
+        <!--input type="hidden" name="user_no" value="<%=Encode.forHtmlAttribute(request.getParameter("user_no"))%>"-->
         <input type="hidden" name="apptProvider_no"
-               value="<%=request.getParameter("apptProvider_no")%>"> <input
+               value="<%=Encode.forHtmlAttribute(request.getParameter("apptProvider_no"))%>"> <input
             type="hidden" name="asstProvider_no"
-            value="<%=request.getParameter("asstProvider_no")%>">
+            value="<%=Encode.forHtmlAttribute(request.getParameter("asstProvider_no"))%>">
         <!--input type="hidden" name="billing_date" value="<%=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)%>"-->
         <!--input type="hidden" name="billing_time" value="<%=now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE)%>"-->
         <input type="hidden" name="billingservice_code" value="">
         <input
                 type="hidden" name="appointment_date"
-                value="<%=request.getParameter("xml_appointment_date")%>"> <input
+                value="<%=Encode.forHtmlAttribute(request.getParameter("xml_appointment_date"))%>"> <input
             type="hidden" name="appointment_no"
-            value="<%=request.getParameter("appointment_no")%>"> <input
-            type="hidden" name="status" value="<%=request.getParameter("status")%>">
+            value="<%=Encode.forHtmlAttribute(request.getParameter("appointment_no"))%>"> <input
+            type="hidden" name="status" value="<%=Encode.forHtmlAttribute(request.getParameter("status"))%>">
         <input type="hidden" name="start_time"
-               value="<%=request.getParameter("start_time")%>"> <input
+               value="<%=Encode.forHtmlAttribute(request.getParameter("start_time"))%>"> <input
             type="hidden" name="displaymode" value="savebill"> <input
             type="hidden" name="demographic_dob" value="<%=demoDOB%>"> <input
             type="hidden" name="demographic_name" value="<%=demoname%>"> <input
@@ -1097,7 +1098,7 @@
             type="hidden" name="clinic_ref_code" value="<%=location1%>"> <input
             type="hidden" name="visitdate" value="<%=visitdate%>"> <input
             type="submit" name="Submit" value="Confirm" onDblClick=""> <a
-            href="billingOB.jsp?billForm=<%=request.getParameter("billForm")%>&hotclick=<%=URLEncoder.encode("", StandardCharsets.UTF_8)%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname, StandardCharsets.UTF_8)%>&demographic_no=<%=request.getParameter("demographic_no")%>&user_no=<%=request.getParameter("user_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("xml_appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=0">edit</a>
+            href="billingOB.jsp?billForm=<%=Encode.forUriComponent(request.getParameter("billForm"))%>&hotclick=<%=URLEncoder.encode("", StandardCharsets.UTF_8)%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=URLEncoder.encode(demoname, StandardCharsets.UTF_8)%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&user_no=<%=Encode.forUriComponent(request.getParameter("user_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("xml_appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=0">edit</a>
 
             <%
 	if (warningMsg.length() > 0) {

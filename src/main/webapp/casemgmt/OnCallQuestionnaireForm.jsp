@@ -1,6 +1,7 @@
 <%--
 
 
+<%@ page import="org.owasp.encoder.Encode" %>
     Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
     This program is free software; you can redistribute it and/or
@@ -38,9 +39,9 @@
     <form action="${pageContext.request.contextPath}/OnCallQuestionnaire.do" method="post">
         <input type="hidden" name="method" value="save"/>
         <input type="hidden" name="providerNo"
-               value="<%=request.getParameter("providerNo") %>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("providerNo")) %>"/>
         <input type="hidden" name="type"
-               value="<%=request.getParameter("type") %>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("type")) %>"/>
         <tr>
             <td>Type of Health problem:</td>
             <td><select name="type_health">

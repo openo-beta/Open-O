@@ -1103,7 +1103,7 @@ request.setAttribute("missingTests", missingTests);
         });
     });
 
-    var _in_window = <%= request.getParameter("inWindow") == null || "true".equals(request.getParameter("inWindow")) %>;
+    var _in_window = <%=Encode.forJavaScript(request.getParameter("inWindow") == null || "true".equals(request.getParameter("inWindow")))%>;
     var contextpath = "<%=request.getContextPath()%>";
 
 </script>

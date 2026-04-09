@@ -55,6 +55,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.commn.dao.CtlDocClassDao" %>
@@ -365,7 +366,7 @@
 
         <jsp:include page="addDocument.jsp">
             <jsp:param name="appointmentNo" value="<%=appointmentNo%>"/>
-            <jsp:param name="addDocument" value="${param.mode}"/>
+            <jsp:param name="addDocument" value="${e:forHtmlAttribute(param.mode)}"/>
         </jsp:include>
 
 

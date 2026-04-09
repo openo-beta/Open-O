@@ -276,7 +276,7 @@
     <body>
 </c:if>
 <script type="text/javascript">
-    var _in_window = <%=( "true".equals(request.getParameter("inWindow")) ? "true" : "false" )%>;
+    var _in_window = <%=Encode.forJavaScript(( "true".equals(request.getParameter("inWindow")) ? "true" : "false" ))%>;
     var contextpath = "<%=request.getContextPath()%>";
 </script>
 <div id="labdoc_<%=docId%>" class="content">

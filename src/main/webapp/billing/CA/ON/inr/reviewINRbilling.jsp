@@ -22,6 +22,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingService" %>
 <%@ page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
 %>
@@ -231,7 +232,7 @@ if (errorCode.compareTo("") != 0) {
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="hidden" name="doccreator"
-                                    value="<%=request.getParameter("doccreator")%>" size="20">
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("doccreator"))%>" size="20">
                                 <input type="hidden" name="orderby" value="updatedatetime desc"
                                        size="20"> <input type="hidden" name="provider_no"
                                                          value="<%=provider_no%>"> <input type="hidden"

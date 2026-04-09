@@ -43,6 +43,7 @@
 
 <%@ page import="ca.openosp.openo.casemgmt.model.*" %>
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 Prescriptions
 <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#C0C0C0">
     <tr class="title">
@@ -73,8 +74,8 @@ Prescriptions
             </c:if>
             <td bgcolor="white">
                 <caisirole:SecurityAccess accessName="prescription Write" accessType="access"
-                                          providerNo='<%=request.getParameter("providerNo")%>'
-                                          demoNo='<%=request.getParameter("demographicNo")%>'
+                                          providerNo='<%=Encode.forHtmlAttribute(request.getParameter("providerNo"))%>'
+                                          demoNo='<%=Encode.forHtmlAttribute(request.getParameter("demographicNo"))%>'
                                           programId='<%=(String)session.getAttribute("case_program_id")%>'>
                     <a <%= styleColor%> target="_blank"
                                         href="<%= request.getContextPath() %>/oscarRx/StaticScript.jsp?regionalIdentifier=<c:out value="${prescription.regionalIdentifier}"/>&cn=<c:out value="${prescription.customName}"/>">
@@ -83,8 +84,8 @@ Prescriptions
                 </caisirole:SecurityAccess>
 
                 <caisirole:SecurityAccess accessName="prescription Write" accessType="access"
-                                          providerNo='<%=request.getParameter("providerNo")%>'
-                                          demoNo='<%=request.getParameter("demographicNo")%>'
+                                          providerNo='<%=Encode.forHtmlAttribute(request.getParameter("providerNo"))%>'
+                                          demoNo='<%=Encode.forHtmlAttribute(request.getParameter("demographicNo"))%>'
                                           programId='<%=(String)session.getAttribute("case_program_id")%>'
                                           reverse="true">
                     <span <%= styleColor%> ><c:out value="${prescription.special}"/></span>

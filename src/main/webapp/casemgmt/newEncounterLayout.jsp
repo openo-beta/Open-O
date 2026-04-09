@@ -338,7 +338,7 @@
 
 
             <%if(request.getParameter("appointmentNo") != null && request.getParameter("appointmentNo").length()>0) { %>
-            var appointmentNo = <%=request.getParameter("appointmentNo")%>;
+            var appointmentNo = <%=Encode.forJavaScript(request.getParameter("appointmentNo"))%>;
             <% } else { %>
             var appointmentNo = 0;
             <%}%>

@@ -30,9 +30,11 @@
 <%-- Updated by Eugene Petruhin on 09 jan 2009 while fixing #2482832 & #2494061 --%>
 
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 
@@ -192,8 +194,8 @@
                 XMLHttpRequestObject.open("POST", '<%=request.getContextPath() %>/CaseManagementEntry.do', true);
                 XMLHttpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-                var demographicNo = '<c:out value="${param.demographicNo}"/>';
-                var noteId = '<%=request.getParameter("noteId") != null ? request.getParameter("noteId") : request.getAttribute("noteId") != null ? request.getAttribute("noteId") : ""%>';
+                var demographicNo = '<c:out value="${e:forJavaScript(param.demographicNo)}"/>';
+                var noteId = '<%=Encode.forJavaScript(request.getParameter("noteId") != null ? request.getParameter("noteId") : request.getAttribute("noteId") != null ? request.getAttribute("noteId") : "")%>';
                 var programId = '<c:out value="${case_program_id}"/>';
                 XMLHttpRequestObject.send("method=autosave&demographicNo=" + demographicNo + "&programId=" + programId + "&note_id=" + noteId + "&note=" + escape(obj.value));
             }
@@ -250,7 +252,7 @@
                     <c:out value="${requestScope.demoName}"/>
                 </c:if>
                 <c:if test="${empty requestScope.demoName}">
-                    <c:out value="${param.demoName}"/>
+                    <c:out value="${e:forHtmlAttribute(param.demoName)}"/>
                 </c:if>
             </I>
             <br>
@@ -260,7 +262,7 @@
                     <c:out value="${requestScope.demoAge}"/>
                 </c:if>
                 <c:if test="${empty requestScope.demoName}">
-                    <c:out value="${param.demoAge}"/>
+                    <c:out value="${e:forHtmlAttribute(param.demoAge)}"/>
                 </c:if>
             </I>
             <br>
@@ -270,7 +272,7 @@
                     <c:out value="${requestScope.demoDOB}"/>
                 </c:if>
                 <c:if test="${empty requestScope.demoName}">
-                    <c:out value="${param.demoDOB}"/>
+                    <c:out value="${e:forHtmlAttribute(param.demoDOB)}"/>
                 </c:if>
             </I></b>
         <br><br>
@@ -373,7 +375,7 @@
         } else {
         %>
         <input id="showResolved" type="button" value="Show Resolved Issues"
-               onclick="document.location='CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=<%=request.getParameter("demographicNo")%>&providerNo=<%=request.getParameter("providerNo")%>&showResolved=true'"/>
+               onclick="document.location='CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>&providerNo=<%=Encode.forJavaScript(request.getParameter("providerNo"))%>&showResolved=true'"/>
         <%
             }
         %>
@@ -438,8 +440,8 @@
                 <c:if test="${param.from=='casemgmt' || requestScope.from=='casemgmt'}">
                     <c:url value="${sessionScope.billing_url}" var="url"/>
                     <caisirole:SecurityAccess accessName="billing" accessType="access"
-                                              providerNo='<%=request.getParameter("providerNo")%>'
-                                              demoNo='<%=request.getParameter("demographicNo")%>' programId="<%=pId%>">
+                                              providerNo='<%=Encode.forHtmlAttribute(request.getParameter("providerNo"))%>'
+                                              demoNo='<%=Encode.forHtmlAttribute(request.getParameter("demographicNo"))%>' programId="<%=pId%>">
                         <tr>
                             <td class="fieldTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="casemanagementEntry.billing"/></td>
 

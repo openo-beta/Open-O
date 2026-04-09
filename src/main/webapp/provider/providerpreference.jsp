@@ -58,6 +58,7 @@
 <%@page import="java.util.ArrayList" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%!
     CtlBillingServiceDao ctlBillingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);
@@ -523,7 +524,7 @@
 
             <tr>
                 <td align="center"><a href=#
-                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=request.getParameter("provider_no") %>');return false;">Edit
+                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=Encode.forJavaScript(request.getParameter("provider_no"))%>');return false;">Edit
                     Default Billing Diagnostic Code</a>&nbsp;&nbsp;&nbsp;
                 </td>
             </tr>

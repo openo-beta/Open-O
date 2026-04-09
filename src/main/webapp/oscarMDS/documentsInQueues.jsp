@@ -43,6 +43,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%@ page import="java.util.*, ca.openosp.openo.util.*, ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE HTML >
 
 <html>
@@ -2421,9 +2422,9 @@
                     <td align="left" valign="center">
                         <input type="hidden" name="providerNo" value="<%= providerNo %>">
                         <input type="hidden" name="searchProviderNo" value="<%= searchProviderNo %>">
-                        <%= (request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">") %>
-                        <%= (request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">") %>
-                        <%= (request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">") %>
+                        <%=Encode.forHtml((request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">"))%>
+                        <%=Encode.forHtml((request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">"))%>
+                        <%=Encode.forHtml((request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">"))%>
 
                         <input type="hidden" name="selectedProviders">
 

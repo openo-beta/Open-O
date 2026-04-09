@@ -18,6 +18,7 @@
 
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -78,7 +79,7 @@
 
 
 <pre>
-<%=request.getParameter("textfield") == null ? "" : request.getParameter("textfield").replaceAll("\r[^\n]|[^\r]\n]", "\r\n")%>
+<%=Encode.forHtml(request.getParameter("textfield") == null ? "" : request.getParameter("textfield").replaceAll("\r[^\n]|[^\r]\n]", "\r\n"))%>
 </pre>
 
 <pre>

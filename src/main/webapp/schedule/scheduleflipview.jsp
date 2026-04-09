@@ -113,12 +113,12 @@
         <script language="JavaScript">
             <!--
             function changePro(providerno) {
-                a = "scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=" + providerno +<%=request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\""%>;
+                a = "scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=" + providerno +<%=Encode.forJavaScript(request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\"")%>;
                 self.location.href = a;
             }
 
             function selectprovider(s) {
-                a = "scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=" + s.options[s.selectedIndex].value +<%=request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\""%>;
+                a = "scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=" + s.options[s.selectedIndex].value +<%=Encode.forJavaScript(request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\"")%>;
                 self.location.href = a;
             }//-->
 

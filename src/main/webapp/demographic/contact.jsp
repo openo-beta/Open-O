@@ -29,6 +29,8 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.commn.model.DemographicContact" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String id = request.getParameter("id");
     StringUtils.trimToEmpty(id);
@@ -94,7 +96,7 @@
     <input type="hidden" name="contact_<%=id%>.contactId" value="0"/>
     <input type="text" name="contact_<%=id%>.contactName" id="contact_<%=id%>.contactName" size="20"
            readonly="readonly"/>
-    <a href="#" onclick="doPersonalSearch('<%=id%>');return false;">${param.search}</a>
+    <a href="#" onclick="doPersonalSearch('<%=id%>');return false;">${e:forHtml(param.search)}</a>
 
     &nbsp;
     SDM:<input type="checkbox" name="contact_<%=id%>.sdm"/>

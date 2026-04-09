@@ -43,6 +43,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -90,7 +91,7 @@
         <input type="hidden" name="ID"
                value="<%= props.getProperty("ID", "0") %>"/>
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="formCreated"
                value="<%= props.getProperty("formCreated", "") %>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
@@ -98,7 +99,7 @@
         <input type="hidden" name="pName"
                value="<%= props.getProperty("pName", "") %>"/>
         <input type="hidden" name="provNo"
-               value="<%= request.getParameter("provNo") %>"/>
+               value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table class="Head" class="hidePrint">

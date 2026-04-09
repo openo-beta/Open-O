@@ -26,6 +26,7 @@
 <%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>
 <%@ page import="ca.openosp.openo.olis.OLISResults2Action" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProperties" %>
@@ -1980,7 +1981,7 @@
                                 style="margin-left: 30px;">Click to view attachment.</a>
                                 <% } else { %>
                         <td colspan="4" valign="left"><a
-                                href="PrintOLIS.do?uuid=<%=Misc.getStr(request.getParameter("uuid"), "")%>&obr=<%=obr%>&obx=<%=obx%>"
+                                href="PrintOLIS.do?uuid=<%=Encode.forUriComponent(Misc.getStr(request.getParameter("uuid"), ""))%>&obr=<%=obr%>&obx=<%=obx%>"
                                 style="margin-left: 30px;">Click to view attachment.</a>
                             <% } %>
                         </td>

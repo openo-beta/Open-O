@@ -986,7 +986,7 @@
                 <td><%=formatter.format(dupTimeReceived.get(Integer.parseInt(tempId))) %>
                 </td>
                 <td><input type="button" value="Open Report"
-                           onclick="window.open('?id=<%=tempId%>&segmentId=<%=tempId%>&providerNo=<%=request.getParameter("providerNo")%>&searchProviderNo=<%=request.getParameter("searchProviderNo")%>&status=<%=request.getParameter("status")%>&demoName=<%=Encode.forHtml(request.getParameter("demoName"))%>', null)"/>
+                           onclick="window.open('?id=<%=tempId%>&segmentId=<%=tempId%>&providerNo=<%=Encode.forJavaScript(request.getParameter("providerNo"))%>&searchProviderNo=<%=Encode.forJavaScript(request.getParameter("searchProviderNo"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&demoName=<%=Encode.forHtml(request.getParameter("demoName"))%>', null)"/>
                 </td>
             </tr>
 

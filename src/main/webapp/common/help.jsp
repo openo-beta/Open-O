@@ -24,6 +24,7 @@
 --%>
 
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String topic = request.getParameter("topic");
 %>
@@ -43,7 +44,7 @@
             No Topic Chosen
         </c:when>
         <c:otherwise>
-            <h3><c:out value="${param.topic}"/></h3>
+            <h3><c:out value="${e:forHtmlAttribute(param.topic)}"/></h3>
             <br/>
             <fmt:setBundle basename="HelpResources" var="help"/>
             <fmt:message bundle="${help}" key="<%=topic%>"/>

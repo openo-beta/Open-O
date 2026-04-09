@@ -39,6 +39,7 @@
 <%@page import="ca.openosp.openo.commn.model.Form" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicAccessoryDao demographicAccessoryDao = (DemographicAccessoryDao) SpringUtils.getBean(DemographicAccessoryDao.class);
     FormDao formDao = SpringUtils.getBean(FormDao.class);
@@ -263,7 +264,7 @@
                 nowrap><%--=bNewList?"<a href=# onClick='onSave()'><img src="<%= request.getContextPath() %>/images/buttonsave.gif" align='top' width='75' height='25' ></a> ":""--%>
                 <%=bNewList ? "<input type='button' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
                 <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
-                <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
+                <%=Encode.forHtml(bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : "")%>
             </th>
             <th align='CENTER'><font face="Arial, Helvetica, sans-serif"
                                      color="#FFFFFF">Antenatal Record 1 </font></th>
@@ -1409,12 +1410,12 @@
             <td align="center" colspan="2"><input type="hidden"
                                                   name="xml_subject" value="form:AR1"> <input type="hidden"
                                                                                               name="reason"
-                                                                                              value="<%=request.getParameter("reason")%>">
+                                                                                              value="<%=Encode.forHtmlAttribute(request.getParameter("reason"))%>">
                 <input
                         type="hidden" name="appointment_no"
-                        value="<%=request.getParameter("appointment_no")%>"> <input
+                        value="<%=Encode.forHtmlAttribute(request.getParameter("appointment_no"))%>"> <input
                         type="hidden" name="demographic_no"
-                        value="<%=request.getParameter("demographic_no")%>"> <input
+                        value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>"> <input
                         type="hidden" name="form_date"
                         value='<%=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)%>'>
                 <input type="hidden" name="form_time"
@@ -1427,8 +1428,8 @@
                 <table width='100%' border=0>
                     <tr>
                         <td width='90%'
-                            align='center'><%=bNewList && (request.getParameter("patientmaster") != null) ? "<input type='submit' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
-                            <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
+                            align='center'><%=Encode.forHtml(bNewList && (request.getParameter("patientmaster") != null) ? "<input type='submit' name='savetemp' value=' Save ' onClick='onSave()'> " : "")%>
+                            <%=Encode.forHtml(bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : "")%>
                             <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
                         </td>
                         <td align='right'><%=bNewList ? "<input type='button' name='Button' value=' Exit ' onClick='onExit();'>" : "<input type='button' name='Button' value=' Exit ' onClick='window.close();'>" %>

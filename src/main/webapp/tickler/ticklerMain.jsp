@@ -54,6 +54,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
@@ -597,7 +598,7 @@
 
         <form name="serviceform" method="get" action="ticklerMain.jsp" class="form-inline">
             <input type="hidden" name="Submit" value="">
-            <input type="hidden" name="demoview" value="${param.demoview}">
+            <input type="hidden" name="demoview" value="${e:forHtmlAttribute(param.demoview)}">
 
             <c:if test="${empty param.demoview}">
                 <div class="control-container">
@@ -671,7 +672,7 @@
                             <%
                                 for (int i = 0; i < sites.size(); i++) {
                             %>
-                            <option value="<%=sites.get(i).getSiteId()%>" <%=sites.get(i).getSiteId().toString().equals(request.getParameter("site")) ? "selected" : ""%>><%=sites.get(i).getName()%>
+                            <option value="<%=sites.get(i).getSiteId()%>" <%=Encode.forHtml(sites.get(i).getSiteId().toString().equals(request.getParameter("site")) ? "selected" : "")%>><%=sites.get(i).getName()%>
                             </option>
                             <%
                                 }
@@ -683,7 +684,7 @@
                         %>
                         <script>
                             changeSite(document.getElementById("site"));
-                            document.getElementById("assignedTo").value = '<%=request.getParameter("assignedTo")%>';
+                            document.getElementById("assignedTo").value = '<%=Encode.forJavaScript(request.getParameter("assignedTo"))%>';
                         </script>
                         <%
                             }
@@ -753,7 +754,7 @@
 
         <form name="ticklerform" method="post" action="dbTicklerMain.jsp">
             <% Locale locale = request.getLocale();%>
-            <input type="hidden" name="parentAjaxId" value="<c:out value='${param.parentAjaxId}' />"/>
+            <input type="hidden" name="parentAjaxId" value="<c:out value='${e:forHtmlAttribute(param.parentAjaxId)}' />"/>
             <table id="ticklerResults" class="table table-striped table-compact" style="width:100%">
                 <thead>
                 <tr>
@@ -1034,7 +1035,7 @@
                         %>
                         <input type="button" class="btn btn-primary" name="button"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnAddTickler"/>"
-                               onClick="popupPage('500','800', 'ticklerAdd.jsp?updateParent=true&parentAjaxId=${parentAjaxId}&bFirstDisp=false&messageID=null&demographic_no=${param.demoview}')"
+                               onClick="popupPage('500','800', 'ticklerAdd.jsp?updateParent=true&parentAjaxId=${parentAjaxId}&bFirstDisp=false&messageID=null&demographic_no=${e:forJavaScript(param.demoview)}')"
                                class="sbttn">
                         <input type="button" name="button" class="btn btn-warning"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>" onClick="window.close()" class="sbttn">

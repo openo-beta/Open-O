@@ -29,6 +29,8 @@
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.commn.model.DemographicContact" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String id = request.getParameter("id");
     ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
@@ -82,5 +84,5 @@
     <input type="hidden" name="procontact_<%=id%>.contactId" value="0"/>
     <input type="text" name="procontact_<%=id%>.contactName" id="procontact_<%=id%>.contactName" size="20"
            readonly="readonly"/>
-    <a href="#" onclick="doProfessionalSearch('<%=id%>');return false;">${param.search}</a>
+    <a href="#" onclick="doProfessionalSearch('<%=id%>');return false;">${e:forHtml(param.search)}</a>
 </div>

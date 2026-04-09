@@ -37,6 +37,7 @@
 <%@ page import="ca.openosp.openo.commn.model.BillingONCHeader1" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingONExt" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
     UserPropertyDAO userPropertyDAO = (UserPropertyDAO) ctx.getBean(UserPropertyDAO.class);
@@ -115,7 +116,7 @@
 <% if (request.getParameter("submit") != null && "Save & Add Another Bill".equals(request.getParameter("submit"))) { %>
 <script LANGUAGE="JavaScript">
     self.opener.refresh();
-    self.location.href = "<%=request.getParameter("url_back")%>";
+    self.location.href = "<%=Encode.forJavaScript(request.getParameter("url_back"))%>";
 </script>
 <% }
 

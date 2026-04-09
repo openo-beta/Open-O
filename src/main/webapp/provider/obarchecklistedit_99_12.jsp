@@ -28,6 +28,7 @@
     String user_no = (String) session.getAttribute("user");
 %>
 <%@ page import="java.util.*, java.sql.*, java.io.*, ca.openosp.*"
+<%@ page import="org.owasp.encoder.Encode" %>
          errorPage="/errorpage.jsp" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 
@@ -71,7 +72,7 @@
                                       onClick="popupPage(450,900,'ar1risk_99_12.htm')"><font
                         color="#FFFF66">View Risk Number</font></a> <input type="button"
                                                                            name="Button"
-                                                                           value="&nbsp;<%=request.getParameter("submit")!=null?" Exit ":"Cancel"%>&nbsp;"
+                                                                           value="&nbsp;<%=Encode.forHtmlAttribute(request.getParameter("submit")!=null?" Exit ":"Cancel")%>&nbsp;"
                                                                            onClick="onExit();">&nbsp;
                 </div>
             </th>

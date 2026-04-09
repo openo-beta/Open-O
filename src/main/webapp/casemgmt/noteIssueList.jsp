@@ -29,8 +29,10 @@
 <%@page import="ca.openosp.openo.PMmodule.model.Program" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProgramDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -62,9 +64,9 @@
     <c:when test="${empty caseManagementEntryForm.caseNote.id}">
         <c:choose>
             <c:when test="${not empty param.newNoteIdx}">
-                <c:set var="noteIndex" value="${param.newNoteIdx}" />
-                <div id="summary${param.newNoteIdx}">
-                    <div id="observation${param.newNoteIdx}" style="float: right; margin-right: 3px;">
+                <c:set var="noteIndex" value="${e:forHtmlAttribute(param.newNoteIdx)}" />
+                <div id="summary${e:forHtmlAttribute(param.newNoteIdx)}">
+                    <div id="observation${e:forHtmlAttribute(param.newNoteIdx)}" style="float: right; margin-right: 3px;">
             </c:when>
             <c:otherwise>
                 <c:set var="noteIndex" value="0" />

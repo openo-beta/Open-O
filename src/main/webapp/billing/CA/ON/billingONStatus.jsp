@@ -494,9 +494,9 @@
                             function changeSite(sel) {
                                 sel.form.providerview.innerHTML = sel.value == "none" ? "" : "<option value='none'>---select providers---</option>" + _providers[sel.value];
                                 sel.style.backgroundColor = sel.options[sel.selectedIndex].style.backgroundColor;
-                                if (sel.value == '<%=request.getParameter("site")%>') {
+                                if (sel.value == '<%=Encode.forJavaScript(request.getParameter("site"))%>') {
                                     if (document.serviceform.provider_ohipNo.value != '')
-                                        sel.form.providerview.value = '<%=request.getParameter("providerview")%>';
+                                        sel.form.providerview.value = '<%=Encode.forJavaScript(request.getParameter("providerview"))%>';
                                 }
                                 changeProvider(false);
                             }

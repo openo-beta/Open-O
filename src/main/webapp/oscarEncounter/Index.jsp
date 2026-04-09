@@ -170,6 +170,7 @@
 <%@ page import="ca.openosp.openo.dxresearch.bean.dxResearchBeanHandler" %>
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -1203,7 +1204,7 @@
                 <td style="font-weight: bold"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.internetResources"/></td>
             </tr>
             <tr>
-                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.searchFor"/><%= request.getParameter("userName")%>
+                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.searchFor"/><%=Encode.forHtml(request.getParameter("userName"))%>
                 </td>
             </tr>
             <tr>

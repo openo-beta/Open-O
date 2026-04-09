@@ -52,6 +52,7 @@
 <%@ page import="ca.openosp.openo.form.FrmRourkeRecord" %>
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -428,7 +429,7 @@
                value="<%= props.getProperty("ID", "0") %>"/>
 
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
 
         <input type="hidden" name="formCreated"
                value="<%= props.getProperty("formCreated", "") %>"/>

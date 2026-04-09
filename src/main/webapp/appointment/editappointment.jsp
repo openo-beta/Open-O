@@ -892,7 +892,7 @@
                     </td>
                     <td>
                 <input type="time" name="start_time" class="form-control"
-                               value="<%=bFirstDisp?ConversionUtils.toTimeStringNoSeconds(appt.getStartTime()):request.getParameter("start_time")%>"
+                               value="<%=Encode.forHtmlAttribute(bFirstDisp?ConversionUtils.toTimeStringNoSeconds(appt.getStartTime()):request.getParameter("start_time"))%>"
                                onChange="checkTimeTypeIn(this);updateTime();">
                     </td>
                 </tr>
@@ -924,11 +924,11 @@
                                 }
                             }
                         %> <input type="hidden" name="end_time"
-                                  value="<%=bFirstDisp?ConversionUtils.toTimeStringNoSeconds(appt.getEndTime()):request.getParameter("end_time")%>"
+                                  value="<%=Encode.forHtmlAttribute(bFirstDisp?ConversionUtils.toTimeStringNoSeconds(appt.getEndTime()):request.getParameter("end_time"))%>"
                     >
 
 				<input type="number" name="duration" id="duration" class="form-control"
-                               value="<%=request.getParameter("duration")!=null?(request.getParameter("duration").equals(" ")||request.getParameter("duration").equals("")||request.getParameter("duration").equals("null")?(""+everyMin) :request.getParameter("duration")):(""+everyMin)%>"
+                               value="<%=Encode.forHtmlAttribute(request.getParameter("duration")!=null?(request.getParameter("duration").equals(" ")||request.getParameter("duration").equals("")||request.getParameter("duration").equals("null")?(""+everyMin) :request.getParameter("duration")):(""+everyMin))%>"
                                onblur="calculateEndTime();">
                     </td>
                 </tr>
@@ -1184,7 +1184,7 @@
                     <td>
                 <input type="text" name="demographic_no" id="demographic_no" class="form-control"
                                ONFOCUS="onBlockFieldFocus(this)" readonly
-                               value="<%=bFirstDisp?( (appt.getDemographicNo())==0?"":(""+appt.getDemographicNo()) ):request.getParameter("demographic_no")%>">
+                               value="<%=Encode.forHtmlAttribute(bFirstDisp?( (appt.getDemographicNo())==0?"":(""+appt.getDemographicNo()) ):request.getParameter("demographic_no"))%>">
                     </td>
                 </tr>
                 <tr>
@@ -1193,7 +1193,7 @@
                     </td>
                     <td>
                 <input type="text" name="chart_no" class="form-control"
-                    readonly value="<%=bFirstDisp?StringUtils.trimToEmpty(chartno):request.getParameter("chart_no")%>"
+                    readonly value="<%=Encode.forHtmlAttribute(bFirstDisp?StringUtils.trimToEmpty(chartno):request.getParameter("chart_no"))%>"
                         >
                     </td>
                 </tr>
@@ -1535,8 +1535,8 @@
         <%--                </div>--%>
         <%--            </li>--%>
         <%--            <li><div class="label"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.msgTime"/>: </div>--%>
-        <%--                <div class="info">From <%=bFirstDisp ? ConversionUtils.toTimeStringNoSeconds(appt.getStartTime()) : request.getParameter("start_time")%>--%>
-        <%--                to <%=bFirstDisp ? ConversionUtils.toTimeStringNoSeconds(appt.getEndTime()) : request.getParameter("end_time")%></div>--%>
+        <%--                <div class="info">From <%=Encode.forHtml(bFirstDisp ? ConversionUtils.toTimeStringNoSeconds(appt.getStartTime()) : request.getParameter("start_time"))%>--%>
+        <%--                to <%=Encode.forHtml(bFirstDisp ? ConversionUtils.toTimeStringNoSeconds(appt.getEndTime()) : request.getParameter("end_time"))%></div>--%>
         <%--            </li>--%>
         <%--            <li><div class="label"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formType"/>: </div>--%>
         <%--                <div class="info"><%=Encode.forHtmlContent(bFirstDisp ? appt.getType() : request.getParameter("type"))%></div>--%>

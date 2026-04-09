@@ -1082,9 +1082,9 @@ Ontario, Canada
               action="<%=request.getContextPath()%>/appointment/appointmentcontrol.jsp"
               onsubmit="return(onAdd())">
             <input type="hidden" name="displaymode" value="">
-            <input type="hidden" name="year" value="<%=request.getParameter("year") %>">
-            <input type="hidden" name="month" value="<%=request.getParameter("month") %>">
-            <input type="hidden" name="day" value="<%=request.getParameter("day") %>">
+            <input type="hidden" name="year" value="<%=Encode.forHtmlAttribute(request.getParameter("year")) %>">
+            <input type="hidden" name="month" value="<%=Encode.forHtmlAttribute(request.getParameter("month")) %>">
+            <input type="hidden" name="day" value="<%=Encode.forHtmlAttribute(request.getParameter("day")) %>">
             <input type="hidden" name="fromAppt" value="1">
 
 
@@ -1115,7 +1115,7 @@ Ontario, Canada
                             </td>
                             <td>
                                 <input type="time" name="start_time" class="form-control"
-                                       value='<%=request.getParameter("start_time")%>'
+                                       value='<%=Encode.forHtmlAttribute(request.getParameter("start_time"))%>'
                                        onChange="checkTimeTypeIn(this);updateTime();checkPageLock()">
                             </td>
                         </tr>
@@ -1127,7 +1127,7 @@ Ontario, Canada
                                 <input type="number" name="duration" id="duration" class="form-control"
                                        value="<%=duration%>" onChange="checkPageLock()" onblur="calculateEndTime();">
                                 <input type="hidden" name="end_time"
-                                       value='<%=request.getParameter("end_time")%>'
+                                       value='<%=Encode.forHtmlAttribute(request.getParameter("end_time"))%>'
                                        onChange="checkTimeTypeIn(this)">
                             </td>
                         </tr>
@@ -1147,7 +1147,7 @@ Ontario, Canada
                                 %>
 			                        <span class="input-group-btn" id="demoNumber">
                                         <input type="text"  name="demographic_no" id="demographic_no" class="form-control" onfocus="onBlockFieldFocus(this)"
-                                               value='<%=(bFirstDisp && !bFromWL)?"":request.getParameter("demographic_no").equals("")?"":request.getParameter("demographic_no")%>' readonly="readonly">
+                                               value='<%=Encode.forHtmlAttribute((bFirstDisp && !bFromWL)?"":request.getParameter("demographic_no").equals("")?"":request.getParameter("demographic_no"))%>' readonly="readonly">
 						           </span>
                                     <input type="text" name="keyword" id="keyword" class="form-control"
                                         value="<%=Encode.forHtmlAttribute(name)%>"
@@ -1290,14 +1290,14 @@ Ontario, Canada
                                     <option class="<%=(allStatus.get(i)).getStatus()%>"
                                             style="background-color:<%=(allStatus.get(i)).getColor()%>"
                                             value="<%=(allStatus.get(i)).getStatus()%>"
-                                            <%=(allStatus.get(i)).getStatus().equals(request.getParameter("status")) ? "SELECTED" : ""%>><%=(allStatus.get(i)).getDescription()%>
+                                            <%=Encode.forHtml((allStatus.get(i)).getStatus().equals(request.getParameter("status")) ? "SELECTED" : "")%>><%=(allStatus.get(i)).getDescription()%>
                                     </option>
                                     <% } %>
                                 </select> <%
                                 }
                                 if (strEditable == null || !strEditable.equalsIgnoreCase("yes")) {
 	            %> <input type="text" name="status" class="form-control"
-                                      value='<%=bFirstDisp?"t":request.getParameter("status")==null?"":request.getParameter("status").equals("")?"":request.getParameter("status")%>'
+                                      value='<%=Encode.forHtmlAttribute(bFirstDisp?"t":request.getParameter("status")==null?"":request.getParameter("status").equals("")?"":request.getParameter("status"))%>'
                             > <%}%>
                             </td>
                         </tr>
@@ -1343,7 +1343,7 @@ Ontario, Canada
                             <td>
                                 <textarea class="form-control" name="notes" tabindex="3" rows="2" style="resize:none;"
                                           placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formNotes"/>" cols="18"
-                                          maxlength="255"><%=bFirstDisp ? "" : "".equals(request.getParameter("notes")) ? "" : request.getParameter("notes")%></textarea>
+                                          maxlength="255"><%=Encode.forHtml(bFirstDisp ? "" : "".equals(request.getParameter("notes")) ? "" : request.getParameter("notes"))%></textarea>
                             </td>
                         </tr>
                         <tr>

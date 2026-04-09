@@ -16,6 +16,7 @@ is hosted in an IFrame and that the IFrame's parent window implements signatureH
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
 <%@ page import="ca.openosp.openo.commn.model.enumerator.ModuleType" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     if (loggedInInfo == null || loggedInInfo.getLoggedInProviderNo() == null) {
@@ -49,7 +50,7 @@ is hosted in an IFrame and that the IFrame's parent window implements signatureH
     boolean saveToDB = "true".equals(request.getParameter("saveToDB"));
 %>
 <script type="text/javascript">
-    var _in_window = <%= "true".equals(request.getParameter("inWindow"))%>;
+    var _in_window = <%=Encode.forJavaScript("true".equals(request.getParameter("inWindow")))%>;
 
     var requestIdKey = "<%= requestIdKey %>";
 
@@ -78,9 +79,9 @@ is hosted in an IFrame and that the IFrame's parent window implements signatureH
     <input type="hidden" id="signatureImage" name="signatureImage" value=""/>
     <input type="hidden" name="source" value="IPAD"/>
     <input type="hidden" name="<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY %>" value="<%= requestIdKey %>"/>
-    <input type="hidden" name="demographicNo" value="<%= request.getParameter("demographicNo") %>"/>
+    <input type="hidden" name="demographicNo" value="<%= Encode.forHtmlAttribute(request.getParameter("demographicNo")) %>"/>
 	<input type="hidden" name="<%= ModuleType.class.getSimpleName()%>"
-			value="<%= request.getParameter(ModuleType.class.getSimpleName()) %>" />
+			value="<%=Encode.forHtmlAttribute(request.getParameter(ModuleType.class.getSimpleName()))%>" />
     <input type="hidden" name="saveToDB" value="<%=saveToDB%>"/>
 </form>
 

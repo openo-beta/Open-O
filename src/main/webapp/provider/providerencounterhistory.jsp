@@ -31,6 +31,7 @@
 <%@page import="ca.openosp.openo.commn.dao.EncounterDao" %>
 <%@page import="ca.openosp.openo.commn.model.Encounter" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     EncounterDao encounterDao = SpringUtils.getBean(EncounterDao.class);
@@ -84,12 +85,12 @@
                 if (strForm.toLowerCase().compareTo("form") == 0 && st.hasMoreTokens()) {
                     strTemplateURL = "template" + (new String(st.nextToken())).trim().toLowerCase() + ".jsp";
             %> <a href=#
-                  onClick="popupPage(600,800,'providercontrol.jsp?encounter_no=<%=enc.getId()%>&demographic_no=<%=request.getParameter("demographic_no")%>&dboperation=search_encountersingle&displaymodevariable=<%=strTemplateURL%>&displaymode=vary&bNewForm=0')"><%=historysubject %>
+                  onClick="popupPage(600,800,'providercontrol.jsp?encounter_no=<%=enc.getId()%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&dboperation=search_encountersingle&displaymodevariable=<%=strTemplateURL%>&displaymode=vary&bNewForm=0')"><%=historysubject %>
             </a></font><br>
                 <%
                 } else if (strForm.compareTo("") != 0) {
                 %> <a href=#
-                      onClick="popupPage(400,600,'providercontrol.jsp?encounter_no=<%=enc.getId()%>&demographic_no=<%=request.getParameter("demographic_no")%>&template=<%=strForm%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=historysubject %>
+                      onClick="popupPage(400,600,'providercontrol.jsp?encounter_no=<%=enc.getId()%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&template=<%=strForm%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=historysubject %>
             </a></font><br>
                 <%
                         }

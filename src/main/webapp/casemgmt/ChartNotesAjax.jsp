@@ -29,6 +29,7 @@
 <%@page import="ca.openosp.openo.util.UtilMisc" %>
 <%@include file="/casemgmt/taglibs.jsp" %>
 <%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@page import="java.util.Enumeration" %>
 <%@page import="ca.openosp.openo.encounter.pageUtil.NavBarDisplayDAO" %>
 <%@page import="java.util.Arrays,java.util.Properties,java.util.List,java.util.Set,java.util.ArrayList,java.util.Enumeration,java.util.HashSet,java.util.Iterator,java.text.SimpleDateFormat,java.util.Calendar,java.util.Date,java.text.ParseException" %>
@@ -1039,7 +1040,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
     //flag for determining if we want to submit case management entry form with enter key pressed in auto completer text box
     var submitIssues = false;
     //AutoCompleter for Issues
-    <%--    <c:url value="/CaseManagementEntry.do?method=issueList&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}" var="issueURL" />--%>
+    <%--    <c:url value="/CaseManagementEntry.do?method=issueList&demographicNo=${e:forJavaScript(param.demographicNo)}&providerNo=${e:forJavaScript(param.providerNo)}" var="issueURL" />--%>
     <%--    let issueAutoCompleter = new Ajax.Autocompleter("issueAutocomplete", "issueAutocompleteList", "<c:out value="${issueURL}"/>", {minChars: 3, indicator: 'busy', afterUpdateElement: saveIssueId, onShow: autoCompleteShowMenu, onHide: autoCompleteHideMenu});--%>
 
     <%int MaxLen = 20;

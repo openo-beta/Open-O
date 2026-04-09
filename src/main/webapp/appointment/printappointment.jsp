@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getAttribute("userrole") == null) {
         response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -63,7 +64,7 @@
     <%}%>
     <br>
     <object id="apptpdf" type="application/pdf"
-            data="printAppointmentReceiptAction.do?appointment_no=<%=request.getParameter("appointment_no")%>"
+            data="printAppointmentReceiptAction.do?appointment_no=<%=Encode.forHtmlAttribute(request.getParameter("appointment_no"))%>"
             height="80%" width="100%"></object>
     </body>
 </html>

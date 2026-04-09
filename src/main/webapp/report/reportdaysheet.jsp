@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.commn.model.ProviderData" %>
 <%@ page import="ca.openosp.openo.commn.dao.ProviderDataDao" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="daySheetBean" class="ca.openosp.AppointmentMainBean" scope="page"/>
 <jsp:useBean id="myGroupBean" class="java.util.Properties" scope="page"/>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
@@ -250,7 +251,7 @@
     %>
     <table width="480" border="0" cellspacing="1" cellpadding="0">
         <tr>
-            <td><%=providerBean.getProperty(rsdemo.getString("provider_no")) + " - " + dateTemp + (request.getParameter("sTime") != null ? (" " + sTime + "-" + eTime) : "") %>
+            <td><%=Encode.forHtml(providerBean.getProperty(rsdemo.getString("provider_no")) + " - " + dateTemp + (request.getParameter("sTime") != null ? (" " + sTime + "-" + eTime) : ""))%>
             </td>
             <td align="right"></td>
         </tr>
@@ -260,31 +261,31 @@
         <tr bgcolor="#CCCCFF" align="center">
             <!--<TH width="14%"><b><a href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=appointment_date"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgAppointmentDate"/></a></b></TH>-->
             <TH width="6%"><b><a
-                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=start_time<%=request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode")%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgAppointmentTime"/></a></b></TH>
+                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=start_time<%=Encode.forUriComponent(request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode"))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgAppointmentTime"/></a></b></TH>
             <TH width="15%"><b><a
-                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=name<%=request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode")%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgPatientLastName"/></a> </b></TH>
+                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=name<%=Encode.forUriComponent(request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode"))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgPatientLastName"/></a> </b></TH>
             <!--<TH width="20%"><b><a href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=p_first_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgPatientFirstName"/></a> </b></TH>-->
 
             <TH width="10%"><b><a
-                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=phone<%=request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode")%>">
+                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=phone<%=Encode.forUriComponent(request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode"))%>">
                 Phone</a></b></TH>
             <TH width="3%"><b><a
-                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=sex<%=request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode")%>">
+                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=sex<%=Encode.forUriComponent(request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode"))%>">
                 Gender </a></b></TH>
             <TH width="9%"><b><a
-                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=hin<%=request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode")%>">
+                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=hin<%=Encode.forUriComponent(request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode"))%>">
                 Health Card </a></b></TH>
             <TH width="5%"><b><a
-                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=ver<%=request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode")%>">
+                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=ver<%=Encode.forUriComponent(request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode"))%>">
                 Version </a></b></TH>
 
             <TH width="6%"><b><a
-                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=chart_no<%=request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode")%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgChartNo"/></a></b></TH>
+                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=chart_no<%=Encode.forUriComponent(request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode"))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgChartNo"/></a></b></TH>
             <!--<TH width="6%"><b><a
-			href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=hin<%=request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode")%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.search.demographicSearch.msgHin"/></a></b></TH>-->
+			href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=hin<%=Encode.forUriComponent(request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode"))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.search.demographicSearch.msgHin"/></a></b></TH>-->
             <% if (!bDob) {%>
             <TH width="6%"><b><a
-                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=roster_status<%=request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode")%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgRosterStatus"/></a></b></TH>
+                    href="reportdaysheet.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&edate=<%=edate%>&orderby=roster_status<%=Encode.forUriComponent(request.getParameter("dsmode")==null?"":"&dsmode="+request.getParameter("dsmode"))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.msgRosterStatus"/></a></b></TH>
             <% } else {%>
             <TH width="10%"><b>DOB</b></TH>
             <% }%>

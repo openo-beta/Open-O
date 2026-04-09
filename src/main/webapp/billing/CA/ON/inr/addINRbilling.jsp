@@ -22,6 +22,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -122,7 +123,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="functionid"
-                                    value="<%=request.getParameter("functionid")%> " size="20">
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("functionid"))%> " size="20">
                             </font></td>
                             <td rowspan="8" width="21%" valign="middle">
                                 <p><br>
@@ -136,7 +137,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="demo_name"
-                                    value="<%=request.getParameter("demographic_name")%>" size="20">
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_name"))%>" size="20">
                             </font></td>
                         </tr>
                         <tr>
@@ -146,7 +147,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="demo_dob"
-                                    value="<%=request.getParameter("dob")%>" size="20"> </font></td>
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("dob"))%>" size="20"> </font></td>
                         </tr>
                         <tr>
                             <td width="29%"><font
@@ -155,7 +156,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="demo_hin"
-                                    value="<%=request.getParameter("hin")%>" size="20"> </font></td>
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("hin"))%>" size="20"> </font></td>
                         </tr>
                         <tr>
                             <td width="29%"><font
@@ -163,7 +164,7 @@
                                     color="#000000">Billing Provider</font></td>
                             <td width="50%"><select name="providers">
                                 <option value=""
-                                        <%=request.getParameter("creator").equals("") ? "selected" : ""%>>Select
+                                        <%=Encode.forHtml(request.getParameter("creator").equals("") ? "selected" : "")%>>Select
                                     Provider
                                 </option>
 
@@ -184,7 +185,7 @@
                                         specialty_code = prov.getProviderNo();
                                 %>
                                 <option value="<%=proOHIP%>|<%=specialty_code%>"
-                                        <%=request.getParameter("creator").equals(specialty_code) ? "selected" : ""%>><%=proLast%>
+                                        <%=Encode.forHtml(request.getParameter("creator").equals(specialty_code) ? "selected" : "")%>><%=proLast%>
                                     ,
                                     <%=proFirst%>
                                 </option>
@@ -229,7 +230,7 @@
                                     type="text" name="dispcreator" readonly
                                     value="<%=proLast1%>, <%=proFirst1%>" size="20"> <input
                                     type="hidden" name="doccreator"
-                                    value="<%=request.getParameter("creator")%>" size="20"> <input
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("creator"))%>" size="20"> <input
                                     type="hidden" name="orderby" value="updatedatetime desc" size="20">
                             </font></td>
                         </tr>

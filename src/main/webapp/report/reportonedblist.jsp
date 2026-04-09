@@ -37,6 +37,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
@@ -188,11 +189,11 @@
   nLastPage=Integer.parseInt(strLimit1)-Integer.parseInt(strLimit2);
   if(nLastPage>=0) {
 %> <a
-            href="reportonedblist.jsp?startDate=<%=request.getParameter("startDate")%>&endDate=<%=request.getParameter("endDate")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgLastPage"/></a> | <%
+            href="reportonedblist.jsp?startDate=<%=Encode.forUriComponent(request.getParameter("startDate"))%>&endDate=<%=Encode.forUriComponent(request.getParameter("endDate"))%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgLastPage"/></a> | <%
   }
   if(nItems==Integer.parseInt(strLimit2)) {
 %> <a
-            href="reportonedblist.jsp?startDate=<%=request.getParameter("startDate")%>&endDate=<%=request.getParameter("endDate")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
+            href="reportonedblist.jsp?startDate=<%=Encode.forUriComponent(request.getParameter("startDate"))%>&endDate=<%=Encode.forUriComponent(request.getParameter("endDate"))%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
         <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnewdblist.msgNextPage"/></a> <%
 }
 %>

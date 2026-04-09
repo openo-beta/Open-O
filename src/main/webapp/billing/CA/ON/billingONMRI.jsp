@@ -47,6 +47,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingPageUtil" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingReviewPrep" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -331,7 +332,7 @@
 
             <div class="span10">
                 <input type="checkbox" name="useProviderMOH"
-                       id="useProviderMOH" <%=("true".equals(request.getParameter("useProviderMOH")) ? "checked" : "") %>>Use
+                       id="useProviderMOH" <%=Encode.forHtml(("true".equals(request.getParameter("useProviderMOH")) ? "checked" : ""))%>>Use
                 individual provider's bill center setting (will use above bill center if provider does not have one
                 set.)
                 <br><br>

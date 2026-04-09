@@ -2,6 +2,7 @@
 <%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
 <%@ page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
 <%@ page import="ca.openosp.openo.commn.model.enumerator.ModuleType" %><%--
+<%@ page import="org.owasp.encoder.Encode" %>
    Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
    This software is published under the GPL GNU General Public License.
    This program is free software; you can redistribute it and/or
@@ -98,9 +99,9 @@
     <input type="hidden" name="method" value="uploadSignature"/>
     <input type="hidden" name="source" value="IPAD"/>
     <input type="hidden" name="<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY %>" value="<%= requestIdKey %>"/>
-    <input type="hidden" name="demographicNo" value="<%= request.getParameter("demographicNo") %>"/>
+    <input type="hidden" name="demographicNo" value="<%= Encode.forHtmlAttribute(request.getParameter("demographicNo")) %>"/>
     <input type="hidden" name=<%= ModuleType.class.getSimpleName()%>
-            value="<%= request.getParameter(ModuleType.class.getSimpleName()) %>"/>
+            value="<%=Encode.forHtmlAttribute(request.getParameter(ModuleType.class.getSimpleName()))%>"/>
     <input type="hidden" name="saveToDB" value="<%=saveToDB%>"/>
 </form>
 </body>

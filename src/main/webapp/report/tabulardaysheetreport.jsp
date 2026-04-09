@@ -23,6 +23,7 @@
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*,ca.openosp.openo.commn.model.*,org.apache.commons.lang3.time.*"
         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.web.admin.ProviderPreferencesUIBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="daySheetBean" class="ca.openosp.AppointmentMainBean" scope="page"/>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 <%
@@ -82,7 +83,7 @@
        class="smallerTable">
     <tr>
         <td><font
-                size=4><b><%=providerBean.getProperty(request.getParameter("provider_no")) + "</b>  (" + date + ")"%><font>
+                size=4><b><%=Encode.forHtml(providerBean.getProperty(request.getParameter("provider_no")) + "</b>  (" + date + ")")%><font>
         </td>
         <td align="right"></td>
     </tr>

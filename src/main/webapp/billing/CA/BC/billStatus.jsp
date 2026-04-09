@@ -105,6 +105,7 @@
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -251,9 +252,9 @@
             <div class="col-lg-12">
                 <i>Results for Demographic</i>
                 :
-                <%=request.getParameter("lastName")%>      ,
-                <%=request.getParameter("firstName")%>      (
-                <%=request.getParameter("demographicNo")%>      )
+                <%=Encode.forHtml(request.getParameter("lastName"))%>      ,
+                <%=Encode.forHtml(request.getParameter("firstName"))%>      (
+                <%=Encode.forHtml(request.getParameter("demographicNo"))%>      )
             </div>
         </div>
         <%}%>
@@ -261,8 +262,8 @@
 
         <form name="serviceform" method="get" action="billStatus.jsp" class="form-inline">
             <input type="hidden" name="filterPatient" value="<%=readonly%>"/>
-            <input type="hidden" name="lastName" value="<%=request.getParameter("lastName")%>"/>
-            <input type="hidden" name="firstName" value="<%=request.getParameter("firstName")%>"/>
+            <input type="hidden" name="lastName" value="<%=Encode.forHtmlAttribute(request.getParameter("lastName"))%>"/>
+            <input type="hidden" name="firstName" value="<%=Encode.forHtmlAttribute(request.getParameter("firstName"))%>"/>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group">
@@ -470,7 +471,7 @@
     <form name="ReProcessBillingForm" method="get" action="reprocessBill.do">
 
         <input type="hidden" id="hiddenFilterType" name="hiddenFilterType"
-               value="<%=request.getParameter("billTypes")%>">
+               value="<%=Encode.forHtmlAttribute(request.getParameter("billTypes"))%>">
 
 
         <table class="table table-striped table-condensed sortable" id="resultsTable">

@@ -27,6 +27,7 @@
 <%@page import="java.util.List" %>
 <%@page import="ca.openosp.openo.commn.model.CtlBillingService" %>
 <%@page import="ca.openosp.openo.commn.dao.CtlBillingServiceDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <form method="post" name="form1"
@@ -98,7 +99,7 @@ int rCount = 0;
 		<td colspan="3"><input type="submit" name="submit"
 			value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_service.btnUpdate"/>"><input
 			type="hidden" name="typeid"
-			value="<%=request.getParameter("billingform")%>"><input
+			value="<%=Encode.forHtmlAttribute(request.getParameter("billingform"))%>"><input
 			type="hidden" name="type" value="<%=service_name%>"></td>
 	</tr>
 </table>

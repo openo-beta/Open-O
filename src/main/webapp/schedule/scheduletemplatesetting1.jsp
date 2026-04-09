@@ -33,6 +33,7 @@
 <%@page import="ca.openosp.openo.commn.model.RSchedule" %>
 <%@page import="ca.openosp.openo.commn.dao.RScheduleDao" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     RScheduleDao rScheduleDao = SpringUtils.getBean(RScheduleDao.class);
@@ -251,15 +252,15 @@
                             <td colspan="2">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td bgcolor="#CCFFCC"><b><%=request.getParameter("provider_name")%>
+                            <td bgcolor="#CCFFCC"><b><%=Encode.forHtml(request.getParameter("provider_name"))%>
                             </b>
                                 <input type="hidden" name="provider_name"
-                                       value="<%=request.getParameter("provider_name")%>"></td>
+                                       value="<%=Encode.forHtmlAttribute(request.getParameter("provider_name"))%>"></td>
                             <td bgcolor="#CCFFCC">
                                 <div align="right"><select name="select"
                                                            onChange="selectrschedule(this)">
                                     <option value="<%=today%>"
-                                            <%=request.getParameter("sdate") != null ? (today.equals(request.getParameter("sdate")) ? "selected" : "") : ""%>>
+                                            <%=Encode.forHtml(request.getParameter("sdate") != null ? (today.equals(request.getParameter("sdate")) ? "selected" : "") : "")%>>
                                         Current
                                         R Schedule
                                     </option>
@@ -269,7 +270,7 @@
 
                                     %>
                                     <option value="<%=ConversionUtils.toDateString(rs.getsDate())%>"
-                                            <%=request.getParameter("sdate") != null ? (ConversionUtils.toDateString(rs.getsDate()).equals(request.getParameter("sdate")) ? "selected" : "") : ""%>>
+                                            <%=Encode.forHtml(request.getParameter("sdate") != null ? (ConversionUtils.toDateString(rs.getsDate()).equals(request.getParameter("sdate")) ? "selected" : "") : "")%>>
                                         <%=ConversionUtils.toDateString(rs.getsDate()) + " ~ " + ConversionUtils.toDateString(rs.geteDate())%>
                                     </option>
                                     <%
@@ -422,7 +423,7 @@
                         <tr>
                             <td bgcolor="#CCFFCC" colspan="2">
                                 <div align="right"><input type="hidden" name="provider_no"
-                                                          value="<%=request.getParameter("provider_no")%>"> <input
+                                                          value="<%=Encode.forHtmlAttribute(request.getParameter("provider_no"))%>"> <input
                                         type="hidden" name="available" value="1"> <input
                                         type="submit" name="Submit" value=" Next "> <input
                                         type="button" name="Cancel" value="Cancel" onClick="window.close()">

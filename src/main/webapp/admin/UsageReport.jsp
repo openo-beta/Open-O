@@ -60,6 +60,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DocumentDao" %>
 <%@page import="ca.openosp.openo.commn.dao.BillingONCHeader1Dao" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
@@ -117,16 +118,16 @@
             <label class="control-label">Start Date</label>
             <div class="controls">
                 <input type="text" id="startDate" name="startDate"
-                       value="<%=request.getParameter("startDate") != null ? request
-					.getParameter("startDate") : ""%>"/>
+                       value="<%=Encode.forHtmlAttribute(request.getParameter("startDate") != null ? request
+					.getParameter("startDate") : "")%>"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">End Date</label>
             <div class="controls">
                 <input type="text" id="endDate" name="endDate"
-                       value="<%=request.getParameter("endDate") != null ? request
-					.getParameter("endDate") : ""%>"/>
+                       value="<%=Encode.forHtmlAttribute(request.getParameter("endDate") != null ? request
+					.getParameter("endDate") : "")%>"/>
             </div>
         </div>
         <div class="control-group">

@@ -50,6 +50,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Form" %>
 <%@ page import="ca.openosp.openo.commn.dao.FormDao" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     RecycleBinDao recycleBinDao = SpringUtils.getBean(RecycleBinDao.class);
     FormDao formDao = SpringUtils.getBean(FormDao.class);
@@ -154,7 +155,7 @@
         <tr bgcolor="#eeeeee">
             <td align="center"><input type="hidden" name="formnum"
                                       value="<%=i%>"> <input type="hidden" name="demographic_no"
-                                                             value="<%=request.getParameter("demographic_no")%>"> <input
+                                                             value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>"> <input
                     type="submit" name="submit" value="Delete"><input
                     type="button" name="button" value="Cancel" onClick="window.close()">
             </td>

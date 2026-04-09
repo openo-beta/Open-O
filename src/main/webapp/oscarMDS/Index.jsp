@@ -10,6 +10,7 @@
 --%>
 
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -134,9 +135,9 @@
                             <td align="left" valign="top">
                                 <input type="hidden" name="providerNo" value="<%= providerNo %>"/>
                                 <input type="hidden" name="searchProviderNo" value="<%= searchProviderNo %>"/>
-                                <%= (request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">") %>
-                                <%= (request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">") %>
-                                <%= (request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">") %>
+                                <%=Encode.forHtml((request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">"))%>
+                                <%=Encode.forHtml((request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">"))%>
+                                <%=Encode.forHtml((request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">"))%>
                                 <input type="hidden" name="status" value="<%= ackStatus %>"/>
                                 <input type="hidden" name="selectedProviders"/>
                                 <input type="hidden" name="favorites" value=""/>

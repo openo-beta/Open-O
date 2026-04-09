@@ -26,6 +26,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.DiagnosticCode" %>
 <%@ page import="ca.openosp.openo.commn.dao.DiagnosticCodeDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 %>
@@ -52,7 +53,7 @@
                 if (self.opener.callChangeCodeDesc) self.opener.callChangeCodeDesc();
 
                 <%if(request.getParameter("name2")!=null) {%>
-                self.opener.<%=request.getParameter("name2")%> = File2.substring(0, 3);
+                self.opener.<%=Encode.forJavaScript(request.getParameter("name2"))%> = File2.substring(0, 3);
                 <%} else {%>
                 self.opener.document.forms[1].xml_diagnostic_detail.value = File2;
                 <%}%>
@@ -90,7 +91,7 @@
           action="billingDigSearch.jsp">
         <%if (request.getParameter("name2") != null) {%>
         <input type="hidden" name="name2"
-               value="<%=request.getParameter("name2")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("name2"))%>"/>
         <%}%>
         <p><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgRefine"/></b><br>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgCodeRange"/>: <select

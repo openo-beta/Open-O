@@ -1,5 +1,6 @@
 <%--
 
+<%@ page import="org.owasp.encoder.Encode" %>
     Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
     This program is free software; you can redistribute it and/or
@@ -87,7 +88,7 @@
 
 <form method="post" action="<%= request.getContextPath() %>/messenger/Transfer/SelectItems.jsp">Demographic No: <input
         type="text" name="demographicNo"
-        value="<%= request.getParameter("demo")%>"/> <input type="submit"
+        value="<%= Encode.forHtmlAttribute(request.getParameter("demo"))%>"/> <input type="submit"
                                                             name="submitXml" value="Submit to XML"> <input type="submit"
                                                                                                            name="submit"
                                                                                                            value="Submit"

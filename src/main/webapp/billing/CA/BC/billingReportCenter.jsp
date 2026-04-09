@@ -54,6 +54,7 @@
 <%@ page import="ca.openosp.openo.commn.model.ReportProvider" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.commn.dao.ReportProviderDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     ReportProviderDao reportProviderDao = SpringUtils.getBean(ReportProviderDao.class);
@@ -159,11 +160,11 @@
 
                 <label style="display: inline-flex; align-items: center; margin-left: 10px;">
 				<input type="checkbox" name="filter_noshow" value="true"
-					<%= request.getParameter("filter_noshow") != null ? "checked" : "" %> > No-Show
+					<%=Encode.forHtml(request.getParameter("filter_noshow") != null ? "checked" : "")%> > No-Show
 			</label>
                 <label style="padding-left: 10px; display: inline-flex; align-items: center;">
 				<input type="checkbox" name="filter_cancelled" value="true"
-					<%= request.getParameter("filter_cancelled") != null ? "checked" : "" %> > Cancelled
+					<%=Encode.forHtml(request.getParameter("filter_cancelled") != null ? "checked" : "")%> > Cancelled
 			</label>
 		</td>
 

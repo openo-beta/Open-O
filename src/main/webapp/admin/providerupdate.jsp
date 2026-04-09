@@ -63,6 +63,7 @@
 <%@ page import="ca.openosp.SxmlMisc" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
     ProviderSiteDao providerSiteDao = SpringUtils.getBean(ProviderSiteDao.class);
@@ -224,13 +225,13 @@
         %>
         <p>
         <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providerupdate.msgUpdateSuccess"/>
-            <a href="providerupdateprovider.jsp?keyword=<%=request.getParameter("provider_no")%>"><%= request.getParameter("provider_no") %>
+            <a href="providerupdateprovider.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("provider_no"))%>"><%=Encode.forHtml(request.getParameter("provider_no"))%>
             </a>
         </h2>
         <%
         } else {
         %>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providerupdate.msgUpdateFailure"/><%= request.getParameter("provider_no") %>.</h1>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providerupdate.msgUpdateFailure"/><%=Encode.forHtml(request.getParameter("provider_no"))%>.</h1>
         <%
             }
         } else {

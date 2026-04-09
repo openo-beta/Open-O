@@ -32,6 +32,7 @@
 <%@page import="ca.openosp.openo.commn.dao.EncounterDao" %>
 <%@page import="ca.openosp.openo.commn.model.Encounter" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     EncounterTemplateDao encounterTemplateDao = SpringUtils.getBean(EncounterTemplateDao.class);
     EncounterDao encounterDao = SpringUtils.getBean(EncounterDao.class);
@@ -111,7 +112,7 @@
 %>
 
 <center><input type="button" value="Print Preview"
-               onClick="popupPage(600,800, 'providerencounterprint.jsp?encounter_no=<%=request.getParameter("encounter_no")%>&demographic_no=<%=request.getParameter("demographic_no")%>&username=<%=request.getParameter("username")%>')">
+               onClick="popupPage(600,800, 'providerencounterprint.jsp?encounter_no=<%=Encode.forJavaScript(request.getParameter("encounter_no"))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&username=<%=Encode.forJavaScript(request.getParameter("username"))%>')">
     <input type="button" value="Close this window" onClick="self.close()">
 </center>
 </body>

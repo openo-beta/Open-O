@@ -52,6 +52,7 @@
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     ProgramDao programDao = SpringUtils.getBean(ProgramDao.class);
     SecRoleDao secRoleDao = SpringUtils.getBean(SecRoleDao.class);
@@ -402,7 +403,7 @@
         function setfocus() {
             this.focus();
             document.forms[0].keyword.select();
-	    window.scrollTo( 0,  '${param.scrollPosition}');
+	    window.scrollTo( 0,  '${e:forJavaScript(param.scrollPosition)}');
         }
 
         function submit(form) {

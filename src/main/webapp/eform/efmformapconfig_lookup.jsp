@@ -13,7 +13,8 @@
 <%@ page import="ca.openosp.openo.eform.data.DatabaseAP" %>
 <%@ page import="ca.openosp.openo.eform.data.EForm" %>
 <%@ page import="ca.openosp.openo.eform.EFormLoader" %>
-<input type="hidden" name="oscarAPCacheLookupType" value="<%= request.getParameter("oscarAPCacheLookupType") %>"/><%
+<%@ page import="org.owasp.encoder.Encode" %>
+<input type="hidden" name="oscarAPCacheLookupType" value="<%= Encode.forHtmlAttribute(request.getParameter("oscarAPCacheLookupType")) %>"/><%
     String[] keys = request.getParameterValues("key");
     if (keys == null) {
         keys = new String[0];

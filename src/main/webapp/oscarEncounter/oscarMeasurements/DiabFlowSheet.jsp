@@ -31,6 +31,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypeBeanHandler" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
 <%@ page import="ca.openosp.openo.prescript.util.RxUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/common/webAppContextAndSuperMgr.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -785,7 +786,7 @@
 <form id="mainForm" name="mainForm" action="<%=request.getContextPath()%>/oscarEncounter/FormUpdate.do">
     <input type="hidden" name="ycoord"
             <%if (request.getParameter("ycoord") != null) { %>
-           value="<%=request.getParameter("ycoord")%>"
+           value="<%=Encode.forHtmlAttribute(request.getParameter("ycoord"))%>"
             <%} else {%>
            value="0"
             <%}%>

@@ -48,6 +48,7 @@
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ page import="ca.openosp.openo.form.graphic.FrmGraphicAR" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String formClass = "AR";
@@ -470,9 +471,9 @@
         <input type="hidden" name="ID"
                value="<%= props.getProperty("ID", "0") %>"/>
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="provNo"
-               value="<%= request.getParameter("provNo") %>"/>
+               value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table class="Head" class="hidePrint">

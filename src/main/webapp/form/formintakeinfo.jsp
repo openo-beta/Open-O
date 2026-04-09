@@ -42,6 +42,7 @@
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String formClass = "IntakeInfo";
@@ -205,8 +206,8 @@
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formId" value="<%=formId%>"/>
-        <!--input type="hidden" name="provider_no" value=<%=request.getParameter("provNo")%> />
-        <input type="hidden" name="provNo" value="<%= request.getParameter("provNo") %>" /-->
+        <!--input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%> />
+        <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
 
         <table border="0" cellspacing="0" cellpadding="0" width="740px"

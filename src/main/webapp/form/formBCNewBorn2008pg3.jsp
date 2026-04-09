@@ -44,6 +44,7 @@
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="oscarVariables" class="java.util.Properties" scope="session"/>
 <%
     String formClass = "BCNewBorn2008";
@@ -441,7 +442,7 @@
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formId" value="<%=formId%>"/>
         <input type="hidden" name="provider_no" value=<%="" + provNo%>/>
-        <!--input type="hidden" name="provNo" value="<%= request.getParameter("provNo") %>" /-->
+        <!--input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
 
         <table class="Head" class="hidePrint">

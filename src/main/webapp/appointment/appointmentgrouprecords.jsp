@@ -70,6 +70,7 @@
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -492,14 +493,14 @@
                 temp = e.nextElement().toString();
                 if (temp.equals("dboperation") || temp.equals("displaymode") || temp.equals("search_mode") || temp.equals("chart_no"))
                     continue;
-                out.println("<input type='hidden' name='" + temp + "' value=\"" + UtilMisc.htmlEscape(request.getParameter(temp)) + "\">");
+                out.println("<input type='hidden' name='" + temp + "' value=\"" + UtilMisc.htmlEscape(Encode.forHtmlAttribute(request.getParameter(temp))) + "\">");
             }
         %>
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr>
-                <td nowrap><font color='black'><%=request.getParameter("appointment_date")%>
-                    | <%=request.getParameter("start_time")%> - <%=request.getParameter("end_time")%>
-                    | <%=UtilMisc.toUpperLowerCase(request.getParameter("keyword"))%>
+                <td nowrap><font color='black'><%=Encode.forHtml(request.getParameter("appointment_date"))%>
+                    | <%=Encode.forHtml(request.getParameter("start_time"))%> - <%=Encode.forHtml(request.getParameter("end_time"))%>
+                    | <%=Encode.forHtml(UtilMisc.toUpperLowerCase(request.getParameter("keyword")))%>
                 </font></td>
                 <td align='right' nowrap>Group : <%=mygroupno%>
                 </td>
@@ -561,7 +562,7 @@
                 <td nowrap><%=otherAppt.getProperty(provider.getProviderNo() + "appt")
                         != null ? otherAppt.getProperty(provider.getProviderNo() + "appt") : ""%>
                         <%--
-                    // <input type="text" name="orig<%=i%>" value="<%=bDefProvider? request.getParameter("reason"):""%>" style="width:100%">
+                    // <input type="text" name="orig<%=i%>" value="<%=Encode.forHtmlAttribute(bDefProvider? request.getParameter("reason"):"")%>" style="width:100%">
                 --%> &nbsp;
                 </td>
             </tr>

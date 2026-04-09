@@ -28,6 +28,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="ca.openosp.openo.mds.data.ProviderData, java.util.ArrayList" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <link rel="stylesheet" type="text/css" href="encounterStyles.css">
 <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
@@ -95,7 +96,7 @@
             <% ArrayList providers = ProviderData.getProviderList();
                 for (int i = 0; i < providers.size(); i++) { %>
             <option value="<%= (String) ((ArrayList) providers.get(i)).get(0) %>"
-                    <%= (((String) ((ArrayList) providers.get(i)).get(0)).equals(request.getParameter("providerNo")) ? " selected" : "") %>><%= (String) ((ArrayList) providers.get(i)).get(1) %>
+                    <%=Encode.forHtml((((String) ((ArrayList) providers.get(i)).get(0)).equals(request.getParameter("providerNo")) ? " selected" : ""))%>><%= (String) ((ArrayList) providers.get(i)).get(1) %>
                 <%= (String) ((ArrayList) providers.get(i)).get(2) %>
             </option>
             <% } %>

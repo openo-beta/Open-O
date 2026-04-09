@@ -25,6 +25,7 @@
 <%@page import="ca.openosp.openo.billing.CA.dao.BillingInrDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
 %>
@@ -170,14 +171,14 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="service_code" size="10"
-                                    value="<%=request.getParameter("servicecode")%>"> <input
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("servicecode"))%>"> <input
                                     type="hidden" name="service_unit" value="1"> </font></td>
                         </tr>
                         <tr>
                             <td width="29%"><font size="1"
                                                   face="Arial, Helvetica, sans-serif">Diagnostic Code</font></td>
                             <td width="50%"><input type="text" name="diag_code" size="20"
-                                                   value="<%=request.getParameter("dxcode")%>"></td>
+                                                   value="<%=Encode.forHtmlAttribute(request.getParameter("dxcode"))%>"></td>
                         </tr>
                         <tr>
                             <td width="29%"><font

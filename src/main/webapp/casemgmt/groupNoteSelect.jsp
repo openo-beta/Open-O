@@ -48,6 +48,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.commn.dao.GroupNoteDao" %>
 <%@page import="ca.openosp.openo.commn.model.GroupNoteLink" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 	ProgramManager programManager = (ProgramManager)SpringUtils.getBean(ProgramManager.class);
 	AdmissionManager admissionManager = (AdmissionManager)SpringUtils.getBean(AdmissionManager.class);
@@ -148,7 +149,7 @@
     <input type="button" value="cancel" onclick="window.close();"/> &nbsp;&nbsp; <input type="submit"
                                                                                         value="Enter note into selected clients"
                                                                                         onclick="return confirmGroupNote();"/>
-    <input type="hidden" name="programId" value="<%=request.getParameter("programId")%>"/>
+    <input type="hidden" name="programId" value="<%=Encode.forHtmlAttribute(request.getParameter("programId"))%>"/>
 </form>
 <% } %>
 </body>

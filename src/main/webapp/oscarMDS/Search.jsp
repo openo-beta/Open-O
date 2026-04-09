@@ -1,5 +1,6 @@
 <%--
 
+<%@ page import="org.owasp.encoder.Encode" %>
     Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
     This program is free software; you can redistribute it and/or
@@ -51,7 +52,7 @@
                 return false;
             }
 
-            var url = "<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=request.getParameter("providerNo")%>";
+            var url = "<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forJavaScript(request.getParameter("providerNo"))%>";
             if ($("#provfind").val().trim() != "") {
                 url += "&searchProviderNo=" + $("#provfind").val().trim();
             } else {
@@ -180,7 +181,7 @@
                                        ondblclick="this.checked = false;">
                                 <label for="searchProviderAll-unclaimed"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.search.formPhysicianUnclaimed"/></label>
                                 <input type="hidden" name="providerNo"
-                                       value="<%= request.getParameter("providerNo") %>">
+                                       value="<%= Encode.forHtmlAttribute(request.getParameter("providerNo")) %>">
                             </td>
                         </tr>
                         <tr>

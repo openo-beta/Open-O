@@ -60,6 +60,7 @@
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
     BillingDetailDao billingDetailDao = SpringUtils.getBean(BillingDetailDao.class);
@@ -528,17 +529,17 @@
                                 <tr>
                                     <td nowrap width="30%" align="center" valign="top"><b>Service
                                         Date</b><br>
-                                        <%=request.getParameter("billDate").replaceAll("\\n", "<br>")%>
+                                        <%=Encode.forHtml(request.getParameter("billDate").replaceAll("\\n", "<br>"))%>
                                     </td>
                                     <td align="center" width="33%"><b>Diagnostic Code</b><br>
-                                        <%=request.getParameter("dxCode")%>
+                                        <%=Encode.forHtml(request.getParameter("dxCode"))%>
                                         <hr>
                                         <b>Cal.% mode</b><br>
-                                        <%=request.getParameter("rulePerc")%>
+                                        <%=Encode.forHtml(request.getParameter("rulePerc"))%>
                                     </td>
                                     <td valign="top"><b>Refer.
-                                        Doctor</b><br><%=request.getParameter("referralDocName")%><br>
-                                        <b>Refer. Doctor #</b><br><%=request.getParameter("referralCode")%>
+                                        Doctor</b><br><%=Encode.forHtml(request.getParameter("referralDocName"))%><br>
+                                        <b>Refer. Doctor #</b><br><%=Encode.forHtml(request.getParameter("referralCode"))%>
                                     </td>
                                 </tr>
                             </table>
@@ -551,7 +552,7 @@
                                    bgcolor="#EEEEFF">
                                 <tr>
                                     <td nowrap width="30%"><b>Billing Physician</b></td>
-                                    <td width="20%"><%=providerBean.getProperty(request.getParameter("xml_provider"), "")%>
+                                    <td width="20%"><%=Encode.forHtml(providerBean.getProperty(request.getParameter("xml_provider"), ""))%>
                                     </td>
                                     <td nowrap width="30%"><b>Assig. Physician</b></td>
                                     <td width="20%"><%=providerBean.getProperty(assgProvider_no, "")%>
@@ -560,16 +561,16 @@
                                 <tr>
 
                                     <td width="30%"><b>Visit Type</b></td>
-                                    <td width="20%"><%=request.getParameter("xml_visittype").substring(request.getParameter("xml_visittype").indexOf("|") + 1)%>
+                                    <td width="20%"><%=Encode.forHtml(request.getParameter("xml_visittype").substring(request.getParameter("xml_visittype").indexOf("|") + 1))%>
                                     </td>
 
                                     <td width="30%"><b>Billing Type</b></td>
-                                    <td width="20%"><%=request.getParameter("xml_billtype").substring(request.getParameter("xml_billtype").indexOf("|") + 1)%>
+                                    <td width="20%"><%=Encode.forHtml(request.getParameter("xml_billtype").substring(request.getParameter("xml_billtype").indexOf("|") + 1))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><b>Visit Location</b></td>
-                                    <td colspan="3"><%=request.getParameter("xml_location").substring(request.getParameter("xml_location").indexOf("|") + 1)%>
+                                    <td colspan="3"><%=Encode.forHtml(request.getParameter("xml_location").substring(request.getParameter("xml_location").indexOf("|") + 1))%>
                                     </td>
                                 </tr>
                                 <tr>
@@ -587,7 +588,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>Admission Date</b></td>
-                                    <td><%=request.getParameter("xml_vdate")%>
+                                    <td><%=Encode.forHtml(request.getParameter("xml_vdate"))%>
                                     </td>
                                     <td colspan="2"></td>
 

@@ -960,9 +960,9 @@
                 }
             }
             if (document.forms[0].dxCode.value == "" && document.forms[0].dxCode1.value == "" && document.forms[0].dxCode2.value == "") {
-                document.forms[0].dxCode.value = '<%=request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode%>';
-                document.forms[0].dxCode1.value = '<%=request.getParameter("dxCode1")!=null?request.getParameter("dxCode1"):""%>';
-                document.forms[0].dxCode2.value = '<%=request.getParameter("dxCode2")!=null?request.getParameter("dxCode2"):""%>';
+                document.forms[0].dxCode.value = '<%=Encode.forJavaScript(request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode)%>';
+                document.forms[0].dxCode1.value = '<%=Encode.forJavaScript(request.getParameter("dxCode1")!=null?request.getParameter("dxCode1"):"")%>';
+                document.forms[0].dxCode2.value = '<%=Encode.forJavaScript(request.getParameter("dxCode2")!=null?request.getParameter("dxCode2"):"")%>';
             }
         }
 
@@ -992,12 +992,12 @@
             var n = document.forms[0].xml_billtype.selectedIndex;
             var val = document.forms[0].xml_billtype[n].value;
             if (val.substring(0, 3) == "PAT" || val.substring(0, 3) == "OCF" || val.substring(0, 3) == "ODS" || val.substring(0, 3) == "CPP" || val.substring(0, 3) == "STD") {
-                self.location.href = "billingON.jsp?curBillForm=<%="PRI"%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=request.getParameter("demographic_no")%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=1";
+                self.location.href = "billingON.jsp?curBillForm=<%="PRI"%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("appointment_date"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&start_time=<%=Encode.forJavaScript(request.getParameter("start_time"))%>&bNewForm=1";
             } else if (val.substring(0, 3) == "BON") {
-                self.location.href = "billingON.jsp?curBillForm=<%=oscarVariables.getProperty("primary_care_incentive", "").trim()%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=request.getParameter("demographic_no")%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=1";
+                self.location.href = "billingON.jsp?curBillForm=<%=oscarVariables.getProperty("primary_care_incentive", "").trim()%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("appointment_date"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&start_time=<%=Encode.forJavaScript(request.getParameter("start_time"))%>&bNewForm=1";
             } else {
                 <% if(ctlBillForm.equals("PRI") ) {%>
-                self.location.href = "billingON.jsp?curBillForm=<%=oscarVariables.getProperty("default_view", "").trim()%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=request.getParameter("demographic_no")%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=1";
+                self.location.href = "billingON.jsp?curBillForm=<%=oscarVariables.getProperty("default_view", "").trim()%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("appointment_date"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&start_time=<%=Encode.forJavaScript(request.getParameter("start_time"))%>&bNewForm=1";
                 <% } %>
             }
         }
@@ -1020,7 +1020,7 @@
         }
 
         function prepareBack() {
-            document.forms[0].services_checked.value = "<%=request.getParameter("services_checked")%>";
+            document.forms[0].services_checked.value = "<%=Encode.forHtmlAttribute(request.getParameter("services_checked"))%>";
             if (document.forms[0].services_checked.value == "null") document.forms[0].services_checked.value = 0;
             document.forms[0].url_back.value = location.href;
 
@@ -1304,13 +1304,13 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                             <%if (appt_no.compareTo("0") == 0) {%>
                             <span class="input-append">
 								<input type="text" id="service_date" name="service_date" readonly
-                                       value="<%=request.getParameter("service_date")!=null? request.getParameter("service_date"):strToday%>"
+                                       value="<%=Encode.forHtmlAttribute(request.getParameter("service_date")!=null? request.getParameter("service_date"):strToday)%>"
                                        style="width: 80px; height:14px;  vertical-align: bottom;">
                                 <img src="${ pageContext.request.contextPath }/images/cal.gif" id="service_date_cal"
                                      style="height:14px;  vertical-align: bottom;" class="add-on" alt="cal"></span>
                             <%} else {%>
                                 <input type="text" id="service_date" name="service_date" readonly
-								value="<%=request.getParameter("appointment_date")%>"
+								value="<%=Encode.forHtmlAttribute(request.getParameter("appointment_date"))%>"
                                    maxlength="10" style="width: 80px;"> <%}%></td>
                         <%
                             String warningClass = "";
@@ -1354,7 +1354,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 <td><input type="text" name="dxCode" class="input-mini"
                                                            maxlength="5" ondblClick="dxScriptAttach('dxCode')"
                                                            onchange="changeCodeDesc();"
-                                                           value="<%=request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode%>"/>
+                                                           value="<%=Encode.forHtmlAttribute(request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode)%>"/>
                                                     <a href="javascript:void(0);" onclick="dxScriptAttach('dxCode');">Search</a>
                                                 </td>
                                             </tr>
@@ -1362,7 +1362,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 <td>dx1</td>
                                                 <td><input type="text" name="dxCode1" class="input-mini"
                                                            maxlength="5" ondblClick="dxScriptAttach('dxCode1')"
-                                                           value="<%=request.getParameter("dxCode1")!=null?request.getParameter("dxCode1"):""%>"/>
+                                                           value="<%=Encode.forHtmlAttribute(request.getParameter("dxCode1")!=null?request.getParameter("dxCode1"):"")%>"/>
                                                     <a href="javascript:void(0);" onclick="dxScriptAttach('dxCode1')">Search</a>
                                                 </td>
                                             </tr>
@@ -1370,7 +1370,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 <td>dx2</td>
                                                 <td><input type="text" name="dxCode2" class="input-mini"
                                                            maxlength="5" ondblClick="dxScriptAttach('dxCode2')"
-                                                           value="<%=request.getParameter("dxCode2")!=null?request.getParameter("dxCode2"):""%>"/>
+                                                           value="<%=Encode.forHtmlAttribute(request.getParameter("dxCode2")!=null?request.getParameter("dxCode2"):"")%>"/>
                                                     <a href="javascript:void(0);" onclick="dxScriptAttach('dxCode2')">Search</a>
                                                 </td>
                                             </tr>
@@ -1413,28 +1413,28 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                         &nbsp;%</b><br/> <% for (int i = 0; i < BillingDataHlp.FIELD_SERVICE_NUM / 2; i++) { %>
                                         <input type="text" name="serviceCode<%=i%>" class="input-mini"
 
-                                               value="<%=request.getParameter("serviceCode"+i)!=null?request.getParameter("serviceCode"+i):""%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceCode"+i)!=null?request.getParameter("serviceCode"+i):"")%>"
                                                onDblClick="scScriptAttach(this)" onBlur="upCaseCtrl(this)"/>x
                                         <input type="text" name="serviceUnit<%=i%>" size="2" maxlength="4"
                                                style="width: 20px;"
-                                               value="<%=request.getParameter("serviceUnit"+i)!=null?request.getParameter("serviceUnit"+i):""%>"/>@
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceUnit"+i)!=null?request.getParameter("serviceUnit"+i):"")%>"/>@
                                         <input type="text" name="serviceAt<%=i%>" size="3" maxlength="4"
                                                style="width: 30px"
-                                               value="<%=request.getParameter("serviceAt"+i)!=null?request.getParameter("serviceAt"+i):""%>"/><br/>
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceAt"+i)!=null?request.getParameter("serviceAt"+i):"")%>"/><br/>
                                         <% } %></td>
                                     <td style="white-space:nowrap; width: 33%; text-align: center" class="xmyPink"><b>Code
                                         &nbsp; Time
                                         &nbsp;%</b><br/> <% for (int i = BillingDataHlp.FIELD_SERVICE_NUM / 2; i < BillingDataHlp.FIELD_SERVICE_NUM; i++) { %>
                                         <input type="text" name="serviceCode<%=i%>" class="input-mini"
 
-                                               value="<%=request.getParameter("serviceCode"+i)!=null?request.getParameter("serviceCode"+i):""%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceCode"+i)!=null?request.getParameter("serviceCode"+i):"")%>"
                                                onDblClick="scScriptAttach(this)" onBlur="upCaseCtrl(this)"/>x
                                         <input type="text" name="serviceUnit<%=i%>" size="2" maxlength="2"
                                                style="width: 20px;"
-                                               value="<%=request.getParameter("serviceUnit"+i)!=null?request.getParameter("serviceUnit"+i):""%>"/>@
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceUnit"+i)!=null?request.getParameter("serviceUnit"+i):"")%>"/>@
                                         <input type="text" name="serviceAt<%=i%>" size="3" maxlength="4"
                                                style="width: 30px"
-                                               value="<%=request.getParameter("serviceAt"+i)!=null?request.getParameter("serviceAt"+i):""%>"/><br/>
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceAt"+i)!=null?request.getParameter("serviceAt"+i):"")%>"/><br/>
                                         <% } %></td>
                                 </tr>
                             </table>
@@ -1743,7 +1743,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                         %>
 											<span class="input-append">
 											    <input type="text" name="xml_vdate" id="xml_vdate" onchange="getDays();"
-                                               value="<%=request.getParameter("xml_vdate")!=null? request.getParameter("xml_vdate"):admDate%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("xml_vdate")!=null? request.getParameter("xml_vdate"):admDate)%>"
 											class="input-small" style="height: 14px; margin-top:4px;" readonly> <img alt="cal" class="add-on" style="height:14px;  margin-top:4px;"
 											src="${ pageContext.request.contextPath }/images/cal.gif" id="xml_vdate_cal">
 											</span>
@@ -1846,7 +1846,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                     type="checkbox" id="xml_<%=serviceCode%>"
                                                     name="xml_<%=serviceCode%>" value="checked"
                                                     onclick="refreshServicesChecked(this);"
-                                                    <%=request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : ""%>
+                                                    <%=Encode.forHtml(request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : "")%>
                                                     <%=bSingleClick ? "onClick='onClickServiceCode(this)'" : ""%> />
                                             <span id="sc<%=(""+i).substring(0,1)+serviceCode%>"
                                                   onclick="getElementById('xml_<%=serviceCode%>').click();"
@@ -1929,7 +1929,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                     type="checkbox" id="xml_<%=serviceCode%>"
                                                     name="xml_<%=serviceCode%>" value="checked"
                                                     onclick="refreshServicesChecked(this);"
-                                                    <%=request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : ""%>
+                                                    <%=Encode.forHtml(request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : "")%>
                                                     <%=bSingleClick ? "onClick='onClickServiceCode(this)'" : ""%> />
                                             <span id="sc<%=(""+i).substring(0,1)+serviceCode%>"
                                                   onclick="getElementById('xml_<%=serviceCode%>').click();"
@@ -2015,7 +2015,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                     type="checkbox" id="xml_<%=serviceCode%>"
                                                     name="xml_<%=serviceCode%>" value="checked"
                                                     onclick="refreshServicesChecked(this);"
-                                                    <%=request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : ""%>
+                                                    <%=Encode.forHtml(request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : "")%>
                                                     <%=bSingleClick ? "onClick='onClickServiceCode(this)'" : ""%> />
                                             <span id="sc<%=(""+i).substring(0,1)+serviceCode%>"
                                                   onclick="getElementById('xml_<%=serviceCode%>').click();"
@@ -2065,19 +2065,19 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
         <input type="hidden" name="sex" value="<%=demoSex%>"/>
 
         <input type="hidden" name="start_time"
-               value="<%=request.getParameter("start_time")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("start_time"))%>"/>
 
         <input type="hidden" name="demographic_dob" value="<%=demoDOB%>"/>
 
         <input type="hidden" name="apptProvider_no"
-               value="<%=request.getParameter("apptProvider_no")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("apptProvider_no"))%>"/>
         <input type="hidden" name="asstProvider_no"
-               value="<%=request.getParameter("asstProvider_no")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("asstProvider_no"))%>"/>
 
         <input type="hidden" name="demographic_name" value="<%=demoname%>"/>
         <input type="hidden" name="providerview" value="<%=providerview%>"/>
         <input type="hidden" name="appointment_date"
-               value="<%=request.getParameter("appointment_date")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("appointment_date"))%>"/>
         <input type="hidden" name="assgProvider_no"
                value="<%=assgProvider_no%>"/>
         <input type="hidden" name="billForm" value="<%=ctlBillForm%>"/>
@@ -2085,9 +2085,9 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
         <input type="hidden" name="services_checked">
         <input type="hidden" name="url_back">
         <input type="hidden" name="billNo_old" id="billNo_old"
-               value="<%=request.getParameter("billNo_old")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("billNo_old"))%>"/>
         <input type="hidden" name="billStatus_old" id="billStatus_old"
-               value="<%=request.getParameter("billStatus_old")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("billStatus_old"))%>"/>
 
     </table>
 

@@ -55,6 +55,7 @@
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     AppointmentArchiveDao appointmentArchiveDao = (AppointmentArchiveDao) SpringUtils.getBean(AppointmentArchiveDao.class);
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
@@ -369,7 +370,7 @@
                 temp = e.nextElement().toString();
                 if (temp.equals("dboperation") || temp.equals("displaymode") || temp.equals("search_mode") || temp.equals("chart_no"))
                     continue;
-                out.println("<input type='hidden' name='" + temp + "' value=\"" + UtilMisc.htmlEscape(request.getParameter(temp)) + "\">");
+                out.println("<input type='hidden' name='" + temp + "' value=\"" + UtilMisc.htmlEscape(Encode.forHtmlAttribute(request.getParameter(temp))) + "\">");
             }
         %>
     </form>

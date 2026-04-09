@@ -57,6 +57,42 @@ public record EmailAttachmentSettings(
     String emailPatientChartOption
 ) {
     /**
+     * Validates email format against a basic pattern and enforces a 254-character limit per RFC 5321.
+     */
+    private static String validateEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return email;
+        }
+        if (email.length() > 254 || !email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            throw new IllegalArgumentException("Invalid email format or length");
+        }
+        return email;
+    }
+
+    /**
+     * Removes Unicode line break sequences (CR, LF, CRLF, NEL, LS, PS) to prevent SMTP header injection.
+     */
+    private static String sanitizeSubject(String subject) {
+        if (subject == null || subject.isEmpty()) {
+            return subject;
+        }
+        if (subject.length() > 200) {
+            subject = subject.substring(0, 200);
+        }
+        return subject.replaceAll("\\R", "");
+    }
+
+    /**
+     * Truncates a string to the specified maximum length.
+     */
+    private static String truncate(String value, int maxLength) {
+        if (value == null) {
+            return null;
+        }
+        return value.length() > maxLength ? value.substring(0, maxLength) : value;
+    }
+
+    /**
      * Creates an EmailAttachmentSettings instance from an HTTP request.
      *
      * @param req The HTTP request containing the parameters.
@@ -93,13 +129,13 @@ public record EmailAttachmentSettings(
             !"false".equals(req.getParameter("encryptEmailAttachments")),
             "true".equals(req.getParameter("autoSendEmail")),
             "true".equals(req.getParameter("deleteEFormAfterSendingEmail")),
-            req.getParameter("passwordEmail"),
-            req.getParameter("passwordClueEmail"),
-            req.getParameter("senderEmail"),
-            req.getParameter("subjectEmail"),
-            req.getParameter("bodyEmail"),
-            req.getParameter("encryptedMessageEmail"),
-            req.getParameter("emailPatientChartOption")
+            truncate(req.getParameter("passwordEmail"), 100),
+            truncate(req.getParameter("passwordClueEmail"), 200),
+            validateEmail(req.getParameter("senderEmail")),
+            sanitizeSubject(req.getParameter("subjectEmail")),
+            truncate(req.getParameter("bodyEmail"), 10000),
+            truncate(req.getParameter("encryptedMessageEmail"), 10000),
+            truncate(req.getParameter("emailPatientChartOption"), 50)
         );
     }
 }

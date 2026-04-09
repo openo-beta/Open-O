@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingONPaymentDao billingOnPaymentDao = SpringUtils.getBean(BillingONPaymentDao.class);
     BillingONCHeader1Dao bCh1Dao = SpringUtils.getBean(BillingONCHeader1Dao.class);
@@ -92,9 +93,9 @@
 
 <table width="95%" border="0">
     <tr>
-        <td align="left"><i>Results for Demographic</i> :<%=request.getParameter("last_name")%>
-            ,<%=request.getParameter("first_name")%>
-            (<%=request.getParameter("demographic_no")%>)
+        <td align="left"><i>Results for Demographic</i> :<%=Encode.forHtml(request.getParameter("last_name"))%>
+            ,<%=Encode.forHtml(request.getParameter("first_name"))%>
+            (<%=Encode.forHtml(request.getParameter("demographic_no"))%>)
         </td>
     </tr>
 </table>
@@ -217,12 +218,12 @@
         nLastPage = Integer.parseInt(strLimit1) - Integer.parseInt(strLimit2);
         if (nLastPage >= 0) {
     %> <a
-        href="billinghistory.jsp?last_name=<%=URLEncoder.encode(request.getParameter("last_name"), StandardCharsets.UTF_8) %>&first_name=<%=URLEncoder.encode(request.getParameter("first_name"), StandardCharsets.UTF_8) %>&demographic_no=<%=request.getParameter("demographic_no")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>">Last
+        href="billinghistory.jsp?last_name=<%=Encode.forUriComponent(URLEncoder.encode(request.getParameter("last_name"), StandardCharsets.UTF_8))%>&first_name=<%=Encode.forUriComponent(URLEncoder.encode(request.getParameter("first_name"), StandardCharsets.UTF_8))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>">Last
     Page</a> | <%
     }
     if (nItems == Integer.parseInt(strLimit2)) {
 %> <a
-        href="billinghistory.jsp?last_name=<%=URLEncoder.encode(request.getParameter("last_name"), StandardCharsets.UTF_8) %>&first_name=<%=URLEncoder.encode(request.getParameter("first_name"), StandardCharsets.UTF_8) %>&demographic_no=<%=request.getParameter("demographic_no")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
+        href="billinghistory.jsp?last_name=<%=Encode.forUriComponent(URLEncoder.encode(request.getParameter("last_name"), StandardCharsets.UTF_8))%>&first_name=<%=Encode.forUriComponent(URLEncoder.encode(request.getParameter("first_name"), StandardCharsets.UTF_8))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
     Next Page</a> <%
     }
 

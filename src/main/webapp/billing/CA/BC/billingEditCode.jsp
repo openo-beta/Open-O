@@ -48,6 +48,7 @@
     <%@ page
             import="ca.openosp.openo.commn.dao.BillingServiceDao,ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.commn.model.*" %>
     <%@ page import="ca.openosp.openo.commn.model.BillingService" %>
+<%@ page import="org.owasp.encoder.Encode" %>
     <%BillingServiceDao billingServiceDao = (BillingServiceDao) SpringUtils.getBean(BillingServiceDao.class); %>
 
     <head>
@@ -77,7 +78,7 @@
 
                 <table class="TopStatusBar">
                     <tr>
-                        <td>Edit Billing Code <%=request.getParameter("code")%> -- <%=request.getParameter("desc")%>
+                        <td>Edit Billing Code <%=Encode.forHtml(request.getParameter("code"))%> -- <%=Encode.forHtml(request.getParameter("desc"))%>
                         </td>
                         <td>&nbsp;</td>
                         <td style="text-align: right">
@@ -95,7 +96,7 @@
             <td class="MainTableRightColumn">
                 <table border="1" width="600px">
                     <tr>
-                        <th colspan="5"><%=request.getParameter("code")%> -- <%=request.getParameter("desc")%>
+                        <th colspan="5"><%=Encode.forHtml(request.getParameter("code"))%> -- <%=Encode.forHtml(request.getParameter("desc"))%>
                         </th>
                     </tr>
                     <tr>
@@ -142,7 +143,7 @@
 
 
                 <form action="${pageContext.request.contextPath}/billing/CA/BC/billingEditCode.do" method="post">
-                    <input type="hidden" name="whereTo" value="<%=request.getParameter("whereTo")%>"/>
+                    <input type="hidden" name="whereTo" value="<%=Encode.forHtmlAttribute(request.getParameter("whereTo"))%>"/>
                     <input type="hidden" name="method" value="returnToSearch"/>
                     <input type="submit" name="submit" value="Back"/>
                 </form>

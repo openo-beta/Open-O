@@ -48,6 +48,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <%
     String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -66,7 +67,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"
 	scope="request" />
 <c:set var="num" value="${fn:length(Notes)}" />
-<div class="nav-menu-heading" style="background-color:#<c:out value="${param.hc}"/>">
+<div class="nav-menu-heading" style="background-color:#<c:out value="${e:forHtmlAttribute(param.hc)}"/>">
 <div class="nav-menu-add-button">
 <h3>
 <%
@@ -74,7 +75,7 @@
 	SecurityManager securityManager = new SecurityManager();
 	if(securityManager.hasWriteAccess("_" + request.getParameter("issue_code"),roleName$)) {
 %>
-<a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${param.title}" />','',0,'','','','<%=request.getAttribute("addUrl")%>0', '<c:out value="${param.cmd}"/>','<%=request.getAttribute("identUrl")%>','<%=request.getAttribute("cppIssue")%>','','<c:out value="${param.demographicNo}"/>');">+</a>
+<a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${e:forHtmlAttribute(param.title)}" />','',0,'','','','<%=request.getAttribute("addUrl")%>0', '<c:out value="${e:forHtmlAttribute(param.cmd)}"/>','<%=request.getAttribute("identUrl")%>','<%=request.getAttribute("cppIssue")%>','','<c:out value="${e:forHtmlAttribute(param.demographicNo)}"/>');">+</a>
 <% } else { %>
 	&nbsp;
 <% } %>
@@ -82,7 +83,7 @@
 </div>
 <div class="nav-menu-title">
 <h3>
-	<a href="javascript:void(0)" onclick="return showIssueHistory('<c:out value="${param.demographicNo}"/>','<%=request.getAttribute("issueIds")%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="${param.title}" /></a>
+	<a href="javascript:void(0)" onclick="return showIssueHistory('<c:out value="${e:forHtmlAttribute(param.demographicNo)}"/>','<%=request.getAttribute("issueIds")%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="${e:forJavaScript(param.title)}" /></a>
 </h3>
 </div>
 </div>
@@ -103,7 +104,7 @@
         for (int i = 0; i < notes.size(); i++) {
             CaseManagementNote note = notes.get(i);
 %>
-    <input type="hidden" id="<%= request.getParameter("cmd") + note.getId() %>" value="<%= i %>" />
+    <input type="hidden" id="<%=Encode.forHtmlAttribute(request.getParameter("cmd") + note.getId())%>" value="<%= i %>" />
 
     <% if (i % 2 == 0) { %>
         <li class="cpp" style="background-color: #F3F3F3;">
@@ -165,7 +166,7 @@
                    title="Rev:<%= note.getRevision() %> - Last update:<%= note.getUpdate_date() %>"
                    id="listNote<%= note.getId() %>"
                    href="javascript:void(0)"
-                   onclick="showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${param.title}" />','<%= note.getId() %>','<%= StringEscapeUtils.escapeEcmaScript(editors.toString()) %>','<%= note.getObservation_date() %>','<%= note.getRevision() %>','<%= noteTxt %>', '<%= request.getAttribute("addUrl") %><%= note.getId() %>', '<%= request.getParameter("cmd") %>','<%= request.getAttribute("identUrl") %>','<%= strNoteIssues.toString() %>','<%= strNoteExts %>','<%= request.getParameter("demographicNo") %>');return false;">
+                   onclick="showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${e:forHtmlAttribute(param.title)}" />','<%= note.getId() %>','<%= StringEscapeUtils.escapeEcmaScript(editors.toString()) %>','<%= note.getObservation_date() %>','<%= note.getRevision() %>','<%= noteTxt %>', '<%= request.getAttribute("addUrl") %><%= note.getId() %>', '<%=Encode.forJavaScript(request.getParameter("cmd"))%>','<%= request.getAttribute("identUrl") %>','<%= strNoteIssues.toString() %>','<%= strNoteExts %>','<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>');return false;">
             </c:when>
             <c:otherwise>
                 <a class="topLinks"
@@ -174,7 +175,7 @@
                    title="Rev:<%= note.getRevision() %> - Last update:<%= note.getUpdate_date() %>"
                    id="listNote<%= note.getId() %>"
                    href="javascript:void(0)"
-                   onclick="showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${param.title}" />','<%= note.getId() %>','<%= StringEscapeUtils.escapeEcmaScript(editors.toString()) %>','<%= note.getObservation_date() %>','<%= note.getRevision() %>','<%= noteTxt %>', '<%= request.getAttribute("addUrl") %><%= note.getId() %>', '<%= request.getParameter("cmd") %>','<%= request.getAttribute("identUrl") %>','<%= strNoteIssues.toString() %>','<%= strNoteExts %>','<%= request.getParameter("demographicNo") %>');return false;">
+                   onclick="showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${e:forHtmlAttribute(param.title)}" />','<%= note.getId() %>','<%= StringEscapeUtils.escapeEcmaScript(editors.toString()) %>','<%= note.getObservation_date() %>','<%= note.getRevision() %>','<%= noteTxt %>', '<%= request.getAttribute("addUrl") %><%= note.getId() %>', '<%=Encode.forJavaScript(request.getParameter("cmd"))%>','<%= request.getAttribute("identUrl") %>','<%= strNoteIssues.toString() %>','<%= strNoteExts %>','<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>');return false;">
             </c:otherwise>
         </c:choose>
 
@@ -187,7 +188,7 @@
 
     <%-- Remote Notes Section --%>
     <fmt:setBundle basename="oscarResources"/>
-<fmt:message key="${param.title}" var="resolvedTitleRaw"/>
+<fmt:message key="${e:forHtmlAttribute(param.title)}" var="resolvedTitleRaw"/>
 <c:set var="resolvedTitle" value="${fn:escapeXml(resolvedTitleRaw)}"/>
 
 <%
@@ -239,8 +240,8 @@
 </ul>
 
 
-<input type="hidden" id="${param.cmd}num" value="${num}">
-<input type="hidden" id="${param.cmd}threshold" value="0">
+<input type="hidden" id="${e:forHtmlAttribute(param.cmd)}num" value="${num}">
+<input type="hidden" id="${e:forHtmlAttribute(param.cmd)}threshold" value="0">
 
 <%!
     String getNoteExts(Long noteId, List<CaseManagementNoteExt> lcme) {

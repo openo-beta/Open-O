@@ -108,6 +108,7 @@
 <%@ page import="ca.openosp.openo.util.*" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -456,10 +457,10 @@
                                 <tr>
                                     <td colspan="3"><input type="hidden" name="srcText" id="srcText" value=''/>
 
-                                        <input type="hidden" name="attachmentCount" id="attachmentCount" value='<%=request.getParameter("attachmentCount")==null?"0":request.getParameter("attachmentCount")%>'/>
+                                        <input type="hidden" name="attachmentCount" id="attachmentCount" value='<%=Encode.forHtmlAttribute(request.getParameter("attachmentCount")==null?"0":request.getParameter("attachmentCount"))%>'/>
                                         <input type="hidden" name="demographic_no" id="demographic_no" value='<%=demographic_no%>'/>
-                                        <input type="hidden" name="isPreview" id="isPreview" value='<%=request.getParameter("isPreview")==null?"false":request.getParameter("isPreview")%>'/>
-                                        <input type="hidden" name="isAttaching" id="isAttaching" value='<%=request.getParameter("isAttaching")==null?"false":request.getParameter("isAttaching")%>'/>
+                                        <input type="hidden" name="isPreview" id="isPreview" value='<%=Encode.forHtmlAttribute(request.getParameter("isPreview")==null?"false":request.getParameter("isPreview"))%>'/>
+                                        <input type="hidden" name="isAttaching" id="isAttaching" value='<%=Encode.forHtmlAttribute(request.getParameter("isAttaching")==null?"false":request.getParameter("isAttaching"))%>'/>
                                         <input type="hidden" name="isNew" id="isNew" value='true'/>
                                         <input type="hidden" name="attachmentTitle" id="attachmentTitle" value=''/></td>
                                 </tr>

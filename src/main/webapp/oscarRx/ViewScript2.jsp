@@ -523,7 +523,7 @@
                 let faxNumber = document.getElementById('faxNumber');
                 frames['preview'].document.getElementById('finalFax').value = faxNumber.options[faxNumber.selectedIndex].value;
                 frames['preview'].document.getElementById('pdfId').value = '<%=signatureRequestId%>';
-                onPrint2('oscarRxFax', "<%=request.getParameter("scriptId")%>");
+                onPrint2('oscarRxFax', "<%=Encode.forJavaScript(request.getParameter("scriptId"))%>");
 
             }
 
@@ -646,7 +646,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
+							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=Encode.forUriComponent(request.getParameter("pharmacyId"))%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>

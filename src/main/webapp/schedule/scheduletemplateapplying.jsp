@@ -180,7 +180,7 @@
             <!--
 
             async function displayTemplate(s) {
-                var url = "scheduleDisplayTemplate.jsp?name=" + s[s.selectedIndex].value + "&providerid=<%=request.getParameter("provider_no")%>";
+                var url = "scheduleDisplayTemplate.jsp?name=" + s[s.selectedIndex].value + "&providerid=<%=Encode.forJavaScript(request.getParameter("provider_no"))%>";
                 var div = "template";
                 fetch(url)
                     .then(response => response.text())
@@ -192,7 +192,7 @@
 
             function selectrschedule(s) {
                 var ref = "<rewrite:reWrite jspPage="scheduletemplateapplying.jsp"/>";
-                ref += "?provider_no=<%=request.getParameter("provider_no")%>&provider_name=<%=URLEncoder.encode(request.getParameter("provider_name"), StandardCharsets.UTF_8)%>";
+                ref += "?provider_no=<%=Encode.forJavaScript(request.getParameter("provider_no"))%>&provider_name=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("provider_name"), StandardCharsets.UTF_8))%>";
                 ref += "&sdate=" + s.options[s.selectedIndex].value;
                 self.location.href = ref;
             }
@@ -200,7 +200,7 @@
             function onBtnDelete(s) {
                 if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgDeleteConfirmation"/>")) {
                     var ref = "<rewrite:reWrite jspPage="scheduletemplateapplying.jsp"/>";
-                    ref += "?provider_no=<%=request.getParameter("provider_no")%>&provider_name=<%=URLEncoder.encode(request.getParameter("provider_name"), StandardCharsets.UTF_8)%>";
+                    ref += "?provider_no=<%=Encode.forJavaScript(request.getParameter("provider_no"))%>&provider_name=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("provider_name"), StandardCharsets.UTF_8))%>";
                     ref += "&sdate=" + s.options[s.selectedIndex].value;
                     ref += "&delete=1&deldate=all";
                     self.location.href = ref;
@@ -520,10 +520,10 @@
                         %>
                         <table style="width:99%">
                             <tr>
-                                <td style="background-color:#CCFFCC"><b><%=request.getParameter("provider_name")%>
+                                <td style="background-color:#CCFFCC"><b><%=Encode.forHtml(request.getParameter("provider_name"))%>
                                 </b>
                                     <input type="hidden" name="provider_name"
-                                           value="<%=request.getParameter("provider_name")%>"></td>
+                                           value="<%=Encode.forHtmlAttribute(request.getParameter("provider_name"))%>"></td>
                                 <td style="background-color:#CCFFCC; text-align:right; white-space:nowrap"><select
                                         name="select" onChange="selectrschedule(this)">
                                     <%
@@ -533,7 +533,7 @@
                                         for (RSchedule rs : rss) {
                                     %>
                                     <option value="<%=ConversionUtils.toDateString(rs.getsDate())%>"
-                                            <%=request.getParameter("sdate") != null ? (ConversionUtils.toDateString(rs.getsDate()).equals(request.getParameter("sdate")) ? "selected" : "") : (ConversionUtils.toDateString(rs.getsDate()).equals(scheduleRscheduleBean.sdate) ? "selected" : "")%>>
+                                            <%=Encode.forHtml(request.getParameter("sdate") != null ? (ConversionUtils.toDateString(rs.getsDate()).equals(request.getParameter("sdate")) ? "selected" : "") : (ConversionUtils.toDateString(rs.getsDate()).equals(scheduleRscheduleBean.sdate) ? "selected" : ""))%>>
                                         <%=ConversionUtils.toDateString(rs.getsDate()) + " ~ " + ConversionUtils.toDateString(rs.geteDate())%>
                                     </option>
                                     <%
@@ -944,7 +944,7 @@
                             <tr>
                                 <td colspan="2">
                                     <div style="text-align:right"><input type="hidden" name="provider_no"
-                                                                         value="<%=request.getParameter("provider_no")%>">
+                                                                         value="<%=Encode.forHtmlAttribute(request.getParameter("provider_no"))%>">
                                         <input
                                                 type="hidden" name="available"
                                                 value="<%=bAlternate||bOrigAlt?"A":"1"%>"> <input

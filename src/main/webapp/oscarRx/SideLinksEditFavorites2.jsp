@@ -37,6 +37,7 @@
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
@@ -60,7 +61,7 @@
         <dt class="PropSheetLevel1CurrentItem<%=alle%>">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/>
             <a href="javascript:void(0);"
-               onclick="window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=request.getParameter("demographicNo")%>';"
+               onclick="window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>';"
                style="width: 200px">+</a>
         </dt>
 

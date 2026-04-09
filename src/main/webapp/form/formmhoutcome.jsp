@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.form.FrmMentalHealthRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 
 <html>
@@ -370,7 +371,7 @@
         <input type="hidden" name="ID"
                value="<%= props.getProperty("ID", "0") %>"/>
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="formCreated"
                value="<%= props.getProperty("formCreated", "") %>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>

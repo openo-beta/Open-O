@@ -57,6 +57,7 @@
 <%@ page import="ca.openosp.openo.waitinglist.WaitingList" %>
 <%@ page import="ca.openosp.openo.commn.model.WaitingListName" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>
@@ -212,12 +213,12 @@
                 type="hidden" name="listId"
                 value="<%=wl1.getListId()%>"/><input
                 type="hidden" name="demographicNo"
-                value="<%=request.getParameter("demographic_no")%>"/>
+                value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>"/>
             <script
                     LANGUAGE="JavaScript">
                 var removeList = confirm("Click OK to remove patient from the waiting list: <%=wln.getName()%>");
                 if (removeList) {
-                    document.forms[0].action = "<%= request.getContextPath() %>/oscarWaitingList/RemoveFromWaitingList.jsp?demographicNo=<%=request.getParameter("demographic_no")%>&listID=<%=wl1.getListId()%>";
+                    document.forms[0].action = "<%= request.getContextPath() %>/oscarWaitingList/RemoveFromWaitingList.jsp?demographicNo=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&listID=<%=wl1.getListId()%>";
                     document.forms[0].submit();
                 }
             </script>

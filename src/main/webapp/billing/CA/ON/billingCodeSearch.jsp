@@ -24,6 +24,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingService" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
@@ -82,7 +83,7 @@
 
             <%
             if(request.getParameter("nameF") != null) {
-                    out.println("self.opener." + request.getParameter("nameF") + " = File0;");
+                    out.println("self.opener." + Encode.forHtml(request.getParameter("nameF")) + " = File0;");
             } else {
             %>
             self.opener.document.serviceform.xml_other1.value = File0;
@@ -185,7 +186,7 @@
         type="button" name="cancel" value="Cancel"
         onclick="javascript:window.close()"> <%
     if (request.getParameter("nameF") != null) {
-        out.println("<input type='hidden' name='nameF' value=\"" + request.getParameter("nameF") + "\"/>");
+        out.println("<input type='hidden' name='nameF' value=\"" + Encode.forHtmlAttribute(request.getParameter("nameF")) + "\"/>");
     }
 %>
 </form>

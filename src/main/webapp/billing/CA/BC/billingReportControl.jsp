@@ -66,6 +66,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Appointment" %>
 <%@ page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -173,12 +174,12 @@
         FLU</font></td>-->
             <label style="display: inline-flex; align-items: center; margin-left: 10px;">
                     <input type="checkbox" name="filter_noshow" value="true"
-                        <%= request.getParameter("filter_noshow") != null ? "checked" : "" %> > No-Show
+                        <%=Encode.forHtml(request.getParameter("filter_noshow") != null ? "checked" : "")%> > No-Show
                 </label>
 
                 <label style="padding-left: 10px; display: inline-flex; align-items: center;">
                     <input type="checkbox" name="filter_cancelled" value="true"
-                        <%= request.getParameter("filter_cancelled") != null ? "checked" : "" %> > Cancelled
+                        <%=Encode.forHtml(request.getParameter("filter_cancelled") != null ? "checked" : "")%> > Cancelled
                 </label>
             </td>
 

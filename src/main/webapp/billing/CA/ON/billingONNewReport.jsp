@@ -55,6 +55,7 @@
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="ca.openosp.openo.login.DBHelp" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -487,7 +488,7 @@ end broken -->
                         %>
                         <option value="<%= sites.get(i).getName() %>"
                                 style="background-color:<%= sites.get(i).getBgColor() %>"
-                                <%=sites.get(i).getName().toString().equals(request.getParameter("site")) ? "selected" : "" %>><%= sites.get(i).getName() %>
+                                <%=Encode.forHtml(sites.get(i).getName().toString().equals(request.getParameter("site")) ? "selected" : "")%>><%= sites.get(i).getName() %>
                         </option>
                         <% } %>
                     </select>
@@ -495,7 +496,7 @@ end broken -->
                     <% if (request.getParameter("providerview") != null) { %>
                     <script>
                         changeSite(document.getElementById("site"));
-                        document.getElementById("providerview").value = '<%=request.getParameter("providerview")%>';
+                        document.getElementById("providerview").value = '<%=Encode.forJavaScript(request.getParameter("providerview"))%>';
                     </script>
                     <% } // multisite end ==========================================
                     } else {

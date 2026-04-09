@@ -64,6 +64,7 @@
 <%@ page import="ca.openosp.openo.prevention.PreventionData" %>
 <%@ page import="ca.openosp.openo.prevention.Prevention" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -1067,7 +1068,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
 
             $("[id$=-btn]").removeClass("btn-primary active");
             <%if (request.getParameter("show") !=null ){%>
-            $('#<%=request.getParameter("show")%>-btn').addClass("btn-primary active");
+            $('#<%=Encode.forJavaScript(request.getParameter("show"))%>-btn').addClass("btn-primary active");
             <%}else{%>
             $('#all-btn').addClass("btn-primary active");
             <%}%>

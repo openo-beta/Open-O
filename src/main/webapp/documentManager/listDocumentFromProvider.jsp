@@ -54,6 +54,7 @@
 <%@page import="ca.openosp.openo.providers.data.*" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <style type="text/css">
     #myAutoComplete {
@@ -215,7 +216,7 @@
                                 <tr>
                                     <td>
                                         Demographic: <% if (request.getParameter("demo_linked_Id") != null && request.getParameter("demo_linked_Id").equals(curDocId)) {%>
-                                        <%=request.getParameter("name")%> <% }%>
+                                        <%=Encode.forHtml(request.getParameter("name"))%> <% }%>
                                     </td>
                                     <td><input type="hidden" name="demog" id="demofind<%=curDocId%>"/>
                                         <input tabindex="<%=tabindex++%>" type="text" id="autocompletedemo<%=curDocId%>"

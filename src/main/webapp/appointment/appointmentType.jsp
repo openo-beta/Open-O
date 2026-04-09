@@ -18,6 +18,7 @@
 
 --%>
 <%@page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*, ca.openosp.openo.appt.*, ca.openosp.openo.commn.dao.AppointmentTypeDao, ca.openosp.openo.commn.model.AppointmentType, ca.openosp.openo.utility.SpringUtils" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -78,7 +79,7 @@
                 <option value="-1">Select type</option>
                 <% for (int i = 0; i < types.size(); i++) {
                 %>
-                <option value="<%= i %>" <%= (request.getParameter("type").equals(types.get(i).getName()) ? " selected" : "") %>><%= types.get(i).getName() %>
+                <option value="<%= i %>" <%=Encode.forHtml((request.getParameter("type").equals(types.get(i).getName()) ? " selected" : ""))%>><%= types.get(i).getName() %>
                 </option>
                 <% } %>
             </select>

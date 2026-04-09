@@ -46,6 +46,7 @@
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRourke2009Record" %>
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -109,7 +110,7 @@
 <input type="hidden" name="ID"
        value="<%= props.getProperty("ID", "0") %>"/>
 <input type="hidden" name="provider_no"
-       value=<%=request.getParameter("provNo")%>/>
+       value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
 <input type="hidden" name="formCreated"
        value="<%= props.getProperty("formCreated", "") %>"/>
 <input type="hidden" name="form_class" value="<%=formClass%>"/>

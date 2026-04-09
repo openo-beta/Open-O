@@ -42,6 +42,7 @@
         import="ca.openosp.openo.util.*, ca.openosp.openo.form.*, ca.openosp.openo.form.data.*, ca.openosp.openo.utility.*" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
@@ -327,8 +328,8 @@
         <%} %>
 
         <input type="hidden" name="formId" value="<%=formId%>"/>
-        <!--input type="hidden" name="provider_no" value=<%=request.getParameter("provNo")%> />
-        <input type="hidden" name="provNo" value="<%= request.getParameter("provNo") %>" /-->
+        <!--input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%> />
+        <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
 
         <!--

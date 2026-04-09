@@ -55,6 +55,7 @@
 <%@ page import="ca.openosp.openo.form.FrmRecordHelp" %>
 <%@ page import="ca.openosp.openo.form.FrmLabReq10Record" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
     <head>
@@ -413,13 +414,13 @@
         <input type="hidden" name="ID"
                value="<%= props.getProperty("ID", "0") %>"/>
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="formCreated"
                value="<%= props.getProperty("formCreated", "") %>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="provNo"
-               value="<%= request.getParameter("provNo") %>"/>
+               value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
         <input type="hidden" name="formId" value="<%=formId%>"/>
         <table class="Head" class="hidePrint">
