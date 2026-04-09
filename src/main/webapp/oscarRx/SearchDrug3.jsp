@@ -2222,35 +2222,83 @@
       $('treatmentsMyD').toggle();
   }
 
+  //  Drug profile legend view-switching
+  //
+  // Clicking a legend button (Current, All, Active, Long Term / Acute, etc.)
+  // loads ListDrugs.jsp into #drugProfile. Some views consist of a single table
+  // (callReplacementWebService), while multi-section views like "Long Term / Acute"
+  // fire one replacement call followed by one or more addition calls that each
+  // append a labelled section below the first.
+  //
+  // Problem: both calls are fired at the same time. The addition call is a GET and
+  // often resolves first, appending its section to #drugProfile. The replacement
+  // call then arrives and calls .html(), which wipes #drugProfile — removing the
+  // already-appended section. To prevent this, addition calls are queued until the
+  // replacement response has been written to the DOM.
+  //
+  // drugProfileAdditionQueue is keyed by target element id (e.g. 'drugProfile').
+  // It holds an array of pending addition functions while a replacement is in
+  // flight, and is set back to null once the replacement is complete.
+  let drugProfileAdditionQueue = {};
+
+  // Public entry point for addition calls (appends a section to an existing view).
+  // If a replacement is still in flight for the same target, the call is queued
+  // and will be executed automatically once the replacement finishes.
   function callAdditionWebService(url, id) {
-      let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&rand=" + ran_number;
-      let updater = new Ajax.Updater(id, url, {
-        method: 'get',
-        parameters: params,
-        insertion: Insertion.Bottom,
-        evalScripts: true,
-        onFailure: function (transport) {
-          console.error('Addition web service call failed with status: ' + (transport.status || 'unknown'));
-        }
-      });
+      let contextPath = ctx;
+      if (url.indexOf(contextPath) !== 0) {
+        url = contextPath + "/oscarRx/" + url;
+      }
+      if (drugProfileAdditionQueue[id]) {
+        let capturedUrl = url;
+        drugProfileAdditionQueue[id].push(function () { doAdditionWebService(capturedUrl, id); });
+        return;
+      }
+      doAdditionWebService(url, id);
   }
 
+  // Fetches a ListDrugs.jsp section and appends it to the target container.
+  // Each response contains an <h4> heading and a <table> with its own DataTable
+  // init script. jQuery.append() evaluates those inline scripts automatically,
+  // so each appended section initialises its own independent DataTable instance.
+  function doAdditionWebService(url, id) {
+      let ran_number = generateSecureRandomId();
+      jQuery.get(url, { demographicNo: '<%=demoNo%>', rand: ran_number })
+        .done(function (responseText) {
+          jQuery('#' + id).append(responseText);
+        })
+        .fail(function (xhr) {
+          console.error('Addition web service call failed with status: ' + (xhr.status || 'unknown'));
+        });
+  }
+
+  // Replaces the entire content of the target container with a fresh ListDrugs.jsp
+  // response. Opens drugProfileAdditionQueue before firing so that any concurrent
+  // addition calls wait for this response to land before appending their sections.
   function callReplacementWebService(url, id) {
       let contextPath = ctx;
       if (url.indexOf(contextPath) !== 0) {
         url = contextPath + "/oscarRx/" + url;
       }
+      drugProfileAdditionQueue[id] = [];
       let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&rand=" + ran_number;
-      let updater = new Ajax.Updater(id, url, {
-        method: 'POST',
-        parameters: params,
-        evalScripts: true,
-        onFailure: function (transport) {
-          console.error('Replacement web service call failed with status: ' + (transport.status || 'unknown'));
-        }
-      });
+      jQuery.post(url, { demographicNo: '<%=demoNo%>', rand: ran_number })
+        .done(function (responseText) {
+          
+          // .html() replaces the container content and evaluates inline scripts,
+          // which triggers the DataTable init for the first section's table.
+          jQuery('#' + id).html(responseText);
+          
+          // Drain the queue — any addition calls that arrived while the replacement
+          // was in flight now execute in order.
+          let queue = drugProfileAdditionQueue[id] || [];
+          drugProfileAdditionQueue[id] = null;
+          queue.forEach(function (fn) { fn(); });
+        })
+        .fail(function (xhr) {
+          drugProfileAdditionQueue[id] = null;
+          console.error('Replacement web service call failed with status: ' + (xhr.status || 'unknown'));
+        });
   }
 
   callReplacementWebService("ListDrugs.jsp", 'drugProfile');
