@@ -26,6 +26,7 @@
 <!DOCTYPE html>
 <%@ page import="ca.openosp.openo.eform.data.*, ca.openosp.openo.eform.*, java.util.*" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
@@ -181,7 +182,7 @@
             %>
             <tr>
                 <td><%if (curForm.get("formFileName") != null && curForm.get("formFileName").toString().length() != 0) {%><i
-                        class="icon-file" title="<%=curForm.get("formFileName").toString()%>"></i><%}%></td>
+                        class="icon-file" title="<%=Encode.forHtmlAttribute(curForm.get("formFileName").toString())%>"></i><%}%></td>
                 <td title="<%=curForm.get("formName")%>">
                     <a href="#"
                        onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=curForm.get("fid")%>', '<%="Form"+i%>'); return false;"><%=curForm.get("formName")%>
