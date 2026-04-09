@@ -255,6 +255,9 @@ public class Fax2Action extends ActionSupport {
         Path outfile = null;
         int page = 1;
         String jobId = request.getParameter("jobId");
+        if (jobId != null && !jobId.isEmpty() && !jobId.matches("^[0-9]+$")) {
+            throw new IllegalArgumentException("Invalid jobId");
+        }
         FaxJob faxJob = null;
 
         if (jobId != null && !jobId.isEmpty()) {

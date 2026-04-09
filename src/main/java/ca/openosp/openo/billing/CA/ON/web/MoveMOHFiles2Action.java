@@ -205,7 +205,8 @@ public class MoveMOHFiles2Action extends ActionSupport {
         return null;
     }
 
-    return new File(folderPath, fileName);
+    File folder = new File(folderPath);
+    return PathValidationUtils.validatePath(fileName, folder);
     }
 
     /**
