@@ -30,6 +30,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ page import="ca.openosp.OscarProperties,ca.openosp.openo.log.*" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,
                 ca.openosp.openo.casemgmt.model.CaseManagementNoteLink,
@@ -181,9 +182,25 @@
 
     boolean integratorEnabled = loggedInInfo.getCurrentFacility().isIntegratorEnabled();
     String annotation_display = CaseManagementNoteLink.DISP_PRESCRIP;
+
+    // The legend in SearchDrug3.jsp can load this page multiple times into #drugProfile —
+    // once as a replacement (e.g. "Long Term Meds") and one or more times as appended
+    // sections (e.g. "Acute", "Inactive", "External"). Each request passes a "heading"
+    // param that labels the section and is used to give its table a unique DOM id so that
+    // each section can be independently initialised as its own DataTable instance.
+    String heading = request.getParameter("heading");
+    
+    // Remove spaces so the heading is safe to embed directly in an HTML element id.
+    String headingSuffix = (heading != null) ? heading.replaceAll("\\s+", "") : "";
+    String tableId = "Drug_table" + headingSuffix;
+    request.setAttribute("sectionHeading", heading);
+    request.setAttribute("drugTableId", tableId);
 %>
+<c:if test="${not empty sectionHeading}">
+    <h4 style="margin-bottom:1px;margin-top:3px;"><e:forHtml value="${sectionHeading}"/></h4>
+</c:if>
 <div class="drugProfileText" style="">
-    <table class="table table-condensed list-drugs" id="Drug_table">
+    <table class="table table-condensed list-drugs" id="<e:forHtmlAttribute value="${drugTableId}"/>">
       <thead>
         <tr>
         	<th>Entered Date</th>
@@ -507,8 +524,7 @@
 
 <script type="text/javascript">
 
-    drugListTable = jQuery("#Drug_table").dataTable({
-      // cache the datatable state to persist through page refreshes
+    drugListTable = jQuery('#${e:forJavaScript(drugTableId)}').dataTable({
       bStateSave: true,
       fnStateSave: function (oSettings, oData) {
         localStorage.setItem('drugListTable', JSON.stringify(oData));
@@ -516,7 +532,7 @@
       fnStateLoad: function () {
         return JSON.parse(localStorage.getItem('drugListTable'));
       },
-      "searching": true,
+      searching: true,
       // "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
       // "iDisplayLength": 50,
       columns: [
@@ -561,7 +577,7 @@
 
       // order: [[4, 'desc']]
 
-    })
+    });
 </script>
 <%!
 
