@@ -79,4 +79,6 @@ public interface EFormDataDao extends AbstractDao<EFormData> {
 
     public Date getLatestFormDateAndTimeForEforms(Collection<Integer> fdidList);
 
+    public List<Integer> findFdidsForDemographic(Integer demographicNo, List<Integer> fdids);
+
 }
