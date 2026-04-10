@@ -111,7 +111,7 @@
     %>
     <xml id="xml_list">
         <encounter>
-            <%=content%>
+            <%=Encode.forHtml(String.valueOf(content))%>
         </encounter>
     </xml>
     <%
@@ -470,10 +470,10 @@
                     type="hidden" name="demographic_no"
                     value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>"> <input
                     type="hidden" name="form_date"
-                    value='<%=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)%>'>
+                    value='<%=Encode.forHtmlAttribute(String.valueOf(now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)))%>'>
                 <input type="hidden" name="form_time"
-                       value='<%=now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE)+":"+now.get(Calendar.SECOND)%>'>
-                <input type="hidden" name="user_no" value='<%=user_no%>'> <input
+                       value='<%=Encode.forHtmlAttribute(String.valueOf(now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE)+":"+now.get(Calendar.SECOND)))%>'>
+                <input type="hidden" name="user_no" value='<%=Encode.forHtmlAttribute(String.valueOf(user_no))%>'> <input
                     type="hidden" name="form_name" value='ALPHA'> <input
                     type="hidden" name="dboperation" value="save_form"> <input
                     type="hidden" name="displaymode"

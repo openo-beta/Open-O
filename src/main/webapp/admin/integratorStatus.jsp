@@ -42,6 +42,7 @@
 <%@page import="java.util.List" %>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -157,14 +158,14 @@
 
 
                     %>
-                    <tr style="border: solid black 2px; background: <%=background %>; color: gray">
-                        <td style="border: solid black 1px"><%=StringUtils.trimToEmpty(x.getName())%>
+                    <tr style="border: solid black 2px; background: <%=Encode.forHtmlAttribute(String.valueOf(background))%>; color: gray">
+                        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(x.getName())))%>
                         </td>
-                        <td style="border: solid black 1px"><%=StringUtils.trimToEmpty(x.getDescription())%>
+                        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(x.getDescription())))%>
                         </td>
-                        <td style="border: solid black 1px"><%=StringUtils.trimToEmpty(x.getContactName()) + "<br>" + StringUtils.trimToEmpty(x.getContactEmail()) + "<br/>" + StringUtils.trimToEmpty(x.getContactPhone()) %>
+                        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(x.getContactName()) + "<br>" + StringUtils.trimToEmpty(x.getContactEmail()) + "<br/>" + StringUtils.trimToEmpty(x.getContactPhone())))%>
                         </td>
-                        <td style="border: solid black 1px"><%=(x.getLastDataUpdate() != null ? sdf.format(x.getLastDataUpdate().getTime()) : "")%>
+                        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf((x.getLastDataUpdate() != null ? sdf.format(x.getLastDataUpdate().getTime()) : "")))%>
                         </td>
                     </tr>
                     <%
@@ -195,16 +196,16 @@
 
 
                 %>
-                <tr style="border: solid black 2px; background: <%=background %>; color: black">
-                    <td style="border: solid black 1px"><%=log.getFilename().substring(log.getFilename().lastIndexOf("/") + 1)%>
+                <tr style="border: solid black 2px; background: <%=Encode.forHtmlAttribute(String.valueOf(background))%>; color: black">
+                    <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(log.getFilename().substring(log.getFilename().lastIndexOf("/") + 1)))%>
                     </td>
-                    <td style="border: solid black 1px"><%=log.getChecksum()%>
+                    <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(log.getChecksum()))%>
                     </td>
-                    <td style="border: solid black 1px"><%=sdf.format(log.getLastDateUpdated())%>
+                    <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(sdf.format(log.getLastDateUpdated())))%>
                     </td>
-                    <td style="border: solid black 1px"><%=sdf.format(log.getCurrentDate())%>
+                    <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(sdf.format(log.getCurrentDate())))%>
                     </td>
-                    <td style="border: solid black 1px"><%=StringUtils.trimToEmpty(log.getIntegratorStatus()) %>
+                    <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(log.getIntegratorStatus())))%>
                     </td>
                 </tr>
                 <%
@@ -223,32 +224,32 @@
                 </tr>
                 <tr>
                     <td>Update Frequency:</td>
-                    <td><%=p.getProperty("INTEGRATOR_UPDATE_PERIOD") %> ms</td>
+                    <td><%=Encode.forHtml(String.valueOf(p.getProperty("INTEGRATOR_UPDATE_PERIOD")))%> ms</td>
                 </tr>
                 <tr>
                     <td>Force Full Push:</td>
-                    <td><%=p.getProperty("INTEGRATOR_FORCE_FULL") %>
+                    <td><%=Encode.forHtml(String.valueOf(p.getProperty("INTEGRATOR_FORCE_FULL")))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Max File Size:</td>
-                    <td><%=p.getProperty("INTEGRATOR_MAX_FILE_SIZE") %>
+                    <td><%=Encode.forHtml(String.valueOf(p.getProperty("INTEGRATOR_MAX_FILE_SIZE")))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Local Store:</td>
-                    <td><%=p.getProperty("FORCED_ROSTER_INTEGRATOR_LOCAL_STORE") %>
+                    <td><%=Encode.forHtml(String.valueOf(p.getProperty("FORCED_ROSTER_INTEGRATOR_LOCAL_STORE")))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Issue Codetype:</td>
-                    <td><%=p.getProperty("COMMUNITY_ISSUE_CODETYPE") %>
+                    <td><%=Encode.forHtml(String.valueOf(p.getProperty("COMMUNITY_ISSUE_CODETYPE")))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Seconds until stale:</td>
-                    <td><%=p.getProperty("seconds_till_considered_stale") %>
-                        (&lt; <%=sdf.format(timeConsideredStale.getTime()) %>)
+                    <td><%=Encode.forHtml(String.valueOf(p.getProperty("seconds_till_considered_stale")))%>
+                        (&lt; <%=Encode.forHtml(String.valueOf(sdf.format(timeConsideredStale.getTime())))%>)
                     </td>
                 </tr>
                 <tr>
@@ -257,12 +258,12 @@
                 </tr>
                 <tr>
                     <td>Module Enabled:</td>
-                    <td><%=p.getProperty("USE_NEW_PATIENT_CONSENT_MODULE")%>
+                    <td><%=Encode.forHtml(String.valueOf(p.getProperty("USE_NEW_PATIENT_CONSENT_MODULE")))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Integrator patient consent:</td>
-                    <td><%=(integratorPatientConsent != null) && ("1".equals(integratorPatientConsent.getValue()))%>
+                    <td><%=Encode.forHtml(String.valueOf((integratorPatientConsent != null) && ("1".equals(integratorPatientConsent.getValue()))))%>
                     </td>
                 </tr>
                 <tr>
@@ -271,22 +272,22 @@
                 </tr>
                 <tr>
                     <td>Enabled:</td>
-                    <td><%=facility.isIntegratorEnabled() %>
+                    <td><%=Encode.forHtml(String.valueOf(facility.isIntegratorEnabled()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>URL:</td>
-                    <td><%=facility.getIntegratorUrl() %>
+                    <td><%=Encode.forHtml(String.valueOf(facility.getIntegratorUrl()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Username:</td>
-                    <td><%=facility.getIntegratorUser() %>
+                    <td><%=Encode.forHtml(String.valueOf(facility.getIntegratorUser()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Password:</td>
-                    <td><%=facility.getIntegratorPassword() %>
+                    <td><%=Encode.forHtml(String.valueOf(facility.getIntegratorPassword()))%>
                     </td>
                 </tr>
                 <tr>
@@ -295,7 +296,7 @@
                 </tr>
                 <tr>
                     <td>Remove Demographic Identity:</td>
-                    <td><%=removeDemographicIdentity %>
+                    <td><%=Encode.forHtml(String.valueOf(removeDemographicIdentity))%>
                     </td>
                 </tr>
                 </tbody>

@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -52,6 +53,6 @@
     </head>
     <body>
     <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.concurrencyError.errorMsg"/></h1>
-    <textarea name='encounterTextarea' wrap="hard" cols="99" rows="20"><%=bean.encounter%></textarea>
+    <textarea name='encounterTextarea' wrap="hard" cols="99" rows="20"><%=Encode.forHtml(String.valueOf(bean.encounter))%></textarea>
     </body>
 </html>

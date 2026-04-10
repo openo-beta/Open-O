@@ -45,6 +45,7 @@
     <%@ page import="ca.openosp.openo.managers.DigitalSignatureManager" %>
     <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
     <%@ page import="ca.openosp.openo.commn.model.enumerator.ModuleType" %>
+<%@ page import="org.owasp.encoder.Encode" %>
     <%
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -119,5 +120,5 @@
             response.setStatus(HttpServletResponse.SC_OK);
         }
     %>
-    <input type="hidden" name="signatureId" value="<%=signatureId%>"/>
+    <input type="hidden" name="signatureId" value="<%=Encode.forHtmlAttribute(String.valueOf(signatureId))%>"/>
 </c:if>

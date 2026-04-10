@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.PMmodule.web.formbean.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.commn.model.Facility" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <script>
     function facility_change(facility_id) {
@@ -72,7 +73,7 @@
     %>
     <tr>
         <td><input id="check_box_<c:out value='${facility.id}'/>"
-                   type="checkbox" <%=checked%>
+                   type="checkbox" <%=Encode.forHtml(String.valueOf(checked))%>
                    onchange="facility_change(<c:out value='${facility.id}'/>)"/></td>
         <td><c:out value="${facility.name}"/></td>
         </c:forEach>

@@ -78,7 +78,7 @@
         var choiceFormat = new Array(6, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         var allNumericField = null;
         var allMatch = null;
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
 
         function checkBeforeSave() {
             if (isFormCompleted(6, 16, 2, 0) == true)
@@ -102,12 +102,12 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <!--input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%> />
         <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
@@ -127,19 +127,19 @@
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     name="fallenLast12MY" class="checkbox"
-                        <%= props.getProperty("fallenLast12MY", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("fallenLast12MY", "")))%> /></td>
                 <td>Yes</td>
             </tr>
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     name="fallenLast12MN" class="checkbox"
-                        <%= props.getProperty("fallenLast12MN", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("fallenLast12MN", "")))%> /></td>
                 <td>No - go to #5</td>
             </tr>
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     class="checkbox" name="fallenLast12MNotRemember"
-                        <%= props.getProperty("fallenLast12MNotRemember", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("fallenLast12MNotRemember", "")))%> /></td>
                 <td>Cannot Remember - go to #5</td>
             </tr>
             <tr>
@@ -151,13 +151,13 @@
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     class="checkbox" name="injuredY"
-                        <%= props.getProperty("injuredY", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("injuredY", "")))%> /></td>
                 <td>Yes</td>
             </tr>
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     class="checkbox" name="injuredN"
-                        <%= props.getProperty("injuredN", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("injuredN", "")))%> /></td>
                 <td>No</td>
             </tr>
             <tr>
@@ -168,13 +168,13 @@
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     class="checkbox" name="medAttnY"
-                        <%= props.getProperty("medAttnY", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("medAttnY", "")))%> /></td>
                 <td>Yes</td>
             </tr>
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     class="checkbox" name="medAttnN"
-                        <%= props.getProperty("medAttnN", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("medAttnN", "")))%> /></td>
                 <td>No</td>
             </tr>
             <tr>
@@ -183,13 +183,13 @@
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     class="checkbox" name="hospitalizedY"
-                        <%= props.getProperty("hospitalizedY", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("hospitalizedY", "")))%> /></td>
                 <td>Yes</td>
             </tr>
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     class="checkbox" name="hospitalizedN"
-                        <%= props.getProperty("hospitalizedN", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("hospitalizedN", "")))%> /></td>
                 <td>No</td>
             </tr>
             <tr>
@@ -200,13 +200,13 @@
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     class="checkbox" name="limitActY"
-                        <%= props.getProperty("limitActY", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("limitActY", "")))%> /></td>
                 <td>Yes</td>
             </tr>
             <tr bgcolor="white">
                 <td width="5%" align="right"><input type="checkbox"
                                                     class="checkbox" name="limitActN"
-                        <%= props.getProperty("limitActN", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("limitActN", "")))%> /></td>
                 <td>No</td>
             </tr>
         </table>
@@ -227,9 +227,9 @@
                               onclick="javascript:return onExit();"/> <input type="button"
                                                                              value="Print"
                                                                              onclick="javascript:window.print();"/></td>
-                <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
+                <td align="right">Study ID: <%=Encode.forHtml(String.valueOf(props.getProperty("studyID", "N/A")))%>
                     <input type="hidden" name="studyID"
-                           value="<%= props.getProperty("studyID", "N/A") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("studyID", "N/A")))%>"/></td>
             </tr>
         </table>
 

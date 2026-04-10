@@ -149,12 +149,12 @@
     } else {
     %>
 
-    <%=errorCode%>
+    <%=Encode.forHtml(String.valueOf(errorCode))%>
     <input type="button" value="Change" onClick="history.go(-1);return false;">
     <%
         }
     %>
-    <p><%=Encode.forHtml(request.getParameter("inraction"))%> Bill number <%=billinginr_no%>
+    <p><%=Encode.forHtml(request.getParameter("inraction"))%> Bill number <%=Encode.forHtml(String.valueOf(billinginr_no))%>
     </p>
     <hr width="90%"></hr>
     <form>

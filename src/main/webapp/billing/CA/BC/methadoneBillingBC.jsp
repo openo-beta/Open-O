@@ -29,8 +29,8 @@
  --%>
 
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@page import="java.util.*,
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@page import="java.util.*,
                 ca.openosp.openo.util.*,
                 org.springframework.web.context.support.WebApplicationContextUtils,
                 org.springframework.web.context.WebApplicationContext" %>
@@ -202,7 +202,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>

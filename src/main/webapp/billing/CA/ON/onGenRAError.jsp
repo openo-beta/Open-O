@@ -23,6 +23,7 @@
          errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingRAPrep" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
 <head>
@@ -64,13 +65,13 @@
                         plast = prop.getProperty("last_name", "");
                         pfirst = prop.getProperty("first_name", "");
                 %>
-                <option value="<%=pohipno%>" <%=proNo.equals(pohipno) ? "selected" : ""%>><%=plast%>,<%=pfirst%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(pohipno))%>" <%=proNo.equals(pohipno) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(plast))%>,<%=Encode.forHtml(String.valueOf(pfirst))%>
                 </option>
                 <%
                     }
                 %>
             </select><input type=submit name='submit' value='Generate'> <input
-                    type="hidden" name="rano" value="<%=raNo%>"> <input
+                    type="hidden" name="rano" value="<%=Encode.forHtmlAttribute(String.valueOf(raNo))%>"> <input
                     type='button' name='print' value='Print' onClick='window.print()'>
                 <input type='button' name='close' value='Close'
                        onClick='window.close()'></th>
@@ -98,21 +99,21 @@
 
         %>
     <tr>
-        <td><%=account%>
+        <td><%=Encode.forHtml(String.valueOf(account))%>
         </td>
-        <td><%=demoLast%>
+        <td><%=Encode.forHtml(String.valueOf(demoLast))%>
         </td>
-        <td><%=servicedate%>
+        <td><%=Encode.forHtml(String.valueOf(servicedate))%>
         </td>
-        <td><%=servicecode%>
+        <td><%=Encode.forHtml(String.valueOf(servicecode))%>
         </td>
-        <td><%=serviceno%>
+        <td><%=Encode.forHtml(String.valueOf(serviceno))%>
         </td>
-        <td align=right><%=amountsubmit%>
+        <td align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
         </td>
-        <td align=right><%=amountpay%>
+        <td align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
         </td>
-        <td align=right><%=explain%>
+        <td align=right><%=Encode.forHtml(String.valueOf(explain))%>
         </td>
     </tr>
 
@@ -149,21 +150,21 @@
                 amountpay = prop.getProperty("amountpay", "");
         %>
         <tr <%=i % 2 == 0 ? "class='myGreen'" : "" %>>
-            <td align="center"><%=account%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(account))%>
             </td>
-            <td><%=demoLast%>
+            <td><%=Encode.forHtml(String.valueOf(demoLast))%>
             </td>
-            <td align="center"><%=servicedate%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(servicedate))%>
             </td>
-            <td align="center"><%=servicecode%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(servicecode))%>
             </td>
-            <td align="center"><%=serviceno%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(serviceno))%>
             </td>
-            <td align="right"><%=amountsubmit%>
+            <td align="right"><%=Encode.forHtml(String.valueOf(amountsubmit))%>
             </td>
-            <td align="right"><%=amountpay%>
+            <td align="right"><%=Encode.forHtml(String.valueOf(amountpay))%>
             </td>
-            <td align="right"><%=explain%>
+            <td align="right"><%=Encode.forHtml(String.valueOf(explain))%>
             </td>
         </tr>
 

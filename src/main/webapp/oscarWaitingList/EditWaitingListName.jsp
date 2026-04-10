@@ -33,6 +33,7 @@
 <%@page import="ca.openosp.openo.waitinglist.bean.*" %>
 <%@ page import="ca.openosp.openo.waitinglist.bean.WLWaitingListNameBeanHandler" %>
 <%@ page import="ca.openosp.openo.waitinglist.bean.WLWaitingListNameBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
     <head>
@@ -87,7 +88,7 @@
         <%
             if (message != null && !message.equals("")) {
         %>
-        <div class="alert"><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=message%>"/></div>
+        <div class="alert"><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf(message))%>"/></div>
         <%
             }
         %>
@@ -107,7 +108,7 @@
                                         String name = wLBean.getWaitingListName();
                                         String selected = id.compareTo((String) request.getAttribute("WLId") == null ? "0" : (String) request.getAttribute("WLId")) == 0 ? "SELECTED" : "";
                                 %>
-                                <option value="<%=id%>" <%=selected%>><%=name%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(name))%>
                                 </option>
                                 <%}%>
                             </select>
@@ -142,7 +143,7 @@
                                         String name = wLBean.getWaitingListName();
                                         String selected = id.compareTo((String) request.getAttribute("WLId") == null ? "0" : (String) request.getAttribute("WLId")) == 0 ? "SELECTED" : "";
                                 %>
-                                <option value="<%=id%>" <%=selected%>><%=name%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(name))%>
                                 </option>
                                 <%}%>
                             </select>

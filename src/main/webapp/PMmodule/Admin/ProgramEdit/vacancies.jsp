@@ -29,6 +29,7 @@
 <%@page import="ca.openosp.openo.PMmodule.service.VacancyTemplateManager" %>
 <%@page import="java.util.List" %>
 <%@page import="java.text.SimpleDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
 
@@ -98,8 +99,8 @@
 </script>
 
 <div class="tabs" id="tabs">
-    <input type="hidden" name="id" id="id" value="<%= currentProgramId%>"/>
-    <input type="hidden" name="programId" id="programId" value="<%=request.getAttribute("id")%>"/>
+    <input type="hidden" name="id" id="id" value="<%=Encode.forHtmlAttribute(String.valueOf(currentProgramId))%>"/>
+    <input type="hidden" name="programId" id="programId" value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("id")))%>"/>
     <table cellpadding="3" cellspacing="0" border="0">
         <tr>
             <th title="Templates">Vacancies</th>
@@ -123,18 +124,18 @@
     %>
     <tr class="b">
         <td style="text-align:left;">
-            <a onclick="javascript:clickLink('Vacancy Add','Vacancy Add', '<%=v.getId() %>');return false;"
-               href="javascript:void(0)"><%=v.getName() %>
+            <a onclick="javascript:clickLink('Vacancy Add','Vacancy Add', '<%=Encode.forJavaScript(String.valueOf(v.getId()))%>');return false;"
+               href="javascript:void(0)"><%=Encode.forHtml(String.valueOf(v.getName()))%>
             </a>
         </td>
         <td style="text-align:left;" class="beright">
-            <a onclick="javascript:clickLink('General','Vacancy Template Add', '<%=vt.getId() %>');return false;"
-               href="javascript:void(0)"><%=(vt == null ? "No Template for This Vacancy" : vt.getName()) %>
+            <a onclick="javascript:clickLink('General','Vacancy Template Add', '<%=Encode.forJavaScript(String.valueOf(vt.getId()))%>');return false;"
+               href="javascript:void(0)"><%=Encode.forHtml(String.valueOf((vt == null ? "No Template for This Vacancy" : vt.getName())))%>
             </a>
         </td>
-        <td style="text-align:center;"><%= v.getStatus() %>
+        <td style="text-align:center;"><%=Encode.forHtml(String.valueOf(v.getStatus()))%>
         </td>
-        <td style="text-align:center;"><%=dateFormatter.format(v.getDateCreated()) %>
+        <td style="text-align:center;"><%=Encode.forHtml(String.valueOf(dateFormatter.format(v.getDateCreated())))%>
         </td>
     </tr>
 

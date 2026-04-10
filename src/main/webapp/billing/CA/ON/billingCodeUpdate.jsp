@@ -93,7 +93,7 @@
 %>
 <script LANGUAGE="JavaScript">
     <!--
-    CodeAttach('<%=param[0]%>', '<%=param[1]%>', '<%=param[2]%>');
+    CodeAttach('<%=Encode.forJavaScript(String.valueOf(param[0]))%>', '<%=Encode.forJavaScript(String.valueOf(param[1]))%>', '<%=Encode.forJavaScript(String.valueOf(param[2]))%>');
     -->
 
 </script>

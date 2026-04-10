@@ -219,29 +219,29 @@
                         String bgColor = toggleLine ? "#EEEEFF" : "white";
             %>
 
-            <tr bgcolor="<%=bgColor%>" align="center"
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>" align="center"
                 onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
-                onMouseout="this.style.backgroundColor='<%=bgColor%>';"
+                onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
                 onClick="<% if(caisi) { out.print("addNameCaisi");}
-						else { out.print("addName");} %>('<%=demo.getDemographicNo()%>','<%=URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getChartNo(), StandardCharsets.UTF_8)%>','<%=Encode.forHtml(request.getParameter("messageId"))%>','<%=demo.getProviderNo()%>')">
+						else { out.print("addName");} %>('<%=Encode.forHtml(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(request.getParameter("messageId"))%>','<%=Encode.forHtml(String.valueOf(demo.getProviderNo()))%>')">
 
-                <td><input type="submit" class="mbttn" name="demographic_no" value="<%=demo.getDemographicNo()%>"
+                <td><input type="submit" class="mbttn" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getDemographicNo()))%>"
                            onClick="<% if(caisi) {out.print("addNameCaisi");}
-					else { out.print("addName");} %>('<%=demo.getDemographicNo()%>','<%=URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getChartNo(), StandardCharsets.UTF_8)%>','<%=Encode.forHtml(request.getParameter("messageId"))%>','<%=demo.getProviderNo()%>')">
+					else { out.print("addName");} %>('<%=Encode.forHtml(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(request.getParameter("messageId"))%>','<%=Encode.forHtml(String.valueOf(demo.getProviderNo()))%>')">
                 </td>
                 <td><%=Encode.forHtml(Misc.toUpperLowerCase(demo.getLastName()))%>
                 </td>
                 <td><%=Encode.forHtml(Misc.toUpperLowerCase(demo.getFirstName()))%>
                 </td>
-                <td><%=demo.getAge()%>
+                <td><%=Encode.forHtml(String.valueOf(demo.getAge()))%>
                 </td>
-                <td><%=demo.getRosterStatus()%>
+                <td><%=Encode.forHtml(String.valueOf(demo.getRosterStatus()))%>
                 </td>
-                <td><%=demo.getSex()%>
+                <td><%=Encode.forHtml(String.valueOf(demo.getSex()))%>
                 </td>
-                <td><%=demo.getFormattedDob()%>
+                <td><%=Encode.forHtml(String.valueOf(demo.getFormattedDob()))%>
                 </td>
-                <td><%=providerBean.getProperty(demo.getProviderNo()) == null ? "" : providerBean.getProperty(demo.getProviderNo())%>
+                <td><%=Encode.forHtml(String.valueOf(providerBean.getProperty(demo.getProviderNo()) == null ? "" : providerBean.getProperty(demo.getProviderNo())))%>
                 </td>
             </tr>
             <%
@@ -283,12 +283,12 @@
     <script language="JavaScript">
         <!--
         function last() {
-            document.nextform.action = "<%= request.getContextPath() %>/demographic/demographicsearch2reportresults.jsp?originalpage=<%=Encode.forJavaScript(request.getParameter("originalpage"))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=nLastPage%>&limit2=<%=strLimit%>";
+            document.nextform.action = "<%= request.getContextPath() %>/demographic/demographicsearch2reportresults.jsp?originalpage=<%=Encode.forJavaScript(request.getParameter("originalpage"))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit))%>";
             //document.nextform.submit();
         }
 
         function next() {
-            document.nextform.action = "<%= request.getContextPath() %>/demographic/demographicsearch2reportresults.jsp?originalpage=<%=Encode.forJavaScript(request.getParameter("originalpage"))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=nNextPage%>&limit2=<%=strLimit%>";
+            document.nextform.action = "<%= request.getContextPath() %>/demographic/demographicsearch2reportresults.jsp?originalpage=<%=Encode.forJavaScript(request.getParameter("originalpage"))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit))%>";
             //document.nextform.submit();
         }
 

@@ -48,6 +48,7 @@
 <%@page import="ca.openosp.openo.commn.dao.InstitutionDao" %>
 <%@page import="ca.openosp.openo.commn.model.Institution" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     InstitutionDao institutionDao = SpringUtils.getBean(InstitutionDao.class);
 %>
@@ -69,7 +70,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>

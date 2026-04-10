@@ -27,6 +27,7 @@
 <%@page import="ca.openosp.OscarProperties" %>
 <%@page import="ca.openosp.openo.managers.DashboardManager" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DashboardManager dashboardManager = SpringUtils.getBean(DashboardManager.class);
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -58,7 +59,7 @@
         };
 
         function launchOutcomesDashboard1(outcomesHostName) {
-            var url = '<%=url%>';
+            var url = '<%=Encode.forJavaScript(String.valueOf(url))%>';
             console.log('url=' + url.toString());
             outcomesWindow = window.open(url.toString(), "OutcomesWindow", "toolbar=1,scrollbars=1,status=1,statusbar=1,copyhistory=1,resizable=1,width=1280,height=1024");
             outcomesWindow.focus();

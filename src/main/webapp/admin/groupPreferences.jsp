@@ -33,6 +33,7 @@
 <%@ page import="ca.openosp.openo.commn.model.MyGroup, ca.openosp.openo.commn.dao.MyGroupDao" %>
 <%@ page import="ca.openosp.openo.commn.model.MyGroupPrimaryKey" %>
 <%@ page import="ca.openosp.openo.commn.model.CtlBillingService, ca.openosp.openo.commn.dao.CtlBillingServiceDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -115,7 +116,7 @@
                                                     selected = " selected=\"selected\" ";
                                                 }
                                         %>
-                                        <option value="<%=serviceType%>" <%=selected%>><%=(String) form[1]%>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(serviceType))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf((String) form[1]))%>
                                         </option>
                                         <% } %>
                                     </select>
@@ -137,10 +138,10 @@
                                     i++;
                             %>
                             <tr BGCOLOR="<%=i%2==0?"ivory":"white"%>">
-                                <td>&nbsp; <%=group%>
+                                <td>&nbsp; <%=Encode.forHtml(String.valueOf(group))%>
                                 </td>
                                 <td ALIGN="center">
-                                    <input type="checkbox" name="data" <%=selected%> value="<%=group%>">
+                                    <input type="checkbox" name="data" <%=selected%> value="<%=Encode.forHtmlAttribute(String.valueOf(group))%>">
                             </tr>
                             <% } %>
                         </table>

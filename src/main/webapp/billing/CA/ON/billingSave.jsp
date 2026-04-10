@@ -35,6 +35,7 @@
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Appointment" %>
 <%@ page import="ca.openosp.openo.appt.ApptStatusData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
     BillingDetailDao billingDetailDao = SpringUtils.getBean(BillingDetailDao.class);
@@ -150,7 +151,7 @@
 
     <script LANGUAGE="JavaScript">
         if (self.opener.document.caseManagementEntryForm)
-            self.opener.document.caseManagementEntryForm.elements["caseNote.billing_code"].value = "<%=nBillNo%>";
+            self.opener.document.caseManagementEntryForm.elements["caseNote.billing_code"].value = "<%=Encode.forJavaScript(String.valueOf(nBillNo))%>";
         self.close();
         if (!self.opener.document.caseManagementEntryForm) self.opener.refresh();
     </script>

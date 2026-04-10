@@ -210,19 +210,19 @@
                                             accessType="access"
                                             providerNo='<%=Encode.forHtmlAttribute(request.getParameter("providerNo"))%>'
                                             demoNo='<%=Encode.forHtmlAttribute(request.getParameter("demographicNo"))%>'
-                                            programId="<%=pId%>">
+                                            programId="<%=Encode.forHtmlAttribute(String.valueOf(pId))%>">
                         <%
                             if (CaseManagementViewFormBean.tabs[x].equals(selectedTab)) {
                         %>
-                        <td style="background-color: #555;<%=extra%>"><a
+                        <td style="background-color: #555;<%=Encode.forHtmlAttribute(String.valueOf(extra))%>"><a
                                 href="javascript:void(0)"
-                                onclick="javascript:clickTab('<%=CaseManagementViewFormBean.tabs[x]%>'); return false;"><%=CaseManagementViewFormBean.tabs[x]%>
+                                onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>'); return false;"><%=Encode.forHtml(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>
                         </a></td>
                         <%
                         } else {
                         %>
-                        <td><a style="<%=extra%>" href="javascript:void(0)"
-                            onclick="javascript:clickTab('<%=CaseManagementViewFormBean.tabs[x]%>');return false;"><%=CaseManagementViewFormBean.tabs[x]%>
+                        <td><a style="<%=Encode.forHtmlAttribute(String.valueOf(extra))%>" href="javascript:void(0)"
+                            onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>');return false;"><%=Encode.forHtml(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>
                         </a></td>
                         <%
                             }
@@ -234,15 +234,15 @@
                     <%
                         if (CaseManagementViewFormBean.tabs[x].equals(selectedTab)) {
                     %>
-                    <td style="background-color: #555;<%=extra%>"><a
+                    <td style="background-color: #555;<%=Encode.forHtmlAttribute(String.valueOf(extra))%>"><a
                             href="javascript:void(0)"
-                            onclick="javascript:clickTab('<%=CaseManagementViewFormBean.tabs[x]%>'); return false;"><%=CaseManagementViewFormBean.tabs[x]%>
+                            onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>'); return false;"><%=Encode.forHtml(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>
                     </a></td>
                     <%
                     } else {
                     %>
-                    <td><a style="<%=extra%>" href="javascript:void(0)"
-                        onclick="javascript:clickTab('<%=CaseManagementViewFormBean.tabs[x]%>');return false;"><%=CaseManagementViewFormBean.tabs[x]%>
+                    <td><a style="<%=Encode.forHtmlAttribute(String.valueOf(extra))%>" href="javascript:void(0)"
+                        onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>');return false;"><%=Encode.forHtml(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>
                     </a></td>
                     <%
                         }
@@ -333,7 +333,7 @@
             </tr>
         </table>
         <jsp:include
-                page='<%="/casemgmt/" + selectedTab.toLowerCase().replaceAll(" ", "_") + ".jsp"%>'/>
+                page='<%=Encode.forHtmlAttribute(String.valueOf("/casemgmt/" + selectedTab.toLowerCase().replaceAll(" ", "_") + ".jsp"))%>'/>
 
 
         <c:if
@@ -433,7 +433,7 @@
                                     bgcolor = "#EEEEFF";
                                 }
                             %>
-                            <tr bgcolor="<%=bgcolor%>" align="center">
+                            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>" align="center">
                                 <td>
                                     <security:oscarSec roleName="<%=roleName$%>" objectName="_casemgmt.notes" rights="u">
                                         <c:choose>
@@ -512,33 +512,33 @@
                             %>
                             <tr>
                                 <td>
-                                    <table id="test<%=index1%>" width="100%" border="0" style="margin-bottom: 5px">
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                    <table id="test<%=Encode.forHtmlAttribute(String.valueOf(index1))%>" width="100%" border="0" style="margin-bottom: 5px">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Facility</td>
                                             <td width="93%"><c:out value="${note.location}"/></td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Program</td>
                                             <td width="93%">
                                                 <c:out value="${note.programName}"/>
                                             </td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Provider</td>
                                             <td width="93%">
                                                 <c:out value="${note.providerName}"/>
                                             </td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Date</td>
                                             <td width="93%"><fmt:formatDate pattern="yyyy-MM-dd hh:mm a"
                                                                             value="${note.observationDate}"/></td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Status</td>
                                             <td width="93%"><c:out value="${note.status}"/></td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Action</td>
                                             <td width="93%">
                                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_casemgmt.notes"
@@ -570,7 +570,7 @@
                                                 </security:oscarSec>
                                             </td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Note</td>
                                             <td width="93%">
                                                 <c:choose>

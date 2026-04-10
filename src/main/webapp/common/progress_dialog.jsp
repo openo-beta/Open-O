@@ -27,6 +27,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <%@page import="ca.openosp.openo.utility.ProgressStatus" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <title>Progress Dialog</title>
@@ -57,10 +58,10 @@
     setTimeout('window.location.reload()', 2000);
 </script>
 
-<span style="font-weight:bold">Total </span><%=progressStatus.total%><br/><br/>
-<span style="font-weight:bold">Processed </span><%=progressStatus.processed%><br/><br/>
-<span style="font-weight:bold">Percent Complete </span><%=progressStatus.percentComplete%>%<br/><br/>
-<span style="font-weight:bold">Current Item </span><%=progressStatus.currentItem%>
+<span style="font-weight:bold">Total </span><%=Encode.forHtml(String.valueOf(progressStatus.total))%><br/><br/>
+<span style="font-weight:bold">Processed </span><%=Encode.forHtml(String.valueOf(progressStatus.processed))%><br/><br/>
+<span style="font-weight:bold">Percent Complete </span><%=Encode.forHtml(String.valueOf(progressStatus.percentComplete))%>%<br/><br/>
+<span style="font-weight:bold">Current Item </span><%=Encode.forHtml(String.valueOf(progressStatus.currentItem))%>
 <%
     }
 %>

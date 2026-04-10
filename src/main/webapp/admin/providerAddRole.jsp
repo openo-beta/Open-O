@@ -247,7 +247,7 @@
     <body onLoad="setfocus()">
     <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.addRole"/></h4>
 
-    <span style="display: inline-block; width:100%; margin:auto; text-align:center;" class="alert"><%=msg%></span>
+    <span style="display: inline-block; width:100%; margin:auto; text-align:center;" class="alert"><%=Encode.forHtml(String.valueOf(msg))%></span>
     <br><br>
     <div class="well">
         <form method="post" name="baseurl" action="providerAddRole.jsp" class="form-horizontal">
@@ -264,7 +264,7 @@
             <div class="control-group">
                 <div class="controls">
                     <input
-                            type="hidden" name="action" value='<%=action%>'/> <% if (!"search".equals(action)) {%>
+                            type="hidden" name="action" value='<%=Encode.forHtmlAttribute(String.valueOf(action))%>'/> <% if (!"search".equals(action)) {%>
                     <input type="submit" name="submit" class="btn btn-primary"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
                            onclick="javascript:return onSave();"> <% }%>

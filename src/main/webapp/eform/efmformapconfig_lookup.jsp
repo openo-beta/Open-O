@@ -46,16 +46,16 @@
                         output = "";
                     } else {
                         for (int i = 0; i < names.size(); i++) {
-                            output = DatabaseAP.parserReplace(names.get(i), org.apache.commons.text.StringEscapeUtils.escapeHtml4(values.get(i)), output);
+                            output = DatabaseAP.parserReplace(names.get(i), Encode.forHtml(values.get(i)), output);
                         }
                     }
                 }
-%><input type="hidden" name="<%=key%>" value="<%=output%>"/><%
+%><input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(key))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(output))%>"/><%
 } catch (Exception e) {
-%><input type="hidden" name="<%=key%>" value=""/><%
+%><input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(key))%>" value=""/><%
     }
 } else {
-%><input type="hidden" name="<%=key%>" value=""/><%
+%><input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(key))%>" value=""/><%
         }
     }
 %>

@@ -89,6 +89,7 @@
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
@@ -135,16 +136,16 @@
             </table>
 
 
-            <img src="<%= request.getContextPath() %>/oscarEncounter/GraphMeasurements.do?method=ChartMeds&demographic_no=<%=demographicNo%><%=drugForGraph%>"/>
+            <img src="<%= request.getContextPath() %>/oscarEncounter/GraphMeasurements.do?method=ChartMeds&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%><%=Encode.forUriComponent(String.valueOf(drugForGraph))%>"/>
 
 
             <fieldset>
                 <legend>Med List</legend>
                 <form action="oscarRx/chartDrugProfile.jsp">
-                    <input type="hidden" name="labType" value="<%=labType%>"/>
-                    <input type="hidden" name="demographic_no" value="<%=demographicNo%>"/>
-                    <input type="hidden" name="testName" value="<%=testName%>"/>
-                    <input type="hidden" name="identifier" value="<%=identifier%>"/>
+                    <input type="hidden" name="labType" value="<%=Encode.forHtmlAttribute(String.valueOf(labType))%>"/>
+                    <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>"/>
+                    <input type="hidden" name="testName" value="<%=Encode.forHtmlAttribute(String.valueOf(testName))%>"/>
+                    <input type="hidden" name="identifier" value="<%=Encode.forHtmlAttribute(String.valueOf(identifier))%>"/>
                     <input type="submit" value="Add Meds to Graph"/>
                     <ul>
                         <%
@@ -173,7 +174,7 @@
                                 }
                         %>
                         <li><input type="checkbox"  <%=getChecked(h, drug.getRegionalIdentifier())%> name="drug"
-                                   value="<%=drug.getRegionalIdentifier()%>"/> <%=drug.getFullOutLine().replaceAll(";", " ")%>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(drug.getRegionalIdentifier()))%>"/> <%=Encode.forHtml(String.valueOf(drug.getFullOutLine().replaceAll(";", " ")))%>
                         </li>
                         <%
                             }

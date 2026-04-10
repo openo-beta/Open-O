@@ -27,7 +27,6 @@
 <%@page import="java.text.ParseException" %>
 <%@page import="ca.openosp.openo.commn.dao.PartialDateDao" %>
 <%@page import="ca.openosp.OscarProperties" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.ConsentDao" %>
 <%@page import="ca.openosp.openo.commn.dao.CVCImmunizationDao" %>
 <%@page import="ca.openosp.openo.commn.dao.CVCMappingDao" %>
@@ -46,6 +45,7 @@
 <%@ page import="ca.openosp.openo.prevention.PreventionDisplayConfig" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.commn.model.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -341,7 +341,7 @@
 
         <SCRIPT LANGUAGE="JavaScript">
 
-            var isCvc = <%=isCvc%>;
+            var isCvc = <%=Encode.forJavaScript(String.valueOf(isCvc))%>;
 
             function showHideItem(id) {
                 if (document.getElementById(id).style.display == 'none')
@@ -607,10 +607,10 @@
                                     var output = d.getFullYear() + "-" + month + "-" + day;
 
 
-                                    if (startup2 && escapeHtml(item.lotNumber) == '<%=addByLotNbr %>') {
+                                    if (startup2 && escapeHtml(item.lotNumber) == '<%=Encode.forJavaScript(String.valueOf(addByLotNbr))%>') {
                                         $("#cvcLot").append('<option selected="selected" value="' + item.lotNumber + '" expiryDate="' + output + '">' + item.lotNumber + '</option>');
                                         startup2 = false;
-                                    } else if (startup && escapeHtml(item.lotNumber) == '<%=(existingPrevention != null)?existingPrevention.get("lot"):"" %>') {
+                                    } else if (startup && escapeHtml(item.lotNumber) == '<%=Encode.forJavaScript(String.valueOf((existingPrevention != null)?existingPrevention.get("lot"):""))%>') {
                                         $("#cvcLot").append('<option selected="selected" value="' + escapeHtml(item.lotNumber) + '" expiryDate="' + output + '">' + escapeHtml(item.lotNumber) + '</option>');
                                         startup = false;
                                     } else {
@@ -700,7 +700,7 @@
             <% if(existingPrevention != null && snomedId != null && existingPrevention.get("brandSnomedId") != null) { %>
             $(document).ready(function () {
                 startup = true;
-                $("#cvcName").val('<%=existingPrevention.get("brandSnomedId")%>');
+                $("#cvcName").val('<%=Encode.forJavaScript(String.valueOf(existingPrevention.get("brandSnomedId")))%>');
                 changeCVCName();
             });
             <% } %>
@@ -729,7 +729,7 @@
                 <table class="TopStatusBar">
                     <tr>
                         <td>
-                            <%=StringEscapeUtils.escapeHtml4(nameage)%>
+                            <%=Encode.forHtml(nameage)%>
                         </td>
                         <td>&nbsp;
 
@@ -758,9 +758,9 @@
 
                  if (inelig.equals("yes")){ %>
                     Patient Ineligible<br>
-                    <a href="setPatientIneligible.jsp?prev=<%=prevention%>&demo=<%=demographic_no%>&elig=yes">Set Patient Eligible</a>
+                    <a href="setPatientIneligible.jsp?prev=<%=Encode.forUriComponent(String.valueOf(prevention))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&elig=yes">Set Patient Eligible</a>
                  <%}else{%>
-                    <a href="setPatientIneligible.jsp?prev=<%=prevention%>&demo=<%=demographic_no%>">Set Patient Ineligible</a>
+                    <a href="setPatientIneligible.jsp?prev=<%=Encode.forUriComponent(String.valueOf(prevention))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>">Set Patient Ineligible</a>
                  <%}%>
 -->
             </td>
@@ -781,7 +781,7 @@
                 <ul style="color:red"><%
                     for (String error : errorList) {
                 %>
-                    <li><%=error %>
+                    <li><%=Encode.forHtml(String.valueOf(error))%>
                     </li>
                     <%
                         }
@@ -795,23 +795,23 @@
                 <h3 style="color:red">Prevention not found!</h3>
                 <%} else { %>
                 <form action="${pageContext.request.contextPath}/oscarPrevention/AddPrevention.do" method="post" onsubmit="return handleFormSubmission()">
-                    <input type="hidden" name="prevention" value="<%=prevention%>"/>
-                    <input type="hidden" name="demographic_no" value="<%=demographic_no%>"/>
-                    <input type="hidden" name="providerNo" value="<%=provider%>"/>
+                    <input type="hidden" name="prevention" value="<%=Encode.forHtmlAttribute(String.valueOf(prevention))%>"/>
+                    <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
+                    <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(provider))%>"/>
                     <%if (snomedId != null) {%>
-                    <input type="hidden" name="snomedId" value="<%=snomedId %>"/>
+                    <input type="hidden" name="snomedId" value="<%=Encode.forHtmlAttribute(String.valueOf(snomedId))%>"/>
                     <%} %>
                     <% if (id != null) { %>
-                    <input type="hidden" name="id" value="<%=id%>"/>
-                    <input type="hidden" name="layoutType" value="<%=layoutType%>"/>
+                    <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>"/>
+                    <input type="hidden" name="layoutType" value="<%=Encode.forHtmlAttribute(String.valueOf(layoutType))%>"/>
 
                     <div class="prevention">
                         <fieldset>
                             <legend>Summary</legend>
-                            <textarea name="summary" readonly><%=summary%></textarea>
+                            <textarea name="summary" readonly><%=Encode.forHtml(String.valueOf(summary))%></textarea>
                             <%if (hasImportExtra) { %>
                             <a href="javascript:void(0);" title="Extra data from Import"
-                               onclick="window.open('<%= request.getContextPath() %>/annotation/importExtra.jsp?display=<%=annotation_display %>&amp;table_id=<%=id %>&amp;demo=<%=demographic_no %>','anwin','width=400,height=250');">
+                               onclick="window.open('<%= request.getContextPath() %>/annotation/importExtra.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(String.valueOf(id))%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>','anwin','width=400,height=250');">
                                 <img src="<%= request.getContextPath() %>/images/notes.gif" align="right" alt="Extra data from Import" height="16"
                                      width="13" border="0"> </a>
                             <%} %>
@@ -821,24 +821,24 @@
                     <%if (layoutType.equals("injection")) {%>
                     <div class="prevention">
                         <fieldset>
-                            <legend>Prevention : <%=prevention%>
+                            <legend>Prevention : <%=Encode.forHtml(String.valueOf(prevention))%>
                             </legend>
                             <div>
                                 <input name="given" type="radio" value="given"      <%=checked(completed,"0")%>
-                                       onClick="$('#providerDrop').val('<%=LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo() %>');hideExtraName(document.getElementById('providerDrop'))">Completed</input>
+                                       onClick="$('#providerDrop').val('<%=Encode.forJavaScript(String.valueOf(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo()))%>');hideExtraName(document.getElementById('providerDrop'))">Completed</input>
                                 <br/>
                                 <input name="given" type="radio" value="given_ext"  <%=checked(completed,"3")%>
                                        onClick="$('#providerDrop').val('-1');hideExtraName(document.getElementById('providerDrop'))">Completed
                                 externally</input><br/>
                                 <input name="given" type="radio"
-                                       value="refused"    <%=checked(completed,"1")%>>Refused</input><br/>
+                                       value="refused"    <%=Encode.forHtml(String.valueOf(checked(completed,"1")))%>>Refused</input><br/>
                                 <input name="given" type="radio" value="ineligible" <%=checked(completed,"2")%>>Ineligible</input>
                             </div>
                             <div>&nbsp;</div>
                             <div style="margin-left:30px;">
                                 <label for="prevDate" class="fields">Date:</label> <input type="text" name="prevDate"
                                                                                           id="prevDate"
-                                                                                          value="<%=prevDate%>"
+                                                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(prevDate))%>"
                                                                                           size="15" required> <a
                                     id="date"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                 <br>
@@ -847,20 +847,20 @@
                                 <label for="provider" class="fields">Provider:</label> <input type="text"
                                                                                               name="providerName"
                                                                                               id="providerName"
-                                                                                              value="<%=providerName%>"/>
+                                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(providerName))%>"/>
                                 <select onchange="javascript:hideExtraName(this);" id="providerDrop" name="provider">
                                     <%
                                         for (int i = 0; i < providers.size(); i++) {
                                             Map<String, String> h = providers.get(i);
                                     %>
-                                    <option value="<%= h.get("providerNo")%>" <%= (h.get("providerNo").equals(provider) ? " selected" : "") %>><%= h.get("lastName") %> <%= h.get("firstName") %>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf((h.get("providerNo").equals(provider) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(h.get("lastName")))%> <%=Encode.forHtml(String.valueOf(h.get("firstName")))%>
                                     </option>
                                     <%}%>
                                     <option value="-1" <%= ("-1".equals(provider) ? " selected" : "") %> >Other</option>
                                 </select>
                                 <br/>
                                 <label for="creator" class="fields">Creator:</label> <input type="text" name="creator"
-                                                                                            value="<%=creatorName%>"
+                                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(creatorName))%>"
                                                                                             readonly/> <br/>
                             </div>
                         </fieldset>
@@ -893,7 +893,7 @@
                                             }
                                         }
                                 %>
-                                <option value="<%=tn.getSnomedConceptId()%>" <%=selected%>><%=tn.getDisplayName() %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(tn.getSnomedConceptId()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(tn.getDisplayName()))%>
                                 </option>
                                 <%
                                     }
@@ -904,17 +904,17 @@
                             <br/>
                             <span id="unknownName" style="display:block"><label for="name">Name</label> <input
                                     type="text" id="name" name="name"
-                                    value="<%=str((extraData.get("name")),"")%>"/> <br/><br/></span>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("name")),"")))%>"/> <br/><br/></span>
                             <%
                             } else {
                             %> <label for="name">Name:</label> <input type="text" id="name" name="name"
-                                                                      value="<%=str((extraData.get("name")),"")%>"/>
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("name")),"")))%>"/>
                             <br/> <%
                             }
 
                         } else {
                         %> <label for="name">Name:</label> <input type="text" id="name" name="name"
-                                                                  value="<%=str((extraData.get("name")),prevention)%>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("name")),prevention)))%>"/>
                             <br/>
 
                             <% } %>
@@ -997,11 +997,11 @@
                                 }
                             %>
                             <br>
-                            <div id="locationDiv" style="display:<%=locationDisplay%>">
+                            <div id="locationDiv" style="display:<%=Encode.forHtmlAttribute(String.valueOf(locationDisplay))%>">
                                 <label for="location2">Specify Location:</label>
 
                                 <input type="text" name="location2" id="location2"
-                                       value="<%=str((extraData.get("location2")),"")%>"/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("location2")),"")))%>"/>
                             </div>
 
                             <br/>
@@ -1031,7 +1031,7 @@
                             <br/>
 
                             <label for="route">DIN:</label>
-                            <input type="text" name="din" id="din" value="<%=str((extraData.get("din")),"")%>"/>
+                            <input type="text" name="din" id="din" value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("din")),"")))%>"/>
                             <br/>
                             <%
                                 String dose = str((extraData.get("dose")), "");
@@ -1053,7 +1053,7 @@
                                     d2 = "mL";
                                 }
                             %>
-                            <label for="dose">Dose:</label> <input type="text" name="dose" value="<%=d1%>"/>
+                            <label for="dose">Dose:</label> <input type="text" name="dose" value="<%=Encode.forHtmlAttribute(String.valueOf(d1))%>"/>
                             <br>
                             <label for="doseUnit">Dose Unit:</label>
                             <select name="doseUnit">
@@ -1072,12 +1072,12 @@
                             <br/>
                             <%if (!isCvc) { %>
                             <label for="lot">Lot:</label> <input type="text" name="lot" id="lot"
-                                                                 value="<%=str(lot,"")%>"/>
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(str(lot,"")))%>"/>
                             <select onchange="javascript:updateLotNr(this);" id="lotDrop" name="lotItem">
                                 <%
                                     for (String lotnr : lotNrList) {
                                 %>
-                                <option value="<%=lotnr%>" <%= (lotnr.equals(lot) ? " selected" : "") %>><%=lotnr%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(lotnr))%>" <%=Encode.forHtml(String.valueOf((lotnr.equals(lot) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(lotnr))%>
                                 </option>
                                 <%}%>
                                 <option value="-1">Other</option>
@@ -1085,7 +1085,7 @@
                             <%} else { %>
                             <div id="cvcLotDiv">
                                 <label for="cvcLot">Lot:</label>
-                                <input type="text" name="lot" id="lot" value="<%=str(lot,"")%>" style="display:block"/>
+                                <input type="text" name="lot" id="lot" value="<%=Encode.forHtmlAttribute(String.valueOf(str(lot,"")))%>" style="display:block"/>
 
                                 <select onchange="javascript:updateCvcLot();" id="cvcLot" name="cvcLot"
                                         style="display:none;">
@@ -1093,15 +1093,15 @@
                                 </select></div>
                             <label for="expiryDate">Expiry Date:</label> <input type="text" name="expiryDate"
                                                                                 id="expiryDate"
-                                                                                value="<%=str((extraData.get("expiryDate")),"")%>"/><br/>
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("expiryDate")),"")))%>"/><br/>
                             <% } %>
                             <label for="manufacture">Manufacture:</label> <input type="text" name="manufacture"
                                                                                  id="manufacture"
-                                                                                 value="<%=str((extraData.get("manufacture")),"")%>"/><br/>
+                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("manufacture")),"")))%>"/><br/>
                         </fieldset>
                         <fieldset>
                             <legend>Comments</legend>
-                            <textarea name="comments"><%=str((extraData.get("comments")), "")%></textarea>
+                            <textarea name="comments"><%=Encode.forHtml(String.valueOf(str((extraData.get("comments")), "")))%></textarea>
                         </fieldset>
                     </div>
                     <script type="text/javascript">
@@ -1113,24 +1113,24 @@
                     <%} else if (layoutType.equals("h1n1")) {%>
                     <div class="prevention">
                         <fieldset>
-                            <legend>Prevention : <%=prevention%>
+                            <legend>Prevention : <%=Encode.forHtml(String.valueOf(prevention))%>
                             </legend>
                             <div>
                                 <input name="given" type="radio" value="given"      <%=checked(completed,"0")%>
-                                       onClick="$('#providerDrop').val('<%=LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo() %>');hideExtraName(document.getElementById('providerDrop'))">Completed</input>
+                                       onClick="$('#providerDrop').val('<%=Encode.forJavaScript(String.valueOf(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo()))%>');hideExtraName(document.getElementById('providerDrop'))">Completed</input>
                                 <br/>
                                 <input name="given" type="radio" value="given_ext"  <%=checked(completed,"3")%>
                                        onClick="$('#providerDrop').val('-1');hideExtraName(document.getElementById('providerDrop'))">Completed
                                 externally</input><br/>
                                 <input name="given" type="radio"
-                                       value="refused"    <%=checked(completed,"1")%>>Refused</input><br/>
+                                       value="refused"    <%=Encode.forHtml(String.valueOf(checked(completed,"1")))%>>Refused</input><br/>
                                 <input name="given" type="radio" value="ineligible" <%=checked(completed,"2")%>>Ineligible</input>
                             </div>
                             <div>&nbsp;</div>
                             <div style="margin-left:30px;">
                                 <label for="prevDate" class="fields">Date:</label> <input type="text" name="prevDate"
                                                                                           id="prevDate"
-                                                                                          value="<%=prevDate%>"
+                                                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(prevDate))%>"
                                                                                           size="15" required> <a
                                     id="date"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                 <br>
@@ -1139,43 +1139,43 @@
                                 <label for="provider" class="fields">Provider:</label> <input type="text"
                                                                                               name="providerName"
                                                                                               id="providerName"
-                                                                                              value="<%=providerName%>"/>
+                                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(providerName))%>"/>
                                 <select onchange="javascript:hideExtraName(this);" id="providerDrop" name="provider">
                                     <%
                                         for (int i = 0; i < providers.size(); i++) {
                                             Map<String, String> h = providers.get(i);
                                     %>
-                                    <option value="<%= h.get("providerNo")%>" <%= (h.get("providerNo").equals(provider) ? " selected" : "") %>><%= h.get("lastName") %> <%= h.get("firstName") %>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf((h.get("providerNo").equals(provider) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(h.get("lastName")))%> <%=Encode.forHtml(String.valueOf(h.get("firstName")))%>
                                     </option>
                                     <%}%>
                                     <option value="-1" <%= ("-1".equals(provider) ? " selected" : "") %> >Other</option>
                                 </select>
                                 <br/>
                                 <label for="creator" class="fields">Creator:</label> <input type="text" name="creator"
-                                                                                            value="<%=creatorName%>"
+                                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(creatorName))%>"
                                                                                             readonly/> <br/>
                             </div>
                         </fieldset>
                         <fieldset>
                             <legend>Result</legend>
                             <label for="location">Location:</label> <input type="text" name="location"
-                                                                           value="<%=str((extraData.get("location")),"")%>"/>
+                                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("location")),"")))%>"/>
                             <br/>
                             <label for="location">Other Location:</label> <input type="text" name="location2"
-                                                                                 value="<%=str((extraData.get("location2")),"")%>"/>
+                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("location2")),"")))%>"/>
                             <br/>
                             <label for="route">Route:</label> <input type="text" name="route"
-                                                                     value="<%=str((extraData.get("route")),"")%>"/><br/>
+                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("route")),"")))%>"/><br/>
                             <label for="dose">Dose:</label> <input type="text" name="dose"
-                                                                   value="<%=str((extraData.get("dose")),"")%>"/><br/>
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("dose")),"")))%>"/><br/>
                             <label for="dose1">Dose 1:</label> <input type="checkbox" name="dose1"
-                                                                      value="true" <%=checked(str((extraData.get("dose1")), ""), "true")%>/><br/>
+                                                                      value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("dose1")), ""), "true")))%>/><br/>
                             <label for="dose2">Dose 2:</label> <input type="checkbox" name="dose2"
-                                                                      value="true" <%=checked(str((extraData.get("dose2")), ""), "true")%>/><br/>
+                                                                      value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("dose2")), ""), "true")))%>/><br/>
                             <label for="lot">Lot:</label> <input type="text" name="lot"
-                                                                 value="<%=str((extraData.get("lot")),"")%>"/><br/>
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("lot")),"")))%>"/><br/>
                             <label for="manufacture">Manufacture:</label> <input type="text" name="manufacture"
-                                                                                 value="<%=str((extraData.get("manufacture")),"")%>"/><br/>
+                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("manufacture")),"")))%>"/><br/>
                         </fieldset>
                         <fieldset>
                             <legend>Info</legend>
@@ -1186,8 +1186,8 @@
 
                             %>
                             <label for="gender">Gender:</label> <input type="text" name="gender" readonly
-                                                                       value="<%=gender%>"/> <br/>
-                            <label for="age">Age:</label> <input type="text" name="age" readonly value="<%=age%>"/><br/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(gender))%>"/> <br/>
+                            <label for="age">Age:</label> <input type="text" name="age" readonly value="<%=Encode.forHtmlAttribute(String.valueOf(age))%>"/><br/>
                             <label for="chronic">Chronic Condition:</label>
                             <select name="chronic">
                                 <option value="false">No</option>
@@ -1223,9 +1223,9 @@
                                 </option>
                             </select><br/>
                             <label for="pregnant">Pregnant:</label> <input type="checkbox" name="pregnant"
-                                                                           value="true" <%=checked(str((extraData.get("pregnant")), ""), "true")%>/><br/>
+                                                                           value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("pregnant")), ""), "true")))%>/><br/>
                             <label for="remote">Remote Setting:</label> <input type="checkbox" name="remote"
-                                                                               value="true" <%=checked(str((extraData.get("remote")), ""), "true")%>/><br/>
+                                                                               value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("remote")), ""), "true")))%>/><br/>
                             <label for="healthcareworker">Health Care Worker:</label>
                             <select name="healthcareworker">
                                 <option value="false">No</option>
@@ -1260,7 +1260,7 @@
 
                             <label for="householdcontact">Household Contact or Care Provider:</label> <input
                                 type="checkbox" name="householdcontact"
-                                value="true" <%=checked(str((extraData.get("householdcontact")), ""), "true")%>/><br/>
+                                value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("householdcontact")), ""), "true")))%>/><br/>
                             <%
                                 boolean bothfirstresponders = false;
                                 if (str((extraData.get("firstresponder")), "").equalsIgnoreCase("true")) {
@@ -1270,21 +1270,21 @@
                             %>
                             <label for="firstresponderpolice">First Responder Police:</label> <input type="checkbox"
                                                                                                      name="firstresponderpolice"
-                                                                                                     value="true" <%=bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderpolice")), ""), "true")%>/><br/>
+                                                                                                     value="true" <%=Encode.forHtml(String.valueOf(bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderpolice")), ""), "true")))%>/><br/>
                             <label for="firstresponderfire">First Responder Fire:</label> <input type="checkbox"
                                                                                                  name="firstresponderfire"
-                                                                                                 value="true" <%=bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderfire")), ""), "true")%>/><br/>
+                                                                                                 value="true" <%=Encode.forHtml(String.valueOf(bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderfire")), ""), "true")))%>/><br/>
                             <label for="swineworker">Swine Worker:</label> <input type="checkbox" name="swineworker"
-                                                                                  value="true" <%=checked(str((extraData.get("swineworker")), ""), "true")%>/><br/>
+                                                                                  value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("swineworker")), ""), "true")))%>/><br/>
                             <label for="poultryworker">Poultry Worker:</label> <input type="checkbox"
                                                                                       name="poultryworker"
-                                                                                      value="true" <%=checked(str((extraData.get("poultryworker")), ""), "true")%>/><br/>
+                                                                                      value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("poultryworker")), ""), "true")))%>/><br/>
                             <label for="firstnations">First Nations:</label> <input type="checkbox" name="firstnations"
-                                                                                    value="true" <%=checked(str((extraData.get("firstnations")), ""), "true")%>/><br/>
+                                                                                    value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("firstnations")), ""), "true")))%>/><br/>
                         </fieldset>
                         <fieldset>
                             <legend>Comments</legend>
-                            <textarea name="comments"><%=str((extraData.get("comments")), "")%></textarea>
+                            <textarea name="comments"><%=Encode.forHtml(String.valueOf(str((extraData.get("comments")), "")))%></textarea>
                         </fieldset>
                     </div>
                     <script type="text/javascript">
@@ -1293,24 +1293,24 @@
                     <%} else if (layoutType.equals("PAPMAM")) {/*next layout type*/%>
                     <div class="prevention">
                         <fieldset>
-                            <legend>Prevention : <%=prevention%>
+                            <legend>Prevention : <%=Encode.forHtml(String.valueOf(prevention))%>
                             </legend>
                             <div>
                                 <input name="given" type="radio" value="given"      <%=checked(completed,"0")%>
-                                       onClick="$('#providerDrop').val('<%=LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo() %>');hideExtraName(document.getElementById('providerDrop'))">Completed</input>
+                                       onClick="$('#providerDrop').val('<%=Encode.forJavaScript(String.valueOf(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo()))%>');hideExtraName(document.getElementById('providerDrop'))">Completed</input>
                                 <br/>
                                 <input name="given" type="radio" value="given_ext"  <%=checked(completed,"3")%>
                                        onClick="$('#providerDrop').val('-1');hideExtraName(document.getElementById('providerDrop'))">Completed
                                 externally</input><br/>
                                 <input name="given" type="radio"
-                                       value="refused"    <%=checked(completed,"1")%>>Refused</input><br/>
+                                       value="refused"    <%=Encode.forHtml(String.valueOf(checked(completed,"1")))%>>Refused</input><br/>
                                 <input name="given" type="radio" value="ineligible" <%=checked(completed,"2")%>>Ineligible</input>
                             </div>
                             <div>&nbsp;</div>
                             <div style="margin-left:30px;">
                                 <label for="prevDate" class="fields">Date:</label> <input type="text" name="prevDate"
                                                                                           id="prevDate"
-                                                                                          value="<%=prevDate%>"
+                                                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(prevDate))%>"
                                                                                           size="15" required> <a
                                     id="date"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                 <br>
@@ -1319,20 +1319,20 @@
                                 <label for="provider" class="fields">Provider:</label> <input type="text"
                                                                                               name="providerName"
                                                                                               id="providerName"
-                                                                                              value="<%=providerName%>"/>
+                                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(providerName))%>"/>
                                 <select onchange="javascript:hideExtraName(this);" id="providerDrop" name="provider">
                                     <%
                                         for (int i = 0; i < providers.size(); i++) {
                                             Map<String, String> h = providers.get(i);
                                     %>
-                                    <option value="<%= h.get("providerNo")%>" <%= (h.get("providerNo").equals(provider) ? " selected" : "") %>><%= h.get("lastName") %> <%= h.get("firstName") %>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf((h.get("providerNo").equals(provider) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(h.get("lastName")))%> <%=Encode.forHtml(String.valueOf(h.get("firstName")))%>
                                     </option>
                                     <%}%>
                                     <option value="-1" <%= ("-1".equals(provider) ? " selected" : "") %> >Other</option>
                                 </select>
                                 <br/>
                                 <label for="creator" class="fields">Creator:</label> <input type="text" name="creator"
-                                                                                            value="<%=creatorName%>"
+                                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(creatorName))%>"
                                                                                             readonly/> <br/>
                             </div>
                         </fieldset>
@@ -1341,23 +1341,23 @@
                             <% if (extraData.get("result") == null) {
                                 extraData.put("result", "pending");
                             } %>
-                            <%=str(prevResultDesc, "")%><br/>
+                            <%=Encode.forHtml(String.valueOf(str(prevResultDesc, "")))%><br/>
                             <input type="radio" name="result"
-                                   value="pending" <%=checked( (extraData.get("result")) ,"pending")%> >Pending</input>
+                                   value="pending" <%=Encode.forHtml(String.valueOf(checked( (extraData.get("result")) ,"pending")))%> >Pending</input>
                             <br/>
                             <input type="radio" name="result"
-                                   value="normal"  <%=checked((extraData.get("result")),"normal")%> >Normal</input><br/>
+                                   value="normal"  <%=Encode.forHtml(String.valueOf(checked((extraData.get("result")),"normal")))%> >Normal</input><br/>
                             <input type="radio" name="result"
-                                   value="abnormal" <%=checked((extraData.get("result")),"abnormal")%> >Abnormal</input>
+                                   value="abnormal" <%=Encode.forHtml(String.valueOf(checked((extraData.get("result")),"abnormal")))%> >Abnormal</input>
                             <br/>
                             <input type="radio" name="result"
-                                   value="other" <%=checked((extraData.get("result")),"other")%> >Other</input> &nbsp;
+                                   value="other" <%=Encode.forHtml(String.valueOf(checked((extraData.get("result")),"other")))%> >Other</input> &nbsp;
                             &nbsp; Reason: <input type="text" name="reason"
-                                                  value="<%=str((extraData.get("reason")),"")%>"/>
+                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("reason")),"")))%>"/>
                         </fieldset>
                         <fieldset>
                             <legend>Comments</legend>
-                            <textarea name="comments"><%=str((extraData.get("comments")), "")%></textarea>
+                            <textarea name="comments"><%=Encode.forHtml(String.valueOf(str((extraData.get("comments")), "")))%></textarea>
                         </fieldset>
                     </div>
                     <script type="text/javascript">
@@ -1366,20 +1366,20 @@
                     <%} else if (layoutType.equals("history")) {%>
                     <div class="prevention">
                         <fieldset>
-                            <legend>Prevention : <%=prevention%>
+                            <legend>Prevention : <%=Encode.forHtml(String.valueOf(prevention))%>
                             </legend>
                             <div style="float:left;">
                                 <input name="given" type="radio"
-                                       value="yes"      <%=checked(completed,"0")%>>Yes</input><br/>
+                                       value="yes"      <%=Encode.forHtml(String.valueOf(checked(completed,"0")))%>>Yes</input><br/>
                                 <input name="given" type="radio"
-                                       value="never"    <%=checked(completed,"1")%>>Never</input><br/>
+                                       value="never"    <%=Encode.forHtml(String.valueOf(checked(completed,"1")))%>>Never</input><br/>
                                 <input name="given" type="radio"
-                                       value="previous" <%=checked(completed,"2")%>>Previous</input>
+                                       value="previous" <%=Encode.forHtml(String.valueOf(checked(completed,"2")))%>>Previous</input>
                             </div>
                             <div style="float:left;margin-left:30px;">
                                 <label for="prevDate" class="fields">Date:</label> <input type="text" name="prevDate"
                                                                                           id="prevDate"
-                                                                                          value="<%=prevDate%>"
+                                                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(prevDate))%>"
                                                                                           size="15" required> <a
                                     id="date"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                 <br>
@@ -1388,13 +1388,13 @@
                                 <label for="provider" class="fields">Provider:</label> <input type="hidden"
                                                                                               name="providerName"
                                                                                               id="providerName"
-                                                                                              value="<%=providerName%>"/>
+                                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(providerName))%>"/>
                                 <select onchange="javascript:hideExtraName(this);" id="providerDrop" name="provider">
                                     <%
                                         for (int i = 0; i < providers.size(); i++) {
                                             Map<String, String> h = providers.get(i);
                                     %>
-                                    <option value="<%= h.get("providerNo")%>" <%= (h.get("providerNo").equals(provider) ? " selected" : "") %>><%= h.get("lastName") %> <%= h.get("firstName") %>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf((h.get("providerNo").equals(provider) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(h.get("lastName")))%> <%=Encode.forHtml(String.valueOf(h.get("firstName")))%>
                                     </option>
                                     <%}%>
                                     <option value="-1" <%= ("-1".equals(provider) ? " selected" : "") %> >Other</option>
@@ -1403,7 +1403,7 @@
                         </fieldset>
                         <fieldset>
                             <legend>Comments</legend>
-                            <textarea name="comments"><%=str((extraData.get("comments")), "")%></textarea>
+                            <textarea name="comments"><%=Encode.forHtml(String.valueOf(str((extraData.get("comments")), "")))%></textarea>
                         </fieldset>
                     </div>
                     <%} %>
@@ -1417,7 +1417,7 @@
                             <div id="nextDateDiv" style="display:none;">
                                 <div>
                                     <label for="nextDate">Next Date:</label><input type="text" name="nextDate"
-                                                                                   value="<%=nextDate%>" id="nextDate"
+                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(nextDate))%>" id="nextDate"
                                                                                    size="9"><a id="nextDateCal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                 </div>
@@ -1426,9 +1426,9 @@
                                                                                                         name="neverWarn"
                                                                                                         id="neverWarn"
                                                                                                         value="neverRemind"
-                                                                                                        onchange="disableifchecked(this,'nextDate');"  <%=completed(never)%>/>
+                                                                                                        onchange="disableifchecked(this,'nextDate');"  <%=Encode.forHtml(String.valueOf(completed(never)))%>/>
                                     Reason: <input type="text" name="neverReason"
-                                                   value="<%=str((extraData.get("neverReason")),"")%>"/>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("neverReason")),"")))%>"/>
                                 </div>
                             </div>
                         </fieldset>
@@ -1515,7 +1515,7 @@
         } else if (second != null) {
             ret = second;
         }
-        return StringEscapeUtils.escapeHtml4(ret);
+        return Encode.forHtml(ret);
     }
 
     String checked(String first, String second) {

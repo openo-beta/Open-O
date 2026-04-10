@@ -41,6 +41,7 @@
 <%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingRAImpl" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="documentBean" class="ca.openosp.DocumentBean" scope="request"/>
 
 <%
@@ -161,24 +162,24 @@
         %>
 
         <tr <%=i % 2 == 0 ? "class='myGreen'" : "class='myIvory'"%>>
-            <td><%=nowDate%>
+            <td><%=Encode.forHtml(String.valueOf(nowDate))%>
             </td>
-            <td align="center"><%=paymentdate%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(paymentdate))%>
             </td>
-            <td><%=payable%>
+            <td><%=Encode.forHtml(String.valueOf(payable))%>
             </td>
-            <td align="center"><%=strcount%>/<%=strtCount%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(strcount))%>/<%=Encode.forHtml(String.valueOf(strtCount))%>
             </td>
             <td align="right"><%=total%>
             </td>
             <td align="center"><a
-                    href="<%= request.getContextPath() %>/billing/CA/ON/onGenRAError.jsp?rano=<%=raNo%>&proNo="
+                    href="<%= request.getContextPath() %>/billing/CA/ON/onGenRAError.jsp?rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&proNo="
                     target="_blank">Error</a> | <a
-                    href="<%= request.getContextPath() %>/billing/CA/ON/onGenRASummary.jsp?rano=<%=raNo%>&proNo="
+                    href="<%= request.getContextPath() %>/billing/CA/ON/onGenRASummary.jsp?rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&proNo="
                     target="_blank">Summary</a>| <a
-                    href="<%= request.getContextPath() %>/billing/CA/ON/genRADesc.jsp?rano=<%=raNo%>" target="_blank">Report
+                    href="<%= request.getContextPath() %>/billing/CA/ON/genRADesc.jsp?rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>" target="_blank">Report
             </a></td>
-            <td><%=status.compareTo("N") == 0 ? "<a href=# onClick=\"checkReconcile('../billing/CA/ON/onGenRAsettle.jsp?rano=" + raNo + "')\">Settle</a> <a href=# onClick=\"checkReconcile('../billing/CA/ON/onGenRAsettle35.jsp?rano=" + raNo + "')\">S35</a>" : status.compareTo("S") == 0 ? " <a href=# onClick=\"checkReconcile('../billing/CA/ON/onGenRAsettle35.jsp?rano=" + raNo + "')\">S35</a>" : "Processed"%>
+            <td><%=Encode.forHtml(String.valueOf(status.compareTo("N") == 0 ? "<a href=# onClick=\"checkReconcile('../billing/CA/ON/onGenRAsettle.jsp?rano=" + raNo + "')\">Settle</a> <a href=# onClick=\"checkReconcile('../billing/CA/ON/onGenRAsettle35.jsp?rano=" + raNo + "')\">S35</a>" : status.compareTo("S") == 0 ? " <a href=# onClick=\"checkReconcile('../billing/CA/ON/onGenRAsettle35.jsp?rano=" + raNo + "')\">S35</a>" : "Processed"))%>
             </td>
         </tr>
         <%

@@ -46,6 +46,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="java.util.Map" %>
 <%@page import="ca.openosp.openo.casemgmt.web.CheckBoxBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -81,7 +82,7 @@
             }
         %>
 
-        <tr bgcolor="<%=bgcolor %>" align="center">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>" align="center">
             <%
                 String checked = "";
                 CheckBoxBean checkBoxBean = (CheckBoxBean) pageContext.getAttribute("issue");
@@ -100,11 +101,11 @@
                     priority = "yellow";
             %>
             <td>
-                <input type="checkbox" name="check_issue" value="<%=issueCompositeId%>" <%=checked%>
+                <input type="checkbox" name="check_issue" value="<%=Encode.forHtmlAttribute(String.valueOf(issueCompositeId))%>" <%=Encode.forHtml(String.valueOf(checked))%>
                        onclick="document.caseManagementViewForm.submit();"/>
             </td>
             <td><c:out value="${issue.issueDisplay.code}"/></td>
-            <td bgcolor="<%=priority%>"><c:out value="${issue.issueDisplay.description }"/></td>
+            <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(priority))%>"><c:out value="${issue.issueDisplay.description }"/></td>
             <td><c:out value="${issue.issueDisplay.location}"/></td>
             <td><c:out value="${issue.issueDisplay.acute}"/></td>
             <td><c:out value="${issue.issueDisplay.certain}"/></td>

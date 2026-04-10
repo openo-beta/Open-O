@@ -166,23 +166,23 @@
                 nItems++;
         %>
         <tr bgcolor="<%=bodd?"ivory":"white"%>">
-            <td align="center"><%=nItems%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(nItems))%>
             </td>
             <td align="center"
-                nowrap><%=ConversionUtils.toDateString(rt.getId().getEdb()).replace('-', '/')%>
+                nowrap><%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(rt.getId().getEdb()).replace('-', '/')))%>
             </td>
-            <td><%=rt.getDemoName()%>
+            <td><%=Encode.forHtml(String.valueOf(rt.getDemoName()))%>
             </td>
-            <!--td align="center" ><%=rt.getId().getDemographicNo()%> </td-->
-            <td><%=SxmlMisc.getXmlContent(rt.getAddress(), "age")%>
+            <!--td align="center" ><%=Encode.forHtml(String.valueOf(rt.getId().getDemographicNo()))%> </td-->
+            <td><%=Encode.forHtml(String.valueOf(SxmlMisc.getXmlContent(rt.getAddress(), "age")))%>
             </td>
-            <td><%=SxmlMisc.getXmlContent(rt.getAddress(), "gravida")%>
+            <td><%=Encode.forHtml(String.valueOf(SxmlMisc.getXmlContent(rt.getAddress(), "gravida")))%>
             </td>
-            <td><%=SxmlMisc.getXmlContent(rt.getAddress(), "term")%>
+            <td><%=Encode.forHtml(String.valueOf(SxmlMisc.getXmlContent(rt.getAddress(), "term")))%>
             </td>
-            <td nowrap><%=SxmlMisc.getXmlContent(rt.getAddress(), "phone")%>
+            <td nowrap><%=Encode.forHtml(String.valueOf(SxmlMisc.getXmlContent(rt.getAddress(), "phone")))%>
             </td>
-            <td><%=providerNameBean.getShortDef(rt.getProviderNo(), "", 11)%>
+            <td><%=Encode.forHtml(String.valueOf(providerNameBean.getShortDef(rt.getProviderNo(), "", 11)))%>
             </td>
         </tr>
         <%
@@ -199,12 +199,12 @@
     nLastPage=Integer.parseInt(strLimit1)-Integer.parseInt(strLimit2);
     if(nLastPage>=0) {
 %> <a
-                href="reportedblist.jsp?startDate=<%=Encode.forUriComponent(request.getParameter("startDate"))%>&endDate=<%=Encode.forUriComponent(request.getParameter("endDate"))%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>">Last
+                href="reportedblist.jsp?startDate=<%=Encode.forUriComponent(request.getParameter("startDate"))%>&endDate=<%=Encode.forUriComponent(request.getParameter("endDate"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">Last
             Page</a> | <%
   }
   if(nItems==Integer.parseInt(strLimit2)) {
 %> <a
-                href="reportedblist.jsp?startDate=<%=Encode.forUriComponent(request.getParameter("startDate"))%>&endDate=<%=Encode.forUriComponent(request.getParameter("endDate"))%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
+                href="reportedblist.jsp?startDate=<%=Encode.forUriComponent(request.getParameter("startDate"))%>&endDate=<%=Encode.forUriComponent(request.getParameter("endDate"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">
             Next Page</a> <%}%>
 
 </body>

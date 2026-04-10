@@ -75,7 +75,7 @@
     <script type="text/javascript" language="Javascript">
         function reset() {
             document.forms[0].target = "";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function onPrint() {
@@ -165,12 +165,12 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="provider_no"
                value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="submit" value="exit"/>
@@ -204,39 +204,39 @@
                                             <td nowrap>Patient name:</td>
                                             <td><input type="text" name="patientName" size="60"
                                                        maxlength="80"
-                                                       value="<%= props.getProperty("patientName", "") %>"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("patientName", "")))%>"
                                                        @oscar.formDB/></td>
                                         </tr>
                                         <tr>
                                             <td>Address:</td>
                                             <td><input type="text" name="c_address" size="60"
-                                                       maxlength="80" value="<%= props.getProperty("c_address", "") %>"
+                                                       maxlength="80" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_address", "")))%>"
                                                        @oscar.formDB/> <input type="text" name="c_address2" size="60"
                                                                               maxlength="80"
-                                                                              value="<%= props.getProperty("c_address2", "") %>"
+                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_address2", "")))%>"
                                                                               @oscar.formDB/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Phone:</td>
                                             <td><input type="text" name="c_phone" size="60"
-                                                       maxlength="60" value="<%= props.getProperty("c_phone", "") %>"
+                                                       maxlength="60" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_phone", "")))%>"
                                                        @oscar.formDB/></td>
                                         </tr>
                                         <tr>
                                             <td>DOB:</td>
                                             <td><input type="text" name="dateOfBirth" size="10"
                                                        maxlength="10"
-                                                       value="<%= props.getProperty("dateOfBirth", "") %>"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateOfBirth", "")))%>"
                                                        @oscar.formDB/> <input type="text" name="patientSex" size="1"
                                                                               maxlength="6"
-                                                                              value="<%= props.getProperty("patientSex", "") %>"
+                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("patientSex", "")))%>"
                                                                               @oscar.formDB/></td>
                                         </tr>
                                         <tr>
                                             <td nowrap>Health Number:</td>
                                             <td><input type="text" name="c_phn" size="20" maxlength="20"
-                                                       value="<%= props.getProperty("c_phn", "") %>" @oscar.formDB/>
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_phn", "")))%>" @oscar.formDB/>
                                             </td>
                                         </tr>
                                     </table>
@@ -257,62 +257,62 @@
                                 <td nowrap width="10%">Date:</td>
                                 <td><input type="text" name="date_invoice" id="date_invoice"
                                            readonly size="8" maxlength="10"
-                                           value="<%= props.getProperty("date_invoice", "") %>" @oscar.formDB
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date_invoice", "")))%>" @oscar.formDB
                                            dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif"
                                                                 id="date_invoice_cal"/></td>
                             </tr>
                             <tr>
                                 <td nowrap>To:</td>
                                 <td><input type="text" name="invoiceTo" size="50"
-                                           maxlength="80" value="<%= props.getProperty("invoiceTo", "") %>"
+                                           maxlength="80" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("invoiceTo", "")))%>"
                                            @oscar.formDB/></td>
                             </tr>
                             <tr>
                                 <td nowrap>Ref.:</td>
                                 <td><input type="text" name="invoiceRef" size="50"
-                                           maxlength="80" value="<%= props.getProperty("invoiceRef", "") %>"
+                                           maxlength="80" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("invoiceRef", "")))%>"
                                            @oscar.formDB/></td>
                             </tr>
                             <tr>
                                 <td nowrap>Service date:</td>
                                 <td><input type="text" name="date_service" id="date_service"
                                            readonly size="8" maxlength="10"
-                                           value="<%= props.getProperty("date_service", "") %>" @oscar.formDB
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date_service", "")))%>" @oscar.formDB
                                            dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif"
                                                                 id="date_service_cal"/></td>
                             </tr>
                             <tr>
                                 <td nowrap>Service type:</td>
                                 <td><input type="text" name="serviceType" size="50"
-                                           maxlength="80" value="<%= props.getProperty("serviceType", "") %>"
+                                           maxlength="80" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("serviceType", "")))%>"
                                            @oscar.formDB/></td>
                             </tr>
                             <tr>
                                 <td nowrap>Amount billed: $</td>
                                 <td><input type="text" name="amountBilled"
                                            onChange="checkTypeIn()" size="10" maxlength="10"
-                                           value="<%= props.getProperty("amountBilled", "") %>" @oscar.formDB/>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("amountBilled", "")))%>" @oscar.formDB/>
                                 </td>
                             </tr>
                             <tr>
                                 <td nowrap valign="top">Comments:</td>
                                 <td><textarea name="comments" style="width: 100%" cols="100"
                                               rows="12" @oscar.formDB
-                                              dbType="text"> <%= props.getProperty("comments", "") %> </textarea>
+                                              dbType="text"> <%=Encode.forHtml(String.valueOf(props.getProperty("comments", "")))%> </textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td align="right">Dr.</td>
                                 <td><input type="text" name="signature" size="50"
                                            maxlength="60"
-                                           value="<%= props.getProperty("signature", providerName) %>"
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("signature", providerName)))%>"
                                            @oscar.formDB/></td>
                             </tr>
                             <tr>
                                 <td nowrap>Date:</td>
                                 <td><input type="text" name="date_signature"
                                            id="date_signature" readonly size="8" maxlength="10"
-                                           value="<%= props.getProperty("date_signature", "") %>"
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date_signature", "")))%>"
                                            @oscar.formDB dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif"
                                                                               id="date_signature_cal"/></td>
                             </tr>

@@ -45,8 +45,8 @@
     <script language="JavaScript">
         <!--
 
-        var ox = <%=oox%>;
-        var oy = <%=ooy%>;
+        var ox = <%=Encode.forJavaScript(String.valueOf(oox))%>;
+        var oy = <%=Encode.forJavaScript(String.valueOf(ooy))%>;
 
         function ff(x, y, w, h, name) { //need escape to name for ' and "
             x = eval(ox + x);
@@ -63,7 +63,7 @@
       bgcolor="navy">
 <img src="<%= request.getContextPath() %>/images/formar2_99_08.gif">
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=50+oox%>px; top:<%=76+ooy%>px; width:400px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(50+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(76+ooy))%>px; width:400px; height:20px;">
     <%=Encode.forHtml(Misc.JSEscape(request.getParameter("xml_name")))%>
 </div>
 
@@ -460,7 +460,7 @@
 </script>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=10+oox%>px; top:<%=ooy+172%>px; width:330px; height:60px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(10+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+172))%>px; width:330px; height:60px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><%=Encode.forHtml(UtilMisc.htmlJsEscape(request.getParameter("xml_rfi")))%>
@@ -469,7 +469,7 @@
     </table>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=347+oox%>px; top:<%=ooy+172%>px; width:180px; height:50px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(347+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+172))%>px; width:180px; height:50px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><%=Encode.forHtml(request.getParameter("xml_Alert_demographicaccessory"))%>
@@ -478,7 +478,7 @@
     </table>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=530+oox%>px; top:<%=ooy+172%>px; width:180px; height:50px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(530+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+172))%>px; width:180px; height:50px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><%=Encode.forHtml(request.getParameter("xml_Medication_demographicaccessory"))%>
@@ -487,7 +487,7 @@
     </table>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=410+oox%>px; top:<%=ooy+765%>px; width:210px; height:80px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(410+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+765))%>px; width:210px; height:80px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><%=Encode.forHtml(request.getParameter("xml_com"))%>
@@ -497,7 +497,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+345%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+345))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv1co"))%></span>
@@ -507,7 +507,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+363%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+363))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv2co"))%></span>
@@ -517,7 +517,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+381%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+381))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv3co"))%></span>
@@ -527,7 +527,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+399%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+399))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv4co"))%></span>
@@ -537,7 +537,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+417%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+417))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv5co"))%></span>
@@ -547,7 +547,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+435%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+435))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv6co"))%></span>
@@ -557,7 +557,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+453%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+453))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv7co"))%></span>
@@ -567,7 +567,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+473%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+473))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv8co"))%></span>
@@ -577,7 +577,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+491%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+491))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv9co"))%></span>
@@ -587,7 +587,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+509%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+509))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv10co"))%></span>
@@ -597,7 +597,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+528%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+528))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv11co"))%></span>
@@ -607,7 +607,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+547%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+547))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv12co"))%></span>
@@ -617,7 +617,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+566%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+566))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv13co"))%></span>
@@ -627,7 +627,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+585%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+585))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv14co"))%></span>
@@ -637,7 +637,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+603%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+603))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv15co"))%></span>
@@ -647,7 +647,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+621%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+621))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv16co"))%></span>
@@ -657,7 +657,7 @@
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=374+oox%>px; top:<%=ooy+639%>px; width:310px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(374+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+639))%>px; width:310px; height:20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><span class="tdname1"><%=Encode.forHtml(request.getParameter("xml_sv17co"))%></span>
@@ -691,9 +691,9 @@
         }
 %>
 <div ID="graphic"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=3+oox%>px; top:<%=653+ooy%>px; width:501px; height:280px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(3+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(653+ooy))%>px; width:501px; height:280px;">
     <embed type="image/svg+xml"
-        src="<%= request.getContextPath() %>/form/formar2svg.jsp?bgimage=<%=URLEncoder.encode("../images/formar2_99_08gra.gif", StandardCharsets.UTF_8)%>&bgimagewidth=222&bgimageheight=276<%=urlparam%>"
+        src="<%= request.getContextPath() %>/form/formar2svg.jsp?bgimage=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode("../images/formar2_99_08gra.gif", StandardCharsets.UTF_8)))%>&bgimagewidth=222&bgimageheight=276<%=Encode.forUriComponent(String.valueOf(urlparam))%>"
            width="221" height="276" wmode="transparent"/>
 </div>
 <%

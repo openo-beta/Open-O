@@ -262,7 +262,7 @@
             function validate(form, writeToEncounter) {
                 if (validateDate(form) <%=caisiEnabled?"&& validateSelectedProgram()":""%>) {
                     if (writeToEncounter) {
-                        window.open('<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=<%=d.getDemographicNo()%>&providerNo=<%=loggedInInfo.getLoggedInProviderNo()%>&curDate=<%=curYear%>-<%=curMonth%>-<%=curDay%>&encType=&status=', '', 'height=700,width=960');
+                        window.open('<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(d.getDemographicNo()))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&curDate=<%=Encode.forJavaScript(String.valueOf(curYear))%>-<%=Encode.forJavaScript(String.valueOf(curMonth))%>-<%=Encode.forJavaScript(String.valueOf(curDay))%>&encType=&status=', '', 'height=700,width=960');
                     }
                     form.submit();
                     return true;
@@ -299,7 +299,7 @@
     <div class="container">
         <form name="serviceform" action="${pageContext.request.contextPath}/tickler/EditTickler.do" method="post">
             <input type="hidden" name="method" value="editTickler"/>
-            <input type="hidden" name="ticklerNo" value="<%=ticklerNo%>"/>
+            <input type="hidden" name="ticklerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(ticklerNo))%>"/>
             <input type="hidden" name="parentAjaxId" value="<e:forHtml value='${param.parentAjaxId}' />"/>
             <h2>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-feather"
@@ -315,7 +315,7 @@
                 <tr>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.demographicName"/></th>
                     <td><a href="javascript:void(0)"
-                           onClick="popupPage(600,800,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=d.getDemographicNo()%>&displaymode=edit&dboperation=search_detail')">
+                           onClick="popupPage(600,800,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(d.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')">
                         <%=Encode.forHtmlContent(d.getLastName())%>,<%=Encode.forHtmlContent(d.getFirstName())%>
                     </a></td>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.phoneNumbers"/></th>
@@ -325,7 +325,7 @@
                 </tr>
                 <tr>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.chartNo"/></th>
-                    <td><%=d.getChartNo()%>
+                    <td><%=Encode.forHtml(String.valueOf(d.getChartNo()))%>
                     </td>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.phoneComments"/></th>
                     <td><%=Encode.forHtmlContent(d.getPhoneComment())%>
@@ -333,7 +333,7 @@
                 </tr>
                 <tr>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.age"/></th>
-                    <td><%=d.getAge()%>(<%=d.getFormattedDob()%>)</td>
+                    <td><%=Encode.forHtml(String.valueOf(d.getAge()))%>(<%=Encode.forHtml(String.valueOf(d.getFormattedDob()))%>)</td>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.email"/></th>
                     <td><%=Encode.forHtmlContent(d.getEmail())%>
                     </td>
@@ -355,7 +355,7 @@
                     <td style="font-weight: bold"><%=Encode.forHtmlContent(t.getProvider().getLastName())%>
                         ,<%=Encode.forHtmlContent(t.getProvider().getFirstName())%>
                     </td>
-                    <td style="font-weight: bold"><%=datetimeFormat.format(t.getCreateDate())%>
+                    <td style="font-weight: bold"><%=Encode.forHtml(String.valueOf(datetimeFormat.format(t.getCreateDate())))%>
                     </td>
                 </tr>
 
@@ -369,7 +369,7 @@
                     <td><%=Encode.forHtmlContent(tc.getProvider().getLastName())%>
                         ,<%=Encode.forHtmlContent(tc.getProvider().getFirstName())%>
                     </td>
-                    <td><%=datetimeFormat.format(tc.getUpdateDate())%>
+                    <td><%=Encode.forHtml(String.valueOf(datetimeFormat.format(tc.getUpdateDate())))%>
                     </td>
                 </tr>
                 <%}%>
@@ -469,7 +469,7 @@
                                     }
                             %>
                             <option <%=selected%>
-                                    value="<%=p.getProviderNo()%>"><%=Encode.forHtmlContent(p.getLastName())%>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtmlContent(p.getLastName())%>
                                 ,<%=Encode.forHtmlContent(p.getFirstName())%>
                             </option>
                             <% } %>
@@ -494,7 +494,7 @@
                     <td colspan="2" style="border: none;">
                         <label for="xml_appointment_date"><fmt:message key="tickler.ticklerEdit.calendarLookup"/></label>
                         <input name="xml_appointment_date" class="form-control" id="xml_appointment_date" type="date"
-                               maxlength="10" value="<%=strDate%>"/>
+                               maxlength="10" value="<%=Encode.forHtmlAttribute(String.valueOf(strDate))%>"/>
                     </td>
 
                 </tr>

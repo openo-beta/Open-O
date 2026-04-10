@@ -38,6 +38,7 @@
 <%@page import="org.apache.commons.lang3.StringUtils" %>
 <%@page import="java.util.ResourceBundle" %>
 <%@page import="java.text.SimpleDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
 
@@ -122,9 +123,9 @@
         </tr>
     </table>
 </div>
-<input type="hidden" name="id" id="id" value="<%=request.getAttribute("id")%>"/>
-<input type="hidden" name="programId" id="programId" value="<%=request.getAttribute("id")%>"/>
-<input type="hidden" name="vacancyId" id="vacancyId" value="<%=vacancyId%>"/>
+<input type="hidden" name="id" id="id" value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("id")))%>"/>
+<input type="hidden" name="programId" id="programId" value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("id")))%>"/>
+<input type="hidden" name="vacancyId" id="vacancyId" value="<%=Encode.forHtmlAttribute(String.valueOf(vacancyId))%>"/>
 <table width="100%" border="1" cellspacing="2" cellpadding="3">
     <tr class="b">
         <td width="30%" class="beright">Requirement Template:</td>
@@ -141,7 +142,7 @@
                     if (templateId != null && templateId.intValue() == vt.getId().intValue())
                         selectedOrNot = "selected";
             %>
-            <option value="<%=vt.getId()%>" <%=selectedOrNot%> ><%=vt.getName() %>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(vt.getId()))%>" <%=Encode.forHtml(String.valueOf(selectedOrNot))%> ><%=Encode.forHtml(String.valueOf(vt.getName()))%>
             </option>
             <%} %>
         </select></td>
@@ -165,7 +166,7 @@
 			for(CriteriaType type : typeList) {
 			*/
     %>
-    <%=VacancyTemplateManager.renderAllSelectOptions(templateId, vacancyId_int, type.getId())%>
+    <%=Encode.forHtml(String.valueOf(VacancyTemplateManager.renderAllSelectOptions(templateId, vacancyId_int, type.getId())))%>
     <% }
     %>
 
@@ -182,7 +183,7 @@
     </tr>
     <tr class="b">
         <td class="beright">Date Closed:</td>
-        <td><input type="text" name="dateClosed" id="dateClosed" value="<%= dateClosed %>" size="10"><img
+        <td><input type="text" name="dateClosed" id="dateClosed" value="<%=Encode.forHtmlAttribute(String.valueOf(dateClosed))%>" size="10"><img
                 src="<%=request.getContextPath()%>/images/cal.gif" id="dateClosed_cal"></td>
         <script type="text/javascript">
             Calendar.setup({
@@ -198,7 +199,7 @@
     </tr>
     <tr class="b">
         <td class="beright">Reason Closed:</td>
-        <td><input type="text" name="reasonClosed" size="100" value="<%= reasonClosed %>"/></td>
+        <td><input type="text" name="reasonClosed" size="100" value="<%=Encode.forHtmlAttribute(String.valueOf(reasonClosed))%>"/></td>
     </tr>
 </table>
 

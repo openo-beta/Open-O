@@ -55,6 +55,7 @@
 <%@page import="ca.openosp.openo.util.DateUtils" %>
 <%@page import="ca.openosp.openo.util.StringUtils" %>
 <%@page import="ca.openosp.openo.demographic.pageUtil.Util" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <title>Enrollment History</title>
@@ -98,7 +99,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><%=demographic.getFormattedName() %> (<%=demographic.getFormattedDob()%>)</td>
+                        <td><%=Encode.forHtml(String.valueOf(demographic.getFormattedName()))%> (<%=Encode.forHtml(String.valueOf(demographic.getFormattedDob()))%>)</td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a target="_blank"
                                                          href="http://www.oscarmanual.org/search?SearchableText=appointment history">Help</a>
@@ -121,18 +122,18 @@
                 <table style="width:5%">
                     <tr>
                         <td nowrap="nowrap"><b>Status</b>:</td>
-                        <td nowrap="nowrap"><%=demographic.getRosterStatusDisplay()%>
+                        <td nowrap="nowrap"><%=Encode.forHtml(String.valueOf(demographic.getRosterStatusDisplay()))%>
                         </td>
                     </tr>
                     <% if ("RO".equals(demographic.getRosterStatus()) || "TE".equals(demographic.getRosterStatus())) { %>
                     <tr>
                         <td nowrap="nowrap"><b>Date Rostered</b>:</td>
-                        <td nowrap="nowrap"><%=DateUtils.formatDate(demographic.getRosterDate(), request.getLocale())%>
+                        <td nowrap="nowrap"><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographic.getRosterDate(), request.getLocale())))%>
                         </td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap"><b>Enrolled To:</b>:</td>
-                        <td nowrap="nowrap"><%=providerDao.getProviderName(demographic.getRosterEnrolledTo())%>
+                        <td nowrap="nowrap"><%=Encode.forHtml(String.valueOf(providerDao.getProviderName(demographic.getRosterEnrolledTo())))%>
                         </td>
                     </tr>
                     <% } %>
@@ -140,12 +141,12 @@
                     <% if ("TE".equals(demographic.getRosterStatus())) { %>
                     <tr>
                         <td nowrap="nowrap"><b>Date Terminated</b>:</td>
-                        <td nowrap="nowrap"><%=DateUtils.formatDate(demographic.getRosterTerminationDate(), request.getLocale())%>
+                        <td nowrap="nowrap"><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographic.getRosterTerminationDate(), request.getLocale())))%>
                         </td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap"><b>Termination Reason:</b>:</td>
-                        <td nowrap="nowrap"><%=Util.rosterTermReasonProperties.getReasonByCode(demographic.getRosterTerminationReason()) %>
+                        <td nowrap="nowrap"><%=Encode.forHtml(String.valueOf(Util.rosterTermReasonProperties.getReasonByCode(demographic.getRosterTerminationReason())))%>
                         </td>
                     </tr>
                     <% } %>
@@ -218,17 +219,17 @@
                     %>
 
                     <tr>
-                        <td><%=DateUtils.formatDate(da.getLastUpdateDate(), request.getLocale())%>
+                        <td><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(da.getLastUpdateDate(), request.getLocale())))%>
                         </td>
-                        <td><%=dRosterStatus %>
+                        <td><%=Encode.forHtml(String.valueOf(dRosterStatus))%>
                         </td>
-                        <td><%=dRosterEnrolledTo %>
+                        <td><%=Encode.forHtml(String.valueOf(dRosterEnrolledTo))%>
                         </td>
-                        <td><%=dRosterDate %>
+                        <td><%=Encode.forHtml(String.valueOf(dRosterDate))%>
                         </td>
-                        <td><%=dRosterTerminationDate %>
+                        <td><%=Encode.forHtml(String.valueOf(dRosterTerminationDate))%>
                         </td>
-                        <td><%=dRosterTerminationReason %>
+                        <td><%=Encode.forHtml(String.valueOf(dRosterTerminationReason))%>
                         </td>
                     </tr>
                     <%

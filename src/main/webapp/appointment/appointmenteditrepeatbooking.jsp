@@ -374,7 +374,7 @@
         </table>
 
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
-            <tr bgcolor="<%=deepcolor%>">
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>">
                 <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmenteditrepeatbooking.title"/></font>
                 </th>
             </tr>
@@ -424,7 +424,7 @@
                     <font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="ddmmyyyy"/></font></td>
                 <td nowrap valign="top"><input type="text" name="endDate"
                                                id="endDate" size="10"
-                                               value="<%=UtilDateUtilities.DateToString(new java.util.Date(),"dd/MM/yyyy")%>"
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(UtilDateUtilities.DateToString(new java.util.Date(),"dd/MM/yyyy")))%>"
                                                readonly></td>
             </tr>
         </table>

@@ -46,6 +46,7 @@ if(!authed) {
 <%@page import="java.sql.ResultSet" %> 
 <%@page import="java.math.BigDecimal" %>
 <%@ page import="ca.openosp.openo.report.data.VisitReportData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <table class="table table-bordered table-striped table-hover table-condensed" style="font-size:12px;">
 	<thead>
@@ -157,20 +158,20 @@ for(Object[] result : reportProviderDao.search_reportprovider("visitreport", ohi
 
     %>
 	<tr>
-		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=oldteam.equals(team)?"":team%></td>
-		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=p_no%> <%=p_last%>,<%=p_first%></td>
-		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=visitcount[0]%></td>
-		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=visitcount[1]%></td>
-		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=visitcount[2]%></td>
-		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=visitcount[3]%></td>
-		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=visitcount[4]%></td>
-		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=visitcount[5]%></td>
-		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=apptvisitcount[0]%></td>
-		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=apptvisitcount[1]%></td>
-		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=apptvisitcount[2]%></td>
-		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=apptvisitcount[3]%></td>
-		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=apptvisitcount[4]%></td>
-		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=apptvisitcount[5]%></td>
+		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=Encode.forHtml(String.valueOf(oldteam.equals(team)?"":team))%></td>
+		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=Encode.forHtml(String.valueOf(p_no))%> <%=Encode.forHtml(String.valueOf(p_last))%>,<%=Encode.forHtml(String.valueOf(p_first))%></td>
+		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=Encode.forHtml(String.valueOf(visitcount[0]))%></td>
+		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=Encode.forHtml(String.valueOf(visitcount[1]))%></td>
+		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=Encode.forHtml(String.valueOf(visitcount[2]))%></td>
+		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=Encode.forHtml(String.valueOf(visitcount[3]))%></td>
+		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=Encode.forHtml(String.valueOf(visitcount[4]))%></td>
+		<td bgcolor="<%=bodd?"#EEEEFF":"white"%>"><%=Encode.forHtml(String.valueOf(visitcount[5]))%></td>
+		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=Encode.forHtml(String.valueOf(apptvisitcount[0]))%></td>
+		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=Encode.forHtml(String.valueOf(apptvisitcount[1]))%></td>
+		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=Encode.forHtml(String.valueOf(apptvisitcount[2]))%></td>
+		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=Encode.forHtml(String.valueOf(apptvisitcount[3]))%></td>
+		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=Encode.forHtml(String.valueOf(apptvisitcount[4]))%></td>
+		<td bgcolor="<%=bodd?"#FFCC00":"white"%>"><%=Encode.forHtml(String.valueOf(apptvisitcount[5]))%></td>
 	</tr>
 	<%
     Total0= new BigDecimal(Integer.parseInt(visitcount[0].toString())).setScale(0, BigDecimal.ROUND_HALF_UP);    
@@ -204,17 +205,17 @@ for(Object[] result : reportProviderDao.search_reportprovider("visitreport", ohi
 	<tr>
 		<td bgcolor="#CCCCFF">&nbsp;</td>
 		<td bgcolor="#CCCCFF">TOTAL</td>
-		<td bgcolor="#CCCCFF"><%=BigTotal0%></td>
-		<td bgcolor="#CCCCFF"><%=BigTotal1%></td>
-		<td bgcolor="#CCCCFF"><%=BigTotal2%></td>
-		<td bgcolor="#CCCCFF"><%=BigTotal3%></td>
-		<td bgcolor="#CCCCFF"><%=BigTotal4%></td>
-		<td bgcolor="#CCCCFF"><%=BigTotal5%></td>
-		<td bgcolor="#FFCC00"><%=ABigTotal0%></td>
-		<td bgcolor="#FFCC00"><%=ABigTotal1%></td>
-		<td bgcolor="#FFCC00"><%=ABigTotal2%></td>
-		<td bgcolor="#FFCC00"><%=ABigTotal3%></td>
-		<td bgcolor="#FFCC00"><%=ABigTotal4%></td>
-		<td bgcolor="#FFCC00"><%=ABigTotal5%></td>
+		<td bgcolor="#CCCCFF"><%=Encode.forHtml(String.valueOf(BigTotal0))%></td>
+		<td bgcolor="#CCCCFF"><%=Encode.forHtml(String.valueOf(BigTotal1))%></td>
+		<td bgcolor="#CCCCFF"><%=Encode.forHtml(String.valueOf(BigTotal2))%></td>
+		<td bgcolor="#CCCCFF"><%=Encode.forHtml(String.valueOf(BigTotal3))%></td>
+		<td bgcolor="#CCCCFF"><%=Encode.forHtml(String.valueOf(BigTotal4))%></td>
+		<td bgcolor="#CCCCFF"><%=Encode.forHtml(String.valueOf(BigTotal5))%></td>
+		<td bgcolor="#FFCC00"><%=Encode.forHtml(String.valueOf(ABigTotal0))%></td>
+		<td bgcolor="#FFCC00"><%=Encode.forHtml(String.valueOf(ABigTotal1))%></td>
+		<td bgcolor="#FFCC00"><%=Encode.forHtml(String.valueOf(ABigTotal2))%></td>
+		<td bgcolor="#FFCC00"><%=Encode.forHtml(String.valueOf(ABigTotal3))%></td>
+		<td bgcolor="#FFCC00"><%=Encode.forHtml(String.valueOf(ABigTotal4))%></td>
+		<td bgcolor="#FFCC00"><%=Encode.forHtml(String.valueOf(ABigTotal5))%></td>
 	</tr>
 </table>

@@ -60,7 +60,7 @@
     <%} else {%>
     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.appointmentReceipt.DefaultPrinter"/>
     <%}%>
-    <%=defaultPrinterNameAppointmentReceipt%>
+    <%=Encode.forHtml(String.valueOf(defaultPrinterNameAppointmentReceipt))%>
     <%}%>
     <br>
     <object id="apptpdf" type="application/pdf"

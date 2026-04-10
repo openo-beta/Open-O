@@ -149,7 +149,7 @@
                             bgcolor = "#EEEEFF";
                         }
                     %>
-                    <tr bgcolor="<%=bgcolor %>" align="center">
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>" align="center">
                         <td><c:choose>
                             <c:when
                                     test="${(!note.signed) and (sessionScope.readonly=='false')}">
@@ -232,21 +232,21 @@
                     <tr>
                         <td>
                             <table width="100%" border="0" style="margin-bottom: 5px">
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Provider</td>
                                     <td width="93%"><c:out
                                             value="${note.provider.formattedName }"/></td>
                                 </tr>
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Date</td>
                                     <td width="93%"><fmt:formatDate pattern="yyyy-MM-dd hh:mm a"
                                                                     value="${note.update_date}"/></td>
                                 </tr>
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Status</td>
                                     <td width="93%"><c:out value="${note.status}"/></td>
                                 </tr>
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Action</td>
                                     <td width="93%"><c:if
                                             test="${(!note.signed) and (sessionScope.readonly=='false')}">
@@ -279,7 +279,7 @@
                                                onclick="popupPage('<c:out value="${lockedURL}" escapeXml="false"/>')">
                                     </c:if></td>
                                 </tr>
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Note</td>
 
                                     <td width="93%"><c:choose>

@@ -91,7 +91,7 @@
                 x = (int) Integer.parseInt(request.getParameter("x" + i).substring(0, ipos));
                 y = (int) Integer.parseInt(request.getParameter("x" + i).substring(ipos + 1));
     %>
-    <use xlink:href="#square" transform="translate(<%=x + ", " + y%>)"/>
+    <use xlink:href="#square" transform="translate(<%=Encode.forHtmlAttribute(String.valueOf(x + ", " + y))%>)"/>
     <%
             }
         }

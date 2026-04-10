@@ -301,7 +301,7 @@
                                     <td></td>
                                     <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.PreferedPharmacy"/> :</b> <a
                                             href="javascript: function myFunction() {return false; }"
-                                            onClick="showpic('Layer1');" id="Calcs"><%=prefPharmacy%>
+                                            onClick="showpic('Layer1');" id="Calcs"><%=Encode.forHtml(String.valueOf(prefPharmacy))%>
                                     </a></td>
                                 </tr>
 
@@ -333,17 +333,17 @@
                                 <br>
                                 <div style="float: left; width: 24%; padding-left: 40px;">&nbsp;</div>
                                 <a style="float: left;"
-                                   href="javascript:reprint('<%=drug.getScript_no()%>')"><%=drug.getRxDisplay()%>
+                                   href="javascript:reprint('<%=Encode.forHtmlAttribute(String.valueOf(drug.getScript_no()))%>')"><%=Encode.forHtml(String.valueOf(drug.getRxDisplay()))%>
                                 </a>
                                 <%
                                 } else {
                                 %>
                                 <%=i > 0 ? "<br style='clear:both;'><br style='clear:both;'>" : ""%>
-                                <div style="float: left; width: 12%; padding-left: 20px;"><%=drug.getRxDate()%>
+                                <div style="float: left; width: 12%; padding-left: 20px;"><%=Encode.forHtml(String.valueOf(drug.getRxDate()))%>
                                 </div>
-                                <div style="float: left; width: 12%; padding-left: 20px;"><%=drug.getNumPrints()%>&nbsp;Prints</div>
+                                <div style="float: left; width: 12%; padding-left: 20px;"><%=Encode.forHtml(String.valueOf(drug.getNumPrints()))%>&nbsp;Prints</div>
                                 <a style="float: left;"
-                                   href="javascript:reprint('<%=drug.getScript_no()%>')"><%=drug.getRxDisplay()%>
+                                   href="javascript:reprint('<%=Encode.forHtmlAttribute(String.valueOf(drug.getScript_no()))%>')"><%=Encode.forHtml(String.valueOf(drug.getRxDisplay()))%>
                                 </a>
                                 <%
                                         }
@@ -407,25 +407,25 @@
                                                         }
                                                 %>
                                                 <tr>
-                                                    <td valign="top"><a <%=styleColor%>
-                                                            href="<%= request.getContextPath() %>/oscarRx/StaticScript.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&bn=<%=Encode.forUriComponent(prescriptDrug.getBrandName())%>"><%=prescriptDrug.getRxDate()%>
+                                                    <td valign="top"><a <%=Encode.forHtml(String.valueOf(styleColor))%>
+                                                            href="<%= request.getContextPath() %>/oscarRx/StaticScript.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&bn=<%=Encode.forUriComponent(prescriptDrug.getBrandName())%>"><%=Encode.forHtml(String.valueOf(prescriptDrug.getRxDate()))%>
                                                     </a></td>
-                                                    <td><a <%=styleColor%>
-                                                            href="<%= request.getContextPath() %>/oscarRx/StaticScript.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&bn=<%=Encode.forUriComponent(prescriptDrug.getBrandName())%>"><%=RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")%>
+                                                    <td><a <%=Encode.forHtml(String.valueOf(styleColor))%>
+                                                            href="<%= request.getContextPath() %>/oscarRx/StaticScript.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&bn=<%=Encode.forUriComponent(prescriptDrug.getBrandName())%>"><%=Encode.forHtml(String.valueOf(RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")))%>
                                                     </a></td>
                                                     <td width="100px" align="center">
                                                         <%
                                                             if (prescriptDrug.getRemoteFacilityName() == null) {
                                                         %>
                                                         <input type="checkbox" name="chkRePrescribe" align="center"
-                                                               drugId="<%=prescriptDrug.getId()%>"/>
+                                                               drugId="<%=Encode.forHtmlAttribute(String.valueOf(prescriptDrug.getId()))%>"/>
                                                         <%
                                                         } else {
                                                         %>
                                                         <form action="<%=request.getContextPath()%>/oscarRx/searchDrug.do"
                                                               method="post">
                                                             <input type="hidden" name="demographicNo"
-                                                                   value="<%=patient.getDemographicNo()%>"/>
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(patient.getDemographicNo()))%>"/>
                                                             <%
                                                                 String searchString = prescriptDrug.getBrandName();
                                                                 if (searchString == null)
@@ -436,7 +436,7 @@
                                                                     searchString = prescriptDrug.getSpecial();
                                                             %>
                                                             <input type="hidden" name="searchString"
-                                                                   value="<%=searchString%>"/>
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(searchString))%>"/>
                                                             <input type="submit" class="ControlPushButton"
                                                                    value="Search to Re-prescribe"/>
                                                         </form>
@@ -449,19 +449,19 @@
                                                             if (prescriptDrug.getRemoteFacilityName() == null) {
                                                         %>
                                                         <input type="checkbox" name="chkDelete" align="center"
-                                                               drugId="<%=prescriptDrug.getId()%>"/>
+                                                               drugId="<%=Encode.forHtmlAttribute(String.valueOf(prescriptDrug.getId()))%>"/>
                                                         <%
                                                             }
                                                         %>
                                                     </td>
                                                     <td width="20px" align="center"><a href="#" title="Annotation"
-                                                                                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=prescriptDrug.getId()%>&demo=<%=bean.getDemographicNo()%>','anwin','width=400,height=500');">
+                                                                                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(prescriptDrug.getId()))%>&demo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>','anwin','width=400,height=500');">
                                                         <img src="<%= request.getContextPath() %>/images/notes.gif" border="0"></a>
                                                     </td>
                                                     <%
                                                         if (integratorEnabled) {
                                                     %>
-                                                    <td align="center"><%=prescriptDrug.getRemoteFacilityName() == null ? "local" : prescriptDrug.getRemoteFacilityName()%>
+                                                    <td align="center"><%=Encode.forHtml(String.valueOf(prescriptDrug.getRemoteFacilityName() == null ? "local" : prescriptDrug.getRemoteFacilityName()))%>
                                                     </td>
                                                     <%
                                                         }
@@ -486,9 +486,9 @@
                                                     %> <a href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?show=all"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgShowAll"/></a> <%
                                                         }
                                                     %> &nbsp;&nbsp;&nbsp; <a
-                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=active<%=show%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgActive"/></a> - <a
-                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=inactive<%=show%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgInactive"/></a> - <a
-                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=all<%=show%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgAll"/></a></td>
+                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=active<%=Encode.forUriComponent(String.valueOf(show))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgActive"/></a> - <a
+                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=inactive<%=Encode.forUriComponent(String.valueOf(show))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgInactive"/></a> - <a
+                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=all<%=Encode.forUriComponent(String.valueOf(show))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgAll"/></a></td>
                                                     <td align="right">
                                                                     <span style="width: 350px; align: right">
                                                                        <input type="button" name="cmdAllergies"
@@ -587,7 +587,7 @@
                         <td><form action="${pageContext.request.contextPath}/oscarRx/searchDrug.do" focus="searchString"
                                        onsubmit="return processData();" method="post">
                             <input type="hidden" name="demographicNo" id="demographicNo"
-                                         value="<%=new Integer(patient.getDemographicNo()).toString()%>"/>
+                                         value="<%=Encode.forHtmlAttribute(String.valueOf(new Integer(patient.getDemographicNo()).toString()))%>"/>
                             <table>
                                 <tr valign="center">
                                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.drugSearchTextBox"/><br>
@@ -598,7 +598,7 @@
                                         }
                                     %>
                                         <%if (eRxEnabled) {%>
-                                        <a href="<%=eRx_SSO_URL%>User=<%=eRxUsername%>&Password=<%=eRxPassword%>&Clinic=<%=eRxFacility%>&PatientIdPMIS=<%=patient.getDemographicNo()%>&IsTraining=<%=eRxTrainingMode%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.eRx.msgExternalPrescriber"/></a>
+                                        <a href="<%=Encode.forHtmlAttribute(String.valueOf(eRx_SSO_URL))%>User=<%=Encode.forHtmlAttribute(String.valueOf(eRxUsername))%>&Password=<%=Encode.forUriComponent(String.valueOf(eRxPassword))%>&Clinic=<%=Encode.forUriComponent(String.valueOf(eRxFacility))%>&PatientIdPMIS=<%=Encode.forUriComponent(String.valueOf(patient.getDemographicNo()))%>&IsTraining=<%=Encode.forUriComponent(String.valueOf(eRxTrainingMode))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.eRx.msgExternalPrescriber"/></a>
                                         <%}%>
 
                                     </td>
@@ -609,7 +609,7 @@
                                             for (int i = 0; i < d_route.length; i++) {
                                         %>
                                         <input type="checkbox" name="route" <%=i%>
-                                               value="<%=d_route[i].trim()%>"><%=d_route[i].trim()%> &nbsp;</input>
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(d_route[i].trim()))%>"><%=Encode.forHtml(String.valueOf(d_route[i].trim()))%> &nbsp;</input>
                                         <%
                                             }
                                         %>
@@ -720,64 +720,64 @@
             <tr class="LightBG">
                 <td class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgName"/></td>
                 <td class="wcblayerItem">&nbsp;</td>
-                <td><%=pharmacy.getName()%>
+                <td><%=Encode.forHtml(String.valueOf(pharmacy.getName()))%>
                 </td>
             </tr>
 
             <tr class="LightBG">
                 <td class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgAddress"/></td>
                 <td class="wcblayerItem">&nbsp;</td>
-                <td><%=pharmacy.getAddress()%>
+                <td><%=Encode.forHtml(String.valueOf(pharmacy.getAddress()))%>
                 </td>
             </tr>
             <tr class="LightBG">
                 <td class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgCity"/></td>
                 <td class="wcblayerItem">&nbsp;</td>
-                <td><%=pharmacy.getCity()%>
+                <td><%=Encode.forHtml(String.valueOf(pharmacy.getCity()))%>
                 </td>
             </tr>
 
             <tr class="LightBG">
                 <td class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgProvince"/></td>
                 <td class="wcblayerItem">&nbsp;</td>
-                <td><%=pharmacy.getProvince()%>
+                <td><%=Encode.forHtml(String.valueOf(pharmacy.getProvince()))%>
                 </td>
             </tr>
             <tr class="LightBG">
                 <td class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgPostalCode"/> :</td>
                 <td class="wcblayerItem">&nbsp;</td>
-                <td><%=pharmacy.getPostalCode()%>
+                <td><%=Encode.forHtml(String.valueOf(pharmacy.getPostalCode()))%>
                 </td>
             </tr>
             <tr class="LightBG">
                 <td class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgPhone1"/> :</td>
                 <td class="wcblayerItem">&nbsp;</td>
-                <td><%=pharmacy.getPhone1()%>
+                <td><%=Encode.forHtml(String.valueOf(pharmacy.getPhone1()))%>
                 </td>
             </tr>
             <tr class="LightBG">
                 <td class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgPhone2"/> :</td>
                 <td class="wcblayerItem">&nbsp;</td>
-                <td><%=pharmacy.getPhone2()%>
+                <td><%=Encode.forHtml(String.valueOf(pharmacy.getPhone2()))%>
                 </td>
             </tr>
             <tr class="LightBG">
                 <td class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgFax"/> :</td>
                 <td class="wcblayerItem">&nbsp;</td>
-                <td><%=pharmacy.getFax()%>
+                <td><%=Encode.forHtml(String.valueOf(pharmacy.getFax()))%>
                 </td>
             </tr>
             <tr class="LightBG">
                 <td class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgEmail"/> :</td>
                 <td class="wcblayerItem">&nbsp;</td>
-                <td><%=pharmacy.getEmail()%>
+                <td><%=Encode.forHtml(String.valueOf(pharmacy.getEmail()))%>
                 </td>
             </tr>
             <tr class="LightBG">
                 <td colspan="3" class="wcblayerTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.pharmacy.msgNotes"/> :</td>
             </tr>
             <tr class="LightBG">
-                <td colspan="3"><%=pharmacy.getNotes()%>
+                <td colspan="3"><%=Encode.forHtml(String.valueOf(pharmacy.getNotes()))%>
                 </td>
             </tr>
 

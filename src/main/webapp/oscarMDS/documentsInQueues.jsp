@@ -39,7 +39,6 @@
     }
 %>
 
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%@ page import="java.util.*, ca.openosp.openo.util.*, ca.openosp.OscarProperties" %>
@@ -2420,8 +2419,8 @@
                 </tr>
                 <tr>
                     <td align="left" valign="center">
-                        <input type="hidden" name="providerNo" value="<%= providerNo %>">
-                        <input type="hidden" name="searchProviderNo" value="<%= searchProviderNo %>">
+                        <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>">
+                        <input type="hidden" name="searchProviderNo" value="<%=Encode.forHtmlAttribute(String.valueOf(searchProviderNo))%>">
                         <%=Encode.forHtml((request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">"))%>
                         <%=Encode.forHtml((request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">"))%>
                         <%=Encode.forHtml((request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">"))%>
@@ -2454,8 +2453,8 @@
                     List dos = (List) queueDocNos.get(qId);
                     Integer numberOfDocs = dos.size();
             %>
-            <a href="javascript:void(0);" onclick="resetCurrentFirstDocLab();showDocInQueue('<%=qId%>')"><%=name%>&nbsp;(<span
-                    id="docNo_<%=qId%>"><%=numberOfDocs%></span>)</a><br/>
+            <a href="javascript:void(0);" onclick="resetCurrentFirstDocLab();showDocInQueue('<%=Encode.forJavaScript(String.valueOf(qId))%>')"><%=Encode.forHtml(String.valueOf(name))%>&nbsp;(<span
+                    id="docNo_<%=Encode.forHtmlAttribute(String.valueOf(qId))%>"><%=Encode.forHtml(String.valueOf(numberOfDocs))%></span>)</a><br/>
             <%}%>
 
         </td>
@@ -2465,18 +2464,18 @@
 </table>
 <script type="text/javascript">
     var current_first_doclab = 0;
-    var typeDocLab = initTypeDocLab('<%=typeDocLab%>');   //{DOC=[357, 317, 316], HL7=[38, 33, 30, 28]}
-    var docType = initDocType('<%=docType%>');   //{357=DOC, 38=HL7, 317=DOC, 316=DOC, 33=HL7, 30=HL7, 28=HL7}
-    var patientDocs = initPatientDocs('<%=patientDocs%>');//{2=[316, 30, 28], 1=[33], -1=[357, 317, 38]}
-    var patientIdNames = initPatientIdNames('<%=StringEscapeUtils.escapeEcmaScript(patientIdNamesStr)%>');//;2=TEST2, PATIENT2;1=Zrrr, Srrr;-1=Not, Assigned
-    var docStatus = initDocStatus('<%=docStatus%>');//{357=A, 38=N, 317=A, 316=A, 33=N, 30=N, 28=N}
-    var normals = initNormals('<%=normals%>');//[357, 317, 316, 38, 33, 30, 28]
-    var abnormals = initAbnormals('<%=abnormals%>');//[123,567]
-    var patientIds = initPatientIds('<%=patientIdStr%>');
-    var queueDocNos = initHashtblWithList('<%=queueDocNos%>');
-    var providerNo = '<%=providerNo%>';
+    var typeDocLab = initTypeDocLab('<%=Encode.forJavaScript(String.valueOf(typeDocLab))%>');   //{DOC=[357, 317, 316], HL7=[38, 33, 30, 28]}
+    var docType = initDocType('<%=Encode.forJavaScript(String.valueOf(docType))%>');   //{357=DOC, 38=HL7, 317=DOC, 316=DOC, 33=HL7, 30=HL7, 28=HL7}
+    var patientDocs = initPatientDocs('<%=Encode.forJavaScript(String.valueOf(patientDocs))%>');//{2=[316, 30, 28], 1=[33], -1=[357, 317, 38]}
+    var patientIdNames = initPatientIdNames('<%=Encode.forJavaScript(patientIdNamesStr)%>');//;2=TEST2, PATIENT2;1=Zrrr, Srrr;-1=Not, Assigned
+    var docStatus = initDocStatus('<%=Encode.forJavaScript(String.valueOf(docStatus))%>');//{357=A, 38=N, 317=A, 316=A, 33=N, 30=N, 28=N}
+    var normals = initNormals('<%=Encode.forJavaScript(String.valueOf(normals))%>');//[357, 317, 316, 38, 33, 30, 28]
+    var abnormals = initAbnormals('<%=Encode.forJavaScript(String.valueOf(abnormals))%>');//[123,567]
+    var patientIds = initPatientIds('<%=Encode.forJavaScript(String.valueOf(patientIdStr))%>');
+    var queueDocNos = initHashtblWithList('<%=Encode.forJavaScript(String.valueOf(queueDocNos))%>');
+    var providerNo = '<%=Encode.forJavaScript(String.valueOf(providerNo))%>';
 
-    var searchProviderNo = '<%=searchProviderNo%>';
+    var searchProviderNo = '<%=Encode.forJavaScript(String.valueOf(searchProviderNo))%>';
     var types = ['DOC'];
 
     var contextpath = '${pageContext.servletContext.contextPath}';

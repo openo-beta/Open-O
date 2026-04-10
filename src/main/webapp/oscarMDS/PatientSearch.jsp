@@ -331,24 +331,24 @@
 
             <tr bgcolor="<%=bodd?"ivory":"white"%>" align="center">
                 <td><input type="submit" name="demographicNo"
-                           value="<%=ca.openosp.Misc.getString(rs,"demographic_no")%>"
-                           onclick="updateOpener('<%=Encode.forJavaScript(request.getParameter("labNo"))%>','<%=ca.openosp.Misc.getString(rs,"demographic_no")%>');">
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(ca.openosp.Misc.getString(rs,"demographic_no")))%>"
+                           onclick="updateOpener('<%=Encode.forJavaScript(request.getParameter("labNo"))%>','<%=Encode.forJavaScript(String.valueOf(ca.openosp.Misc.getString(rs,"demographic_no")))%>');">
                 </td>
-                <td><%=nbsp(Misc.toUpperLowerCase(ca.openosp.Misc.getString(rs, "last_name")))%>
+                <td><%=Encode.forHtml(String.valueOf(nbsp(Misc.toUpperLowerCase(ca.openosp.Misc.getString(rs, "last_name")))))%>
                 </td>
-                <td><%=nbsp(Misc.toUpperLowerCase(ca.openosp.Misc.getString(rs, "first_name")))%>
+                <td><%=Encode.forHtml(String.valueOf(nbsp(Misc.toUpperLowerCase(ca.openosp.Misc.getString(rs, "first_name")))))%>
                 </td>
-                <td><%= age %>
+                <td><%=Encode.forHtml(String.valueOf(age))%>
                 </td>
-                <td><%=nbsp(ca.openosp.Misc.getString(rs, "roster_status"))%>
+                <td><%=Encode.forHtml(String.valueOf(nbsp(ca.openosp.Misc.getString(rs, "roster_status"))))%>
                 </td>
-                <td><%=nbsp(ca.openosp.Misc.getString(rs, "patient_status"))%>
+                <td><%=Encode.forHtml(String.valueOf(nbsp(ca.openosp.Misc.getString(rs, "patient_status"))))%>
                 </td>
-                <td><%=nbsp(ca.openosp.Misc.getString(rs, "sex"))%>
+                <td><%=Encode.forHtml(String.valueOf(nbsp(ca.openosp.Misc.getString(rs, "sex"))))%>
                 </td>
-                <td><%=nbsp(ca.openosp.Misc.getString(rs, "year_of_birth") + "-" + ca.openosp.Misc.getString(rs, "month_of_birth") + "-" + ca.openosp.Misc.getString(rs, "date_of_birth"))%>
+                <td><%=Encode.forHtml(String.valueOf(nbsp(ca.openosp.Misc.getString(rs, "year_of_birth") + "-" + ca.openosp.Misc.getString(rs, "month_of_birth") + "-" + ca.openosp.Misc.getString(rs, "date_of_birth"))))%>
                 </td>
-                <td><%=providerBean.getProperty(ca.openosp.Misc.getString(rs, "provider_no")) == null ? "&nbsp;" : providerBean.getProperty(ca.openosp.Misc.getString(rs, "provider_no")) %>
+                <td><%=Encode.forHtml(String.valueOf(providerBean.getProperty(ca.openosp.Misc.getString(rs, "provider_no")) == null ? "&nbsp;" : providerBean.getProperty(ca.openosp.Misc.getString(rs, "provider_no"))))%>
                 </td>
 
             </tr>
@@ -371,12 +371,12 @@
     <script language="JavaScript">
         <!--
         function last() {
-            document.nextform.action = "<%= request.getContextPath() %>/oscarMDS/PatientSearch.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>&from=<%=Encode.forJavaScript(request.getParameter("from"))%>";
+            document.nextform.action = "<%= request.getContextPath() %>/oscarMDS/PatientSearch.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>&from=<%=Encode.forJavaScript(request.getParameter("from"))%>";
             //document.nextform.submit();
         }
 
         function next() {
-            document.nextform.action = "<%= request.getContextPath() %>/oscarMDS/PatientSearch.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>&from=<%=Encode.forJavaScript(request.getParameter("from"))%>";
+            document.nextform.action = "<%= request.getContextPath() %>/oscarMDS/PatientSearch.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>&from=<%=Encode.forJavaScript(request.getParameter("from"))%>";
             //document.nextform.submit();
         }
 

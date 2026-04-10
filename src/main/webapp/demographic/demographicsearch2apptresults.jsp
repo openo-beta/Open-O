@@ -496,29 +496,29 @@
                             bgColor = rowCounter % 2 == 0 ? "#EEEEFF" : "white";
 
                 %>
-                <tr style="background-color: <%=bgColor%>"
+                <tr style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                     onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
-                    onMouseout="this.style.backgroundColor='<%=bgColor%>';"
-                    onClick="document.forms[0].demographic_no.value=<%=demo.getDemographicNo()%>;<% if(caisi) { out.print("addNameCaisi");} else { out.print("addName");} %>('<%=demo.getDemographicNo()%>','<%=URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=demo.getProviderNo()%>','')">
+                    onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
+                    onClick="document.forms[0].demographic_no.value=<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>;<% if(caisi) { out.print("addNameCaisi");} else { out.print("addName");} %>('<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demo.getProviderNo()))%>','')">
 
                     <td class="demoId">
                         <input type="submit" class="mbttn btn btn-default btn-sm" name="demographic_no"
-                               value="<%=demo.getDemographicNo()%>"
-                               onClick="<% if(caisi) {out.print("addNameCaisi");} else {out.print("addName");} %>('<%=demo.getDemographicNo()%>','<%=URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=demo.getProviderNo()%>','')">
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getDemographicNo()))%>"
+                               onClick="<% if(caisi) {out.print("addNameCaisi");} else {out.print("addName");} %>('<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demo.getProviderNo()))%>','')">
                     </td>
                     <td class="lastName"><%=Encode.forHtml(Misc.toUpperLowerCase(demo.getLastName()))%>
                     </td>
                     <td class="firstName"><%=Encode.forHtml(Misc.toUpperLowerCase(demo.getFirstName())) + " " + Encode.forHtml(Misc.toUpperLowerCase(demo.getMiddleNames()))%>
                     </td>
-                    <td class="age"><%=demo.getAge()%>
+                    <td class="age"><%=Encode.forHtml(String.valueOf(demo.getAge()))%>
                     </td>
-                    <td class="rosterStatus"><%=demo.getRosterStatus() == null || demo.getRosterStatus().equals("") ? "&nbsp;" : demo.getRosterStatus()%>
+                    <td class="rosterStatus"><%=Encode.forHtml(String.valueOf(demo.getRosterStatus() == null || demo.getRosterStatus().equals("") ? "&nbsp;" : demo.getRosterStatus()))%>
                     </td>
-                    <td class="sex"><%=demo.getSex()%>
+                    <td class="sex"><%=Encode.forHtml(String.valueOf(demo.getSex()))%>
                     </td>
-                    <td class="dob"><%=demo.getYearOfBirth() + "-" + demo.getMonthOfBirth() + "-" + demo.getDateOfBirth()%>
+                    <td class="dob"><%=Encode.forHtml(String.valueOf(demo.getYearOfBirth() + "-" + demo.getMonthOfBirth() + "-" + demo.getDateOfBirth()))%>
                     </td>
-                    <td class="doctor"><%=providerBean.getProperty(demo.getProviderNo() == null ? "" : demo.getProviderNo()) == null ? "" : providerBean.getProperty(demo.getProviderNo())%>
+                    <td class="doctor"><%=Encode.forHtml(String.valueOf(providerBean.getProperty(demo.getProviderNo() == null ? "" : demo.getProviderNo()) == null ? "" : providerBean.getProperty(demo.getProviderNo())))%>
                     </td>
                 </tr>
 
@@ -537,17 +537,17 @@
                             bgColor = rowCounter % 2 == 0 ? "#EEEEFF" : "white";
                             DemographicTransfer demographicTransfer = matchingDemographicTransferScore.getDemographicTransfer();
                 %>
-                <tr style="background-color: <%=bgColor%>"
+                <tr style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                     onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
-                    onMouseout="this.style.backgroundColor='<%=bgColor%>';"
-                    onClick="document.forms[0].demographic_no.value=<%=demographicTransfer.getCaisiDemographicId()%>;addName('<%=demographicTransfer.getCaisiDemographicId()%>','<%=URLEncoder.encode(demographicTransfer.getLastName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demographicTransfer.getFirstName(), StandardCharsets.UTF_8)%>','','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=demographicTransfer.getCaisiProviderId()%>','<%=demographicTransfer.getIntegratorFacilityId()%>')">
+                    onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
+                    onClick="document.forms[0].demographic_no.value=<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>;addName('<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographicTransfer.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographicTransfer.getFirstName(), StandardCharsets.UTF_8)))%>','','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiProviderId()))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getIntegratorFacilityId()))%>')">
                     <td class="demoId" colspan="8">
                         <input type="submit" class="mbttn btn btn-default btn-sm" name="demographic_no"
-                               value="Integrator <%=CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), demographicTransfer.getIntegratorFacilityId()).getName()%>:<%=demographicTransfer.getCaisiDemographicId()%>"/>
+                               value="Integrator <%=Encode.forHtmlAttribute(String.valueOf(CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), demographicTransfer.getIntegratorFacilityId()).getName()))%>:<%=Encode.forHtmlAttribute(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>"/>
                     </td>
-                    <td class="lastName"><%=Misc.toUpperLowerCase(demographicTransfer.getLastName())%>
+                    <td class="lastName"><%=Encode.forHtml(String.valueOf(Misc.toUpperLowerCase(demographicTransfer.getLastName())))%>
                     </td>
-                    <td class="firstName"><%=Misc.toUpperLowerCase(demographicTransfer.getFirstName())%>
+                    <td class="firstName"><%=Encode.forHtml(String.valueOf(Misc.toUpperLowerCase(demographicTransfer.getFirstName())))%>
                     </td>
                     <%
                         String ageString = "";
@@ -560,12 +560,12 @@
                             bdayString = DateFormatUtils.ISO_DATE_FORMAT.format(demographicTransfer.getBirthDate());
                         }
                     %>
-                    <td class="age"><%=ageString%>
+                    <td class="age"><%=Encode.forHtml(String.valueOf(ageString))%>
                     </td>
                     <td class="rosterStatus"></td>
-                    <td class="sex"><%=demographicTransfer.getGender()%>
+                    <td class="sex"><%=Encode.forHtml(String.valueOf(demographicTransfer.getGender()))%>
                     </td>
-                    <td class="dob"><%=bdayString%>
+                    <td class="dob"><%=Encode.forHtml(String.valueOf(bdayString))%>
                     </td>
                     <td class="doctor">
                         <%
@@ -661,12 +661,12 @@
         <script language="JavaScript">
 
             function last() {
-                document.nextform.action = "<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
                 //document.nextform.submit();
             }
 
             function next() {
-                document.nextform.action = "<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
                 //document.nextform.submit();
             }
 

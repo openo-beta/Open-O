@@ -104,7 +104,7 @@
 
         function reset() {
             document.forms[0].target = "apptProviderSearch";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function onPrint() {
@@ -311,12 +311,12 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <!--input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%> /-->
         <!--input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
@@ -341,14 +341,14 @@
         <table width="100%" border="0" cellspacing="3" cellpadding="0">
             <tr>
                 <th><%=bView ? "<font color='yellow'>VIEW PAGE: </font>" : ""%>
-                    Immunizations / Allergies (Patient: <%= props.getProperty("c_surname", "") %>,
-                    <%= props.getProperty("c_givenName", "") %> )
+                    Immunizations / Allergies (Patient: <%=Encode.forHtml(String.valueOf(props.getProperty("c_surname", "")))%>,
+                    <%=Encode.forHtml(String.valueOf(props.getProperty("c_givenName", "")))%> )
                 </th>
                 <input type="hidden" name="c_surname" size="30"
-                       value="<%= props.getProperty("c_surname", "") %>" maxlength="30"
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_surname", "")))%>" maxlength="30"
                        @oscar.formDB/>
                 <input type="hidden" name="c_givenName" size="30"
-                       value="<%= props.getProperty("c_givenName", "") %>" maxlength="30"
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_givenName", "")))%>" maxlength="30"
                        @oscar.formDB/>
             </tr>
         </table>
@@ -361,30 +361,30 @@
                 <tr>
                     <td align="right" width="50%">*Date of Administration :</td>
                     <td><input type="text" name="dateAdmin" size="10" maxlength="10"
-                               value="<%= props.getProperty("dateAdmin", "") %>" @oscar.formDB
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateAdmin", "")))%>" @oscar.formDB
                                dbType="date"/></td>
                 </tr>
                 <tr>
                     <td align="right">Trade name :</td>
                     <td><input type="text" name="tradeName" size="30" maxlength="50"
-                               value="<%= props.getProperty("tradeName", "") %>" @oscar.formDB/>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tradeName", "")))%>" @oscar.formDB/>
                     </td>
                 </tr>
                 <tr>
                     <td align="right">Manufacturer :</td>
                     <td><input type="text" name="manufacturer" size="30"
-                               maxlength="50" value="<%= props.getProperty("manufacturer", "") %>"
+                               maxlength="50" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manufacturer", "")))%>"
                                @oscar.formDB/></td>
                 </tr>
                 <tr>
                     <td align="right">Lot # :</td>
                     <td><input type="text" name="lot" size="30" maxlength="50"
-                               value="<%= props.getProperty("lot", "") %>" @oscar.formDB/></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("lot", "")))%>" @oscar.formDB/></td>
                 </tr>
                 <tr>
                     <td align="right">Exip. date :</td>
                     <td><input type="text" name="expiDate" size="10" maxlength="10"
-                               value="<%= props.getProperty("expiDate", "") %>" @oscar.formDB
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("expiDate", "")))%>" @oscar.formDB
                                dbType="date"/></td>
                 </tr>
             </table>
@@ -396,16 +396,16 @@
                         :
                     </td>
                     <td><input type="checkbox" name="doseAdminSC"
-                            <%= props.getProperty("doseAdminSC", "") %> @oscar.formDB
+                            <%=Encode.forHtml(String.valueOf(props.getProperty("doseAdminSC", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> SC<br>
                         <input type="checkbox" name="doseAdminIM"
-                                <%= props.getProperty("doseAdminIM", "") %> @oscar.formDB
+                                <%=Encode.forHtml(String.valueOf(props.getProperty("doseAdminIM", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> IM<br>
                         <input type="checkbox" name="doseAdminml"
-                                <%= props.getProperty("doseAdminml", "") %> @oscar.formDB
+                                <%=Encode.forHtml(String.valueOf(props.getProperty("doseAdminml", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> ml <input type="text" name="doseAdminTxtml"
                                                                size="10" maxlength="10"
-                                                               value="<%= props.getProperty("doseAdminTxtml", "") %>"
+                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doseAdminTxtml", "")))%>"
                                                                @oscar.formDB/>
 
                     </td>
@@ -413,39 +413,39 @@
                 <tr>
                     <td align="right" valign="top">Location :</td>
                     <td><input type="checkbox" name="locLtDel"
-                            <%= props.getProperty("locLtDel", "") %> @oscar.formDB
+                            <%=Encode.forHtml(String.valueOf(props.getProperty("locLtDel", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> Lt. deltoid<br>
                         <input type="checkbox" name="locRtDel"
-                                <%= props.getProperty("locRtDel", "") %> @oscar.formDB
+                                <%=Encode.forHtml(String.valueOf(props.getProperty("locRtDel", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> Rt. deltoid<br>
                         <input type="checkbox" name="locLtDelOUQ"
-                                <%= props.getProperty("locLtDelOUQ", "") %> @oscar.formDB
+                                <%=Encode.forHtml(String.valueOf(props.getProperty("locLtDelOUQ", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> Lt gluteal (OUQ)<br>
                         <input type="checkbox" name="locRtDelOUQ"
-                                <%= props.getProperty("locRtDelOUQ", "") %> @oscar.formDB
+                                <%=Encode.forHtml(String.valueOf(props.getProperty("locRtDelOUQ", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> Rt.gluteal (OUQ)<br>
                         <input type="checkbox" name="locOther"
-                                <%= props.getProperty("locOther", "") %> @oscar.formDB
+                                <%=Encode.forHtml(String.valueOf(props.getProperty("locOther", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> other ( anterolateral thigh)
                     </td>
                 </tr>
                 <tr>
                     <td align="right" valign="top">Instructions :</td>
                     <td><input type="checkbox" name="InstrStay20"
-                            <%= props.getProperty("InstrStay20", "") %> @oscar.formDB
+                            <%=Encode.forHtml(String.valueOf(props.getProperty("InstrStay20", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> stay in waiting area for 20 minutes<br>
                         <input type="checkbox" name="InstrExpectLoc"
-                                <%= props.getProperty("InstrExpectLoc", "") %> @oscar.formDB
+                                <%=Encode.forHtml(String.valueOf(props.getProperty("InstrExpectLoc", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> expect local tenderness/small lump <br>
                         <input type="checkbox" name="InstrFU"
-                                <%= props.getProperty("InstrFU", "") %> @oscar.formDB
+                                <%=Encode.forHtml(String.valueOf(props.getProperty("InstrFU", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> f/u if rash, fever, Sz, leth or new Sxs
                     </td>
                 </tr>
                 <tr>
                     <td align="right" valign="top">At discharge :</td>
                     <td><input type="checkbox" name="disChNoComp"
-                            <%= props.getProperty("disChNoComp", "") %> @oscar.formDB
+                            <%=Encode.forHtml(String.valueOf(props.getProperty("disChNoComp", "")))%> @oscar.formDB
                                dbType="tinyint(1)"/> no complications
                     </td>
                 </tr>

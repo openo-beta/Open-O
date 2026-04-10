@@ -41,6 +41,7 @@
 
 <%@ page import="java.util.*,ca.openosp.openo.report.data.*" %>
 <%@ page import="ca.openosp.openo.report.data.RptLabReportData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -90,7 +91,7 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.LabReqReport.msgLabReqReport"/> <%= mons %>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.LabReqReport.msgLabReqReport"/> <%=Encode.forHtml(String.valueOf(mons))%>
     </title>
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
@@ -152,7 +153,7 @@
                                     String proNum = (String) w.get(0);
                                     String proName = (String) w.get(1);
                             %>
-                            <option value="<%=proNum%>" <%=selled(proNum, pros)%>><%=proName%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(proNum))%>" <%=Encode.forHtml(String.valueOf(selled(proNum, pros)))%>><%=Encode.forHtml(String.valueOf(proName))%>
                             </option>
                             <%
                                 }
@@ -181,7 +182,7 @@
                     <td bgcolor="#eeeeff" width=700>
                         <table border=0 cellspacing=2>
                             <tr>
-                                <td class="nameBox" colspan=3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.LabReqReport.msgPatientName"/>: <%= demoData.getDemographicName()%>
+                                <td class="nameBox" colspan=3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.LabReqReport.msgPatientName"/>: <%=Encode.forHtml(String.valueOf(demoData.getDemographicName()))%>
                                 </td>
                             </tr>
                             <tr>
@@ -201,7 +202,7 @@
                                         %>
                                         <tr>
                                             <td class="fieldBox" bgcolor="#ddddff"><a
-                                                    href="javascript:popupOscarConsultationConfig(700,960, '<%= request.getContextPath() %>/form/formlabreq07.jsp?demographic_no=<%=demoData.demoNo%>&formId=<%=demoLab.requestId%>&provNo=<%=demoLab.proNo%>&readOnly=true')"><%=demoLab.referalDate%>
+                                                    href="javascript:popupOscarConsultationConfig(700,960, '<%= request.getContextPath() %>/form/formlabreq07.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoData.demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(demoLab.requestId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(demoLab.proNo))%>&readOnly=true')"><%=Encode.forHtml(String.valueOf(demoLab.referalDate))%>
                                             </a>
                                             </td>
                                         </tr>
@@ -228,10 +229,10 @@
                                         %>
                                         <tr>
                                             <td class="fieldBox" bgcolor="#deddff"><a href=#
-                                                                                      onclick="javascript:rs('new','<%=request.getContextPath()%>/documentManager/documentGetFile.jsp?document=<%=demoLetter.docfileName%>&type=active&doc_no=<%=demoLetter.document_no%>', 480,480,1)"><%=demoLetter.docdesc%>
+                                                                                      onclick="javascript:rs('new','<%=request.getContextPath()%>/documentManager/documentGetFile.jsp?document=<%=Encode.forJavaScript(String.valueOf(demoLetter.docfileName))%>&type=active&doc_no=<%=Encode.forJavaScript(String.valueOf(demoLetter.document_no))%>', 480,480,1)"><%=Encode.forHtml(String.valueOf(demoLetter.docdesc))%>
                                             </a>
                                             </td>
-                                            <td class="fieldBox" bgcolor="#deddff"><%=demoLetter.docDate.toString()%>
+                                            <td class="fieldBox" bgcolor="#deddff"><%=Encode.forHtml(String.valueOf(demoLetter.docDate.toString()))%>
                                             </td>
                                         </tr>
                                         <%
@@ -269,10 +270,10 @@
                                         %>
                                         <tr>
                                             <td class="fieldBox" bgcolor="#deddff"><a href=#
-                                                                                      onclick="javascript:rs('new2','<%=labURL%>', 850,600,1)">lab</a>
+                                                                                      onclick="javascript:rs('new2','<%=Encode.forJavaScript(String.valueOf(labURL))%>', 850,600,1)">lab</a>
                                             </td>
                                             <td class="fieldBox"
-                                                bgcolor="#deddff"><%=((String) h.get("collectionDate"))%>
+                                                bgcolor="#deddff"><%=Encode.forHtml(String.valueOf(((String) h.get("collectionDate"))))%>
                                             </td>
                                         </tr>
                                         <%

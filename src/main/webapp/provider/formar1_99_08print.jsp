@@ -30,8 +30,8 @@
     if (request.getParameter("oox") != null) oox = Integer.parseInt(request.getParameter("oox"));
     if (request.getParameter("ooy") != null) ooy = Integer.parseInt(request.getParameter("ooy"));
 %>
-<%@ page import="java.util.*, java.sql.*, ca.openosp.*"
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.util.*, java.sql.*, ca.openosp.*"
          errorPage="/errorpage.jsp" %>
 
 <html>
@@ -42,8 +42,8 @@
     <script language="JavaScript">
         <!--
 
-        var ox = <%=oox%>;
-        var oy = <%=ooy%>;
+        var ox = <%=Encode.forJavaScript(String.valueOf(oox))%>;
+        var oy = <%=Encode.forJavaScript(String.valueOf(ooy))%>;
 
         function ff(x, y, w, h, name) { //need escape to name for ' and "
             x = eval(ox + x);
@@ -60,7 +60,7 @@
       background="<%= request.getContextPath() %>/images/formar1_99_08.gif">
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=50+oox%>px; top:<%=96+ooy%>px; width:400px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(50+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(96+ooy))%>px; width:400px; height:20px;">
     <%=Encode.forHtml(request.getParameter("xml_name"))%>
 </div>
 
@@ -313,26 +313,26 @@
 
 </script>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=480+oox%>px; top:<%=ooy+197%>px; width:230px; height:30px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(480+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+197))%>px; width:230px; height:30px;">
     <pre><%=Encode.forHtml(request.getParameter("xml_ebmf"))%></pre>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=140+oox%>px; top:<%=ooy+240%>px; width:280px; height:50px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(140+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+240))%>px; width:280px; height:50px;">
     <pre><%=Encode.forHtml(request.getParameter("xml_Alert_demographicaccessory"))%></pre>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=460+oox%>px; top:<%=ooy+240%>px; width:280px; height:50px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(460+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+240))%>px; width:280px; height:50px;">
     <pre><%=Encode.forHtml(request.getParameter("xml_Medication_demographicaccessory"))%></pre>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=440+oox%>px; top:<%=ooy+770%>px; width:280px; height:60px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(440+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+770))%>px; width:280px; height:60px;">
     <pre><%=Encode.forHtml(request.getParameter("xml_rfi"))%></pre>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=12+oox%>px; top:<%=ooy+850%>px; width:300px; height:60px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(12+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+850))%>px; width:300px; height:60px;">
     <pre><%=Encode.forHtml(request.getParameter("xml_comments"))%></pre>
 </div>
 

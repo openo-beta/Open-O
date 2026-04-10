@@ -1,6 +1,5 @@
 <%--
 
-<%@ page import="org.owasp.encoder.Encode" %>
     Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
     This program is free software; you can redistribute it and/or
@@ -24,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

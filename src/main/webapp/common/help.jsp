@@ -25,6 +25,7 @@
 
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String topic = request.getParameter("topic");
 %>
@@ -47,7 +48,7 @@
             <h3><c:out value="${e:forHtmlAttribute(param.topic)}"/></h3>
             <br/>
             <fmt:setBundle basename="HelpResources" var="help"/>
-            <fmt:message bundle="${help}" key="<%=topic%>"/>
+            <fmt:message bundle="${help}" key="<%=Encode.forHtmlAttribute(String.valueOf(topic))%>"/>
         </c:otherwise>
     </c:choose>
     <br/>

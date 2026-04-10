@@ -41,6 +41,7 @@
 <%@page import="ca.openosp.openo.web.admin.KeyManagerUIBean" %>
 <%@page import="ca.openosp.openo.commn.model.PublicKey" %>
 <%@page import="ca.openosp.openo.commn.model.ProfessionalSpecialist" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@include file="/layouts/html_top.jspf" %>
 
@@ -62,7 +63,7 @@
     String uploadUrl = requestUrl.substring(0, requestUrl.length() - servletPath.length());
     uploadUrl = uploadUrl + "/lab/newLabUpload.do";
 %>
-<div style="border:solid grey 1px;word-wrap:break-word;font-size:12px; width:95%"><%=uploadUrl%>
+<div style="border:solid grey 1px;word-wrap:break-word;font-size:12px; width:95%"><%=Encode.forHtml(String.valueOf(uploadUrl))%>
 </div>
 <div style="font-size:12px">
     (You may need to change the server name / port to the externally accessible name / port of your server.)
@@ -71,7 +72,7 @@
 <hr/>
 <br/>
 <div class="oscarBlueForeground">Oscar Public Key (Base64 encoded)</div>
-<div style="border:solid grey 1px;word-wrap:break-word;font-size:12px; width:95%"><%=KeyManagerUIBean.getPublicOscarKeyEscaped()%>
+<div style="border:solid grey 1px;word-wrap:break-word;font-size:12px; width:95%"><%=Encode.forHtml(String.valueOf(KeyManagerUIBean.getPublicOscarKeyEscaped()))%>
 </div>
 <br/>
 <hr/>
@@ -121,7 +122,7 @@
                 <%
                     for (PublicKey publicKey : KeyManagerUIBean.getPublicKeys()) {
                 %>
-                <option value="<%=KeyManagerUIBean.getSericeNameEscaped(publicKey)%>"><%=KeyManagerUIBean.getSericeDisplayString(publicKey)%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(KeyManagerUIBean.getSericeNameEscaped(publicKey)))%>"><%=Encode.forHtml(String.valueOf(KeyManagerUIBean.getSericeDisplayString(publicKey)))%>
                 </option>
                 <%
                     }
@@ -144,7 +145,7 @@
                 <%
                     for (ProfessionalSpecialist professionalSpecialist : KeyManagerUIBean.getProfessionalSpecialists()) {
                 %>
-                <option value="<%=professionalSpecialist.getId()%>"><%=KeyManagerUIBean.getProfessionalSpecialistDisplayString(professionalSpecialist)%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(professionalSpecialist.getId()))%>"><%=Encode.forHtml(String.valueOf(KeyManagerUIBean.getProfessionalSpecialistDisplayString(professionalSpecialist)))%>
                 </option>
                 <%
                     }

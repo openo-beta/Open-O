@@ -72,7 +72,7 @@
 %>
 <xml id="xml_list">
     <encounteraccessory>
-        <%=content%>
+        <%=Encode.forHtml(String.valueOf(content))%>
     </encounteraccessory>
 </xml>
 <%

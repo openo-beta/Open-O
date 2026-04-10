@@ -287,8 +287,8 @@ background-color:rgb(212, 212, 254);
             var frm = document.forms[0];
 
             frm.limit.value = <%=limit%>;
-            if (next) frm.offset.value = <%=offset+limit%>;
-            else frm.offset.value = <%=offset-limit%>;
+            if (next) frm.offset.value = <%=Encode.forJavaScript(String.valueOf(offset+limit))%>;
+            else frm.offset.value = <%=Encode.forJavaScript(String.valueOf(offset-limit))%>;
 
             frm.submit();
         }
@@ -371,10 +371,10 @@ background-color:rgb(212, 212, 254);
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.btnConsReq"/>"/>
                                 <div style="margin: 0; padding: 0; ">
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStart"/>:
-                                    <input type="text" name="startDate" size="8" id="startDate" value="<%= formattedStartDate %>" /><a id="SCal"><img
+                                    <input type="text" name="startDate" size="8" id="startDate" value="<%=Encode.forHtmlAttribute(String.valueOf(formattedStartDate))%>" /><a id="SCal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEnd"/>:
-                                    <input type="text" name="endDate" size="8" id="endDate" value="<%= formattedEndDate %>" /><a id="ECal"><img
+                                    <input type="text" name="endDate" size="8" id="endDate" value="<%=Encode.forHtmlAttribute(String.valueOf(formattedEndDate))%>" /><a id="ECal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:
                                     <input type="checkbox" name="includeCompleted" <%= includeCompleted ? "checked" : "" %> />
@@ -636,7 +636,7 @@ background-color:rgb(212, 212, 254);
                         }
                     }%>
                 <a target="_blank"
-                   href="<%= request.getContextPath() %>/tickler/AddTickler.do?<%=queryStr%>&message=<%=java.net.URLEncoder.encode("Patient has Consultation Letter with a status of 'Nothing Done' for over one week","UTF-8")%>">Add
+                   href="<%= request.getContextPath() %>/tickler/AddTickler.do?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&message=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode("Patient has Consultation Letter with a status of 'Nothing Done' for over one week","UTF-8")))%>">Add
                     Tickler for Consults with ND for more than one week</a>
                 <%}%>
             </td>

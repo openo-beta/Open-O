@@ -106,7 +106,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=provider.getProviderNo()%>" <%=selected%>><%=provider.getFormattedName()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>
                     </option>
                     <%
                         }
@@ -244,33 +244,33 @@
         <tbody>
         <tr>
             <td>0 -19</td>
-            <td><%=divide(total, a0to19)%>%</td>
-            <td><%=divide(a0to19, a0to19m)%>%</td>
-            <td><%=divide(a0to19, a0to19f)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a0to19)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a0to19, a0to19m)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a0to19, a0to19f)))%>%</td>
         </tr>
         <tr>
             <td>20-44</td>
-            <td><%=divide(total, a20to44)%>%</td>
-            <td><%=divide(a20to44, a20to44m)%>%</td>
-            <td><%=divide(a20to44, a20to44f)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a20to44)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a20to44, a20to44m)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a20to44, a20to44f)))%>%</td>
         </tr>
         <tr>
             <td>45-64</td>
-            <td><%=divide(total, a45to64)%>%</td>
-            <td><%=divide(a45to64, a45to64m)%>%</td>
-            <td><%=divide(a45to64, a45to64f)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a45to64)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a45to64, a45to64m)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a45to64, a45to64f)))%>%</td>
         </tr>
         <tr>
             <td>65-84</td>
-            <td><%=divide(total, a65to84)%>%</td>
-            <td><%=divide(a65to84, a65to84m)%>%</td>
-            <td><%=divide(a65to84, a65to84f)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a65to84)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a65to84, a65to84m)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a65to84, a65to84f)))%>%</td>
         </tr>
         <tr>
             <td>85+</td>
-            <td><%=divide(total, a85plus)%>%</td>
-            <td><%=divide(a85plus, a85plusm)%>%</td>
-            <td><%=divide(a85plus, a85plusf)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a85plus)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a85plus, a85plusm)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a85plus, a85plusf)))%>%</td>
         </tr>
         </tbody>
     </table>
@@ -308,21 +308,21 @@
         </thead>
         <tbody>
         <tr>
-            <td><%=scheduledAppts%>
+            <td><%=Encode.forHtml(String.valueOf(scheduledAppts))%>
             </td>
-            <td><%=billing%>
+            <td><%=Encode.forHtml(String.valueOf(billing))%>
             </td>
-            <td><%=encounterNote%>
+            <td><%=Encode.forHtml(String.valueOf(encounterNote))%>
             </td>
-            <td><%=problemList%>
+            <td><%=Encode.forHtml(String.valueOf(problemList))%>
             </td>
-            <td><%=storedDocuments%>
+            <td><%=Encode.forHtml(String.valueOf(storedDocuments))%>
             </td>
-            <td><%=rxNewRenewals%>
+            <td><%=Encode.forHtml(String.valueOf(rxNewRenewals))%>
             </td>
-            <td><%=useOfRemindersAlerts%>
+            <td><%=Encode.forHtml(String.valueOf(useOfRemindersAlerts))%>
             </td>
-            <td><%=labs%>
+            <td><%=Encode.forHtml(String.valueOf(labs))%>
             </td>
         </tr>
         </tbody>

@@ -24,6 +24,7 @@
 --%>
 
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ page errorPage="/errorpage.jsp" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -46,7 +47,7 @@
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>Case Management</title>
         <%! String refresh = OscarProperties.getInstance().getProperty("refresh.encounterLayout.jsp", "-1"); %>
-        <%="-1".equals(refresh) ? "" : "<meta http-equiv=\"refresh\" content=\"" + refresh + ";\">"%>
+        <%=Encode.forHtml(String.valueOf("-1".equals(refresh) ? "" : "<meta http-equiv=\"refresh\" content=\"" + refresh + ";\">"))%>
     </head>
     <body>
     <table border="0" width="100%" cellspacing="5">

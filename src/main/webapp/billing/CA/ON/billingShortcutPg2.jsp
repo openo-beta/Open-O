@@ -46,7 +46,6 @@
 <%@ page errorPage="/errorpage.jsp" import="java.util.*,java.math.*,java.net.*,java.sql.*, ca.openosp.openo.util.*, ca.openosp.*" %>
 
 <%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.*" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
@@ -509,10 +508,10 @@
             <td>
                 <table border="0" cellspacing="0" cellpadding="0" width="100%">
                     <tr bgcolor="#33CCCC">
-                        <td nowrap bgcolor="#FFCC99" width="10%" align="center"><%= demoname %>
-                            <%= demoSex.equals("1") ? "Male" : "Female" %> <%= " DOB: " + demoDOBYY + "/" + demoDOBMM + "/" + demoDOBDD + " HIN: " + demoHIN %>
+                        <td nowrap bgcolor="#FFCC99" width="10%" align="center"><%=Encode.forHtml(String.valueOf(demoname))%>
+                            <%= demoSex.equals("1") ? "Male" : "Female" %> <%=Encode.forHtml(String.valueOf(" DOB: " + demoDOBYY + "/" + demoDOBMM + "/" + demoDOBDD + " HIN: " + demoHIN))%>
                         </td>
-                        <td bgcolor="#99CCCC" align="center"><%= wrongMsg %>
+                        <td bgcolor="#99CCCC" align="center"><%=Encode.forHtml(String.valueOf(wrongMsg))%>
                         </td>
                     </tr>
                 </table>
@@ -555,7 +554,7 @@
                                     <td width="20%"><%=Encode.forHtml(providerBean.getProperty(request.getParameter("xml_provider"), ""))%>
                                     </td>
                                     <td nowrap width="30%"><b>Assig. Physician</b></td>
-                                    <td width="20%"><%=providerBean.getProperty(assgProvider_no, "")%>
+                                    <td width="20%"><%=Encode.forHtml(String.valueOf(providerBean.getProperty(assgProvider_no, "")))%>
                                     </td>
                                 </tr>
                                 <tr>
@@ -582,7 +581,7 @@
                                     %>
                                         Not Applicable &nbsp;
                                         <%} else {%>
-                                        <%=testSliCode%> &nbsp;
+                                        <%=Encode.forHtml(String.valueOf(testSliCode))%> &nbsp;
                                         <%}%>
                                     </td>
                                 </tr>
@@ -608,7 +607,7 @@
                 <table border="1" width="50%" bordercolorlight="#99A005"
                        bordercolordark="#FFFFFF">
 
-                    <%= msg %>
+                    <%=Encode.forHtml(String.valueOf(msg))%>
 
                     <tr>
 
@@ -630,15 +629,15 @@
             for (Enumeration e = request.getParameterNames(); e.hasMoreElements(); ) {
                 String temp = e.nextElement().toString();
         %>
-        <input type="hidden" name="<%= temp %>"
-               value="<%=StringEscapeUtils.escapeHtml4(request.getParameter(temp))%>">
+        <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(temp))%>"
+               value="<%=Encode.forHtml(request.getParameter(temp))%>">
         <%
             }
         %>
-        <input type="hidden" name="hc_type" value="<%=demoHCTYPE%>">
-        <input type="hidden" name="referralCode" value="<%=r_doctor_ohip%>">
-        <input type="hidden" name="sex" value="<%=demoSex%>">
-        <input type="hidden" name="proOHIPNO" value="<%=proOHIPNO%>">
+        <input type="hidden" name="hc_type" value="<%=Encode.forHtmlAttribute(String.valueOf(demoHCTYPE))%>">
+        <input type="hidden" name="referralCode" value="<%=Encode.forHtmlAttribute(String.valueOf(r_doctor_ohip))%>">
+        <input type="hidden" name="sex" value="<%=Encode.forHtmlAttribute(String.valueOf(demoSex))%>">
+        <input type="hidden" name="proOHIPNO" value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIPNO))%>">
     </form>
 
 </table>

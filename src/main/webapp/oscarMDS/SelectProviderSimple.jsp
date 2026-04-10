@@ -55,9 +55,9 @@
         <select name="selectedProviders" size="10" multiple>
             <% ArrayList providers = ProviderData.getProviderList();
                 for (int i = 0; i < providers.size(); i++) { %>
-            <option value="<%= (String) ((ArrayList) providers.get(i)).get(0) %>"
-                    <%=Encode.forHtml((((String) ((ArrayList) providers.get(i)).get(0)).equals(request.getParameter("providerNo")) ? " selected" : ""))%>><%= (String) ((ArrayList) providers.get(i)).get(1) %>
-                <%= (String) ((ArrayList) providers.get(i)).get(2) %>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf((String) ((ArrayList) providers.get(i)).get(0)))%>"
+                    <%=Encode.forHtml((((String) ((ArrayList) providers.get(i)).get(0)).equals(request.getParameter("providerNo")) ? " selected" : ""))%>><%=Encode.forHtml(String.valueOf((String) ((ArrayList) providers.get(i)).get(1)))%>
+                <%=Encode.forHtml(String.valueOf((String) ((ArrayList) providers.get(i)).get(2)))%>
             </option>
             <% } %>
         </select>

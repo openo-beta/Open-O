@@ -19,6 +19,7 @@
         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.login.DBHelp" %>
 <%@ page import="ca.openosp.openo.report.data.RptReportCreator" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <% java.util.Properties oscarVariables = ca.openosp.OscarProperties.getInstance(); %>
 
 <%
@@ -534,13 +535,13 @@
         <tr BGCOLOR="#66CCCC">
             <th width="6%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgNoHeader"/></th>
             <% for (int i = 0; i < vecFieldCaption.size(); i++) { %>
-            <th><%=(String) vecFieldCaption.get(i)%>
+            <th><%=Encode.forHtml(String.valueOf((String) vecFieldCaption.get(i)))%>
             </th>
             <% } %>
             <% if (bSpecSelect) {
                 for (int i = 0; i < vecSpecCaption.size(); i++) {
             %>
-            <th><%=(String) vecSpecCaption.get(i)%>
+            <th><%=Encode.forHtml(String.valueOf((String) vecSpecCaption.get(i)))%>
             </th>
             <% }
             }%>
@@ -551,17 +552,17 @@
                 String color = i % 2 == 0 ? "#EEEEFF" : "#DDDDFF";
                 Properties prop = (Properties) vecFieldValue.get(i);
         %>
-        <tr BGCOLOR="<%=color%>">
-            <td align="center"><%=i + 1 %>
+        <tr BGCOLOR="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
+            <td align="center"><%=Encode.forHtml(String.valueOf(i + 1))%>
             </td>
             <% for (int j = 0; j < vecFieldName.size(); j++) { %>
-            <td><%=prop.getProperty((String) vecFieldName.get(j), "")%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(prop.getProperty((String) vecFieldName.get(j), "")))%>&nbsp;</td>
             <% } %>
             <% if (bSpecSelect) {
                 String demoNo = prop.getProperty("demographic_no");
                 for (int j = 0; j < vecSpecCaption.size(); j++) {
             %>
-            <td><%=propSpecValue.getProperty(demoNo + ((String) vecSpecCaption.get(j)).replaceAll(" ", "_"), "")%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(propSpecValue.getProperty(demoNo + ((String) vecSpecCaption.get(j)).replaceAll(" ", "_"), "")))%>&nbsp;</td>
             <% }
             } %>
         </tr>

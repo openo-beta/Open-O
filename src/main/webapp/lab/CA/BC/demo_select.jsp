@@ -45,6 +45,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 
     String postTo = request.getParameter("postTo");
@@ -77,7 +78,7 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/oscar.css">
     <script language="JavaScript">
         function PopupReturn(index) {
-            window.opener.location = '<%=postTo.replaceAll("-","&")%>' + index;
+            window.opener.location = '<%=Encode.forJavaScript(String.valueOf(postTo.replaceAll("-","&")))%>' + index;
             window.opener.focus();
             window.close();
         };
@@ -94,8 +95,8 @@
     </table>
     <table>
         <tr>
-            <td><input type="hidden" name="postTo" value="<%=postTo%>"/> <input
-                    type="text" name="keyword" value="<%=keyword%>"/> <input
+            <td><input type="hidden" name="postTo" value="<%=Encode.forHtmlAttribute(String.valueOf(postTo))%>"/> <input
+                    type="text" name="keyword" value="<%=Encode.forHtmlAttribute(String.valueOf(keyword))%>"/> <input
                     type="submit" value="Search"/></td>
         </tr>
     </table>
@@ -104,52 +105,52 @@
         <tr>
             <td width="10%" class="Text"><input type="radio" name="column"
                                                 value="DemographicNo"
-                    <%=(column.equals("DemographicNo") ? "checked" : "")%> /><a
-                    href="<%=url%>&orderby=DemographicNo">Demo No</a></td>
+                    <%=Encode.forHtml(String.valueOf((column.equals("DemographicNo") ? "checked" : "")))%> /><a
+                    href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=DemographicNo">Demo No</a></td>
             <td width="20%" class="Text"><input type="radio" name="column"
-                                                value="LastName" <%=(column.equals("LastName") ? "checked" : "")%> /><a
-                    href="<%=url%>">Last Name</a></td>
+                                                value="LastName" <%=Encode.forHtml(String.valueOf((column.equals("LastName") ? "checked" : "")))%> /><a
+                    href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>">Last Name</a></td>
             <td width="15%" class="Text"><input type="radio" name="column"
-                                                value="FirstName" <%=(column.equals("FirstName") ? "checked" : "")%> /><a
-                    href="<%=url%>&orderby=FirstName">First Name</a></td>
+                                                value="FirstName" <%=Encode.forHtml(String.valueOf((column.equals("FirstName") ? "checked" : "")))%> /><a
+                    href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=FirstName">First Name</a></td>
             <td width="10%" class="Text" align="center"><input type="radio"
                                                                name="column" value="ChartNo"
-                    <%=(column.equals("ChartNo") ? "checked" : "")%> /><a
-                    href="<%=url%>&orderby=ChartNo">Chart#</a></td>
+                    <%=Encode.forHtml(String.valueOf((column.equals("ChartNo") ? "checked" : "")))%> /><a
+                    href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=ChartNo">Chart#</a></td>
             <td width="2%" class="Text" align="center"><input type="radio"
                                                               name="column"
-                                                              value="Sex" <%=(column.equals("Sex") ? "checked" : "")%> /><a
-                    href="<%=url%>&orderby=Sex">Sex</a></td>
+                                                              value="Sex" <%=Encode.forHtml(String.valueOf((column.equals("Sex") ? "checked" : "")))%> /><a
+                    href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=Sex">Sex</a></td>
             <td width="15%" class="Text" align="center"><input type="radio"
                                                                name="column" value="YearOfBirth"
-                    <%=(column.equals("YearOfBirth") ? "checked" : "")%> /><a
-                    href="<%=url%>&orderby=YearOfBirth">DOB</a></td>
+                    <%=Encode.forHtml(String.valueOf((column.equals("YearOfBirth") ? "checked" : "")))%> /><a
+                    href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=YearOfBirth">DOB</a></td>
             <td width="2%" class="Text" align="center"><input type="radio"
                                                               name="column" value="PatientStatus"
-                    <%=(column.equals("PatientStatus") ? "checked" : "")%> /><a
-                    href="<%=url%>&orderby=PatientStatus">Status</a></td>
+                    <%=Encode.forHtml(String.valueOf((column.equals("PatientStatus") ? "checked" : "")))%> /><a
+                    href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=PatientStatus">Status</a></td>
         </tr>
         <%
             boolean other = true;
             int count = 0;
             for (Demographic d : demographics) {
         %>
-        <tr class="<%=(other? "LightBG" : "WhiteBG")%>">
+        <tr class="<%=Encode.forHtmlAttribute(String.valueOf((other? "LightBG" : "WhiteBG")))%>">
             <td class="Text" align="center"><a
-                    href="javascript:PopupReturn('<%=d.getDemographicNo()%>')">
-                <%=d.getDemographicNo()%>
+                    href="javascript:PopupReturn('<%=Encode.forHtmlAttribute(String.valueOf(d.getDemographicNo()))%>')">
+                <%=Encode.forHtml(String.valueOf(d.getDemographicNo()))%>
             </a></td>
-            <td class="Text"><%=Misc.toUpperLowerCase(d.getLastName())%>
+            <td class="Text"><%=Encode.forHtml(String.valueOf(Misc.toUpperLowerCase(d.getLastName())))%>
             </td>
-            <td class="Text"><%=Misc.toUpperLowerCase(d.getFirstName())%>
+            <td class="Text"><%=Encode.forHtml(String.valueOf(Misc.toUpperLowerCase(d.getFirstName())))%>
             </td>
-            <td class="Text" align="center"><%=Misc.check(d.getChartNo(), "")%>
+            <td class="Text" align="center"><%=Encode.forHtml(String.valueOf(Misc.check(d.getChartNo(), "")))%>
             </td>
-            <td class="Text" align="center"><%=Misc.check(d.getSex(), "")%>
+            <td class="Text" align="center"><%=Encode.forHtml(String.valueOf(Misc.check(d.getSex(), "")))%>
             </td>
-            <td class="Text" align="center" nowrap><%= d.getBirthDayAsString()%>
+            <td class="Text" align="center" nowrap><%=Encode.forHtml(String.valueOf(d.getBirthDayAsString()))%>
             </td>
-            <td class="Text" align="center"><%=Misc.check(d.getPatientStatus(), "")%>
+            <td class="Text" align="center"><%=Encode.forHtml(String.valueOf(Misc.check(d.getPatientStatus(), "")))%>
             </td>
         </tr>
         <%
@@ -163,10 +164,10 @@
         %>
         <tr>
             <td width="50%" colspan="3" align="right" class="SmallerText">
-                &nbsp;<%=(start > 0 ? "<a href=" + previous + ">previous</a>" : "")%>
+                &nbsp;<%=Encode.forHtml(String.valueOf((start > 0 ? "<a href=" + previous + ">previous</a>" : "")))%>
             </td>
             <td width="50%" colspan="4" align="left" class="SmallerText">
-                | <%=(count == 10 ? "<a href=" + next + ">next</a>" : "")%>&nbsp;
+                | <%=Encode.forHtml(String.valueOf((count == 10 ? "<a href=" + next + ">next</a>" : "")))%>&nbsp;
             </td>
         </tr>
     </table>

@@ -227,7 +227,7 @@
         <!-- getPractionerNo() getPractitionerNoType() getFormattedName() getComments() getBillingNo() getTitle() getEmail() getOhipNo() getAddress() -->
         <tr>
             <td style="text-align:center"><a
-                    href='providerupdateprovider.jsp?keyword=<%=provider.getId()%>'><%= provider.getId() %>
+                    href='providerupdateprovider.jsp?keyword=<%=Encode.forUriComponent(String.valueOf(provider.getId()))%>'><%=Encode.forHtml(String.valueOf(provider.getId()))%>
             </a></td>
             <td><%= Encode.forHtmlContent((provider.getLastName() == null ? "" : provider.getLastName()) + ", " + (provider.getFirstName() == null ? "" : provider.getFirstName())) %>
             </td>
@@ -241,7 +241,7 @@
             </td>
             <td><%= Encode.forHtmlContent(provider.getPhone() == null ? "" : provider.getPhone()) %>
             </td>
-            <td><%= (provider.getStatus() != null) ? ("1".equals(provider.getStatus()) ? "Active" : "Inactive") : "" %>
+            <td><%=Encode.forHtml(String.valueOf((provider.getStatus() != null) ? ("1".equals(provider.getStatus()) ? "Active" : "Inactive") : ""))%>
             </td>
         </tr>
         <%
@@ -260,11 +260,11 @@
         String searchStatusQ = (searchStatus != null) ? "&search_status=" + searchStatus : "";
         if (nLastPage >= 0) {
     %> <a
-            href="providersearchresults.jsp?keyword=<%= Encode.forUriComponent(keyword) %>&search_mode=<%= searchMode %><%= searchStatusQ %>&orderby=<%=orderBy%>&limit1=<%=nLastPage%>&limit2=<%=strLimit%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.btnLastPage"/></a> | <%
+            href="providersearchresults.jsp?keyword=<%= Encode.forUriComponent(keyword) %>&search_mode=<%=Encode.forUriComponent(String.valueOf(searchMode))%><%=Encode.forUriComponent(String.valueOf(searchStatusQ))%>&orderby=<%=Encode.forUriComponent(String.valueOf(orderBy))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.btnLastPage"/></a> | <%
         }
         if (nItems == Integer.parseInt(strLimit)) {
     %> <a
-            href="providersearchresults.jsp?keyword=<%= Encode.forUriComponent(keyword) %>&search_mode=<%= searchMode %><%= searchStatusQ %>&orderby=<%= orderBy %>&limit1=<%=nNextPage%>&limit2=<%=strLimit%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.btnNextPage"/></a> <%
+            href="providersearchresults.jsp?keyword=<%= Encode.forUriComponent(keyword) %>&search_mode=<%=Encode.forUriComponent(String.valueOf(searchMode))%><%=Encode.forUriComponent(String.valueOf(searchStatusQ))%>&orderby=<%=Encode.forUriComponent(String.valueOf(orderBy))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.btnNextPage"/></a> <%
         }
     %>
     <p><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.msgClickForEditing"/></p>

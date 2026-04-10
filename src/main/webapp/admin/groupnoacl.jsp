@@ -38,6 +38,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.commn.dao.MyGroupAccessRestrictionDao" %>
 <%@ page import="ca.openosp.openo.commn.model.MyGroupAccessRestriction" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     String providerNo = loggedInInfo.getLoggedInProviderNo();
@@ -143,7 +144,7 @@
                                                     selected = " selected=\"selected\" ";
                                                 }
                                         %>
-                                        <option value="<%=group%>" <%=selected%>><%=group %>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(group))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(group))%>
                                         </option>
                                         <% } %>
                                         <%
@@ -153,7 +154,7 @@
                                                     selected = " selected=\"selected\" ";
                                                 }
                                         %>
-                                        <option value="<%=provider.getProviderNo()%>" <%=selected%>><%=provider.getFormattedName() %>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>
                                         </option>
                                         <% } %>
                                     </select>
@@ -171,11 +172,11 @@
                                     i++;
                             %>
                             <tr BGCOLOR="<%=i%2==0?"ivory":"white"%>">
-                                <td>&nbsp; <%=provider.getLastName()%>, <%=provider.getFirstName()%>
+                                <td>&nbsp; <%=Encode.forHtml(String.valueOf(provider.getLastName()))%>, <%=Encode.forHtml(String.valueOf(provider.getFirstName()))%>
                                 </td>
                                 <td ALIGN="center">
                                     <input type="checkbox" name="data" <%=selected%>
-                                           value="<%=provider.getProviderNo()%>">
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>">
                             </tr>
                             <% } %>
 

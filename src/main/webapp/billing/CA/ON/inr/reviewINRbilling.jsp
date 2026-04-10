@@ -160,7 +160,7 @@
 if (errorCode.compareTo("") != 0) {
 %>
 
-<form><%=errorCode%> <input type=button name=back
+<form><%=Encode.forHtml(String.valueOf(errorCode))%> <input type=button name=back
                             onClick="javascript:history.go(-1);return false;"></form>
     <%} else {%>
 <table BORDER="0" CELLPADDING="1" CELLSPACING="0" WIDTH="100%"
@@ -180,8 +180,8 @@ if (errorCode.compareTo("") != 0) {
                                                   color="#000000" size="1">Demographic Name </font></td>
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
-                                    type="hidden" name="demoid" value="<%=demoid%> " size="20">
-                                <input type="text" name="demo_name" value="<%=demo_name%> "
+                                    type="hidden" name="demoid" value="<%=Encode.forHtmlAttribute(String.valueOf(demoid))%> " size="20">
+                                <input type="text" name="demo_name" value="<%=Encode.forHtmlAttribute(String.valueOf(demo_name))%> "
                                        size="20" readonly> </font></td>
                             <td rowspan="9" width="21%" valign="middle">
                                 <p><br>
@@ -192,36 +192,36 @@ if (errorCode.compareTo("") != 0) {
                             <td width="29%"><font size="1"
                                                   face="Arial, Helvetica, sans-serif">Demographic HIN</font></td>
                             <td width="50%"><input type="text" name="demo_hin"
-                                                   value="<%=demo_hin%> " size="20" readonly></td>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demo_hin))%> " size="20" readonly></td>
                         </tr>
                         <tr>
                             <td width="29%"><font size="1"
                                                   face="Arial, Helvetica, sans-serif">Demographic DOB</font></td>
                             <td width="50%"><input type="text" name="demo_dob"
-                                                   value="<%=demo_dob%> " size="20" readonly></td>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demo_dob))%> " size="20" readonly></td>
                         </tr>
                         <tr>
                             <td width="29%"><font face="Arial, Helvetica, sans-serif"
                                                   color="#000000" size="1">Service Code </font></td>
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
-                                    type="text" name="service_code" size="10" value="<%=service_code%>"
+                                    type="text" name="service_code" size="10" value="<%=Encode.forHtmlAttribute(String.valueOf(service_code))%>"
                                     readonly> <input type="text" name="service_amount"
-                                                     size="10" value="<%=service_amount%>" readonly> <input
+                                                     size="10" value="<%=Encode.forHtmlAttribute(String.valueOf(service_amount))%>" readonly> <input
                                     type="hidden" name="service_unit" value="1"> </font></td>
                         </tr>
                         <tr>
                             <td width="29%"><font size="1"
                                                   face="Arial, Helvetica, sans-serif">Diagnostic Code</font></td>
                             <td width="50%"><input type="text" name="diag_code" size="20"
-                                                   value="<%=diag_code%>" readonly></td>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(diag_code))%>" readonly></td>
                         </tr>
                         <tr>
                             <td width="29%"><font face="Arial, Helvetica, sans-serif"
                                                   color="#000000" size="1">Create Date</font></td>
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
-                                    type="text" name="docdate" readonly value="<%=nowDate%>" size="20">
+                                    type="text" name="docdate" readonly value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>" size="20">
                             </font></td>
                         </tr>
                         <tr>
@@ -235,12 +235,12 @@ if (errorCode.compareTo("") != 0) {
                                     value="<%=Encode.forHtmlAttribute(request.getParameter("doccreator"))%>" size="20">
                                 <input type="hidden" name="orderby" value="updatedatetime desc"
                                        size="20"> <input type="hidden" name="provider_no"
-                                                         value="<%=provider_no%>"> <input type="hidden"
+                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(provider_no))%>"> <input type="hidden"
                                                                                           name="provider_ohip_no"
-                                                                                          value="<%=provider_ohip_no%>">
+                                                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(provider_ohip_no))%>">
                                 <input
-                                        type="hidden" name="provider_rma_no" value="<%=provider_rma_no%>">
-                                <input type="hidden" name="service_desc" value="<%=service_desc%>">
+                                        type="hidden" name="provider_rma_no" value="<%=Encode.forHtmlAttribute(String.valueOf(provider_rma_no))%>">
+                                <input type="hidden" name="service_desc" value="<%=Encode.forHtmlAttribute(String.valueOf(service_desc))%>">
                             </font></td>
                         </tr>
                     </table>

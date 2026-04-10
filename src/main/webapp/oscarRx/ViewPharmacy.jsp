@@ -125,7 +125,7 @@
                                             <% %>
                                             <input type="hidden" id="pharmacyId" name="pharmacyId"/>
                                             <input type="hidden" id="demographicNo" name="demographicNo"
-                                                   value="<%=bean.getDemographicNo()%>"/>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(bean.getDemographicNo()))%>"/>
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.pharmacyName"/> :
                                         </td>
                                         <td><label type="text" readonly="true" id="pharmacyName" name="pharmacyName"/>

@@ -69,7 +69,7 @@
         <td height="40" width="25"></td>
         <td width="90%" align="left">
             <p><font color="#4D4D4D"><b><font size="4">oscar<font
-                    size="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgTitle"/> (<%=createtime%>)</font></font></b></font>
+                    size="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgTitle"/> (<%=Encode.forHtml(String.valueOf(createtime))%>)</font></font></b></font>
             </p>
         </td>
         <td><input type="button" name="Button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.btnPrint"/>"
@@ -134,7 +134,7 @@
                     bodd = !bodd;
     %>
     <tr bgcolor="<%=bodd?"#F6F6F6":"#FFFFFF"%>">
-        <td class="items"><%=formatter.format(indexDate)%>
+        <td class="items"><%=Encode.forHtml(String.valueOf(formatter.format(indexDate)))%>
         </td>
         <td class="items">&nbsp;</td>
         <td class="items">&nbsp;</td>
@@ -154,20 +154,20 @@
             indexDate = DateUtils.addMinutes(indexDate, 15);
         }
     %>
-    <tr bgcolor="<%=((bodd)?"#F6F6F6":"#FFFFFF")%>">
-        <td class="items"><%=formatter.format(indexDate)%>
+    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(((bodd)?"#F6F6F6":"#FFFFFF")))%>">
+        <td class="items"><%=Encode.forHtml(String.valueOf(formatter.format(indexDate)))%>
         </td>
-        <td class="items"><%=rsdemo.getString("d.chart_no")%>&nbsp;</td>
-        <td class="items"><%=Misc.toUpperLowerCase(rsdemo.getString("d.last_name")) + ", " + Misc.toUpperLowerCase(rsdemo.getString("d.first_name")) + " Ph:" + rsdemo.getString("d.phone")%>
+        <td class="items"><%=Encode.forHtml(String.valueOf(rsdemo.getString("d.chart_no")))%>&nbsp;</td>
+        <td class="items"><%=Encode.forHtml(String.valueOf(Misc.toUpperLowerCase(rsdemo.getString("d.last_name")) + ", " + Misc.toUpperLowerCase(rsdemo.getString("d.first_name")) + " Ph:" + rsdemo.getString("d.phone")))%>
         </td>
-        <td class="items"><%=rsdemo.getString("d.date_of_birth") + "-" + rsdemo.getString("d.month_of_birth") + "-" + rsdemo.getString("d.year_of_birth")%>
+        <td class="items"><%=Encode.forHtml(String.valueOf(rsdemo.getString("d.date_of_birth") + "-" + rsdemo.getString("d.month_of_birth") + "-" + rsdemo.getString("d.year_of_birth")))%>
         </td>
-        <td class="items"><%=rsdemo.getString("d.hin")%>&nbsp;</td>
+        <td class="items"><%=Encode.forHtml(String.valueOf(rsdemo.getString("d.hin")))%>&nbsp;</td>
         <td class="items">&nbsp;</td>
         <td class="items">&nbsp;</td>
         <td class="items">&nbsp;</td>
         <td class="items">&nbsp;</td>
-        <td class="items"><%=rsdemo.getString("a.reason")%>&nbsp;</td>
+        <td class="items"><%=Encode.forHtml(String.valueOf(rsdemo.getString("a.reason")))%>&nbsp;</td>
     </tr>
     <%
         previousEndDate = currentEndDate;
@@ -178,7 +178,7 @@
         indexDate = DateUtils.addMinutes(indexDate, 15);
     %>
     <tr bgcolor="<%=bodd?"#F6F6F6":"#FFFFFF"%>">
-        <td class="items"><%=formatter.format(indexDate)%>
+        <td class="items"><%=Encode.forHtml(String.valueOf(formatter.format(indexDate)))%>
         </td>
         <td class="items">&nbsp;</td>
         <td class="items">&nbsp;</td>

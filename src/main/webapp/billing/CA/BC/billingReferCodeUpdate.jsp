@@ -47,6 +47,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.DiagnosticCode" %>
 <%@ page import="ca.openosp.openo.commn.dao.DiagnosticCodeDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 %>
@@ -70,7 +71,7 @@
 
             self.close();
             self.opener.document
-        .<%=formName%>.<%=formElement%>.
+        .<%=formName%>.<%=Encode.forJavaScript(String.valueOf(formElement))%>.
             value = File0;
         }
 
@@ -126,7 +127,7 @@
 %>
 <script LANGUAGE="JavaScript">
     <!--
-    CodeAttach('<%=param[0]%>', '<%=param[1]%>', '<%=param[2]%>');
+    CodeAttach('<%=Encode.forJavaScript(String.valueOf(param[0]))%>', '<%=Encode.forJavaScript(String.valueOf(param[1]))%>', '<%=Encode.forJavaScript(String.valueOf(param[2]))%>');
     -->
 
 </script>

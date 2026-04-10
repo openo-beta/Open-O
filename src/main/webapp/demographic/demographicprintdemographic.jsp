@@ -25,8 +25,8 @@
 --%>
 
 
-<%@ page import="java.util.*, java.sql.*, ca.openosp.*"
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.util.*, java.sql.*, ca.openosp.*"
          errorPage="/errorpage.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -64,7 +64,7 @@
         for (int i = 0; i < b1; i++) {
     %>
     <div ID="blockDiv1"
-         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=left%>px; top:<%=top+i*(height+gap/2)%>px; width:400px; height:100px;">
+         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(left))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(top+i*(height+gap/2)))%>px; width:400px; height:100px;">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <%--    <tr><td><%=Encode.forHtml(request.getParameter("label1"))%></td></tr>--%>
             <tr>
@@ -89,7 +89,7 @@
     %>
 
     <div ID="blockDiv1"
-         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=left%>px; top:<%=top+b1*(height+gap)+i*(height+gap/2)%>px; width:400px; height:100px;">
+         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(left))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(top+b1*(height+gap)+i*(height+gap/2)))%>px; width:400px; height:100px;">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <%--<tr><td><%=Encode.forHtml(request.getParameter("label2"))%></td></tr>--%>
             <tr>
@@ -112,7 +112,7 @@
     %>
 
     <div ID="blockDiv1"
-         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=left%>px; top:<%=top+(b1+b2)*(height+gap)+i*(height+gap/2)%>px; width:400px; height:100px;">
+         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(left))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(top+(b1+b2)*(height+gap)+i*(height+gap/2)))%>px; width:400px; height:100px;">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <%--  <tr><td><%=Encode.forHtml(request.getParameter("label3"))%></td></tr>--%>
             <tr>
@@ -130,7 +130,7 @@
     %>
 
     <div ID="blockDiv1"
-         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=left%>px; top:<%=top+(b1+b2+b3)*(height+gap)+i*(height+gap/2)%>px; width:400px; height:100px;">
+         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(left))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(top+(b1+b2+b3)*(height+gap)+i*(height+gap/2)))%>px; width:400px; height:100px;">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <%--  <tr><td><%=Encode.forHtml(request.getParameter("label4"))%></td></tr>--%>
             <tr>
@@ -147,7 +147,7 @@
         for (int i = 0; i < b5; i++) {
     %>
     <div ID="blockDiv1"
-         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=left%>px; top:<%=top+(b1+b2+b3+b4)*(height+gap)+i*(height+gap/2)%>px; width:400px; height:100px;">
+         STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(left))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(top+(b1+b2+b3+b4)*(height+gap)+i*(height+gap/2)))%>px; width:400px; height:100px;">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <%--  <tr><td><%=Encode.forHtml(request.getParameter("label5"))%></td></tr>--%>
             <tr>

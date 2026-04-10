@@ -67,6 +67,7 @@
         import="ca.openosp.openo.messenger.docxfer.send.*, ca.openosp.openo.messenger.docxfer.util.*, ca.openosp.openo.util.*" %>
 <%@ page import="java.util.*, org.w3c.dom.*" %>
 <%@ page import="ca.openosp.openo.util.Doc2PDF" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -161,7 +162,7 @@
                             %>
                             <% for ( int i = 0 ; i < attVector.size(); i++) { %>
                     <tr>
-                        <td bgcolor="#DDDDFF"><%=(String) attVector.get(i)%>
+                        <td bgcolor="#DDDDFF"><%=Encode.forHtml(String.valueOf((String) attVector.get(i)))%>
                         </td>
                         <td bgcolor="#DDDDFF"><input type=submit
                                                      onclick=" document.forms[0].file_id.value = <%=i%>"
@@ -169,7 +170,7 @@
                     </tr>
                             <% }  %>
                         <input type="hidden" name="file_id" id="file_id"/>
-                        <input type="hidden" name="attachment" id="attachment" value="<%=pdfAttch%>"/>
+                        <input type="hidden" name="attachment" id="attachment" value="<%=Encode.forHtmlAttribute(String.valueOf(pdfAttch))%>"/>
 
                     <table>
             </td>

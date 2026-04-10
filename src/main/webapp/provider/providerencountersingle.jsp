@@ -67,13 +67,13 @@
         content = enc.getContent();
         encounterattachment = enc.getEncounterAttachment();
 %>
-<font size="-1"><%=ConversionUtils.toDateString(enc.getEncounterDate())%> <%=ConversionUtils.toTimeString(enc.getEncounterTime())%>
-    &nbsp;<font color="green"><%=enc.getSubject().equals("") ? "Unknown" : enc.getSubject()%>
+<font size="-1"><%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(enc.getEncounterDate())))%> <%=Encode.forHtml(String.valueOf(ConversionUtils.toTimeString(enc.getEncounterTime())))%>
+    &nbsp;<font color="green"><%=Encode.forHtml(String.valueOf(enc.getSubject().equals("") ? "Unknown" : enc.getSubject()))%>
     </font></font>
 <br>
 <xml id="xml_list">
     <encounter>
-        <%=content%>
+        <%=Encode.forHtml(String.valueOf(content))%>
     </encounter>
 </xml>
 <%
@@ -86,8 +86,8 @@
             while (st.hasMoreTokens()) {
                 temp = st.nextToken(">").substring(1);
         %> <a href=#
-              onClick="popupPage(600,800, '<%=st.nextToken("<").substring(1)%>')">
-            <%=temp%>
+              onClick="popupPage(600,800, '<%=Encode.forJavaScript(String.valueOf(st.nextToken("<").substring(1)))%>')">
+            <%=Encode.forHtml(String.valueOf(temp))%>
         </a> <%
                 st.nextToken(">");
             }

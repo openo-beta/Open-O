@@ -1,5 +1,4 @@
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %><%--
-<%@ page import="org.owasp.encoder.Encode" %>
 
     Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
@@ -24,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -210,7 +210,7 @@
                                         <td>
                                             <input type="hidden" id="pharmacyId" name="pharmacyId"/>
                                             <input type="hidden" id="demographicNo" name="demographicNo"
-                                                   value="<%=bean.getDemographicNo()%>"/>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(bean.getDemographicNo()))%>"/>
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.pharmacyName"/> :
                                         </td>
                                         <td><input type="text" id="pharmacyName" name="pharmacyName"/></td>

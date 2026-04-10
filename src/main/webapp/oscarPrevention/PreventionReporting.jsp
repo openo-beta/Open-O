@@ -456,7 +456,7 @@
                                     String qName = sc.queryName;
                                     String selected = (patientSet != null && patientSet.equals(qId)) ? "selected" : "";
                             %>
-                            <option value="<%=Encode.forHtmlAttribute(qId)%>" <%=selected%>><%=Encode.forHtmlContent(qName)%>
+                            <option value="<%=Encode.forHtmlAttribute(qId)%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtmlContent(qName)%>
                             </option>
                             <%}%>
                         </select>
@@ -524,20 +524,20 @@
         <form name="frmBatchBill" action="" method="post">
             <input type="hidden" name="clinic_view"
                    value="<%=OscarProperties.getInstance().getProperty("clinic_view","")%>">
-            <input type="hidden" name="followUpType" value="<%=followUpType%>">
+            <input type="hidden" name="followUpType" value="<%=Encode.forHtmlAttribute(String.valueOf(followUpType))%>">
             <table class="ele" width="90%">
                 <tr>
                     <td>&nbsp;</td>
-                    <td style="10%;">Total patients: <%=list.size()%><br/>Ineligible:<%=ineligible%>
+                    <td style="10%;">Total patients: <%=list.size()%><br/>Ineligible:<%=Encode.forHtml(String.valueOf(ineligible))%>
                     </td>
-                    <td style="10%;">Up to Date: <%=done%> = <%=percentage %> %
+                    <td style="10%;">Up to Date: <%=Encode.forHtml(String.valueOf(done))%> = <%=Encode.forHtml(String.valueOf(percentage))%> %
                         <%if (percentageWithGrace != null) { %>
-                            <%-- <br/> With Grace <%=percentageWithGrace%> %
+                            <%-- <br/> With Grace <%=Encode.forHtml(String.valueOf(percentageWithGrace))%> %
                             --%>
                         <%}%>
                     </td>
 
-                    <td style="40%;">&nbsp;<%=request.getAttribute("patientSet")%>
+                    <td style="40%;">&nbsp;<%=Encode.forHtml(String.valueOf(request.getAttribute("patientSet")))%>
                     </td>
                     <td>
                         <select onchange="setNextContactMethod(this)">
@@ -561,7 +561,7 @@
                     <th class="unsortable">&nbsp;</th>
                     <th>DemoNo</th>
                     <th>DOB</th>
-                    <th>Age as of <br/><%=UtilDateUtilities.DateToString(asDate)%>
+                    <th>Age as of <br/><%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(asDate)))%>
                     </th>
                     <th>Sex</th>
                     <th>Lastname</th>
@@ -627,14 +627,14 @@
                             }
                             %>
                        <tr>
-                          <td><%=i+1%></td>
+                          <td><%=Encode.forHtml(String.valueOf(i+1))%></td>
                           <td>
-                              <a href="javascript: return false;" onClick="popup(724,964,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=dis.demographicNo%>&amp;displaymode=edit&amp;dboperation=search_detail','MasterDemographic')"><%=dis.demographicNo%></a>
+                              <a href="javascript: return false;" onClick="popup(724,964,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(dis.demographicNo))%>&amp;displaymode=edit&amp;dboperation=search_detail','MasterDemographic')"><%=Encode.forHtml(String.valueOf(dis.demographicNo))%></a>
                           </td>
-                          <td><%=DemographicData.getDob(demo,"-")%></td>
+                          <td><%=Encode.forHtml(String.valueOf(DemographicData.getDob(demo,"-")))%></td>
 
                           <%if (type == null) { %>
-                          <td><%=demo.getAgeAsOf(asDate)%></td>
+                          <td><%=Encode.forHtml(String.valueOf(demo.getAgeAsOf(asDate)))%></td>
                           <td><%=Encode.forHtmlContent(h.get("sex"))%></td>
                           <td><%=Encode.forHtmlContent(h.get("lastName"))%></td>
                           <td><%=Encode.forHtmlContent(h.get("firstName"))%></td>
@@ -642,16 +642,16 @@
                           <td><%=Encode.forHtmlContent(demo.getPhone())%> </td>
                           <td><%=Encode.forHtmlContent(demo.getEmail()) %></td>
                           <td><%=Encode.forHtmlContent(demo.getAddress())+" "+Encode.forHtmlContent(demo.getCity())+" "+Encode.forHtmlContent(demo.getProvince())+" "+Encode.forHtmlContent(demo.getPostal())%> </td>
-                          <td><oscar:nextAppt demographicNo="<%=demo.getDemographicNo().toString()%>"/></td>
-                          <td bgcolor="<%=dis.color%>"><%=dis.state%></td>                          
-                          <td bgcolor="<%=dis.color%>"><%=dis.bonusStatus%></td>
-                          <td bgcolor="<%=dis.color%>"><%=dis.numMonths%></td>
-                          <td bgcolor="<%=dis.color%>"><%=dis.lastDate%></td>
+                          <td><oscar:nextAppt demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demo.getDemographicNo().toString()))%>"/></td>
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(dis.state))%></td>                          
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(dis.bonusStatus))%></td>
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(dis.numMonths))%></td>
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(dis.lastDate))%></td>
 
 
                           <% } else {
                               Demographic demoSDM = demoData.getSubstituteDecisionMaker(LoggedInInfo.getLoggedInInfoFromSession(request), dis.demographicNo.toString());%>
-                          <td><%=demo.getAgeAsOf(asDate)%></td>
+                          <td><%=Encode.forHtml(String.valueOf(demo.getAgeAsOf(asDate)))%></td>
                           <td><%=Encode.forHtmlContent(h.get("sex"))%></td>
                           <td><%=Encode.forHtmlContent(h.get("lastName"))%></td>
                           <td><%=Encode.forHtmlContent(h.get("firstName"))%></td>
@@ -660,33 +660,33 @@
                           <td><%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getPhone())%> &nbsp;</td>
                           <td><%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getEmail())%> &nbsp;</td>
                           <td><%=demoSDM == null ? "" :Encode.forHtmlContent(demoSDM.getAddress())%> <%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getCity())%> <%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getProvince())%> <%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getPostal())%>&nbsp;</td>
-                          <td><oscar:nextAppt demographicNo="<%=demo.getDemographicNo().toString()%>"/></td>
-                          <td bgcolor="<%=dis.color%>"><%=dis.state%></td>
-                          <td bgcolor="<%=dis.color%>"><%=dis.numShots%></td>                          
-                          <td bgcolor="<%=dis.color%>"><%=dis.bonusStatus%></td>
-                          <td bgcolor="<%=dis.color%>"><%=dis.numMonths%></td>
-                          <td bgcolor="<%=dis.color%>"><%=dis.lastDate%></td>
+                          <td><oscar:nextAppt demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demo.getDemographicNo().toString()))%>"/></td>
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(dis.state))%></td>
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(dis.numShots))%></td>                          
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(dis.bonusStatus))%></td>
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(dis.numMonths))%></td>
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(dis.lastDate))%></td>
 
                           <%}%>
-                          <td bgcolor="<%=dis.color%>" id="lastFollowup<%=i+1%>">
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>" id="lastFollowup<%=Encode.forHtmlAttribute(String.valueOf(i+1))%>">
                              <% if (dis.lastFollowup != null ){ %>
-                                 <%=dis.lastFollupProcedure%>
-                                 <%=UtilDateUtilities.DateToString(dis.lastFollowup)%>
-                                 <%=UtilDateUtilities.getNumMonths(dis.lastFollowup,new Date())%>M
+                                 <%=Encode.forHtml(String.valueOf(dis.lastFollupProcedure))%>
+                                 <%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(dis.lastFollowup)))%>
+                                 <%=Encode.forHtml(String.valueOf(UtilDateUtilities.getNumMonths(dis.lastFollowup,new Date())))%>M
                              <% }else{ %>
                                 ----
                              <% } %>
                           </td>
-                          <td bgcolor="<%=dis.color%>" id="nextSuggestedProcedure<%=i+1%>">
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>" id="nextSuggestedProcedure<%=Encode.forHtmlAttribute(String.valueOf(i+1))%>">
                               <%if (dis.nextSuggestedProcedure != null && dis.nextSuggestedProcedure.equals("P1")){ %>
-                                 <a href="javascript: return false;" onclick="return completedProcedure('<%=i+1%>','<%=followUpType%>','<%=dis.nextSuggestedProcedure%>','<%=dis.demographicNo%>');"><%=dis.nextSuggestedProcedure%></a>                              
+                                 <a href="javascript: return false;" onclick="return completedProcedure('<%=Encode.forJavaScript(String.valueOf(i+1))%>','<%=Encode.forJavaScript(String.valueOf(followUpType))%>','<%=Encode.forJavaScript(String.valueOf(dis.nextSuggestedProcedure))%>','<%=Encode.forJavaScript(String.valueOf(dis.demographicNo))%>');"><%=Encode.forHtml(String.valueOf(dis.nextSuggestedProcedure))%></a>                              
                               <%}else{%>
-                                    <%=(dis.nextSuggestedProcedure != null)?dis.nextSuggestedProcedure:"&nbsp;"%>
+                                    <%=Encode.forHtml(String.valueOf((dis.nextSuggestedProcedure != null)?dis.nextSuggestedProcedure:"&nbsp;"))%>
                               <%}%>
                           </td>
-                          <td bgcolor="<%=dis.color%>">		
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>">		
                           	<%if(!setBill) {%>					                          
-                          		<input type="checkbox"  id="selectnsp<%=i+1%>" name="nsp" value="<%=dis.demographicNo%>">
+                          		<input type="checkbox"  id="selectnsp<%=Encode.forHtmlAttribute(String.valueOf(i+1))%>" name="nsp" value="<%=Encode.forHtmlAttribute(String.valueOf(dis.demographicNo))%>">
                           	<%} else { %>
                           		&nbsp;
                           	<%} %>
@@ -695,14 +695,14 @@
                           	String providerName=providerBean.getProperty(demo.getProviderNo());
                           	providerName=StringUtils.trimToEmpty(providerName);
                           %>
-                          <td bgcolor="<%=dis.color%>"><%=providerName%></td>
-                          <td bgcolor="<%=dis.color%>">
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>"><%=Encode.forHtml(String.valueOf(providerName))%></td>
+                          <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(dis.color))%>">
                               <% if( billCode != null && setBill ) {
                                   numDays = bCh1Dao.getDaysSinceBilled(billCode, dis.demographicNo);
                                   //we only want to enable billing if it has been a year since the last invoice was created
                                   enabled = numDays >= 0 && numDays < 365 ? "disabled" : "checked";
                               %>
-                              <input type="checkbox" name="bill" <%=enabled%> value="<%=billCode + ";" + dis.demographicNo + ";" + demo.getProviderNo()%>">
+                              <input type="checkbox" name="bill" <%=enabled%> value="<%=Encode.forHtmlAttribute(String.valueOf(billCode + ";" + dis.demographicNo + ";" + demo.getProviderNo()))%>">
                               <%}%>
                           </td>
 
@@ -725,7 +725,7 @@
             String queryStr = getUrlParamList(firstLetter, "demo");
         %>
         <a target="_blank"
-           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=queryStr%>&amp;message=<%=java.net.URLEncoder.encode("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"), StandardCharsets.UTF_8)%>&amp;followupType=<%=followUpType%>&amp;followupValue=L1">Generate
+           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&amp;message=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"), StandardCharsets.UTF_8)))%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L1">Generate
             First Letter</a>
         <%}%>
 
@@ -733,7 +733,7 @@
             String queryStr = getUrlParamList(secondLetter, "demo");
         %>
         <a target="_blank"
-           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=queryStr%>&amp;message=<%=java.net.URLEncoder.encode("Letter 2 Reminder Letter sent for :"+request.getAttribute("prevType"), StandardCharsets.UTF_8)%>&amp;followupType=<%=followUpType%>&amp;followupValue=L2">Generate
+           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&amp;message=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode("Letter 2 Reminder Letter sent for :"+request.getAttribute("prevType"), StandardCharsets.UTF_8)))%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L2">Generate
             Second Letter</a>
         <%}%>
 
@@ -741,7 +741,7 @@
             String queryStr = getUrlParamList(refusedLetter, "demo");
         %>
         <a target="_blank"
-           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=queryStr%>&amp;message=<%=java.net.URLEncoder.encode("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"), StandardCharsets.UTF_8)%>&amp;followupType=<%=followUpType%>&amp;followupValue=L1">Generate
+           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&amp;message=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"), StandardCharsets.UTF_8)))%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L1">Generate
             Refused Letter</a>
         <%}%>
 

@@ -142,7 +142,7 @@
     ArrayList doctypes = EDocUtil.getDoctypes(module);%>
 
 
-<div id="DocumentProvider_<%=currentProvider%>" style="background-color: #f2f7ff;">
+<div id="DocumentProvider_<%=Encode.forHtmlAttribute(String.valueOf(currentProvider))%>" style="background-color: #f2f7ff;">
     <%
         if (providerDocs != null && !providerDocs.isEmpty() && providerDocs.containsKey(currentProvider)) {
             List<EDoc> docList = (List<EDoc>) providerDocs.get(currentProvider);
@@ -161,36 +161,36 @@
                 if (numPage != 0)
                     numPageStr = (new Integer(numPage)).toString();
     %>
-    <div id="document<%=curDocId%>">
+    <div id="document<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>">
         <table class="docTable">
             <tr>
                 <td colspan="8">
                     <a href="javascript:void(0);">
-                        <img src="<%=url%>" onclick="popupPage(500,600,'name_<%=curDocId%>','<%=docUrl%>')"
+                        <img src="<%=Encode.forHtmlAttribute(String.valueOf(url))%>" onclick="popupPage(500,600,'name_<%=Encode.forJavaScript(String.valueOf(curDocId))%>','<%=Encode.forJavaScript(String.valueOf(docUrl))%>')"
                              title="Click to Download File"/>
                     </a>
                 </td>
 
                 <td align="left" valign="top">
                     <fieldset>
-                        <legend>Document Uploaded :<%=curdoc.getDateTimeStamp()%> - Content
-                            Type: <%=contentType%> <%=curdoc.getFileName() %> - Number of Pages: <%=numPageStr%>
+                        <legend>Document Uploaded :<%=Encode.forHtml(String.valueOf(curdoc.getDateTimeStamp()))%> - Content
+                            Type: <%=Encode.forHtml(String.valueOf(contentType))%> <%=Encode.forHtml(String.valueOf(curdoc.getFileName()))%> - Number of Pages: <%=Encode.forHtml(String.valueOf(numPageStr))%>
                         </legend>
-                        <form id="forms<%=curDocId%>" action="undocumentReport.jsp"
-                              onsubmit="return sendToServer('forms<%=curDocId%>');">
+                        <form id="forms<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>" action="undocumentReport.jsp"
+                              onsubmit="return sendToServer('forms<%=Encode.forJavaScript(String.valueOf(curDocId))%>');">
                             <input type="hidden" name="method" value="documentUpdate"/>
-                            <input type="hidden" name="documentId" value="<%=curDocId%>"/>
+                            <input type="hidden" name="documentId" value="<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>"/>
                             <table>
                                 <tr>
                                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocType"/>:</td>
                                     <td>
-                                        <select tabindex="<%=tabindex++%>" name="docType" id="docType">
+                                        <select tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" name="docType" id="docType">
                                             <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
                                             <%
                                                 for (int j = 0; j < doctypes.size(); j++) {
                                                     String doctype = (String) doctypes.get(j);
                                             %>
-                                            <option value="<%= doctype%>" <%=(curdoc.getType().equals(doctype)) ? " selected" : ""%>><%= doctype%>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(doctype))%>" <%=(curdoc.getType().equals(doctype)) ? " selected" : ""%>><%=Encode.forHtml(String.valueOf(doctype))%>
                                             </option>
                                             <%}%>
                                         </select>
@@ -198,17 +198,17 @@
                                 </tr>
                                 <tr>
                                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocDesc"/>:</td>
-                                    <td><input tabindex="<%=tabindex++%>" type="text" name="documentDescription"
-                                               value="<%=curdoc.getDescription()%>"/></td>
+                                    <td><input tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" type="text" name="documentDescription"
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(curdoc.getDescription()))%>"/></td>
                                 </tr>
                                 <tr>
                                     <td>Observation Date:</td>
                                     <td>
-                                        <input tabindex="<%=tabindex++%>" id="observationDate<%=curDocId%>"
-                                               name="observationDate<%=curDocId%>" type="text"
-                                               value="<%=curdoc.getObservationDate()%>">
-                                        <a id="obsdate<%=curDocId%>"
-                                           onmouseover="renderCalendar(this.id,'observationDate<%=curDocId%>' );"
+                                        <input tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" id="observationDate<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>"
+                                               name="observationDate<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>" type="text"
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(curdoc.getObservationDate()))%>">
+                                        <a id="obsdate<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>"
+                                           onmouseover="renderCalendar(this.id,'observationDate<%=Encode.forJavaScript(String.valueOf(curDocId))%>' );"
                                            href="javascript:void(0);"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif"
                                                                            alt="Calendar" border="0"/></a>
                                     </td>
@@ -218,10 +218,10 @@
                                         Demographic: <% if (request.getParameter("demo_linked_Id") != null && request.getParameter("demo_linked_Id").equals(curDocId)) {%>
                                         <%=Encode.forHtml(request.getParameter("name"))%> <% }%>
                                     </td>
-                                    <td><input type="hidden" name="demog" id="demofind<%=curDocId%>"/>
-                                        <input tabindex="<%=tabindex++%>" type="text" id="autocompletedemo<%=curDocId%>"
-                                               onchange="checkSave('<%=curDocId%>')" name="demographicKeyword"/>
-                                        <div id="autocomplete_choices<%=curDocId%>" class="autocomplete"></div>
+                                    <td><input type="hidden" name="demog" id="demofind<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>"/>
+                                        <input tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" type="text" id="autocompletedemo<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>"
+                                               onchange="checkSave('<%=Encode.forJavaScript(String.valueOf(curDocId))%>')" name="demographicKeyword"/>
+                                        <div id="autocomplete_choices<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>" class="autocomplete"></div>
                                         <script type="text/javascript">
 
                                             YAHOO.example.BasicRemote = function () {
@@ -242,7 +242,7 @@
                                                 //oDS.connXhrMode ="cancelStaleRequests";
 
                                                 // Instantiate the AutoComplete
-                                                var oAC = new YAHOO.widget.AutoComplete("autocompletedemo<%=curDocId%>", "autocomplete_choices<%=curDocId%>", oDS);
+                                                var oAC = new YAHOO.widget.AutoComplete("autocompletedemo<%=Encode.forJavaScript(String.valueOf(curDocId))%>", "autocomplete_choices<%=Encode.forJavaScript(String.valueOf(curDocId))%>", oDS);
                                                 oAC.queryMatchSubset = true;
                                                 oAC.minQueryLength = 3;
                                                 oAC.maxResultsDisplayed = 25;
@@ -263,7 +263,7 @@
                                                     //oscarLog("--"+args[0].getInputEl().value);
                                                     selectedDemos.push(args[0].getInputEl().value);
                                                     //enable Save button whenever a selection is made
-                                                    $('save<%=curDocId%>').enable();
+                                                    $('save<%=Encode.forJavaScript(String.valueOf(curDocId))%>').enable();
 
                                                 });
 
@@ -286,10 +286,10 @@
 
                                     <td>
                                         <div class="myAutoComplete">
-                                            <input type="hidden" name="provi" id="provfind<%=curDocId%>"/>
-                                            <input tabindex="<%=tabindex++%>" type="text"
-                                                   id="autocompleteprov<%=curDocId%>" name="providerKeyword"/>
-                                            <div id="autocomplete_choicesprov<%=curDocId%>" class="autocomplete"></div>
+                                            <input type="hidden" name="provi" id="provfind<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>"/>
+                                            <input tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" type="text"
+                                                   id="autocompleteprov<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>" name="providerKeyword"/>
+                                            <div id="autocomplete_choicesprov<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>" class="autocomplete"></div>
                                         </div>
 
                                         <!--script type="text/javascript">
@@ -298,7 +298,7 @@
                                                                         //oscarLog("FnMultipleFields ");
                                                                         //oscarLog(oDS.responseSchema);
                                                                         // Instantiate AutoComplete
-                                                                        var oAC = new YAHOO.widget.AutoComplete("autocompleteprov<%=curDocId%>", "autocomplete_choicesprov<%=curDocId%>", oDS);
+                                                                        var oAC = new YAHOO.widget.AutoComplete("autocompleteprov<%=Encode.forHtml(String.valueOf(curDocId))%>", "autocomplete_choicesprov<%=Encode.forHtml(String.valueOf(curDocId))%>", oDS);
                                                                         oAC.useShadow = true;
                                                                         oAC.resultTypeList = false;
 
@@ -337,7 +337,7 @@
                                                                             adoc.appendChild(idoc);
 
                                                                             adoc.appendChild(bdoc);
-                                                                            var providerList = $('providerList<%=curDocId%>');
+                                                                            var providerList = $('providerList<%=Encode.forHtml(String.valueOf(curDocId))%>');
                                                                         //    console.log('Now HERE'+providerList);
                                                                             providerList.appendChild(adoc);
 
@@ -371,7 +371,7 @@
                                                 //oDS.connXhrMode ="cancelStaleRequests";
 
                                                 // Instantiate the AutoComplete
-                                                var oAC = new YAHOO.widget.AutoComplete("autocompleteprov<%=curDocId%>", "autocomplete_choicesprov<%=curDocId%>", oDS);
+                                                var oAC = new YAHOO.widget.AutoComplete("autocompleteprov<%=Encode.forJavaScript(String.valueOf(curDocId))%>", "autocomplete_choicesprov<%=Encode.forJavaScript(String.valueOf(curDocId))%>", oDS);
                                                 oAC.queryMatchSubset = true;
                                                 oAC.minQueryLength = 3;
                                                 oAC.maxResultsDisplayed = 25;
@@ -415,7 +415,7 @@
                                                     adoc.appendChild(idoc);
 
                                                     adoc.appendChild(bdoc);
-                                                    var providerList = $('providerList<%=curDocId%>');
+                                                    var providerList = $('providerList<%=Encode.forJavaScript(String.valueOf(curDocId))%>');
                                                     //    console.log('Now HERE'+providerList);
                                                     providerList.appendChild(adoc);
 
@@ -430,20 +430,20 @@
                                                 };
                                             }();
                                         </script>
-                                        <div id="providerList<%=curDocId%>"></div>
+                                        <div id="providerList<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>"></div>
                                     </td>
                                 </tr>
 
 
                                 <tr>
                                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgCreator"/>:</td>
-                                    <td><%=curdoc.getCreatorName()%>
+                                    <td><%=Encode.forHtml(String.valueOf(curdoc.getCreatorName()))%>
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <td colspan="2" align="right"><input id="save<%=curDocId%>"
-                                                                         tabindex="<%=tabindex++%>" type="submit"
+                                    <td colspan="2" align="right"><input id="save<%=Encode.forHtmlAttribute(String.valueOf(curDocId))%>"
+                                                                         tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" type="submit"
                                                                          name="save" value="Save" disabled/></td>
                                 </tr>
                             </table>

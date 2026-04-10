@@ -43,6 +43,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -65,42 +66,42 @@
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.currentIssues.general"/>:</td>
-                <td><textarea rows="5" cols="50" name="General"><%=props.getProperty("General", "")%></textarea></td>
+                <td><textarea rows="5" cols="50" name="General"><%=Encode.forHtml(String.valueOf(props.getProperty("General", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.currentIssues.nervousSystem"/>:</td>
-                <td><textarea rows="5" cols="50" name="Nervous"><%=props.getProperty("Nervous", "")%></textarea></td>
+                <td><textarea rows="5" cols="50" name="Nervous"><%=Encode.forHtml(String.valueOf(props.getProperty("Nervous", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.currentIssues.headEarsNoseThroat"/>:</td>
-                <td><textarea rows="5" cols="50" name="HEENT"><%=props.getProperty("HEENT", "")%></textarea></td>
+                <td><textarea rows="5" cols="50" name="HEENT"><%=Encode.forHtml(String.valueOf(props.getProperty("HEENT", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.currentIssues.neck"/>:</td>
-                <td><textarea rows="5" cols="50" name="Neck"><%=props.getProperty("Neck", "")%></textarea></td>
+                <td><textarea rows="5" cols="50" name="Neck"><%=Encode.forHtml(String.valueOf(props.getProperty("Neck", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.currentIssues.chest"/>:</td>
-                <td><textarea rows="5" cols="50" name="Chest"><%=props.getProperty("Chest", "")%></textarea></td>
+                <td><textarea rows="5" cols="50" name="Chest"><%=Encode.forHtml(String.valueOf(props.getProperty("Chest", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.currentIssues.heart"/>:</td>
-                <td><textarea rows="5" cols="50" name="Heart"><%=props.getProperty("Heart", "")%></textarea></td>
+                <td><textarea rows="5" cols="50" name="Heart"><%=Encode.forHtml(String.valueOf(props.getProperty("Heart", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.currentIssues.gastro"/>:</td>
                 <td><textarea rows="5" cols="50"
-                              name="Gastrointestinal"><%=props.getProperty("Gastrointestinal", "")%></textarea></td>
+                              name="Gastrointestinal"><%=Encode.forHtml(String.valueOf(props.getProperty("Gastrointestinal", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.currentIssues.genitals"/>:</td>
                 <td><textarea rows="5" cols="50"
-                              name="GenitalsUrinary"><%=props.getProperty("GenitalsUrinary", "")%></textarea></td>
+                              name="GenitalsUrinary"><%=Encode.forHtml(String.valueOf(props.getProperty("GenitalsUrinary", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.currentIssues.psychiatric"/>:</td>
                 <td><textarea rows="5" cols="50"
-                              name="GeneralPsychiatric"><%=props.getProperty("GeneralPsychiatric", "")%></textarea></td>
+                              name="GeneralPsychiatric"><%=Encode.forHtml(String.valueOf(props.getProperty("GeneralPsychiatric", "")))%></textarea></td>
             </tr>
         </table>
 

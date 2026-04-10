@@ -45,7 +45,7 @@
             Facility facility = facilityDao.find(facilityId);
     %>
     <li>
-        <a href='?nextPage=<%=Encode.forUriComponent(request.getParameter("nextPage"))%>&<%=Login2Action.SELECTED_FACILITY_ID%>=<%=facility.getId()%>'><%=facility.getName()%>
+        <a href='?nextPage=<%=Encode.forUriComponent(request.getParameter("nextPage"))%>&<%=Encode.forUriComponent(String.valueOf(Login2Action.SELECTED_FACILITY_ID))%>=<%=Encode.forUriComponent(String.valueOf(facility.getId()))%>'><%=Encode.forHtml(String.valueOf(facility.getName()))%>
         </a></li>
     <%
         }

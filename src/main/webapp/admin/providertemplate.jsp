@@ -124,7 +124,7 @@
                                 for (EncounterTemplate encounterTemplate : allTemplates) {
                                     String templateName = Encode.forHtmlAttribute(encounterTemplate.getEncounterTemplateName());
                             %>
-                            <option value="<%=templateName%>"><%=templateName%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(templateName))%>"><%=Encode.forHtml(String.valueOf(templateName))%>
                             </option>
                             <%
                                 }
@@ -169,7 +169,7 @@
                                class="btn btn-danger"
                                onClick="document.forms['template'].dboperation.value='Delete'; document.forms['template'].submit();">
 
-                        <INPUT TYPE="hidden" NAME="creator" VALUE="<%=curUser_no%>">
+                        <INPUT TYPE="hidden" NAME="creator" VALUE="<%=Encode.forHtmlAttribute(String.valueOf(curUser_no))%>">
                         <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.btnSave"/>"
                                class="btn btn-primary"
                                onClick="document.forms['template'].dboperation.value=' Save '; document.forms['template'].submit();">

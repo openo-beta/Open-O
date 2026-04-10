@@ -89,7 +89,7 @@
     tmp1 = tmp;
     while (tmp1.length() > 80) {
 %>
-<%=tmp1.substring(0, 80)%>
+<%=Encode.forHtml(String.valueOf(tmp1.substring(0, 80)))%>
 <%
         tmp1 = tmp1.substring(80);
 
@@ -97,7 +97,7 @@
 
 
 %>
-<%=tmp1%>
+<%=Encode.forHtml(String.valueOf(tmp1))%>
 </pre>
 
 

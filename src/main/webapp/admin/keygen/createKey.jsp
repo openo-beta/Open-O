@@ -117,6 +117,7 @@
 %>
 
 <%@page import="ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OscarToOscarUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -159,13 +160,13 @@
                             <div id="success" style="display: none;">Key pair created
                                 successfully
                             </div>
-                            <div id="fail" style="display:<%= failDisplay %>;">
+                            <div id="fail" style="display:<%=Encode.forHtmlAttribute(String.valueOf(failDisplay))%>;">
                                 <%
                                     if (message != null) {
                                         if (error.equals("false")) {
                                             out.print(message);
                                         } else {
-                                %><font color="red"><%= message %>
+                                %><font color="red"><%=Encode.forHtml(String.valueOf(message))%>
                             </font>
                                 <%
                                         }

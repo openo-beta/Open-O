@@ -214,7 +214,7 @@
                         for (int i = 0; i < list.size(); i++) {
                             Hashtable h = (Hashtable) list.get(i);
                     %>
-                    <option value="<%=h.get("ID")%>"><%=h.get("report_name")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("ID")))%>"><%=Encode.forHtml(String.valueOf(h.get("report_name")))%>
                     </option>
                     <%}%>
                 </select> <%
@@ -225,9 +225,9 @@
                     if (followUpType != null && followUpValue != null) { %>
                     Mark in patients Records: <input type="checkbox" name="addFollowUp"
                                                      value="ON" checked/> <input type="hidden" name="followupType"
-                                                                                 value="<%=followUpType%>"/> <input
+                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(followUpType))%>"/> <input
                             type="hidden"
-                            name="followupValue" value="<%=followUpValue%>"/> <%}%>
+                            name="followupValue" value="<%=Encode.forHtmlAttribute(String.valueOf(followUpValue))%>"/> <%}%>
                 </div>
 
                 <input type="submit" value="Generate Letters"/>
@@ -249,9 +249,9 @@
                             Map<String, String> h = deName.getNameAgeSexHashtable(LoggedInInfo.getLoggedInInfoFromSession(request), demos[i]);
                     %>
                     <tr>
-                        <td><%=i + 1%>
+                        <td><%=Encode.forHtml(String.valueOf(i + 1))%>
                         </td>
-                        <td><input type="checkbox" name="demos" value="<%=demos[i]%>"
+                        <td><input type="checkbox" name="demos" value="<%=Encode.forHtmlAttribute(String.valueOf(demos[i]))%>"
                                    checked/></td>
 					<td><%=Encode.forHtmlContent(h.get("lastName"))%>, <%=Encode.forHtmlContent(h.get("firstName"))%></td>
 					<td><%=Encode.forHtmlContent(h.get("sex"))%></td>
@@ -274,10 +274,9 @@
             // if ( firstLetter.size() > 0 ) {
             //    String queryStr = getUrlParamList(firstLetter, "demo");
             //
-            //&message=<%=java.net.URLEncoder.encode("Letter 1 Reminder Letter sent for :" + request.getAttribute("prevType"), StandardCharsets.UTF_8)
+            //&message=<%=Encode.forHtml(String.valueOf(java.net.URLEncoder.encode("Letter 1 Reminder Letter sent for :" + request.getAttribute("prevType"), StandardCharsets.UTF_8)
             //&followupType=
-            //&followupValue=L1
-    %>
+            //&followupValue=L1))%>
     </div>
 
     <script type="text/javascript">

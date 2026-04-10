@@ -73,7 +73,7 @@
     <%} else {%>
     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.DefaultPrinter"/>
     <%}%>
-    <%=defaultPrinterName%>
+    <%=Encode.forHtml(String.valueOf(defaultPrinterName))%>
     <%}%>
     <br>
     <object id="pdf" type="application/pdf"

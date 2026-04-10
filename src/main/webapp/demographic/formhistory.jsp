@@ -139,14 +139,14 @@
 
                         i++;
                 %>
-                &nbsp;<%=ConversionUtils.toDateString(f.getFormDate())%> <%=ConversionUtils.toTimeString(f.getFormTime())%>
+                &nbsp;<%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(f.getFormDate())))%> <%=Encode.forHtml(String.valueOf(ConversionUtils.toTimeString(f.getFormTime())))%>
 
-                <input type="checkbox" name="<%="form_no"+i%>"
-                       value="<%=f.getId()%>"> <font color="blue">
+                <input type="checkbox" name="<%=Encode.forHtmlAttribute(String.valueOf("form_no"+i))%>"
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(f.getId()))%>"> <font color="blue">
                 <a href=#
-                   onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?form_no=<%=f.getId()%>&dboperation=search_form&displaymodevariable=form<%=f.getFormName()%>.jsp&displaymode=vary&bNewForm=0')">
-                    <%=f.getFormName()%>
-                </a></font> by <%=f.getProviderNo()%><br>
+                   onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?form_no=<%=Encode.forJavaScript(String.valueOf(f.getId()))%>&dboperation=search_form&displaymodevariable=form<%=Encode.forJavaScript(String.valueOf(f.getFormName()))%>.jsp&displaymode=vary&bNewForm=0')">
+                    <%=Encode.forHtml(String.valueOf(f.getFormName()))%>
+                </a></font> by <%=Encode.forHtml(String.valueOf(f.getProviderNo()))%><br>
                 <%
                     }
                 %>

@@ -27,8 +27,8 @@
 <%
     String user_no = (String) session.getAttribute("user");
 %>
-<%@ page import="java.util.*, java.sql.*, java.io.*, ca.openosp.*"
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.util.*, java.sql.*, java.io.*, ca.openosp.*"
          errorPage="/errorpage.jsp" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 

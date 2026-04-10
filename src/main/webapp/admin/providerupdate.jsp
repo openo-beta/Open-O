@@ -238,8 +238,8 @@
             if (!isProviderFormalize) {
                 //output ProviderFormalize error message
         %>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=errMsgProviderFormalize%>"/></h1>
-        Provider # range from : <%=min_value %> To : <%=max_value %>
+        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf(errMsgProviderFormalize))%>"/></h1>
+        Provider # range from : <%=Encode.forHtml(String.valueOf(min_value))%> To : <%=Encode.forHtml(String.valueOf(max_value))%>
         <%
                 }
             }

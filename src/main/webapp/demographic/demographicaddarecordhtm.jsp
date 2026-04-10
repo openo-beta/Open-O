@@ -65,7 +65,6 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.OscarProperties" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.managers.ProgramManager2" %>
 <%@page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
 
@@ -842,14 +841,14 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                     style="color:red;">:</span> </b></td>
                             <td id="lastName" align="left">
                                 <input type="text" name="last_name" id="last_name" onBlur="upCaseCtrl(this)"
-                                       value="<%=lastNameVal%>">
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(lastNameVal))%>">
 
                             </td>
                             <td align="right" id="firstNameLbl"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formFirstName"/><span
                                     style="color:red;">:</span> </b></td>
                             <td id="firstName" align="left">
                                 <input type="text" name="first_name" id="first_name" onBlur="upCaseCtrl(this)"
-                                       value="<%=firstNameVal%>">
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(firstNameVal))%>">
                             </td>
                         </tr>
                         <tr>
@@ -916,7 +915,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             <td id="spokenLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgSpoken"/>:</b></td>
                             <td id="spokenCell"><select name="spoken_lang">
                                 <%for (String sp_lang : Util.spokenLangProperties.getLangSorted()) { %>
-                                <option value="<%=sp_lang %>"><%=sp_lang %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(sp_lang))%>"><%=Encode.forHtml(String.valueOf(sp_lang))%>
                                 </option>
                                 <%} %>
                             </select>
@@ -932,7 +931,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </td>
                             <td id="cityLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formCity"/>: </b></td>
                             <td id="cityCell" align="left"><input type="text" id="city" name="city"
-                                                                  value="<%=defaultCity %>"/></td>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(defaultCity))%>"/></td>
                         </tr>
 
                         <tr valign="top">
@@ -960,8 +959,8 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                     <% if (pNames.isDefined()) {
                                         for (ListIterator li = pNames.listIterator(); li.hasNext(); ) {
                                             String province = (String) li.next(); %>
-                                    <option value="<%=province%>"
-                                            <%=province.equals(defaultProvince) ? " selected" : ""%>><%=li.next()%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(province))%>"
+                                            <%=province.equals(defaultProvince) ? " selected" : ""%>><%=Encode.forHtml(String.valueOf(li.next()))%>
                                     </option>
                                     <% } %>
                                     <% } else { %>
@@ -1223,8 +1222,8 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                     <% if (pNames.isDefined()) {
                                         for (ListIterator li = pNames.listIterator(); li.hasNext(); ) {
                                             String province = (String) li.next(); %>
-                                    <option value="<%=province%>"
-                                            <%=province.equals(defaultProvince) ? " selected" : ""%>><%=li.next()%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(province))%>"
+                                            <%=province.equals(defaultProvince) ? " selected" : ""%>><%=Encode.forHtml(String.valueOf(li.next()))%>
                                     </option>
                                     <% } %>
                                     <% } else { %>
@@ -1449,7 +1448,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             <td id="phoneLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPhoneHome"/>: </b></td>
                             <td id="phoneCell" align="left"><input type="text" id="phone" name="phone"
                                                                    onBlur="formatPhoneNum()"
-                                                                   value="<%=props.getProperty("phoneprefix", "905-")%>">
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("phoneprefix", "905-")))%>">
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.Ext"/>:<input
                                         type="text" id="hPhoneExt" name="hPhoneExt" value="" size="4"/></td>
                             <td id="phoneWorkLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPhoneWork"/>:</b></td>
@@ -1580,7 +1579,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <select name="sex" id="sex">
                                     <option value=""></option>
                                     <% for (Gender gn : Gender.values()) { %>
-                                    <option value="<%=gn.name()%>" <%=((sex.toUpperCase().equals(gn.name())) ? "selected=\"selected\"" : "") %>><%=gn.getText()%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(gn.name()))%>" <%=Encode.forHtml(String.valueOf(((sex.toUpperCase().equals(gn.name())) ? "selected=\"selected\"" : "")))%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
                                     </option>
                                     <% } %>
                                 </select>
@@ -1624,7 +1623,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                     <% if (pNames.isDefined()) {
                                         for (ListIterator li = pNames.listIterator(); li.hasNext(); ) {
                                             String province = (String) li.next(); %>
-                                    <option value="<%=province%>"<%=province.equals(HCType) ? " selected" : ""%>><%=li.next()%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(province))%>"<%=province.equals(HCType) ? " selected" : ""%>><%=Encode.forHtml(String.valueOf(li.next()))%>
                                     </option>
                                     <% } %>
                                     <% } else { %>
@@ -1821,7 +1820,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <select id="countryOfOrigin" name="countryOfOrigin">
                                     <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.msgNotSet"/></option>
                                     <%for (CountryCode cc : countryList) { %>
-                                    <option value="<%=cc.getCountryId()%>"><%=cc.getCountryName() %>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(cc.getCountryId()))%>"><%=Encode.forHtml(String.valueOf(cc.getCountryName()))%>
                                     </option>
                                     <%}%>
                                 </select>
@@ -1892,8 +1891,8 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                         for (Provider p : providerDao.getActiveProvidersByRole("doctor")) {
                                             String docProviderNo = p.getProviderNo();
                                     %>
-                                    <option id="doc<%=docProviderNo%>"
-                                            value="<%=docProviderNo%>"><%=Encode.forHtmlContent(p.getFormattedName())%>
+                                    <option id="doc<%=Encode.forHtmlAttribute(String.valueOf(docProviderNo))%>"
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(docProviderNo))%>"><%=Encode.forHtmlContent(p.getFormattedName())%>
                                     </option>
                                     <%
                                         }
@@ -1906,7 +1905,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <%
                                     for (Provider p : providerDao.getActiveProvidersByRole("nurse")) {
                                 %>
-                                <option value="<%=p.getProviderNo()%>"><%=Encode.forHtmlContent(p.getFormattedName())%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtmlContent(p.getFormattedName())%>
                                 </option>
                                 <%
                                     }
@@ -1921,7 +1920,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <%
                                     for (Provider p : providerDao.getActiveProvidersByRole("midwife")) {
                                 %>
-                                <option value="<%=p.getProviderNo()%>">
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>">
                                     <%=Encode.forHtmlContent(p.getFormattedName())%>
                                 </option>
                                 <%
@@ -1935,7 +1934,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <%
                                     for (Provider p : providerDao.getActiveProvidersByRole("doctor")) {
                                 %>
-                                <option value="<%=p.getProviderNo()%>">
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>">
                                     <%=Encode.forHtmlContent(p.getFormattedName())%>
                                 </option>
                                 <%
@@ -1970,8 +1969,8 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                     prop = (Properties) vecRef.get(k);
                                 %>
                                 <option
-                                        value="<%=prop.getProperty("last_name")+","+prop.getProperty("first_name")%>">
-                                    <%=Misc.getShortStr((prop.getProperty("last_name") + "," + prop.getProperty("first_name")), "", nStrShowLen)%>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("last_name")+","+prop.getProperty("first_name")))%>">
+                                    <%=Encode.forHtml(String.valueOf(Misc.getShortStr((prop.getProperty("last_name") + "," + prop.getProperty("first_name")), "", nStrShowLen)))%>
                                 </option>
                                 <% } %>
                             </select>
@@ -1984,8 +1983,8 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                         <% for(int k=0; k<vecRef.size(); k++) {
   		prop= (Properties) vecRef.get(k);
   	%>
-                                        if (refName.indexOf("<%=prop.getProperty("last_name")+","+prop.getProperty("first_name")%>") >= 0) {
-                                            refNo = '<%=prop.getProperty("referral_no", "")%>';
+                                        if (refName.indexOf("<%=Encode.forJavaScript(String.valueOf(prop.getProperty("last_name")+","+prop.getProperty("first_name")))%>") >= 0) {
+                                            refNo = '<%=Encode.forJavaScript(String.valueOf(prop.getProperty("referral_no", "")))%>';
                                         }
                                         <% } %>
                                         document.forms[1].r_doctor_ohip.value = refNo;
@@ -2015,7 +2014,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 
                                     <%
                                         for (String status : demographicDao.getRosterStatuses()) {%>
-                                    <option value="<%=status%>"><%=status%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(status))%>"><%=Encode.forHtml(String.valueOf(status))%>
                                     </option>
                                     <% } // end while %>
                                 </select> <input type="button" onClick="newStatus1();" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.AddNewRosterStatus"/> "/></td>
@@ -2038,7 +2037,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 						for (Provider p : providerDao.getActiveProvidersByRole("doctor")) {
 								String docProviderNo = p.getProviderNo();
 					%>
-                                    <option id="<%=docProviderNo%>" value="<%=docProviderNo%>"><%=p.getFormattedName()%>
+                                    <option id="<%=Encode.forHtmlAttribute(String.valueOf(docProviderNo))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(docProviderNo))%>"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                                     </option>
                                             <%
 						}
@@ -2047,7 +2046,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </td>
                             <td id="chartNoLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formChartNo"/>:</b></td>
                             <td id="chartNo" align="left"><input type="text" id="chart_no" name="chart_no"
-                                                                 value="<%=StringEscapeUtils.escapeHtml4(chartNoVal)%>">
+                                                                 value="<%=Encode.forHtml(chartNoVal)%>">
                             </td>
 
                         </tr>
@@ -2062,7 +2061,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                     <option value="FI"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.FI-Fired"/></option>
                                     <%
                                         for (String status : demographicDao.search_ptstatus()) { %>
-                                    <option value="<%=status%>"><%=status%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(status))%>"><%=Encode.forHtml(String.valueOf(status))%>
                                     </option>
                                     <% } // end while %>
                                 </select> <input type="button" onClick="newStatus();" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.AddNewPatient"/> ">
@@ -2074,7 +2073,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             <td align="left">
                                 <input type="text" placeholder="yyyy-mm-dd"
                                        name="patient_status_date" id="patient_status_date"
-                                       value="<%=today %>" size="12"> <img
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(today))%>" size="12"> <img
                                     src="<%= request.getContextPath() %>/images/cal.gif" id="patient_status_date_cal">
                             </td>
                         </tr>
@@ -2085,12 +2084,12 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             </b></td>
                             <td id="joinDateCell" align="left"><input type="text" name="date_joined_year"
                                                                       placeholder="yyyy"
-                                                                      size="4" maxlength="4" value="<%=curYear%>">
+                                                                      size="4" maxlength="4" value="<%=Encode.forHtmlAttribute(String.valueOf(curYear))%>">
                                 <input
                                         type="text" placeholder="mm" name="date_joined_month" size="2" maxlength="2"
-                                        value="<%=curMonth%>"> <input type="text" placeholder="dd"
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(curMonth))%>"> <input type="text" placeholder="dd"
                                                                       name="date_joined_date" size="2" maxlength="2"
-                                                                      value="<%=curDay%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(curDay))%>">
                             </td>
                             <td id="endDateLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formEndDate"/></b><b>: </b></td>
                             <td id="endDateCell" align="left"><input type="text" placeholder="yyyy" name="end_date_year"
@@ -2121,7 +2120,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                                         selected = " selected=\"selected\" ";
                                                     }
                                     %>
-                                    <option value="<%=llItem.getValue()%>" <%=selected%>><%=llItem.getLabel()%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(llItem.getValue()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(llItem.getLabel()))%>
                                     </option>
                                     <%
                                             }
@@ -2153,9 +2152,9 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                         <tr valign="top">
                             <% if (hasHasPrimary) {
                             %>
-                            <td style="text-align: right;"><b><%=hasPrimary.replace(" ", "&nbsp;")%>:</b></td>
+                            <td style="text-align: right;"><b><%=Encode.forHtml(String.valueOf(hasPrimary.replace(" ", "&nbsp;")))%>:</b></td>
                             <td>
-                                <select name="<%=hasPrimary.replace(" ", "")%>">
+                                <select name="<%=Encode.forHtmlAttribute(String.valueOf(hasPrimary.replace(" ", "")))%>">
                                     <option value="N/A" <%="N/A".equals(hasPrimaryCarePhysician) ? "selected" : ""%>>
                                         N/A
                                     </option>
@@ -2169,9 +2168,9 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             <% }
                                 if (hasEmpStatus) {
                             %>
-                            <td style="text-align: right;"><b><%=empStatus.replace(" ", "&nbsp;")%>:</b></td>
+                            <td style="text-align: right;"><b><%=Encode.forHtml(String.valueOf(empStatus.replace(" ", "&nbsp;")))%>:</b></td>
                             <td>
-                                <select name="<%=empStatus.replace(" ", "")%>">
+                                <select name="<%=Encode.forHtmlAttribute(String.valueOf(empStatus.replace(" ", "")))%>">
                                     <option value="N/A" <%="N/A".equals(employmentStatus) ? "selected" : ""%>>N/A
                                     </option>
                                     <option value="FULL TIME" <%="FULL TIME".equals(employmentStatus) ? "selected" : ""%>>
@@ -2200,21 +2199,21 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 for (int k = 0; k < propDemoExt.length; k = k + 2) {
                         %>
                         <tr valign="top">
-                            <td style="text-align: right;"><b><%=propDemoExt[k] %>
+                            <td style="text-align: right;"><b><%=Encode.forHtml(String.valueOf(propDemoExt[k]))%>
                             </b><b>: </b></td>
                             <td style="text-align: left;">
                                 <% if (bExtForm) {
                                     out.println(propDemoExtForm[k]);
                                 } else { %>
-                                <input type="text" name="<%=propDemoExt[k].replace(' ', '_') %>" value="">
+                                <input type="text" name="<%=Encode.forHtmlAttribute(String.valueOf(propDemoExt[k].replace(' ', '_')))%>" value="">
                                 <% } %>
                             </td>
-                            <td style="text-align: right;"><%=(k + 1) < propDemoExt.length ? ("<b>" + propDemoExt[k + 1] + ": </b>") : "&nbsp;" %>
+                            <td style="text-align: right;"><%=Encode.forHtml(String.valueOf((k + 1) < propDemoExt.length ? ("<b>" + propDemoExt[k + 1] + ": </b>") : "&nbsp;"))%>
                             </td>
                             <td style="text-align: left;">
                                 <% if (bExtForm && (k + 1) < propDemoExt.length) {
                                     out.println(propDemoExtForm[k + 1]);
-                                } else { %> <%=(k + 1) < propDemoExt.length ? "<input type=\"text\" name=\"" + propDemoExt[k + 1].replace(' ', '_') + "\"  value=''>" : "&nbsp;" %>
+                                } else { %> <%=Encode.forHtml(String.valueOf((k + 1) < propDemoExt.length ? "<input type=\"text\" name=\"" + propDemoExt[k + 1].replace(' ', '_') + "\"  value=''>" : "&nbsp;"))%>
                                 <% } %>
                             </td>
                         </tr>
@@ -2233,7 +2232,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                         %>
                         <tr>
                             <td colspan="4">
-                                <jsp:include page="<%=fieldJSP%>"/>
+                                <jsp:include page="<%=Encode.forHtmlAttribute(String.valueOf(fieldJSP))%>"/>
 
                                 <%}%>
                             </td>
@@ -2263,7 +2262,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                                 for (WaitingListName wln : waitingListNameDao.findCurrentByGroup(((ProviderPreference) session.getAttribute(SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE)).getMyGroupNo())) {
 
                                             %>
-                                            <option value="<%=wln.getId()%>"><%=wln.getName()%>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(wln.getId()))%>"><%=Encode.forHtml(String.valueOf(wln.getName()))%>
                                             </option>
                                             <%
                                                 }
@@ -2272,7 +2271,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                         <td align="right" nowrap><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecordhtm.msgWaitListNote"/>: </b></td>
                                         <td align="left"><input type="text" id="waiting_list_note"
                                                                 name="waiting_list_note"
-                                                <%=wLReadonly%>></td>
+                                                <%=Encode.forHtml(String.valueOf(wLReadonly))%>></td>
                                     </tr>
 
                                     <tr>
@@ -2281,7 +2280,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                         <td align="left"><input type="text" placeholder="yyyy-mm-dd"
                                                                 name="waiting_list_referral_date"
                                                                 id="waiting_list_referral_date"
-                                                                value="" size="12" <%=wLReadonly%>> <img
+                                                                value="" size="12" <%=Encode.forHtml(String.valueOf(wLReadonly))%>> <img
                                                 src="<%= request.getContextPath() %>/images/cal.gif" id="referral_date_cal">
                                         </td>
                                         <td><!-- placeholder --></td>
@@ -2391,7 +2390,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                                     // Always use OSCAR program as default if it exists
                                                     if (oscarProgram != null) {
                                                 %>
-                                                <option value="<%=oscarProgram.getId()%>" selected="selected"><%=oscarProgram.getName()%></option>
+                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(oscarProgram.getId()))%>" selected="selected"><%=Encode.forHtml(String.valueOf(oscarProgram.getName()))%></option>
                                                 <%
                                                     }
                                                     
@@ -2401,7 +2400,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                                             continue;
                                                         }
                                                 %>
-                                                <option value="<%=_p.getId()%>"><%=_p.getName()%></option>
+                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(_p.getId()))%>"><%=Encode.forHtml(String.valueOf(_p.getName()))%></option>
                                                 <%
                                                     }
                                                     
@@ -2422,7 +2421,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                                 %>
                                                 <li>
                                                     <input type="checkbox" name="sp"
-                                                           value="<%=_p.getId()%>"/><%=_p.getName()%>
+                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(_p.getId()))%>"/><%=Encode.forHtml(String.valueOf(_p.getName()))%>
                                                 </li>
                                                 <%}%>
                                             </ul>
@@ -2466,7 +2465,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                         if (fid != null && fid >= 0) {
                                     %>
                                     <iframe scrolling="no" id="eform_iframe" name="eform_iframe" frameborder="0"
-                                            src="<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=fid%>"
+                                            src="<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(fid))%>"
                                             onload="this.height=0;var fdh=(this.Document?this.Document.body.scrollHeight:this.contentDocument.body.offsetHeight);this.height=(fdh>800?fdh:800)"
                                             width="100%"></iframe>
                                     <%}%>
@@ -2540,7 +2539,7 @@ if (privateConsentEnabled) {
 }
 %>
     </script>
-    <!--<iframe src="<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=fid%>" width="100%" height="100%"></iframe>-->
+    <!--<iframe src="<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(fid))%>" width="100%" height="100%"></iframe>-->
     <%//}%>
     </body>
 </html>

@@ -30,6 +30,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DocumentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Document" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -71,7 +72,7 @@
               frames.opera
     /cache4/pacing="0" cols="*">
     <frame name="topFrame" scrolling="NO" noresize src="docViewerHead.jsp">
-    <frame name="mainFrame" src="<%=filePath%>">
+    <frame name="mainFrame" src="<%=Encode.forHtmlAttribute(String.valueOf(filePath))%>">
     </frameset>
     <noframes>
         <body bgcolor="#FFFFFF" text="#000000">

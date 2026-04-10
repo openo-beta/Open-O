@@ -226,10 +226,10 @@
                                         // specialty_code = SxmlMisc.getXmlContent(rslocal.getString("comments"),"<xml_p_specialty_code>","</xml_p_specialty_code>");
                                         proNo = p.getProviderNo();
                                 %>
-                                <option value="<%=proNo%>"
-                                        <%=Encode.forHtml(request.getParameter("creator").equals(proNo) ? "selected" : "")%>><%=proLast%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(proNo))%>"
+                                        <%=Encode.forHtml(request.getParameter("creator").equals(proNo) ? "selected" : "")%>><%=Encode.forHtml(String.valueOf(proLast))%>
                                     ,
-                                    <%=proFirst%>
+                                    <%=Encode.forHtml(String.valueOf(proFirst))%>
                                 </option>
                                 <%
                                     }
@@ -260,7 +260,7 @@
                                     color="#000000"><fmt:message key="billing.batchbilling.CreateDate"/></font></td>
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
-                                    type="text" name="createdate" readonly value="<%=nowDate%>" size="20">
+                                    type="text" name="createdate" readonly value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>" size="20">
                             </font></td>
                         </tr>
                         <tr>
@@ -270,7 +270,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="dispcreator" readonly
-                                    value="<%=creator.getFormattedName()%>" size="20"> <input
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(creator.getFormattedName()))%>" size="20"> <input
                                     type="hidden" name="creator"
                                     value="<%=Encode.forHtmlAttribute(request.getParameter("creator"))%>" size="20">
                             </font></td>

@@ -28,6 +28,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.ClinicNbrDao" %>
 <%@page import="ca.openosp.OscarProperties, ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page
         import="java.sql.*, java.util.*, ca.openosp.*, ca.openosp.SxmlMisc, ca.openosp.openo.providers.data.ProviderBillCenter"
         errorPage="/errorpage.jsp" %>
@@ -113,7 +114,7 @@
                                 ClinicNbr tempNbr = nbrIter.next();
                                 String valueString = tempNbr.getNbrValue() + " | " + tempNbr.getNbrString();
                         %>
-                        <option value="<%=tempNbr.getId()%>"><%=valueString%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(tempNbr.getId()))%>"><%=Encode.forHtml(String.valueOf(valueString))%>
                         </option>
                         <%}%>
 

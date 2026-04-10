@@ -121,7 +121,7 @@
         function validate2(form, prevention) {
             form.goPrev.value = prevention;
             if (validateProviderNo(form)) {
-                form.action = "<%=actionPage%>"; //"dbAddFluBilling.jsp"
+                form.action = "<%=Encode.forJavaScript(String.valueOf(actionPage))%>"; //"dbAddFluBilling.jsp"
                 form.submit()
             } else {
             }
@@ -130,7 +130,7 @@
         function validate(form) {
             form.goPrev.value = "";
             if (validateProviderNo(form)) {
-                form.action = "<%=actionPage%>"; //"dbAddFluBilling.jsp"
+                form.action = "<%=Encode.forJavaScript(String.valueOf(actionPage))%>"; //"dbAddFluBilling.jsp"
                 form.submit()
             } else {
             }
@@ -458,7 +458,7 @@
                                 value="<%=Encode.forHtmlAttribute(request.getParameter("dob"))%>" size="20"> </font></td>
                         <td width="24%"><font
                                 face="Verdana, Arial, Helvetica, sans-serif" size="1">Appointment
-                            Date <input type="text" name="apptDate" value="<%=nowDate%>">
+                            Date <input type="text" name="apptDate" value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>">
                         </font></td>
                     </tr>
                     <tr bgcolor="#DFDFEA">
@@ -479,8 +479,8 @@
                                     proOHIP = (String) billingProvider.get(i + 1);
                                     String proName = (String) billingProvider.get(i + 2);
                             %>
-                            <option value="<%=proOHIP%>|<%=specialty_code%>"
-                                    <%=Encode.forHtml((request.getParameter("mrp").equals(specialty_code) || billingProvider.size() == 3) ? "selected" : "")%>><%=proName%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>|<%=Encode.forHtmlAttribute(String.valueOf(specialty_code))%>"
+                                    <%=Encode.forHtml((request.getParameter("mrp").equals(specialty_code) || billingProvider.size() == 3) ? "selected" : "")%>><%=Encode.forHtml(String.valueOf(proName))%>
                             </option>
                             <% } %>
 
@@ -501,10 +501,10 @@
                                         proOHIP = prov.getProviderNo();
 
                                 %>
-                                <option value="<%=proOHIP%>"
-                                        <%=Encode.forHtml(request.getParameter("creator").equals(proOHIP) ? "selected" : "")%>><%=proLast%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"
+                                        <%=Encode.forHtml(request.getParameter("creator").equals(proOHIP) ? "selected" : "")%>><%=Encode.forHtml(String.valueOf(proLast))%>
                                     ,
-                                    <%=proFirst%>
+                                    <%=Encode.forHtml(String.valueOf(proFirst))%>
                                 </option>
                                 <%
                                     }
@@ -539,14 +539,14 @@
                                 face="Verdana, Arial, Helvetica, sans-serif" size="1"
                                 color="#000000">Create Date</font><font
                                 face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
-                                type="text" name="docdate" readonly value="<%=nowDate%>" size="20">
+                                type="text" name="docdate" readonly value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>" size="20">
                         </font></td>
                         <td width="24%"><font
                                 face="Verdana, Arial, Helvetica, sans-serif" color="#000000"
                                 size="1">Creator </font><font
                                 face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                 type="text" name="dispcreator" readonly
-                                value="<%=proLast1%>, <%=proFirst1%>" size="20"> </font><font
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(proLast1))%>, <%=Encode.forHtmlAttribute(String.valueOf(proFirst1))%>" size="20"> </font><font
                                 face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                 type="hidden" name="doccreator"
                                 value="<%=Encode.forHtmlAttribute(request.getParameter("creator"))%>" size="20"> <input
@@ -557,9 +557,9 @@
                                 type="hidden" name="rd" value="<%=Encode.forHtmlAttribute(request.getParameter("rd"))%>"
                                 size="20"> <input type="hidden" name="demo_hctype"
                                                   value="<%=Encode.forHtmlAttribute(request.getParameter("demo_hctype"))%>" size="20">
-                            <input type="hidden" name="clinic_ref_code" value="<%=clinicview%>"
+                            <input type="hidden" name="clinic_ref_code" value="<%=Encode.forHtmlAttribute(String.valueOf(clinicview))%>"
                                    size="20"> <input type="hidden" name="clinicNo"
-                                                     value="<%=clinicNo%>" size="20"> <input type="hidden"
+                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(clinicNo))%>" size="20"> <input type="hidden"
                                                                                              name="appointment_no"
                                                                                              value="0" size="20"> <input
                                     type="hidden" name="orderby" value="updatedatetime desc" size="20">

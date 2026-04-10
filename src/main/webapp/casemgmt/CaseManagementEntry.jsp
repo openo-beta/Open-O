@@ -53,7 +53,7 @@
     <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
     <link rel="stylesheet" href="<c:out value="${ctx}"/>/css/casemgmt.css" type="text/css">
     <script type="text/javascript">
-        var flag =<%=request.getAttribute("change_flag")%>;
+        var flag =<%=Encode.forJavaScript(String.valueOf(request.getAttribute("change_flag")))%>;
 
         <%
 
@@ -195,7 +195,7 @@
                 XMLHttpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
                 var demographicNo = '<c:out value="${e:forJavaScript(param.demographicNo)}"/>';
-                var noteId = '<%=Encode.forJavaScript(request.getParameter("noteId") != null ? request.getParameter("noteId") : request.getAttribute("noteId") != null ? request.getAttribute("noteId") : "")%>';
+                var noteId = '<%=Encode.forJavaScript(String.valueOf(request.getParameter("noteId") != null ? request.getParameter("noteId") : request.getAttribute("noteId") != null ? request.getAttribute("noteId") : ""))%>';
                 var programId = '<c:out value="${case_program_id}"/>';
                 XMLHttpRequestObject.send("method=autosave&demographicNo=" + demographicNo + "&programId=" + programId + "&note_id=" + noteId + "&note=" + escape(obj.value));
             }
@@ -232,12 +232,12 @@
         <input type="hidden" name="chain" id="chain"/>
         <input type="hidden" name="demographicNo" id="demographicNo"/>
         <c:if test="${param.providerNo==null}">
-            <input type="hidden" name="providerNo" value="<%=session.getAttribute("user")%>">
+            <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(session.getAttribute("user")))%>">
         </c:if>
         <c:if test="${param.providerNo!=null}">
             <input type="hidden" name="providerNo" id="providerNo"/>
         </c:if>
-        <input type="hidden" name="caseNote.program_no" value="<%=pId%>"/>
+        <input type="hidden" name="caseNote.program_no" value="<%=Encode.forHtmlAttribute(String.valueOf(pId))%>"/>
         <input type="hidden" name="method" value="save"/>
         <c:if test="${param.from=='casemgmt'||requestScope.from=='casemgmt'}">
             <input type="hidden" name="from" value="casemgmt"/>
@@ -441,14 +441,14 @@
                     <c:url value="${sessionScope.billing_url}" var="url"/>
                     <caisirole:SecurityAccess accessName="billing" accessType="access"
                                               providerNo='<%=Encode.forHtmlAttribute(request.getParameter("providerNo"))%>'
-                                              demoNo='<%=Encode.forHtmlAttribute(request.getParameter("demographicNo"))%>' programId="<%=pId%>">
+                                              demoNo='<%=Encode.forHtmlAttribute(request.getParameter("demographicNo"))%>' programId="<%=Encode.forHtmlAttribute(String.valueOf(pId))%>">
                         <tr>
                             <td class="fieldTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="casemanagementEntry.billing"/></td>
 
                             <td class="fieldValue">
                                 ${caseNote.billing_code}
                                 <input type="button" value="add billing"
-                                       onclick="self.open('<%=(String)session.getAttribute("billing_url")%>','','scrollbars=yes,menubars=no,toolbars=no,resizable=yes');return false;">
+                                       onclick="self.open('<%=Encode.forJavaScript(String.valueOf((String)session.getAttribute("billing_url")))%>','','scrollbars=yes,menubars=no,toolbars=no,resizable=yes');return false;">
                             </td>
                         </tr>
                     </caisirole:SecurityAccess>
@@ -464,10 +464,10 @@
             <tr>
                 <td class="fieldValue" colspan="2">
                     <input type="submit" value="Save"
-                           onclick="this.form.method.value='save';return validateSave(<%=count_issues_display%>);">
+                           onclick="this.form.method.value='save';return validateSave(<%=Encode.forJavaScript(String.valueOf(count_issues_display))%>);">
                     <input type="submit"
                            value="Save and Exit"
-                           onclick="this.form.method.value='saveAndExit';if (validateSave(<%=count_issues_display%>)) {return true;}else return false;">
+                           onclick="this.form.method.value='saveAndExit';if (validateSave(<%=Encode.forJavaScript(String.valueOf(count_issues_display))%>)) {return true;}else return false;">
                     <input type="submit"
                            value="cancel" onclick="this.form.method.value='cancel';return true;">
                 </td>

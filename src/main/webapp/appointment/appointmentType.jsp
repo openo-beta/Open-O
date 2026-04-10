@@ -17,7 +17,6 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*, ca.openosp.openo.appt.*, ca.openosp.openo.commn.dao.AppointmentTypeDao, ca.openosp.openo.commn.model.AppointmentType, ca.openosp.openo.utility.SpringUtils" %>
@@ -37,12 +36,12 @@
         var resources = '';
         var names = '';
         <%   for(int j = 0;j < types.size(); j++) { %>
-        dur = dur + '<%= types.get(j).getDuration() %>' + ',';
-        reason = reason + '<%= types.get(j).getReason() %>' + ',';
-        loc = loc + '<%= types.get(j).getLocation() %>' + ',';
-        notes = notes + '<%= types.get(j).getNotes() %>' + ',';
-        resources = resources + '<%= types.get(j).getResources() %>' + ',';
-        names = names + '<%=StringEscapeUtils.escapeEcmaScript(types.get(j).getName()) %>' + ',';
+        dur = dur + '<%=Encode.forJavaScript(String.valueOf(types.get(j).getDuration()))%>' + ',';
+        reason = reason + '<%=Encode.forJavaScript(String.valueOf(types.get(j).getReason()))%>' + ',';
+        loc = loc + '<%=Encode.forJavaScript(String.valueOf(types.get(j).getLocation()))%>' + ',';
+        notes = notes + '<%=Encode.forJavaScript(String.valueOf(types.get(j).getNotes()))%>' + ',';
+        resources = resources + '<%=Encode.forJavaScript(String.valueOf(types.get(j).getResources()))%>' + ',';
+        names = names + '<%=Encode.forJavaScript(types.get(j).getName()) %>' + ',';
         <%   } %>
         var durArray = dur.split(",");
         var reasonArray = reason.split(",");
@@ -79,7 +78,7 @@
                 <option value="-1">Select type</option>
                 <% for (int i = 0; i < types.size(); i++) {
                 %>
-                <option value="<%= i %>" <%=Encode.forHtml((request.getParameter("type").equals(types.get(i).getName()) ? " selected" : ""))%>><%= types.get(i).getName() %>
+                <option value="<%= i %>" <%=Encode.forHtml((request.getParameter("type").equals(types.get(i).getName()) ? " selected" : ""))%>><%=Encode.forHtml(String.valueOf(types.get(i).getName()))%>
                 </option>
                 <% } %>
             </select>

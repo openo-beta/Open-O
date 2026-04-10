@@ -461,7 +461,7 @@
             alert("${DateError}");
         </c:if>
     </c:if>
-    const backgroundColorId = "bgColour" + "<%=noteIndex%>";
+    const backgroundColorId = "bgColour" + "<%=Encode.forJavaScript(String.valueOf(noteIndex))%>";
     const backgroundColorInput = document.getElementById(backgroundColorId);
     let txtColour = "#000000";
     let background = "#CCCCFF";

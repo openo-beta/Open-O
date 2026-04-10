@@ -1,6 +1,5 @@
 <%--
 
-<%@ page import="org.owasp.encoder.Encode" %>
     Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
     This program is free software; you can redistribute it and/or
@@ -24,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%--
 /**
@@ -84,7 +84,7 @@
 <h1>Document Transfer</h1>
 
 <!-- Debug: Servlet Path -->
-<%= this.getServletContext().getRealPath(request.getServletPath()) %>
+<%=Encode.forHtml(String.valueOf(this.getServletContext().getRealPath(request.getServletPath())))%>
 
 <form method="post" action="<%= request.getContextPath() %>/messenger/Transfer/SelectItems.jsp">Demographic No: <input
         type="text" name="demographicNo"

@@ -1,7 +1,6 @@
 <%--
 
 
-<%@ page import="org.owasp.encoder.Encode" %>
     Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
     This program is free software; you can redistribute it and/or
@@ -23,6 +22,7 @@
     Toronto, Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/taglibs.jsp" %>
 
 <html>

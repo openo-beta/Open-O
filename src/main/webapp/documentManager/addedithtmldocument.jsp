@@ -232,14 +232,14 @@
         function checkDefaultValue(object) {
             //selectBoxType = object.form.docType
             //var selectedType = selectBoxType.options[selectBoxType.selectedIndex].value;
-            if ((object.value == "<%= defaultDesc%>") || (object.value == "<%= defaultType%>")) {
+            if ((object.value == "<%=Encode.forJavaScript(String.valueOf(defaultDesc))%>") || (object.value == "<%=Encode.forJavaScript(String.valueOf(defaultType))%>")) {
                 object.value = "";
             }
         }
 
         function checkSel(sel) {
             theForm = sel.form;
-            if ((theForm.docDesc.value == "") || (theForm.docDesc.value == "<%= defaultDesc%>")) {
+            if ((theForm.docDesc.value == "") || (theForm.docDesc.value == "<%=Encode.forJavaScript(String.valueOf(defaultDesc))%>")) {
                 theForm.docDesc.value = theForm.docType.value;
                 theForm.docDesc.focus();
                 theForm.docDesc.select();
@@ -254,7 +254,7 @@
 
         var docSubClassList = [
             <% for (int i=0; i<subClasses.size(); i++) { %>
-            "<%=subClasses.get(i)%>"<%=(i<subClasses.size()-1)?",":""%>
+            "<%=Encode.forJavaScript(String.valueOf(subClasses.get(i)))%>"<%=(i<subClasses.size()-1)?",":""%>
             <% } %>
         ];
 
@@ -275,7 +275,7 @@
 <div class="maindiv">
     <div class="maindivheading">&nbsp;&nbsp;&nbsp; Edit Document</div>
     <%-- Lists linkhtmlerrors --%> <% for (Enumeration errorkeys = linkhtmlerrors.keys(); errorkeys.hasMoreElements(); ) {%>
-    <font class="warning">Error: <fmt:setBundle basename="oscarResources"/><fmt:message key="<%=(String) linkhtmlerrors.get(errorkeys.nextElement())%>"/></font><br/>
+    <font class="warning">Error: <fmt:setBundle basename="oscarResources"/><fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf((String) linkhtmlerrors.get(errorkeys.nextElement())))%>"/></font><br/>
     <% } %> <form action="${pageContext.request.contextPath}/documentManager/addEditHtml.do" method="POST"
                        enctype="multipart/form-data" class="form"
                        onsubmit="return submitUpload(this);">
@@ -285,13 +285,13 @@
     <input type="hidden" name="functionId"
            value="<%=Encode.forHtmlAttribute(formdata.getFunctionId())%>" size="20"/>
     <input type="hidden" name="functionid" value="<%=Encode.forHtmlAttribute(moduleid)%>" size="20"/>
-    <input type="hidden" name="mode" value="<%=mode%>"/>
+    <input type="hidden" name="mode" value="<%=Encode.forHtmlAttribute(String.valueOf(mode))%>"/>
     <input type="hidden" name="docCreator"
-           value="<%=formdata.getDocCreator()%>"/>
-    <input type="hidden" name="reviewerId" value="<%=formdata.getReviewerId()%>"/>
-    <input type="hidden" name="reviewDateTime" value="<%=formdata.getReviewDateTime()%>"/>
+           value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getDocCreator()))%>"/>
+    <input type="hidden" name="reviewerId" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getReviewerId()))%>"/>
+    <input type="hidden" name="reviewDateTime" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getReviewDateTime()))%>"/>
     <input type="hidden" name="reviewDoc" value="false"/>
-    <input type="hidden" name="annotation_attrib" value="<%=annotation_attrib%>"/>
+    <input type="hidden" name="annotation_attrib" value="<%=Encode.forHtmlAttribute(String.valueOf(annotation_attrib))%>"/>
 
     <table width="100%" height="100%" class="layouttable">
         <tr>
@@ -342,7 +342,7 @@
         </tr>
         <tr>
             <td>Added By:</td>
-            <td><%=EDocUtil.getProviderName(formdata.getDocCreator())%>
+            <td><%=Encode.forHtml(String.valueOf(EDocUtil.getProviderName(formdata.getDocCreator())))%>
             </td>
         </tr>
         <tr>
@@ -354,7 +354,7 @@
                         String selected = "";
                         if (formdata.getResponsibleId().equals(pd.get("providerNo"))) selected = "selected";
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(pd.get("providerNo")))%>" <%=selected%>><%=Encode.forHtmlContent(String.valueOf(pd.get("lastName")))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(pd.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtmlContent(String.valueOf(pd.get("lastName")))%>
                         , <%=Encode.forHtmlContent(String.valueOf(pd.get("firstName")))%>
                     </option>
                     <% } %>
@@ -363,26 +363,26 @@
         </tr>
         <tr>
             <td>Date Added/Updated:</td>
-            <td><%=lastUpdate%>
+            <td><%=Encode.forHtml(String.valueOf(lastUpdate))%>
             </td>
         </tr>
         <tr>
             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formContentAddedUpdated"/>:</td>
-            <td><%=formdata.getContentDateTime()%>
+            <td><%=Encode.forHtml(String.valueOf(formdata.getContentDateTime()))%>
             </td>
         </tr>
         <tr>
             <td>Source Author:</td>
-            <td><input type="text" name="source" size="15" value="<%=formdata.getSource()%>"/></td>
+            <td><input type="text" name="source" size="15" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getSource()))%>"/></td>
         </tr>
         <tr>
             <td>Source Facility:</td>
-            <td><input type="text" name="sourceFacility" size="15" value="<%=formdata.getSourceFacility()%>"/></td>
+            <td><input type="text" name="sourceFacility" size="15" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getSourceFacility()))%>"/></td>
         </tr>
         <tr>
             <td>Observation Date <font class="comment">(yyyy/mm/dd):</font></td>
             <td><input type="text" name="observationDate"
-                       id="observationDate" value="<%=formdata.getObservationDate()%>"><a
+                       id="observationDate" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getObservationDate()))%>"><a
                     id="obsdate"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif"
                                       alt="Calendar" border="0"/></a></td>
         </tr>
@@ -390,15 +390,15 @@
         <tr>
             <td>Public?</td>
             <td><input type="checkbox" name="docPublic"
-                    <%=formdata.getDocPublic() + " "%> value="checked"></td>
+                    <%=Encode.forHtml(String.valueOf(formdata.getDocPublic() + " "))%> value="checked"></td>
         </tr>
         <% }
             if (oldDoc) { %>
         <tr>
             <td colspan="2">
                 <% if (formdata.getReviewerId() != null && !formdata.getReviewerId().equals("")) { %>
-                Reviewed: &nbsp; <%=EDocUtil.getProviderName(formdata.getReviewerId())%>
-                &nbsp; [<%=formdata.getReviewDateTime()%>]
+                Reviewed: &nbsp; <%=Encode.forHtml(String.valueOf(EDocUtil.getProviderName(formdata.getReviewerId())))%>
+                &nbsp; [<%=Encode.forHtml(String.valueOf(formdata.getReviewDateTime()))%>]
                 <% } else { %>
                 <input type="button" value="Reviewed" title="Click to set Reviewed" onclick="reviewed(this);"/>
                 <% } %>
@@ -408,7 +408,7 @@
         <tr>
             <td colspan="2">
                 <input type="button" value="Annotation"
-                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?atbname=<%=annotation_attrib%>&display=<%=annotation_display%>&table_id=<%=annotation_tableid%>&demo=<%=moduleid%>','anwin','width=400,height=500');"/>
+                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?atbname=<%=Encode.forJavaScript(String.valueOf(annotation_attrib))%>&display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(annotation_tableid))%>&demo=<%=Encode.forJavaScript(String.valueOf(moduleid))%>','anwin','width=400,height=500');"/>
             </td>
         </tr>
         <tr>
@@ -417,7 +417,7 @@
         <tr>
             <td colspan="2">
 			    <textarea name="html" <% if (linkhtmlerrors.containsKey("uploaderror")) {%>
-                          class="warning" <%}%> wrap="off" style="width: 98%; height: 200px;"><%=formdata.getHtml()%>
+                          class="warning" <%}%> wrap="off" style="width: 98%; height: 200px;"><%=Encode.forHtml(String.valueOf(formdata.getHtml()))%>
 			    </textarea>
             </td>
         </tr>

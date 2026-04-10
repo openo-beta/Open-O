@@ -42,7 +42,6 @@
 <%@ page import="ca.openosp.openo.form.graphic.*, ca.openosp.openo.util.*, ca.openosp.openo.form.*, ca.openosp.openo.form.data.*" %>
 <%@ page import="ca.openosp.openo.commn.web.Pregnancy2Action" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.util.LabelValueBean" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
@@ -125,22 +124,22 @@
     <head>
         <title>Antenatal Record 2</title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + context + "/" %>">
-        <script type="text/javascript" src="<%= context %>/js/global.js"></script>
+        <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/global.js"></script>
         <link rel="stylesheet" type="text/css" href="<%=bView ? context + "/form/arStyleView.css" : context + "/form/arStyle.css"%>">
-        <link rel="stylesheet" type="text/css" media="all" href="<%= context %>/share/calendar/calendar.css" title="win2k-cold-1"/>
-        <script type="text/javascript" src="<%= context %>/share/calendar/calendar.js"></script>
+        <link rel="stylesheet" type="text/css" media="all" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/calendar.css" title="win2k-cold-1"/>
+        <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="<%= context %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
-        <script type="text/javascript" src="<%= context %>/share/calendar/calendar-setup.js"></script>
-        <script type="text/javascript" src="<%= context %>/js/jquery-1.7.1.min.js"></script>
-        <script src="<%= context %>/js/jquery-ui-1.8.18.custom.min.js"></script>
-        <script src="<%= context %>/js/fg.menu.js"></script>
-        <script type="text/javascript" src="<%= context %>/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-        <link rel="stylesheet" type="text/css" href="<%= context %>/js/fancybox/jquery.fancybox-1.3.4.css" media="screen"/>
+                src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+        <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/calendar-setup.js"></script>
+        <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/jquery-1.7.1.min.js"></script>
+        <script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/jquery-ui-1.8.18.custom.min.js"></script>
+        <script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/fg.menu.js"></script>
+        <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+        <link rel="stylesheet" type="text/css" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/fancybox/jquery.fancybox-1.3.4.css" media="screen"/>
 
 
-        <link rel="stylesheet" href="<%= context %>/css/cupertino/jquery-ui-1.8.18.custom.css">
-        <link rel="stylesheet" href="<%= context %>/css/fg.menu.css">
+        <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/css/cupertino/jquery-ui-1.8.18.custom.css">
+        <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/css/fg.menu.css">
 
         <style type="text/css">
             body {
@@ -242,7 +241,7 @@
                 <%
 			} else if(cytologyForms.size() == 1) {
 				%>
-                popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=cytologyForms.get(0).getValue()%>&demographic_no=<%=demoNo%>&appointment=0', 'cytology');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(cytologyForms.get(0).getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0', 'cytology');
                 <%
 			} else {
 				%>$("#cytology-eform-form").dialog("open");
@@ -261,7 +260,7 @@
                 <%
 				} else if(ultrasoundForms.size() == 1) {
 					%>
-                popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=ultrasoundForms.get(0).getValue()%>&demographic_no=<%=demoNo%>&appointment=0', 'ultrasound');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(ultrasoundForms.get(0).getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0', 'ultrasound');
                 <%
 				} else {
 					%>$("#ultrasound-eform-form").dialog("open");
@@ -277,11 +276,11 @@
 		if(customForms != null) {
 			if(customForms.size()==0) {
 				%>
-                alert('No <%=customEformGroup%> Forms configured');
+                alert('No <%=Encode.forJavaScript(String.valueOf(customEformGroup))%> Forms configured');
                 <%
 			} else if(customForms.size() == 1) {
 				%>
-                popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=customForms.get(0).getValue()%>&demographic_no=<%=demoNo%>&appointment=0', '<%=customEformGroup%>form');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(customForms.get(0).getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0', '<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');
                 <%
 			} else {
 				%>$("#custom-eform-form").dialog("open");
@@ -340,11 +339,11 @@
             }
 
             $(document).ready(function () {
-                $("select[name='ar2_strep']").val('<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("ar2_strep", "")) %>');
-                $("select[name='ar2_bloodGroup']").val('<%= abo %>');
-                $("select[name='ar2_rh']").val('<%= rh %>');
-                $("select[name='ar2_labCustom1Label']").val('<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("ar2_labCustom1Label", "")) %>');
-                $("select[name='ar2_labCustom2Label']").val('<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("ar2_labCustom2Label", "")) %>');
+                $("select[name='ar2_strep']").val('<%= Encode.forJavaScript(props.getProperty("ar2_strep", "")) %>');
+                $("select[name='ar2_bloodGroup']").val('<%=Encode.forJavaScript(String.valueOf(abo))%>');
+                $("select[name='ar2_rh']").val('<%=Encode.forJavaScript(String.valueOf(rh))%>');
+                $("select[name='ar2_labCustom1Label']").val('<%= Encode.forJavaScript(props.getProperty("ar2_labCustom1Label", "")) %>');
+                $("select[name='ar2_labCustom2Label']").val('<%= Encode.forJavaScript(props.getProperty("ar2_labCustom2Label", "")) %>');
 
 
                 if ($("select[name='ar2_rh']").val() == 'NEG'/* && getGAWeek() >= 9*/) {
@@ -357,11 +356,11 @@
                     $("#rhogam_warn").hide();
                 }
 
-                if ('<%=StringEscapeUtils.escapeEcmaScript(props.getProperty("pg1_labRubella", ""))%>' == 'Non-Immune') {
+                if ('<%=Encode.forJavaScript(props.getProperty("pg1_labRubella", ""))%>' == 'Non-Immune') {
                     $("#rubella_warn").show();
                 }
 
-                if ('<%=StringEscapeUtils.escapeEcmaScript(props.getProperty("pg1_labHBsAg", ""))%>' == 'POS') {
+                if ('<%=Encode.forJavaScript(props.getProperty("pg1_labHBsAg", ""))%>' == 'POS') {
                     $("#hbsag_warn").show();
                 }
 
@@ -613,14 +612,14 @@
                         for(int x=0; x<rfNum; x++) {
                             int y=x+1;
                     %>
-                    const rfResponse<%=y%> = await fetch('form/onarenhanced_rf.jsp?n=<%=y%>');
-                    if (!rfResponse<%=y%>.ok) {
-                        throw new Error('HTTP error ' + rfResponse<%=y%>.status + ': ' + rfResponse<%=y%>.statusText);
+                    const rfResponse<%=Encode.forJavaScript(String.valueOf(y))%> = await fetch('form/onarenhanced_rf.jsp?n=<%=Encode.forJavaScript(String.valueOf(y))%>');
+                    if (!rfResponse<%=Encode.forJavaScript(String.valueOf(y))%>.ok) {
+                        throw new Error('HTTP error ' + rfResponse<%=Encode.forJavaScript(String.valueOf(y))%>.status + ': ' + rfResponse<%=Encode.forJavaScript(String.valueOf(y))%>.statusText);
                     }
-                    const rfHtml<%=y%> = await rfResponse<%=y%>.text();
-                    document.querySelector('#rf_container tbody').insertAdjacentHTML('beforeend', rfHtml<%=y%>);
-                    setInput(<%=y%>, "c_riskFactors", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("c_riskFactors"+y, "")) %>');
-                    setInput(<%=y%>, "c_planManage", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("c_planManage"+y, "")) %>');
+                    const rfHtml<%=Encode.forJavaScript(String.valueOf(y))%> = await rfResponse<%=Encode.forJavaScript(String.valueOf(y))%>.text();
+                    document.querySelector('#rf_container tbody').insertAdjacentHTML('beforeend', rfHtml<%=Encode.forJavaScript(String.valueOf(y))%>);
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "c_riskFactors", '<%= Encode.forJavaScript(props.getProperty("c_riskFactors"+y, "")) %>');
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "c_planManage", '<%= Encode.forJavaScript(props.getProperty("c_planManage"+y, "")) %>');
                     <%
                         }
                     } else {
@@ -641,21 +640,21 @@
                         for(int x=0; x<svNum; x++) {
                             int y=x+1;
                     %>
-                    const svResponse<%=y%> = await fetch('form/onarenhanced_sv.jsp?n=<%=y%>');
-                    if (!svResponse<%=y%>.ok) {
-                        throw new Error('HTTP error ' + svResponse<%=y%>.status + ': ' + svResponse<%=y%>.statusText);
+                    const svResponse<%=Encode.forJavaScript(String.valueOf(y))%> = await fetch('form/onarenhanced_sv.jsp?n=<%=Encode.forJavaScript(String.valueOf(y))%>');
+                    if (!svResponse<%=Encode.forJavaScript(String.valueOf(y))%>.ok) {
+                        throw new Error('HTTP error ' + svResponse<%=Encode.forJavaScript(String.valueOf(y))%>.status + ': ' + svResponse<%=Encode.forJavaScript(String.valueOf(y))%>.statusText);
                     }
-                    const svHtml<%=y%> = await svResponse<%=y%>.text();
-                    document.querySelector('#sv_tbody').insertAdjacentHTML('beforeend', svHtml<%=y%>);
-                    setInput(<%=y%>, "pg2_date", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg2_date"+y, "")) %>');
-                    setInput(<%=y%>, "pg2_gest", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg2_gest"+y, "")) %>');
-                    setInput(<%=y%>, "pg2_wt", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg2_wt"+y, "")) %>');
-                    setInput(<%=y%>, "pg2_BP", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg2_BP"+y, "")) %>');
-                    setInput(<%=y%>, "pg2_urinePr", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg2_urinePr"+y, "")) %>');
-                    setInput(<%=y%>, "pg2_ht", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg2_ht"+y, "")) %>');
-                    setInput(<%=y%>, "pg2_presn", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg2_presn"+y, "")) %>');
-                    setInput(<%=y%>, "pg2_FHR", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg2_FHR"+y, "")) %>');
-                    setInput(<%=y%>, "pg2_comments", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg2_comments"+y, "")) %>');
+                    const svHtml<%=Encode.forJavaScript(String.valueOf(y))%> = await svResponse<%=Encode.forJavaScript(String.valueOf(y))%>.text();
+                    document.querySelector('#sv_tbody').insertAdjacentHTML('beforeend', svHtml<%=Encode.forJavaScript(String.valueOf(y))%>);
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "pg2_date", '<%= Encode.forJavaScript(props.getProperty("pg2_date"+y, "")) %>');
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "pg2_gest", '<%= Encode.forJavaScript(props.getProperty("pg2_gest"+y, "")) %>');
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "pg2_wt", '<%= Encode.forJavaScript(props.getProperty("pg2_wt"+y, "")) %>');
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "pg2_BP", '<%= Encode.forJavaScript(props.getProperty("pg2_BP"+y, "")) %>');
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "pg2_urinePr", '<%= Encode.forJavaScript(props.getProperty("pg2_urinePr"+y, "")) %>');
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "pg2_ht", '<%= Encode.forJavaScript(props.getProperty("pg2_ht"+y, "")) %>');
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "pg2_presn", '<%= Encode.forJavaScript(props.getProperty("pg2_presn"+y, "")) %>');
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "pg2_FHR", '<%= Encode.forJavaScript(props.getProperty("pg2_FHR"+y, "")) %>');
+                    setInput(<%=Encode.forJavaScript(String.valueOf(y))%>, "pg2_comments", '<%= Encode.forJavaScript(props.getProperty("pg2_comments"+y, "")) %>');
                     <%
                         }
                     } else {
@@ -681,9 +680,9 @@
                     }
                     const usHtml<%=x%> = await usResponse<%=x%>.text();
                     document.querySelector('#us_container tbody').insertAdjacentHTML('beforeend', usHtml<%=x%>);
-                    setInput(<%=x%>, "ar2_uDate", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("ar2_uDate"+x, "")) %>');
-                    setInput(<%=x%>, "ar2_uGA", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("ar2_uGA"+x, "")) %>');
-                    setInput(<%=x%>, "ar2_uResults", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("ar2_uResults"+x, "")) %>');
+                    setInput(<%=x%>, "ar2_uDate", '<%= Encode.forJavaScript(props.getProperty("ar2_uDate"+x, "")) %>');
+                    setInput(<%=x%>, "ar2_uGA", '<%= Encode.forJavaScript(props.getProperty("ar2_uGA"+x, "")) %>');
+                    setInput(<%=x%>, "ar2_uResults", '<%= Encode.forJavaScript(props.getProperty("ar2_uResults"+x, "")) %>');
                     <%
                         }
                     } else {
@@ -734,8 +733,8 @@
                 haveLock = false;
                 $.ajax({
                         type: "POST",
-                        url: "<%= context %>/PageMonitoringService.do",
-                        data: {method: "update", page: "formonarenhanced", pageId: "<%=demoNo%>", lock: lock},
+                        url: "<%=Encode.forJavaScript(String.valueOf(context))%>/PageMonitoringService.do",
+                        data: {method: "update", page: "formonarenhanced", pageId: "<%=Encode.forJavaScript(String.valueOf(demoNo))%>", lock: lock},
                         dataType: 'json',
                         success: function (data, textStatus) {
                             lockData = data;
@@ -795,7 +794,7 @@
 
             function reset() {
                 document.forms[0].target = "";
-                document.forms[0].action = "/<%=project_home%>/form/formname.do";
+                document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
             }
 
             function onPrint() {
@@ -832,7 +831,7 @@
             		urlExt.append("&multiple="+(multiple+1));
             	}
             	%>
-                        document.forms[0].action = "<%= context %>/form/createpdf?__title=Antenatal+Record+Part+2&__cfgfile=onar2enhancedPrintCfgPg1&__cfgGraphicFile=onar2PrintGraphCfgPg1&__template=onar2<%=urlExt.toString()%>&postProcessor=ONAR2EnhancedPostProcessor";
+                        document.forms[0].action = "<%=Encode.forJavaScript(String.valueOf(context))%>/form/createpdf?__title=Antenatal+Record+Part+2&__cfgfile=onar2enhancedPrintCfgPg1&__cfgGraphicFile=onar2PrintGraphCfgPg1&__template=onar2<%=Encode.forJavaScript(String.valueOf(urlExt.toString()))%>&postProcessor=ONAR2EnhancedPostProcessor";
                         document.forms[0].target = "_blank";
                     }
 
@@ -1004,7 +1003,7 @@
                         adjustDynamicListTotals();
 
                         try {
-                            const response = await fetch('<%= context %>/Pregnancy.do?method=saveFormAjax', {
+                            const response = await fetch('<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=saveFormAjax', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -1029,7 +1028,7 @@
                             result = false;
                         }
                     } else {
-                        url = url.replace('#id', '<%=formId%>');
+                        url = url.replace('#id', '<%=Encode.forJavaScript(String.valueOf(formId))%>');
                         location.href = url;
                     }
                 }
@@ -1288,7 +1287,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                 var mm = eval(str_date.substring(eval(str_date.indexOf("/") + 1), str_date.lastIndexOf("/")) - 1);
                 var dd = str_date.substring(eval(str_date.lastIndexOf("/") + 1));
                 var check_date = new Date(yyyy, mm, dd);
-                var start = new Date("<%=sDate%>");
+                var start = new Date("<%=Encode.forJavaScript(String.valueOf(sDate))%>");
 
                 if (check_date.getUTCHours() != start.getUTCHours()) {
                     if (check_date.getUTCHours() > start.getUTCHours()) {
@@ -1421,7 +1420,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
             }
 
             $(document).ready(function () {
-                if ('<%=rh%>' == 'NEG') {
+                if ('<%=Encode.forJavaScript(String.valueOf(rh))%>' == 'NEG') {
                     $("input[name='ar2_rhNeg']").attr('checked', true);
                     $("#rhNegSpan").css('background-color', 'red');
                 }
@@ -1435,7 +1434,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                 });
 
 
-                if ('<%=hbsag%>' == 'POS') {
+                if ('<%=Encode.forJavaScript(String.valueOf(hbsag))%>' == 'POS') {
                     $("input[name='ar2_hepBIG']").attr('checked', true);
                     $("#hepbSpan").css('background-color', 'red');
                     $("input[name='ar2_hepBVac']").attr('checked', true);
@@ -1458,7 +1457,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     }
                 });
 
-                if ('<%=rubella%>' == 'Non-Immune' || '<%=rubella%>' == 'Indeterminate') {
+                if ('<%=Encode.forJavaScript(String.valueOf(rubella))%>' == 'Non-Immune' || '<%=Encode.forJavaScript(String.valueOf(rubella))%>' == 'Indeterminate') {
                     $("input[name='ar2_rubella']").attr('checked', true);
                     $("#rubellaSpan").css('background-color', 'red');
                 }
@@ -1544,12 +1543,12 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                         "Generate Requisition": async function () {
                             $(this).dialog("close");
                             var penicillin = $("#penicillin").attr('checked');
-                            var demographic = '<%=props.getProperty("demographic_no", "0")%>';
-                            var user = '<%=session.getAttribute("user")%>';
-                            url = '<%= context %>/form/formlabreq<%=labReqVer %>.jsp?demographic_no=' + demographic + '&formId=0&provNo=' + user + '&fromSession=true';
+                            var demographic = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("demographic_no", "0")))%>';
+                            var user = '<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>';
+                            url = '<%=Encode.forJavaScript(String.valueOf(context))%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographic + '&formId=0&provNo=' + user + '&fromSession=true';
 
                             try {
-                                const response = await fetch('<%= context %>/Pregnancy.do?method=createGBSLabReq&demographicNo=' + demographic + '&penicillin=' + penicillin);
+                                const response = await fetch('<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=createGBSLabReq&demographicNo=' + demographic + '&penicillin=' + penicillin);
                                 if (!response.ok) {
                                     throw new Error('HTTP error ' + response.status + ': ' + response.statusText);
                                 }
@@ -1581,16 +1580,16 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             var printAr2 = $("#print_ar2").attr('checked');
                             var printLocation = $("#print_location").val();
                             var printMethod = $("#print_method").val();
-                            var demographic = '<%=props.getProperty("demographic_no", "0")%>';
-                            var user = '<%=session.getAttribute("user")%>';
+                            var demographic = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("demographic_no", "0")))%>';
+                            var user = '<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>';
 
                             var rfNum = $("#rf_num").val();
                             var svNum = $("#sv_num").val();
                             var usNum = $("#us_num").val();
 
 
-                            var obxNum = '<%=props.getProperty("obxhx_num", "0")%>';
-                            var hasExtraComments = <%=(props.getProperty("pg1_comments2AR1", "").length() > 0)%>;
+                            var obxNum = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("obxhx_num", "0")))%>';
+                            var hasExtraComments = <%=Encode.forJavaScript(String.valueOf((props.getProperty("pg1_comments2AR1", "").length() > 0)))%>;
 
                             if ((typeof printAr1 == "undefined") && (typeof printAr2 == "undefined")) {
                                 return;
@@ -1600,7 +1599,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             if (printLocation.length > 0) {
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: '<%= context %>/Pregnancy.do?method=recordPrint',
+                                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=recordPrint',
                                     data: {
                                         printLocation: printLocation,
                                         printMethod: printMethod,
@@ -1619,7 +1618,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             if (ret == true) {
                                 document.forms[0].submit.value = "print";
                                 document.forms[0].target = "_blank";
-                                var url = "<%= context %>/form/createpdf?";
+                                var url = "<%=Encode.forJavaScript(String.valueOf(context))%>/form/createpdf?";
                                 var multiple = 0;
                                 if (!(typeof printAr1 == "undefined")) {
                                     url += "__title=Antenatal+Record+Part+1&__cfgfile=onar1enhancedPrintCfgPg1&__template=onar1&__numPages=1&postProcessor=ONAR1EnhancedPostProcessor";
@@ -1720,7 +1719,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                 $("#print_log_menu").bind('click', function () {
                     jQuery.ajax({
                         type: "POST",
-                        url: '<%= context %>/Pregnancy.do?method=getPrintData',
+                        url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getPrintData',
                         data: {resourceName: 'ONAREnhanced', resourceId: $('#episodeId').val()},
                         dataType: 'json',
                         async: true,
@@ -1757,7 +1756,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                 }
 
                 function getFundalImageUrl(c) {
-                    var url = "<%= context %>/Pregnancy.do?method=getFundalImage";
+                    var url = "<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getFundalImage";
                     //gest,ht
                     var params = "";
                     var n = getGestHtVal();
@@ -1859,9 +1858,9 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             var gct_urine = $("#gct_urine").attr('checked');
                             var gct_ab = $("#gct_ab").attr('checked');
                             var gct_glu = $("#gct_glu").attr('checked');
-                            var user = '<%=session.getAttribute("user")%>';
-                            url = '<%= context %>/form/formlabreq<%=labReqVer %>.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=' + user + '&fromSession=true';
-                            var pregUrl = '<%= context %>/Pregnancy.do?method=createGCTLabReq&demographicNo=<%=demoNo%>&hb=' + gct_hb + '&urine=' + gct_urine + '&antibody=' + gct_ab + '&glucose=' + gct_glu;
+                            var user = '<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>';
+                            url = '<%=Encode.forJavaScript(String.valueOf(context))%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=0&provNo=' + user + '&fromSession=true';
+                            var pregUrl = '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=createGCTLabReq&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&hb=' + gct_hb + '&urine=' + gct_urine + '&antibody=' + gct_ab + '&glucose=' + gct_glu;
 
                             try {
                                 const response = await fetch(pregUrl);
@@ -1893,9 +1892,9 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                         "Generate Requisition": async function () {
                             $(this).dialog("close");
                             var gtt_glu = $("#gtt_glu").attr('checked');
-                            var user = '<%=session.getAttribute("user")%>';
-                            url = '<%= context %>/form/formlabreq<%=labReqVer %>.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=' + user + '&fromSession=true';
-                            var pregUrl = '<%= context %>/Pregnancy.do?method=createGTTLabReq&demographicNo=<%=demoNo%>&glucose=' + gtt_glu;
+                            var user = '<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>';
+                            url = '<%=Encode.forJavaScript(String.valueOf(context))%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=0&provNo=' + user + '&fromSession=true';
+                            var pregUrl = '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=createGTTLabReq&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&glucose=' + gtt_glu;
 
                             try {
                                 const response = await fetch(pregUrl);
@@ -2113,8 +2112,8 @@ if (!fedb.equals("") && fedb.length()==10 ) {
 
             function checkSOGCGuidelineForEDB() {
                 //get LMP
-                var lmp = '<%=props.getProperty("pg1_menLMP")%>';
-                var edb = '<%=props.getProperty("c_finalEDB")%>';
+                var lmp = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_menLMP")))%>';
+                var edb = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("c_finalEDB")))%>';
 
                 var dLMP = parseDate(lmp);
                 dLMP.setHours(8);
@@ -2141,7 +2140,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                 var usNum = 0;
 
                 //is there a 1st trimester U/S
-                var numUS = '<%=props.getProperty("us_num", "0")%>';
+                var numUS = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("us_num", "0")))%>';
                 for (var x = 1; x <= numUS; x++) {
                     //get the date and the GA
                     var usDateStr = $("#ar2_uDate" + x).val(); // yyyy/m//dd
@@ -2272,17 +2271,17 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
                     <tr id="24wk_visit">
                         <td>24 week Visit<span style="float:right"><img id="24wk_visit_menu"
-                                                                        src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                        src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                         border="0"></span></td>
                     </tr>
                     <tr id="35wk_visit">
                         <td>35 week Visit<span style="float:right"><img id="35wk_visit_menu"
-                                                                        src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                        src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                         border="0"></span></td>
                     </tr>
                     <!--
 			<tr id="dd_visit">
-				<td>Due Date<span style="float:right"><img id="dd_visit_menu" src="<%= context %>/images/right-circle-arrow-Icon.png" border="0"></span></td>
+				<td>Due Date<span style="float:right"><img id="dd_visit_menu" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png" border="0"></span></td>
 			</tr>
 			-->
                 </table>
@@ -2296,7 +2295,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     <tr id="graph">
                         <td>
                             <span id="fundal_graph_text">Fundus Height Graph</span><span style="float:right"><img
-                                id="graph_menu" src="<%= context %>/images/right-circle-arrow-Icon.png" border="0"></span>
+                                id="graph_menu" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png" border="0"></span>
                             <div style="display:none"><a href="#" id="fundal_link">dummy link</a></div>
                         </td>
                     </tr>
@@ -2304,7 +2303,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                         <td>
                             Printing Log
                             <span style="float:right"><img id="print_log_menu"
-                                                           src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                           src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                            border="0"></span>
                         </td>
                     </tr>
@@ -2318,7 +2317,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
                     <tr id="edb_warn" style="display:none">
                         <td>Update EDB<span style="float:right"><img id="edb_menu"
-                                                                     src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                     src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                      border="0"></span></td>
                     </tr>
                     <tr id="rh_warn" style="display:none">
@@ -2341,19 +2340,19 @@ if (!fedb.equals("") && fedb.length()==10 ) {
 
                     <tr id="gct_warn" style="display:none">
                         <td>Perform 1hr GCT<span style="float:right"><img id="gct_menu"
-                                                                          src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                          src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                           border="0"></span></td>
                     </tr>
 
                     <tr id="gct_diabetes_warn" style="display:none">
                         <td>Gestational Diabetes<span style="float:right"><img id="gd_menu"
-                                                                               src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                               src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                                border="0"></span></td>
                     </tr>
 
                     <tr id="2hrgtt_prompt" style="display:none">
                         <td>GTT Req<span style="float:right"><img id="gtt_menu"
-                                                                  src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                  src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                   border="0"></span></td>
                     </tr>
 
@@ -2366,18 +2365,18 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
 
                     <tr id="lab_prompt">
-                        <td>Labs<span style="float:right"><img id="lab_menu" src="<%= context %>/images/right-circle-arrow-Icon.png"
+                        <td>Labs<span style="float:right"><img id="lab_menu" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                border="0"></span></td>
                     </tr>
 
                     <tr id="forms_prompt">
                         <td>Forms<span style="float:right"><img id="forms_menu"
-                                                                src="<%= context %>/images/right-circle-arrow-Icon.png" border="0"></span>
+                                                                src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png" border="0"></span>
                         </td>
                     </tr>
 
                     <tr id="strep_prompt" style="display:none">
-                        <td>GBS<span style="float:right"><img id="gbs_menu" src="<%= context %>/images/right-circle-arrow-Icon.png"
+                        <td>GBS<span style="float:right"><img id="gbs_menu" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                               border="0"></span></td>
                     </tr>
 
@@ -2399,19 +2398,19 @@ if (!fedb.equals("") && fedb.length()==10 ) {
 
                 <input type="hidden" name="commonField" value="ar2_"/>
                 <input type="hidden" name="c_lastVisited"
-                       value=<%=props.getProperty("c_lastVisited", "pg2")%>/>
+                       value=<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "pg2")))%>/>
                 <input type="hidden" name="demographic_no"
-                       value="<%= props.getProperty("demographic_no", "0") %>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
                 <input type="hidden" name="formCreated"
-                       value="<%= props.getProperty("formCreated", "") %>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
                 <input type="hidden" id="episodeId" name="episodeId"
-                       value="<%= props.getProperty("episodeId", "") %>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("episodeId", "")))%>"/>
                 <input type="hidden" name="form_class" value="<%=formClass%>"/>
                 <input type="hidden" name="form_link" value="<%=formLink%>"/>
-                <input type="hidden" id="formId" name="formId" value="<%=formId%>"/>
+                <input type="hidden" id="formId" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
                 <input type="hidden" name="sent_to_born" value="0"/>
                 <input type="hidden" name="ID"
-                       value="<%= props.getProperty("ID", "0") %>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
                 <input type="hidden" name="provider_no"
                        value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
                 <input type="hidden" name="provNo"
@@ -2446,11 +2445,11 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             &nbsp;&nbsp;&nbsp;
                             <b>View:</b> <a
                                 href="javascript:void(0);"
-                                onclick="popupPage(960,700,'form/formonarenhancedpg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo+historyet%>&view=1');">
+                                onclick="popupPage(960,700,'form/formonarenhancedpg1.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo+historyet))%>&view=1');">
                             AR1</a> &nbsp;&nbsp;&nbsp;
                             <b>Edit:</b> <a
                                 href="javascript:void(0);"
-                                onclick="return onPageChange('form/formonarenhancedpg1.jsp?demographic_no=<%=demoNo%>&formId=#id&provNo=<%=provNo%>');">AR1</a>
+                                onclick="return onPageChange('form/formonarenhancedpg1.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');">AR1</a>
 
                         </td>
                         <%
@@ -2545,7 +2544,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
                 </table>
 
-                <input type="hidden" id="rf_num" name="rf_num" value="<%= props.getProperty("rf_num", "0") %>"/>
+                <input type="hidden" id="rf_num" name="rf_num" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rf_num", "0")))%>"/>
 
 
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" id="rf_container">
@@ -2575,7 +2574,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                         %>
                         <td colspan="2"
                             style="background-color: green; color: #FFFFFF; font-weight: bold;">
-                                    <%=ar1CompleteSignal%>
+                                    <%=Encode.forHtml(String.valueOf(ar1CompleteSignal))%>
                                     <%
  	 			} else {
  	 		%>
@@ -2607,7 +2606,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
 					<b>Rh IG Given:</b>
 					<input type="text" name="ar2_rhIG" id="ar2_rhIG" size="7" maxlength="10"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("ar2_rhIG", "")) %>">
-					<img src="<%= context %>/images/cal.gif" id="ar2_rhIG_cal">
+					<img src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/cal.gif" id="ar2_rhIG_cal">
 				</span>
                         </td>
 
@@ -2637,7 +2636,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
                 </table>
 
-                <input type="hidden" id="sv_num" name="sv_num" value="<%= props.getProperty("sv_num", "0") %>"/>
+                <input type="hidden" id="sv_num" name="sv_num" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sv_num", "0")))%>"/>
 
                 <table width="100%" border="1" cellspacing="0" cellpadding="0" id="sv_container">
                     <thead>
@@ -2691,7 +2690,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     </tr>
                 </table>
 
-                <input type="hidden" id="us_num" name="us_num" value="<%= props.getProperty("us_num", "0") %>"/>
+                <input type="hidden" id="us_num" name="us_num" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("us_num", "0")))%>"/>
 
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" id="bottomContent">
                     <tr>
@@ -2812,56 +2811,56 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                         <table border="0" cellspacing="0" cellpadding="0" width="100%">
                                             <tr>
                                                 <td width="33%"><input type="checkbox" name="ar2_exercise"
-                                                        <%= props.getProperty("ar2_exercise", "") %>>Exercise<br>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_exercise", "")))%>>Exercise<br>
                                                     <input type="checkbox" name="ar2_workPlan"
-                                                            <%= props.getProperty("ar2_workPlan", "") %>>Work plan<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_workPlan", "")))%>>Work plan<br>
                                                     <input type="checkbox" name="ar2_intercourse"
-                                                            <%= props.getProperty("ar2_intercourse", "") %>>Intercourse<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_intercourse", "")))%>>Intercourse<br>
                                                     <input type="checkbox" name="ar2_travel"
-                                                            <%= props.getProperty("ar2_travel", "") %>>Travel<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_travel", "")))%>>Travel<br>
                                                     <input type="checkbox" name="ar2_prenatal"
-                                                            <%= props.getProperty("ar2_prenatal", "") %>>Prenatal
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_prenatal", "")))%>>Prenatal
                                                     classes<br>
                                                     <input type="checkbox" name="ar2_birth"
-                                                            <%= props.getProperty("ar2_birth", "") %>>Birth plan<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_birth", "")))%>>Birth plan<br>
                                                     <input type="checkbox" name="ar2_onCall"
-                                                            <%= props.getProperty("ar2_onCall", "") %>>On call
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_onCall", "")))%>>On call
                                                     providers
                                                 </td>
                                                 <td width="33%"><input type="checkbox" name="ar2_preterm"
-                                                        <%= props.getProperty("ar2_preterm", "") %>>Preterm
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_preterm", "")))%>>Preterm
                                                     labour<br>
                                                     <input type="checkbox" name="ar2_prom"
-                                                            <%= props.getProperty("ar2_prom", "") %>>PROM<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_prom", "")))%>>PROM<br>
                                                     <input type="checkbox" name="ar2_aph"
-                                                            <%= props.getProperty("ar2_aph", "") %>>APH<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_aph", "")))%>>APH<br>
                                                     <input type="checkbox" name="ar2_fetal"
-                                                            <%= props.getProperty("ar2_fetal", "") %>>Fetal movement<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_fetal", "")))%>>Fetal movement<br>
                                                     <input type="checkbox" name="ar2_admission"
-                                                            <%= props.getProperty("ar2_admission", "") %>>Admission
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_admission", "")))%>>Admission
                                                     timing<br>
                                                     <input type="checkbox" name="ar2_pain"
-                                                            <%= props.getProperty("ar2_pain", "") %>>Pain management<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_pain", "")))%>>Pain management<br>
                                                     <input type="checkbox" name="ar2_labour"
-                                                            <%= props.getProperty("ar2_labour", "") %>>Labour
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_labour", "")))%>>Labour
                                                     support<br>
                                                 </td>
                                                 <td width="33%"><input type="checkbox" name="ar2_breast"
-                                                        <%= props.getProperty("ar2_breast", "") %>>Breast
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_breast", "")))%>>Breast
                                                     feeding<br>
                                                     <input type="checkbox" name="ar2_circumcision"
-                                                            <%= props.getProperty("ar2_circumcision", "") %>>Circumcision<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_circumcision", "")))%>>Circumcision<br>
                                                     <input type="checkbox" name="ar2_dischargePlan"
-                                                            <%= props.getProperty("ar2_dischargePlan", "") %>>Discharge
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_dischargePlan", "")))%>>Discharge
                                                     planning<br>
                                                     <input type="checkbox" name="ar2_car"
-                                                            <%= props.getProperty("ar2_car", "") %>>Car seat safety<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_car", "")))%>>Car seat safety<br>
                                                     <input type="checkbox" name="ar2_depression"
-                                                            <%= props.getProperty("ar2_depression", "") %>>Depression<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_depression", "")))%>>Depression<br>
                                                     <input type="checkbox" name="ar2_contraception"
-                                                            <%= props.getProperty("ar2_contraception", "") %>>Contraception<br>
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_contraception", "")))%>>Contraception<br>
                                                     <input type="checkbox" name="ar2_postpartumCare"
-                                                            <%= props.getProperty("ar2_postpartumCare", "") %>>Postpartum
+                                                            <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_postpartumCare", "")))%>>Postpartum
                                                     care
                                                 </td>
                                             </tr>
@@ -2936,7 +2935,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             <input type="text" name="pg2_formDate" class="spe"
                                    onDblClick="calToday(this)" size="10" maxlength="10"
                                    style="width: 80%"
-                                   value="<%= props.getProperty("pg2_formDate", "") %>"></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_formDate", "")))%>"></td>
                         <td width="30%">Signature<br>
                             <input type="text" name="pg2_signature2" size="30" maxlength="50"
                                    style="width: 80%"
@@ -2946,7 +2945,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             <input type="text" name="pg2_formDate2" class="spe"
                                    onDblClick="calToday(this)" size="10" maxlength="10"
                                    style="width: 80%"
-                                   value="<%= props.getProperty("pg2_formDate2", "") %>"></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_formDate2", "")))%>"></td>
                     </tr>
 
                 </table>
@@ -2971,12 +2970,12 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             &nbsp;&nbsp;&nbsp;
                             <font><b>View:</b> <a
                                     href="javascript:void(0);"
-                                    onclick="popupPage(960,700,'formonarenhancedpg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>&view=1');">
+                                    onclick="popupPage(960,700,'formonarenhancedpg1.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&view=1');">
                                 AR1</a> </font>
                             &nbsp;&nbsp;&nbsp;
                             <b>Edit:</b> <a
                                 href="javascript:void(0);"
-                                onclick="return onPageChange('formonarenhancedpg1.jsp?demographic_no=<%=demoNo%>&formId=#id&provNo=<%=provNo%>');">AR1</a>
+                                onclick="return onPageChange('formonarenhancedpg1.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');">AR1</a>
                         </td>
                         <%
                             }
@@ -3046,7 +3045,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             Order 1 Hour GCT
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Labs' menu item under Prompts, and choose 1 Hour GCT"><img border="0"
-                                                                                                           src="<%= context %>/images/icon_help_sml.gif"/></a>
+                                                                                                           src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     </tbody>
@@ -3065,7 +3064,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             Order GBS Lab
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Labs' menu item under Prompts, and choose GBS"><img border="0"
-                                                                                                    src="<%= context %>/images/icon_help_sml.gif"/></a>
+                                                                                                    src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     <tr>
@@ -3073,7 +3072,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             Consider ultrasound for position
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Forms' menu item under Prompts, and choose Ultrasound"><img border="0"
-                                                                                                            src="<%= context %>/images/icon_help_sml.gif"/></a>
+                                                                                                            src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     </tbody>
@@ -3097,7 +3096,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
     <div id="lab_menu_div" class="hidden">
         <ul>
             <li><a href="javascript:void(0)"
-                   onclick="popPage('form/formlabreq<%=labReqVer %>.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq')">Routine
+                   onclick="popPage('form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&labType=AnteNatal','LabReq')">Routine
                 Prenatal</a></li>
             <li><a href="javascript:void(0)" onclick="gbsReq();return false;">GBS</a></li>
             <li><a href="javascript:void(0)" onclick="gctReq();return false;">1 Hour GCT</a></li>
@@ -3108,7 +3107,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
     <div id="forms_menu_div" class="hidden">
         <ul>
             <li><a href="javascript:void(0)" onclick="loadUltrasoundForms();">Ultrasound</a></li>
-            <li><a href="javascript:void(0)" onclick="loadCustomForms();"><%=customEformGroup%>
+            <li><a href="javascript:void(0)" onclick="loadCustomForms();"><%=Encode.forHtml(String.valueOf(customEformGroup))%>
             </a></li>
         </ul>
     </div>
@@ -3148,11 +3147,11 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=bean.getValue()%>&demographic_no=<%=demoNo%>&appointment=0','cytology');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','cytology');return false;">
                                 Open
                             </button>
                         </td>
-                        <td><%=bean.getLabel() %>
+                        <td><%=Encode.forHtml(String.valueOf(bean.getLabel()))%>
                         </td>
                     </tr>
                     <%
@@ -3177,11 +3176,11 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=bean.getValue()%>&demographic_no=<%=demoNo%>&appointment=0','ultrasound');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','ultrasound');return false;">
                                 Open
                             </button>
                         </td>
-                        <td><%=bean.getLabel() %>
+                        <td><%=Encode.forHtml(String.valueOf(bean.getLabel()))%>
                         </td>
                     </tr>
                     <%
@@ -3195,7 +3194,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
     </div>
 
 
-    <div id="custom-eform-form" title="<%=customEformGroup%> Forms">
+    <div id="custom-eform-form" title="<%=Encode.forHtmlAttribute(String.valueOf(customEformGroup))%> Forms">
         <form>
             <fieldset>
                 <table>
@@ -3206,11 +3205,11 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=bean.getValue()%>&demographic_no=<%=demoNo%>&appointment=0','<%=customEformGroup%>form');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');return false;">
                                 Open
                             </button>
                         </td>
-                        <td><%=bean.getLabel() %>
+                        <td><%=Encode.forHtml(String.valueOf(bean.getLabel()))%>
                         </td>
                     </tr>
                     <%

@@ -26,6 +26,7 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" errorPage="/errorpage.jsp" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="
       java.util.*,
       java.io.*,
@@ -133,7 +134,7 @@
                   }
 
                   // 2) XSS-safe name
-                  String safeName = StringEscapeUtils.escapeHtml4(name);
+                  String safeName = Encode.forHtml(name);
 
                   String encoded = URLEncoder.encode(name, "UTF-8");
                   long bytes = f.length();

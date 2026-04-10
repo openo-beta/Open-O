@@ -45,6 +45,7 @@
         import="ca.openosp.openo.util.UtilMisc,ca.openosp.openo.encounter.data.*,java.net.*,java.util.*" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     String provNo = request.getParameter("provider_no");
@@ -112,13 +113,13 @@
     <body bgcolor="ivory" onLoad="setfocus()" topmargin="0" leftmargin="0"
           rightmargin="0">
     <table border=0 cellspacing=0 cellpadding=0 width="100%">
-        <tr bgcolor="<%=deepcolor%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>">
             <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.msgFormList"/></font></th>
         </tr>
     </table>
     <center>
         <table BORDER="0" CELLPADDING="2" CELLSPACING="2" WIDTH="65%" BGCOLOR="white">
-            <tr BGCOLOR="<%=tableTitle%>">
+            <tr BGCOLOR="<%=Encode.forHtmlAttribute(String.valueOf(tableTitle))%>">
                 <th width=35% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formName"/></th>
                 <th width=30% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formCreated"/></th>
                 <th width=35% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formEditedTime"/></th>
@@ -152,19 +153,19 @@
                             yellow = true;
                         }
             %>
-            <tr bgcolor='<%= yellow ? "yellow" : j%2 == 0 ? (i%2 == 0 ?weakcolor:deepcolor) : (i%2 == 0 ?"white":"#eeeeee")%>'>
-                <td><a href=# onClick="popupPageK('<%=hash + "started"%>','<%=request.getContextPath()
+            <tr bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(yellow ? "yellow" : j%2 == 0 ? (i%2 == 0 ?weakcolor:deepcolor) : (i%2 == 0 ?"white":"#eeeeee")))%>'>
+                <td><a href=# onClick="popupPageK('<%=Encode.forJavaScript(String.valueOf(hash + "started"))%>','<%=request.getContextPath()
 									+ "/form/forwardshortcutname.do?formname=" + frm.getFormName()
 									+ "&demographic_no=" + demoNo 
 									+ "&formId=" + pfrm.getFormId()
 									+ "&provNo=" + provNo
 									+ "&remoteFacilityId=" + pfrm.getRemoteFacilityId() %>'); return false;">
 
-                    <%=frm.getFormName() + (pfrm.getRemoteFacilityId() != null ? " (remote)" : "") + (yellow ? " (current)" : "")%>
+                    <%=Encode.forHtml(String.valueOf(frm.getFormName() + (pfrm.getRemoteFacilityId() != null ? " (remote)" : "") + (yellow ? " (current)" : "")))%>
                 </a></td>
-                <td align='center'><%=pfrm.getCreated()%>
+                <td align='center'><%=Encode.forHtml(String.valueOf(pfrm.getCreated()))%>
                 </td>
-                <td align='center'><%=pfrm.getEdited()%>
+                <td align='center'><%=Encode.forHtml(String.valueOf(pfrm.getEdited()))%>
                 </td>
             </tr>
             <%
@@ -181,14 +182,14 @@
                     if (nLastPage >= 0) {
             %>
             <a
-                    href="formlist.jsp?demographic_no=<%=demoNo%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formLastpage"/></a>
+                    href="formlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formLastpage"/></a>
             |
             <%
                 }
                 if (nItems == intLimit2) {
             %>
             <a
-                    href="formlist.jsp?demographic_no=<%=demoNo%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
+                    href="formlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formNextPage"/></a>
             </td>
             </tr>

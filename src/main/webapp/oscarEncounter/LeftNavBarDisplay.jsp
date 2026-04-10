@@ -65,9 +65,9 @@
     //Is there java script to insert in page?  Then do it
     if (js != null) {
 %>
-<%=js%>
+<%=Encode.forHtml(String.valueOf(js))%>
 <% } %>
-<input type=hidden name="reloadUrl" value="<%=dao.getReloadUrl()%>"/>
+<input type=hidden name="reloadUrl" value="<%=Encode.forHtmlAttribute(String.valueOf(dao.getReloadUrl()))%>"/>
 <%
     //Do we have a '+' command to display on the right of the module header?
     String rh = dao.getRightHeadingID();
@@ -76,10 +76,10 @@
 
     if (!rh.equals("") && securityMgr.hasWriteAccess("_" + ((String) request.getAttribute("cmd")).toLowerCase(), roleName$)) {
 %>
-<div class="nav-menu-heading" style="<%=getBackgroundColor(dao)%>">
-    <div class="nav-menu-add-button" id='menuTitle<%=rh%>'>
+<div class="nav-menu-heading" style="<%=Encode.forHtmlAttribute(String.valueOf(getBackgroundColor(dao)))%>">
+    <div class="nav-menu-add-button" id='menuTitle<%=Encode.forHtmlAttribute(String.valueOf(rh))%>'>
         <h3><a href="javascript:void(0);" <%=dao.numPopUpMenuItems() > 0 ? "onmouseover" : "onclick"%>=
-            "<%=dao.getRightURL()%>">&#43;</a></h3>
+            "<%=Encode.forHtml(String.valueOf(dao.getRightURL()))%>">&#43;</a></h3>
     </div>
     <%
         int num;
@@ -93,9 +93,9 @@
                 menuWidth *= 2;
             }
     %>
-    <div id='menu<%=rh%>' class='menu' style='width: <%=menuWidth%>px;'
+    <div id='menu<%=Encode.forHtmlAttribute(String.valueOf(rh))%>' class='menu' style='width: <%=Encode.forHtmlAttribute(String.valueOf(menuWidth))%>px;'
          onclick='event.cancelBubble = true;'>
-        <h3 style='text-align: center'><%=dao.getMenuHeader()%>
+        <h3 style='text-align: center'><%=Encode.forHtml(String.valueOf(dao.getMenuHeader()))%>
         </h3>
         <%
             for (int idx = 0; idx < num; ++idx) {
@@ -104,10 +104,10 @@
                 } else {
                     style = "menuItemleft";
                 }%>
-        <a href="javascript:void(0)" class="<%=style%>"
+        <a href="javascript:void(0)" class="<%=Encode.forHtmlAttribute(String.valueOf(style))%>"
            onmouseover='this.style.color="black"'
            onmouseout='this.style.color="white"'
-           onclick="<%=dao.getPopUpUrl(idx) + ";"%> return false;"><%=dao.getPopUpText(idx)%>
+           onclick="<%=Encode.forJavaScript(String.valueOf(dao.getPopUpUrl(idx) + ";"))%> return false;"><%=Encode.forHtml(String.valueOf(dao.getPopUpText(idx)))%>
         </a>
         <%
             if (columns && idx % 2 == 1) {
@@ -127,8 +127,8 @@
     else {
         if (!rh.equals("")) {
     %>
-    <div id='menuTitle<%=rh%>' style="width:10%;">
-        <h3 style="padding:0; <%=getBackgroundColor(dao)%>">&nbsp;</h3>
+    <div id='menuTitle<%=Encode.forHtmlAttribute(String.valueOf(rh))%>' style="width:10%;">
+        <h3 style="padding:0; <%=Encode.forHtmlAttribute(String.valueOf(getBackgroundColor(dao)))%>">&nbsp;</h3>
     </div>
     <%
             }
@@ -137,11 +137,11 @@
         //left hand module header comes last as it's displayed as a block
     %>
     <div class="nav-menu-title">
-        <h3 onclick="<%=dao.getLeftURL() + ";"%> return false;"><a href="javascript:void(0)"><%=dao.getLeftHeading()%>
+        <h3 onclick="<%=Encode.forJavaScript(String.valueOf(dao.getLeftURL() + ";"))%> return false;"><a href="javascript:void(0)"><%=Encode.forHtml(String.valueOf(dao.getLeftHeading()))%>
         </a></h3>
     </div>
 </div>
-<ul id="<%=request.getAttribute("navbarName")%>list">
+<ul id="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("navbarName")))%>list">
     <%
         //now we display the actual items of the module
         String manageItems = "";
@@ -206,8 +206,8 @@
         }
     %>
 </ul>
-<input type="hidden" id="<%=request.getAttribute("navbarName")%>num"
-       value="<%=numDisplayed%>"/>
+<input type="hidden" id="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("navbarName")))%>num"
+       value="<%=Encode.forHtmlAttribute(String.valueOf(numDisplayed))%>"/>
 <%
     out.println("<script type=\"text/javascript\">" + jscode.toString() + "</script>");
 %>

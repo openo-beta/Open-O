@@ -184,10 +184,10 @@
                                         proOHIP = prov.getOhipNo();
                                         specialty_code = prov.getProviderNo();
                                 %>
-                                <option value="<%=proOHIP%>|<%=specialty_code%>"
-                                        <%=Encode.forHtml(request.getParameter("creator").equals(specialty_code) ? "selected" : "")%>><%=proLast%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>|<%=Encode.forHtmlAttribute(String.valueOf(specialty_code))%>"
+                                        <%=Encode.forHtml(request.getParameter("creator").equals(specialty_code) ? "selected" : "")%>><%=Encode.forHtml(String.valueOf(proLast))%>
                                     ,
-                                    <%=proFirst%>
+                                    <%=Encode.forHtml(String.valueOf(proFirst))%>
                                 </option>
                                 <%
                                     }
@@ -218,7 +218,7 @@
                                     color="#000000">Create Date</font></td>
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
-                                    type="text" name="docdate" readonly value="<%=nowDate%>" size="20">
+                                    type="text" name="docdate" readonly value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>" size="20">
                             </font></td>
                         </tr>
                         <tr>
@@ -228,7 +228,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="dispcreator" readonly
-                                    value="<%=proLast1%>, <%=proFirst1%>" size="20"> <input
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(proLast1))%>, <%=Encode.forHtmlAttribute(String.valueOf(proFirst1))%>" size="20"> <input
                                     type="hidden" name="doccreator"
                                     value="<%=Encode.forHtmlAttribute(request.getParameter("creator"))%>" size="20"> <input
                                     type="hidden" name="orderby" value="updatedatetime desc" size="20">

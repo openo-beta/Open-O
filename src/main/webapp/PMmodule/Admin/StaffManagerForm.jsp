@@ -25,6 +25,7 @@
 <%@ include file="/taglibs.jsp" %>
 <%@ page import="ca.openosp.openo.PMmodule.web.formbean.*" %>
 <%@ page import="ca.openosp.openo.PMmodule.web.formbean.StaffManagerViewFormBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <style>
     .sortable {
         background-color: #555;
@@ -86,13 +87,13 @@
                         %>
                         <td style="background-color: #555;"><a
                                 href="javascript:void(0)"
-                                onclick="javascript:clickTab('<%=StaffManagerViewFormBean.tabs[x] %>'); return false;"><%=StaffManagerViewFormBean.tabs[x]%>
+                                onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(StaffManagerViewFormBean.tabs[x]))%>'); return false;"><%=Encode.forHtml(String.valueOf(StaffManagerViewFormBean.tabs[x]))%>
                         </a></td>
                         <%
                         } else {
                         %>
                         <td><a href="javascript:void(0)"
-                               onclick="javascript:clickTab('<%=StaffManagerViewFormBean.tabs[x] %>');return false;"><%=StaffManagerViewFormBean.tabs[x]%>
+                               onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(StaffManagerViewFormBean.tabs[x]))%>');return false;"><%=Encode.forHtml(String.valueOf(StaffManagerViewFormBean.tabs[x]))%>
                         </a></td>
                         <%
                             }
@@ -105,7 +106,7 @@
             </div>
             <%@ include file="/common/messages.jsp" %>
             <jsp:include
-                    page='<%="/PMmodule/Admin/StaffEdit/"+selectedTab.toLowerCase().replaceAll(" ","_") + ".jsp"%>'/>
+                    page='<%=Encode.forHtmlAttribute(String.valueOf("/PMmodule/Admin/StaffEdit/"+selectedTab.toLowerCase().replaceAll(" ","_") + ".jsp"))%>'/>
         </c:when>
         <c:otherwise>
             <%@ include file="/common/messages.jsp" %>

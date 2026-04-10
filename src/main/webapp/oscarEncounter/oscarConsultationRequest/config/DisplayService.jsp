@@ -88,7 +88,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -127,7 +127,7 @@
                         </tr>
                         <tr>
                             <td><form action="${pageContext.request.contextPath}/oscarEncounter/UpdateServiceSpecialists.do" method="post">
-                                <input type="hidden" name="serviceId" value="<%=serviceId %>">
+                                <input type="hidden" name="serviceId" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceId))%>">
                                 <input type="submit"
                                        value="<fmt:message key="oscarEncounter.oscarConsultationRequest.config.DisplayService.btnUpdateServices"/>">
                                 <table>
@@ -159,7 +159,7 @@
                                         <td>
                                             <%if (specialistInField.contains(specId)) { %> <input type=checkbox
                                                                                                   name="specialists"
-                                                                                                  value=<%=specId%> checked> <%} else {%>
+                                                                                                  value=<%=Encode.forHtml(String.valueOf(specId))%> checked> <%} else {%>
                                             <input type=checkbox name="specialists" value=<%=specId%>>
                                             <%}%>
                                         </td>

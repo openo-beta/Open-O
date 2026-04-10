@@ -43,6 +43,7 @@
 <%@ page import="ca.openosp.openo.commn.Gender" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderBillCenter" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String curProvider_no = (String) session.getAttribute("user");
     //display the main providers page
@@ -172,7 +173,7 @@
                     } else {%>
                         <input type="text" name="provider_no" maxlength="6"/>
                         <input type="button" value='<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provideraddrecordhtm.suggest"/>'
-                               onclick="provider_no.value='<%=suggestProviderNo%>'"
+                               onclick="provider_no.value='<%=Encode.forJavaScript(String.valueOf(suggestProviderNo))%>'"
                         <%}%>
                     </td>
                 </tr>
@@ -205,7 +206,7 @@
                             for (int i = 0; i < sites.size(); i++) {
                         %>
                         <input type="checkbox" name="sites"
-                               value="<%=sites.get(i).getSiteId()%>"><%=sites.get(i).getName()%><br/>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(sites.get(i).getSiteId()))%>"><%=Encode.forHtml(String.valueOf(sites.get(i).getName()))%><br/>
                         <%
                             }
                         %>
@@ -244,7 +245,7 @@
                                     <%
                     for( ProviderData p : providerL ) {
                     %>
-                            <option value="<%=p.getId()%>"><%=p.getLastName() + ", " + p.getFirstName()%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getId()))%>"><%=Encode.forHtml(String.valueOf(p.getLastName() + ", " + p.getFirstName()))%>
                             </option>
 
                                     <%
@@ -270,7 +271,7 @@
                         <td><select name="sex" id="sex">
                             <option value=""></option>
                             <% for (Gender gn : Gender.values()) { %>
-                            <option value=<%=gn.name()%>><%=gn.getText()%>
+                            <option value=<%=gn.name()%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
                             </option>
                             <% } %>
                         </select>
@@ -367,7 +368,7 @@
                                     if (ll != null) {
                                         for (LookupListItem llItem : ll.getItems()) {
                                 %>
-                                <option value="<%=llItem.getValue()%>"><%=llItem.getLabel()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(llItem.getValue()))%>"><%=Encode.forHtml(String.valueOf(llItem.getLabel()))%>
                                 </option>
                                 <%
                                         }
@@ -398,7 +399,7 @@
                                         ClinicNbr tempNbr = nbrIter.next();
                                         String valueString = tempNbr.getNbrValue() + " | " + tempNbr.getNbrString();
                                 %>
-                                <option value="<%=tempNbr.getNbrValue()%>"><%=valueString%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(tempNbr.getNbrValue()))%>"><%=Encode.forHtml(String.valueOf(valueString))%>
                                 </option>
                                 <%}%>
 
@@ -428,7 +429,7 @@
 
                                     codeDesc = billCenter.getAllBillCenter().getProperty(billCode);
                             %>
-                            <option value=<%= billCode %> <%=selectedBillCenter%>><%= codeDesc%>
+                            <option value=<%= billCode %> <%=Encode.forHtml(String.valueOf(selectedBillCenter))%>><%=Encode.forHtml(String.valueOf(codeDesc))%>
                             </option>
                             <%
                                 }

@@ -61,7 +61,7 @@
     %>
 
 
-    <security:oscarSec objectName="_site_access_privacy" roleName="<%=CurRoleName%>" rights="r" reverse="false">
+    <security:oscarSec objectName="_site_access_privacy" roleName="<%=Encode.forHtmlAttribute(String.valueOf(CurRoleName))%>" rights="r" reverse="false">
         <%isSiteAccessPrivacy = true; %>
     </security:oscarSec>
 
@@ -532,9 +532,9 @@
 
                                         for (RSchedule rs : rss) {
                                     %>
-                                    <option value="<%=ConversionUtils.toDateString(rs.getsDate())%>"
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(ConversionUtils.toDateString(rs.getsDate())))%>"
                                             <%=Encode.forHtml(request.getParameter("sdate") != null ? (ConversionUtils.toDateString(rs.getsDate()).equals(request.getParameter("sdate")) ? "selected" : "") : (ConversionUtils.toDateString(rs.getsDate()).equals(scheduleRscheduleBean.sdate) ? "selected" : ""))%>>
-                                        <%=ConversionUtils.toDateString(rs.getsDate()) + " ~ " + ConversionUtils.toDateString(rs.geteDate())%>
+                                        <%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(rs.getsDate()) + " ~ " + ConversionUtils.toDateString(rs.geteDate())))%>
                                     </option>
                                     <%
                                         }
@@ -560,28 +560,28 @@
                             <tr>
                                 <td style="background-color:#CCFFCC" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgDate"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgFrom"/>:
                                     <input
-                                            type="text" name="syear" maxlength="4" value="<%=syear%>"
+                                            type="text" name="syear" maxlength="4" value="<%=Encode.forHtmlAttribute(String.valueOf(syear))%>"
                                             style="width: 40px;"> -
                                     <input type="text" name="smonth"
-                                           maxlength="2" value="<%=smonth%>" style="width: 30px;"> -
+                                           maxlength="2" value="<%=Encode.forHtmlAttribute(String.valueOf(smonth))%>" style="width: 30px;"> -
                                     <input
-                                            type="text" name="sday" maxlength="2" value="<%=sday%>"
+                                            type="text" name="sday" maxlength="2" value="<%=Encode.forHtmlAttribute(String.valueOf(sday))%>"
                                             onChange="onChangeDates()" style="width: 30px;"> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgDateFormat"/> &nbsp;
                                     &nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgTo"/>:
                                     <input type="text" name="eyear" maxlength="4"
-                                           value="<%=eyear%>" style="width: 40px;">
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(eyear))%>" style="width: 40px;">
                                     <input type="hidden"
-                                           name="origeyear" value="<%=eyear%>"> -
+                                           name="origeyear" value="<%=Encode.forHtmlAttribute(String.valueOf(eyear))%>"> -
                                     <input type="text"
-                                           name="emonth" size="2" maxlength="2" value="<%=emonth%>"
+                                           name="emonth" size="2" maxlength="2" value="<%=Encode.forHtmlAttribute(String.valueOf(emonth))%>"
                                            style="width: 30px;">
                                     <input type="hidden" name="origemonth"
-                                           value="<%=emonth%>"> -
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(emonth))%>"> -
                                     <input type="text" name="eday"
-                                           maxlength="2" value="<%=eday%>" onChange="onChangeDatee()"
+                                           maxlength="2" value="<%=Encode.forHtmlAttribute(String.valueOf(eday))%>" onChange="onChangeDatee()"
                                            style="width: 30px;">
                                     <input type="hidden" name="origeday"
-                                           value="<%=eday%>"></td>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(eday))%>"></td>
                             </tr>
                             <tr>
                                 <td colspan="2">&nbsp;</td>
@@ -642,11 +642,11 @@
                                                             <p><input type="checkbox"
                                                                       name="checksun" value="1"
                                                                       onClick="addDataString()"
-                                                                    <%=param2[0]%>>
+                                                                    <%=Encode.forHtml(String.valueOf(param2[0]))%>>
                                                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSunday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="sunfrom1" size="20" value="<%=param3[0][0]%>"
+                                                                   name="sunfrom1" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[0][0]))%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="sunto1" value="<<"
                                                                    onclick="javascript:tranbutton1_click();">
@@ -656,9 +656,9 @@
                                                     <tr>
                                                         <td><input type="checkbox"
                                                                    name="checkmon" value="2" onClick="addDataString()"
-                                                                <%=param2[1]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgMonday"/></td>
+                                                                <%=Encode.forHtml(String.valueOf(param2[1]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgMonday"/></td>
                                                         <td><input type="text"
-                                                                   name="monfrom1" size="20" value="<%=param3[1][0]%>"
+                                                                   name="monfrom1" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[1][0]))%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="monto1" value="<<"
                                                                    onclick="javascript:tranbutton2_click();">
@@ -668,10 +668,10 @@
                                                     <tr style="background-color:#CCFFCC">
                                                         <td><input type="checkbox"
                                                                    name="checktue" value="3" onClick="addDataString()"
-                                                                <%=param2[2]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgTuesday"/>
+                                                                <%=Encode.forHtml(String.valueOf(param2[2]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgTuesday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="tuefrom1" size="20" value="<%=param3[2][0]%>"
+                                                                   name="tuefrom1" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[2][0]))%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="tueto1" value="<<"
                                                                    onclick="javascript:tranbutton3_click();">
@@ -681,10 +681,10 @@
                                                     <tr>
                                                         <td><input type="checkbox"
                                                                    name="checkwed" value="4" onClick="addDataString()"
-                                                                <%=param2[3]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgWednesday"/>
+                                                                <%=Encode.forHtml(String.valueOf(param2[3]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgWednesday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="wedfrom1" size="20" value="<%=param3[3][0]%>"
+                                                                   name="wedfrom1" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[3][0]))%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="wedto1" value="<<"
                                                                    onclick="javascript:tranbutton4_click();">
@@ -694,10 +694,10 @@
                                                     <tr style="background-color:#CCFFCC">
                                                         <td><input type="checkbox"
                                                                    name="checkthu" value="5" onClick="addDataString()"
-                                                                <%=param2[4]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgThursday"/>
+                                                                <%=Encode.forHtml(String.valueOf(param2[4]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgThursday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="thufrom1" size="20" value="<%=param3[4][0]%>"
+                                                                   name="thufrom1" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[4][0]))%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="thuto1" value="<<"
                                                                    onclick="javascript:tranbutton5_click();">
@@ -707,9 +707,9 @@
                                                     <tr>
                                                         <td><input type="checkbox"
                                                                    name="checkfri" value="6" onClick="addDataString()"
-                                                                <%=param2[5]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgFriday"/></td>
+                                                                <%=Encode.forHtml(String.valueOf(param2[5]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgFriday"/></td>
                                                         <td><input type="text"
-                                                                   name="frifrom1" size="20" value="<%=param3[5][0]%>"
+                                                                   name="frifrom1" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[5][0]))%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="frito1" value="<<"
                                                                    onclick="javascript:tranbutton6_click();">
@@ -719,10 +719,10 @@
                                                     <tr style="background-color:#CCFFCC">
                                                         <td><input type="checkbox"
                                                                    name="checksat" value="7" onClick="addDataString()"
-                                                                <%=param2[6]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSaturday"/>
+                                                                <%=Encode.forHtml(String.valueOf(param2[6]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSaturday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="satfrom1" size="20" value="<%=param3[6][0]%>"
+                                                                   name="satfrom1" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[6][0]))%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="satto1" value="<<"
                                                                    onclick="javascript:tranbutton7_click();">
@@ -810,11 +810,11 @@
                                                             <p><input type="checkbox"
                                                                       name="checksun2" value="1"
                                                                       onClick="addDataString()"
-                                                                    <%=param2[0]%>>
+                                                                    <%=Encode.forHtml(String.valueOf(param2[0]))%>>
                                                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSunday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="sunfrom2" size="20" value="<%=param3[0][0]%>">
+                                                                   name="sunfrom2" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[0][0]))%>">
                                                             <input
                                                                     type="button" name="sunto2" value="<<"
                                                                     onclick="javascript:tranbuttonb1_click();">
@@ -824,9 +824,9 @@
                                                     <tr style="background-color:#E0FFFF">
                                                         <td><input type="checkbox"
                                                                    name="checkmon2" value="2" onClick="addDataString()"
-                                                                <%=param2[1]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgMonday"/></td>
+                                                                <%=Encode.forHtml(String.valueOf(param2[1]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgMonday"/></td>
                                                         <td><input type="text"
-                                                                   name="monfrom2" size="20" value="<%=param3[1][0]%>">
+                                                                   name="monfrom2" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[1][0]))%>">
                                                             <input
                                                                     type="button" name="monto2" value="<<"
                                                                     onclick="javascript:tranbuttonb2_click();">
@@ -836,10 +836,10 @@
                                                     <tr style="background-color:#00C5CD">
                                                         <td><input type="checkbox"
                                                                    name="checktue2" value="3" onClick="addDataString()"
-                                                                <%=param2[2]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgTuesday"/>
+                                                                <%=Encode.forHtml(String.valueOf(param2[2]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgTuesday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="tuefrom2" size="20" value="<%=param3[2][0]%>">
+                                                                   name="tuefrom2" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[2][0]))%>">
                                                             <input
                                                                     type="button" name="tueto2" value="<<"
                                                                     onclick="javascript:tranbuttonb3_click();">
@@ -849,10 +849,10 @@
                                                     <tr style="background-color:#E0FFFF">
                                                         <td><input type="checkbox"
                                                                    name="checkwed2" value="4" onClick="addDataString()"
-                                                                <%=param2[3]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgWednesday"/>
+                                                                <%=Encode.forHtml(String.valueOf(param2[3]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgWednesday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="wedfrom2" size="20" value="<%=param3[3][0]%>">
+                                                                   name="wedfrom2" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[3][0]))%>">
                                                             <input
                                                                     type="button" name="wedto2" value="<<"
                                                                     onclick="javascript:tranbuttonb4_click();">
@@ -862,10 +862,10 @@
                                                     <tr style="background-color:#00C5CD">
                                                         <td><input type="checkbox"
                                                                    name="checkthu2" value="5" onClick="addDataString()"
-                                                                <%=param2[4]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgThursday"/>
+                                                                <%=Encode.forHtml(String.valueOf(param2[4]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgThursday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="thufrom2" size="20" value="<%=param3[4][0]%>">
+                                                                   name="thufrom2" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[4][0]))%>">
                                                             <input
                                                                     type="button" name="thuto2" value="<<"
                                                                     onclick="javascript:tranbuttonb5_click();">
@@ -875,9 +875,9 @@
                                                     <tr style="background-color:#E0FFFF">
                                                         <td><input type="checkbox"
                                                                    name="checkfri2" value="6" onClick="addDataString()"
-                                                                <%=param2[5]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgFriday"/></td>
+                                                                <%=Encode.forHtml(String.valueOf(param2[5]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgFriday"/></td>
                                                         <td><input type="text"
-                                                                   name="frifrom2" size="20" value="<%=param3[5][0]%>">
+                                                                   name="frifrom2" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[5][0]))%>">
                                                             <input
                                                                     type="button" name="frito2" value="<<"
                                                                     onclick="javascript:tranbuttonb6_click();">
@@ -887,10 +887,10 @@
                                                     <tr style="background-color:#00C5CD">
                                                         <td><input type="checkbox"
                                                                    name="checksat2" value="7" onClick="addDataString()"
-                                                                <%=param2[6]%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSaturday"/>
+                                                                <%=Encode.forHtml(String.valueOf(param2[6]))%>> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgSaturday"/>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="satfrom2" size="20" value="<%=param3[6][0]%>">
+                                                                   name="satfrom2" size="20" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[6][0]))%>">
                                                             <input
                                                                     type="button" name="satto2" value="<<"
                                                                     onclick="javascript:tranbuttonb7_click();">
@@ -904,7 +904,7 @@
 
                                             </td>
                                             <td><select style="width:100%;height:100%"
-                                                        size=<%=bOrigAlt||bAlternate?22:11%>
+                                                        size=<%=Encode.forHtml(String.valueOf(bOrigAlt||bAlternate?22:11))%>
                                                                 onclick="displayTemplate(this)" name="mytemplate">
                                                 <%
 

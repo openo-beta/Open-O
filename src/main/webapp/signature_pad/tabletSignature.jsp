@@ -50,13 +50,13 @@ is hosted in an IFrame and that the IFrame's parent window implements signatureH
     boolean saveToDB = "true".equals(request.getParameter("saveToDB"));
 %>
 <script type="text/javascript">
-    var _in_window = <%=Encode.forJavaScript("true".equals(request.getParameter("inWindow")))%>;
+    var _in_window = <%="true".equals(request.getParameter("inWindow"))%>;
 
-    var requestIdKey = "<%= requestIdKey %>";
+    var requestIdKey = "<%=Encode.forJavaScript(String.valueOf(requestIdKey))%>";
 
-    var previewImageUrl = "<%= imageUrl %>";
+    var previewImageUrl = "<%=Encode.forJavaScript(String.valueOf(imageUrl))%>";
 
-    var storedImageUrl = "<%= storedImageUrl %>";
+    var storedImageUrl = "<%=Encode.forJavaScript(String.valueOf(storedImageUrl))%>";
 
     var contextPath = "<%=request.getContextPath() %>";
 
@@ -78,11 +78,11 @@ is hosted in an IFrame and that the IFrame's parent window implements signatureH
       id="signatureForm" method="POST">
     <input type="hidden" id="signatureImage" name="signatureImage" value=""/>
     <input type="hidden" name="source" value="IPAD"/>
-    <input type="hidden" name="<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY %>" value="<%= requestIdKey %>"/>
+    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(requestIdKey))%>"/>
     <input type="hidden" name="demographicNo" value="<%= Encode.forHtmlAttribute(request.getParameter("demographicNo")) %>"/>
 	<input type="hidden" name="<%= ModuleType.class.getSimpleName()%>"
 			value="<%=Encode.forHtmlAttribute(request.getParameter(ModuleType.class.getSimpleName()))%>" />
-    <input type="hidden" name="saveToDB" value="<%=saveToDB%>"/>
+    <input type="hidden" name="saveToDB" value="<%=Encode.forHtmlAttribute(String.valueOf(saveToDB))%>"/>
 </form>
 
 </body>

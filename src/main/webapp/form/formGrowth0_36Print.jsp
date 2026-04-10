@@ -14,7 +14,6 @@
 %>
 
 <%@ page errorPage="/errorpage.jsp" import="java.util.*" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%
     int nS = 1;
@@ -77,14 +76,14 @@
         function go() {
             if (document.all) {
                 <% if(cfgGraphic.length>1) {%>
-                document.all.growth.action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=cfgGraphic[0]%>&__cfgGraphicFile=<%=cfgGraphic[1]%>";
+                document.all.growth.action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forJavaScript(String.valueOf(cfgGraphic[0]))%>&__cfgGraphicFile=<%=Encode.forJavaScript(String.valueOf(cfgGraphic[1]))%>";
                 <% }else{%>
                 document.all.growth.action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forJavaScript(request.getParameter("__cfgGraphicFile"))%>";
                 <% }%>
                 document.all.growth.submit();
             } else {
                 <% if(cfgGraphic.length>1) {%>
-                document.getElementById('growth').action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=cfgGraphic[0]%>&__cfgGraphicFile=<%=cfgGraphic[1]%>";
+                document.getElementById('growth').action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forJavaScript(String.valueOf(cfgGraphic[0]))%>&__cfgGraphicFile=<%=Encode.forJavaScript(String.valueOf(cfgGraphic[1]))%>";
                 <% }else{%>
                 document.getElementById('growth').action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forJavaScript(request.getParameter("__cfgGraphicFile"))%>";
                 <% }%>
@@ -107,8 +106,8 @@
                 continue;
             }
     %>
-    <input type="hidden" name="<%= temp %>"
-           value="<%=StringEscapeUtils.escapeHtml4(request.getParameter(temp))%>"/>
+    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(temp))%>"
+           value="<%=Encode.forHtml(request.getParameter(temp))%>"/>
     <%
         }
     %>
@@ -133,8 +132,8 @@
         for (Enumeration e = prop.propertyNames(); e.hasMoreElements(); ) {
             String temp = e.nextElement().toString();
     %>
-    <input type="hidden" name="<%= temp %>"
-           value="<%=StringEscapeUtils.escapeHtml4(prop.getProperty(temp, ""))%>"/>
+    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(temp))%>"
+           value="<%=Encode.forHtml(prop.getProperty(temp, ""))%>"/>
     <%
         }
     %>

@@ -31,6 +31,7 @@
         import="java.util.*, ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig, ca.openosp.OscarProperties, ca.openosp.openo.util.StringUtils,ca.openosp.openo.encounter.oscarMeasurements.bean.*" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBeanHandler" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
 
@@ -125,8 +126,8 @@
                                     <option value="0">None Selected</option>
 
                                     <% for (EctMeasurementTypesBean measurementTypes : vec) { %>
-                                    <option value="<%=measurementTypes.getType()%>,FLOWSHEET,<%=measurementTypes.getTypeDisplayName()%>"><%=measurementTypes.getTypeDisplayName()%>
-                                        (<%=measurementTypes.getType()%>)
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(measurementTypes.getType()))%>,FLOWSHEET,<%=Encode.forHtmlAttribute(String.valueOf(measurementTypes.getTypeDisplayName()))%>"><%=Encode.forHtml(String.valueOf(measurementTypes.getTypeDisplayName()))%>
+                                        (<%=Encode.forHtml(String.valueOf(measurementTypes.getType()))%>)
                                     </option>
                                     <% } %>
                                 </select>
@@ -134,9 +135,9 @@
 
                         </tr>
                         <tr>
-                            <td class="Cell" width="20%">To Map to Loinc Code : <%=loinc%>
+                            <td class="Cell" width="20%">To Map to Loinc Code : <%=Encode.forHtml(String.valueOf(loinc))%>
                             </td>
-                            <td class="Cell"><input type="hidden" name="loinc_code" value="<%=loinc%>"/></td>
+                            <td class="Cell"><input type="hidden" name="loinc_code" value="<%=Encode.forHtmlAttribute(String.valueOf(loinc))%>"/></td>
                         </tr>
                         <tr>
                             <td colspan="2" class="Cell" align="center"><input
@@ -155,7 +156,7 @@
                             <td colspan="2">
                                 <ul>
                                     <% for (EctMeasurementTypesBean measurementTypes : vec) { %>
-                                    <li><%=measurementTypes.getTypeDisplayName()%> (<%=measurementTypes.getType()%>)
+                                    <li><%=Encode.forHtml(String.valueOf(measurementTypes.getTypeDisplayName()))%> (<%=Encode.forHtml(String.valueOf(measurementTypes.getType()))%>)
                                     </li>
                                     <% } %>
                                 </ul>

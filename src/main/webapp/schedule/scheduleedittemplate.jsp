@@ -147,7 +147,7 @@
                                     for (ScheduleTemplate st : scheduleTemplateDao.findByProviderNo(request.getParameter("providerid"))) {
 
                                 %>
-                                <option value="<%=st.getId().getName()%>"><%=st.getId().getName() + " |" + st.getSummary()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(st.getId().getName()))%>"><%=Encode.forHtml(String.valueOf(st.getId().getName() + " |" + st.getSummary()))%>
                                 </option>
                                 <%
                                     }
@@ -214,7 +214,7 @@
 					Collections.sort(stcs,ScheduleTemplateCode.CodeComparator);
 					
    for (ScheduleTemplateCode stc:stcs) {   %>
- <%=String.valueOf(stc.getCode())+" - "+stc.getDescription()%>  <%}	%>
+ <%=Encode.forHtml(String.valueOf(String.valueOf(stc.getCode())+" - "+stc.getDescription()))%>  <%}	%>
              "><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleedittemplate.formTemplateCode"/></a></td>
             </tr>
             <tr bgcolor='ivory'>
@@ -228,11 +228,11 @@
                         %>
                         <tr>
                             <% for (int j = 0; j < cols; j++) { %>
-                            <td bgcolor='silver'><%=(n < 10 ? "0" : "") + n + ":00"%>
+                            <td bgcolor='silver'><%=Encode.forHtml(String.valueOf((n < 10 ? "0" : "") + n + ":00"))%>
                             </td>
                             <% for (int k = 0; k < icols; k++) { %>
                             <td><input type="text"
-                                       name="timecode<%=i*(cols*icols)+j*icols+k%>" size="1"
+                                       name="timecode<%=Encode.forHtmlAttribute(String.valueOf(i*(cols*icols)+j*icols+k))%>" size="1"
                                        maxlength="1"
                                     <%=bEdit?("value='"+myTempBean.getTimecodeCharAt(i*(cols*icols)+j*icols+k)+"'"):"value=''"%>>
                             </td>

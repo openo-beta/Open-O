@@ -27,6 +27,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     // Check if demographicNo is present and valid
     String demographicNo = request.getParameter("demographicNo");
@@ -72,7 +73,7 @@ if (window.opener && !window.opener.closed) {
 }
 </c:if>
 
-        location.href = '${pageContext.request.contextPath}/oscarEncounter/IncomingEncounter.do?demographicNo=<%=demographicNo%>&reason=Lab+Results-Notes&curDate=<%=curYear%>-<%=curMonth%>-<%=curDay%>&encType=<%=URLEncoder.encode("Lab Results","UTF-8")%>&status=';
+        location.href = '${pageContext.request.contextPath}/oscarEncounter/IncomingEncounter.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&reason=Lab+Results-Notes&curDate=<%=Encode.forJavaScript(String.valueOf(curYear))%>-<%=Encode.forJavaScript(String.valueOf(curMonth))%>-<%=Encode.forJavaScript(String.valueOf(curDay))%>&encType=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("Lab Results","UTF-8")))%>&status=';
         window.resizeTo(980, 700);
 
     </script>
@@ -81,7 +82,7 @@ if (window.opener && !window.opener.closed) {
 <body>
 
 <a
-        href="javascript:popupPage(700, 980, '${pageContext.request.contextPath}/oscarEncounter/IncomingEncounter.do?demographicNo=<%=demographicNo%>&reason=Lab+Results-Notes&curDate=<%=curYear%>-<%=curMonth%>-<%=curDay%>&encType=<%=URLEncoder.encode("Lab Results","UTF-8")%>&status=');window.close();">Please
+        href="javascript:popupPage(700, 980, '${pageContext.request.contextPath}/oscarEncounter/IncomingEncounter.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&reason=Lab+Results-Notes&curDate=<%=Encode.forUriComponent(String.valueOf(curYear))%>-<%=Encode.forUriComponent(String.valueOf(curMonth))%>-<%=Encode.forUriComponent(String.valueOf(curDay))%>&encType=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode("Lab Results","UTF-8")))%>&status=');window.close();">Please
     click here to go to the patient's E-Chart.</a>
 
 </body>

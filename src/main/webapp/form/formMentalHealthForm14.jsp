@@ -289,23 +289,23 @@
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="patientLastName"
-               value="<%=patientNames[0].trim()%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(patientNames[0].trim()))%>"/>
         <input type="hidden" name="patientFirstName"
-               value="<%=patientNames[1].trim()%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(patientNames[1].trim()))%>"/>
         <input type="hidden" name="patientBirthYear"
-               value="<%=patientDOB[0].trim()%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(patientDOB[0].trim()))%>"/>
         <input type="hidden" name="patientBirthMth"
-               value="<%=patientDOB[1].trim()%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(patientDOB[1].trim()))%>"/>
         <input type="hidden" name="patientBirthDay"
-               value="<%=patientDOB[2].trim()%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(patientDOB[2].trim()))%>"/>
         <input type="hidden" name="ID"
-               value="<%= props.getProperty("ID", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no"
                value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="provNo"
@@ -349,68 +349,68 @@
             <tr>
                 <td height="47"><p>I, (print full name of person)
                     <label>
-                        <input type="text" name="name" id="name" value="<%=props.getProperty("name","")%>"/>
+                        <input type="text" name="name" id="name" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("name","")))%>"/>
                     </label>
                 </p></td>
             </tr>
             <tr>
                 <td height="69">of (address) <label>
                     <input name="address" type="text" id="address" size="100" maxlength="100"
-                           value="<%=props.getProperty("address","")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("address","")))%>"/>
                 </label>
                 </td>
             </tr>
             <tr>
                 <td>hereby consent to the disclosure or transmittal to or the examination by (print name) <label>
                     <input name="physicianName" type="text" id="physicianName" size="60" maxlength="60"
-                           value="<%=props.getProperty("physicianName","")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("physicianName","")))%>"/>
                 </label>
                 </td>
             </tr>
             <tr>
                 <td>of the clinical record compiled in (name of psychiatric facility) <label>
                     <input name="nameOfFacility" type="text" id="nameOfFacility" size="60" maxlength="100"
-                           value="<%=props.getProperty("nameOfFacility","")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("nameOfFacility","")))%>"/>
                 </label>
                 </td>
             </tr>
             <tr>
                 <td>in respect of (name of patient) <label>
                     <input name="clientName" type="hidden" id="clientName" size="60" maxlength="60"
-                           value="<%=props.getProperty("clientName","")%>"/><%=props.getProperty("clientName", "")%>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("clientName","")))%>"/><%=Encode.forHtml(String.valueOf(props.getProperty("clientName", "")))%>
                 </label>
 
                     (date of birth, where available) <label>
                         <input name="clientDOB" type="hidden" id="clientDOB" size="20" maxlength="10"
-                               value="<%=props.getProperty("clientDOB","")%>"/><%=props.getProperty("clientDOB", "")%>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("clientDOB","")))%>"/><%=Encode.forHtml(String.valueOf(props.getProperty("clientDOB", "")))%>
                     </label>
                 </td>
             </tr>
             <tr>
                 <td>(witness) <label>
                     <input name="witness" type="text" id="witness" size="60" maxlength="60"
-                           value="<%=props.getProperty("witness","")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("witness","")))%>"/>
                 </label>
                 </td>
             </tr>
             <tr>
                 <td>(signature) <label>
                     <input name="signature" type="text" id="signature" size="60" maxlength="60"
-                           value="<%=props.getProperty("signature","")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("signature","")))%>"/>
                 </label>
                 </td>
             </tr>
             <tr>
                 <td>(if other than the patient, state relationship to the patient) <label>
                     <input name="relationship" type="text" id="relationship" size="60" maxlength="20"
-                           value="<%=props.getProperty("relationship","")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("relationship","")))%>"/>
                 </label>
                 </td>
             </tr>
             <tr>
                 <td>Date (day / month / year) <label>
                     <input name="signatureDate" type="text" id="signatureDate" size="60" maxlength="20"
-                           value="<%=props.getProperty("signatureDate","")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("signatureDate","")))%>"/>
                 </label>
                 </td>
             </tr>

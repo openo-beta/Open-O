@@ -416,8 +416,8 @@
                 for(Properties prop:vec) {
                         %>
         item = {
-            providerNo: "<%=prop.get("provider_no")%>",
-            role_id: "<%=prop.get("role_id")%>",
+            providerNo: "<%=Encode.forJavaScript(String.valueOf(prop.get("provider_no")))%>",
+            role_id: "<%=Encode.forJavaScript(String.valueOf(prop.get("role_id")))%>",
             roleName: "<%=Encode.forHtmlAttribute((String)prop.get("role_name"))%>"
         };
         items.push(item);
@@ -484,7 +484,7 @@
 
     <% if (msg.length() > 1) {%>
     <div class="alert alert-info">
-        <%=msg%>
+        <%=Encode.forHtml(String.valueOf(msg))%>
     </div>
     <% } %>
     <div class="well">
@@ -528,14 +528,14 @@
             Properties item = vec.get(i);
             String providerNo = item.getProperty("provider_no", "");
     %>
-      <form name="myform" class="myform myform-<%= providerNo %>" action="providerRole.jsp" method="POST" onSubmit="this.scrollPosition.value=window.scrollY">
+      <form name="myform" class="myform myform-<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>" action="providerRole.jsp" method="POST" onSubmit="this.scrollPosition.value=window.scrollY">
         <tr>
 
               <td><%= Encode.forHtmlContent(providerNo) %></td>
               <td><%= Encode.forHtmlContent(item.getProperty("first_name", "")) %></td>
               <td><%= Encode.forHtmlContent(item.getProperty("last_name", "")) %></td>
             <td>
-              <select name="roleNew" onchange="enableAddRoleButton(this)" data-org="<%= item.getProperty("role_name", "") %>">
+              <select name="roleNew" onchange="enableAddRoleButton(this)" data-org="<%=Encode.forJavaScript(String.valueOf(item.getProperty("role_name", "")))%>">
                     <option value="-">-</option>
                     <%
                         for (int j = 0; j < vecRoleName.size(); j++) {
@@ -551,7 +551,7 @@
             </td>
             <% if (newCaseManagement) { %>
             <td>
-                <%=(primaries.get(i) != null && (primaries.get(i)).booleanValue() == true) ? oscarRec.getString("global.yes") : "" %>
+                <%=Encode.forHtml(String.valueOf((primaries.get(i) != null && (primaries.get(i)).booleanValue() == true) ? oscarRec.getString("global.yes") : ""))%>
             </td>
             <% } %>
 
@@ -565,7 +565,7 @@
                 <input type="hidden" name="scrollPosition" class="scrollPosition" />
                 <input type="hidden" name="keyword" value="<%=Encode.forHtmlAttribute(keyword)%>"/>
               <input type="hidden" name="providerId" value="<%=Encode.forHtmlAttribute(providerNo)%>">
-                <input type="hidden" name="roleId" value="<%= item.getProperty("role_id", "")%>">
+                <input type="hidden" name="roleId" value="<%=Encode.forHtmlAttribute(String.valueOf(item.getProperty("role_id", "")))%>">
                 <input type="hidden" name="roleOld"
                        value="<%= Encode.forHtmlAttribute(item.getProperty("role_name", ""))%>">
                 <div class="button-group">
@@ -604,7 +604,7 @@
                                 String providerNo = prop.getProperty("provider_no");
                                 if (!temp1.contains(providerNo)) {
                         %>
-                        <option value="<%=providerNo%>"><%=Encode.forHtmlContent(prop.getProperty("last_name") + "," + prop.getProperty("first_name")) %>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"><%=Encode.forHtmlContent(prop.getProperty("last_name") + "," + prop.getProperty("first_name")) %>
                         </option>
                         <%
                                     temp1.add(providerNo);

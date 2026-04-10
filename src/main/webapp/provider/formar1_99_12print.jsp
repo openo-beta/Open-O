@@ -30,8 +30,8 @@
     if (request.getParameter("oox") != null) oox += Integer.parseInt(request.getParameter("oox"));
     if (request.getParameter("ooy") != null) ooy += Integer.parseInt(request.getParameter("ooy"));
 %>
-<%@ page import="java.util.*, java.sql.*, ca.openosp.*"
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.util.*, java.sql.*, ca.openosp.*"
          errorPage="/errorpage.jsp" %>
 
 <html>
@@ -42,8 +42,8 @@
     <script language="JavaScript">
         <!--
 
-        var ox = <%=oox%>;
-        var oy = <%=ooy%>;
+        var ox = <%=Encode.forJavaScript(String.valueOf(oox))%>;
+        var oy = <%=Encode.forJavaScript(String.valueOf(ooy))%>;
 
         function ff(x, y, w, h, name) { //need escape to name for ' and "
             x = eval(ox + x);
@@ -61,7 +61,7 @@
 <img src="<%= request.getContextPath() %>/images/formar1_99_12.gif">
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=50+oox%>px; top:<%=74+ooy%>px; width:400px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(50+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(74+ooy))%>px; width:400px; height:20px;">
     <%=Encode.forHtml(Misc.JSEscape(request.getParameter("xml_name")))%>
 </div>
 
@@ -558,50 +558,50 @@
 
 </script>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=480+oox%>px; top:<%=ooy+175%>px; width:230px; height:30px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(480+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+175))%>px; width:230px; height:30px;">
     <pre><%=Encode.forHtml(request.getParameter("xml_ebmf"))%></pre>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=80+oox%>px; top:<%=ooy+228%>px; width:280px; height:50px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(80+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+228))%>px; width:280px; height:50px;">
     <span class="smalltdname"><%=Encode.forHtml(request.getParameter("xml_Alert_demographicaccessory"))%></span>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=395+oox%>px; top:<%=ooy+228%>px; width:280px; height:50px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(395+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+228))%>px; width:280px; height:50px;">
     <span class="smalltdname"><%=Encode.forHtml(request.getParameter("xml_Medication_demographicaccessory"))%></span>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=440+oox%>px; top:<%=ooy+748%>px; width:150px; height:60px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(440+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+748))%>px; width:150px; height:60px;">
     <span class="smalltdname"><%=Encode.forHtml(request.getParameter("xml_rfi"))%></span></div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=12+oox%>px; top:<%=ooy+830%>px; width:300px; height:60px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(12+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+830))%>px; width:300px; height:60px;">
     <pre><%=Encode.forHtml(request.getParameter("xml_comments"))%></pre>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+421%>px; width:340px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+421))%>px; width:340px; height:20px;">
     <%=Encode.forHtml(request.getParameter("xml_oh1co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+439%>px; width:340px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+439))%>px; width:340px; height:20px;">
     <%=Encode.forHtml(request.getParameter("xml_oh2co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+457%>px; width:340px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+457))%>px; width:340px; height:20px;">
     <%=Encode.forHtml(request.getParameter("xml_oh3co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+476%>px; width:340px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+476))%>px; width:340px; height:20px;">
     <%=Encode.forHtml(request.getParameter("xml_oh4co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+494%>px; width:340px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+494))%>px; width:340px; height:20px;">
     <%=Encode.forHtml(request.getParameter("xml_oh5co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+512%>px; width:340px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+512))%>px; width:340px; height:20px;">
     <%=Encode.forHtml(request.getParameter("xml_oh6co"))%>
 </div>
 

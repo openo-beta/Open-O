@@ -97,9 +97,9 @@
     <!-- current links? -->
 
     <tr>
-        <td><%=demographic.getFormattedName() %>
+        <td><%=Encode.forHtml(String.valueOf(demographic.getFormattedName()))%>
         </td>
-        <td><%=link.isAnonymous() %>
+        <td><%=Encode.forHtml(String.valueOf(link.isAnonymous()))%>
         </td>
     </tr>
 
@@ -111,7 +111,7 @@
 
 <h5>Select clients for group note</h5>
 <form action="groupNoteSelectAction.jsp">
-    <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
+    <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>"/>
     <table>
 
         <%
@@ -122,8 +122,8 @@
                 }
         %>
         <tr>
-            <td><input type="checkbox" name="group_client_id" value="<%=demographic.getDemographicNo()%>"/></td>
-            <td><%=demographic.getFormattedName()%>
+            <td><input type="checkbox" name="group_client_id" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic.getDemographicNo()))%>"/></td>
+            <td><%=Encode.forHtml(String.valueOf(demographic.getFormattedName()))%>
             </td>
         </tr>
         <%
@@ -138,7 +138,7 @@
 
     <script>
         function confirmGroupNote() {
-            var update =<%=isUpdate%>;
+            var update =<%=Encode.forJavaScript(String.valueOf(isUpdate))%>;
             if (update == true) {
                 return confirm('This will cause all previously associated clients to be disassociated with group note, and all previously associated anonymous clients to be set inactive');
             }

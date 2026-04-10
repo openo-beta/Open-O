@@ -70,6 +70,7 @@
 %>
 
 <%@ page import="java.util.*,ca.openosp.openo.report.reportByTemplate.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -96,10 +97,10 @@
 
             function updateLink(filePath, keytype) {
                 if (keytype == "PRIVATEKEY") {
-                    <%=privateKey%>
+                    <%=Encode.forJavaScript(String.valueOf(privateKey))%>
                     = filePath;
                 } else if (keytype == "DECRYPTIONKEY") {
-                    <%=decryptionKey%>
+                    <%=Encode.forJavaScript(String.valueOf(decryptionKey))%>
                     = filePath;
                 }
             }
@@ -112,19 +113,19 @@
             <div class="control-group">
                 <label class="control-label">User Name:</label>
                 <div class="controls">
-                    <input readonly="readonly" type="text" name="userName" value="<%=userName%>"/>
+                    <input readonly="readonly" type="text" name="userName" value="<%=Encode.forHtmlAttribute(String.valueOf(userName))%>"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">SFTP Download Folder:</label>
                 <div class="controls">
-                    <input type="text" name="location" value="<%=location%>"/>
+                    <input type="text" name="location" value="<%=Encode.forHtmlAttribute(String.valueOf(location))%>"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Private Key:</label>
                 <div class="controls">
-                    <a href="<%= request.getContextPath() %>/<%=privateKey%>" id="pkeyLink">View Private Key</a>
+                    <a href="<%= request.getContextPath() %>/<%=Encode.forHtmlAttribute(String.valueOf(privateKey))%>" id="pkeyLink">View Private Key</a>
                     <input type="button" class="btn" name="privateKey" value="Upload Private Key"
                            onClick='popupPage(600,900,"<%=request.getContextPath() %>/hospitalReportManager/hrmKeyUploader.jsp");return false;'/>
                 </div>
@@ -132,7 +133,7 @@
             <div class="control-group">
                 <label class="control-label">Decryption Key:</label>
                 <div class="controls">
-                    <a href="<%= request.getContextPath() %>/<%=decryptionKey%>" id="dkeyLink">View Decryption Key</a>
+                    <a href="<%= request.getContextPath() %>/<%=Encode.forHtmlAttribute(String.valueOf(decryptionKey))%>" id="dkeyLink">View Decryption Key</a>
                     <input type="button" class="btn" name="decryptionKey" value="Upload Decryption Key"
                            onClick='popupPage(600,900,"<%=request.getContextPath() %>/hospitalReportManager/hrmKeyUploader.jsp");return false;'/>
                 </div>
@@ -140,7 +141,7 @@
             <div class="control-group">
                 <label class="control-label">Auto Polling Interval:</label>
                 <div class="controls">
-                    <input type="text" name="interval" value="<%=interval %>"/>
+                    <input type="text" name="interval" value="<%=Encode.forHtmlAttribute(String.valueOf(interval))%>"/>
                 </div>
             </div>
             <div class="control-group">

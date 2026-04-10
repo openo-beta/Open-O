@@ -127,7 +127,7 @@
 <% }
 
     if (!"Settle & Print Invoice".equals(request.getParameter("submit")) && !"Save & Print Invoice".equals(request.getParameter("submit"))) { %>
-<a href="billingON3rdInv.jsp?billingNo=<%=billingNo%>"> Print invoice</a>
+<a href="billingON3rdInv.jsp?billingNo=<%=Encode.forUriComponent(String.valueOf(billingNo))%>"> Print invoice</a>
 <% } %>
 
 
@@ -148,7 +148,7 @@
 
     %>
     self.opener.refresh();
-    self.location.href = "<%=urlBack%>";
+    self.location.href = "<%=Encode.forJavaScript(String.valueOf(urlBack))%>";
 
     <%}else{%>
     self.close();
@@ -173,7 +173,7 @@
         }
     }
 
-    popupPage(700, 720, 'billingON3rdInv.jsp?billingNo=<%=billingNo%>');
+    popupPage(700, 720, 'billingON3rdInv.jsp?billingNo=<%=Encode.forJavaScript(String.valueOf(billingNo))%>');
     self.close();
     self.opener.refresh();
 </script>

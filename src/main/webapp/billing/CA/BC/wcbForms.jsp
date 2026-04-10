@@ -46,6 +46,7 @@
 <%@page import="java.text.*, java.util.*, ca.openosp.openo.billing.ca.bc.data.*,ca.openosp.openo.billing.ca.bc.pageUtil.*,ca.openosp.*,ca.openosp.openo.entities.*" %>
 <%@ page import="ca.openosp.openo.entities.WCB" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
@@ -57,7 +58,7 @@
 <div>
     <div>
         <label> WCB Forms available to attach.</label> <a
-            onclick="popup(700,960,'viewformwcb.do?demographic_no=<%=demographicNo%>&formId=0&provNo=999998&parentAjaxId=forms&hideToBill=true','<%=demographicNo%>NEWWCB'); return false;"
+            onclick="popup(700,960,'viewformwcb.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=0&provNo=999998&parentAjaxId=forms&hideToBill=true','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>NEWWCB'); return false;"
             href="javascript:void(0);">New WCB Form</a> <br>
     </div>
     <table class="table table-striped table-condensed">
@@ -77,24 +78,24 @@
                 request.setAttribute("wcb", (Object) wcb);
         %>
         <tr>
-            <td><input type="radio" name="WCBid" value="<%=wcb.getId()%>" <%=checked(wcbid, wcb.getId())%> /></td>
+            <td><input type="radio" name="WCBid" value="<%=Encode.forHtmlAttribute(String.valueOf(wcb.getId()))%>" <%=Encode.forHtml(String.valueOf(checked(wcbid, wcb.getId())))%> /></td>
             <td><a href="javascript:void(0);"
-                   onclick="checkifSet('<%=wcb.getW_icd9()%>','<%= wcb.getW_feeitem()%>','<%= wcb.getW_extrafeeitem()%>');">Populate</a>
+                   onclick="checkifSet('<%=Encode.forJavaScript(String.valueOf(wcb.getW_icd9()))%>','<%=Encode.forJavaScript(String.valueOf(wcb.getW_feeitem()))%>','<%=Encode.forJavaScript(String.valueOf(wcb.getW_extrafeeitem()))%>');">Populate</a>
             </td>
             <td align="middle">
-                <a onclick="popup(700,960,'viewformwcb.do?demographic_no=<%=demographicNo%>&formId=<%=wcb.getId()%>&provNo=<%=session.getAttribute("user")%>&parentAjaxId=forms&billingcode=<%=billingcode%>&hideToBill=true','<%=demographicNo%>NEWWCB'); return false;"
+                <a onclick="popup(700,960,'viewformwcb.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(wcb.getId()))%>&provNo=<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>&parentAjaxId=forms&billingcode=<%=Encode.forJavaScript(String.valueOf(billingcode))%>&hideToBill=true','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>NEWWCB'); return false;"
                    href="javascript:void(0);"><fmt:formatDate pattern="yyyy-MM-dd" value="${wcb.w_doi}"/></a>
 
             </td>
             <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${wcb.formCreated}"/></td>
-            <td><%=wcb.getW_diagnosis()%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(wcb.getW_diagnosis()))%>&nbsp;</td>
 
 
             <%
                 if (wcb.verifyFormNotNeeded() != null && wcb.verifyFormNotNeeded().size() > 0) {
                     List<String> errs = wcb.verifyFormNotNeeded();
             %>
-            <td title="header=[To bill WCB without a form the following is needed] body=[<%for (String s : errs) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=s%>"/><%  }%>]">
+            <td title="header=[To bill WCB without a form the following is needed] body=[<%for (String s : errs) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"/><%  }%>]">
                     <%}else{%>
             <td>
                 <%}%>
@@ -107,7 +108,7 @@
                 if (wcb.verifyEverythingOnForm() != null && wcb.verifyEverythingOnForm().size() > 0) {
                     List<String> errs = wcb.verifyEverythingOnForm();
             %>
-            <td title="header=[To bill WCB with a form the following is needed] body=[<%for (String s : errs) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=s%>"/><%  }%>]">
+            <td title="header=[To bill WCB with a form the following is needed] body=[<%for (String s : errs) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"/><%  }%>]">
                     <%}else{%>
             <td>
                 <%}%>

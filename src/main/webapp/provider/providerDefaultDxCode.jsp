@@ -83,7 +83,7 @@
 
 
 <form id="preference_form" name="preference_form" action="preference_action.jsp" method="post">
-    <input type="hidden" name="provider_no" id="provider_no" value="<%=provider_no%>"/>
+    <input type="hidden" name="provider_no" id="provider_no" value="<%=Encode.forHtmlAttribute(String.valueOf(provider_no))%>"/>
     <input type="hidden" name="new_tickler_warning_window" id="new_tickler_warning_window"
            value="<%=Encode.forHtmlAttribute(request.getParameter("new_tickler_warning_window"))%>"/>
 
@@ -93,7 +93,7 @@
         <tr>
             <td>Dx &nbsp;&nbsp;
                 <input type="text" name="dxCode" size="5" maxlength="5" ondblClick="dxScriptAttach('dxCode')"
-                       value="<%=defaultDxCode%>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(defaultDxCode))%>"/>
                 <a href=# onclick="dxScriptAttach('dxCode');">Search</a>
             </td>
         </tr>

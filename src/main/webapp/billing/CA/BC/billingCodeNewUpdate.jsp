@@ -49,6 +49,7 @@
 <%@page import="ca.openosp.openo.commn.model.BillingService" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.ServiceCodeAssociation" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingAssociationPersistence" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
 %>
@@ -72,7 +73,7 @@
 
             self.close();
             self.opener.document
-        .<%=formName%>.<%=formElement%>.
+        .<%=formName%>.<%=Encode.forJavaScript(String.valueOf(formElement))%>.
             value = File0;
         }
 
@@ -135,7 +136,7 @@
 %>
 <script LANGUAGE="JavaScript">
     <!--
-    CodeAttach('<%=param[0]%>', '<%=param[1]%>', '<%=param[2]%>', '<%=diags[0]%>', '<%=diags[1]%>', '<%=diags[2]%>');
+    CodeAttach('<%=Encode.forJavaScript(String.valueOf(param[0]))%>', '<%=Encode.forJavaScript(String.valueOf(param[1]))%>', '<%=Encode.forJavaScript(String.valueOf(param[2]))%>', '<%=Encode.forJavaScript(String.valueOf(diags[0]))%>', '<%=Encode.forJavaScript(String.valueOf(diags[1]))%>', '<%=Encode.forJavaScript(String.valueOf(diags[2]))%>');
     -->
 
 </script>
