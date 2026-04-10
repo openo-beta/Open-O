@@ -72,7 +72,7 @@
 <hr/>
 <br/>
 <div class="oscarBlueForeground">Oscar Public Key (Base64 encoded)</div>
-<div style="border:solid grey 1px;word-wrap:break-word;font-size:12px; width:95%"><%=Encode.forHtml(String.valueOf(KeyManagerUIBean.getPublicOscarKeyEscaped()))%>
+<div style="border:solid grey 1px;word-wrap:break-word;font-size:12px; width:95%"><%=KeyManagerUIBean.getPublicOscarKeyEscaped()%>
 </div>
 <br/>
 <hr/>
@@ -122,7 +122,7 @@
                 <%
                     for (PublicKey publicKey : KeyManagerUIBean.getPublicKeys()) {
                 %>
-                <option value="<%=Encode.forHtmlAttribute(String.valueOf(KeyManagerUIBean.getSericeNameEscaped(publicKey)))%>"><%=Encode.forHtml(String.valueOf(KeyManagerUIBean.getSericeDisplayString(publicKey)))%>
+                <option value="<%=KeyManagerUIBean.getSericeNameEscaped(publicKey)%>"><%=Encode.forHtml(String.valueOf(KeyManagerUIBean.getSericeDisplayString(publicKey)))%>
                 </option>
                 <%
                     }
@@ -145,7 +145,7 @@
                 <%
                     for (ProfessionalSpecialist professionalSpecialist : KeyManagerUIBean.getProfessionalSpecialists()) {
                 %>
-                <option value="<%=Encode.forHtmlAttribute(String.valueOf(professionalSpecialist.getId()))%>"><%=Encode.forHtml(String.valueOf(KeyManagerUIBean.getProfessionalSpecialistDisplayString(professionalSpecialist)))%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(professionalSpecialist.getId()))%>"><%=KeyManagerUIBean.getProfessionalSpecialistDisplayString(professionalSpecialist)%>
                 </option>
                 <%
                     }

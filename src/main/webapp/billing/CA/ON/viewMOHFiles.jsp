@@ -149,10 +149,10 @@
                     bodd = bodd ? false : true;
                     if (contents[i].isDirectory() || contents[i].getName().startsWith(".")) continue;
                     if (contents[i].getName().endsWith(".sh")) continue;
-                    String archiveElement = "<td ><input type='checkbox' name='mohFile' value='" + URLEncoder.encode(contents[i].getName(), StandardCharsets.UTF_8) + "' title='select to archive'/></td>";
+                    String archiveElement = "<td ><input type='checkbox' name='mohFile' value='" + Encode.forHtmlAttribute(contents[i].getName()) + "' title='select to archive'/></td>";
                     if (folder == EDTFolder.INBOX || folder == EDTFolder.ARCHIVE) {
-                        out.println("<tr>" + (folder == EDTFolder.INBOX ? archiveElement : "") + "<td><a HREF='#' onclick='viewMOHFile(\"" + URLEncoder.encode(contents[i].getName(), StandardCharsets.UTF_8) + "\")'>" + Encode.forHtml(contents[i].getName()) + Encode.forHtml(unzipMSG) + "</a></td>");
-                        out.println("<td><a href=\"" + request.getContextPath() + "/servlet/BackupDownload?filename=" + URLEncoder.encode(contents[i].getName(), StandardCharsets.UTF_8) + "\">Download</a></td>");
+                        out.println("<tr>" + (folder == EDTFolder.INBOX ? archiveElement : "") + "<td><a HREF='#' onclick='viewMOHFile(\"" + Encode.forJavaScript(contents[i].getName()) + "\")'>" + Encode.forHtml(contents[i].getName()) + Encode.forHtml(unzipMSG) + "</a></td>");
+                        out.println("<td><a href=\"" + request.getContextPath() + "/servlet/BackupDownload?filename=" + Encode.forUriComponent(contents[i].getName()) + "\">Download</a></td>");
                     } else {
                         out.println("<tr><td>" + Encode.forHtml(contents[i].getName()) + "</td>");
                     }

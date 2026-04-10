@@ -86,7 +86,7 @@
             </td>
 
             <td>
-                <a href="<%= request.getContextPath() %>/eform/deleteImage.do?filename=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(curimage, "UTF-8")))%>"
+                <a href="<%= request.getContextPath() %>/eform/deleteImage.do?filename=<%=Encode.forUriComponent(String.valueOf(curimage))%>"
                    class="contentLink"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.btnDelete"/></a>
             </td>
         </tr>

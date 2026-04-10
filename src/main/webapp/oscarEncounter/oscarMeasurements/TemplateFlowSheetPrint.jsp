@@ -739,7 +739,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
 
                         %>
                         <div class="preventionProcedure" <%=hider%>
-                             onclick="javascript:popup(465,635,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;id=<%=Encode.forJavaScript(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(temp,"UTF-8")))%>','addMeasurementData')">
+                             onclick="javascript:popup(465,635,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;id=<%=Encode.forJavaScript(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(temp))%>','addMeasurementData')">
 
                             <p <%=Encode.forHtml(String.valueOf(indColour))%>
                                     title="Entered By: <%=Encode.forHtmlAttribute(String.valueOf(mdb.getProviderFirstName()))%> <%=Encode.forHtmlAttribute(String.valueOf(mdb.getProviderLastName()))%>">

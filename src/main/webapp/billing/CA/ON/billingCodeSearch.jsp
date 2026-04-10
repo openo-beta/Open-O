@@ -83,7 +83,7 @@
 
             <%
             if(request.getParameter("nameF") != null) {
-                    out.println("self.opener." + Encode.forHtml(request.getParameter("nameF")) + " = File0;");
+                    out.println("self.opener." + Encode.forJavaScript(request.getParameter("nameF")) + " = File0;");
             } else {
             %>
             self.opener.document.serviceform.xml_other1.value = File0;

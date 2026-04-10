@@ -158,7 +158,7 @@
             String clinicaid_link = request.getContextPath() + "/billing/billingClinicAid.jsp?" +
                     "billing_action=create_invoice&" +
                     "demographic_no=" + demographic_no + "&service_start_date=" +
-                    URLEncoder.encode(service_start_date, "UTF-8") +
+                    service_start_date +
                     "&appointment_no=" + appointment_no +
                     "&appointment_provider_no=" + provider_no +
                     "&chart_no=" +

@@ -319,7 +319,7 @@
                                 String checkedString = (checkedEncounterFormNames.contains(encounterForm.getFormName()) ? "checked=\"checked\"" : "");
                         %>
                         <input type="checkbox" name="encounterFormName"
-                               value="<%=Encode.forHtmlAttribute(String.valueOf(nameEscaped))%>" <%=checkedString%> /> <%=Encode.forHtml(String.valueOf(nameEscaped))%>
+                               value="<%=nameEscaped%>" <%=checkedString%> /> <%=nameEscaped%>
                         <br/>
                         <%
                             }

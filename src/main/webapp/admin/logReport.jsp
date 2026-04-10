@@ -293,16 +293,16 @@ for (int i = 0; i < vec.size(); i++) {
     color = i%2==0?tdInterlColor:"white";
 %>
         <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>" align="center">
-            <td><c:out value='<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("dateTime")))%>'/></td>
-            <td><c:out value='<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("action")))%>'/></td>
-            <td><c:out value='<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("content")))%>'/></td>
-            <td><c:out value='<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("contentId")))%>'/></td>
-            <td><c:out value='<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("ip")))%>'/></td>
+            <td><c:out value='<%=prop.getProperty("dateTime")%>'/></td>
+            <td><c:out value='<%=prop.getProperty("action")%>'/></td>
+            <td><c:out value='<%=prop.getProperty("content")%>'/></td>
+            <td><c:out value='<%=prop.getProperty("contentId")%>'/></td>
+            <td><c:out value='<%=prop.getProperty("ip")%>'/></td>
             <% if (bAll) { %>
-            <td><c:out value='<%=Encode.forHtmlAttribute(String.valueOf(propName.getProperty(prop.getProperty("provider_no"), "")))%>'/></td>
+            <td><c:out value='<%=propName.getProperty(prop.getProperty("provider_no"), "")%>'/></td>
             <% } %>
-            <td><c:out value='<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("demographic_no")))%>'/></td>
-            <td><c:out value='<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("data")))%>'/></td>
+            <td><c:out value='<%=prop.getProperty("demographic_no")%>'/></td>
+            <td><c:out value='<%=prop.getProperty("data")%>'/></td>
         </tr>
 
                 <% } %>

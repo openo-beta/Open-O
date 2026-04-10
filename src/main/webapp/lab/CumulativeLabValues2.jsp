@@ -230,7 +230,7 @@
                       
                       if (prevName == null){prevName ="";} %>
                      <li style="margin-top:2px;">
-                        <a title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(prevName))%>] body=[]"      href="javascript: function myFunction() {return false; }"  onclick="javascript:addLabToProfile2('<%=Encode.forJavaScript(String.valueOf(h.get("labType")))%>','<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8)))%>');">                        
+                        <a title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(prevName))%>] body=[]"      href="javascript: function myFunction() {return false; }"  onclick="javascript:addLabToProfile2('<%=Encode.forJavaScript(String.valueOf(h.get("labType")))%>','<%=Encode.forJavaScript(String.valueOf(prevName))%>');">                        
                            <%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(prevName, 13, 8, "...")))%>
                         </a>
                      </li>          

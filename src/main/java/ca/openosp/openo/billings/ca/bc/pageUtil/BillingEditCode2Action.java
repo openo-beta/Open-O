@@ -79,7 +79,7 @@ public final class BillingEditCode2Action extends ActionSupport {
         MiscUtils.getLogger().debug(jsonObject.toString());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getOutputStream().write(jsonObject.toString().getBytes());
+        response.getOutputStream().write(jsonObject.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 

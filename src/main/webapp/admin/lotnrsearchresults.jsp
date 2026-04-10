@@ -153,7 +153,7 @@
                     <td><%=Encode.forHtml(String.valueOf(pRec.getPreventionType()))%>
                     </td>
                     <td><a
-                            href="lotnrdeleterecordhtm.jsp?prevention=<%=Encode.forUriComponent(String.valueOf(pRec.getPreventionType()))%>&lotnr=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(pRec.getLotNr(), StandardCharsets.UTF_8)))%>"><%=Encode.forHtml(String.valueOf(pRec.getLotNr()))%>
+                            href="lotnrdeleterecordhtm.jsp?prevention=<%=Encode.forUriComponent(String.valueOf(pRec.getPreventionType()))%>&lotnr=<%=Encode.forUriComponent(String.valueOf(pRec.getLotNr()))%>"><%=Encode.forHtml(String.valueOf(pRec.getLotNr()))%>
                     </a></td>
                 </tr>
                 <% }

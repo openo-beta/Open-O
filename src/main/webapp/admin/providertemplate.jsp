@@ -124,7 +124,7 @@
                                 for (EncounterTemplate encounterTemplate : allTemplates) {
                                     String templateName = Encode.forHtmlAttribute(encounterTemplate.getEncounterTemplateName());
                             %>
-                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(templateName))%>"><%=Encode.forHtml(String.valueOf(templateName))%>
+                            <option value="<%=templateName%>"><%=templateName%>
                             </option>
                             <%
                                 }

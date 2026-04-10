@@ -137,7 +137,7 @@
                             <% } %> <% if (request.getParameter("searchProviderNo") != null) { // we were called from e-chart %>
                             <input type="button"
                                    value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=BCP&segmentID=<%=Encode.forJavaScript(request.getParameter("segmentID"))%>&name=<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(lab.pName, StandardCharsets.UTF_8)))%>', 'searchPatientWindow')">
+                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=BCP&segmentID=<%=Encode.forJavaScript(request.getParameter("segmentID"))%>&name=<%=Encode.forJavaScript(String.valueOf(lab.pName))%>', 'searchPatientWindow')">
                             <% } %>
                             <!--input type="button" value="Link To Lab Req" onClick="popupStart(360, 680, 'linkToLabReq.jsp?demo=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>&type=BCP&segmentID=<%=Encode.forJavaScript(request.getParameter("segmentID"))%>', 'searchPatientWindow')"-->
                             <!--a href="linkToLabReq.jsp?demo=<%=Encode.forUriComponent(String.valueOf(lab.getDemographicNo()))%>&type=BCP&segmentID=<%=Encode.forUriComponent(request.getParameter("segmentID"))%>"></a-->
@@ -208,7 +208,7 @@
                                                                     <% if (request.getParameter("searchProviderNo") == null) { // we were called from e-chart %>
                                                                     <a href="javascript:window.close()"> <% } else { // we were called from lab module %>
                                                                         <a
-                                                                                href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=BCP&segmentID=<%=Encode.forUriComponent(request.getParameter("segmentID"))%>&name=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode(lab.pName, StandardCharsets.UTF_8)))%>', 'searchPatientWindow')">
+                                                                                href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=BCP&segmentID=<%=Encode.forUriComponent(request.getParameter("segmentID"))%>&name=<%=Encode.forUriComponent(String.valueOf(lab.pName))%>', 'searchPatientWindow')">
                                                                             <% } %> <%=Encode.forHtml(String.valueOf(lab.pName))%>
                                                                         </a></div>
                                                             </td>
@@ -586,7 +586,7 @@
                             <% } %> <% if (request.getParameter("searchProviderNo") != null) { // we were called from e-chart %>
                             <input type="button"
                                    value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=BCP&segmentID=<%=Encode.forJavaScript(request.getParameter("segmentID"))%>&name=<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(lab.pName, StandardCharsets.UTF_8)))%>', 'searchPatientWindow')">
+                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=BCP&segmentID=<%=Encode.forJavaScript(request.getParameter("segmentID"))%>&name=<%=Encode.forJavaScript(String.valueOf(lab.pName))%>', 'searchPatientWindow')">
                             <% } %>
                         </td>
                         <td width="50%" valign="center" align="left"><span

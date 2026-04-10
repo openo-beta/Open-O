@@ -129,7 +129,7 @@
             </a>
         </td>
         <td style="text-align:left;" class="beright">
-            <a onclick="javascript:clickLink('General','Vacancy Template Add', '<%=Encode.forJavaScript(String.valueOf(vt.getId()))%>');return false;"
+            <a onclick="javascript:clickLink('General','Vacancy Template Add', '<%=Encode.forJavaScript(String.valueOf(vt == null ? "" : vt.getId()))%>');return false;"
                href="javascript:void(0)"><%=Encode.forHtml(String.valueOf((vt == null ? "No Template for This Vacancy" : vt.getName())))%>
             </a>
         </td>

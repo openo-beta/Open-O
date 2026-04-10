@@ -154,7 +154,7 @@ public class NotePermissions2Action extends ActionSupport {
         ObjectNode json = objectMapper.valueToTree(hashMap);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getOutputStream().write(json.toString().getBytes());
+        response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
 
     }
@@ -219,7 +219,7 @@ public class NotePermissions2Action extends ActionSupport {
         ObjectNode json = objectMapper.valueToTree(hashMap);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getOutputStream().write(json.toString().getBytes());
+        response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
 
         return null;
     }
@@ -249,7 +249,7 @@ public class NotePermissions2Action extends ActionSupport {
                     hashMap.put("defaultRoleName", programProviderList.get(0).getRole().getName());
 
                     ObjectNode json = objectMapper.valueToTree(hashMap);
-                    response.getOutputStream().write(json.toString().getBytes());
+                    response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
 
                     return null;
                 }
@@ -273,7 +273,7 @@ public class NotePermissions2Action extends ActionSupport {
             hashMap.put("success", false);
 
         ObjectNode json = objectMapper.valueToTree(hashMap);
-        response.getOutputStream().write(json.toString().getBytes());
+        response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
 
         return null;
     }
@@ -312,7 +312,7 @@ public class NotePermissions2Action extends ActionSupport {
 
 
         ObjectNode json = objectMapper.valueToTree(hashMap);
-        response.getOutputStream().write(json.toString().getBytes());
+        response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
 
         return null;
     }

@@ -282,7 +282,7 @@
                         if (request.getParameter("appointment_no") != null)
                             newFormURL += "&appointment_no=" + request.getParameter("appointment_no");
                         if (request.getParameter("reason") != null)
-                            newFormURL += "&reason=" + URLEncoder.encode(request.getParameter("reason"), StandardCharsets.UTF_8);
+                            newFormURL += "&reason=" + request.getParameter("reason");
                         newFormURL += "&bNewForm=1&displaymode=ar1&dboperation=search_demograph";
 
                     %> <a href="<%=Encode.forHtmlAttribute(String.valueOf(newFormURL))%>"><font color="yellow">New Form</font></a>&nbsp;

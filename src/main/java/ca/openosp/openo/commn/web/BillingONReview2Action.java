@@ -83,7 +83,7 @@ public class BillingONReview2Action extends ActionSupport {
         String json = objectMapper.writeValueAsString(demographic);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getOutputStream().write(json.getBytes());
+        response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 
@@ -92,7 +92,7 @@ public class BillingONReview2Action extends ActionSupport {
         String json = objectMapper.writeValueAsString(clinic);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getOutputStream().write(json.getBytes());
+        response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 }

@@ -261,7 +261,7 @@
                                                                     </a>
                                                                     <% } else { // we were called from lab module %>
                                                                     <a
-                                                                            href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&name=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode(lab.pLastName+", "+lab.pFirstName )))%>', 'searchPatientWindow')">
+                                                                            href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&name=<%=Encode.forUriComponent(String.valueOf(lab.pLastName+", "+lab.pFirstName))%>', 'searchPatientWindow')">
                                                                         <%=Encode.forHtml(String.valueOf(lab.pLastName))%>, <%=Encode.forHtml(String.valueOf(lab.pFirstName))%>
                                                                     </a> <% } %></div>
                                                             </td>

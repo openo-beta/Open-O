@@ -110,7 +110,7 @@
         session.setAttribute("casemgmt_oscar_baseurl", request.getContextPath());
         session.setAttribute("casemgmt_oscar_bean", bean);
         session.setAttribute("casemgmt_bean_flag", "true");
-        String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view&demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&providerName=" + bean.userName + "&appointmentNo=" + request.getParameter("appointmentNo") + "&reason=" + URLEncoder.encode(request.getParameter("reason") == null ? "" : request.getParameter("reason"), StandardCharsets.UTF_8) + "&reasonCode=" + (request.getParameter("reasonCode") != null ? request.getParameter("reasonCode") : "");
+        String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view&demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&providerName=" + URLEncoder.encode(bean.userName, StandardCharsets.UTF_8) + "&appointmentNo=" + (request.getParameter("appointmentNo") != null ? request.getParameter("appointmentNo") : "") + "&reason=" + URLEncoder.encode(request.getParameter("reason") == null ? "" : request.getParameter("reason"), StandardCharsets.UTF_8) + "&reasonCode=" + (request.getParameter("reasonCode") != null ? request.getParameter("reasonCode") : "");
         if (request.getParameter("casetoEncounter") == null) {
             response.sendRedirect(hrefurl);
             return;
@@ -905,10 +905,10 @@
                             String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view"
                                 + "&demographicNo=" + bean.demographicNo
                                 + "&providerNo=" + bean.providerNo
-                                + "&providerName=" + bean.userName
-                                + "&appointmentNo=" + URLEncoder.encode(request.getParameter("appointmentNo") == null ? "" : request.getParameter("appointmentNo"), StandardCharsets.UTF_8)
-                                + "&reason=" + URLEncoder.encode(request.getParameter("reason") == null ? "" : request.getParameter("reason"), StandardCharsets.UTF_8)
-                                + "&reasonCode=" + URLEncoder.encode(request.getParameter("reasonCode") == null ? "" : request.getParameter("reasonCode"), StandardCharsets.UTF_8);
+                                + "&providerName=" + URLEncoder.encode(bean.userName, StandardCharsets.UTF_8)
+                                + "&appointmentNo=" + (request.getParameter("appointmentNo") != null ? request.getParameter("appointmentNo") : "")
+                                + "&reason=" + URLEncoder.encode(request.getParameter("reason") != null ? request.getParameter("reason") : "", StandardCharsets.UTF_8)
+                                + "&reasonCode=" + (request.getParameter("reasonCode") != null ? request.getParameter("reasonCode") : "");
                         %>
                         <tr>
                             <td><a href="<%=Encode.forHtmlAttribute(String.valueOf(hrefurl))%>">Case Management Encounter</a></td>
@@ -927,7 +927,7 @@
                             <%
                                 if (bean.status.indexOf('B') == -1) { %>
                             <a href=#
-                               onClick='popupPage(700,1000, "<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(province, StandardCharsets.UTF_8)))%>&billForm=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8)))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("", StandardCharsets.UTF_8)))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerview=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&user_no=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(bean.appointmentDate))%>&start_time=<%=Encode.forJavaScript(String.valueOf(bean.startTime))%>&bNewForm=1&status=t");return false;'
+                               onClick='popupPage(700,1000, "<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forJavaScript(String.valueOf(province))%>&billForm=<%=Encode.forJavaScript(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(""))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerview=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&user_no=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(bean.appointmentDate))%>&start_time=<%=Encode.forJavaScript(String.valueOf(bean.startTime))%>&bNewForm=1&status=t");return false;'
                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a> <% } else {%>
                             <!--a href=# onClick='onUnbilled("<%= request.getContextPath() %>/billing/billingDeleteWithoutNo.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>");return false;' title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.unbil"/>">-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a-->
                             <a href=#
@@ -961,7 +961,7 @@
                             <% } %> <a href=#
                                        onClick="popupOscarComm(580,900,'<%=request.getContextPath()%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&quickList=');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.disease"/></a><br>
                             <a href=#
-                               onClick="popupOscarCon(580,800,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?keyword=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&displaymode=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("Search ", StandardCharsets.UTF_8)))%>&search_mode=search_name&originalpage=<%=URLEncoder.encode(request.getContextPath() + "/tickler/ticklerAdd.jsp", StandardCharsets.UTF_8)%>&orderby=last_name&appointment_date=2000-01-01&limit1=0&limit2=5&status=t&start_time=10:45&end_time=10:59&duration=15&dboperation=search_demorecord&type=&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.addTickler"/></a><br>
+                               onClick="popupOscarCon(580,800,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?keyword=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&displaymode=<%=Encode.forJavaScript(String.valueOf("Search "))%>&search_mode=search_name&originalpage=<%=request.getContextPath() + "/tickler/ticklerAdd.jsp"%>&orderby=last_name&appointment_date=2000-01-01&limit1=0&limit2=5&status=t&start_time=10:45&end_time=10:59&duration=15&dboperation=search_demorecord&type=&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.addTickler"/></a><br>
                         </td>
                     </tr>
                     <!-- <tr><td>&nbsp;</td></tr> -->

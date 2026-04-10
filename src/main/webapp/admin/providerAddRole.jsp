@@ -247,7 +247,7 @@
     <body onLoad="setfocus()">
     <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.addRole"/></h4>
 
-    <span style="display: inline-block; width:100%; margin:auto; text-align:center;" class="alert"><%=Encode.forHtml(String.valueOf(msg))%></span>
+    <span style="display: inline-block; width:100%; margin:auto; text-align:center;" class="alert"><%=msg%></span>
     <br><br>
     <div class="well">
         <form method="post" name="baseurl" action="providerAddRole.jsp" class="form-horizontal">

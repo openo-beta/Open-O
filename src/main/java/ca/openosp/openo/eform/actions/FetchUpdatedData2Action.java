@@ -98,7 +98,7 @@ public final class FetchUpdatedData2Action extends ActionSupport {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getOutputStream().write(json.toString().getBytes());
+        response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
 
         return null;
     }

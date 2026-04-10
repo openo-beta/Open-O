@@ -223,11 +223,11 @@
                 onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
                 onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
                 onClick="<% if(caisi) { out.print("addNameCaisi");}
-						else { out.print("addName");} %>('<%=Encode.forHtml(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(request.getParameter("messageId"))%>','<%=Encode.forHtml(String.valueOf(demo.getProviderNo()))%>')">
+						else { out.print("addName");} %>('<%=Encode.forHtml(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forHtml(String.valueOf(demo.getLastName()))%>','<%=Encode.forHtml(String.valueOf(demo.getFirstName()))%>','<%=Encode.forHtml(String.valueOf(demo.getChartNo()))%>','<%=Encode.forHtml(request.getParameter("messageId"))%>','<%=Encode.forHtml(String.valueOf(demo.getProviderNo()))%>')">
 
                 <td><input type="submit" class="mbttn" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getDemographicNo()))%>"
                            onClick="<% if(caisi) {out.print("addNameCaisi");}
-					else { out.print("addName");} %>('<%=Encode.forHtml(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(String.valueOf(URLEncoder.encode(demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forHtml(request.getParameter("messageId"))%>','<%=Encode.forHtml(String.valueOf(demo.getProviderNo()))%>')">
+					else { out.print("addName");} %>('<%=Encode.forHtml(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forHtml(String.valueOf(demo.getLastName()))%>','<%=Encode.forHtml(String.valueOf(demo.getFirstName()))%>','<%=Encode.forHtml(String.valueOf(demo.getChartNo()))%>','<%=Encode.forHtml(request.getParameter("messageId"))%>','<%=Encode.forHtml(String.valueOf(demo.getProviderNo()))%>')">
                 </td>
                 <td><%=Encode.forHtml(Misc.toUpperLowerCase(demo.getLastName()))%>
                 </td>

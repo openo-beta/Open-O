@@ -122,7 +122,7 @@
 <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
     <tr BGCOLOR="#CCCCFF">
         <td width="5%" align="center" nowrap><a
-                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(param, StandardCharsets.UTF_8)))%>&delta=-12">
+                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>&delta=-12">
             <img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                  ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgNextYear"/>"
                  vspace="2"> <img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10"
@@ -130,18 +130,18 @@
                                   ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgLastYear"/>"
                                   vspace="2"> </a></td>
         <td align="center" nowrap><a
-                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(param, StandardCharsets.UTF_8)))%>&delta=-1">
+                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>&delta=-1">
             <img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                  ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgViewLastMonth"/>"
                  vspace="2"> <fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgLastMonth"/> </a> <b><span CLASS=title><%=Encode.forHtml(String.valueOf(year))%>-<%=Encode.forHtml(String.valueOf(month))%></span></b>
             <a
-                    href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(param, StandardCharsets.UTF_8)))%>&delta=1">
+                    href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>&delta=1">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgNextMonth"/> <img
                     src="<%= request.getContextPath() %>/images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                     ALT="<fmt:setBundle basename="oscarResources"/><fmt:message key="share.CalendarPopUp.msgNextMonth"/>"
                     vspace="2"></a></td>
         <td align='right'><a
-                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(param, StandardCharsets.UTF_8)))%>&delta=12">
+                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>&delta=12">
             <img src="<%= request.getContextPath() %>/images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                  ALT="Next Year" vspace="2"> <img src="<%= request.getContextPath() %>/images/next.gif"
                                                   WIDTH="10" HEIGHT="9" BORDER="0" ALT="Next Year" vspace="2"></a></td>
@@ -154,7 +154,7 @@
             <%
                 for (int i = 0; i < 12; i++) {
             %> <a
-                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(i+1))%>&param=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(param, StandardCharsets.UTF_8)))%>"><font
+                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(i+1))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>"><font
                 SIZE="2" <%=(i+1)==month?"color='red'":"color='blue'"%>><%=Encode.forHtml(String.valueOf(arrayMonth[i]))%>
         </a>
             <% } %>

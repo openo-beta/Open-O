@@ -334,7 +334,7 @@
                 if (remoteFacilityId == '') {
                     document.addform.action = "<%=Encode.forJavaScript(request.getParameter("originalpage"))%>?";
                 } else {
-                    document.addform.action = "<%=request.getContextPath()%>/appointment/copyRemoteDemographic.jsp?originalPage=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("originalpage"), StandardCharsets.UTF_8))%>&";
+                    document.addform.action = "<%=request.getContextPath()%>/appointment/copyRemoteDemographic.jsp?originalPage=<%=Encode.forJavaScript(request.getParameter("originalpage"))%>&";
                 }
 
                 document.addform.action = document.addform.action + "demographic_no=" + demographic_no + "&name=" + fullname + "&chart_no=" + chartno + "&bFirstDisp=false" + "&messageID=" + messageID + "&doctor_no=" + doctorNo + "&remoteFacilityId=" + remoteFacilityId;
@@ -499,12 +499,12 @@
                 <tr style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                     onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
                     onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
-                    onClick="document.forms[0].demographic_no.value=<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>;<% if(caisi) { out.print("addNameCaisi");} else { out.print("addName");} %>('<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demo.getProviderNo()))%>','')">
+                    onClick="document.forms[0].demographic_no.value=<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>;<% if(caisi) { out.print("addNameCaisi");} else { out.print("addName");} %>('<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forJavaScript(String.valueOf(demo.getLastName()))%>','<%=Encode.forJavaScript(String.valueOf(demo.getFirstName()))%>','<%=Encode.forJavaScript(String.valueOf(demo.getChartNo() == null ? "" : demo.getChartNo()))%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demo.getProviderNo()))%>','')">
 
                     <td class="demoId">
                         <input type="submit" class="mbttn btn btn-default btn-sm" name="demographic_no"
                                value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getDemographicNo()))%>"
-                               onClick="<% if(caisi) {out.print("addNameCaisi");} else {out.print("addName");} %>('<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demo.getProviderNo()))%>','')">
+                               onClick="<% if(caisi) {out.print("addNameCaisi");} else {out.print("addName");} %>('<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forJavaScript(String.valueOf(demo.getLastName()))%>','<%=Encode.forJavaScript(String.valueOf(demo.getFirstName()))%>','<%=Encode.forJavaScript(String.valueOf(demo.getChartNo() == null ? "" : demo.getChartNo()))%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demo.getProviderNo()))%>','')">
                     </td>
                     <td class="lastName"><%=Encode.forHtml(Misc.toUpperLowerCase(demo.getLastName()))%>
                     </td>
@@ -540,7 +540,7 @@
                 <tr style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                     onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
                     onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
-                    onClick="document.forms[0].demographic_no.value=<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>;addName('<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographicTransfer.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographicTransfer.getFirstName(), StandardCharsets.UTF_8)))%>','','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiProviderId()))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getIntegratorFacilityId()))%>')">
+                    onClick="document.forms[0].demographic_no.value=<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>;addName('<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getLastName()))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getFirstName()))%>','','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiProviderId()))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getIntegratorFacilityId()))%>')">
                     <td class="demoId" colspan="8">
                         <input type="submit" class="mbttn btn btn-default btn-sm" name="demographic_no"
                                value="Integrator <%=Encode.forHtmlAttribute(String.valueOf(CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), demographicTransfer.getIntegratorFacilityId()).getName()))%>:<%=Encode.forHtmlAttribute(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>"/>

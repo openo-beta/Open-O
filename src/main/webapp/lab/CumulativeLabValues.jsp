@@ -221,7 +221,7 @@
                                         prevName = "";
                                     }
                             %>
-                            <li style="margin-top: 2px;"><%-- a title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(prevName))%>] body=[]"      href="javascript: function myFunction() {return false; }"  onclick="javascript:addLabToProfile2('<%=Encode.forJavaScript(String.valueOf(h.get("labType")))%>','<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8)))%>');" --%>
+                            <li style="margin-top: 2px;"><%-- a title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(prevName))%>] body=[]"      href="javascript: function myFunction() {return false; }"  onclick="javascript:addLabToProfile2('<%=Encode.forJavaScript(String.valueOf(h.get("labType")))%>','<%=Encode.forJavaScript(String.valueOf(prevName))%>');" --%>
                                 <a title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(prevName))%>] body=[]"
                                    href="javascript: function myFunction() {return false; }"
                                    onclick="javascript:addLabToProfile2('<%=Encode.forJavaScript(String.valueOf(h.get("labType")))%>','<%=Encode.forJavaScript(String.valueOf(prevNameEsc))%>','<%=Encode.forJavaScript(String.valueOf(identCodeEsc))%>');">

@@ -164,10 +164,10 @@
         %>
         <tr>
             <td width="50%" colspan="3" align="right" class="SmallerText">
-                &nbsp;<%=start > 0 ? "<a href=" + previous + ">previous</a>" : ""%>
+                &nbsp;<%=start > 0 ? "<a href=\"" + Encode.forHtmlAttribute(previous) + "\">previous</a>" : ""%>
             </td>
             <td width="50%" colspan="4" align="left" class="SmallerText">
-                | <%=count == 10 ? "<a href=" + next + ">next</a>" : ""%>&nbsp;
+                | <%=count == 10 ? "<a href=\"" + Encode.forHtmlAttribute(next) + "\">next</a>" : ""%>&nbsp;
             </td>
         </tr>
     </table>

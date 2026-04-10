@@ -67,7 +67,7 @@ public class RptDownloadCSVServlet extends HttpServlet {
 
 
         // Sanitize reportName for use in Content-Disposition header to prevent HTTP response splitting
-        String sanitizedReportName = reportName.replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
+        String sanitizedReportName = (reportName == null ? "report" : reportName).replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
         String filename = sanitizedReportName + ".csv"; // request.getParameter("filename");
         OutputStream out = null;
         try {

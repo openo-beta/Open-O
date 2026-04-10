@@ -116,10 +116,10 @@
             }
         %>
         <br/>
-        <a href="lotnraddrecordhtm.jsp?prevention=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(prevention,"UTF-8")))%>">Add Another Lot #
+        <a href="lotnraddrecordhtm.jsp?prevention=<%=Encode.forUriComponent(String.valueOf(prevention))%>">Add Another Lot #
             to <%=Encode.forHtml(String.valueOf(prevention))%>
         </a> <br/>
-        <a href="lotnrsearchresults.jsp?search_mode=search_prev&keyword=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(prevention,"UTF-8")))%>&orderby=prevention_type&dboperation=lotnr_search_prevention&limit1=0&limit2=10&button=submit">View
+        <a href="lotnrsearchresults.jsp?search_mode=search_prev&keyword=<%=Encode.forUriComponent(String.valueOf(prevention))%>&orderby=prevention_type&dboperation=lotnr_search_prevention&limit1=0&limit2=10&button=submit">View
             Lots for <%=Encode.forHtml(String.valueOf(prevention))%>
         </a>
     </center>

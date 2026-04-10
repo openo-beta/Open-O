@@ -274,7 +274,7 @@
             // if ( firstLetter.size() > 0 ) {
             //    String queryStr = getUrlParamList(firstLetter, "demo");
             //
-            //&message=<%=Encode.forHtml(String.valueOf(java.net.URLEncoder.encode("Letter 1 Reminder Letter sent for :" + request.getAttribute("prevType"), StandardCharsets.UTF_8)
+            //&message=<%=Encode.forHtml(String.valueOf("Letter 1 Reminder Letter sent for :" + request.getAttribute("prevType")
             //&followupType=
             //&followupValue=L1))%>
     </div>

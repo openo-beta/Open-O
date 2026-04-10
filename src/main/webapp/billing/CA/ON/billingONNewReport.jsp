@@ -56,6 +56,7 @@
 <%@ page import="ca.openosp.openo.login.DBHelp" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.net.URLEncoder" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -110,11 +111,11 @@
             prop.setProperty("PATIENT", rs.getString("name"));
             prop.setProperty("DESCRIPTION", rs.getString("reason"));
             String tempStr = "<a href=# onClick='popupPage(700,1000, \"billingOB.jsp?billForm="
-                    + URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8) + "&hotclick=&appointment_no="
-                    + rs.getString("appointment_no") + "&demographic_name=" + URLEncoder.encode(rs.getString("name"), StandardCharsets.UTF_8)
-                    + "&demographic_no=" + rs.getString("demographic_no") + "&user_no=" + rs.getString("provider_no")
-                    + "&apptProvider_no=" + providerview + "&appointment_date=" + rs.getString("appointment_date")
-                    + "&start_time=" + rs.getString("start_time") + "&bNewForm=1\"); return false;'>Bill ";
+                    + Encode.forJavaScript(oscarVariables.getProperty("default_view")) + "&hotclick=&appointment_no="
+                    + Encode.forJavaScript(rs.getString("appointment_no")) + "&demographic_name=" + Encode.forJavaScript(URLEncoder.encode(rs.getString("name"), StandardCharsets.UTF_8))
+                    + "&demographic_no=" + Encode.forJavaScript(rs.getString("demographic_no")) + "&user_no=" + Encode.forJavaScript(rs.getString("provider_no"))
+                    + "&apptProvider_no=" + Encode.forJavaScript(providerview) + "&appointment_date=" + Encode.forJavaScript(rs.getString("appointment_date"))
+                    + "&start_time=" + Encode.forJavaScript(rs.getString("start_time")) + "&bNewForm=1\"); return false;'>Bill ";
             prop.setProperty("COMMENTS", tempStr);
             vecValue.add(prop);
         }

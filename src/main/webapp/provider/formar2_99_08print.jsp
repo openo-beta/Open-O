@@ -693,7 +693,7 @@
 <div ID="graphic"
      STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(3+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(653+ooy))%>px; width:501px; height:280px;">
     <embed type="image/svg+xml"
-        src="<%= request.getContextPath() %>/form/formar2svg.jsp?bgimage=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode("../images/formar2_99_08gra.gif", StandardCharsets.UTF_8)))%>&bgimagewidth=222&bgimageheight=276<%=Encode.forUriComponent(String.valueOf(urlparam))%>"
+        src="<%= request.getContextPath() %>/form/formar2svg.jsp?bgimage=<%=Encode.forUriComponent(String.valueOf("../images/formar2_99_08gra.gif"))%>&bgimagewidth=222&bgimageheight=276<%=Encode.forUriComponent(String.valueOf(urlparam))%>"
            width="221" height="276" wmode="transparent"/>
 </div>
 <%

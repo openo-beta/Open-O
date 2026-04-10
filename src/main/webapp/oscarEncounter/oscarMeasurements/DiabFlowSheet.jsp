@@ -918,7 +918,7 @@
             <td class="field">
                 <a style="color: black; text-decoration : underline;"
                    href="javascript: function myFunction() {return false; }"
-                   onclick="javascript:popup(465,635,'<%=Encode.forJavaScript(String.valueOf(project))%>/oscarEncounter/oscarMeasurements/AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(temp,"UTF-8")))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs(h.get("name").hashCode())))%>')">
+                   onclick="javascript:popup(465,635,'<%=Encode.forJavaScript(String.valueOf(project))%>/oscarEncounter/oscarMeasurements/AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(temp))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs(h.get("name").hashCode())))%>')">
                     <b><%=Encode.forHtml(String.valueOf(child.flowSheetItem.getDisplayName()))%>
                     </b>
                 </a>

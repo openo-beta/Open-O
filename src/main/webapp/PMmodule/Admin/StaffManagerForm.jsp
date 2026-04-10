@@ -106,7 +106,7 @@
             </div>
             <%@ include file="/common/messages.jsp" %>
             <jsp:include
-                    page='<%=Encode.forHtmlAttribute(String.valueOf("/PMmodule/Admin/StaffEdit/"+selectedTab.toLowerCase().replaceAll(" ","_") + ".jsp"))%>'/>
+                    page='<%="/PMmodule/Admin/StaffEdit/" + (java.util.Arrays.asList(StaffManagerViewFormBean.tabs).contains(selectedTab) ? selectedTab : StaffManagerViewFormBean.tabs[0]).toLowerCase().replaceAll(" ", "_") + ".jsp"%>'/>
         </c:when>
         <c:otherwise>
             <%@ include file="/common/messages.jsp" %>

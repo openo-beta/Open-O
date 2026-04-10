@@ -636,7 +636,7 @@ background-color:rgb(212, 212, 254);
                         }
                     }%>
                 <a target="_blank"
-                   href="<%= request.getContextPath() %>/tickler/AddTickler.do?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&message=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode("Patient has Consultation Letter with a status of 'Nothing Done' for over one week","UTF-8")))%>">Add
+                   href="<%= request.getContextPath() %>/tickler/AddTickler.do?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&message=<%=Encode.forUriComponent(String.valueOf("Patient has Consultation Letter with a status of 'Nothing Done' for over one week"))%>">Add
                     Tickler for Consults with ND for more than one week</a>
                 <%}%>
             </td>

@@ -136,7 +136,7 @@
                   // 2) XSS-safe name
                   String safeName = Encode.forHtml(name);
 
-                  String encoded = URLEncoder.encode(name, "UTF-8");
+                  String encoded = Encode.forUriComponent(name);
                   long bytes = f.length();
                   String displaySize = FileUtils.byteCountToDisplaySize(bytes);
 

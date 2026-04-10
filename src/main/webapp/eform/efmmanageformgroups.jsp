@@ -130,12 +130,12 @@
                 <tr>
                     <%}%>
                     <td>
-                        <a href='<%= request.getContextPath() %>/eforms/delGroup.do?group_name=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(groupName, "UTF-8")))%>'
+                        <a href='<%= request.getContextPath() %>/eforms/delGroup.do?group_name=<%=Encode.forUriComponent(String.valueOf(groupName))%>'
                            class="btn btn-small" title="delete this group"
                            data-confirm="<i class='icon-warning-sign icon-large'></i> Are you sure you would like to delete group: <strong><%=Encode.forHtml(String.valueOf(groupName))%></strong>?"><i
                                 class="icon-trash"></i></a></td>
                     <td title="<%=Encode.forHtmlAttribute(String.valueOf(groupName))%>"><a
-                            href='<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?orderby=form_name&group_view=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(groupName, "UTF-8")))%>'
+                            href='<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?orderby=form_name&group_view=<%=Encode.forUriComponent(String.valueOf(groupName))%>'
                             class="contentLink"><%=Encode.forHtml(String.valueOf(groupName))%>
                     </a></td>
                     <td><%=Encode.forHtml(String.valueOf((String) curhash.get("count")))%>
@@ -191,7 +191,7 @@
                     data-trigger="hover" data-placement="bottom">
 
                     <td>
-                        <a href="<%= request.getContextPath() %>/eforms/removeFromGroup.do?fid=<%=Encode.forUriComponent(String.valueOf(curForm.get("fid")))%>&groupName=<%=Encode.forUriComponent(String.valueOf(URLEncoder.encode(groupView, "UTF-8")))%>"
+                        <a href="<%= request.getContextPath() %>/eforms/removeFromGroup.do?fid=<%=Encode.forUriComponent(String.valueOf(curForm.get("fid")))%>&groupName=<%=Encode.forUriComponent(String.valueOf(groupView))%>"
                            title="remove from group" class="btn btn-small" title="delete eform from group"
                            data-confirm="<i class='icon-warning-sign icon-large'></i> Are you sure you would like to remove this eform from this group?"><i
                                 class="icon-trash"></i></a>

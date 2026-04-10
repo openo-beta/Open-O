@@ -257,14 +257,14 @@
 
         nNextPage = Integer.parseInt(strLimit) + Integer.parseInt(strOffset);
         nLastPage = Integer.parseInt(strOffset) - Integer.parseInt(strLimit);
-        String searchStatusQ = (searchStatus != null) ? "&search_status=" + searchStatus : "";
+        String searchStatusQ = (searchStatus != null) ? "&search_status=" + Encode.forUriComponent(String.valueOf(searchStatus)) : "";
         if (nLastPage >= 0) {
     %> <a
-            href="providersearchresults.jsp?keyword=<%= Encode.forUriComponent(keyword) %>&search_mode=<%=Encode.forUriComponent(String.valueOf(searchMode))%><%=Encode.forUriComponent(String.valueOf(searchStatusQ))%>&orderby=<%=Encode.forUriComponent(String.valueOf(orderBy))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.btnLastPage"/></a> | <%
+            href="providersearchresults.jsp?keyword=<%= Encode.forUriComponent(keyword) %>&search_mode=<%=Encode.forUriComponent(String.valueOf(searchMode))%><%=searchStatusQ%>&orderby=<%=Encode.forUriComponent(String.valueOf(orderBy))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.btnLastPage"/></a> | <%
         }
         if (nItems == Integer.parseInt(strLimit)) {
     %> <a
-            href="providersearchresults.jsp?keyword=<%= Encode.forUriComponent(keyword) %>&search_mode=<%=Encode.forUriComponent(String.valueOf(searchMode))%><%=Encode.forUriComponent(String.valueOf(searchStatusQ))%>&orderby=<%=Encode.forUriComponent(String.valueOf(orderBy))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.btnNextPage"/></a> <%
+            href="providersearchresults.jsp?keyword=<%= Encode.forUriComponent(keyword) %>&search_mode=<%=Encode.forUriComponent(String.valueOf(searchMode))%><%=searchStatusQ%>&orderby=<%=Encode.forUriComponent(String.valueOf(orderBy))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.btnNextPage"/></a> <%
         }
     %>
     <p><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.msgClickForEditing"/></p>

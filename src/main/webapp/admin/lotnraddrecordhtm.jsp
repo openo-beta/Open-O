@@ -118,7 +118,7 @@
                         <select id="prevention" name="prevention">
                             <% for (String s : inject_prev_list) {
                             %>
-                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(s))%>" <%=Encode.forHtml(String.valueOf((s.equals(selectedPrevention)) ? " selected=\"selected\" " : ""))%>><%=Encode.forHtml(String.valueOf(s))%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(s))%>" <%=(s.equals(selectedPrevention)) ? " selected=\"selected\" " : ""%>><%=Encode.forHtml(String.valueOf(s))%>
                             </option>
                             <%}%>
                         </select>

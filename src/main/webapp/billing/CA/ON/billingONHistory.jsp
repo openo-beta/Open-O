@@ -218,12 +218,12 @@
         nLastPage = Integer.parseInt(strLimit1) - Integer.parseInt(strLimit2);
         if (nLastPage >= 0) {
     %> <a
-        href="billinghistory.jsp?last_name=<%=Encode.forUriComponent(URLEncoder.encode(request.getParameter("last_name"), StandardCharsets.UTF_8))%>&first_name=<%=Encode.forUriComponent(URLEncoder.encode(request.getParameter("first_name"), StandardCharsets.UTF_8))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">Last
+        href="billinghistory.jsp?last_name=<%=Encode.forUriComponent(request.getParameter("last_name"))%>&first_name=<%=Encode.forUriComponent(request.getParameter("first_name"))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">Last
     Page</a> | <%
     }
     if (nItems == Integer.parseInt(strLimit2)) {
 %> <a
-        href="billinghistory.jsp?last_name=<%=Encode.forUriComponent(URLEncoder.encode(request.getParameter("last_name"), StandardCharsets.UTF_8))%>&first_name=<%=Encode.forUriComponent(URLEncoder.encode(request.getParameter("first_name"), StandardCharsets.UTF_8))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">
+        href="billinghistory.jsp?last_name=<%=Encode.forUriComponent(request.getParameter("last_name"))%>&first_name=<%=Encode.forUriComponent(request.getParameter("first_name"))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">
     Next Page</a> <%
     }
 
