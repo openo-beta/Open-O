@@ -35,13 +35,10 @@ import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.webserv.rest.to.model.DemographicSearchResult;
 
-import ca.openosp.openo.demographic.data.DemographicMerged;
-
 public class DemographicSearchResultTransformer implements ResultTransformer {
 
     private DemographicDao demographicDao;
     private SimpleDateFormat sdf = new SimpleDateFormat(DateUtils.ISO8601_DATE_PATTERN);
-    private DemographicMerged dm = new DemographicMerged();
 
     public DemographicSearchResultTransformer() {
     }
@@ -68,9 +65,8 @@ public class DemographicSearchResultTransformer implements ResultTransformer {
 
         //more about this @ SF Bug #3575
         if (mergedTo != null) {
-            //find and replace with the HEAD record info
-            Integer headDemographicNo = dm.getHead(demographicNo);
-            Demographic d = demographicDao.getDemographicById(headDemographicNo);
+            //find and replace with the HEAD record info — mergedTo is the surviving record
+            Demographic d = demographicDao.getDemographicById(mergedTo);
 
             if (d != null) {
                 demographicNo = d.getDemographicNo();
