@@ -52,7 +52,6 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.OscarProperties;
-import ca.openosp.openo.demographic.data.DemographicMerged;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -518,8 +517,8 @@ public final class MessageUploader {
         }
 
         if (result != null) {
-            DemographicMerged dm = new DemographicMerged();
-            Integer headDemo = dm.getHead(result.getDemographicNo());
+            Demographic demToCheck = demographicManager.getDemographic(loggedInInfo, result.getDemographicNo());
+            Integer headDemo = (demToCheck != null) ? demToCheck.getHeadRecord() : null;
             if (headDemo != null && headDemo.intValue() != result.getDemographicNo()) {
                 Demographic demoTmp = demographicManager.getDemographic(loggedInInfo, headDemo);
                 if (demoTmp != null) {
@@ -596,8 +595,8 @@ public final class MessageUploader {
             //did this link a merged patient? if so, we need to make sure we are the head record, or update
             //result to be the head record.
             if (result != null) {
-                DemographicMerged dm = new DemographicMerged();
-                Integer headDemo = dm.getHead(result.getDemographicNo());
+                Demographic demToCheck = demographicManager.getDemographic(loggedInInfo, result.getDemographicNo());
+                Integer headDemo = (demToCheck != null) ? demToCheck.getHeadRecord() : null;
                 if (headDemo != null && headDemo.intValue() != result.getDemographicNo()) {
                     Demographic demoTmp = demographicManager.getDemographic(loggedInInfo, headDemo);
                     if (demoTmp != null) {
@@ -719,8 +718,8 @@ public final class MessageUploader {
 
 
         if (result != null) {
-            DemographicMerged dm = new DemographicMerged();
-            Integer headDemo = dm.getHead(result.getDemographicNo());
+            Demographic demToCheck = demographicManager.getDemographic(loggedInInfo, result.getDemographicNo());
+            Integer headDemo = (demToCheck != null) ? demToCheck.getHeadRecord() : null;
             if (headDemo != null && headDemo.intValue() != result.getDemographicNo()) {
                 Demographic demoTmp = demographicManager.getDemographic(loggedInInfo, headDemo);
                 if (demoTmp != null) {
