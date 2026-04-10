@@ -799,16 +799,6 @@ public class EForm extends EFormBase {
         return SqlUtils.parameterizeToken(sql, name, value, params);
     }
 
-    /**
-     * @deprecated Use {@link ca.openosp.openo.util.PreparedSQL} directly instead.
-     */
-    @Deprecated
-    public static class SqlWithParams extends PreparedSQL {
-        public SqlWithParams(String sql, List<Object> params) {
-            super(sql, params);
-        }
-    }
-
     private String getSqlParams(String key) {
         if (sql_params.containsKey(key)) {
             String val = sql_params.get(key);

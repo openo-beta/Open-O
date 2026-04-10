@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import ca.openosp.openo.utility.DbConnectionFilter;
@@ -118,12 +119,32 @@ public class FrmONAREnhancedRecord extends FrmRecord {
 
 
 
+    private static final Set<String> ALLOWED_ONAR_TABLES = Set.of(
+            "formONAREnhancedRecord", "formONAREnhancedRecordExt1", "formONAREnhancedRecordExt2");
+
     private List<String> getColumnNames(String table) throws SQLException {
+        if (!ALLOWED_ONAR_TABLES.contains(table)) {
+            throw new SecurityException("Invalid ONAR table name: " + table);
+        }
+        String sql;
+        switch (table) {
+            case "formONAREnhancedRecord":
+                sql = "SELECT * FROM formONAREnhancedRecord LIMIT 1";
+                break;
+            case "formONAREnhancedRecordExt1":
+                sql = "SELECT * FROM formONAREnhancedRecordExt1 LIMIT 1";
+                break;
+            case "formONAREnhancedRecordExt2":
+                sql = "SELECT * FROM formONAREnhancedRecordExt2 LIMIT 1";
+                break;
+            default:
+                throw new SecurityException("Invalid ONAR table name: " + table);
+        }
         List<String> result = new ArrayList<String>();
         ResultSet rs2 = null;
 
         try {
-            rs2 = DBHandler.GetSQL("select * from " + table + " limit 1");
+            rs2 = DBHandler.GetPreSQL(sql);
 
             ResultSetMetaData md = rs2.getMetaData();
 

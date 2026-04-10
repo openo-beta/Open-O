@@ -75,22 +75,6 @@ public class FrmRecordHelp {
         _dateFormat = s;
     }
 
-    /** @deprecated Use {@link #getFormRecord(String, Object...)} with parameterized SQL instead. */
-    @Deprecated
-    public Properties getFormRecord(String sql) //int demographicNo, int existingID)
-            throws SQLException {
-        MiscUtils.getLogger().warn("SECURITY: deprecated getFormRecord(String) called with unparameterized SQL. Migrate caller to parameterized overload.");
-        Properties props = new Properties();
-
-
-        ResultSet rs = DBHandler.GetSQL(sql);
-        if (rs.next()) {
-            props = extractFormProperties(rs);
-        }
-        rs.close();
-        return props;
-    }
-
     public Properties getFormRecord(String sql, Object... params) throws SQLException {
         Properties props = new Properties();
         ResultSet rs = DBHandler.GetPreSQL(sql, params);
@@ -124,62 +108,6 @@ public class FrmRecordHelp {
                 props.setProperty(name, value);
         }
         return props;
-    }
-
-    /** @deprecated Use {@link #saveFormRecord(Properties, String, Object...)} with parameterized SQL instead. */
-    @Deprecated
-    public synchronized int saveFormRecord(Properties props, String sql) throws SQLException {
-        MiscUtils.getLogger().warn("SECURITY: deprecated saveFormRecord(Properties, String) called with unparameterized SQL. Migrate caller to parameterized overload.");
-
-        ResultSet rs = DBHandler.GetSQL(sql, true);
-        rs.moveToInsertRow();
-        rs = updateResultSet(props, rs, true);
-        rs.insertRow();
-        String saveAsXml = OscarProperties.getInstance().getProperty("save_as_xml", "false");
-
-        if (saveAsXml.equalsIgnoreCase("true")) {
-
-            String demographicNo = props.getProperty("demographic_no");
-            int index = sql.indexOf("form");
-            int spaceIndex = sql.indexOf(" ", index);
-            String formClass = sql.substring(index, spaceIndex);
-            Date d = new Date();
-            String now = UtilDateUtilities.DateToString(d, "yyyyMMddHHmmss");
-            String place = OscarProperties.getInstance().getProperty("form_record_path", "/root");
-
-            if (!place.endsWith(System.getProperty("file.separator")))
-                place = place + System.getProperty("file.separator");
-            String fileName = place + formClass + "_" + demographicNo + "_" + now + ".xml";
-
-            try {
-                // caution: this method closes the resultset.
-                Document doc = JDBCUtil.toDocument(rs);
-                JDBCUtil.saveAsXML(doc, fileName);
-            } catch (Exception e) {
-                MiscUtils.getLogger().error("Error", e);
-            }
-        }
-        rs.close();
-
-        int ret = 0;
-        /*
-         * if db_type = mysql return LAST_INSERT_ID() but if db_type = postgresql, return a prepared
-         * statement, since here we dont know which sequence will be used
-         */
-        String db_type = OscarProperties.getInstance() != null ? OscarProperties.getInstance().getProperty("db_type",
-                "") : "";
-        if (db_type.equals("") || db_type.equalsIgnoreCase("mysql")) {
-            sql = "SELECT LAST_INSERT_ID()";
-        } else if (db_type.equalsIgnoreCase("postgresql")) {
-            sql = "SELECT CURRVAL('?')";
-        } else {
-            throw new SQLException("ERROR: Database " + db_type + " unrecognized.");
-        }
-        rs = DBHandler.GetSQL(sql);
-        if (rs.next())
-            ret = rs.getInt(1);
-        rs.close();
-        return ret;
     }
 
     public ResultSet updateResultSet(Properties props, ResultSet rs, boolean bInsert) throws SQLException {
@@ -286,38 +214,11 @@ public class FrmRecordHelp {
     }
 
     //for page form
-    /** @deprecated Use {@link #updateFormRecord(Properties, String, Object...)} with parameterized SQL instead. */
-    @Deprecated
-    public void updateFormRecord(Properties props, String sql) throws SQLException {
-        MiscUtils.getLogger().warn("SECURITY: deprecated updateFormRecord(Properties, String) called with unparameterized SQL. Migrate caller to parameterized overload.");
-
-        ResultSet rs = DBHandler.GetSQL(sql, true);
-        //rs.relative(0);
-
-        rs = updateResultSet(props, rs, false);
-        rs.updateRow();
-
-        rs.close();
-    }
-
     public void updateFormRecord(Properties props, String sql, Object... params) throws SQLException {
         ResultSet rs = DBHandler.GetPreSQLUpdatable(sql, params);
         rs = updateResultSet(props, rs, false);
         rs.updateRow();
         rs.close();
-    }
-
-    /** @deprecated Use {@link #getPrintRecord(String, Object...)} with parameterized SQL instead. */
-    @Deprecated
-    public Properties getPrintRecord(String sql) throws SQLException {
-        MiscUtils.getLogger().warn("SECURITY: deprecated getPrintRecord(String) called with unparameterized SQL. Migrate caller to parameterized overload.");
-        Properties props = new Properties();
-
-        ResultSet rs = DBHandler.GetSQL(sql);
-        if (rs.next()) {
-            props = getResultsAsProperties(rs);
-        }
-        return props;
     }
 
     public Properties getPrintRecord(String sql, Object... params) throws SQLException {
@@ -328,21 +229,6 @@ public class FrmRecordHelp {
         }
         rs.close();
         return props;
-    }
-
-    /** @deprecated Use {@link #getPrintRecords(String, Object...)} with parameterized SQL instead. */
-    @Deprecated
-    public List<Properties> getPrintRecords(String sql) throws SQLException {
-        MiscUtils.getLogger().warn("SECURITY: deprecated getPrintRecords(String) called with unparameterized SQL. Migrate caller to parameterized overload.");
-        ArrayList<Properties> results = new ArrayList<Properties>();
-
-        ResultSet rs = DBHandler.GetSQL(sql);
-        while (rs.next()) {
-            Properties p = getResultsAsProperties(rs);
-            results.add(p);
-        }
-
-        return results;
     }
 
     public List<Properties> getPrintRecords(String sql, Object... params) throws SQLException {
@@ -378,19 +264,6 @@ public class FrmRecordHelp {
         }
 
         return (p);
-    }
-
-    /** @deprecated Use {@link #getDemographicIds(String, Object...)} with parameterized SQL instead. */
-    @Deprecated
-    public List<Integer> getDemographicIds(String sql) throws SQLException {
-        List<Integer> results = new ArrayList<Integer>();
-
-        ResultSet rs = DBHandler.GetSQL(sql);
-        while (rs.next()) {
-            results.add(rs.getInt("demographic_no"));
-        }
-
-        return results;
     }
 
     public List<Integer> getDemographicIds(String sql, Object... params) throws SQLException {

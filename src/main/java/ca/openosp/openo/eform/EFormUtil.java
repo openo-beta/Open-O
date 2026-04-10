@@ -586,32 +586,6 @@ public class EFormUtil {
         setFormStatus(fid, true);
     }
 
-    /** @deprecated Use {@link #getValues(ArrayList, String, Object...)} with parameterized SQL instead. */
-    @Deprecated
-    public static ArrayList<String> getValues(ArrayList<String> names, String sql) {
-        // gets the values for each column name in the sql (used by DatabaseAP)
-        ResultSet rs = getSQL(sql);
-        ArrayList<String> values = new ArrayList<String>();
-        try {
-            while (rs.next()) {
-                values = new ArrayList<String>();
-                for (int i = 0; i < names.size(); i++) {
-                    try {
-                        values.add(Misc.getString(rs, names.get(i)));
-                        logger.debug("VALUE ====" + rs.getObject(names.get(i)) + "|");
-                    } catch (Exception sqe) {
-                        values.add("<(" + names.get(i) + ")NotFound>");
-                        logger.error("Error", sqe);
-                    }
-                }
-            }
-            rs.close();
-        } catch (SQLException sqe) {
-            logger.error("Error", sqe);
-        }
-        return (values);
-    }
-
     /**
      * Gets values for each column name using a parameterized SQL query.
      * @param names column names to extract from the result set
@@ -633,32 +607,6 @@ public class EFormUtil {
                         logger.error("Error", sqe);
                     }
                 }
-            }
-            rs.close();
-        } catch (SQLException sqe) {
-            logger.error("Error", sqe);
-        }
-        return values;
-    }
-
-    /** @deprecated Use {@link #getJsonValues(ArrayList, String, Object...)} with parameterized SQL instead. */
-    @Deprecated
-    public static ArrayNode getJsonValues(ArrayList<String> names, String sql) {
-        // gets the values for each column name in the sql (used by DatabaseAP)
-        ResultSet rs = getSQL(sql);
-        ArrayNode values = objectMapper.createArrayNode();
-        try {
-            while (rs.next()) {
-                ObjectNode value = objectMapper.createObjectNode();
-                for (int i = 0; i < names.size(); i++) {
-                    try {
-                        value.put(names.get(i), Misc.getString(rs, names.get(i)));
-                    } catch (Exception sqe) {
-                        value.put(names.get(i), "<(" + names.get(i) + ")NotFound>");
-                        logger.error("Error", sqe);
-                    }
-                }
-                values.add(value);
             }
             rs.close();
         } catch (SQLException sqe) {
@@ -757,13 +705,14 @@ public class EFormUtil {
                 + "GROUP BY eform_groups.group_name;";
         ArrayList<HashMap<String, String>> al = new ArrayList<HashMap<String, String>>();
         try {
-            ResultSet rs = getSQL(sql);
+            ResultSet rs = DBHandler.GetPreSQL(sql);
             while (rs.next()) {
                 HashMap<String, String> curhash = new HashMap<String, String>();
                 curhash.put("groupName", Misc.getString(rs, "group_name"));
                 curhash.put("count", Misc.getString(rs, "count"));
                 al.add(curhash);
             }
+            rs.close();
         } catch (SQLException sqe) {
             logger.error("Error", sqe);
         }
@@ -1411,18 +1360,6 @@ public class EFormUtil {
         return eFormDataDao.isLatestShowLatestFormOnlyPatientForm(fdid);
     }
 
-
-    @Deprecated
-    private static ResultSet getSQL(String sql) {
-        ResultSet rs = null;
-        try {
-
-            rs = DBHandler.GetSQL(sql);
-        } catch (SQLException sqe) {
-            logger.error("Error", sqe);
-        }
-        return (rs);
-    }
 
     private static void setFormStatus(String fid, boolean status) {
 
