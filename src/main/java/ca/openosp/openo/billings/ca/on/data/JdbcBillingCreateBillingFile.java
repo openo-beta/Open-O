@@ -924,6 +924,9 @@ public class JdbcBillingCreateBillingFile {
                 }
             } while (true);
 
+        } catch (SecurityException e) {
+            _logger.error("Security violation reading OHIP file", e);
+            throw e;
         } catch (Exception e) {
             _logger.error("Read OHIP File Error");
         } finally {

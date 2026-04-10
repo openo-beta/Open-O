@@ -66,14 +66,14 @@ public class PrintLabs2Action extends ActionSupport {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() {
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "r", null)) {
+            throw new SecurityException("missing required sec object (_lab)");
+        }
+
         String segmentID = request.getParameter("segmentID");
         if (segmentID == null || !segmentID.matches("^[0-9]+$")) {
             logger.error("Invalid segmentID parameter");
             return "error";
-        }
-
-        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "r", null)) {
-            throw new SecurityException("missing required sec object (_lab)");
         }
 
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.READ, LogConst.CON_HL7_LAB, segmentID, request.getRemoteAddr(), "");

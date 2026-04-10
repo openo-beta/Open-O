@@ -184,10 +184,17 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return;
         }
-        File validatedFile = (fileName != null) ? PathValidationUtils.validatePath(fileName, new File(documentDir)) : null;
+        File validatedFile = null;
+        try {
+            validatedFile = (fileName != null) ? PathValidationUtils.validatePath(fileName, new File(documentDir)) : null;
+        } catch (SecurityException e) {
+            logger.warn("Rejected invalid document path request", e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         Path validatedPath = (validatedFile != null && validatedFile.isFile()) ? validatedFile.toPath() : null;
         if (validatedPath == null) {
-            logger.error("Invalid file path requested: " + fileName);
+            logger.error("Invalid file path requested");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }

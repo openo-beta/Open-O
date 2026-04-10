@@ -58,6 +58,10 @@
         filename = request.getParameter("document");
         filetype = request.getParameter("type");
         doc_no = request.getParameter("doc_no");
+        if (filename == null || filename.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing document parameter");
+            return;
+        }
         File docDir = new File(docdownload);
         File validatedFile = null;
         try {

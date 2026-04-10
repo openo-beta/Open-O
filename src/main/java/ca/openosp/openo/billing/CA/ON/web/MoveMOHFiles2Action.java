@@ -209,7 +209,7 @@ public class MoveMOHFiles2Action extends ActionSupport {
     try {
         return PathValidationUtils.validatePath(fileName, folder);
     } catch (SecurityException e) {
-        logger.warn("Invalid file path rejected: " + fileName, e);
+        logger.warn("Invalid file path rejected", e);
         return null;
     }
     }
