@@ -24,36 +24,36 @@
  */
 package ca.openosp.openo.commn.dao;
 
-import ca.openosp.openo.commn.model.DemographicMergeEvent;
+import ca.openosp.openo.commn.model.DemographicMerge;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.List;
 
 /**
- * JPA implementation of {@link DemographicMergeEventDao}.
+ * JPA implementation of {@link DemographicMergeDao}.
  *
  * @since 2026-03-19
  */
 @Repository
-public class DemographicMergeEventDaoImpl extends AbstractDaoImpl<DemographicMergeEvent> implements DemographicMergeEventDao {
+public class DemographicMergeDaoImpl extends AbstractDaoImpl<DemographicMerge> implements DemographicMergeDao {
 
-    public DemographicMergeEventDaoImpl() {
-        super(DemographicMergeEvent.class);
+    public DemographicMergeDaoImpl() {
+        super(DemographicMerge.class);
     }
 
     @Override
-    public DemographicMergeEvent findLatestMergeEventByMergedDemographicNo(Integer mergedDemographicNo) {
+    public DemographicMerge findLatestMergeEventByMergedDemographicNo(Integer mergedDemographicNo) {
         Query q = entityManager.createQuery(
-                "select e from DemographicMergeEvent e " +
+                "select e from DemographicMerge e " +
                 "where e.mergedDemographicNo = ?1 and e.eventType = ?2 " +
                 "order by e.eventDate desc");
         q.setParameter(1, mergedDemographicNo);
-        q.setParameter(2, DemographicMergeEvent.EventType.MERGE);
+        q.setParameter(2, DemographicMerge.EventType.MERGE);
         q.setMaxResults(1);
 
         @SuppressWarnings("unchecked")
-        List<DemographicMergeEvent> results = q.getResultList();
+        List<DemographicMerge> results = q.getResultList();
 
         return results.isEmpty() ? null : results.get(0);
     }
