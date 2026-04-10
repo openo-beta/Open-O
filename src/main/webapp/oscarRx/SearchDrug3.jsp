@@ -2455,6 +2455,8 @@
       jQuery('#drugProfile').empty();
 
       sections.forEach(section => {
+          if (section.label && section.rows.length === 0) { return; }
+
           const tableId = section.label
               ? 'Drug_table' + section.label.replace(/\s+/g, '')
               : 'Drug_table';
