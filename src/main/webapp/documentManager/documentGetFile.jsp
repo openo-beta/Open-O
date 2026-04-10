@@ -83,7 +83,8 @@
 <%
         } else {
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "inline;filename=\"" + filename + "\"");
+            String sanitizedFilename = filename.replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
+            response.setHeader("Content-Disposition", "inline;filename=\"" + sanitizedFilename + "\"");
             //read the file name.
             File f = new File(filePath);
             InputStream is = new FileInputStream(f);
@@ -108,7 +109,7 @@
             List<Document> documents = documentDao.findActiveByDocumentNo(doc_no_as_int);
 
             for (Document d : documents) {
-                out.print(d.getDocxml());
+                out.print(Encode.forHtml(d.getDocxml()));
             }
         }
     }

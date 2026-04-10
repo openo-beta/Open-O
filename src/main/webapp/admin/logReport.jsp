@@ -260,7 +260,7 @@
         if (propName.getProperty(providerNo, "").equals("")) {
             out.print("All");
         } else {
-            out.print(propName.getProperty(providerNo, ""));
+            out.print(Encode.forHtml(propName.getProperty(providerNo, "")));
         }
     %> - Log Report</h4>
 

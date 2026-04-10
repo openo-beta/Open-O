@@ -152,6 +152,8 @@ public class NotePermissions2Action extends ActionSupport {
         hashMap.put("permissionList", permissionList);
 
         ObjectNode json = objectMapper.valueToTree(hashMap);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.getOutputStream().write(json.toString().getBytes());
         return null;
 
@@ -215,6 +217,8 @@ public class NotePermissions2Action extends ActionSupport {
         }
 
         ObjectNode json = objectMapper.valueToTree(hashMap);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.getOutputStream().write(json.toString().getBytes());
 
         return null;

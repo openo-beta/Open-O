@@ -76,7 +76,7 @@
     int nStep = providerPreference.getEveryMin();
     String mygroupno = providerPreference.getMyGroupNo();
 
-    String curProvider_no = request.getParameter("provider_no") != null ? request.getParameter("provider_no") : "174";
+    String curProvider_no = request.getParameter("provider_no") != null ? request.getParameter("provider_no").replaceAll("[^a-zA-Z0-9]", "") : "174";
     String curDemoNo = request.getParameter("demographic_no") != null ? request.getParameter("demographic_no") : "";
     String curDemoName = request.getParameter("demographic_name") != null ? request.getParameter("demographic_name") : "";
     String[] param = new String[3];

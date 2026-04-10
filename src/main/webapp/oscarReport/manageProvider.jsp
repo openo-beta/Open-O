@@ -170,7 +170,7 @@
                    onClick='window.print()'>
             <input type="hidden" name="submit" value="Submit">
             <input class="btn btn-primary" type=submit value=<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.manageProvider.btnSubmit"/>>
-            <input type=hidden name=action value=<%=action%>> <input type=hidden name=count value=<%=Encode.forHtml(String.valueOf(count1))%>>
+            <input type=hidden name=action value="<%=Encode.forHtmlAttribute(action)%>"> <input type=hidden name=count value=<%=Encode.forHtml(String.valueOf(count1))%>>
         </form>
     </div>
     </body>

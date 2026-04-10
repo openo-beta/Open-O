@@ -415,7 +415,7 @@
                                         &nbsp; <input type="checkbox" name="thirdParty"
                                                 <%=Encode.forHtml(String.valueOf(props.getProperty("thirdParty", "")))%> /><b>Third
                                             Party/Uninsured</b><br>
-                                        <input type="checkbox" name="wcb" <%=props.getProperty("wcb", "")%> /><b>WCB</b><br>
+                                        <input type="checkbox" name="wcb" <%=Encode.forHtml(String.valueOf(props.getProperty("wcb", "")))%> /><b>WCB</b><br>
                                     </div>
                                 </font></td>
                         </tr>
@@ -428,9 +428,9 @@
 					<%
                         if (props.getProperty("aci") == null) {
                             if (oscarProps.getProperty("clinic_code") != null)
-                                out.print(" \n" + oscarProps.getProperty("clinic_code"));
+                                out.print(Encode.forHtml(" \n" + oscarProps.getProperty("clinic_code")));
                         } else {
-                            out.print(props.getProperty("aci", "").trim());
+                            out.print(Encode.forHtml(props.getProperty("aci", "").trim()));
                         }
                     %>
 					</textarea></td>
@@ -1037,7 +1037,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="checkboxTd">
-                                                        <!--<input type="checkbox" name="m_fecalOccultBlood" <%=props.getProperty("m_fecalOccultBlood", "")%>>-->&nbsp;
+                                                        <!--<input type="checkbox" name="m_fecalOccultBlood" <%=Encode.forHtml(String.valueOf(props.getProperty("m_fecalOccultBlood", "")))%>>-->&nbsp;
                                                     </td>
                                                     <td class="checkboxLabelTd"><!--Fecal Occult Blood-->&nbsp;</td>
                                                 </tr>

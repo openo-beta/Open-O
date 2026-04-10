@@ -102,7 +102,7 @@
     if (request.getParameter("template") != null && !(request.getParameter("template").equals("."))) {
 
         for (EncounterTemplate template : encounterTemplateDao.findByName(request.getParameter("template"))) {
-            out.println(template.getEncounterTemplateValue());
+            out.println(Encode.forHtml(template.getEncounterTemplateValue()));
         }
 
 

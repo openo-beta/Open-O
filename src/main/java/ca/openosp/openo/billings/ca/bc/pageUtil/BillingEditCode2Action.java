@@ -77,6 +77,8 @@ public final class BillingEditCode2Action extends ActionSupport {
         ObjectNode jsonObject = objectMapper.valueToTree(itemCode);
         jsonObject.put("id", id);
         MiscUtils.getLogger().debug(jsonObject.toString());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.getOutputStream().write(jsonObject.toString().getBytes());
         return null;
     }

@@ -98,6 +98,9 @@
     String eform_link = request.getParameter("eform_link");
     String source = request.getParameter("source");
 
+    // Validate numeric parameters to prevent injection
+    if (fid != null && !fid.matches("\\d+")) { fid = null; }
+    if (demographic_no != null && !demographic_no.matches("\\d+")) { demographic_no = null; }
 
     EForm thisEForm = null;
     if (fid == null || demographic_no == null) {

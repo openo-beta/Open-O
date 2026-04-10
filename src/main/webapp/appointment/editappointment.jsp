@@ -881,7 +881,7 @@
                     </td>
                     <td>
                 <input type="date" class="form-control" name="appointment_date" id="date"
-                               value="<%=bFirstDisp?ConversionUtils.toDateString(appt.getAppointmentDate()):strApptDate%>"
+                               value="<%=Encode.forHtmlAttribute(bFirstDisp?ConversionUtils.toDateString(appt.getAppointmentDate()):strApptDate)%>"
                         >
                     </td>
                 </tr>
@@ -1017,7 +1017,7 @@
                                 if (isSiteSelected) {
                                     out.println(sb.toString());
                                 } else {
-                                    out.println("<option value='" + loc + "'>" + loc + "</option>");
+                                    out.println("<option value='" + Encode.forHtmlAttribute(loc) + "'>" + Encode.forHtml(loc) + "</option>");
                                 }
                             %>
 

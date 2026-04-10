@@ -129,7 +129,7 @@
         function CodeAttach(File0) {
             self.close();
             self.opener.document
-        .<%=formName%>.<%=Encode.forJavaScript(String.valueOf(formElement))%>.
+        .<%=Encode.forJavaScript(String.valueOf(formName))%>.<%=Encode.forJavaScript(String.valueOf(formElement))%>.
             value = File0;
         }
 
@@ -149,7 +149,7 @@
 </table>
 <form name="servicecode" id="servicecode" method="post"
       action="billingReferCodeUpdate.jsp"><input type="hidden"
-                                                 name="formName" value="<%=formName%>"/> <input type="hidden"
+                                                 name="formName" value="<%=Encode.forHtmlAttribute(String.valueOf(formName))%>"/> <input type="hidden"
                                                                                                 name="formElement"
                                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(formElement))%>"/>
     <table width="600" border="1">

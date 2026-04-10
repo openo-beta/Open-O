@@ -155,11 +155,11 @@
             %>
             <tr bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(yellow ? "yellow" : j%2 == 0 ? (i%2 == 0 ?weakcolor:deepcolor) : (i%2 == 0 ?"white":"#eeeeee")))%>'>
                 <td><a href=# onClick="popupPageK('<%=Encode.forJavaScript(String.valueOf(hash + "started"))%>','<%=request.getContextPath()
-									+ "/form/forwardshortcutname.do?formname=" + frm.getFormName()
-									+ "&demographic_no=" + demoNo 
-									+ "&formId=" + pfrm.getFormId()
-									+ "&provNo=" + provNo
-									+ "&remoteFacilityId=" + pfrm.getRemoteFacilityId() %>'); return false;">
+									+ "/form/forwardshortcutname.do?formname=" + Encode.forUriComponent(frm.getFormName())
+									+ "&demographic_no=" + Encode.forUriComponent(demoNo)
+									+ "&formId=" + Encode.forUriComponent(String.valueOf(pfrm.getFormId()))
+									+ "&provNo=" + Encode.forUriComponent(provNo)
+									+ "&remoteFacilityId=" + Encode.forUriComponent(String.valueOf(pfrm.getRemoteFacilityId())) %>'); return false;">
 
                     <%=Encode.forHtml(String.valueOf(frm.getFormName() + (pfrm.getRemoteFacilityId() != null ? " (remote)" : "") + (yellow ? " (current)" : "")))%>
                 </a></td>

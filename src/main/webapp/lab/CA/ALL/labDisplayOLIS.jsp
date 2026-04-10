@@ -1427,7 +1427,7 @@
                                                 if (report.getComment().equals("")) {
                                                     out.print("no comment");
                                                 } else {
-                                                    out.print("comment : " + report.getComment());
+                                                    out.print("comment : " + Encode.forHtml(report.getComment()));
                                                 }
                                             } else {
                                                 out.print("no comment");

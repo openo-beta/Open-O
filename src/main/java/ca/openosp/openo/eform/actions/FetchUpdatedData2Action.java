@@ -96,6 +96,8 @@ public final class FetchUpdatedData2Action extends ActionSupport {
 
         ObjectNode json = objectMapper.valueToTree(outValues);
 
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.getOutputStream().write(json.toString().getBytes());
 
         return null;

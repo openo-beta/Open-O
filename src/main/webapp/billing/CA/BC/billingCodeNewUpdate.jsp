@@ -73,7 +73,7 @@
 
             self.close();
             self.opener.document
-        .<%=formName%>.<%=Encode.forJavaScript(String.valueOf(formElement))%>.
+        .<%=Encode.forJavaScript(String.valueOf(formName))%>.<%=Encode.forJavaScript(String.valueOf(formElement))%>.
             value = File0;
         }
 

@@ -462,7 +462,7 @@
             <tr>
                 <td>
                     <label>
-                        <input type="checkbox" name="behaved" id="behaved" <%=props.getProperty("behaved", "")%>/>
+                        <input type="checkbox" name="behaved" id="behaved" <%=Encode.forHtml(String.valueOf(props.getProperty("behaved", "")))%>/>
                     </label>
                     has behaved or is behaving violently towards another person
                 </td>
@@ -470,7 +470,7 @@
             <tr>
                 <td>
                     <label>
-                        <input type="checkbox" name="caused" id="caused" <%=props.getProperty("caused", "")%>/>
+                        <input type="checkbox" name="caused" id="caused" <%=Encode.forHtml(String.valueOf(props.getProperty("caused", "")))%>/>
                     </label>
                     has caused or is causing another person to fear bodily harm from him or her; or
                 </td>
@@ -478,7 +478,7 @@
             <tr>
                 <td>
                     <label>
-                        <input type="checkbox" name="shown" id="shown" <%=props.getProperty("shown", "")%>/>
+                        <input type="checkbox" name="shown" id="shown" <%=Encode.forHtml(String.valueOf(props.getProperty("shown", "")))%>/>
                     </label>
                     has shown or is showing a lack of competence to care for himself or herself
                 </td>

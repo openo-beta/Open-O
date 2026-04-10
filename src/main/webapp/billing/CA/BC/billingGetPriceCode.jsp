@@ -49,7 +49,7 @@
         function CodeAttach(cost) {
             self.close();
             self.opener.document
-        .<%=formName%>.<%=Encode.forJavaScript(String.valueOf(formElementPrice))%>.
+        .<%=Encode.forJavaScript(String.valueOf(formName))%>.<%=Encode.forJavaScript(String.valueOf(formElementPrice))%>.
             value = cost;
         }
     </script>

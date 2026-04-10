@@ -84,7 +84,7 @@
                     String keyPairOut = "-------- Service Name --------\n" + name + "\n------------------------------\n" +
                             "----- Client Private Key -----\n" + clientKey + "\n------------------------------\n" +
                             "------ Oscar Public Key ------\n" + oscarKey + "\n------------------------------";
-                    response.setContentType("text");
+                    response.setContentType("text/plain");
                     response.setContentLength(keyPairOut.length());
                     response.setHeader("Content-Disposition", "attachment; filename=keyPair.key");
                     ServletOutputStream output = null;
@@ -164,7 +164,7 @@
                                 <%
                                     if (message != null) {
                                         if (error.equals("false")) {
-                                            out.print(message);
+                                            out.print(Encode.forHtml(message));
                                         } else {
                                 %><font color="red"><%=Encode.forHtml(String.valueOf(message))%>
                             </font>

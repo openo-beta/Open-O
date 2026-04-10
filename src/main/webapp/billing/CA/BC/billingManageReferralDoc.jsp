@@ -144,52 +144,52 @@
                     </a></td>
                 <td><%
                     if (billingReferral.getLastName() != null) {
-                        out.print(billingReferral.getLastName());
+                        out.print(Encode.forHtml(billingReferral.getLastName()));
                     }
                 %></td>
                 <td><%
                     if (billingReferral.getFirstName() != null) {
-                        out.print(billingReferral.getFirstName());
+                        out.print(Encode.forHtml(billingReferral.getFirstName()));
                     }
                 %></td>
                 <td><%
                     if (billingReferral.getSpecialty() != null) {
-                        out.print(billingReferral.getSpecialty());
+                        out.print(Encode.forHtml(billingReferral.getSpecialty()));
                     }
                 %></td>
                 <td><%
                     if (billingReferral.getAddress1() != null) {
-                        out.print(billingReferral.getAddress1());
+                        out.print(Encode.forHtml(billingReferral.getAddress1()));
                     }
                 %></td>
                 <td><%
                     if (billingReferral.getAddress2() != null) {
-                        out.print(billingReferral.getAddress2());
+                        out.print(Encode.forHtml(billingReferral.getAddress2()));
                     }
                 %></td>
                 <td><%
                     if (billingReferral.getCity() != null) {
-                        out.print(billingReferral.getCity());
+                        out.print(Encode.forHtml(billingReferral.getCity()));
                     }
                 %></td>
                 <td><%
                     if (billingReferral.getProvince() != null) {
-                        out.print(billingReferral.getProvince());
+                        out.print(Encode.forHtml(billingReferral.getProvince()));
                     }
                 %></td>
                 <td><%
                     if (billingReferral.getPostal() != null) {
-                        out.print(billingReferral.getPostal());
+                        out.print(Encode.forHtml(billingReferral.getPostal()));
                     }
                 %></td>
                 <td><%
                     if (billingReferral.getPhone() != null) {
-                        out.print(billingReferral.getPhone());
+                        out.print(Encode.forHtml(billingReferral.getPhone()));
                     }
                 %></td>
                 <td><%
                     if (billingReferral.getFax() != null) {
-                        out.print(billingReferral.getFax());
+                        out.print(Encode.forHtml(billingReferral.getFax()));
                     }
                 %></td>
             </tr>

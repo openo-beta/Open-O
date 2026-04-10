@@ -163,5 +163,5 @@
 <input type="hidden" name="c_lastVisited" value="0"/>
 <input type="hidden" name="formValidatedBy" value="<%=Encode.forHtmlAttribute(String.valueOf(providerName))%>"/>
 <input type="hidden" name="form_class" value="<%=formClass%>"/>
-<input type="hidden" name="form_link" value="<%=formLink%>"/>
+<input type="hidden" name="form_link" value="<%=Encode.forHtmlAttribute(formLink)%>"/>
 <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>

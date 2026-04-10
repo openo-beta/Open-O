@@ -156,13 +156,13 @@
                         <input type="hidden" name="dboperation" value="">
 
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.formTemplateName"/>:<br>
-                        <input type="text" name="name" pattern="^[a-zA-Z0-9\s]+$" value="<%=bEdit?tName:""%>"
+                        <input type="text" name="name" pattern="^[a-zA-Z0-9\s]+$" value="<%=bEdit?Encode.forHtmlAttribute(tName):""%>"
                                class="span10" maxlength="50"> <!-- match the definition in the schema -->
 
                         <br><br>
 
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.formTemplateText"/>:<br>
-                        <textarea name="value" rows="20" class="span10"><%=bEdit ? tValue : ""%></textarea>
+                        <textarea name="value" rows="20" class="span10"><%=bEdit ? Encode.forHtml(tValue) : ""%></textarea>
 
                         <br>
                         <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providertemplate.btnDelete"/>"

@@ -1499,7 +1499,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                     ></select>
                                         <script>
                                             changeSite(document.getElementById("site"));
-                                            document.getElementById("xml_provider").value = '<%=Encode.forJavaScriptBlock(request.getParameter("xml_provider")==null?xmlp:request.getParameter("xml_provider"))%>';
+                                            document.getElementById("xml_provider").value = '<%=Encode.forJavaScript(request.getParameter("xml_provider")==null?xmlp:request.getParameter("xml_provider"))%>';
                                         </script>
                                         <%
                                             // multisite end ==========================================

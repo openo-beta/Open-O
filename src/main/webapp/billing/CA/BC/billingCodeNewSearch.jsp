@@ -127,7 +127,7 @@
 </table>
 <form name="servicecode" id="servicecode" method="post"
       action="billingCodeNewUpdate.jsp"><input type="hidden"
-                                               name="formName" value="<%=formName%>"/> <input type="hidden"
+                                               name="formName" value="<%=Encode.forHtmlAttribute(formName)%>"/> <input type="hidden"
                                                                                               name="formElement"
                                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(formElement))%>"/>
     <div style="height: 600; overflow: auto">

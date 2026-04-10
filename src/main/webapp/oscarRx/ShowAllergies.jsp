@@ -258,7 +258,7 @@
 
 
                         } else {
-                            out.print("<span class='view_menu'><a href='showAllergy.do?demographicNo=" + demoNo + "&view=" + navArray[i] + "'>");
+                            out.print("<span class='view_menu'><a href='showAllergy.do?demographicNo=" + Encode.forUriComponent(demoNo) + "&view=" + Encode.forUriComponent(navArray[i]) + "'>");
                             out.print(navArray[i]);
                             out.print("</a></span>");
                         }

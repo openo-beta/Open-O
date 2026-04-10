@@ -122,7 +122,20 @@ function appendHtmlWithScripts(container, html) {
     doc.querySelectorAll('script').forEach(script => {
         const newScript = document.createElement('script');
         if (script.src) {
-            newScript.src = script.src;
+            // Only allow same-origin script sources from trusted server-rendered JSP responses.
+            // This prevents injection of external script URLs from untrusted content.
+            try {
+                var scriptUrl = new URL(script.src, window.location.origin);
+                if (scriptUrl.origin === window.location.origin) {
+                    newScript.src = script.src;
+                } else {
+                    console.warn('Blocked cross-origin script src: ' + script.src);
+                    return;
+                }
+            } catch (e) {
+                console.warn('Invalid script src URL: ' + script.src);
+                return;
+            }
         } else {
             newScript.textContent = script.textContent;
         }

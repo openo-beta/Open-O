@@ -1091,7 +1091,7 @@ Ontario, Canada
                 <!-- We display a shortened title for the mobile version -->
                 <% if (isMobileOptimized) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabelMobile"/>
                 <% } else { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabel"/>
-                <% out.println("(" + pFirstname + " " + pLastname + ")"); %>
+                <% out.println("(" + Encode.forHtml(pFirstname) + " " + Encode.forHtml(pLastname) + ")"); %>
                 <% } %></h4>
             </div>
             <div class="well table-responsive">

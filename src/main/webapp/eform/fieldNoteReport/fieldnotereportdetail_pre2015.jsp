@@ -44,7 +44,8 @@
     if ("download".equals(method)) {
         response.setContentType("application/msword");
         String filename = residentName.replace(", ", "").replace(" ", "") + ".doc";
-        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        filename = filename.replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
     }
 
     HashMap<String, String> purposes = new HashMap<String, String>();

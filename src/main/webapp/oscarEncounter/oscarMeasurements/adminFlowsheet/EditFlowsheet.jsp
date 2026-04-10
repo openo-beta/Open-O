@@ -589,7 +589,7 @@ Flowsheet: <span style="font-weight:normal"><c:out value="${requestScope.display
                                     <%if (cust.getAction().equals("add")) { %>
                                     <td><%
                                         if (mtype != null) {
-                                            out.print(mtype);
+                                            out.print(Encode.forHtml(mtype));
                                         }
                                     %>
 

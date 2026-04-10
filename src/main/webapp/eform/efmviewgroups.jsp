@@ -82,7 +82,7 @@
             %>
             <li class="<%=Encode.forHtmlAttribute(String.valueOf(selected))%>"><a href="#"
                                          onclick="document.getElementById('group_view').value='<%=Encode.forJavaScript(String.valueOf(group))%>'; document.forms['groupselect'].submit();"><%=Encode.forHtml(String.valueOf(group))%>
-                (<%=size%>)</a></li>
+                (<%=Encode.forHtml(String.valueOf(size))%>)</a></li>
             <% } %>
         </ul>
         <security:oscarSec roleName="<%=roleName$%>"
