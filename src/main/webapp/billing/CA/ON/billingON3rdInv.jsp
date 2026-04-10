@@ -42,6 +42,7 @@
 <%@ page import="ca.openosp.openo.billing.CA.ON.util.DisplayInvoiceLogo2Action" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%
@@ -244,10 +245,10 @@
     <input type="hidden" name="invoiceNo" id="invoiceNo" value="<%=invoiceNoStr%>"/>
     <div class="doNotPrint">
         <div class="titleBar">
-            <input type="button" name="printInvoice" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billing3rdInv.printPDF"/>"
+            <input type="button" name="printInvoice" value="<fmt:message key="billing.billing3rdInv.printPDF"/>"
                    onClick="submitForm('print')"/>
             <input type="button" name="printHtml" value="Print" onclick="window.print();">
-            <%-- <input type="button" name="emailInvoice" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billing3rdInv.email"/>" onClick="submitForm('email')"/> --%>
+            <%-- <input type="button" name="emailInvoice" value="<fmt:message key="billing.billing3rdInv.email"/>" onClick="submitForm('email')"/> --%>
         </div>
     </div>
 </form>
@@ -298,7 +299,7 @@
         </b></font><br/>
             Print Date:<%=DateUtils.sumDate("yyyy-MM-dd HH:mm", "0") %><br/>
             <% if (props.hasProperty("invoice_due_date")) { %>
-            <b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.3rdpartyinvoice.dueDate"/>:</b><%=dueDateStr%>
+            <b><fmt:message key="oscar.billing.CA.ON.3rdpartyinvoice.dueDate"/>:</b><%=dueDateStr%>
             <% }%>
         </td>
     </tr>

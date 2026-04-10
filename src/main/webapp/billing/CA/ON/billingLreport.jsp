@@ -12,6 +12,7 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ page import="java.util.*,ca.openosp.*,java.io.*,java.net.*,ca.openosp.openo.util.*,org.apache.commons.io.FileUtils"
@@ -131,7 +132,7 @@
                 <font size="3">Billing</font>
             </td>
             <td width="90%" align="right" class="Header">
-                <input type="button" name="print" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
+                <input type="button" name="print" value="<fmt:message key="global.btnPrint"/>"
                        onClick="window.print()">
             </td>
         </tr>

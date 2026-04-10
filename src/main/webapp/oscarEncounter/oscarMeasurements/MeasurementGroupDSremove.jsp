@@ -40,6 +40,7 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 
@@ -67,7 +68,7 @@
 <html>
 <head>
 
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - <%=groupName%>
+    <title><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - <%=groupName%>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -77,7 +78,7 @@
 <body>
 <div class="container">
 
-    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - Remove Decision Support from
+    <h3><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - Remove Decision Support from
         Group </h3>
     <%
         propValue = MeasurementManager.getPropertyValue(propKey);

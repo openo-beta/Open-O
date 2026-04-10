@@ -29,13 +29,14 @@
 %>
 <%@ page import="java.util.*,ca.openosp.openo.report.pageUtil.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/encounterStyles.css">
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgDisplayMeasurementStyleSheets"/></title>
+        <title><fmt:message key="oscarEncounter.Measurements.msgDisplayMeasurementStyleSheets"/></title>
 
     </head>
 
@@ -56,11 +57,11 @@
     <form action="${pageContext.request.contextPath}/oscarEncounter/oscarMeasurements/DeleteMeasurementStyleSheet.do" method="post">
         <table class="MainTable" id="scrollNumber1" name="encounterTable">
             <tr class="MainTableTopRow">
-                <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgMeasurements"/></td>
+                <td class="MainTableTopRowLeftColumn"><fmt:message key="oscarEncounter.Measurements.msgMeasurements"/></td>
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgDisplayMeasurementStyleSheets"/></td>
+                            <td><fmt:message key="oscarEncounter.Measurements.msgDisplayMeasurementStyleSheets"/></td>
                         </tr>
                     </table>
                 </td>
@@ -83,9 +84,9 @@
                                     <tr>
                                         <td>
                                     <tr>
-                                        <td align="left" class="Header" width="300"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingStyleSheetName"/>
+                                        <td align="left" class="Header" width="300"><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingStyleSheetName"/>
                                         </td>
-                                        <td align="left" class="Header" width="10"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementAction.headingDelete"/>
+                                        <td align="left" class="Header" width="10"><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementAction.headingDelete"/>
                                         </td>
                                     </tr>
                                     <c:forEach var="styleSheet" items="${styleSheets.styleSheetNameVector}" varStatus="ctr">
@@ -102,10 +103,10 @@
                     <table>
                         <tr>
                             <td><input type="button" name="Button"
-                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
+                                       value="<fmt:message key="global.btnClose"/>"
                                        onClick="window.close()"></td>
                             <td><input type="button" name="Button"
-                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.displayHistory.headingDelete"/>"
+                                       value="<fmt:message key="oscarEncounter.oscarMeasurements.displayHistory.headingDelete"/>"
                                        onclick="submit();"/></td>
                         </tr>
                     </table>

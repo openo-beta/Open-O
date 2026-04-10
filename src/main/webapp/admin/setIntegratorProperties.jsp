@@ -26,6 +26,7 @@
 
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 
 <%
@@ -55,7 +56,7 @@
 <html>
     <head>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetIntegratorPreferences"/></title>
+        <title><fmt:message key="provider.btnSetIntegratorPreferences"/></title>
 
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.9.1.js"></script>
@@ -185,8 +186,8 @@
     </head>
 
     <body class="BodyStyle" vlink="#0000FF">
-    <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.integratorPreferences.preferences"/></h4>
-    <p><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.integratorPreferences.chooseDataSets"/></p>
+    <h4><fmt:message key="provider.integratorPreferences.preferences"/></h4>
+    <p><fmt:message key="provider.integratorPreferences.chooseDataSets"/></p>
 
     <% if (request.getAttribute("saved") != null) { %>
     <div style="colour: red; border: 1px solid red; padding: 5px; margin: 10px;">Preferences Saved</div>
@@ -237,13 +238,13 @@
         </oscar:oscarPropertiesCheck>
         <hr/>
         <input class="btn btn-primary" type="submit" onclick="$('input[type=radio]').removeAttr('disabled');"
-               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.integratorPreferences.save"/>"/>
+               value="<fmt:message key="provider.integratorPreferences.save"/>"/>
             <%--
             <table id="integratorPrefTable" border=0>
                 <tr>
                     <td></td>
-                    <th><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.integratorPreferences.enabled"/></th>
-                    <th><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.integratorPreferences.disabled"/></th>
+                    <th><fmt:message key="provider.integratorPreferences.enabled"/></th>
+                    <th><fmt:message key="provider.integratorPreferences.disabled"/></th>
                 </tr>
                 <tr>
                     <td>Demographic Records</td>

@@ -28,6 +28,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingPaymentType" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <html>
 <head>
@@ -48,7 +49,7 @@
             jQuery('#tblBillType').DataTable({
                 "order": [],
                 "language": {
-                    "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"
+                    "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:message key="global.i18nLanguagecode"/>.json"
                 }
             });
         });

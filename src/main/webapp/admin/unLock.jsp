@@ -99,13 +99,14 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
     <head>
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="<%=request.getContextPath() %>/css/font-awesome.min.css">
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.unlockAcct"/></title>
+        <title><fmt:message key="admin.admin.unlockAcct"/></title>
         <script type="text/javascript" language="JavaScript">
 
             <!--
@@ -119,7 +120,7 @@
     </head>
     <body>
     <div width="100%">
-        <div id="header"><H4><i class="icon-unlock"></i>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.unlockAcct"/></H4>
+        <div id="header"><H4><i class="icon-unlock"></i>&nbsp;<fmt:message key="admin.admin.unlockAcct"/></H4>
         </div>
     </div>
 
@@ -130,14 +131,14 @@
         </div>
         <% } %>
         <div class="well">
-            <b><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.ID"/></b>
+            <b><fmt:message key="admin.providersearchresults.ID"/></b>
             <select name="userName">
                 <% for (int i = 0; i < vec.size(); i++) { %>
                 <option value="<%=(String) vec.get(i) %>"><%=(String) vec.get(i) %>
                 </option>
                 <% } %>
             </select> <input type="submit" name="submit" class="btn btn-primary"
-                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.unlockAcct"/>"/>
+                             value="<fmt:message key="admin.admin.unlockAcct"/>"/>
         </div>
 
 

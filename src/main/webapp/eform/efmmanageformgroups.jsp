@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%
     String user = (String) session.getAttribute("user");
@@ -59,7 +60,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.frmGroups"/></title>
+        <title><fmt:message key="admin.admin.frmGroups"/></title>
 
         <style>
             .contentLink {
@@ -81,7 +82,7 @@
     <body>
     <%@ include file="efmTopNav.jspf" %>
 
-    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.frmGroups"/></h3>
+    <h3><fmt:message key="admin.admin.frmGroups"/></h3>
     <div class="row-fluid">
         <div class="well span6">
 
@@ -91,9 +92,9 @@
                 <div class="controls">
                     <div class="input-append">
                         <input type="text" name="groupName" class="check"
-                               placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.addGroup"/>">
+                               placeholder="<fmt:message key="eform.groups.addGroup"/>">
                         <input type="submit" name="subm" class="btn btn-primary groupAdd"
-                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.addGroup"/>" disabled>
+                               value="<fmt:message key="eform.groups.addGroup"/>" disabled>
                     </div>
                 </div>
             </form>
@@ -152,7 +153,7 @@
         <!--EFORMS IN GROUP-->
 
         <div class="well span6">
-            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.contents"/>: <%=groupView%>
+            <h4><fmt:message key="eform.groups.contents"/>: <%=groupView%>
             </h4>
 
             <table class="table table-condensed table-striped">
@@ -164,14 +165,14 @@
                     <th>
                         <a href="<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?orderby=form_name&group_view=<%=groupView%>"
                            class="contentLink">
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnFormName"/>
+                            <fmt:message key="eform.uploadhtml.btnFormName"/>
                         </a>
                     </th>
 
                     <th>
                         <a href="<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?group_view=<%=groupView%>"
                            class="contentLink">
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnDate"/>
+                            <fmt:message key="eform.uploadhtml.btnDate"/>
                         </a>
                     </th>
 
@@ -187,7 +188,7 @@
                                 HashMap<String, ? extends Object> curForm = eForms.get(i);
                 %>
                 <tr rel="popover" data-html="true" data-title="<%=curForm.get("formName")%>"
-                    data-content="<strong><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnSubject"/>:</strong><br> <%=Encode.forHtmlContent(curForm.get("formSubject") != null ? curForm.get("formSubject").toString() : "")%> <br> <small><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnFile"/>: <%=Encode.forHtmlContent(curForm.get("formFileName") != null ? curForm.get("formFileName").toString() : "")%></small>"
+                    data-content="<strong><fmt:message key="eform.uploadhtml.btnSubject"/>:</strong><br> <%=Encode.forHtmlContent(curForm.get("formSubject") != null ? curForm.get("formSubject").toString() : "")%> <br> <small><fmt:message key="eform.uploadhtml.btnFile"/>: <%=Encode.forHtmlContent(curForm.get("formFileName") != null ? curForm.get("formFileName").toString() : "")%></small>"
                     data-trigger="hover" data-placement="bottom">
 
                     <td>
@@ -209,12 +210,12 @@
                 <% }
                 } else { %>
                 <tr align="center">
-                    <td colspan="5"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.noFormsInGroup"/></td>
+                    <td colspan="5"><fmt:message key="eform.groups.noFormsInGroup"/></td>
                 </tr>
                 <% }
                 } else {%>
                 <tr align="center">
-                    <td colspan="5"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.noGroupMsg"/></td>
+                    <td colspan="5"><fmt:message key="eform.groups.noGroupMsg"/></td>
                 </tr>
                 <% } %>
                 </tbody>
@@ -233,7 +234,7 @@
              aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                <h3 id="myModalLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.addToGroup"/> <%=groupView%>
+                <h3 id="myModalLabel"><fmt:message key="eform.groups.addToGroup"/> <%=groupView%>
                 </h3>
             </div>
             <div class="modal-body">

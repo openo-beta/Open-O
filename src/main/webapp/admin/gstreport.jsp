@@ -25,6 +25,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.on.administration.GstReport" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -94,7 +95,7 @@
 %>
 <html>
 <head>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.gstReport"/></title>
+    <title><fmt:message key="admin.admin.gstReport"/></title>
 
     <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.9.1.min.js"></script>
     <script src="<%=request.getContextPath() %>/js/bootstrap.min.js"></script>
@@ -107,7 +108,7 @@
 <body>
 <FORM name="gstform" action="gstreport.jsp" class="form-inline">
 
-    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.gstReport"/></h3>
+    <h3><fmt:message key="admin.admin.gstReport"/></h3>
 
     <div class="container-fluid well well-small">
         <div class="span2">Date: <%=DateUtils.sumDate("yyyy-MM-dd", "0")%>

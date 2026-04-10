@@ -49,12 +49,13 @@
 <%@page import="ca.openosp.openo.providers.data.*,java.util.*,ca.openosp.openo.lab.ca.on.CommonLabResultData,ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.commn.dao.QueueDao" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.title"/></title>
+    <title><fmt:message key="inboxmanager.document.title"/></title>
     <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/scriptaculous.js"></script>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css"/>
@@ -327,7 +328,7 @@
 <body>
 <div class="maindiv">
     <div class="maindivheading">
-        &nbsp;&nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.addMultipleDocuments"/>
+        &nbsp;&nbsp;&nbsp; <fmt:message key="inboxmanager.document.addMultipleDocuments"/>
     </div>
     <div>
         <input type="hidden" id="queue" value="<%=queueId%>"/>

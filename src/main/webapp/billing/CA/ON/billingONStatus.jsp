@@ -38,6 +38,7 @@
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%--
     The taglib directive below imports the JSTL library. If you uncomment it,
     you must also add the JSTL library to the project. The Add Library... action
@@ -215,7 +216,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.invoiceRpts"/>
+            <fmt:message key="admin.admin.invoiceRpts"/>
         </title>
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
         <script src="<%=request.getContextPath() %>/js/bootstrap.min.js"></script>
@@ -423,7 +424,7 @@
     <body>
     <jsp:include page="/images/spinner.jsp" flush="true"/>
     <h3>
-        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.invoiceRpts"/>
+        <fmt:message key="admin.admin.invoiceRpts"/>
     </h3>
     <div class="container-fluid">
         <!--Hiding for now since this does not seem to manage the providers in the select
@@ -856,7 +857,7 @@
                         <% }%>
                         <th class="hidden-print">
                             <a href="#" onClick="checkAll(document.invoiceForm.invoiceAction)">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingStatus.action"/>
+                                <fmt:message key="billing.billingStatus.action"/>
                             </a>
                         </th>
                     </tr>
@@ -1038,7 +1039,7 @@
                         "bPaginate": false,
                         "order": [],
                         "language": {
-                            "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"
+                            "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:message key="global.i18nLanguagecode"/>.json"
                         }
                     });
 
@@ -1086,10 +1087,10 @@
                         <% }%>
                         <td style="text-align:center" class="hidden-print">
                             <a href="#" onClick="submitForm('print')">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingStatus.print"/>
+                                <fmt:message key="billing.billingStatus.print"/>
                             </a>
                                 <%-- <a href="#" onClick="submitForm('email')">
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingStatus.email"/>
+                                    <fmt:message key="billing.billingStatus.email"/>
                                 </a> --%>
                         </td>
                     </tr>
@@ -1107,7 +1108,7 @@
                     "bPaginate": false,
                     "order": [],
                     "language": {
-                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"
+                        "url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:message key="global.i18nLanguagecode"/>.json"
                     }
                 });
 

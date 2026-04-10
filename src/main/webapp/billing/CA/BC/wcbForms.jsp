@@ -48,6 +48,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
     String demographicNo = request.getParameter("demographicNo");
     String wcbid = request.getParameter("wcbid");
@@ -94,7 +95,7 @@
                 if (wcb.verifyFormNotNeeded() != null && wcb.verifyFormNotNeeded().size() > 0) {
                     List<String> errs = wcb.verifyFormNotNeeded();
             %>
-            <td title="header=[To bill WCB without a form the following is needed] body=[<%for (String s : errs) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=s%>"/><%  }%>]">
+            <td title="header=[To bill WCB without a form the following is needed] body=[<%for (String s : errs) { %><fmt:message key="<%=s%>"/><%  }%>]">
                     <%}else{%>
             <td>
                 <%}%>
@@ -107,7 +108,7 @@
                 if (wcb.verifyEverythingOnForm() != null && wcb.verifyEverythingOnForm().size() > 0) {
                     List<String> errs = wcb.verifyEverythingOnForm();
             %>
-            <td title="header=[To bill WCB with a form the following is needed] body=[<%for (String s : errs) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=s%>"/><%  }%>]">
+            <td title="header=[To bill WCB with a form the following is needed] body=[<%for (String s : errs) { %><fmt:message key="<%=s%>"/><%  }%>]">
                     <%}else{%>
             <td>
                 <%}%>

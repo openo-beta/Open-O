@@ -22,6 +22,7 @@
 <%@ page import="ca.openosp.openo.commn.model.ProviderPreference" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -58,7 +59,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DiseaseRegistry"/></title>
+        <title><fmt:message key="admin.admin.DiseaseRegistry"/></title>
 
         <meta charset="UTF-8">
 
@@ -146,7 +147,7 @@
     <div class="container-fluid">
         <div class="navbar">
             <div class="navbar-inner">
-                <a class="brand" href="#"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DiseaseRegistry"/></a>
+                <a class="brand" href="#"><fmt:message key="admin.admin.DiseaseRegistry"/></a>
             </div>
         </div>
 
@@ -222,7 +223,7 @@
 
 
                 <select id="provider_no" name="provider_no" class="sel">
-                    <option value="*"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formAllProviders"/></option>
+                    <option value="*"><fmt:message key="report.reportindex.formAllProviders"/></option>
 
                     <option disabled>___________</option>
 

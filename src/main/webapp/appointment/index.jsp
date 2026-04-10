@@ -25,6 +25,7 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <html>
     <head>
@@ -33,6 +34,6 @@
     </head>
 
     <body bgcolor="#FFFFFF">
-    <fmt:setBundle basename="oscarResources"/><fmt:message key="global.msgSomethingWrong"/>
+    <fmt:message key="global.msgSomethingWrong"/>
     </body>
 </html>

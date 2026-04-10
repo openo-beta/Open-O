@@ -57,6 +57,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <jsp:useBean id="providerBean" class="java.util.Properties"
              scope="session"/>
 <html>
@@ -66,7 +67,7 @@
     <link rel="stylesheet" href="billingON.css">
     <script language="JavaScript">
         function onUnbilled(url) {
-            if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.onUnbilled"/>")) {
+            if (confirm("<fmt:message key="provider.appointmentProviderAdminDay.onUnbilled"/>")) {
                 popupPage(700, 720, url);
             }
         }

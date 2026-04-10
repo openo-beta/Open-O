@@ -34,6 +34,7 @@
 <%@ page import="ca.openosp.SxmlMisc" %>
 
 <%@include file="/casemgmt/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%
     GregorianCalendar now = new GregorianCalendar();
@@ -50,7 +51,6 @@
 
 %>
 
-<fmt:setBundle basename="oscarResources"/>
 
 <html>
 <head>

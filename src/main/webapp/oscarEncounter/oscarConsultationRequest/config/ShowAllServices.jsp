@@ -43,6 +43,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <!DOCTYPE html>
@@ -54,7 +55,7 @@
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
+        <title><fmt:message key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
         </title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script>
@@ -85,7 +86,7 @@
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td class="Header"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
+                            <td class="Header"><fmt:message key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.title"/>
                             </td>
                         </tr>
                     </table>
@@ -109,7 +110,7 @@
                                 <table>
                                     <form action="${pageContext.request.contextPath}/oscarEncounter/AddService.do" method="post">
                                         <tr>
-                                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.services"/>
+                                            <td><fmt:message key="oscarEncounter.oscarConsultationRequest.config.ShowAllServices.services"/>
                                             </td>
                                         </tr>
                                         <tr>

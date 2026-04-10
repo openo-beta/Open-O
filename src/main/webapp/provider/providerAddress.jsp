@@ -26,6 +26,7 @@
 
 <%@ page language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ page import="ca.openosp.openo.providers.data.*" %>
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
@@ -47,7 +48,7 @@
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
 
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxAddress.title"/></title>
+        <title><fmt:message key="provider.editRxAddress.title"/></title>
 
         <script type="text/javascript">
             function validate() {
@@ -139,8 +140,8 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxAddress.msgProviderAddress"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:message key="provider.editRxFax.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:message key="provider.editRxAddress.msgProviderAddress"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
@@ -197,10 +198,10 @@
                     <br/>
 
                     <input type="submit" onclick="return validate();"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.btnSubmit"/>"/>
+                           value="<fmt:message key="provider.editRxFax.btnSubmit"/>"/>
                 </form> <%
             } else if (((String) request.getAttribute("status")).equals("complete")) {
-            %> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxAddress.msgSuccess"/> <br>
+            %> <fmt:message key="provider.editRxAddress.msgSuccess"/> <br>
                 <%=address%>, <%=city%>, <%=province%>, <%=postal%>  <%
                 }
             %>

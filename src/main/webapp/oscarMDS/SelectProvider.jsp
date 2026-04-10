@@ -24,6 +24,7 @@
 
 --%>
 <%@include file="/casemgmt/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ page
         import="ca.openosp.openo.providers.data.ProviderData, java.util.ArrayList,java.util.Map, java.util.List, ca.openosp.openo.utility.SpringUtils" %>
 <%@ page
@@ -34,7 +35,7 @@
 <html>
 <head>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.selectProvider.title"/></title>
+    <title><fmt:message key="oscarMDS.selectProvider.title"/></title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/share/yui/js/yahoo-dom-event.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/share/yui/js/connection-min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/share/yui/js/animation-min.js"></script>
@@ -116,7 +117,7 @@
 <input type="hidden" id="forwardList" value="<c:out value="${ param.forwardList }" />"/>
 <form name="providerSelectForm" class="mx-1">
     <p style="font-weight:bold;">
-        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.forward.msgInstruction1"/>
+        <fmt:message key="oscarMDS.forward.msgInstruction1"/>
     </p>
 
     <div>
@@ -156,7 +157,7 @@
         </div>
     </div>
     <div>
-        <p><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.forward.msgInstruction2"/></p>
+        <p><fmt:message key="oscarMDS.forward.msgInstruction2"/></p>
         <!-- <input type="button" id="submitButton" value="Submit" onclick="prepSubmit();return false;"> -->
     </div>
 </form>

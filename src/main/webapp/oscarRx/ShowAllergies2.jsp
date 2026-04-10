@@ -31,6 +31,7 @@
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page language="java" import="ca.openosp.OscarProperties" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
@@ -87,7 +88,7 @@
 %>
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.title"/></title>
+        <title><fmt:message key="EditAllergies.title"/></title>
 
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -425,16 +426,16 @@
                 <table>
                     <tr class="DivCCBreadCrumbs">
                         <td>
-                            <a href="SearchDrug3.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a>
+                            <a href="SearchDrug3.jsp"><fmt:message key="SearchDrug.title"/></a>
                             &nbsp;&gt;&nbsp;
-                            <b><fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.title"/></b>
+                            <b><fmt:message key="EditAllergies.title"/></b>
                         </td>
                     </tr>
                     <!----Start new rows here-->
 
                     <tr class="DivContentSectionHead">
                         <td>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.section1Title"/>
+                            <fmt:message key="EditAllergies.section1Title"/>
                         </td>
                     </tr>
                     <tr id="patientDataRow">
@@ -442,7 +443,7 @@
                             <table>
                                 <tr>
                                     <td>
-                                        <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>
+                                        <b><fmt:message key="SearchDrug.nameText"/></b>
                                         ${patient.getSurname() }, ${patient.getFirstName() }<br/>
                                     </td>
                                     <td>&nbsp;</td>
@@ -455,7 +456,7 @@
                     </tr>
                     <tr>
                         <td class="DivContentSectionHead">
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.section2Title"/>
+                            <fmt:message key="EditAllergies.section2Title"/>
                             <span class="view_menu">View:
 <%
 

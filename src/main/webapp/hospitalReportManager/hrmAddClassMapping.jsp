@@ -27,6 +27,7 @@
 <%@page import="java.util.*, ca.openosp.openo.hospitalReportManager.*, ca.openosp.openo.hospitalReportManager.model.HRMCategory, ca.openosp.openo.hospitalReportManager.dao.HRMCategoryDao, ca.openosp.openo.utility.SpringUtils" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <!DOCTYPE html >
 <html>
@@ -45,9 +46,9 @@
         <div class="col-sm-12">
             <h4>Add Mapping</h4>
             <p class="pull-right">
-                <a href="javascript:popupStart(300,400,'Help.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a> |
-                <a href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> |
-                <a href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
+                <a href="javascript:popupStart(300,400,'Help.jsp')"><fmt:message key="global.help"/></a> |
+                <a href="javascript:popupStart(300,400,'About.jsp')"><fmt:message key="global.about"/></a> |
+                <a href="javascript:popupStart(300,400,'License.jsp')"><fmt:message key="global.license"/></a>
             </p>
             <form method="post" action="<%=request.getContextPath() %>/hospitalReportManager/Mapping.do">
                 <fieldset>

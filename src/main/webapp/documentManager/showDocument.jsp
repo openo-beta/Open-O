@@ -46,6 +46,7 @@
 <%@ page import="java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@page import="org.owasp.encoder.Encode"%>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -157,7 +158,6 @@
     request.setAttribute("demoName", demoName);
 %>
 
-<fmt:setBundle basename="oscarResources"/>
 
 <c:if test="${param.inWindow eq 'true'}">
     <html>

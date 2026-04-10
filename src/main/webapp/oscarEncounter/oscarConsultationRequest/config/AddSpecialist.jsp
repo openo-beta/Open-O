@@ -44,6 +44,7 @@
 <%@ page import="java.util.ResourceBundle" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -78,7 +79,6 @@
     pageContext.setAttribute("specialties", specialties);
 
 %>
-<fmt:setBundle basename="oscarResources"/>
 <html>
 
     <%

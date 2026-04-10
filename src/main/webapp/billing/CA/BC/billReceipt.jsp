@@ -64,6 +64,7 @@
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
     double totalPayments = 0;
     double totalRefunds = 0;
@@ -102,7 +103,7 @@
 <html>
     <head>
         <title>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.bc.title"/>
+            <fmt:message key="billing.bc.title"/>
         </title>
         <link rel="stylesheet" type="text/css" href="billReceiptPrint.css" id="printStyle" media="print"/>
         <style>
@@ -465,7 +466,7 @@
                                                     <td></td>
                                                     <td>Line#</td>
                                                     <td>
-                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.service.desc"/>
+                                                        <fmt:message key="billing.service.desc"/>
                                                     </td>
                                                     <td>Service Code</td>
                                                     <td>QTY</td>

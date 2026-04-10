@@ -26,6 +26,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.*" %>
@@ -64,7 +65,7 @@
 
     <div id="rightColLoader" style="width: 100%;">
         <h3 style="width: 100%; background-color: #CCCCFF;">
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.LeftNavBar.msgLoading"/></h3>
+            <fmt:message key="oscarEncounter.LeftNavBar.msgLoading"/></h3>
     </div>
 </body>
 </html>

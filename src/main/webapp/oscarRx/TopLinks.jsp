@@ -27,6 +27,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <core:set var="ctx" value="${ pageContext.servletContext.contextPath }"/>
 <core:set var="url"
@@ -42,7 +43,7 @@
 
             <core:if test="${ not empty param.patientName }">
                 <a href="javascript:void(0)" onClick="popupPage(700,1000,'${ url }'); return false;"
-                   title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">
+                   title="<fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">
                     <core:out value="${ param.patientName }"/>
                 </a>
             </core:if>
@@ -77,7 +78,7 @@
             <core:if test="${ not empty param.mrp }">
                 <security:oscarSec roleName="${ security }" objectName="_newCasemgmt.doctorName" rights="r">
 	    	<span class="label">	
-	    		  <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgMRP"/>  			   
+	    		  <fmt:message key="oscarEncounter.Index.msgMRP"/>  			   
 		    </span>
                     <span>
 		     	<core:out value="${ param.mrp }"/>

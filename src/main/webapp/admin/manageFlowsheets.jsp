@@ -42,6 +42,7 @@
 
 <%@ page import="java.util.*,ca.openosp.openo.report.reportByTemplate.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
@@ -67,7 +68,6 @@
 
 %>
 
-<fmt:setBundle basename="oscarResources"/>
 
 <html>
     <head>

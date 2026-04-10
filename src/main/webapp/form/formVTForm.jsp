@@ -40,6 +40,7 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
@@ -879,7 +880,7 @@
                                                                 <td class="subTitle" width="15%">Ob. Date<br>
                                                                     (yyyy-MM-dd)
                                                                 </td>
-                                                                <td class="subTitle" width="28%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                                <td class="subTitle" width="28%"><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -938,7 +939,7 @@
                                                     </td>
                                                     <td class="subTitle" width="16%">Last Data</td>
                                                     <td class="subTitle" width="18%">New Data</td>
-                                                    <td class="subTitle" width="30%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                    <td class="subTitle" width="30%"><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -1010,7 +1011,7 @@
                                                                                            style="display: none;">New Data</span>
                                                     </td>
                                                     <td class="subTitle" width="30%"><span id="psychHead4"
-                                                                                           style="display: none;"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                                                           style="display: none;"> <fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
 									</span></td>
                                                 </tr>
                                                 <tr>
@@ -1116,7 +1117,7 @@
                                                                                            style="display: none;">New Data</span>
                                                     </td>
                                                     <td class="subTitle" width="30%"><span id="medHead4"
-                                                                                           style="display: none;"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                                                           style="display: none;"> <fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
 									</span></td>
                                                 </tr>
                                                 <tr>
@@ -1264,7 +1265,7 @@
                                                                                            style="display: none;">New Data</span>
                                                     </td>
                                                     <td class="subTitle" width="30%"><span id="vitalHead3"
-                                                                                           style="display: none;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></span>
+                                                                                           style="display: none;"><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></span>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -1483,7 +1484,7 @@
                                                     <td class="subTitle" width="10%">Ob. Date<br>
                                                         (yyyy-MM-dd)
                                                     </td>
-                                                    <td class="subTitle" width="23%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></td>
+                                                    <td class="subTitle" width="23%"><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></td>
                                                 </tr>
                                                 <tr>
                                                     <th class="dataEntryTable" colspan="3">Foot Exam</th>
@@ -1708,7 +1709,7 @@
                                                     <td class="subTitle" width="10%">Ob. Date<br>
                                                         (yyyy-MM-dd)
                                                     </td>
-                                                    <td class="subTitle" width="23%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></td>
+                                                    <td class="subTitle" width="23%"><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/></td>
                                                 </tr>
                                                 <tr>
                                                     <th class="dataEntryTable" colspan="3">Eye Exam</th>
@@ -1868,7 +1869,7 @@
                                                     <td class="subTitle" width="10%">Ob. Date<br>
                                                         (yyyy-MM-dd)
                                                     </td>
-                                                    <td class="subTitle" width="35%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                    <td class="subTitle" width="35%"><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -2228,7 +2229,7 @@
                                                         Entered on
                                                     </td>
                                                     <td class="subTitle" width="10%">&nbsp;</td>
-                                                    <td class="subTitle" width="45%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
+                                                    <td class="subTitle" width="45%"><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.headingComments"/>
                                                     </td>
                                                 </tr>
                                                 <tr>

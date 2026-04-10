@@ -40,6 +40,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ page import="java.util.Set, java.util.List, java.util.Iterator" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementIssue" %>
@@ -135,7 +136,7 @@
          alt="Minimize Display" onclick='resetView(true, true, event)'
          style='float: right; margin-right: 5px;'
          src='<c:out value="${ctx}"/>/oscarEncounter/graphics/triangle_up.gif'/>
-    <span id="txt<c:out value="${Note.id}"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgLocked"/> <%=DateUtils.getDate(note.getUpdate_date(), dateFormat)%>
+    <span id="txt<c:out value="${Note.id}"/>"><fmt:message key="oscarEncounter.Index.msgLocked"/> <%=DateUtils.getDate(note.getUpdate_date(), dateFormat)%>
 	<c:out value="${provName}"/></span>
     <p id="passwdError" style="color: red;">Incorrect password</p>
     <p id='passwdPara' class="passwd">Password:&nbsp;<input
@@ -143,7 +144,7 @@
             id='passwd' size='16'>&nbsp; <input id='btnUnlock'
                                                 type='button'
                                                 onclick="return unlock_ajax('<c:out value="n${Note.id}"/>');"
-                                                value='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnUnLock"/>'>
+                                                value='<fmt:message key="oscarEncounter.Index.btnUnLock"/>'>
     </p>
     <script type="text/javascript">
         $('passwd').focus();

@@ -39,6 +39,7 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -245,14 +246,14 @@
 
     <div class="docHeading btn-group">
         <a class="btn" id="plusminusAddDocA" href="javascript: showhide('addDocDiv', 'plusminusAddDocA');">
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.msgAddDocument"/>
+            <fmt:message key="dms.addDocument.msgAddDocument"/>
         </a>
         <a class="btn" id="plusminusLinkA" href="javascript: showhide('addLinkDiv', 'plusminusLinkA')">
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddLink"/>
+            <fmt:message key="dms.addDocument.AddLink"/>
         </a>
         <a class="btn" href="javascript:void(0);"
            onclick="popup1(450, 600, 'addedithtmldocument.jsp?function=<%=module%>&functionid=<%=moduleid%>&mode=addHtml', 'addhtml')">
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddHTML"/>
+            <fmt:message key="dms.addDocument.AddHTML"/>
         </a>
     </div>
 
@@ -262,7 +263,7 @@
 
             <c:forEach var="error" items="${ docerrors }">
                 <div class="alert alert-danger">
-                    <strong>Error:</strong> <fmt:setBundle basename="oscarResources"/><fmt:message key="${error.value}"/>
+                    <strong>Error:</strong> <fmt:message key="${error.value}"/>
                 </div>
             </c:forEach>
 
@@ -277,7 +278,7 @@
                 <label for="docType">Type</label>
                 <div class="input-group">
                     <select id="docType" class="form-control" name="docType">
-                        <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
+                        <option value=""><fmt:message key="dms.addDocument.formSelect"/></option>
                         <%
                             for (int i = 0; i < doctypes.size(); i++) {
                                 String doctype = (String) doctypes.get(i); %>
@@ -289,7 +290,7 @@
                     <div class="input-group-btn btn-group">
                         <input id="docTypeinput" type="button" class="btn btn-default form-control"
                                onClick="newDocType();"
-                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentEdit.formAddNewDocType"/>"/>
+                               value="<fmt:message key="dms.documentEdit.formAddNewDocType"/>"/>
                     </div>
                 </div>
             </div>
@@ -310,9 +311,9 @@
             </div>
 
             <div class="form-group">
-                <label for="docClass"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.msgDocClass"/>:</label>
+                <label for="docClass"><fmt:message key="dms.addDocument.msgDocClass"/>:</label>
                 <select name="docClass" id="docClass" class="form-control">
-                    <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelectClass"/></option>
+                    <option value=""><fmt:message key="dms.addDocument.formSelectClass"/></option>
                     <% boolean consult1Shown = false;
                         for (String reportClass : reportClasses) {
                             if (reportClass.startsWith("Consultant Report")) {
@@ -327,7 +328,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="docSubClass"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.msgDocSubClass"/>:</label>
+                <label for="docSubClass"><fmt:message key="dms.addDocument.msgDocSubClass"/>:</label>
                 <input type="text" name="docSubClass" id="docSubClass" class="form-control">
                 <div class="autocomplete_style" id="docSubClass_list"></div>
             </div>
@@ -354,7 +355,7 @@
                     <div class="input-group-btn">
                         <input type="submit" name="Submit" value="Add" class="btn btn-primary">
                         <input type="button" name="Button" class="btn btn-error"
-                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
+                               value="<fmt:message key="global.btnCancel"/>"
                                onclick="window.location='documentReport.jsp?function=<%=module%>&functionid=<%=moduleid%>'">
 
                     </div>
@@ -372,7 +373,7 @@
             <%-- Lists Errors --%>
         <c:forEach var="error" items="${ linkhtmlerrors }">
             <div class="alert alert-danger">
-                <strong>Error:</strong> <fmt:setBundle basename="oscarResources"/><fmt:message key="${error.value}"/>
+                <strong>Error:</strong> <fmt:message key="${error.value}"/>
             </div>
         </c:forEach>
 
@@ -386,7 +387,7 @@
             <label for="docType1">Link Type</label>
             <div class="input-group">
                 <select id="docType1" name="docType" class="form-control">
-                    <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
+                    <option value=""><fmt:message key="dms.addDocument.formSelect"/></option>
                     <%
                         for (int i1 = 0; i1 < doctypes.size(); i1++) {
                             String doctype = (String) doctypes.get(i1); %>
@@ -398,7 +399,7 @@
                 <div class="input-group-btn btn-group">
                     <input id="docTypeinput1" type="button" class="btn btn-default form-control"
                            onClick="newDocTypeLink();"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentEdit.formAddNewDocType"/>"/>
+                           value="<fmt:message key="dms.documentEdit.formAddNewDocType"/>"/>
                 </div>
             </div>
         </div>
@@ -412,9 +413,9 @@
         </div>
 
         <div class="form-group">
-            <label for="docClassB"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.msgDocClass"/></label>
+            <label for="docClassB"><fmt:message key="dms.addDocument.msgDocClass"/></label>
             <select name="docClass" id="docClassB" class="form-control">
-                <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelectClass"/></option>
+                <option value=""><fmt:message key="dms.addDocument.formSelectClass"/></option>
                 <% boolean consult2Shown = false;
                     for (String reportClass : reportClasses) {
                         if (reportClass.startsWith("Consultant Report")) {
@@ -429,7 +430,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="docSubClass2"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.msgDocSubClass"/></label>
+            <label for="docSubClass2"><fmt:message key="dms.addDocument.msgDocSubClass"/></label>
             <input type="text" name="docSubClass" id="docSubClass2" class="form-control">
             <div class="autocomplete_style" id="docSubClass_list2"></div>
         </div>
@@ -453,7 +454,7 @@
                     <input type="hidden" name="mode" value="addLink">
                     <input class="btn btn-primary" type="SUBMIT" name="Submit" value="Add">
                     <input class="btn" type="button" name="Button"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
+                           value="<fmt:message key="global.btnCancel"/>"
                            onclick="window.location='documentReport.jsp?function=<%=module%>&functionid=<%=moduleid%>'">
                 </div>
             </div>

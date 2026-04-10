@@ -24,6 +24,7 @@
 
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -70,7 +71,7 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providerupdate.title"/></title>
+        <title><fmt:message key="admin.providerupdate.title"/></title>
     </head>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/web.css"/>
 
@@ -78,7 +79,7 @@
     <center>
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
             <tr bgcolor="#486ebd">
-                <th><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providerupdate.description"/></font></th>
+                <th><font face="Helvetica" color="#FFFFFF"><fmt:message key="admin.providerupdate.description"/></font></th>
             </tr>
         </table>
 
@@ -223,21 +224,21 @@
                     }
         %>
         <p>
-        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providerupdate.msgUpdateSuccess"/>
+        <h2><fmt:message key="admin.providerupdate.msgUpdateSuccess"/>
             <a href="providerupdateprovider.jsp?keyword=<%=request.getParameter("provider_no")%>"><%= request.getParameter("provider_no") %>
             </a>
         </h2>
         <%
         } else {
         %>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providerupdate.msgUpdateFailure"/><%= request.getParameter("provider_no") %>.</h1>
+        <h1><fmt:message key="admin.providerupdate.msgUpdateFailure"/><%= request.getParameter("provider_no") %>.</h1>
         <%
             }
         } else {
             if (!isProviderFormalize) {
                 //output ProviderFormalize error message
         %>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=errMsgProviderFormalize%>"/></h1>
+        <h1><fmt:message key="<%=errMsgProviderFormalize%>"/></h1>
         Provider # range from : <%=min_value %> To : <%=max_value %>
         <%
                 }

@@ -43,6 +43,7 @@
         import="java.sql.*, java.util.*, ca.openosp.MyDateFormat, ca.openosp.openo.commn.OtherIdManager, ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.openo.event.EventService, ca.openosp.openo.utility.SpringUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@page import="ca.openosp.openo.commn.dao.AppointmentArchiveDao" %>
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
@@ -67,7 +68,7 @@
             <table border="0" cellspacing="0" cellpadding="0" width="90%">
                 <tr bgcolor="#486ebd">
                     <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabel"/></font></th>
+                        <fmt:message key="appointment.addappointment.msgMainLabel"/></font></th>
                 </tr>
             </table>
             <%
@@ -159,7 +160,7 @@
                     }
             %>
             <p>
-            <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddSuccess"/></h3>
+            <h3><fmt:message key="appointment.addappointment.msgAddSuccess"/></h3>
 
         </div>
         <form>
@@ -174,9 +175,9 @@
                                 </th>
                             </tr>
                             <tr style="font-family: arial, sans-serif; font-size: 8pt;">
-                                <th style="padding-right: 10px"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDate"/></th>
-                                <th width="60" style="padding-right: 10px"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formStartTime"/></th>
-                                <th width="120" style="padding-right: 10px"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgProvider"/></th>
+                                <th style="padding-right: 10px"><fmt:message key="Appointment.formDate"/></th>
+                                <th width="60" style="padding-right: 10px"><fmt:message key="Appointment.formStartTime"/></th>
+                                <th width="120" style="padding-right: 10px"><fmt:message key="appointment.addappointment.msgProvider"/></th>
 
                             </tr>
                             <%
@@ -229,7 +230,7 @@
 
                             <tr class="DoNotPrint">
                                 <td style="padding-left: 10px"><input type="button"
-                                                                      value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
+                                                                      value="<fmt:message key="global.btnPrint"/>"
                                                                       onClick="window.print();"></td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
@@ -258,7 +259,7 @@
             } else {
             %>
             <p>
-            <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddFailure"/></h1>
+            <h1><fmt:message key="appointment.addappointment.msgAddFailure"/></h1>
 
             <%
                 }
@@ -267,7 +268,7 @@
                 <p></p>
                 <hr width="90%"/>
 
-                <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>" onClick="window.close();">
+                <input type="button" value="<fmt:message key="global.btnClose"/>" onClick="window.close();">
             </div>
         </form>
     </center>

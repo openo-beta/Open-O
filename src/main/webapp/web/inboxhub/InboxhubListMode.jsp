@@ -5,12 +5,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@page import="ca.openosp.openo.utility.MiscUtils,org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="org.apache.logging.log4j.Logger,ca.openosp.openo.commn.dao.OscarLogDao,ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.inboxhub.query.InboxhubQuery" %>
 <%@ page import="ca.openosp.openo.mds.data.CategoryData" %>
 
-<fmt:setBundle basename="oscarResources"/>
 
 <c:if test="${page eq 1}">
 <div class="bg-light text-light">

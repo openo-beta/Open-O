@@ -53,6 +53,7 @@
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -549,7 +550,7 @@
                                         %>
                                         <td class="borderGrayBottomRight"
                                             style="border-right: 0px; width: 130px;"><font
-                                                class="subHeading"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.form.labreq.patientChartNo"/></font><br/>
+                                                class="subHeading"><fmt:message key="oscarEncounter.form.labreq.patientChartNo"/></font><br/>
                                             <input type="hidden" style="width: 90%" name="patientChartNo"
                                                    value="<%=demoChartNo%>"/> <%=props.getProperty("patientChartNo", "")%>
                                         </td>

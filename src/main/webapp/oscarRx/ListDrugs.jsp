@@ -27,6 +27,7 @@
 <%@page import="ca.openosp.openo.commn.model.PartialDate" %>
 <%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -46,7 +47,6 @@
 <%@ page import="ca.openosp.openo.commn.dao.PartialDateDao" %>
 <%@ page import="static ca.openosp.openo.prescript.util.RxUtil.DateToString" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
-<fmt:setBundle basename="oscarResources"/>
 <%
     RxPatientData.Patient patient = null;
     RxSessionBean bean = null;

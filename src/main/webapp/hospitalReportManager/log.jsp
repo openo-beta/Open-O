@@ -29,6 +29,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
@@ -68,7 +69,7 @@
                     ajax: "<%=request.getContextPath()%>/hospitalReportManager/hrm.do?method=viewLog",
                     searching: false,
                     "dom": '<"top"i>rt<"bottom"lp><"clear">',
-                    "language": {"url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"},
+                    "language": {"url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:message key="global.i18nLanguagecode"/>.json"},
                     "columns": [
                         {
                             "data": "transaction_date", render: function (data, type, full, meta) {

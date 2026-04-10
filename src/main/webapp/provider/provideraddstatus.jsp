@@ -26,6 +26,7 @@
 
 <%@ page import="java.sql.*, java.util.*, ca.openosp.MyDateFormat,ca.openosp.openo.event.EventService" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@page import="ca.openosp.openo.commn.dao.AppointmentArchiveDao" %>
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Appointment" %>
@@ -72,7 +73,7 @@
     } else {
 %>
 <p>
-<h1><fmt:setBundle basename="oscarResources"/><fmt:message key="AddProviderStatus.msgAddFailure"/></h1>
+<h1><fmt:message key="AddProviderStatus.msgAddFailure"/></h1>
 
 <%
     }

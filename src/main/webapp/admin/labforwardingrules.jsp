@@ -25,6 +25,7 @@
 --%>
 <%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -64,7 +65,7 @@
 <html>
 <head>
 
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.labFwdRules"/></title>
+    <title><fmt:message key="admin.admin.labFwdRules"/></title>
 
     <script type="text/javascript">
 
@@ -114,7 +115,7 @@
 
 <body>
 
-<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.labFwdRules"/></h3>
+<h3><fmt:message key="admin.admin.labFwdRules"/></h3>
 
 
 <form id="ForwardRulesForm" name="RULES" action="${ctx}/admin/ForwardingRules.do" method="post">
@@ -216,7 +217,7 @@
         <h5>Update Forwarding Rules</h5>
 
         Set incoming status:
-        <input type="radio" name="status" value="N"    <%= status.equals("F") ? "" : "checked" %>> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.search.formReportStatusNew"/>
+        <input type="radio" name="status" value="N"    <%= status.equals("F") ? "" : "checked" %>> <fmt:message key="oscarMDS.search.formReportStatusNew"/>
         <input type="radio" name="status" value="F" <%= status.equals("F") ? "checked" : "" %>> Filed
 
         <br/>

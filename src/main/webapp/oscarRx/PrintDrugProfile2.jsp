@@ -26,6 +26,7 @@
 <%@page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
 <%@ page import="ca.openosp.openo.rx.data.*" %>
@@ -141,11 +142,11 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.section1Title"/></div>
+                            <div class="DivContentSectionHead"><fmt:message key="SearchDrug.section1Title"/></div>
                         </td>
                     </tr>
                     <tr>
-                        <td><!-- <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>-->
+                        <td><!-- <b><fmt:message key="SearchDrug.nameText"/></b>-->
                             <%=surname%>, <%=firstName%><br/>
                             <%=address%><br/>
                             <%=city%>, <%=province%> <%=postal%><br/><br/>
@@ -153,7 +154,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.ageText"/></b>
+                            <b><fmt:message key="SearchDrug.ageText"/></b>
                             ${patient.age}
                             <b>Gender:</b> ${patient.sex}
                             <b>HC:</b> ${patient.hin}<br/>
@@ -165,7 +166,7 @@
                             <table cellspacing="0" width="100%" cellpadding="0">
                                 <tr>
                                     <td>
-                                        <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.section2Title"/></div>
+                                        <div class="DivContentSectionHead"><fmt:message key="SearchDrug.section2Title"/></div>
                                     </td>
                                     <td align="right" class="noPrint">
                                         <div class="DivContentSectionHead">
@@ -188,8 +189,8 @@
                                     <td width="100%"><!--<div class="Step1Text" style="width:100%">-->
                                         <table width="100%" cellpadding="3">
                                             <tr>
-                                                <th align=left width=20%><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgRxDate"/></b></th>
-                                                <th align=left width=100%><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgPrescription"/></b></th>
+                                                <th align=left width=20%><b><fmt:message key="SearchDrug.msgRxDate"/></b></th>
+                                                <th align=left width=100%><b><fmt:message key="SearchDrug.msgPrescription"/></b></th>
                                             </tr>
 
                                             <%

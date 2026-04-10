@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -44,7 +45,6 @@
         return;
     }
 %>
-<fmt:setBundle basename="oscarResources"/>
 <html>
 
 

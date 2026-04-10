@@ -25,10 +25,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib prefix="oscar" uri="/oscarPropertiestag" %>
 <%@ page import="ca.openosp.openo.commn.model.enumerator.ModuleType" %>
 <%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
-<fmt:setBundle basename="oscarResources"/>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="myDrugRefEnabled">

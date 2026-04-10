@@ -26,6 +26,7 @@
 <%@ page
         import="ca.openosp.openo.providers.data.*,ca.openosp.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -81,7 +82,7 @@
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.title"/></title>
+        <title><fmt:message key="ViewScript.title"/></title>
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <c:if test="${empty sessionScope.RxSessionBean}">
@@ -710,7 +711,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                             parent.document.getElementById('lightwindow_contents').style.width = "1120px";
                                             document.getElementById('preview').style.width = "600px";
                                             frames['preview'].document.getElementById('pharmInfo').innerHTML = text;
-                                            $("selectedPharmacy").innerHTML = '<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.printPharmacyInfo.paperSizeWarning"/>';
+                                            $("selectedPharmacy").innerHTML = '<fmt:message key="oscarRx.printPharmacyInfo.paperSizeWarning"/>';
                                         }
 
                                         function reducePreview() {
@@ -726,7 +727,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         <% //vecAddress=null;
                                             if (vecAddress != null) { %>
                                         <tr>
-                                            <td align="left" colspan=2><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgAddress"/>
+                                            <td align="left" colspan=2><fmt:message key="ViewScript.msgAddress"/>
                                                 <select name="addressSel" id="addressSel" onChange="addressSelect()"
                                                         style="width:200px;">
                                                     <% String rxAddr = (String) session.getAttribute("RX_ADDR");
@@ -745,7 +746,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         </tr>
                                         <% } %>
                                         <tr>
-                                            <td colspan=2 style="font-weight: bold;"><span><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgActions"/></span>
+                                            <td colspan=2 style="font-weight: bold;"><span><fmt:message key="ViewScript.msgActions"/></span>
                                             </td>
                                         </tr>
 
@@ -769,7 +770,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         </tr>
                                         <tr>
                                             <td style="padding-bottom: 0"><span><input type=button
-                                                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgPrint"/>"
+                                                                                       value="<fmt:message key="ViewScript.msgPrint"/>"
                                                                                        class="ControlPushButton"
                                                                                        style="width: 210px"
                                                                                        onClick="javascript:printIframe();"/></span>
@@ -826,7 +827,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         <% } %>
                                         <tr>
                                             <td><span><input type=button
-                                                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgCreateNewRx"/>"
+                                                             value="<fmt:message key="ViewScript.msgCreateNewRx"/>"
                                                              class="ControlPushButton"
                                                              style="width: 210px"
                                                              onClick="resetStash();resetReRxDrugList();javascript:parent.myLightWindow.deactivate();"/></span>
@@ -834,7 +835,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         </tr>
                                         <tr>
                                             <td><span><input type=button
-                                                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
+                                                             value="<fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 210px"
                                                              onClick="javascript:clearPending('close');parent.window.close();"/></span>
                                             </td>
@@ -843,7 +844,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                             if (request.getSession().getAttribute("rePrint") == null) {%>
 
                                         <tr>
-                                            <td colspan=2 style="font-weight: bold"><span><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgAddNotesRx"/></span></td>
+                                            <td colspan=2 style="font-weight: bold"><span><fmt:message key="ViewScript.msgAddNotesRx"/></span></td>
                                         </tr>
                                         <tr>
                                             <!--td width=10px></td-->
@@ -873,7 +874,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
 						<% } %>
                                         <%}%>
                                         <tr>
-                                            <td colspan=2 style="font-weight: bold"><span><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgDrugInfo"/></span></td>
+                                            <td colspan=2 style="font-weight: bold"><span><fmt:message key="ViewScript.msgDrugInfo"/></span></td>
                                         </tr>
                                         <%
                                             for (int i = 0; i < bean.getStashSize(); i++) {

@@ -10,6 +10,7 @@
 --%>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="ca.openosp.openo.admin.traceability.BuildNumberPropertiesFileReader" %>
@@ -60,7 +61,7 @@
         </script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html;">
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.oscarStatus.oscarStatus"/></title>
+        <title><fmt:message key="admin.oscarStatus.oscarStatus"/></title>
 
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -85,7 +86,7 @@
                 <% } %>
 
         <div class="page-header">
-            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.oscarStatus.oscarStatus"/></h4>
+            <h4><fmt:message key="admin.oscarStatus.oscarStatus"/></h4>
         </div>
 
         <h5>Master Status:</h5>
@@ -127,7 +128,7 @@
         <pre>Git SHA-1: <%=BuildNumberPropertiesFileReader.getGitSha1()%></pre>
 
         <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.misc" rights="r" reverse="<%=false%>">
-        <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.oscarStatus.restart"/></h4>
+        <h4><fmt:message key="admin.oscarStatus.restart"/></h4>
         <div class="well">
             <form method="post" action="rebootConfirmation.jsp" name="confirmOscarReboot">
                 <p>If you are having issues with Oscar, click the button below to restart Oscar.</p>

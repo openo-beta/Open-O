@@ -64,6 +64,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -175,7 +176,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.title"/></title>
+        <title><fmt:message key="tickler.ticklerAdd.title"/></title>
 
       <style>
         *:not(h2):not(.btn) {
@@ -405,7 +406,7 @@
 
         <%--function validateSelectedProgram() {--%>
         <%--    if (document.serviceform.program_assigned_to.value === "none") {--%>
-        <%--        document.getElementById("error").insertAdjacentText("beforeend", '<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgNoProgramSelected"/>');--%>
+        <%--        document.getElementById("error").insertAdjacentText("beforeend", '<fmt:message key="tickler.ticklerAdd.msgNoProgramSelected"/>');--%>
         <%--        document.getElementById("error").style.display = 'block';--%>
         <%--        return false;--%>
         <%--    }--%>
@@ -419,12 +420,12 @@
 
         function validateDemoNo() {
             if (document.serviceform.demographic_no.value === "") {
-                document.getElementById("error").insertAdjacentText("beforeend", '<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgInvalidDemographic"/>');
+                document.getElementById("error").insertAdjacentText("beforeend", '<fmt:message key="tickler.ticklerAdd.msgInvalidDemographic"/>');
                 document.getElementById("error").style.display = 'block';
                 return false;
             } else {
                 if (document.serviceform.xml_appointment_date.value === "" || !IsDate(document.serviceform.xml_appointment_date.value)) {
-                    document.getElementById("error").insertAdjacentText("beforeend", '<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgMissingDate"/>');
+                    document.getElementById("error").insertAdjacentText("beforeend", '<fmt:message key="tickler.ticklerAdd.msgMissingDate"/>');
                     document.getElementById("error").style.display = 'block';
                     return false;
                 }
@@ -493,7 +494,7 @@
 <%--        <tr style="background-color: black">--%>
 <%--            <td class="table-condensed"--%>
 <%--                style="text-align:left; padding:10px; font-weight: 900; height:40px; font-size: large; font-family: arial, sans-serif; color: white">--%>
-<%--                Add <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgTickler"/></td>--%>
+<%--                Add <fmt:message key="tickler.ticklerAdd.msgTickler"/></td>--%>
 <%--        </tr>--%>
 <%--    </table>--%>
 
@@ -542,14 +543,14 @@
                 <tr>
                     <td style="border:none;">
                       <label for="keyword">
-                      <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formDemoName"/>:
+                      <fmt:message key="tickler.ticklerAdd.formDemoName"/>:
                       </label>
                     </td>
                     <td style="border:none;">
                         <div class="input-group">
                             <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Search Demographic" value="<%=Encode.forHtmlAttribute(demoName)%>">
                             <span class="input-group-btn">
-                                <input type="submit" name="Submit" class="btn btn-default" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.btnSearch"/>">
+                                <input type="submit" name="Submit" class="btn btn-default" value="<fmt:message key="tickler.ticklerAdd.btnSearch"/>">
                             </span>
                         </div>
 
@@ -566,7 +567,7 @@
             <table class="table table-condensed">
 
 <%--                <tr>--%>
-<%--                  <td><label for="demogrpahic_no"> <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formChartNo"/>:</label></td>--%>
+<%--                  <td><label for="demogrpahic_no"> <fmt:message key="tickler.ticklerAdd.formChartNo"/>:</label></td>--%>
 <%--                    <td>--%>
 <%--                      <span>--%>
 
@@ -578,7 +579,7 @@
                 <tr>
                     <td>
                       <label for="xml_appointment_date">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formServiceDate"/>:
+                        <fmt:message key="tickler.ticklerAdd.formServiceDate"/>:
                       </label>
                     </td>
                     <td>
@@ -598,20 +599,20 @@
               </tr>
                 <tr>
                     <td><label for="priority">
-                      <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.Priority"/>:
+                      <fmt:message key="tickler.ticklerMain.Priority"/>:
                     </label></td>
                     <td>
                         <select name="priority" id="priority" class="form-control">
-                            <option value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.high"/>" <%=priority.equals("High")?"selected":""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.high"/>
-                            <option value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.normal"/>" <%=priority.equals("Normal")?"selected":""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.normal"/>
-                            <option value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.low"/>" <%=priority.equals("Low")?"selected":""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.priority.low"/>
+                            <option value="<fmt:message key="tickler.ticklerMain.priority.high"/>" <%=priority.equals("High")?"selected":""%>><fmt:message key="tickler.ticklerMain.priority.high"/>
+                            <option value="<fmt:message key="tickler.ticklerMain.priority.normal"/>" <%=priority.equals("Normal")?"selected":""%>><fmt:message key="tickler.ticklerMain.priority.normal"/>
+                            <option value="<fmt:message key="tickler.ticklerMain.priority.low"/>" <%=priority.equals("Low")?"selected":""%>><fmt:message key="tickler.ticklerMain.priority.low"/>
                         </select>
                     </td>
                 </tr>
 
                 <tr>
                     <td >
-                      <label for="task_assigned_to"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.assignTaskTo"/>:</label></td>
+                      <label for="task_assigned_to"><fmt:message key="tickler.ticklerAdd.assignTaskTo"/>:</label></td>
                     <td>
 
                         <div id="selectWrapper">
@@ -701,7 +702,7 @@
                 <tr>
                     <td >
                       <a href="#" onclick="openBrWindow('./ticklerSuggestedText.jsp','','width=680,height=400')" >
-                      <label for="suggestedText"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerEdit.suggestedText"/>:</label>
+                      <label for="suggestedText"><fmt:message key="tickler.ticklerEdit.suggestedText"/>:</label>
                       </a>
                     </td>
                     <td>
@@ -719,7 +720,7 @@
 
                 <tr>
                     <td>
-                      <label for="ticklerMessage"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formReminder"/>:</label>
+                      <label for="ticklerMessage"><fmt:message key="tickler.ticklerAdd.formReminder"/>:</label>
                       </td>
                     <td>
                       <textarea name="ticklerMessage" id="ticklerMessage" class="form-control"></textarea>
@@ -727,13 +728,13 @@
                 </tr>
                 <tr>
                     <td colspan="2"><input type="button" name="Button" class="btn btn-primary"
-                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.btnSubmit"/>"
+                               value="<fmt:message key="tickler.ticklerAdd.btnSubmit"/>"
                                onclick="validate(this.form);">
                         <input type="button" name="Button" class="btn btn-secondary"
                                value="Save / Write to eChart"
                                onclick="validate(this.form, true)">
                         <input type="button" name="Button" class="btn btn-danger"
-                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.btnCancel"/>"
+                               value="<fmt:message key="tickler.ticklerAdd.btnCancel"/>"
                                onclick="window.close()">
                     </td>
                 </tr>

@@ -41,6 +41,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
@@ -181,10 +182,10 @@
                             <input type="hidden" name="documentId" value="<%=curDocId%>"/>
                             <table>
                                 <tr>
-                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocType"/>:</td>
+                                    <td><fmt:message key="dms.documentReport.msgDocType"/>:</td>
                                     <td>
                                         <select tabindex="<%=tabindex++%>" name="docType" id="docType">
-                                            <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
+                                            <option value=""><fmt:message key="dms.addDocument.formSelect"/></option>
                                             <%
                                                 for (int j = 0; j < doctypes.size(); j++) {
                                                     String doctype = (String) doctypes.get(j);
@@ -196,7 +197,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocDesc"/>:</td>
+                                    <td><fmt:message key="dms.documentReport.msgDocDesc"/>:</td>
                                     <td><input tabindex="<%=tabindex++%>" type="text" name="documentDescription"
                                                value="<%=curdoc.getDescription()%>"/></td>
                                 </tr>
@@ -435,7 +436,7 @@
 
 
                                 <tr>
-                                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgCreator"/>:</td>
+                                    <td><fmt:message key="dms.documentReport.msgCreator"/>:</td>
                                     <td><%=curdoc.getCreatorName()%>
                                     </td>
                                 </tr>

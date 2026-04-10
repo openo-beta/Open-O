@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%
     String residentId = request.getParameter("residentId");
@@ -91,7 +92,7 @@
 %>
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/></title>
+        <title><fmt:message key="admin.fieldNote.report"/></title>
         <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
         <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/eformStyle.css">
         <style>
@@ -109,7 +110,7 @@
     <body>
 
     <div class="eformInputHeading" align="center">
-        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/>
+        <fmt:message key="admin.fieldNote.report"/>
     </div>
 
     <%
@@ -118,7 +119,7 @@
     <table width="100%">
         <tr>
             <td valign="top">
-                <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.back"/>" onclick="window.close();"/>
+                <input type="button" value="<fmt:message key="admin.fieldNote.back"/>" onclick="window.close();"/>
             </td>
             <td>
                 <%
@@ -325,7 +326,7 @@
         if (!"download".equals(method)) {
     %>
     <p>&nbsp;</p>
-    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.back"/>" onclick="window.close();"/>
+    <input type="button" value="<fmt:message key="admin.fieldNote.back"/>" onclick="window.close();"/>
     <%
         }
     %>
