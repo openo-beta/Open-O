@@ -68,7 +68,7 @@ import ca.openosp.openo.model.security.Secrole;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.UtilDateUtilities;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 public class EctIncomingEncounter2Action extends ActionSupport {
@@ -105,7 +105,7 @@ public class EctIncomingEncounter2Action extends ActionSupport {
             }
         }
 
-        EctSessionBean bean = new EctSessionBean();
+        EctSessionBean bean;
         String appointmentNo = null;
 
         if (request.getSession().getAttribute("cur_appointment_no") != null) {

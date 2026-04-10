@@ -37,6 +37,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,10 +80,12 @@ import ca.openosp.openo.util.UtilDateUtilities;
 
 import com.itextpdf.text.pdf.PdfReader;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
-public class AddEditDocument2Action extends ActionSupport {
+public class AddEditDocument2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -96,8 +99,14 @@ public class AddEditDocument2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_edoc)");
         }
 
+        if (docFileOnDisk == null) {
+            response.setHeader("oscar_error", props.getString("dms.addDocument.errorZeroSize"));
+            response.sendError(500, props.getString("dms.addDocument.errorZeroSize"));
+            return null;
+        }
+
         int numberOfPages = 0;
-        String fileName = MiscUtils.sanitizeFileName(this.getDocFile().getName());
+        String fileName = MiscUtils.sanitizeFileName(docFileOnDisk.getName());
         String user = (String) request.getSession().getAttribute("user");
         EDoc newDoc = new EDoc("", "", fileName, "", user, user, this.getSource(), 'A', UtilDateUtilities.getToday("yyyy-MM-dd"), "", "", "demographic", "-1", 0);
         newDoc.setDocPublic("0");
@@ -112,14 +121,14 @@ public class AddEditDocument2Action extends ActionSupport {
         }
 
         // save local file;
-        if (this.getDocFile().length() == 0) {
+        if (docFileOnDisk.length() == 0) {
             response.setHeader("oscar_error", props.getString("dms.addDocument.errorZeroSize"));
             response.sendError(500, props.getString("dms.addDocument.errorZeroSize"));
             return null;
         }
-        File file = writeLocalFile(Files.newInputStream(this.getDocFile().toPath()), fileName);// write file to local dir
+        File file = writeLocalFile(Files.newInputStream(docFileOnDisk.toPath()), fileName);// write file to local dir
 
-        if (!file.exists() || file.length() < this.getDocFile().length()) {
+        if (!file.exists() || file.length() < docFileOnDisk.length()) {
             response.setHeader("oscar_error", props.getString("dms.addDocument.errorNoWrite"));
             response.sendError(500, props.getString("dms.addDocument.errorNoWrite"));
             return null;
@@ -243,8 +252,7 @@ public class AddEditDocument2Action extends ActionSupport {
                 errors.put("typemissing", "dms.error.typeMissing");
                 throw new Exception();
             }
-            File docFile = this.getDocFile();
-            if (docFile.length() == 0) {
+            if (docFileOnDisk == null || docFileOnDisk.length() == 0) {
                 errors.put("uploaderror", "dms.error.uploadError");
                 throw new FileNotFoundException();
             }
@@ -261,7 +269,7 @@ public class AddEditDocument2Action extends ActionSupport {
             String fileName2 = newDoc.getFileName();
 
             // save local file
-            File file = writeLocalFile(Files.newInputStream(docFile.toPath()), fileName2);
+            File file = writeLocalFile(Files.newInputStream(docFileOnDisk.toPath()), fileName2);
             newDoc.setContentType(this.docFileContentType);
 
             if (fileName2.toLowerCase().endsWith(".pdf")) {
@@ -387,8 +395,7 @@ public class AddEditDocument2Action extends ActionSupport {
 
             if (OscarProperties.getInstance().getBooleanProperty("ALLOW_UPDATE_DOCUMENT_CONTENT", "true"))
             {
-                File docFile = this.getDocFile();
-                if (docFile != null && docFile.exists()) {
+                if (docFileOnDisk != null && docFileOnDisk.exists()) {
                     fileName = MiscUtils.sanitizeFileName(this.docFileFileName);
                     updateFileContent = true; // set update to true
                 }
@@ -426,7 +433,7 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
             if (updateFileContent) {
                 fileName = MiscUtils.sanitizeFileName(newDoc.getFileName());
                 // save local file
-                writeLocalFile(Files.newInputStream(this.getDocFile().toPath()), fileName);
+                writeLocalFile(Files.newInputStream(docFileOnDisk.toPath()), fileName);
                 if (fileName.toLowerCase().endsWith(".pdf")) {
                     newDoc.setContentType("application/pdf");
                     int numberOfPages = countNumOfPages(fileName);
@@ -497,6 +504,7 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         } finally {
+            if (is != null) is.close();
             if (fos != null) fos.close();
         }
         return file;
@@ -538,9 +546,10 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
     private String responsibleId = "";
     private String source = "";
     private String sourceFacility = "";
-    private File docFile;
+    private UploadedFile docFile;
+    private File docFileOnDisk;
 
-    private File filedata;
+    private UploadedFile filedata;
 
     private String docPublic = "";
     private String mode = "";
@@ -640,14 +649,6 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         this.sourceFacility = sourceFacility;
     }
 
-    public File getDocFile() {
-        return docFile;
-    }
-
-    public void setDocFile(File docFile) {
-        this.docFile = docFile;
-    }
-
     public String getMode() {
         return mode;
     }
@@ -712,14 +713,6 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         this.html = html;
     }
 
-    public File getFiledata() {
-        return filedata;
-    }
-
-    public void setFiledata(File Filedata) {
-        this.filedata = Filedata;
-    }
-
     public String getAppointmentNo() {
         return appointmentNo;
     }
@@ -768,14 +761,25 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         this.extraReviewDoc = extraReviewDoc;
     }
 
-    private String docFileFileName;    
-    private String docFileContentType; 
+    private String docFileFileName;
+    private String docFileContentType;
 
-    public void setDocFileFileName(String docFileFileName) {
-        this.docFileFileName = docFileFileName;
-    }
-
-    public void setDocFileContentType(String docFileContentType) {
-        this.docFileContentType = docFileContentType;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            for (UploadedFile uploadedFile : uploadedFiles) {
+                if ("docFile".equals(uploadedFile.getInputName())) {
+                    this.docFile = uploadedFile;
+                    this.docFileOnDisk = PathValidationUtils.toFile(docFile);
+                    this.docFileFileName = docFile.getOriginalName();
+                    this.docFileContentType = docFile.getContentType();
+                } else if ("filedata".equals(uploadedFile.getInputName())) {
+                    this.filedata = uploadedFile;
+                    this.docFileOnDisk = PathValidationUtils.toFile(uploadedFile);
+                    this.docFileFileName = uploadedFile.getOriginalName();
+                    this.docFileContentType = uploadedFile.getContentType();
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 //CHECKSTYLE:OFF
 /**
- * Copyright (c) 2024. Magenta Health. All Rights Reserved.
+
  * Copyright (c) 2008-2012 Indivica Inc.
  * <p>
  * This software is made available under the terms of the
@@ -8,7 +8,7 @@
  * License details are available via "indivica.ca/gplv2"
  * and "gnu.org/licenses/gpl-2.0.html".
  * <p>
- * Modifications made by Magenta Health in 2024.
+ * Modifications made by Magenta Health in collaboration with Open OSP in 2024.
  */
 package ca.openosp.openo.commn.dao;
 

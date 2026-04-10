@@ -26,10 +26,14 @@ import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
 import ca.openosp.openo.lab.ca.all.upload.handlers.DefaultHandler;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.List;
+import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
+import ca.openosp.openo.utility.PathValidationUtils;
 
-public class HRMUploadKey2Action extends ActionSupport {
+public class HRMUploadKey2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -41,19 +45,24 @@ public class HRMUploadKey2Action extends ActionSupport {
         String proNo = (String) request.getSession().getAttribute("user");
         String outcome = "failure";
 
-        try {
-            InputStream is = Files.newInputStream(importFile.toPath());
+        if (importFileOnDisk == null) {
+            request.setAttribute("outcome", "failure");
+            return SUCCESS;
+        }
 
+        try {
             String type = request.getParameter("type");
 
-
-            String filePath = Utilities.saveFile(is, filename);
-            is.close();
+            String filePath;
+            try (InputStream is = Files.newInputStream(importFileOnDisk.toPath())) {
+                filePath = Utilities.saveFile(is, filename);
+            }
             File file = new File(filePath);
 
-            is = new FileInputStream(filePath);
-            int checkFileUploadedSuccessfully = FileUploadCheck.addFile(file.getName(), is, proNo);
-            is.close();
+            int checkFileUploadedSuccessfully;
+            try (InputStream is2 = new FileInputStream(filePath)) {
+                checkFileUploadedSuccessfully = FileUploadCheck.addFile(file.getName(), is2, proNo);
+            }
 
             if (checkFileUploadedSuccessfully != FileUploadCheck.UNSUCCESSFUL_SAVE) {
                 logger.debug("filePath" + filePath);
@@ -81,8 +90,18 @@ public class HRMUploadKey2Action extends ActionSupport {
         return SUCCESS;
     }
 
-    private File importFile; // Uploaded file
-    private String importFileFileName; // Name of the uploaded file
-    private String importFileContentType; // Content type of the uploaded file
+    private UploadedFile importFile;
+    private File importFileOnDisk;
+    private String importFileFileName;
+    private String importFileContentType;
 
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
+            this.importFileFileName = importFile.getOriginalName();
+            this.importFileContentType = importFile.getContentType();
+        }
+    }
 }

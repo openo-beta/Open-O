@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.commn.model.EmailAttachment;
+import ca.openosp.openo.casemgmt.model.ProviderExt;
+import ca.openosp.openo.commn.dao.ProviderExtDao;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.EmailLog;
 import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
 import ca.openosp.openo.documentManager.EDoc;
@@ -28,25 +32,92 @@ import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.util.StringUtils;
 
+/**
+ * Utility class for generating clinical notes from email communications in the OpenO EMR system.
+ *
+ * <p>This class handles the creation of comprehensive clinical notes from {@link EmailLog} objects,
+ * which represent email communications between healthcare providers and patients. The generated notes
+ * include email content, encryption information, attachments (eForms, documents, lab results, HRM documents,
+ * and forms), and technical metadata for audit trail purposes.</p>
+ *
+ * <p>Key features:</p>
+ * <ul>
+ *   <li>Formats email subject, body, and metadata into clinical note format</li>
+ *   <li>Handles encrypted email content with password clues</li>
+ *   <li>Processes multiple attachment types (eForms, documents, labs, HRM, forms)</li>
+ *   <li>Supports secure handling of Protected Health Information (PHI)</li>
+ *   <li>Provides formatted date/time stamps for audit trails</li>
+ *   <li>Supports internal comments for provider-to-provider communication</li>
+ * </ul>
+ *
+ * <p>The utility generates notes in a standardized format that includes email content,
+ * encryption details, attached clinical documents, technical metadata, and internal comments.</p>
+ *
+ * @see EmailLog
+ * @see EmailAttachment
+ * @see LoggedInInfo
+ * @since 2026-01-23
+ */
 public class EmailNoteUtil {
     private EmailLog emailLog;
     private LoggedInInfo loggedInInfo;
     private String DATE_FORMAT = "yyyy.MM.dd";
     private String TIME_FORMAT = "hh:mm a";
+    private static final String SENT_DATE_FORMAT = "dd-MMM-yyyy H:mm";
 
     private CommonLabResultData commonLabResultData;
     private EformDataManager eFormDataManager = SpringUtils.getBean(EformDataManager.class);
     private FormsManager formsManager = SpringUtils.getBean(FormsManager.class);
+    private ProviderExtDao providerExtDao = SpringUtils.getBean(ProviderExtDao.class);
 
+    /**
+     * Private default constructor to prevent instantiation without required parameters.
+     */
     private EmailNoteUtil() {
     }
 
+    /**
+     * Constructs an EmailNoteUtil instance for generating clinical notes from email communications.
+     *
+     * <p>This constructor initializes the utility with the logged-in user's context and the email log
+     * to be processed. It also initializes the {@link CommonLabResultData} instance for processing
+     * laboratory result attachments.</p>
+     *
+     * @param loggedInInfo {@link LoggedInInfo} the logged-in user's session information, used for
+     *                     accessing healthcare provider context and security credentials
+     * @param emailLog {@link EmailLog} the email communication record containing subject, body,
+     *                 recipients, attachments, encryption information, and metadata
+     * @since 2026-01-23
+     */
     public EmailNoteUtil(LoggedInInfo loggedInInfo, EmailLog emailLog) {
         this.emailLog = emailLog;
         this.loggedInInfo = loggedInInfo;
         this.commonLabResultData = new CommonLabResultData();
     }
 
+    /**
+     * Generates a comprehensive clinical note from the email log data.
+     *
+     * <p>This method constructs a formatted clinical note that includes all relevant information
+     * from the email communication. The note follows a standardized structure to ensure consistency
+     * across the EMR system and compliance with healthcare documentation requirements.</p>
+     *
+     * <p>The generated note includes:</p>
+     * <ul>
+     *   <li>Email subject and body content</li>
+     *   <li>Encryption information including password clues when applicable</li>
+     *   <li>Attached clinical documents (eForms, documents, labs, HRM documents, and forms)
+     *       with identifiers, dates, and encryption details</li>
+     *   <li>Technical metadata for audit trail (sender, recipients, timestamp, log ID)</li>
+     *   <li>Internal provider-to-provider comments when configured for display</li>
+     * </ul>
+     *
+     * <p>The method processes multiple clinical document types and includes appropriate metadata
+     * for each attachment to support clinical workflows and regulatory compliance.</p>
+     *
+     * @return String the formatted clinical note ready for insertion into the patient's chart
+     * @since 2026-01-23
+     */
     public String createNote() {
         StringBuilder noteBuilder = new StringBuilder();
         addHeader(emailLog, noteBuilder);
@@ -56,6 +127,7 @@ public class EmailNoteUtil {
         addEncryptedBody(emailLog, noteBuilder);
         addTechnicalInformation(emailLog, noteBuilder);
         addInternalComment(emailLog, noteBuilder);
+        addSentByLine(noteBuilder);
         return noteBuilder.toString();
     }
 
@@ -267,5 +339,35 @@ public class EmailNoteUtil {
 
     private String getEmailTime() {
         return DateUtils.format(TIME_FORMAT, emailLog.getTimestamp(), null);
+    }
+
+    private void addSentByLine(StringBuilder noteBuilder) {
+        String dateTime = DateUtils.format(SENT_DATE_FORMAT, emailLog.getTimestamp(), null);
+        String displayName = resolveProviderDisplayName();
+        noteBuilder.append("\n\n[Sent on ").append(dateTime);
+        if (!displayName.isBlank()) {
+            noteBuilder.append(" by ").append(displayName);
+        }
+        noteBuilder.append("]");
+    }
+
+    /**
+     * Resolves the display name for the logged-in provider.
+     *
+     * <p>Uses the custom signature from {@link ProviderExt} if configured,
+     * otherwise falls back to the provider's full name — consistent with
+     * encounter note sign &amp; save behaviour.
+     *
+     * @return String the display name to use in the sent-by line
+     */
+    private String resolveProviderDisplayName() {
+        Provider provider = loggedInInfo.getLoggedInProvider();
+        if (provider == null) return "";
+        ProviderExt pe = providerExtDao.find(provider.getProviderNo());
+        return Optional.ofNullable(pe)
+                .map(ProviderExt::getSignature)
+                .filter(sig -> !sig.isBlank())
+                .map(String::trim)
+                .orElseGet(provider::getFullName);
     }
 }

@@ -39,7 +39,7 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 public class RxHideCpp2Action extends ActionSupport {
@@ -69,6 +69,8 @@ public class RxHideCpp2Action extends ActionSupport {
         }
         drugDao.merge(drug);
         try {
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
             response.getWriter().println("ok");
         } catch (IOException e) {
             logger.error("error", e);

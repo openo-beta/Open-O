@@ -41,6 +41,7 @@
 
 <%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%@ page import="java.util.*, ca.openosp.openo.util.*, ca.openosp.OscarProperties" %>
 <!DOCTYPE HTML >
 
@@ -321,15 +322,22 @@
         var queueID;
 
         function showDocInQueue(qid) {
-            $('docs').innerHTML = '';
+            var docsContainer = $('docs');
+            while (docsContainer.firstChild) {
+                docsContainer.removeChild(docsContainer.firstChild);
+            }
             var docs = queueDocNos[qid];
             nowChildId = 'docs';
             nowMultiple = 1;
             nowDocLabIds = new Array();
-            for (var i = docs.length - 1; i > -1; i--) {
+            for (var i = 0; i < docs.length; i++) {
                 var docid = docs[i];
                 nowDocLabIds.push(docid);
+                var placeholder = document.createElement('div');
+                placeholder.id = 'docPlaceholder_' + docid.replace(' ', '');
+                docsContainer.appendChild(placeholder);
             }
+            nowDocLabIds.reverse();
             queueID = qid;
             showFirstTime();
         }
@@ -881,12 +889,13 @@
             //create child element in docViews
             docNo = docNo.replace(' ', '');//trim
             var type = checkType(docNo);
-            //oscarLog('type'+type);
-            //var div=childId;
 
-            //var div=window.frames[0].document.getElementById(childId);
-            var div = $(childId);
-            //alert(div);
+            var placeholder = document.getElementById('docPlaceholder_' + docNo);
+            var div = placeholder || document.getElementById(childId);
+            if (!div) {
+                console.error('showDocLab: target element not found for docNo=' + docNo);
+                return;
+            }
             var url = '';
             if (type == 'DOC')
                 url = "<%= request.getContextPath() %>/documentManager/showDocument.jsp";
@@ -899,19 +908,39 @@
             else
                 url = "";
 
-            //oscarLog('url='+url);
-            var data = "segmentID=" + docNo + "&providerNo=" + providerNo + "&searchProviderNo=" + searchProviderNo + "&status=" + status + "&demoName=" + demoName;
-            if (inQueue)
-                data += "&inQueue=" + inQueue;
-            // oscarLog('url='+url+'+-+ \n data='+data+"----div:"+div);
-            new Ajax.Updater(div, url, {
-                method: 'get',
-                parameters: data,
-                insertion: Insertion.Bottom,
-                evalScripts: true,
-                onSuccess: function (transport) {
-                    focusFirstDocLab();
+            var data = "segmentID=" + encodeURIComponent(docNo)
+                + "&providerNo=" + encodeURIComponent(providerNo)
+                + "&searchProviderNo=" + encodeURIComponent(searchProviderNo)
+                + "&status=" + encodeURIComponent(status)
+                + "&demoName=" + encodeURIComponent(demoName);
+            if (inQueue) {
+                data += "&inQueue=" + encodeURIComponent(inQueue);
+            }
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    '<csrf:tokenname/>': '<csrf:tokenvalue/>'
+                },
+                credentials: 'same-origin',
+                body: data
+            })
+            .then(function (response) {
+                if (!response.ok) { throw new Error('Failed to load document'); }
+                return response.text();
+            })
+            .then(function (html) {
+                if (placeholder) {
+                    jQuery(div).html(html);
+                } else {
+                    jQuery(div).append(html);
                 }
+                focusFirstDocLab();
+            })
+            .catch(function (err) {
+                console.error('Error loading document/lab:', err);
             });
 
         }

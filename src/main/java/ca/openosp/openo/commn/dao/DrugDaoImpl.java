@@ -1,29 +1,5 @@
 //CHECKSTYLE:OFF
-/**
- * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- * <p>
- * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
- * This software is published under the GPL GNU General Public License.
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * <p>
- * This software was written for
- * Centre for Research on Inner City Health, St. Michael's Hospital,
- * Toronto, Ontario, Canada
- * <p>
- * Modifications made by Magenta Health in 2024.
- */
+
 package ca.openosp.openo.commn.dao;
 
 import java.math.BigInteger;
@@ -254,9 +230,9 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
             boolean b = true;
             for (int i = 0; i < rt.size(); i++) {
                 Drug p2 = rt.get(i);
-                if (p2.getGcnSeqNo() == drug.getGcnSeqNo()) {
+                if (p2.getGcnSeqNo() != null && p2.getGcnSeqNo().equals(drug.getGcnSeqNo())) {
 
-                    if (p2.getGcnSeqNo() != 0) { // not custom - safe GCN
+                    if (! "0".equals(p2.getGcnSeqNo())) { // not custom - safe GCN
 
                         b = false;
                     } else {// custom
@@ -416,7 +392,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     @Override
     public Drug findByEverything(String providerNo, int demographicNo, Date rxDate, Date endDate, Date writtenDate,
-                                 String brandName, int gcn_SEQNO, String customName, float takeMin, float takeMax, String frequencyCode,
+                                 String brandName, String gcn_SEQNO, String customName, float takeMin, float takeMax, String frequencyCode,
                                  String duration, String durationUnit, String quantity, String unitName, int repeat, Date lastRefillDate,
                                  boolean nosubs, boolean prn, String escapedSpecial, String outsideProviderName, String outsideProviderOhip,
                                  boolean customInstr, Boolean longTerm, boolean customNote, Boolean pastMed,
@@ -542,7 +518,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     @Override
     public Integer findLastNotArchivedId(String brandName, String genericName, int demographicNo) {
         Query query = entityManager.createQuery(
-                "SELECT max(d.id) from Drug d where d.archived = 0 AND d.archivedReason='' AND d.brandName = :bn AND d.genericName = :gn  AND d.demographicId = :dn");
+                "SELECT max(d.id) from Drug d where d.archived = false AND d.archivedReason='' AND d.brandName = :bn AND d.genericName = :gn  AND d.demographicId = :dn");
         query.setParameter("bn", brandName);
         query.setParameter("gn", genericName);
         query.setParameter("dn", demographicNo);
@@ -597,7 +573,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     @Override
     public List<Drug> findLongTermDrugsByDemographic(Integer demographicId) {
-        String sqlCommand = "select x from Drug x where x.demographicId=?1 and x.archived = 0 and x.longTerm = 1";
+        String sqlCommand = "select x from Drug x where x.demographicId=?1 and x.archived = false and x.longTerm = 1";
 
         Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, demographicId);
@@ -608,6 +584,17 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     }
 
+    @Override
+    public List<Drug> findBy(int scriptNo, int demographicNo) {
+        TypedQuery<Drug> drugQuery = entityManager.createQuery(
+            "SELECT d FROM Drug d WHERE d.scriptNo = :scriptNo AND d.demographicId = :demoId " +
+                "ORDER BY d.position DESC, d.rxDate DESC, d.id ASC", Drug.class
+        );
+        drugQuery.setParameter("scriptNo", scriptNo);
+        drugQuery.setParameter("demoId", demographicNo);
+
+        return drugQuery.getResultList();
+    }
     /**
      * Finds special instructions that match a given query string.
      *

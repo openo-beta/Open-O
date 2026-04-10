@@ -24,7 +24,7 @@
 
 --%>
 <%@ page
-        import="ca.openosp.openo.providers.data.*, ca.openosp.openo.rx.data.*,ca.openosp.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
+        import="ca.openosp.openo.providers.data.*,ca.openosp.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -237,10 +237,14 @@
 
         <script type="text/javascript">
             function resetStash() {
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
+
+                var url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearStash";
                 var data = "";
+                console.log(url);
                 new Ajax.Request(url, {
-                    method: 'post', parameters: data, onSuccess: function (transport) {
+                    method: 'post', parameters: data,
+                  requestHeaders: {'Accept': 'application/json'},
+                  onSuccess: function (transport) {
                         parent.document.getElementById('rxText').innerHTML = "";//make pending prescriptions disappear.
                         parent.document.getElementById('searchString').focus();
                     }
@@ -248,7 +252,7 @@
             }
 
             function resetReRxDrugList() {
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
+                var url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
                 var data = "";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data
@@ -260,8 +264,6 @@
                 var useSC = false;
                 var scAddress = "";
                 var rxPageSize = $('printPageSize').value;
-                console.log("rxPagesize  " + rxPageSize);
-
                 <% if(vecAddressName != null) { %>
                 useSC = true;
                 <%for(int i=0; i<vecAddressName.size(); i++) {%>
@@ -286,7 +288,7 @@
             }
 
             function setDefaultAddr() {
-                var url = "setDefaultAddr.jsp";
+                var url = '<c:out value="${ctx}"/>/oscarRx/setDefaultAddr.jsp';
                 var ran_number = Math.round(Math.random() * 1000000);
                 var addr = encodeURIComponent(document.getElementById('addressSel').value);
                 var params = "addr=" + addr + "&rand=" + ran_number;
@@ -294,10 +296,10 @@
             }
 
 
+
             function addNotes() {
 
-
-                var url = "oscarRx/AddRxComment.jsp";
+                var url = '<c:out value="${ctx}"/>/oscarRx/AddRxComment.jsp';
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
                 var params = "scriptNo=<%=request.getAttribute("scriptId")%>&comment=" + comment + "&rand=" + ran_number;  //]
@@ -330,7 +332,7 @@
             }
 
             function printPaste2Parent(print, fax, pasteRx) {
-                //console.log("in printPaste2Parent");
+
                 try {
                     text = "";
                     <% if (props.isPropertyActive("rx_paste_asterisk")) { %>
@@ -420,7 +422,7 @@
 						"&additionalNotes=" +
 						"&body="+ encodeURIComponent(text),
 				onSuccess:function(ret){
-					//console.log("success")
+
 					if (print) {
 						printIframe();
 					}
@@ -674,7 +676,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         }
 
                                         function ShowDrugInfo(drug) {
-                                            window.open("drugInfo.do?GN=" + escape(drug), "_blank",
+                                            window.open('<c:out value="${ctx}"/>/oscarRx/drugInfo.do?GN=' + encodeURIComponent(drug), "_blank",
                                                 "location=no, menubar=no, toolbar=no, scrollbars=yes, status=yes, resizable=yes");
                                         }
 

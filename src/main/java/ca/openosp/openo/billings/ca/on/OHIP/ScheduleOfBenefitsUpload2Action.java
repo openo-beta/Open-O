@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 
 import ca.openosp.OscarProperties;
 
@@ -44,10 +45,12 @@ import ca.openosp.OscarProperties;
 /**
  * @author Jay Gallagher
  */
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
-public class ScheduleOfBenefitsUpload2Action extends ActionSupport {
+public class ScheduleOfBenefitsUpload2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -70,9 +73,15 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport {
         boolean updateAnaesthetistFees = checkBox(request.getParameter("updateAnaesthetistFees"));
         BigDecimal updateAssistantFeesValue = updateAssistantFees ? getBDValue(request.getParameter("updateAssistantFeesValue")) : null;
         BigDecimal updateAnaesthetistFeesValue = updateAnaesthetistFees ? getBDValue(request.getParameter("updateAnaesthetistFeesValue")) : null;
+        if (importFileOnDisk == null) {
+            request.setAttribute("outcome", "exception");
+            request.setAttribute("warnings", warnings);
+            return SUCCESS;
+        }
+
         try {
 
-            InputStream is = new java.io.FileInputStream(importFile);
+            InputStream is = new java.io.FileInputStream(importFileOnDisk);
 
             ScheduleOfBenefits sob = new ScheduleOfBenefits();
             String codeChanges = request.getParameter("showChangedCodes");
@@ -156,27 +165,23 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport {
         return isAdded;
     }
 
-    private File importFile;          // 上传的文件
-    private String importFileFileName; // 上传文件的名称
+    private UploadedFile importFile;
+    private File importFileOnDisk;
+    private String importFileFileName;
+    private String importFileContentType;
     private boolean updateAssistantFees;
     private boolean updateAnaesthetistFees;
     private BigDecimal updateAssistantFeesValue;
     private BigDecimal updateAnaesthetistFeesValue;
 
-    public File getImportFile() {
-        return importFile;
-    }
-
-    public void setImportFile(File importFile) {
-        this.importFile = importFile;
-    }
-
-    public String getImportFileFileName() {
-        return importFileFileName;
-    }
-
-    public void setImportFileFileName(String importFileFileName) {
-        this.importFileFileName = importFileFileName;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
+            this.importFileFileName = importFile.getOriginalName();
+            this.importFileContentType = importFile.getContentType();
+        }
     }
 
     public boolean isUpdateAssistantFees() {

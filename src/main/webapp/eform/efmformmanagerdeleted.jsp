@@ -25,6 +25,7 @@
 --%>
 <%@ page import="ca.openosp.openo.eform.data.*, ca.openosp.openo.eform.*, java.util.*" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
@@ -94,7 +95,7 @@
                    onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=curForm.get("fid")%>', '<%="FormD"+i%>'); return false;"><%=curForm.get("formName")%>
             </a></td>
             <td><%=curForm.get("formSubject")%>&nbsp;</td>
-            <td><%=curForm.get("formFileName")%>
+            <td><%=Encode.forHtmlContent(curForm.get("formFileName") != null ? curForm.get("formFileName").toString() : "")%>
             </td>
             <td><%=curForm.get("formDate")%>
             </td>
