@@ -84,99 +84,11 @@
 
 
 
-<style>
-    /* Container for the drug-maintenance-switch */
-    .drug-maintenance-switch {
-        top: -2px;
-        position: relative;
-        width: 34px;
-        height: 16px;
-    }
-
-    /* Hide the default checkbox */
-    .drug-maintenance-switch-input {
-        display: none;
-    }
-
-    /* Style the switch track */
-    .drug-maintenance-switch-label {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #dfdfdf;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        border-radius: 5%;
-    }
-
-    /* Style the toggle knob, default label to blank if unchecked */
-    .drug-maintenance-switch-label::after {
-        text-align: center;
-        content: '';
-        font-size: xx-small;
-        font-stretch: extra-expanded;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        width: 12px;
-        height: 12px;
-        background-color: #FFFFFFAF;
-        border-radius: 50%;
-        transition: transform 0.3s, content 0.3s, width 0.3s, height 0.3s, border-radius 0.3s;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Change Label to LT (long term) when checked */
-    .drug-maintenance-switch-input:checked + .drug-maintenance-switch-label::after {
-        content: 'LT'; /* Change label when checked */
-        transform: translateX(14px);
-        border-radius: 5%;
-        width: 16px;
-        height: 12px;
-        color: white;
-        background-color: #1e7e34AF;
-    }
-
-    /* Disabled State Styling */
-    .drug-maintenance-switch-input:disabled + .drug-maintenance-switch-label {
-        background-color: #e0e0e0;
-        cursor: not-allowed;
-    }
-
-    /* Disabled State: Handle appearance */
-    .drug-maintenance-switch-input:disabled:checked + .drug-maintenance-switch-label::after {
-        background-color: #1e7e349F;
-        transform: translateX(14px);
-        content: 'LT';
-        width: 16px;
-        height: 12px;
-        border-radius: 5%;
-    }
-
-    .list-drugs td:nth-child(5) {
-        word-break: break-word;
-        white-space: normal;
-    }
-
-
-</style>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     SecurityManager securityManager = new SecurityManager();
     PartialDateDao partialDateDao = SpringUtils.getBean(PartialDateDao.class);
-
-    boolean showall = false;
-    if (request.getParameter("show") != null) {
-        if (request.getParameter("show").equals("all")) {
-            showall = true;
-        }
-    }
 
     CodingSystemManager codingSystemManager = SpringUtils.getBean(CodingSystemManager.class);
 
@@ -233,11 +145,7 @@
             List<Drug> prescriptDrugs = null;
             CaseManagementManager caseManagementManager = SpringUtils.getBean(CaseManagementManager.class);
 
-            if (showall) {
-                prescriptDrugs = caseManagementManager.getPrescriptions(loggedInInfo, patient.getDemographicNo(), showall);
-            } else {
-                prescriptDrugs = caseManagementManager.getCurrentPrescriptions(patient.getDemographicNo());
-            }
+            prescriptDrugs = caseManagementManager.getPrescriptions(loggedInInfo, patient.getDemographicNo(), true);
 
             DrugReasonDao drugReasonDao = SpringUtils.getBean(DrugReasonDao.class);
 
@@ -269,29 +177,6 @@
                     isPrevAnnotation = true;
                 }
 
-                if (request.getParameter("status") != null) { //TODO: Redo this in a better way
-                    String stat = request.getParameter("status");
-                    if (stat.equals("active") && !prescriptDrug.isLongTerm() && !prescriptDrug.isCurrent()) {
-                        continue;
-                    } else if (stat.equals("inactive") && prescriptDrug.isCurrent()) {
-                        continue;
-                    }
-                }
-                if (request.getParameter("longTermOnly") != null && request.getParameter("longTermOnly").equals("true")) {
-                    if (!prescriptDrug.isLongTerm()) {
-                        continue;
-                    }
-                }
-
-                if (request.getParameter("longTermOnly") != null && request.getParameter("longTermOnly").equals("acute")) {
-                    if (prescriptDrug.isLongTerm()) {
-                        continue;
-                    }
-                }
-                if (request.getParameter("drugLocation") != null && request.getParameter("drugLocation").equals("external")) {
-                    if (!prescriptDrug.isExternal())
-                        continue;
-                }
 //add all long term med drugIds to an array.
                 styleColor = getClassColour(prescriptDrug, now, month);
                 String specialText = prescriptDrug.getSpecial();
@@ -301,7 +186,10 @@
 
                 boolean startDateUnknown = prescriptDrug.getStartDateUnknown();
         %>
-        <tr>
+        <tr data-is-archived="<%= prescriptDrug.isArchived() %>"
+            data-is-longterm="<%= prescriptDrug.isLongTerm() %>"
+            data-is-current="<%= prescriptDrug.isCurrent() %>"
+            data-is-external="<%= prescriptDrug.isExternal() %>">
 
         <td><a id="createDate_<%=prescriptIdInt%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=DateToString(prescriptDrug.getCreateDate())%></a></td>
             <td>
@@ -524,7 +412,7 @@
 
 <script type="text/javascript">
 
-    drugListTable = jQuery('#${e:forJavaScript(drugTableId)}').dataTable({
+    window.drugListTableConfig = window.drugListTableConfig || {
       bStateSave: true,
       fnStateSave: function (oSettings, oData) {
         localStorage.setItem('drugListTable', JSON.stringify(oData));
@@ -577,7 +465,8 @@
 
       // order: [[4, 'desc']]
 
-    });
+    };
+    drugListTable = jQuery('#${e:forJavaScript(drugTableId)}').dataTable(window.drugListTableConfig);
 </script>
 <%!
 
