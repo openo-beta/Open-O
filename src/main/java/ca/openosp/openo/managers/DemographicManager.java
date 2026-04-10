@@ -108,16 +108,9 @@ public interface DemographicManager {
 
     public void deleteExtension(LoggedInInfo loggedInInfo, DemographicExt ext);
 
-    public void mergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children);
-
-    public void unmergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children);
-
     public Long getActiveDemographicCount(LoggedInInfo loggedInInfo);
 
     public List<Demographic> getActiveDemographics(LoggedInInfo loggedInInfo, int offset, int limit);
-
-    public List<DemographicMerged> getMergedDemographics(LoggedInInfo loggedInInfo, Integer parentId);
-
 
     public String getDemographicWorkPhoneAndExtension(LoggedInInfo loggedInInfo, Integer demographicNo);
 

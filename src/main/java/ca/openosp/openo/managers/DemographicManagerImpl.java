@@ -84,10 +84,6 @@ public class DemographicManagerImpl implements DemographicManager {
     private DemographicCustArchiveDao demographicCustArchiveDao;
 
     @Autowired
-    private DemographicMergedDao demographicMergedDao;
-
-
-    @Autowired
     private AdmissionDao admissionDao;
 
     @Autowired
@@ -617,38 +613,6 @@ public class DemographicManagerImpl implements DemographicManager {
     }
 
     @Override
-    public void mergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children) {
-        for (Integer child : children) {
-            DemographicMerged dm = new DemographicMerged();
-            dm.setDemographicNo(child);
-            dm.setMergedTo(parentId);
-            demographicMergedDao.persist(dm);
-
-            // --- log action ---
-            LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.mergeDemographics", "id=" + dm.getId());
-        }
-
-    }
-
-    @Override
-    public void unmergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children) {
-        for (Integer childId : children) {
-            List<DemographicMerged> dms = demographicMergedDao.findByParentAndChildIds(parentId, childId);
-            if (dms.isEmpty()) {
-                throw new IllegalArgumentException(
-                        "Unable to find merge record for parent " + parentId + " and child " + childId);
-            }
-            for (DemographicMerged dm : demographicMergedDao.findByParentAndChildIds(parentId, childId)) {
-                dm.setDeleted(1);
-                demographicMergedDao.merge(dm);
-
-                // --- log action ---
-                LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.unmergeDemographics", "id=" + dm.getId());
-            }
-        }
-    }
-
-    @Override
     public Long getActiveDemographicCount(LoggedInInfo loggedInInfo) {
         Long count = demographicDao.getActiveDemographicCount();
 
@@ -674,27 +638,6 @@ public class DemographicManagerImpl implements DemographicManager {
         return result;
     }
 
-    /**
-     * Gets all merged demographic for the specified parent record ID
-     *
-     * @param parentId ID of the parent demographic record
-     * @return Returns all merged demographic records for the specified parent id.
-     */
-    @Override
-    public List<DemographicMerged> getMergedDemographics(LoggedInInfo loggedInInfo, Integer parentId) {
-        List<DemographicMerged> result = demographicMergedDao.findCurrentByMergedTo(parentId);
-
-        if (result != null) {
-            for (DemographicMerged d : result) {
-                // --- log action ---
-                LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.getMergedDemogrpaphics result",
-                        "demographicNo=" + d.getDemographicNo());
-            }
-
-        }
-
-        return result;
-    }
 
 
 
