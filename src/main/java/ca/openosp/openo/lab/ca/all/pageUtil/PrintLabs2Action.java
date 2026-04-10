@@ -66,15 +66,20 @@ public class PrintLabs2Action extends ActionSupport {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() {
+        String segmentID = request.getParameter("segmentID");
+        if (segmentID == null || !segmentID.matches("^[0-9]+$")) {
+            logger.error("Invalid segmentID parameter");
+            return "error";
+        }
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "r", null)) {
             throw new SecurityException("missing required sec object (_lab)");
         }
 
-        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.READ, LogConst.CON_HL7_LAB, request.getParameter("segmentID"), request.getRemoteAddr(), "");
+        LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.READ, LogConst.CON_HL7_LAB, segmentID, request.getRemoteAddr(), "");
 
         try {
-            MessageHandler handler = Factory.getHandler(request.getParameter("segmentID"));
+            MessageHandler handler = Factory.getHandler(segmentID);
             if (handler.getHeaders().get(0).equals("CELLPATHR")) {//if it is a VIHA RTF lab
                 response.setContentType("text/rtf");  //octet-stream
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + handler.getPatientName().replaceAll("\\s", "_") + "_LabReport.rtf\"");
@@ -85,10 +90,6 @@ public class PrintLabs2Action extends ActionSupport {
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + handler.getPatientName().replaceAll("\\s", "_") + "_LabReport.pdf\"");
 
                 //first write to a file
-                String segmentID = request.getParameter("segmentID");
-                if (segmentID == null || !segmentID.matches("^[0-9]+$")) {
-                    throw new IllegalArgumentException("Invalid segmentID");
-                }
                 File f = File.createTempFile("lab" + segmentID, "pdf");
                 FileOutputStream fos = new FileOutputStream(f);
                 LabPDFCreator pdf = new LabPDFCreator(request, fos);

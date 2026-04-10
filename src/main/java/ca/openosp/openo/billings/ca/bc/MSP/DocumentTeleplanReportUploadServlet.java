@@ -96,11 +96,10 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet {
                 } else {
                     String pathName = item.getName();
                     String[] fullFile = pathName.split("[/|\\\\]");
-                    File savedFile = new File(foldername, fullFile[fullFile.length - 1]);
-
                     fileheader = fullFile[fullFile.length - 1];
-
-                    item.write(savedFile);
+                    File folderDir = new File(foldername);
+                    File validatedFile = PathValidationUtils.validatePath(fileheader, folderDir);
+                    item.write(validatedFile);
                 }
             }
         } catch (FileUploadException e) {

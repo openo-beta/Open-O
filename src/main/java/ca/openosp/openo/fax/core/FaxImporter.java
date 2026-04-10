@@ -282,6 +282,8 @@ public class FaxImporter {
         filename = newDoc.getFileName();
         File docDir = new File(DOCUMENT_DIR);
         File validatedDest = PathValidationUtils.validatePath(filename, docDir);
+        filename = validatedDest.getName();
+        newDoc.setFileName(filename);
 
         if (Base64.decodeToFile(faxFile.getDocument(), validatedDest.getPath())) {
 

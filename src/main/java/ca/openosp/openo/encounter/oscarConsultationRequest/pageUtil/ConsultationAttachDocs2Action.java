@@ -179,8 +179,13 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
 
         // Validate and sanitize the file path to prevent path traversal attacks
         String documentDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        if (documentDir == null || documentDir.trim().isEmpty()) {
+            logger.error("DOCUMENT_DIR property not configured");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
         File validatedFile = (fileName != null) ? PathValidationUtils.validatePath(fileName, new File(documentDir)) : null;
-        Path validatedPath = (validatedFile != null && validatedFile.exists()) ? validatedFile.toPath() : null;
+        Path validatedPath = (validatedFile != null && validatedFile.isFile()) ? validatedFile.toPath() : null;
         if (validatedPath == null) {
             logger.error("Invalid file path requested: " + fileName);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -211,7 +216,8 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
 
         String segmentID = request.getParameter("segmentID");
         if (segmentID == null || !segmentID.matches("^[0-9]+$")) {
-            throw new IllegalArgumentException("Invalid segmentID");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
         request.setAttribute("segmentID", segmentID);
         try {
@@ -239,14 +245,11 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         String formId = request.getParameter("formId");
         String formName = request.getParameter("formName");
         String demographicNo = request.getParameter("demographicNo");
-        if (formId == null || !formId.matches("^[0-9]+$")) {
-            throw new IllegalArgumentException("Invalid formId");
-        }
-        if (demographicNo == null || !demographicNo.matches("^[0-9]+$")) {
-            throw new IllegalArgumentException("Invalid demographicNo");
-        }
-        if (formName == null || formName.isEmpty()) {
-            throw new IllegalArgumentException("Invalid formName");
+        if (formId == null || !formId.matches("^[0-9]+$")
+                || demographicNo == null || !demographicNo.matches("^[0-9]+$")
+                || formName == null || formName.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
         // Encode params to prevent path injection in dispatcher URL
         String encodedFormName = java.net.URLEncoder.encode(formName, java.nio.charset.StandardCharsets.UTF_8);

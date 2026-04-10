@@ -121,6 +121,9 @@ public final class IncomingDocUtil {
     }
 
     public static String getIncomingDocumentFilePathName(String queueId, String pdfDir, String pdfName) {
+        if (pdfName == null || pdfName.isEmpty()) {
+            throw new IllegalArgumentException("pdfName cannot be null or empty");
+        }
         String filePathName = getIncomingDocumentFilePath(queueId, pdfDir);
 
         File baseDir = new File(filePathName);
@@ -130,6 +133,9 @@ public final class IncomingDocUtil {
     }
 
     public static String getAndCreateIncomingDocumentFilePathName(String queueId, String pdfDir, String pdfName) {
+        if (pdfName == null || pdfName.isEmpty()) {
+            throw new IllegalArgumentException("pdfName cannot be null or empty");
+        }
         String filePathName = getAndCreateIncomingDocumentFilePath(queueId, pdfDir);
 
         File baseDir = new File(filePathName);
@@ -144,6 +150,10 @@ public final class IncomingDocUtil {
         String basePath = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
         if (basePath == null || basePath.isEmpty()) {
             throw new IllegalStateException("INCOMINGDOCUMENT_DIR property not configured");
+        }
+
+        if (queueId == null || queueId.isEmpty()) {
+            throw new IllegalArgumentException("queueId cannot be null or empty");
         }
 
         // Validate queueId as a path component within INCOMINGDOCUMENT_DIR
@@ -188,6 +198,10 @@ public final class IncomingDocUtil {
             throw new IllegalStateException("INCOMINGDOCUMENT_DIR property not configured");
         }
 
+        if (queueId == null || queueId.isEmpty()) {
+            throw new IllegalArgumentException("queueId cannot be null or empty");
+        }
+
         // Validate queueId as a path component within INCOMINGDOCUMENT_DIR
         File baseDir = new File(basePath);
         File queueDir = PathValidationUtils.validatePath(queueId, baseDir);
@@ -211,11 +225,8 @@ public final class IncomingDocUtil {
 
         File filePathDir = new File(filePath);
 
-        if (!filePathDir.exists()) {
-            boolean created = filePathDir.mkdirs();
-            if (!created) {
-                logger.warn("Failed to create directory: " + filePathDir.getPath());
-            }
+        if (!filePathDir.exists() && !filePathDir.mkdirs() && !filePathDir.isDirectory()) {
+            throw new IllegalStateException("Failed to create directory: " + filePathDir.getPath());
         }
 
         return filePathDir.getPath();
@@ -229,9 +240,10 @@ public final class IncomingDocUtil {
 
         String basePath = getIncomingDocumentFilePath(queueId, myPdfDir);
         File baseDir = new File(basePath);
-        File tempFile = PathValidationUtils.validatePath("T" + myPdfName, baseDir);
+        String safePdfName = PathValidationUtils.validatePath(myPdfName, baseDir).getName();
+        File tempFile = PathValidationUtils.validatePath("T" + safePdfName, baseDir);
         tempFilePathName = tempFile.getPath();
-        filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, myPdfName);
+        filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, safePdfName);
 
         File f = new File(filePathName);
         lastModified = f.lastModified();
@@ -288,9 +300,10 @@ public final class IncomingDocUtil {
 
         String basePath = getIncomingDocumentFilePath(queueId, myPdfDir);
         File baseDir = new File(basePath);
-        File tempFile = PathValidationUtils.validatePath("T" + myPdfName, baseDir);
+        String safePdfName = PathValidationUtils.validatePath(myPdfName, baseDir).getName();
+        File tempFile = PathValidationUtils.validatePath("T" + safePdfName, baseDir);
         tempFilePathName = tempFile.getPath();
-        filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, myPdfName);
+        filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, safePdfName);
 
         File f = new File(filePathName);
         lastModified = f.lastModified();
@@ -346,9 +359,10 @@ public final class IncomingDocUtil {
 
         String basePath = getIncomingDocumentFilePath(queueId, myPdfDir);
         File baseDir = new File(basePath);
-        File tempFile = PathValidationUtils.validatePath("T" + myPdfName, baseDir);
+        String safePdfName = PathValidationUtils.validatePath(myPdfName, baseDir).getName();
+        File tempFile = PathValidationUtils.validatePath("T" + safePdfName, baseDir);
         tempFilePathName = tempFile.getPath();
-        filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, myPdfName);
+        filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, safePdfName);
 
         File f = new File(filePathName);
         lastModified = f.lastModified();
@@ -356,10 +370,10 @@ public final class IncomingDocUtil {
 
         String deletePath = getIncomingDocumentDeletedFilePath(queueId, myPdfDir) + File.separator;
         String deletePathFileName = "";
-        int index = myPdfName.indexOf(".pdf");
+        int index = safePdfName.indexOf(".pdf");
 
-        String myPdfNameF = myPdfName.substring(0, index);
-        String myPdfNameExt = myPdfName.substring(index, myPdfName.length());
+        String myPdfNameF = safePdfName.substring(0, index);
+        String myPdfNameExt = safePdfName.substring(index, safePdfName.length());
 
         PdfReader reader = null;
         Document document = null;
@@ -434,18 +448,19 @@ public final class IncomingDocUtil {
 
         String basePath = getIncomingDocumentFilePath(queueId, myPdfDir);
         File baseDir = new File(basePath);
-        File tempFile = PathValidationUtils.validatePath("T" + myPdfName, baseDir);
+        String safePdfName = PathValidationUtils.validatePath(myPdfName, baseDir).getName();
+        File tempFile = PathValidationUtils.validatePath("T" + safePdfName, baseDir);
         tempFilePathName = tempFile.getPath();
-        filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, myPdfName);
+        filePathName = getIncomingDocumentFilePathName(queueId, myPdfDir, safePdfName);
 
         File f = new File(filePathName);
         lastModified = f.lastModified();
         f.setReadOnly();
 
         String extractBasePath = getIncomingDocumentFilePath(queueId, myPdfDir);
-        int index = myPdfName.toLowerCase().indexOf(".pdf");
-        String myPdfNameF = myPdfName.substring(0, index);
-        String myPdfNameExt = myPdfName.substring(index, myPdfName.length());
+        int index = safePdfName.toLowerCase().indexOf(".pdf");
+        String myPdfNameF = safePdfName.substring(0, index);
+        String myPdfNameExt = safePdfName.substring(index, safePdfName.length());
 
         ArrayList<String> extractList = new ArrayList<String>();
         int startPage, endPage;

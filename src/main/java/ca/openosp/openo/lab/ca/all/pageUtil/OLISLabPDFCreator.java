@@ -121,7 +121,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
             String uuidToAdd = request.getParameter("uuid");
-            if (uuidToAdd == null) {
+            if (uuidToAdd == null || uuidToAdd.trim().isEmpty()) {
                 throw new SecurityException("Invalid uuid parameter");
             }
             File tmpDir = new File(System.getProperty("java.io.tmpdir"));

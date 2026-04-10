@@ -59,7 +59,13 @@
         filetype = request.getParameter("type");
         doc_no = request.getParameter("doc_no");
         File docDir = new File(docdownload);
-        File validatedFile = PathValidationUtils.validatePath(filename, docDir);
+        File validatedFile = null;
+        try {
+            validatedFile = PathValidationUtils.validatePath(filename, docDir);
+        } catch (SecurityException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
         filename = validatedFile.getName();
         String filePath = validatedFile.getPath();
         if (filetype.compareTo("active") == 0) {

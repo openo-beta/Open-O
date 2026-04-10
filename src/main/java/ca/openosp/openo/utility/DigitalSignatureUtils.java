@@ -43,8 +43,8 @@ public class DigitalSignatureUtils {
     }
 
     public static String getTempFilePath(String signatureRequestId) {
-        if (signatureRequestId == null) {
-            throw new SecurityException("Invalid signature request ID");
+        if (signatureRequestId == null || signatureRequestId.trim().isEmpty()) {
+            return null;
         }
         File tmpDir = new File(System.getProperty("java.io.tmpdir"));
         File validatedFile = PathValidationUtils.validatePath(

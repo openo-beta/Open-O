@@ -897,7 +897,9 @@ public class JdbcBillingCreateBillingFile {
         propBillingNo = new Properties();
         RandomAccessFile raf = null;
         try {
-            raf = new RandomAccessFile(home_dir + ohipFilename, "r");
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(ohipFilename, homeDir);
+            raf = new RandomAccessFile(validatedFile, "r");
             do {
                 String lineValue = raf.readLine();
                 if (lineValue == null) {
@@ -937,12 +939,13 @@ public class JdbcBillingCreateBillingFile {
     public void renameFile() {
         String home_dir;
         home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
-        File file = new File(home_dir + ohipFilename);
+        File homeDir = new File(home_dir);
+        File file = PathValidationUtils.validatePath(ohipFilename, homeDir);
 
         // new filename
         String newName = ohipFilename + "." + GregorianCalendar.getInstance().getTimeInMillis();
 
-        File file2 = new File(home_dir + newName);
+        File file2 = PathValidationUtils.validatePath(newName, homeDir);
 
         boolean success = file.renameTo(file2);
         if (!success) {

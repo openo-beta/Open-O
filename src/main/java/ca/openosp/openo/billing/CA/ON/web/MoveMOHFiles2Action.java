@@ -206,7 +206,12 @@ public class MoveMOHFiles2Action extends ActionSupport {
     }
 
     File folder = new File(folderPath);
-    return PathValidationUtils.validatePath(fileName, folder);
+    try {
+        return PathValidationUtils.validatePath(fileName, folder);
+    } catch (SecurityException e) {
+        logger.warn("Invalid file path rejected: " + fileName, e);
+        return null;
+    }
     }
 
     /**
