@@ -319,7 +319,7 @@
                                 String checkedString = (checkedEncounterFormNames.contains(encounterForm.getFormName()) ? "checked=\"checked\"" : "");
                         %>
                         <input type="checkbox" name="encounterFormName"
-                               value="<%=Encode.forHtmlAttribute(String.valueOf(nameEscaped))%>" <%=Encode.forHtml(String.valueOf(checkedString))%> /> <%=Encode.forHtml(String.valueOf(nameEscaped))%>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(nameEscaped))%>" <%=checkedString%> /> <%=Encode.forHtml(String.valueOf(nameEscaped))%>
                         <br/>
                         <%
                             }
@@ -348,7 +348,7 @@
 
                         %>
                         <input type="checkbox" name="eformId"
-                               value="<%=Encode.forHtmlAttribute(String.valueOf(eform.getId()))%>" <%=Encode.forHtml(String.valueOf(checkedString))%> /> <%=Encode.forHtml(eform.getFormName())%>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(eform.getId()))%>" <%=checkedString%> /> <%=Encode.forHtml(eform.getFormName())%>
                         <br/>
                         <%
                             }
@@ -415,7 +415,7 @@
                         boolean weekendsEnabled = showWeekendsProp == null || Boolean.parseBoolean(showWeekendsProp.getValue());
                     %>
                     <input type="checkbox" name="schedule.week_view_weekends"
-                           value="true" <%=Encode.forHtml(String.valueOf(weekendsEnabled ? "checked=\"checked\"" : ""))%> />
+                           value="true" <%=weekendsEnabled ? "checked=\"checked\"" : ""%> />
                 </td>
             </tr>
             <tr>

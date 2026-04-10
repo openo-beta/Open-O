@@ -159,7 +159,7 @@
                                         <td>
                                             <%if (specialistInField.contains(specId)) { %> <input type=checkbox
                                                                                                   name="specialists"
-                                                                                                  value=<%=Encode.forHtml(String.valueOf(specId))%> checked> <%} else {%>
+                                                                                                  value=<%=Encode.forHtmlAttribute(String.valueOf(specId))%> checked> <%} else {%>
                                             <input type=checkbox name="specialists" value=<%=specId%>>
                                             <%}%>
                                         </td>

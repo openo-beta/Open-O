@@ -285,7 +285,7 @@
         %>
         <tr>
 
-        <td><a id="createDate_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=Encode.forHtml(String.valueOf(styleColor))%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=Encode.forHtml(String.valueOf(DateToString(prescriptDrug.getCreateDate())))%></a></td>
+        <td><a id="createDate_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=Encode.forHtml(String.valueOf(DateToString(prescriptDrug.getCreateDate())))%></a></td>
             <td>
             	<% if(startDateUnknown) { %>
             		
@@ -327,7 +327,7 @@
 			}
 			
 			%>
-            <td><a id="prescrip_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=Encode.forHtml(String.valueOf(styleColor))%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"   <%=Encode.forHtml(String.valueOf(tComment))%>   ><%=Encode.forHtml(String.valueOf(RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")))%></a></td>
+            <td><a id="prescrip_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"   <%=tComment%>   ><%=Encode.forHtml(String.valueOf(RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")))%></a></td>
 			<%            			
 	           	if(securityManager.hasWriteAccess("_rx",roleName$,true)) {            		
            	%>
@@ -453,7 +453,7 @@
 						checked="checked=\"checked\"";
 					}
 				%>
-				<input type="checkbox" id="hidecpp_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=Encode.forHtml(String.valueOf(checked))%>/>
+				<input type="checkbox" id="hidecpp_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=checked%>/>
 			</td>
 			
 			<%if(OscarProperties.getInstance().getProperty("rx.enable_internal_dispensing","false").equals("true")) {%>

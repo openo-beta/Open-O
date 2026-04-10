@@ -471,7 +471,7 @@
         %>
         <c:if test="${empty sessionScope.archiveView or sessionScope.archiveView != true}">
             <%!String refresh = ca.openosp.OscarProperties.getInstance().getProperty("refresh.appointmentprovideradminday.jsp", "-1");%>
-            <%=Encode.forHtml(String.valueOf("-1".equals(refresh) ? "" : "<meta http-equiv=\"refresh\" content=\"" + refresh + "\">"))%>
+            <%="-1".equals(refresh) ? "" : "<meta http-equiv=\"refresh\" content=\"" + refresh + "\">"%>
         </c:if>
         <%
             }
@@ -2093,7 +2093,7 @@
                                                         <% }
                                                         } // end if not is week view %>
 
-                                                        <%=Encode.forHtml(String.valueOf((bShortcutIntakeForm) ? "| <a href='#' onClick='popupPage(700, 1024, \"formIntake.jsp?demographic_no=" + demographic_no + "\")' title='Intake Form'>In</a>" : ""))%>
+                                                        <%=(bShortcutIntakeForm) ? "| <a href='#' onClick='popupPage(700, 1024, \"formIntake.jsp?demographic_no=" + demographic_no + "\")' title='Intake Form'>In</a>" : ""%>
 
                                                         <!-- billing code block -->
                                                         <% if (!isWeekView) { %>
@@ -2157,7 +2157,7 @@
                                                                         }
                                                                     }
                                                                 %>
-                                                                <%=Encode.forHtml(String.valueOf((providerColor != null ? "<span style=\"background-color:" + providerColor + ";width:5px\">&nbsp;</span>" : "")))%>
+                                                                <%=(providerColor != null ? "<span style=\"background-color:" + providerColor + ";width:5px\">&nbsp;</span>" : "")%>
                                                             </oscar:oscarPropertiesCheck>
 
                                                             <span class='reason reason_<%=Encode.forHtmlAttribute(String.valueOf(curProvider_no[nProvider]))%> hideReason'>

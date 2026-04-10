@@ -2360,7 +2360,7 @@ if (userAgent != null) {
                                                                 String hourOfday = Integer.toString(i);
                                                                 String selectedHour = (hourOfday.equals(thisForm.getAppointmentHour())) ? "selected" : "";
                                                         %>
-                                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(hourOfday))%>" <%=Encode.forHtml(String.valueOf(selectedHour))%>><%=Encode.forHtml(String.valueOf(hourOfday))%>
+                                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(hourOfday))%>" <%=selectedHour%>><%=Encode.forHtml(String.valueOf(hourOfday))%>
                                                         </option>
                                                         <%
                                                             }
@@ -2376,7 +2376,7 @@ if (userAgent != null) {
                                                                 }
                                                                 String selectedMinute = (String.valueOf(i).equals(thisForm.getAppointmentMinute())) ? "selected" : "";
                                                         %>
-                                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(i)))%>" <%=Encode.forHtml(String.valueOf(selectedMinute))%>><%=Encode.forHtml(String.valueOf(minuteOfhour))%>
+                                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(i)))%>" <%=selectedMinute%>><%=Encode.forHtml(String.valueOf(minuteOfhour))%>
                                                         </option>
                                                         <%
                                                             }
@@ -2484,7 +2484,7 @@ if (userAgent != null) {
                                                     String te = (String) consultUtil.teamVec.elementAt(i);
                                                     String selectedTeam = (te.equals(thisForm.getSendTo())) ? "selected" : "";
                                             %>
-                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(te))%>" <%=Encode.forHtml(String.valueOf(selectedTeam))%>><%=Encode.forHtml(String.valueOf(te))%>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(te))%>" <%=selectedTeam%>><%=Encode.forHtml(String.valueOf(te))%>
                                             </option>
                                             <%
                                                 }
@@ -2573,7 +2573,7 @@ if (userAgent != null) {
                                             <div>
                                                 <input type="checkbox" id="ext_letterheadTitle"
                                                        name="ext_letterheadTitle"
-                                                       value="Dr" <%=Encode.forHtml(String.valueOf((consultUtil.letterheadTitle != null && consultUtil.letterheadTitle.equals("Dr") ? "checked"  : "")))%>>
+                                                       value="Dr" <%=(consultUtil.letterheadTitle != null && consultUtil.letterheadTitle.equals("Dr") ? "checked"  : "")%>>
                                                 <label for="ext_letterheadTitle">Include Dr. with name</label>
                                             </div>
                                             <%}%>

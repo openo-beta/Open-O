@@ -629,7 +629,7 @@
                                             }
                                         }
                                 %>
-                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(form.getValue()))%>" <%=Encode.forHtml(String.valueOf(selected))%> ><%=Encode.forHtml(String.valueOf(form.getLabel()))%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(form.getValue()))%>" <%=selected%> ><%=Encode.forHtml(String.valueOf(form.getLabel()))%>
                                 </option>
                                 <%
                                     }
@@ -982,7 +982,7 @@
                         <td style="text-align:center"><%=Encode.forHtml(String.valueOf(settleDate))%>
                         </td>
                         <!--SETTLE DATE-->
-                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(getHtmlSpace(ch1Obj.getTransc_id())))%>
+                        <td style="text-align:center"><%=getHtmlSpace(ch1Obj.getTransc_id())%>
                         </td>
                         <!--CODE-->
                         <td style="text-align:right"><%=Encode.forHtml(String.valueOf(getStdCurr(ch1Obj.getTotal())))%>
@@ -994,7 +994,7 @@
                         <td style="text-align:center"><%=Encode.forHtml(String.valueOf(adj.toString()))%>
                         </td>
                         <!--SETTLE DATE-->
-                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(getHtmlSpace(ch1Obj.getRec_id())))%>
+                        <td style="text-align:center"><%=getHtmlSpace(ch1Obj.getRec_id())%>
                         </td>
                         <!--DX1-->
                         <!--td>&nbsp;</td--><!--DX2-->

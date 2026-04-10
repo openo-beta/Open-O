@@ -144,7 +144,7 @@
                                                     selected = " selected=\"selected\" ";
                                                 }
                                         %>
-                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(group))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(group))%>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(group))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(group))%>
                                         </option>
                                         <% } %>
                                         <%
@@ -154,7 +154,7 @@
                                                     selected = " selected=\"selected\" ";
                                                 }
                                         %>
-                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>
                                         </option>
                                         <% } %>
                                     </select>

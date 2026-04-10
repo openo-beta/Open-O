@@ -108,7 +108,7 @@
                                         String name = wLBean.getWaitingListName();
                                         String selected = id.compareTo((String) request.getAttribute("WLId") == null ? "0" : (String) request.getAttribute("WLId")) == 0 ? "SELECTED" : "";
                                 %>
-                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(name))%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(name))%>
                                 </option>
                                 <%}%>
                             </select>
@@ -143,7 +143,7 @@
                                         String name = wLBean.getWaitingListName();
                                         String selected = id.compareTo((String) request.getAttribute("WLId") == null ? "0" : (String) request.getAttribute("WLId")) == 0 ? "SELECTED" : "";
                                 %>
-                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(name))%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(name))%>
                                 </option>
                                 <%}%>
                             </select>

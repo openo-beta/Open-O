@@ -47,7 +47,7 @@
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <title>Case Management</title>
         <%! String refresh = OscarProperties.getInstance().getProperty("refresh.encounterLayout.jsp", "-1"); %>
-        <%=Encode.forHtml(String.valueOf("-1".equals(refresh) ? "" : "<meta http-equiv=\"refresh\" content=\"" + refresh + ";\">"))%>
+        <%="-1".equals(refresh) ? "" : "<meta http-equiv=\"refresh\" content=\"" + refresh + ";\">"%>
     </head>
     <body>
     <table border="0" width="100%" cellspacing="5">

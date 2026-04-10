@@ -78,7 +78,7 @@
                 request.setAttribute("wcb", (Object) wcb);
         %>
         <tr>
-            <td><input type="radio" name="WCBid" value="<%=Encode.forHtmlAttribute(String.valueOf(wcb.getId()))%>" <%=Encode.forHtml(String.valueOf(checked(wcbid, wcb.getId())))%> /></td>
+            <td><input type="radio" name="WCBid" value="<%=Encode.forHtmlAttribute(String.valueOf(wcb.getId()))%>" <%=checked(wcbid, wcb.getId())%> /></td>
             <td><a href="javascript:void(0);"
                    onclick="checkifSet('<%=Encode.forJavaScript(String.valueOf(wcb.getW_icd9()))%>','<%=Encode.forJavaScript(String.valueOf(wcb.getW_feeitem()))%>','<%=Encode.forJavaScript(String.valueOf(wcb.getW_extrafeeitem()))%>');">Populate</a>
             </td>

@@ -146,7 +146,7 @@
                     if (templateId != null && templateId.intValue() == vt.getId().intValue())
                         selectedOrNot = "selected";
             %>
-            <option value="<%=Encode.forHtmlAttribute(String.valueOf(vt.getId()))%>" <%=Encode.forHtml(String.valueOf(selectedOrNot))%> ><%=Encode.forHtml(String.valueOf(vt.getName()))%>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(vt.getId()))%>" <%=selectedOrNot%> ><%=Encode.forHtml(String.valueOf(vt.getName()))%>
             </option>
             <%} %>
         </select></td>
@@ -172,7 +172,7 @@
 			for(CriteriaType type : typeList) {
 			*/	
 		%>
-        <%=Encode.forHtml(String.valueOf(VacancyTemplateManager.renderAllSelectOptions(templateId, vacancyId_int, type.getId())))%>
+        <%=VacancyTemplateManager.renderAllSelectOptions(templateId, vacancyId_int, type.getId())%>
         <%	}
 		%>
 

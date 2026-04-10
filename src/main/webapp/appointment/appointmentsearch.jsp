@@ -177,7 +177,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>
                     </option>
                     <%
                         }
@@ -196,7 +196,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
                     </option>
                     <%
                         }
@@ -215,7 +215,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
                     </option>
                     <%
                         }
@@ -230,7 +230,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
                     </option>
                     <%
                         }
@@ -250,7 +250,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(c.getCode()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(c.getCode()))%> - <%=Encode.forHtml(String.valueOf(c.getDescription()))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(c.getCode()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(c.getCode()))%> - <%=Encode.forHtml(String.valueOf(c.getDescription()))%>
                     </option>
                     <%
                         }
@@ -269,7 +269,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
                     </option>
                     <%
                         }

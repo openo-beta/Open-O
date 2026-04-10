@@ -212,20 +212,20 @@
                 <label class="control-label" for="limitType">Limit Type:</label>
                 <div class="controls">
                     <input type="radio" name="confirm" value="No"
-                            <%=Encode.forHtml(String.valueOf((bEdit? (dataBean.getProperty("confirm").startsWith("N")? "checked" : "") : "checked")))%>>Off
+                            <%=(bEdit? (dataBean.getProperty("confirm").startsWith("N")? "checked" : "") : "checked")%>>Off
                     <input type="radio" name="confirm" value="Yes"
-                            <%=Encode.forHtml(String.valueOf(((bEdit && dataBean.getProperty("confirm").equals("Yes"))? "checked" : "")))%>>Warning
+                            <%=((bEdit && dataBean.getProperty("confirm").equals("Yes"))? "checked" : "")%>>Warning
                     <!-- <input type="radio" name="confirm" value="Str"
-					<%=Encode.forHtml(String.valueOf((bEdit? (dataBean.getProperty("confirm").startsWith("Str")? "checked" : "") : "checked")))%>>Strict
+					<%=(bEdit? (dataBean.getProperty("confirm").startsWith("Str")? "checked" : "") : "checked")%>>Strict
 				not implimented --> <br>
                     <input type="radio" name="confirm" value="Day"
-                            <%=Encode.forHtml(String.valueOf((bEdit? (dataBean.getProperty("confirm").equals("Day")? "checked" : "") : "checked")))%>>Same
+                            <%=(bEdit? (dataBean.getProperty("confirm").equals("Day")? "checked" : "") : "checked")%>>Same
                     Day
                     <input type="radio" name="confirm" value="Wk"
-                            <%=Encode.forHtml(String.valueOf((bEdit? (dataBean.getProperty("confirm").equals("Wk")? "checked" : "") : "checked")))%>>Same
+                            <%=(bEdit? (dataBean.getProperty("confirm").equals("Wk")? "checked" : "") : "checked")%>>Same
                     Week
                     <input type="radio" name="confirm" value="Onc"
-                            <%=Encode.forHtml(String.valueOf((bEdit? (dataBean.getProperty("confirm").equals("Onc")? "checked" : "") : "checked")))%>>On-Call
+                            <%=(bEdit? (dataBean.getProperty("confirm").equals("Onc")? "checked" : "") : "checked")%>>On-Call
                     Urgent
 
                 </div>

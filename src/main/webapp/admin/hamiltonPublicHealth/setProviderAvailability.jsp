@@ -174,7 +174,7 @@
                         <%
                             String tmpUp = userPropertyDAO.getStringValue(p.getProviderNo(), "availabilityCode");
                         %>
-                        <%=Encode.forHtml(String.valueOf((tmpUp != null && tmpUp.length() > 0) ? tmpUp : "<i>Not Set</i>"))%>
+                        <%=(tmpUp != null && tmpUp.length() > 0) ? tmpUp : "<i>Not Set</i>"%>
 
                     </td>
                 </tr>

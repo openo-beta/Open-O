@@ -514,7 +514,7 @@
             } else {
 
             %>
-            <%=Encode.forHtml(String.valueOf(hrmReport.getFirstReportTextContent().replaceAll("\n", "<br />")))%>
+            <%=Encode.forHtml(hrmReport.getFirstReportTextContent()).replaceAll("\n", "<br />")%>
 
             <% } %>
 
@@ -647,7 +647,7 @@
                         <% if (providerLinkList != null && providerLinkList.size() > 0) {
                             for (HRMDocumentToProvider p : providerLinkList) {
                                 if (!p.getProviderNo().equalsIgnoreCase("-1")) { %>
-                        <%=Encode.forHtml(providerDao.getProviderName(p.getProviderNo()))%> <%=Encode.forHtml(String.valueOf(p.getSignedOff() != null && p.getSignedOff() == 1 ? "<abbr title='" + p.getSignedOffTimestamp() + "'>(Signed-Off " + p.getSignedOffTimestamp() + ")</abbr>" : ""))%>
+                        <%=Encode.forHtml(providerDao.getProviderName(p.getProviderNo()))%> <%=p.getSignedOff() != null && p.getSignedOff() == 1 ? "<abbr title='" + Encode.forHtmlAttribute(String.valueOf(p.getSignedOffTimestamp())) + "'>(Signed-Off " + Encode.forHtml(String.valueOf(p.getSignedOffTimestamp())) + ")</abbr>" : ""%>
                         <a href="#"
                            onclick="removeProvFromHrm('<%=Encode.forJavaScript(String.valueOf(p.getId()))%>', '<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>')">(remove)</a><br/>
                         <% }

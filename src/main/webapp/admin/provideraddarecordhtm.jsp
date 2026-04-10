@@ -429,7 +429,7 @@
 
                                     codeDesc = billCenter.getAllBillCenter().getProperty(billCode);
                             %>
-                            <option value=<%= billCode %> <%=Encode.forHtml(String.valueOf(selectedBillCenter))%>><%=Encode.forHtml(String.valueOf(codeDesc))%>
+                            <option value=<%= billCode %> <%=selectedBillCenter%>><%=Encode.forHtml(String.valueOf(codeDesc))%>
                             </option>
                             <%
                                 }

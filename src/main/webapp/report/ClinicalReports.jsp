@@ -544,7 +544,7 @@
                                     %>
                                     <%for (String listName : demoSetList) {%>
                                     <input type="checkbox" name="denominator_patientSet"
-                                           value="<%=Encode.forHtmlAttribute(String.valueOf(listName))%>" <%=Encode.forHtml(String.valueOf(listName.equals(defaultDenominatorPatientSet) ? " checked=\"checked\" " : ""))%>><%=Encode.forHtml(String.valueOf(listName))%>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(listName))%>" <%=listName.equals(defaultDenominatorPatientSet) ? " checked=\"checked\" " : ""%>><%=Encode.forHtml(String.valueOf(listName))%>
                                     <br>
                                     <%}%>
                                 </div>
@@ -554,19 +554,19 @@
                             <fieldset>
                                 <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.Fieldstoinclude"/></legend>
                                 <input type="checkbox"
-                                       name="showfields" <%=Encode.forHtml(String.valueOf(dchecked((String[]) request.getAttribute("showfields"), "lastName")))%>
+                                       name="showfields" <%=dchecked((String[]) request.getAttribute("showfields"), "lastName")%>
                                        value="lastName"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgLastName"/></input>
                                 <input type="checkbox"
-                                       name="showfields" <%=Encode.forHtml(String.valueOf(dchecked((String[]) request.getAttribute("showfields"), "firstName")))%>
+                                       name="showfields" <%=dchecked((String[]) request.getAttribute("showfields"), "firstName")%>
                                        value="firstName"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgFirstName"/></input>
                                 <input type="checkbox"
-                                       name="showfields" <%=Encode.forHtml(String.valueOf(dchecked((String[]) request.getAttribute("showfields"), "sex")))%>
+                                       name="showfields" <%=dchecked((String[]) request.getAttribute("showfields"), "sex")%>
                                        value="sex"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgSex"/></input>
                                 <input type="checkbox"
-                                       name="showfields" <%=Encode.forHtml(String.valueOf(dchecked((String[]) request.getAttribute("showfields"), "phone")))%>
+                                       name="showfields" <%=dchecked((String[]) request.getAttribute("showfields"), "phone")%>
                                        value="phone"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgPhone"/></input>
                                 <input type="checkbox"
-                                       name="showfields" <%=Encode.forHtml(String.valueOf(dchecked((String[]) request.getAttribute("showfields"), "address")))%>
+                                       name="showfields" <%=dchecked((String[]) request.getAttribute("showfields"), "address")%>
                                        value="address"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgAddress"/></input>
                                 <br/>
                                 <%for (int rm = 0; rm < 3; rm++) {%>

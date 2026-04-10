@@ -32,5 +32,5 @@
 %>
 <%=Encode.forHtml(String.valueOf(noteStr))%>
 <% } else { %>
-<%=Encode.forHtml(String.valueOf(noteStr.replaceAll("\n", "<br>")))%>
+<%=noteStr.replaceAll("\n", "<br>")%>
 <%}%>

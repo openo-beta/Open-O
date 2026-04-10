@@ -258,7 +258,7 @@
                             <td>Filter out patients not in system</td>
                             <td>
                                 <input type="checkbox"
-                                       name="filter_patients" <%=Encode.forHtml(String.valueOf((olisPreferences.isFilterPatients() ? "checked=\"checked\"" : "")))%>/>
+                                       name="filter_patients" <%=(olisPreferences.isFilterPatients() ? "checked=\"checked\"" : "")%>/>
                             </td>
                         </tr>
                         <tr>

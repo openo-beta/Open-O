@@ -73,7 +73,7 @@
     %>
     <tr>
         <td><input id="check_box_<c:out value='${facility.id}'/>"
-                   type="checkbox" <%=Encode.forHtml(String.valueOf(checked))%>
+                   type="checkbox" <%=checked%>
                    onchange="facility_change(<c:out value='${facility.id}'/>)"/></td>
         <td><c:out value="${facility.name}"/></td>
         </c:forEach>

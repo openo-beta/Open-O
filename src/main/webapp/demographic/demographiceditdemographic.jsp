@@ -4198,7 +4198,7 @@
                                                                                     selected = " selected=\"selected\" ";
                                                                                 }
                                                                 %>
-                                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(llItem.getValue()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(llItem.getLabel()))%>
+                                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(llItem.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(llItem.getLabel()))%>
                                                                 </option>
                                                                 <%
                                                                             }
@@ -4807,7 +4807,7 @@
                                                                                 <li>
                                                                                     <input type="checkbox" name="sp"
                                                                                            id="sp"
-                                                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(_p.getId()))%>" <%=Encode.forHtml(String.valueOf(selected))%> <%=Encode.forHtml(String.valueOf((readOnly) ? " disabled=\"disabled\" " : ""))%> />
+                                                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(_p.getId()))%>" <%=selected%> <%=(readOnly) ? " disabled=\"disabled\" " : ""%> />
                                                                                     <label for="sp"><%=Encode.forHtml(String.valueOf(_p.getName()))%>
                                                                                     </label>
                                                                                 </li>

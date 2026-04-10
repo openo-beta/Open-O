@@ -413,7 +413,7 @@
                         %>
 
                         <tr class="<%=Encode.forHtmlAttribute(String.valueOf(classStyle))%>">
-                            <td><input type="checkbox" name="codes" value="<%=Encode.forHtmlAttribute(String.valueOf(lin))%>" <%=Encode.forHtml(String.valueOf(selected))%>/></td>
+                            <td><input type="checkbox" name="codes" value="<%=Encode.forHtmlAttribute(String.valueOf(lin))%>" <%=selected%>/></td>
                             <td><%=Encode.forHtml(String.valueOf(h.get("code")))%>
                             </td>
                             <td><%=Encode.forHtml(String.valueOf(oldFee))%>

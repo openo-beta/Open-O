@@ -163,7 +163,7 @@
                         </td>
                         <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(x.getDescription())))%>
                         </td>
-                        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(x.getContactName()) + "<br>" + StringUtils.trimToEmpty(x.getContactEmail()) + "<br/>" + StringUtils.trimToEmpty(x.getContactPhone())))%>
+                        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(x.getContactName())))%><br><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(x.getContactEmail())))%><br/><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(x.getContactPhone())))%>
                         </td>
                         <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf((x.getLastDataUpdate() != null ? sdf.format(x.getLastDataUpdate().getTime()) : "")))%>
                         </td>

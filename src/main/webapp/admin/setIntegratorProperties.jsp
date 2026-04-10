@@ -220,7 +220,7 @@
                 <label class="radio">
                     <input type="radio" name="integrator_full_push" value="0" <%=getChecked(properties[18], false) %> />
                     All Patients with Charts Opened
-                    Since <%=Encode.forHtml(String.valueOf((properties[19] != null ? properties[19].getValue() : "<em>[never]</em>")))%>
+                    Since <%=properties[19] != null ? properties[19].getValue() : "<em>[never]</em>"%>
                 </label>
             </div>
         </div>

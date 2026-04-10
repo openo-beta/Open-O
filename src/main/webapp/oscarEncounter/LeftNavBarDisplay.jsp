@@ -65,7 +65,7 @@
     //Is there java script to insert in page?  Then do it
     if (js != null) {
 %>
-<%=Encode.forHtml(String.valueOf(js))%>
+<%=js%>
 <% } %>
 <input type=hidden name="reloadUrl" value="<%=Encode.forHtmlAttribute(String.valueOf(dao.getReloadUrl()))%>"/>
 <%
@@ -79,7 +79,7 @@
 <div class="nav-menu-heading" style="<%=Encode.forHtmlAttribute(String.valueOf(getBackgroundColor(dao)))%>">
     <div class="nav-menu-add-button" id='menuTitle<%=Encode.forHtmlAttribute(String.valueOf(rh))%>'>
         <h3><a href="javascript:void(0);" <%=dao.numPopUpMenuItems() > 0 ? "onmouseover" : "onclick"%>=
-            "<%=Encode.forHtml(String.valueOf(dao.getRightURL()))%>">&#43;</a></h3>
+            "<%=dao.getRightURL()%>">&#43;</a></h3>
     </div>
     <%
         int num;
@@ -107,7 +107,7 @@
         <a href="javascript:void(0)" class="<%=Encode.forHtmlAttribute(String.valueOf(style))%>"
            onmouseover='this.style.color="black"'
            onmouseout='this.style.color="white"'
-           onclick="<%=Encode.forJavaScript(String.valueOf(dao.getPopUpUrl(idx) + ";"))%> return false;"><%=Encode.forHtml(String.valueOf(dao.getPopUpText(idx)))%>
+           onclick="<%=dao.getPopUpUrl(idx) + ";"%> return false;"><%=Encode.forHtml(String.valueOf(dao.getPopUpText(idx)))%>
         </a>
         <%
             if (columns && idx % 2 == 1) {
@@ -137,7 +137,7 @@
         //left hand module header comes last as it's displayed as a block
     %>
     <div class="nav-menu-title">
-        <h3 onclick="<%=Encode.forJavaScript(String.valueOf(dao.getLeftURL() + ";"))%> return false;"><a href="javascript:void(0)"><%=Encode.forHtml(String.valueOf(dao.getLeftHeading()))%>
+        <h3 onclick="<%=dao.getLeftURL() + ";"%> return false;"><a href="javascript:void(0)"><%=Encode.forHtml(String.valueOf(dao.getLeftHeading()))%>
         </a></h3>
     </div>
 </div>

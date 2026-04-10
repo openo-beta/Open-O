@@ -198,7 +198,7 @@ var _saveBtnClick = function (e) {
                     jQuery(noteObj).find("#quitImg" + noteId).attr("id", "quitImg" + data.newNoteId);
                     jQuery(noteObj).find("#print" + noteId).attr("id", "print" + data.newNoteId).prop("onclick", null).on("click", function(event) { togglePrint(data.newNoteId, event); });
                     jQuery(noteObj).find("#edit" + noteId).attr("id", "edit" + data.newNoteId);
-                    jQuery(noteObj).find("#txt" + noteId).attr("id", "txt" + data.newNoteId).css("white-space", "pre-line").text(data.noteContent);
+                    jQuery(noteObj).find("#txt" + noteId).attr("id", "txt" + data.newNoteId).html(data.noteContent.replace(/\n/g, "<br />"));
                     jQuery(noteObj).find("#sig" + noteId).attr("id", "sig" + data.newNoteId);
                     jQuery(noteObj).find("#summary" + noteId).attr("id", "summary" + data.newNoteId);
                     jQuery(noteObj).find("#observation" + noteId).attr("id", "observation" + data.newNoteId);

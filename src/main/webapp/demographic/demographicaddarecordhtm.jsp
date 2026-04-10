@@ -2120,7 +2120,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                                         selected = " selected=\"selected\" ";
                                                     }
                                     %>
-                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(llItem.getValue()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(llItem.getLabel()))%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(llItem.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(llItem.getLabel()))%>
                                     </option>
                                     <%
                                             }
@@ -2208,12 +2208,12 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <input type="text" name="<%=Encode.forHtmlAttribute(String.valueOf(propDemoExt[k].replace(' ', '_')))%>" value="">
                                 <% } %>
                             </td>
-                            <td style="text-align: right;"><%=Encode.forHtml(String.valueOf((k + 1) < propDemoExt.length ? ("<b>" + propDemoExt[k + 1] + ": </b>") : "&nbsp;"))%>
+                            <td style="text-align: right;"><%=(k + 1) < propDemoExt.length ? ("<b>" + propDemoExt[k + 1] + ": </b>") : "&nbsp;"%>
                             </td>
                             <td style="text-align: left;">
                                 <% if (bExtForm && (k + 1) < propDemoExt.length) {
                                     out.println(propDemoExtForm[k + 1]);
-                                } else { %> <%=Encode.forHtml(String.valueOf((k + 1) < propDemoExt.length ? "<input type=\"text\" name=\"" + propDemoExt[k + 1].replace(' ', '_') + "\"  value=''>" : "&nbsp;"))%>
+                                } else { %> <%=(k + 1) < propDemoExt.length ? "<input type=\"text\" name=\"" + propDemoExt[k + 1].replace(' ', '_') + "\"  value=''>" : "&nbsp;"%>
                                 <% } %>
                             </td>
                         </tr>

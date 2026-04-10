@@ -60,7 +60,7 @@
                         for (LabelValueBean program : programs) {
                             String selected = (Integer.parseInt(program.getValue()) == defaultprogramId) ? " selected=\"selected\" " : "";
                 %>
-                <option value="<%=Encode.forHtmlAttribute(String.valueOf(program.getValue()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(program.getLabel())%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(program.getValue()))%>" <%=selected%>><%=Encode.forHtml(program.getLabel())%>
                 </option>
                 <% }
                 }

@@ -116,7 +116,7 @@
                                                     selected = " selected=\"selected\" ";
                                                 }
                                         %>
-                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(serviceType))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf((String) form[1]))%>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(serviceType))%>" <%=selected%>><%=Encode.forHtml(String.valueOf((String) form[1]))%>
                                         </option>
                                         <% } %>
                                     </select>

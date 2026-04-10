@@ -698,7 +698,7 @@
      STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(10+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+172))%>px; width:330px; height:60px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <td><%=Encode.forHtml(String.valueOf(props.getProperty("c_riskFactors", "").replaceAll("\\n", "<br>")))%>
+            <td><%=props.getProperty("c_riskFactors", "").replaceAll("\\n", "<br>")%>
             </td>
         </tr>
     </table>

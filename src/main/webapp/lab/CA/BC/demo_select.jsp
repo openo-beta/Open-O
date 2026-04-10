@@ -63,7 +63,7 @@
         keyword = ConversionUtils.fromIntString(keyword);
     }
 
-    String url = "demo_select.jsp?keyword=" + keyword + "&postTo=" + postTo + (column.equals("") ? "" : "&column=" + column);
+    String url = "demo_select.jsp?keyword=" + Encode.forUriComponent(String.valueOf(keyword)) + "&postTo=" + Encode.forUriComponent(String.valueOf(postTo)) + (column.equals("") ? "" : "&column=" + Encode.forUriComponent(String.valueOf(column)));
 
     DemographicDao dao = SpringUtils.getBean(DemographicDao.class);
 
@@ -105,29 +105,29 @@
         <tr>
             <td width="10%" class="Text"><input type="radio" name="column"
                                                 value="DemographicNo"
-                    <%=Encode.forHtml(String.valueOf((column.equals("DemographicNo") ? "checked" : "")))%> /><a
+                    <%=(column.equals("DemographicNo") ? "checked" : "")%> /><a
                     href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=DemographicNo">Demo No</a></td>
             <td width="20%" class="Text"><input type="radio" name="column"
-                                                value="LastName" <%=Encode.forHtml(String.valueOf((column.equals("LastName") ? "checked" : "")))%> /><a
+                                                value="LastName" <%=(column.equals("LastName") ? "checked" : "")%> /><a
                     href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>">Last Name</a></td>
             <td width="15%" class="Text"><input type="radio" name="column"
-                                                value="FirstName" <%=Encode.forHtml(String.valueOf((column.equals("FirstName") ? "checked" : "")))%> /><a
+                                                value="FirstName" <%=(column.equals("FirstName") ? "checked" : "")%> /><a
                     href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=FirstName">First Name</a></td>
             <td width="10%" class="Text" align="center"><input type="radio"
                                                                name="column" value="ChartNo"
-                    <%=Encode.forHtml(String.valueOf((column.equals("ChartNo") ? "checked" : "")))%> /><a
+                    <%=(column.equals("ChartNo") ? "checked" : "")%> /><a
                     href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=ChartNo">Chart#</a></td>
             <td width="2%" class="Text" align="center"><input type="radio"
                                                               name="column"
-                                                              value="Sex" <%=Encode.forHtml(String.valueOf((column.equals("Sex") ? "checked" : "")))%> /><a
+                                                              value="Sex" <%=(column.equals("Sex") ? "checked" : "")%> /><a
                     href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=Sex">Sex</a></td>
             <td width="15%" class="Text" align="center"><input type="radio"
                                                                name="column" value="YearOfBirth"
-                    <%=Encode.forHtml(String.valueOf((column.equals("YearOfBirth") ? "checked" : "")))%> /><a
+                    <%=(column.equals("YearOfBirth") ? "checked" : "")%> /><a
                     href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=YearOfBirth">DOB</a></td>
             <td width="2%" class="Text" align="center"><input type="radio"
                                                               name="column" value="PatientStatus"
-                    <%=Encode.forHtml(String.valueOf((column.equals("PatientStatus") ? "checked" : "")))%> /><a
+                    <%=(column.equals("PatientStatus") ? "checked" : "")%> /><a
                     href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>&orderby=PatientStatus">Status</a></td>
         </tr>
         <%
@@ -164,10 +164,10 @@
         %>
         <tr>
             <td width="50%" colspan="3" align="right" class="SmallerText">
-                &nbsp;<%=Encode.forHtml(String.valueOf((start > 0 ? "<a href=" + previous + ">previous</a>" : "")))%>
+                &nbsp;<%=start > 0 ? "<a href=" + previous + ">previous</a>" : ""%>
             </td>
             <td width="50%" colspan="4" align="left" class="SmallerText">
-                | <%=Encode.forHtml(String.valueOf((count == 10 ? "<a href=" + next + ">next</a>" : "")))%>&nbsp;
+                | <%=count == 10 ? "<a href=" + next + ">next</a>" : ""%>&nbsp;
             </td>
         </tr>
     </table>

@@ -101,7 +101,7 @@
                     priority = "yellow";
             %>
             <td>
-                <input type="checkbox" name="check_issue" value="<%=Encode.forHtmlAttribute(String.valueOf(issueCompositeId))%>" <%=Encode.forHtml(String.valueOf(checked))%>
+                <input type="checkbox" name="check_issue" value="<%=Encode.forHtmlAttribute(String.valueOf(issueCompositeId))%>" <%=checked%>
                        onclick="document.caseManagementViewForm.submit();"/>
             </td>
             <td><c:out value="${issue.issueDisplay.code}"/></td>

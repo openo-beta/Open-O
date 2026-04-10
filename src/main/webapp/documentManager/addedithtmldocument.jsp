@@ -354,7 +354,7 @@
                         String selected = "";
                         if (formdata.getResponsibleId().equals(pd.get("providerNo"))) selected = "selected";
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(pd.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtmlContent(String.valueOf(pd.get("lastName")))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(pd.get("providerNo")))%>" <%=selected%>><%=Encode.forHtmlContent(String.valueOf(pd.get("lastName")))%>
                         , <%=Encode.forHtmlContent(String.valueOf(pd.get("firstName")))%>
                     </option>
                     <% } %>
@@ -390,7 +390,7 @@
         <tr>
             <td>Public?</td>
             <td><input type="checkbox" name="docPublic"
-                    <%=Encode.forHtml(String.valueOf(formdata.getDocPublic() + " "))%> value="checked"></td>
+                    <%=formdata.getDocPublic() + " "%> value="checked"></td>
         </tr>
         <% }
             if (oldDoc) { %>

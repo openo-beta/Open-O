@@ -84,7 +84,7 @@
         <tr class="genericTableRow" style="background-color:#f3f3f3">
             <td class="genericTableData">
                 <input type="checkbox"
-                       name="linked.<%=Encode.forHtmlAttribute(String.valueOf(temp.linkDestination+'.'+temp.remoteLinkId))%>" <%=Encode.forHtml(String.valueOf(temp.linked ? "checked=\"on\"" : ""))%> />
+                       name="linked.<%=Encode.forHtmlAttribute(String.valueOf(temp.linkDestination+'.'+temp.remoteLinkId))%>" <%=temp.linked ? "checked=\"on\"" : ""%> />
             </td>
             <td class="genericTableData"><%=Encode.forHtml(String.valueOf(temp.matchingScore))%>
             </td>

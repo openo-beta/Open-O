@@ -460,7 +460,7 @@
                 if (request.getAttribute("errors") != null) {
                     // Show the errors to the user
                     for (String error : (List<String>) request.getAttribute("errors")) { %>
-            <div class="error"><%=Encode.forHtml(String.valueOf(error.replaceAll("\\n", "<br />")))%>
+            <div class="error"><%=error.replaceAll("\\n", "<br />")%>
             </div>
             <% }
             }
@@ -482,7 +482,7 @@
                             if (errors.size() > 0) {
                                 for (OLISError error : errors) {
             %>
-            <div class="error"><%=Encode.forHtml(String.valueOf(error.getIndentifer()))%>:<%=Encode.forHtml(String.valueOf(error.getText().replaceAll("\\n", "<br />")))%>
+            <div class="error"><%=Encode.forHtml(String.valueOf(error.getIndentifer()))%>:<%=error.getText().replaceAll("\\n", "<br />")%>
             </div>
             <%
                                 }

@@ -126,9 +126,9 @@
                     size="4">oscar<font size="3">PathNET - View Lab Report</font></font></b></font>
             </td>
             <td align="right" class="Text"
-                nowrap><%=Encode.forHtml(String.valueOf((signed ? (provider.getLastName() != null ? "<b>Signed Off By: </b>" + provider.getFormattedName() : "<b>Signed Off By Provider No.:</b> " + provider.getProviderNo()) + " on " + hl7_link.getSignedOn() : "")))%>
+                nowrap><%=signed ? (provider.getLastName() != null ? "<b>Signed Off By: </b>" + Encode.forHtml(provider.getFormattedName()) : "<b>Signed Off By Provider No.:</b> " + Encode.forHtml(provider.getProviderNo())) + " on " + Encode.forHtml(String.valueOf(hl7_link.getSignedOn())) : ""%>
                 <input type="checkbox" name="cmd_sign" onclick="Sign(this);"
-                       value="<%=Encode.forHtmlAttribute(String.valueOf(pid))%>" <%=Encode.forHtml(String.valueOf((signed ? "checked disabled" : "")))%> /><input
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(pid))%>" <%=signed ? "checked disabled" : ""%> /><input
                         type="hidden" name="pid" value="<%=Encode.forHtmlAttribute(String.valueOf(pid))%>"/>Sign
             </td>
         </tr>
@@ -284,10 +284,10 @@
                 class="<%=Encode.forHtmlAttribute(String.valueOf((other? "LightBG" : "WhiteBG")))%>"><%=Encode.forHtml(String.valueOf(hl7_obx.getObservationIdentifier().substring(hl7_obx.getObservationIdentifier().indexOf(" "))))%>
             </td>
             <td class="Text" nowrap class="<%=Encode.forHtmlAttribute(String.valueOf((other? "LightBG" : "WhiteBG")))%>">
-                <b><%=Encode.forHtml(String.valueOf(((hl7_obx.getAbnormalFlags().toUpperCase().equals("N")) ? "&nbsp;" : Misc.check(hl7_obx.getAbnormalFlags(), "", "&nbsp;"))))%>
+                <b><%=(hl7_obx.getAbnormalFlags().toUpperCase().equals("N")) ? "&nbsp;" : Misc.check(hl7_obx.getAbnormalFlags(), "", "&nbsp;")%>
                 </b></td>
             <td class="Text"
-                class="<%=Encode.forHtmlAttribute(String.valueOf((other? "LightBG" : "WhiteBG")))%>"><%=Encode.forHtml(String.valueOf(((hl7_obx.getAbnormalFlags().toUpperCase().equals("N")) ? hl7_obx.getObservationResults() : "<b>" + hl7_obx.getObservationResults() + "</b>").replaceAll("\\\\\\.br\\\\", " ")))%>
+                class="<%=Encode.forHtmlAttribute(String.valueOf((other? "LightBG" : "WhiteBG")))%>"><%=hl7_obx.getAbnormalFlags().toUpperCase().equals("N") ? Encode.forHtml(hl7_obx.getObservationResults()) : "<b>" + Encode.forHtml(hl7_obx.getObservationResults()) + "</b>"%>
             </td>
             <td class="Text" nowrap class="<%=Encode.forHtmlAttribute(String.valueOf((other? "LightBG" : "WhiteBG")))%>"><%=Encode.forHtml(String.valueOf(hl7_obx.getReferenceRange()))%>
             </td>

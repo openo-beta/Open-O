@@ -151,7 +151,7 @@
         List<CriteriaType> typeList = VacancyTemplateManager.getAllCriteriaTypesByWlProgramId(Integer.parseInt((String) request.getAttribute("id")));
         for (CriteriaType criteriaType : typeList) {
     %>
-    <%=Encode.forHtml(String.valueOf(VacancyTemplateManager.renderAllSelectOptions(template.getId(), null, criteriaType.getId())))%>
+    <%=VacancyTemplateManager.renderAllSelectOptions(template.getId(), null, criteriaType.getId())%>
     <% }
     %>
 

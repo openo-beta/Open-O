@@ -681,7 +681,7 @@
                         for (BillingFormData.BillingVisit billingVisit : billvisit) {
                             String selected = serviceLocation.equals(billingVisit.getVisitType()) ? "selected" : "";
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(billingVisit.getVisitType())%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtmlContent(billingVisit.getDisplayName())%>
+                    <option value="<%=Encode.forHtmlAttribute(billingVisit.getVisitType())%>" <%=selected%>><%=Encode.forHtmlContent(billingVisit.getDisplayName())%>
                     </option>
                     <%
                         }

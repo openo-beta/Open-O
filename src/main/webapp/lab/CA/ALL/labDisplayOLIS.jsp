@@ -863,7 +863,7 @@
                                                                     <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
                                                                     <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
                                                                     <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                                                    <%=Encode.forHtml(String.valueOf(city + ("".equals(city) || "".equals(province) ? "" : ", ") + province + ("".equals(city) && "".equals(province) ? "" : "<br/>")))%>
+                                                                    <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
                                                                     <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
                                                                 </div>
                                                             </td>
@@ -1163,7 +1163,7 @@
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                            <%=Encode.forHtml(String.valueOf(city + ("".equals(city) || "".equals(province) ? "" : ", ") + province + ("".equals(city) && "".equals(province) ? "" : "<br/>")))%>
+                                            <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
                                             <% } %>
                                         </div>
@@ -1193,7 +1193,7 @@
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                            <%=Encode.forHtml(String.valueOf(city + ("".equals(city) || "".equals(province) ? "" : ", ") + province + ("".equals(city) && "".equals(province) ? "" : "<br/>")))%>
+                                            <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country", false)))%>
                                             <% } %>
                                             <%
@@ -1311,7 +1311,7 @@
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                            <%=Encode.forHtml(String.valueOf(city + ("".equals(city) || "".equals(province) ? "" : ", ") + province + ("".equals(city) && "".equals(province) ? "" : "<br/>")))%>
+                                            <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
                                             <% } %>
                                         </div>
@@ -1346,7 +1346,7 @@
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                            <%=Encode.forHtml(String.valueOf(city + ("".equals(city) || "".equals(province) ? "" : ", ") + province + ("".equals(city) && "".equals(province) ? "" : "<br/>")))%>
+                                            <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
                                             <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
                                             <% } %>
                                         </div>
@@ -1488,7 +1488,7 @@
 
                                             <% for (int i = 0, j = handler.getReportCommentCount(); i < j; i++) { %>
                                             <span style="margin-left:15px; width: 700px; word-wrap: break-word;">
-                                                    <%=Encode.forHtml(String.valueOf((i > 0 ? "<br/>" : "") + handler.getReportComment(i)))%>
+                                                    <%=i > 0 ? "<br/>" : ""%><%=Encode.forHtml(handler.getReportComment(i))%>
                                                     </span>
                                             <span style="margin-left:15px; font-size:8px; color:#333333;">
                                                     <%=Encode.forHtml(String.valueOf(handler.getReportSourceOrganization(i)))%>
@@ -1695,7 +1695,7 @@
                                 <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
                                 <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
                                 <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                <%=Encode.forHtml(String.valueOf(city + ("".equals(city) || "".equals(province) ? "" : ", ") + province + ("".equals(city) && "".equals(province) ? "" : "<br/>")))%>
+                                <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
                                 <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
                                 <% } %>
                             </div>

@@ -155,7 +155,7 @@
                     &nbsp;
                     Include hidden:
                     <input type="checkbox" name="showHidden"
-                           id="showHidden" <%=Encode.forHtml(String.valueOf((checked != null && checked) ? " checked=\"checked\" " : ""))%> />
+                           id="showHidden" <%=(checked != null && checked) ? " checked=\"checked\" " : ""%> />
 
                     <input type="submit" style="border:1px solid #666666;" value="Search" />
                     <input type="submit" style="border:1px solid #666666;" onclick="clearMe()" value="Clear" />

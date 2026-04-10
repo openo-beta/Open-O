@@ -320,7 +320,7 @@
                         String selected = "";
                         if (formdata.getResponsibleId().equals(pd.get("providerNo"))) selected = "selected";
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(pd.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtmlContent(pd.get("lastName"))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(pd.get("providerNo")))%>" <%=selected%>><%=Encode.forHtmlContent(pd.get("lastName"))%>
                         , <%=Encode.forHtmlContent(pd.get("firstName"))%>
                     </option>
                     <% } %>

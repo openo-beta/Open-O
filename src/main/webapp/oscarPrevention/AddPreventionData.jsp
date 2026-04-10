@@ -831,7 +831,7 @@
                                        onClick="$('#providerDrop').val('-1');hideExtraName(document.getElementById('providerDrop'))">Completed
                                 externally</input><br/>
                                 <input name="given" type="radio"
-                                       value="refused"    <%=Encode.forHtml(String.valueOf(checked(completed,"1")))%>>Refused</input><br/>
+                                       value="refused"    <%=checked(completed,"1")%>>Refused</input><br/>
                                 <input name="given" type="radio" value="ineligible" <%=checked(completed,"2")%>>Ineligible</input>
                             </div>
                             <div>&nbsp;</div>
@@ -893,7 +893,7 @@
                                             }
                                         }
                                 %>
-                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(tn.getSnomedConceptId()))%>" <%=Encode.forHtml(String.valueOf(selected))%>><%=Encode.forHtml(String.valueOf(tn.getDisplayName()))%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(tn.getSnomedConceptId()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(tn.getDisplayName()))%>
                                 </option>
                                 <%
                                     }
@@ -1123,7 +1123,7 @@
                                        onClick="$('#providerDrop').val('-1');hideExtraName(document.getElementById('providerDrop'))">Completed
                                 externally</input><br/>
                                 <input name="given" type="radio"
-                                       value="refused"    <%=Encode.forHtml(String.valueOf(checked(completed,"1")))%>>Refused</input><br/>
+                                       value="refused"    <%=checked(completed,"1")%>>Refused</input><br/>
                                 <input name="given" type="radio" value="ineligible" <%=checked(completed,"2")%>>Ineligible</input>
                             </div>
                             <div>&nbsp;</div>
@@ -1169,9 +1169,9 @@
                             <label for="dose">Dose:</label> <input type="text" name="dose"
                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("dose")),"")))%>"/><br/>
                             <label for="dose1">Dose 1:</label> <input type="checkbox" name="dose1"
-                                                                      value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("dose1")), ""), "true")))%>/><br/>
+                                                                      value="true" <%=checked(str((extraData.get("dose1")), ""), "true")%>/><br/>
                             <label for="dose2">Dose 2:</label> <input type="checkbox" name="dose2"
-                                                                      value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("dose2")), ""), "true")))%>/><br/>
+                                                                      value="true" <%=checked(str((extraData.get("dose2")), ""), "true")%>/><br/>
                             <label for="lot">Lot:</label> <input type="text" name="lot"
                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("lot")),"")))%>"/><br/>
                             <label for="manufacture">Manufacture:</label> <input type="text" name="manufacture"
@@ -1223,9 +1223,9 @@
                                 </option>
                             </select><br/>
                             <label for="pregnant">Pregnant:</label> <input type="checkbox" name="pregnant"
-                                                                           value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("pregnant")), ""), "true")))%>/><br/>
+                                                                           value="true" <%=checked(str((extraData.get("pregnant")), ""), "true")%>/><br/>
                             <label for="remote">Remote Setting:</label> <input type="checkbox" name="remote"
-                                                                               value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("remote")), ""), "true")))%>/><br/>
+                                                                               value="true" <%=checked(str((extraData.get("remote")), ""), "true")%>/><br/>
                             <label for="healthcareworker">Health Care Worker:</label>
                             <select name="healthcareworker">
                                 <option value="false">No</option>
@@ -1260,7 +1260,7 @@
 
                             <label for="householdcontact">Household Contact or Care Provider:</label> <input
                                 type="checkbox" name="householdcontact"
-                                value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("householdcontact")), ""), "true")))%>/><br/>
+                                value="true" <%=checked(str((extraData.get("householdcontact")), ""), "true")%>/><br/>
                             <%
                                 boolean bothfirstresponders = false;
                                 if (str((extraData.get("firstresponder")), "").equalsIgnoreCase("true")) {
@@ -1270,17 +1270,17 @@
                             %>
                             <label for="firstresponderpolice">First Responder Police:</label> <input type="checkbox"
                                                                                                      name="firstresponderpolice"
-                                                                                                     value="true" <%=Encode.forHtml(String.valueOf(bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderpolice")), ""), "true")))%>/><br/>
+                                                                                                     value="true" <%=bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderpolice")), ""), "true")%>/><br/>
                             <label for="firstresponderfire">First Responder Fire:</label> <input type="checkbox"
                                                                                                  name="firstresponderfire"
-                                                                                                 value="true" <%=Encode.forHtml(String.valueOf(bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderfire")), ""), "true")))%>/><br/>
+                                                                                                 value="true" <%=bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderfire")), ""), "true")%>/><br/>
                             <label for="swineworker">Swine Worker:</label> <input type="checkbox" name="swineworker"
-                                                                                  value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("swineworker")), ""), "true")))%>/><br/>
+                                                                                  value="true" <%=checked(str((extraData.get("swineworker")), ""), "true")%>/><br/>
                             <label for="poultryworker">Poultry Worker:</label> <input type="checkbox"
                                                                                       name="poultryworker"
-                                                                                      value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("poultryworker")), ""), "true")))%>/><br/>
+                                                                                      value="true" <%=checked(str((extraData.get("poultryworker")), ""), "true")%>/><br/>
                             <label for="firstnations">First Nations:</label> <input type="checkbox" name="firstnations"
-                                                                                    value="true" <%=Encode.forHtml(String.valueOf(checked(str((extraData.get("firstnations")), ""), "true")))%>/><br/>
+                                                                                    value="true" <%=checked(str((extraData.get("firstnations")), ""), "true")%>/><br/>
                         </fieldset>
                         <fieldset>
                             <legend>Comments</legend>
@@ -1303,7 +1303,7 @@
                                        onClick="$('#providerDrop').val('-1');hideExtraName(document.getElementById('providerDrop'))">Completed
                                 externally</input><br/>
                                 <input name="given" type="radio"
-                                       value="refused"    <%=Encode.forHtml(String.valueOf(checked(completed,"1")))%>>Refused</input><br/>
+                                       value="refused"    <%=checked(completed,"1")%>>Refused</input><br/>
                                 <input name="given" type="radio" value="ineligible" <%=checked(completed,"2")%>>Ineligible</input>
                             </div>
                             <div>&nbsp;</div>
@@ -1343,15 +1343,15 @@
                             } %>
                             <%=Encode.forHtml(String.valueOf(str(prevResultDesc, "")))%><br/>
                             <input type="radio" name="result"
-                                   value="pending" <%=Encode.forHtml(String.valueOf(checked( (extraData.get("result")) ,"pending")))%> >Pending</input>
+                                   value="pending" <%=checked( (extraData.get("result")) ,"pending")%> >Pending</input>
                             <br/>
                             <input type="radio" name="result"
-                                   value="normal"  <%=Encode.forHtml(String.valueOf(checked((extraData.get("result")),"normal")))%> >Normal</input><br/>
+                                   value="normal"  <%=checked((extraData.get("result")),"normal")%> >Normal</input><br/>
                             <input type="radio" name="result"
-                                   value="abnormal" <%=Encode.forHtml(String.valueOf(checked((extraData.get("result")),"abnormal")))%> >Abnormal</input>
+                                   value="abnormal" <%=checked((extraData.get("result")),"abnormal")%> >Abnormal</input>
                             <br/>
                             <input type="radio" name="result"
-                                   value="other" <%=Encode.forHtml(String.valueOf(checked((extraData.get("result")),"other")))%> >Other</input> &nbsp;
+                                   value="other" <%=checked((extraData.get("result")),"other")%> >Other</input> &nbsp;
                             &nbsp; Reason: <input type="text" name="reason"
                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(str((extraData.get("reason")),"")))%>"/>
                         </fieldset>
@@ -1370,11 +1370,11 @@
                             </legend>
                             <div style="float:left;">
                                 <input name="given" type="radio"
-                                       value="yes"      <%=Encode.forHtml(String.valueOf(checked(completed,"0")))%>>Yes</input><br/>
+                                       value="yes"      <%=checked(completed,"0")%>>Yes</input><br/>
                                 <input name="given" type="radio"
-                                       value="never"    <%=Encode.forHtml(String.valueOf(checked(completed,"1")))%>>Never</input><br/>
+                                       value="never"    <%=checked(completed,"1")%>>Never</input><br/>
                                 <input name="given" type="radio"
-                                       value="previous" <%=Encode.forHtml(String.valueOf(checked(completed,"2")))%>>Previous</input>
+                                       value="previous" <%=checked(completed,"2")%>>Previous</input>
                             </div>
                             <div style="float:left;margin-left:30px;">
                                 <label for="prevDate" class="fields">Date:</label> <input type="text" name="prevDate"

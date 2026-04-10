@@ -218,11 +218,11 @@ Colposcopy Total :
 <br>
 <br>
 <table bgcolor="#EEEEEE" bordercolor="#666666" border="1">
-    <%=Encode.forHtml(String.valueOf(htmlContent))%>
+    <%=htmlContent%>
 </table>
 <br>
 <table bgcolor="#EEEEFF" bordercolor="#666666" border="1">
-    <%=Encode.forHtml(String.valueOf(transaction))%>
+    <%=transaction%>
 </table>
 
 <%
@@ -263,7 +263,7 @@ Colposcopy Total :
                         isChecked = "checked";
         %>
         <tr>
-            <td><input name="choosePremium<%=Encode.forHtmlAttribute(String.valueOf(premiumId))%>" type="checkbox" value="Y" <%=Encode.forHtml(String.valueOf(isChecked))%>/>
+            <td><input name="choosePremium<%=Encode.forHtmlAttribute(String.valueOf(premiumId))%>" type="checkbox" value="Y" <%=isChecked%>/>
             <td><%=Encode.forHtml(String.valueOf(premium.getProviderOHIPNo()))%>
             </td>
             <td><select name="providerNo<%=Encode.forHtmlAttribute(String.valueOf(premiumId))%>">
@@ -276,7 +276,7 @@ Colposcopy Total :
                             selectedChoice = "selected=\"selected\"";
                         }
                 %>
-                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf(selectedChoice))%>><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=selectedChoice%>><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                 </option>
                 <% } %>
             </select>

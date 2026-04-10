@@ -139,7 +139,7 @@
                                         <td>
 
                                             <input type=checkbox name="specialists"
-                                                   value=<%=Encode.forHtml(String.valueOf(i.getId()))%> <%=Encode.forHtml(String.valueOf(assoc!=null?"checked=\"checked\"":""))%>>
+                                                   value=<%=Encode.forHtmlAttribute(String.valueOf(i.getId()))%> <%=assoc!=null?"checked=\"checked\"":""%>>
 
                                         </td>
                                         <td>
