@@ -239,6 +239,91 @@
   <link rel="stylesheet" type="text/css" href="${ctx}/library/jquery/jquery-ui-1.12.1.min.css"/>
   <link href="${pageContext.request.contextPath}/library/DataTables/DataTables-1.13.4/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
 
+  <style>
+    /* Drug maintenance (LT) toggle switch — moved here from ListDrugs.jsp so these
+       styles survive rebuildDrugProfile(), which clears #drugProfile on every
+       legend-button click and would otherwise discard ListDrugs.jsp's inline <style>. */
+
+    /* Container */
+    .drug-maintenance-switch {
+        top: -2px;
+        position: relative;
+        width: 34px;
+        height: 16px;
+    }
+
+    /* Hide the native checkbox */
+    .drug-maintenance-switch-input {
+        display: none;
+    }
+
+    /* Switch track */
+    .drug-maintenance-switch-label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #dfdfdf;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border-radius: 5%;
+    }
+
+    /* Knob (unchecked) */
+    .drug-maintenance-switch-label::after {
+        text-align: center;
+        content: '';
+        font-size: xx-small;
+        font-stretch: extra-expanded;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 12px;
+        height: 12px;
+        background-color: #FFFFFFAF;
+        border-radius: 50%;
+        transition: transform 0.3s, content 0.3s, width 0.3s, height 0.3s, border-radius 0.3s;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Knob (checked → shows "LT") */
+    .drug-maintenance-switch-input:checked + .drug-maintenance-switch-label::after {
+        content: 'LT';
+        transform: translateX(14px);
+        border-radius: 5%;
+        width: 16px;
+        height: 12px;
+        color: white;
+        background-color: #1e7e34AF;
+    }
+
+    /* Disabled track */
+    .drug-maintenance-switch-input:disabled + .drug-maintenance-switch-label {
+        background-color: #e0e0e0;
+        cursor: not-allowed;
+    }
+
+    /* Disabled knob (checked) */
+    .drug-maintenance-switch-input:disabled:checked + .drug-maintenance-switch-label::after {
+        background-color: #1e7e349F;
+        transform: translateX(14px);
+        content: 'LT';
+        width: 16px;
+        height: 12px;
+        border-radius: 5%;
+    }
+
+    /* Prescription name column — allow wrapping */
+    .list-drugs td:nth-child(5) {
+        word-break: break-word;
+        white-space: normal;
+    }
+  </style>
+
   <script type="text/javascript" src="${ctx}/js/global.js"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/prototype.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/screen.js"/>"></script>
@@ -673,7 +758,7 @@
     let Lst;
 
     function CngClass(obj) {
-      document.getElementById("selected_default").removeAttribute("style");
+      document.getElementById("selected_default").className = '';
       if (Lst) Lst.className = '';
       obj.className = 'selected';
       Lst = obj;
@@ -911,6 +996,13 @@
     .link-default-selected {
       color: #000000;
       text-decoration: none;
+      font-weight: bold;
+    }
+
+    .selected {
+      color: #000000;
+      text-decoration: none;
+      font-weight: bold;
     }
 
     .link-no-decoration {
@@ -1235,7 +1327,7 @@
                     <%if (show_current) {%>
                     <td>
                       <a href="javascript:void(0);"
-                         onclick="callReplacementWebService('ListDrugs.jsp','drugProfile');CngClass(this);"
+                         onclick="filterDrugView('current');CngClass(this);"
                          id="selected_default" class="link-default-selected"
                          TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgShowCurrentDesc'/>">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgShowCurrent"/>
@@ -1247,7 +1339,7 @@
                     %>
                     <td>
                       <a href="javascript:void(0);"
-                         onclick="callReplacementWebService('ListDrugs.jsp?show=all','drugProfile');CngClass(this);"
+                         onclick="filterDrugView('all');CngClass(this);"
                          Title="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgShowAllDesc'/>">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgShowAll"/>
                       </a>
@@ -1258,7 +1350,7 @@
                     %>
                     <td>
                       <a href="javascript:void(0);"
-                         onclick="callReplacementWebService('ListDrugs.jsp?status=active','drugProfile');CngClass(this);"
+                         onclick="filterDrugView('active');CngClass(this);"
                          TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgActiveDesc'/>">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgActive"/>
                       </a>
@@ -1269,7 +1361,7 @@
                     %>
                     <td>
                       <a href="javascript:void(0);"
-                         onclick="callReplacementWebService('ListDrugs.jsp?status=inactive','drugProfile');CngClass(this);"
+                         onclick="filterDrugView('inactive');CngClass(this);"
                          TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgInactiveDesc'/>">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgInactive"/>
                       </a>
@@ -1282,7 +1374,7 @@
                     %>
                     <td>
                       <a href="javascript:void(0);"
-                         onclick="callReplacementWebService('ListDrugs.jsp?longTermOnly=true&heading=Long Term Meds','drugProfile'); callAdditionWebService('ListDrugs.jsp?longTermOnly=acute&heading=Acute','drugProfile');CngClass(this);"
+                         onclick="showLongTermAcuteView();CngClass(this);"
                          TITLE="<fmt:setBundle basename='oscarResources'/><fmt:message key='SearchDrug.msgLongTermAcuteDesc'/>">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgLongTermAcute"/>
                       </a>
@@ -1293,7 +1385,7 @@
                     %>
                     <td>
                       <a href="javascript:void(0);"
-                         onclick="callReplacementWebService('ListDrugs.jsp?longTermOnly=true&heading=Long Term Meds','drugProfile'); callAdditionWebService('ListDrugs.jsp?longTermOnly=acute&heading=Acute&status=active','drugProfile');callAdditionWebService('ListDrugs.jsp?longTermOnly=acute&heading=Inactive&status=inactive','drugProfile');callAdditionWebService('ListDrugs.jsp?heading=External&drugLocation=external','drugProfile');CngClass(this);"
+                         onclick="showFullProfileView();CngClass(this);"
                          TITLE="<fmt:setBundle basename='oscarResources'/><fmt:message key='SearchDrug.msgLongTermAcuteInactiveExternalDesc'/>">
                         <fmt:setBundle basename="oscarResources"/><fmt:message
                         key="SearchDrug.msgLongTermAcuteInactiveExternal"/>
@@ -2288,7 +2380,29 @@
           // .html() replaces the container content and evaluates inline scripts,
           // which triggers the DataTable init for the first section's table.
           jQuery('#' + id).html(responseText);
-          
+
+          // Re-cache whenever the drug list is refreshed (initial load, re-rx, changeLt).
+          // After caching, re-apply the active legend view so the display is consistent:
+          //   - Initial load: activeViewMode='current' → shows only non-archived rows even
+          //     though the server now always returns all drugs including archived.
+          //   - changeLt / save-Rx: re-applies whatever view the user had selected.
+          if (id === 'drugProfile') {
+              // DataTables pagination removes off-page rows from the live DOM.
+              // jQuery('#Drug_table tbody tr') would therefore only return the
+              // current page's rows (default: 10), silently truncating the cache.
+              // fnGetNodes() returns ALL row nodes from DataTables' internal store,
+              // including detached off-page ones, giving us the full dataset.
+              const dtInstance = jQuery('#Drug_table').dataTable();
+              allDrugRows = jQuery(dtInstance.fnGetNodes()).clone(true, true);
+              drugTableHeadHtml = jQuery('#Drug_table thead').html();
+              drugTableClasses = jQuery('#Drug_table').attr('class');
+              if (activeSectionDefs) {
+                  showSections(activeSectionDefs);
+              } else {
+                  filterDrugView(activeViewMode);
+              }
+          }
+
           // Drain the queue — any addition calls that arrived while the replacement
           // was in flight now execute in order.
           let queue = drugProfileAdditionQueue[id] || [];
@@ -2301,7 +2415,117 @@
         });
   }
 
-  callReplacementWebService("ListDrugs.jsp", 'drugProfile');
+  // ---------------------------------------------------------------------------
+  //  Client-side drug profile filtering
+  //
+  //  On every drug-list load (page open, re-rx, changeLt), all rows are fetched
+  //  once and stored in allDrugRows. Legend buttons then filter that cache
+  //  client-side — no extra server round-trips required.
+  //
+  //  activeViewMode / activeSectionDefs track which legend view is currently
+  //  active so that non-legend refreshes (changeLt, save-Rx) can re-apply the
+  //  same view automatically after the new data is cached.
+  // ---------------------------------------------------------------------------
+
+  // Row cache — populated after every drug-list load via callReplacementWebService.
+  let allDrugRows = null;       // cloned jQuery set of all <tr> from the full server response
+  let drugTableHeadHtml = null; // cached <thead> innerHTML, reused when building each section table
+  let drugTableClasses = null;  // class string copied from #Drug_table to each rebuilt table
+
+  // Exactly one of these is non-null at any time, depending on which legend button is active.
+  let activeViewMode = 'current'; // argument for filterDrugView  (single-table views)
+  let activeSectionDefs = null;   // argument for showSections     (multi-section views)
+
+  // Row predicate helpers — centralise the data-* attribute checks so filter
+  // functions below don't repeat the same string comparisons everywhere.
+  const rowIsArchived = r => r.dataset.isArchived === 'true';
+  const rowIsLongTerm = r => r.dataset.isLongterm === 'true';
+  const rowIsCurrent = r => r.dataset.isCurrent === 'true';
+  const rowIsExternal = r => r.dataset.isExternal === 'true';
+
+  // Tear down every DataTable inside #drugProfile, wipe the container, then
+  // render each section: an optional heading, a cloned table, and a new DataTable.
+  function rebuildDrugProfile(sections) {
+      jQuery('#drugProfile table').each(function () {
+          if (jQuery.fn.dataTable && jQuery.fn.dataTable.isDataTable(this)) {
+              jQuery(this).dataTable().fnDestroy();
+          }
+      });
+      jQuery('#drugProfile').empty();
+
+      sections.forEach(section => {
+          const tableId = section.label
+              ? 'Drug_table' + section.label.replace(/\s+/g, '')
+              : 'Drug_table';
+
+          if (section.label) {
+              jQuery('#drugProfile').append(
+                  jQuery('<h4 style="margin-bottom:1px;margin-top:3px;"></h4>').text(section.label)
+              );
+          }
+
+          const $tbody = jQuery('<tbody></tbody>');
+          section.rows.each(function () {
+              $tbody.append(jQuery(this).clone(true, true));
+          });
+
+          jQuery('<table></table>')
+              .attr({ id: tableId, class: drugTableClasses })
+              .append(jQuery('<thead></thead>').html(drugTableHeadHtml), $tbody)
+              .appendTo('#drugProfile')
+              .dataTable(window.drugListTableConfig);
+      });
+  }
+
+  // Show a single table containing only the rows that match the given mode.
+  function filterDrugView(mode) {
+      if (!allDrugRows) { return; }
+      activeViewMode = mode;
+      activeSectionDefs = null;
+      const filtered = allDrugRows.filter(function () {
+          switch (mode) {
+              case 'current':  return !rowIsArchived(this);
+              case 'all':      return true;
+              case 'active':   return !rowIsArchived(this) && (rowIsLongTerm(this) || rowIsCurrent(this));
+              case 'inactive': return !rowIsArchived(this) && !rowIsCurrent(this);
+              default:         return true;
+          }
+      });
+      rebuildDrugProfile([{ label: null, rows: filtered }]);
+  }
+
+  // Show multiple labelled sections, each filtered by its own predicate.
+  // Called by showLongTermAcuteView() and showFullProfileView() below.
+  function showSections(sectionDefs) {
+      if (!allDrugRows) { return; }
+      activeSectionDefs = sectionDefs;
+      activeViewMode = null;
+      const sections = sectionDefs.map(def => ({
+          label: def.label,
+          rows: allDrugRows.filter(function () { return def.filterFn(this); })
+      }));
+      rebuildDrugProfile(sections);
+  }
+
+  // Named entry points for the two multi-section legend buttons — keeps onclick
+  // attributes readable and avoids repeating filter logic inline in the HTML.
+  function showLongTermAcuteView() {
+      showSections([
+          { label: 'Long Term Meds', filterFn: r => !rowIsArchived(r) && rowIsLongTerm(r) },
+          { label: 'Acute', filterFn: r => !rowIsArchived(r) && !rowIsLongTerm(r) }
+      ]);
+  }
+
+  function showFullProfileView() {
+      showSections([
+          { label: 'Long Term Meds', filterFn: r => !rowIsArchived(r) && rowIsLongTerm(r) },
+          { label: 'Acute', filterFn: r => !rowIsArchived(r) && !rowIsLongTerm(r) && rowIsCurrent(r) },
+          { label: 'Inactive', filterFn: r => !rowIsArchived(r) && !rowIsLongTerm(r) && !rowIsCurrent(r) },
+          { label: 'External', filterFn: r => !rowIsArchived(r) && rowIsExternal(r) }
+      ]);
+  }
+
+  callReplacementWebService("ListDrugs.jsp?show=all", 'drugProfile');
 
   function searchResultsHandler(type, args) {
     let url = ctx + "/oscarRx/WriteScript.do";
