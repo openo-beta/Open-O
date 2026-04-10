@@ -327,7 +327,7 @@
                         try {
                             remoteFacilityIdQueryString = "&remoteFacilityId=" + result.getRemoteFacilityId();
                             String remoteLabKey = LabDisplayHelper.makeLabKey(Integer.parseInt(result.getLabPatientId()), result.getSegmentID(), result.labType, result.getDateTime());
-                            remoteFacilityIdQueryString = remoteFacilityIdQueryString + "&remoteLabKey=" + remoteLabKey;
+                            remoteFacilityIdQueryString = remoteFacilityIdQueryString + "&remoteLabKey=" + URLEncoder.encode(remoteLabKey, "UTF-8");
                         } catch (Exception e) {
                             MiscUtils.getLogger().error("Error", e);
                         }

@@ -186,7 +186,7 @@
                 String curDay = Integer.toString(today.getDay());
                 String Hour = Integer.toString(today.getHours());
                 String Min = Integer.toString(today.getMinutes());
-                String eURL = "/oscarEncounter/IncomingEncounter.do?casetoEncounter=true&providerNo=" + bean.providerNo + "&appointmentNo=" + bean.appointmentNo + "&demographicNo=" + bean.demographicNo + "&curProviderNo=" + bean.providerNo + "&reason=" + " " + "&userName=" + bean.patientFirstName + " " + bean.patientLastName + "&curDate=" + curYear + "-" + curMonth + "-" + curDay + "&appointmentDate=" + curYear + "-" + curMonth + "-" + curDay + "&startTime=" + Hour + ":" + Min + "&status=t";%>
+                String eURL = "/oscarEncounter/IncomingEncounter.do?casetoEncounter=true&providerNo=" + bean.providerNo + "&appointmentNo=" + bean.appointmentNo + "&demographicNo=" + bean.demographicNo + "&curProviderNo=" + bean.providerNo + "&reason=" + java.net.URLEncoder.encode(" ", StandardCharsets.UTF_8) + "&userName=" + java.net.URLEncoder.encode(bean.patientFirstName + " " + bean.patientLastName, StandardCharsets.UTF_8) + "&curDate=" + curYear + "-" + curMonth + "-" + curDay + "&appointmentDate=" + curYear + "-" + curMonth + "-" + curDay + "&startTime=" + Hour + ":" + Min + "&status=t";%>
             <caisirole:SecurityAccess accessName="medical encounter" accessType="access"
                                       providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>" demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>"
                                       programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">

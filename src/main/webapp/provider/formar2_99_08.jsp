@@ -245,7 +245,7 @@
                         //if(bNewList&&!(request.getParameter("patientmaster")!=null) ) {
                         if (bNewList || (request.getParameter("patientmaster") != null)) {
                     %> <a href=#
-                          onClick="popupPage(600,900,'<%= request.getContextPath() %>/provider/providercontrol.jsp?appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&curProvider_no=&bNewForm=1&username=&reason=<%=Encode.forJavaScript(request.getParameter("reason")==null?"":request.getParameter("reason"))%>&displaymode=ar1&dboperation=search_demograph');return false;"
+                          onClick="popupPage(600,900,'<%= request.getContextPath() %>/provider/providercontrol.jsp?appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&curProvider_no=&bNewForm=1&username=&reason=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("reason")==null?"":request.getParameter("reason"), StandardCharsets.UTF_8))%>&displaymode=ar1&dboperation=search_demograph');return false;"
                           title="Antenatal Record 1"> <font color='yellow'>View AR1</font></a>
                     | <a href=#
                          onClick="popupPage(500,600,'<%=request.getContextPath()%>/demographic/formhistory.jsp?demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>')"

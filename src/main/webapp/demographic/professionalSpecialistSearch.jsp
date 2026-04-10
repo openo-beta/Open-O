@@ -192,12 +192,12 @@
         <script language="JavaScript">
             <!--
             function last() {
-                document.nextform.action = "<%= request.getContextPath() %>/demographic/professionalSpecialistSearch.jsp?form=<%=Encode.forJavaScript(String.valueOf(form))%>&elementName=<%=Encode.forJavaScript(String.valueOf(elementName))%>&elementId=<%=Encode.forJavaScript(String.valueOf(elementId))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
+                document.nextform.action = "<%= request.getContextPath() %>/demographic/professionalSpecialistSearch.jsp?form=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(form,"UTF-8")))%>&elementName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementName,"UTF-8")))%>&elementId=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementId,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
                 document.nextform.submit();
             }
 
             function next() {
-                document.nextform.action = "<%= request.getContextPath() %>/demographic/professionalSpecialistSearch.jsp?form=<%=Encode.forJavaScript(String.valueOf(form))%>&elementName=<%=Encode.forJavaScript(String.valueOf(elementName))%>&elementId=<%=Encode.forJavaScript(String.valueOf(elementId))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
+                document.nextform.action = "<%= request.getContextPath() %>/demographic/professionalSpecialistSearch.jsp?form=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(form,"UTF-8")))%>&elementName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementName,"UTF-8")))%>&elementId=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementId,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
                 document.nextform.submit();
             }
 

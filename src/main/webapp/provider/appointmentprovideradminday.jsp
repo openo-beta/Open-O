@@ -919,7 +919,7 @@
                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r">
                                     <li>
                                         <a HREF="#"
-                                           ONCLICK="popupOscarRx(600,1024,'<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProvider().getFirstName()+" "+loggedInInfo1.getLoggedInProvider().getLastName()))%>')"
+                                           ONCLICK="popupOscarRx(600,1024,'<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(loggedInInfo1.getLoggedInProvider().getFirstName()+" "+loggedInInfo1.getLoggedInProvider().getLastName(), StandardCharsets.UTF_8)))%>')"
                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.messenger"/>">
                                             <span id="oscar_new_msg"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.msg"/></span></a>
                                     </li>
@@ -929,7 +929,7 @@
                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_con" rights="r">
                                     <li id="con">
                                         <a HREF="#"
-                                           ONCLICK="popupOscarRx(625,1024,'<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProvider().getFirstName()+" "+loggedInInfo1.getLoggedInProvider().getLastName()))%>')"
+                                           ONCLICK="popupOscarRx(625,1024,'<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(loggedInInfo1.getLoggedInProvider().getFirstName()+" "+loggedInInfo1.getLoggedInProvider().getLastName(), StandardCharsets.UTF_8)))%>')"
                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewConReq"/>">
                                             <span id="oscar_aged_consults"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.con"/></span></a>
                                     </li>
@@ -1144,10 +1144,10 @@
                 </a>
 
                 <%
-                    String calendarUrl = request.getContextPath() + "/share/CalendarPopup.jsp?urlfrom=" + request.getContextPath() + "/provider/providercontrol.jsp" + "&year=" + strYear + "&month=" + strMonth + "&param=" + "&view=0&displaymode=day&dboperation=searchappointmentday&viewall=" + viewall;
+                    String calendarUrl = request.getContextPath() + "/share/CalendarPopup.jsp?urlfrom=" + request.getContextPath() + "/provider/providercontrol.jsp" + "&year=" + strYear + "&month=" + strMonth + "&param=" + URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday&viewall=" + viewall, "UTF-8");
 
                     if (isWeekView) {
-                        calendarUrl += "&provider_no=" + provNum;
+                        calendarUrl += URLEncoder.encode("&provider_no=" + provNum, "UTF-8");
                     }
                 %>
 
@@ -2073,9 +2073,9 @@
                                                                 + Encode.forHtmlContent(reason)
                                                                 + "&reasonCode=" + (appointment.getReasonCode() != null ? appointment.getReasonCode() : "")
                                                                 + "&encType="
-                                                                + "face to face encounter with client"
+                                                                + URLEncoder.encode("face to face encounter with client", "UTF-8")
                                                                 + "&userName="
-                                                                + userfirstname + " " + userlastname
+                                                                + URLEncoder.encode(userfirstname + " " + userlastname, StandardCharsets.UTF_8)
                                                                 + "&curDate=" + curYear + "-" + curMonth + "-"
                                                                 + curDay + "&appointmentDate=" + year + "-"
                                                                 + month + "-" + day + "&startTime="
@@ -2102,14 +2102,14 @@
                                                                 if (status.indexOf('B') == -1) {
                                                             %>
                                                             &#124; <a href=#
-                                                                      onClick='popupPage(755,1200, "<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forJavaScript(String.valueOf(prov))%>&billForm=<%=Encode.forJavaScript(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(""))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(name))%>&status=<%=Encode.forJavaScript(String.valueOf(status))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&providerview=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&user_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&xml_provider=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(year+"-"+month+"-"+day))%>&start_time=<%=Encode.forJavaScript(String.valueOf(start_time))%>&bNewForm=1");return false;'
+                                                                      onClick='popupPage(755,1200, "<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(prov, StandardCharsets.UTF_8)))%>&billForm=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8)))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("", StandardCharsets.UTF_8)))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(name, StandardCharsets.UTF_8)))%>&status=<%=Encode.forJavaScript(String.valueOf(status))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&providerview=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&user_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&xml_provider=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(year+"-"+month+"-"+day))%>&start_time=<%=Encode.forJavaScript(String.valueOf(start_time))%>&bNewForm=1");return false;'
                                                                       title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billingtag"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnB"/></a>
                                                             <%
                                                             } else {
                                                                 if (caisiBillingPreferenceNotDelete != null && caisiBillingPreferenceNotDelete.equals("1")) {
                                                             %>
                                                             &#124; <a href=#
-                                                                      onClick='onUpdatebill("<%= request.getContextPath() %>/billing/CA/ON/billingEditWithApptNo.jsp?billRegion=<%=Encode.forJavaScript(String.valueOf(prov))%>&billForm=<%=Encode.forJavaScript(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(""))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(name))%>&status=<%=Encode.forJavaScript(String.valueOf(status))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&providerview=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&user_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(year+"-"+month+"-"+day))%>&start_time=<%=Encode.forJavaScript(String.valueOf(iS+":"+iSm))%>&bNewForm=1");return false;'
+                                                                      onClick='onUpdatebill("<%= request.getContextPath() %>/billing/CA/ON/billingEditWithApptNo.jsp?billRegion=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(prov, StandardCharsets.UTF_8)))%>&billForm=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8)))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("", StandardCharsets.UTF_8)))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(name, StandardCharsets.UTF_8)))%>&status=<%=Encode.forJavaScript(String.valueOf(status))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&providerview=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&user_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(year+"-"+month+"-"+day))%>&start_time=<%=Encode.forJavaScript(String.valueOf(iS+":"+iSm))%>&bNewForm=1");return false;'
                                                                       title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billingtag"/>">=<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnB"/></a>
                                                             <%
                                                             } else {
@@ -2287,7 +2287,7 @@
                         popupOscarRx(600, 1024, '<%= request.getContextPath() %>/billing/CA/<%=Encode.forJavaScript(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>');
                         return false;  //code for 'B'illing
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.calendarShortcut"/> :
-                        popupOscarRx(425, 430, '<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/provider/providercontrol.jsp&year=<%=Encode.forJavaScript(String.valueOf(strYear))%>&month=<%=Encode.forJavaScript(String.valueOf(strMonth))%>&param=<%=Encode.forJavaScript(String.valueOf("&view=0&displaymode=day&dboperation=searchappointmentday"))%>');
+                        popupOscarRx(425, 430, '<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/provider/providercontrol.jsp&year=<%=Encode.forJavaScript(String.valueOf(strYear))%>&month=<%=Encode.forJavaScript(String.valueOf(strMonth))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday","UTF-8")))%>');
                         return false;  //run code for 'C'alendar
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.edocShortcut"/> :
                         popupOscarRx('700', '1024', '<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&curUser=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>', 'edocView');
@@ -2306,13 +2306,13 @@
                         popupOscarRx(600, 1024, '<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>', '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.lab"/>');
                         return false;  //run code for 'L'ab
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.msgShortcut"/> :
-                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(userfirstname+" "+userlastname))%>');
+                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname, StandardCharsets.UTF_8)))%>');
                         return false;  //run code for 'M'essage
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.monthShortcut"/> :
                         window.open("providercontrol.jsp?year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=1<%=Encode.forJavaScript(String.valueOf(viewString))%>&displaymode=month&dboperation=searchappointmentmonth", "_self");
                         return false;  //run code for Mo'n'th
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.conShortcut"/> :
-                        popupOscarRx(625, 1024, '<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(userfirstname+" "+userlastname))%>');
+                        popupOscarRx(625, 1024, '<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname, StandardCharsets.UTF_8)))%>');
                         return false;  //run code for c'O'nsultation
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.reportShortcut"/> :
                         popupOscarRx(650, 1024, '<%= request.getContextPath() %>/report/reportindex.jsp', 'reportPage');

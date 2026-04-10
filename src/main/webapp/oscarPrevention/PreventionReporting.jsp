@@ -725,7 +725,7 @@
             String queryStr = getUrlParamList(firstLetter, "demo");
         %>
         <a target="_blank"
-           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&amp;message=<%=Encode.forUriComponent(String.valueOf("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType")))%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L1">Generate
+           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=queryStr%>&amp;message=<%=Encode.forUriComponent(String.valueOf("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType")))%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L1">Generate
             First Letter</a>
         <%}%>
 
@@ -733,7 +733,7 @@
             String queryStr = getUrlParamList(secondLetter, "demo");
         %>
         <a target="_blank"
-           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&amp;message=<%=Encode.forUriComponent(String.valueOf("Letter 2 Reminder Letter sent for :"+request.getAttribute("prevType")))%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L2">Generate
+           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=queryStr%>&amp;message=<%=Encode.forUriComponent(String.valueOf("Letter 2 Reminder Letter sent for :"+request.getAttribute("prevType")))%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L2">Generate
             Second Letter</a>
         <%}%>
 
@@ -741,7 +741,7 @@
             String queryStr = getUrlParamList(refusedLetter, "demo");
         %>
         <a target="_blank"
-           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&amp;message=<%=Encode.forUriComponent(String.valueOf("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType")))%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L1">Generate
+           href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=queryStr%>&amp;message=<%=Encode.forUriComponent(String.valueOf("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType")))%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L1">Generate
             Refused Letter</a>
         <%}%>
 

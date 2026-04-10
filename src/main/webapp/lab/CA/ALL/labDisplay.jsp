@@ -251,7 +251,7 @@ Map<String, ExcellerisOntarioHandler.OrderStatus> missingTests = new HashMap<>()
         hl7 = LabDisplayHelper.getHl7Body(cachedDemographicLabResultXmlData);
 
         try {
-            remoteFacilityIdQueryString = "&remoteFacilityId=" + remoteFacilityIdString + "&remoteLabKey=" + remoteLabKey;
+            remoteFacilityIdQueryString = "&remoteFacilityId=" + remoteFacilityIdString + "&remoteLabKey=" + URLEncoder.encode(remoteLabKey, "UTF-8");
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }

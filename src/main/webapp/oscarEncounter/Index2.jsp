@@ -141,7 +141,7 @@
         String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view" +
         "&demographicNo=" + bean.demographicNo +
         "&providerNo=" + bean.providerNo +
-        "&providerName=" + bean.userName +
+        "&providerName=" + URLEncoder.encode(bean.userName, StandardCharsets.UTF_8) +
         "&appointmentNo=" + (bean.appointmentNo != null ? bean.appointmentNo : "") +
         "&reason=" + URLEncoder.encode(bean.reason != null ? bean.reason : "", StandardCharsets.UTF_8) +
         "&reasonCode=" + (bean.reasonCode != null ? bean.reasonCode : "") +
