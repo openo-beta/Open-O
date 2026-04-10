@@ -758,7 +758,8 @@
     let Lst;
 
     function CngClass(obj) {
-      document.getElementById("selected_default").className = '';
+      const defaultEl = document.getElementById("selected_default");
+      if (defaultEl) defaultEl.className = '';
       if (Lst) Lst.className = '';
       obj.className = 'selected';
       Lst = obj;
