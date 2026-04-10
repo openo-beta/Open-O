@@ -24,21 +24,21 @@
  */
 package ca.openosp.openo.commn.dao;
 
-import ca.openosp.openo.commn.model.DemographicMergeEvent;
+import ca.openosp.openo.commn.model.DemographicMerge;
 
 /**
- * DAO interface for {@link DemographicMergeEvent}.
+ * DAO interface for {@link DemographicMerge}.
  *
  * @since 2026-03-19
  */
-public interface DemographicMergeEventDao extends AbstractDao<DemographicMergeEvent> {
+public interface DemographicMergeDao extends AbstractDao<DemographicMerge> {
 
     /**
      * Loads the most recent MERGE event for the given merged demographic (C).
      * Used by the unmerge path to identify the primary and secondary demographics to reactivate.
      *
      * @param mergedDemographicNo Integer the demographic_no of the merged record (C)
-     * @return DemographicMergeEvent the latest MERGE event for the given demographic, or null if not found
+     * @return DemographicMerge the latest MERGE event for the given demographic, or null if not found
      */
-    DemographicMergeEvent findLatestMergeEventByMergedDemographicNo(Integer mergedDemographicNo);
+    DemographicMerge findLatestMergeEventByMergedDemographicNo(Integer mergedDemographicNo);
 }
