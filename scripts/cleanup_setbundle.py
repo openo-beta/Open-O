@@ -1,4 +1,22 @@
 #!/usr/bin/env python3
+
+# Copyright (c) 2026 Sebastian Ibanez. All Rights Reserved.
+#
+# This software is published under the GNU General Public License.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
 """Cleanup script to remove redundant fmt:setBundle calls from JSP files.
 
 For each JSP file under src/main/webapp/:
@@ -17,16 +35,21 @@ import os
 import re
 import sys
 
-WEBAPP_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                          "src", "main", "webapp")
+WEBAPP_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src", "main", "webapp"
+)
 
 # Matches all variants: double/single quotes, optional space before />
-SETBUNDLE_RE = re.compile(r'<fmt:setBundle\s+basename\s*=\s*["\']oscarResources["\']\s*/>')
+SETBUNDLE_RE = re.compile(
+    r'<fmt:setBundle\s+basename\s*=\s*["\']oscarResources["\']\s*/>'
+)
 
 # For finding insertion points (priority order)
 FMT_TAGLIB_RE = re.compile(r'<%@\s*taglib\s+.*prefix\s*=\s*["\']fmt["\']\s*%>')
-TAGLIBS_INCLUDE_RE = re.compile(r'<%@\s*include\s+file\s*=\s*["\'].*/taglibs\.jsp["\']\s*%>')
-DIRECTIVE_RE = re.compile(r'<%@\s*(taglib|page|include)\s+')
+TAGLIBS_INCLUDE_RE = re.compile(
+    r'<%@\s*include\s+file\s*=\s*["\'].*/taglibs\.jsp["\']\s*%>'
+)
+DIRECTIVE_RE = re.compile(r"<%@\s*(taglib|page|include)\s+")
 
 SETBUNDLE_LINE = '<fmt:setBundle basename="oscarResources"/>\n'
 
@@ -89,7 +112,7 @@ def process_file(filepath):
         final_lines.append(clean_line)
     # Handle case where removal shortened line count (shouldn't happen with sub, but safety)
     if len(cleaned_lines) > len(original_lines):
-        final_lines.extend(cleaned_lines[len(original_lines):])
+        final_lines.extend(cleaned_lines[len(original_lines) :])
 
     # Step 3: Find insertion point and insert single setBundle
     insert_idx = find_insertion_line(final_lines)
@@ -123,7 +146,9 @@ def validate(filepath, original, new_content, removed_count):
     orig_msg_count = original.count("fmt:message")
     new_msg_count = new_content.count("fmt:message")
     if orig_msg_count != new_msg_count:
-        warnings.append(f"fmt:message count changed: {orig_msg_count} -> {new_msg_count}")
+        warnings.append(
+            f"fmt:message count changed: {orig_msg_count} -> {new_msg_count}"
+        )
 
     # Check: no non-setBundle content should be lost.
     # After stripping all setBundle tags from both versions, the remaining content
@@ -133,10 +158,15 @@ def validate(filepath, original, new_content, removed_count):
     orig_nonblank = [l for l in orig_stripped.splitlines() if l.strip()]
     new_nonblank = [l for l in new_content.splitlines() if l.strip()]
     # The new content has 1 inserted setBundle line; remove it for comparison
-    new_nonblank_filtered = [l for l in new_nonblank
-                             if l.strip() != '<fmt:setBundle basename="oscarResources"/>']
+    new_nonblank_filtered = [
+        l
+        for l in new_nonblank
+        if l.strip() != '<fmt:setBundle basename="oscarResources"/>'
+    ]
     if orig_nonblank != new_nonblank_filtered:
-        warnings.append("Non-setBundle content differs after cleanup — possible data loss")
+        warnings.append(
+            "Non-setBundle content differs after cleanup — possible data loss"
+        )
 
     return warnings
 
@@ -146,7 +176,11 @@ def make_diff(filepath, original, new_content):
     rel = filepath.replace(os.getcwd() + "/", "")
     orig_lines = original.splitlines(keepends=True)
     new_lines = new_content.splitlines(keepends=True)
-    return "".join(difflib.unified_diff(orig_lines, new_lines, fromfile=f"a/{rel}", tofile=f"b/{rel}"))
+    return "".join(
+        difflib.unified_diff(
+            orig_lines, new_lines, fromfile=f"a/{rel}", tofile=f"b/{rel}"
+        )
+    )
 
 
 def main():
@@ -196,7 +230,10 @@ def main():
 
     # Summary
     print("=" * 70, file=sys.stderr)
-    print(f"fmt:setBundle Cleanup {'(DRY RUN)' if mode != 'apply' else 'COMPLETE'}", file=sys.stderr)
+    print(
+        f"fmt:setBundle Cleanup {'(DRY RUN)' if mode != 'apply' else 'COMPLETE'}",
+        file=sys.stderr,
+    )
     print("=" * 70, file=sys.stderr)
     print(f"Files processed:     {total_files}", file=sys.stderr)
     print(f"Total tags removed:  {total_removed}", file=sys.stderr)
