@@ -22,7 +22,7 @@
  * McMaster University
  * Hamilton
  * Ontario, Canada
- * Modifications made by Magenta Health in 2026.
+ * Modifications made by Magenta Health in collaboration with Open OSP in 2026.
  */
 
 package ca.openosp.openo.lab.ca.all.util;

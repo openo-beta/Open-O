@@ -237,10 +237,14 @@
 
         <script type="text/javascript">
             function resetStash() {
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
+
+                var url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearStash";
                 var data = "";
+                console.log(url);
                 new Ajax.Request(url, {
-                    method: 'post', parameters: data, onSuccess: function (transport) {
+                    method: 'post', parameters: data,
+                  requestHeaders: {'Accept': 'application/json'},
+                  onSuccess: function (transport) {
                         parent.document.getElementById('rxText').innerHTML = "";//make pending prescriptions disappear.
                         parent.document.getElementById('searchString').focus();
                     }
@@ -248,7 +252,7 @@
             }
 
             function resetReRxDrugList() {
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
+                var url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
                 var data = "";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data
@@ -260,8 +264,6 @@
                 var useSC = false;
                 var scAddress = "";
                 var rxPageSize = $('printPageSize').value;
-                console.log("rxPagesize  " + rxPageSize);
-
                 <% if(vecAddressName != null) { %>
                 useSC = true;
                 <%for(int i=0; i<vecAddressName.size(); i++) {%>
@@ -330,7 +332,7 @@
             }
 
             function printPaste2Parent(print, fax, pasteRx) {
-                //console.log("in printPaste2Parent");
+
                 try {
                     text = "";
                     <% if (props.isPropertyActive("rx_paste_asterisk")) { %>
@@ -420,7 +422,7 @@
 						"&additionalNotes=" +
 						"&body="+ encodeURIComponent(text),
 				onSuccess:function(ret){
-					//console.log("success")
+
 					if (print) {
 						printIframe();
 					}

@@ -8,7 +8,7 @@ This header should be added to files only when explicitly requested. Do not auto
 
 ```java
 /**
- * Copyright (c) 2025. Magenta Health. All Rights Reserved.
+ * 
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

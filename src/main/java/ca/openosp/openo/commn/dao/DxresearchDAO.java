@@ -1,6 +1,6 @@
 //CHECKSTYLE:OFF
 /**
- * Copyright (c) 2024. Magenta Health. All Rights Reserved.
+
  * Copyright (c) 2006-. OSCARservice, OpenSoft System. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  * <p>
- * Modifications made by Magenta Health in 2024.
+ * Modifications made by Magenta Health in collaboration with Open OSP in 2024.
  */
 package ca.openosp.openo.commn.dao;
 

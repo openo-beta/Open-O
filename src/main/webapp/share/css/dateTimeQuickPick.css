@@ -1,0 +1,31 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 2px;
+  width: 270px;
+}
+
+.grid a, .today-button {
+  background-color: #E6E6FA;
+  text-align: center;
+  width: auto;
+  height: auto;
+  padding: 10px;
+  margin: 2px;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  color: black;
+  font-size: 12px !important;
+  border-radius: 3px;
+}
+
+.grid a:hover, .today-button:hover {
+  background-color: #EE82EE;
+  color: white;
+}
+
+.today-button {
+  width: 125px;
+  cursor: pointer;
+}

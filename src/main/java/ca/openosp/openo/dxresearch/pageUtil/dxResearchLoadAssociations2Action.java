@@ -30,6 +30,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -53,10 +56,10 @@ import ca.openosp.openo.utility.SpringUtils;
 import com.Ostermiller.util.ExcelCSVParser;
 import com.Ostermiller.util.ExcelCSVPrinter;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
-public class dxResearchLoadAssociations2Action extends ActionSupport {
+public class dxResearchLoadAssociations2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -173,14 +176,14 @@ public class dxResearchLoadAssociations2Action extends ActionSupport {
         }
 
         // Validate that the file is a valid uploaded file and prevent path traversal
-        if (!isValidUploadedFile(file)) {
+        if (!isValidUploadedFile(fileOnDisk)) {
             MiscUtils.getLogger().error("SECURITY WARNING: Invalid file path detected for file upload");
             addActionError("Invalid file upload.");
             return ERROR;
         }
 
         // Re-validate at point of use for static analysis visibility
-        File validatedFile = PathValidationUtils.validateUpload(file);
+        File validatedFile = PathValidationUtils.validateUpload(fileOnDisk);
         String[][] data = ExcelCSVParser.parse(new FileReader(validatedFile));
 
         int rowsInserted = 0;
@@ -273,15 +276,16 @@ public class dxResearchLoadAssociations2Action extends ActionSupport {
         return uploadedFile.exists() && uploadedFile.isFile();
     }
 
-    private File file; // Uploaded file
+    private UploadedFile file; // Uploaded file
+    private File fileOnDisk;
     private boolean replace = true; // Flag for replacement
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.file = uploadedFiles.get(0);
+            this.fileOnDisk = PathValidationUtils.toFile(file);
+        }
     }
 
     public boolean isReplace() {

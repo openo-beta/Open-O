@@ -54,7 +54,7 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.owasp.encoder.Encode;
@@ -1253,9 +1253,13 @@ public final class RxWriteScript2Action extends ActionSupport {
                 bean.setStashIndex(bean.getStashSize() - 1);
             }
         }
-
-        saveDrug(request);
-        return "refresh";
+        response.setContentType("application/json");
+		String savedScriptId = saveDrug(request);
+        Map<String, String> hm = new HashMap<>();
+        hm.put("savedScriptId", savedScriptId);
+        ObjectNode jo = objectMapper.valueToTree(hm);
+        response.getOutputStream().write(jo.toString().getBytes());
+		return null;
     }
 
     public String getDemoNameAndHIN() throws IOException, Exception {
@@ -1316,7 +1320,7 @@ public final class RxWriteScript2Action extends ActionSupport {
         return null;
     }
   
-    public void saveDrug(final HttpServletRequest request) throws Exception {
+    public String saveDrug(final HttpServletRequest request) throws Exception {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         checkPrivilege(loggedInInfo, PRIVILEGE_WRITE);
 
@@ -1407,7 +1411,7 @@ public final class RxWriteScript2Action extends ActionSupport {
         }
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_PRESCRIPTION, scriptId, ip, "" + bean.getDemographicNo(), auditStr.toString());
 
-        return;
+        return scriptId;
     }
 
     public String searchSpecialInstructions() throws IOException {

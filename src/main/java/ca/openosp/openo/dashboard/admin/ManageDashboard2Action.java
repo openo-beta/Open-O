@@ -25,7 +25,9 @@
 
 package ca.openosp.openo.dashboard.admin;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.logging.log4j.Logger;
@@ -63,7 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageDashboard2Action extends ActionSupport {
+public class ManageDashboard2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -113,12 +115,12 @@ public class ManageDashboard2Action extends ActionSupport {
         byte[] filebytes = null;
         ObjectNode json = null;
 
-        if (indicatorTemplateFile != null) {
+        if (indicatorTemplateFileOnDisk != null) {
             try {
                 // Validate uploaded file before any file operations
-                PathValidationUtils.validateUpload(indicatorTemplateFile);
+                PathValidationUtils.validateUpload(indicatorTemplateFileOnDisk);
 
-                filebytes = Files.readAllBytes(indicatorTemplateFile.toPath());
+                filebytes = Files.readAllBytes(indicatorTemplateFileOnDisk.toPath());
             } catch (Exception e) {
                 json = objectMapper.createObjectNode();
                 json.put("status", "error");
@@ -166,7 +168,7 @@ public class ManageDashboard2Action extends ActionSupport {
                 builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
                 // Build the JDOM2 document
-                Document xmlDocument = builder.build(indicatorTemplateFile);
+                Document xmlDocument = builder.build(indicatorTemplateFileOnDisk);
 
                 // Setup XSD validation
                 SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -435,14 +437,15 @@ public class ManageDashboard2Action extends ActionSupport {
         }
     }
 
-    private File indicatorTemplateFile;
+    private UploadedFile indicatorTemplateFile;
+    private File indicatorTemplateFileOnDisk;
 
-    public File getIndicatorTemplateFile() {
-        return indicatorTemplateFile;
-    }
-
-    public void setIndicatorTemplateFile(File indicatorTemplateFile) {
-        this.indicatorTemplateFile = indicatorTemplateFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.indicatorTemplateFile = uploadedFiles.get(0);
+            this.indicatorTemplateFileOnDisk = PathValidationUtils.toFile(indicatorTemplateFile);
+        }
     }
     
     /**

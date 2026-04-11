@@ -1,6 +1,6 @@
 //CHECKSTYLE:OFF
 /**
- * Copyright (c) 2025. Magenta Health. All Rights Reserved.
+ * 
  * <p>
  * This software is made available under the terms of the
  * GNU General Public License, Version 2, 1991 (GPLv2).

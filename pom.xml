@@ -32,10 +32,14 @@
         <slf4j.version>2.0.17</slf4j.version>
         <!-- Hapi Fhir Version -->
         <hapifhir.version>6.10.5</hapifhir.version>
+        <!-- HL7 FHIR Core Version (org.hl7.fhir.core transitive overrides for CVE fix) -->
+        <hl7.fhir.core.version>6.4.0</hl7.fhir.core.version>
         <!-- Apache CXF Version -->
         <cxf.version>3.6.9</cxf.version>
         <!-- Netty Version (for transitive dependency security fixes) -->
         <netty.version>4.1.129.Final</netty.version>
+        <!-- Jackson Version -->
+        <jackson.version>2.21.1</jackson.version>
         <struts.devMode>false</struts.devMode>
         <!-- Test properties -->
         <skipModernTests>false</skipModernTests>
@@ -117,6 +121,18 @@
                 <groupId>org.apache.mina</groupId>
                 <artifactId>mina-core</artifactId>
                 <version>2.1.10</version>
+            </dependency>
+            <!-- Force secure versions of org.hl7.fhir.core libs to fix XXE vulnerability in XSLT parsing -->
+            <!-- Transitive from hapi-fhir-structures-dstu3, need 6.4.0+ to fix CVE -->
+            <dependency>
+                <groupId>ca.uhn.hapi.fhir</groupId>
+                <artifactId>org.hl7.fhir.utilities</artifactId>
+                <version>${hl7.fhir.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi.fhir</groupId>
+                <artifactId>org.hl7.fhir.dstu3</artifactId>
+                <version>${hl7.fhir.core.version}</version>
             </dependency>
             <!-- Force secure versions of ALL Netty modules to fix multiple CVEs:
                  - HTTP/2 DDoS (MadeYouReset) in netty-codec-http2
@@ -654,28 +670,28 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.19.2</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- Jackson Java 8 Date/Time support -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.19.2</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- Jackson JAXB annotations support - provides JaxbAnnotationIntrospector used in Spring configs -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
-            <version>2.19.2</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- Jackson XML support - explicit version to override older transitive from jasperreports -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.19.2</version>
+            <version>${jackson.version}</version>
         </dependency>
 
 
@@ -1158,7 +1174,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
-            <version>2.19.2</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- OWASP Encoder -->
@@ -1415,12 +1431,18 @@
         <dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-core</artifactId>
-            <version>2.5.33</version>
+            <version>6.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-spring-plugin</artifactId>
-            <version>2.5.33</version>
+            <version>6.8.0</version>
+        </dependency>
+        <!-- Required for Struts 6.x caching -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.2.3</version>
         </dependency>
 		<!-- https://mvnrepository.com/artifact/org.jboss.aerogear/aerogear-otp-java -->
 		<dependency>

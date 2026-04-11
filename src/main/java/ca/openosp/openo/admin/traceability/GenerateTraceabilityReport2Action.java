@@ -28,6 +28,7 @@ package ca.openosp.openo.admin.traceability;
 import java.io.File;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -36,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
@@ -47,15 +49,18 @@ import ca.openosp.openo.log.LogConst;
  *
  * @author oscar
  */
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
-public class GenerateTraceabilityReport2Action extends ActionSupport {
+public class GenerateTraceabilityReport2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
     public static int BUFFER_SIZE = 8192;
 
-    private File file;
+    private UploadedFile file;
+    private File fileOnDisk;
 
     @Override
     public String execute() throws Exception {
@@ -72,12 +77,17 @@ public class GenerateTraceabilityReport2Action extends ActionSupport {
         ExecutorService executor = null;
         Future<String> futureTRP = null;
         Future<String> futureTRC = null;
+        if (fileOnDisk == null) {
+            MiscUtils.getLogger().error("No traceability file was uploaded");
+            return null;
+        }
+
         try {
             pipedInputStream = new PipedInputStream(BUFFER_SIZE);
             pipedOutputStream = new PipedOutputStream(pipedInputStream);
             executor = Executors.newFixedThreadPool(2);
 
-            TraceabilityReportProcessor traceabilityReportProcessor = new TraceabilityReportProcessor(pipedOutputStream, file, request);
+            TraceabilityReportProcessor traceabilityReportProcessor = new TraceabilityReportProcessor(pipedOutputStream, fileOnDisk, request);
             TraceabilityReportConsumer traceabilityReportConsumer = new TraceabilityReportConsumer(pipedInputStream, response);
 
             futureTRP = executor.submit(traceabilityReportProcessor);
@@ -97,11 +107,11 @@ public class GenerateTraceabilityReport2Action extends ActionSupport {
         return null;
     }
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.file = uploadedFiles.get(0);
+            this.fileOnDisk = PathValidationUtils.toFile(file);
+        }
     }
 }

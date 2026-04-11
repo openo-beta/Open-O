@@ -1,6 +1,6 @@
 //CHECKSTYLE:OFF
 /**
- * Copyright (c) 2024. Magenta Health. All Rights Reserved.
+
  * Copyright (c) 2012- Centre de Medecine Integree
  * <p>
  * This software is published under the GPL GNU General Public License.
@@ -22,7 +22,7 @@
  * Centre de Medecine Integree, Saint-Laurent, Quebec, Canada to be provided
  * as part of the OSCAR McMaster EMR System
  * <p>
- * Modifications made by Magenta Health in 2024.
+ * Modifications made by Magenta Health in collaboration with Open OSP in 2024.
  */
 
 package ca.openosp.openo.commn.dao;

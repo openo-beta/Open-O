@@ -122,44 +122,48 @@
                 background-color: white;
             }
 
-            *:not(h2) {
-                line-height: 1 !important;
-                font-size: 12px !important;
+            *:not(h2):not(.btn) {
+              line-height: 1 !important;
+              font-size: 12px !important;
             }
 
-            .grid {
-                display: grid;
-                grid-template-columns: repeat(10, 1fr);
-                grid-gap: 2px;
-                width: 270px;
-            }
+            /*.grid {*/
+            /*    display: grid;*/
+            /*    grid-template-columns: repeat(10, 1fr);*/
+            /*    grid-gap: 2px;*/
+            /*    width: 270px;*/
+            /*}*/
 
-            .grid a, .today-button {
-                background-color: #E6E6FA;
-                text-align: center;
-                width: auto;
-                height: auto;
-                padding: 2px;
-                margin: 1px;
-                display: flex;
-                justify-content: center;
-                text-decoration: none;
-                color: black;
-                font-size: 11px !important;
-                border-radius: 3px;
-            }
+            /*.grid a, .today-button {*/
+            /*    background-color: #E6E6FA;*/
+            /*    text-align: center;*/
+            /*    width: auto;*/
+            /*    height: auto;*/
+            /*    padding: 2px;*/
+            /*    margin: 1px;*/
+            /*    display: flex;*/
+            /*    justify-content: center;*/
+            /*    text-decoration: none;*/
+            /*    color: black;*/
+            /*    font-size: 11px !important;*/
+            /*    border-radius: 3px;*/
+            /*}*/
 
-            .grid a:hover, .today-button:hover {
-                background-color: #EE82EE;
-                color: white;
-            }
+            /*.grid a:hover, .today-button:hover {*/
+            /*    background-color: #EE82EE;*/
+            /*    color: white;*/
+            /*}*/
 
-            .today-button {
-                width: 125px;
-                cursor: pointer;
-            }
+            /*.today-button {*/
+            /*    width: 125px;*/
+            /*    cursor: pointer;*/
+            /*}*/
         </style>
         <title><fmt:message key="tickler.ticklerEdit.title"/></title>
+
+        <link href="<%=request.getContextPath()%>/share/css/dateTimeQuickPick.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<%=request.getContextPath()%>/share/javascript/dateTimeQuickPick.js"></script>
+
         <script type="application/javascript">
             //open a new popup window
             function popupPage(vheight, vwidth, varpage) {
@@ -182,54 +186,54 @@
                 window.open(theURL, winName, features);
             }
 
-            // Add options 1 to 10 for days, weeks, months, and years
-            function addQuickPick() {
-                const quickPickDiv = document.getElementById('quickPickDateOptions');
-                for (let i = 0; i < 40; i++) {
-                    const linkButton = document.createElement('a');
-                    linkButton.href = '#';
-                    switch (Math.floor(i / 10)) {
-                        case 0:
-                            linkButton.innerText = (i % 10) + 1 + "d";
-                            linkButton.onclick = function () {
-                                addTime((i % 10) + 1, "days");
-                            };
-                            break;//1 through 10 days
-                        case 1:
-                            linkButton.innerText = (i % 10) + 1 + "w";
-                            linkButton.onclick = function () {
-                                addTime(((i % 10) + 1) * 7, "days");
-                            };
-                            break;//1 through 10 weeks
-                        case 2:
-                            linkButton.innerText = (i % 10) + 1 + "m";
-                            linkButton.onclick = function () {
-                                addTime((i % 10) + 1, "months");
-                            };
-                            break;//1 through 10 months
-                        case 3:
-                            linkButton.innerText = (i % 10) + 1 + "y";
-                            linkButton.onclick = function () {
-                                addTime(((i % 10) + 1) * 12, "months");
-                            };
-                            break;//1 through 10 years
-                    }
-                    quickPickDiv.appendChild(linkButton);
-                }
-            }
-
-            function addTime(num, type) {
-                let currentDate = new Date();
-                if (type === "months") {
-                    currentDate.setMonth(currentDate.getMonth() + num);
-                } else {
-                    currentDate.setDate(currentDate.getDate() + num);
-                }
-                const year = currentDate.getFullYear();
-                const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-                const day = String(currentDate.getDate()).padStart(2, '0');
-                document.serviceform.xml_appointment_date.value = year + "-" + month + "-" + day;
-            }
+            // // Add options 1 to 10 for days, weeks, months, and years
+            // function addQuickPick() {
+            //     const quickPickDiv = document.getElementById('quickPickDateOptions');
+            //     for (let i = 0; i < 40; i++) {
+            //         const linkButton = document.createElement('a');
+            //         linkButton.href = '#';
+            //         switch (Math.floor(i / 10)) {
+            //             case 0:
+            //                 linkButton.innerText = (i % 10) + 1 + "d";
+            //                 linkButton.onclick = function () {
+            //                     addTime((i % 10) + 1, "days");
+            //                 };
+            //                 break;//1 through 10 days
+            //             case 1:
+            //                 linkButton.innerText = (i % 10) + 1 + "w";
+            //                 linkButton.onclick = function () {
+            //                     addTime(((i % 10) + 1) * 7, "days");
+            //                 };
+            //                 break;//1 through 10 weeks
+            //             case 2:
+            //                 linkButton.innerText = (i % 10) + 1 + "m";
+            //                 linkButton.onclick = function () {
+            //                     addTime((i % 10) + 1, "months");
+            //                 };
+            //                 break;//1 through 10 months
+            //             case 3:
+            //                 linkButton.innerText = (i % 10) + 1 + "y";
+            //                 linkButton.onclick = function () {
+            //                     addTime(((i % 10) + 1) * 12, "months");
+            //                 };
+            //                 break;//1 through 10 years
+            //         }
+            //         quickPickDiv.appendChild(linkButton);
+            //     }
+            // }
+            //
+            // function addTime(num, type) {
+            //     let currentDate = new Date();
+            //     if (type === "months") {
+            //         currentDate.setMonth(currentDate.getMonth() + num);
+            //     } else {
+            //         currentDate.setDate(currentDate.getDate() + num);
+            //     }
+            //     const year = currentDate.getFullYear();
+            //     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            //     const day = String(currentDate.getDate()).padStart(2, '0');
+            //     document.serviceform.xml_appointment_date.value = year + "-" + month + "-" + day;
+            // }
 
             function DateAdd(startDate, numDays, numMonths, numYears) {
                 var returnDate = new Date(startDate.getTime());
@@ -280,19 +284,30 @@
                     return true;
                 }
             }
+
+            // on load
+            document.addEventListener('DOMContentLoaded', function() {
+              addQuickPick();
+            });
         </script>
         <link href="<%= request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet"
               type="text/css">
 
     </head>
 
-    <body onLoad="addQuickPick()">
+    <body>
     <div class="container">
         <form name="serviceform" action="${pageContext.request.contextPath}/tickler/EditTickler.do" method="post">
             <input type="hidden" name="method" value="editTickler"/>
             <input type="hidden" name="ticklerNo" value="<%=ticklerNo%>"/>
             <input type="hidden" name="parentAjaxId" value="<e:forHtml value='${param.parentAjaxId}' />"/>
-            <h2><fmt:message key="tickler.ticklerEdit.title"/></h2>
+            <h2>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-feather"
+                   viewBox="0 0 16 16">
+                <path d="M15.807.531c-.174-.177-.41-.289-.64-.363a3.765 3.765 0 0 0-.833-.15c-.62-.049-1.394 0-2.252.175C10.365.545 8.264 1.415 6.315 3.1c-1.95 1.686-3.168 3.724-3.758 5.423-.294.847-.44 1.634-.429 2.268.005.316.05.62.154.88.017.04.035.082.056.122A68.362 68.362 0 0 0 .08 15.198a.528.528 0 0 0 .157.72.504.504 0 0 0 .705-.16 67.606 67.606 0 0 1 2.158-3.26c.285.141.616.195.958.182.513-.02 1.098-.188 1.723-.49 1.25-.605 2.744-1.787 4.303-3.642l1.518-1.55a.528.528 0 0 0 0-.739l-.729-.744 1.311.209a.504.504 0 0 0 .443-.15c.222-.23.444-.46.663-.684.663-.68 1.292-1.325 1.763-1.892.314-.378.585-.752.754-1.107.163-.345.278-.773.112-1.188a.524.524 0 0 0-.112-.172ZM3.733 11.62C5.385 9.374 7.24 7.215 9.309 5.394l1.21 1.234-1.171 1.196a.526.526 0 0 0-.027.03c-1.5 1.789-2.891 2.867-3.977 3.393-.544.263-.99.378-1.324.39a1.282 1.282 0 0 1-.287-.018Zm6.769-7.22c1.31-1.028 2.7-1.914 4.172-2.6a6.85 6.85 0 0 1-.4.523c-.442.533-1.028 1.134-1.681 1.804l-.51.524-1.581-.25Zm3.346-3.357C9.594 3.147 6.045 6.8 3.149 10.678c.007-.464.121-1.086.37-1.806.533-1.535 1.65-3.415 3.455-4.976 1.807-1.561 3.746-2.36 5.31-2.68a7.97 7.97 0 0 1 1.564-.173Z"/>
+              </svg>
+              <fmt:message key="tickler.ticklerEdit.title"/>
+            </h2>
             <div id="error" class="alert alert-error" style="display:none;"></div>
 
             <table class="table table-condensed">
@@ -391,7 +406,7 @@
                             <option <%=selected%> value="C"><fmt:message key="tickler.ticklerMain.stComplete"/></option>
                                     <% if (t.getStatusDesc(vLocale).equals(stDeleted)){selected="selected";}else{selected="";}%>
                             <option <%=selected%> value="D"><fmt:message key="tickler.ticklerMain.stDeleted"/></option>
-                            <select>
+                        </select>
                     </td>
                 </tr>
                 <tr>

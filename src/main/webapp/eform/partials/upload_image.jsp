@@ -83,7 +83,7 @@
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>Success!</strong> Your image was uploaded.
             <c:if test="${ not empty sanitizedFileName }">
-                <br/>Saved as: <strong>${Encode.formHtmlContent(sanitizedFileName)}</strong>
+                <br/>Saved as: <strong>${Encode.forHtmlContent(sanitizedFileName)}</strong>
             </c:if>
         </div>
         <script>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025. Magenta Health. All Rights Reserved.
+ * 
  *
  * OpenO Test Framework Base Class
  *
