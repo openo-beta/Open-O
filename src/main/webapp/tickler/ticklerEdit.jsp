@@ -277,7 +277,7 @@
 
             function validateDate(form) {
                 if (form.xml_appointment_date.value === "" || !IsDate(form.xml_appointment_date.value)) {
-                    document.getElementById("error").insertAdjacentText("beforeend", "<fmt:message key="tickler.ticklerAdd.msgMissingDate"/>");
+                    document.getElementById("error").textContent = "<fmt:message key="tickler.ticklerAdd.msgMissingDate"/>";
                     document.getElementById("error").style.display = 'block';
                     return false;
                 } else {
@@ -308,7 +308,7 @@
               </svg>
               <fmt:message key="tickler.ticklerEdit.title"/>
             </h2>
-            <div id="error" class="alert alert-error" style="display:none;"></div>
+            <div id="error" class="alert alert-danger" style="display:none;"></div>
 
             <table class="table table-condensed">
 
