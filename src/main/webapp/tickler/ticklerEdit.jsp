@@ -276,9 +276,10 @@
             }
 
             function validateDate(form) {
+                let errorDiv = document.getElementById("error");
                 if (form.xml_appointment_date.value === "" || !IsDate(form.xml_appointment_date.value)) {
-                    document.getElementById("error").textContent = "<fmt:message key="tickler.ticklerAdd.msgMissingDate"/>";
-                    document.getElementById("error").style.display = 'block';
+                    errorDiv.textContent = "<fmt:message key="tickler.ticklerAdd.msgMissingDate"/>";
+                    errorDiv.style.display = 'block';
                     return false;
                 } else {
                     return true;

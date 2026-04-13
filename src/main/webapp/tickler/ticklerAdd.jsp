@@ -418,7 +418,7 @@
         }
 
         function validateDemoNo() {
-            var errorDiv = document.getElementById("error");
+            let errorDiv = document.getElementById("error");
             if (document.serviceform.demographic_no.value === "") {
                 errorDiv.textContent = '<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgInvalidDemographic"/>';
                 errorDiv.style.display = 'block';
@@ -431,7 +431,7 @@
                 }
                 <% if (ca.openosp.openo.commn.IsPropertiesOn.isMultisitesEnable()) { %>
                 else if (document.serviceform.site.value === "none" || document.serviceform.site.value === "0") {
-                    errorDiv.textContent = "Must assign task to a provider.";
+                    errorDiv.textContent = '<fmt:message key="tickler.ticklerAdd.msgNoProviderAssigned"/>';
                     errorDiv.style.display = 'block';
                     return false;
                 }
