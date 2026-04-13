@@ -2,7 +2,7 @@
 
 This document records Snyk Code findings that have been manually reviewed and determined to be false positives or not applicable. It serves as the authoritative reference for ignoring these findings in the Snyk UI and for onboarding reviewers who encounter them in future scans.
 
-**Last updated:** 2026-04-09
+**Last updated:** 2026-04-13
 **Reviewed by:** LiamStanziani
 
 ---
@@ -559,8 +559,180 @@ All findings are in `src/test/java/.../SchemaUtils.java`, a test utility for sch
 
 ---
 
-## Cross-Site Scripting (java/XSS) - CWE-79
+## Cross-Site Scripting (java/XSS, javascript/DOMXSS) - CWE-79
 
-*To be added*
+**Scan date:** 2026-04-13
+**Branch:** `security/phase-2-xss-remediation`
+**Total findings:** 22 (13 java/XSS, 9 javascript/DOMXSS)
+**Genuine vulnerabilities:** 0
+**Starting count:** 4,000+ (99.5% reduction achieved via OWASP output encoding)
+
+### Root cause of remaining false positives
+
+Snyk Code's data-flow analysis tracks HTTP parameters through variables and method calls to output sinks, but does not recognize these mitigations:
+- **Content-Type headers** -- `application/json` or `application/octet-stream` prevents browser HTML rendering
+- **Binary file streaming** -- `ServletOutputStream.write(byte[])` with non-HTML content types
+- **Localhost-only servlets** -- request origin restricted to `127.0.0.1`
+- **Admin-authored content** -- eForm HTML templates created by system administrators
+- **Third-party libraries** -- jQuery DataTables and auto-generated JavaDoc
+
+---
+
+### java/XSS -- JSON responses with application/json Content-Type (2 findings)
+
+#### 1-2. ManageDocument2Action.java:277, :297
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **False positive -- JSON response with application/json Content-Type** |
+
+**Why it's safe:** Both methods set `response.setContentType("application/json")` before writing. Browsers will not interpret the response as HTML. Data serialized via Jackson ObjectMapper which auto-escapes JSON string values.
+
+---
+
+### java/XSS -- Binary file streaming (4 findings)
+
+#### 3. GenericDownload.java:115
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **False positive -- binary download with application/octet-stream** |
+
+**Why it's safe:** Content-Type defaults to `application/octet-stream`. Content-Disposition: attachment forces download. File path validated via `PathValidationUtils.validatePath()`.
+
+#### 4-5. documentGetFile.jsp:102, documentGetFile.jsp (consultation):85
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **False positive -- binary file stream with non-HTML Content-Type** |
+
+**Why it's safe:** Content-Type set to `application/octet-stream` before write. Content-Disposition header with sanitized filename (CRLF stripped). Binary data cannot execute as HTML.
+
+#### 6. EFormViewForPdfGenerationServlet.java:116
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **False positive -- localhost-only servlet with CSP headers** |
+
+**Why it's safe:** Servlet rejects non-localhost requests (127.0.0.1 check, returns 403). Has Content-Security-Policy and X-Content-Type-Options headers. Renders eForm HTML for server-side PDF generation only.
+
+---
+
+### java/XSS -- Admin-authored eForm HTML (2 findings)
+
+#### 7-8. efmformadd_data.jsp:154, efmshowform_data.jsp:153
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **False positive -- intentional HTML rendering of admin-authored clinical forms** |
+
+**Why it's safe:** eForm HTML templates are created by system administrators through the eForm management interface. Rendering raw HTML is the intended behavior -- eForms ARE HTML forms. Access requires authentication and `_eform` security privilege.
+
+---
+
+### java/XSS -- Server-generated content with validated inputs (5 findings)
+
+#### 9. admin/keygen/createKey.jsp:94
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **False positive -- server-generated key with text/plain Content-Type** |
+
+**Why it's safe:** Content-Type set to text/plain. Content-Disposition forces download. Output is server-generated RSA key material, not user input.
+
+#### 10. setProviderAvailability.jsp:177
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **False positive -- admin-managed provider data** |
+
+**Why it's safe:** Value comes from UserProperty table (admin-managed). Fallback is a static HTML string. Not user-controlled.
+
+#### 11. scheduleflipview.jsp:313
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **False positive -- admin-managed site data with sanitized provider_no** |
+
+**Why it's safe:** getSiteHTML() uses database-stored site names/colors (admin-managed). curProvider_no sanitized with `replaceAll("[^a-zA-Z0-9]", "")`. Other values OWASP-encoded.
+
+#### 12-13. demo_select.jsp:167, :170
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **False positive -- URL parameters encoded with Encode.forUriComponent()** |
+
+**Why it's safe:** Pagination URLs encode all request parameters (keyword, postTo, column) via `Encode.forUriComponent()`. Snyk tracks original parameter flow but doesn't recognize URI encoding as sanitization.
+
+---
+
+### javascript/DOMXSS -- Third-party libraries (4 findings)
+
+#### 14-16. jquery.dataTables.js:1068, :3055, :3365
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **Not applicable -- third-party library (jQuery DataTables)** |
+
+Third-party library, cannot be modified without forking. Known DataTables DOM manipulation patterns. Risk accepted.
+
+#### 17. docs/static/javadoc/search-page.js:38
+
+| Field | Value |
+|-------|-------|
+| Severity | HIGH |
+| Verdict | **Not applicable -- auto-generated JavaDoc** |
+
+Generated by maven-javadoc-plugin. Regenerated on each build. Not hand-written code.
+
+---
+
+### javascript/DOMXSS -- Trusted server-rendered HTML (5 findings)
+
+#### 18. noteProgram.js:201
+
+| Field | Value |
+|-------|-------|
+| Severity | WARNING |
+| Verdict | **False positive -- trusted AJAX response from authenticated endpoint** |
+
+**Why it's safe:** Note content from authenticated CaseManagementEntry.do endpoint. Contains server-formatted line breaks. Using .text() would break display of existing clinical notes.
+
+#### 19. topnav.js:14
+
+| Field | Value |
+|-------|-------|
+| Severity | WARNING |
+| Verdict | **False positive -- trusted server-rendered navigation HTML** |
+
+**Why it's safe:** Response from tabAlertsRefresh.jsp renders badge/count markup via custom JSP tags. Server-generated HTML from authenticated endpoint.
+
+#### 20-21. dashboardDisplayController.js:124, drilldownDisplayController.js:63
+
+| Field | Value |
+|-------|-------|
+| Severity | WARNING |
+| Verdict | **False positive -- trusted server-rendered dashboard HTML** |
+
+**Why it's safe:** Authenticated dashboard endpoints return server-rendered indicator panels. HTML generated by JSP templates, not user input.
+
+#### 22. oscarMDSIndex.js:130
+
+| Field | Value |
+|-------|-------|
+| Severity | WARNING |
+| Verdict | **False positive -- same-origin validated script source** |
+
+**Why it's safe:** Same-origin URL validation added to ensure script.src only accepts scripts from the current origin.
 
 ---
