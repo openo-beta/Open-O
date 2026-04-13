@@ -26,10 +26,10 @@ package ca.openosp.openo.demographic.merge;
 
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.commn.dao.DemographicDao;
-import ca.openosp.openo.commn.dao.DemographicMergeEventDao;
+import ca.openosp.openo.commn.dao.DemographicMergeDao;
 import ca.openosp.openo.commn.dao.DemographicMergeOperationDao;
 import ca.openosp.openo.commn.model.Demographic;
-import ca.openosp.openo.commn.model.DemographicMergeEvent;
+import ca.openosp.openo.commn.model.DemographicMerge;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -67,7 +67,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     private DemographicDao demographicDao;
 
     @Autowired
-    private DemographicMergeEventDao mergeEventDao;
+    private DemographicMergeDao mergeDao;
 
     @Autowired
     private DemographicMergeOperationDao operationDao;
@@ -113,7 +113,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         // Record the merge event before copying data so the audit row is always
         // written as part of the same transaction; it rolls back with everything
         // else if an error occurs.
-        saveMergeEvent(DemographicMergeEvent.EventType.MERGE, primaryDemographicNo, secondaryDemographicNos, targetDemographicNo, loggedInInfo.getLoggedInProviderNo());
+        saveMergeEvent(DemographicMerge.EventType.MERGE, primaryDemographicNo, secondaryDemographicNos, targetDemographicNo, loggedInInfo.getLoggedInProviderNo());
         System.out.println("  [OK] Merge event recorded in audit table");
 
         // Primary (A → C): full copy — status update deferred to applyMergeStatuses()
@@ -179,7 +179,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         System.out.println("  Merged demographic C: " + mergedDemographicNo);
         System.out.println("  Provider:             " + loggedInInfo.getLoggedInProviderNo());
 
-        DemographicMergeEvent event = mergeEventDao.findLatestMergeEventByMergedDemographicNo(mergedDemographicNo);
+        DemographicMerge event = mergeDao.findLatestMergeEventByMergedDemographicNo(mergedDemographicNo);
         if (event == null) {
             System.out.println("  [ERROR] No MERGE event found for C=" + mergedDemographicNo + " — aborting");
             throw new IllegalStateException(
@@ -216,7 +216,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         System.out.println("  [OK] Deactivated merged demographic C=" + mergedDemographicNo + " -> IN");
 
         // Record the unmerge event
-        saveMergeEvent(DemographicMergeEvent.EventType.UNMERGE, event.getPrimaryDemographicNo(),
+        saveMergeEvent(DemographicMerge.EventType.UNMERGE, event.getPrimaryDemographicNo(),
                 event.getSecondaryDemographicNos(), mergedDemographicNo,
                 loggedInInfo.getLoggedInProviderNo());
         System.out.println("  [OK] Unmerge event recorded in audit table");
@@ -238,10 +238,10 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * {@inheritDoc}
      */
     @Override
-    public Map<Integer, DemographicMergeEvent> findMergeEventsForDemographics(List<Integer> mergedDemographicNos) {
-        Map<Integer, DemographicMergeEvent> result = new HashMap<>();
+    public Map<Integer, DemographicMerge> findMergeEventsForDemographics(List<Integer> mergedDemographicNos) {
+        Map<Integer, DemographicMerge> result = new HashMap<>();
         for (Integer no : mergedDemographicNos) {
-            DemographicMergeEvent event = mergeEventDao.findLatestMergeEventByMergedDemographicNo(no);
+            DemographicMerge event = mergeDao.findLatestMergeEventByMergedDemographicNo(no);
             if (event != null) {
                 result.put(no, event);
             }
@@ -256,7 +256,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     public Map<Integer, List<Demographic>> findMergeSourcesForDemographics(List<Integer> mergedDemographicNos) {
         Map<Integer, List<Demographic>> result = new HashMap<>();
         for (Integer no : mergedDemographicNos) {
-            DemographicMergeEvent event = mergeEventDao.findLatestMergeEventByMergedDemographicNo(no);
+            DemographicMerge event = mergeDao.findLatestMergeEventByMergedDemographicNo(no);
             if (event == null) continue;
             List<Demographic> sources = new ArrayList<>();
             Demographic primary = demographicDao.getClientByDemographicNo(event.getPrimaryDemographicNo());
@@ -544,10 +544,10 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * @param mergedDemographicNo    Integer the merged record's demographic number
      * @param providerNo             String the provider performing the operation
      */
-    private void saveMergeEvent(DemographicMergeEvent.EventType eventType, Integer primaryDemographicNo,
+    private void saveMergeEvent(DemographicMerge.EventType eventType, Integer primaryDemographicNo,
                                 List<Integer> secondaryDemographicNos,
                                 Integer mergedDemographicNo, String providerNo) {
-        DemographicMergeEvent event = new DemographicMergeEvent();
+        DemographicMerge event = new DemographicMerge();
         event.setEventType(eventType);
         event.setPrimaryDemographicNo(primaryDemographicNo);
         event.setSecondaryDemographicNo(
@@ -555,7 +555,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         event.setMergedDemographicNo(mergedDemographicNo);
         event.setProviderNo(providerNo);
         event.setEventDate(new Date());
-        mergeEventDao.persist(event);
+        mergeDao.persist(event);
     }
 
     // -------------------------------------------------------------------------
@@ -595,10 +595,10 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * one entry for the primary A, one per secondary, and one for the deactivated merged record C.
      *
      * @param loggedInInfo        LoggedInInfo the authenticated provider
-     * @param event               DemographicMergeEvent the original MERGE event being reversed
+     * @param event               DemographicMerge the original MERGE event being reversed
      * @param mergedDemographicNo Integer the demographic number of the deactivated merged record C
      */
-    private void writeAuditEntriesForUnmerge(LoggedInInfo loggedInInfo, DemographicMergeEvent event,
+    private void writeAuditEntriesForUnmerge(LoggedInInfo loggedInInfo, DemographicMerge event,
                                              Integer mergedDemographicNo) {
         String unmergedFrom = "unmergedFrom=" + mergedDemographicNo;
         LogAction.addLogSynchronous(loggedInInfo, "DemographicUnmerge",
