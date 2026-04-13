@@ -170,6 +170,7 @@
 
 
    pageContext.setAttribute("providers", providerDao.getActiveProviders());
+   pageContext.setAttribute("taskTo", taskTo);
 %>
 
 <!DOCTYPE html>
@@ -616,9 +617,8 @@
 
                         <div id="selectWrapper">
                             <select name="task_assigned_to" id="task_assigned_to" class="form-control">
-                              <option value=""></option>
                               <c:forEach items="${ providers }" var="provider">
-                                <option value="${ provider.providerNo }">
+                                <option value="${ provider.providerNo }" ${provider.providerNo == taskTo ? 'selected' : ''}>
                                   <c:out value="${ provider.formattedName }"/>
                                 </option>
                               </c:forEach>
