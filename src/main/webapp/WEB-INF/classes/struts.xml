@@ -1223,13 +1223,6 @@
         <action name="admin/manageCSSStyles" class="ca.openosp.openo.billing.CA.ON.web.ManageCSS2Action">
             <result name="init">/admin/manageCSSStyles.jsp</result>
         </action>
-        <action name="admin/MergeRecords" class="ca.openosp.openo.demographic.pageUtil.DemographicMergeRecord2Action">
-            <result name="success">/admin/demographicmergerecord.jsp?outcome=success</result>
-            <result name="failure">/admin/demographicmergerecord.jsp?outcome=failure</result>
-            <result name="successUnMerge">/admin/demographicmergerecord.jsp?outcome=successUnMerge</result>
-            <result name="failureUnMerge">/admin/demographicmergerecord.jsp?outcome=failureUnMerge</result>
-            <result name="caisiSearch">/PMmodule/ClientSearch2.do</result>
-        </action>
         <action name="admin/DemographicMerge" class="ca.openosp.openo.demographic.pageUtil.DemographicMergeAction">
             <result name="search">/admin/demographicMergeRecord.jsp</result>
             <result name="success" type="redirect">/admin/DemographicMerge.do?outcome=success&amp;mergedDemoNo=%{mergedDemoNo}</result>
