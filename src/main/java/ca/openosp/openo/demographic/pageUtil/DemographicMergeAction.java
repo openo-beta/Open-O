@@ -25,7 +25,6 @@
 package ca.openosp.openo.demographic.pageUtil;
 
 import ca.openosp.openo.commn.model.Demographic;
-import ca.openosp.openo.commn.model.DemographicMergeEvent;
 import ca.openosp.openo.demographic.merge.DemographicMergeManager;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
@@ -40,7 +39,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Struts2 action for the demographic merge/unmerge workflow.
