@@ -25,7 +25,7 @@
 package ca.openosp.openo.demographic.merge;
 
 import ca.openosp.openo.commn.model.Demographic;
-import ca.openosp.openo.commn.model.DemographicMergeEvent;
+import ca.openosp.openo.commn.model.DemographicMerge;
 import ca.openosp.openo.utility.LoggedInInfo;
 
 import java.util.List;
@@ -85,9 +85,9 @@ public interface DemographicMergeManager {
      * Demographics with no matching event are silently omitted from the result.
      *
      * @param mergedDemographicNos List&lt;Integer&gt; the demographic_nos of merged records (C)
-     * @return Map&lt;Integer, DemographicMergeEvent&gt; keyed by merged demographic_no
+     * @return Map&lt;Integer, DemographicMerge&gt; keyed by merged demographic_no
      */
-    Map<Integer, DemographicMergeEvent> findMergeEventsForDemographics(List<Integer> mergedDemographicNos);
+    Map<Integer, DemographicMerge> findMergeEventsForDemographics(List<Integer> mergedDemographicNos);
 
     /**
      * Loads the source demographics (primary first, then secondaries in order) for each
