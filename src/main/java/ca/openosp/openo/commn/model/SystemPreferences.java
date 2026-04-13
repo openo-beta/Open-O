@@ -35,7 +35,12 @@ public class SystemPreferences extends AbstractModel<Integer> {
         rx_paste_provider_to_echart, rx_show_end_dates, rx_show_start_dates,
         rx_show_highest_allergy_warning,
         rx_show_refill_duration,
-        rx_show_refill_quantity, rx_methadone_end_date_calc, save_rx_signature
+        rx_show_refill_quantity, rx_methadone_end_date_calc, save_rx_signature;
+    }
+    public enum ONEID_KEYS {
+        oag_client_id, oag_client_secret, keystore_password,
+        endpoint_access_token, endpoint_callback, endpoint_audience,
+        keystore_alias, keystore_path, timeout,endpoint_authorize
     }
 
     public enum SCHEDULE_PREFERENCE_KEYS {schedule_display_type, schedule_display_custom_roster_status}

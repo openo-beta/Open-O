@@ -26,9 +26,9 @@
 
 package ca.openosp.openo.commn.model;
 
-import javax.persistence.Entity;
+import ca.openosp.openo.integration.fhir.r4.resources.constants.ContactType;
 
-import ca.openosp.openo.integration.fhir.resources.constants.ContactType;
+import javax.persistence.Entity;
 
 @Entity
 public class ProfessionalContact extends Contact {

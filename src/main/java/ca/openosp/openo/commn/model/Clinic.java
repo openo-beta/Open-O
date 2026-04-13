@@ -24,7 +24,10 @@
 
 package ca.openosp.openo.commn.model;
 
-import java.io.Serializable;
+import ca.openosp.openo.integration.fhir.r4.interfaces.ContactInterface;
+import ca.openosp.openo.integration.fhir.r4.resources.constants.ContactRelationship;
+import ca.openosp.openo.integration.fhir.r4.resources.constants.ContactType;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,11 +36,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.io.Serializable;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import ca.openosp.openo.integration.fhir.interfaces.ContactInterface;
-import ca.openosp.openo.integration.fhir.resources.constants.ContactRelationship;
-import ca.openosp.openo.integration.fhir.resources.constants.ContactType;
 
 /**
  * @author Jay Gallagher

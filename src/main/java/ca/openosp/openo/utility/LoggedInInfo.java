@@ -23,16 +23,16 @@
 
 package ca.openosp.openo.utility;
 
-import java.io.Serializable;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import ca.openosp.openo.commn.model.Facility;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.integration.oneId.OneIdGatewayData;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * The Provider fields should only be used if this is a user based thread, i.e. a thread handling a user request.
@@ -53,6 +53,7 @@ public final class LoggedInInfo implements Serializable {
     private Security loggedInSecurity = null;
     private Locale locale = null;
     private String ip = null;
+	private OneIdGatewayData oneIdGatewayData = null;
 
     public LoggedInInfo() {
         // do nothing
@@ -199,7 +200,43 @@ public final class LoggedInInfo implements Serializable {
         this.ip = ip;
     }
 
-    public String getLoggedInInfoKey() {
-         return LOGGED_IN_INFO_KEY; 
+	public OneIdGatewayData getOneIdGatewayData() {
+		return oneIdGatewayData;
+	}
+
+	public void setOneIdGatewayData(OneIdGatewayData oneIdGatewayData) {
+		this.oneIdGatewayData = oneIdGatewayData;
+	}
+
+	public void setOneIdGatewayData(String oneIdToken) {
+		this.oneIdGatewayData = new OneIdGatewayData(oneIdToken);
+	}
+
+	public boolean hasOneIdKey() {
+		if(loggedInSecurity != null && loggedInSecurity.getOneIdKey() != null && !loggedInSecurity.getOneIdKey().trim().isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * When OSCAR is behind multiple proxies, calling request.getRemoteAddr() will return the last
+	 * proxy that sent the request  which is the incorrect IP address to log. Retrieving the
+	 * X-Forwarded-For header will give us a list of the client IP as well as any proxies. Since it
+	 * is read left to right, we want to extract the first IP in the list, the client's IP.
+	 *
+	 * @param request - The HttpServletRequest we extract the IP list from.
+	 * @return The first IP value in the list returned by the X-Forwarded-For header, which will be
+	 * the clients IP address.
+	 */
+	public static String obtainClientIpAddress(HttpServletRequest request) {
+		String ipValues = request.getHeader("X-Forwarded-For");
+		if (ipValues != null && !ipValues.isEmpty()) {
+			String[] ipArray = ipValues.split(", ");
+			if (ipArray.length > 0) {
+				return ipArray[0];
+			}
+		}
+		return request.getRemoteAddr();
     }
 }
