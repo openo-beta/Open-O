@@ -89,8 +89,8 @@ import org.springframework.web.reactive.function.client.WebClient;
  *    }
  *
  *     @Bean
- *     public WebClient customClient() {
- *         return buildWebClient();
+ *     public WebClient getCustomClient() {
+ *         return buildClient();
  *     }
  * }
  * }</pre>
@@ -161,7 +161,7 @@ public abstract class OpenOOAuth2ClientProvider {
      *
      * @return a configured {@link WebClient}
      */
-    protected WebClient buildWebClient() {
+    protected WebClient buildClient() {
         ClientRegistration registration = getClientRegistration();
         ClientRegistrationRepository clientRegistrationRepo = new InMemoryClientRegistrationRepository(registration);
 
