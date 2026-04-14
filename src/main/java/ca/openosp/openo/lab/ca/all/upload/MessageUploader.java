@@ -516,22 +516,6 @@ public final class MessageUploader {
             DbConnectionFilter.releaseThreadLocalDbConnection();
         }
 
-        if (result != null) {
-            Demographic demToCheck = demographicManager.getDemographic(loggedInInfo, result.getDemographicNo());
-            Integer headDemo = (demToCheck != null) ? demToCheck.getHeadRecord() : null;
-            if (headDemo != null && headDemo.intValue() != result.getDemographicNo()) {
-                Demographic demoTmp = demographicManager.getDemographic(loggedInInfo, headDemo);
-                if (demoTmp != null) {
-                    result.setDemographicNo(demoTmp.getDemographicNo());
-                    result.setProviderNo(demoTmp.getProviderNo());
-                } else {
-                    logger.info("Unable to load the head record of this patient record. (" + result.getDemographicNo() + ")");
-                    result = null;
-                }
-            }
-        }
-
-
         return result != null ? result.getDemographicNo() : null;
     }
 
@@ -592,24 +576,6 @@ public final class MessageUploader {
 
 
         try {
-            //did this link a merged patient? if so, we need to make sure we are the head record, or update
-            //result to be the head record.
-            if (result != null) {
-                Demographic demToCheck = demographicManager.getDemographic(loggedInInfo, result.getDemographicNo());
-                Integer headDemo = (demToCheck != null) ? demToCheck.getHeadRecord() : null;
-                if (headDemo != null && headDemo.intValue() != result.getDemographicNo()) {
-                    Demographic demoTmp = demographicManager.getDemographic(loggedInInfo, headDemo);
-                    if (demoTmp != null) {
-                        result.setDemographicNo(demoTmp.getDemographicNo());
-                        result.setProviderNo(demoTmp.getProviderNo());
-                    } else {
-                        logger.info("Unable to load the head record of this patient record. (" + result.getDemographicNo() + ")");
-                        result = null;
-                    }
-                }
-            }
-
-
             if (result == null) {
                 logger.info("Could not find patient for lab: " + labId);
             } else {
@@ -715,22 +681,6 @@ public final class MessageUploader {
 			} catch (SQLException sqlE) {
 				throw sqlE;
 			}
-
-
-        if (result != null) {
-            Demographic demToCheck = demographicManager.getDemographic(loggedInInfo, result.getDemographicNo());
-            Integer headDemo = (demToCheck != null) ? demToCheck.getHeadRecord() : null;
-            if (headDemo != null && headDemo.intValue() != result.getDemographicNo()) {
-                Demographic demoTmp = demographicManager.getDemographic(loggedInInfo, headDemo);
-                if (demoTmp != null) {
-                    result.setDemographicNo(demoTmp.getDemographicNo());
-                    result.setProviderNo(demoTmp.getProviderNo());
-                } else {
-                    logger.info("Unable to load the head record of this patient record. (" + result.getDemographicNo() + ")");
-                    result = null;
-                }
-            }
-        }
 
 
         if (result == null) {

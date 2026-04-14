@@ -24,7 +24,7 @@
 
 --%>
 <%@ page import="java.util.*, java.sql.*,java.net.*, ca.openosp.openo.db.DBPreparedHandler, ca.openosp.MyDateFormat, ca.openosp.Misc" %>
-<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
+
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -300,17 +300,7 @@
                     idx = 0;
 
 
-                    DemographicMerged dmDAO = new DemographicMerged();
-
                     while (rs.next() && idx < Integer.parseInt(strLimit2)) {
-                        String dem_no = ca.openosp.Misc.getString(rs, "demographic_no");
-                        String head = dmDAO.getHead(dem_no);
-
-                        if (head != null && !head.equals(dem_no)) {
-                            //skip non head records
-                            continue;
-                        }
-
                         bodd = bodd ? false : true; //for the color of rows
                         nItems++; //to calculate if it is the end of records
 

@@ -105,7 +105,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         Session session = currentSession();
         try {
             SQLQuery sqlQuery = session.createSQLQuery(
-                "select demographic_no from demographic_merged where merged_to = :parentId and deleted = 0");
+                "SELECT merged_demographic_no FROM demographic_merged WHERE primary_demographic_no = :parentId AND event_type = 'MERGE'");
             sqlQuery.setInteger("parentId", demographicNo);
             return sqlQuery.list();
         } finally {
@@ -1905,7 +1905,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         if (bean.getAssignedToProviderNo() != null && bean.getAssignedToProviderNo().length() > 0) {
             assignedToProviderNo = bean.getAssignedToProviderNo();
-            sql = " demographic_no in (select decode(dm.merged_to,null,a.client_id,dm.merged_to) from admission a,demographic_merged dm where a.client_id=dm.demographic_no(+)and a.primaryWorker='"
+            sql = " demographic_no in (select distinct a.client_id from admission a where a.primaryWorker='"
                 + assignedToProviderNo + "')";
             criteria.add(Restrictions.sqlRestriction(sql));
         }
@@ -2768,9 +2768,8 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         String demographicQuery = generateDemographicSearchQuery(loggedInInfo, searchRequest, params,
             "d.demographic_no, d.last_name, d.first_name, d.chart_no, d.sex, d.provider_no, d.roster_status," +
-                " d.patient_status, d.phone, d.year_of_birth,d.month_of_birth,d.date_of_birth,p.last_name as providerLastName,"
-                +
-                "p.first_name as providerFirstName,d.hin,dm.merged_to");
+                " d.patient_status, d.phone, d.year_of_birth,d.month_of_birth,d.date_of_birth,p.last_name as providerLastName," +
+                "p.first_name as providerFirstName,d.hin");
 
         // Session session = getSession();
         Session session = currentSession();
@@ -2783,7 +2782,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
             sqlQuery.setFirstResult(startIndex);
             DemographicSearchResultTransformer transformer = new DemographicSearchResultTransformer();
-            transformer.setDemographicDao(this);
             sqlQuery.setResultTransformer(transformer);
             setLimit(sqlQuery, itemsToReturn);
 
@@ -2927,7 +2925,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         orderBy = " ORDER BY " + orderBy;
         return "select " + select
-            + " from demographic d left join provider p on d.provider_no = p.provider_no left join demographic_merged dm on d.demographic_no = dm.demographic_no where "
+            + " from demographic d left join provider p on d.provider_no = p.provider_no where "
             + fieldname + " " + regularexp + " :keyword " + ptstatusexp + domainRestriction + orderBy;
     }
 
@@ -3087,7 +3085,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     private static final String ACTIVE_MERGED_SUBQUERY =
             "AND de.patient_status = 'AC' "
             + "AND de.demographic_no IN ("
-            + "SELECT merged_demographic_no FROM demographic_merge_event WHERE event_type = 'MERGE'"
+            + "SELECT merged_demographic_no FROM demographic_merged WHERE event_type = 'MERGE'"
             + ") ";
 
     @SuppressWarnings("unchecked")
