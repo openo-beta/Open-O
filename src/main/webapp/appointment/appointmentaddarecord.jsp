@@ -52,7 +52,7 @@
 <%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.event.EventService" %>
 <%@page import="ca.openosp.openo.managers.DemographicManager" %>
-<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
+
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.waitinglist.WaitingList" %>
 <%@ page import="ca.openosp.openo.commn.model.WaitingListName" %>
@@ -89,8 +89,7 @@
 //the keyword(name) must match the demographic_no if it has been changed
             Demographic demo = null;
             if (request.getParameter("demographic_no") != null && !(request.getParameter("demographic_no").equals(""))) {
-                DemographicMerged dmDAO = new DemographicMerged();
-                param[16] = dmDAO.getHead(request.getParameter("demographic_no"));
+                param[16] = request.getParameter("demographic_no");
 
                 DemographicData demData = new DemographicData();
                 demo = demData.getDemographic(loggedInInfo, param[16]);
@@ -138,8 +137,7 @@
             //the keyword(name) must match the demographic_no if it has been changed
             demo = null;
             if (request.getParameter("demographic_no") != null && !(request.getParameter("demographic_no").equals(""))) {
-                DemographicMerged dmDAO = new DemographicMerged();
-                a.setDemographicNo(Integer.parseInt(dmDAO.getHead(request.getParameter("demographic_no"))));
+                a.setDemographicNo(Integer.parseInt(request.getParameter("demographic_no")));
 
                 DemographicData demData = new DemographicData();
                 demo = demData.getDemographic(loggedInInfo, String.valueOf(a.getDemographicNo()));
