@@ -60,8 +60,8 @@
 	<bean id="DxDao" class="ca.openosp.openo.commn.dao.DxDao" autowire="byName" />
 	<bean id="CasemgmtNoteLockDao" class="ca.openosp.openo.commn.dao.CasemgmtNoteLockDao" autowire="byName" />
 	
-	<bean id="AllergyDao" class="ca.openosp.openo.commn.dao.AllergyMergedDemographicDao" autowire="byName" />
-	<bean id="allergyDao" class="ca.openosp.openo.commn.dao.AllergyMergedDemographicDao" autowire="byName" />
+	<bean id="AllergyDao" class="ca.openosp.openo.commn.dao.AllergyDaoImpl" autowire="byName" />
+	<bean id="allergyDao" class="ca.openosp.openo.commn.dao.AllergyDaoImpl" autowire="byName" />
 	
 	<bean id="IssueDAO" class="ca.openosp.openo.casemgmt.dao.IssueDAO" autowire="byName" />
 	<bean id="secroleDao" class="ca.openosp.openo.daos.security.SecroleDao" autowire="byName"/>

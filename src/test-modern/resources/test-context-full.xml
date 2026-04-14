@@ -285,6 +285,6 @@
 
     <!-- Demographic merge DAOs for DemographicMergeOperationDaoIntegrationTest -->
     <bean id="demographicMergeOperationDao" class="ca.openosp.openo.commn.dao.DemographicMergeOperationDaoImpl" autowire="byName" />
-    <bean id="demographicMergeEventDao" class="ca.openosp.openo.commn.dao.DemographicMergeEventDaoImpl" autowire="byName" />
+    <bean id="demographicMergeDao" class="ca.openosp.openo.commn.dao.DemographicMergeDaoImpl" autowire="byName" />
 
 </beans>

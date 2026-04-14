@@ -231,7 +231,6 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
-<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicRelationship" %>
 <%@ page import="ca.openosp.openo.utility.*" %>
 <%@ page import="ca.openosp.openo.commn.model.*" %>
@@ -1333,33 +1332,25 @@
                                         <tr>
                                             <td>
                                                 <%
-                                                    DemographicMerged dmDAO = new DemographicMerged();
                                                     String dboperation = "search_detail";
-                                                    String head = dmDAO.getHead(demographic_no);
-                                                    ArrayList records = dmDAO.getTail(head);
+                                                    List<Integer> mergedIds = demographicManager.getMergedDemographicIds(loggedInInfo, Integer.parseInt(demographic_no));
 
                                                 %><a
-                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= head %>&displaymode=edit&dboperation=<%= dboperation %>"><%=head%>
+                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= demographic_no %>&displaymode=edit&dboperation=<%= dboperation %>"><%=demographic_no%>
                                             </a>
                                                 <%
-
-                                                    for (int i = 0; i < records.size(); i++) {
-                                                        if (((String) records.get(i)).equals(demographic_no)) {
-                                                %><%=", " + demographic_no %>
-                                                <%
-                                                } else {
+                                                    for (Integer mergedId : mergedIds) {
                                                 %>, <a
-                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= records.get(i) %>&displaymode=edit&dboperation=<%= dboperation %>"><%=records.get(i)%>
+                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= mergedId %>&displaymode=edit&dboperation=<%= dboperation %>"><%=mergedId%>
                                             </a>
                                                 <%
-                                                        }
                                                     }
                                                 %> )
 
                                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_demographic"
                                                                    rights="w">
                                                     <%
-                                                        if (head.equals(demographic_no)) {
+                                                        if (true) {
                                                     %>
                                                     <a id="editBtn" href="javascript: showHideDetail();"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgEdit"/></a>
                                                     <a id="closeBtn" href="javascript: showHideDetail();"

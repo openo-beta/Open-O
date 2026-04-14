@@ -31,13 +31,10 @@ import java.util.List;
 
 import org.apache.tools.ant.util.DateUtils;
 import org.hibernate.transform.ResultTransformer;
-import ca.openosp.openo.commn.dao.DemographicDao;
-import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.webserv.rest.to.model.DemographicSearchResult;
 
 public class DemographicSearchResultTransformer implements ResultTransformer {
 
-    private DemographicDao demographicDao;
     private SimpleDateFormat sdf = new SimpleDateFormat(DateUtils.ISO8601_DATE_PATTERN);
 
     public DemographicSearchResultTransformer() {
@@ -61,32 +58,6 @@ public class DemographicSearchResultTransformer implements ResultTransformer {
         String providerLastName = (String) tuple[12];
         String providerFirstName = (String) tuple[13];
         String hin = (String) tuple[14];
-        Integer mergedTo = (Integer) tuple[15];
-
-        //more about this @ SF Bug #3575
-        if (mergedTo != null) {
-            //find and replace with the HEAD record info — mergedTo is the surviving record
-            Demographic d = demographicDao.getDemographicById(mergedTo);
-
-            if (d != null) {
-                demographicNo = d.getDemographicNo();
-                lastName = d.getLastName();
-                firstName = d.getFirstName();
-                chartNo = d.getChartNo();
-                sex = d.getSex();
-                providerNo = d.getProviderNo();
-                rosterStatus = d.getRosterStatus();
-                patientStatus = d.getPatientStatus();
-                phone = d.getPhone();
-                year = d.getYearOfBirth();
-                month = d.getMonthOfBirth();
-                day = d.getDateOfBirth();
-                hin = d.getHin();
-                providerLastName = (d.getProvider() != null) ? d.getProvider().getLastName() : "";
-                providerFirstName = (d.getProvider() != null) ? d.getProvider().getFirstName() : "";
-                mergedTo = null;
-            }
-        }
 
         Date dob = null;
         try {
@@ -107,14 +78,5 @@ public class DemographicSearchResultTransformer implements ResultTransformer {
 
         return collection;
     }
-
-    public DemographicDao getDemographicDao() {
-        return demographicDao;
-    }
-
-    public void setDemographicDao(DemographicDao demographicDao) {
-        this.demographicDao = demographicDao;
-    }
-
 
 }
