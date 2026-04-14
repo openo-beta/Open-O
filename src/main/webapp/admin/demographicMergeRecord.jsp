@@ -21,7 +21,7 @@
         offset          - int pagination offset
         limit           - int page size
         resultCount     - int number of results
-        mergeEventMap   - Map<Integer,DemographicMergeEvent> keyed by merged demographic_no (unmerge mode only)
+        mergeEventMap   - Map<Integer,DemographicMerge> keyed by merged demographic_no (unmerge mode only)
         mergeSourcesMap - Map<Integer,List<Demographic>> keyed by merged demographic_no; primary first, then secondaries (unmerge mode only)
     @since 2026-03-25
 --%>
@@ -42,8 +42,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.mergeRec"/></title>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.mergeDemographic"/></title>
     <link href="${pageContext.request.contextPath}/library/bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <style>
         body { padding-top: 1rem; }
         a { text-decoration: none; }
@@ -69,7 +70,7 @@
 
     <h4 class="mt-3 mb-3">
         <fmt:setBundle basename="oscarResources"/>
-        <fmt:message key="admin.admin.mergeRec"/>
+        <fmt:message key="admin.admin.mergeDemographic"/>
     </h4>
 
     <%-- Outcome alerts --%>
@@ -497,17 +498,17 @@
                 const primaryRadio = document.querySelector('input.primary-radio:checked');
                 const checked = Array.from(document.querySelectorAll('input.demo-check:checked'));
 
-                const pi   = document.createElement('input');
-                pi.type  = 'hidden';
-                pi.name  = 'primaryDemographicNo';
+                const pi = document.createElement('input');
+                pi.type = 'hidden';
+                pi.name = 'primaryDemographicNo';
                 pi.value = primaryRadio.value;
                 form.appendChild(pi);
 
                 checked.forEach(function (cb) {
                     if (cb.value !== primaryRadio.value) {
-                        const si   = document.createElement('input');
-                        si.type  = 'hidden';
-                        si.name  = 'secondaryDemographicNo';
+                        const si = document.createElement('input');
+                        si.type = 'hidden';
+                        si.name = 'secondaryDemographicNo';
                         si.value = cb.value;
                         form.appendChild(si);
                     }
@@ -540,7 +541,7 @@
         document.querySelectorAll('input.primary-radio').forEach(function (radio) {
             radio.addEventListener('change', function () {
                 const row = radio.closest('tr');
-                const cb  = row ? row.querySelector('input.demo-check') : null;
+                const cb = row ? row.querySelector('input.demo-check') : null;
                 if (cb && !cb.checked) cb.checked = true;
             });
         });
@@ -552,8 +553,8 @@
             th.addEventListener('click', function () {
                 const table = th.closest('table');
                 const tbody = table.querySelector('tbody');
-                const col   = parseInt(th.getAttribute('data-col'), 10);
-                const asc   = th.getAttribute('data-asc') !== 'true';
+                const col = parseInt(th.getAttribute('data-col'), 10);
+                const asc = th.getAttribute('data-asc') !== 'true';
                 th.setAttribute('data-asc', asc ? 'true' : 'false');
 
                 table.querySelectorAll('th.sortable .sort-icon').forEach(function (ic) {
@@ -566,10 +567,10 @@
 
                 const rows = Array.from(tbody.querySelectorAll('tr'));
                 rows.sort(function (a, b) {
-                    const at  = ((a.querySelectorAll('td')[col] || {}).textContent || '').trim();
-                    const bt  = ((b.querySelectorAll('td')[col] || {}).textContent || '').trim();
-                    const n1  = parseFloat(at);
-                    const n2  = parseFloat(bt);
+                    const at = ((a.querySelectorAll('td')[col] || {}).textContent || '').trim();
+                    const bt = ((b.querySelectorAll('td')[col] || {}).textContent || '').trim();
+                    const n1 = parseFloat(at);
+                    const n2 = parseFloat(bt);
                     const cmp = (!isNaN(n1) && !isNaN(n2)) ? (n1 - n2) : at.localeCompare(bt);
                     return asc ? cmp : -cmp;
                 });
