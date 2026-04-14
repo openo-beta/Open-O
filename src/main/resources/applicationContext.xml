@@ -109,8 +109,14 @@
 	<bean id="DxDao" class="ca.openosp.openo.commn.dao.DxDaoImpl" autowire="byName" />
 	<bean id="CasemgmtNoteLockDao" class="ca.openosp.openo.commn.dao.CasemgmtNoteLockDaoImpl" autowire="byName" />
 	
-	<bean id="AllergyDao" class="ca.openosp.openo.commn.dao.AllergyMergedDemographicDaoImpl" autowire="byName" />
-	<bean id="allergyDao" class="ca.openosp.openo.commn.dao.AllergyMergedDemographicDaoImpl" autowire="byName" />
+	<bean id="AllergyDao" class="ca.openosp.openo.commn.dao.AllergyDaoImpl" autowire="byName" />
+	<bean id="allergyDao" class="ca.openosp.openo.commn.dao.AllergyDaoImpl" autowire="byName" />
+	<bean id="drugDao" class="ca.openosp.openo.commn.dao.DrugDaoImpl" autowire="byName" />
+	<bean id="preventionDao" class="ca.openosp.openo.commn.dao.PreventionDaoImpl" autowire="byName" />
+	<bean id="consultationRequestDao" class="ca.openosp.openo.commn.dao.ConsultationRequestDaoImpl" autowire="byName" />
+	<bean id="documentResultsDao" class="ca.openosp.openo.commn.dao.DocumentResultsDaoImpl" autowire="byName" />
+	<bean id="populationReportDao" class="ca.openosp.openo.commn.dao.PopulationReportDaoImpl" autowire="byName" />
+	<bean id="pregnancyFormsDao" class="ca.openosp.openo.commn.dao.PregnancyFormsDaoImpl" autowire="byName" />
 	<bean id="secRoleDao" class="ca.openosp.openo.commn.dao.SecRoleDaoImpl" autowire="byName" />
 	<bean id="IssueDAO" class="ca.openosp.openo.casemgmt.dao.IssueDAOImpl" autowire="byName" />
 	<bean id="secroleDao" class="ca.openosp.openo.daos.security.SecroleDaoImpl" autowire="byName"/>
@@ -142,7 +148,7 @@
 	<bean id="rourke2009Dao" class="ca.openosp.openo.commn.dao.forms.Rourke2009DAO" autowire="byName" />
 
 	<bean id="lookupDao" class="ca.openosp.openo.daos.LookupDaoImpl" autowire="byName" />
-	<bean id="documentDao" class="ca.openosp.openo.commn.dao.DocumentMergeDemographicDAOImpl" autowire="byName" />
+	<bean id="documentDao" class="ca.openosp.openo.commn.dao.DocumentDaoImpl" autowire="byName" />
 	<bean id="userAccessDao" class="ca.openosp.openo.daos.security.UserAccessDaoImpl" autowire="byName" />
 	<bean id="demographicExtDao" class="ca.openosp.openo.commn.dao.DemographicExtDaoImpl" autowire="byName" />
 	<bean id="providerDefaultProgramDao" class="ca.openosp.openo.commn.dao.ProviderDefaultProgramDaoImpl" autowire="byName" />

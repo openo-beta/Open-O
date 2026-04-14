@@ -26,11 +26,10 @@
         <class>ca.openosp.openo.commn.model.Admission</class>
         <class>ca.openosp.openo.commn.model.OscarLog</class>
         <class>ca.openosp.openo.commn.model.Facility</class>
-        <class>ca.openosp.openo.commn.model.DemographicMerged</class>
         <class>ca.openosp.openo.PMmodule.model.ProgramQueue</class>
         <class>ca.openosp.openo.commn.model.ProfessionalSpecialist</class>
         <!-- Demographic merge operation entities -->
-        <class>ca.openosp.openo.commn.model.DemographicMergeEvent</class>
+        <class>ca.openosp.openo.commn.model.DemographicMerge</class>
         <class>ca.openosp.openo.commn.model.CaseMgmtIssue</class>
         <class>ca.openosp.openo.commn.model.CaseMgmtIssueNotes</class>
         <class>ca.openosp.openo.commn.model.CaseMgmtNote</class>

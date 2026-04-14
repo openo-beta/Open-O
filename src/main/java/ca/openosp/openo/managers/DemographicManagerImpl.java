@@ -444,9 +444,6 @@ public class DemographicManagerImpl implements DemographicManager {
         Demographic prevDemo = demographicDao.getDemographicById(demographic.getDemographicNo());
         demographicArchiveDao.archiveRecord(prevDemo);
 
-        // retain merge info
-        demographic.setSubRecord(prevDemo.getSubRecord());
-
         // save current demo
         demographic.setLastUpdateUser(loggedInInfo.getLoggedInProviderNo());
         demographicDao.save(demographic);

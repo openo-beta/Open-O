@@ -309,7 +309,7 @@ public interface DemographicDao {
     /**
      * Finds active merged demographics (C records created by the merge engine) whose
      * last name matches the given search string. Only records that appear in
-     * {@code demographic_merge_event} with {@code event_type = 'MERGE'} and have
+     * {@code demographic_merged} with {@code event_type = 'MERGE'} and have
      * {@code patient_status = 'AC'} are returned.
      *
      * @param searchStr String last name prefix, or "last,first" for combined search

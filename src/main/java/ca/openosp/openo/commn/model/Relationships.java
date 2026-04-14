@@ -67,13 +67,7 @@ public class Relationships extends AbstractModel<Integer> {
 
     private String notes;
 
-    // TEMP FIX: Changed from primitive boolean to Boolean wrapper to handle legacy NULL values in the
-    // 'deleted' DB column. Hibernate uses field-level access and cannot assign NULL to a primitive boolean,
-    // causing a PropertyAccessException during entity load in DemographicMergeOperationDaoImpl.
-    // TODO: Revert this back to primitive boolean once the root cause is fixed.
-    // TODO: Add a NOT NULL DEFAULT 0 constraint on the 'deleted' column (via a DB migration) so that
-    //       NULL values can no longer be inserted, then revert this field back to primitive boolean.
-    private Boolean deleted;
+    private boolean deleted;
 
     private String creator;
 

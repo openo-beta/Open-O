@@ -420,7 +420,6 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         c.setNewsletter(source.getNewsletter());
 
         // New merged record is always active; extension rows copied separately by copyIdentityTables.
-        // anonymous / headRecord / subRecord are intentionally omitted — C is a fresh active record.
         c.setPatientStatus(STATUS_ACTIVE);
         c.setPatientStatusDate(new Date());
 
@@ -536,7 +535,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     // -------------------------------------------------------------------------
 
     /**
-     * Saves a {@link DemographicMergeEvent} row recording a merge or unmerge action.
+     * Saves a {@link DemographicMerge} row recording a merge or unmerge action.
      *
      * @param eventType              String "MERGE" or "UNMERGE"
      * @param primaryDemographicNo   Integer the primary demographic number

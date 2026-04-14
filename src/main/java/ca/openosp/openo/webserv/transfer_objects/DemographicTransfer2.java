@@ -76,7 +76,6 @@ public final class DemographicTransfer2 {
     private String sourceOfIncome;
     private String citizenship;
     private String sin;
-    private Integer headRecord;
     private String anonymous;
     private String spokenLanguage;
     private Integer activeCount;
@@ -420,14 +419,6 @@ public final class DemographicTransfer2 {
         this.sin = sin;
     }
 
-    public Integer getHeadRecord() {
-        return (headRecord);
-    }
-
-    public void setHeadRecord(Integer headRecord) {
-        this.headRecord = headRecord;
-    }
-
     public String getAnonymous() {
         return (anonymous);
     }
@@ -673,7 +664,6 @@ public final class DemographicTransfer2 {
             else if ("lastName".equals(field)) dto.setLastName(this.getLastName());
             else if ("hcRenewDate".equals(field)) dto.setHcRenewDate(this.getHcRenewDate());
             else if ("hcType".equals(field)) dto.setHcType(this.getHcType());
-            else if ("headRecord".equals(field)) dto.setHeadRecord(this.getHeadRecord());
             else if ("hin".equals(field)) dto.setHin(this.getHin());
             else if ("hsAlertCount".equals(field)) dto.setHsAlertCount(this.getHsAlertCount());
             else if ("lastUpdateDate".equals(field)) dto.setLastUpdateDate(this.getLastUpdateDate());
