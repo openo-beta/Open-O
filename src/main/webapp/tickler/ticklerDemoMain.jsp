@@ -1034,9 +1034,9 @@
                                                                            value=""> <% if (ticklerview.compareTo("D") == 0) {%>
                                 <input
                                         type="button"
-                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnErase"/>"
+                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnRestore"/>"
                                         class="sbttn"
-                                        onclick="document.forms['ticklerform'].submit_form.value='Erase Completely'; document.forms['ticklerform'].submit();">
+                                        onclick="document.forms['ticklerform'].submit_form.value='Activate'; document.forms['ticklerform'].submit();">
                                 <%} else {%> <input type="button"
                                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnComplete"/>"
                                                     class="sbttn"
