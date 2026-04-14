@@ -418,20 +418,21 @@
         }
 
         function validateDemoNo() {
+            let errorDiv = document.getElementById("error");
             if (document.serviceform.demographic_no.value === "") {
-                document.getElementById("error").insertAdjacentText("beforeend", '<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgInvalidDemographic"/>');
-                document.getElementById("error").style.display = 'block';
+                errorDiv.textContent = '<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgInvalidDemographic"/>';
+                errorDiv.style.display = 'block';
                 return false;
             } else {
                 if (document.serviceform.xml_appointment_date.value === "" || !IsDate(document.serviceform.xml_appointment_date.value)) {
-                    document.getElementById("error").insertAdjacentText("beforeend", '<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgMissingDate"/>');
-                    document.getElementById("error").style.display = 'block';
+                    errorDiv.textContent = '<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.msgMissingDate"/>';
+                    errorDiv.style.display = 'block';
                     return false;
                 }
                 <% if (ca.openosp.openo.commn.IsPropertiesOn.isMultisitesEnable()) { %>
                 else if (document.serviceform.site.value === "none" || document.serviceform.site.value === "0") {
-                    document.getElementById("error").insertAdjacentText("beforeend", "Must assign task to a provider.");
-                    document.getElementById("error").style.display = 'block';
+                    errorDiv.textContent = '<fmt:message key="tickler.ticklerAdd.msgNoProviderAssigned"/>';
+                    errorDiv.style.display = 'block';
                     return false;
                 }
                 <% } %>
@@ -505,7 +506,7 @@
       <fmt:message key="tickler.ticklerAdd.title"/>
     </h2>
 
-  <div id="error" class="alert alert-error" style="display:none;"></div>
+  <div id="error" class="alert alert-danger" style="display:none;"></div>
         <%
             String searchMode = request.getParameter("search_mode");
             if (searchMode == null || searchMode.isEmpty()) {
