@@ -1190,7 +1190,7 @@
     </div>
     <div>
       <a href="javascript:void(0)" onclick="showPreviousPrints(<%=drug.getScript_no() %>);return false;">
-        <%=drug.getNumPrints()%>Print(s)
+        <%=drug.getNumPrints()%> Print(s)
       </a>
     </div>
   </div>
