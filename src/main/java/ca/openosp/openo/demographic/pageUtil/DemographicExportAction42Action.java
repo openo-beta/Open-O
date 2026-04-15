@@ -114,6 +114,7 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.utility.WebUtils;
 import org.w3c.dom.Document;
@@ -2527,7 +2528,7 @@ public class DemographicExportAction42Action extends ActionSupport {
                             String expFile = demographic.getFirstName() + "_" + demographic.getLastName();
                             expFile += "_" + demoNo;
                             expFile += "_" + demographic.getDateOfBirth() + demographic.getMonthOfBirth() + demographic.getYearOfBirth();
-                            files.add(new File(directory, expFile + ".xml"));
+                            files.add(PathValidationUtils.validatePath(expFile + ".xml", directory));
                             dirs.add(getProviderName(demographic.getProviderNo()));
                         } catch (Exception e) {
                             logger.error("Error", e);

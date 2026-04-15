@@ -36,6 +36,13 @@
     String DATE_FORMAT = "dateFormat_";
     String SAVE_AS = "default";
     String reportId = request.getParameter("id") != null ? request.getParameter("id") : "0";
+    // Validate reportId is numeric to prevent SQL injection
+    try {
+        Integer.parseInt(reportId);
+    } catch (NumberFormatException e) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid report ID");
+        return;
+    }
 // get form name
     String reportName = (new RptReportItem()).getReportName(reportId);
 

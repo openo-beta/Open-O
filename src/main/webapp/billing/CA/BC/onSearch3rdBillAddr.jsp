@@ -60,23 +60,37 @@
         DBPreparedHandler dbObj = new DBPreparedHandler();
         String search_mode = request.getParameter("search_mode") == null ? "search_name" : request
                 .getParameter("search_mode");
-        String orderBy = request.getParameter("orderby") == null ? "company_name" : request
+        // Whitelist valid orderBy column names to prevent SQL injection
+        String orderByParam = request.getParameter("orderby") == null ? "company_name" : request
                 .getParameter("orderby");
+        java.util.Set<String> validOrderBy = new java.util.HashSet<>(java.util.Arrays.asList(
+            "company_name", "attention", "address", "city", "province", "postcode", "telephone", "fax", "id"
+        ));
+        String orderBy = validOrderBy.contains(orderByParam) ? orderByParam : "company_name";
+
         String where = "";
+        java.util.List<String> paramList = new java.util.ArrayList<>();
         if ("search_name".equals(search_mode)) {
             String[] temp = keyword.split("\\,\\p{Space}*");
             if (temp.length > 1) {
-                where = "company_name like '" + temp[0] + "%' and company_name like '"
-                        + temp[1] + "%'";
+                where = "company_name like ? and company_name like ?";
+                paramList.add(temp[0] + "%");
+                paramList.add(temp[1] + "%");
             } else {
-                where = "company_name like '" + temp[0] + "%'";
+                where = "company_name like ?";
+                paramList.add(temp[0] + "%");
             }
         } else {
-            where = search_mode + " like '" + keyword + "%'";
+            // Whitelist valid search_mode column names to prevent SQL injection
+            java.util.Set<String> validSearchColumns = new java.util.HashSet<>(java.util.Arrays.asList(
+                "company_name", "attention", "address", "city", "province", "postcode", "telephone", "fax"
+            ));
+            String searchColumn = validSearchColumns.contains(search_mode) ? search_mode : "company_name";
+            where = searchColumn + " like ?";
+            paramList.add(keyword + "%");
         }
-        String sql = "select * from billing_on_3rdPartyAddress where " + where + " order by " + orderBy;// + " limit "
-//						+ strLimit1 + "," + strLimit2;
-        ResultSet rs = dbObj.queryResults_paged(sql, Integer.parseInt(strLimit1));
+        String sql = "select * from billing_on_3rdPartyAddress where " + where + " order by " + orderBy;
+        ResultSet rs = dbObj.queryResults_paged(sql, paramList.toArray(new String[0]), Integer.parseInt(strLimit1));
         int idx = 0;
         while (rs.next() && idx < Integer.parseInt(strLimit2)) {
             prop = new Properties();

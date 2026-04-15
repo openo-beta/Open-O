@@ -14,6 +14,7 @@
 <%@ page import="ca.openosp.openo.eform.data.EForm" %>
 <%@ page import="ca.openosp.openo.eform.EFormLoader" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.util.PreparedSQL" %>
 <input type="hidden" name="oscarAPCacheLookupType" value="<%= Encode.forHtmlAttribute(request.getParameter("oscarAPCacheLookupType")) %>"/><%
     String[] keys = request.getParameterValues("key");
     if (keys == null) {
@@ -37,11 +38,12 @@
                 String output = ap.getApOutput();
                 //replace ${demographic} with demogrpahicNo
                 if (sql != null) {
-                    sql = form.replaceAllFields(sql);
+                    PreparedSQL swp = form.parameterizeFields(sql);
+                    sql = swp.getSql();
 
                     ArrayList<String> names = DatabaseAP.parserGetNames(output); //a list of ${apName} --> apName
                     sql = DatabaseAP.parserClean(sql);  //replaces all other ${apName} expressions with 'apName'
-                    ArrayList<String> values = EFormUtil.getValues(names, sql);
+                    ArrayList<String> values = EFormUtil.getValues(names, sql, swp.getParamsArray());
                     if (values.size() != names.size()) {
                         output = "";
                     } else {

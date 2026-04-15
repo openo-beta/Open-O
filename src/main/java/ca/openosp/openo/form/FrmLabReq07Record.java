@@ -30,7 +30,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -117,9 +116,8 @@ public class FrmLabReq07Record extends FrmRecord {
             }
 
         } else {
-            String sql = "SELECT * FROM formLabReq07 WHERE demographic_no = " + demographicNo + " AND ID = "
-                    + existingID;
-            props = (new FrmRecordHelp()).getFormRecord(sql);
+            String sql = "SELECT * FROM formLabReq07 WHERE demographic_no = ? AND ID = ?";
+            props = (new FrmRecordHelp()).getFormRecord(sql, demographicNo, existingID);
             String chartNo = props.getProperty("patientChartNo");
             String chartNoLbl = LocaleUtils.getMessage(Locale.getDefault(), "oscarEncounter.form.labreq.patientChartNo") + ":";
             int beginIdx = chartNo.lastIndexOf(chartNoLbl);
@@ -150,8 +148,8 @@ public class FrmLabReq07Record extends FrmRecord {
         if (demoProvider.equals(provNo)) {
             // from provider table
             sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no, comments "
-                    + "FROM provider WHERE provider_no = '" + provNo + "'";
-            rs = DBHandler.GetSQL(sql);
+                    + "FROM provider WHERE provider_no = ?";
+            rs = DBHandler.GetPreSQL(sql, provNo);
 
             if (rs.next()) {
                 String comments = Misc.getString(rs, "comments");
@@ -171,9 +169,8 @@ public class FrmLabReq07Record extends FrmRecord {
             rs.close();
         } else {
             // from provider table
-            sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no, comments FROM provider WHERE provider_no = '"
-                    + provNo + "'";
-            rs = DBHandler.GetSQL(sql);
+            sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no, comments FROM provider WHERE provider_no = ?";
+            rs = DBHandler.GetPreSQL(sql, provNo);
 
             String num = "";
             if (rs.next()) {
@@ -194,9 +191,8 @@ public class FrmLabReq07Record extends FrmRecord {
 
             if (!demoProvider.equals("")) {
                 // from provider table
-                sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no FROM provider WHERE provider_no = "
-                        + demoProvider;
-                rs = DBHandler.GetSQL(sql);
+                sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no FROM provider WHERE provider_no = ?";
+                rs = DBHandler.GetPreSQL(sql, demoProvider);
 
                 if (rs.next()) {
                     if (num.equals("")) {
@@ -268,31 +264,29 @@ public class FrmLabReq07Record extends FrmRecord {
 
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
-        String sql = "SELECT * FROM formLabReq07 WHERE demographic_no=" + demographic_no + " AND ID=0";
+        String sql = "SELECT * FROM formLabReq07 WHERE demographic_no = ? AND ID = 0";
 
-        return ((new FrmRecordHelp()).saveFormRecord(props, sql));
+        return ((new FrmRecordHelp()).saveFormRecord(props, sql, demographic_no));
     }
 
     public Properties getPrintRecord(int demographicNo, int existingID) throws SQLException {
-        String sql = "SELECT * FROM formLabReq07 WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-        return ((new FrmRecordHelp()).getPrintRecord(sql));
+        String sql = "SELECT * FROM formLabReq07 WHERE demographic_no = ? AND ID = ?";
+        return ((new FrmRecordHelp()).getPrintRecord(sql, demographicNo, existingID));
     }
 
     public static List<Properties> getPrintRecords(int demographicNo) throws SQLException {
-        String sql = "SELECT * FROM formLabReq07 WHERE demographic_no = " + demographicNo;
-        return ((new FrmRecordHelp()).getPrintRecords(sql));
+        String sql = "SELECT * FROM formLabReq07 WHERE demographic_no = ?";
+        return ((new FrmRecordHelp()).getPrintRecords(sql, demographicNo));
     }
 
     public static List<Properties> getPrintRecordsSince(int demographicNo, Date lastUpdateDate) throws SQLException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sql = "SELECT * FROM formLabReq07 WHERE demographic_no = " + demographicNo + " and formEdited > '" + formatter.format(lastUpdateDate) + "'";
-        return ((new FrmRecordHelp()).getPrintRecords(sql));
+        String sql = "SELECT * FROM formLabReq07 WHERE demographic_no = ? AND formEdited > ?";
+        return ((new FrmRecordHelp()).getPrintRecords(sql, demographicNo, new java.sql.Timestamp(lastUpdateDate.getTime())));
     }
 
     public static List<Integer> getDemogaphicIdsSince(Date lastUpdateDate) throws SQLException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sql = "SELECT demographic_no FROM formLabReq07 WHERE formEdited > '" + formatter.format(lastUpdateDate) + "'";
-        return ((new FrmRecordHelp()).getDemographicIds(sql));
+        String sql = "SELECT demographic_no FROM formLabReq07 WHERE formEdited > ?";
+        return ((new FrmRecordHelp()).getDemographicIds(sql, new java.sql.Timestamp(lastUpdateDate.getTime())));
     }
 
 

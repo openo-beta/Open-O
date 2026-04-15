@@ -213,7 +213,18 @@
                 }
 
                 String orderby = "", limit = "", limit1 = "", limit2 = "";
-                if (request.getParameter("orderby") != null) orderby = "order by " + request.getParameter("orderby");
+                if (request.getParameter("orderby") != null) {
+                    // Whitelist valid column names to prevent SQL injection
+                    String orderbyParam = request.getParameter("orderby");
+                    java.util.Set<String> validOrderBy = new java.util.HashSet<>(java.util.Arrays.asList(
+                        "last_name", "first_name", "demographic_no", "chart_no", "sex",
+                        "year_of_birth", "month_of_birth", "date_of_birth", "roster_status",
+                        "patient_status", "provider_no", "hin", "address", "phone"
+                    ));
+                    if (validOrderBy.contains(orderbyParam)) {
+                        orderby = "order by " + orderbyParam;
+                    }
+                }
                 if (request.getParameter("limit1") != null) limit1 = request.getParameter("limit1");
                 if (request.getParameter("limit2") != null) {
                     limit2 = request.getParameter("limit2");

@@ -53,7 +53,7 @@
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Site" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
-<%@ page import="ca.openosp.openo.login.DBHelp" %>
+<%@ page import="ca.openosp.openo.db.DBHandler" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.net.URLEncoder" %>
@@ -79,7 +79,6 @@
     Vector vecValue = new Vector();
     Vector vecTotal = new Vector();
     Properties prop = null;
-    DBHelp dbObj = new DBHelp();
     ResultSet rs = null;
     String sql = null;
 
@@ -91,12 +90,12 @@
         vecHeader.add("DESCRIPTION");
         vecHeader.add("COMMENTS");
 
-        sql = "select * from appointment where provider_no='" + providerview + "' and appointment_date >='" + xml_vdate
-                + "' and appointment_date<='" + xml_appointment_date
-                + "' and (BINARY status NOT LIKE 'B%' AND BINARY status NOT LIKE 'C%' AND BINARY status NOT LIKE 'N%')"
+        sql = "select * from appointment where provider_no=? and appointment_date >=?"
+                + " and appointment_date<=?"
+                + " and (BINARY status NOT LIKE 'B%' AND BINARY status NOT LIKE 'C%' AND BINARY status NOT LIKE 'N%')"
                 + " and demographic_no != 0 order by appointment_date , start_time ";
 
-        rs = dbObj.searchDBRecord(sql);
+        rs = DBHandler.GetPreSQL(sql, providerview, xml_vdate, xml_appointment_date);
         while (rs.next()) {
             if (bMultisites) {
                 // skip record if location does not match the selected site, blank location always gets displayed for backward-compatibility
@@ -128,10 +127,10 @@
         vecHeader.add("PATIENT");
         vecHeader.add("DESCRIPTION");
         vecHeader.add("ACCOUNT");
-        sql = "select * from billing_on_cheader1 where provider_no='" + providerview + "' and billing_date >='" + xml_vdate
-                + "' and billing_date<='" + xml_appointment_date + "' and (status<>'D' and status<>'S' and status<>'B')"
+        sql = "select * from billing_on_cheader1 where provider_no=? and billing_date >=?"
+                + " and billing_date<=? and (status<>'D' and status<>'S' and status<>'B')"
                 + " order by billing_date , billing_time ";
-        rs = dbObj.searchDBRecord(sql);
+        rs = DBHandler.GetPreSQL(sql, providerview, xml_vdate, xml_appointment_date);
         while (rs.next()) {
             if (bMultisites) {
                 // skip record if clinic is not match the selected site, blank clinic always gets displayed for backward compatible
@@ -189,13 +188,13 @@
         // get billing no in the date range
         Vector vecBillingNo = new Vector();
         Properties propTotal = new Properties();
-        sql = "select billing_no,total from billing where provider_no='" + providerview
-                + "' and billing_date>='" + xml_vdate + "' and billing_date<='" + xml_appointment_date
-                + "' and status ='S' order by billing_date, billing_time";
+        sql = "select billing_no,total from billing where provider_no=?"
+                + " and billing_date>=? and billing_date<=?"
+                + " and status ='S' order by billing_date, billing_time";
 
         // change 'S' to 'O' for testing
 
-        rs = dbObj.searchDBRecord(sql);
+        rs = DBHandler.GetPreSQL(sql, providerview, xml_vdate, xml_appointment_date);
         while (rs.next()) {
             vecBillingNo.add("" + rs.getInt("billing_no"));
             propTotal.setProperty("" + rs.getInt("billing_no"), rs.getString("total"));
@@ -204,17 +203,24 @@
 
         // get detail ra for the billing no
         String tempStr = "";
-        for (int i = 0; i < vecBillingNo.size(); i++) {
-            tempStr += ("".equals(tempStr) ? "" : ",") + (String) vecBillingNo.get(i);
+        if (vecBillingNo.isEmpty()) {
+            tempStr = "-1";
         }
-        tempStr = "".equals(tempStr) ? "-1" : tempStr;
-
-        // change tempStr to '75980, 75982, 75990' for testing
-        //tempStr = "75980, 75982, 75990,79571,79066";
+        StringBuilder placeholders = new StringBuilder();
+        Object[] inParams = new Object[vecBillingNo.size()];
+        for (int i = 0; i < vecBillingNo.size(); i++) {
+            if (i > 0) placeholders.append(",");
+            placeholders.append("?");
+            inParams[i] = Integer.parseInt((String) vecBillingNo.get(i));
+        }
+        if (vecBillingNo.isEmpty()) {
+            placeholders.append("-1");
+            inParams = new Object[0];
+        }
 
         sql = "select billing_no, amountclaim, amountpay, hin, service_date from radetail where billing_no in ("
-                + tempStr + ") and raheader_no !=0 order by billing_no, radetail_no";
-        rs = dbObj.searchDBRecord(sql);
+                + placeholders.toString() + ") and raheader_no !=0 order by billing_no, radetail_no";
+        rs = DBHandler.GetPreSQL(sql, inParams);
         String sAmountclaim = "", sAmountpay = "", hin = "";
         int nNo = 0;
         while (rs.next()) {
@@ -287,11 +293,11 @@
         float fTotalClaim = 0.00f;
         String sAmountclaim = "";
 
-        sql = "select * from billing where provider_no='" + providerview + "' and billing_date >='" + xml_vdate
-                + "' and billing_date<='" + xml_appointment_date + "' and (status<>'D' and status<>'S')"
+        sql = "select * from billing where provider_no=? and billing_date >=?"
+                + " and billing_date<=? and (status<>'D' and status<>'S')"
                 + " order by billing_date , billing_time ";
         int nNo = 0;
-        rs = dbObj.searchDBRecord(sql);
+        rs = DBHandler.GetPreSQL(sql, providerview, xml_vdate, xml_appointment_date);
         while (rs.next()) {
             prop = new Properties();
             nNo++;

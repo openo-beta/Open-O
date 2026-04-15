@@ -48,13 +48,9 @@ public class FrmAREnhancedBloodWorkTest {
 
             try {
 
-                String sql = " SELECT pg1_labHb, pg1_labMCV, pg1_labABO, pg1_labRh, pg1_labAntiScr, " +
-                        " pg1_labRubella, pg1_labHBsAg, pg1_labVDRL, pg1_labHIV  FROM formONAREnhancedRecord " +
-                        " WHERE demographic_no=" + demographicNo +
-                        " AND ID=" + formId;
+                String sql = "SELECT pg1_labHb, pg1_labMCV, pg1_labABO, pg1_labRh, pg1_labAntiScr, pg1_labRubella, pg1_labHBsAg, pg1_labVDRL, pg1_labHIV FROM formONAREnhancedRecord WHERE demographic_no = ? AND ID = ?";
 
-
-                rs = DBHandler.GetSQL(sql);
+                rs = DBHandler.GetPreSQL(sql, demographicNo, formId);
 
                 if (rs.next()) {//only retrieve the first record
 
