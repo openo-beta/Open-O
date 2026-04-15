@@ -287,9 +287,13 @@
         <tr>
 
         <td><a id="createDate_<%=prescriptIdInt%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=DateToString(prescriptDrug.getCreateDate())%></a></td>
-            <td>
+            <%-- data-order: DataTables sorts this column by the attribute value instead of the cell
+                 content. When start date is unknown the cell renders empty, so we fall back to
+                 createDate to maintain parity with the previous server-side sort, which used
+                 the same fallback to keep rows in a meaningful sort position. --%>
+            <td data-order="<%= startDateUnknown ? DateToString(prescriptDrug.getCreateDate()) : DateToString(prescriptDrug.getRxDate()) %>">
             	<% if(startDateUnknown) { %>
-            		
+
                 <% } else {
                     String startDate = UtilDateUtilities.DateToString(prescriptDrug.getRxDate());
                     startDate = partialDateDao.getDatePartial(startDate, PartialDate.DRUGS, prescriptDrug.getId(), PartialDate.DRUGS_STARTDATE);
