@@ -511,10 +511,10 @@
       // cache the datatable state to persist through page refreshes
       bStateSave: true,
       fnStateSave: function (oSettings, oData) {
-        localStorage.setItem('drugListTable', JSON.stringify(oData));
+        localStorage.setItem('drugListTable_v2', JSON.stringify(oData));
       },
       fnStateLoad: function () {
-        return JSON.parse(localStorage.getItem('drugListTable'));
+        return JSON.parse(localStorage.getItem('drugListTable_v2'));
       },
       "searching": true,
       // "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
@@ -559,7 +559,9 @@
       //     });
       // },
 
-      order: [[0, 'desc']]
+      // default sort: column 1 = Start Date (Rx Date), descending (most recent first)
+      // matches the original server-side Drug.START_DATE_COMPARATOR behaviour
+      order: [[1, 'desc']]
 
     })
 </script>
