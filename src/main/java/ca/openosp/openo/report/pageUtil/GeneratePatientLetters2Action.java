@@ -60,6 +60,9 @@ import ca.openosp.openo.report.data.ManageLetters;
 import ca.openosp.openo.util.ConcatPDF;
 import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
+import ca.openosp.openo.utility.PathValidationUtils;
+
+import java.io.File;
 
 /**
  * @author jay
@@ -158,12 +161,16 @@ public class GeneratePatientLetters2Action extends ActionSupport {
 
                 String description = letterData.get("ID") + "-" + letterData.get("report_name");
                 String type = "others";
-                String fileName = letterData.get("ID") + "-" + StringUtils.replace((String) letterData.get("report_name"), " ", "-") + "-" + demos[i] + ".pdf";
+                String rawFileName = letterData.get("ID") + "-" + StringUtils.replace((String) letterData.get("report_name"), " ", "-") + "-" + demos[i] + ".pdf";
                 String html = "";
                 char status = 'A';
                 String observationDate = UtilDateUtilities.DateToString(new Date());
                 String module = "demographic";
                 String moduleId = demos[i];
+
+                // Validate filename before it enters EDoc
+                File docDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+                String fileName = PathValidationUtils.validatePath(rawFileName, docDir).getName();
 
                 EDoc newDoc = new EDoc(description, type, fileName, "", providerNo, providerNo, "", status, observationDate, "", "", module, moduleId);
                 newDoc.setDocPublic("0");
@@ -177,8 +184,10 @@ public class GeneratePatientLetters2Action extends ActionSupport {
                     newDoc.setProgramId(pp.getProgramId().intValue());
                 }
 
+                // Re-validate the timestamped filename from EDoc
                 fileName = newDoc.getFileName();
-                String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/" + fileName;
+                File saveFile = PathValidationUtils.validatePath(fileName, docDir);
+                String savePath = saveFile.getPath();
                 if (log.isTraceEnabled()) {
                     log.trace("writing report to disk location " + savePath);
                 }

@@ -32,6 +32,7 @@ import ca.openosp.openo.billing.CA.BC.model.LogTeleplanTx;
 import ca.openosp.openo.commn.dao.BillingDao;
 import ca.openosp.openo.commn.model.Billing;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.entities.Billingmaster;
@@ -386,7 +387,9 @@ public class ExtractBean extends Object implements Serializable {
 
             FileOutputStream out;
 
-            out = new FileOutputStream(home_dir + ohipFilename);
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(ohipFilename, homeDir);
+            out = new FileOutputStream(validatedFile);
             PrintStream p;
             p = new PrintStream(out);
             p.println(value1);
@@ -412,7 +415,9 @@ public class ExtractBean extends Object implements Serializable {
 
 
             FileOutputStream out1;
-            out1 = new FileOutputStream(home_dir1 + htmlFilename);
+            File homeDir1 = new File(home_dir1);
+            File validatedFile1 = PathValidationUtils.validatePath(htmlFilename, homeDir1);
+            out1 = new FileOutputStream(validatedFile1);
             PrintStream p1;
             p1 = new PrintStream(out1);
 

@@ -14,6 +14,7 @@
 <%@ page import="ca.openosp.openo.util.FileSortByDate" %>
 <%@ page import="ca.openosp.openo.util.zip" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="ca.openosp.openo.utility.PathValidationUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
@@ -121,7 +122,9 @@
                 String unzipMSG = "";
                 try {
                     if (zname != null && !zname.equals("")) {
-                        Boolean unzipDone = zip.unzipXML(folderPath, zname);
+                        File folderDir = new File(folderPath);
+                        File validatedZip = PathValidationUtils.validatePath(zname, folderDir);
+                        Boolean unzipDone = zip.unzipXML(folderPath, validatedZip.getName());
                         if (!unzipDone) {
                             unzipMSG = "(Cannot unzip)";
                         }
