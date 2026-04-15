@@ -515,10 +515,10 @@
       // cache the datatable state to persist through page refreshes
       bStateSave: true,
       fnStateSave: function (oSettings, oData) {
-        localStorage.setItem('drugListTable_v2', JSON.stringify(oData));
+        localStorage.setItem('drugListTable', JSON.stringify(oData));
       },
       fnStateLoad: function () {
-        return JSON.parse(localStorage.getItem('drugListTable_v2'));
+        return JSON.parse(localStorage.getItem('drugListTable'));
       },
       "searching": true,
       // "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
