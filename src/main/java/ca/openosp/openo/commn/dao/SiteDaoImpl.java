@@ -158,7 +158,7 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
 
     @Override
     public Site getByLocation(String location) {
-        Query query = this.entityManager.createQuery("select s from Site s where s.name=?1");
+        Query query = this.entityManager.createQuery("select s from Site s where s.name = ?1");
         query.setParameter(1, location);
 
         @SuppressWarnings("unchecked")

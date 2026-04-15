@@ -26,6 +26,7 @@ import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.eform.data.DatabaseAP;
@@ -54,6 +55,17 @@ public final class FetchUpdatedData2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_eform)");
         }
 
+        // Validate inputs to prevent SQL injection via DatabaseAP template substitution.
+        // These values are substituted directly into SQL templates; they must be safe.
+        if (demographic != null) {
+            SqlUtils.validateNumericId(demographic, "demographic");
+        }
+        if (provider != null && !provider.matches("^[a-zA-Z0-9_,]+$")) {
+            throw new SecurityException("Invalid provider parameter");
+        }
+        if (uuid != null && !uuid.matches("^[a-fA-F0-9\\-]+$")) {
+            throw new SecurityException("Invalid uuid parameter");
+        }
 
         HashMap<String, String> outValues = new HashMap<String, String>();
 
@@ -67,19 +79,21 @@ public final class FetchUpdatedData2Action extends ActionSupport {
                     String output = ap.getApOutput();
                     //replace ${demographic} with demogrpahicNo
                     if (sql != null) {
-                        sql = DatabaseAP.parserReplace("demographic", demographic, sql);
-                        sql = DatabaseAP.parserReplace("providers", provider, sql);
-                        sql = DatabaseAP.parserReplace("uuid", uuid, sql);
-                        //sql = replaceAllFields(sql);
+                        // Parameterize template variables instead of string substitution
+                        List<Object> params = new ArrayList<>();
+                        sql = parameterizeToken(sql, "demographic", demographic, params);
+                        sql = parameterizeToken(sql, "providers", provider, params);
+                        sql = parameterizeToken(sql, "uuid", uuid, params);
 
                         ArrayList<String> names = DatabaseAP.parserGetNames(output); //a list of ${apName} --> apName
                         sql = DatabaseAP.parserClean(sql);  //replaces all other ${apName} expressions with 'apName'
+                        Object[] paramArray = params.toArray();
 
                         if (ap.isJsonOutput()) {
-                            ArrayNode values = EFormUtil.getJsonValues(names, sql);
+                            ArrayNode values = EFormUtil.getJsonValues(names, sql, paramArray);
                             output = values.toString(); //in case of JsonOutput, return the whole ArrayNode and let the javascript deal with it
                         } else {
-                            ArrayList<String> values = EFormUtil.getValues(names, sql);
+                            ArrayList<String> values = EFormUtil.getValues(names, sql, paramArray);
                             if (values.size() != names.size()) {
                                 output = "";
                             } else {
@@ -99,5 +113,12 @@ public final class FetchUpdatedData2Action extends ActionSupport {
         response.getOutputStream().write(json.toString().getBytes());
 
         return null;
+    }
+
+    /**
+     * Replaces all occurrences of ${name} in sql with ? and adds value to params list.
+     */
+    private static String parameterizeToken(String sql, String name, String value, List<Object> params) {
+        return SqlUtils.parameterizeToken(sql, name, value, params);
     }
 }

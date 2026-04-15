@@ -58,6 +58,7 @@ import ca.openosp.openo.eform.APExecute;
 import ca.openosp.openo.prevention.reports.FollowupManagement;
 import ca.openosp.openo.report.data.ManageLetters;
 import ca.openosp.openo.util.ConcatPDF;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
@@ -86,6 +87,19 @@ public class GeneratePatientLetters2Action extends ActionSupport {
         String[] demos = request.getParameterValues("demos");
         String id = request.getParameter("reportLetter");
         String providerNo = (String) request.getSession().getAttribute("user");
+
+        // Validate demographic numbers are numeric to prevent SQL injection via AP template substitution
+        if (demos != null) {
+            for (String demo : demos) {
+                if (demo != null) {
+                    SqlUtils.validateNumericId(demo, "demographic_no");
+                }
+            }
+        }
+        // Validate reportLetter id is numeric
+        if (id != null) {
+            SqlUtils.validateNumericId(id, "reportLetter");
+        }
 
         if (log.isTraceEnabled()) {
             if (demos == null) {
@@ -127,6 +141,9 @@ public class GeneratePatientLetters2Action extends ActionSupport {
             HashMap parameters = new HashMap();
             if (reportParams != null) {
                 for (int p = 0; p < reportParams.length; p++) {
+                    // SQL Injection Note: demos[i] is validated as numeric-only (^[0-9]+$) above.
+                    // apExe.execute() substitutes this validated value into admin-configured DatabaseAP
+                    // SQL templates. The AP templates come from EFormLoader config, not user input.
                     MiscUtils.getLogger().debug("demo = " + demos[i]);
                     parameters.put(reportParams[p], apExe.execute(reportParams[p], demos[i]));
                 }

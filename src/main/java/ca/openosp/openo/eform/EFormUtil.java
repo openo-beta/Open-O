@@ -59,6 +59,7 @@ import ca.openosp.openo.eform.data.EForm;
 import ca.openosp.openo.eform.data.EFormBase;
 import ca.openosp.openo.clinic.ClinicData;
 import ca.openosp.openo.db.DBHandler;
+import ca.openosp.openo.utility.DbConnectionFilter;
 import ca.openosp.openo.messenger.data.MessengerSystemMessage;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;
@@ -66,6 +67,8 @@ import ca.openosp.openo.util.UtilDateUtilities;
 
 import javax.persistence.PersistenceException;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -101,6 +104,49 @@ public class EFormUtil {
     private static final ConsultationRequestDao consultationRequestDao = SpringUtils.getBean(ConsultationRequestDao.class);
     private static final ProfessionalSpecialistDao professionalSpecialistDao = SpringUtils.getBean(ProfessionalSpecialistDao.class);
     private static final EFormDao eformDao = SpringUtils.getBean(EFormDao.class);
+
+    /**
+     * Whitelisted ORDER BY column values for eform queries.
+     * Only these exact values are allowed for sort parameters to prevent SQL injection.
+     */
+    private static final Set<String> VALID_SORT_COLUMNS = Set.of(
+            NAME, SUBJECT, DATE, FILE_NAME, PROVIDER,
+            "form_date", "form_time"
+    );
+
+    /**
+     * Validates a sort column against the whitelist, returning a safe default if invalid.
+     *
+     * @param sortBy the requested sort column
+     * @return a validated sort column safe for use in ORDER BY clauses
+     */
+    private static String validateSortColumn(String sortBy) {
+        if (sortBy != null && VALID_SORT_COLUMNS.contains(sortBy)) {
+            return sortBy;
+        }
+        return NAME;
+    }
+
+    /**
+     * Executes a parameterized SQL query with a whitelisted ORDER BY clause.
+     * The sortBy parameter MUST be validated via validateSortColumn() before calling this method.
+     *
+     * @param baseSql the SQL query with ? placeholders, without ORDER BY clause
+     * @param validatedSortBy a sort column previously validated by validateSortColumn()
+     * @param params the parameters to bind to the PreparedStatement
+     * @return the ResultSet from the query execution
+     * @throws SQLException if a database error occurs
+     */
+    private static ResultSet executeWithSort(String baseSql, String validatedSortBy, Object... params) throws SQLException {
+        // SECURITY: validatedSortBy must come from validateSortColumn() which whitelists against VALID_SORT_COLUMNS
+        String fullSql = baseSql.concat(" ORDER BY ").concat(validatedSortBy);
+        Connection conn = DbConnectionFilter.getThreadLocalDbConnection();
+        PreparedStatement ps = conn.prepareStatement(fullSql);
+        for (int i = 0; i < params.length; i++) {
+            ps.setObject(i + 1, params[i]);
+        }
+        return ps.executeQuery();
+    }
 
     private EFormUtil() {
     }
@@ -540,18 +586,22 @@ public class EFormUtil {
         setFormStatus(fid, true);
     }
 
-    @Deprecated
-    public static ArrayList<String> getValues(ArrayList<String> names, String sql) {
-        // gets the values for each column name in the sql (used by DatabaseAP)
-        ResultSet rs = getSQL(sql);
+    /**
+     * Gets values for each column name using a parameterized SQL query.
+     * @param names column names to extract from the result set
+     * @param sql parameterized SQL with ? placeholders
+     * @param params bind parameter values in order
+     * @return list of values corresponding to column names
+     */
+    public static ArrayList<String> getValues(ArrayList<String> names, String sql, Object... params) {
         ArrayList<String> values = new ArrayList<String>();
         try {
+            ResultSet rs = DBHandler.GetPreSQL(sql, params);
             while (rs.next()) {
                 values = new ArrayList<String>();
                 for (int i = 0; i < names.size(); i++) {
                     try {
                         values.add(Misc.getString(rs, names.get(i)));
-                        logger.debug("VALUE ====" + rs.getObject(names.get(i)) + "|");
                     } catch (Exception sqe) {
                         values.add("<(" + names.get(i) + ")NotFound>");
                         logger.error("Error", sqe);
@@ -562,14 +612,20 @@ public class EFormUtil {
         } catch (SQLException sqe) {
             logger.error("Error", sqe);
         }
-        return (values);
+        return values;
     }
 
-    public static ArrayNode getJsonValues(ArrayList<String> names, String sql) {
-        // gets the values for each column name in the sql (used by DatabaseAP)
-        ResultSet rs = getSQL(sql);
+    /**
+     * Gets JSON values for each column name using a parameterized SQL query.
+     * @param names column names to extract from the result set
+     * @param sql parameterized SQL with ? placeholders
+     * @param params bind parameter values in order
+     * @return ArrayNode containing result objects
+     */
+    public static ArrayNode getJsonValues(ArrayList<String> names, String sql, Object... params) {
         ArrayNode values = objectMapper.createArrayNode();
         try {
+            ResultSet rs = DBHandler.GetPreSQL(sql, params);
             while (rs.next()) {
                 ObjectNode value = objectMapper.createObjectNode();
                 for (int i = 0; i < names.size(); i++) {
@@ -649,13 +705,14 @@ public class EFormUtil {
                 + "GROUP BY eform_groups.group_name;";
         ArrayList<HashMap<String, String>> al = new ArrayList<HashMap<String, String>>();
         try {
-            ResultSet rs = getSQL(sql);
+            ResultSet rs = DBHandler.GetPreSQL(sql);
             while (rs.next()) {
                 HashMap<String, String> curhash = new HashMap<String, String>();
                 curhash.put("groupName", Misc.getString(rs, "group_name"));
                 curhash.put("count", Misc.getString(rs, "count"));
                 al.add(curhash);
             }
+            rs.close();
         } catch (SQLException sqe) {
             logger.error("Error", sqe);
         }
@@ -666,11 +723,11 @@ public class EFormUtil {
         String sql;
         sql = "SELECT eform_groups.group_name, count(*)-1 AS 'count' FROM eform_groups "
                 + "LEFT JOIN eform_data ON eform_data.fid=eform_groups.fid "
-                + "WHERE (eform_data.status=1 AND eform_data.demographic_no=" + demographic_no
+                + "WHERE (eform_data.status=1 AND eform_data.demographic_no=?"
                 + ") OR eform_groups.fid=0 " + "GROUP BY eform_groups.group_name";
         ArrayList<HashMap<String, String>> al = new ArrayList<HashMap<String, String>>();
         try {
-            ResultSet rs = getSQL(sql);
+            ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(demographic_no));
             while (rs.next()) {
                 HashMap<String, String> curhash = new HashMap<String, String>();
                 curhash.put("groupName", Misc.getString(rs, "group_name"));
@@ -691,9 +748,8 @@ public class EFormUtil {
     public static void addEFormToGroup(String groupName, String fid) {
         try {
 
-            String sql1 = "SELECT eform_groups.fid FROM eform_groups, eform WHERE eform_groups.fid=" + fid
-                    + " AND eform_groups.fid=eform.fid AND eform.status=1 AND eform_groups.group_name='" + groupName + "'";
-            ResultSet rs = DBHandler.GetSQL(sql1);
+            String sql1 = "SELECT eform_groups.fid FROM eform_groups, eform WHERE eform_groups.fid=? AND eform_groups.fid=eform.fid AND eform.status=1 AND eform_groups.group_name=?";
+            ResultSet rs = DBHandler.GetPreSQL(sql1, Integer.parseInt(fid), groupName);
             if (!rs.next()) {
                 EFormGroup eg = new EFormGroup();
                 eg.setFormId(Integer.parseInt(fid));
@@ -712,16 +768,23 @@ public class EFormUtil {
 
     public static ArrayList<HashMap<String, ? extends Object>> listEForms(String sortBy, String deleted, String group, String userRoles) {
         // sends back a list of forms that were uploaded (those that can be added to the patient)
-        String sql = "";
-        if (deleted.equals("deleted")) {
-            sql = "SELECT * FROM eform, eform_groups where eform.status=0 AND eform.fid=eform_groups.fid AND eform_groups.group_name='" + group + "' ORDER BY " + sortBy;
-        } else if (deleted.equals("current")) {
-            sql = "SELECT * FROM eform, eform_groups where eform.status=1 AND eform.fid=eform_groups.fid AND eform_groups.group_name='" + group + "' ORDER BY " + sortBy;
-        } else if (deleted.equals("all")) {
-            sql = "SELECT * FROM eform AND eform.fid=eform_groups.fid AND eform_groups.group_name='" + group + "' ORDER BY " + sortBy;
+        String safeSortBy = validateSortColumn(sortBy);
+        ResultSet rs = null;
+        try {
+            if (deleted.equals("deleted")) {
+                rs = executeWithSort("SELECT * FROM eform, eform_groups WHERE eform.status=? AND eform.fid=eform_groups.fid AND eform_groups.group_name=?", safeSortBy, 0, group);
+            } else if (deleted.equals("current")) {
+                rs = executeWithSort("SELECT * FROM eform, eform_groups WHERE eform.status=? AND eform.fid=eform_groups.fid AND eform_groups.group_name=?", safeSortBy, 1, group);
+            } else if (deleted.equals("all")) {
+                rs = executeWithSort("SELECT * FROM eform, eform_groups WHERE eform.fid=eform_groups.fid AND eform_groups.group_name=?", safeSortBy, group);
+            }
+        } catch (SQLException sqe) {
+            logger.error("Error executing listEForms query", sqe);
         }
-        ResultSet rs = getSQL(sql);
         ArrayList<HashMap<String, ? extends Object>> results = new ArrayList<HashMap<String, ? extends Object>>();
+        if (rs == null) {
+            return results;
+        }
         try {
             while (rs.next()) {
                 HashMap<String, String> curht = new HashMap<String, String>();
@@ -790,16 +853,24 @@ public class EFormUtil {
     @Deprecated
     public static ArrayList<HashMap<String, ? extends Object>> listPatientEForms(String sortBy, String deleted, String demographic_no, String groupName, String userRoles) {
         // sends back a list of forms added to the patient
-        String sql = "";
-        if (deleted.equals("deleted")) {
-            sql = "SELECT * FROM eform_data, eform_groups WHERE eform_data.status=0 AND eform_data.patient_independent=0 AND eform_data.demographic_no=" + demographic_no + " AND eform_data.fid=eform_groups.fid AND eform_groups.group_name='" + groupName + "' ORDER BY " + sortBy;
-        } else if (deleted.equals("current")) {
-            sql = "SELECT * FROM eform_data, eform_groups WHERE eform_data.status=1 AND eform_data.patient_independent=0 AND eform_data.demographic_no=" + demographic_no + " AND eform_data.fid=eform_groups.fid AND eform_groups.group_name='" + groupName + "' ORDER BY " + sortBy;
-        } else if (deleted.equals("all")) {
-            sql = "SELECT * FROM eform_data, eform_groups WHERE eform_data.patient_independent=0 AND eform_data.demographic_no=" + demographic_no + " AND eform_data.fid=eform_groups.fid AND eform_groups.group_name='" + groupName + "' ORDER BY " + sortBy;
+        String safeSortBy = validateSortColumn(sortBy);
+        int demoNo = Integer.parseInt(demographic_no);
+        ResultSet rs = null;
+        try {
+            if (deleted.equals("deleted")) {
+                rs = executeWithSort("SELECT * FROM eform_data, eform_groups WHERE eform_data.status=? AND eform_data.patient_independent=0 AND eform_data.demographic_no=? AND eform_data.fid=eform_groups.fid AND eform_groups.group_name=?", safeSortBy, 0, demoNo, groupName);
+            } else if (deleted.equals("current")) {
+                rs = executeWithSort("SELECT * FROM eform_data, eform_groups WHERE eform_data.status=? AND eform_data.patient_independent=0 AND eform_data.demographic_no=? AND eform_data.fid=eform_groups.fid AND eform_groups.group_name=?", safeSortBy, 1, demoNo, groupName);
+            } else if (deleted.equals("all")) {
+                rs = executeWithSort("SELECT * FROM eform_data, eform_groups WHERE eform_data.patient_independent=0 AND eform_data.demographic_no=? AND eform_data.fid=eform_groups.fid AND eform_groups.group_name=?", safeSortBy, demoNo, groupName);
+            }
+        } catch (SQLException sqe) {
+            logger.error("Error executing listPatientEForms query", sqe);
         }
-        ResultSet rs = getSQL(sql);
         ArrayList<HashMap<String, ? extends Object>> results = new ArrayList<HashMap<String, ? extends Object>>();
+        if (rs == null) {
+            return results;
+        }
         try {
             while (rs.next()) {
                 // filter eform by role type
@@ -1289,18 +1360,6 @@ public class EFormUtil {
         return eFormDataDao.isLatestShowLatestFormOnlyPatientForm(fdid);
     }
 
-
-    @Deprecated
-    private static ResultSet getSQL(String sql) {
-        ResultSet rs = null;
-        try {
-
-            rs = DBHandler.GetSQL(sql);
-        } catch (SQLException sqe) {
-            logger.error("Error", sqe);
-        }
-        return (rs);
-    }
 
     private static void setFormStatus(String fid, boolean status) {
 
