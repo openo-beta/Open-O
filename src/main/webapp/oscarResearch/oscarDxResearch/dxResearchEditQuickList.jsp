@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -137,7 +138,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>

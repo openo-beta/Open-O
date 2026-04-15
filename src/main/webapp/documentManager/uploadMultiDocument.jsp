@@ -58,6 +58,7 @@
 <%@page import="ca.openosp.openo.providers.data.*" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     List providers = ProviderData.getProviderList();
     String provider = "";
@@ -156,7 +157,7 @@
 
             window.onload = function () {
                 var settings = {
-                    upload_url: "<%=request.getContextPath()%>/documentManager/addEditDocument.do;jsessionid=<%=request.getRequestedSessionId()%>", 	// Relative to the SWF file
+                    upload_url: "<%=request.getContextPath()%>/documentManager/addEditDocument.do;jsessionid=<%=Encode.forJavaScript(String.valueOf(request.getRequestedSessionId()))%>", 	// Relative to the SWF file
                     file_post_name: "filedata",
                     post_params: {"method": "multifast"},
                     use_query_string: true,
@@ -308,8 +309,8 @@
 
 
             function setup() {
-                var update = "<%=updateParent%>";
-                var parentId = "<%=parentAjaxId%>";
+                var update = "<%=Encode.forJavaScript(String.valueOf(updateParent))%>";
+                var parentId = "<%=Encode.forJavaScript(String.valueOf(parentAjaxId))%>";
                 var Url = window.opener.URLs;
 
                 if (update == "true" && !window.opener.closed)
@@ -438,9 +439,9 @@
                         for (int i = 0; i < providers.size(); i++) {
                             Map h = (Map) providers.get(i);
                     %>
-                    <option value="<%= h.get("providerNo")%>"
-                            <%= (h.get("providerNo").equals(provider) ? " selected" : "")%>><%= h.get("lastName")%>
-                        <%= h.get("firstName")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("providerNo")))%>"
+                            <%=Encode.forHtml(String.valueOf((h.get("providerNo").equals(provider) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(h.get("lastName")))%>
+                        <%=Encode.forHtml(String.valueOf(h.get("firstName")))%>
                     </option>
                     <%}%>
 

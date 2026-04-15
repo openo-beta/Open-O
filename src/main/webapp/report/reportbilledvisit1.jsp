@@ -24,6 +24,7 @@
         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.db.DBPreparedHandler" %>
 <%@ page import="ca.openosp.openo.db.DBPreparedHandlerParam" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -178,7 +179,7 @@ out.flush();
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr>
-        <td>Period: (<%=sdate%> ~ <%=edate%>)</td>
+        <td>Period: (<%=Encode.forHtml(String.valueOf(sdate))%> ~ <%=Encode.forHtml(String.valueOf(edate))%>)</td>
     </tr>
 </table>
 
@@ -190,31 +191,31 @@ out.flush();
         <TH width="6%">RES</TH>
 
         <% for (int i = 0; i < vNurseNo.size(); i++) { %>
-        <TH width="6%"><%=vNurse.get(i)%>
+        <TH width="6%"><%=Encode.forHtml(String.valueOf(vNurse.get(i)))%>
         </TH>
         <% } %>
     </tr>
 
-    <tr bgcolor="<%=weakcolor%>">
+    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(weakcolor))%>">
         <td align="center">Patient</td>
-        <td align="center"><%=props.getProperty("patPhys")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patPhys")))%>
         </td>
-        <td align="center"><%=props.getProperty("patRes")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patRes")))%>
         </td>
         <% for (int i = 0; i < vNurseNo.size(); i++) { %>
-        <td align="center"><%=props.getProperty("patNurse" + i)%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patNurse" + i)))%>
         </td>
         <% } %>
 
     </tr>
     <tr>
         <td align="center">Visit</td>
-        <td align="center"><%=props.getProperty("visPhys")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visPhys")))%>
         </td>
-        <td align="center"><%=props.getProperty("visRes")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visRes")))%>
         </td>
         <% for (int i = 0; i < vNurseNo.size(); i++) { %>
-        <td align="center"><%=props.getProperty("visNurse" + i)%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visNurse" + i)))%>
         </td>
         <% } %>
     </tr>

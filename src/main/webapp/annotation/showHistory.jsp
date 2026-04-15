@@ -63,7 +63,7 @@
     <title>Annotation History</title>
 </head>
 <body>
-<h3 style="text-align: center;"><%=display%> Annotation Revision History</h3>
+<h3 style="text-align: center;"><%=Encode.forHtml(String.valueOf(display))%> Annotation Revision History</h3>
 
 <% for (CaseManagementNote cmn : lcmn) {
     String showNote = cmn.getNote();
@@ -72,8 +72,8 @@
 <div style="width: 99%; background-color: #EFEFEF; font-size: 12px; border-left: thin groove #000000; border-bottom: thin groove #000000; border-right: thin groove #000000;">
     <%=Encode.forHtml("Lab Reports".equals(display) ? cmm.getNoteContentForDisplay(showNote) : showNote)%>
     <div style="color: #0000FF;">
-        Documentation Date: <%=cmn.getCreate_date()%><br>
-        Saved by <%=cmn.getProviderName()%>
+        Documentation Date: <%=Encode.forHtml(String.valueOf(cmn.getCreate_date()))%><br>
+        Saved by <%=Encode.forHtml(String.valueOf(cmn.getProviderName()))%>
     </div>
 </div>
 <br>

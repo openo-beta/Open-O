@@ -27,6 +27,7 @@
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String curUser_no;
@@ -219,7 +220,7 @@
                 <label class="radio">
                     <input type="radio" name="integrator_full_push" value="0" <%=getChecked(properties[18], false) %> />
                     All Patients with Charts Opened
-                    Since <%=(properties[19] != null ? properties[19].getValue() : "<em>[never]</em>") %>
+                    Since <%=properties[19] != null ? properties[19].getValue() : "<em>[never]</em>"%>
                 </label>
             </div>
         </div>
@@ -229,7 +230,7 @@
                 <div class="controls">
                     <label class="checkbox">
                         <input type="checkbox" name="integrator_patient_consent"
-                               value="1" <%=getChecked(properties[20], true) %> /> Push Patient Files With Patient
+                               value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[20], true)))%> /> Push Patient Files With Patient
                         Consent Only.
                     </label>
                 </div>
@@ -247,73 +248,73 @@
                 </tr>
                 <tr>
                     <td>Demographic Records</td>
-                    <td><input type="radio"  name="integrator_demographic_sync" value="1" <%=getChecked(properties[0], true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_sync" value="0" <%=getChecked(properties[0], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_sync" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[0], true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_sync" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[0], false)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Allergies</td>
-                    <td><input type="radio"  name="integrator_demographic_allergies" value="1" <%=getChecked(properties[2], true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_allergies" value="0" <%=getChecked(properties[2], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_allergies" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[2], true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_allergies" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[2], false)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Appointments</td>
-                    <td><input type="radio"  name="integrator_demographic_appointments" value="1" <%=getChecked(properties[3], true, true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_appointments" value="0" <%=getChecked(properties[3], false, true) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_appointments" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[3], true, true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_appointments" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[3], false, true)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Billing</td>
-                    <td><input type="radio"  name="integrator_demographic_billing" value="1" <%=getChecked(properties[4], true, true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_billing" value="0" <%=getChecked(properties[4], false, true) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_billing" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[4], true, true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_billing" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[4], false, true)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Consent</td>
-                    <td><input type="radio"  name="integrator_demographic_consent" value="1" <%=getChecked(properties[5], true) %>/></td>
-                    <td><input type="radio"  name="integrator_demographic_consent" value="0" <%=getChecked(properties[5], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_consent" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[5], true)))%>/></td>
+                    <td><input type="radio"  name="integrator_demographic_consent" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[5], false)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Documents</td>
-                    <td><input type="radio"  name="integrator_demographic_documents" value="1" <%=getChecked(properties[6], true, true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_documents" value="0" <%=getChecked(properties[6], false, true) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_documents" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[6], true, true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_documents" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[6], false, true)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; E-Forms</td>
-                    <td><input type="radio"  name="integrator_demographic_eforms" value="1" <%=getChecked(properties[9], true, true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_eforms" value="0" <%=getChecked(properties[9], false, true) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_eforms" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[9], true, true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_eforms" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[9], false, true)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Lab Requisitions</td>
-                    <td><input type="radio"  name="integrator_demographic_labreq" value="1" <%=getChecked(properties[11], true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_labreq" value="0" <%=getChecked(properties[11], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_labreq" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[11], true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_labreq" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[11], false)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Measurements</td>
-                    <td><input type="radio"  name="integrator_demographic_measurements" value="1" <%=getChecked(properties[12], true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_measurements" value="0" <%=getChecked(properties[12], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_measurements" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[12], true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_measurements" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[12], false)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Issues</td>
-                    <td><input type="radio"  name="integrator_demographic_issues" value="1" <%=getChecked(properties[10], true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_issues" value="0" <%=getChecked(properties[10], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_issues" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[10], true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_issues" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[10], false)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; &raquo; Notes</td>
-                    <td><input type="radio"  name="integrator_demographic_notes" value="1" <%=getChecked(properties[13], true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_notes" value="0" <%=getChecked(properties[13], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_notes" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[13], true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_notes" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[13], false)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Prescriptions</td>
-                    <td><input type="radio"  name="integrator_demographic_drugs" value="1" <%=getChecked(properties[7], true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_drugs" value="0" <%=getChecked(properties[7], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_drugs" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[7], true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_drugs" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[7], false)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; &raquo; Dx Research</td>
-                    <td><input type="radio"  name="integrator_demographic_dxresearch" value="1" <%=getChecked(properties[8], true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_dxresearch" value="0" <%=getChecked(properties[8], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_dxresearch" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[8], true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_dxresearch" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[8], false)))%> /></td>
                 </tr>
                 <tr>
                     <td>&raquo; Preventions</td>
-                    <td><input type="radio"  name="integrator_demographic_preventions" value="1" <%=getChecked(properties[14], true) %> /></td>
-                    <td><input type="radio"  name="integrator_demographic_preventions" value="0" <%=getChecked(properties[14], false) %> /></td>
+                    <td><input type="radio"  name="integrator_demographic_preventions" value="1" <%=Encode.forHtml(String.valueOf(getChecked(properties[14], true)))%> /></td>
+                    <td><input type="radio"  name="integrator_demographic_preventions" value="0" <%=Encode.forHtml(String.valueOf(getChecked(properties[14], false)))%> /></td>
                 </tr>
 
             </table>

@@ -24,6 +24,7 @@
 
 --%>
 <%@ page contentType="application/javascript; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String newticklerwarningwindow = null;
@@ -327,13 +328,13 @@ popupPage(700,720, url);
 
 //popup a new tickler warning window
 function load() {
-var cbi = "<%=cbiReminderWindow%>";
+var cbi = "<%=Encode.forHtmlAttribute(String.valueOf(cbiReminderWindow))%>";
 if(cbi!="null" && cbi!="") {
 alert(cbi);
 <%request.getSession().setAttribute("cbiReminderWindow", "null");%>
 }
 
-if ("<%=newticklerwarningwindow%>"=="enabled") {
+if ("<%=Encode.forHtml(String.valueOf(newticklerwarningwindow))%>"=="enabled") {
 if (IsPopupBlocker()) {
 alert("You have a popup blocker, so you can not see the new tickler warning window. Please disable the pop blocker in your google bar, yahoo bar or IE ...");
 } else{

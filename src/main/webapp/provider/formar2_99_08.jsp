@@ -41,6 +41,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.form.graphic.FrmGraphicAR" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicAccessoryDao demographicAccessoryDao = (DemographicAccessoryDao) SpringUtils.getBean(DemographicAccessoryDao.class);
     FormDao formDao = SpringUtils.getBean(FormDao.class);
@@ -145,7 +146,7 @@
                 content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=content%>
+        <encounter><%=Encode.forHtml(String.valueOf(content))%>
         </encounter>
     </xml>
     <%
@@ -192,7 +193,7 @@
             content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=content%>
+        <encounter><%=Encode.forHtml(String.valueOf(content))%>
         </encounter>
     </xml>
     <%
@@ -232,7 +233,7 @@
                 <%--=bNewList?"<a href=# onClick='onSave()'><img src="<%= request.getContextPath() %>/images/buttonsave.gif" align='top' width='75' height='25' ></a> ":""--%>
                 <%=bNewList ? "<input type='button' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
                 <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
-                <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
+                <%=Encode.forHtml(bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : "")%>
             </th>
             <th align=CENTER><font face="Helvetica" color="#FFFFFF">ANTENATAL
                 RECORD 2</font> <font color="orange">page <input type="text"
@@ -244,13 +245,13 @@
                         //if(bNewList&&!(request.getParameter("patientmaster")!=null) ) {
                         if (bNewList || (request.getParameter("patientmaster") != null)) {
                     %> <a href=#
-                          onClick="popupPage(600,900,'<%= request.getContextPath() %>/provider/providercontrol.jsp?appointment_no=<%=request.getParameter("appointment_no")%>&demographic_no=<%=request.getParameter("demographic_no")%>&curProvider_no=&bNewForm=1&username=&reason=<%=URLEncoder.encode(request.getParameter("reason")==null?"":request.getParameter("reason"), StandardCharsets.UTF_8)%>&displaymode=ar1&dboperation=search_demograph');return false;"
+                          onClick="popupPage(600,900,'<%= request.getContextPath() %>/provider/providercontrol.jsp?appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&curProvider_no=&bNewForm=1&username=&reason=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("reason")==null?"":request.getParameter("reason"), StandardCharsets.UTF_8))%>&displaymode=ar1&dboperation=search_demograph');return false;"
                           title="Antenatal Record 1"> <font color='yellow'>View AR1</font></a>
                     | <a href=#
-                         onClick="popupPage(500,600,'<%=request.getContextPath()%>/demographic/formhistory.jsp?demographic_no=<%=request.getParameter("demographic_no")%>')"
+                         onClick="popupPage(500,600,'<%=request.getContextPath()%>/demographic/formhistory.jsp?demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>')"
                          title="Previous Antenatal Record 2"> <font color='yellow'>Prev.
                     AR2</font></a> | <a
-                        href="<%= request.getContextPath() %>/provider/providercontrol.jsp?appointment_no=<%=request.getParameter("appointment_no")%>&demographic_no=<%=request.getParameter("demographic_no")%>&curProvider_no=<%=request.getParameter("curProvider_no")%>&username=<%=request.getParameter("username")%>&reason=<%=request.getParameter("reason")%>&displaymode=ar2&dboperation=search_demograph&template=&bNext=1"
+                        href="<%= request.getContextPath() %>/provider/providercontrol.jsp?appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&curProvider_no=<%=Encode.forUriComponent(request.getParameter("curProvider_no"))%>&username=<%=Encode.forUriComponent(request.getParameter("username"))%>&reason=<%=Encode.forUriComponent(request.getParameter("reason"))%>&displaymode=ar2&dboperation=search_demograph&template=&bNext=1"
                         title="Next AR2 Form"> <font color='yellow'> Next AR2 </font></a> <% } %>
                     <%=bNewList ? "<input type='button' name='Button' value=' Exit ' onClick='onExit();'>" : "<input type='button' name='Button' value=' Exit ' onClick='window.close();'>" %>
                     <input type="submit" name="print" value="Print Preview"
@@ -268,10 +269,10 @@
                         if (request.getParameter("appointment_no") != null)
                             newFormURL += "&appointment_no=" + request.getParameter("appointment_no");
                         if (request.getParameter("reason") != null)
-                            newFormURL += "&reason=" + URLEncoder.encode(request.getParameter("reason"), StandardCharsets.UTF_8);
+                            newFormURL += "&reason=" + request.getParameter("reason");
                         newFormURL += "&bNewForm=1&displaymode=ar2&dboperation=search_demograph&template=";
 
-                    %> <a href="<%=newFormURL%>"><font color="yellow">New Form</font></a>&nbsp;
+                    %> <a href="<%=Encode.forHtmlAttribute(String.valueOf(newFormURL))%>"><font color="yellow">New Form</font></a>&nbsp;
                 </div>
             </th>
         </tr>
@@ -355,7 +356,7 @@
             var mm = eval(str_date.substring(eval(str_date.indexOf("/") + 1), str_date.lastIndexOf("/")) - 1);
             var dd = str_date.substring(eval(str_date.lastIndexOf("/") + 1));
             var check_date = new Date(yyyy, mm, dd);
-            var start = new Date("<%=sDate%>");
+            var start = new Date("<%=Encode.forJavaScript(String.valueOf(sDate))%>");
 
             if (check_date.getUTCHours() != start.getUTCHours()) {
                 if (check_date.getUTCHours() > start.getUTCHours()) {
@@ -1335,26 +1336,26 @@
             <td align="center" colspan="2"><input type="hidden"
                                                   name="xml_subject" value="form:AR2"> <input type="hidden"
                                                                                               name="reason"
-                                                                                              value="<%=request.getParameter("reason")%>">
+                                                                                              value="<%=Encode.forHtmlAttribute(request.getParameter("reason"))%>">
                 <input
                         type="hidden" name="appointment_no"
-                        value="<%=request.getParameter("appointment_no")%>"> <input
+                        value="<%=Encode.forHtmlAttribute(request.getParameter("appointment_no"))%>"> <input
                         type="hidden" name="demographic_no"
-                        value="<%=request.getParameter("demographic_no")%>"> <input
+                        value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>"> <input
                         type="hidden" name="form_date"
-                        value='<%=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)%>'>
+                        value='<%=Encode.forHtmlAttribute(String.valueOf(now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)))%>'>
                 <input type="hidden" name="form_time"
-                       value='<%=now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE)+":"+now.get(Calendar.SECOND)%>'>
-                <input type="hidden" name="user_no" value='<%=user_no%>'> <input
+                       value='<%=Encode.forHtmlAttribute(String.valueOf(now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE)+":"+now.get(Calendar.SECOND)))%>'>
+                <input type="hidden" name="user_no" value='<%=Encode.forHtmlAttribute(String.valueOf(user_no))%>'> <input
                         type="hidden" name="formtype" value='direct'> <input
-                        type="hidden" name="form_name" value='<%=form_name%>'> <input
+                        type="hidden" name="form_name" value='<%=Encode.forHtmlAttribute(String.valueOf(form_name))%>'> <input
                         type="hidden" name="dboperation" value="save_form"> <input
                         type="hidden" name="displaymode" value="saveform">
                 <table width='100%' border=0>
                     <tr>
                         <td width='90%'
-                            align='center'><%=bNewList && (request.getParameter("patientmaster") != null) ? "<input type='submit' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
-                            <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
+                            align='center'><%=Encode.forHtml(bNewList && (request.getParameter("patientmaster") != null) ? "<input type='submit' name='savetemp' value=' Save ' onClick='onSave()'> " : "")%>
+                            <%=Encode.forHtml(bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : "")%>
                             <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
                         </td>
                         <td align='right'><%=bNewList ? "<input type='button' name='Button' value=' Exit ' onClick='onExit();'>" : "<input type='button' name='Button' value=' Exit ' onClick='window.close();'>" %>

@@ -14,6 +14,7 @@
 <%@ page import="ca.openosp.openo.util.FileSortByDate" %>
 <%@ page import="ca.openosp.openo.util.zip" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.utility.PathValidationUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -151,12 +152,12 @@
                     bodd = bodd ? false : true;
                     if (contents[i].isDirectory() || contents[i].getName().startsWith(".")) continue;
                     if (contents[i].getName().endsWith(".sh")) continue;
-                    String archiveElement = "<td ><input type='checkbox' name='mohFile' value='" + URLEncoder.encode(contents[i].getName(), StandardCharsets.UTF_8) + "' title='select to archive'/></td>";
+                    String archiveElement = "<td ><input type='checkbox' name='mohFile' value='" + Encode.forHtmlAttribute(contents[i].getName()) + "' title='select to archive'/></td>";
                     if (folder == EDTFolder.INBOX || folder == EDTFolder.ARCHIVE) {
-                        out.println("<tr>" + (folder == EDTFolder.INBOX ? archiveElement : "") + "<td><a HREF='#' onclick='viewMOHFile(\"" + URLEncoder.encode(contents[i].getName(), StandardCharsets.UTF_8) + "\")'>" + contents[i].getName() + unzipMSG + "</a></td>");
-                        out.println("<td><a href=\"" + request.getContextPath() + "/servlet/BackupDownload?filename=" + URLEncoder.encode(contents[i].getName(), StandardCharsets.UTF_8) + "\">Download</a></td>");
+                        out.println("<tr>" + (folder == EDTFolder.INBOX ? archiveElement : "") + "<td><a HREF='#' onclick='viewMOHFile(\"" + Encode.forJavaScript(contents[i].getName()) + "\")'>" + Encode.forHtml(contents[i].getName()) + Encode.forHtml(unzipMSG) + "</a></td>");
+                        out.println("<td><a href=\"" + request.getContextPath() + "/servlet/BackupDownload?filename=" + Encode.forUriComponent(contents[i].getName()) + "\">Download</a></td>");
                     } else {
-                        out.println("<tr><td>" + contents[i].getName() + "</td>");
+                        out.println("<tr><td>" + Encode.forHtml(contents[i].getName()) + "</td>");
                     }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date d = new Date(contents[i].lastModified());

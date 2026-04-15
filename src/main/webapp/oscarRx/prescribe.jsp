@@ -239,21 +239,21 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
                 String fieldSetId = "set_" + rand;
 %>
 
-<fieldset style="margin-top:2px;" id="<%=fieldSetId%>">
-    <a tabindex="-1" href="javascript:void(0);"  style="float:right;margin-left:5px;margin-top:0px;padding-top:0px;" onclick="removePrescribingDrug(<%=fieldSetId%>, <%=DrugReferenceId%>);"><img src='<c:out value="${ctx}/images/close.png"/>' border="0"></a>
-    <a tabindex="-1" href="javascript:void(0);"  style="float:right;;margin-left:5px;margin-top:0px;padding-top:0px;" title="Add to Favorites" onclick="addFav('<%=rand%>','<%=drugName%>')">F</a>
-    <a tabindex="-1" href="javascript:void(0);" style="float:right;margin-top:0px;padding-top:0px;" onclick="$('rx_more_<%=rand%>').toggle();">  <span id="moreLessWord_<%=rand%>" onclick="updateMoreLess(id)" >more</span> </a>
+<fieldset style="margin-top:2px;" id="<%=Encode.forHtmlAttribute(String.valueOf(fieldSetId))%>">
+    <a tabindex="-1" href="javascript:void(0);"  style="float:right;margin-left:5px;margin-top:0px;padding-top:0px;" onclick="removePrescribingDrug(<%=Encode.forJavaScript(String.valueOf(fieldSetId))%>, <%=Encode.forJavaScript(String.valueOf(DrugReferenceId))%>);"><img src='<c:out value="${ctx}/images/close.png"/>' border="0"></a>
+    <a tabindex="-1" href="javascript:void(0);"  style="float:right;;margin-left:5px;margin-top:0px;padding-top:0px;" title="Add to Favorites" onclick="addFav('<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(drugName))%>')">F</a>
+    <a tabindex="-1" href="javascript:void(0);" style="float:right;margin-top:0px;padding-top:0px;" onclick="$('rx_more_<%=Encode.forJavaScript(String.valueOf(rand))%>').toggle();">  <span id="moreLessWord_<%=Encode.forJavaScript(String.valueOf(rand))%>" onclick="updateMoreLess(id)" >more</span> </a>
 
     <%-- Modern flexbox layout for drug name field - replaces float-based layout for better alignment and responsiveness --%>
     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-bottom:5px;">
         <label style="width:101px;flex-shrink:0;" title="<%=Encode.forHtmlAttribute(ATC)%>" >Name:</label>
         <input type="hidden" name="atcCode" value="<%=Encode.forHtmlAttribute(ATCcode)%>" />
-        <input tabindex="-1" type="text" id="drugName_<%=rand%>"  name="drugName_<%=rand%>"  size="30" <%if("0".equals(gcnCode)){%> onkeyup="saveCustomName(this);" value="<%=Encode.forHtmlAttribute(drugName)%>"<%} else{%> value="<%=Encode.forHtmlAttribute(drugName)%>"  onchange="changeDrugName('<%=rand%>','<%=Encode.forJavaScript(drugName)%>');" <%}%> TITLE="<%=Encode.forHtmlAttribute(drugName)%>"/>&nbsp;<span id="inactive_<%=rand%>" style="color:red;"></span>
+        <input tabindex="-1" type="text" id="drugName_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"  name="drugName_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"  size="30" <%if("0".equals(gcnCode)){%> onkeyup="saveCustomName(this);" value="<%=Encode.forHtmlAttribute(drugName)%>"<%} else{%> value="<%=Encode.forHtmlAttribute(drugName)%>"  onchange="changeDrugName('<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(drugName)%>');" <%}%> TITLE="<%=Encode.forHtmlAttribute(drugName)%>"/>&nbsp;<span id="inactive_<%=Encode.forJavaScript(String.valueOf(rand))%>" style="color:red;"></span>
     </div>
 
 	<!-- Allergy Alert Table-->
 
-	<table style="margin-top:5px; margin-bottom:5px; border-collapse: collapse; display: none; width:100%;" id="alleg_tbl_<%=rand%>">
+	<table style="margin-top:5px; margin-bottom:5px; border-collapse: collapse; display: none; width:100%;" id="alleg_tbl_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>">
 		<tr>
 			<td style="background-color:#CCCCCC;height:10px;width:100%;">
 				<!--spacer cell-->
@@ -262,7 +262,7 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
 	
 		<tr>
 			<td >    
-	    		<span id="alleg_<%=rand%>" style="font-size:11px;"></span>
+	    		<span id="alleg_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" style="font-size:11px;"></span>
 			</td>
 		</tr>
 	</table>
@@ -270,20 +270,20 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
     <%-- Splice in the Indication field --%>
     <%-- Modern flexbox layout for indication field - ensures consistent label width and field alignment --%>
     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-bottom:5px;">
-        <label style="width:101px;flex-shrink:0;" for="jsonDxSearch_<%=rand%>" >Indication: </label>
-        <select name="codingSystem_<%=rand%>" id="codingSystem_<%=rand%>" >
+        <label style="width:101px;flex-shrink:0;" for="jsonDxSearch_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" >Indication: </label>
+        <select name="codingSystem_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="codingSystem_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" >
             <option value="icd9">icd9</option>
             <%-- option value="limitUse">Limited Use</option --%>
         </select>
-        <input type="hidden" name="reasonCode_<%=rand%>" id="codeTxt_<%=rand%>" />
-        <input type="text" class="codeTxt" name="jsonDxSearch_<%=rand%>" id="jsonDxSearch_<%=rand%>" placeholder="Search Dx" />
+        <input type="hidden" name="reasonCode_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="codeTxt_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" />
+        <input type="text" class="codeTxt" name="jsonDxSearch_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="jsonDxSearch_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" placeholder="Search Dx" />
     </div>
      <%-- Splice in the Indication field --%>
 
     <%-- Modern flexbox layout for instructions field - improves alignment and collapsible special instructions section --%>
     <div style="margin-bottom:5px;">
         <div style="display:flex;align-items:center;gap:5px;">
-            <a tabindex="-1" href="javascript:void(0);" onclick="showHideSpecInst('siAutoComplete_<%=rand%>')" style="width:101px;flex-shrink:0;">Show/Hide Special Instructions: </a>
+            <a tabindex="-1" href="javascript:void(0);" onclick="showHideSpecInst('siAutoComplete_<%=Encode.forJavaScript(String.valueOf(rand))%>')" style="width:101px;flex-shrink:0;">Show/Hide Special Instructions: </a>
             <input type="text" id="instructions_<%=Encode.forHtmlAttribute(rand)%>" name="instructions_<%=Encode.forHtmlAttribute(rand)%>" onkeypress="handleEnter(this,event);"
                    value="<%=Encode.forHtmlAttribute(instructions)%>" size="60" onchange="parseIntr(this);"
                    onfocus="startShowingSampleInstructions(this, <%=Encode.forHtmlAttribute(rand)%>);"
@@ -350,61 +350,61 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
 		</div>
         
         <%if(genericName!=null&&!genericName.equalsIgnoreCase("null")){%>
-        <div><a>Ingredient:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=genericName%></a></div><%}%>
+        <div><a>Ingredient:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(genericName))%></a></div><%}%>
        <div class="rxStr" title="not what you mean?" >
-           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('method_<%=rand%>')">Method:</a><a   id="method_<%=rand%>" onclick="focusTo(this.id)" onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"><%=methodStr%></a>
-           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('route_<%=rand%>')">Route:</a><a id="route_<%=rand%>" onclick="focusTo(this.id)" onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=routeStr%></a>
-           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('frequency_<%=rand%>')">Frequency:</a><a  id="frequency_<%=rand%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=frequencyStr%></a>
-           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('minimum_<%=rand%>')">Min:</a><a  id="minimum_<%=rand%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=minimumStr%></a>
-           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('maximum_<%=rand%>')">Max:</a><a id="maximum_<%=rand%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=maximumStr%></a>
-           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('duration_<%=rand%>')">Duration:</a><a  id="duration_<%=rand%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=durationStr%></a>
-           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('durationUnit_<%=rand%>')">DurationUnit:</a><a  id="durationUnit_<%=rand%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=durationUnitStr%></a>
-           <a tabindex="-1" >Qty/Mitte:</a><a tabindex="-1" id="quantityStr_<%=rand%>"> <%=quantityStr%></a>
-           <a> </a><a tabindex="-1" id="unitName_<%=rand%>"> </a>
-           <a> </a><a tabindex="-1" href="javascript:void(0);" id="prn_<%=rand%>" onclick="setPrn('<%=rand%>');updateProperty('prnVal_<%=rand%>');"><%=prnStr%></a>
-           <input id="prnVal_<%=rand%>"  style="display:none" <%if(prnStr.trim().length()==0){%>value="false"<%} else{%>value="true" <%}%> />
-           <input id="rx_save_updates_<%=rand%>" type="button" value="Save Changes" onclick="saveLinks('<%=rand%>')"/>
+           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('method_<%=Encode.forJavaScript(String.valueOf(rand))%>')">Method:</a><a   id="method_<%=Encode.forJavaScript(String.valueOf(rand))%>" onclick="focusTo(this.id)" onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"><%=Encode.forHtml(String.valueOf(methodStr))%></a>
+           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('route_<%=Encode.forJavaScript(String.valueOf(rand))%>')">Route:</a><a id="route_<%=Encode.forJavaScript(String.valueOf(rand))%>" onclick="focusTo(this.id)" onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=Encode.forHtml(String.valueOf(routeStr))%></a>
+           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('frequency_<%=Encode.forJavaScript(String.valueOf(rand))%>')">Frequency:</a><a  id="frequency_<%=Encode.forJavaScript(String.valueOf(rand))%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=Encode.forHtml(String.valueOf(frequencyStr))%></a>
+           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('minimum_<%=Encode.forJavaScript(String.valueOf(rand))%>')">Min:</a><a  id="minimum_<%=Encode.forJavaScript(String.valueOf(rand))%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=Encode.forHtml(String.valueOf(minimumStr))%></a>
+           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('maximum_<%=Encode.forJavaScript(String.valueOf(rand))%>')">Max:</a><a id="maximum_<%=Encode.forJavaScript(String.valueOf(rand))%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=Encode.forHtml(String.valueOf(maximumStr))%></a>
+           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('duration_<%=Encode.forJavaScript(String.valueOf(rand))%>')">Duration:</a><a  id="duration_<%=Encode.forJavaScript(String.valueOf(rand))%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=Encode.forHtml(String.valueOf(durationStr))%></a>
+           <a tabindex="-1" href="javascript:void(0);" onclick="focusTo('durationUnit_<%=Encode.forJavaScript(String.valueOf(rand))%>')">DurationUnit:</a><a  id="durationUnit_<%=Encode.forJavaScript(String.valueOf(rand))%>" onclick="focusTo(this.id) " onfocus="lookEdittable(this.id)" onblur="lookNonEdittable(this.id);updateProperty(this.id);"> <%=Encode.forHtml(String.valueOf(durationUnitStr))%></a>
+           <a tabindex="-1" >Qty/Mitte:</a><a tabindex="-1" id="quantityStr_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"> <%=Encode.forHtml(String.valueOf(quantityStr))%></a>
+           <a> </a><a tabindex="-1" id="unitName_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"> </a>
+           <a> </a><a tabindex="-1" href="javascript:void(0);" id="prn_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" onclick="setPrn('<%=Encode.forJavaScript(String.valueOf(rand))%>');updateProperty('prnVal_<%=Encode.forJavaScript(String.valueOf(rand))%>');"><%=Encode.forHtml(String.valueOf(prnStr))%></a>
+           <input id="prnVal_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"  style="display:none" <%if(prnStr.trim().length()==0){%>value="false"<%} else{%>value="true" <%}%> />
+           <input id="rx_save_updates_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" type="button" value="Save Changes" onclick="saveLinks('<%=Encode.forJavaScript(String.valueOf(rand))%>')"/>
        </div>
-       <div id="rx_more_<%=rand%>" style="display:none;padding:2px;">
+       <div id="rx_more_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" style="display:none;padding:2px;">
         <div>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPrescribedRefill"/>:
        	  &nbsp;
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPrescribedRefillDuration"/>
-            <input type="text" size="6" id="refillDuration_<%=rand%>" name="refillDuration_<%=rand%>"
-                   value="<%=refillDuration%>"
+            <input type="text" size="6" id="refillDuration_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" name="refillDuration_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"
+                   value="<%=Encode.forHtmlAttribute(String.valueOf(refillDuration))%>"
                    onchange="if(isNaN(this.value)||this.value<0){alert('Refill duration must be number (of days)');this.focus();return false;}return true;"/><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPrescribedRefillDurationDays"/>
        	  &nbsp;       	  
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPrescribedRefillQuantity"/>
-       	  <input type="text" size="6" id="refillQuantity_<%=rand%>" name="refillQuantity_<%=rand%>" value="<%=refillQuantity%>" />
+       	  <input type="text" size="6" id="refillQuantity_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" name="refillQuantity_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(refillQuantity))%>" />
        	  </div><div> 
     	  
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPrescribedDispenseInterval"/>
-       	  <input type="text" size="6" id="dispenseInterval_<%=rand%>" name="dispenseInterval_<%=rand%>" value="<%=dispenseInterval%>" />
+       	  <input type="text" size="6" id="dispenseInterval_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" name="dispenseInterval_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(dispenseInterval))%>" />
        	  </div>
        	  
 	     <%if(OscarProperties.getInstance().getProperty("rx.enable_internal_dispensing","false").equals("true")) {%>  
 	       <div>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgDispenseInternal"/>
-			  <input type="checkbox" name="dispenseInternal_<%=rand%>" id="dispenseInternal_<%=rand%>" <%if(dispenseInternal) {%> checked="checked" <%}%> />
+			  <input type="checkbox" name="dispenseInternal_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="dispenseInternal_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(dispenseInternal) {%> checked="checked" <%}%> />
       	 </div>
       	 <% } %>
 		<div>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPrescribedByOutsideProvider"/>
-            <input type="checkbox" id="ocheck_<%=rand%>" name="ocheck_<%=rand%>"
-                   onclick="$('otext_<%=rand%>').toggle();" <%if (isOutsideProvider) {%> checked="checked" <%
+            <input type="checkbox" id="ocheck_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" name="ocheck_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"
+                   onclick="$('otext_<%=Encode.forJavaScript(String.valueOf(rand))%>').toggle();" <%if (isOutsideProvider) {%> checked="checked" <%
                 } else {
                 }
             %>/>
-            <div id="otext_<%=rand%>" <%if(isOutsideProvider){%>style="display:table;padding:2px;"
+            <div id="otext_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(isOutsideProvider){%>style="display:table;padding:2px;"
                  <%}else{%>style="display:none;padding:2px;"<%}%> >
                 <b><label style="float:left;width:80px;">Name :</label></b> <input type="text"
-                                                                                   id="outsideProviderName_<%=rand%>"
-                                                                                   name="outsideProviderName_<%=rand%>" <%if (outsideProvName != null) {%>
-                                                                                   value="<%=outsideProvName%>"<%} else {%>
+                                                                                   id="outsideProviderName_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"
+                                                                                   name="outsideProviderName_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if (outsideProvName != null) {%>
+                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(outsideProvName))%>"<%} else {%>
                                                                                    value=""<%}%> />
-                <b><label style="width:80px;">OHIP No:</label></b> <input type="text" id="outsideProviderOhip_<%=rand%>"
-                                                                          name="outsideProviderOhip_<%=rand%>"
-                                                                          <%if(outsideProvOhip!=null){%>value="<%=outsideProvOhip%>"<%} else {%>
+                <b><label style="width:80px;">OHIP No:</label></b> <input type="text" id="outsideProviderOhip_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"
+                                                                          name="outsideProviderOhip_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"
+                                                                          <%if(outsideProvOhip!=null){%>value="<%=Encode.forHtmlAttribute(String.valueOf(outsideProvOhip))%>"<%} else {%>
                                                                           value=""<%}%>/>
             </div>
           </div>
@@ -413,75 +413,75 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
             <label for="pastMedSelection" title="Medications taken at home that were previously ordered."><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPastMedication"/></label>
         
         <span id="pastMedSelection">
-        	<label for="pastMedY_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/></label>
-            <input  type="radio" value="yes" name="pastMed_<%=rand%>" id="pastMedY_<%=rand%>" <%if(pastMed != null && pastMed) {%> checked="checked" <%}%>  />
+        	<label for="pastMedY_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/></label>
+            <input  type="radio" value="yes" name="pastMed_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="pastMedY_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(pastMed != null && pastMed) {%> checked="checked" <%}%>  />
             
-            <label for="pastMedN_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/></label>
-            <input  type="radio" value="no" name="pastMed_<%=rand%>" id="pastMedN_<%=rand%>" <%if(pastMed != null && ! pastMed) {%> checked="checked" <%}%>  />
+            <label for="pastMedN_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/></label>
+            <input  type="radio" value="no" name="pastMed_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="pastMedN_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(pastMed != null && ! pastMed) {%> checked="checked" <%}%>  />
             
-            <label for="pastMedE_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnknown"/></label>
-            <input  type="radio" value="unset" name="pastMed_<%=rand%>" id="pastMedE_<%=rand%>" <%if(pastMed == null) {%> checked="checked" <%}%>  />
+            <label for="pastMedE_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnknown"/></label>
+            <input  type="radio" value="unset" name="pastMed_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="pastMedE_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(pastMed == null) {%> checked="checked" <%}%>  />
          </span>         
 	</div><div>
 	
             <label for="patientCompliantSelection"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPatientCompliance"/>:</label>
 	<span id="patientCompliantSelection">
-         <label for="patientComplianceY_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/></label>
-            <input type="radio" value="yes" name="patientCompliance_<%=rand%>" id="patientComplianceY_<%=rand%>" <%if(patientCompliance!=null && patientCompliance) {%> checked="checked" <%}%> />
+         <label for="patientComplianceY_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/></label>
+            <input type="radio" value="yes" name="patientCompliance_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="patientComplianceY_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(patientCompliance!=null && patientCompliance) {%> checked="checked" <%}%> />
 
-          <label for="patientComplianceN_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/></label>
-            <input type="radio" value="no" name="patientCompliance_<%=rand%>" id="patientComplianceN_<%=rand%>" <%if(patientCompliance!=null && !patientCompliance) {%> checked="checked" <%}%> />
+          <label for="patientComplianceN_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/></label>
+            <input type="radio" value="no" name="patientCompliance_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="patientComplianceN_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(patientCompliance!=null && !patientCompliance) {%> checked="checked" <%}%> />
 	
-		<label for="patientComplianceE_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnset"/></label>
-            <input type="radio" value="unset" name="patientCompliance_<%=rand%>" id="patientComplianceE_<%=rand%>" <%if(patientCompliance==null) {%> checked="checked" <%}%> />
+		<label for="patientComplianceE_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnset"/></label>
+            <input type="radio" value="unset" name="patientCompliance_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="patientComplianceE_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(patientCompliance==null) {%> checked="checked" <%}%> />
     </span>
 	</div><div>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNonAuthoritative"/>
-            <input type="checkbox" name="nonAuthoritativeN_<%=rand%>" id="nonAuthoritativeN_<%=rand%>" <%if(nonAuthoritative) {%> checked="checked" <%}%> />
+            <input type="checkbox" name="nonAuthoritativeN_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="nonAuthoritativeN_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(nonAuthoritative) {%> checked="checked" <%}%> />
     </div><div>
     
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgSubNotAllowed"/>
-    		<input type="checkbox" name="nosubs_<%=rand%>" id="nosubs_<%=rand%>" <%if(nosubs) {%> checked="checked" <%}%> />
+    		<input type="checkbox" name="nosubs_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="nosubs_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(nosubs) {%> checked="checked" <%}%> />
     </div><div>
 
         <label style="float:left;width:80px;">Start Date:</label>
-           <input type="text" id="rxDate_<%=rand%>" name="rxDate_<%=rand%>" value="<%=startDate%>" <%if(startDateUnknown) {%> disabled="disabled" <%}%>/>
+           <input type="text" id="rxDate_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" name="rxDate_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(startDate))%>" <%if(startDateUnknown) {%> disabled="disabled" <%}%>/>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnknown"/>
-           <input  type="checkbox" name="startDateUnknown_<%=rand%>" id="startDateUnknown_<%=rand%>" <%if(startDateUnknown) {%> checked="checked" <%}%> onclick="toggleStartDateUnknown('<%=rand%>');"/>
+           <input  type="checkbox" name="startDateUnknown_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" id="startDateUnknown_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" <%if(startDateUnknown) {%> checked="checked" <%}%> onclick="toggleStartDateUnknown('<%=Encode.forJavaScript(String.valueOf(rand))%>');"/>
            
            </div><div>
 	<label style="">Last Refill Date:</label>
-           <input type="text" id="lastRefillDate_<%=rand%>"  name="lastRefillDate_<%=rand%>" value="<%=lastRefillDate%>" />
+           <input type="text" id="lastRefillDate_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"  name="lastRefillDate_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(lastRefillDate))%>" />
 	</div><div>
         <label style="float:left;width:80px;">Written Date:</label>
-           <input type="text" id="writtenDate_<%=rand%>"  name="writtenDate_<%=rand%>" value="<%=writtenDate%>" />
-           <a href="javascript:void(0);" style="float:right;margin-top:0px;padding-top:0px;" onclick="addFav('<%=rand%>','<%=drugName%>');return false;">Add to Favorite</a>
+           <input type="text" id="writtenDate_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"  name="writtenDate_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(writtenDate))%>" />
+           <a href="javascript:void(0);" style="float:right;margin-top:0px;padding-top:0px;" onclick="addFav('<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(drugName))%>');return false;">Add to Favorite</a>
        
            </div><div>
            			           
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgProtocolReference"/>:
-           <input type="text" id="protocol_<%=rand%>"  name="protocol_<%=rand%>" value="<%=protocol%>" />          
+           <input type="text" id="protocol_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"  name="protocol_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(protocol))%>" />          
 
            <%--  OMD Revalidation: field not required currently. Commented out as this may be used again in the future. 
           <label style="">Prior Rx Protocol:</label>
-           <input type="text" id="protocol_<%=rand%>"  name="priorRxProtocol_<%=rand%>" value="<%=priorRxProtocol%>" />
+           <input type="text" id="protocol_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>"  name="priorRxProtocol_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(priorRxProtocol))%>" />
             --%>
             
            </div><div>
            
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPickUpDate"/>:
-            <input type="text" id="pickupDate_<%=rand%>" name="pickupDate_<%=rand%>" value="<%=pickupDate%>"
+            <input type="text" id="pickupDate_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" name="pickupDate_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(pickupDate))%>"
                    onchange="if (!isValidDate(this.value)) {this.value=null}"/>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPickUpTime"/>:
-            <input type="text" id="pickupTime_<%=rand%>" name="pickupTime_<%=rand%>" value="<%=pickupTime%>"
+            <input type="text" id="pickupTime_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" name="pickupTime_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(pickupTime))%>"
                    onchange="if (!isValidTime(this.value)) {this.value=null}"/>
         </div>
         <div>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgComment"/>:
-           <input type="text" id="comment_<%=rand%>" name="comment_<%=rand%>" value="<%=comment%>" size="60"/>
+           <input type="text" id="comment_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" name="comment_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(comment))%>" size="60"/>
            </div><div>  
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatmentType"/>:
-           <select name="eTreatmentType_<%=rand%>">
+           <select name="eTreatmentType_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>">
            		<option>--</option>
                 <option value="CHRON" <%=eTreatmentType.equals("CHRON") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.Continuous"/></option>
                 <option value="ACU" <%=eTreatmentType.equals("ACU") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.Acute"/></option>
@@ -489,7 +489,7 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
                 <option value="PRNL" <%=eTreatmentType.equals("PRNL") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.LongTermPRN"/></option>
                 <option value="PRNS" <%=eTreatmentType.equals("PRNS") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.ShortTermPRN"/></option>
             </select>
-           <select name="rxStatus_<%=rand%>">
+           <select name="rxStatus_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>">
            		<option>--</option>
                 <option value="New" <%=rxStatus.equals("New") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgRxStatus.New"/></option>
                 <option value="Active" <%=rxStatus.equals("Active") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgRxStatus.Active"/></option>
@@ -502,16 +502,16 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
                 </div><div>                
             <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgDrugForm"/>:
                 <%if(rx.getDrugFormList()!=null && rx.getDrugFormList().indexOf(",")!=-1){ %>
-                <select name="drugForm_<%=rand%>">
+                <select name="drugForm_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>">
                 	<%
                 		String[] forms = rx.getDrugFormList().split(",");
                 		for(String form:forms) {
                 	%>
-                		<option value="<%=form%>" <%=form.equals(drugForm)?"selected":"" %>><%=form%></option>
+                		<option value="<%=Encode.forHtmlAttribute(String.valueOf(form))%>" <%=form.equals(drugForm)?"selected":"" %>><%=Encode.forHtml(String.valueOf(form))%></option>
                 	<% } %>
                 </select>    
 				<%} else { %>
-					<%=drugForm%>
+					<%=Encode.forHtml(String.valueOf(drugForm))%>
 				<% } %>
 
 
@@ -521,16 +521,16 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
 
         </div>
            
-           <div id="renalDosing_<%=rand%>" ></div>
-           <div id="luc_<%=rand%>" style="margin-top:2px;" >
+           <div id="renalDosing_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" ></div>
+           <div id="luc_<%=Encode.forHtmlAttribute(String.valueOf(rand))%>" style="margin-top:2px;" >
             </div>
          
            
            <oscar:oscarPropertiesCheck property="RENAL_DOSING_DS" value="yes">
-            <script type="text/javascript">getRenalDosingInformation('renalDosing_<%=rand%>','<%=rx.getAtcCode()%>');</script>
+            <script type="text/javascript">getRenalDosingInformation('renalDosing_<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(rx.getAtcCode()))%>');</script>
             </oscar:oscarPropertiesCheck>
            <oscar:oscarPropertiesCheck property="billregion" value="ON" >
-               <script type="text/javascript">getLUC('luc_<%=rand%>','<%=rand%>','<%=rx.getRegionalIdentifier()%>');</script>
+               <script type="text/javascript">getLUC('luc_<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(rx.getRegionalIdentifier()))%>');</script>
             </oscar:oscarPropertiesCheck>
 			
 
@@ -683,7 +683,7 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
        jQuery("document").ready(function() {
     	   
 
-                jQuery('#rx_save_updates_<%=rand%>').hide();
+                jQuery('#rx_save_updates_<%=Encode.forJavaScript(String.valueOf(rand))%>').hide();
 
 				var idindex = "";
                jQuery( "input[id*='jsonDxSearch']" ).autocomplete({	
@@ -736,7 +736,7 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
 		<%--   Removed during OMD Re-Evaluation.  This function auto set the LongTerm field
 		if number of refills more than 0.  This is not a definitive Long Term drug.        
 			jQuery("input[id^='repeats_']").keyup(function(){
-            	var rand = <%=rand%>;
+            	var rand = <%=Encode.forJavaScript(String.valueOf(rand))%>;
             	var repeatsVal = this.value;
             	if(repeatsVal>0){
             		jQuery("#longTerm_"+rand).attr("checked","checked");
@@ -750,8 +750,8 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
 
 
         <script type="text/javascript">
-            $('drugName_'+'<%=rand%>').value=decodeURIComponent(encodeURIComponent('<%=drugName%>'));
-            calculateRxData('<%=rand%>');
+            $('drugName_'+'<%=Encode.forJavaScript(String.valueOf(rand))%>').value=decodeURIComponent(encodeURIComponent('<%=Encode.forJavaScript(String.valueOf(drugName))%>'));
+            calculateRxData('<%=Encode.forJavaScript(String.valueOf(rand))%>');
             handleEnter=function handleEnter(inField, ev){
                 var charCode;
                 if(ev && ev.which)
@@ -788,7 +788,7 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
                 oDS.maxCacheEntries = 0;
                 // oDS.connXhrMode = "cancelStaleRequests";
                 // Instantiate AutoComplete
-                let oAC = new YAHOO.widget.AutoComplete("siInput_<%=rand%>", "siContainer_<%=rand%>", oDS);
+                let oAC = new YAHOO.widget.AutoComplete("siInput_<%=Encode.forJavaScript(String.valueOf(rand))%>", "siContainer_<%=Encode.forJavaScript(String.valueOf(rand))%>", oDS);
                 oAC.useShadow = true;
                 oAC.resultTypeList = false;
                 oAC.queryMatchSubset = true;
@@ -816,24 +816,24 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
                 };
             }();
 
-            checkAllergy('<%=rand%>','<%=rx.getAtcCode()%>');
-            checkIfInactive('<%=rand%>','<%=rx.getRegionalIdentifier()%>');
+            checkAllergy('<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(rx.getAtcCode()))%>');
+            checkIfInactive('<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(rx.getRegionalIdentifier()))%>');
 
-            var isDiscontinuedLatest=<%=isDiscontinuedLatest%>;
+            var isDiscontinuedLatest=<%=Encode.forJavaScript(String.valueOf(isDiscontinuedLatest))%>;
             //oscarLog("isDiscon "+isDiscontinuedLatest);
             //pause(1000);
-            var archR='<%=archivedReason%>';
+            var archR='<%=Encode.forJavaScript(String.valueOf(archivedReason))%>';
             if(isDiscontinuedLatest && archR!="represcribed"){
-               var archD='<%=archivedDate%>';
+               var archD='<%=Encode.forJavaScript(String.valueOf(archivedDate))%>';
                //oscarLog("in js discon "+archR+"--"+archD);
 
-                    if(confirm('This drug was discontinued on <%=archivedDate%> because of <%=archivedReason%> are you sure you want to continue it?')==true){
+                    if(confirm('This drug was discontinued on <%=Encode.forJavaScript(String.valueOf(archivedDate))%> because of <%=Encode.forJavaScript(String.valueOf(archivedReason))%> are you sure you want to continue it?')==true){
                         //do nothing
                     }
                     else{
-                        $('<%=fieldSetId%>').remove();
+                        $('<%=Encode.forJavaScript(String.valueOf(fieldSetId))%>').remove();
                         //call java class to delete it from stash pool.
-                        var randId='<%=rand%>';
+                        var randId='<%=Encode.forJavaScript(String.valueOf(rand))%>';
                         deletePrescribe(randId);
                     }
             }
@@ -841,12 +841,12 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
             //oscarLog("listRxDrugsSize="+listRxDrugSize);
             counterRx++;
             //oscarLog("counterRx="+counterRx);
-           var gcn_val="<%=gcnCode%>";
+           var gcn_val="<%=Encode.forJavaScript(String.valueOf(gcnCode))%>";
            if(gcn_val === "0"){
-               $('drugName_<%=rand%>').focus();
+               $('drugName_<%=Encode.forJavaScript(String.valueOf(rand))%>').focus();
            } else if(counterRx==listRxDrugSize){
                //oscarLog("counterRx="+counterRx+"--listRxDrugSize="+listRxDrugSize);
-               $('instructions_<%=rand%>').focus();
+               $('instructions_<%=Encode.forJavaScript(String.valueOf(rand))%>').focus();
            }
         </script>
                 <%}%>

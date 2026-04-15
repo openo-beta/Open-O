@@ -36,6 +36,7 @@
         import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasuringInstructionBeanHandler, ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasuringInstructionBean" %>
 <%@ page import="ca.openosp.openo.managers.MeasurementManager" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String demo = request.getParameter("demographicNo"); //bean.getDemographicNo();
     request.setAttribute("demo", demo);
@@ -118,7 +119,7 @@
                 if (parentChanged) {
                     document.forms[0].elements["value(parentChanged)"].value = "true";
 
-                    if (!confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.msgParentChanged"/> <oscar:nameage demographicNo="<%=demo%>"/>"))
+                    if (!confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.msgParentChanged"/> <oscar:nameage demographicNo="<%=Encode.forJavaScript(String.valueOf(demo))%>"/>"))
                         ret = false;
                 }
 
@@ -179,7 +180,7 @@
                 <td class="MainTableTopRowRightColumn" style="padding:0px">
                     <table class="TopStatusBar" style="width:100%; height:100%;">
                         <tr>
-                            <td class="Header"><h3><oscar:nameage demographicNo="<%=demo%>"/></h3></td>
+                            <td class="Header"><h3><oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demo))%>"/></h3></td>
                         </tr>
                     </table>
                 </td>
@@ -190,13 +191,13 @@
                         <tr>
                             <td><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popupPage(150,200,'<%=request.getContextPath()%>/oscarEncounter/calculators.jsp?demo=<%=demo%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/></a></td>
+                                    onClick="popupPage(150,200,'<%=request.getContextPath()%>/oscarEncounter/calculators.jsp?demo=<%=Encode.forJavaScript(String.valueOf(demo))%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/></a></td>
                         </tr>
                     </table>
                 </td>
                 <td class="MainTableRightColumn">
 
-                    <%=measurementManager.getDShtml(groupName)%>
+                    <%=Encode.forHtml(String.valueOf(measurementManager.getDShtml(groupName)))%>
                     <div id="errorDiv" style="display:none; margin: 10px 0; padding: 10px; border: 1px solid #dc3545; background-color: #f8d7da; border-radius: 4px;">
                         <strong style="color: #721c24;">Error:</strong>
                         <ul id="errors_list" style="color: #721c24; margin: 5px 0 0 0; padding-left: 20px;">
@@ -218,7 +219,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>

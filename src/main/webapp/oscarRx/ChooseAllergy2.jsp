@@ -43,6 +43,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -297,7 +298,7 @@
                                         <%
                                             String sBack = request.getContextPath() + "/oscarRx/ShowAllergies2.jsp";
                                         %> <input type=button class="ControlPushButton"
-                                                  onclick="javascript:window.location.href='<%=sBack%>';"
+                                                  onclick="javascript:window.location.href='<%=Encode.forJavaScript(String.valueOf(sBack))%>';"
                                                   value="Back to View Allergies"/></td>
                                 </tr>
                             </table>
@@ -333,7 +334,7 @@
 <%--								%><div id="11_content"><%--%>
 <%--								for(Allergy allergy:allergyResults.get(11)) {--%>
 <%--									%>--%>
-<%--									<a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription() %></a>--%>
+<%--									<a href="addReaction.do?ID=<%=Encode.forUriComponent(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode(allergy.getDescription())))%>&type=<%=Encode.forUriComponent(String.valueOf(allergy.getTypeCode()))%>"><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%></a>--%>
 <%--									<br/>--%>
 <%--									<%--%>
 <%--								}--%>
@@ -345,7 +346,7 @@
 <%--								%><div id="12_content" style="display:none"><%--%>
 <%--								for(Allergy allergy:allergyResults.get(12)) {--%>
 <%--									%>--%>
-<%--									<a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription() %></a>--%>
+<%--									<a href="addReaction.do?ID=<%=Encode.forUriComponent(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode(allergy.getDescription())))%>&type=<%=Encode.forUriComponent(String.valueOf(allergy.getTypeCode()))%>"><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%></a>--%>
 <%--									<br/>--%>
 <%--									<%--%>
 <%--								}--%>
@@ -358,7 +359,7 @@
 <%--								%><div id="14_content"><%--%>
 <%--								for(Allergy allergy:allergyResults.get(14)) {--%>
 <%--									%>--%>
-<%--									<a href="addReaction.do?ID=<%= allergy.getDrugrefId() %>&name=<%=java.net.URLEncoder.encode(allergy.getDescription())%>&type=<%=allergy.getTypeCode()%>"><%=allergy.getDescription() %></a>--%>
+<%--									<a href="addReaction.do?ID=<%=Encode.forUriComponent(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode(allergy.getDescription())))%>&type=<%=Encode.forUriComponent(String.valueOf(allergy.getTypeCode()))%>"><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%></a>--%>
 <%--									<br/>--%>
 <%--									<%--%>
 <%--								}--%>
@@ -373,7 +374,7 @@
 <%--				<%--%>
 <%--                        String sBack="ShowAllergies2.jsp";--%>
 <%--                      %> <input type=button class="ControlPushButton"--%>
-<%--					onclick="javascript:window.location.href='<%=sBack%>';"--%>
+<%--					onclick="javascript:window.location.href='<%=Encode.forJavaScript(String.valueOf(sBack))%>';"--%>
 <%--					value="Back to View Allergies" /></td>--%>
 <%--			</tr>--%>
 <%--			</table>--%>

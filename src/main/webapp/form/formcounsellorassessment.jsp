@@ -45,6 +45,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -390,17 +391,17 @@
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
     <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="ID"
-               value="<%= props.getProperty("ID", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="provNo"
-               value="<%= request.getParameter("provNo") %>"/>
+               value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
 
 
@@ -421,19 +422,19 @@
                         <tr>
                             <td class="style76">Date of assessment (YYYY/MM/DD): <br>
                                 <input type="text" name="dateAssessment"
-                                       value="<%=props.getProperty("dateAssessment", "")%>"></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateAssessment", "")))%>"></td>
                             <td class="style76">Assessment start time: <br>
                                 <input type="text" name="assessStartTime"
-                                       value="<%=props.getProperty("assessStartTime", "")%>"> am
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("assessStartTime", "")))%>"> am
                                 / pm</br>
                             </td>
                             <td class="style76">Date client entered Seaton House
                                 (YYYY/MM/DD): &nbsp; <input type="text" name="dateEnteredSeaton"
-                                                            value="<%=props.getProperty("dateEnteredSeaton", "")%>">
+                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateEnteredSeaton", "")))%>">
                                 <br>
                                 Date client exited Seaton House (YYYY/MM/DD):
                                 &nbsp;&nbsp;&nbsp;&nbsp; <input type="text" name="dateExitedSeaton"
-                                                                value="<%=props.getProperty("dateExitedSeaton", "")%>">
+                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateExitedSeaton", "")))%>">
                             </td>
                         </tr>
                     </table>
@@ -447,10 +448,10 @@
                         <tr>
                             <td align="left" class="style76">Client's Surname <input
                                     type="text" name="clientSurname"
-                                    value="<%=props.getProperty("clientSurname", "")%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("clientSurname", "")))%>"></td>
                             <td align="left" class="style76">Client's First Name <input
                                     type="text" name="clientFirstName"
-                                    value="<%=props.getProperty("clientFirstName", "")%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("clientFirstName", "")))%>"></td>
                             <td align="left" class="style76">Date of Birth<br>
                                 (MM/DD/YYYY)<br>
                                 <select name="month">
@@ -589,7 +590,7 @@
                                             <%=props.getProperty("day", "").equals("31") ? "selected" : ""%>>31
                                     </option>
                                 </select> <input type="text" name="year" size="7" maxlength="4"
-                                                 value="<%=props.getProperty("year", "")%>"></td>
+                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("year", "")))%>"></td>
                         </tr>
                     </table>
                     <table width="95%" border="1">
@@ -624,7 +625,7 @@
                                 <span
                                         onClick="javascript:clickCheckBox(document.forms[0].cbox_speakOther);">Other:
 					</span> <input type="text" name="speakOther" size="55"
-                                   value="<%=props.getProperty("speakOther", "")%>"></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("speakOther", "")))%>"></td>
                         </tr>
                     </table>
 
@@ -665,7 +666,7 @@
                             <td align="left" class="style76">Question 1. How did you hear
                                 about Seaton House? &nbsp;&nbsp;&nbsp; <input type="text"
                                                                               name="howHearAboutSeaton" size="55"
-                                                                              value="<%=props.getProperty("howHearAboutSeaton", "")%>">
+                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("howHearAboutSeaton", "")))%>">
 
                             </td>
                         </tr>
@@ -673,7 +674,7 @@
                             <td align="left" class="style76">Question 2. Where were you
                                 before coming to Seaton House? &nbsp;&nbsp;&nbsp; <input
                                         type="text" name="whereBeforeSeaton" size="55"
-                                        value="<%=props.getProperty("whereBeforeSeaton", "")%>"></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("whereBeforeSeaton", "")))%>"></td>
                         </tr>
 
                     </table>
@@ -762,14 +763,14 @@
                                             <span
                                                     onClick="javascript:clickCheckBox(document.forms[0].cbox_assistWithOther);">Other</span>
                                             &nbsp;&nbsp; <input type="text" name="assistWithOther" size="35"
-                                                                value="<%=props.getProperty("assistWithOther", "")%>">
+                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("assistWithOther", "")))%>">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" align="left" valign="top" class="style76">
                                             Comments:<br>
                                             <textArea name="commentsOnID"
-                                                      cols="75"><%=props.getProperty("commentsOnID", "")%></textArea>
+                                                      cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("commentsOnID", "")))%></textArea>
 
                                         </td>
                                     </tr>
@@ -844,7 +845,7 @@
                                             <span
                                                     onClick="javascript:clickCheckBox(document.forms[0].cbox_haveOther1);">Other
 							(specify)</span> <input type="text" name="haveOther" size="27"
-                                                    value="<%=props.getProperty("haveOther", "")%>"></td>
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("haveOther", "")))%>"></td>
                                     </tr>
                                 </table>
                                 <table width="100%" border="0">
@@ -1079,12 +1080,12 @@
                                             <br>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text"
                                                                                   name="doctor1NameAddr" size="55"
-                                                                                  value="<%=props.getProperty("doctor1NameAddr", "")%>">
+                                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doctor1NameAddr", "")))%>">
                                         </td>
                                         <td colspan="2" valign="top" class="style76">Phone #
                                             &nbsp;&nbsp;&nbsp; <input type="text" name="doctor1Phone"
                                                                       size="25"
-                                                                      value="<%=props.getProperty("doctor1Phone", "")%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doctor1Phone", "")))%>">
                                         </td>
                                     </tr>
                                     <tr>
@@ -1093,7 +1094,7 @@
                                             Doctor (YYYY/MM/DD)&nbsp;&nbsp;&nbsp; <input type="text"
                                                                                          name="dateLastDoctor1Contact"
                                                                                          size="55"
-                                                                                         value="<%=props.getProperty("dateLastDoctor1Contact", "")%>">
+                                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateLastDoctor1Contact", "")))%>">
                                         </td>
                                     </tr>
 
@@ -1105,12 +1106,12 @@
                                             <br>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text"
                                                                                   name="doctor2NameAddr" size="55"
-                                                                                  value="<%=props.getProperty("doctor2NameAddr", "")%>">
+                                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doctor2NameAddr", "")))%>">
                                         </td>
                                         <td colspan="2" valign="top" class="style76">Phone #
                                             &nbsp;&nbsp;&nbsp; <input type="text" name="doctor2Phone"
                                                                       size="25"
-                                                                      value="<%=props.getProperty("doctor2Phone", "")%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doctor2Phone", "")))%>">
                                         </td>
                                     </tr>
                                     <tr>
@@ -1119,7 +1120,7 @@
                                             Doctor (YYYY/MM/DD)&nbsp;&nbsp;&nbsp; <input type="text"
                                                                                          name="dateLastDoctor2Contact"
                                                                                          size="55"
-                                                                                         value="<%=props.getProperty("dateLastDoctor2Contact", "")%>">
+                                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateLastDoctor2Contact", "")))%>">
                                         </td>
                                     </tr>
                                 </table>
@@ -1186,7 +1187,7 @@
                                         <td colspan="6" align="left" valign="top" class="style76">
                                             Comments:<br>
                                             <textArea name="commentsOnNeedHelp"
-                                                      cols="75"><%=props.getProperty("commentsOnNeedHelp", "")%></textArea>
+                                                      cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("commentsOnNeedHelp", "")))%></textArea>
 
                                         </td>
                                     </tr>
@@ -1235,17 +1236,17 @@
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="text" name="drinksPerDay" size="3"
-                                    value="<%=props.getProperty("drinksPerDay", "")%>">
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("drinksPerDay", "")))%>">
                                 drinks/day
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="text" name="drinksPerWeek" size="3"
-                                    value="<%=props.getProperty("drinksPerWeek", "")%>">
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("drinksPerWeek", "")))%>">
                                 drinks/week
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="text" name="drinksPerMonth" size="3"
-                                    value="<%=props.getProperty("drinksPerMonth", "")%>">
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("drinksPerMonth", "")))%>">
                                 drinks/month
                             </td>
 
@@ -1352,7 +1353,7 @@
                             <td colspan="6" align="left" valign="top" class="style76">
                                 Comments:<br>
                                 <textArea name="commentsOnAlcohol"
-                                          cols="75"><%=props.getProperty("commentsOnAlcohol", "")%></textArea>
+                                          cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("commentsOnAlcohol", "")))%></textArea>
 
                             </td>
                         </tr>
@@ -1436,7 +1437,7 @@
                         <tr>
                             <td colspan="6" align="left" class="style76">Comments:<br>
                                 <textArea name="commentsOnStreetDrugs"
-                                          cols="75"><%=props.getProperty("commentsOnStreetDrugs", "")%></textArea>
+                                          cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("commentsOnStreetDrugs", "")))%></textArea>
 
                             </td>
                         </tr>
@@ -1453,7 +1454,7 @@
                                 housing are you interested in? (e.g., shared, independent, rooming
                                 house) <br>
                                 <input type="text" name="housingInterested" size="90"
-                                       value="<%=props.getProperty("housingInterested", "")%>">
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("housingInterested", "")))%>">
                             </td>
                         </tr>
 
@@ -1486,7 +1487,7 @@
                             <td colspan="6" align="left" class="style76">3. What was your
                                 last address? <br>
                                 <input type="text" name="clientLastAddress" size="90"
-                                       value="<%=props.getProperty("clientLastAddress", "")%>">
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("clientLastAddress", "")))%>">
                             </td>
                         </tr>
 
@@ -1494,7 +1495,7 @@
                             <td colspan="6" align="left" class="style76">4. Where was the
                                 last place you paid rent? (give details if different from Q3) <br>
                                 <input type="text" name="clientLastAddressPayRent" size="90"
-                                       value="<%=props.getProperty("clientLastAddressPayRent", "")%>">
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("clientLastAddressPayRent", "")))%>">
                             </td>
                         </tr>
 
@@ -1503,7 +1504,7 @@
                                 you live there? Give approximate date
                                 (YYYY/MM/DD)&nbsp;&nbsp;&nbsp; <input type="text"
                                                                       name="dateLivedThere" size="50"
-                                                                      value="<%=props.getProperty("dateLivedThere", "")%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateLivedThere", "")))%>">
                             </td>
                         </tr>
 
@@ -1511,7 +1512,7 @@
                             <td colspan="6" align="left" class="style76">6. Who were you
                                 living with? (Roommate, family, etc.) &nbsp;&nbsp;&nbsp; <input
                                         type="text" name="livedWithWhom" size="50"
-                                        value="<%=props.getProperty("livedWithWhom", "")%>"></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("livedWithWhom", "")))%>"></td>
                         </tr>
 
                         <tr>
@@ -1580,17 +1581,17 @@
                             <td colspan="4" align="left" class="style76">9. Where do you
                                 owe money? &nbsp;&nbsp;&nbsp; <input type="text"
                                                                      name="whereOweRent" size="50"
-                                                                     value="<%=props.getProperty("whereOweRent", "")%>">
+                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("whereOweRent", "")))%>">
                             </td>
                             <td colspan="2" align="left" class="style76">Amount $:
                                 &nbsp;&nbsp;&nbsp; <input type="text" name="amtOwing" size="5"
-                                                          value="<%=props.getProperty("amtOwing", "")%>"></td>
+                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("amtOwing", "")))%>"></td>
                         </tr>
 
                         <tr>
                             <td colspan="6" align="left" class="style76">Comments:<br>
                                 <textArea name="commentsOnHousing"
-                                          cols="75"><%=props.getProperty("commentsOnHousing", "")%></textArea>
+                                          cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("commentsOnHousing", "")))%></textArea>
                             </td>
                         </tr>
                     </table>
@@ -1607,7 +1608,7 @@
                             </td>
                             <td width="30%" colspan="1" align="left" class="style76"><input
                                     type="text" name="yearsOfEducation" size="5"
-                                    value="<%=props.getProperty("yearsOfEducation", "")%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("yearsOfEducation", "")))%>"></td>
                         </tr>
 
                         <tr>
@@ -1714,7 +1715,7 @@
                         <tr>
                             <td colspan="6" align="left" class="style76">Comments:<br>
                                 <textArea name="commentsOnEducation"
-                                          cols="75"><%=props.getProperty("commentsOnEducation", "")%></textArea>
+                                          cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("commentsOnEducation", "")))%></textArea>
                             </td>
                         </tr>
 
@@ -1762,12 +1763,12 @@
                             <td colspan="3" align="left" class="style76">2. If yes, how
                                 long have you been employed? &nbsp;&nbsp;&nbsp; <input type="text"
                                                                                        name="howLongEmployed" size="5"
-                                                                                       value="<%=props.getProperty("howLongEmployed", "")%>">
+                                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("howLongEmployed", "")))%>">
                             </td>
                             <td colspan="3" align="left" class="style76">If no, how long
                                 have you been unemployed? &nbsp;&nbsp;&nbsp; <input type="text"
                                                                                     name="howLongUnemployed" size="5"
-                                                                                    value="<%=props.getProperty("howLongUnemployed", "")%>">
+                                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("howLongUnemployed", "")))%>">
                             </td>
 
                         </tr>
@@ -1776,7 +1777,7 @@
                             <td colspan="6" align="left" class="style76">3. What is your
                                 usual occupation? &nbsp;&nbsp;&nbsp; <input type="text"
                                                                             name="usualOccupation" size="50"
-                                                                            value="<%=props.getProperty("usualOccupation", "")%>">
+                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("usualOccupation", "")))%>">
                             </td>
                         </tr>
 
@@ -1813,7 +1814,7 @@
                         <tr>
                             <td colspan="6" align="left" class="style76">Comments:<br>
                                 <textArea name="commentsOnEmployment"
-                                          cols="75"><%=props.getProperty("commentsOnEmployment", "")%></textArea>
+                                          cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("commentsOnEmployment", "")))%></textArea>
 
                             </td>
                         </tr>
@@ -1830,7 +1831,7 @@
                                 your main source of income in the past 12 months (Please state
                                 source and monthly amount) <br>
                                 <input type="text" name="mainSourceOfIncome" size="70"
-                                       value="<%=props.getProperty("mainSourceOfIncome", "")%>">
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("mainSourceOfIncome", "")))%>">
                             </td>
                         </tr>
 
@@ -1882,7 +1883,7 @@
                             <td colspan="9" align="left" class="style76">2. Approximately
                                 how much do you receive: $ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input
                                         type="text" name="howMuchYouReceive" size="7"
-                                        value="<%=props.getProperty("howMuchYouReceive", "")%>">
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("howMuchYouReceive", "")))%>">
                             </td>
                         </tr>
 
@@ -1920,7 +1921,7 @@
                             <td colspan="9" align="left" class="style76">4. Name, address
                                 and phone # of Public Trustee <br>
                                 <input type="text" name="publicTrusteeInfo" size="120"
-                                       value="<%=props.getProperty("publicTrusteeInfo", "")%>">
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("publicTrusteeInfo", "")))%>">
 
                             </td>
                         </tr>
@@ -1937,7 +1938,7 @@
 					--></span></td>
                             <td colspan="2" align="left" class="style76">Type: <input
                                     type="text" name="typeOfIncome" size="35"
-                                    value="<%=props.getProperty("typeOfIncome", "")%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("typeOfIncome", "")))%>"></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_entitledToOtherIncome" value="no"
                                     <%=(props.getProperty("radio_entitledToOtherIncome", "")).equalsIgnoreCase("no")?"checked":""%>>
@@ -1972,12 +1973,12 @@
                                         </td>
                                         <td colspan="4" align="left" class="style76">Type: <input
                                                 type="text" name="everMadeAppforOtherIncome"
-                                                value="<%=props.getProperty("everMadeAppforOtherIncome", "")%>">
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("everMadeAppforOtherIncome", "")))%>">
                                         </td>
                                         <td colspan="3" align="left" class="style76">
                                             <nobr>When
                                                 (YYYY/MM/DD): <input type="text" name="whenMadeAppforOtherIncome"
-                                                                     value="<%=props.getProperty("whenMadeAppforOtherIncome", "")%>">
+                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("whenMadeAppforOtherIncome", "")))%>">
                                             </nobr>
                                         </td>
                                     </tr>
@@ -1987,7 +1988,7 @@
                         <tr>
                             <td colspan="9" align="left" class="style76">Comments:<br>
                                 <textArea name="commentsOnFinance"
-                                          cols="75"><%=props.getProperty("commentsOnFinance", "")%></textArea>
+                                          cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("commentsOnFinance", "")))%></textArea>
                             </td>
                         </tr>
 
@@ -2036,7 +2037,7 @@
                             <td colspan="9" align="left" class="style76">2. Give brief
                                 history of incarceration(s) (date, reason, location)<br>
                                 <textArea name="historyOfJail"
-                                          cols="75"><%=props.getProperty("historyOfJail", "")%></textArea>
+                                          cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("historyOfJail", "")))%></textArea>
                             </td>
                         </tr>
 
@@ -2078,14 +2079,14 @@
                                         <td colspan="9" class="style76">If yes, specify:
                                             &nbsp;&nbsp;&nbsp; <input type="text" name="needAssistInLegal"
                                                                       size="55"
-                                                                      value="<%=props.getProperty("needAssistInLegal", "")%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("needAssistInLegal", "")))%>">
 
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="9" align="left" class="style76">Comments:<br>
                                             <textArea name="commentsOnLegalIssues"
-                                                      cols="75"><%=props.getProperty("commentsOnLegalIssues", "")%></textArea>
+                                                      cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("commentsOnLegalIssues", "")))%></textArea>
                                         </td>
                                     </tr>
 
@@ -2210,7 +2211,7 @@
                                                         onClick="javascript:clickRadio(document.forms[0].radio_yourCanadianStatus[6]);">Other
 							(specify) --> Q4</span></nobr> &nbsp;&nbsp;&nbsp; <input type="text"
                                                                                      name="yourCanadianStatus"
-                                                                                     value="<%=props.getProperty("yourCanadianStatus", "")%>">
+                                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("yourCanadianStatus", "")))%>">
                                         </td>
                                     </tr>
                                 </table>
@@ -2245,11 +2246,11 @@
                                         <td colspan="6" class="style76">*If yes, why?
                                             &nbsp;&nbsp;&nbsp; <input type="text"
                                                                       name="whySponsorshipBreakdown" size="55"
-                                                                      value="<%=props.getProperty("whySponsorshipBreakdown", "")%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("whySponsorshipBreakdown", "")))%>">
                                         </td>
                                         <td colspan="3" class="style76">Name of Sponsor: <input
                                                 type="text" name="sponsorName" size="35"
-                                                value="<%=props.getProperty("sponsorName", "")%>"></td>
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sponsorName", "")))%>"></td>
 
                                     </tr>
 
@@ -2261,14 +2262,14 @@
                             <td colspan="9" class="style76">4. Do you need a referral to a
                                 community agency to help you with immigration issues? <input
                                         type="text" name="needHelpWithImmigration" size="35"
-                                        value="<%=props.getProperty("needHelpWithImmigration", "")%>">
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("needHelpWithImmigration", "")))%>">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="9" align="left" class="style76">
                                 CommentsOnImmigration:<br>
                                 <textArea name="CommentsOnImmigration"
-                                          cols="75"><%=props.getProperty("CommentsOnImmigration", "")%></textArea>
+                                          cols="75"><%=Encode.forHtml(String.valueOf(props.getProperty("CommentsOnImmigration", "")))%></textArea>
                             </td>
                         </tr>
 
@@ -2314,19 +2315,19 @@
                                     <tr>
                                         <td colspan="7" align="left" class="style76">2a. Name of
                                             Agency: <input type="text" name="agency1Name" size="55"
-                                                           value="<%=props.getProperty("agency1Name", "")%>"></td>
+                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("agency1Name", "")))%>"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" align="left" valign="top" class="style76">
                                             <nobr>
                                                 Contact Person: <input type="text" name="contact1Name" size="35"
-                                                                       value="<%=props.getProperty("contact1Name", "")%>">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("contact1Name", "")))%>">
                                             </nobr>
                                         </td>
                                         <td colspan="3" align="left" valign="top" class="style76">
                                             <nobr>
                                                 Phone # <input type="text" name="contact1Phone" size="12"
-                                                               value="<%=props.getProperty("contact1Phone", "")%>">
+                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("contact1Phone", "")))%>">
                                             </nobr>
                                         </td>
                                     </tr>
@@ -2334,12 +2335,12 @@
                                         <td colspan="6" class="style76">Assistance provided:
                                             &nbsp;&nbsp;&nbsp; <input type="text" name="assistProvided1"
                                                                       size="55"
-                                                                      value="<%=props.getProperty("assistProvided1", "")%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("assistProvided1", "")))%>">
                                         </td>
                                         <td colspan="3" class="style76">Date of last contact with
                                             Agency (YYYY/MM/DD) <input type="text" name="dateLastContact1"
                                                                        size="35"
-                                                                       value="<%=props.getProperty("dateLastContact1", "")%>">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateLastContact1", "")))%>">
                                         </td>
                                     </tr>
                                 </table>
@@ -2352,19 +2353,19 @@
                                     <tr>
                                         <td colspan="7" align="left" class="style76">2b. Name of
                                             Agency: <input type="text" name="agency2Name" size="55"
-                                                           value="<%=props.getProperty("agency2Name", "")%>"></td>
+                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("agency2Name", "")))%>"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" align="left" valign="top" class="style76">
                                             <nobr>
                                                 Contact Person: <input type="text" name="contact2Name" size="35"
-                                                                       value="<%=props.getProperty("contact2Name", "")%>">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("contact2Name", "")))%>">
                                             </nobr>
                                         </td>
                                         <td colspan="3" align="left" valign="top" class="style76">
                                             <nobr>
                                                 Phone # <input type="text" name="contact2Phone" size="12"
-                                                               value="<%=props.getProperty("contact2Phone", "")%>">
+                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("contact2Phone", "")))%>">
                                             </nobr>
                                         </td>
                                     </tr>
@@ -2372,12 +2373,12 @@
                                         <td colspan="6" class="style76">Assistance provided:
                                             &nbsp;&nbsp;&nbsp; <input type="text" name="assistProvided2"
                                                                       size="55"
-                                                                      value="<%=props.getProperty("assistProvided2", "")%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("assistProvided2", "")))%>">
                                         </td>
                                         <td colspan="3" class="style76">Date of last contact with
                                             Agency (YYYY/MM/DD) <input type="text" name="dateLastContact2"
                                                                        size="35"
-                                                                       value="<%=props.getProperty("dateLastContact2", "")%>">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateLastContact2", "")))%>">
                                         </td>
 
                                     </tr>
@@ -2391,19 +2392,19 @@
                                     <tr>
                                         <td colspan="7" align="left" class="style76">2c. Name of
                                             Agency: <input type="text" name="agency3Name" size="55"
-                                                           value="<%=props.getProperty("agency3Name", "")%>"></td>
+                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("agency3Name", "")))%>"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" align="left" valign="top" class="style76">
                                             <nobr>
                                                 Contact Person: <input type="text" name="contact3Name" size="35"
-                                                                       value="<%=props.getProperty("contact3Name", "")%>">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("contact3Name", "")))%>">
                                             </nobr>
                                         </td>
                                         <td colspan="3" align="left" valign="top" class="style76">
                                             <nobr>
                                                 Phone # <input type="text" name="contact3Phone" size="12"
-                                                               value="<%=props.getProperty("contact3Phone", "")%>">
+                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("contact3Phone", "")))%>">
                                             </nobr>
                                         </td>
                                     </tr>
@@ -2411,12 +2412,12 @@
                                         <td colspan="6" class="style76">Assistance provided:
                                             &nbsp;&nbsp;&nbsp; <input type="text" name="assistProvided3"
                                                                       size="55"
-                                                                      value="<%=props.getProperty("assistProvided3", "")%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("assistProvided3", "")))%>">
                                         </td>
                                         <td colspan="3" class="style76">Date of last contact with
                                             Agency (YYYY/MM/DD) <input type="text" name="dateLastContact3"
                                                                        size="35"
-                                                                       value="<%=props.getProperty("dateLastContact3", "")%>">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateLastContact3", "")))%>">
                                         </td>
                                     </tr>
                                 </table>
@@ -2429,19 +2430,19 @@
                                     <tr>
                                         <td colspan="7" align="left" class="style76">2d. Name of
                                             Agency: <input type="text" name="agency4Name" size="55"
-                                                           value="<%=props.getProperty("agency4Name", "")%>"></td>
+                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("agency4Name", "")))%>"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" align="left" valign="top" class="style76">
                                             <nobr>
                                                 Contact Person: <input type="text" name="contact4Name" size="35"
-                                                                       value="<%=props.getProperty("contact4Name", "")%>">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("contact4Name", "")))%>">
                                             </nobr>
                                         </td>
                                         <td colspan="3" align="left" valign="top" class="style76">
                                             <nobr>
                                                 Phone # <input type="text" name="contact4Phone" size="12"
-                                                               value="<%=props.getProperty("contact4Phone", "")%>">
+                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("contact4Phone", "")))%>">
                                             </nobr>
                                         </td>
                                     </tr>
@@ -2449,12 +2450,12 @@
                                         <td colspan="6" class="style76">Assistance provided:
                                             &nbsp;&nbsp;&nbsp; <input type="text" name="assistProvided4"
                                                                       size="55"
-                                                                      value="<%=props.getProperty("assistProvided4", "")%>">
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("assistProvided4", "")))%>">
                                         </td>
                                         <td colspan="3" class="style76">Date of last contact with
                                             Agency (YYYY/MM/DD) <input type="text" name="dateLastContact4"
                                                                        size="35"
-                                                                       value="<%=props.getProperty("dateLastContact4", "")%>">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateLastContact4", "")))%>">
                                         </td>
                                     </tr>
                                 </table>
@@ -2681,7 +2682,7 @@
                             <td colspan="6" align="left" class="style76">Completed by:
                                 (Sign and Print Name) &nbsp;&nbsp;&nbsp; <input type="text"
                                                                                 name="completedBy1" size="55"
-                                                                                value="<%=props.getProperty("completedBy1", "")%>">
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("completedBy1", "")))%>">
                             </td>
                         </tr>
 
@@ -2697,13 +2698,13 @@
                             <td colspan="3" align="left" valign="top" class="style76">
                                 Completed by: &nbsp;&nbsp;&nbsp; <input type="text"
                                                                         name="completedBy2" size="45"
-                                                                        value="<%=props.getProperty("completedBy2", "")%>">
+                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("completedBy2", "")))%>">
                             </td>
                             <td width="49%" colspan="3" align="left" valign="top"
                                 class="style76">Date Assessment Completed
                                 (YYYY/MM/DD):&nbsp;&nbsp;&nbsp; <input type="text"
                                                                        name="assessCompleteTime" size="25"
-                                                                       value="<%=props.getProperty("assessCompleteTime", "")%>">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("assessCompleteTime", "")))%>">
                                 am/pm
                             </td>
                         </tr>
@@ -2711,7 +2712,7 @@
                             <td colspan="3" align="left" valign="top" class="style76">
                                 Follow-up dates/appointments: &nbsp;&nbsp;&nbsp; <input type="text"
                                                                                         name="followupAppmts" size="25"
-                                                                                        value="<%=props.getProperty("followupAppmts", "")%>">
+                                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("followupAppmts", "")))%>">
                             </td>
                             <td width="49%" colspan="3" align="left" valign="top"
                                 class="style76">&nbsp;&nbsp;&nbsp;

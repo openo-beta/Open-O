@@ -47,6 +47,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DocumentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Document" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.utility.PathValidationUtils" %>
 
 <%
@@ -79,7 +80,8 @@
         String filePath = validatedFile.getPath();
         if (filetype.compareTo("active") == 0) {
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
+            String sanitizedFilename = filename.replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + sanitizedFilename + "\"");
             //read the file name.
             File f = new File(filePath);
             InputStream is = new FileInputStream(f);
@@ -100,7 +102,7 @@
 
         } else {
             for (Document d : documentDao.findActiveByDocumentNo(Integer.parseInt(doc_no))) {
-                out.print(d.getDocxml());
+                out.print(Encode.forHtml(d.getDocxml()));
             }
         }
 

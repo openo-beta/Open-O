@@ -33,6 +33,7 @@
 <%@page import="ca.openosp.openo.PMmodule.dao.CriteriaTypeDao" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.CriteriaTypeOptionDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     CriteriaTypeDao criteriaTypeDAO = SpringUtils.getBean(CriteriaTypeDao.class);
     CriteriaTypeOptionDao criteriaTypeOptionDAO = SpringUtils.getBean(CriteriaTypeOptionDao.class);
@@ -51,16 +52,16 @@
     nameMin = typeSelected.toLowerCase().replaceAll(" ", "_").concat("Minimum");
 %>
 
-<div id="block_vacancyType_<%=typeSelected.toLowerCase().replaceAll(" ","_")%>">
+<div id="block_vacancyType_<%=Encode.forHtmlAttribute(String.valueOf(typeSelected.toLowerCase().replaceAll(" ","_")))%>">
     <table>
         <tr class="b">
-            <td class="beright"><%=typeSelected%> Range Minimum:</td>
-            <td><input type="text" size="50" maxlength="50" value="<%=min %>" name="<%=nameMin%>">
+            <td class="beright"><%=Encode.forHtml(String.valueOf(typeSelected))%> Range Minimum:</td>
+            <td><input type="text" size="50" maxlength="50" value="<%=min %>" name="<%=Encode.forHtmlAttribute(String.valueOf(nameMin))%>">
             </td>
         </tr>
         <tr class="b">
-            <td class="beright"><%=typeSelected%> Range Maximum:</td>
-            <td><input type="text" size="50" maxlength="50" value="<%=max %>" name="<%=nameMax%>">
+            <td class="beright"><%=Encode.forHtml(String.valueOf(typeSelected))%> Range Maximum:</td>
+            <td><input type="text" size="50" maxlength="50" value="<%=max %>" name="<%=Encode.forHtmlAttribute(String.valueOf(nameMax))%>">
             </td>
         </tr>
     </table>

@@ -43,6 +43,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DesapriskDao" %>
 <%@ page import="ca.openosp.openo.db.DBHandler" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DesapriskDao desapriskDao = SpringUtils.getBean(DesapriskDao.class);
 %>
@@ -67,7 +68,7 @@
     </script>
 </head>
 <body bgproperties="fixed" topmargin="0" leftmargin="1" rightmargin="1">
-<form name="planner" method="post" action="antenatalplanner.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>">
+<form name="planner" method="post" action="antenatalplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&formId=<%=Encode.forUriComponent(String.valueOf(form_no))%>">
     <%-- @ include file="zgetarriskdata.jsp" --%>
     <%
         //save risk&checklist data if required
@@ -114,7 +115,7 @@
                             riskDataBean.setProperty(resultsetmetadata.getColumnName(k), "checked"); //"55", "risk_cinca"
 
     %>
-    <input type="hidden" name="<%=resultsetmetadata.getColumnName(k)%>" value="checked">
+    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(resultsetmetadata.getColumnName(k)))%>" value="checked">
     <% }
     }
     }
@@ -128,7 +129,7 @@
             String checklist_content = darp.getChecklistContent();
     %>
     <script type="text/javascript">
-        xmlText = "<xml><planner><%=risk_content%><%=checklist_content%></planner></xml>";
+        xmlText = "<xml><planner><%=Encode.forJavaScript(String.valueOf(risk_content))%><%=Encode.forJavaScript(String.valueOf(checklist_content))%></planner></xml>";
     </script>
     <%
             String riskFilePath = application.getRealPath("/decision/antenatal/desantenatalplannerrisks_99_12.xml");
@@ -158,7 +159,7 @@
                 <input type="submit" name="submit" value="Save and Exit"/>
                 <input type="button" value="  Exit  " onclick="javascript:return onExit();"/>
                 <input type="button" name="submit" value="Print"
-                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>
+                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right">
                 <a href=# onClick="popupPage(600,930,'obarriskedit_99_12.jsp');return false;">Edit OB Risks</a> |
@@ -231,7 +232,7 @@ else {
                 <input type="submit" name="submit" value="Save and Exit"/>
                 <input type="button" value="  Exit  " onclick="javascript:return onExit();"/>
                 <input type="button" name="submit" value="Print"
-                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>
+                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right">
                 <a href=# onClick="popupPage(600,930,'obarriskedit_99_12.jsp');return false;">Edit OB Risks</a> |

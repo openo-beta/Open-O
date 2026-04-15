@@ -305,21 +305,21 @@
             <div class="span12">
 
                 <% do { %>
-                <div class="row" id="user<%=count == 0 ? "" : count%>">
+                <div class="row" id="user<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>">
                     <div class="span12">
 
                         <div class="row">
                             <div class="span6">
-                                <label for="faxUser<%=count == 0 ? "" : count%>">User</label>
-                                <input class="span6" type="text" id="faxUser<%=count == 0 ? "" : count%>" name="faxUser"
+                                <label for="faxUser<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>">User</label>
+                                <input class="span6" type="text" id="faxUser<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>" name="faxUser"
                                        value="<%=Encode.forHtmlAttribute( faxConfigList.isEmpty() ? "" : faxConfigList.get(count).getFaxUser() )%>"/>
-                                <input type="hidden" id="id<%=count == 0 ? "" : count%>" name="id"
-                                       value="<%=faxConfigList.isEmpty() ? "-1" : faxConfigList.get(count).getId()%>"/>
+                                <input type="hidden" id="id<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>" name="id"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(faxConfigList.isEmpty() ? "-1" : faxConfigList.get(count).getId()))%>"/>
 
                             </div>
 
                             <div class="span6">
-                                <label for="faxPasswd<%=count == 0 ? "" : count%>">Password</label>
+                                <label for="faxPasswd<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>">Password</label>
                                 <%
                                     String faxPassword = "";
 
@@ -329,31 +329,31 @@
                                     }
 
                                 %>
-                                <input class="span6" type="password" id="faxPasswd<%=count == 0 ? "" : count%>"
+                                <input class="span6" type="password" id="faxPasswd<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
                                        name="faxPassword" value="<%=Encode.forHtmlAttribute( faxPassword )%>"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="span6">
 
-                                <label for="faxNumber<%=count == 0 ? "" : count%>">Fax Number</label>
-                                <input class="span6" type="text" id="faxNumber<%=count == 0 ? "" : count%>"
+                                <label for="faxNumber<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>">Fax Number</label>
+                                <input class="span6" type="text" id="faxNumber<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
                                        name="faxNumber"
                                        value="<%=Encode.forHtmlAttribute( faxConfigList.isEmpty() ? "" : faxConfigList.get(count).getFaxNumber() )%>"/>
                             </div>
 
                             <div class="span6">
-                                <label for="senderEmail<%=count == 0 ? "" : count%>">Email</label>
+                                <label for="senderEmail<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>">Email</label>
 
-                                <input class="span6" type="email" id="senderEmail<%=count == 0 ? "" : count%>"
+                                <input class="span6" type="email" id="senderEmail<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
                                        name="senderEmail" placeholder="Account email"
                                        value="<%=Encode.forHtmlAttribute(faxConfigList.isEmpty() ? "" : faxConfigList.get(count).getSenderEmail())%>"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="span6">
-                                <label for="inBoxQueue<%=count == 0 ? "" : count%>">Inbox Queue</label>
-                                <select class="span6" id="inBoxQueue<%=count == 0 ? "" : count%>" name="inboxQueue">
+                                <label for="inBoxQueue<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>">Inbox Queue</label>
+                                <select class="span6" id="inBoxQueue<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>" name="inboxQueue">
                                     <option value="-1">-</option>
                                     <%
                                         for (Integer queueId : queueMap.keySet()) {
@@ -374,8 +374,8 @@
 
                             </div>
                             <div class="span6">
-                                <label for="accountName<%= count == 0 ? "" : count %>">Account Name</label>
-                                <input type="text" name="accountName" id='accountName<%= count == 0 ? "" : count %>'
+                                <label for="accountName<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>">Account Name</label>
+                                <input type="text" name="accountName" id='accountName<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>'
                                        value='<%= Encode.forHtmlAttribute(faxConfigList.isEmpty() ? "" : faxConfigList.get(count).getAccountName()) %>'/>
                             </div>
                         </div>
@@ -384,34 +384,34 @@
                                 <label>Enable/Disable Gateway</label>
 
                                 <label class="radio inline control-label">
-                                    <input type="radio" id="on<%=count == 0 ? "" : count %>"
-                                           name="active<%=count == 0 ? "" : count%>"
+                                    <input type="radio" id="on<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
+                                           name="active<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
                                            value="true" <%=faxConfigList.isEmpty() ? "" : faxConfigList.get(count).isActive() ? "checked" : ""%>  />
                                     On</label>
                                 <label class="radio inline control-label">
-                                    <input type="radio" id="of<%=count == 0 ? "" : count %>"
-                                           name="active<%=count == 0 ? "" : count%>"
+                                    <input type="radio" id="of<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
+                                           name="active<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
                                            value="false" <%=faxConfigList.isEmpty() ? "" : faxConfigList.get(count).isActive() ? "" : "checked"%> />
                                     Off</label>
 
-                                <input type="hidden" id="activeState<%=count == 0 ? "" : count%>" name="activeState"
-                                       value="<%=faxConfigList.isEmpty() ? "" : faxConfigList.get(count).isActive()%>"/>
+                                <input type="hidden" id="activeState<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>" name="activeState"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(faxConfigList.isEmpty() ? "" : faxConfigList.get(count).isActive()))%>"/>
                             </div>
                             <div class="span6">
                                 <label>Enable/Disable Receiving Faxes (If Gateway Enabled)</label>
 
                                 <label class="radio inline control-label">
-                                    <input type="radio" id="download_on<%=count == 0 ? "" : count %>"
-                                           name="download<%=count == 0 ? "" : count%>"
+                                    <input type="radio" id="download_on<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
+                                           name="download<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
                                            value="true" <%=faxConfigList.isEmpty() ? "" : faxConfigList.get(count).isDownload() ? "checked" : ""%>  />
                                     On</label>
                                 <label class="radio inline control-label">
-                                    <input type="radio" id="download_of<%=count == 0 ? "" : count %>"
-                                           name="download<%=count == 0 ? "" : count%>"
+                                    <input type="radio" id="download_of<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
+                                           name="download<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>"
                                            value="false" <%=faxConfigList.isEmpty() ? "" : faxConfigList.get(count).isDownload() ? "" : "checked"%> />
                                     Off</label>
-                                <input type="hidden" id="downloadState<%=count == 0 ? "" : count%>" name="downloadState"
-                                       value="<%=faxConfigList.isEmpty() ? "" : faxConfigList.get(count).isDownload()%>"/>
+                                <input type="hidden" id="downloadState<%=Encode.forHtmlAttribute(String.valueOf(count == 0 ? "" : count))%>" name="downloadState"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(faxConfigList.isEmpty() ? "" : faxConfigList.get(count).isDownload()))%>"/>
                             </div>
                         </div>
 

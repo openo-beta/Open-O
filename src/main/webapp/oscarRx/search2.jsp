@@ -26,6 +26,7 @@
 
 <%@page import="ca.openosp.openo.prescript.data.RxDrugData,java.util.*,ca.openosp.openo.rx.util.*" %>
 <%@ page import="ca.openosp.openo.prescript.util.RxDrugRef" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <ul>
     <%
         String searchString = request.getParameter("searchString");
@@ -42,7 +43,7 @@
                 String cat = "" + drug.get("category");
                 if (cat.equals("18")) {
     %>
-    <li id="g_<%=drug.get("id")%>"><%=drug.get("name")%>
+    <li id="g_<%=Encode.forHtmlAttribute(String.valueOf(drug.get("id")))%>"><%=Encode.forHtml(String.valueOf(drug.get("name")))%>
     </li>
     <%
             }
@@ -54,7 +55,7 @@
         if (drugSearch != null) {
             for (RxDrugData.MinDrug drug : genList) {
     %>
-    <li id="g_<%=drug.pKey%>"><%=drug.name%>
+    <li id="g_<%=Encode.forHtmlAttribute(String.valueOf(drug.pKey))%>"><%=Encode.forHtml(String.valueOf(drug.name))%>
     </li>
     <%
             }
@@ -69,7 +70,7 @@
                 //if (!genWBrand.contains(genName)){
                 //   genWBrand.add(genName);
     %>
-    <li id="b_<%=drug.pKey%>"><%=drug.name%>
+    <li id="b_<%=Encode.forHtmlAttribute(String.valueOf(drug.pKey))%>"><%=Encode.forHtml(String.valueOf(drug.name))%>
     </li>
     <%
                     //}

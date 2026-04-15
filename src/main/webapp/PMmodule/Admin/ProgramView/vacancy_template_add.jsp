@@ -32,6 +32,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="org.apache.commons.lang3.StringUtils" %>
 <%@page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/taglibs.jsp" %>
 
 <%
@@ -95,9 +96,9 @@
 </script>
 <div class="tabs" id="tabs">
 
-    <input type="hidden" name="vacancyOrTemplateId" id="vacancyOrTemplateId" value="<%=template.getId()%>"/>
-    <input type="hidden" name="programId" id="programId" value="<%=request.getAttribute("id")%>"/>
-    <input type="hidden" name="id" id="id" value="<%=request.getAttribute("id")%>"/>
+    <input type="hidden" name="vacancyOrTemplateId" id="vacancyOrTemplateId" value="<%=Encode.forHtmlAttribute(String.valueOf(template.getId()))%>"/>
+    <input type="hidden" name="programId" id="programId" value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("id")))%>"/>
+    <input type="hidden" name="id" id="id" value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("id")))%>"/>
     <table cellpadding="3" cellspacing="0" border="0">
         <tr>
             <th title="Programs" class="nofocus"><a
@@ -116,7 +117,7 @@
     </tr>
     <tr class="b">
         <td class="beright">Template Name:</td>
-        <td><input type="text" size="50" maxlength="50" value="<%=template.getName()==null?"":template.getName() %>"
+        <td><input type="text" size="50" maxlength="50" value="<%=Encode.forHtmlAttribute(String.valueOf(template.getName()==null?"":template.getName()))%>"
                    name="templateName"></td>
     </tr>
 </table>

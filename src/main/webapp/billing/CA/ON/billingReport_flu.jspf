@@ -31,6 +31,7 @@
 <%@page import="java.math.BigDecimal" %>
 <%@page import="java.util.List" %>
 <%@page import="ca.openosp.openo.commn.dao.BillingDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <table width="100%" border="2" cellpadding="0" cellspacing="0">
 
@@ -103,12 +104,12 @@ if(bs.size() == 0) {
 	<tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">
 		<TD align="left" width="20%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif"><a href=#
-			onClick='popupPage(700,720, "billingOB2.jsp?billing_no=<%=bId%>&dboperation=search_bill&hotclick=0")'
-			title="<%=reason%>"> <%=bId%></a></font></b></TD>
+			onClick='popupPage(700,720, "billingOB2.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(bId))%>&dboperation=search_bill&hotclick=0")'
+			title="<%=Encode.forHtmlAttribute(String.valueOf(reason))%>"> <%=Encode.forHtml(String.valueOf(bId))%></a></font></b></TD>
 		<TD align="left" width="20%"><b><font size="2"
-			face="Arial, Helvetica, sans-serif"><%=demoName%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(demoName))%></font></b></TD>
 		<TD align="left" width="20%"><b><font size="2"
-			face="Arial, Helvetica, sans-serif"><%=apptDate%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(apptDate))%></font></b></TD>
 
 		<TD align="right" width="10%"><b> <font size="2"
 			face="Arial, Helvetica, sans-serif">&nbsp;</font></b></TD>
@@ -130,12 +131,12 @@ if(bs.size() == 0) {
 	<tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">
 		<TD align="left" width="20%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif"><a href=#
-			onClick='popupPage(700,720, "<%= request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=bId%>&dboperation=search_bill&hotclick=0")'
-			title="<%=reason%>"> <%=bId%></a></font></b></TD>
+			onClick='popupPage(700,720, "<%= request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forJavaScript(String.valueOf(bId))%>&dboperation=search_bill&hotclick=0")'
+			title="<%=Encode.forHtmlAttribute(String.valueOf(reason))%>"> <%=Encode.forHtml(String.valueOf(bId))%></a></font></b></TD>
 		<TD align="left" width="20%"><b><font size="2"
-			face="Arial, Helvetica, sans-serif"><%=demoName%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(demoName))%></font></b></TD>
 		<TD align="left" width="20%"><b><font size="2"
-			face="Arial, Helvetica, sans-serif"><%=apptDate%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(apptDate))%></font></b></TD>
 		<TD align="right" width="10%"><b> <font size="2"
 			face="Arial, Helvetica, sans-serif"><%=total%></font></b></TD>
 		<TD align="right" width="10%"><b> <font size="2"
@@ -168,13 +169,13 @@ if (rowCount == 0) {
 		<TD align="left" width="20%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif">Total</font></b></TD>
 		<TD align="left" width="20%"><b><font size="2"
-			face="Arial, Helvetica, sans-serif">Clinic Count: <%=rowCount-rowCount1%></font></b></TD>
+			face="Arial, Helvetica, sans-serif">Clinic Count: <%=Encode.forHtml(String.valueOf(rowCount-rowCount1))%></font></b></TD>
 		<TD align="left" width="20%"><b><font size="2"
-			face="Arial, Helvetica, sans-serif">Walk-in Count: <%=rowCount1%></font></font></b></TD>
+			face="Arial, Helvetica, sans-serif">Walk-in Count: <%=Encode.forHtml(String.valueOf(rowCount1))%></font></font></b></TD>
 		<TD align="right" width="10%"><b> <font size="2"
-			face="Arial, Helvetica, sans-serif"><%=Total2%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(Total2))%></font></b></TD>
 		<TD align="right" width="10%"><b> <font size="2"
-			face="Arial, Helvetica, sans-serif"><%=Total1%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(Total1))%></font></b></TD>
 		<TD align="center" width="20%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif">&nbsp;</font></b></TD>
 	</tr>

@@ -49,7 +49,6 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.web.PrescriptionQrCodeUIBean" %>
 <%@page import="ca.openosp.openo.commn.model.EForm" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.commn.model.EncounterForm" %>
 <%@page import="ca.openosp.openo.commn.dao.CtlBillingServiceDao" %>
 <%@page import="ca.openosp.openo.commn.model.CtlBillingService" %>
@@ -58,6 +57,7 @@
 <%@page import="java.util.ArrayList" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%!
     CtlBillingServiceDao ctlBillingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);
@@ -238,18 +238,18 @@
           rightmargin="0" style="font-family:sans-serif">
     <FORM NAME="UPDATEPRE" METHOD="post" ACTION="providerupdatepreference.jsp" onSubmit="return(checkTypeInAll())">
 
-        <div style="background-color:<%=deepcolor%>;text-align:center;font-weight:bold">
+        <div style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>;text-align:center;font-weight:bold">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.description"/>
         </div>
 
-        <table class="preferenceTable" style="width:100%;border-collapse:collapse;background-color:<%=weakcolor%>;">
+        <table class="preferenceTable" style="width:100%;border-collapse:collapse;background-color:<%=Encode.forHtmlAttribute(String.valueOf(weakcolor))%>;">
             <tr>
                 <td class="preferenceLabel">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.preference.formStartHour"/>
                     <span class="preferenceUnits">(0-23)</span>
                 </td>
                 <td class="preferenceValue">
-                    <INPUT TYPE="TEXT" NAME="start_hour" VALUE='<%=startHour%>' size="2" maxlength="2">
+                    <INPUT TYPE="TEXT" NAME="start_hour" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(startHour))%>' size="2" maxlength="2">
                 </td>
             </tr>
             <tr>
@@ -258,7 +258,7 @@
                     <span class="preferenceUnits">(0-23)</span>
                 </td>
                 <td class="preferenceValue">
-                    <INPUT TYPE="TEXT" NAME="end_hour" VALUE='<%=endHour%>' size="2" maxlength="2">
+                    <INPUT TYPE="TEXT" NAME="end_hour" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(endHour))%>' size="2" maxlength="2">
                 </td>
             </tr>
             <tr>
@@ -267,7 +267,7 @@
                     <span class="preferenceUnits"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.preference.min"/></span>
                 </td>
                 <td class="preferenceValue">
-                    <INPUT TYPE="TEXT" NAME="every_min" VALUE='<%=everyMin%>' size="2" maxlength="2">
+                    <INPUT TYPE="TEXT" NAME="every_min" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(everyMin))%>' size="2" maxlength="2">
                 </td>
             </tr>
             <tr>
@@ -275,7 +275,7 @@
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.preference.formGroupNo"/>
                 </td>
                 <td class="preferenceValue">
-                    <INPUT TYPE="TEXT" NAME="mygroup_no" VALUE='<%=myGroupNo%>' size="12" maxlength="10">
+                    <INPUT TYPE="TEXT" NAME="mygroup_no" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(myGroupNo))%>' size="12" maxlength="10">
                     <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.viewedit"/>"
                            onClick="popupPage(360,680,'providerdisplaymygroup.jsp' );return false;"/>
                 </td>
@@ -302,7 +302,7 @@
                 </td>
                 <td class="preferenceValue">
                     <input type="text" name="appointmentScreenFormsNameDisplayLength"
-                           value='<%=providerPreference.getAppointmentScreenLinkNameDisplayLength()%>' size="2">
+                           value='<%=Encode.forHtmlAttribute(String.valueOf(providerPreference.getAppointmentScreenLinkNameDisplayLength()))%>' size="2">
                 </td>
             </tr>
             <tr>
@@ -315,7 +315,7 @@
                             List<EncounterForm> encounterForms = ProviderPreferencesUIBean.getAllEncounterForms();
                             Collection<String> checkedEncounterFormNames = ProviderPreferencesUIBean.getCheckedEncounterFormNames(providerNo);
                             for (EncounterForm encounterForm : encounterForms) {
-                                String nameEscaped = StringEscapeUtils.escapeHtml4(encounterForm.getFormName());
+                                String nameEscaped = Encode.forHtml(encounterForm.getFormName());
                                 String checkedString = (checkedEncounterFormNames.contains(encounterForm.getFormName()) ? "checked=\"checked\"" : "");
                         %>
                         <input type="checkbox" name="encounterFormName"
@@ -348,7 +348,7 @@
 
                         %>
                         <input type="checkbox" name="eformId"
-                               value="<%=eform.getId()%>" <%=checkedString%> /> <%=StringEscapeUtils.escapeHtml4(eform.getFormName())%>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(eform.getId()))%>" <%=checkedString%> /> <%=Encode.forHtml(eform.getFormName())%>
                         <br/>
                         <%
                             }
@@ -367,9 +367,9 @@
                             for (ProviderPreference.QuickLink quickLink : quickLinks) {
                         %>
                         <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/>"
-                               onclick="document.location='providerPreferenceQuickLinksAction.jsp?action=remove&name='+escape('<%=StringEscapeUtils.escapeHtml4(quickLink.getName())%>')"/>
-                        <%=StringEscapeUtils.escapeHtml4(quickLink.getName())%>
-                        : <%=StringEscapeUtils.escapeHtml4(quickLink.getUrl())%>
+                               onclick="document.location='providerPreferenceQuickLinksAction.jsp?action=remove&name='+escape('<%=Encode.forHtml(quickLink.getName())%>')"/>
+                        <%=Encode.forHtml(quickLink.getName())%>
+                        : <%=Encode.forHtml(quickLink.getUrl())%>
                         <br/>
                         <%
                             }
@@ -478,7 +478,7 @@
                             for (int hr = 0; hr < 24; ++hr) {
                                 for (int min = 0; min < 60; min += 30) {
                         %>
-                        <option value="<%=String.valueOf(hr)+":"+String.valueOf(min) %>" <%= hr == h && min == mins ? "selected" : ""%> ><%=String.valueOf(hr) + " : " + String.valueOf(min) + (min == 0 ? "0" : "") %>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(hr)+":"+String.valueOf(min)))%>" <%= hr == h && min == mins ? "selected" : ""%> ><%=Encode.forHtml(String.valueOf(String.valueOf(hr) + " : " + String.valueOf(min) + (min == 0 ? "0" : "")))%>
                         </option>
                         <%
                                 }
@@ -491,7 +491,7 @@
                 Event.observe('reviewMsg', 'change', function (event) {
                     var value = $('reviewMsg').getValue();
 
-                    new Ajax.Request('<c:out value="${ctx}"/>/setProviderStaleDate.do?method=OscarMsgRecvd&value=' + value + '&provider_no=<%=providerNo%>', {
+                    new Ajax.Request('<c:out value="${ctx}"/>/setProviderStaleDate.do?method=OscarMsgRecvd&value=' + value + '&provider_no=<%=Encode.forJavaScript(String.valueOf(providerNo))%>', {
                         method: 'get',
                         onSuccess: function (transport) {
                         }
@@ -501,7 +501,7 @@
             </script>
         </table>
 
-        <div style="background-color:<%=deepcolor%>;text-align:center;font-weight:bold">
+        <div style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>;text-align:center;font-weight:bold">
             <INPUT TYPE="submit" VALUE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.btnSubmit"/>' SIZE="7">
             <INPUT TYPE="RESET" VALUE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>' onClick="window.close();">
         </div>
@@ -523,7 +523,7 @@
 
             <tr>
                 <td align="center"><a href=#
-                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=request.getParameter("provider_no") %>');return false;">Edit
+                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=Encode.forJavaScript(request.getParameter("provider_no"))%>');return false;">Edit
                     Default Billing Diagnostic Code</a>&nbsp;&nbsp;&nbsp;
                 </td>
             </tr>
@@ -549,7 +549,7 @@
                             <% String br = OscarProperties.getInstance().getProperty("billregion");
                                 if (br.equals("BC")) { %>
                             <a href=#
-                               onClick="popupPage(900,500,'<%=request.getContextPath()%>/billing/CA/BC/viewBillingPreferencesAction.do?providerNo=<%=providerNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnBillPreference"/></a>
+                               onClick="popupPage(900,500,'<%=request.getContextPath()%>/billing/CA/BC/viewBillingPreferencesAction.do?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnBillPreference"/></a>
                             <% } else { %>
                             <a href=# onClick="showHideBillPref();return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnBillPreference"/></a>
                             <% } %>
@@ -567,16 +567,16 @@
                                             for (Object[] result : ctlBillingServiceDao.getUniqueServiceTypes("A")) {
 
                                     %>
-                                    <option value="<%=(String)result[0]%>"
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf((String)result[0]))%>"
                                             <%=((String) result[0]).equals(def) ? "selected" : ""%>>
-                                        <%=(String) result[1]%>
+                                        <%=Encode.forHtml(String.valueOf((String) result[1]))%>
                                     </option>
                                     <%
                                         }
                                     } else {
                                         for (Object[] result : ctlBillingServiceDao.getUniqueServiceTypes("A")) {
                                     %>
-                                    <option value="<%=(String)result[0]%>"><%=(String) result[1]%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf((String)result[0]))%>"><%=Encode.forHtml(String.valueOf((String) result[1]))%>
                                     </option>
                                     <%
                                             }
@@ -629,7 +629,7 @@
                 </tr>
                 <tr>
                     <td align="center"><a href=#
-                                          onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=view&provider_no=<%=providerNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditStaleDate"/></a></td>
+                                          onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=view&provider_no=<%=Encode.forJavaScript(String.valueOf(providerNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditStaleDate"/></a></td>
                 </tr>
 
 
@@ -763,31 +763,31 @@
                             <tr>
                                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelEnable"/>:</td>
                                 <td><input name="erx_enable" title="Enable the External Prescriber"
-                                           type="checkbox" <%=eRxEnabledChecked%> /></td>
+                                           type="checkbox" <%=Encode.forHtml(String.valueOf(eRxEnabledChecked))%> /></td>
                             </tr>
                             <tr>
                                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelUser"/>:</td>
-                                <td><input name="erx_username" type="text" value="<%=eRxUsername%>"
+                                <td><input name="erx_username" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxUsername))%>"
                                            title="Username to access the External Prescriber"/></td>
                             </tr>
                             <tr>
                                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelPassword"/>:</td>
-                                <td><input name="erx_password" type="password" value="<%=eRxPassword%>"
+                                <td><input name="erx_password" type="password" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxPassword))%>"
                                            title="Password to access the External Prescriber"/></td>
                             <tr>
                             </tr>
                             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelFacility"/>:</td>
-                            <td><input name="erx_facility" type="text" value="<%=eRxFacility%>"
+                            <td><input name="erx_facility" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxFacility))%>"
                                        title="The Facility ID assigned to you by the External Prescriber"/><br></td>
                             <tr>
                             </tr>
                             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelTrainingMode"/>:</td>
                             <td><input name="erx_training_mode" type="checkbox"
-                                       title="Enable Training Mode" <%=eRxTrainingModeChecked%> /></td>
+                                       title="Enable Training Mode" <%=Encode.forHtml(String.valueOf(eRxTrainingModeChecked))%> /></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelURL"/>:</td>
-                <td><input name="erx_sso_url" type="text" value="<%=eRx_SSO_URL%>"
+                <td><input name="erx_sso_url" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRx_SSO_URL))%>"
                            title="The URL to access the Web Interface from OSCAR Rx"/></td>
             </tr>
 

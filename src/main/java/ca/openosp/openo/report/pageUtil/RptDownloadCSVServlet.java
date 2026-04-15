@@ -67,7 +67,9 @@ public class RptDownloadCSVServlet extends HttpServlet {
         }
 
 
-        String filename = reportName + ".csv"; // request.getParameter("filename");
+        // Sanitize reportName for use in Content-Disposition header to prevent HTTP response splitting
+        String sanitizedReportName = (reportName == null ? "report" : reportName).replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
+        String filename = sanitizedReportName + ".csv"; // request.getParameter("filename");
         OutputStream out = null;
         try {
             if (in != null) {
@@ -78,6 +80,7 @@ public class RptDownloadCSVServlet extends HttpServlet {
                 int FIXED_LEN = 2048;
                 String contentType = "application/unknow";
                 MiscUtils.getLogger().debug("contentType: " + contentType);
+                response.setContentType("text/csv");
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
                 while (n <= len - FIXED_LEN) {
                     out.write(b, n, FIXED_LEN); // b.flush();

@@ -13,8 +13,9 @@
 <%@ page import="ca.openosp.openo.eform.data.DatabaseAP" %>
 <%@ page import="ca.openosp.openo.eform.data.EForm" %>
 <%@ page import="ca.openosp.openo.eform.EFormLoader" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.util.PreparedSQL" %>
-<input type="hidden" name="oscarAPCacheLookupType" value="<%= request.getParameter("oscarAPCacheLookupType") %>"/><%
+<input type="hidden" name="oscarAPCacheLookupType" value="<%= Encode.forHtmlAttribute(request.getParameter("oscarAPCacheLookupType")) %>"/><%
     String[] keys = request.getParameterValues("key");
     if (keys == null) {
         keys = new String[0];
@@ -47,16 +48,16 @@
                         output = "";
                     } else {
                         for (int i = 0; i < names.size(); i++) {
-                            output = DatabaseAP.parserReplace(names.get(i), org.apache.commons.text.StringEscapeUtils.escapeHtml4(values.get(i)), output);
+                            output = DatabaseAP.parserReplace(names.get(i), Encode.forHtml(values.get(i)), output);
                         }
                     }
                 }
-%><input type="hidden" name="<%=key%>" value="<%=output%>"/><%
+%><input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(key))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(output))%>"/><%
 } catch (Exception e) {
-%><input type="hidden" name="<%=key%>" value=""/><%
+%><input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(key))%>" value=""/><%
     }
 } else {
-%><input type="hidden" name="<%=key%>" value=""/><%
+%><input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(key))%>" value=""/><%
         }
     }
 %>

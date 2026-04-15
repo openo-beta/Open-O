@@ -55,6 +55,8 @@
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="ca.openosp.openo.db.DBHandler" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.net.URLEncoder" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -108,11 +110,11 @@
             prop.setProperty("PATIENT", rs.getString("name"));
             prop.setProperty("DESCRIPTION", rs.getString("reason"));
             String tempStr = "<a href=# onClick='popupPage(700,1000, \"billingOB.jsp?billForm="
-                    + URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8) + "&hotclick=&appointment_no="
-                    + rs.getString("appointment_no") + "&demographic_name=" + URLEncoder.encode(rs.getString("name"), StandardCharsets.UTF_8)
-                    + "&demographic_no=" + rs.getString("demographic_no") + "&user_no=" + rs.getString("provider_no")
-                    + "&apptProvider_no=" + providerview + "&appointment_date=" + rs.getString("appointment_date")
-                    + "&start_time=" + rs.getString("start_time") + "&bNewForm=1\"); return false;'>Bill ";
+                    + Encode.forJavaScript(oscarVariables.getProperty("default_view")) + "&hotclick=&appointment_no="
+                    + Encode.forJavaScript(rs.getString("appointment_no")) + "&demographic_name=" + Encode.forJavaScript(URLEncoder.encode(rs.getString("name"), StandardCharsets.UTF_8))
+                    + "&demographic_no=" + Encode.forJavaScript(rs.getString("demographic_no")) + "&user_no=" + Encode.forJavaScript(rs.getString("provider_no"))
+                    + "&apptProvider_no=" + Encode.forJavaScript(providerview) + "&appointment_date=" + Encode.forJavaScript(rs.getString("appointment_date"))
+                    + "&start_time=" + Encode.forJavaScript(rs.getString("start_time")) + "&bNewForm=1\"); return false;'>Bill ";
             prop.setProperty("COMMENTS", tempStr);
             vecValue.add(prop);
         }
@@ -474,11 +476,11 @@ end broken -->
                             Set<Provider> siteProviders = sites.get(i).getProviders();
                             List<Provider>  siteProvidersList = new ArrayList<Provider> (siteProviders);
                             Collections.sort(siteProvidersList,(new Provider()).ComparatorName());%>
-                        _providers["<%= sites.get(i).getName() %>"] = "<% Iterator<Provider> iter = siteProvidersList.iterator();
+                        _providers["<%=Encode.forJavaScript(String.valueOf(sites.get(i).getName()))%>"] = "<% Iterator<Provider> iter = siteProvidersList.iterator();
 	while (iter.hasNext()) {
 		Provider p=iter.next();
 		if (reporters.contains(p.getProviderNo())) {
-	%><option value='<%= p.getProviderNo() %>'><%= p.getLastName() %>, <%= p.getFirstName() %></option><% }} %>";
+	%><option value='<%=Encode.forJavaScript(String.valueOf(p.getProviderNo()))%>'><%=Encode.forJavaScript(String.valueOf(p.getLastName()))%>, <%=Encode.forJavaScript(String.valueOf(p.getFirstName()))%></option><% }} %>";
                         <% } %>
 
                         function changeSite(sel) {
@@ -491,9 +493,9 @@ end broken -->
                         <%
                             for (int i = 0; i < sites.size(); i++) {
                         %>
-                        <option value="<%= sites.get(i).getName() %>"
-                                style="background-color:<%= sites.get(i).getBgColor() %>"
-                                <%=sites.get(i).getName().toString().equals(request.getParameter("site")) ? "selected" : "" %>><%= sites.get(i).getName() %>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(sites.get(i).getName()))%>"
+                                style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(sites.get(i).getBgColor()))%>"
+                                <%=Encode.forHtml(sites.get(i).getName().toString().equals(request.getParameter("site")) ? "selected" : "")%>><%=Encode.forHtml(String.valueOf(sites.get(i).getName()))%>
                         </option>
                         <% } %>
                     </select>
@@ -501,7 +503,7 @@ end broken -->
                     <% if (request.getParameter("providerview") != null) { %>
                     <script>
                         changeSite(document.getElementById("site"));
-                        document.getElementById("providerview").value = '<%=request.getParameter("providerview")%>';
+                        document.getElementById("providerview").value = '<%=Encode.forJavaScript(request.getParameter("providerview"))%>';
                     </script>
                     <% } // multisite end ==========================================
                     } else {
@@ -526,9 +528,9 @@ end broken -->
 
 
                         %>
-                        <option value="<%=proOHIP%>"
-                                <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=proLast%>,
-                            <%=proFirst%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"
+                                <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(proLast))%>,
+                            <%=Encode.forHtml(String.valueOf(proFirst))%>
                         </option>
                         <%
                             }
@@ -541,13 +543,13 @@ end broken -->
                         From:
                         <input class="input-medium" style="height:30px;"
                                type="date" name="xml_vdate" id="xml_vdate"
-                               value="<%=xml_vdate%>">
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>">
                     </label>
                     <label class="date">
                         To:
                         <input class="input-medium" style="height:30px;"
                                type="date" name="xml_appointment_date" id="xml_appointment_date"
-                               value="<%=xml_appointment_date%>">
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>">
                     </label>
                 </td>
                 <td style="text-align:right"><input type="submit" name="Submit" class="btn btn-primary"
@@ -565,7 +567,7 @@ end broken -->
         <thead>
         <tr>
                 <% for (int i=0; i<vecHeader.size(); i++) {%>
-            <th><%=vecHeader.get(i) %>
+            <th><%=Encode.forHtml(String.valueOf(vecHeader.get(i)))%>
             </th>
                 <% } %>
         </thead>
@@ -576,7 +578,7 @@ end broken -->
             <% for (int j = 0; j < vecHeader.size(); j++) {
                 prop = (Properties) vecValue.get(i);
             %>
-            <td style="text-align:center;"><%=prop.getProperty((String) vecHeader.get(j), "&nbsp;") %>&nbsp;</td>
+            <td style="text-align:center;"><%=Encode.forHtml(String.valueOf(prop.getProperty((String) vecHeader.get(j), "&nbsp;")))%>&nbsp;</td>
             <% } %>
         </tr>
         <% } %>
@@ -584,7 +586,7 @@ end broken -->
         <% if (vecTotal.size() > 0) { %>
         <tr>
             <% for (int i = 0; i < vecTotal.size(); i++) {%>
-            <th><%=vecTotal.get(i) %>&nbsp;</th>
+            <th><%=Encode.forHtml(String.valueOf(vecTotal.get(i)))%>&nbsp;</th>
             <% } %>
         </tr>
         <% } %>

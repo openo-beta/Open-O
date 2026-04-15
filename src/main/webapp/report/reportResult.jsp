@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.report.data.RptReportCreator" %>
 <%@ page import="ca.openosp.openo.report.data.RptReportItem" %>
 <%@ page import="ca.openosp.openo.report.pageUtil.RptFormQuery" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String VALUE = "value_";
     String DATE_FORMAT = "dateFormat_";
@@ -108,7 +109,7 @@
     <center>
         <table BORDER="1" CELLPADDING="0" CELLSPACING="0" WIDTH="80%">
             <tr BGCOLOR="#CCFFFF">
-                <th><%=reportName%>
+                <th><%=Encode.forHtml(String.valueOf(reportName))%>
                 </th>
             </tr>
         </table>
@@ -117,7 +118,7 @@
         <tr BGCOLOR="#CCCCFF">
             <td></td>
             <td width="10%" align="right" nowrap><a
-                    href="reportFilter.jsp?id=<%=reportId%>">Back to Report Filter</a></td>
+                    href="reportFilter.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>">Back to Report Filter</a></td>
         </tr>
     </table>
 
@@ -128,7 +129,7 @@
         <thead>
         <tr BGCOLOR="#66CCCC">
             <% for (int i = 0; i < vecFieldCaption.size(); i++) { %>
-            <th><%=(String) vecFieldCaption.get(i)%>
+            <th><%=Encode.forHtml(String.valueOf((String) vecFieldCaption.get(i)))%>
             </th>
             <% } %>
         </tr>
@@ -137,9 +138,9 @@
             String color = i % 2 == 0 ? "#EEEEFF" : "#DDDDFF";
             Properties prop = (Properties) vecFieldValue.get(i);
         %>
-        <tr BGCOLOR="<%=color%>">
+        <tr BGCOLOR="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <% for (int j = 0; j < vecFieldCaption.size(); j++) { %>
-            <td><%=prop.getProperty((String) vecFieldCaption.get(j), "")%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(prop.getProperty((String) vecFieldCaption.get(j), "")))%>&nbsp;</td>
             <% } %>
         </tr>
         <% } %>

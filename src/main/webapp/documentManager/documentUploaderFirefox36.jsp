@@ -27,6 +27,7 @@
 <%@page import="java.util.*,ca.openosp.openo.lab.ca.on.CommonLabResultData,ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.commn.dao.QueueDao, ca.openosp.openo.mds.data.ProviderData" %>
 <%@page import="ca.openosp.OscarProperties" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao, ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
@@ -51,10 +52,10 @@
 <head>
     <meta charset="utf-8">
     <title><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.title"/></title>
-    <link rel="stylesheet" href="<%=context%>/css/cupertino/jquery-ui-1.8.18.custom.css" id="theme">
-    <link rel="stylesheet" href="<%=resourcePath%>jquery.fileupload-ui.css">
-    <link rel="stylesheet" href="<%=resourcePath%>style.css">
-    <link rel="stylesheet" type="text/css" href="<%=context%>/share/css/OscarStandardLayout.css"/>
+    <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/css/cupertino/jquery-ui-1.8.18.custom.css" id="theme">
+    <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.fileupload-ui.css">
+    <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>style.css">
+    <link rel="stylesheet" type="text/css" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/css/OscarStandardLayout.css"/>
     <script type="text/javascript">
         function setProvider(select) {
             jQuery("#providers").val(select.options[select.selectedIndex].value);
@@ -76,10 +77,10 @@
     <div id="fileupload">
 
         <div class="file_upload_buttons fileupload-buttonbar ui-widget-header ui-corner-top">
-            <form action="<%=context%>/documentManager/documentUpload.do?method=executeUpload" method="POST"
+            <form action="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/documentManager/documentUpload.do?method=executeUpload" method="POST"
                   enctype="multipart/form-data">
-                <input type="hidden" id="providers" name="providers" value="<%=provider%>"/>
-                <input type="hidden" name="queue" value="<%=queueId%>"/>
+                <input type="hidden" id="providers" name="providers" value="<%=Encode.forHtmlAttribute(String.valueOf(provider))%>"/>
+                <input type="hidden" name="queue" value="<%=Encode.forHtmlAttribute(String.valueOf(queueId))%>"/>
                 <input type="file" name="filedata" multiple>
                 <button type="submit">Upload</button>
                 <div id="add" class="file_upload_label">Add files...</div>
@@ -95,7 +96,7 @@
                     for (int i = 0; i < providers.size(); i++) {
                         Provider p = providers.get(i);
                 %>
-				<option value="<%= p.getProviderNo()%>" <%= (p.getProviderNo().equals(provider) ? " selected" : "")%>><%= p.getLastName()%> <%= p.getFirstName()%></option>
+				<option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf((p.getProviderNo().equals(provider) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(p.getLastName()))%> <%=Encode.forHtml(String.valueOf(p.getFirstName()))%></option>
 				<%
                     }
                 %>
@@ -131,11 +132,11 @@
         </div>
     </div>
 </div>
-<script src="<%=context%>/js/jquery-1.7.1.min.js"></script>
-<script src="<%=context%>/js/jquery-ui-1.8.18.custom.min.js"></script>
-<script src="<%=resourcePath%>jquery.fileupload.js"></script>
-<script src="<%=resourcePath%>jquery.fileupload-ui.js"></script>
-<script src="<%=resourcePath%>jquery.fileupload-uix.js"></script>
+<script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/jquery-1.7.1.min.js"></script>
+<script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/jquery-ui-1.8.18.custom.min.js"></script>
+<script src="<%=Encode.forJavaScript(String.valueOf(resourcePath))%>jquery.fileupload.js"></script>
+<script src="<%=Encode.forJavaScript(String.valueOf(resourcePath))%>jquery.fileupload-ui.js"></script>
+<script src="<%=Encode.forJavaScript(String.valueOf(resourcePath))%>jquery.fileupload-uix.js"></script>
 <script type="text/javascript">
     jQuery(function () {
         jQuery('#fileupload').fileUploadUIX({sequentialUploads: true});

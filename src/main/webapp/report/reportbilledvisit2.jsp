@@ -23,6 +23,8 @@
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, ca.openosp.openo.db.*,java.net.*"
         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.db.DBPreparedHandler" %>
+<%@ page import="ca.openosp.openo.db.DBPreparedHandlerParam" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -203,7 +205,7 @@
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr>
-        <td>Period: (<%=sdate%> ~ <%=edate%>)</td>
+        <td>Period: (<%=Encode.forHtml(String.valueOf(sdate))%> ~ <%=Encode.forHtml(String.valueOf(edate))%>)</td>
     </tr>
 </table>
 
@@ -222,39 +224,39 @@
         <TH width="6%">Vis_Res</TH>
 
         <% for (int i = 0; i < vNurseNo.size(); i++) { %>
-        <TH width="6%"><%="pat_" + vNurse.get(i)%>
+        <TH width="6%"><%=Encode.forHtml(String.valueOf("pat_" + vNurse.get(i)))%>
         </TH>
-        <TH width="6%"><%="vis_" + vNurse.get(i)%>
+        <TH width="6%"><%=Encode.forHtml(String.valueOf("vis_" + vNurse.get(i)))%>
         </TH>
         <% } %>
 
     </tr>
 
     <% for (int i = 0; i < vServiceCode.size(); i++) { %>
-    <tr bgcolor="<%= i%2==0?weakcolor:"white"%>">
-        <td align="center"><%=vServiceCode.get(i)%>
+    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(i%2==0?weakcolor:"white"))%>">
+        <td align="center"><%=Encode.forHtml(String.valueOf(vServiceCode.get(i)))%>
         </td>
-        <td><%=vServiceDesc.get(i)%>
+        <td><%=Encode.forHtml(String.valueOf(vServiceDesc.get(i)))%>
         </td>
-        <td align="center"><%=props.getProperty(vServiceCode.get(i) + "pat" + vServiceDesc.get(i))%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty(vServiceCode.get(i) + "pat" + vServiceDesc.get(i))))%>
         </td>
-        <td align="center"><%=props.getProperty(vServiceCode.get(i) + "vis" + vServiceDesc.get(i))%>
-        </td>
-
-        <td align="center"><%=props.getProperty(vServiceCode.get(i) + "patPhy" + vServiceDesc.get(i))%>
-        </td>
-        <td align="center"><%=props.getProperty(vServiceCode.get(i) + "visPhy" + vServiceDesc.get(i))%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty(vServiceCode.get(i) + "vis" + vServiceDesc.get(i))))%>
         </td>
 
-        <td align="center"><%=props.getProperty(vServiceCode.get(i) + "patRes" + vServiceDesc.get(i))%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty(vServiceCode.get(i) + "patPhy" + vServiceDesc.get(i))))%>
         </td>
-        <td align="center"><%=props.getProperty(vServiceCode.get(i) + "visRes" + vServiceDesc.get(i))%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty(vServiceCode.get(i) + "visPhy" + vServiceDesc.get(i))))%>
+        </td>
+
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty(vServiceCode.get(i) + "patRes" + vServiceDesc.get(i))))%>
+        </td>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty(vServiceCode.get(i) + "visRes" + vServiceDesc.get(i))))%>
         </td>
 
         <% for (int j = 0; j < vNurseNo.size(); j++) { %>
-        <td align="center"><%=props.getProperty(vServiceCode.get(i) + "patNurse" + j + vServiceDesc.get(i))%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty(vServiceCode.get(i) + "patNurse" + j + vServiceDesc.get(i))))%>
         </td>
-        <td align="center"><%=props.getProperty(vServiceCode.get(i) + "visNurse" + j + vServiceDesc.get(i))%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty(vServiceCode.get(i) + "visNurse" + j + vServiceDesc.get(i))))%>
         </td>
         <% } %>
     </tr>

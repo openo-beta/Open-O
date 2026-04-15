@@ -158,7 +158,7 @@
                             String prov = ((Properties) vecProvider.get(i)).getProperty("providerNo", "");
                             String selected = request.getParameter("providerNo");
                     %>
-                    <option value="<%=prov %>"
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(prov))%>"
                             <% if ((selected != null) && (selected.equals(prov))) { %> selected
                             <% } %>><%= Encode.forHtmlContent(((Properties) vecProvider.get(i)).getProperty("name", "")) %>
                     </option>
@@ -179,7 +179,7 @@
             <div class="span4">
                 <label>Start Date: </label>
                 <div class="input-append">
-                    <input type="text" name="startDate" id="startDate1" value="<%=startDate!=null?startDate:""%>"
+                    <input type="text" name="startDate" id="startDate1" value="<%=Encode.forHtmlAttribute(String.valueOf(startDate!=null?startDate:""))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -188,7 +188,7 @@
             <div class="span4">
                 <label>End Date: </label>
                 <div class="input-append">
-                    <input type="text" name="endDate" id="endDate1" value="<%=endDate!=null?endDate:""%>"
+                    <input type="text" name="endDate" id="endDate1" value="<%=Encode.forHtmlAttribute(String.valueOf(endDate!=null?endDate:""))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -274,7 +274,7 @@
         if (propName.getProperty(providerNo, "").equals("")) {
             out.print("All");
         } else {
-            out.print(propName.getProperty(providerNo, ""));
+            out.print(Encode.forHtml(propName.getProperty(providerNo, "")));
         }
     %> - Log Report</h4>
 
@@ -283,9 +283,9 @@
     </button>
 
 
-    <p>Period: ( <%= startDate == null ? "" : startDate %> ~ <%= endDate == null ? "" : endDate %>)</p>
+    <p>Period: ( <%=Encode.forHtml(String.valueOf(startDate == null ? "" : startDate))%> ~ <%=Encode.forHtml(String.valueOf(endDate == null ? "" : endDate))%>)</p>
     <table class="table table-bordered table-striped table-hover table-condensed">
-        <tr bgcolor="<%=tdTitleColor%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(tdTitleColor))%>">
             <TH>Time</TH>
             <TH>Action</TH>
             <TH>Content</TH>
@@ -306,7 +306,7 @@ for (int i = 0; i < vec.size(); i++) {
 	prop = (Properties) vec.get(i);
     color = i%2==0?tdInterlColor:"white";
 %>
-        <tr bgcolor="<%=color %>" align="center">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>" align="center">
             <td><c:out value='<%=prop.getProperty("dateTime")%>'/></td>
             <td><c:out value='<%=prop.getProperty("action")%>'/></td>
             <td><c:out value='<%=prop.getProperty("content")%>'/></td>
@@ -316,7 +316,7 @@ for (int i = 0; i < vec.size(); i++) {
             <td><c:out value='<%=propName.getProperty(prop.getProperty("provider_no"), "")%>'/></td>
             <% } %>
             <td><c:out value='<%=prop.getProperty("demographic_no")%>'/></td>
-            <td><c:out value='<%=prop.getProperty("data") %>'/></td>
+            <td><c:out value='<%=prop.getProperty("data")%>'/></td>
         </tr>
 
                 <% } %>

@@ -43,6 +43,7 @@
 <%@ page import="ca.openosp.openo.util.*, ca.openosp.openo.form.*, ca.openosp.openo.form.data.*" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String formClass = "2MinWalk";
@@ -77,7 +78,7 @@
         var choiceFormat = new Array(7, 11, 16, 20);
         var allNumericField = null;
         var allMatch = null;
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
 
         function checkBeforeSave() {
             var distance = document.forms[0].elements[6].value;
@@ -119,12 +120,12 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table border="0" cellspacing="0" cellpadding="0" width="740px"
@@ -173,7 +174,7 @@
                                         <td></td>
                                         <td colspan="4">Distance: <input type="text" size="10"
                                                                          name="distance"
-                                                                         value="<%= props.getProperty("distance", "") %>"/>
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("distance", "")))%>"/>
                                             meter
                                         </td>
                                     </tr>
@@ -188,29 +189,29 @@
                                         <td width="5%" align="right"></td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q1tried"
-                                                <%= props.getProperty("Q1tried", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q1tried", "")))%> /></td>
                                         <td width="40%">Tried but unable</td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q1FullTandem3To9"
-                                                <%= props.getProperty("Q1FullTandem3To9", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q1FullTandem3To9", "")))%> /></td>
                                         <td width="55%">3-9 secs. full tandem</td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q1SideBySide10"
-                                                <%= props.getProperty("Q1SideBySide10", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q1SideBySide10", "")))%> /></td>
                                         <td width="40%">10 secs. side by side</td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q1FullTandem10"
-                                                <%= props.getProperty("Q1FullTandem10", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q1FullTandem10", "")))%> /></td>
                                         <td width="55%">10 secs. full tandem</td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q1SemiTandem10"
-                                                <%= props.getProperty("Q1SemiTandem10", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q1SemiTandem10", "")))%> /></td>
                                         <td width="40%">10 secs semi tandem</td>
                                         <td width="5%"></td>
                                         <td width="55%"></td>
@@ -219,7 +220,7 @@
                                         <td width="5%" align="right"></td>
                                         <td colspan="4">Comments: <input type="text" size="80"
                                                                          name="Q1Cmt"
-                                                                         value="<%= props.getProperty("Q1Cmt", "") %>"/>
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Q1Cmt", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -247,7 +248,7 @@
                                         <td width="5%" align="right"></td>
                                         <td colspan="2">Time 1:<input type="text" size="10"
                                                                       name="Q2time1"
-                                                                      value="<%= props.getProperty("Q2time1", "") %>"/>
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Q2time1", "")))%>"/>
                                         </td>
                                         <td width="5%" align="right"></td>
                                         <td width="55%"></td>
@@ -256,7 +257,7 @@
                                         <td width="5%" align="right"></td>
                                         <td colspan="2">Time 2:<input type="text" size="10"
                                                                       name="Q2time2"
-                                                                      value="<%= props.getProperty("Q2time2", "") %>"/>
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Q2time2", "")))%>"/>
                                         </td>
                                         <td width="5%" align="right"></td>
                                         <td width="55%"></td>
@@ -265,7 +266,7 @@
                                         <td width="5%" align="right"></td>
                                         <td colspan="4">Comments: <input type="text" size="80"
                                                                          name="Q2Cmt"
-                                                                         value="<%= props.getProperty("Q2Cmt", "") %>"/>
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Q2Cmt", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -289,29 +290,29 @@
                                         <td width="5%" align="right"></td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q3Unable"
-                                                <%= props.getProperty("Q3Unable", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q3Unable", "")))%> /></td>
                                         <td width="40%">Unable to stand without using arms</td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q3From11To13s"
-                                                <%= props.getProperty("Q3From11To13s", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q3From11To13s", "")))%> /></td>
                                         <td width="55%">(11.2 - 13.6 seconds)</td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q3LessThan16s"
-                                                <%= props.getProperty("Q3LessThan16s", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q3LessThan16s", "")))%> /></td>
                                         <td width="40%">(Greater than or equal to 16.7 seconds)</td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q3LessThan11s"
-                                                <%= props.getProperty("Q3LessThan11s", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q3LessThan11s", "")))%> /></td>
                                         <td width="55%">(Less than or equal to 11.1 seconds)</td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="5%" align="right"><input type="checkbox"
                                                                             class="checkbox" name="Q3From13To16s"
-                                                <%= props.getProperty("Q3From13To16s", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q3From13To16s", "")))%> /></td>
                                         <td width="40%">(13.7 - 16.6 seconds)</td>
                                         <td width="5%"></td>
                                         <td width="55%"></td>
@@ -320,7 +321,7 @@
                                         <td width="5%" align="right"></td>
                                         <td colspan="4">Comments: <input type="text" size="80"
                                                                          name="Q3Cmt"
-                                                                         value="<%= props.getProperty("Q3Cmt", "") %>"/>
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Q3Cmt", "")))%>"/>
                                         </td>
                                     </tr>
                                 </table>
@@ -348,9 +349,9 @@
                                                                                          value="Print"
                                                                                          onclick="javascript:window.print();"/>
                             </td>
-                            <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
+                            <td align="right">Study ID: <%=Encode.forHtml(String.valueOf(props.getProperty("studyID", "N/A")))%>
                                 <input type="hidden" name="studyID"
-                                       value="<%= props.getProperty("studyID", "N/A") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("studyID", "N/A")))%>"/></td>
                         </tr>
                     </table>
                 </td>

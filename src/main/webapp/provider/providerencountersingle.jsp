@@ -32,6 +32,7 @@
 <%@page import="ca.openosp.openo.commn.dao.EncounterDao" %>
 <%@page import="ca.openosp.openo.commn.model.Encounter" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     EncounterTemplateDao encounterTemplateDao = SpringUtils.getBean(EncounterTemplateDao.class);
     EncounterDao encounterDao = SpringUtils.getBean(EncounterDao.class);
@@ -66,13 +67,13 @@
         content = enc.getContent();
         encounterattachment = enc.getEncounterAttachment();
 %>
-<font size="-1"><%=ConversionUtils.toDateString(enc.getEncounterDate())%> <%=ConversionUtils.toTimeString(enc.getEncounterTime())%>
-    &nbsp;<font color="green"><%=enc.getSubject().equals("") ? "Unknown" : enc.getSubject()%>
+<font size="-1"><%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(enc.getEncounterDate())))%> <%=Encode.forHtml(String.valueOf(ConversionUtils.toTimeString(enc.getEncounterTime())))%>
+    &nbsp;<font color="green"><%=Encode.forHtml(String.valueOf(enc.getSubject().equals("") ? "Unknown" : enc.getSubject()))%>
     </font></font>
 <br>
 <xml id="xml_list">
     <encounter>
-        <%=content%>
+        <%=Encode.forHtml(String.valueOf(content))%>
     </encounter>
 </xml>
 <%
@@ -85,8 +86,8 @@
             while (st.hasMoreTokens()) {
                 temp = st.nextToken(">").substring(1);
         %> <a href=#
-              onClick="popupPage(600,800, '<%=st.nextToken("<").substring(1)%>')">
-            <%=temp%>
+              onClick="popupPage(600,800, '<%=Encode.forJavaScript(String.valueOf(st.nextToken("<").substring(1)))%>')">
+            <%=Encode.forHtml(String.valueOf(temp))%>
         </a> <%
                 st.nextToken(">");
             }
@@ -101,7 +102,7 @@
     if (request.getParameter("template") != null && !(request.getParameter("template").equals("."))) {
 
         for (EncounterTemplate template : encounterTemplateDao.findByName(request.getParameter("template"))) {
-            out.println(template.getEncounterTemplateValue());
+            out.println(Encode.forHtml(template.getEncounterTemplateValue()));
         }
 
 
@@ -111,7 +112,7 @@
 %>
 
 <center><input type="button" value="Print Preview"
-               onClick="popupPage(600,800, 'providerencounterprint.jsp?encounter_no=<%=request.getParameter("encounter_no")%>&demographic_no=<%=request.getParameter("demographic_no")%>&username=<%=request.getParameter("username")%>')">
+               onClick="popupPage(600,800, 'providerencounterprint.jsp?encounter_no=<%=Encode.forJavaScript(request.getParameter("encounter_no"))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&username=<%=Encode.forJavaScript(request.getParameter("username"))%>')">
     <input type="button" value="Close this window" onClick="self.close()">
 </center>
 </body>
