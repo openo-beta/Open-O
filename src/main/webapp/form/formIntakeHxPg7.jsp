@@ -45,6 +45,7 @@
 
 
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -65,40 +66,40 @@
         <table>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.wearSeatbelt"/></td>
-                <td><input type="text" name="SeatBelt" value="<%=props.getProperty("SeatBelt","")%>"/></td>
+                <td><input type="text" name="SeatBelt" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("SeatBelt","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.smoker"/></td>
-                <td><input type="text" name="smoker" value="<%=props.getProperty("smoker","")%>"/></td>
+                <td><input type="text" name="smoker" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("smoker","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.smokingAmount"/></td>
-                <td><input type="text" name="HowMuchSmoke" value="<%=props.getProperty("HowMuchSmoke","")%>"/></td>
+                <td><input type="text" name="HowMuchSmoke" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HowMuchSmoke","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.pastSmoking"/></td>
-                <td><input type="text" name="smokeInPast" value="<%=props.getProperty("smokeInPast","")%>"/></td>
+                <td><input type="text" name="smokeInPast" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("smokeInPast","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.streetDrugs"/></td>
-                <td><input type="text" name="UseDrugs" value="<%=props.getProperty("UseDrugs","")%>"/></td>
+                <td><input type="text" name="UseDrugs" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("UseDrugs","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.drinkAlcohol"/></td>
-                <td><input type="text" name="Alcohol" value="<%=props.getProperty("Alcohol","")%>"/></td>
+                <td><input type="text" name="Alcohol" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Alcohol","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.numberOfDrinks"/></td>
-                <td><input type="text" name="HowManyDrinks" value="<%=props.getProperty("HowManyDrinks","")%>"/></td>
+                <td><input type="text" name="HowManyDrinks" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HowManyDrinks","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.drinksPerWeek"/></td>
-                <td><input type="text" name="HowManyDrinksWeek" value="<%=props.getProperty("HowManyDrinksWeek","")%>"/>
+                <td><input type="text" name="HowManyDrinksWeek" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HowManyDrinksWeek","")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.hoursOfExercise"/></td>
-                <td><input type="text" name="exercise" value="<%=props.getProperty("exercise","")%>"/></td>
+                <td><input type="text" name="exercise" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("exercise","")))%>"/></td>
             </tr>
         </table>
 

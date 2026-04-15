@@ -14,6 +14,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="ca.openosp.openo.admin.traceability.BuildNumberPropertiesFileReader" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -77,12 +78,12 @@
     </form>
     <% if (request.getAttribute("restartOscar") != null) { %>
     <h4>Oscar is restarting.</h4>
-    <pre><%=request.getAttribute("restartOscar") %></pre>
+    <pre><%=Encode.forHtml(String.valueOf(request.getAttribute("restartOscar")))%></pre>
     <% } %>
 
     <% if (request.getAttribute("rebootServer") != null) { %>
     <h4>Server is rebooting.</em>
-        <pre><%=request.getAttribute("rebootServer") %></pre>
+        <pre><%=Encode.forHtml(String.valueOf(request.getAttribute("rebootServer")))%></pre>
                 <% } %>
 
         <div class="page-header">
@@ -90,23 +91,23 @@
         </div>
 
         <h5>Master Status:</h5>
-        <pre><%=request.getAttribute("sqlMasterStatusText") %></pre>
+        <pre><%=Encode.forHtml(String.valueOf(request.getAttribute("sqlMasterStatusText")))%></pre>
 
         <h5>Slave Status:</h5>
-        <pre><%=request.getAttribute("sqlSlaveStatusText") %></pre>
+        <pre><%=Encode.forHtml(String.valueOf(request.getAttribute("sqlSlaveStatusText")))%></pre>
 
         <h5>Filesystem:</h5>
-        <pre><%=request.getAttribute("filesystemStatusText") %></pre>
+        <pre><%=Encode.forHtml(String.valueOf(request.getAttribute("filesystemStatusText")))%></pre>
 
         <h5>Uptime:</h5>
-        <pre><%=request.getAttribute("uptimeText") %></pre>
+        <pre><%=Encode.forHtml(String.valueOf(request.getAttribute("uptimeText")))%></pre>
 
         <h5>Virtual Memory:</h5>
-        <pre><%=request.getAttribute("vmstatText") %></pre>
+        <pre><%=Encode.forHtml(String.valueOf(request.getAttribute("vmstatText")))%></pre>
 
                 <%if (request.getAttribute("documentStatusText") != null) { %>
         <h5>Oscar Document Storage:</h5>
-        <pre><%=request.getAttribute("documentStatusText") %></pre>
+        <pre><%=Encode.forHtml(String.valueOf(request.getAttribute("documentStatusText")))%></pre>
                 <%} else { %>
         <h5>Oscar Document Storage:</h5>
         <div class="well">
@@ -116,7 +117,7 @@
 
                 <%if (request.getAttribute("hl7StatusText") != null) { %>
         <h5>HL7 Status:</h5>
-        <pre><%=request.getAttribute("hl7StatusText") %></pre>
+        <pre><%=Encode.forHtml(String.valueOf(request.getAttribute("hl7StatusText")))%></pre>
                 <%} else { %>
         <h5>HL7 Status:</h5>
         <div class="well">
@@ -125,7 +126,7 @@
                 <%} %>
 
         <h5>Build ID:</h5>
-        <pre>Git SHA-1: <%=BuildNumberPropertiesFileReader.getGitSha1()%></pre>
+        <pre>Git SHA-1: <%=Encode.forHtml(String.valueOf(BuildNumberPropertiesFileReader.getGitSha1()))%></pre>
 
         <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.misc" rights="r" reverse="<%=false%>">
         <h4><fmt:message key="admin.oscarStatus.restart"/></h4>

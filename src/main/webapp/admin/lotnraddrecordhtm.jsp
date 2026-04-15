@@ -36,6 +36,7 @@
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionDisplayConfig" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String curProvider_no, userfirstname, userlastname;
     curProvider_no = (String) session.getAttribute("user");
@@ -118,7 +119,7 @@
                         <select id="prevention" name="prevention">
                             <% for (String s : inject_prev_list) {
                             %>
-                            <option value="<%=s%>" <%=(s.equals(selectedPrevention)) ? " selected=\"selected\" " : "" %>><%=s%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(s))%>" <%=(s.equals(selectedPrevention)) ? " selected=\"selected\" " : ""%>><%=Encode.forHtml(String.valueOf(s))%>
                             </option>
                             <%}%>
                         </select>

@@ -41,6 +41,7 @@
 <%@page import="org.jdom2.input.SAXBuilder" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@page import="org.apache.logging.log4j.Logger" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -93,9 +94,9 @@
 
     <tr>
         <td>
-            <a href="<%=h.get("link")%>"><%=h.get("title")%>
+            <a href="<%=Encode.forHtmlAttribute(String.valueOf(h.get("link")))%>"><%=Encode.forHtml(String.valueOf(h.get("title")))%>
             </a><br/>
-            <%=h.get("publication")%> -- <%=h.get("year")%>
+            <%=Encode.forHtml(String.valueOf(h.get("publication")))%> -- <%=Encode.forHtml(String.valueOf(h.get("year")))%>
         </td>
 
     </tr>

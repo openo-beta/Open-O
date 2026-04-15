@@ -52,6 +52,7 @@
 <%@ page import="ca.openosp.Misc" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -158,20 +159,20 @@
                     <th><fmt:message key="demographic.demographiclabelprintsetting.msgLabel"/></th>
                     <th><fmt:message key="demographic.demographiclabelprintsetting.msgNumeberOfLabel"/></th>
                     <th><fmt:message key="demographic.demographiclabelprintsetting.msgLocation"/>
-                        <input type="hidden" name="address" value="<%=address%>">
-                        <input type="hidden" name="chart_no" value="<%=chart_no%>">
-                        <input type="hidden" name="city" value="<%=city%>">
-                        <input type="hidden" name="dob" value="<%=dob%>">
-                        <input type="hidden" name="first_name" value="<%=first_name%>">
-                        <input type="hidden" name="hin" value="<%=hin%>">
-                        <input type="hidden" name="last_name" value="<%=last_name%>">
-                        <input type="hidden" name="phone" value="<%=phone%>">
-                        <input type="hidden" name="phone2" value="<%=phone2%>">
-                        <input type="hidden" name="postal" value="<%=postal%>">
-                        <input type="hidden" name="providername" value="<%=providername%>">
-                        <input type="hidden" name="province" value="<%=province%>">
-                        <input type="hidden" name="sex" value="<%=sex%>">
-                        <input type="hidden" name="age" value="<%=age%>">
+                        <input type="hidden" name="address" value="<%=Encode.forHtmlAttribute(String.valueOf(address))%>">
+                        <input type="hidden" name="chart_no" value="<%=Encode.forHtmlAttribute(String.valueOf(chart_no))%>">
+                        <input type="hidden" name="city" value="<%=Encode.forHtmlAttribute(String.valueOf(city))%>">
+                        <input type="hidden" name="dob" value="<%=Encode.forHtmlAttribute(String.valueOf(dob))%>">
+                        <input type="hidden" name="first_name" value="<%=Encode.forHtmlAttribute(String.valueOf(first_name))%>">
+                        <input type="hidden" name="hin" value="<%=Encode.forHtmlAttribute(String.valueOf(hin))%>">
+                        <input type="hidden" name="last_name" value="<%=Encode.forHtmlAttribute(String.valueOf(last_name))%>">
+                        <input type="hidden" name="phone" value="<%=Encode.forHtmlAttribute(String.valueOf(phone))%>">
+                        <input type="hidden" name="phone2" value="<%=Encode.forHtmlAttribute(String.valueOf(phone2))%>">
+                        <input type="hidden" name="postal" value="<%=Encode.forHtmlAttribute(String.valueOf(postal))%>">
+                        <input type="hidden" name="providername" value="<%=Encode.forHtmlAttribute(String.valueOf(providername))%>">
+                        <input type="hidden" name="province" value="<%=Encode.forHtmlAttribute(String.valueOf(province))%>">
+                        <input type="hidden" name="sex" value="<%=Encode.forHtmlAttribute(String.valueOf(sex))%>">
+                        <input type="hidden" name="age" value="<%=Encode.forHtmlAttribute(String.valueOf(age))%>">
                     </th>
                 </tr>
                 <tr>
@@ -179,13 +180,13 @@
                         <table style="width:90%">
                             <tr>
                                 <td style="border: solid 1px; background-color: white;">
-				<span id="copytext1" class="copytext"> <b><%=last_name%>,&nbsp;<%=first_name%></b><br>
-				&nbsp;&nbsp;&nbsp;&nbsp;<%=hin%><br>
-				&nbsp;&nbsp;&nbsp;&nbsp;<%=dob%>&nbsp;<%=sex%><br>
+				<span id="copytext1" class="copytext"> <b><%=Encode.forHtml(String.valueOf(last_name))%>,&nbsp;<%=Encode.forHtml(String.valueOf(first_name))%></b><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(hin))%><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(dob))%>&nbsp;<%=Encode.forHtml(String.valueOf(sex))%><br>
 				<br>
-				<b><%=last_name%>,&nbsp;<%=first_name%></b><br>
-				&nbsp;&nbsp;&nbsp;&nbsp;<%=hin%><br>
-				&nbsp;&nbsp;&nbsp;&nbsp;<%=dob%>&nbsp;<%=sex%><br>
+				<b><%=Encode.forHtml(String.valueOf(last_name))%>,&nbsp;<%=Encode.forHtml(String.valueOf(first_name))%></b><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(hin))%><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(dob))%>&nbsp;<%=Encode.forHtml(String.valueOf(sex))%><br>
 				</span></td>
                             </tr>
                         </table>
@@ -194,7 +195,7 @@
                         <fmt:message key="demographic.demographiclabelprintsetting.btnNewPatientLabel"/></a><br><br>
                         <input type="checkbox" name="label1checkbox" value="checked">
                         <input type="text" name="label1no" size="2" maxlength="2"
-                               value="<%= oscarVariables.getProperty("label.1no","1") %>"/>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("label.1no","1")))%>"/>
                     </td>
                     <td rowspan=5 style="vertical-align:middle; background-color:#999999;">
                         <div class="control-group">
@@ -202,7 +203,7 @@
                             <div class="controls">
                                 <input type="text" class="input-small" name="left"
                                        placeholder="<fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>"
-                                       maxlength="3" value="<%= oscarVariables.getProperty("label.left","200") %>">&nbsp;
+                                       maxlength="3" value="<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("label.left","200")))%>">&nbsp;
                                 <fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>
                             </div>
                         </div>
@@ -210,7 +211,7 @@
                             <label class="control-label"><fmt:message key="demographic.demographiclabelprintsetting.formTop"/>:</label>
                             <div class="controls">
                                 <input type="text" class="input-small" name="top" maxlength="3"
-                                       value="<%= oscarVariables.getProperty("label.top","0")%>"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("label.top","0")))%>"
                                        placeholder="<fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>">&nbsp;
                                 <fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>
                             </div>
@@ -219,7 +220,7 @@
                             <label class="control-label"><fmt:message key="demographic.demographiclabelprintsetting.formHeight"/>:</label>
                             <div class="controls">
                                 <input type="text" class="input-small" name="height" maxlength="3"
-                                       value="<%= oscarVariables.getProperty("label.height","145")%>"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("label.height","145")))%>"
                                        placeholder="<fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>">&nbsp;
                                 <fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>
                             </div>
@@ -228,7 +229,7 @@
                             <label class="control-label"><fmt:message key="demographic.demographiclabelprintsetting.formGap"/>:</label>
                             <div class="controls">
                                 <input type="text" class="input-small" name="gap" size="3" maxlength="3"
-                                       value="<%= oscarVariables.getProperty("label.gap","0")%>"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("label.gap","0")))%>"
                                        placeholder="<fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>">&nbsp;
                                 <fmt:message key="demographic.demographiclabelprintsetting.msgPx"/>
                             </div>
@@ -241,10 +242,10 @@
                             <tr>
                                 <td style="border: solid 1px; background-color: white;">
 				<span id="copytext2"
-                      class="copytext"> <b><%=last_name%>,&nbsp;<%=first_name%>&nbsp;<%=chart_no%></b><br><%=address%><br><%=city%>,&nbsp;<%=province%>,&nbsp;<%=postal%><br>
-				<fmt:message key="demographic.demographiclabelprintsetting.msgHome"/>:&nbsp;<%=phone%><br><%=dob%>&nbsp;<%=sex%><br><%=hin%><br>
-				<fmt:message key="demographic.demographiclabelprintsetting.msgBus"/>:<%=phone2%>&nbsp;
-				<fmt:message key="demographic.demographiclabelprintsetting.msgDr"/>&nbsp;<%=providername%><br>
+                      class="copytext"> <b><%=Encode.forHtml(String.valueOf(last_name))%>,&nbsp;<%=Encode.forHtml(String.valueOf(first_name))%>&nbsp;<%=Encode.forHtml(String.valueOf(chart_no))%></b><br><%=Encode.forHtml(String.valueOf(address))%><br><%=Encode.forHtml(String.valueOf(city))%>,&nbsp;<%=Encode.forHtml(String.valueOf(province))%>,&nbsp;<%=Encode.forHtml(String.valueOf(postal))%><br>
+				<fmt:message key="demographic.demographiclabelprintsetting.msgHome"/>:&nbsp;<%=Encode.forHtml(String.valueOf(phone))%><br><%=Encode.forHtml(String.valueOf(dob))%>&nbsp;<%=Encode.forHtml(String.valueOf(sex))%><br><%=Encode.forHtml(String.valueOf(hin))%><br>
+				<fmt:message key="demographic.demographiclabelprintsetting.msgBus"/>:<%=Encode.forHtml(String.valueOf(phone2))%>&nbsp;
+				<fmt:message key="demographic.demographiclabelprintsetting.msgDr"/>&nbsp;<%=Encode.forHtml(String.valueOf(providername))%><br>
 				</span></td>
                             </tr>
                         </table>
@@ -252,14 +253,14 @@
                     <td style="text-align:center; background-color:#CCCCCC">
                         <input type="checkbox" name="label2checkbox" value="checked" checked>
                         <input type="text" name="label2no" size="2" maxlength="2"
-                               value="<%= oscarVariables.getProperty("label.2no","1") %>"></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("label.2no","1")))%>"></td>
                 </tr>
                 <tr>
                     <td style="align:center">
                         <table style="width:90%">
                             <tr>
                                 <td style="border: solid 1px; background-color: white;">
-				<span id="copytext3" class="copytext"> <%=last_name%>,&nbsp;<%=first_name%><br><%=address%><br><%=city%>,&nbsp;<%=province%>,&nbsp;<%=postal%><br>
+				<span id="copytext3" class="copytext"> <%=Encode.forHtml(String.valueOf(last_name))%>,&nbsp;<%=Encode.forHtml(String.valueOf(first_name))%><br><%=Encode.forHtml(String.valueOf(address))%><br><%=Encode.forHtml(String.valueOf(city))%>,&nbsp;<%=Encode.forHtml(String.valueOf(province))%>,&nbsp;<%=Encode.forHtml(String.valueOf(postal))%><br>
 				</span></td>
                             </tr>
                         </table>
@@ -267,14 +268,14 @@
                     <td style="text-align:center; background-color:#CCCCCC">
                         <input type="checkbox" name="label3checkbox" value="checked">
                         <input type="text" name="label3no" size="2" maxlength="2"
-                               value="<%= oscarVariables.getProperty("label.3no","1") %>"></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("label.3no","1")))%>"></td>
                 </tr>
                 <tr>
                     <td style="align:center">
                         <table style="width:90%">
                             <tr>
                                 <td style="border: solid 1px; background-color: white;">
-				<span id="copytext4" class="copytext"> <%=first_name%>&nbsp;<%=last_name%><br><%=address%><br><%=city%>,&nbsp;<%=province%>,&nbsp;<%=postal%><br>
+				<span id="copytext4" class="copytext"> <%=Encode.forHtml(String.valueOf(first_name))%>&nbsp;<%=Encode.forHtml(String.valueOf(last_name))%><br><%=Encode.forHtml(String.valueOf(address))%><br><%=Encode.forHtml(String.valueOf(city))%>,&nbsp;<%=Encode.forHtml(String.valueOf(province))%>,&nbsp;<%=Encode.forHtml(String.valueOf(postal))%><br>
 				</span></td>
                             </tr>
                         </table>
@@ -283,7 +284,7 @@
                         <textarea id="text1" STYLE="display: none;"> </textarea>
                         <input type="checkbox" name="label4checkbox" value="checked">
                         <input type="text" name="label4no" size="2" maxlength="2"
-                               value="<%= oscarVariables.getProperty("label.4no","1") %>"></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("label.4no","1")))%>"></td>
                 </tr>
                 <tr>
                     <td style="align:center">
@@ -291,8 +292,8 @@
                             <tr>
                                 <td style="border: solid 1px; background-color: white;">
 				<span id="copytext5"
-                      class="copytext"> <%=chart_no%> &nbsp;&nbsp;<%=last_name%>, <%=first_name%><br><%=address%>, <%=city%>, <%=province%>, <%=postal%>
-				<br><%=dob%> &nbsp;&nbsp;&nbsp;<%=age%> <%=sex%> &nbsp;<%=hin%><br><%=phone%>&nbsp;&nbsp;&nbsp;<%=phone2%><br><%=refDoc%>
+                      class="copytext"> <%=Encode.forHtml(String.valueOf(chart_no))%> &nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(last_name))%>, <%=Encode.forHtml(String.valueOf(first_name))%><br><%=Encode.forHtml(String.valueOf(address))%>, <%=Encode.forHtml(String.valueOf(city))%>, <%=Encode.forHtml(String.valueOf(province))%>, <%=Encode.forHtml(String.valueOf(postal))%>
+				<br><%=Encode.forHtml(String.valueOf(dob))%> &nbsp;&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(age))%> <%=Encode.forHtml(String.valueOf(sex))%> &nbsp;<%=Encode.forHtml(String.valueOf(hin))%><br><%=Encode.forHtml(String.valueOf(phone))%>&nbsp;&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(phone2))%><br><%=Encode.forHtml(String.valueOf(refDoc))%>
 				</span></td>
                             </tr>
                         </table>
@@ -301,7 +302,7 @@
                                                                                       style="display: none;"></textarea>
                         <input type="checkbox" name="label5checkbox" value="checked">
                         <input type="text" name="label5no" size="2" maxlength="2"
-                               value="<%= oscarVariables.getProperty("label.5no","1") %>"></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("label.5no","1")))%>"></td>
                 </tr>
                 <tr>
                     <td style="text-align:left" colspan="3"><br><input type="submit" name="Submit"

@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName3$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -64,56 +65,56 @@
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.intercourse"/>?</td>
                 <td><input type="text" name="hadSexualIntercourse"
-                           value="<%=props.getProperty("hadSexualIntercourse","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("hadSexualIntercourse","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.maleSex"/>?</td>
-                <td><input type="text" name="sexWithMale" value="<%=props.getProperty("sexWithMale","")%>"/></td>
+                <td><input type="text" name="sexWithMale" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sexWithMale","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.femaleSex"/>?</td>
-                <td><input type="text" name="sexWithFemale" value="<%=props.getProperty("sexWithFemale","")%>"/></td>
+                <td><input type="text" name="sexWithFemale" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sexWithFemale","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.firstIntercourse"/>?</td>
-                <td><input type="text" name="ageHadSex" value="<%=props.getProperty("ageHadSex","")%>"/></td>
+                <td><input type="text" name="ageHadSex" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ageHadSex","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.numberOfPartners"/>?</td>
-                <td><input type="text" name="partnersLastYear" value="<%=props.getProperty("partnersLastYear","")%>"/>
+                <td><input type="text" name="partnersLastYear" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("partnersLastYear","")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.condomFrequency"/>?</td>
                 <td><input type="text" name="HowOftenUseCondoms"
-                           value="<%=props.getProperty("HowOftenUseCondoms","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HowOftenUseCondoms","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title" colspan="3"><fmt:message key="oscarEncounter.formIntakeHx.stds"/>:</td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.hadSTD"/>?</td>
-                <td><input type="text" name="hadSTD" value="<%=props.getProperty("hadSTD","")%>"/></td>
+                <td><input type="text" name="hadSTD" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("hadSTD","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.hpv"/></td>
-                <td><input type="text" name="hadHPV" value="<%=props.getProperty("hadHPV","")%>"/></td>
+                <td><input type="text" name="hadHPV" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("hadHPV","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.chlamydia"/></td>
-                <td><input type="text" name="hadchlamydia" value="<%=props.getProperty("hadchlamydia","")%>"/></td>
+                <td><input type="text" name="hadchlamydia" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("hadchlamydia","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.gonorrhea"/></td>
-                <td><input type="text" name="hadgonorrhea" value="<%=props.getProperty("hadgonorrhea","")%>"/></td>
+                <td><input type="text" name="hadgonorrhea" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("hadgonorrhea","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.genitalHerpes"/></td>
-                <td><input type="text" name="hadHSV2" value="<%=props.getProperty("hadHSV2","")%>"/></td>
+                <td><input type="text" name="hadHSV2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("hadHSV2","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="2"><fmt:message key="oscarEncounter.formIntakeHx.syphilis"/></td>
-                <td><input type="text" name="hadsyphilis" value="<%=props.getProperty("hadsyphilis","")%>"/></td>
+                <td><input type="text" name="hadsyphilis" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("hadsyphilis","")))%>"/></td>
             </tr>
         </table>
     </form>

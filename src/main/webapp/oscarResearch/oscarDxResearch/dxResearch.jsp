@@ -26,6 +26,7 @@
 
 <%@ page import="ca.openosp.openo.dxresearch.util.dxResearchCodingSystem" %>
 <%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -224,7 +225,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -241,7 +242,7 @@
 								</span>
 
                                                 <select class="form-control" name="selectedCodingSystem"
-                                                            <%=disabled%>>
+                                                            <%=Encode.forHtml(String.valueOf(disabled))%>>
                                                     <c:forEach var="codingSys" items="${codingSystem.codingSystems}">
                                                         <option value="${codingSys}">
                                                             <c:out value="${codingSys}"/>
@@ -253,7 +254,7 @@
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research1"
-                                                    <%=disabled%> />
+                                                    <%=Encode.forHtml(String.valueOf(disabled))%> />
                                             <input type="hidden" name="demographicNo"
                                                    value="<c:out value="${demographicNo}"/>">
                                             <input type="hidden" name="providerNo"
@@ -261,19 +262,19 @@
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research2"
-                                                       <%=disabled%>/></td>
+                                                       <%=Encode.forHtml(String.valueOf(disabled))%>/></td>
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research3"
-                                                       <%=disabled%>/></td>
+                                                       <%=Encode.forHtml(String.valueOf(disabled))%>/></td>
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research4"
-                                                       <%=disabled%>/></td>
+                                                       <%=Encode.forHtml(String.valueOf(disabled))%>/></td>
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research5"
-                                                       <%=disabled%>/></td>
+                                                       <%=Encode.forHtml(String.valueOf(disabled))%>/></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -292,11 +293,11 @@
                                             <input type="button" name="button" class="btn btn-primary"
                                                    value="<fmt:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
                                                    onClick="javascript: ResearchScriptAttach();" )
-                                                   <%=disabled%>">
+                                                   <%=Encode.forHtml(String.valueOf(disabled))%>">
 
                                             <input type="button" name="button" class="btn btn-primary"
                                                    value="<fmt:message key="ADD"/>"
-                                                   onClick="javascript: submitform('','');" <%=disabled%>">
+                                                   onClick="javascript: submitform('','');" <%=Encode.forHtml(String.valueOf(disabled))%>">
                                             <% } %>
                                         </td>
                                     </tr>

@@ -48,6 +48,7 @@
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.util.UtilXML" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     EctSessionBean bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean");
 
@@ -202,7 +203,7 @@
                     <td class="Header"
                         style="padding-left:2px;padding-right:2px;border-right:2px solid #003399;text-align:left;font-size:80%;font-weight:bold;width:100%;"
                         NOWRAP>
-                        <%=last_name %>, <%=first_name%> <%=sex%> <%=age%>
+                        <%=Encode.forHtml(String.valueOf(last_name))%>, <%=Encode.forHtml(String.valueOf(first_name))%> <%=Encode.forHtml(String.valueOf(sex))%> <%=Encode.forHtml(String.valueOf(age))%>
                     </td>
                     <td>
                     </td>
@@ -219,7 +220,7 @@
         </td>
         <td class="MainTableRightColumn">
             <form action="${pageContext.request.contextPath}/oscarEncounter/immunization/saveSchedule.do" method="post">
-                <input type="hidden" name="demographic_no" value="<%=demoNo%>">
+                <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>">
                 <table name="encounterTableRightCol" width="100%">
                     <tr>
                         <td>
@@ -251,7 +252,7 @@
                     <tr>
                         <td>
 
-                            <input type="hidden" name="xmlDoc" value='<%= UtilMisc.encode64(UtilXML.toXML(doc)) %>'/>
+                            <input type="hidden" name="xmlDoc" value='<%=Encode.forHtmlAttribute(String.valueOf(UtilMisc.encode64(UtilXML.toXML(doc))))%>'/>
                             <%
 
                                 for (int i = 0; i < sets.getLength(); i++) {
@@ -272,16 +273,16 @@
                                 <input type="checkbox" onclick="javascript:showSet('tblSet<%=i%>', event);"
                                        id="chkSet<%=i%>"/>
                                 <a href=#
-                                   onclick="javascript:showSetName('tblSet<%=i%>', 'chkSet<%=i%>');" <%=fontStyle%> >
-                                    <%= set.getAttribute("name") %>
+                                   onclick="javascript:showSetName('tblSet<%=i%>', 'chkSet<%=i%>');" <%=Encode.forHtml(String.valueOf(fontStyle))%> >
+                                    <%=Encode.forHtml(String.valueOf(set.getAttribute("name")))%>
                                 </a>
                                 &nbsp;&nbsp;
 
                                 <% if (!status.equals("deleted")) { %>
-                                <a href="deleteSchedule.do?method=delete&tblSet=<%=i%>&demoNo=<%=demoNo%>"
+                                <a href="deleteSchedule.do?method=delete&tblSet=<%=i%>&demoNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>"
                                    onclick="return confirm('Are you sure you want to delete this record ?');">del</a>
                                 <%} else {%>
-                                <a href="deleteSchedule.do?method=restore&tblSet=<%=i%>&demoNo=<%=demoNo%>"
+                                <a href="deleteSchedule.do?method=restore&tblSet=<%=i%>&demoNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>"
                                    onclick="return confirm('Are you sure you want to restore this record ?');">restore</a>
                                 <%}%>
 
@@ -301,7 +302,7 @@
                                     <%
                                         for (int j = 0; j < columns.getLength(); j++) {
                                             Element column = (Element) columns.item(j);%>
-                                    <td class="head"><%= column.getAttribute("name") %>&nbsp;</td>
+                                    <td class="head"><%=Encode.forHtml(String.valueOf(column.getAttribute("name")))%>&nbsp;</td>
                                     <%
                                             colCount = j + 2;
                                         }
@@ -321,12 +322,12 @@
                                             String s = "tdSet" + i + "_Row" + j + "_name";
                                 %>
                                 <tr>
-                                    <td class="head" id="<%=s%>"><%=genText(s, "")%>
+                                    <td class="head" id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genText(s, "")))%>
                                     </td>
                                             <%   }else{%>
 
                                 <tr>
-                                    <td class="head"><%= sName %>
+                                    <td class="head"><%=Encode.forHtml(String.valueOf(sName))%>
                                     </td>
                                     <% }
 
@@ -339,7 +340,7 @@
                                                     if (String.valueOf(k).equals(cell.getAttribute("index"))) {
                                                         String s = "tdSet" + i + "_Row" + j + "_Col" + k; %>
                                     <td class="normal"
-                                        id="<%=s%>"><%= genCell(s, cell, sName + " - " + ((Element) columns.item(k - 1)).getAttribute("name"))%>
+                                        id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genCell(s, cell, sName + " - " + ((Element) columns.item(k - 1)).getAttribute("name"))))%>
                                     </td>
                                     <% n++;
                                     } else { %>
@@ -359,7 +360,7 @@
                                             if (cell.getAttribute("index").equals(String.valueOf(k + 1))) {
                                                 String s = "tdSet" + i + "_Row" + j + "_Col" + (k + 1);
                                     %>
-                                    <td id="<%=s%>"><%= genCell(s, cell, "")%>
+                                    <td id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genCell(s, cell, "")))%>
                                     </td>
                                     <%} else {%>
                                     <td class="grey">&nbsp;</td>
@@ -376,7 +377,7 @@
                                             sValue = UtilXML.getText(comments.item(0));
                                         }
                                     %>
-                                    <td id="<%=sID%>"><%= genText(sID, sValue)%>
+                                    <td id="<%=Encode.forHtmlAttribute(String.valueOf(sID))%>"><%=Encode.forHtml(String.valueOf(genText(sID, sValue)))%>
                                     </td>
                                 </tr>
                                 <%

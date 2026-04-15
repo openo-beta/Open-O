@@ -48,6 +48,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingPageUtil" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingReviewPrep" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -179,7 +180,7 @@
             ProviderBillCenter pbc = providerBillCenterDao.find(providerNo);
             if(pbc != null) {
             %>
-        providerBillCenterMap['<%=providerNo%>'] = '<%=pbc.getBillCenterCode()%>';
+        providerBillCenterMap['<%=Encode.forJavaScript(String.valueOf(providerNo))%>'] = '<%=Encode.forJavaScript(String.valueOf(pbc.getBillCenterCode()))%>';
         <%
         }
     }
@@ -242,7 +243,7 @@
             <a href="#" class="dropdown-archive">Show Archive</a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                 <%for (int i = 0; i < 5; i++) { %>
-                <li><a href="billingONMRI.jsp?year=<%=yearArray[i]%>">YEAR <%=yearArray[i]%>
+                <li><a href="billingONMRI.jsp?year=<%=Encode.forUriComponent(String.valueOf(yearArray[i]))%>">YEAR <%=Encode.forHtml(String.valueOf(yearArray[i]))%>
                 </a></li>
                 <%}%>
             </ul>
@@ -269,7 +270,7 @@
                         if (providerStr.size() == 1) {
                             String temp[] = ((String) providerStr.get(0)).split("\\|");
                     %>
-                    <option value="<%=temp[0]%>"><%=temp[1]%>, <%=temp[2]%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(temp[0]))%>"><%=Encode.forHtml(String.valueOf(temp[1]))%>, <%=Encode.forHtml(String.valueOf(temp[2]))%>
                     </option>
                     <%
                     } else {
@@ -280,7 +281,7 @@
                         for (int i = 0; i < providerStr.size(); i++) {
                             String temp[] = ((String) providerStr.get(i)).split("\\|");
                     %>
-                    <option value="<%=temp[0]%>"><%=temp[1]%>, <%=temp[2]%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(temp[0]))%>"><%=Encode.forHtml(String.valueOf(temp[1]))%>, <%=Encode.forHtml(String.valueOf(temp[2]))%>
                     </option>
                     <%
                             }
@@ -296,8 +297,8 @@
                         for (Enumeration e = BillingDataHlp.propBillingCenter.propertyNames(); e.hasMoreElements(); ) {
                             String centerCode = (String) e.nextElement();
                     %>
-                    <option value="<%=centerCode%>"
-                            <%=oscarVariables.getProperty("billcenter").compareTo(centerCode) == 0 ? "selected" : ""%>><%=BillingDataHlp.propBillingCenter.getProperty(centerCode)%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(centerCode))%>"
+                            <%=oscarVariables.getProperty("billcenter").compareTo(centerCode) == 0 ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(BillingDataHlp.propBillingCenter.getProperty(centerCode)))%>
                     </option>
                     <%
                         }
@@ -305,16 +306,16 @@
                 </select>
             </div>
 
-            <input type="hidden" name="monthCode" value="<%=monthCode%>">
+            <input type="hidden" name="monthCode" value="<%=Encode.forHtmlAttribute(String.valueOf(monthCode))%>">
             <input type="hidden" name="verCode" value="V03">
-            <input type="hidden" name="curUser" value="<%=curProvider_no%>">
-            <input type="hidden" name="curDate" value="<%=nowDate%>">
+            <input type="hidden" name="curUser" value="<%=Encode.forHtmlAttribute(String.valueOf(curProvider_no))%>">
+            <input type="hidden" name="curDate" value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>">
 
 
             <div class="span4">
                 <label>Service Date Start:</label>
                 <div class="input-append">
-                    <input type="text" name="xml_vdate" id="xml_vdate" value="<%=xml_vdate%>"
+                    <input type="text" name="xml_vdate" id="xml_vdate" value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -324,7 +325,7 @@
                 <label>Service Date End:</label>
                 <div class="input-append">
                     <input type="text" name="xml_appointment_date" id="xml_appointment_date"
-                           value="<%=xml_appointment_date%>" pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>" pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$"
                            autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -332,7 +333,7 @@
 
             <div class="span10">
                 <input type="checkbox" name="useProviderMOH"
-                       id="useProviderMOH" <%=("true".equals(request.getParameter("useProviderMOH")) ? "checked" : "") %>>Use
+                       id="useProviderMOH" <%=Encode.forHtml(("true".equals(request.getParameter("useProviderMOH")) ? "checked" : ""))%>>Use
                 individual provider's bill center setting (will use above bill center if provider does not have one
                 set.)
                 <br><br>
@@ -388,26 +389,26 @@
 
         %>
 
-        <tr onMouseOver="this.style.backgroundColor='pink';" onMouseout="this.style.backgroundColor='<%=bgColor%>';"
-            bgcolor="<%=bgColor%>">
-            <td><font size="2"><%=pro_name%>
+        <tr onMouseOver="this.style.backgroundColor='pink';" onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
+            bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>">
+            <td><font size="2"><%=Encode.forHtml(String.valueOf(pro_name))%>
             </font></td>
-            <td align="center"><font size="2"><%=updatedate.substring(0, 16)%>
+            <td align="center"><font size="2"><%=Encode.forHtml(String.valueOf(updatedate.substring(0, 16)))%>
             </font></td>
-            <td align="center"><font size="2"><%=cr%>
+            <td align="center"><font size="2"><%=Encode.forHtml(String.valueOf(cr))%>
             </font></td>
             <td align="right"><font size="2"><%=total%>
             </font></td>
 
             <td width="15%"><font size="2"> <a
-                    href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=oFile%>"
-                    target="_blank"><%=oFile%>
+                    href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=Encode.forUriComponent(String.valueOf(oFile))%>"
+                    target="_blank"><%=Encode.forHtml(String.valueOf(oFile))%>
             </a></font></td>
             <td width="3%"><input type="button" value="R" class="btn hidden-print"
-                                  onclick="recreate(<%=obj.getId() %>)"/></td>
+                                  onclick="recreate(<%=Encode.forJavaScript(String.valueOf(obj.getId()))%>)"/></td>
             <td><font size="2"> <a
-                    href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=hFile%>"
-                    target="_blank"><%=hFile%>
+                    href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=Encode.forUriComponent(String.valueOf(hFile))%>"
+                    target="_blank"><%=Encode.forHtml(String.valueOf(hFile))%>
             </a></font></td>
         </tr>
 
@@ -445,24 +446,24 @@
                 pro_name = proName.getProperty(pro_ohip);
         %>
 
-        <tr bgcolor="<%=count%2==0?yearColor:"white"%>">
-            <td><%if (pro_name != null) { %><font size="2"><%=pro_name%>
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(count%2==0?yearColor:"white"))%>">
+            <td><%if (pro_name != null) { %><font size="2"><%=Encode.forHtml(String.valueOf(pro_name))%>
             </font><%}%></td>
-            <td align="center"><font size="2"><%=updatedate%>
+            <td align="center"><font size="2"><%=Encode.forHtml(String.valueOf(updatedate))%>
             </font></td>
-            <td align="center"><font size="2"><%=cr%>
+            <td align="center"><font size="2"><%=Encode.forHtml(String.valueOf(cr))%>
             </td>
             <td align="right"><font
-                    size="2"><%=total.substring(0, total.indexOf(".")) + total.substring(total.indexOf("."), total.indexOf(".") + 3)%>
+                    size="2"><%=Encode.forHtml(String.valueOf(total.substring(0, total.indexOf(".")) + total.substring(total.indexOf("."), total.indexOf(".") + 3)))%>
             </font></td>
 
             <td colspan=2><font size="2"> <a
-                    href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=oFile%>"
-                    target="_blank"><%=oFile%>
+                    href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=Encode.forUriComponent(String.valueOf(oFile))%>"
+                    target="_blank"><%=Encode.forHtml(String.valueOf(oFile))%>
             </a></font></td>
             <td><font size="2"> <a
-                    href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=hFile%>"
-                    target="_blank"><%=hFile%>
+                    href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=Encode.forUriComponent(String.valueOf(hFile))%>"
+                    target="_blank"><%=Encode.forHtml(String.valueOf(hFile))%>
             </a></font></td>
         </tr>
 

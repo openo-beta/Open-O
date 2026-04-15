@@ -272,7 +272,9 @@ public class ManageDocument2Action extends ActionSupport {
         hm.put("patientId", demog);
         ObjectNode jsonObject = objectMapper.valueToTree(hm);
         try {
-            response.getOutputStream().write(jsonObject.toString().getBytes());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getOutputStream().write(jsonObject.toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             MiscUtils.getLogger().error("Error", e);
         }
@@ -290,7 +292,9 @@ public class ManageDocument2Action extends ActionSupport {
         hm.put("demoName", getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), dn));
         ObjectNode jsonObject = objectMapper.valueToTree(hm);
         try {
-            response.getOutputStream().write(jsonObject.toString().getBytes());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getOutputStream().write(jsonObject.toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             MiscUtils.getLogger().error("Error", e);
         }

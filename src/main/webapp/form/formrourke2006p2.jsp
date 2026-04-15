@@ -46,6 +46,7 @@
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ page import="ca.openosp.openo.form.FrmRourke2006Record" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -179,7 +180,7 @@
 
         function reset() {
             document.forms[0].target = "";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function $F(elem) {
@@ -343,18 +344,18 @@
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="ID"
-               value="<%= props.getProperty("ID", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="c_lastVisited"
-               value=<%=props.getProperty("c_lastVisited", "p2")%>/>
+               value=<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "p2")))%>/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table cellpadding="0" cellspacing="0" class="Header" class="hidePrint">
@@ -377,17 +378,17 @@
                 </td>
                 <td align="center" width="100%">
                     <% if (formId > 0) { %> <a name="length" href="#"
-                                               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Growth+Graph1&__cfgfile=<%=growthCharts[0]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');return false;">
+                                               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Growth+Graph1&__cfgfile=<%=Encode.forJavaScript(String.valueOf(growthCharts[0]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');return false;">
                     <fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/></a><br>
                     <a name="headCirc" href="#"
-                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Head+Circumference&__cfgfile=<%=growthCharts[1]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');return false;">
+                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Head+Circumference&__cfgfile=<%=Encode.forJavaScript(String.valueOf(growthCharts[1]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');return false;">
                         <fmt:message key="oscarEncounter.formRourke1.btnGraphHead"/></a> <% } else { %>
                     &nbsp; <% } %>
                 </td>
                 <td nowrap="true"><a
-                        href="form/formrourke2006p1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:message key="oscarEncounter.formRourke2006.Pg1"/></a>&nbsp;|&nbsp; <a><fmt:message key="oscarEncounter.formRourke2006.Pg2"/></a>&nbsp;|&nbsp; <a
-                        href="form/formrourke2006p3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:message key="oscarEncounter.formRourke2006.Pg3"/></a>&nbsp;|&nbsp; <a
-                        href="form/formrourke2006p4.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:message key="oscarEncounter.formRourke2006.Pg4"/></a></td>
+                        href="form/formrourke2006p1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke2006.Pg1"/></a>&nbsp;|&nbsp; <a><fmt:message key="oscarEncounter.formRourke2006.Pg2"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourke2006p3.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke2006.Pg3"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourke2006p4.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke2006.Pg4"/></a></td>
             </tr>
         </table>
 
@@ -401,19 +402,19 @@
             <tr valign="top">
                 <td align="center"><fmt:message key="oscarEncounter.formRourke2006_2.formRiskFactors"/><br>
                     <textarea wrap="physical" id="c_riskFactors" name="c_riskFactors"
-                              rows="3" cols="17"><%= props.getProperty("c_riskFactors", "") %></textarea>
+                              rows="3" cols="17"><%=Encode.forHtml(String.valueOf(props.getProperty("c_riskFactors", "")))%></textarea>
                 </td>
                 <td nowrap align="center"><fmt:message key="oscarEncounter.formRourke2006_2.formFamHistory"/><br>
                     <textarea id="c_famHistory" name="c_famHistory" rows="3"
-                              cols="17"><%= props.getProperty("c_famHistory", "") %></textarea>
+                              cols="17"><%=Encode.forHtml(String.valueOf(props.getProperty("c_famHistory", "")))%></textarea>
                 </td>
                 <td width="65%" nowrap align="center">
                     <p><fmt:message key="oscarEncounter.formRourke1.msgName"/>: <input
                             type="text" name="c_pName" maxlength="60" size="30"
-                            value="<%= props.getProperty("c_pName", "") %>" readonly="true"/>
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_pName", "")))%>" readonly="true"/>
                         &nbsp;&nbsp; <fmt:message key="oscarEncounter.formRourke1.msgBirthDate"/> (d/m/yyyy): <input
                                 type="text" name="c_birthDate" size="10" maxlength="10"
-                                value="<%= props.getProperty("c_birthDate", "") %>" readonly="true">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_birthDate", "")))%>" readonly="true">
                         &nbsp;&nbsp; <% if (!((FrmRourke2006Record) rec).isFemale(demoNo)) {
                         %><fmt:message key="oscarEncounter.formRourke1.msgMale"/> <input type="hidden"
                                                                                   name="c_male" value="x"> <%
@@ -464,45 +465,45 @@
             <tr align="center">
                 <td><input type="text" class="wide"
                            ondblclick="htEnglish2Metric(this);" name="p2_ht2m" size="4"
-                           maxlength="5" value="<%= props.getProperty("p2_ht2m", "") %>"></td>
+                           maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_ht2m", "")))%>"></td>
                 <td><input type="text" class="wide"
                            ondblclick="wtEnglish2Metric(this);" name="p2_wt2m" size="4"
-                           maxlength="5" value="<%= props.getProperty("p2_wt2m", "") %>"></td>
+                           maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_wt2m", "")))%>"></td>
                 <td><input type="text" class="wide"
                            ondblclick="htEnglish2Metric(this);" name="p2_hc2m" size="4"
-                           maxlength="5" value="<%= props.getProperty("p2_hc2m", "") %>"></td>
+                           maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_hc2m", "")))%>"></td>
                 <td><input type="text" class="wide"
                            ondblclick="htEnglish2Metric(this);" name="p2_ht4m" size="4"
-                           maxlength="5" value="<%= props.getProperty("p2_ht4m", "") %>"></td>
+                           maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_ht4m", "")))%>"></td>
                 <td><input type="text" class="wide"
                            ondblclick="wtEnglish2Metric(this);" name="p2_wt4m" size="4"
-                           maxlength="5" value="<%= props.getProperty("p2_wt4m", "") %>"></td>
+                           maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_wt4m", "")))%>"></td>
                 <td><input type="text" class="wide"
                            ondblclick="htEnglish2Metric(this);" name="p2_hc4m" size="4"
-                           maxlength="5" value="<%= props.getProperty("p2_hc4m", "") %>"></td>
+                           maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_hc4m", "")))%>"></td>
                 <td><input type="text" class="wide"
                            ondblclick="htEnglish2Metric(this);" name="p2_ht6m" size="4"
-                           maxlength="5" value="<%= props.getProperty("p2_ht6m", "") %>"></td>
+                           maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_ht6m", "")))%>"></td>
                 <td><input type="text" class="wide"
                            ondblclick="wtEnglish2Metric(this);" name="p2_wt6m" size="4"
-                           maxlength="5" value="<%= props.getProperty("p2_wt6m", "") %>"></td>
+                           maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_wt6m", "")))%>"></td>
                 <td><input type="text" class="wide"
                            ondblclick="htEnglish2Metric(this);" name="p2_hc6m" size="4"
-                           maxlength="5" value="<%= props.getProperty("p2_hc6m", "") %>"></td>
+                           maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_hc6m", "")))%>"></td>
             </tr>
             <tr align="center">
                 <td class="column"><a><fmt:message key="oscarEncounter.formRourke1.formParentalConcerns"/></a></td>
                 <td colspan="3"><textarea id="p2_pConcern2m"
                                           name="p2_pConcern2m" class="wide" cols="10"
-                                          rows="5"><%= props.getProperty("p2_pConcern2m", "") %></textarea>
+                                          rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_pConcern2m", "")))%></textarea>
                 </td>
                 <td colspan="3"><textarea id="p2_pConcern4m"
                                           name="p2_pConcern4m" class="wide" cols="10"
-                                          rows="5"><%= props.getProperty("p2_pConcern4m", "") %></textarea>
+                                          rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_pConcern4m", "")))%></textarea>
                 </td>
                 <td colspan="3"><textarea id="p2_pConcern6m"
                                           name="p2_pConcern6m" class="wide" cols="10"
-                                          rows="5"><%= props.getProperty("p2_pConcern6m", "") %></textarea>
+                                          rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_pConcern6m", "")))%></textarea>
                 </td>
             </tr>
             <tr align="center">
@@ -514,17 +515,17 @@
                         <tr align="center">
                             <td colspan="2"><textarea id="p2_nutrition2m"
                                                       name="p2_nutrition2m" class="wide" rows="5"
-                                                      cols="25"><%= props.getProperty("p2_nutrition2m", "") %></textarea>
+                                                      cols="25"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_nutrition2m", "")))%></textarea>
                             </td>
                         </tr>
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p2_breastFeeding2m"
-                                    <%= props.getProperty("p2_breastFeeding2m", "") %> /></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_breastFeeding2m", "")))%> /></td>
                             <td><b><a href="javascript:showNotes()"
                                       onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                       onMouseOut="hideLayer()"
-                                      onclick="popPage('<%=resource%>n_breastFeeding');return false"><fmt:message key="oscarEncounter.formRourke2006_1.btnBreastFeeding"/><br/>
+                                      onclick="popPage('<%=Encode.forJavaScript(String.valueOf(resource))%>n_breastFeeding');return false"><fmt:message key="oscarEncounter.formRourke2006_1.btnBreastFeeding"/><br/>
                             </a><span
                                     onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                     onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.msgBreastFeedingDescr"/></span></b></td>
@@ -532,7 +533,7 @@
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p2_formulaFeeding2m"
-                                    <%= props.getProperty("p2_formulaFeeding2m", "") %> /></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_formulaFeeding2m", "")))%> /></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.msgFormulaFeeding"/></td>
                         </tr>
                     </table>
@@ -543,13 +544,13 @@
                         <tr align="center">
                             <td colspan="2"><textarea id="p2_nutrition4m"
                                                       name="p2_nutrition4m" class="wide" rows="5"
-                                                      cols="25"><%= props.getProperty("p2_nutrition4m", "") %></textarea>
+                                                      cols="25"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_nutrition4m", "")))%></textarea>
                             </td>
                         </tr>
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p2_breastFeeding4m"
-                                    <%= props.getProperty("p2_breastFeeding4m", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_breastFeeding4m", "")))%>></td>
                             <td><b><a
                                     onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                     onMouseOut="hideLayer()" href="javascript:showNotes()"><fmt:message key="oscarEncounter.formRourke2006_1.btnBreastFeeding"/></a><br/>
@@ -560,7 +561,7 @@
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p2_formulaFeeding4m"
-                                    <%= props.getProperty("p2_formulaFeeding4m", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_formulaFeeding4m", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.msgFormulaFeeding"/></td>
                         </tr>
                     </table>
@@ -570,7 +571,7 @@
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p2_breastFeeding6m"
-                                    <%= props.getProperty("p2_breastFeeding6m", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_breastFeeding6m", "")))%>></td>
                             <td><b><a
                                     onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                     onMouseOut="hideLayer()" href="javascript:showNotes()"><fmt:message key="oscarEncounter.formRourke2006_1.btnBreastFeeding"/></a><br/>
@@ -581,38 +582,38 @@
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p2_formulaFeeding6m"
-                                    <%= props.getProperty("p2_formulaFeeding6m", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_formulaFeeding6m", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.msgFormulaFeedingLong"/></td>
                         </tr>
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
-                                                    name="p2_bottle6m" <%= props.getProperty("p2_bottle6m", "") %>></td>
+                                                    name="p2_bottle6m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_bottle6m", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.msgBottle"/></td>
                         </tr>
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
-                                                    name="p2_liquids6m" <%= props.getProperty("p2_liquids6m", "") %>>
+                                                    name="p2_liquids6m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_liquids6m", "")))%>>
                             </td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.msgLiquids"/></td>
                         </tr>
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
-                                                    name="p2_iron6m" <%= props.getProperty("p2_iron6m", "") %>></td>
+                                                    name="p2_iron6m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_iron6m", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.msgIronFoods"/></td>
                         </tr>
                         <tr>
                             <td valign="top"><input type="checkbox" name="p2_vegFruit6m"
-                                    <%= props.getProperty("p2_vegFruit6m", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_vegFruit6m", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.msgVegFruits"/></td>
                         </tr>
                         <tr>
                             <td valign="top"><input type="checkbox" name="p2_egg6m"
-                                    <%= props.getProperty("p2_egg6m", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_egg6m", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.msgEggWhites"/></td>
                         </tr>
                         <tr>
                             <td valign="top"><input type="checkbox" name="p2_choking6m"
-                                    <%= props.getProperty("p2_choking6m", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_choking6m", "")))%>></td>
                             <td><a href="javascript:showNotes()"
                                    onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                    onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_2.msgChoking"/>*</a></td>
@@ -658,39 +659,39 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_carSeatOk"
                                                     name="p2_carSeatOk" onclick="onCheck(this,'p2_carSeat')"
-                                    <%= props.getProperty("p2_carSeatOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_carSeatOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_carSeatNo"
                                                     name="p2_carSeatNo" onclick="onCheck(this,'p2_carSeat')"
-                                    <%= props.getProperty("p2_carSeatNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_carSeatNo", "")))%>></td>
                             <td valign="top"><b><a
                                     onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                     onMouseOut="hideLayer()" href="javascript:showNotes()"><fmt:message key="oscarEncounter.formRourke1.formCarSeat"/></a>*</b></td>
                             <td valign="top"><input type="radio" id="p2_sleepPosOk"
                                                     name="p2_sleepPosOk" onclick="onCheck(this,'p2_sleepPos')"
-                                    <%= props.getProperty("p2_sleepPosOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_sleepPosOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_sleepPosNo"
                                                     name="p2_sleepPosNo" onclick="onCheck(this,'p2_sleepPos')"
-                                    <%= props.getProperty("p2_sleepPosNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_sleepPosNo", "")))%>></td>
                             <td valign="top"><b><a href="javascript:showNotes()"
                                                    onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                    onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_2.formSleepPos"/></a></b></td>
                             <td valign="top"><input type="radio" id="p2_poisonsOk"
                                                     name="p2_poisonsOk" onclick="onCheck(this,'p2_poisons')"
-                                    <%= props.getProperty("p2_poisonsOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_poisonsOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_poisonsNo"
                                                     name="p2_poisonsNo" onclick="onCheck(this,'p2_poisons')"
-                                    <%= props.getProperty("p2_poisonsNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_poisonsNo", "")))%>></td>
                             <td valign="top"><b><a href="javascript:showNotes()"
                                                    onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                    onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_2.formPoisons"/></a></b></td>
                             <td valign="top"><input type="radio" id="p2_firearmSafetyOk"
                                                     name="p2_firearmSafetyOk"
                                                     onclick="onCheck(this,'p2_firearmSafety')"
-                                    <%= props.getProperty("p2_firearmSafetyOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_firearmSafetyOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_firearmSafetyNo"
                                                     name="p2_firearmSafetyNo"
                                                     onclick="onCheck(this,'p2_firearmSafety')"
-                                    <%= props.getProperty("p2_firearmSafetyNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_firearmSafetyNo", "")))%>></td>
                             <td colspan="4" valign="top"><b><a
                                     href="javascript:showNotes()"
                                     onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
@@ -699,26 +700,26 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_electricOk"
                                                     name="p2_electricOk" onclick="onCheck(this,'p2_electric')"
-                                    <%= props.getProperty("p2_electricOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_electricOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_electricNo"
                                                     name="p2_electricNo" onclick="onCheck(this,'p2_electric')"
-                                    <%= props.getProperty("p2_electricNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_electricNo", "")))%>></td>
                             <td valign="top"><i><fmt:message key="oscarEncounter.formRourke2006_2.formElectric"/></i></td>
                             <td valign="top"><input type="radio" id="p2_smokeSafetyOk"
                                                     name="p2_smokeSafetyOk" onclick="onCheck(this,'p2_smokeSafety')"
-                                    <%= props.getProperty("p2_smokeSafetyOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_smokeSafetyOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_smokeSafetyNo"
                                                     name="p2_smokeSafetyNo" onclick="onCheck(this,'p2_smokeSafety')"
-                                    <%= props.getProperty("p2_smokeSafetyNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_smokeSafetyNo", "")))%>></td>
                             <td valign="top"><a href="javascript:showNotes()"
                                                 onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                 onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formSmokeSafety"/>*</a></td>
                             <td valign="top"><input type="radio" id="p2_hotWaterOk"
                                                     name="p2_hotWaterOk" onclick="onCheck(this,'p2_hotWater')"
-                                    <%= props.getProperty("p2_hotWaterOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_hotWaterOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_hotWaterNo"
                                                     name="p2_hotWaterNo" onclick="onCheck(this,'p2_hotWater')"
-                                    <%= props.getProperty("p2_hotWaterNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_hotWaterNo", "")))%>></td>
                             <td valign="top"><i><a href="javascript:showNotes()"
                                                    onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                    onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formHotWater"/>*</a></i></td>
@@ -727,20 +728,20 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_fallsOk"
                                                     name="p2_fallsOk" onclick="onCheck(this,'p2_falls')"
-                                    <%= props.getProperty("p2_fallsOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_fallsOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_fallsNo"
                                                     name="p2_fallsNo" onclick="onCheck(this,'p2_falls')"
-                                    <%= props.getProperty("p2_fallsNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_fallsNo", "")))%>></td>
                             <td colspan="4" valign="top"><i><a
                                     href="javascript:showNotes()"
                                     onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                     onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_2.formFalls"/>*</a></i></td>
                             <td valign="top"><input type="radio" id="p2_safeToysOk"
                                                     name="p2_safeToysOk" onclick="onCheck(this,'p2_safeToys')"
-                                    <%= props.getProperty("p2_safeToysOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_safeToysOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_safeToysNo"
                                                     name="p2_safeToysNo" onclick="onCheck(this,'p2_safeToys')"
-                                    <%= props.getProperty("p2_safeToysNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_safeToysNo", "")))%>></td>
                             <td valign="top"><a href="javascript:showNotes()"
                                                 onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                 onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formSafeToys"/>*</a></td>
@@ -777,26 +778,26 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_sleepCryOk"
                                                     name="p2_sleepCryOk" onclick="onCheck(this,'p2_sleepCry')"
-                                    <%= props.getProperty("p2_sleepCryOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_sleepCryOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_sleepCryNo"
                                                     name="p2_sleepCryNo" onclick="onCheck(this,'p2_sleepCry')"
-                                    <%= props.getProperty("p2_sleepCryNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_sleepCryNo", "")))%>></td>
                             <td valign="top"><a href="javascript:showNotes()"
                                                 onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                                                 onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_2.formsleepCry"/>**</a></td>
                             <td valign="top"><input type="radio" id="p2_soothabilityOk"
                                                     name="p2_soothabilityOk" onclick="onCheck(this,'p2_soothability')"
-                                    <%= props.getProperty("p2_soothabilityOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_soothabilityOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_soothabilityNo"
                                                     name="p2_soothabilityNo" onclick="onCheck(this,'p2_soothability')"
-                                    <%= props.getProperty("p2_soothabilityNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_soothabilityNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_1.formSoothability"/></td>
                             <td valign="top"><input type="radio" id="p2_homeVisitOk"
                                                     name="p2_homeVisitOk" onclick="onCheck(this,'p2_homeVisit')"
-                                    <%= props.getProperty("p2_homeVisitOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_homeVisitOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_homeVisitNo"
                                                     name="p2_homeVisitNo" onclick="onCheck(this,'p2_homeVisit')"
-                                    <%= props.getProperty("p2_homeVisitNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_homeVisitNo", "")))%>></td>
                             <td colspan="7" valign="top"><b><a
                                     href="javascript:showNotes()"
                                     onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
@@ -805,40 +806,40 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_bondingOk"
                                                     name="p2_bondingOk" onclick="onCheck(this,'p2_bonding')"
-                                    <%= props.getProperty("p2_bondingOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_bondingOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_bondingNo"
                                                     name="p2_bondingNo" onclick="onCheck(this,'p2_bonding')"
-                                    <%= props.getProperty("p2_bondingNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_bondingNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_1.formBonding"/></td>
                             <td valign="top"><input type="radio" id="p2_pFatigueOk"
                                                     name="p2_pFatigueOk" onclick="onCheck(this,'p2_pFatigue')"
-                                    <%= props.getProperty("p2_pFatigueOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_pFatigueOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_pFatigueNo"
                                                     name="p2_pFatigueNo" onclick="onCheck(this,'p2_pFatigue')"
-                                    <%= props.getProperty("p2_pFatigueNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_pFatigueNo", "")))%>></td>
                             <td valign="top"><a href="javascript:showNotes()"
                                                 onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote2"/>')"
                                                 onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formParentFatigue"/>**</a></td>
                             <td valign="top"><input type="radio" id="p2_famConflictOk"
                                                     name="p2_famConflictOk" onclick="onCheck(this,'p2_famConflict')"
-                                    <%= props.getProperty("p2_famConflictOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_famConflictOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_famConflictNo"
                                                     name="p2_famConflictNo" onclick="onCheck(this,'p2_famConflict')"
-                                    <%= props.getProperty("p2_famConflictNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_famConflictNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_1.formFamConflict"/></td>
                             <td valign="top"><input type="radio" id="p2_siblingsOk"
                                                     name="p2_siblingsOk" onclick="onCheck(this,'p2_siblings')"
-                                    <%= props.getProperty("p2_siblingsOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_siblingsOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_siblingsNo"
                                                     name="p2_siblingsNo" onclick="onCheck(this,'p2_siblings')"
-                                    <%= props.getProperty("p2_siblingsNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_siblingsNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_1.formSiblings"/></td>
                             <td valign="top"><input type="radio" id="p2_childCareOk"
                                                     name="p2_childCareOk" onclick="onCheck(this,'p2_childCare')"
-                                    <%= props.getProperty("p2_childCareOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_childCareOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_childCareNo"
                                                     name="p2_childCareNo" onclick="onCheck(this,'p2_childCare')"
-                                    <%= props.getProperty("p2_childCareNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_childCareNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formChildCare"/></td>
                         </tr>
                         <tr>
@@ -873,37 +874,37 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_2ndSmokeOk"
                                                     name="p2_2ndSmokeOk" onclick="onCheck(this,'p2_2ndSmoke')"
-                                    <%= props.getProperty("p2_2ndSmokeOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_2ndSmokeOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_2ndSmokeNo"
                                                     name="p2_2ndSmokeNo" onclick="onCheck(this,'p2_2ndSmoke')"
-                                    <%= props.getProperty("p2_2ndSmokeNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_2ndSmokeNo", "")))%>></td>
                             <td valign="top"><b><a href="javascript:showNotes()"
                                                    onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                    onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke1.formSecondHandSmoke"/>*</a></b></td>
                             <td valign="top"><input type="radio" id="p2_teethingOk"
                                                     name="p2_teethingOk" onclick="onCheck(this,'p2_teething')"
-                                    <%= props.getProperty("p2_teethingOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_teethingOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_teethingNo"
                                                     name="p2_teethingNo" onclick="onCheck(this,'p2_teething')"
-                                    <%= props.getProperty("p2_teethingNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_teethingNo", "")))%>></td>
                             <td valign="top"><b><a href="javascript:showNotes()"
                                                    onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                    onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_2.formTeething"/>*</a></b></td>
                             <td valign="top"><input type="radio" id="p2_altMedOk"
                                                     name="p2_altMedOk" onclick="onCheck(this,'p2_altMed')"
-                                    <%= props.getProperty("p2_altMedOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_altMedOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_altMedNo"
                                                     name="p2_altMedNo" onclick="onCheck(this,'p2_altMed')"
-                                    <%= props.getProperty("p2_altMedNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_altMedNo", "")))%>></td>
                             <td valign="top"><a href="javascript:showNotes()"
                                                 onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                 onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_2.formAltMed"/>*</a></td>
                             <td valign="top"><input type="radio" id="p2_pacifierOk"
                                                     name="p2_pacifierOk" onclick="onCheck(this,'p2_pacifier')"
-                                    <%= props.getProperty("p2_pacifierOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_pacifierOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_pacifierNo"
                                                     name="p2_pacifierNo" onclick="onCheck(this,'p2_pacifier')"
-                                    <%= props.getProperty("p2_pacifierNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_pacifierNo", "")))%>></td>
                             <td colspan="4" valign="top"><i><a
                                     href="javascript:showNotes()"
                                     onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
@@ -912,37 +913,37 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_tmpControlOk"
                                                     name="p2_tmpControlOk" onclick="onCheck(this,'p2_tmpControl')"
-                                    <%= props.getProperty("p2_tmpControlOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_tmpControlOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_tmpControlNo"
                                                     name="p2_tmpControlNo" onclick="onCheck(this,'p2_tmpControl')"
-                                    <%= props.getProperty("p2_tmpControlNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_tmpControlNo", "")))%>></td>
                             <td valign="top"><a href="javascript:showNotes()"
                                                 onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                 onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formTempCtrl"/>*</a></td>
                             <td valign="top"><input type="radio" id="p2_feverOk"
                                                     name="p2_feverOk" onclick="onCheck(this,'p2_fever')"
-                                    <%= props.getProperty("p2_feverOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_feverOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_feverNo"
                                                     name="p2_feverNo" onclick="onCheck(this,'p2_fever')"
-                                    <%= props.getProperty("p2_feverNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_feverNo", "")))%>></td>
                             <td valign="top"><a href="javascript:showNotes()"
                                                 onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                 onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formFever"/>*</a></td>
                             <td valign="top"><input type="radio" id="p2_sunExposureOk"
                                                     name="p2_sunExposureOk" onclick="onCheck(this,'p2_sunExposure')"
-                                    <%= props.getProperty("p2_sunExposureOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_sunExposureOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_sunExposureNo"
                                                     name="p2_sunExposureNo" onclick="onCheck(this,'p2_sunExposure')"
-                                    <%= props.getProperty("p2_sunExposureNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_sunExposureNo", "")))%>></td>
                             <td valign="top"><a href="javascript:showNotes()"
                                                 onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                                 onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formSunExposure"/>*</a></td>
                             <td valign="top"><input type="radio" id="p2_pesticidesOk"
                                                     name="p2_pesticidesOk" onclick="onCheck(this,'p2_pesticides')"
-                                    <%= props.getProperty("p2_pesticidesOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_pesticidesOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_pesticidesNo"
                                                     name="p2_pesticidesNo" onclick="onCheck(this,'p2_pesticides')"
-                                    <%= props.getProperty("p2_pesticidesNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_pesticidesNo", "")))%>></td>
                             <td colspan="4" valign="top"><i><a
                                     href="javascript:showNotes()"
                                     onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
@@ -978,7 +979,7 @@
                         <tr align="center">
                             <td colspan="3"><textarea id="p2_development2m"
                                                       name="p2_development2m" rows="5" cols="25"
-                                                      class="wide"><%= props.getProperty("p2_development2m", "") %></textarea>
+                                                      class="wide"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_development2m", "")))%></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -991,10 +992,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_eyesOk"
                                                     name="p2_eyesOk" onclick="onCheck(this,'p2_eyes')"
-                                    <%= props.getProperty("p2_eyesOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_eyesOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_eyesNo"
                                                     name="p2_eyesNo" onclick="onCheck(this,'p2_eyes')"
-                                    <%= props.getProperty("p2_eyesNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_eyesNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formEyesMove"/></td>
                         </tr>
                         <tr>
@@ -1006,10 +1007,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_soundsOk"
                                                     name="p2_soundsOk" onclick="onCheck(this,'p2_sounds')"
-                                    <%= props.getProperty("p2_soundsOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_soundsOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_soundsNo"
                                                     name="p2_soundsNo" onclick="onCheck(this,'p2_sounds')"
-                                    <%= props.getProperty("p2_soundsNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_soundsNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formSounds"/></td>
                         </tr>
                         <tr>
@@ -1021,10 +1022,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_headUpOk"
                                                     name="p2_headUpOk" onclick="onCheck(this,'p2_headUp')"
-                                    <%= props.getProperty("p2_headUpOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_headUpOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_headUpNo"
                                                     name="p2_headUpNo" onclick="onCheck(this,'p2_headUp')"
-                                    <%= props.getProperty("p2_headUpNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_headUpNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formHeadUp"/></td>
                         </tr>
                         <tr>
@@ -1036,10 +1037,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_cuddledOk"
                                                     name="p2_cuddledOk" onclick="onCheck(this,'p2_cuddled')"
-                                    <%= props.getProperty("p2_cuddledOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_cuddledOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_cuddledNo"
                                                     name="p2_cuddledNo" onclick="onCheck(this,'p2_cuddled')"
-                                    <%= props.getProperty("p2_cuddledNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_cuddledNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formCuddled"/></td>
                         </tr>
                         <tr>
@@ -1051,10 +1052,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_smilesOk"
                                                     name="p2_smilesOk" onclick="onCheck(this,'p2_smiles')"
-                                    <%= props.getProperty("p2_smilesOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_smilesOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_smilesNo"
                                                     name="p2_smilesNo" onclick="onCheck(this,'p2_smiles')"
-                                    <%= props.getProperty("p2_smilesNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_smilesNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formSmiles"/></td>
                         </tr>
                         <tr>
@@ -1067,11 +1068,11 @@
                             <td valign="top"><input type="radio"
                                                     id="p2_noParentsConcerns2mOk" name="p2_noParentsConcerns2mOk"
                                                     onclick="onCheck(this,'p2_noParentsConcerns2m')"
-                                    <%= props.getProperty("p2_noParentsConcerns2mOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_noParentsConcerns2mOk", "")))%>></td>
                             <td valign="top"><input type="radio"
                                                     id="p2_noParentsConcerns2mNo" name="p2_noParentsConcerns2mNo"
                                                     onclick="onCheck(this,'p2_noParentsConcerns2m')"
-                                    <%= props.getProperty("p2_noParentsConcerns2mNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_noParentsConcerns2mNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke1.formNoparentConcerns"/></td>
                         </tr>
                         <tr>
@@ -1087,7 +1088,7 @@
                         <tr align="center">
                             <td colspan="3"><textarea id="p2_development4m"
                                                       name="p2_development4m" rows="5" cols="25"
-                                                      class="wide"><%= props.getProperty("p2_development4m", "") %></textarea>
+                                                      class="wide"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_development4m", "")))%></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -1100,10 +1101,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_turnsHeadOk"
                                                     name="p2_turnsHeadOk" onclick="onCheck(this,'p2_turnsHead')"
-                                    <%= props.getProperty("p2_turnsHeadOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_turnsHeadOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_turnsHeadNo"
                                                     name="p2_turnsHeadNo" onclick="onCheck(this,'p2_turnsHead')"
-                                    <%= props.getProperty("p2_turnsHeadNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_turnsHeadNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formTurnsHead"/></td>
                         </tr>
                         <tr>
@@ -1115,10 +1116,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_laughsOk"
                                                     name="p2_laughsOk" onclick="onCheck(this,'p2_laughs')"
-                                    <%= props.getProperty("p2_laughsOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_laughsOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_laughsNo"
                                                     name="p2_laughsNo" onclick="onCheck(this,'p2_laughs')"
-                                    <%= props.getProperty("p2_laughsNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_laughsNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formLaughs"/></td>
                         </tr>
                         <tr>
@@ -1130,10 +1131,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_headSteadyOk"
                                                     name="p2_headSteadyOk" onclick="onCheck(this,'p2_headSteady')"
-                                    <%= props.getProperty("p2_headSteadyOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_headSteadyOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_headSteadyNo"
                                                     name="p2_headSteadyNo" onclick="onCheck(this,'p2_headSteady')"
-                                    <%= props.getProperty("p2_headSteadyNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_headSteadyNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formHeadSteady"/></td>
                         </tr>
                         <tr>
@@ -1145,10 +1146,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_graspOk"
                                                     name="p2_graspOk" onclick="onCheck(this,'p2_grasp')"
-                                    <%= props.getProperty("p2_graspOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_graspOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_graspNo"
                                                     name="p2_graspNo" onclick="onCheck(this,'p2_grasp')"
-                                    <%= props.getProperty("p2_graspNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_graspNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke2006_2.formGrasp"/></td>
                         </tr>
                         <tr>
@@ -1161,11 +1162,11 @@
                             <td valign="top"><input type="radio"
                                                     id="p2_noParentsConcerns4mOk" name="p2_noParentsConcerns4mOk"
                                                     onclick="onCheck(this,'p2_noParentsConcerns4m')"
-                                    <%= props.getProperty("p2_noParentsConcerns4mOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_noParentsConcerns4mOk", "")))%>></td>
                             <td valign="top"><input type="radio"
                                                     id="p2_noParentsConcerns4mNo" name="p2_noParentsConcerns4mNo"
                                                     onclick="onCheck(this,'p2_noParentsConcerns4m')"
-                                    <%= props.getProperty("p2_noParentsConcerns4mNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_noParentsConcerns4mNo", "")))%>></td>
                             <td valign="top"><fmt:message key="oscarEncounter.formRourke1.formNoparentConcerns"/></td>
                         </tr>
                         <tr>
@@ -1181,7 +1182,7 @@
                         <tr align="center">
                             <td colspan="3"><textarea id="p2_development6m"
                                                       name="p2_development6m" rows="5" cols="25"
-                                                      class="wide"><%= props.getProperty("p2_development6m", "") %></textarea>
+                                                      class="wide"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_development6m", "")))%></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -1194,10 +1195,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_movingObjOk"
                                                     name="p2_movingObjOk" onclick="onCheck(this,'p2_movingObj')"
-                                    <%= props.getProperty("p2_movingObjOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_movingObjOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_movingObjNo"
                                                     name="p2_movingObjNo" onclick="onCheck(this,'p2_movingObj')"
-                                    <%= props.getProperty("p2_movingObjNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_movingObjNo", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.formMovingObj"/></td>
                         </tr>
                         <tr>
@@ -1209,10 +1210,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_looksOk"
                                                     name="p2_looksOk" onclick="onCheck(this,'p2_looks')"
-                                    <%= props.getProperty("p2_looksOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_looksOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_looksNo"
                                                     name="p2_looksNo" onclick="onCheck(this,'p2_looks')"
-                                    <%= props.getProperty("p2_looksNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_looksNo", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.formLooks"/></td>
                         </tr>
                         <tr>
@@ -1224,10 +1225,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_babblesOk"
                                                     name="p2_babblesOk" onclick="onCheck(this,'p2_babbles')"
-                                    <%= props.getProperty("p2_babblesOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_babblesOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_babblesNo"
                                                     name="p2_babblesNo" onclick="onCheck(this,'p2_babbles')"
-                                    <%= props.getProperty("p2_babblesNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_babblesNo", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.formBabbles"/></td>
                         </tr>
                         <tr>
@@ -1238,10 +1239,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_rollsOk"
                                                     name="p2_rollsOk" onclick="onCheck(this,'p2_rolls')"
-                                    <%= props.getProperty("p2_rollsOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_rollsOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_rollsNo"
                                                     name="p2_rollsNo" onclick="onCheck(this,'p2_rolls')"
-                                    <%= props.getProperty("p2_rollsNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_rollsNo", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.formRolls"/></td>
                         </tr>
                         <tr>
@@ -1252,10 +1253,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_sitsOk"
                                                     name="p2_sitsOk" onclick="onCheck(this,'p2_sits')"
-                                    <%= props.getProperty("p2_sitsOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_sitsOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_sitsNo"
                                                     name="p2_sitsNo" onclick="onCheck(this,'p2_sits')"
-                                    <%= props.getProperty("p2_sitsNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_sitsNo", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.formSits"/></td>
                         </tr>
                         <tr>
@@ -1266,10 +1267,10 @@
                         <tr>
                             <td valign="top"><input type="radio" id="p2_handToMouthOk"
                                                     name="p2_handToMouthOk" onclick="onCheck(this,'p2_handToMouth')"
-                                    <%= props.getProperty("p2_handToMouthOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_handToMouthOk", "")))%>></td>
                             <td valign="top"><input type="radio" id="p2_handToMouthNo"
                                                     name="p2_handToMouthNo" onclick="onCheck(this,'p2_handToMouth')"
-                                    <%= props.getProperty("p2_handToMouthNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_handToMouthNo", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke2006_2.formHandToMouth"/></td>
                         </tr>
                         <tr>
@@ -1281,11 +1282,11 @@
                             <td valign="top"><input type="radio"
                                                     id="p2_noParentsConcerns6mOk" name="p2_noParentsConcerns6mOk"
                                                     onclick="onCheck(this,'p2_noParentsConcerns6m')"
-                                    <%= props.getProperty("p2_noParentsConcerns6mOk", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_noParentsConcerns6mOk", "")))%>></td>
                             <td valign="top"><input type="radio"
                                                     id="p2_noParentsConcerns6mNo" name="p2_noParentsConcerns6mNo"
                                                     onclick="onCheck(this,'p2_noParentsConcerns6m')"
-                                    <%= props.getProperty("p2_noParentsConcerns6mNo", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_noParentsConcerns6mNo", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke1.formNoparentConcerns"/></td>
                         </tr>
                         <tr>
@@ -1309,12 +1310,12 @@
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p2_fontanelles2m"
-                                    <%= props.getProperty("p2_fontanelles2m", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("p2_fontanelles2m", "")))%>></td>
                             <td><fmt:message key="oscarEncounter.formRourke1.formFontanelles"/></td>
                         </tr>
                         <tr>
                             <td valign="top"><input type="checkbox" class="chk"
-                                                    name="p2_eyes2m" <%= props.getProperty("p2_eyes2m", "") %>></td>
+                                                    name="p2_eyes2m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_eyes2m", "")))%>></td>
                             <td
                             <i><a href="javascript:showNotes()" onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                                   onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke1.formRedReflex"/>*</a></i>
@@ -1322,32 +1323,32 @@
             </tr>
             <tr>
                 <td valign="top"><input type="checkbox" class="chk"
-                                        name="p2_corneal2m" <%= props.getProperty("p2_corneal2m", "") %>></td>
+                                        name="p2_corneal2m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_corneal2m", "")))%>></td>
                 <td><i><a href="javascript:showNotes()"
                           onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                           onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formCornealReflex"/>*</a></i></td>
             </tr>
             <tr>
                 <td valign="top"><input type="checkbox" class="chk"
-                                        name="p2_hearing2m" <%= props.getProperty("p2_hearing2m", "") %>></td>
+                                        name="p2_hearing2m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_hearing2m", "")))%>></td>
                 <td><i><a href="javascript:showNotes()"
                           onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                           onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formHearingInquiry"/>*</a></i></td>
             </tr>
             <tr>
                 <td valign="top"><input type="checkbox" class="chk"
-                                        name="p2_heart2m" <%= props.getProperty("p2_heart2m", "") %>></td>
+                                        name="p2_heart2m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_heart2m", "")))%>></td>
                 <td><fmt:message key="oscarEncounter.formRourke2006_2.formHeart"/></td>
             </tr>
             <tr>
                 <td valign="top"><input type="checkbox" class="chk"
-                                        name="p2_hips2m" <%= props.getProperty("p2_hips2m", "") %>></td>
+                                        name="p2_hips2m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_hips2m", "")))%>></td>
                 <td><i><fmt:message key="oscarEncounter.formRourke2006_2.formHips"/></i></td>
             </tr>
             <tr>
                 <td valign="top"><input type="checkbox" class="chk"
                                         name="p2_muscleTone2m"
-                        <%= props.getProperty("p2_muscleTone2m", "") %>></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("p2_muscleTone2m", "")))%>></td>
                 <td><a href="javascript:showNotes()"
                        onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                        onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formMuscleTone"/>*</a></td>
@@ -1361,34 +1362,34 @@
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
-                                            name="p2_eyes4m" <%= props.getProperty("p2_eyes4m", "") %>></td>
+                                            name="p2_eyes4m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_eyes4m", "")))%>></td>
                     <td><i><a href="javascript:showNotes()"
                               onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke1.formRedReflex"/>*</a></i></td>
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
-                                            name="p2_corneal4m" <%= props.getProperty("p2_corneal4m", "") %>></td>
+                                            name="p2_corneal4m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_corneal4m", "")))%>></td>
                     <td><i><a href="javascript:showNotes()"
                               onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formCornealReflex"/>*</a></i></td>
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
-                                            name="p2_hearing4m" <%= props.getProperty("p2_hearing4m", "") %>></td>
+                                            name="p2_hearing4m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_hearing4m", "")))%>></td>
                     <td><i><a href="javascript:showNotes()"
                               onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formHearingInquiry"/>*</a></i></td>
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
-                                            name="p2_hips4m" <%= props.getProperty("p2_hips4m", "") %>></td>
+                                            name="p2_hips4m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_hips4m", "")))%>></td>
                     <td><i><fmt:message key="oscarEncounter.formRourke2006_2.formHips"/></i></td>
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
                                             name="p2_muscleTone4m"
-                            <%= props.getProperty("p2_muscleTone4m", "") %>></td>
+                            <%=Encode.forHtml(String.valueOf(props.getProperty("p2_muscleTone4m", "")))%>></td>
                     <td><a href="javascript:showNotes()"
                            onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formMuscleTone"/>*</a></td>
@@ -1403,39 +1404,39 @@
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
                                             name="p2_fontanelles6m"
-                            <%= props.getProperty("p2_fontanelles6m", "") %>></td>
+                            <%=Encode.forHtml(String.valueOf(props.getProperty("p2_fontanelles6m", "")))%>></td>
                     <td><fmt:message key="oscarEncounter.formRourke1.formFontanelles"/></td>
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
-                                            name="p2_eyes6m" <%= props.getProperty("p2_eyes6m", "") %>></td>
+                                            name="p2_eyes6m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_eyes6m", "")))%>></td>
                     <td><i><a href="javascript:showNotes()"
                               onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke1.formRedReflex"/>*</a></i></td>
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
-                                            name="p2_corneal6m" <%= props.getProperty("p2_corneal6m", "") %>></td>
+                                            name="p2_corneal6m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_corneal6m", "")))%>></td>
                     <td><i><a href="javascript:showNotes()"
                               onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_2.formCornealReflex"/>*</a></i></td>
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
-                                            name="p2_hearing6m" <%= props.getProperty("p2_hearing6m", "") %>></td>
+                                            name="p2_hearing6m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_hearing6m", "")))%>></td>
                     <td><i><a href="javascript:showNotes()"
                               onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                               onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formHearingInquiry"/>*</a></i></td>
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
-                                            name="p2_hips6m" <%= props.getProperty("p2_hips6m", "") %>></td>
+                                            name="p2_hips6m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_hips6m", "")))%>></td>
                     <td><i><fmt:message key="oscarEncounter.formRourke2006_2.formHips"/></i></td>
                 </tr>
                 <tr>
                     <td valign="top"><input type="checkbox" class="chk"
                                             name="p2_muscleTone6m"
-                            <%= props.getProperty("p2_muscleTone6m", "") %>></td>
+                            <%=Encode.forHtml(String.valueOf(props.getProperty("p2_muscleTone6m", "")))%>></td>
                     <td><a href="javascript:showNotes()"
                            onMouseOver="popLayer('<fmt:message key="oscarEncounter.formRourke2006.footnote1"/>')"
                            onMouseOut="hideLayer()"><fmt:message key="oscarEncounter.formRourke2006_1.formMuscleTone"/>*</a></td>
@@ -1447,12 +1448,12 @@
             <td class="column"><a><fmt:message key="oscarEncounter.formRourke1.msgProblemsAndPlans"/></a></td>
             <td colspan="3" valign="top"><textarea id="p2_problems2m"
                                                    name="p2_problems2m" rows="5" cols="25"
-                                                   class="wide"><%= props.getProperty("p2_problems2m", "") %></textarea>
+                                                   class="wide"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_problems2m", "")))%></textarea>
             </td>
             </td>
             <td colspan="3" valign="top"><textarea id="p2_problems4m"
                                                    name="p2_problems4m" rows="5" cols="25"
-                                                   class="wide"><%= props.getProperty("p2_problems4m", "") %></textarea>
+                                                   class="wide"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_problems4m", "")))%></textarea>
             </td>
             </td>
             <td colspan="3" valign="top">
@@ -1460,12 +1461,12 @@
                     <tr align="center">
                         <td colspan="2"><textarea id="p2_problems6m"
                                                   name="p2_problems6m" rows="5" cols="25"
-                                                  class="wide"><%= props.getProperty("p2_problems6m", "") %></textarea>
+                                                  class="wide"><%=Encode.forHtml(String.valueOf(props.getProperty("p2_problems6m", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top"><input type="checkbox" class="chk"
-                                                name="p2_tb6m" <%= props.getProperty("p2_tb6m", "") %>></td>
+                                                name="p2_tb6m" <%=Encode.forHtml(String.valueOf(props.getProperty("p2_tb6m", "")))%>></td>
                         <td><fmt:message key="oscarEncounter.formRourke2006_2.formTB"/></td>
                     </tr>
                 </table>
@@ -1488,7 +1489,7 @@
                     <tr>
                         <td><input type="checkbox" class="chk"
                                    name="p2_hepatitisVaccine6m"
-                                <%= props.getProperty("p2_hepatitisVaccine6m", "") %>></td>
+                                <%=Encode.forHtml(String.valueOf(props.getProperty("p2_hepatitisVaccine6m", "")))%>></td>
                         <td><fmt:message key="oscarEncounter.formRourke2006_1.msgImmunizationHepatitisVaccine"/></td>
                     </tr>
                 </table>
@@ -1498,13 +1499,13 @@
             <td class="column"><a><fmt:message key="oscarEncounter.formRourke1.formSignature"/></a></td>
             <td colspan="3"><input type="text" class="wide"
                                    style="width: 100%" name="p2_signature2m"
-                                   value="<%= props.getProperty("p2_signature2m", "") %>"/></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_signature2m", "")))%>"/></td>
             <td colspan="3"><input type="text" class="wide" maxlength="42"
                                    style="width: 100%" name="p2_signature4m"
-                                   value="<%= props.getProperty("p2_signature4m", "") %>"/></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_signature4m", "")))%>"/></td>
             <td colspan="3"><input type="text" class="wide"
                                    style="width: 100%" name="p2_signature6m"
-                                   value="<%= props.getProperty("p2_signature6m", "") %>"/></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p2_signature6m", "")))%>"/></td>
         </tr>
 
         </table>
@@ -1529,17 +1530,17 @@
                 </td>
                 <td align="center" width="100%">
                     <% if (formId > 0) { %> <a name="length" href="#"
-                                               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Growth+Graph1&__cfgfile=<%=growthCharts[0]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');return false;">
+                                               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Growth+Graph1&__cfgfile=<%=Encode.forJavaScript(String.valueOf(growthCharts[0]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');return false;">
                     <fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/></a><br>
                     <a name="headCirc" href="#"
-                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Head+Circumference&__cfgfile=<%=growthCharts[1]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');return false;">
+                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Head+Circumference&__cfgfile=<%=Encode.forJavaScript(String.valueOf(growthCharts[1]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');return false;">
                         <fmt:message key="oscarEncounter.formRourke1.btnGraphHead"/></a> <% } else { %>
                     &nbsp; <% } %>
                 </td>
                 <td nowrap="true"><a
-                        href="form/formrourke2006p1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:message key="oscarEncounter.formRourke2006.Pg1"/></a>&nbsp;|&nbsp; <a><fmt:message key="oscarEncounter.formRourke2006.Pg2"/></a>&nbsp;|&nbsp; <a
-                        href="form/formrourke2006p3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:message key="oscarEncounter.formRourke2006.Pg3"/></a>&nbsp;|&nbsp; <a
-                        href="form/formrourke2006p4.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>"><fmt:message key="oscarEncounter.formRourke2006.Pg4"/></a></td>
+                        href="form/formrourke2006p1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke2006.Pg1"/></a>&nbsp;|&nbsp; <a><fmt:message key="oscarEncounter.formRourke2006.Pg2"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourke2006p3.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke2006.Pg3"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourke2006p4.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke2006.Pg4"/></a></td>
             </tr>
         </table>
         <p style="font-size: 8pt;"><fmt:message key="oscarEncounter.formRourke2006.footer"/><br/>

@@ -47,6 +47,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.managers.MeasurementManager" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String groupName = session.getAttribute("groupName").toString();
@@ -98,7 +99,7 @@
 
     <div class="alert alert-success alert-block">
         <h4>Success!</h4>
-        You have successfully <%=state%> the decision support!
+        You have successfully <%=Encode.forHtml(String.valueOf(state))%> the decision support!
 
         <div style="width:100%;text-align:right;margin-top:10px"><a class="btn" onclick="window.close();">Done</a> <a
                 href="SetupGroupList.do" class="btn btn-info">Modify another group</a></div>

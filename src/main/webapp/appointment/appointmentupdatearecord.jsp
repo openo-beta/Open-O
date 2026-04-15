@@ -51,6 +51,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     AppointmentArchiveDao appointmentArchiveDao = (AppointmentArchiveDao) SpringUtils.getBean(AppointmentArchiveDao.class);
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
@@ -133,7 +134,7 @@
             <%
                 if(!(request.getParameter("printReceipt")==null) && request.getParameter("printReceipt").equals("1")) {
             %>
-            popupPage(350, 750, 'printappointment.jsp?appointment_no=<%=request.getParameter("appointment_no")%>');
+            popupPage(350, 750, 'printappointment.jsp?appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>');
             <%}%>
             self.opener.refresh();
             self.close();

@@ -27,6 +27,7 @@
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -63,7 +64,7 @@
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><%=transactionType%>
+        <title><%=Encode.forHtml(String.valueOf(transactionType))%>
         </title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
@@ -84,7 +85,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -96,7 +97,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td class="Header"><%=transactionType%>
+                        <td class="Header"><%=Encode.forHtml(String.valueOf(transactionType))%>
                         </td>
                     </tr>
                 </table>
@@ -121,7 +122,7 @@
                     <tr>
                         <td style="color: red;">
                             <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddDepartment.msgDepartmentAdded">
-                                <fmt:param value="<%=added%>" />
+                                <fmt:param value="<%=Encode.forHtmlAttribute(String.valueOf(added))%>" />
                             </fmt:message>
                         </td>
                     </tr>
@@ -131,7 +132,7 @@
 
                             <form action="${pageContext.request.contextPath}/oscarEncounter/AddDepartment.do" method="post">
                             <table>
-                                    <input type="hidden" name="id" id="id" value="<%=id%>"/>
+                                    <input type="hidden" name="id" id="id" value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>"/>
                                 <tr>
                                     <td>Name</td>
                                     <td><input type="text" name="name"/></td>
@@ -145,8 +146,8 @@
 
                     <tr>
                         <td colspan="6">
-                            <input type="hidden" name="whichType" value="<%=whichType%>"/>
-                            <input type="submit" name="transType" value="<%=transactionType%>"/>
+                            <input type="hidden" name="whichType" value="<%=Encode.forHtmlAttribute(String.valueOf(whichType))%>"/>
+                            <input type="submit" name="transType" value="<%=Encode.forHtmlAttribute(String.valueOf(transactionType))%>"/>
                         </td>
                     </tr>
                 </table>

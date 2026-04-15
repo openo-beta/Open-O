@@ -27,6 +27,7 @@
 <%@page import="ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.openo.prescript.util.RxUtil" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%!
@@ -847,25 +848,25 @@
 
         function calcSmkSYear() {
             if (isNumber(document.getElementsByName("smokingstartage_value")[0].value)) {
-                document.getElementsByName("smokingstartyear_value")[0].value = <%=demographicBirthYear%> +parseInt(document.getElementsByName("smokingstartage_value")[0].value);
+                document.getElementsByName("smokingstartyear_value")[0].value = <%=Encode.forJavaScript(String.valueOf(demographicBirthYear))%> +parseInt(document.getElementsByName("smokingstartage_value")[0].value);
             }
         }
 
         function calcSmkSAge() {
             if (isNumber(document.getElementsByName("smokingstartyear_value")[0].value)) {
-                document.getElementsByName("smokingstartage_value")[0].value = parseInt(document.getElementsByName("smokingstartyear_value")[0].value) - <%=demographicBirthYear%>;
+                document.getElementsByName("smokingstartage_value")[0].value = parseInt(document.getElementsByName("smokingstartyear_value")[0].value) - <%=Encode.forJavaScript(String.valueOf(demographicBirthYear))%>;
             }
         }
 
         function calcSmkCYear() {
             if (isNumber(document.getElementsByName("smokingcessage_value")[0].value)) {
-                document.getElementsByName("smokingcessyear_value")[0].value = <%=demographicBirthYear%> +parseInt(document.getElementsByName("smokingcessage_value")[0].value);
+                document.getElementsByName("smokingcessyear_value")[0].value = <%=Encode.forJavaScript(String.valueOf(demographicBirthYear))%> +parseInt(document.getElementsByName("smokingcessage_value")[0].value);
             }
         }
 
         function calcSmkCAge() {
             if (isNumber(document.getElementsByName("smokingcessyear_value")[0].value)) {
-                document.getElementsByName("smokingcessage_value")[0].value = parseInt(document.getElementsByName("smokingcessyear_value")[0].value) - <%=demographicBirthYear%>;
+                document.getElementsByName("smokingcessage_value")[0].value = parseInt(document.getElementsByName("smokingcessyear_value")[0].value) - <%=Encode.forJavaScript(String.valueOf(demographicBirthYear))%>;
             }
         }
 
@@ -896,51 +897,51 @@
 <% } %>
 
 <form method="post" action="">
-    <input type="hidden" name="demographic_no" value="<%=demographic_no%>"/>
+    <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
     <input type="hidden" name="selfsubmit" value="1"/>
     <table>
         <tr>
-            <th colspan="8"><%=demographicName%>
+            <th colspan="8"><%=Encode.forHtml(String.valueOf(demographicName))%>
             </th>
         </tr>
         <tr>
             <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=project%>/CaseManagementEntry.do?method=issuehistory&demographicNo=<%=demographic_no%>&issueIds=38'); return false;">Reminders:</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/CaseManagementEntry.do?method=issuehistory&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&issueIds=38'); return false;">Reminders:</a>
             </td>
-            <td colspan="7"><%=remindersList%>
-            </td>
-        </tr>
-        <tr>
-            <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=project%>/oscarRx/choosePatient.do?providerNo=999998&demographicNo=<%=demographic_no%>&pharmaList=true'); return false;">Pharmacy:</a>
-            </td>
-            <td colspan="7"><%=pharmacyName%>
+            <td colspan="7"><%=Encode.forHtml(String.valueOf(remindersList))%>
             </td>
         </tr>
         <tr>
             <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=project%>/oscarRx/showAllergy.do?demographicNo=<%=demographic_no%>'); return false;">Allergies:</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/choosePatient.do?providerNo=999998&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&pharmaList=true'); return false;">Pharmacy:</a>
             </td>
-            <td colspan="7"><%=allergiesList%>
-            </td>
-        </tr>
-        <tr>
-            <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=project%>/oscarRx/choosePatient.do?providerNo=<%=curUser_no%>&demographicNo=<%=demographic_no%>'); return false;">Medications:</a>
-            </td>
-            <td colspan="7"><%=medicationsList%>
+            <td colspan="7"><%=Encode.forHtml(String.valueOf(pharmacyName))%>
             </td>
         </tr>
         <tr>
             <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=project%>/oscarPrevention/index.jsp?demographic_no=<%=demographic_no%>'); return false;">Preventions:</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Allergies:</a>
             </td>
-            <td colspan="7"><%=preventionsList%>
+            <td colspan="7"><%=Encode.forHtml(String.valueOf(allergiesList))%>
+            </td>
+        </tr>
+        <tr>
+            <td class="rowheader"><a href="#"
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Medications:</a>
+            </td>
+            <td colspan="7"><%=Encode.forHtml(String.valueOf(medicationsList))%>
+            </td>
+        </tr>
+        <tr>
+            <td class="rowheader"><a href="#"
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarPrevention/index.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Preventions:</a>
+            </td>
+            <td colspan="7"><%=Encode.forHtml(String.valueOf(preventionsList))%>
             </td>
         </tr>
         <tr>
             <td class="rowheader">Other:</td>
-            <td colspan="7"><%=dxCodeList%>
+            <td colspan="7"><%=Encode.forHtml(String.valueOf(dxCodeList))%>
             </td>
         </tr>
 
@@ -959,77 +960,77 @@
             <td class="rowheader2">Height:</td>
             <td colspan="3"><input type="text" name="ht_value" size="5" onchange="calcBMI()"/> cm</td>
             <td><input type="text" name="ht_comment"/></td>
-            <td><%=msmtValueHT%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueHT))%>
             </td>
-            <td><%=msmtDateHT%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateHT))%>
             </td>
-            <td><p><%=msmtCommentHT%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentHT))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Weight:</td>
             <td colspan="3"><input type="text" name="wt_value" size="5" onchange="calcBMI()"/> kg</td>
             <td><input type="text" name="wt_comment"/></td>
-            <td><%=msmtValueWT%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueWT))%>
             </td>
-            <td><%=msmtDateWT%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateWT))%>
             </td>
-            <td><p><%=msmtCommentWT%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentWT))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">BMI:</td>
             <td colspan="3"><input type="text" name="bmi_value" size="5"/></td>
             <td><input type="text" name="bmi_comment"/></td>
-            <td><%=msmtValueBMI%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueBMI))%>
             </td>
-            <td><%=msmtDateBMI%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateBMI))%>
             </td>
-            <td><p><%=msmtCommentBMI%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentBMI))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Head Circ:</td>
             <td colspan="3"><input type="text" name="head_value" size="5"/> cm</td>
             <td><input type="text" name="head_comment"/></td>
-            <td><%=msmtValueHEAD%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueHEAD))%>
             </td>
-            <td><%=msmtDateHEAD%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateHEAD))%>
             </td>
-            <td><p><%=msmtCommentHEAD%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentHEAD))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Waist:</td>
             <td colspan="3"><input type="text" name="waist_value" size="5" onchange="calcWHR()"/> cm</td>
             <td><input type="text" name="waist_comment"/></td>
-            <td><%=msmtValueWAIST%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueWAIST))%>
             </td>
-            <td><%=msmtDateWAIST%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateWAIST))%>
             </td>
-            <td><p><%=msmtCommentWAIST%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentWAIST))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Hip:</td>
             <td colspan="3"><input type="text" name="hip_value" size="5" onchange="calcWHR()"/> cm</td>
             <td><input type="text" name="hip_comment"/></td>
-            <td><%=msmtValueHIP%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueHIP))%>
             </td>
-            <td><%=msmtDateHIP%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateHIP))%>
             </td>
-            <td><p><%=msmtCommentHIP%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentHIP))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Waist:Hip Ratio:</td>
             <td colspan="3"><input type="text" name="whr_value" size="5"/></td>
             <td><input type="text" name="whr_comment"/></td>
-            <td><%=msmtValueWHR%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueWHR))%>
             </td>
-            <td><%=msmtDateWHR%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateWHR))%>
             </td>
-            <td><p><%=msmtCommentWHR%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentWHR))%>
             </p></td>
         </tr>
         <tr>
@@ -1038,11 +1039,11 @@
             <td><input type="radio" name="bp_instruction" value="BP Tru">BP Tru</input></td>
             <td><input type="radio" name="bp_instruction" value="Sitting" checked>Sitting</input></td>
             <td rowspan="2"><input type="text" name="bp_comment"/></td>
-            <td rowspan="2"><%=msmtValueBP%>
+            <td rowspan="2"><%=Encode.forHtml(String.valueOf(msmtValueBP))%>
             </td>
-            <td rowspan="2"><%=msmtDateBP%>
+            <td rowspan="2"><%=Encode.forHtml(String.valueOf(msmtDateBP))%>
             </td>
-            <td rowspan="2"><p><%=msmtCommentBP%>
+            <td rowspan="2"><p><%=Encode.forHtml(String.valueOf(msmtCommentBP))%>
             </p></td>
         </tr>
         <tr>
@@ -1054,44 +1055,44 @@
             <td class="rowheader2">Pulse:</td>
             <td colspan="3"><input type="text" name="pulse_value" size="5"/> bpm</td>
             <td><input type="text" name="pulse_comment"/></td>
-            <td><%=msmtValuePULSE%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValuePULSE))%>
             </td>
-            <td><%=msmtDatePULSE%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDatePULSE))%>
             </td>
-            <td><p><%=msmtCommentPULSE%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentPULSE))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Resp:</td>
             <td colspan="3"><input type="text" name="resp_value" size="5"/> bpm</td>
             <td><input type="text" name="resp_comment"/></td>
-            <td><%=msmtValueRESP%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueRESP))%>
             </td>
-            <td><%=msmtDateRESP%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateRESP))%>
             </td>
-            <td><p><%=msmtCommentRESP%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentRESP))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Temp:</td>
             <td colspan="3"><input type="text" name="temp_value" size="5"/> &deg;C</td>
             <td><input type="text" name="temp_comment"/></td>
-            <td><%=msmtValueTEMP%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueTEMP))%>
             </td>
-            <td><%=msmtDateTEMP%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateTEMP))%>
             </td>
-            <td><p><%=msmtCommentTEMP%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentTEMP))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">O2 Sats:</td>
             <td colspan="3"><input type="text" name="o2_value" size="5"/></td>
             <td><input type="text" name="o2_comment"/></td>
-            <td><%=msmtValueO2%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueO2))%>
             </td>
-            <td><%=msmtDateO2%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateO2))%>
             </td>
-            <td><p><%=msmtCommentO2%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentO2))%>
             </p></td>
         </tr>
         <tr>
@@ -1101,11 +1102,11 @@
                                                                                                           value="No">No</input>
             </td>
             <td><input type="text" name="feet_sensation_comment"/></td>
-            <td><%=msmtValueFEETsensation%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueFEETsensation))%>
             </td>
-            <td><%=msmtDateFEETsensation%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateFEETsensation))%>
             </td>
-            <td><p><%=msmtCommentFEETsensation%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentFEETsensation))%>
             </p></td>
         </tr>
         <tr>
@@ -1115,11 +1116,11 @@
                                                                                                           value="No">No</input>
             </td>
             <td><input type="text" name="feet_vibration_comment"/></td>
-            <td><%=msmtValueFEETvibration%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueFEETvibration))%>
             </td>
-            <td><%=msmtDateFEETvibration%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateFEETvibration))%>
             </td>
-            <td><p><%=msmtCommentFEETvibration%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentFEETvibration))%>
             </p></td>
         </tr>
         <tr>
@@ -1129,11 +1130,11 @@
                                                                                                          value="No">No</input>
             </td>
             <td><input type="text" name="feet_reflexes_comment"/></td>
-            <td><%=msmtValueFEETreflexes%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueFEETreflexes))%>
             </td>
-            <td><%=msmtDateFEETreflexes%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateFEETreflexes))%>
             </td>
-            <td><p><%=msmtCommentFEETreflexes%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentFEETreflexes))%>
             </p></td>
         </tr>
         <tr>
@@ -1143,11 +1144,11 @@
                                                                                                        value="No">No</input>
             </td>
             <td><input type="text" name="feet_pulses_comment"/></td>
-            <td><%=msmtValueFEETpulses%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueFEETpulses))%>
             </td>
-            <td><%=msmtDateFEETpulses%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateFEETpulses))%>
             </td>
-            <td><p><%=msmtCommentFEETpulses%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentFEETpulses))%>
             </p></td>
         </tr>
         <tr>
@@ -1157,33 +1158,33 @@
                                                                                                           value="No">No</input>
             </td>
             <td><input type="text" name="feet_infection_comment"/></td>
-            <td><%=msmtValueFEETinfection%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueFEETinfection))%>
             </td>
-            <td><%=msmtDateFEETinfection%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateFEETinfection))%>
             </td>
-            <td><p><%=msmtCommentFEETinfection%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentFEETinfection))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Exercise:</td>
             <td colspan="3"><input type="text" name="exercise_value" size="5"/> min/wk</td>
             <td><input type="text" name="exercise_comment"/></td>
-            <td><%=msmtValueEXERCISE%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueEXERCISE))%>
             </td>
-            <td><%=msmtDateEXERCISE%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateEXERCISE))%>
             </td>
-            <td><p><%=msmtCommentEXERCISE%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentEXERCISE))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Drinks per Week:</td>
             <td colspan="3"><input type="text" name="drinks_value" size="5"/> drinks/wk</td>
             <td><input type="text" name="drinks_comment"/></td>
-            <td><%=msmtValueDRINKS%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueDRINKS))%>
             </td>
-            <td><%=msmtDateDRINKS%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateDRINKS))%>
             </td>
-            <td><p><%=msmtCommentDRINKS%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentDRINKS))%>
             </p></td>
         </tr>
         <tr>
@@ -1192,11 +1193,11 @@
             <td><input type="radio" name="smoking_value" value="Former">Former</input></td>
             <td><input type="radio" name="smoking_value" value="Never">Never</input></td>
             <td><input type="text" name="smoking_comment"/></td>
-            <td><%=msmtValueSMK%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueSMK))%>
             </td>
-            <td><%=msmtDateSMK%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateSMK))%>
             </td>
-            <td><p><%=msmtCommentSMK%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentSMK))%>
             </p></td>
         </tr>
         <tr>
@@ -1205,11 +1206,11 @@
             <td><input type="radio" name="smokingrecent_value" value="Last 6 Months">Last 6 Months</input></td>
             <td><input type="radio" name="smokingrecent_value" value="None">None</input></td>
             <td><input type="text" name="smokingrecent_comment"/></td>
-            <td><%=msmtValueSmkR%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueSmkR))%>
             </td>
-            <td><%=msmtDateSmkR%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateSmkR))%>
             </td>
-            <td><%=msmtCommentSmkR%>
+            <td><%=Encode.forHtml(String.valueOf(msmtCommentSmkR))%>
             </td>
         </tr>
         <tr>
@@ -1220,11 +1221,11 @@
                                    onchange="calcSmkSAge(); calcPYHX()"/> (year)
             </td>
             <td><input type="text" name="smokingstart_comment"/></td>
-            <td><%=msmtValueSmkS%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueSmkS))%>
             </td>
-            <td><%=msmtDateSmkS%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateSmkS))%>
             </td>
-            <td><p><%=msmtCommentSmkS%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentSmkS))%>
             </p></td>
         </tr>
         <tr>
@@ -1235,11 +1236,11 @@
                                    onchange="calcSmkCAge(); calcPYHX()"/> (year)
             </td>
             <td><input type="text" name="smokingcess_comment"/></td>
-            <td><%=msmtValueSmkC%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueSmkC))%>
             </td>
-            <td><%=msmtDateSmkC%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateSmkC))%>
             </td>
-            <td><p><%=msmtCommentSmkC%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentSmkC))%>
             </p></td>
         </tr>
         <tr>
@@ -1255,22 +1256,22 @@
                 <input type="radio" name="smokingpks_value" value="4" onchange="calcPYHX()">4</input>
             </td>
             <td><input type="text" name="smokingpks_comment"/></td>
-            <td><%=msmtValueSmkD%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueSmkD))%>
             </td>
-            <td><%=msmtDateSmkD%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateSmkD))%>
             </td>
-            <td><p><%=msmtCommentSmkD%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentSmkD))%>
             </p></td>
         </tr>
         <tr>
             <td class="rowheader2">Pack Years:</td>
             <td colspan="3"><input type="text" name="smokingpyhx_value" size="5"/> pyhx</td>
             <td><input type="text" name="smokingpyhx_comment"/></td>
-            <td><%=msmtValueSmkPY%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueSmkPY))%>
             </td>
-            <td><%=msmtDateSmkPY%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateSmkPY))%>
             </td>
-            <td><%=msmtCommentSmkPY%>
+            <td><%=Encode.forHtml(String.valueOf(msmtCommentSmkPY))%>
             </td>
         </tr>
         <tr>
@@ -1280,11 +1281,11 @@
                                                                                                           value="No">No</input>
             </td>
             <td><input type="text" name="smokingadvised_comment"/></td>
-            <td><%=msmtValueSmkA%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueSmkA))%>
             </td>
-            <td><%=msmtDateSmkA%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateSmkA))%>
             </td>
-            <td><%=msmtCommentSmkA%>
+            <td><%=Encode.forHtml(String.valueOf(msmtCommentSmkA))%>
             </td>
         </tr>
         <tr>
@@ -1294,11 +1295,11 @@
                                                                                                        value="No">No</input>
             </td>
             <td><input type="text" name="smokingquit_comment"/></td>
-            <td><%=msmtValueSmkQ%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueSmkQ))%>
             </td>
-            <td><%=msmtDateSmkQ%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateSmkQ))%>
             </td>
-            <td><p><%=msmtCommentSmkQ%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentSmkQ))%>
             </p></td>
         </tr>
 
@@ -1309,11 +1310,11 @@
                                                                                                            value="No">No</input>
             </td>
             <td><input type="text" name="smokingfollowup_comment"/></td>
-            <td><%=msmtValueSmkF%>
+            <td><%=Encode.forHtml(String.valueOf(msmtValueSmkF))%>
             </td>
-            <td><%=msmtDateSmkF%>
+            <td><%=Encode.forHtml(String.valueOf(msmtDateSmkF))%>
             </td>
-            <td><p><%=msmtCommentSmkF%>
+            <td><p><%=Encode.forHtml(String.valueOf(msmtCommentSmkF))%>
             </p></td>
         </tr>
 

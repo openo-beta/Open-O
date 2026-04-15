@@ -28,6 +28,7 @@
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingCodeImpl" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     //
     //int serviceCodeLen = 5;
@@ -174,7 +175,7 @@
                 document.forms[1].service_code.focus();
                 document.forms[1].service_code.select();
                 <% if ( prop.getProperty("gstFlag") != null ) {%>
-                if ("<%=prop.getProperty("gstFlag")%>" == "1") {
+                if ("<%=Encode.forJavaScript(String.valueOf(prop.getProperty("gstFlag")))%>" == "1") {
                     document.getElementById("gstCheck").checked = true;
                     document.getElementById("gstFlag").value = 1;
                 } else {
@@ -302,7 +303,7 @@
                                 MiscUtils.getLogger().warn("NULL value set for a private billing code description (code is '" + strCode + "')");
                             }
                     %>
-                    <option value="<%=strCode%>"><%=(strCode + "| " + strDesc)%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(strCode))%>"><%=Encode.forHtml(String.valueOf((strCode + "| " + strDesc)))%>
                     </option>
                     <%
                         }
@@ -317,14 +318,14 @@
         <div class="well">
             <form method="post" name="baseurl" action="billingONEditPrivateCode.jsp">
 
-                <div class="alert alert-<%=alert%>">
-                    <%=msg%>
+                <div class="alert alert-<%=Encode.forHtmlAttribute(String.valueOf(alert))%>">
+                    <%=Encode.forHtml(String.valueOf(msg))%>
                 </div>
 
                 Private Code_ <small>(e.g. O001A)</small><br>
                 <div class="input-append">
                     <input type="text" name="service_code"
-                           value="<%=prop.getProperty("service_code", "?").substring(1)%>" class="span2" maxlength='10'
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("service_code", "?").substring(1)))%>" class="span2" maxlength='10'
                            onblur="upCaseCtrl(this)" required/>
                     <button type="submit" name="submit" class="btn btn-primary" onclick="javascript:return onSearch();"
                             value="Search">Search
@@ -334,10 +335,10 @@
                 <br>
 
                 Description<br>
-                <input type="text" name="description" value="<%=prop.getProperty("description", "")%>" size='50'><br>
+                <input type="text" name="description" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("description", "")))%>" size='50'><br>
 
                 Fee <small>(format: xx.xx, e.g. 18.20)</small><br>
-                <input type="text" name="value" value="<%=prop.getProperty("value", "")%>" size='8' maxlength='8'> <br>
+                <input type="text" name="value" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("value", "")))%>" size='8' maxlength='8'> <br>
 
                 <input type="checkbox" name="gstCheck" id="gstCheck" onclick="setFlag()"/> Add GST <br>
 
@@ -356,7 +357,7 @@
 
                 <br>
                 <input class="btn" type="submit" name="submit" value="Delete" onclick="javascript:return onDelete();">
-                <input type="hidden" name="action" value='<%=action%>'>
+                <input type="hidden" name="action" value='<%=Encode.forHtmlAttribute(String.valueOf(action))%>'>
                 <input class="btn" type="submit" name="submit"
                        value="<fmt:message key="admin.resourcebaseurl.btnSave"/>"
                        onclick="javascript:return onSave();">

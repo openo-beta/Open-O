@@ -30,6 +30,7 @@
 
 <%@ page import="ca.openosp.openo.report.oscarMeasurements.pageUtil.*" %>
 <%@ page import="java.util.*, java.sql.*, java.text.*, java.net.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 
     GregorianCalendar now = new GregorianCalendar();
@@ -93,7 +94,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -138,12 +139,12 @@
                                                 type="text" name='startDateA'
                                                 value='<c:out value="${lastYear}"/>' size="10"> <img
                                                 src="<%= request.getContextPath() %>/img/calendar.gif" border="0"
-                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=startDateA&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=<%="RptInitializeFrequencyOfRelevantTestsCDMReportForm"%>','','width=300,height=300')"/>
+                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=startDateA&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&amp;form=<%="RptInitializeFrequencyOfRelevantTestsCDMReportForm"%>','','width=300,height=300')"/>
                                         </td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"><input
                                                 type="text" name='endDateA' value='<c:out value="${today}"/>'
                                                 size="10"> <img src="<%= request.getContextPath() %>/img/calendar.gif" border="0"
-                                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=endDateA&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=<%="RptInitializeFrequencyOfRelevantTestsCDMReportForm"%>','','width=300,height=300')"/>
+                                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=endDateA&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&amp;form=<%="RptInitializeFrequencyOfRelevantTestsCDMReportForm"%>','','width=300,height=300')"/>
                                         </td>
                                         <td width="450" class="fieldBox" bgcolor="#ddddff"></td>
                                     </tr>
@@ -189,10 +190,10 @@
                                         <td width="80" class="fieldBox" bgcolor="#ddddff"><input type="text" name="moreThan" size="6"/></td>
                                         <td width="80" class="fieldBox" bgcolor="#ddddff"><input type="text" name="lessThan" size="6"/></td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"><input type="text" name="startDateD" value='<c:out value="${lastYear}"/>' size="10"> 
-                                            <img src="<%= request.getContextPath() %>/img/calendar.gif" border="0" onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=startDateD[${ctr.index}]&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
+                                            <img src="<%= request.getContextPath() %>/img/calendar.gif" border="0" onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=startDateD[${ctr.index}]&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
                                         </td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"><input type="text" name="endDateD" value='<c:out value="${today}"/>' size="10"> 
-                                            <img src="<%= request.getContextPath() %>/img/calendar.gif" border="0" onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=endDateD[${ctr.index}]&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
+                                            <img src="<%= request.getContextPath() %>/img/calendar.gif" border="0" onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=endDateD[${ctr.index}]&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&amp;form=RptInitializeFrequencyOfRelevantTestsCDMReportForm','','width=300,height=300')"/>
                                         </td>
                                         <input type="hidden" name='value(measurementTypeD${ctr.index})' value="<c:out value="${measurementType.type}"/>"/>
                                     </tr>

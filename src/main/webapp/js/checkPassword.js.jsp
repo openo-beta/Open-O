@@ -24,6 +24,7 @@
 --%>
     <%@ page import="ca.openosp.OscarProperties"%>
     <%@ page import="org.springframework.web.util.JavaScriptUtils"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 
     <%@ page contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 
@@ -36,12 +37,12 @@
 
     function validatePassword(pwd) {
 
-        var password_min_length = <%=op.getProperty("password_min_length")%>;
-        var password_min_groups = <%=op.getProperty("password_min_groups")%>;
-        var password_group_lower_chars = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_lower_chars"))%>";
-        var password_group_upper_chars = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_upper_chars"))%>";
-        var password_group_digits = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))%>";
-        var password_group_special = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_special"))%>";
+        var password_min_length = <%=Encode.forHtml(String.valueOf(op.getProperty("password_min_length")))%>;
+        var password_min_groups = <%=Encode.forHtml(String.valueOf(op.getProperty("password_min_groups")))%>;
+        var password_group_lower_chars = "<%=Encode.forHtmlAttribute(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_lower_chars"))))%>";
+        var password_group_upper_chars = "<%=Encode.forHtmlAttribute(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_upper_chars"))))%>";
+        var password_group_digits = "<%=Encode.forHtmlAttribute(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))))%>";
+        var password_group_special = "<%=Encode.forHtmlAttribute(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_special"))))%>";
 
         <%
         if (!Boolean.parseBoolean(op.getProperty("IGNORE_PASSWORD_REQUIREMENTS")))
@@ -93,8 +94,8 @@
 
     function validatePin(pin) {
 
-        var password_pin_min_length = <%=op.getProperty("password_pin_min_length")%>;
-        var password_group_digits = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))%>";
+        var password_pin_min_length = <%=Encode.forHtml(String.valueOf(op.getProperty("password_pin_min_length")))%>;
+        var password_group_digits = "<%=Encode.forHtmlAttribute(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))))%>";
 
         if (pin.length < password_pin_min_length) {
             alert('<fmt:message key="password.policy.violation.msgPinLengthError"/> ' +

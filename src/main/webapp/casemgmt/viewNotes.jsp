@@ -24,7 +24,6 @@
 
 --%>
 
-<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="ca.openosp.openo.util.ConversionUtils"%>
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay"%>
 <%  long start = System.currentTimeMillis(); %>
@@ -49,6 +48,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <%
     String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -67,7 +67,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"
 	scope="request" />
 <c:set var="num" value="${fn:length(Notes)}" />
-<div class="nav-menu-heading" style="background-color:#<c:out value="${param.hc}"/>">
+<div class="nav-menu-heading" style="background-color:#<c:out value="${e:forHtmlAttribute(param.hc)}"/>">
 <div class="nav-menu-add-button">
 <h3>
 <%
@@ -75,7 +75,7 @@
 	SecurityManager securityManager = new SecurityManager();
 	if(securityManager.hasWriteAccess("_" + request.getParameter("issue_code"),roleName$)) {
 %>
-<a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<fmt:message key="${param.title}" />','',0,'','','','<%=request.getAttribute("addUrl")%>0', '<c:out value="${param.cmd}"/>','<%=request.getAttribute("identUrl")%>','<%=request.getAttribute("cppIssue")%>','','<c:out value="${param.demographicNo}"/>');">+</a>
+<a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<fmt:message key="${e:forHtmlAttribute(param.title)}" />','',0,'','','','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("addUrl")))%>0', '<c:out value="${e:forHtmlAttribute(param.cmd)}"/>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("identUrl")))%>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("cppIssue")))%>','','<c:out value="${e:forHtmlAttribute(param.demographicNo)}"/>');">+</a>
 <% } else { %>
 	&nbsp;
 <% } %>
@@ -83,7 +83,7 @@
 </div>
 <div class="nav-menu-title">
 <h3>
-	<a href="javascript:void(0)" onclick="return showIssueHistory('<c:out value="${param.demographicNo}"/>','<%=request.getAttribute("issueIds")%>');"><fmt:message key="${param.title}" /></a>
+	<a href="javascript:void(0)" onclick="return showIssueHistory('<c:out value="${e:forHtmlAttribute(param.demographicNo)}"/>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("issueIds")))%>');"><fmt:message key="${e:forJavaScript(param.title)}" /></a>
 </h3>
 </div>
 </div>
@@ -104,7 +104,7 @@
         for (int i = 0; i < notes.size(); i++) {
             CaseManagementNote note = notes.get(i);
 %>
-    <input type="hidden" id="<%= request.getParameter("cmd") + note.getId() %>" value="<%= i %>" />
+    <input type="hidden" id="<%=Encode.forHtmlAttribute(request.getParameter("cmd") + note.getId())%>" value="<%= i %>" />
 
     <% if (i % 2 == 0) { %>
         <li class="cpp" style="background-color: #F3F3F3;">
@@ -142,7 +142,7 @@
             }
 
             String noteTxt = note.getNote().replaceAll("\"", "");
-            noteTxt = org.apache.commons.text.StringEscapeUtils.escapeEcmaScript(noteTxt);
+            noteTxt = Encode.forJavaScript(noteTxt);
 
             Set<CaseManagementIssue> setIssues = note.getIssues();
             StringBuffer strNoteIssues = new StringBuffer();
@@ -151,35 +151,35 @@
                 CaseManagementIssue iss = iter.next();
                 strNoteIssues.append(iss.getIssue_id()).append(";")
                              .append(iss.getIssue().getCode()).append(";")
-                             .append(org.apache.commons.text.StringEscapeUtils.escapeEcmaScript(iss.getIssue().getDescription()));
+                             .append(Encode.forJavaScript(iss.getIssue().getDescription()));
                 if (iter.hasNext()) {
                     strNoteIssues.append(";");
                 }
             }
 %>
-    <span id="spanListNote<%= note.getId() %>">
+    <span id="spanListNote<%=Encode.forHtmlAttribute(String.valueOf(note.getId()))%>">
         <c:choose>
             <c:when test='${param.title == "oscarEncounter.oMeds.title" || param.title == "oscarEncounter.riskFactors.title" || param.title == "oscarEncounter.famHistory.title" || param.noheight == "true"}'>
                 <a class="links"
                    onmouseover="this.className='linkhover'"
                    onmouseout="this.className='links'"
-                   title="Rev:<%= note.getRevision() %> - Last update:<%= note.getUpdate_date() %>"
-                   id="listNote<%= note.getId() %>"
+                   title="Rev:<%=Encode.forHtmlAttribute(String.valueOf(note.getRevision()))%> - Last update:<%=Encode.forHtmlAttribute(String.valueOf(note.getUpdate_date()))%>"
+                   id="listNote<%=Encode.forHtmlAttribute(String.valueOf(note.getId()))%>"
                    href="javascript:void(0)"
-                   onclick="showEdit(event,'<fmt:message key="${param.title}" />','<%= note.getId() %>','<%= StringEscapeUtils.escapeEcmaScript(editors.toString()) %>','<%= note.getObservation_date() %>','<%= note.getRevision() %>','<%= noteTxt %>', '<%= request.getAttribute("addUrl") %><%= note.getId() %>', '<%= request.getParameter("cmd") %>','<%= request.getAttribute("identUrl") %>','<%= strNoteIssues.toString() %>','<%= strNoteExts %>','<%= request.getParameter("demographicNo") %>');return false;">
+                   onclick="showEdit(event,'<fmt:message key="${e:forHtmlAttribute(param.title)}" />','<%=Encode.forJavaScript(String.valueOf(note.getId()))%>','<%= Encode.forJavaScript(editors.toString()) %>','<%=Encode.forJavaScript(String.valueOf(note.getObservation_date()))%>','<%=Encode.forJavaScript(String.valueOf(note.getRevision()))%>','<%=Encode.forJavaScript(String.valueOf(noteTxt))%>', '<%=Encode.forJavaScript(String.valueOf(request.getAttribute("addUrl")))%><%=Encode.forJavaScript(String.valueOf(note.getId()))%>', '<%=Encode.forJavaScript(request.getParameter("cmd"))%>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("identUrl")))%>','<%=Encode.forJavaScript(String.valueOf(strNoteIssues.toString()))%>','<%=Encode.forJavaScript(String.valueOf(strNoteExts))%>','<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>');return false;">
             </c:when>
             <c:otherwise>
                 <a class="topLinks"
                    onmouseover="this.className='topLinkhover'"
                    onmouseout="this.className='topLinks'"
-                   title="Rev:<%= note.getRevision() %> - Last update:<%= note.getUpdate_date() %>"
-                   id="listNote<%= note.getId() %>"
+                   title="Rev:<%=Encode.forHtmlAttribute(String.valueOf(note.getRevision()))%> - Last update:<%=Encode.forHtmlAttribute(String.valueOf(note.getUpdate_date()))%>"
+                   id="listNote<%=Encode.forHtmlAttribute(String.valueOf(note.getId()))%>"
                    href="javascript:void(0)"
-                   onclick="showEdit(event,'<fmt:message key="${param.title}" />','<%= note.getId() %>','<%= StringEscapeUtils.escapeEcmaScript(editors.toString()) %>','<%= note.getObservation_date() %>','<%= note.getRevision() %>','<%= noteTxt %>', '<%= request.getAttribute("addUrl") %><%= note.getId() %>', '<%= request.getParameter("cmd") %>','<%= request.getAttribute("identUrl") %>','<%= strNoteIssues.toString() %>','<%= strNoteExts %>','<%= request.getParameter("demographicNo") %>');return false;">
+                   onclick="showEdit(event,'<fmt:message key="${e:forHtmlAttribute(param.title)}" />','<%=Encode.forJavaScript(String.valueOf(note.getId()))%>','<%= Encode.forJavaScript(editors.toString()) %>','<%=Encode.forJavaScript(String.valueOf(note.getObservation_date()))%>','<%=Encode.forJavaScript(String.valueOf(note.getRevision()))%>','<%=Encode.forJavaScript(String.valueOf(noteTxt))%>', '<%=Encode.forJavaScript(String.valueOf(request.getAttribute("addUrl")))%><%=Encode.forJavaScript(String.valueOf(note.getId()))%>', '<%=Encode.forJavaScript(request.getParameter("cmd"))%>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("identUrl")))%>','<%=Encode.forJavaScript(String.valueOf(strNoteIssues.toString()))%>','<%=Encode.forJavaScript(String.valueOf(strNoteExts))%>','<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>');return false;">
             </c:otherwise>
         </c:choose>
 
-        <%= htmlNoteTxt %></a>
+        <%=Encode.forHtml(String.valueOf(htmlNoteTxt))%></a>
     </span></li>
 <%
         } // end for
@@ -187,7 +187,7 @@
 %>
 
     <%-- Remote Notes Section --%>
-<fmt:message key="${param.title}" var="resolvedTitleRaw"/>
+<fmt:message key="${e:forHtmlAttribute(param.title)}" var="resolvedTitleRaw"/>
 <c:set var="resolvedTitle" value="${fn:escapeXml(resolvedTitleRaw)}"/>
 
 <%
@@ -226,11 +226,11 @@
          title="<%= Encode.forHtmlAttribute(locAttr) %> by <%= Encode.forHtmlAttribute(provAttr) %> on <%= Encode.forHtmlAttribute(timestamp) %>"
          href="javascript:void(0)"
          onclick="showIntegratedNote(
-           '<%= resolvedTitleJs %>',
-           '<%= rawTextJs      %>',
-           '<%= locJs          %>',
-           '<%= provJs         %>',
-           '<%= timeJs         %>'
+           '<%=Encode.forHtml(String.valueOf(resolvedTitleJs))%>',
+           '<%=Encode.forHtml(String.valueOf(rawTextJs))%>',
+           '<%=Encode.forHtml(String.valueOf(locJs))%>',
+           '<%=Encode.forHtml(String.valueOf(provJs))%>',
+           '<%=Encode.forHtml(String.valueOf(timeJs))%>'
          ); return false;">
         <%= Encode.forHtml(rawText) %>
       </a>
@@ -239,8 +239,8 @@
 </ul>
 
 
-<input type="hidden" id="${param.cmd}num" value="${num}">
-<input type="hidden" id="${param.cmd}threshold" value="0">
+<input type="hidden" id="${e:forHtmlAttribute(param.cmd)}num" value="${num}">
+<input type="hidden" id="${e:forHtmlAttribute(param.cmd)}threshold" value="0">
 
 <%!
     String getNoteExts(Long noteId, List<CaseManagementNoteExt> lcme) {
@@ -252,7 +252,7 @@
 		if (key.contains(" Date")) {
 		    val = readPartialDate(cme);
 		} else {
-		    val = org.apache.commons.text.StringEscapeUtils.escapeEcmaScript(cme.getValue());
+		    val = Encode.forJavaScript(cme.getValue());
 		}
 		if (strcme.length()>0) strcme.append(";");
 		strcme.append(key + ";" + val);

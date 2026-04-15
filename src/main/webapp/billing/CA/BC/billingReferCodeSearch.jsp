@@ -32,6 +32,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.model.Billingreferral" %>
 <%@page import="ca.openosp.openo.commn.dao.BillingreferralDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingreferralDao billingReferralDao = (BillingreferralDao) SpringUtils.getBean(BillingreferralDao.class);
 %>
@@ -128,7 +129,7 @@
         function CodeAttach(File0) {
             self.close();
             self.opener.document
-        .<%=formName%>.<%=formElement%>.
+        .<%=Encode.forJavaScript(String.valueOf(formName))%>.<%=Encode.forJavaScript(String.valueOf(formElement))%>.
             value = File0;
         }
 
@@ -148,9 +149,9 @@
 </table>
 <form name="servicecode" id="servicecode" method="post"
       action="billingReferCodeUpdate.jsp"><input type="hidden"
-                                                 name="formName" value="<%=formName%>"/> <input type="hidden"
+                                                 name="formName" value="<%=Encode.forHtmlAttribute(String.valueOf(formName))%>"/> <input type="hidden"
                                                                                                 name="formElement"
-                                                                                                value="<%=formElement%>"/>
+                                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(formElement))%>"/>
     <table width="600" border="1">
         <tr bgcolor="#CCCCFF">
             <td width="12%"><b><font face="Arial, Helvetica, sans-serif"
@@ -195,25 +196,25 @@
                 }
         %>
 
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td width="12%"><font face="Arial, Helvetica, sans-serif"
                                   size="2">
                 <% if (Dcode.compareTo(xcodeName) == 0 || Dcode.compareTo(xcodeName1) == 0 || Dcode.compareTo(xcodeName2) == 0) { %><input
-                    type="checkbox" name="code_<%=Dcode%>" checked>
-                <%} else {%><input type="checkbox" name="code_<%=Dcode%>">
-                <%}%><%=Dcode%>
+                    type="checkbox" name="code_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>" checked>
+                <%} else {%><input type="checkbox" name="code_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>">
+                <%}%><%=Encode.forHtml(String.valueOf(Dcode))%>
             </font></td>
             <td width="22%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"><%=DcodeDesc%>
+                                  size="2"><%=Encode.forHtml(String.valueOf(DcodeDesc))%>
             </font></td>
             <td width="22%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"><%=DcodeSpecialty%>
+                                  size="2"><%=Encode.forHtml(String.valueOf(DcodeSpecialty))%>
             </font></td>
             <td width="22%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"><%=DcodeCity%>
+                                  size="2"><%=Encode.forHtml(String.valueOf(DcodeCity))%>
             </font></td>
             <td width="22%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"><%=DcodePhone%>
+                                  size="2"><%=Encode.forHtml(String.valueOf(DcodePhone))%>
             </font></td>
         </tr>
         <%
@@ -221,9 +222,9 @@
         %>
 
         <% if (intCount == 0) { %>
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td colspan="5"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"><%=desc%>No match found. <%=fdesc%>
+                                  size="2"><%=Encode.forHtml(String.valueOf(desc))%>No match found. <%=Encode.forHtml(String.valueOf(fdesc))%>
                 <%// =i%>
             </font></td>
 
@@ -233,7 +234,7 @@
         <% if (intCount == 1) { %>
         <script LANGUAGE="JavaScript">
             <!--
-            CodeAttach('<%=Dcode%>');
+            CodeAttach('<%=Encode.forJavaScript(String.valueOf(Dcode))%>');
             -->
 
         </script>

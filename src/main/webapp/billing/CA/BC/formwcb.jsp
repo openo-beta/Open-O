@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.Teleplan.WCBCodes" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.WcbHelper" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -413,7 +414,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -427,26 +428,26 @@
         <input type="hidden" name="billForm" value="GP"/>
         <input type="hidden" name="appointment_no" value="0"/>
         <input type="hidden" name="demographic_name"
-               value="<%=form.getW_lname() + " " + form.getW_fname()%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(form.getW_lname() + " " + form.getW_fname()))%>"/>
         <input type="hidden" name="demographic_no"
-               value="<%=form.getDemographic()%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(form.getDemographic()))%>"/>
         <input type="hidden" name="appointment_no" value="0"/>
         <input type="hidden" name="providerview"
-               value="<%=form.getProviderNo()%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(form.getProviderNo()))%>"/>
         <input type="hidden" name="user_no"
-               value="<%=(String) session.getAttribute("user")%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf((String) session.getAttribute("user")))%>"/>
         <input type="hidden" name="status" value="t"/>
         <input type="hidden" name="apptProvider_no"
-               value="<%=form.getProviderNo()%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(form.getProviderNo()))%>"/>
         <input type="hidden" name="bNewForm" value="1"/>
-        <input type="hidden" name="fromBilling" value="<%=fromBilling%>"/>
+        <input type="hidden" name="fromBilling" value="<%=Encode.forHtmlAttribute(String.valueOf(fromBilling))%>"/>
         <input type="hidden" name="wcbFormId" id="wcbFormId"/>
 
         <%
             java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyy-MM-dd");
             String fmtApptDate = fmt.format(new Date());
         %>
-        <input type="hidden" name="appointment_date" value="<%=fmtApptDate%>"/>
+        <input type="hidden" name="appointment_date" value="<%=Encode.forHtmlAttribute(String.valueOf(fmtApptDate))%>"/>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr bgcolor="#000000">
                 <td height="40" width="10%"></td>
@@ -783,7 +784,7 @@
             <td>Payee Number: <input type="text" readonly="readonly"
                                          name="w_payeeno" size="5"/></td>
             <td>Provider No: <input type="text" readonly="readonly"
-                                        name="w_pracno" size="5"/>(<%=form.getW_pracname()%>)
+                                        name="w_pracno" size="5"/>(<%=Encode.forHtml(String.valueOf(form.getW_pracname()))%>)
             </td>
         </tr>
         <tr>
@@ -953,8 +954,8 @@
             <tr class="SectionHead">
                 <td class="wcblayerTitle">
                     <a href="#"
-                       onClick="setClaim('<%=claim.getClaimNumber()%>','<%=emp.w_empname%>','<%=emp.w_opaddress%>','<%=emp.w_opcity%>','<%=emp.w_emparea%>','<%=emp.w_empphone%>','<%=claim.w_icd9%>','<%=claim.w_bp%>','<%=claim.w_side%>','<%=claim.w_noi%>','<%=claim.w_doi%>');hidepic('claimLayer');return false;">
-                        <%=claim.getClaimNumber()%>
+                       onClick="setClaim('<%=Encode.forJavaScript(String.valueOf(claim.getClaimNumber()))%>','<%=Encode.forJavaScript(String.valueOf(emp.w_empname))%>','<%=Encode.forJavaScript(String.valueOf(emp.w_opaddress))%>','<%=Encode.forJavaScript(String.valueOf(emp.w_opcity))%>','<%=Encode.forJavaScript(String.valueOf(emp.w_emparea))%>','<%=Encode.forJavaScript(String.valueOf(emp.w_empphone))%>','<%=Encode.forJavaScript(String.valueOf(claim.w_icd9))%>','<%=Encode.forJavaScript(String.valueOf(claim.w_bp))%>','<%=Encode.forJavaScript(String.valueOf(claim.w_side))%>','<%=Encode.forJavaScript(String.valueOf(claim.w_noi))%>','<%=Encode.forJavaScript(String.valueOf(claim.w_doi))%>');hidepic('claimLayer');return false;">
+                        <%=Encode.forHtml(String.valueOf(claim.getClaimNumber()))%>
                     </a></td>
                 <td class="wcblayerItem">&nbsp;</td>
 
@@ -988,14 +989,14 @@
             %>
             <tr class="SectionHead">
                 <td class="wcblayerTitle"><a href="#"
-                                             onClick="setEmployer('<%=emp.w_empname%>','<%=emp.w_opaddress%>','<%=emp.w_opcity%>','<%=emp.w_emparea%>','<%=emp.w_empphone%>');hidepic('employerLayer');return false;">
-                    <%=emp.w_empname%>
+                                             onClick="setEmployer('<%=Encode.forJavaScript(String.valueOf(emp.w_empname))%>','<%=Encode.forJavaScript(String.valueOf(emp.w_opaddress))%>','<%=Encode.forJavaScript(String.valueOf(emp.w_opcity))%>','<%=Encode.forJavaScript(String.valueOf(emp.w_emparea))%>','<%=Encode.forJavaScript(String.valueOf(emp.w_empphone))%>');hidepic('employerLayer');return false;">
+                    <%=Encode.forHtml(String.valueOf(emp.w_empname))%>
                 </a></td>
-                <td class="wcblayerTitle"><%=emp.w_opaddress%>
+                <td class="wcblayerTitle"><%=Encode.forHtml(String.valueOf(emp.w_opaddress))%>
                 </td>
-                <td class="wcblayerTitle"><%=emp.w_opcity%>
+                <td class="wcblayerTitle"><%=Encode.forHtml(String.valueOf(emp.w_opcity))%>
                 </td>
-                <td class="wcblayerTitle"><%=emp.w_emparea%>-<%=emp.w_empphone%>
+                <td class="wcblayerTitle"><%=Encode.forHtml(String.valueOf(emp.w_emparea))%>-<%=Encode.forHtml(String.valueOf(emp.w_empphone))%>
                 </td>
                 <td colspan="2" class="wcblayerItem">&nbsp;</td>
             </tr>

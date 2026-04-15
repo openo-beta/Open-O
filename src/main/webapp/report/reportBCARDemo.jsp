@@ -15,6 +15,7 @@
     }
 %>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.util.*, ca.openosp.openo.demographic.data.ProvinceNames"
          errorPage="/errorpage.jsp" %>
 <% java.util.Properties oscarVariables = ca.openosp.OscarProperties.getInstance(); %>
@@ -175,8 +176,8 @@
                     for (int i = 0; i < propDemoExt.length; i++) {%>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox"
-                                                name="<%=propDemoExt[i].replace(' ', '_') %>"></b></td>
-                    <td nowrap><%=propDemoExt[i] %>
+                                                name="<%=Encode.forHtmlAttribute(String.valueOf(propDemoExt[i].replace(' ', '_')))%>"></b></td>
+                    <td nowrap><%=Encode.forHtml(String.valueOf(propDemoExt[i]))%>
                     </td>
                 </tr>
                 <%
@@ -354,16 +355,16 @@
 
                 <tr bgcolor="<%=i%2==0?"":"#EEEEFF" %>">
                     <td align="right"><b><input type="checkbox"
-                                                name="filter_<%=100+i %>"></b></td>
+                                                name="filter_<%=Encode.forHtmlAttribute(String.valueOf(100+i))%>"></b></td>
                     <td>
-                        <% if (bExtForm) { %> <%=propDemoExt[i] %><%=propDemoExtForm[i].replaceAll("name=\"" + propDemoExt[i].replace(' ', '_') + "\"", "name=\"pSpec" + (100 + i) + "\"") %>
-                        <% } else { %> <%=propDemoExt[i] %> <input type="text"
-                                                                   name="pSpec<%=100+i %>" value="" size="15"> <% } %>
+                        <% if (bExtForm) { %> <%=Encode.forHtml(String.valueOf(propDemoExt[i]))%><%=Encode.forHtml(String.valueOf(propDemoExtForm[i].replaceAll("name=\"" + propDemoExt[i].replace(' ', '_') + "\"", "name=\"pSpec" + (100 + i) + "\"")))%>
+                        <% } else { %> <%=Encode.forHtml(String.valueOf(propDemoExt[i]))%> <input type="text"
+                                                                   name="pSpec<%=Encode.forHtmlAttribute(String.valueOf(100+i))%>" value="" size="15"> <% } %>
                     </td>
-                    <td align="right"><input type="hidden" name="value_<%=100+i %>"
-                                             value="demographicExt.key_val='<%=propDemoExt[i].replace(' ', '_') %>' and demographicExt.value like 'pSpec<%=100+i %>%' ">
-                        <input type="hidden" name="position_<%=100+i %>" value="sql">
-                        <input type="hidden" name="dateFormat_<%=100+i %>" value="">
+                    <td align="right"><input type="hidden" name="value_<%=Encode.forHtmlAttribute(String.valueOf(100+i))%>"
+                                             value="demographicExt.key_val='<%=Encode.forHtmlAttribute(String.valueOf(propDemoExt[i].replace(' ', '_')))%>' and demographicExt.value like 'pSpec<%=Encode.forHtmlAttribute(String.valueOf(100+i))%>%' ">
+                        <input type="hidden" name="position_<%=Encode.forHtmlAttribute(String.valueOf(100+i))%>" value="sql">
+                        <input type="hidden" name="dateFormat_<%=Encode.forHtmlAttribute(String.valueOf(100+i))%>" value="">
                     </td>
                 </tr>
                 <%
@@ -380,8 +381,8 @@
                         <% if (pNames.isDefined()) {
                             for (ListIterator li = pNames.listIterator(); li.hasNext(); ) {
                                 String province = (String) li.next(); %>
-                        <option value="<%=province%>"
-                                <%=province.equals(prov) ? " selected" : ""%>><%=li.next()%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(province))%>"
+                                <%=province.equals(prov) ? " selected" : ""%>><%=Encode.forHtml(String.valueOf(li.next()))%>
                         </option>
                         <% } %>
                         <% } else { %>

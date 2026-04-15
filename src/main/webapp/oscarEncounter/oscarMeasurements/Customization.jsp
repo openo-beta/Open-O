@@ -34,6 +34,7 @@
 <%@ page import="ca.openosp.openo.encounter.pageUtil.*" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.*" %>
 <%@ page import="java.util.Vector" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -63,7 +64,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>

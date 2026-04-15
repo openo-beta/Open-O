@@ -29,6 +29,7 @@
 <fmt:setBundle basename="oscarResources"/>
 <%@page import="java.util.*" %>
 <%@ page import="java.util.ResourceBundle"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect(request.getContextPath() + "/logout.htm");
@@ -48,7 +49,7 @@
     <head>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><%=bundle.getString(providertitle)%></title>
+        <title><%=Encode.forHtml(String.valueOf(bundle.getString(providertitle)))%></title>
         <script src="<c:out value="${ctx}"/>/share/javascript/provider_form_validations.js"></script>
         <script src="<c:out value="${ctx}"/>/js/global.js"></script>
         <link href="<c:out value="${ctx}"/>/css/bootstrap.css" rel="stylesheet"> <!-- Bootstrap 2.3.1 -->
@@ -60,17 +61,17 @@
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
             <td class="MainTableTopRowLeftColumn">
-                <h4><%=bundle.getString(providermsgPrefs)%></h4>
+                <h4><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgPrefs)))%></h4>
             </td>
             <td class="MainTableTopRowRightColumn">
-                <h4>&nbsp;&nbsp;<%=bundle.getString(providermsgProvider)%></h4>
+                <h4>&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(bundle.getString(providermsgProvider)))%></h4>
             </td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%>
-                <%=bundle.getString(providermsgEdit)%>
+                <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgEdit)))%>
 
                 <form id="providerForm" action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
@@ -84,7 +85,7 @@
                 </form>
 
                 <%} else {%>
-                <div class="alert alert-success" style="width:100%"><%=bundle.getString(providermsgSuccess)%></div>
+                <div class="alert alert-success" style="width:100%"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgSuccess)))%></div>
                 <br>
                 <%}%>
             </td>

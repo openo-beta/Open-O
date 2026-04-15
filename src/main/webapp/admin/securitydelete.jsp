@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Security" %>
 <%@ page import="ca.openosp.openo.commn.dao.SecurityDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
 %>
@@ -80,12 +81,12 @@
         %>
         <p>
         <h2><fmt:message key="admin.securitydelete.msgDeletionSuccess"/>:
-            <%= request.getParameter("keyword") %>.</h2>
+            <%=Encode.forHtml(request.getParameter("keyword"))%>.</h2>
         <%
         } else {
         %>
         <h1><fmt:message key="admin.securitydelete.msgDeletionFailure"/>:
-            <%= request.getParameter("keyword") %>.</h1>
+            <%=Encode.forHtml(request.getParameter("keyword"))%>.</h1>
         <%
             }
         %>

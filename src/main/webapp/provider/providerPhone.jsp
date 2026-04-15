@@ -32,6 +32,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.htm");
@@ -96,7 +97,7 @@
                 <br/>
 
 
-                <input type="text" name="faxNumber" value="<%=phoneNum%>" size="40"/>
+                <input type="text" name="faxNumber" value="<%=Encode.forHtmlAttribute(String.valueOf(phoneNum))%>" size="40"/>
                 <br>
 
                 <input type="submit" onclick="return validate();"
@@ -104,7 +105,7 @@
             </form> <%
             } else if (((String) request.getAttribute("status")).equals("complete")) {
             %> <fmt:message key="provider.editRxPhone.msgSuccess"/> <br>
-                <%=phoneNum%> <%
+                <%=Encode.forHtml(String.valueOf(phoneNum))%> <%
                 }
             %>
             </td>

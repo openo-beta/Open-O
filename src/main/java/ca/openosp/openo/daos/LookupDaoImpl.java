@@ -30,11 +30,34 @@ import ca.openosp.openo.model.LookupCodeValue;
 import ca.openosp.openo.model.LookupTableDefValue;
 import ca.openosp.openo.model.LstOrgcd;
 import ca.openosp.openo.model.security.SecProvider;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.SessionFactory;
 
 public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
+
+    /**
+     * Pattern for DB-configured field expressions that may contain
+     * SQL functions like {@code concat(first_name, ' ', last_name)}.
+     * Allows alphanumeric, underscores, parentheses, commas, dots, spaces, and single quotes
+     * (needed for string literals in SQL functions). These values come from admin DB config,
+     * not user input, so this is defense-in-depth against second-order injection.
+     */
+    private static final java.util.regex.Pattern SAFE_SQL_EXPRESSION = java.util.regex.Pattern.compile("^[a-zA-Z0-9_()'., ]+$");
+
+    /**
+     * Validates that a field expression from DB config is safe for use in queries.
+     * @param fieldSql the field name or expression from FieldDefValue
+     * @return the validated field expression
+     * @throws IllegalArgumentException if the expression contains unsafe characters
+     */
+    private static String validateFieldSql(String fieldSql) {
+        if (fieldSql == null || !SAFE_SQL_EXPRESSION.matcher(fieldSql).matches()) {
+            throw new IllegalArgumentException("Invalid field name from config");
+        }
+        return fieldSql;
+    }
 
     /*
      * Column property mappings defined by the generic idx
@@ -77,6 +100,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         LookupTableDefValue tableDef = GetLookupTableDef(tableId);
         if (tableDef == null)
             return (new ArrayList<LookupCodeValue>());
+        SqlUtils.validateTableName(tableDef.getTableName());
         List fields = LoadFieldDefList(tableId);
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[100];
         String fieldNames[] = new String[17];
@@ -88,12 +112,14 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             for (int j = 0; j < fields.size(); j++) {
                 FieldDefValue fdef = (FieldDefValue) fields.get(j);
                 if (fdef.getGenericIdx() == i) {
-                    if (fdef.getFieldSQL().indexOf('(') >= 0) {
-                        sSQL += fdef.getFieldSQL() + " " + fdef.getFieldName() + ",";
-                        fieldNames[i - 1] = fdef.getFieldName();
+                    String validatedField = validateFieldSql(fdef.getFieldSQL());
+                    String validatedName = validateFieldSql(fdef.getFieldName());
+                    if (validatedField.indexOf('(') >= 0) {
+                        sSQL += validatedField + " " + validatedName + ",";
+                        fieldNames[i - 1] = validatedName;
                     } else {
-                        sSQL += "s." + fdef.getFieldSQL() + ",";
-                        fieldNames[i - 1] = fdef.getFieldSQL();
+                        sSQL += "s." + validatedField + ",";
+                        fieldNames[i - 1] = validatedField;
                     }
                     ok = true;
                     break;
@@ -234,12 +260,21 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         paramList.add(tableId);
         Object params[] = paramList.toArray(new Object[paramList.size()]);
 
-        return getHibernateTemplate().find(sSql, params);
+        List results = getHibernateTemplate().find(sSql, params);
+        // Validate all field SQL values from DB config to prevent second-order SQL injection
+        for (Object obj : results) {
+            FieldDefValue fdv = (FieldDefValue) obj;
+            validateFieldSql(fdv.getFieldSQL());
+            if (fdv.getFieldName() != null) {
+                validateFieldSql(fdv.getFieldName());
+            }
+        }
+        return results;
     }
 
     @Override
     public List GetCodeFieldValues(LookupTableDefValue tableDef, String code) {
-        String tableName = tableDef.getTableName();
+        String tableName = SqlUtils.validateTableName(tableDef.getTableName());
         List fs = LoadFieldDefList(tableDef.getTableId());
         String idFieldName = "";
 
@@ -255,10 +290,10 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             }
         }
         sql += " from " + tableName + " s";
-        sql += " where " + idFieldName + "='" + code + "'";
+        sql += " where " + idFieldName + "=?"; // idFieldName from DB config, code is parameterized
         DBPreparedHandler db = new DBPreparedHandler();
         try {
-            ResultSet rs = db.queryResults(sql);
+            ResultSet rs = db.queryResults(sql, code);
             if (rs.next()) {
                 for (int i = 0; i < fs.size(); i++) {
                     FieldDefValue fdv = (FieldDefValue) fs.get(i);
@@ -289,7 +324,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
     @Override
     public List<List> GetCodeFieldValues(LookupTableDefValue tableDef) {
-        String tableName = tableDef.getTableName();
+        String tableName = SqlUtils.validateTableName(tableDef.getTableName());
         List fs = LoadFieldDefList(tableDef.getTableId());
         ArrayList<List> codes = new ArrayList<List>();
         String sql = "select ";
@@ -431,7 +466,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
     }
 
     private String InsertCodeValue(LookupTableDefValue tableDef, List fieldDefList) throws SQLException {
-        String tableName = tableDef.getTableName();
+        String tableName = SqlUtils.validateTableName(tableDef.getTableName());
         String idFieldVal = "";
 
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[fieldDefList.size()];
@@ -475,7 +510,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
     }
 
     private String UpdateCodeValue(LookupTableDefValue tableDef, List fieldDefList) throws SQLException {
-        String tableName = tableDef.getTableName();
+        String tableName = SqlUtils.validateTableName(tableDef.getTableName());
         String idFieldName = "";
         String idFieldVal = "";
 
@@ -697,15 +732,14 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
     @Override
     public int getCountOfActiveClient(String orgCd) throws SQLException {
-        String sql = "select count(*) from admission where admission_status='" + KeyConstants.INTAKE_STATUS_ADMITTED
-                + "' and  'P' || program_id in (" + " select code from lst_orgcd  where codecsv like '%' || '" + orgCd
-                + ",' || '%')";
-        String sql1 = "select count(*) from program_queue where  'P' || program_id in ("
-                + " select code from lst_orgcd  where codecsv like '%' || '" + orgCd + ",' || '%')";
+        String admissionSql = "select count(*) from admission where admission_status=? and CONCAT('P', program_id) in (select code from lst_orgcd where codecsv like CONCAT('%', ?, '%'))";
+        String queueSql = "select count(*) from program_queue where CONCAT('P', program_id) in (select code from lst_orgcd where codecsv like CONCAT('%', ?, '%'))";
+
+        String orgCdPattern = orgCd + ",";
 
         DBPreparedHandler db = new DBPreparedHandler();
 
-        ResultSet rs = db.queryResults(sql);
+        ResultSet rs = db.queryResults(admissionSql, new String[]{KeyConstants.INTAKE_STATUS_ADMITTED, orgCdPattern});
         int id = 0;
         if (rs.next())
             id = rs.getInt(1);
@@ -713,7 +747,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             return id;
 
         rs.close();
-        rs = db.queryResults(sql1);
+        rs = db.queryResults(queueSql, new String[]{orgCdPattern});
         if (rs.next())
             id = rs.getInt(1);
         rs.close();

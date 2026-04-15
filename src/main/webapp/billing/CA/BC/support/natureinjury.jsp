@@ -27,6 +27,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.WcbNoiCodeDao" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -46,7 +47,7 @@
     <script language="JavaScript">
     function posttoText(index){
     self.close();
-    opener.document.<%=form%>.<%=field%>.value = index;
+    opener.document.<%=Encode.forJavaScript(String.valueOf(form))%>.<%=Encode.forJavaScript(String.valueOf(field))%>.value = index;
     opener.document.focus();
     }
     </script>
@@ -78,12 +79,12 @@
     <tr <%=((color) ? "bgcolor=\"#F6F6F6\"" : "")%> align="left"
     valign="top">
     <td class="SmallerText"><a href=#
-    onClick="posttoText('<%=c.getCode()%>');"><%=c.getCode()%></a>
+    onClick="posttoText('<%=Encode.forJavaScript(String.valueOf(c.getCode()))%>');"><%=Encode.forHtml(String.valueOf(c.getCode()))%></a>
     </td>
-    <td class="SmallerText"><%=c.getLevel1()%></td>
-    <td class="SmallerText"><%=c.getLevel2()%></td>
-    <td class="SmallerText"><%=c.getLevel3()%></td>
-    <td class="SmallerText"><%=c.getUsagenote()%></td>
+    <td class="SmallerText"><%=Encode.forHtml(String.valueOf(c.getLevel1()))%></td>
+    <td class="SmallerText"><%=Encode.forHtml(String.valueOf(c.getLevel2()))%></td>
+    <td class="SmallerText"><%=Encode.forHtml(String.valueOf(c.getLevel3()))%></td>
+    <td class="SmallerText"><%=Encode.forHtml(String.valueOf(c.getUsagenote()))%></td>
     </tr>
     <%
             color = !(color);

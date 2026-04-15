@@ -26,6 +26,7 @@
 <!DOCTYPE html>
 <%@ page import="ca.openosp.openo.eform.data.*, ca.openosp.openo.eform.*, java.util.*" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -76,7 +77,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -100,7 +101,7 @@
                     for (int i = 0; i < roleList.size(); i++) {
                 %>
 
-                <option value="<%=roleList.get(i) %>"><%=roleList.get(i) %>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(roleList.get(i)))%>"><%=Encode.forHtml(String.valueOf(roleList.get(i)))%>
                 </option>
 
                 <%} %>

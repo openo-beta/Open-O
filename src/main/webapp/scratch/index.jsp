@@ -414,7 +414,7 @@
 				    Date date = scratchPad.getDateTime();
 				    
 				%>
-					<option value="<%=Encode.forHtmlAttribute(strId)%>"><%=DateUtils.formatDateTime(date, request.getLocale())%></option>
+					<option value="<%=Encode.forHtmlAttribute(strId)%>"><%=Encode.forHtml(String.valueOf(DateUtils.formatDateTime(date, request.getLocale())))%></option>
 				<%
 				}
 				%>
@@ -427,7 +427,7 @@
 		<form id="scratch" action="">
             <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(user_no)%>" />
             <input type="hidden" name="id" id="curr_id" value="<%=Encode.forHtmlAttribute(id)%>" />
-            <input type="hidden" name="windowId" id="windowId" value="<%=String.valueOf(System.nanoTime())%>" />
+            <input type="hidden" name="windowId" id="windowId" value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(System.nanoTime())))%>" />
             <input type="hidden" name="dirty" value=false id="dirty" />
             <textarea name="scratchpad" id="thetext" rows="50"
 			cols="50" oninput="setDirty();" onpaste="setDirty();" ><%=Encode.forHtmlContent(text)%></textarea>

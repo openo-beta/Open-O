@@ -32,6 +32,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
@@ -185,16 +186,16 @@
 
 
                     <label for="address">Address</label>
-                    <input type="text" name="address" value="<%=address %>" />
+                    <input type="text" name="address" value="<%=Encode.forHtmlAttribute(String.valueOf(address))%>" />
                     <br/>
                     <label for="city">City</label>
-                    <input type="text" name="city" value="<%=city %>" />
+                    <input type="text" name="city" value="<%=Encode.forHtmlAttribute(String.valueOf(city))%>" />
                     <br/>
                     <label for="province">Province</label>
-                    <input type="text" name="province" value="<%=province %>" />
+                    <input type="text" name="province" value="<%=Encode.forHtmlAttribute(String.valueOf(province))%>" />
                     <br/>
                     <label for="postal">Postal</label>
-                    <input type="text" name="postal" value="<%=postal %>" />
+                    <input type="text" name="postal" value="<%=Encode.forHtmlAttribute(String.valueOf(postal))%>" />
                     <br/>
 
                     <input type="submit" onclick="return validate();"
@@ -202,7 +203,7 @@
                 </form> <%
             } else if (((String) request.getAttribute("status")).equals("complete")) {
             %> <fmt:message key="provider.editRxAddress.msgSuccess"/> <br>
-                <%=address%>, <%=city%>, <%=province%>, <%=postal%>  <%
+                <%=Encode.forHtml(String.valueOf(address))%>, <%=Encode.forHtml(String.valueOf(city))%>, <%=Encode.forHtml(String.valueOf(province))%>, <%=Encode.forHtml(String.valueOf(postal))%>  <%
                 }
             %>
             </td>

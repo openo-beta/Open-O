@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.commn.model.EFormValue" %>
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -44,7 +45,8 @@
     if ("download".equals(method)) {
         response.setContentType("application/msword");
         String filename = residentName.replace(", ", "").replace(" ", "") + ".doc";
-        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+        filename = filename.replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
     }
 
     HashMap<String, String> purposes = new HashMap<String, String>();
@@ -129,18 +131,18 @@
                     <tr>
                         <td>Resident</td>
                         <td>:</td>
-                        <td><%= residentName %>
+                        <td><%=Encode.forHtml(String.valueOf(residentName))%>
                         </td>
                     </tr>
                     <tr>
                         <td>Report dates</td>
                         <td>:</td>
-                        <td><%= dateStart %> ~ <%= dateEnd %>
+                        <td><%=Encode.forHtml(String.valueOf(dateStart))%> ~ <%=Encode.forHtml(String.valueOf(dateEnd))%>
                     </tr>
                     <tr>
                         <td>Total field notes</td>
                         <td>:</td>
-                        <td><%= FieldNoteManager.getTotalNumberOfFieldNotes(residentId) %>
+                        <td><%=Encode.forHtml(String.valueOf(FieldNoteManager.getTotalNumberOfFieldNotes(residentId)))%>
                         </td>
                     </tr>
                 </table>
@@ -151,10 +153,10 @@
                         for (String purpose : keys) {
                     %>
                     <tr>
-                        <td><%= purposes.get(purpose) %>
+                        <td><%=Encode.forHtml(String.valueOf(purposes.get(purpose)))%>
                         </td>
                         <td>:</td>
-                        <td><%= FieldNoteManager.countItem(residentFieldNoteValues, purpose) %>
+                        <td><%=Encode.forHtml(String.valueOf(FieldNoteManager.countItem(residentFieldNoteValues, purpose)))%>
                         </td>
                     </tr>
                     <%
@@ -163,7 +165,7 @@
                     <tr>
                         <td>MHBS tutorial</td>
                         <td>:</td>
-                        <td><%= FieldNoteManager.countItem(residentFieldNoteValues, "location", "BS tutorial") %>
+                        <td><%=Encode.forHtml(String.valueOf(FieldNoteManager.countItem(residentFieldNoteValues, "location", "BS tutorial")))%>
                         </td>
                     </tr>
                 </table>
@@ -185,10 +187,10 @@
                         for (String roleSkill : keys) {
                     %>
                     <tr>
-                        <td><%= roleSkills.get(roleSkill) %>
+                        <td><%=Encode.forHtml(String.valueOf(roleSkills.get(roleSkill)))%>
                         </td>
                         <td>:</td>
-                        <td><%= FieldNoteManager.countItem(residentFieldNoteValues, roleSkill) %>
+                        <td><%=Encode.forHtml(String.valueOf(FieldNoteManager.countItem(residentFieldNoteValues, roleSkill)))%>
                         </td>
                     </tr>
                     <%
@@ -213,7 +215,7 @@
         %>
         <tr>
             <td class="eformInputHeadingActive" colspan="2">
-                <%= impressions.get(impression) %>
+                <%=Encode.forHtml(String.valueOf(impressions.get(impression)))%>
                 (<%= fieldNoteValues_impression.size() %>)
             </td>
         </tr>
@@ -244,7 +246,7 @@
         %>
         <tr>
             <td style="font-weight: bold;" colspan="2">
-                Clinical Domain : <%= clinicalDomains.get(clinicalDomain) %>
+                Clinical Domain : <%=Encode.forHtml(String.valueOf(clinicalDomains.get(clinicalDomain)))%>
                 (<%= fieldNoteValues_clinicalDomain.size() %>)
             </td>
         </tr>
@@ -270,14 +272,14 @@
         %>
         <tr style="background-color: #F2F2F2;">
             <td>Topic(s):</td>
-            <td><%= topic %>
+            <td><%=Encode.forHtml(String.valueOf(topic))%>
         </tr>
         <%
             if (StringUtils.filled(residentRoleSkill)) {
         %>
         <tr style="background-color: #F2F2F2;">
             <td>Role/Skill(s):</td>
-            <td><%= residentRoleSkill %>
+            <td><%=Encode.forHtml(String.valueOf(residentRoleSkill))%>
         </tr>
         <%
             }
@@ -286,7 +288,7 @@
         %>
         <tr style="background-color: #F2F2F2;">
             <td>Done well:</td>
-            <td><%= doneWell %>
+            <td><%=Encode.forHtml(String.valueOf(doneWell))%>
         </tr>
         <%
             }
@@ -295,7 +297,7 @@
         %>
         <tr style="background-color: #F2F2F2;">
             <td>Work on:</td>
-            <td><%= workOn %>
+            <td><%=Encode.forHtml(String.valueOf(workOn))%>
         </tr>
         <%
             }
@@ -304,14 +306,14 @@
         %>
         <tr style="background-color: #F2F2F2;">
             <td>Follow-up:</td>
-            <td><%= followUp %>
+            <td><%=Encode.forHtml(String.valueOf(followUp))%>
         </tr>
         <%
             }
         %>
         <tr style="background-color: #F2F2F2;">
             <td>Date:</td>
-            <td><%= apptDate %>
+            <td><%=Encode.forHtml(String.valueOf(apptDate))%>
         </tr>
         <tr>
             <td>&nbsp;</td>

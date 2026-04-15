@@ -265,7 +265,7 @@
             <div class="control-group">
                 <div class="controls">
                     <input
-                            type="hidden" name="action" value='<%=action%>'/> <% if (!"search".equals(action)) {%>
+                            type="hidden" name="action" value='<%=Encode.forHtmlAttribute(String.valueOf(action))%>'/> <% if (!"search".equals(action)) {%>
                     <input type="submit" name="submit" class="btn btn-primary"
                            value="<fmt:message key="admin.resourcebaseurl.btnSave"/>"
                            onclick="javascript:return onSave();"> <% }%>

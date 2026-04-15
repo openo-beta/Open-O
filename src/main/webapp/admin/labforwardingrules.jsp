@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -101,7 +101,7 @@
             <%}else if(autoFileLabs != null && autoFileLabs.equalsIgnoreCase("yes")){%>
             return confirm("Are you sure you would like to update the forwarding rules?")
             <%}else{%>
-            if (document.RULES.providerNums.value == '' && document.RULES.status[1].checked && <%= (frwdProviders.size() == 0)%>) {
+            if (document.RULES.providerNums.value == '' && document.RULES.status[1].checked && <%=Encode.forJavaScript(String.valueOf((frwdProviders.size() == 0)))%>) {
                 alert("You must select a providers to forward the incoming labs to if you wish to automatically file them.");
                 return false;
             } else {
@@ -133,9 +133,9 @@
             <% ArrayList providers = ProviderData.getProviderList();
                 for (int i = 0; i < providers.size(); i++) {
                     String prov_no = (String) ((ArrayList) providers.get(i)).get(0);%>
-            <option value="<%= prov_no %>"
-                    <% if (prov_no.equals(providerNo)) {%> <%="selected"%> <%}%>><%= (String) ((ArrayList) providers.get(i)).get(1) %>
-                <%= (String) ((ArrayList) providers.get(i)).get(2) %>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(prov_no))%>"
+                    <% if (prov_no.equals(providerNo)) {%> <%="selected"%> <%}%>><%=Encode.forHtml(String.valueOf((String) ((ArrayList) providers.get(i)).get(1)))%>
+                <%=Encode.forHtml(String.valueOf((String) ((ArrayList) providers.get(i)).get(2)))%>
             </option>
             <% }%>
         </select>
@@ -176,13 +176,13 @@
             <tbody>
                 <%for (int i=0; i < frwdProviders.size(); i++){%>
             <tr>
-                <td><%= (String) ((ArrayList) frwdProviders.get(i)).get(1) %> <%= (String) ((ArrayList) frwdProviders.get(i)).get(2) %>
+                <td><%=Encode.forHtml(String.valueOf((String) ((ArrayList) frwdProviders.get(i)).get(1)))%> <%=Encode.forHtml(String.valueOf((String) ((ArrayList) frwdProviders.get(i)).get(2)))%>
                 </td>
                 <td><%= status.equals("N") ? "New" : "Filed" %>
                 </td>
                 <td>
                     <button type="submit" class="btn btn-small"
-                            onclick="return removeProvider('<%= (String) ((ArrayList) frwdProviders.get(i)).get(0) %>', '<%= StringEscapeUtils.escapeEcmaScript((String) ((ArrayList) frwdProviders.get(i)).get(1)) %> <%= StringEscapeUtils.escapeEcmaScript((String) ((ArrayList) frwdProviders.get(i)).get(2)) %>')"
+                            onclick="return removeProvider('<%=Encode.forJavaScript(String.valueOf((String) ((ArrayList) frwdProviders.get(i)).get(0)))%>', '<%= Encode.forJavaScript((String) ((ArrayList) frwdProviders.get(i)).get(1)) %> <%= Encode.forJavaScript((String) ((ArrayList) frwdProviders.get(i)).get(2)) %>')"
                             title="remove provider"><i class="icon-trash"></i> remove
                     </button>
                 </td>
@@ -234,8 +234,8 @@
                     for (int i = 0; i < providers.size(); i++) {
                         String prov_no = (String) ((ArrayList) providers.get(i)).get(0);
                         if (!providerNo.equals(prov_no) && !frwdProviders.contains(providers.get(i))) {%>
-                <option value="<%= prov_no %>"><%= (String) ((ArrayList) providers.get(i)).get(1) %>
-                    <%= (String) ((ArrayList) providers.get(i)).get(2) %>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(prov_no))%>"><%=Encode.forHtml(String.valueOf((String) ((ArrayList) providers.get(i)).get(1)))%>
+                    <%=Encode.forHtml(String.valueOf((String) ((ArrayList) providers.get(i)).get(2)))%>
                 </option>
                 <% }
                 } %>

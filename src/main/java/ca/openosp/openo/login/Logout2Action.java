@@ -87,9 +87,12 @@ public class Logout2Action extends ActionSupport {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                cookie.setMaxAge(0);
-                cookie.setPath("/");
-                response.addCookie(cookie);
+                // Sanitize cookie name to prevent HTTP response splitting
+                String cookieName = cookie.getName().replaceAll("[\\r\\n]", "");
+                Cookie expiredCookie = new Cookie(cookieName, "");
+                expiredCookie.setMaxAge(0);
+                expiredCookie.setPath("/");
+                response.addCookie(expiredCookie);
             }
         }
         return SUCCESS;

@@ -17,6 +17,7 @@
          import="java.util.*, ca.openosp.openo.report.data.*" %>
 <%@ page import="ca.openosp.openo.report.data.RptReportFilter" %>
 <%@ page import="ca.openosp.openo.report.data.RptReportItem" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String reportId = request.getParameter("id") != null ? request.getParameter("id") : "0";
 // get form name
@@ -109,18 +110,18 @@
     <center>
         <table BORDER="1" CELLPADDING="0" CELLSPACING="0" WIDTH="80%">
             <tr BGCOLOR="#CCFFFF">
-                <th><%=reportName%>
+                <th><%=Encode.forHtml(String.valueOf(reportName))%>
                 </th>
             </tr>
         </table>
     </center>
     <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
         <tr BGCOLOR="#CCCCFF">
-            <td><%=msg%>
+            <td><%=Encode.forHtml(String.valueOf(msg))%>
             </td>
             <td width="10%" align="right" nowrap><a
                     href="reportFormRecord.jsp">Back to Report List</a> | <a
-                    href="reportFormConfig.jsp?id=<%=reportId%>">Configuration</a></td>
+                    href="reportFormConfig.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>">Configuration</a></td>
         </tr>
     </table>
     <table width="100%" border="0" cellspacing="2" cellpadding="2">
@@ -134,22 +135,22 @@
                     vecJS.add(strElt[4]);
             %>
 
-            <tr bgcolor="<%=color%>">
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
                 <td align="right" width="20%"><b><input type="checkbox"
-                                                        name="<%="filter_" + itemId%>" <%="1".equals(itemId)?"checked":""%>></b>
+                                                        name="<%=Encode.forHtmlAttribute(String.valueOf("filter_" + itemId))%>" <%="1".equals(itemId)?"checked":""%>></b>
                 </td>
-                <td><%=strElt[0]%>
+                <td><%=Encode.forHtml(String.valueOf(strElt[0]))%>
                 </td>
                 <td width="5%" align="right"><input type="hidden"
-                                                    name="<%="value_" + itemId%>" value="<%=strElt[1]%>"> <input
-                        type="hidden" name="<%="position_" + itemId%>" value="<%=strElt[2]%>">
-                    <input type="hidden" name="<%="dateFormat_" + itemId%>"
-                           value="<%=strElt[5]%>"></td>
+                                                    name="<%=Encode.forHtmlAttribute(String.valueOf("value_" + itemId))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(strElt[1]))%>"> <input
+                        type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf("position_" + itemId))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(strElt[2]))%>">
+                    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf("dateFormat_" + itemId))%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(strElt[5]))%>"></td>
             </tr>
             <% } %>
             <tr bgcolor="silver">
                 <td colspan="2" align="center"><input type="hidden" name="id"
-                                                      value="<%=reportId%>"> <input type="submit" name="submit"
+                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(reportId))%>"> <input type="submit" name="submit"
                                                                                     value="Report in HTML"> | <input
                         type="submit" name="submit"
                         value="Report in CSV"></td>

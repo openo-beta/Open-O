@@ -26,6 +26,7 @@
 --%>
 
 <%@page import="java.util.*, java.io.*, ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -104,7 +105,7 @@
         <br/>
         <form action="patientLetterManager.jsp?action=save">
             <input type="hidden" name="action" value="save"/>
-            <textarea name="letter" rows="30" cols="80"><%=currentLetter%></textarea>
+            <textarea name="letter" rows="30" cols="80"><%=Encode.forHtml(String.valueOf(currentLetter))%></textarea>
             <br/>
             <input class="btn btn-primary" type="submit" value="Save"/>
         </form>

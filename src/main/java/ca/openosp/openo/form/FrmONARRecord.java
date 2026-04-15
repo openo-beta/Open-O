@@ -10,7 +10,7 @@ import java.util.Properties;
 import ca.openosp.Misc;
 import ca.openosp.openo.utility.LoggedInInfo;
 
-import ca.openosp.openo.login.DBHelp;
+import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 public class FrmONARRecord extends FrmRecord {
@@ -18,12 +18,8 @@ public class FrmONARRecord extends FrmRecord {
         Properties props = new Properties();
 
         if (existingID <= 0) {
-            DBHelp db = new DBHelp();
-            String sql = "SELECT demographic_no, last_name, first_name, sex, "
-                    + "address, city, province, postal, phone, phone2, "
-                    + "year_of_birth, month_of_birth, date_of_birth, hin, chart_no FROM demographic WHERE demographic_no = "
-                    + demographicNo;
-            ResultSet rs = DBHelp.searchDBRecord(sql);
+            String sql = "SELECT demographic_no, last_name, first_name, sex, address, city, province, postal, phone, phone2, year_of_birth, month_of_birth, date_of_birth, hin, chart_no FROM demographic WHERE demographic_no = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo);
             if (rs.next()) {
                 java.util.Date date = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), rs
                         .getString("month_of_birth"), Misc.getString(rs, "date_of_birth"));
@@ -50,8 +46,8 @@ public class FrmONARRecord extends FrmRecord {
             }
             rs.close();
         } else {
-            String sql = "SELECT * FROM formONAR WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-            props = (new FrmRecordHelp()).getFormRecord(sql);
+            String sql = "SELECT * FROM formONAR WHERE demographic_no = ? AND ID = ?";
+            props = (new FrmRecordHelp()).getFormRecord(sql, demographicNo, existingID);
         }
 
         return props;
@@ -59,14 +55,14 @@ public class FrmONARRecord extends FrmRecord {
 
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
-        String sql = "SELECT * FROM formONAR WHERE demographic_no=" + demographic_no + " AND ID=0";
+        String sql = "SELECT * FROM formONAR WHERE demographic_no = ? AND ID = 0";
 
-        return ((new FrmRecordHelp()).saveFormRecord(props, sql));
+        return ((new FrmRecordHelp()).saveFormRecord(props, sql, demographic_no));
     }
 
     public Properties getPrintRecord(int demographicNo, int existingID) throws SQLException {
-        String sql = "SELECT * FROM formONAR WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-        return ((new FrmRecordHelp()).getPrintRecord(sql));
+        String sql = "SELECT * FROM formONAR WHERE demographic_no = ? AND ID = ?";
+        return ((new FrmRecordHelp()).getPrintRecord(sql, demographicNo, existingID));
     }
 
     public String findActionValue(String submit) throws SQLException {

@@ -54,6 +54,7 @@
 <%@ page import="ca.openosp.MyDateFormat" %>
 <%@ page import="ca.openosp.Misc" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
 %>
@@ -123,12 +124,12 @@
                         request.getParameter("security_no") + "->" + request.getParameter("user_name"), request.getRemoteAddr());
         %>
         <p>
-        <h2><fmt:message key="admin.securityupdate.msgUpdateSuccess"/> <%=request.getParameter("provider_no")%>
+        <h2><fmt:message key="admin.securityupdate.msgUpdateSuccess"/> <%=Encode.forHtml(request.getParameter("provider_no"))%>
         </h2>
         <%
         } else {
         %>
-        <h1><fmt:message key="admin.securityupdate.msgUpdateFailure"/><%= request.getParameter("provider_no") %>.</h1>
+        <h1><fmt:message key="admin.securityupdate.msgUpdateFailure"/><%=Encode.forHtml(request.getParameter("provider_no"))%>.</h1>
         <%
             }
         %>

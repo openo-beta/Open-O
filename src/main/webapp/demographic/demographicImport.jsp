@@ -43,6 +43,7 @@
 <%@page import="ca.openosp.openo.demographic.data.*,java.util.*,ca.openosp.openo.demographic.pageUtil.Util" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProgramDao, ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.PMmodule.model.Program" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -207,7 +208,7 @@
         Course:&nbsp;<select name="courseId" id="courseId">
         <option value="0">Choose One</option>
                 <%for(Program course:courses) { %>
-        <option value="<%=course.getId().intValue()%>"><%=course.getName()%>
+        <option value="<%=course.getId().intValue()%>"><%=Encode.forHtml(String.valueOf(course.getName()))%>
         </option>
                 <% } %>
         </select><br/>

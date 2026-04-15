@@ -48,6 +48,7 @@
 <%@page import="ca.openosp.openo.commn.model.Department" %>
 <%@page import="java.util.List" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     DepartmentDao departmentDao = SpringUtils.getBean(DepartmentDao.class);
@@ -78,7 +79,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -138,7 +139,7 @@
 
                                     <tr>
                                         <td><input type="checkbox" name="specialists"
-                                                   value="<%=i.getId()%>"></td>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(i.getId()))%>"></td>
                                         <td>
                                             <%
                                                 String contextPath = request.getContextPath();

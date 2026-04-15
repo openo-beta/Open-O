@@ -27,8 +27,8 @@
 <%@ page import="java.util.*,java.sql.*, java.net.*" %>
 <%@ page import="ca.openosp.openo.commn.web.Contact2Action" %>
 <%@ page import="ca.openosp.openo.commn.model.Contact" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.apache.commons.text.WordUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -95,19 +95,19 @@
                     serializePopupData(data1, data2);
                 } catch (error) {
                     opener.document
-                .<%=form%>.
-                    elements['<%=elementId%>'].value = data1;
+                .<%=Encode.forJavaScript(String.valueOf(form))%>.
+                    elements['<%=Encode.forJavaScript(String.valueOf(elementId))%>'].value = data1;
                     opener.document
-                .<%=form%>.
-                    elements['<%=elementName%>'].value = data2;
+                .<%=Encode.forJavaScript(String.valueOf(form))%>.
+                    elements['<%=Encode.forJavaScript(String.valueOf(elementName))%>'].value = data2;
                     self.close();
                 }
 
             }
 
             function serializePopupData(data1, data2) {
-                var id1 = '<%=elementId%>';
-                var id2 = '<%=elementName%>';
+                var id1 = '<%=Encode.forJavaScript(String.valueOf(elementId))%>';
+                var id2 = '<%=Encode.forJavaScript(String.valueOf(elementName))%>';
                 var data = '{"' + id1 + '":"' + data1 + '","' + id2 + '":"' + data2 + '"}';
                 opener.popUpData(data);
                 self.close();
@@ -140,13 +140,13 @@
         </table>
         <table>
             <tr>
-                <td align="left">Results based on keyword(s): <%=keyword == null ? "" : keyword%>
+                <td align="left">Results based on keyword(s): <%=Encode.forHtml(String.valueOf(keyword == null ? "" : keyword))%>
                 </td>
             </tr>
         </table>
-        <input type='hidden' name='form' value="<%=StringEscapeUtils.escapeHtml4(form)%>"/>
-        <input type='hidden' name='elementName' value="<%=StringEscapeUtils.escapeHtml4(elementName)%>"/>
-        <input type='hidden' name='elementId' value="<%=StringEscapeUtils.escapeHtml4(elementId)%>"/>
+        <input type='hidden' name='form' value="<%=Encode.forHtml(form)%>"/>
+        <input type='hidden' name='elementName' value="<%=Encode.forHtml(elementName)%>"/>
+        <input type='hidden' name='elementId' value="<%=Encode.forHtml(elementId)%>"/>
     </form>
 
     <table bgcolor="#C0C0C0" width="100%">
@@ -164,12 +164,12 @@
                 String bgColor = i.getIndex() % 2 == 0 ? "#EEEEFF" : "ivory";
 
                 String strOnClick;
-                strOnClick = "selectResult('" + contact.getId() + "','" + StringEscapeUtils.escapeEcmaScript(contact.getLastName() + "," + contact.getFirstName()) + "')";
+                strOnClick = "selectResult('" + contact.getId() + "','" + Encode.forJavaScript(contact.getLastName() + "," + contact.getFirstName()) + "')";
 
             %>
-            <tr bgcolor="<%=bgColor%>"
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                 onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
-                onMouseout="this.style.backgroundColor='<%=bgColor%>';" onClick="<%=strOnClick%>">
+                onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';" onClick="<%=Encode.forJavaScript(String.valueOf(strOnClick))%>">
                 <td></td>
                 <td><c:out value="${contact.lastName}"/></td>
                 <td><c:out value="${contact.firstName}"/></td>
@@ -192,12 +192,12 @@
     <script type="text/javascript">
 
         function last() {
-            document.nextform.action = "<%= request.getContextPath() %>/demographic/contactSearch.jsp?form=<%=URLEncoder.encode(form,"UTF-8")%>&elementName=<%=URLEncoder.encode(elementName,"UTF-8")%>&elementId=<%=URLEncoder.encode(elementId,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>";
+            document.nextform.action = "<%= request.getContextPath() %>/demographic/contactSearch.jsp?form=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(form,"UTF-8")))%>&elementName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementName,"UTF-8")))%>&elementId=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementId,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
             document.nextform.submit();
         }
 
         function next() {
-            document.nextform.action = "<%= request.getContextPath() %>/demographic/contactSearch.jsp?form=<%=URLEncoder.encode(form,"UTF-8")%>&elementName=<%=URLEncoder.encode(elementName,"UTF-8")%>&elementId=<%=URLEncoder.encode(elementId,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>";
+            document.nextform.action = "<%= request.getContextPath() %>/demographic/contactSearch.jsp?form=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(form,"UTF-8")))%>&elementName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementName,"UTF-8")))%>&elementId=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementId,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
             document.nextform.submit();
         }
 

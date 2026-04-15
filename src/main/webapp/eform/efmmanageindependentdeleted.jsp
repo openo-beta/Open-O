@@ -29,6 +29,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     if (session.getAttribute("userrole") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -89,19 +90,19 @@
             <thead>
             <tr>
                 <th>
-                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=EFormUtil.NAME%>"
+                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=Encode.forUriComponent(String.valueOf(EFormUtil.NAME))%>"
                        class="contentLink">
                         <fmt:message key="eform.showmyform.btnFormName"/>
                     </a>
                 </th>
                 <th>
-                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=EFormUtil.SUBJECT%>"
+                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=Encode.forUriComponent(String.valueOf(EFormUtil.SUBJECT))%>"
                        class="contentLink">
                         <fmt:message key="eform.showmyform.btnSubject"/>
                     </a>
                 </th>
                 <th>
-                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=EFormUtil.PROVIDER%>"
+                    <a href="<%=request.getContextPath()%>/eform/efmmanageindependent.jsp?orderby=<%=Encode.forUriComponent(String.valueOf(EFormUtil.PROVIDER))%>"
                        class="contentLink">
                         <fmt:message key="eform.showmyform.btnFormProvider"/>
                     </a>
@@ -127,18 +128,18 @@
             %>
             <tr bgcolor="<%=((i % 2) == 1)?"#F2F2F2":"white"%>">
                 <td><a href="#"
-                       ONCLICK="popupPage('<%=request.getContextPath()%>/eform/efmshowform_data.jsp?fdid=<%=curform.get("fdid")%>', '<%="FormP" + i%>'); return false;"
+                       ONCLICK="popupPage('<%=request.getContextPath()%>/eform/efmshowform_data.jsp?fdid=<%=Encode.forJavaScript(String.valueOf(curform.get("fdid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormP" + i))%>'); return false;"
                        TITLE="<fmt:message key="eform.showmyform.msgViewFrm"/>"
-                       onmouseover="window.status='<fmt:message key="eform.showmyform.msgViewFrm"/>'; return true"><%=curform.get("formName")%>
+                       onmouseover="window.status='<fmt:message key="eform.showmyform.msgViewFrm"/>'; return true"><%=Encode.forHtmlAttribute(String.valueOf(curform.get("formName")))%>
                 </a></td>
-                <td><%=curform.get("formSubject")%>
+                <td><%=Encode.forHtml(String.valueOf(curform.get("formSubject")))%>
                 </td>
-                <td align='center'><%=providerDao.getProviderNameLastFirst((String) curform.get("providerNo"))%>
+                <td align='center'><%=Encode.forHtml(String.valueOf(providerDao.getProviderNameLastFirst((String) curform.get("providerNo"))))%>
                 </td>
-                <td align='center'><%=curform.get("formDate")%>
+                <td align='center'><%=Encode.forHtml(String.valueOf(curform.get("formDate")))%>
                 </td>
                 <td align='center'>
-                    <a href="<%=request.getContextPath()%>/eform/unRemoveEForm.do?callpage=independent&fdid=<%=curform.get("fdid")%>"
+                    <a href="<%=request.getContextPath()%>/eform/unRemoveEForm.do?callpage=independent&fdid=<%=Encode.forUriComponent(String.valueOf(curform.get("fdid")))%>"
                        onClick="javascript: return confirm('Are you sure you want to restore this eform?');"
                        class="contentLink"><fmt:message key="global.btnRestore"/></a>
                 </td>

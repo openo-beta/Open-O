@@ -28,6 +28,7 @@
 <%@page import="ca.openosp.openo.demographic.data.*,java.util.*,ca.openosp.openo.billing.ca.bc.Teleplan.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanSequenceDAO" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanUserPassDAO" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -63,19 +64,19 @@
                 TeleplanSequenceDAO seq = new TeleplanSequenceDAO();
                 ca.openosp.OscarProperties op = ca.openosp.OscarProperties.getInstance();
             %>
-            Last Sequence # = <%=seq.getLastSequenceNumber()%>   Current Datacenter #
-            = <%=op.getProperty("dataCenterId", "Not Set")%>
+            Last Sequence # = <%=Encode.forHtml(String.valueOf(seq.getLastSequenceNumber()))%>   Current Datacenter #
+            = <%=Encode.forHtml(String.valueOf(op.getProperty("dataCenterId", "Not Set")))%>
         </div>
 
 
         <%if (request.getAttribute("error") != null) { %>
         <div class="alert alert-error">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <%=request.getAttribute("error")%>
+            <%=Encode.forHtml(String.valueOf(request.getAttribute("error")))%>
         </div>
         <%}%>
 
-        <oscar:oscarPropertiesCheck property="BILLING_SUPERUSER" value="<%=superUser%>">
+        <oscar:oscarPropertiesCheck property="BILLING_SUPERUSER" value="<%=Encode.forHtmlAttribute(String.valueOf(superUser))%>">
             <h4>Manually Set Sequence #</h4>
             <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
                 <input type="hidden" name="method" value="setSequenceNumber"/>
@@ -84,7 +85,7 @@
             </form>
         </oscar:oscarPropertiesCheck>
 
-        <oscar:oscarPropertiesCheck property="BILLING_SUPERUSER" value="<%=superUser%>">
+        <oscar:oscarPropertiesCheck property="BILLING_SUPERUSER" value="<%=Encode.forHtmlAttribute(String.valueOf(superUser))%>">
             <h4>Set Teleplan UserName Password</h4>
             <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
                 <input type="hidden" name="method" value="setUserName"/>
@@ -96,7 +97,7 @@
 
         <% if (dao.hasUsernamePassword()) { %>
 
-        <oscar:oscarPropertiesCheck property="BILLING_SUPERUSER" value="<%=superUser%>">
+        <oscar:oscarPropertiesCheck property="BILLING_SUPERUSER" value="<%=Encode.forHtmlAttribute(String.valueOf(superUser))%>">
             <h4>Get Teleplan Sequence #</h4>
             <form action="${pageContext.request.contextPath}/billing/CA/BC/ManageTeleplan.do" method="post">
                 <input type="hidden" name="method" value="getSequenceNumber"/>

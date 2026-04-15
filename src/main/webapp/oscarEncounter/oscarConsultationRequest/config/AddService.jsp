@@ -26,6 +26,7 @@
 
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -109,7 +110,7 @@
                     <tr>
                         <td style="color:red">
                             <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddDepartment.msgDepartmentAdded">
-                                <fmt:param value="<%=added%>" />
+                                <fmt:param value="<%=Encode.forHtmlAttribute(String.valueOf(added))%>" />
                             </fmt:message>
                         </td>
                     </tr>

@@ -101,11 +101,12 @@
 <%@ page import="ca.openosp.openo.mds.data.MDSSegmentData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-    <title><%=lab.pLastName%>, <%=lab.pFirstName%> <fmt:message key="oscarMDS.segmentDisplay.title"/></title>
+    <title><%=Encode.forHtml(String.valueOf(lab.pLastName))%>, <%=Encode.forHtml(String.valueOf(lab.pFirstName))%> <fmt:message key="oscarMDS.segmentDisplay.title"/></title>
     <script language="javascript" type="text/javascript"
             src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
     <link rel="stylesheet" type="text/css"
@@ -133,7 +134,7 @@
     }
 
     function linkreq(rptId, reqId) {
-        var link = "<%= request.getContextPath() %>/lab/LinkReq.jsp?table=labPatientPhysicianInfo&rptid=" + rptId + "&reqid=" + reqId + "<%=demographicID != null ? "&demographicNo=" + demographicID : ""%>";
+        var link = "<%= request.getContextPath() %>/lab/LinkReq.jsp?table=labPatientPhysicianInfo&rptid=" + rptId + "&reqid=" + reqId + "<%=Encode.forJavaScript(String.valueOf(demographicID != null ? "&demographicNo=" + demographicID : ""))%>";
         window.open(link, "linkwin", "width=500, height=200");
     }
 </script>
@@ -142,13 +143,13 @@
 <!-- form forwarding of the lab -->
 <form name="reassignForm" method="post" action="<%= request.getContextPath() %>/lab/CA/ON/Forward.do"><input
         type="hidden" name="flaggedLabs"
-        value="<%= segmentID %>"/> <input
+        value="<%=Encode.forHtmlAttribute(String.valueOf(segmentID))%>"/> <input
         type="hidden" name="selectedProviders" value=""/>
     <input type="hidden" name="favorites" value=""/>
     <input type="hidden" name="labType" value="CML"/> <input type="hidden"
-                                                             name="labType<%= segmentID %>CML"
+                                                             name="labType<%=Encode.forHtmlAttribute(String.valueOf(segmentID))%>CML"
                                                              value="imNotNull"/> <input type="hidden" name="providerNo"
-                                                                                        value="<%= request.getParameter("providerNo") %>"/>
+                                                                                        value="<%= Encode.forHtmlAttribute(request.getParameter("providerNo")) %>"/>
 </form>
 <form name="acknowledgeForm" method="post"
       action="<%=request.getContextPath()%>/oscarMDS/UpdateStatus.do">
@@ -161,9 +162,9 @@
                     <tr>
                         <td align="left" class="MainTableTopRowRightColumn" width="100%">
                             <input type="hidden" name="segmentID"
-                                   value="<%= segmentID %>"/> <input
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(segmentID))%>"/> <input
                                 type="hidden" name="providerNo"
-                                value="<%= request.getParameter("providerNo") %>"/> <input
+                                value="<%= Encode.forHtmlAttribute(request.getParameter("providerNo")) %>"/> <input
                                 type="hidden" name="status" value="A"/> <input type="hidden"
                                                                                name="comment" value=""/> <input
                                 type="hidden" name="labType"
@@ -179,18 +180,18 @@
                                                                     value=" <fmt:message key="global.btnPrint"/> "
                                                                     onClick="window.print()"> <% if (lab.getDemographicNo() != null && !lab.getDemographicNo().equals("") && !lab.getDemographicNo().equalsIgnoreCase("null")) { %>
                             <input type="button" value="Msg"
-                                   onclick="popup(700,960,'${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=<%=lab.getDemographicNo()%>','msg')"/>
+                                   onclick="popup(700,960,'${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>','msg')"/>
                             <input type="button" value="Tickler"
-                                   onclick="popup(450,600,'${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?demographic_no=<%=lab.getDemographicNo()%>','tickler')"/>
+                                   onclick="popup(450,600,'${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>','tickler')"/>
                             <% } %> <% if (request.getParameter("searchProviderNo") != null) { // we were called from e-chart %>
                             <input type="button"
                                    value=" <fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(lab.pLastName+", "+lab.pFirstName )%>', 'searchPatientWindow')">
+                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&name=<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(lab.pLastName+", "+lab.pFirstName )))%>', 'searchPatientWindow')">
                             <% } %>
-                            <input type="button" value="Req# <%=reqTableID%>" title="Link to Requisition"
-                                   onclick="linkreq('<%=segmentID%>','<%=reqID%>');"/>
+                            <input type="button" value="Req# <%=Encode.forHtmlAttribute(String.valueOf(reqTableID))%>" title="Link to Requisition"
+                                   onclick="linkreq('<%=Encode.forJavaScript(String.valueOf(segmentID))%>','<%=Encode.forJavaScript(String.valueOf(reqID))%>');"/>
                             <span class="Field2"><i>Next Appointment: <oscar:nextAppt
-                                    demographicNo="<%=lab.getDemographicNo()%>"/></i></span></td>
+                                    demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(lab.getDemographicNo()))%>"/></i></span></td>
                     </tr>
                 </table>
 
@@ -207,15 +208,15 @@
                             <div class="Field2">Version:&#160;&#160; <%
                                 for (int i = 0; i < multiID.length; i++) {
                                     if (multiID[i].equals(segmentID)) {
-                            %>v<%= i + 1 %>&#160;<%
+                            %>v<%=Encode.forHtml(String.valueOf(i + 1))%>&#160;<%
                             } else {
                                 if (request.getParameter("searchProviderNo") != null) { // null if we were called from e-chart
                             %><a
-                                    href="CMLDisplay.jsp?segmentID=<%=multiID[i]%>&multiID=<%=lab.multiLabId%>&providerNo=<%=request.getParameter("providerNo")%>&searchProviderNo=<%=request.getParameter("searchProviderNo")%>">v<%= i + 1 %>
+                                    href="CMLDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(multiID[i]))%>&multiID=<%=Encode.forUriComponent(String.valueOf(lab.multiLabId))%>&providerNo=<%=Encode.forUriComponent(request.getParameter("providerNo"))%>&searchProviderNo=<%=Encode.forUriComponent(request.getParameter("searchProviderNo"))%>">v<%=Encode.forHtml(String.valueOf(i + 1))%>
                             </a>&#160;<%
                             } else {
                             %><a
-                                    href="CMLDisplay.jsp?segmentID=<%=multiID[i]%>&multiID=<%=lab.multiLabId%>&providerNo=<%=request.getParameter("providerNo")%>">v<%= i + 1 %>
+                                    href="CMLDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(multiID[i]))%>&multiID=<%=Encode.forUriComponent(String.valueOf(lab.multiLabId))%>&providerNo=<%=Encode.forUriComponent(request.getParameter("providerNo"))%>">v<%=Encode.forHtml(String.valueOf(i + 1))%>
                             </a>&#160;<%
                                         }
                                     }
@@ -256,13 +257,13 @@
                                                             <td colspan="2" nowrap>
                                                                 <div class="FieldData" nowrap="nowrap">
                                                                     <% if (request.getParameter("searchProviderNo") == null) { // we were called from e-chart %>
-                                                                    <a href="javascript:window.close()"><%=lab.pLastName%>
-                                                                        , <%=lab.pFirstName%>
+                                                                    <a href="javascript:window.close()"><%=Encode.forHtml(String.valueOf(lab.pLastName))%>
+                                                                        , <%=Encode.forHtml(String.valueOf(lab.pFirstName))%>
                                                                     </a>
                                                                     <% } else { // we were called from lab module %>
                                                                     <a
-                                                                            href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(lab.pLastName+", "+lab.pFirstName )%>', 'searchPatientWindow')">
-                                                                        <%=lab.pLastName%>, <%=lab.pFirstName%>
+                                                                            href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&name=<%=Encode.forUriComponent(String.valueOf(lab.pLastName+", "+lab.pFirstName))%>', 'searchPatientWindow')">
+                                                                        <%=Encode.forHtml(String.valueOf(lab.pLastName))%>, <%=Encode.forHtml(String.valueOf(lab.pFirstName))%>
                                                                     </a> <% } %></div>
                                                             </td>
                                                         </tr>
@@ -272,13 +273,13 @@
                                                                 </div>
                                                             </td>
                                                             <td colspan="2" nowrap>
-                                                                <div class="FieldData" nowrap="nowrap"><%=lab.pDOB%>
+                                                                <div class="FieldData" nowrap="nowrap"><%=Encode.forHtml(String.valueOf(lab.pDOB))%>
                                                                 </div>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td colspan="2" nowrap>
-                                                                <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=lab.getAge()%> <%
+                                                                <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=Encode.forHtml(String.valueOf(lab.getAge()))%> <%
                                                                     try {
                                                                         lab.getAge();
                                                                     } catch (Exception e) {
@@ -289,7 +290,7 @@
                                                                 </div>
                                                             </td>
                                                             <td colspan="2" nowrap>
-                                                                <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=lab.pSex%>
+                                                                <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=Encode.forHtml(String.valueOf(lab.pSex))%>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -303,7 +304,7 @@
                                                             </td>
                                                             <td colspan="2" nowrap>
                                                                 <div class="FieldData"
-                                                                     nowrap="nowrap"><%=lab.pHealthNum%>
+                                                                     nowrap="nowrap"><%=Encode.forHtml(String.valueOf(lab.pHealthNum))%>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -320,7 +321,7 @@
                                                             </td>
                                                             <td nowrap>
                                                                 <div align="left" class="FieldData"
-                                                                     nowrap="nowrap"><%=lab.pPhone%>
+                                                                     nowrap="nowrap"><%=Encode.forHtml(String.valueOf(lab.pPhone))%>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -354,7 +355,7 @@
                                                             </td>
                                                             <td nowrap>
                                                                 <div align="left" class="FieldData"
-                                                                     nowrap="nowrap"><%=""/*not sure on what goes here*/%>
+                                                                     nowrap="nowrap"><%=Encode.forHtml(String.valueOf(""/*not sure on what goes here*/))%>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -373,7 +374,7 @@
                                         <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formDateService"/>:</strong></div>
                                     </td>
                                     <td>
-                                        <div class="FieldData" nowrap="nowrap"><%= lab.serviceDate %>
+                                        <div class="FieldData" nowrap="nowrap"><%=Encode.forHtml(String.valueOf(lab.serviceDate))%>
                                         </div>
                                     </td>
                                 </tr>
@@ -383,7 +384,7 @@
                                     </td>
                                     <td>
                                         <div class="FieldData"
-                                             nowrap="nowrap"><%= ((String) (lab.status.equals("F") ? "Final" : "Partial"))%>
+                                             nowrap="nowrap"><%=Encode.forHtml(String.valueOf(((String) (lab.status.equals("F") ? "Final" : "Partial"))))%>
                                         </div>
                                     </td>
                                 </tr>
@@ -395,7 +396,7 @@
                                         <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formClientRefer"/>:</strong></div>
                                     </td>
                                     <td nowrap>
-                                        <div class="FieldData" nowrap="nowrap"><%= lab.docNum%>
+                                        <div class="FieldData" nowrap="nowrap"><%=Encode.forHtml(String.valueOf(lab.docNum))%>
                                         </div>
                                     </td>
                                 </tr>
@@ -404,7 +405,7 @@
                                         <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formAccession"/>:</strong></div>
                                     </td>
                                     <td>
-                                        <div class="FieldData" nowrap="nowrap"><%= lab.accessionNum%>
+                                        <div class="FieldData" nowrap="nowrap"><%=Encode.forHtml(String.valueOf(lab.accessionNum))%>
                                         </div>
                                     </td>
                                 </tr>
@@ -425,15 +426,15 @@
                                    bordercolor="#CCCCCC">
                                 <tr>
                                     <td bgcolor="white">
-                                        <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formRequestingClient"/>: </strong> <%= lab.docName%>
+                                        <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formRequestingClient"/>: </strong> <%=Encode.forHtml(String.valueOf(lab.docName))%>
                                         </div>
                                     </td>
                                     <td bgcolor="white">
-                                        <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formReportToClient"/>: </strong> <%= ""/*mDSSegmentData.providers.admittingDoctor not sure*/%>
+                                        <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formReportToClient"/>: </strong> <%=Encode.forHtml(String.valueOf(""/*mDSSegmentData.providers.admittingDoctor not sure*/))%>
                                         </div>
                                     </td>
                                     <td bgcolor="white" align="right">
-                                        <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formCCClient"/>: </strong> <%="" /* mDSSegmentData.providers.consultingDoctor*/ %>
+                                        <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formCCClient"/>: </strong> <%=Encode.forHtml(String.valueOf("" /* mDSSegmentData.providers.consultingDoctor*/))%>
                                         </div>
                                     </td>
                                 </tr>
@@ -458,7 +459,7 @@
                                 <tr>
                                     <% if (multiID.length > 1) { %>
                                     <td align="center" bgcolor="white" width="20%" valign="top">
-                                        <div class="FieldData"><b>Version:</b> v<%= j + 1 %>
+                                        <div class="FieldData"><b>Version:</b> v<%=Encode.forHtml(String.valueOf(j + 1))%>
                                         </div>
                                     </td>
                                     <td align="left" bgcolor="white" width="80%" valign="top">
@@ -469,12 +470,12 @@
                                         <div class="FieldData">
                                             <!--center--> <% for (int i = 0; i < statusArray.size(); i++) {
                                             ReportStatus report = (ReportStatus) statusArray.get(i); %>
-                                            <%= report.getProviderName() %> : <font
-                                                color="red"><%= report.getStatus() %>
+                                            <%=Encode.forHtml(String.valueOf(report.getProviderName()))%> : <font
+                                                color="red"><%=Encode.forHtml(String.valueOf(report.getStatus()))%>
                                         </font>
-                                            <% if (report.getStatus().equals("Acknowledged")) { %> <%= report.getTimestamp() %>
+                                            <% if (report.getStatus().equals("Acknowledged")) { %> <%=Encode.forHtml(String.valueOf(report.getTimestamp()))%>
                                             ,
-                                            <%= (report.getComment().equals("") ? "no comment" : "comment : " + report.getComment()) %>
+                                            <%=Encode.forHtml(String.valueOf((report.getComment().equals("") ? "no comment" : "comment : " + report.getComment())))%>
                                             <% } %> <br>
                                             <% }
                                                 if (statusArray.size() == 0) {
@@ -514,7 +515,7 @@
                     </tr>
                     <tr>
                         <td bgcolor="#FFCC00" width="200" height="22" valign="bottom">
-                            <div class="Title2"><%=gResults.groupName%>
+                            <div class="Title2"><%=Encode.forHtml(String.valueOf(gResults.groupName))%>
                             </div>
                         </td>
                         <td align="right" bgcolor="#FFCC00" width="100">&nbsp;</td>
@@ -561,28 +562,28 @@
                             if (thisResult.isLabResult()) {
                     %>
 
-                    <tr bgcolor="<%=(linenum % 2 == 1 ? highlight : "")%>"
-                        class="<%=lineClass%>">
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>"
+                        class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td valign="top" align="left"><a
-                                href="labValues.jsp?testName=<%=thisResult.testName%>&demo=<%=lab.getDemographicNo()%>&labType=CML"><%=thisResult.testName %>
+                                href="labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(thisResult.testName))%>&demo=<%=Encode.forUriComponent(String.valueOf(lab.getDemographicNo()))%>&labType=CML"><%=Encode.forHtml(String.valueOf(thisResult.testName))%>
                         </a></td>
-                        <td align="center"><%=thisResult.result %>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(thisResult.result))%>
                         </td>
-                        <td align="center"><%=thisResult.abn %>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(thisResult.abn))%>
                         </td>
-                        <td align="center"><%=thisResult.getReferenceRange()%>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(thisResult.getReferenceRange()))%>
                         </td>
-                        <td align="center"><%=thisResult.units %>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(thisResult.units))%>
                         </td>
-                        <td align="center"><%=lab.collectionDate%>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(lab.collectionDate))%>
                         </td>
-                        <td align="center"><%=thisResult.locationId %>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(thisResult.locationId))%>
                         </td>
-                        <td align="center"><%=""/*thisResult.resultStatus*/ %>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(""/*thisResult.resultStatus*/))%>
                         </td>
                         <td align="center" valign="top">
                             <a href="javascript:void(0);" title="Annotation"
-                               onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=annotation_display%>&amp;table_id=<%=segmentID%>&amp;demo=<%=lab.getDemographicNo()%>&amp;other_id=<%=String.valueOf(i) + "-" + String.valueOf(l) %>','anwin','width=400,height=500');">
+                               onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>&amp;other_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(i) + "-" + String.valueOf(l)))%>','anwin','width=400,height=500');">
                                 <%if (!isPrevAnnotation) { %><img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation"
                                                                   height="16" width="13" border="0"/><%} else { %><img
                                     src="<%= request.getContextPath() %>/images/filledNotes.gif" alt="rxAnnotation" height="16" width="13"
@@ -591,10 +592,10 @@
                         </td>
                     </tr>
                     <% } else {%>
-                    <tr bgcolor="<%=(linenum % 2 == 1 ? highlight : "")%>"
-                        class="<%=lineClass%>">
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>"
+                        class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td valign="top" align="left" colspan="8"><pre
-                                style="margin-left: 100px;"><%=thisResult.description %></pre>
+                                style="margin-left: 100px;"><%=Encode.forHtml(String.valueOf(thisResult.description))%></pre>
                         </td>
 
                     </tr>
@@ -632,13 +633,13 @@
                                                                     value=" <fmt:message key="global.btnPrint"/> "
                                                                     onClick="window.print()"> <% if (lab.getDemographicNo() != null && !lab.getDemographicNo().equals("") && !lab.getDemographicNo().equalsIgnoreCase("null")) { %>
                             <input type="button" value="Msg"
-                                   onclick="popup(700,960,'<%=request.getContextPath()%>/messenger/SendDemoMessage.do?demographic_no=<%=lab.getDemographicNo()%>','msg')"/>
+                                   onclick="popup(700,960,'<%=request.getContextPath()%>/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>','msg')"/>
                             <input type="button" value="Tickler"
-                                   onclick="popup(450,600,'${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?demographic_no=<%=lab.getDemographicNo()%>','tickler')"/>
+                                   onclick="popup(450,600,'${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>','tickler')"/>
                             <% } %> <% if (request.getParameter("searchProviderNo") != null) { // we were called from e-chart %>
                             <input type="button"
                                    value=" <fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(lab.pLastName+", "+lab.pFirstName )%>', 'searchPatientWindow')">
+                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&name=<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(lab.pLastName+", "+lab.pFirstName )))%>', 'searchPatientWindow')">
                             <% } %>
                         </td>
                         <td width="50%" valign="center" align="left"><span

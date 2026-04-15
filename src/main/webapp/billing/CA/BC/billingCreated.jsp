@@ -339,13 +339,13 @@
                             </tr>
                             <tr>
                                 <th>Patient DoB:</th>
-                                <td><%=bean.getPatientDoB()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getPatientDoB()))%>
                                 </td>
                                 <th>Patient Age:</th>
-                                <td><%=bean.getPatientAge()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getPatientAge()))%>
                                 </td>
                                 <th>Patient Sex:</th>
-                                <td><%=bean.getPatientSex()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getPatientSex()))%>
                                 </td>
                             </tr>
                             <tr>
@@ -368,38 +368,38 @@
                             </tr>
                             <tr>
                                 <th>Billing Type:</th>
-                                <td><%=bean.getBillingType()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getBillingType()))%>
                                 </td>
                                 <th>Service Location:</th>
-                                <td><%=bean.getVisitType()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getVisitType()))%>
                                 </td>
                                 <th>Clarification Code:</th>
-                                <td><%=bean.getVisitLocation()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getVisitLocation()))%>
                                 </td>
                                 <th>Payment Method:</th>
-                                <td><%=bean.getPaymentTypeName()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getPaymentTypeName()))%>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Service Date:</th>
-                                <td><%=bean.getServiceDate()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getServiceDate()))%>
                                 </td>
                                 <th>Service To Date:</th>
-                                <td><%=bean.getService_to_date()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getService_to_date()))%>
                                 </td>
                                 <th>After Hours:</th>
-                                <td><%=getAHDisplay(bean.getAfterHours())%>
+                                <td><%=Encode.forHtml(String.valueOf(getAHDisplay(bean.getAfterHours())))%>
                                 </td>
                                 <th>Time Call:</th>
-                                <td><%=bean.getTimeCall()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getTimeCall()))%>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Start:</th>
-                                <td><%=bean.getStartTime()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getStartTime()))%>
                                 </td>
                                 <th>End:</th>
-                                <td><%=bean.getEndTime()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getEndTime()))%>
                                 </td>
                                 <th>Billing Provider:</th>
                                 <td><%=Encode.forHtmlContent(billform.getProviderName(bean.getBillingProvider()))%>
@@ -416,7 +416,7 @@
                                 <td><%=Encode.forHtmlContent(bean.getDependent())%>
                                 </td>
                                 <th>Sub Code:</th>
-                                <td><%=bean.getSubmissionCode()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getSubmissionCode()))%>
                                 </td>
                                 <th>&nbsp;</th>
                                 <td>&nbsp;</td>
@@ -426,17 +426,17 @@
                                 <td colspan="3"><%=Encode.forHtmlContent(bean.getShortClaimNote())%>
                                 </td>
                                 <th>ICBC Claim #:</th>
-                                <td colspan="3"><%=bean.getIcbc_claim_no()%>
+                                <td colspan="3"><%=Encode.forHtml(String.valueOf(bean.getIcbc_claim_no()))%>
                                 </td>
                             </tr>
                             <tr>
-                                <th><%=getReferralString(bean.getReferType1())%>
+                                <th><%=Encode.forHtml(String.valueOf(getReferralString(bean.getReferType1())))%>
                                 </th>
-                                <td colspan="3"><%=Encode.forHtmlContent(billingReferralDao.getReferralDocName(bean.getReferral1())) %> <%=addBrackets(bean.getReferral1())%>
+                                <td colspan="3"><%=Encode.forHtmlContent(billingReferralDao.getReferralDocName(bean.getReferral1())) %> <%=Encode.forHtml(String.valueOf(addBrackets(bean.getReferral1())))%>
                                 </td>
-                                <th><%=getReferralString(bean.getReferType2())%>
+                                <th><%=Encode.forHtml(String.valueOf(getReferralString(bean.getReferType2())))%>
                                 </th>
-                                <td colspan="3"><%=Encode.forHtmlContent(billingReferralDao.getReferralDocName(bean.getReferral2())) %> <%=addBrackets(bean.getReferral2())%>
+                                <td colspan="3"><%=Encode.forHtmlContent(billingReferralDao.getReferralDocName(bean.getReferral2())) %> <%=Encode.forHtml(String.valueOf(addBrackets(bean.getReferral2())))%>
                                 </td>
                             </tr>
 
@@ -457,22 +457,22 @@
                                             BillingBillingManager.BillingItem bi = (BillingBillingManager.BillingItem) billItem.get(i);
                                         %>
                                         <tr>
-                                            <td><%=bi.getServiceCode()%>
+                                            <td><%=Encode.forHtml(String.valueOf(bi.getServiceCode()))%>
                                             </td>
-                                            <td><%=bi.getDescription()%>
+                                            <td><%=Encode.forHtml(String.valueOf(bi.getDescription()))%>
                                             </td>
-                                            <td><%=bi.getUnit()%>
+                                            <td><%=Encode.forHtml(String.valueOf(bi.getUnit()))%>
                                             </td>
                                             <td><input type="text" class="form-control"
-                                                       name="dispPrice+<%=bi.getServiceCode()%>"
-                                                       value="<%=bi.getDispPrice()%>"/></td>
-                                            <td><%=bi.getDispLineTotal()%>
+                                                       name="dispPrice+<%=Encode.forHtmlAttribute(String.valueOf(bi.getServiceCode()))%>"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(bi.getDispPrice()))%>"/></td>
+                                            <td><%=Encode.forHtml(String.valueOf(bi.getDispLineTotal()))%>
                                             </td>
                                         </tr>
                                         <% } %>
                                         <tr>
                                             <th colspan="4">Total:</th>
-                                            <td><%=bean.getGrandtotal()%>
+                                            <td><%=Encode.forHtml(String.valueOf(bean.getGrandtotal()))%>
                                             </td>
                                         </tr>
 
@@ -487,25 +487,25 @@
                                         </tr>
                                         <c:if test="${ not empty billingSessionBean.dx1 }">
                                             <tr>
-                                                <td><%=bean.getDx1()%>
+                                                <td><%=Encode.forHtml(String.valueOf(bean.getDx1()))%>
                                                 </td>
-                                                <td><%=billform.getDiagDesc(bean.getDx1(), bean.getBillRegion())%>
+                                                <td><%=Encode.forHtml(String.valueOf(billform.getDiagDesc(bean.getDx1(), bean.getBillRegion())))%>
                                                 </td>
                                             </tr>
                                         </c:if>
                                         <c:if test="${ not empty billingSessionBean.dx2 }">
                                             <tr>
-                                                <td><%=bean.getDx2()%>
+                                                <td><%=Encode.forHtml(String.valueOf(bean.getDx2()))%>
                                                 </td>
-                                                <td><%=billform.getDiagDesc(bean.getDx2(), bean.getBillRegion())%>
+                                                <td><%=Encode.forHtml(String.valueOf(billform.getDiagDesc(bean.getDx2(), bean.getBillRegion())))%>
                                                 </td>
                                             </tr>
                                         </c:if>
                                         <c:if test="${ not empty billingSessionBean.dx3 }">
                                             <tr>
-                                                <td><%=bean.getDx3()%>
+                                                <td><%=Encode.forHtml(String.valueOf(bean.getDx3()))%>
                                                 </td>
-                                                <td><%=billform.getDiagDesc(bean.getDx3(), bean.getBillRegion())%>
+                                                <td><%=Encode.forHtml(String.valueOf(billform.getDiagDesc(bean.getDx3(), bean.getBillRegion())))%>
                                                 </td>
                                             </tr>
                                         </c:if>

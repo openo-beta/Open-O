@@ -45,6 +45,7 @@
         import="ca.openosp.openo.demographic.data.*,java.util.*,ca.openosp.openo.providers.data.*,ca.openosp.openo.util.*,ca.openosp.openo.report.data.*" %>
 <%@ page import="ca.openosp.openo.report.data.RptSearchData" %>
 <%@ page import="ca.openosp.openo.report.data.DemographicSets" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -121,7 +122,7 @@
         <table>
             <tr>
                 <% if (demographic_no != null) { %>
-                <td><input type="hidden" name="demographicNo" value="<%=demographic_no%>"/>
+                <td><input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
                     Reporting :
                     <%} else {%>
                     Patient Set: <select name="patientSet" id="patientSet">
@@ -130,7 +131,7 @@
                             for (int i = 0; i < sets.size(); i++) {
                                 String setName = sets.get(i);
                         %>
-                        <option value="<%=setName%>"><%=setName%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(setName))%>"><%=Encode.forHtml(String.valueOf(setName))%>
                         </option>
                         <%}%>
                     </select>

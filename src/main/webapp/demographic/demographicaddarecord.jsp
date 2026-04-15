@@ -428,7 +428,7 @@
                 if (start_time2 != null && !start_time2.equals("null")) {
             %>
             <script language="JavaScript">
-                document.addappt.action = "<%= request.getContextPath() %>/appointment/addappointment.jsp?user_id=<%=Encode.forJavaScript(request.getParameter("creator"))%>&provider_no=<%=provider_no2%>&bFirstDisp=<%=bFirstDisp2%>&appointment_date=<%=request.getParameter("appointment_date")%>&year=<%=year2%>&month=<%=month2%>&day=<%=day2%>&start_time=<%=start_time2%>&end_time=<%=end_time2%>&duration=<%=duration2%>&name=<%=URLEncoder.encode(bufName.toString(), StandardCharsets.UTF_8)%>&chart_no=<%=URLEncoder.encode(bufChart.toString(), StandardCharsets.UTF_8)%>&bFirstDisp=false&demographic_no=<%=dem.toString()%>&messageID=<%=request.getParameter("messageId")%>&doctor_no=<%=Encode.forJavaScript(bufDoctorNo.toString())%>&notes=<%=Encode.forJavaScript(request.getParameter("notes"))%>&reason=<%=Encode.forJavaScript(request.getParameter("reason"))%>&location=<%=Encode.forJavaScript(request.getParameter("location"))%>&resources=<%=request.getParameter("resources")%>&type=<%=request.getParameter("type")%>&style=<%=request.getParameter("style")%>&billing=<%=request.getParameter("billing")%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&createdatetime=<%=request.getParameter("createdatetime")%>&creator=<%=Encode.forJavaScript(request.getParameter("creator"))%>&remarks=<%=Encode.forJavaScript(request.getParameter("remarks"))%>";
+                document.addappt.action = "<%= request.getContextPath() %>/appointment/addappointment.jsp?user_id=<%=Encode.forJavaScript(request.getParameter("creator"))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(provider_no2))%>&bFirstDisp=<%=Encode.forJavaScript(String.valueOf(bFirstDisp2))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("appointment_date"))%>&year=<%=Encode.forJavaScript(String.valueOf(year2))%>&month=<%=Encode.forJavaScript(String.valueOf(month2))%>&day=<%=Encode.forJavaScript(String.valueOf(day2))%>&start_time=<%=Encode.forJavaScript(String.valueOf(start_time2))%>&end_time=<%=Encode.forJavaScript(String.valueOf(end_time2))%>&duration=<%=Encode.forJavaScript(String.valueOf(duration2))%>&name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bufName.toString(), StandardCharsets.UTF_8)))%>&chart_no=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bufChart.toString(), StandardCharsets.UTF_8)))%>&bFirstDisp=false&demographic_no=<%=Encode.forJavaScript(String.valueOf(dem.toString()))%>&messageID=<%=Encode.forJavaScript(request.getParameter("messageId"))%>&doctor_no=<%=Encode.forJavaScript(bufDoctorNo.toString())%>&notes=<%=Encode.forJavaScript(request.getParameter("notes"))%>&reason=<%=Encode.forJavaScript(request.getParameter("reason"))%>&location=<%=Encode.forJavaScript(request.getParameter("location"))%>&resources=<%=Encode.forJavaScript(request.getParameter("resources"))%>&type=<%=Encode.forJavaScript(request.getParameter("type"))%>&style=<%=Encode.forJavaScript(request.getParameter("style"))%>&billing=<%=Encode.forJavaScript(request.getParameter("billing"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&createdatetime=<%=Encode.forJavaScript(request.getParameter("createdatetime"))%>&creator=<%=Encode.forJavaScript(request.getParameter("creator"))%>&remarks=<%=Encode.forJavaScript(request.getParameter("remarks"))%>";
                 document.addappt.submit();
             </SCRIPT>
             <% } %>
@@ -438,19 +438,19 @@
         <p>
         <h2><fmt:message key="demographic.demographicaddarecord.msgSuccessful"/></h2>
 
-        <a href="demographiccontrol.jsp?demographic_no=<%=dem%>&displaymode=edit&dboperation=search_detail"><fmt:message key="demographic.demographicaddarecord.goToRecord"/></a>
+        <a href="demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(dem))%>&displaymode=edit&dboperation=search_detail"><fmt:message key="demographic.demographicaddarecord.goToRecord"/></a>
 
         <caisi:isModuleLoad moduleName="caisi">
             <br/>
-            <a href="<%= request.getContextPath() %>/PMmodule/ClientManager.do?id=<%=dem%>"><fmt:message key="demographic.demographicaddarecord.goToCaisiRecord"/> (<a href="#"
-                                                                                  onclick="popup(700,1027,'demographiccontrol.jsp?demographic_no=<%=dem%>&displaymode=edit&dboperation=search_detail')">New
+            <a href="<%= request.getContextPath() %>/PMmodule/ClientManager.do?id=<%=Encode.forUriComponent(String.valueOf(dem))%>"><fmt:message key="demographic.demographicaddarecord.goToCaisiRecord"/> (<a href="#"
+                                                                                  onclick="popup(700,1027,'demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(dem))%>&displaymode=edit&dboperation=search_detail')">New
                 Window</a>)</a>
         </caisi:isModuleLoad>
 
 
         <caisi:isModuleLoad moduleName="caisi">
             <br/>
-            <a href="<%= request.getContextPath() %>/PMmodule/ClientManager.do?id=<%=dem%>"><fmt:message key="demographic.demographicaddarecord.goToCaisiRecord"/></a>
+            <a href="<%= request.getContextPath() %>/PMmodule/ClientManager.do?id=<%=Encode.forUriComponent(String.valueOf(dem))%>"><fmt:message key="demographic.demographicaddarecord.goToCaisiRecord"/></a>
         </caisi:isModuleLoad>
 
 

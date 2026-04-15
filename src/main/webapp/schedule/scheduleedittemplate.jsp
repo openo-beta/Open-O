@@ -44,6 +44,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.ScheduleTemplateDao" %>
 <%@ page import="ca.openosp.openo.commn.model.ScheduleTemplateCode" %>
 <%@ page import="ca.openosp.openo.commn.dao.ScheduleTemplateCodeDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ScheduleTemplateDao scheduleTemplateDao = SpringUtils.getBean(ScheduleTemplateDao.class);
     ScheduleTemplateCodeDao scheduleTemplateCodeDao = SpringUtils.getBean(ScheduleTemplateCodeDao.class);
@@ -109,7 +110,7 @@
             function changeGroup(s) {
                 var newGroupNo = s.options[s.selectedIndex].value;
                 newGroupNo = s.options[s.selectedIndex].value;
-                self.location.href = "scheduleedittemplate.jsp?providerid=<%=request.getParameter("providerid")%>&providername=<%=URLEncoder.encode(request.getParameter("providername"), StandardCharsets.UTF_8)%>&step=" + newGroupNo;
+                self.location.href = "scheduleedittemplate.jsp?providerid=<%=Encode.forJavaScript(request.getParameter("providerid"))%>&providername=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("providername") != null ? request.getParameter("providername") : "", StandardCharsets.UTF_8))%>&step=" + newGroupNo;
 
             }
 
@@ -131,7 +132,7 @@
                         <input type="hidden" name="step" value="">
                         <tr bgcolor="#CCFFCC">
                             <td nowrap>
-                                <p><fmt:message key="schedule.scheduleedittemplate.formProvider"/>: <%=request.getParameter("providername")%>
+                                <p><fmt:message key="schedule.scheduleedittemplate.formProvider"/>: <%=Encode.forHtml(request.getParameter("providername"))%>
                                 </p>
                             </td>
                             <td align='right'><select name="name">
@@ -147,15 +148,15 @@
                                     for (ScheduleTemplate st : scheduleTemplateDao.findByProviderNo(request.getParameter("providerid"))) {
 
                                 %>
-                                <option value="<%=st.getId().getName()%>"><%=st.getId().getName() + " |" + st.getSummary()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(st.getId().getName()))%>"><%=Encode.forHtml(String.valueOf(st.getId().getName() + " |" + st.getSummary()))%>
                                 </option>
                                 <%
                                     }
                                 %>
                             </select> <input type="hidden" name="providerid"
-                                             value="<%=request.getParameter("providerid")%>"> <input
+                                             value="<%=Encode.forHtmlAttribute(request.getParameter("providerid"))%>"> <input
                                     type="hidden" name="providername"
-                                    value="<%=request.getParameter("providername")%>">
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("providername"))%>">
                             <td align='right'><input type="button"
                                                      value='<fmt:message key="schedule.scheduleedittemplate.btnEdit"/>'
                                                      onclick="document.forms['addtemplatecode1'].dboperation.value=' Edit '; document.forms['addtemplatecode1'].submit();">
@@ -176,9 +177,9 @@
                                 </option>
                                 <% } %>
                             </select> <input type="hidden" name="providerid"
-                                             value="<%=request.getParameter("providerid")%>"> <input
+                                             value="<%=Encode.forHtmlAttribute(request.getParameter("providerid"))%>"> <input
                                     type="hidden" name="providername"
-                                    value="<%=request.getParameter("providername")%>"> <input
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("providername"))%>"> <input
                                     type="button" value='Go'
                                     onclick="document.forms['addtemplatecode1'].step.value=document.forms[1].step1.options[document.forms[1].step1.selectedIndex].value; document.forms['addtemplatecode1'].submit();">
                             </td>
@@ -214,7 +215,7 @@
 					Collections.sort(stcs,ScheduleTemplateCode.CodeComparator);
 					
    for (ScheduleTemplateCode stc:stcs) {   %>
- <%=String.valueOf(stc.getCode())+" - "+stc.getDescription()%>  <%}	%>
+ <%=Encode.forHtml(String.valueOf(String.valueOf(stc.getCode())+" - "+stc.getDescription()))%>  <%}	%>
              "><fmt:message key="schedule.scheduleedittemplate.formTemplateCode"/></a></td>
             </tr>
             <tr bgcolor='ivory'>
@@ -228,11 +229,11 @@
                         %>
                         <tr>
                             <% for (int j = 0; j < cols; j++) { %>
-                            <td bgcolor='silver'><%=(n < 10 ? "0" : "") + n + ":00"%>
+                            <td bgcolor='silver'><%=Encode.forHtml(String.valueOf((n < 10 ? "0" : "") + n + ":00"))%>
                             </td>
                             <% for (int k = 0; k < icols; k++) { %>
                             <td><input type="text"
-                                       name="timecode<%=i*(cols*icols)+j*icols+k%>" size="1"
+                                       name="timecode<%=Encode.forHtmlAttribute(String.valueOf(i*(cols*icols)+j*icols+k))%>" size="1"
                                        maxlength="1"
                                     <%=bEdit?("value='"+myTempBean.getTimecodeCharAt(i*(cols*icols)+j*icols+k)+"'"):"value=''"%>>
                             </td>
@@ -255,9 +256,9 @@
                            onclick="document.forms['addtemplatecode'].dboperation.value='Delete'; document.forms['addtemplatecode'].submit();">
                 </td>
                 <td align="right"><input type="hidden" name="providerid"
-                                         value="<%=request.getParameter("providerid")%>"> <input
+                                         value="<%=Encode.forHtmlAttribute(request.getParameter("providerid"))%>"> <input
                         type="hidden" name="providername"
-                        value="<%=request.getParameter("providername")%>"> <input
+                        value="<%=Encode.forHtmlAttribute(request.getParameter("providername"))%>"> <input
                         type="hidden" name="dboperation" value=""> <input
                         type="button"
                         value='<fmt:message key="schedule.scheduleedittemplate.btnSave"/>'

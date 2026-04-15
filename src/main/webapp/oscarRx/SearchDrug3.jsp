@@ -30,7 +30,6 @@
 <fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
 <%@page import="ca.openosp.OscarProperties,ca.openosp.openo.log.*" %>
@@ -48,6 +47,7 @@
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -98,7 +98,7 @@
 
 %>
 <security:oscarSec roleName="<%=roleName2$%>"
-                   objectName='<%="_rx$"+demoNo%>' rights="o"
+                   objectName='<%=Encode.forHtmlAttribute(String.valueOf("_rx$"+demoNo))%>' rights="o"
                    reverse="<%=false%>">
   <fmt:message key="demographic.demographiceditdemographic.accessDenied"/>
   <% response.sendRedirect(request.getContextPath() + "/acctLocked.html"); %>
@@ -308,7 +308,7 @@
       let top = winY + 70;
       let left = winX + 110;
       let url = ctx + "/oscarRx/searchDrug.do?rx2=true&searchString=" + encodeURIComponent($('searchString').value);
-      popup2(600, 800, top, left, url, 'windowNameRxSearch<%=demoNo%>');
+      popup2(600, 800, top, left, url, 'windowNameRxSearch<%=Encode.forJavaScript(String.valueOf(demoNo))%>');
 
     }
 
@@ -320,7 +320,7 @@
       let top = winY + 70;
       let left = winX + 110;
       let url = ctx + "/oscarRx/SelectReason.jsp?demographicNo=" + demographic + "&drugId=" + encodeURIComponent(id);
-      popup2(575, 650, top, left, url, 'windowNameRxReason<%=demoNo%>');
+      popup2(575, 650, top, left, url, 'windowNameRxReason<%=Encode.forJavaScript(String.valueOf(demoNo))%>');
 
     }
 
@@ -668,7 +668,7 @@
     			String today = formatter.format(new java.util.Date());
     		%>
         txt.disabled = true;
-        txt.value = '<%=today%>';
+        txt.value = '<%=Encode.forJavaScript(String.valueOf(today))%>';
       } else {
         txt.disabled = false;
       }
@@ -679,7 +679,7 @@
     function completeMedRec() {
       let ok = confirm("Are you sure you would like to mark the Med Rec as complete?");
       if (ok) {
-        let url = ctx + "/oscarRx/completeMedRec.jsp?demographicNo=<%=rxSessionBean.getDemographicNo()%>";
+        let url = ctx + "/oscarRx/completeMedRec.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(rxSessionBean.getDemographicNo()))%>";
         let data;
         new Ajax.Request(url, {
           method: 'get', parameters: data, onSuccess: function (transport) {
@@ -972,7 +972,7 @@
 <body class="yui-skin-sam">
 
 <div id="searchDrug3Wrapper">
-  <%=WebUtils.popErrorAndInfoMessagesAsHtml(session)%>
+  <%=Encode.forHtml(String.valueOf(WebUtils.popErrorAndInfoMessagesAsHtml(session)))%>
   <table id="AutoNumber1">
     <%@ include file="TopLinks2.jspf" %><!-- Row On included here-->
     <tr>
@@ -1004,7 +1004,7 @@
                 <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 
                 <input type="hidden" property="demographicNo"
-                       value="<%=Integer.toString(patient.getDemographicNo())%>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(Integer.toString(patient.getDemographicNo())))%>"/>
                 <table>
                   <tr id="prescriptionStageRow">
                     <td>
@@ -1017,7 +1017,7 @@
                         <%-- Prescriptions are staged here via the prescribe.jsp widget --%>
 
                         <input type="hidden" id="deleteOnCloseRxBox" value="false"/>
-                        <input type="hidden" property="demographicNo" value="<%=patient.getDemographicNo()%>"/>
+                        <input type="hidden" property="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(patient.getDemographicNo()))%>"/>
 
                       </div>
                       <input type="hidden" id="rxPharmacyId" name="rxPharmacyId" value=""/>
@@ -1122,7 +1122,7 @@
 
                       <% } %>
                       <a  class="btn btn-link"
-                          href="javascript:popupWindow(720,920, ctx + '/oscarRx/chartDrugProfile.jsp?demographic_no=<%=demoNo%>','PrintDrugProfile2')">Timeline
+                          href="javascript:popupWindow(720,920, ctx + '/oscarRx/chartDrugProfile.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>','PrintDrugProfile2')">Timeline
                         Drug Profile</a>
                     </div>
                   </td>
@@ -1136,8 +1136,8 @@
                             if (drug.getScript_no() != null && script_no.equals(drug.getScript_no())) {
                                                     %>
                     <div class="btn btn-link text-indent-5">
-                      <a href="javascript:void(0);" onclick="reprint2('<%=drug.getScript_no()%>')">
-                        <%=drug.getRxDisplay()%>
+                      <a href="javascript:void(0);" onclick="reprint2('<%=Encode.forJavaScript(String.valueOf(drug.getScript_no()))%>')">
+                        <%=Encode.forHtml(String.valueOf(drug.getRxDisplay()))%>
                       </a>
                     </div>
                       <%
@@ -1149,17 +1149,17 @@
 <div class="reprintRxItem">
   <div class="reprintRxItemHeading">
     <div>
-      <strong>Rx: <%=drug.getRxDate()%>
+      <strong>Rx: <%=Encode.forHtml(String.valueOf(drug.getRxDate()))%>
       </strong>
     </div>
     <div>
-      <a href="javascript:void(0)" onclick="showPreviousPrints(<%=drug.getScript_no() %>);return false;">
-        <%=drug.getNumPrints()%>Print(s)
+      <a href="javascript:void(0)" onclick="showPreviousPrints(<%=Encode.forJavaScript(String.valueOf(drug.getScript_no()))%>);return false;">
+        <%=Encode.forHtml(String.valueOf(drug.getNumPrints()))%>Print(s)
       </a>
     </div>
   </div>
   <div class="text-indent-5">
-    <a href="javascript:void(0);" onclick="reprint2('<%=drug.getScript_no()%>')"><%=drug.getRxDisplay()%>
+    <a href="javascript:void(0);" onclick="reprint2('<%=Encode.forJavaScript(String.valueOf(drug.getScript_no()))%>')"><%=Encode.forHtml(String.valueOf(drug.getRxDisplay()))%>
     </a>
   </div>
   <%} %>
@@ -1227,9 +1227,9 @@
               String str = note.getNote();
         %>
         <tr>
-          <td><%=formatter.format(note.getCreate_date()) %>
+          <td><%=Encode.forHtml(String.valueOf(formatter.format(note.getCreate_date())))%>
           </td>
-          <td><%=StringEscapeUtils.escapeHtml4(str)%>
+          <td><%=Encode.forHtml(str)%>
           </td>
         </tr>
         <%
@@ -1832,7 +1832,7 @@
   }
   function Discontinue2(id, reason, comment, drugSpecial) {
     let url = ctx + "/oscarRx/deleteRx.do?parameterValue=Discontinue";
-    let demoNo = '<%=patient.getDemographicNo()%>';
+    let demoNo = '<%=Encode.forJavaScript(String.valueOf(patient.getDemographicNo()))%>';
     let data = "drugId=" + encodeURIComponent(id) + "&reason=" + encodeURIComponent(reason) + "&comment=" + encodeURIComponent(comment) + "&demoNo=" + demoNo + "&drugSpecial=" + encodeURIComponent(drugSpecial) + "&rand=" + generateSecureRandomId();
     new Ajax.Request(url, {
       method: 'post', postBody: data,
@@ -1874,8 +1874,8 @@
   }
   //represcribe long term meds
   function RePrescribeLongTerm() {
-    let demoNo = '<%=patient.getDemographicNo()%>';
-    let data = "demoNo=" + demoNo + "&showall=<%=showall%>&rand=" + Math.floor(Math.random() * 10001);
+    let demoNo = '<%=Encode.forJavaScript(String.valueOf(patient.getDemographicNo()))%>';
+    let data = "demoNo=" + demoNo + "&showall=<%=Encode.forJavaScript(String.valueOf(showall))%>&rand=" + Math.floor(Math.random() * 10001);
     let url = ctx + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
     new Ajax.Updater('rxText', url, {
       method: 'get',
@@ -2012,7 +2012,7 @@
       let ele = $(textId);
       let url = ctx + "/oscarRx/TreatmentMyD.jsp"
       let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&cond=" + encodeURIComponent(ele.value) + "&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&cond=" + encodeURIComponent(ele.value) + "&rand=" + ran_number;
       new Ajax.Updater(id, url, {
         method: 'get',
         parameters: params,
@@ -2025,7 +2025,7 @@
   }
   function callAdditionWebService(url, id) {
       let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&rand=" + ran_number;
       let updater = new Ajax.Updater(id, url, {
         method: 'get',
         parameters: params,
@@ -2042,7 +2042,7 @@
         url = contextPath + "/oscarRx/" + url;
       }
       let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&rand=" + ran_number;
       let updater = new Ajax.Updater(id, url, {
         method: 'POST',
         parameters: params,
@@ -2306,7 +2306,7 @@
       let url = ctx + "/oscarRx/WriteScript.do";
       let ran_number = Math.round(Math.random() * 1000000);
       let params = "parameterValue=createNewRx"
-        + "&demographicNo=" + <%=demoNo%>
+        + "&demographicNo=" + <%=Encode.forJavaScript(String.valueOf(demoNo))%>
         +"&drugId=" + encodeURIComponent(drugId)
         + "&text=" + encodeURIComponent(name)
         + "&randomId="
@@ -2693,7 +2693,7 @@
         function getRenalDosingInformation(divId, atcCode) {
       let url = "<%= request.getContextPath() %>/oscarRx/RenalDosing.jsp";
             let ran_number = Math.round(Math.random() * 1000000);
-      let params = "demographicNo=<%=demoNo%>&atcCode=" + encodeURIComponent(atcCode) + "&divId=" + divId + "&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&atcCode=" + encodeURIComponent(atcCode) + "&divId=" + divId + "&rand=" + ran_number;
             new Ajax.Updater(divId, url, {
                 method: 'get',
                 parameters: params,

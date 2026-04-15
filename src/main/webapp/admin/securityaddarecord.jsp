@@ -241,7 +241,7 @@
                     </td>
                     <td><input type="password" name="password" size="20" maxlength="32" autocomplete="off"> <font
                             size="-2">(<fmt:message key="admin.securityrecord.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <fmt:message key="admin.securityrecord.msgSymbols"/>)</font></td>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_min_length")))%> <fmt:message key="admin.securityrecord.msgSymbols"/>)</font></td>
                 </tr>
                 <tr>
                     <td>
@@ -262,7 +262,7 @@
                                     List<Security> s = securityDao.findByProviderNo(p.getProviderNo());
                                     if (s.size() > 0) {
                         %>
-                        <option value="<%=p.getProviderNo()%>"><%=Encode.forHtmlContent(p.getFormattedName())%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtmlContent(p.getFormattedName())%>
                         </option>
                         <%
                                 }
@@ -272,7 +272,7 @@
                         } else {
                             for (Provider p : providerDao.getActiveProviders()) {
                         %>
-                        <option value="<%=p.getProviderNo()%>"><%=Encode.forHtmlContent(p.getFormattedName())%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtmlContent(p.getFormattedName())%>
                         </option>
                         <%
                                 }
@@ -321,7 +321,7 @@
                     </td>
                     <td><input type="password" name="pin" size="6" maxlength="6" autocomplete="off"/> <font
                             size="-2">(<fmt:message key="admin.securityrecord.msgAtLeast"/>
-                        <%=op.getProperty("password_pin_min_length")%> <fmt:message key="admin.securityrecord.msgDigits"/>)</font>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_pin_min_length")))%> <fmt:message key="admin.securityrecord.msgDigits"/>)</font>
                     </td>
                 </tr>
                 <tr>

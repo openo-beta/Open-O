@@ -93,16 +93,16 @@
         %>
         <tr>
             <td><a href="#" class="viewEform"
-                   onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=curForm.get("fid")%>', '<%="FormD"+i%>'); return false;"><%=curForm.get("formName")%>
+                   onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(curForm.get("fid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormD"+i))%>'); return false;"><%=Encode.forHtml(String.valueOf(curForm.get("formName")))%>
             </a></td>
-            <td><%=curForm.get("formSubject")%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(curForm.get("formSubject")))%>&nbsp;</td>
             <td><%=Encode.forHtmlContent(curForm.get("formFileName") != null ? curForm.get("formFileName").toString() : "")%>
             </td>
-            <td><%=curForm.get("formDate")%>
+            <td><%=Encode.forHtml(String.valueOf(curForm.get("formDate")))%>
             </td>
-            <td><%=curForm.get("formTime")%>
+            <td><%=Encode.forHtml(String.valueOf(curForm.get("formTime")))%>
             </td>
-            <td><a href='<%= request.getContextPath() %>/eform/restoreEForm.do?fid=<%=curForm.get("fid")%>'
+            <td><a href='<%= request.getContextPath() %>/eform/restoreEForm.do?fid=<%=Encode.forUriComponent(String.valueOf(curForm.get("fid")))%>'
                    class="contentLink">
                 <fmt:message key="eform.calldeletedformdata.btnRestore"/>
             </a>

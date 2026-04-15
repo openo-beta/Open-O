@@ -55,7 +55,6 @@
         import="java.math.*, java.util.*, java.io.*, java.sql.*, ca.openosp.*, ca.openosp.openo.util.*, java.net.*,ca.openosp.MyDateFormat, ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.*" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
@@ -145,7 +144,7 @@
 
             //if consultation has not been saved, load existing docs into proper select boxes
             function init() {
-                var docs = <%= attachedDocs %>;
+                var docs = <%=Encode.forJavaScript(String.valueOf(attachedDocs))%>;
                 docs = docs.split("|");
                 checkDocuments(docs);
             }
@@ -274,12 +273,12 @@
     <body style="font-family: Verdana, Tahoma, Arial, sans-serif; background-color: #ddddff" onload="init()">
 
     <h3 style="text-align: left"><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.header"/>
-        <%=patientName%>
+        <%=Encode.forHtml(String.valueOf(patientName))%>
     </h3>
     <form action="<%=request.getContextPath() %>/eform/attachDoc.do">
-        <input type="hidden" name="requestId" id="requestId" value="<%=requestId%>"/>
-        <input type="hidden" name="demoNo" id="demoNo" value="<%=demoNo%>"/>
-        <input type="hidden" name="providerNo" id="providerNo" value="<%=providerNo%>"/>
+        <input type="hidden" name="requestId" id="requestId" value="<%=Encode.forHtmlAttribute(String.valueOf(requestId))%>"/>
+        <input type="hidden" name="demoNo" id="demoNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>"/>
+        <input type="hidden" name="providerNo" id="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"/>
         <table style="width:1080px; border: solid 1px blue; font-size: x-small; background-color:white;">
             <tr>
                 <th style="text-align: center"><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.available"/></th>
@@ -347,7 +346,7 @@
                                 String onClick = "";
 
                                 if (curDoc.isPDF()) {
-                                    onClick = "javascript:previewPDF('" + Encode.forJavaScript(curDoc.getDocId()) + "','" + StringEscapeUtils.escapeEcmaScript(url) + "');";
+                                    onClick = "javascript:previewPDF('" + Encode.forJavaScript(curDoc.getDocId()) + "','" + Encode.forJavaScript(url) + "');";
                                 } else if (curDoc.isImage()) {
                                     onClick = "javascript:previewImage('" + url + "');";
                                 } else {
@@ -370,30 +369,30 @@
                                     truncatedDisplayName = "(none)";
                                 }
                         %>
-                        <li class="doc" title="<%=curDoc.getDescription()%>" id="<%=docType[0]+curDoc.getDocId()%>">
+                        <li class="doc" title="<%=Encode.forHtmlAttribute(String.valueOf(curDoc.getDescription()))%>" id="<%=Encode.forHtmlAttribute(String.valueOf(docType[0]+curDoc.getDocId()))%>">
                             <div>
                                 <div style="float:left; height:20px; line-height:20px;">
                                     <input class="tightCheckbox1"
-                                           type="checkbox" name="docNo" id="docNo<%=curDoc.getDocId()%>"
-                                           value="<%=curDoc.getDocId()%>"
+                                           type="checkbox" name="docNo" id="docNo<%=Encode.forHtmlAttribute(String.valueOf(curDoc.getDocId()))%>"
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(curDoc.getDocId()))%>"
                                            style="margin: 0px; padding: 0px;"/>
                                     <span class="url" style="display:none">
-		                        	<a title="<%=curDoc.getDescription()%>" href="<%=url%>"
+		                        	<a title="<%=Encode.forHtmlAttribute(String.valueOf(curDoc.getDescription()))%>" href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>"
                                        style="color: blue; text-decoration: none;" target="_blank">
-										<img style="width:15px;height:15px" title="<%= printTitle %>"
-                                             src="<%= printImage %>" alt="<%= printAlt %>"/>
-										<%=truncatedDisplayName%>
+										<img style="width:15px;height:15px" title="<%=Encode.forHtmlAttribute(String.valueOf(printTitle))%>"
+                                             src="<%=Encode.forHtmlAttribute(String.valueOf(printImage))%>" alt="<%=Encode.forHtmlAttribute(String.valueOf(printAlt))%>"/>
+										<%=Encode.forHtml(String.valueOf(truncatedDisplayName))%>
 									</a>										
 			                    </span>
-                                    <img title="<%= printTitle %>" src="<%= printImage %>" alt="<%= printAlt %>">
-                                    <a class="docPreview" href="#" onclick="<%=onClick%>">
-                                        <span class="text"><%=truncatedDisplayName%></span>
+                                    <img title="<%=Encode.forHtmlAttribute(String.valueOf(printTitle))%>" src="<%=Encode.forHtmlAttribute(String.valueOf(printImage))%>" alt="<%=Encode.forHtmlAttribute(String.valueOf(printAlt))%>">
+                                    <a class="docPreview" href="#" onclick="<%=Encode.forJavaScript(String.valueOf(onClick))%>">
+                                        <span class="text"><%=Encode.forHtml(String.valueOf(truncatedDisplayName))%></span>
                                     </a>
 
                                 </div>
                                 <div style="float:right; height:25px; line-height:25px; margin-top:3px;">
-                                    <a class="docPreview" href="#" onclick="<%=onClick%>">
-                                        <span>... <%=date%></span>
+                                    <a class="docPreview" href="#" onclick="<%=Encode.forJavaScript(String.valueOf(onClick))%>">
+                                        <span>... <%=Encode.forHtml(String.valueOf(date))%></span>
                                     </a>
                                 </div>
                                 <div style="clear:both;"></div>
@@ -439,29 +438,29 @@
                                     truncatedDisplayName = "(none)";
                                 }
                         %>
-                        <li class="lab" title="<%=labDisplayName%>" id="<%=docType[1]+result.labPatientId%>">
+                        <li class="lab" title="<%=Encode.forHtmlAttribute(String.valueOf(labDisplayName))%>" id="<%=Encode.forHtmlAttribute(String.valueOf(docType[1]+result.labPatientId))%>">
                             <div>
                                 <div style="float:left; height:20px; line-height:20px; white-space:nowrap;">
                                     <input class="tightCheckbox1" type="checkbox"
-                                           name="labNo" id="labNo<%=result.segmentID%>"
-                                           value="<%=result.segmentID%>"
+                                           name="labNo" id="labNo<%=Encode.forHtmlAttribute(String.valueOf(result.segmentID))%>"
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(result.segmentID))%>"
                                            style="margin: 0px; padding: 0px;"/>
                                     <span class="url" style="display:none">
-								               <a href="<%=url%>" title="<%=labDisplayName%>"
+								               <a href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>" title="<%=Encode.forHtmlAttribute(String.valueOf(labDisplayName))%>"
                                                   style="color: #CC0099; text-decoration: none;" target="_blank">
-											   <img style="width:15px;height:15px" title="<%= printTitle %>"
-                                                    src="<%= printImage %>" alt="<%= printAlt %>"/>
-											<%=truncatedDisplayName%></a>
+											   <img style="width:15px;height:15px" title="<%=Encode.forHtmlAttribute(String.valueOf(printTitle))%>"
+                                                    src="<%=Encode.forHtmlAttribute(String.valueOf(printImage))%>" alt="<%=Encode.forHtmlAttribute(String.valueOf(printAlt))%>"/>
+											<%=Encode.forHtml(String.valueOf(truncatedDisplayName))%></a>
 								        </span>
-                                    <img title="<%= printTitle %>" src="<%= printImage %>" alt="<%= printAlt %>">
-                                    <a class="labPreview" href="#" onclick="javascript:previewHTML('<%=url%>');">
-                                        <span class="text"><%=truncatedDisplayName%></span>
+                                    <img title="<%=Encode.forHtmlAttribute(String.valueOf(printTitle))%>" src="<%=Encode.forHtmlAttribute(String.valueOf(printImage))%>" alt="<%=Encode.forHtmlAttribute(String.valueOf(printAlt))%>">
+                                    <a class="labPreview" href="#" onclick="javascript:previewHTML('<%=Encode.forJavaScript(String.valueOf(url))%>');">
+                                        <span class="text"><%=Encode.forHtml(String.valueOf(truncatedDisplayName))%></span>
                                     </a>
 
                                 </div>
                                 <div style="float:right; height:25px; line-height:25px; white-space:nowrap;">
-                                    <a class="labPreview" href="#" onclick="javascript:previewHTML('<%=url%>');">
-                                        <span style="float:right;">... <%=date%></span>
+                                    <a class="labPreview" href="#" onclick="javascript:previewHTML('<%=Encode.forJavaScript(String.valueOf(url))%>');">
+                                        <span style="float:right;">... <%=Encode.forHtml(String.valueOf(date))%></span>
                                     </a>
                                 </div>
                                 <div style="clear:both;"></div>
@@ -519,28 +518,28 @@
                                 //Gets the report date
                                 date = DateUtils.getDate(hrmDocument.getReportDate(), "dd-MMM-yyyy", request.getLocale());
                         %>
-                        <li class="hrm" title="<%=hrmDisplayName%>" id="hrm<%=hrmDocument.getId()%>">
+                        <li class="hrm" title="<%=Encode.forHtmlAttribute(String.valueOf(hrmDisplayName))%>" id="hrm<%=Encode.forHtmlAttribute(String.valueOf(hrmDocument.getId()))%>">
                             <div>
                                 <div style="float:left; height:20px; line-height:20px; white-space:nowrap;">
                                     <input class="tightCheckbox1" type="checkbox" name="hrmNo"
-                                           id="hrmNo<%=hrmDocument.getId()%>" value="<%=hrmDocument.getId()%>"
+                                           id="hrmNo<%=Encode.forHtmlAttribute(String.valueOf(hrmDocument.getId()))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(hrmDocument.getId()))%>"
                                            style="margin: 0px; padding: 0px;"/>
                                     <span class="url" style="display:none">
-											<a href="<%=url%>" title="<%=hrmDisplayName%>"
+											<a href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>" title="<%=Encode.forHtmlAttribute(String.valueOf(hrmDisplayName))%>"
                                                style="color: red; text-decoration: none;" target="_blank">
-											<img style="width:15px;height:15px" title="<%= printTitle %>"
-                                                 src="<%= printImage %>" alt="<%= printAlt %>"/>
-											<%=truncatedDisplayName%></a>
+											<img style="width:15px;height:15px" title="<%=Encode.forHtmlAttribute(String.valueOf(printTitle))%>"
+                                                 src="<%=Encode.forHtmlAttribute(String.valueOf(printImage))%>" alt="<%=Encode.forHtmlAttribute(String.valueOf(printAlt))%>"/>
+											<%=Encode.forHtml(String.valueOf(truncatedDisplayName))%></a>
 										</span>
-                                    <img title="<%= printTitle %>" src="<%= printImage %>" alt="<%= printAlt %>">
-                                    <a class="hrmPreview" href="#" onclick="javascript:previewHTML('<%=url%>');">
-                                        <span class="text"><%=truncatedDisplayName%></span>
+                                    <img title="<%=Encode.forHtmlAttribute(String.valueOf(printTitle))%>" src="<%=Encode.forHtmlAttribute(String.valueOf(printImage))%>" alt="<%=Encode.forHtmlAttribute(String.valueOf(printAlt))%>">
+                                    <a class="hrmPreview" href="#" onclick="javascript:previewHTML('<%=Encode.forJavaScript(String.valueOf(url))%>');">
+                                        <span class="text"><%=Encode.forHtml(String.valueOf(truncatedDisplayName))%></span>
                                     </a>
 
                                 </div>
                                 <div style="float:right; height:25px; line-height:25px; white-space:nowrap;">
-                                    <a class="hrmPreview" href="#" onclick="javascript:previewHTML('<%=url%>');">
-                                        <span style="float:right;">... <%=date%></span>
+                                    <a class="hrmPreview" href="#" onclick="javascript:previewHTML('<%=Encode.forJavaScript(String.valueOf(url))%>');">
+                                        <span style="float:right;">... <%=Encode.forHtml(String.valueOf(date))%></span>
                                     </a>
                                 </div>
                                 <div style="clear:both;"></div>
@@ -558,32 +557,32 @@
                             for (EFormData eForm : eForms) {
                                 url = request.getContextPath() + "/eform/efmshowform_data.jsp?fdid=" + eForm.getId();
                         %>
-                        <li class="eForm" title="<%=eForm.getFormName()%>" id="eForm<%=eForm.getId()%>">
+                        <li class="eForm" title="<%=Encode.forHtmlAttribute(String.valueOf(eForm.getFormName()))%>" id="eForm<%=Encode.forHtmlAttribute(String.valueOf(eForm.getId()))%>">
                             <div>
                                 <div style="float:left; height:20px; line-height:20px; white-space:nowrap;">
                                     <input class="tightCheckbox1" type="checkbox" name="eFormNo"
-                                           id="eFormNo<%=eForm.getId()%>" value="<%=eForm.getId()%>"
+                                           id="eFormNo<%=Encode.forHtmlAttribute(String.valueOf(eForm.getId()))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(eForm.getId()))%>"
                                            style="margin: 0px; padding: 0px;"/>
                                     <span class="url" style="display:none">
-															<a href="<%=url%>" title="<%=eForm.getFormName()%>"
+															<a href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>" title="<%=Encode.forHtmlAttribute(String.valueOf(eForm.getFormName()))%>"
                                                                style="color: #917611; text-decoration: none;"
                                                                target="_blank">
 															<img style="width:15px;height:15px"
-                                                                 title="<%= printTitle %>" src="<%= printImage %>"
-                                                                 alt="<%= printAlt %>"/>
-															<%=eForm.getFormName()%></a>
+                                                                 title="<%=Encode.forHtmlAttribute(String.valueOf(printTitle))%>" src="<%=Encode.forHtmlAttribute(String.valueOf(printImage))%>"
+                                                                 alt="<%=Encode.forHtmlAttribute(String.valueOf(printAlt))%>"/>
+															<%=Encode.forHtml(String.valueOf(eForm.getFormName()))%></a>
 														</span>
-                                    <img title="<%= printTitle %>" src="<%= printImage %>" alt="<%= printAlt %>">
+                                    <img title="<%=Encode.forHtmlAttribute(String.valueOf(printTitle))%>" src="<%=Encode.forHtmlAttribute(String.valueOf(printImage))%>" alt="<%=Encode.forHtmlAttribute(String.valueOf(printAlt))%>">
                                     <a class="eFormPreview" href="#"
-                                       onclick="javascript:previewHTML('<%=url%>', true);">
-                                        <span class="text"><%=(eForm.getFormName().length() > 14) ? eForm.getFormName().substring(0, 11) + "..." : eForm.getFormName()%></span>
+                                       onclick="javascript:previewHTML('<%=Encode.forJavaScript(String.valueOf(url))%>', true);">
+                                        <span class="text"><%=Encode.forHtml(String.valueOf((eForm.getFormName().length() > 14) ? eForm.getFormName().substring(0, 11) + "..." : eForm.getFormName()))%></span>
                                     </a>
 
                                 </div>
                                 <div style="float:right; height:25px; line-height:25px; white-space:nowrap;">
                                     <a class="eFormPreview" href="#"
-                                       onclick="javascript:previewHTML('<%=url%>', true);">
-                                        <span style="float:right;"><%=sdf.format(eForm.getFormDate())%></span>
+                                       onclick="javascript:previewHTML('<%=Encode.forJavaScript(String.valueOf(url))%>', true);">
+                                        <span style="float:right;"><%=Encode.forHtml(String.valueOf(sdf.format(eForm.getFormDate())))%></span>
                                     </a>
                                 </div>
                                 <div style="clear:both;"></div>

@@ -76,6 +76,7 @@
 <%@ page import="ca.openosp.Misc" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ProfessionalSpecialistDao professionalSpecialistDao = (ProfessionalSpecialistDao) SpringUtils.getBean(ProfessionalSpecialistDao.class);
 %>
@@ -698,8 +699,8 @@
         %>
         <tr bgcolor=<%=ctlCount % 2 == 0 ? "#FFFFFF" : "#EEEEFF"%>>
             <td colspan="2"><b><font size="-2" color="#7A388D"><a
-                    href="billingShortcutPg1.jsp?billForm=<%=ctlcode%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=request.getParameter("demographic_no")%>&user_no=<%=user_no%>&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=1"
-                    onClick="showHideLayers('Layer1','','hide');"><%=ctlcodename%>
+                    href="billingShortcutPg1.jsp?billForm=<%=Encode.forUriComponent(String.valueOf(ctlcode))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&user_no=<%=Encode.forUriComponent(String.valueOf(user_no))%>&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=1"
+                    onClick="showHideLayers('Layer1','','hide');"><%=Encode.forHtml(String.valueOf(ctlcodename))%>
             </a></font></b></td>
         </tr>
         <%
@@ -730,12 +731,12 @@
         <tr bgcolor=<%=ctlCount % 2 == 0 ? "#FFFFFF" : "#EEEEFF"%>>
             <td width="18%"><b><font size="-2" color="#7A388D"><a
                     href="#"
-                    onClick="document.forms[0].dxCode.value='<%=ctldiagcode%>';showHideLayers('Layer2','','hide');return false;"><%=ctldiagcode%>
+                    onClick="document.forms[0].dxCode.value='<%=Encode.forJavaScript(String.valueOf(ctldiagcode))%>';showHideLayers('Layer2','','hide');return false;"><%=Encode.forHtml(String.valueOf(ctldiagcode))%>
             </a></font></b></td>
             <td colspan="2"><font size="-2" color="#7A388D"><a
                     href="#"
-                    onClick="document.forms[0].dxCode.value='<%=ctldiagcode%>';showHideLayers('Layer2','','hide');return false;">
-                <%=ctldiagcodename.length() < 56 ? ctldiagcodename : ctldiagcodename.substring(0, 55)%>
+                    onClick="document.forms[0].dxCode.value='<%=Encode.forJavaScript(String.valueOf(ctldiagcode))%>';showHideLayers('Layer2','','hide');return false;">
+                <%=Encode.forHtml(String.valueOf(ctldiagcodename.length() < 56 ? ctldiagcodename : ctldiagcodename.substring(0, 55)))%>
             </a></font></td>
         </tr>
         <%
@@ -769,9 +770,9 @@
             <td>
                 <table border="0" cellspacing="0" cellpadding="0" width="100%">
                     <tr bgcolor="#33CCCC">
-                        <td nowrap bgcolor="#FFCC99" width="10%" align="center"><%= demoname %>
+                        <td nowrap bgcolor="#FFCC99" width="10%" align="center"><%=Encode.forHtml(String.valueOf(demoname))%>
                         </td>
-                        <td bgcolor="#99CCCC" align="center"><font color="black"><%= msg %>
+                        <td bgcolor="#99CCCC" align="center"><font color="black"><%=Encode.forHtml(String.valueOf(msg))%>
                         </font>
                         </td>
                     </tr>
@@ -790,34 +791,34 @@
                                     <td nowrap width="30%" align="center"><a id="trigger"
                                                                              href="#">[<fmt:message key="billing.servicedate"/>]</a><br>
                                         <textarea name="billDate" cols="11" rows="5"
-                                                  readonly><%=request.getParameter("billDate") != null ? request.getParameter("billDate") : ""%></textarea>
+                                                  readonly><%=Encode.forHtml(request.getParameter("billDate") != null ? request.getParameter("billDate") : "")%></textarea>
                                     </td>
                                     <td nowrap align="center"><fmt:message key="billing.billingCorrection.formServiceCode"/> x <fmt:message key="billing.billingCorrection.formUnit"/><br>
                                         <input type="text" name="serviceDate0" size="5" maxlength="5"
-                                               value="<%=request.getParameter("serviceDate0")!=null?request.getParameter("serviceDate0"):""%>">x
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceDate0")!=null?request.getParameter("serviceDate0"):"")%>">x
                                         <input type="text" name="serviceUnit0" size="2" maxlength="2"
                                                style=""
-                                               value="<%=request.getParameter("serviceUnit0")!=null?request.getParameter("serviceUnit0"):""%>"><br>
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceUnit0")!=null?request.getParameter("serviceUnit0"):"")%>"><br>
                                         <input type="text" name="serviceDate1" size="5" maxlength="5"
-                                               value="<%=request.getParameter("serviceDate1")!=null?request.getParameter("serviceDate1"):""%>">x
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceDate1")!=null?request.getParameter("serviceDate1"):"")%>">x
                                         <input type="text" name="serviceUnit1" size="2" maxlength="2"
                                                style=""
-                                               value="<%=request.getParameter("serviceUnit1")!=null?request.getParameter("serviceUnit1"):""%>"><br>
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceUnit1")!=null?request.getParameter("serviceUnit1"):"")%>"><br>
                                         <input type="text" name="serviceDate2" size="5" maxlength="5"
-                                               value="<%=request.getParameter("serviceDate2")!=null?request.getParameter("serviceDate2"):""%>">x
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceDate2")!=null?request.getParameter("serviceDate2"):"")%>">x
                                         <input type="text" name="serviceUnit2" size="2" maxlength="2"
                                                style=""
-                                               value="<%=request.getParameter("serviceUnit2")!=null?request.getParameter("serviceUnit2"):""%>"><br>
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceUnit2")!=null?request.getParameter("serviceUnit2"):"")%>"><br>
                                         <input type="text" name="serviceDate3" size="5" maxlength="5"
-                                               value="<%=request.getParameter("serviceDate3")!=null?request.getParameter("serviceDate3"):""%>">x
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceDate3")!=null?request.getParameter("serviceDate3"):"")%>">x
                                         <input type="text" name="serviceUnit3" size="2" maxlength="2"
                                                style=""
-                                               value="<%=request.getParameter("serviceUnit3")!=null?request.getParameter("serviceUnit3"):""%>"><br>
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceUnit3")!=null?request.getParameter("serviceUnit3"):"")%>"><br>
                                         <input type="text" name="serviceDate4" size="5" maxlength="5"
-                                               value="<%=request.getParameter("serviceDate4")!=null?request.getParameter("serviceDate4"):""%>">x
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceDate4")!=null?request.getParameter("serviceDate4"):"")%>">x
                                         <input type="text" name="serviceUnit4" size="2" maxlength="2"
                                                style=""
-                                               value="<%=request.getParameter("serviceUnit4")!=null?request.getParameter("serviceUnit4"):""%>">
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceUnit4")!=null?request.getParameter("serviceUnit4"):"")%>">
                                     </td>
                                     <td valign="top">
                                         <table border="0" cellspacing="0" cellpadding="0" width="100%">
@@ -826,7 +827,7 @@
                                                        onClick="showHideLayers('Layer2','','show','Layer1','','hide'); return false;"><fmt:message key="billing.hospitalBilling.formDx"/></a><br>
                                                     <input type="text" name="dxCode" size="5" maxlength="5"
                                                            onDblClick="dxScriptAttach('dxCode')"
-                                                           value="<%=request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode%>">
+                                                           value="<%=Encode.forHtmlAttribute(request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode)%>">
                                                 </td>
                                                 <td>Cal.% mode<br>
                                                     <select name="rulePerc">
@@ -847,9 +848,9 @@
                                                 href="javascript:referralScriptAttach2('referralCode','referralDocName')"><fmt:message key="billing.hospitalBilling.btnReferral"/>
                                         </a> <input type="text" name="referralCode" size="5"
                                                     maxlength="6"
-                                                    value="<%=request.getParameter("referralCode")!=null?request.getParameter("referralCode"):r_doctor_ohip%>"><br>
+                                                    value="<%=Encode.forHtmlAttribute(request.getParameter("referralCode")!=null?request.getParameter("referralCode"):r_doctor_ohip)%>"><br>
                                         <input type="text" name="referralDocName" size="22" maxlength="30"
-                                               value="<%=request.getParameter("referralDocName")!=null?request.getParameter("referralDocName"):r_doctor%>">
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("referralDocName")!=null?request.getParameter("referralDocName"):r_doctor)%>">
                                     </td>
                                 </tr>
                             </table>
@@ -868,10 +869,10 @@
                                             if (vecProvider.size() == 1) {
                                                 propT = (Properties) vecProvider.get(0);
                                         %>
-                                        <option value="<%=propT.getProperty("proOHIP")%>"
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(propT.getProperty("proOHIP")))%>"
                                                 <%=providerview.equals(propT.getProperty("proOHIP")) ? "selected" : ""%>>
-                                            <b><%=propT.getProperty("last_name")%>,
-                                                <%=propT.getProperty("first_name")%>
+                                            <b><%=Encode.forHtml(String.valueOf(propT.getProperty("last_name")))%>,
+                                                <%=Encode.forHtml(String.valueOf(propT.getProperty("first_name")))%>
                                             </b></option>
                                         <% } else { %>
                                         <option value="000000"
@@ -881,17 +882,17 @@
                                             for (int i = 0; i < vecProvider.size(); i++) {
                                                 propT = (Properties) vecProvider.get(i);
                                         %>
-                                        <option value="<%=propT.getProperty("proOHIP")%>"
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(propT.getProperty("proOHIP")))%>"
                                                 <%=providerview.equals(propT.getProperty("proOHIP")) ? "selected" : ""%>>
-                                            <b><%=propT.getProperty("last_name")%>,
-                                                <%=propT.getProperty("first_name")%>
+                                            <b><%=Encode.forHtml(String.valueOf(propT.getProperty("last_name")))%>,
+                                                <%=Encode.forHtml(String.valueOf(propT.getProperty("first_name")))%>
                                             </b></option>
                                         <% }
                                         }
                                         %>
                                     </select></td>
                                     <td nowrap width="30%" align="center"><b><fmt:message key="billing.hospitalBilling.frmAssgnPhysician"/></b></td>
-                                    <td width="20%"><%=providerBean.getProperty(assgProvider_no, "")%>
+                                    <td width="20%"><%=Encode.forHtml(String.valueOf(providerBean.getProperty(assgProvider_no, "")))%>
                                     </td>
                                 </tr>
                                 <tr>
@@ -911,7 +912,7 @@
                                             for (ClinicNbr clinic : nbrs) {
                                                 String valueString = String.format("%s | %s", clinic.getNbrValue(), clinic.getNbrString());
                                         %>
-                                        <option value="<%=valueString%>" <%=providerNbr.startsWith(clinic.getNbrValue()) ? "selected" : ""%>><%=valueString%>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(valueString))%>" <%=providerNbr.startsWith(clinic.getNbrValue()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(valueString))%>
                                         </option>
                                         <%}%>
                                         <% } else { %>
@@ -958,9 +959,9 @@
                                                 String strLocation = request.getParameter("xml_location") != null ? request.getParameter("xml_location") : clinicview;
                                         %>
                                         <option
-                                                value="<%=propT.getProperty("clinic_location_no") + "|" + propT.getProperty("clinic_location_name")%>"
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(propT.getProperty("clinic_location_no") + "|" + propT.getProperty("clinic_location_name")))%>"
                                                 <%=strLocation.startsWith(propT.getProperty("clinic_location_no")) ? "selected" : ""%>>
-                                            <%=propT.getProperty("clinic_location_name")%>
+                                            <%=Encode.forHtml(String.valueOf(propT.getProperty("clinic_location_name")))%>
                                         </option>
                                         <%
                                             }
@@ -984,7 +985,7 @@
                                     <td colspan="3">
                                         <select name="xml_slicode">
 
-                                            <option value="<%=clinicNo%>"><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.NA"/></option>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(clinicNo))%>"><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.NA"/></option>
 
                                             <%if (SxmlMisc.getXmlContent(prComments, "xml_p_sli").trim().equals("HDS")) {%>
                                             <option selected value="HDS "><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.HDS"/></option>
@@ -1053,7 +1054,7 @@
                                     <td><b><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode"/></b></td>
                                     <td colspan="3">
                                         <select name="xml_slicode">
-                                            <option value="<%=clinicNo%>"><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.NA"/></option>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(clinicNo))%>"><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.NA"/></option>
                                             <option value="HDS "><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.HDS"/></option>
                                             <option value="HED "><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.HED"/></option>
                                             <option value="HIP "><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.HIP"/></option>
@@ -1078,12 +1079,12 @@
                                             } %>
                                         <!--input type="text" name="xml_vdate" id="xml_vdate" value="<%--=request.getParameter("xml_vdate")!=null? request.getParameter("xml_vdate"):visitdate--%>" size='10' maxlength='10' -->
                                         <input type="text" name="xml_vdate" id="xml_vdate"
-                                               value="<%=request.getParameter("xml_vdate")!=null? request.getParameter("xml_vdate"):admDate%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("xml_vdate")!=null? request.getParameter("xml_vdate"):admDate)%>"
                                                size='10' maxlength='10'> <img
                                             src="<%= request.getContextPath() %>/images/cal.gif" id="xml_vdate_cal"></td>
                                     <td colspan="2"><a href="#"
                                                        onClick="showHideLayers('Layer1','','show');return false;"><fmt:message key="billing.billingform"/>
-                                    </a>:</font></b> <%=currentFormName.length() < 30 ? currentFormName : currentFormName.substring(0, 30)%>
+                                    </a>:</font></b> <%=Encode.forHtml(String.valueOf(currentFormName.length() < 30 ? currentFormName : currentFormName.substring(0, 30)))%>
                                     </td>
 
                                 </tr>
@@ -1108,7 +1109,7 @@
                             <table width="100%" border="1" cellspacing="0" cellpadding="0"
                                    height="0" bordercolorlight="#99A005" bordercolordark="#FFFFFF">
                                 <tr bgcolor="#CCCCFF">
-                                    <th width="10%" nowrap><font size="-1" color="#000000"><%=headerTitle1%>
+                                    <th width="10%" nowrap><font size="-1" color="#000000"><%=Encode.forHtml(String.valueOf(headerTitle1))%>
                                     </font></th>
                                     <th width="70%" bgcolor="#CCCCFF"><font size="-1"
                                                                             color="#000000">Description</font></th>
@@ -1127,27 +1128,27 @@
                                 %>
                                 <tr bgcolor=<%=i % 2 == 0 ? "#FFFFFF" : "#EEEEFF"%>>
                                     <td nowrap><input type="checkbox"
-                                                      name="code_xml_<%=serviceCode%>" value="checked"
-                                        <%="checked".equals(request.getParameter("code_xml_"+serviceCode))? "checked":""%>>
+                                                      name="code_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="checked"
+                                        <%=Encode.forHtml("checked".equals(request.getParameter("code_xml_"+serviceCode))? "checked":"")%>>
                                         <b><font size="-1"
                                                  color="<%=premiumFlag.equals("A")? "#993333" : "black"%>"><span
-                                                id="sc<%=(""+i).substring(0,1)+serviceCode%>"
-                                                onDblClick="onDblClickServiceCode(this)"><%=serviceCode%></span></font></b>
-                                        <input type="text" name="unit_xml_<%=serviceCode%>"
-                                               value="<%=request.getParameter("unit_xml_"+serviceCode)!=null? request.getParameter("unit_xml_"+serviceCode):""%>"
+                                                id="sc<%=Encode.forHtmlAttribute(String.valueOf((""+i).substring(0,1)+serviceCode))%>"
+                                                onDblClick="onDblClickServiceCode(this)"><%=Encode.forHtml(String.valueOf(serviceCode))%></span></font></b>
+                                        <input type="text" name="unit_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("unit_xml_"+serviceCode)!=null? request.getParameter("unit_xml_"+serviceCode):"")%>"
                                                size="1" maxlength="2" style="width: 20px; height: 12px;"></td>
                                     <td <%=serviceDesc.length() > 30 ? "title=\"" + serviceDesc + "\"" : ""%>><font
-                                            size="-1"><%=serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc%>
-                                        <input type="hidden" name="desc_xml_<%=serviceCode%>"
-                                               value="<%=serviceDesc%>"/>
-                                        <input type="hidden" name="sli_xml_<%=serviceCode%>" value="<%=serviceSLI%>"/>
+                                            size="-1"><%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc))%>
+                                        <input type="hidden" name="desc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDesc))%>"/>
+                                        <input type="hidden" name="sli_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceSLI))%>"/>
                                     </font></td>
-                                    <td align="right"><font size="-1"><%=serviceDisp%>
+                                    <td align="right"><font size="-1"><%=Encode.forHtml(String.valueOf(serviceDisp))%>
                                     </font> <input
-                                            type="hidden" name="price_xml_<%=serviceCode%>"
-                                            value="<%=serviceDisp%>"/> <input type="hidden"
-                                                                              name="perc_xml_<%=serviceCode%>"
-                                                                              value="<%=servicePercentage%>"/>
+                                            type="hidden" name="price_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDisp))%>"/> <input type="hidden"
+                                                                              name="perc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(servicePercentage))%>"/>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -1159,7 +1160,7 @@
                             <table width="100%" border="1" cellspacing="0" cellpadding="0"
                                    height="0" bordercolorlight="#99A005" bordercolordark="#FFFFFF">
                                 <tr bgcolor="#CCCCFF">
-                                    <th width="10%" nowrap><font size="-1" color="#000000"><%=headerTitle2%>
+                                    <th width="10%" nowrap><font size="-1" color="#000000"><%=Encode.forHtml(String.valueOf(headerTitle2))%>
                                     </font></th>
                                     <th width="70%" bgcolor="#CCCCFF"><font size="-1"
                                                                             color="#000000">Description</font></th>
@@ -1178,26 +1179,26 @@
                                 %>
                                 <tr bgcolor=<%=i % 2 == 0 ? "#FFFFFF" : "#EEEEFF"%>>
                                     <td nowrap><input type="checkbox"
-                                                      name="code_xml_<%=serviceCode%>" value="checked"
-                                            <%="checked".equals(request.getParameter("code_xml_" + serviceCode)) ? "checked" : ""%> />
+                                                      name="code_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="checked"
+                                            <%=Encode.forHtml("checked".equals(request.getParameter("code_xml_" + serviceCode)) ? "checked" : "")%> />
                                         <b><font size="-1"
                                                  color="<%=premiumFlag.equals("A")? "#993333" : "black"%>"><span
-                                                id="sc<%=(""+i).substring(0,1)+serviceCode%>"
-                                                onDblClick="onDblClickServiceCode(this)"><%=serviceCode%></span></font></b>
-                                        <input type="text" name="unit_xml_<%=serviceCode%>"
-                                               value="<%=request.getParameter("unit_xml_"+serviceCode)!=null? request.getParameter("unit_xml_"+serviceCode):""%>"
+                                                id="sc<%=Encode.forHtmlAttribute(String.valueOf((""+i).substring(0,1)+serviceCode))%>"
+                                                onDblClick="onDblClickServiceCode(this)"><%=Encode.forHtml(String.valueOf(serviceCode))%></span></font></b>
+                                        <input type="text" name="unit_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("unit_xml_"+serviceCode)!=null? request.getParameter("unit_xml_"+serviceCode):"")%>"
                                                size="1" maxlength="2" style="width: 20px; height: 12px;"/></td>
                                     <td <%=serviceDesc.length() > 30 ? "title=\"" + serviceDesc + "\"" : ""%>><font
-                                            size="-1"><%=serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc%>
-                                        <input type="hidden" name="desc_xml_<%=serviceCode%>"
-                                               value="<%=serviceDesc%>"/> </font></td>
-                                    <td align="right"><font size="-1"><%=serviceDisp%>
+                                            size="-1"><%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc))%>
+                                        <input type="hidden" name="desc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDesc))%>"/> </font></td>
+                                    <td align="right"><font size="-1"><%=Encode.forHtml(String.valueOf(serviceDisp))%>
                                     </font> <input
-                                            type="hidden" name="price_xml_<%=serviceCode%>"
-                                            value="<%=serviceDisp%>"/> <input type="hidden"
-                                                                              name="perc_xml_<%=serviceCode%>"
-                                                                              value="<%=servicePercentage%>"/>
-                                        <input type="hidden" name="sli_xml_<%=serviceCode%>" value="<%=serviceSLI%>"/>
+                                            type="hidden" name="price_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDisp))%>"/> <input type="hidden"
+                                                                              name="perc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(servicePercentage))%>"/>
+                                        <input type="hidden" name="sli_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceSLI))%>"/>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -1210,7 +1211,7 @@
                             <table width="100%" border="1" cellspacing="0" cellpadding="0"
                                    height="0" bordercolorlight="#99A005" bordercolordark="#FFFFFF">
                                 <tr bgcolor="#CCCCFF">
-                                    <th width="10%" nowrap><font size="-1" color="#000000"><%=headerTitle3%>
+                                    <th width="10%" nowrap><font size="-1" color="#000000"><%=Encode.forHtml(String.valueOf(headerTitle3))%>
                                     </font></th>
                                     <th width="70%" bgcolor="#CCCCFF"><font size="-1"
                                                                             color="#000000"><fmt:message key="billing.service.desc"/></font></th>
@@ -1229,26 +1230,26 @@
                                 %>
                                 <tr bgcolor=<%=i % 2 == 0 ? "#FFFFFF" : "#EEEEFF"%>>
                                     <td nowrap><input type="checkbox"
-                                                      name="code_xml_<%=serviceCode%>" value="checked"
-                                            <%="checked".equals(request.getParameter("code_xml_" + serviceCode)) ? "checked" : ""%> />
+                                                      name="code_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="checked"
+                                            <%=Encode.forHtml("checked".equals(request.getParameter("code_xml_" + serviceCode)) ? "checked" : "")%> />
                                         <b><font size="-1"
                                                  color="<%=premiumFlag.equals("A")? "#993333" : "black"%>"><span
-                                                id="sc<%=(""+i).substring(0,1)+serviceCode%>"
-                                                onDblClick="onDblClickServiceCode(this)"><%=serviceCode%></span></font></b>
-                                        <input type="text" name="unit_xml_<%=serviceCode%>"
-                                               value="<%=request.getParameter("unit_xml_"+serviceCode)!=null? request.getParameter("unit_xml_"+serviceCode):""%>"
+                                                id="sc<%=Encode.forHtmlAttribute(String.valueOf((""+i).substring(0,1)+serviceCode))%>"
+                                                onDblClick="onDblClickServiceCode(this)"><%=Encode.forHtml(String.valueOf(serviceCode))%></span></font></b>
+                                        <input type="text" name="unit_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("unit_xml_"+serviceCode)!=null? request.getParameter("unit_xml_"+serviceCode):"")%>"
                                                size="1" maxlength="2" style="width: 20px; height: 12px;"/></td>
                                     <td <%=serviceDesc.length() > 30 ? "title=\"" + serviceDesc + "\"" : ""%>><font
-                                            size="-1"><%=serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc%>
-                                        <input type="hidden" name="desc_xml_<%=serviceCode%>"
-                                               value="<%=serviceDesc%>"/> </font></td>
-                                    <td align="right"><font size="-1"><%=serviceDisp%>
+                                            size="-1"><%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc))%>
+                                        <input type="hidden" name="desc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDesc))%>"/> </font></td>
+                                    <td align="right"><font size="-1"><%=Encode.forHtml(String.valueOf(serviceDisp))%>
                                     </font> <input
-                                            type="hidden" name="price_xml_<%=serviceCode%>"
-                                            value="<%=serviceDisp%>"/> <input type="hidden"
-                                                                              name="perc_xml_<%=serviceCode%>"
-                                                                              value="<%=servicePercentage%>"/>
-                                        <input type="hidden" name="sli_xml_<%=serviceCode%>" value="<%=serviceSLI%>"/>
+                                            type="hidden" name="price_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDisp))%>"/> <input type="hidden"
+                                                                              name="perc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(servicePercentage))%>"/>
+                                        <input type="hidden" name="sli_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceSLI))%>"/>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -1263,30 +1264,30 @@
             </td>
         </tr>
 
-        <input type="hidden" name="clinic_no" value="<%=clinicNo%>"/>
-        <input type="hidden" name="demographic_no" value="<%=demo_no%>"/>
-        <input type="hidden" name="appointment_no" value="<%=appt_no%>"/>
+        <input type="hidden" name="clinic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(clinicNo))%>"/>
+        <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demo_no))%>"/>
+        <input type="hidden" name="appointment_no" value="<%=Encode.forHtmlAttribute(String.valueOf(appt_no))%>"/>
 
         <input type="hidden" name="ohip_version" value="V03G"/>
-        <input type="hidden" name="hin" value="<%=demoHIN%>"/>
+        <input type="hidden" name="hin" value="<%=Encode.forHtmlAttribute(String.valueOf(demoHIN))%>"/>
 
         <input type="hidden" name="start_time"
-               value="<%=request.getParameter("start_time")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("start_time"))%>"/>
 
-        <input type="hidden" name="demographic_dob" value="<%=demoDOB%>"/>
+        <input type="hidden" name="demographic_dob" value="<%=Encode.forHtmlAttribute(String.valueOf(demoDOB))%>"/>
 
         <input type="hidden" name="apptProvider_no"
-               value="<%=request.getParameter("apptProvider_no")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("apptProvider_no"))%>"/>
         <input type="hidden" name="asstProvider_no"
-               value="<%=request.getParameter("asstProvider_no")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("asstProvider_no"))%>"/>
 
-        <input type="hidden" name="demographic_name" value="<%=demoname%>"/>
-        <input type="hidden" name="providerview" value="<%=providerview%>"/>
+        <input type="hidden" name="demographic_name" value="<%=Encode.forHtmlAttribute(String.valueOf(demoname))%>"/>
+        <input type="hidden" name="providerview" value="<%=Encode.forHtmlAttribute(String.valueOf(providerview))%>"/>
         <input type="hidden" name="appointment_date"
-               value="<%=request.getParameter("appointment_date")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("appointment_date"))%>"/>
         <input type="hidden" name="assgProvider_no"
-               value="<%=assgProvider_no%>"/>
-        <input type="hidden" name="billForm" value="<%=ctlBillForm%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(assgProvider_no))%>"/>
+        <input type="hidden" name="billForm" value="<%=Encode.forHtmlAttribute(String.valueOf(ctlBillForm))%>"/>
 
     </table>
 </form>
@@ -1298,7 +1299,7 @@
 <table border="0" cellpadding="0" cellspacing="2" width="100%"
        bgcolor="#CCCCFF">
     <tr>
-        <td colspan="6" class="RowTop"><%= demoname %> - <b><fmt:message key="billing.hospitalBilling.frmBillHistory"/>
+        <td colspan="6" class="RowTop"><%=Encode.forHtml(String.valueOf(demoname))%> - <b><fmt:message key="billing.hospitalBilling.frmBillHistory"/>
         </b> <fmt:message key="billing.hospitalBilling.frmLastFive"/></td>
     </tr>
     <tr>
@@ -1320,17 +1321,17 @@
                         Properties propD = (Properties) vecHistD.get(i);
                 %>
                 <tr bgcolor="<%=i%2==0?"ivory":"#EEEEFF"%>" align="center">
-                    <td><%= prop.getProperty("billing_no", "&nbsp;") %>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_no", "&nbsp;")))%>
                     </td>
-                    <td><%= prop.getProperty("billing_date", "&nbsp;") %>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_date", "&nbsp;")))%>
                     </td>
-                    <td><%= prop.getProperty("visitdate", "&nbsp;") %>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("visitdate", "&nbsp;")))%>
                     </td>
-                    <td><%= propD.getProperty("service_code", "&nbsp;") %>
+                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("service_code", "&nbsp;")))%>
                     </td>
-                    <td><%= propD.getProperty("diagnostic_code", "&nbsp;") %>
+                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("diagnostic_code", "&nbsp;")))%>
                     </td>
-                    <td><%= prop.getProperty("update_date", "&nbsp;") %>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("update_date", "&nbsp;")))%>
                     </td>
                 </tr>
                 <%
@@ -1344,7 +1345,7 @@
 <table border="0" cellpadding="1" cellspacing="2" width="100%"
        class="myIvory">
     <tr class="myYellow">
-        <td colspan="6"><%=demoname%> - <b><fmt:message key="billing.hospitalBilling.frmBillHistory"/></b>
+        <td colspan="6"><%=Encode.forHtml(String.valueOf(demoname))%> - <b><fmt:message key="billing.hospitalBilling.frmBillHistory"/></b>
             <fmt:message key="billing.hospitalBilling.frmLastFive"/>
         </td>
     </tr>
@@ -1368,17 +1369,17 @@
 
                 %>
                 <tr <%=i % 4 == 0 ? "class=\"myGreen\"" : ""%> align="center">
-                    <td><%=obj.getId()%>
+                    <td><%=Encode.forHtml(String.valueOf(obj.getId()))%>
                     </td>
-                    <td><%=obj.getBilling_date()%>
+                    <td><%=Encode.forHtml(String.valueOf(obj.getBilling_date()))%>
                     </td>
-                    <td><%=iobj.getService_date()%>
+                    <td><%=Encode.forHtml(String.valueOf(iobj.getService_date()))%>
                     </td>
-                    <td><%=iobj.getService_code()%>
+                    <td><%=Encode.forHtml(String.valueOf(iobj.getService_code()))%>
                     </td>
-                    <td><%=iobj.getDx()%>
+                    <td><%=Encode.forHtml(String.valueOf(iobj.getDx()))%>
                     </td>
-                    <td><%=obj.getUpdate_datetime().substring(0, 10)%>
+                    <td><%=Encode.forHtml(String.valueOf(obj.getUpdate_datetime().substring(0, 10)))%>
                     </td>
                 </tr>
                 <%

@@ -27,6 +27,7 @@
 <fmt:setBundle basename="oscarResources"/>
 <%@ page import="ca.openosp.*" errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
 <head>
@@ -52,10 +53,10 @@
                 }
             } else {
                 if (document.all) {
-                    document.all.form1.action = "/<%=props.getProperty("project_home", "")%>/oscarBilling/DocumentErrorReportUpload.do";
+                    document.all.form1.action = "/<%=Encode.forJavaScript(String.valueOf(props.getProperty("project_home", "")))%>/oscarBilling/DocumentErrorReportUpload.do";
                     document.all.form1.submit();
                 } else {
-                    document.getElementById('form1').action = "/<%=props.getProperty("project_home", "")%>/oscarBilling/DocumentErrorReportUpload.do";
+                    document.getElementById('form1').action = "/<%=Encode.forJavaScript(String.valueOf(props.getProperty("project_home", "")))%>/oscarBilling/DocumentErrorReportUpload.do";
                     document.getElementById('form1').submit();
                 }
             }

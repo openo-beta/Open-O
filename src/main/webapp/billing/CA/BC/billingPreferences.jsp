@@ -100,7 +100,7 @@
                     %>
                     <td class="MainTableRightColumn">
                         <label for="autoPopulateRefer" class="checkbox-inline">
-                            <input type="checkbox" id="autoPopulateRefer" name="autoPopulateRefer" disabled="<%=globalAutoPopulateRefer%>"/>
+                            <input type="checkbox" id="autoPopulateRefer" name="autoPopulateRefer" disabled="<%=Encode.forHtmlAttribute(String.valueOf(globalAutoPopulateRefer))%>"/>
                             Auto-populate Referring Physician on Billing Form</label>
                         <% if (globalAutoPopulateRefer) { %>
                         <p class="text-warning">Note: The Auto-Populate option above cannot be changed per provider,
@@ -261,7 +261,7 @@
     </div>
 
     <script type="text/javascript">
-        document.getElementsByName('autoPopulateRefer')[0].checked = <%= autoPopulateRefer %>;
+        document.getElementsByName('autoPopulateRefer')[0].checked = <%=Encode.forJavaScript(String.valueOf(autoPopulateRefer))%>;
 
         function defaultPayeeSelect() {
             let invoicePayeeInfoTA = document.getElementById("invoicePayeeInfo");
@@ -284,7 +284,7 @@
 
         $(document).ready(function () {
 
-            const defaultValue = "<%= Property.PROPERTY_VALUE.clinicdefault.name() %>";
+            const defaultValue = "<%=Encode.forJavaScript(String.valueOf(Property.PROPERTY_VALUE.clinicdefault.name()))%>";
 
             $("#defaultBillingProvider").on("change", function () {
                 let selected = $("#defaultBillingProvider option:selected").val();

@@ -25,6 +25,7 @@
 %>
 
 <%@page import="java.util.*, ca.openosp.openo.hospitalReportManager.*, ca.openosp.openo.hospitalReportManager.model.HRMCategory, ca.openosp.openo.hospitalReportManager.dao.HRMCategoryDao, ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -95,7 +96,7 @@
                                     List<HRMCategory> categoryList = categoryDao.findAll();
                                     for (HRMCategory category : categoryList) {
                                 %>
-                                <option value="<%=category.getId() %>"><%=category.getCategoryName() %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(category.getId()))%>"><%=Encode.forHtml(String.valueOf(category.getCategoryName()))%>
                                 </option>
                                 <%
                                     }

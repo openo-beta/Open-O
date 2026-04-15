@@ -70,6 +70,7 @@
 <%@ page import="ca.openosp.MyDateFormat" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
     ProviderSiteDao providerSiteDao = SpringUtils.getBean(ProviderSiteDao.class);
@@ -229,8 +230,8 @@
     } else {
         if (!isProviderFormalize) {
     %>
-        <h1><fmt:message key="<%=errMsgProviderFormalize%>"/></h1>
-        Provider # range from : <%=min_value %> To : <%=max_value %>
+        <h1><fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf(errMsgProviderFormalize))%>"/></h1>
+        Provider # range from : <%=Encode.forHtml(String.valueOf(min_value))%> To : <%=Encode.forHtml(String.valueOf(max_value))%>
         <%
                 }
             }

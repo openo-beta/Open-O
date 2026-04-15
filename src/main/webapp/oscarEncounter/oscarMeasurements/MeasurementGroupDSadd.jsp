@@ -47,6 +47,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.managers.MeasurementManager" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String groupName = session.getAttribute("groupName").toString();
@@ -60,7 +61,7 @@
 <html>
 <head>
 
-    <title><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - <%=groupName%>
+    <title><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - <%=Encode.forHtml(String.valueOf(groupName))%>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -71,10 +72,10 @@
 <div class="container">
 
     <h3><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - Add Decision Support to <em
-            class="text-info"><%=groupName%>
+            class="text-info"><%=Encode.forHtml(String.valueOf(groupName))%>
     </em> Group </h3>
     <p><em>The following listed decision support files are available for the flowsheets. Make a
-        selection and press "add" to make that decision support available on the <strong><%=groupName%>
+        selection and press "add" to make that decision support available on the <strong><%=Encode.forHtml(String.valueOf(groupName))%>
         </strong> measurement group.</em></p>
 
 
@@ -85,7 +86,7 @@
                 List<String> dsHtmlList = MeasurementManager.getFlowsheetDsHTML();
                 for (String file : dsHtmlList) {%>
 
-            <option value="<%=file%>"><%=file.substring(0, file.lastIndexOf('.'))%>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(file))%>"><%=Encode.forHtml(String.valueOf(file.substring(0, file.lastIndexOf('.'))))%>
             </option>
 
             <%}%>

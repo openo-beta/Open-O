@@ -10,6 +10,7 @@
 --%>
 
 <!DOCTYPE html>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -48,7 +49,7 @@
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
     <% Iterator iter = doctypeerrors.keySet().iterator();
         while (iter.hasNext()) {%>
-    <font class="warning">Error: <fmt:message key="<%=doctypeerrors.get(iter.next())%>"/></font><br/>
+    <font class="warning">Error: <fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf(doctypeerrors.get(iter.next())))%>"/></font><br/>
     <% } %>
 
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/fonts-min.css"/>
@@ -82,8 +83,8 @@
                         <select id="docTypeD" name="docTypeD" style="width: 160">
                             <option value="">Demographic Document Types</option>
                             <% for (String doctypeD : doctypesD) { %>
-                            <option value="<%=doctypeD%>">
-                                    <%=doctypeD%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(doctypeD))%>">
+                                    <%=Encode.forHtml(String.valueOf(doctypeD))%>
                             </option>
                             <%}%>
                         </select>
@@ -111,8 +112,8 @@
                             <option value="">Provider Document Types</option>
                             <%
                                 for (String doctypeP : doctypesP) { %>
-                            <option value="<%=doctypeP%>">
-                                    <%=doctypeP%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(doctypeP))%>">
+                                    <%=Encode.forHtml(String.valueOf(doctypeP))%>
                             </option>
                             <%}%>
                         </select>

@@ -76,6 +76,7 @@
 <%@page import="ca.openosp.openo.db.DBPreparedHandler" %>
 
 <%@page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -135,10 +136,10 @@
                         <option value="ServiceCode">ServiceCode</option>
                     </select></td>
                 <td nowrap>start <input type="text" name="startDate"
-                                        id="startDate" value="<%=startDate!=null?startDate:""%>" size="10"
+                                        id="startDate" value="<%=Encode.forHtmlAttribute(String.valueOf(startDate!=null?startDate:""))%>" size="10"
                                         readonly> <img src="<%= request.getContextPath() %>/images/cal.gif" id="startDate_cal">
                     end <input type="text" name="endDate" id="endDate"
-                               value="<%=endDate!=null?endDate:""%>" size="10" readonly> <img
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(endDate!=null?endDate:""))%>" size="10" readonly> <img
                             src="<%= request.getContextPath() %>/images/cal.gif" id="endDate_cal"></td>
                 <td>Provider: <select name="providerNoDoctor">
                     <option value="">------Doctor------</option>
@@ -146,9 +147,9 @@
                         for (int i = 0; i < VEC_PROVIDER[0].size(); i++) {
                     %>
                     <option
-                            value="<%=((Properties)VEC_PROVIDER[0].get(i)).getProperty("providerNo", "")  %>">
-                        <%= ((Properties) VEC_PROVIDER[0].get(i)).getProperty("firstName", "") + " " +
-                                ((Properties) VEC_PROVIDER[0].get(i)).getProperty("lastName", "") %>
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(((Properties)VEC_PROVIDER[0].get(i)).getProperty("providerNo", "")))%>">
+                        <%=Encode.forHtml(String.valueOf(((Properties) VEC_PROVIDER[0].get(i)).getProperty("firstName", "") + " " +
+                                ((Properties) VEC_PROVIDER[0].get(i)).getProperty("lastName", "")))%>
                     </option>
                     <%
                         }
@@ -159,9 +160,9 @@
                         for (int i = 0; i < VEC_PROVIDER[1].size(); i++) {
                     %>
                     <option
-                            value="<%=((Properties)VEC_PROVIDER[1].get(i)).getProperty("providerNo", "")  %>">
-                        <%= ((Properties) VEC_PROVIDER[1].get(i)).getProperty("firstName", "") + " " +
-                                ((Properties) VEC_PROVIDER[1].get(i)).getProperty("lastName", "") %>
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(((Properties)VEC_PROVIDER[1].get(i)).getProperty("providerNo", "")))%>">
+                        <%=Encode.forHtml(String.valueOf(((Properties) VEC_PROVIDER[1].get(i)).getProperty("firstName", "") + " " +
+                                ((Properties) VEC_PROVIDER[1].get(i)).getProperty("lastName", "")))%>
                     </option>
                     <%
                         }
@@ -172,9 +173,9 @@
                         for (int i = 0; i < VEC_PROVIDER[2].size(); i++) {
                     %>
                     <option
-                            value="<%=((Properties)VEC_PROVIDER[2].get(i)).getProperty("providerNo", "")  %>">
-                        <%= ((Properties) VEC_PROVIDER[2].get(i)).getProperty("firstName", "") + " " +
-                                ((Properties) VEC_PROVIDER[2].get(i)).getProperty("lastName", "") %>
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(((Properties)VEC_PROVIDER[2].get(i)).getProperty("providerNo", "")))%>">
+                        <%=Encode.forHtml(String.valueOf(((Properties) VEC_PROVIDER[2].get(i)).getProperty("firstName", "") + " " +
+                                ((Properties) VEC_PROVIDER[2].get(i)).getProperty("lastName", "")))%>
                     </option>
                     <%
                         }
@@ -185,9 +186,9 @@
                         for (int i = 0; i < VEC_PROVIDER[3].size(); i++) {
                     %>
                     <option
-                            value="<%=((Properties)VEC_PROVIDER[3].get(i)).getProperty("providerNo", "")  %>">
-                        <%= ((Properties) VEC_PROVIDER[3].get(i)).getProperty("firstName", "") + " " +
-                                ((Properties) VEC_PROVIDER[3].get(i)).getProperty("lastName", "") %>
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(((Properties)VEC_PROVIDER[3].get(i)).getProperty("providerNo", "")))%>">
+                        <%=Encode.forHtml(String.valueOf(((Properties) VEC_PROVIDER[3].get(i)).getProperty("firstName", "") + " " +
+                                ((Properties) VEC_PROVIDER[3].get(i)).getProperty("lastName", "")))%>
                     </option>
                     <%
                         }
@@ -230,17 +231,17 @@
 
                 if (bDx) {
                     sql =
-                            "select distinct(bd.diagnostic_code), dt.description from billingdetail bd, diagnosticcode dt where bd.status!='D' and bd.diagnostic_code = dt.diagnostic_code and bd.appointment_date>='"
-                                    + startDate + "' and bd.appointment_date<='" + endDate + "' order by diagnostic_code";
-                    rs = dbObj.queryResults(sql);
+                            "select distinct(bd.diagnostic_code), dt.description from billingdetail bd, diagnosticcode dt where bd.status!='D' and bd.diagnostic_code = dt.diagnostic_code and bd.appointment_date>=?"
+                                    + " and bd.appointment_date<=? order by diagnostic_code";
+                    rs = dbObj.queryResults(sql, new String[]{startDate, endDate});
                     while (rs.next()) {
                         vServiceCode.add(Misc.getString(rs, "bd.diagnostic_code"));
                         vServiceDesc.add(Misc.getString(rs, "dt.description"));
                     }
                 } else {
                     // get service code list
-                    sql = "select distinct(service_code), service_desc from billingdetail bd where bd.status!='D' and bd.appointment_date>='" + startDate + "' and bd.appointment_date<='" + endDate + "' order by service_code";
-                    rs = dbObj.queryResults(sql);
+                    sql = "select distinct(service_code), service_desc from billingdetail bd where bd.status!='D' and bd.appointment_date>=? and bd.appointment_date<=? order by service_code";
+                    rs = dbObj.queryResults(sql, new String[]{startDate, endDate});
                     while (rs.next()) {
                         vServiceCode.add(Misc.getString(rs, "service_code"));
                         vServiceDesc.add(Misc.getString(rs, "service_desc"));
@@ -251,14 +252,15 @@
                     // get total pat
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd where b.billing_no=bd.billing_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd where b.billing_no=bd.billing_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd where b.billing_no=bd.billing_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd where b.billing_no=bd.billing_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "pat" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -268,14 +270,15 @@
                     // get total vis
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd  where b.billing_no=bd.billing_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd  where b.billing_no=bd.billing_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd where b.billing_no=bd.billing_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd where b.billing_no=bd.billing_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "vis" + vServiceDesc.get(i), Misc.getString(rs, "count(distinct(b.billing_no))"
                         ));
@@ -284,14 +287,15 @@
                     // get sex f
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" + " and d.sex='F'";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D' and d.sex='F'";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" + " and d.sex='F'";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=? and d.sex='F'";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "patSexF" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -299,14 +303,15 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" + " and d.sex='M'";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D' and d.sex='M'";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" + " and d.sex='M'";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=? and d.sex='M'";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "patSexM" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -315,14 +320,15 @@
                     // get visit sex m
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" + " and d.sex='F'";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D' and d.sex='F'";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" + " and d.sex='F'";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=? and d.sex='F'";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "visSexF" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.billing_no))"));
@@ -330,14 +336,15 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" + " and d.sex='M'";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D' and d.sex='M'";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" + " and d.sex='M'";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=? and d.sex='M'";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "visSexM" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.billing_no))"));
@@ -346,16 +353,17 @@
                     // get age 0-1
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' "
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
                                 + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
 
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "pat0_1" + vServiceDesc.get(i), Misc.getString(rs,
@@ -364,16 +372,17 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'"
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
                                 + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
 
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "vis0_1" + vServiceDesc.get(i), Misc.getString(rs,
@@ -383,20 +392,19 @@
                     // get age 2-11
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "pat2_11" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -404,20 +412,19 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "vis2_11" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.billing_no))"));
@@ -426,20 +433,19 @@
                     // get age 12-20
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "pat12_20" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -447,20 +453,19 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "vis12_20" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.billing_no))"));
@@ -469,20 +474,19 @@
                     // get age 21-34
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "pat21_34" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -490,20 +494,19 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "vis21_34" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.billing_no))"));
@@ -512,20 +515,19 @@
                     // get age 35-50
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "pat35_50" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -533,20 +535,19 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "vis35_50" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.billing_no))"));
@@ -555,20 +556,19 @@
                     // get age 51-64
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "pat51_64" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -576,20 +576,19 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "vis51_64" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.billing_no))"));
@@ -598,20 +597,19 @@
                     // get age 65-70
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "pat65_70" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -619,20 +617,19 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
-                                        +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
-                                +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "vis65_70" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.billing_no))"));
@@ -641,16 +638,17 @@
                     // get age 71-
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
+                                "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
+                        sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "pat71_" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.demographic_no))"));
@@ -658,16 +656,17 @@
 
                     if (bDx) {
                         sql =
-                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
-                                        + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
-                                        "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
+                                "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code=?"
+                                        + " and b.creator=? and b.billing_date>=?"
+                                        + " and b.billing_date<=? and b.status!='D' and bd.status!='D'"
+                                        + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
+                        rs = dbObj.queryResults(sql, new String[]{(String) vServiceCode.get(i), providerNo, startDate, endDate});
                     } else {
-                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
-                                + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
+                        sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>=?"
+                                + " and b.billing_date<=? and b.creator=? and b.status!='D' and bd.status!='D' and bd.service_code=? and bd.service_desc=?"
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
+                        rs = dbObj.queryResults(sql, new String[]{startDate, endDate, providerNo, (String) vServiceCode.get(i), (String) vServiceDesc.get(i)});
                     }
-                    rs = dbObj.queryResults(sql);
                     while (rs.next()) {
                         props.setProperty(vServiceCode.get(i) + "vis71_" + vServiceDesc.get(i), Misc.getString(rs,
                                 "count(distinct(b.billing_no))"));
@@ -676,7 +675,7 @@
     %>
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr bgcolor="<%="#669999"%>">
-            <th align="left"><font face="Helvetica" color="white"><%=providerName%>
+            <th align="left"><font face="Helvetica" color="white"><%=Encode.forHtml(String.valueOf(providerName))%>
                 - PATIENT VISIT LIST </font></th>
             <th width="10%" nowrap><input type="button" name="Button"
                                           value="Print" onClick="window.print()"> <input type="button"
@@ -686,12 +685,12 @@
     </table>
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr>
-            <td>Period: ( <%= startDate %> ~ <%= endDate %> )</td>
+            <td>Period: ( <%=Encode.forHtml(String.valueOf(startDate))%> ~ <%=Encode.forHtml(String.valueOf(endDate))%> )</td>
         </tr>
     </table>
     <table width="100%" border="1" bgcolor="#ffffff" cellspacing="0"
            cellpadding="0">
-        <tr bgcolor="<%=tdTitleColor%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(tdTitleColor))%>">
             <TH colspan="2" width="10%"><%=bDx ? "Dx Code" : "ServiceCode"%>
             </TH>
             <TH colspan="2" width="6%">Total</TH>
@@ -706,7 +705,7 @@
             <TH colspan="2" width="6%">65-70 yr</TH>
             <TH colspan="2" width="6%">71+ yr</TH>
         </tr>
-        <tr align="center" bgcolor="<%=tdTitleColor%>">
+        <tr align="center" bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(tdTitleColor))%>">
             <td>Code</td>
             <td>Description</td>
             <td>Pt.</td>
@@ -759,8 +758,8 @@
                             // new level2
                             catName = curCatName;
         %>
-        <tr bgcolor="<%=tdSubtitleColor%>">
-            <td colspan="24"><%= curCatName %>
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(tdSubtitleColor))%>">
+            <td colspan="24"><%=Encode.forHtml(String.valueOf(curCatName))%>
             </td>
         </tr>
         <%
@@ -771,56 +770,56 @@
                 }
             }
         %>
-        <tr bgcolor="<%=color %>" align="center">
-            <td><%=vServiceCode.get(i)%>
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>" align="center">
+            <td><%=Encode.forHtml(String.valueOf(vServiceCode.get(i)))%>
             </td>
-            <td><%=vServiceDesc.get(i)%>
+            <td><%=Encode.forHtml(String.valueOf(vServiceDesc.get(i)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat" + vServiceDesc.get(i)), 0)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat" + vServiceDesc.get(i)), 0)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis" + vServiceDesc.get(i)), 1)%>
-            </td>
-
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "patSexF" + vServiceDesc.get(i)), 2)%>
-            </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "visSexF" + vServiceDesc.get(i)), 3)%>
-            </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "patSexM" + vServiceDesc.get(i)), 4)%>
-            </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "visSexM" + vServiceDesc.get(i)), 5)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis" + vServiceDesc.get(i)), 1)))%>
             </td>
 
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat0_1" + vServiceDesc.get(i)), 6)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "patSexF" + vServiceDesc.get(i)), 2)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis0_1" + vServiceDesc.get(i)), 7)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "visSexF" + vServiceDesc.get(i)), 3)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat2_11" + vServiceDesc.get(i)), 8)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "patSexM" + vServiceDesc.get(i)), 4)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis2_11" + vServiceDesc.get(i)), 9)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "visSexM" + vServiceDesc.get(i)), 5)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat12_20" + vServiceDesc.get(i)), 10)%>
+
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat0_1" + vServiceDesc.get(i)), 6)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis12_20" + vServiceDesc.get(i)), 11)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis0_1" + vServiceDesc.get(i)), 7)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat21_34" + vServiceDesc.get(i)), 12)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat2_11" + vServiceDesc.get(i)), 8)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis21_34" + vServiceDesc.get(i)), 13)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis2_11" + vServiceDesc.get(i)), 9)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat35_50" + vServiceDesc.get(i)), 14)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat12_20" + vServiceDesc.get(i)), 10)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis35_50" + vServiceDesc.get(i)), 15)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis12_20" + vServiceDesc.get(i)), 11)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat51_64" + vServiceDesc.get(i)), 16)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat21_34" + vServiceDesc.get(i)), 12)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis51_64" + vServiceDesc.get(i)), 17)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis21_34" + vServiceDesc.get(i)), 13)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat65_70" + vServiceDesc.get(i)), 18)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat35_50" + vServiceDesc.get(i)), 14)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis65_70" + vServiceDesc.get(i)), 19)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis35_50" + vServiceDesc.get(i)), 15)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat71_" + vServiceDesc.get(i)), 20)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat51_64" + vServiceDesc.get(i)), 16)))%>
             </td>
-            <td><%=getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis71_" + vServiceDesc.get(i)), 21)%>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis51_64" + vServiceDesc.get(i)), 17)))%>
+            </td>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat65_70" + vServiceDesc.get(i)), 18)))%>
+            </td>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis65_70" + vServiceDesc.get(i)), 19)))%>
+            </td>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "pat71_" + vServiceDesc.get(i)), 20)))%>
+            </td>
+            <td><%=Encode.forHtml(String.valueOf(getNumAndCalTotal(props.getProperty(vServiceCode.get(i) + "vis71_" + vServiceDesc.get(i)), 21)))%>
             </td>
         </tr>
         <%
@@ -850,7 +849,7 @@
                 total = getNumAndCalTotal(total, props.getProperty(vServiceCode.get(i) + "vis71_" + vServiceDesc.get(i)), 21);
             }
         %>
-        <tr bgcolor="<%=tdTitleColor%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(tdTitleColor))%>">
             <TH colspan="2" width="10%"><%=bDx ? "Dx Code" : "ServiceCode"%>
             </TH>
             <TH colspan="2" width="6%">Total</TH>
@@ -865,7 +864,7 @@
             <TH colspan="2" width="6%">65-70 yr</TH>
             <TH colspan="2" width="6%">71+ yr</TH>
         </tr>
-        <tr align="center" bgcolor="<%=tdTitleColor%>">
+        <tr align="center" bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(tdTitleColor))%>">
             <td>Code</td>
             <td>Description</td>
             <td>Pt.</td>
@@ -894,7 +893,7 @@
         <tr align="center">
             <td colspan="2" align="right">Sub. Total:</td>
             <% for (int i = 0; i < total.length; i++) { %>
-            <td><%=total[i]%>
+            <td><%=Encode.forHtml(String.valueOf(total[i]))%>
             </td>
             <% } %>
         </tr>

@@ -30,6 +30,7 @@
 
 <%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@ page import="java.util.*,ca.openosp.openo.billings.ca.bc.data.BillingCodeData,ca.openosp.openo.billing.ca.bc.pageUtil.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -45,7 +46,7 @@
 
         <form action="billingPrivateCodeAdjust.jsp" method="get">
             <%if (request.getAttribute("returnMessage") != null) { %>
-            <%=request.getAttribute("returnMessage")%>
+            <%=Encode.forHtml(String.valueOf(request.getAttribute("returnMessage")))%>
             <%} %>
         </form>
         <%

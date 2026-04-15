@@ -23,6 +23,7 @@
 <fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix="c" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
 <head>
@@ -112,21 +113,21 @@
             <div class="span5">
                 Patient Name: <br>
                 <div class="input-append">
-                    <input class="span4" id="nameForlooksOnly" type="text" value="<%=name%>">
+                    <input class="span4" id="nameForlooksOnly" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(name))%>">
                     <button class="btn btn-primary" type="button" value="Search" onclick="demographicSearch()"><i
                             class="icon icon-search"></i></button>
                 </div>
             </div>
 
-            <input type="hidden" name="firstNameParam" id="fname" value="<%=request.getParameter("firstNameParam")%>"/>
-            <input type="hidden" name="lastNameParam" id="lname" value="<%=request.getParameter("lastNameParam")%>"/>
+            <input type="hidden" name="firstNameParam" id="fname" value="<%=Encode.forHtmlAttribute(request.getParameter("firstNameParam"))%>"/>
+            <input type="hidden" name="lastNameParam" id="lname" value="<%=Encode.forHtmlAttribute(request.getParameter("lastNameParam"))%>"/>
 
 
             <div class="span2">
                 <label>Start Date:</label>
                 <div class="input-append">
                     <input type="text" style="width:90px" name="fromDateParam" id="fromDateParam"
-                           value="<%= request.getAttribute("fromDateParam") != null ? request.getAttribute("fromDateParam") : "" %>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("fromDateParam") != null ? request.getAttribute("fromDateParam") : ""))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -137,7 +138,7 @@
                 <label>End Date:</label>
                 <div class="input-append">
                     <input type="text" style="width:90px" name="toDateParam" id="toDateParam"
-                           value="<%= request.getAttribute("toDateParam") != null ? request.getAttribute("toDateParam") : "" %>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("toDateParam") != null ? request.getAttribute("toDateParam") : ""))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -163,7 +164,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>

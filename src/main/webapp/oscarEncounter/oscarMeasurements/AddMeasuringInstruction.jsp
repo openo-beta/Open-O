@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
 %>
@@ -55,7 +56,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>

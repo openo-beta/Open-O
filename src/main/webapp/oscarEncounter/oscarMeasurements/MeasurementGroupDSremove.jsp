@@ -47,6 +47,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.managers.MeasurementManager" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String groupName = session.getAttribute("groupName").toString();
@@ -68,7 +69,7 @@
 <html>
 <head>
 
-    <title><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - <%=groupName%>
+    <title><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - <%=Encode.forHtml(String.valueOf(groupName))%>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -87,13 +88,13 @@
 
 
     <form action="MeasurementGroupDScomplete.jsp" method="post" name="formRemove">
-        <input type="hidden" name="property" value="<%=propKey%>">
+        <input type="hidden" name="property" value="<%=Encode.forHtmlAttribute(String.valueOf(propKey))%>">
 
 
         <div class="alert alert-warning alert-block">
             <h4>Warning!</h4>
-            Measurement group <em><strong><%=groupName%>
-        </strong></em> is associated with the <em><strong><%=valueDisplay%>
+            Measurement group <em><strong><%=Encode.forHtml(String.valueOf(groupName))%>
+        </strong></em> is associated with the <em><strong><%=Encode.forHtml(String.valueOf(valueDisplay))%>
         </strong></em> decision support. To remove this association please click on the remove button.
 
             <div style="width:100%;text-align:right;margin-top:10px">

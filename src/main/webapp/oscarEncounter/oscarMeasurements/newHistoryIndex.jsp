@@ -33,6 +33,7 @@
 %>
 
 <%@page import="java.text.SimpleDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 
     <head>
@@ -66,7 +67,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -124,7 +125,7 @@
                                             }
 
                                         %>
-                                        <td title='<c:out value="${unit}" /> <c:out value="${comment}" />' <%=ucStyle%>>
+                                        <td title='<c:out value="${unit}" /> <c:out value="${comment}" />' <%=Encode.forHtml(String.valueOf(ucStyle))%>>
                                             <c:out value="${cell.dataField}"/>
                                         </td>
                                     </c:if>

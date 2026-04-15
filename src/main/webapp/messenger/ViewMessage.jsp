@@ -169,7 +169,7 @@
                     windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
                     var page = "";
                     var win;
-                    var today = "<%=session.getAttribute("today")%>";
+                    var today = "<%=Encode.forJavaScript(String.valueOf(session.getAttribute("today")))%>";
                     var header = "messenger";
                     var encType = "messenger";
                     var txt;
@@ -367,21 +367,21 @@
                                         <td class="Printable" bgcolor="#DDDDFF"><fmt:message key="messenger.ViewMessage.msgFrom"/>:
                                         </td>
                                         <td colspan="2" id="sentBy" class="Printable"
-                                            bgcolor="#CCCCFF"><%= session.getAttribute("viewMessageSentby") %>
+                                            bgcolor="#CCCCFF"><%=Encode.forHtml(String.valueOf(session.getAttribute("viewMessageSentby")))%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="Printable" bgcolor="#DDDDFF"><fmt:message key="messenger.ViewMessage.msgTo"/>:
                                         </td>
                                         <td colspan="2" id="sentTo" class="Printable"
-                                            bgcolor="#BFBFFF"><%= session.getAttribute("viewMessageSentto") %>
+                                            bgcolor="#BFBFFF"><%=Encode.forHtml(String.valueOf(session.getAttribute("viewMessageSentto")))%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="Printable" bgcolor="#DDDDFF"><fmt:message key="messenger.ViewMessage.msgSubject"/>:
                                         </td>
                                         <td colspan="2" id="msgSubject" class="Printable"
-                                            bgcolor="#BBBBFF"><%= session.getAttribute("viewMessageSubject") %>
+                                            bgcolor="#BBBBFF"><%=Encode.forHtml(String.valueOf(session.getAttribute("viewMessageSubject")))%>
                                         </td>
                                     </tr>
 
@@ -400,7 +400,7 @@
                                         <td bgcolor="#DDDDFF"><fmt:message key="messenger.ViewMessage.msgAttachments"/>:
                                         </td>
                                         <td bgcolor="#B8B8FF" colspan="2"><a
-                                                href="javascript:popupViewAttach(700,960,'ViewAttach.do?attachId=<%=id%>')">
+                                                href="javascript:popupViewAttach(700,960,'ViewAttach.do?attachId=<%=Encode.forUriComponent(String.valueOf(id))%>')">
                                             <fmt:message key="messenger.ViewMessage.btnAttach"/> </a></td>
                                     </tr>
                                     <%
@@ -414,7 +414,7 @@
                                         <td bgcolor="#DDDDFF"><fmt:message key="messenger.ViewMessage.msgAttachments"/>:
                                         </td>
                                         <td bgcolor="#B8B8FF" colspan="2"><a
-                                                href="javascript:popupViewAttach(700,960,'ViewPDFAttach.do?attachId=<%=id%>')">
+                                                href="javascript:popupViewAttach(700,960,'ViewPDFAttach.do?attachId=<%=Encode.forUriComponent(String.valueOf(id))%>')">
                                             <fmt:message key="messenger.ViewMessage.btnAttach"/> </a></td>
                                     </tr>
                                     <%
@@ -559,7 +559,7 @@
                                                     <input type="button"
                                                            class="ControlPushButton" name="linkDemo"
                                                            value="Link to demographic"
-                                                           onclick="popup(document.forms[0].demographic_no.value,'<%=session.getAttribute("viewMessageId")%>','<%=session.getAttribute("providerNo")%>','linkToDemographic')"/>
+                                                           onclick="popup(document.forms[0].demographic_no.value,'<%=Encode.forJavaScript(String.valueOf(session.getAttribute("viewMessageId")))%>','<%=Encode.forJavaScript(String.valueOf(session.getAttribute("providerNo")))%>','linkToDemographic')"/>
 
                                                     <input type="button" class="ControlPushButton"
                                                            name="clearDemographic" value="Clear selected demographic"
@@ -660,23 +660,23 @@
 
                                                         %>
                                                         <a href="javascript:void(0)"
-                                                           onclick="popupViewAttach(700,960,'<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=${ demographic.key }&curProviderNo=<%=session.getAttribute("providerNo")%>
-                                                                   <%=params%>');return false;">E</a>
+                                                           onclick="popupViewAttach(700,960,'<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=${ demographic.key }&curProviderNo=<%=Encode.forJavaScript(String.valueOf(session.getAttribute("providerNo")))%>
+                                                                   <%=Encode.forHtml(String.valueOf(params))%>');return false;">E</a>
                                                         <%} %>
 
-                                                        <a href="javascript:popupViewAttach(700,960,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=session.getAttribute("providerNo")%>&demographicNo=${ demographic.key }')">Rx</a>
+                                                        <a href="javascript:popupViewAttach(700,960,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forUriComponent(String.valueOf(session.getAttribute("providerNo")))%>&demographicNo=${ demographic.key }')">Rx</a>
 
 
 
                                                         <input type="button" class="ControlPushButton"
                                                                name="writeEncounter" value="Write to encounter"
-                                                               onclick="popup( '${ demographic.key }','<%=session.getAttribute("viewMessageId")%>','<%=session.getAttribute("providerNo")%>','writeToEncounter')"/>
+                                                               onclick="popup( '${ demographic.key }','<%=Encode.forJavaScript(String.valueOf(session.getAttribute("viewMessageId")))%>','<%=Encode.forJavaScript(String.valueOf(session.getAttribute("providerNo")))%>','writeToEncounter')"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td bgcolor="#EEEEFF"></td>
                                                     <td bgcolor="#EEEEFF"><a
-                                                            href="javascript:popupStart(400,850, '<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=${ demographic.key }&last_name=<%=demoLastName%>&first_name=<%=demoFirstName%>&orderby=appointment_date&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25','ApptHist')"
+                                                            href="javascript:popupStart(400,850, '<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=${ demographic.key }&last_name=<%=Encode.forUriComponent(String.valueOf(demoLastName))%>&first_name=<%=Encode.forUriComponent(String.valueOf(demoFirstName))%>&orderby=appointment_date&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25','ApptHist')"
                                                             title="Click to see appointment history">Next Appt:
                                                         <oscar:nextAppt
                                                                 demographicNo="${ demographic.key }"/></a></td>
@@ -702,7 +702,7 @@
     </form>
     <% String bodyTextAsHTML = (String) session.getAttribute("viewMessageMessage");
         bodyTextAsHTML = bodyTextAsHTML.replaceAll("\n|\r\n?", "<br/>"); %>
-    <p class="NotDisplayable Printable"><%= bodyTextAsHTML %>
+    <p class="NotDisplayable Printable"><%=Encode.forHtml(String.valueOf(bodyTextAsHTML))%>
     </p>
 
 

@@ -203,25 +203,25 @@
             <%--    <ul style="display: flex;">--%>
             <%--        <li>--%>
             <select class="wideInput form-control input-group-addon" name="search_mode">
-                <option value="search_name" <%=request.getParameter("search_mode").equals("search_name") ? "selected" : ""%>>
+                <option value="search_name" <%=Encode.forHtml(request.getParameter("search_mode").equals("search_name") ? "selected" : "")%>>
                     <fmt:message key="demographic.demographicsearch2apptresults.optName"/>
                 </option>
-                <option value="search_phone" <%=request.getParameter("search_mode").equals("search_phone") ? "selected" : ""%>>
+                <option value="search_phone" <%=Encode.forHtml(request.getParameter("search_mode").equals("search_phone") ? "selected" : "")%>>
                     <fmt:message key="demographic.demographicsearch2apptresults.optPhone"/>
                 </option>
-                <option value="search_dob" <%=request.getParameter("search_mode").equals("search_dob") ? "selected" : ""%>>
+                <option value="search_dob" <%=Encode.forHtml(request.getParameter("search_mode").equals("search_dob") ? "selected" : "")%>>
                     <fmt:message key="demographic.demographicsearch2apptresults.optDOB"/>
                 </option>
-                <option value="search_address" <%=request.getParameter("search_mode").equals("search_address") ? "selected" : ""%>>
+                <option value="search_address" <%=Encode.forHtml(request.getParameter("search_mode").equals("search_address") ? "selected" : "")%>>
                     <fmt:message key="demographic.demographicsearch2apptresults.optAddress"/>
                 </option>
-                <option value="search_hin" <%=request.getParameter("search_mode").equals("search_hin") ? "selected" : ""%>>
+                <option value="search_hin" <%=Encode.forHtml(request.getParameter("search_mode").equals("search_hin") ? "selected" : "")%>>
                     <fmt:message key="demographic.demographicsearch2apptresults.optHIN"/>
                 </option>
-                <option value="search_chart_no" <%=request.getParameter("search_mode").equals("search_chart_no") ? "selected" : ""%>>
+                <option value="search_chart_no" <%=Encode.forHtml(request.getParameter("search_mode").equals("search_chart_no") ? "selected" : "")%>>
                     <fmt:message key="demographic.demographicsearch2apptresults.optChart"/>
                 </option>
-                <option value="search_demographic_no" <%=request.getParameter("search_mode").equals("search_demographic_no") ? "selected" : ""%>>
+                <option value="search_demographic_no" <%=Encode.forHtml(request.getParameter("search_mode").equals("search_demographic_no") ? "selected" : "")%>>
                     <fmt:message key="demographic.demographicsearch2apptresults.demographicId"/>
                 </option>
             </select>
@@ -302,7 +302,7 @@
                 if (loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {
             %>
             <input type="checkbox" class="checkbox-inline" name="includeIntegratedResults"
-                   value="true"   <%="true".equals(request.getParameter("includeIntegratedResults")) ? "checked" : ""%>/>
+                   value="true"   <%=Encode.forHtml("true".equals(request.getParameter("includeIntegratedResults")) ? "checked" : "")%>/>
             <span style="font-size:small"><fmt:message key="demographic.search.msgInclIntegratedResults"/></span>
             <% } %>
             <%--   </li>--%>
@@ -333,9 +333,9 @@
                 fullname = lastname + "," + firstname;
 
                 if (remoteFacilityId == '') {
-                    document.addform.action = "<%=request.getParameter("originalpage")%>?";
+                    document.addform.action = "<%=Encode.forJavaScript(request.getParameter("originalpage"))%>?";
                 } else {
-                    document.addform.action = "<%=request.getContextPath()%>/appointment/copyRemoteDemographic.jsp?originalPage=<%=URLEncoder.encode(request.getParameter("originalpage"), StandardCharsets.UTF_8)%>&";
+                    document.addform.action = "<%=request.getContextPath()%>/appointment/copyRemoteDemographic.jsp?originalPage=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("originalpage"), StandardCharsets.UTF_8))%>&";
                 }
 
                 document.addform.action = document.addform.action + "demographic_no=" + demographic_no + "&name=" + fullname + "&chart_no=" + chartno + "&bFirstDisp=false" + "&messageID=" + messageID + "&doctor_no=" + doctorNo + "&remoteFacilityId=" + remoteFacilityId;
@@ -348,19 +348,19 @@
 
             function addNameCaisi(demographic_no, lastname, firstname, chartno, messageID) {
                 fullname = lastname + "," + firstname;
-                if (opener.document.<%=request.getParameter("formName")%> != null) {
-                    if (opener.document.<%=request.getParameter("formName")%>.
-                    elements['<%=request.getParameter("elementName")%>'] != null
+                if (opener.document.<%=Encode.forJavaScript(request.getParameter("formName"))%> != null) {
+                    if (opener.document.<%=Encode.forJavaScript(request.getParameter("formName"))%>.
+                    elements['<%=Encode.forJavaScript(request.getParameter("elementName"))%>'] != null
                 )
                     opener.document
-                .<%=request.getParameter("formName")%>.
-                    elements['<%=request.getParameter("elementName")%>'].value = fullname;
-                    if (opener.document.<%=request.getParameter("formName")%>.
-                    elements['<%=request.getParameter("elementId")%>'] != null
+                .<%=Encode.forJavaScript(request.getParameter("formName"))%>.
+                    elements['<%=Encode.forJavaScript(request.getParameter("elementName"))%>'].value = fullname;
+                    if (opener.document.<%=Encode.forJavaScript(request.getParameter("formName"))%>.
+                    elements['<%=Encode.forJavaScript(request.getParameter("elementId"))%>'] != null
                 )
                     opener.document
-                .<%=request.getParameter("formName")%>.
-                    elements['<%=request.getParameter("elementId")%>'].value = demographic_no;
+                .<%=Encode.forJavaScript(request.getParameter("formName"))%>.
+                    elements['<%=Encode.forJavaScript(request.getParameter("elementId"))%>'].value = demographic_no;
                 }
                 self.close();
             }
@@ -497,29 +497,29 @@
                             bgColor = rowCounter % 2 == 0 ? "#EEEEFF" : "white";
 
                 %>
-                <tr style="background-color: <%=bgColor%>"
+                <tr style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                     onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
-                    onMouseout="this.style.backgroundColor='<%=bgColor%>';"
-                    onClick="document.forms[0].demographic_no.value=<%=demo.getDemographicNo()%>;<% if(caisi) { out.print("addNameCaisi");} else { out.print("addName");} %>('<%=demo.getDemographicNo()%>','<%=URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)%>','<%=request.getParameter("messageId")%>','<%=demo.getProviderNo()%>','')">
+                    onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
+                    onClick="document.forms[0].demographic_no.value=<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>;<% if(caisi) { out.print("addNameCaisi");} else { out.print("addName");} %>('<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demo.getProviderNo()))%>','')">
 
                     <td class="demoId">
                         <input type="submit" class="mbttn btn btn-default btn-sm" name="demographic_no"
-                               value="<%=demo.getDemographicNo()%>"
-                               onClick="<% if(caisi) {out.print("addNameCaisi");} else {out.print("addName");} %>('<%=demo.getDemographicNo()%>','<%=URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)%>','<%=request.getParameter("messageId")%>','<%=demo.getProviderNo()%>','')">
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getDemographicNo()))%>"
+                               onClick="<% if(caisi) {out.print("addNameCaisi");} else {out.print("addName");} %>('<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getFirstName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo.getChartNo() == null ? "" : demo.getChartNo(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demo.getProviderNo()))%>','')">
                     </td>
                     <td class="lastName"><%=Encode.forHtml(Misc.toUpperLowerCase(demo.getLastName()))%>
                     </td>
                     <td class="firstName"><%=Encode.forHtml(Misc.toUpperLowerCase(demo.getFirstName())) + " " + Encode.forHtml(Misc.toUpperLowerCase(demo.getMiddleNames()))%>
                     </td>
-                    <td class="age"><%=demo.getAge()%>
+                    <td class="age"><%=Encode.forHtml(String.valueOf(demo.getAge()))%>
                     </td>
-                    <td class="rosterStatus"><%=demo.getRosterStatus() == null || demo.getRosterStatus().equals("") ? "&nbsp;" : demo.getRosterStatus()%>
+                    <td class="rosterStatus"><%=Encode.forHtml(String.valueOf(demo.getRosterStatus() == null || demo.getRosterStatus().equals("") ? "&nbsp;" : demo.getRosterStatus()))%>
                     </td>
-                    <td class="sex"><%=demo.getSex()%>
+                    <td class="sex"><%=Encode.forHtml(String.valueOf(demo.getSex()))%>
                     </td>
-                    <td class="dob"><%=demo.getYearOfBirth() + "-" + demo.getMonthOfBirth() + "-" + demo.getDateOfBirth()%>
+                    <td class="dob"><%=Encode.forHtml(String.valueOf(demo.getYearOfBirth() + "-" + demo.getMonthOfBirth() + "-" + demo.getDateOfBirth()))%>
                     </td>
-                    <td class="doctor"><%=providerBean.getProperty(demo.getProviderNo() == null ? "" : demo.getProviderNo()) == null ? "" : providerBean.getProperty(demo.getProviderNo())%>
+                    <td class="doctor"><%=Encode.forHtml(String.valueOf(providerBean.getProperty(demo.getProviderNo() == null ? "" : demo.getProviderNo()) == null ? "" : providerBean.getProperty(demo.getProviderNo())))%>
                     </td>
                 </tr>
 
@@ -538,17 +538,17 @@
                             bgColor = rowCounter % 2 == 0 ? "#EEEEFF" : "white";
                             DemographicTransfer demographicTransfer = matchingDemographicTransferScore.getDemographicTransfer();
                 %>
-                <tr style="background-color: <%=bgColor%>"
+                <tr style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                     onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
-                    onMouseout="this.style.backgroundColor='<%=bgColor%>';"
-                    onClick="document.forms[0].demographic_no.value=<%=demographicTransfer.getCaisiDemographicId()%>;addName('<%=demographicTransfer.getCaisiDemographicId()%>','<%=URLEncoder.encode(demographicTransfer.getLastName(), StandardCharsets.UTF_8)%>','<%=URLEncoder.encode(demographicTransfer.getFirstName(), StandardCharsets.UTF_8)%>','','<%=request.getParameter("messageId")%>','<%=demographicTransfer.getCaisiProviderId()%>','<%=demographicTransfer.getIntegratorFacilityId()%>')">
+                    onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
+                    onClick="document.forms[0].demographic_no.value=<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>;addName('<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographicTransfer.getLastName(), StandardCharsets.UTF_8)))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographicTransfer.getFirstName(), StandardCharsets.UTF_8)))%>','','<%=Encode.forJavaScript(request.getParameter("messageId"))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getCaisiProviderId()))%>','<%=Encode.forJavaScript(String.valueOf(demographicTransfer.getIntegratorFacilityId()))%>')">
                     <td class="demoId" colspan="8">
                         <input type="submit" class="mbttn btn btn-default btn-sm" name="demographic_no"
-                               value="Integrator <%=CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), demographicTransfer.getIntegratorFacilityId()).getName()%>:<%=demographicTransfer.getCaisiDemographicId()%>"/>
+                               value="Integrator <%=Encode.forHtmlAttribute(String.valueOf(CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), demographicTransfer.getIntegratorFacilityId()).getName()))%>:<%=Encode.forHtmlAttribute(String.valueOf(demographicTransfer.getCaisiDemographicId()))%>"/>
                     </td>
-                    <td class="lastName"><%=Misc.toUpperLowerCase(demographicTransfer.getLastName())%>
+                    <td class="lastName"><%=Encode.forHtml(String.valueOf(Misc.toUpperLowerCase(demographicTransfer.getLastName())))%>
                     </td>
-                    <td class="firstName"><%=Misc.toUpperLowerCase(demographicTransfer.getFirstName())%>
+                    <td class="firstName"><%=Encode.forHtml(String.valueOf(Misc.toUpperLowerCase(demographicTransfer.getFirstName())))%>
                     </td>
                     <%
                         String ageString = "";
@@ -561,12 +561,12 @@
                             bdayString = DateFormatUtils.ISO_DATE_FORMAT.format(demographicTransfer.getBirthDate());
                         }
                     %>
-                    <td class="age"><%=ageString%>
+                    <td class="age"><%=Encode.forHtml(String.valueOf(ageString))%>
                     </td>
                     <td class="rosterStatus"></td>
-                    <td class="sex"><%=demographicTransfer.getGender()%>
+                    <td class="sex"><%=Encode.forHtml(String.valueOf(demographicTransfer.getGender()))%>
                     </td>
-                    <td class="dob"><%=bdayString%>
+                    <td class="dob"><%=Encode.forHtml(String.valueOf(bdayString))%>
                     </td>
                     <td class="doctor">
                         <%
@@ -640,7 +640,7 @@
         %>
         <fmt:message key="demographic.search.noResultsWereFound"/>
         <div class="createNew">
-            <a href="<%= request.getContextPath() %>/demographic/demographicaddarecordhtm.jsp?fromAppt=1&originalPage=<%=request.getParameter("originalPage")%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&notes=<%=Encode.forUriComponent(request.getParameter("notes"))%>&appointment_date=<%=request.getParameter("appointment_date")%>&year=<%=request.getParameter("year")%>&month=<%=request.getParameter("month")%>&day=<%=request.getParameter("day")%>&start_time=<%=request.getParameter("start_time")%>&end_time=<%=request.getParameter("end_time")%>&duration=<%=request.getParameter("duration")%>&bFirstDisp=false&provider_no=<%=request.getParameter("provider_no")%>&notes=<%=Encode.forUriComponent(request.getParameter("notes"))%>&reasonCode=<%=Encode.forUriComponent(request.getParameter("reasonCode"))%>&reason=<%=Encode.forUriComponent(request.getParameter("reason"))%>&location=<%=Encode.forUriComponent(request.getParameter("location"))%>&resources=<%=request.getParameter("resources")%>&type=<%=request.getParameter("type")%>&style=<%=request.getParameter("style")%>&billing=<%=request.getParameter("billing")%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&createdatetime=<%=request.getParameter("createdatetime")%>&creator=<%=Encode.forUriComponent(request.getParameter("creator"))%>&remarks=<%=request.getParameter("remarks")%>">
+            <a href="<%= request.getContextPath() %>/demographic/demographicaddarecordhtm.jsp?fromAppt=1&originalPage=<%=Encode.forUriComponent(request.getParameter("originalPage"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&notes=<%=Encode.forUriComponent(request.getParameter("notes"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("appointment_date"))%>&year=<%=Encode.forUriComponent(request.getParameter("year"))%>&month=<%=Encode.forUriComponent(request.getParameter("month"))%>&day=<%=Encode.forUriComponent(request.getParameter("day"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&end_time=<%=Encode.forUriComponent(request.getParameter("end_time"))%>&duration=<%=Encode.forUriComponent(request.getParameter("duration"))%>&bFirstDisp=false&provider_no=<%=Encode.forUriComponent(request.getParameter("provider_no"))%>&notes=<%=Encode.forUriComponent(request.getParameter("notes"))%>&reasonCode=<%=Encode.forUriComponent(request.getParameter("reasonCode"))%>&reason=<%=Encode.forUriComponent(request.getParameter("reason"))%>&location=<%=Encode.forUriComponent(request.getParameter("location"))%>&resources=<%=Encode.forUriComponent(request.getParameter("resources"))%>&type=<%=Encode.forUriComponent(request.getParameter("type"))%>&style=<%=Encode.forUriComponent(request.getParameter("style"))%>&billing=<%=Encode.forUriComponent(request.getParameter("billing"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&createdatetime=<%=Encode.forUriComponent(request.getParameter("createdatetime"))%>&creator=<%=Encode.forUriComponent(request.getParameter("creator"))%>&remarks=<%=Encode.forUriComponent(request.getParameter("remarks"))%>">
                 <fmt:message key="demographic.search.btnCreateNew"/></a>
         </div>
         <%
@@ -648,7 +648,7 @@
         %>
         <fmt:message key="demographic.search.noResultsWereFound"/>
         <div class="createNew">
-            <a href="<%= request.getContextPath() %>/demographic/demographicaddarecordhtm.jsp?fromAppt=1&originalPage=<%=request.getParameter("originalPage")%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&notes=<%=Encode.forUriComponent(request.getParameter("notes"))%>&appointment_date=<%=request.getParameter("appointment_date")%>&year=<%=request.getParameter("year")%>&month=<%=request.getParameter("month")%>&day=<%=request.getParameter("day")%>&start_time=<%=request.getParameter("start_time")%>&end_time=<%=request.getParameter("end_time")%>&duration=<%=request.getParameter("duration")%>&bFirstDisp=false&provider_no=<%=request.getParameter("provider_no")%>&notes=<%=Encode.forUriComponent(request.getParameter("notes"))%>&reasonCode=<%=Encode.forUriComponent(request.getParameter("reasonCode"))%>&reason=<%=Encode.forUriComponent(request.getParameter("reason"))%>&location=<%=Encode.forUriComponent(request.getParameter("location"))%>&resources=<%=request.getParameter("resources")%>&type=<%=request.getParameter("type")%>&style=<%=request.getParameter("style")%>&billing=<%=request.getParameter("billing")%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&createdatetime=<%=request.getParameter("createdatetime")%>&creator=<%=Encode.forUriComponent(request.getParameter("creator"))%>&remarks=<%=request.getParameter("remarks")%>">
+            <a href="<%= request.getContextPath() %>/demographic/demographicaddarecordhtm.jsp?fromAppt=1&originalPage=<%=Encode.forUriComponent(request.getParameter("originalPage"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&notes=<%=Encode.forUriComponent(request.getParameter("notes"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("appointment_date"))%>&year=<%=Encode.forUriComponent(request.getParameter("year"))%>&month=<%=Encode.forUriComponent(request.getParameter("month"))%>&day=<%=Encode.forUriComponent(request.getParameter("day"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&end_time=<%=Encode.forUriComponent(request.getParameter("end_time"))%>&duration=<%=Encode.forUriComponent(request.getParameter("duration"))%>&bFirstDisp=false&provider_no=<%=Encode.forUriComponent(request.getParameter("provider_no"))%>&notes=<%=Encode.forUriComponent(request.getParameter("notes"))%>&reasonCode=<%=Encode.forUriComponent(request.getParameter("reasonCode"))%>&reason=<%=Encode.forUriComponent(request.getParameter("reason"))%>&location=<%=Encode.forUriComponent(request.getParameter("location"))%>&resources=<%=Encode.forUriComponent(request.getParameter("resources"))%>&type=<%=Encode.forUriComponent(request.getParameter("type"))%>&style=<%=Encode.forUriComponent(request.getParameter("style"))%>&billing=<%=Encode.forUriComponent(request.getParameter("billing"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&createdatetime=<%=Encode.forUriComponent(request.getParameter("createdatetime"))%>&creator=<%=Encode.forUriComponent(request.getParameter("creator"))%>&remarks=<%=Encode.forUriComponent(request.getParameter("remarks"))%>">
                 <fmt:message key="demographic.search.btnCreateNew"/></a>
         </div>
         <%
@@ -662,12 +662,12 @@
         <script language="JavaScript">
 
             function last() {
-                document.nextform.action = "<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
                 //document.nextform.submit();
             }
 
             function next() {
-                document.nextform.action = "<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
                 //document.nextform.submit();
             }
 

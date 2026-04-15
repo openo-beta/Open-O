@@ -62,6 +62,7 @@
 
 <%@page import="ca.openosp.openo.documentManager.IncomingDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <jsp:useBean id="LastPatientsBean" class="java.util.ArrayList" scope="session"/>
 
@@ -257,8 +258,8 @@
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/autocomplete.css"/>
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/demographicProviderAutocomplete.css"/>
     <script type="text/javascript">
-        var curPage =<%=pdfPageNumber%>;
-        var totalPage =<%=numOfPage%>;
+        var curPage =<%=Encode.forJavaScript(String.valueOf(pdfPageNumber))%>;
+        var totalPage =<%=Encode.forJavaScript(String.valueOf(numOfPage))%>;
 
         function popupPage(vheight, vwidth, varpage) {
             var page = "" + varpage;
@@ -415,7 +416,7 @@
                         if (validPages) {
                             var range3 = ranges[i].concat('-' + ranges[i]).split('-');
                             for (var k = parseInt(range3[0], 10); k <= parseInt(range3[1], 10); k++) {
-                                if (k ><%=numOfPage%>) {
+                                if (k ><%=Encode.forJavaScript(String.valueOf(numOfPage))%>) {
                                     validPages = false;
                                 }
                                 if (k == 0) {
@@ -435,7 +436,7 @@
                         }
                     }
                     if (!notwholedoc) {
-                        if ((numbers.length - 1) ==<%=numOfPage%>) {
+                        if ((numbers.length - 1) ==<%=Encode.forJavaScript(String.valueOf(numOfPage))%>) {
                             validPages = false;
                         }
                     }
@@ -583,7 +584,7 @@
         }
 
         function checkDocument() {
-            var n = "<%=pdfName%>";
+            var n = "<%=Encode.forJavaScript(String.valueOf(pdfName))%>";
             if (n.length == 0) {
                 alert("<fmt:message key="dms.incomingDocs.nothingToSave"/>");
                 return false;
@@ -673,7 +674,7 @@
 
         var docSubClassList = [
             <% for (int i = 0; i < subClasses.size(); i++) {%>
-            "<%=subClasses.get(i)%>"<%=(i < subClasses.size() - 1) ? "," : ""%>
+            "<%=Encode.forJavaScript(String.valueOf(subClasses.get(i)))%>"<%=(i < subClasses.size() - 1) ? "," : ""%>
             <% }%>
         ];
 
@@ -734,7 +735,7 @@
                 }
 
                 var url = "<%=request.getContextPath()%>/DocumentDescriptionTemplate.do";
-                var data = 'method=getDocumentDescriptionFromDocType&doctype=' + docType + "&providerNo=<%=user_no%>&useDocumentDescriptionTemplateType=<%=useDocumentDescriptionTemplateType%>";
+                var data = 'method=getDocumentDescriptionFromDocType&doctype=' + docType + "&providerNo=<%=Encode.forJavaScript(String.valueOf(user_no))%>&useDocumentDescriptionTemplateType=<%=Encode.forJavaScript(String.valueOf(useDocumentDescriptionTemplateType))%>";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, onSuccess: function (transport) {
                         var json = transport.responseText.evalJSON();
@@ -763,19 +764,19 @@
         <tr style="display: flex;">
             <td align="left" valign="top">
                 <form method="post" name="PdfInfoForm" action="incomingDocs.jsp">
-                    <input type="hidden" name="pdfNo" value="<%=pdfNo%>">
-                    <input type="hidden" name="pdfDir" value="<%=pdfDir%>">
-                    <input type="hidden" name="pdfName" value="<%=pdfName%>">
+                    <input type="hidden" name="pdfNo" value="<%=Encode.forHtmlAttribute(String.valueOf(pdfNo))%>">
+                    <input type="hidden" name="pdfDir" value="<%=Encode.forHtmlAttribute(String.valueOf(pdfDir))%>">
+                    <input type="hidden" name="pdfName" value="<%=Encode.forHtmlAttribute(String.valueOf(pdfName))%>">
                     <input type="hidden" name="pdfAction" value="">
                     <input type="hidden" name="pdfPageNumber" value="1">
                     <input type="hidden" name="pdfExtractPageNumber" value="">
-                    <input type="hidden" name="imageType" value="<%=imageType%>">
-                    <input type="hidden" name="defaultQueue" value="<%=queueIdStr%>">
-                    <input type="hidden" name="entryMode" value="<%=entryMode%>">
+                    <input type="hidden" name="imageType" value="<%=Encode.forHtmlAttribute(String.valueOf(imageType))%>">
+                    <input type="hidden" name="defaultQueue" value="<%=Encode.forHtmlAttribute(String.valueOf(queueIdStr))%>">
+                    <input type="hidden" name="entryMode" value="<%=Encode.forHtmlAttribute(String.valueOf(entryMode))%>">
                     <table width="350">
                         <%if (errorMessage.length() > 0) {%>
                         <tr>
-                            <td><b><font color="red"><%=errorMessage%>
+                            <td><b><font color="red"><%=Encode.forHtml(String.valueOf(errorMessage))%>
                             </font></b></td>
                         </tr>
                         <%}%>
@@ -787,7 +788,7 @@
                                             int id = (Integer) ht.get("id");
                                             String qName = (String) ht.get("queue");
                                     %>
-                                    <option value="<%=id%>" <%=((id == queueId) ? " selected" : "")%>><%= qName%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>" <%=Encode.forHtml(String.valueOf(((id == queueId) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(qName))%>
                                     </option>
                                     <%}%>
                                 </select>
@@ -808,22 +809,22 @@
                         <tr>
                             <td>
                                 <fieldset>
-                                    <legend>[<%=pdfDir%>]: <% if (Integer.parseInt(pdfNo) <= 0) {%><fmt:message key="dms.incomingDocs.noFile"/><% } else {%> <%=pdfNo%>/ <%=pdfList.size()%>
-                                        <b><%=pdfList.get(Integer.parseInt(pdfNo) - 1)%>
+                                    <legend>[<%=Encode.forHtml(String.valueOf(pdfDir))%>]: <% if (Integer.parseInt(pdfNo) <= 0) {%><fmt:message key="dms.incomingDocs.noFile"/><% } else {%> <%=Encode.forHtml(String.valueOf(pdfNo))%>/ <%=pdfList.size()%>
+                                        <b><%=Encode.forHtml(String.valueOf(pdfList.get(Integer.parseInt(pdfNo) - 1)))%>
                                         </b> <%}%></legend>
                                     <table>
                                         <tr>
                                             <td>
-                                                <select tabIndex="<%=tabIndex++%>" name="SelectPdfList"
-                                                        id="SelectPdfList" onchange="loadSelectedPdf('<%=pdfDir%>');">
+                                                <select tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" name="SelectPdfList"
+                                                        id="SelectPdfList" onchange="loadSelectedPdf('<%=Encode.forJavaScript(String.valueOf(pdfDir))%>');">
                                                     <option value=""><fmt:message key="dms.incomingDocs.selectPDF"/></option>
                                                     <%
                                                         for (int p = 0; p < pdfList.size(); p++) {
                                                             String docName = (String) pdfList.get(p);
                                                             String docModifiedDate = (String) pdfListModifiedDate.get(p);
                                                     %>
-                                                    <option value="<%= docName%>" title="<%=docName%>"><%=p + 1%>
-                                                        ) <%=docModifiedDate%>
+                                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(docName))%>" title="<%=Encode.forHtmlAttribute(String.valueOf(docName))%>"><%=Encode.forHtml(String.valueOf(p + 1))%>
+                                                        ) <%=Encode.forHtml(String.valueOf(docModifiedDate))%>
                                                     </option>
                                                     <%}%>
                                                 </select></td>
@@ -831,24 +832,24 @@
                                         <tr>
                                             <td><input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.first"/>"
-                                                       onclick="loadPdf('1','<%=pdfDir%>');">
+                                                       onclick="loadPdf('1','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>');">
                                                 <input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.previous"/>"
-                                                       onclick="loadPdf('<%=Integer.parseInt(pdfNo) - 1%>','<%=pdfDir%>');">
+                                                       onclick="loadPdf('<%=Integer.parseInt(pdfNo) - 1%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>');">
                                                 <input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.next"/>"
-                                                       onclick="loadPdf('<%=Integer.parseInt(pdfNo) + 1%>','<%=pdfDir%>');">
+                                                       onclick="loadPdf('<%=Integer.parseInt(pdfNo) + 1%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>');">
                                                 <input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.last"/>"
-                                                       onclick="loadPdf('<%=pdfList.size()%>','<%=pdfDir%>');">
+                                                       onclick="loadPdf('<%=pdfList.size()%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>');">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><input type="button" value=" <fmt:message key="global.btnPrint"/> "
-                                                       onClick="printPdf('<%=queueIdStr%>','<%=pdfDir%>','<%=pdfName%>');">
+                                                       onClick="printPdf('<%=Encode.forJavaScript(String.valueOf(queueIdStr))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>');">
                                                 <input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.deletePDF"/>"
-                                                       onclick="deletePdf('<%=pdfNo%>','<%=pdfDir%>','<%=pdfName%>');">
+                                                       onclick="deletePdf('<%=Encode.forJavaScript(String.valueOf(pdfNo))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>');">
                                             </td>
                                         </tr>
                                     </table>
@@ -858,14 +859,14 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <select tabIndex="<%=tabIndex++%>" name="SelectPageList"
+                                                <select tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" name="SelectPageList"
                                                         id="SelectPageList"
-                                                        onchange="loadSelectedPage('<%=queueIdStr%>','<%=pdfDir%>','<%=pdfName%>');">
+                                                        onchange="loadSelectedPage('<%=Encode.forJavaScript(String.valueOf(queueIdStr))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>');">
                                                     <option value=""><fmt:message key="dms.incomingDocs.selectPage"/></option>
                                                     <%
                                                         for (int p = 1; p <= numOfPage; p++) {
                                                     %>
-                                                    <option value="<%=p%>"><%=p%>
+                                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p))%>"><%=Encode.forHtml(String.valueOf(p))%>
                                                     </option>
                                                     <%}%>
                                                 </select>
@@ -874,46 +875,46 @@
                                         <tr>
                                             <td><input type="button" id="firstP"
                                                        value="<fmt:message key="dms.incomingDocs.first"/>"
-                                                       onclick="firstPage('<%=queueIdStr%>','<%=pdfDir%>','<%=pdfName%>');">
+                                                       onclick="firstPage('<%=Encode.forJavaScript(String.valueOf(queueIdStr))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>');">
                                                 <input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.previous"/>"
-                                                       onclick="prevPage('<%=queueIdStr%>','<%=pdfDir%>','<%=pdfName%>');">
+                                                       onclick="prevPage('<%=Encode.forJavaScript(String.valueOf(queueIdStr))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>');">
                                                 <input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.next"/>"
-                                                       onclick="nextPage('<%=queueIdStr%>','<%=pdfDir%>','<%=pdfName%>');">
+                                                       onclick="nextPage('<%=Encode.forJavaScript(String.valueOf(queueIdStr))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>');">
                                                 <input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.last"/>"
-                                                       onclick="lastPage('<%=queueIdStr%>','<%=pdfDir%>','<%=pdfName%>');">
+                                                       onclick="lastPage('<%=Encode.forJavaScript(String.valueOf(queueIdStr))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>');">
 
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><fmt:message key="dms.incomingDocs.rotateThisPage"/>:<input
                                                     type="button" value="180"
-                                                    onclick="rotatePdf('<%=pdfNo%>','<%=pdfDir%>','<%=pdfName%>','180');">
+                                                    onclick="rotatePdf('<%=Encode.forJavaScript(String.valueOf(pdfNo))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>','180');">
                                                 <input type="button" value="+90"
-                                                       onclick="rotatePdf('<%=pdfNo%>','<%=pdfDir%>','<%=pdfName%>','90');">
+                                                       onclick="rotatePdf('<%=Encode.forJavaScript(String.valueOf(pdfNo))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>','90');">
                                                 <input type="button" value="-90"
-                                                       onclick="rotatePdf('<%=pdfNo%>','<%=pdfDir%>','<%=pdfName%>','M90');">
+                                                       onclick="rotatePdf('<%=Encode.forJavaScript(String.valueOf(pdfNo))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>','M90');">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><fmt:message key="dms.incomingDocs.rotateAllPages"/>:<input
                                                     type="button" value="180"
-                                                    onclick="rotateAllPagePdf('<%=pdfNo%>','<%=pdfDir%>','<%=pdfName%>','180');">
+                                                    onclick="rotateAllPagePdf('<%=Encode.forJavaScript(String.valueOf(pdfNo))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>','180');">
                                                 <input type="button" value="+90"
-                                                       onclick="rotateAllPagePdf('<%=pdfNo%>','<%=pdfDir%>','<%=pdfName%>','90');">
+                                                       onclick="rotateAllPagePdf('<%=Encode.forJavaScript(String.valueOf(pdfNo))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>','90');">
                                                 <input type="button" value="-90"
-                                                       onclick="rotateAllPagePdf('<%=pdfNo%>','<%=pdfDir%>','<%=pdfName%>','M90');">
+                                                       onclick="rotateAllPagePdf('<%=Encode.forJavaScript(String.valueOf(pdfNo))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>','M90');">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.extractPage"/>"
-                                                       onclick="extractPagePdf('<%=pdfNo%>','<%=pdfDir%>','<%=pdfName%>');">
+                                                       onclick="extractPagePdf('<%=Encode.forJavaScript(String.valueOf(pdfNo))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>');">
                                                 <input type="button"
                                                        value="<fmt:message key="dms.incomingDocs.deletePage"/>"
-                                                       onclick="deletePagePdf('<%=pdfNo%>','<%=pdfDir%>','<%=pdfName%>');">
+                                                       onclick="deletePagePdf('<%=Encode.forJavaScript(String.valueOf(pdfNo))%>','<%=Encode.forJavaScript(String.valueOf(pdfDir))%>','<%=Encode.forJavaScript(String.valueOf(pdfName))%>');">
                                             </td>
                                         </tr>
                                     </table>
@@ -924,7 +925,7 @@
                 </form>
                 <fieldset>
                     <legend><fmt:message key="dms.incomingDocs.dataEntryMode"/>:
-                        <select tabIndex="<%=tabIndex++%>" name="entryModeList" id="entryModeList"
+                        <select tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" name="entryModeList" id="entryModeList"
                                 onchange="setEntryMode();">
                             <option value="Normal" <%=entryMode.equals("Normal") ? "selected" : ""%> ><fmt:message key="dms.incomingDocs.normal"/></option>
                             <option value="Fast" <%=entryMode.equals("Fast") ? "selected" : ""%> ><fmt:message key="dms.incomingDocs.fast"/></option>
@@ -932,14 +933,14 @@
                     </legend>
                     <form id="forms_" method="post" action="ManageDocument.do">
                         <input type="hidden" name="method" value="addIncomingDocument"/>
-                        <input type="hidden" name="pdfDir" value="<%=pdfDir%>">
-                        <input type="hidden" name="pdfName" value="<%=pdfName%>">
-                        <input type="hidden" name="queueId" value="<%=queueIdStr%>">
-                        <input type="hidden" name="pdfNo" value="<%=pdfNo%>">
+                        <input type="hidden" name="pdfDir" value="<%=Encode.forHtmlAttribute(String.valueOf(pdfDir))%>">
+                        <input type="hidden" name="pdfName" value="<%=Encode.forHtmlAttribute(String.valueOf(pdfName))%>">
+                        <input type="hidden" name="queueId" value="<%=Encode.forHtmlAttribute(String.valueOf(queueIdStr))%>">
+                        <input type="hidden" name="pdfNo" value="<%=Encode.forHtmlAttribute(String.valueOf(pdfNo))%>">
                         <input type="hidden" name="queue" value="1">
                         <input type="hidden" name="pdfAction" value="">
                         <input type="hidden" name="lastdemographic_no" id="lastdemographic_no" value="">
-                        <input type="hidden" name="entryMode" value="<%=entryMode%>">
+                        <input type="hidden" name="entryMode" value="<%=Encode.forHtmlAttribute(String.valueOf(entryMode))%>">
                         <table border="0" width="350">
                             <% if (entryMode.equals("Fast")) {%>
                             <tr>
@@ -948,22 +949,22 @@
                                         for (int j = 0; j < docTypes.size(); j++) {
                                             String docType = (String) docTypes.get(j);
                                     %>
-                                    <input type="button" value="<%=docType.length()<3?docType:docType.substring(0, 3)%>"
-                                           title="<%=docType%>" onclick="selectDocType(<%=j%>+1);"> <%}%>
+                                    <input type="button" value="<%=Encode.forHtmlAttribute(String.valueOf(docType.length()<3?docType:docType.substring(0, 3)))%>"
+                                           title="<%=Encode.forHtmlAttribute(String.valueOf(docType))%>" onclick="selectDocType(<%=j%>+1);"> <%}%>
                                 </td>
                             </tr>
                             <%}%>
                             <tr>
                                 <td><fmt:message key="dms.incomingDocs.type"/>:</td>
                                 <td>
-                                    <select tabIndex="<%=tabIndex++%>" name="docType" id="docType"
+                                    <select tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" name="docType" id="docType"
                                             onchange="addDocumentDescriptionTemplateButton()">
                                         <option value=""><fmt:message key="dms.incomingDocs.selectType"/></option>
                                         <%
                                             for (int j = 0; j < docTypes.size(); j++) {
                                                 String docType = (String) docTypes.get(j);
                                         %>
-                                        <option value="<%= docType%>"><%= docType%>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(docType))%>"><%=Encode.forHtml(String.valueOf(docType))%>
                                         </option>
                                         <%}%>
                                     </select>
@@ -983,7 +984,7 @@
                                                 consultShown = true;
                                             }
                                     %>
-                                    <option value="<%=reportClass%>"><%=reportClass%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(reportClass))%>"><%=Encode.forHtml(String.valueOf(reportClass))%>
                                     </option>
                                     <% }%>
                                 </select>
@@ -1004,7 +1005,7 @@
                                 <td colspan="2"><fmt:message key="dms.incomingDocs.description"/>:</td>
                             </tr>
                             <tr>
-                                <td colspan="2"><input tabIndex="<%=tabIndex++%>" type="text" style="width:100%;"
+                                <td colspan="2"><input tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" type="text" style="width:100%;"
                                                        id="documentDescription" name="documentDescription" value=""
                                                        onfocus="setDescriptionIfEmpty();"/></td>
                             </tr>
@@ -1015,8 +1016,8 @@
                                                                        src="<%=request.getContextPath()%>/images/cal.gif"
                                                                        alt="Calendar" border="0"/></a></td>
                                 <td>
-                                    <input tabIndex="<%=tabIndex++%>" id="observationDate" name="observationDate"
-                                           type="text" maxlength="10" size="10" value="<%=todayDate%>">
+                                    <input tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" id="observationDate" name="observationDate"
+                                           type="text" maxlength="10" size="10" value="<%=Encode.forHtmlAttribute(String.valueOf(todayDate))%>">
                                 </td>
                             </tr>
                             <% if (entryMode.equals("Fast")) {%>
@@ -1033,9 +1034,9 @@
                                             if (demo != null) {
                                 %>
                                     <input type="button"
-                                           value="<%=demo.getLastName()%>, <%=demo.getFirstName()%> (<%=demo.getYearOfBirth()%>-<%=demo.getMonthOfBirth()%>-<%=demo.getDateOfBirth()%>)"
-                                           id="demvalueid<%=valueid%>"
-                                           onclick="loadRecentDemo('<%=valueid%>','<%=demo.getLastName()%>, <%=demo.getFirstName()%> (<%=demo.getYearOfBirth()%>-<%=demo.getMonthOfBirth()%>-<%=demo.getDateOfBirth()%>)')"/>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getLastName()))%>, <%=Encode.forHtmlAttribute(String.valueOf(demo.getFirstName()))%> (<%=Encode.forHtmlAttribute(String.valueOf(demo.getYearOfBirth()))%>-<%=Encode.forHtmlAttribute(String.valueOf(demo.getMonthOfBirth()))%>-<%=Encode.forHtmlAttribute(String.valueOf(demo.getDateOfBirth()))%>)"
+                                           id="demvalueid<%=Encode.forHtmlAttribute(String.valueOf(valueid))%>"
+                                           onclick="loadRecentDemo('<%=Encode.forJavaScript(String.valueOf(valueid))%>','<%=Encode.forJavaScript(String.valueOf(demo.getLastName()))%>, <%=Encode.forJavaScript(String.valueOf(demo.getFirstName()))%> (<%=Encode.forJavaScript(String.valueOf(demo.getYearOfBirth()))%>-<%=Encode.forJavaScript(String.valueOf(demo.getMonthOfBirth()))%>-<%=Encode.forJavaScript(String.valueOf(demo.getDateOfBirth()))%>)')"/>
                                     <%
 
                                                 }
@@ -1055,7 +1056,7 @@
                                 <td colspan="2">
                                     <input id="saved" type="hidden" name="saved" value="false"/>
                                     <input type="hidden" name="demog" value="-1" id="demofind"/>
-                                    <input tabIndex="<%=tabIndex++%>" type="text" id="autocompletedemo"
+                                    <input tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" type="text" id="autocompletedemo"
                                            onchange="checkSave('')" name="demographicKeyword"/>
                                     <div id="autocomplete_choices" class="autocomplete"></div>
                                 </td>
@@ -1110,15 +1111,15 @@
                                                 }
                                                 String initials = sbInitials.toString();
                                     %>
-                                    <input type="button" value="<%=initials%>"
-                                           title="<%=sortedprovider.getFirstName()%> <%=sortedprovider.getLastName()%> "
-                                           onclick="addflagprovider('<%=sortedprovider.getFirstName()%>','<%=sortedprovider.getLastName()%>','<%=sortedprovider.getProviderNo()%>');">
+                                    <input type="button" value="<%=Encode.forHtmlAttribute(String.valueOf(initials))%>"
+                                           title="<%=Encode.forHtmlAttribute(String.valueOf(sortedprovider.getFirstName()))%> <%=Encode.forHtmlAttribute(String.valueOf(sortedprovider.getLastName()))%> "
+                                           onclick="addflagprovider('<%=Encode.forJavaScript(String.valueOf(sortedprovider.getFirstName()))%>','<%=Encode.forJavaScript(String.valueOf(sortedprovider.getLastName()))%>','<%=Encode.forJavaScript(String.valueOf(sortedprovider.getProviderNo()))%>');">
                                     <% }
                                     }
 
                                     }%>
 
-                                    <input tabIndex="<%=tabIndex++%>" type="text" id="autocompleteprov"
+                                    <input tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" type="text" id="autocompleteprov"
                                            name="ProvKeyword"/>
                                     <div id="autocomplete_choicesprov" class="autocomplete"></div>
                                     <div id="providerList"></div>
@@ -1127,7 +1128,7 @@
                             <tr>
                                 <td colspan="2" align="left"><p>
                                     <p><input type="submit" onclick="return checkDocument();" name="save"
-                                              tabIndex="<%=tabIndex++%>" id="save" disabled value="Save & Next"/></td>
+                                              tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" id="save" disabled value="Save & Next"/></td>
                             </tr>
                         </table>
                     </form>
@@ -1135,10 +1136,10 @@
             </td>
             <td class="topalign">
                 <div>
-                    <%if (Integer.parseInt(pdfNo) > 0) {%>Page : <b id="pgnum"><%=pdfPageNumber%> <fmt:message key="dms.incomingDocs.of"/><span
-                        class="<%= numOfPage > 1 ? "multiPage" : "singlePage" %>"> <%=numOfPage%> <%}%></span></b>
+                    <%if (Integer.parseInt(pdfNo) > 0) {%>Page : <b id="pgnum"><%=Encode.forHtml(String.valueOf(pdfPageNumber))%> <fmt:message key="dms.incomingDocs.of"/><span
+                        class="<%= numOfPage > 1 ? "multiPage" : "singlePage" %>"> <%=Encode.forHtml(String.valueOf(numOfPage))%> <%}%></span></b>
                     <fmt:message key="dms.incomingDocs.viewAs"/>:
-                    <select tabIndex="<%=tabIndex++%>" name="imageTypeList" id="imageTypeList"
+                    <select tabIndex="<%=Encode.forHtmlAttribute(String.valueOf(tabIndex++))%>" name="imageTypeList" id="imageTypeList"
                             onchange="setImageType();">
                         <option value="Pdf" <%=imageType.equals("Pdf") ? "selected" : ""%> ><fmt:message key="dms.incomingDocs.PDF"/></option>
                         <option value="Image" <%=imageType.equals("Image") ? "selected" : ""%> ><fmt:message key="dms.incomingDocs.image"/></option>
@@ -1297,7 +1298,7 @@
     </table>
 </div>
 <script type="text/javascript">
-    showPageImg('<%=queueIdStr%>', '<%=pdfDir%>', '<%=pdfName%>', '<%=pdfPageNumber%>');
+    showPageImg('<%=Encode.forJavaScript(String.valueOf(queueIdStr))%>', '<%=Encode.forJavaScript(String.valueOf(pdfDir))%>', '<%=Encode.forJavaScript(String.valueOf(pdfName))%>', '<%=Encode.forJavaScript(String.valueOf(pdfPageNumber))%>');
 </script>
 
 </body>

@@ -29,6 +29,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.managers.SecurityInfoManager" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -130,7 +131,7 @@
                                                 selected = " selected=\"selected\" ";
                                             }
                                     %>
-                                    <option value="<%=p.getProviderNo()%>" <%=selected %>><%=p.getFormattedName()%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                                     </option>
                                     <% } %>
                                 </select>
@@ -142,7 +143,7 @@
                                 <input type="checkbox" name="providerUnmatched" value="true" id="providerUnmatched"/>
                             </td>
                             <% } else { %>
-                            <td colspan="3"><%=LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProvider().getFormattedName() %>
+                            <td colspan="3"><%=Encode.forHtml(String.valueOf(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProvider().getFormattedName()))%>
                             </td>
                             <% } %>
                         </tr>

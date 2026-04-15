@@ -42,7 +42,7 @@
 %>
 
 <security:oscarSec roleName="<%=roleName$%>"
-                   objectName='<%="_demographic$"+demographic$%>' rights="o"
+                   objectName='<%=Encode.forHtmlAttribute(String.valueOf("_demographic$"+demographic$))%>' rights="o"
                    reverse="<%=false%>">
     You have no rights to access the data!
     <% authed = false; %>
@@ -74,6 +74,7 @@
 <%@ page import="ca.openosp.MyDateFormat" %>
 <%@ page import="ca.openosp.Misc" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ProfessionalSpecialistDao professionalSpecialistDao = (ProfessionalSpecialistDao) SpringUtils.getBean(ProfessionalSpecialistDao.class);
     DemographicCustDao demographicCustDao = (DemographicCustDao) SpringUtils.getBean(DemographicCustDao.class);
@@ -177,59 +178,59 @@
         <table width="100%" class="MainTableLeftColumn">
             <tr>
                 <td class="RowTop" colspan="3" align="center" bgcolor="#EEEEFF">
-                    <b>Record</b> (<%=d.getDemographicNo()%>) <%=d.getLastName()%>,
-                    <%=d.getFirstName()%> <%=d.getSex()%>
-                    <%=age%> years
+                    <b>Record</b> (<%=Encode.forHtml(String.valueOf(d.getDemographicNo()))%>) <%=Encode.forHtml(String.valueOf(d.getLastName()))%>,
+                    <%=Encode.forHtml(String.valueOf(d.getFirstName()))%> <%=Encode.forHtml(String.valueOf(d.getSex()))%>
+                    <%=Encode.forHtml(String.valueOf(age))%> years
                 </td>
             </tr>
             <tr>
                 <td align="left"
-                    title='<%=d.getDemographicNo()%>'><b><fmt:message key="demographic.demographiceditdemographic.formLastName"/>: </b><%=d.getLastName()%>
+                    title='<%=Encode.forHtmlAttribute(String.valueOf(d.getDemographicNo()))%>'><b><fmt:message key="demographic.demographiceditdemographic.formLastName"/>: </b><%=Encode.forHtml(String.valueOf(d.getLastName()))%>
                 </td>
                 <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formFirstName"/>: </b></td>
-                <td align="left"><%=d.getFirstName()%>
+                <td align="left"><%=Encode.forHtml(String.valueOf(d.getFirstName()))%>
                 </td>
             </tr>
 
 
             <tr valign="top">
-                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formAddr"/>: </b> <%=d.getAddress()%>
+                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formAddr"/>: </b> <%=Encode.forHtml(String.valueOf(d.getAddress()))%>
                 </td>
                 <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formCity"/>: </b></td>
-                <td align="left"><%=d.getCity()%>
+                <td align="left"><%=Encode.forHtml(String.valueOf(d.getCity()))%>
                 </td>
             </tr>
 
             <tr valign="top">
-                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formProcvince"/>: </b><%=d.getProvince()%>
+                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formProcvince"/>: </b><%=Encode.forHtml(String.valueOf(d.getProvince()))%>
                 </td>
                 <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formPostal"/>: </b></td>
-                <td align="left"><%=d.getPostal()%>
+                <td align="left"><%=Encode.forHtml(String.valueOf(d.getPostal()))%>
                 </td>
             </tr>
             <tr valign="top">
-                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formPhoneH"/>: </b><%=d.getPhone()%>
+                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formPhoneH"/>: </b><%=Encode.forHtml(String.valueOf(d.getPhone()))%>
                 </td>
                 <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formPhoneW"/>:</b></td>
-                <td align="left"><%=d.getPhone2()%>
+                <td align="left"><%=Encode.forHtml(String.valueOf(d.getPhone2()))%>
                 </td>
             </tr>
             <tr valign="top">
-                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formEmail"/>: </b><%=d.getEmail() != null ? d.getEmail() : ""%>
+                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formEmail"/>: </b><%=Encode.forHtml(String.valueOf(d.getEmail() != null ? d.getEmail() : ""))%>
                 </td>
             </tr>
             <tr valign="top">
                 <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formDOB"/></b><fmt:message key="demographic.demographiceditdemographic.formDOBDetais"/><b>:
-                </b> <%=d.getYearOfBirth()%>/ <%=d.getMonthOfBirth()%>/
-                    <%=d.getDateOfBirth()%> <b>Age: </b> <%=age%>
+                </b> <%=Encode.forHtml(String.valueOf(d.getYearOfBirth()))%>/ <%=Encode.forHtml(String.valueOf(d.getMonthOfBirth()))%>/
+                    <%=Encode.forHtml(String.valueOf(d.getDateOfBirth()))%> <b>Age: </b> <%=Encode.forHtml(String.valueOf(age))%>
                 </td>
                 <td align="left" nowrap><b><fmt:message key="demographic.demographiceditdemographic.formSex"/>:</b></td>
-                <td align="left"><%=d.getSex()%>
+                <td align="left"><%=Encode.forHtml(String.valueOf(d.getSex()))%>
                 </td>
             </tr>
             <tr valign="top">
-                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formHin"/>: </b><%=d.getHin()%>
-                    <b><fmt:message key="demographic.demographiceditdemographic.formVer"/></b> <%=d.getVer()%>
+                <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formHin"/>: </b><%=Encode.forHtml(String.valueOf(d.getHin()))%>
+                    <b><fmt:message key="demographic.demographiceditdemographic.formVer"/></b> <%=Encode.forHtml(String.valueOf(d.getVer()))%>
                 </td>
                 <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formEFFDate"/>:</b></td>
                 <td align="left">
@@ -243,13 +244,13 @@
                         decF.applyPattern("00");
                         String effDateMonth = decF.format(MyDateFormat.getMonthFromStandardDate(d.getFormattedEffDate()));
                         String effDateDay = decF.format(MyDateFormat.getDayFromStandardDate(d.getFormattedEffDate()));
-                    %> <%= effDateYear%>/ <%= effDateMonth%>/ <%= effDateDay%>
+                    %> <%=Encode.forHtml(String.valueOf(effDateYear))%>/ <%=Encode.forHtml(String.valueOf(effDateMonth))%>/ <%=Encode.forHtml(String.valueOf(effDateDay))%>
                 </td>
             </tr>
             <tr valign="top">
                 <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formHCType"/>:</b> <%
                     String hctype = d.getHcType() == null ? "" : d.getHcType(); %>
-                    <%=hctype%>
+                    <%=Encode.forHtml(String.valueOf(hctype))%>
                 </td>
                 <td></td>
                 <td></td>
@@ -259,7 +260,7 @@
                     List<Provider> providers = providerDao.getActiveProviders();
                     for (Provider p : providers) {
                         if (p.getProviderNo().equals(d.getProviderNo())) {%>
-                    <%=Misc.getShortStr((p.getLastName() + "," + p.getFirstName()), "", nStrShowLen)%>
+                    <%=Encode.forHtml(String.valueOf(Misc.getShortStr((p.getLastName() + "," + p.getFirstName()), "", nStrShowLen)))%>
                     <% }
                     }
                     %>
@@ -269,7 +270,7 @@
                     <%
                         for (Provider p : providers) {
                             if (p.getProviderNo().equals(resident)) {%>
-                    <%=Misc.getShortStr((p.getLastName() + "," + p.getFirstName()), "", nStrShowLen)%>
+                    <%=Encode.forHtml(String.valueOf(Misc.getShortStr((p.getLastName() + "," + p.getFirstName()), "", nStrShowLen)))%>
                     <% }
                     }%>
                 </td>
@@ -278,7 +279,7 @@
                 <td align="left" nowrap><b><fmt:message key="demographic.demographiceditdemographic.formMidwife"/>: </b> <%
                     for (Provider p : providers) {
                         if (p.getProviderNo().equals(midwife)) {%>
-                    <%=Misc.getShortStr((p.getLastName() + "," + p.getFirstName()), "", nStrShowLen)%>
+                    <%=Encode.forHtml(String.valueOf(Misc.getShortStr((p.getLastName() + "," + p.getFirstName()), "", nStrShowLen)))%>
                     <% }
                     }%>
                 </td>
@@ -287,7 +288,7 @@
                     <%
                         for (Provider p : providers) {
                             if (p.getProviderNo().equals(nurse)) {%>
-                    <%=Misc.getShortStr((p.getLastName() + "," + p.getFirstName()), "", nStrShowLen)%>
+                    <%=Encode.forHtml(String.valueOf(Misc.getShortStr((p.getLastName() + "," + p.getFirstName()), "", nStrShowLen)))%>
                     <% }
                     }%>
                 </td>
@@ -317,9 +318,9 @@
                         prop = (Properties) vecRef.get(k);
                     %>
                     <option
-                            value="<%=prop.getProperty("last_name")+","+prop.getProperty("first_name")%>"
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("last_name")+","+prop.getProperty("first_name")))%>"
                             <%=prop.getProperty("referral_no").equals(rdohip) ? "selected" : ""%>>
-                        <%=Misc.getShortStr((prop.getProperty("last_name") + "," + prop.getProperty("first_name")), "", nStrShowLen)%>
+                        <%=Encode.forHtml(String.valueOf(Misc.getShortStr((prop.getProperty("last_name") + "," + prop.getProperty("first_name")), "", nStrShowLen)))%>
                     </option>
                     <% } %>
                 </select>
@@ -332,8 +333,8 @@
                             <% for(int k=0; k<vecRef.size(); k++) {
                                     prop= (Properties) vecRef.get(k);
                             %>
-                            if (refName == "<%=prop.getProperty("last_name")+","+prop.getProperty("first_name")%>") {
-                                refNo = '<%=prop.getProperty("referral_no", "")%>';
+                            if (refName == "<%=Encode.forJavaScript(String.valueOf(prop.getProperty("last_name")+","+prop.getProperty("first_name")))%>") {
+                                refNo = '<%=Encode.forJavaScript(String.valueOf(prop.getProperty("referral_no", "")))%>';
                             }
                             <% } %>
                             document.updatedelete.r_doctor_ohip.value = refNo;
@@ -341,10 +342,10 @@
 
                         //-->
                     </script>
-                    <% } else {%> <%=rd%> <% } %>
+                    <% } else {%> <%=Encode.forHtml(String.valueOf(rd))%> <% } %>
                 </td>
                 <td align="left" nowrap><b><fmt:message key="demographic.demographiceditdemographic.formRefDocNo"/>: </b></td>
-                <td align="left"><%=rdohip%>
+                <td align="left"><%=Encode.forHtml(String.valueOf(rdohip))%>
                 </td>
             </tr>
 
@@ -354,7 +355,7 @@
                     if (rosterStatus == null) {
                         rosterStatus = "";
                     }
-                %> <%=rosterStatus%>
+                %> <%=Encode.forHtml(String.valueOf(rosterStatus))%>
                 </td>
                 <td align="left" nowrap><b><fmt:message key="demographic.demographiceditdemographic.DateJoined"/>: </b></td>
                 <td align="left">
@@ -365,7 +366,7 @@
                         decF.applyPattern("00");
                         String hcRenewMonth = decF.format(MyDateFormat.getMonthFromStandardDate(d.getFormattedRenewDate()));
                         String hcRenewDay = decF.format(MyDateFormat.getDayFromStandardDate(d.getFormattedRenewDate()));
-                    %> <%= hcRenewYear %> <%= hcRenewMonth %> <%= hcRenewDay %>
+                    %> <%=Encode.forHtml(String.valueOf(hcRenewYear))%> <%=Encode.forHtml(String.valueOf(hcRenewMonth))%> <%=Encode.forHtml(String.valueOf(hcRenewDay))%>
                 </td>
             </tr>
             <tr valign="top">
@@ -376,16 +377,16 @@
 
                         for (String pt : demographicDao.search_ptstatus()) {
                             if (pacStatus.equals(pt)) { %>
-                    <%=pt%> <% nextStatus = false;
+                    <%=Encode.forHtml(String.valueOf(pt))%> <% nextStatus = false;
                     }
                     }
 
                     %> <% if (nextStatus) {
 
-                    %> <%=pacStatus%> <% } %>
+                    %> <%=Encode.forHtml(String.valueOf(pacStatus))%> <% } %>
                 </td>
                 <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formChartNo"/>:</b></td>
-                <td align="left"><%=d.getChartNo()%>
+                <td align="left"><%=Encode.forHtml(String.valueOf(d.getChartNo()))%>
                 </td>
             </tr>
 
@@ -400,13 +401,13 @@
 
                     for (WaitingListName wln : waitingListNameDao.findCurrentByGroup(((ProviderPreference) session.getAttribute(SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE)).getMyGroupNo())) {
                         if (wln.getId().toString().equals(listID)) {
-                %><%=wln.getName()%> <%
+                %><%=Encode.forHtml(String.valueOf(wln.getName()))%> <%
                         }
                     }
                 %>
                 </td>
                 <td align="left" nowrap><b>Waiting List Note: </b></td>
-                <td align="left"><%=wlnote%>
+                <td align="left"><%=Encode.forHtml(String.valueOf(wlnote))%>
                 </td>
             </tr>
             <%}%>
@@ -418,7 +419,7 @@
                     decF.applyPattern("00");
                     String dateJoinedMonth = decF.format(MyDateFormat.getMonthFromStandardDate(d.getFormattedDateJoined()));
                     String dateJoinedDay = decF.format(MyDateFormat.getDayFromStandardDate(d.getFormattedDateJoined()));
-                %> <%= dateJoinedYear %> <%= dateJoinedMonth %> <%= dateJoinedDay %>
+                %> <%=Encode.forHtml(String.valueOf(dateJoinedYear))%> <%=Encode.forHtml(String.valueOf(dateJoinedMonth))%> <%=Encode.forHtml(String.valueOf(dateJoinedDay))%>
                 </td>
                 <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formEndDate"/>: </b></td>
                 <td align="left">
@@ -429,19 +430,19 @@
                         decF.applyPattern("00");
                         String endMonth = decF.format(MyDateFormat.getMonthFromStandardDate(d.getFormattedEndDate()));
                         String endDay = decF.format(MyDateFormat.getDayFromStandardDate(d.getFormattedEndDate()));
-                    %> <%= endYear %> <%= endMonth %> <%= endDay %>
+                    %> <%=Encode.forHtml(String.valueOf(endYear))%> <%=Encode.forHtml(String.valueOf(endMonth))%> <%=Encode.forHtml(String.valueOf(endDay))%>
                 </td>
             <tr valign="top">
                 <td nowrap colspan="3">
                     <table width="100%" bgcolor="#EEEEFF">
                         <tr>
                             <td width="7%" align="left"><font color="#FF0000"><b><fmt:message key="demographic.demographiceditdemographic.formAlert"/>: </b></font></td>
-                            <td><%=alert%>
+                            <td><%=Encode.forHtml(String.valueOf(alert))%>
                             </td>
                         </tr>
                         <tr>
                             <td align="left"><b><fmt:message key="demographic.demographiceditdemographic.formNotes"/>: </b></td>
-                            <td><%=notes%>
+                            <td><%=Encode.forHtml(String.valueOf(notes))%>
                             </td>
                         </tr>
                     </table>

@@ -52,6 +52,7 @@
 %>
 
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 
     <head>
@@ -120,7 +121,7 @@
         <% if (request.getAttribute("Error") != null) { %>
         <div class="alert alert-error">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <%=request.getAttribute("Error") %>
+            <%=Encode.forHtml(String.valueOf(request.getAttribute("Error")))%>
         </div>
         <% }%>
 

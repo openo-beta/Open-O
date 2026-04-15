@@ -1,6 +1,7 @@
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxDrugData" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxCodesData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %><%--
 
     Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -208,9 +209,9 @@
                                         <tr class=tblRow <%= style %> name="record<%= i%>Line1">
                                             <td colspan=2><b>Favorite Name:</b><input type=hidden
                                                                                       name="fldFavoriteId<%= i%>"
-                                                                                      value="<%= f.getFavoriteId() %>"/>
+                                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(f.getFavoriteId()))%>"/>
                                                 <input type=text size="50" name="fldFavoriteName<%= i%>"
-                                                       class=tblRow size=80 value="<%= f.getFavoriteName() %>"/>&nbsp;&nbsp;&nbsp;
+                                                       class=tblRow size=80 value="<%=Encode.forHtmlAttribute(String.valueOf(f.getFavoriteName()))%>"/>&nbsp;&nbsp;&nbsp;
                                             </td>
                                             <td colspan=5><a href="javascript:updateRow(<%= i%>);">Save
                                                 Changes</a>&nbsp;&nbsp;&nbsp; <a href="javascript:deleteRow(<%= i%>);">Delete
@@ -218,9 +219,9 @@
                                         </tr>
                                         <% if (!isCustom) { %>
                                         <tr class=tblRow <%= style %> name="record<%= i%>Line2">
-                                            <td><b>Brand Name:</b><%= f.getBN() %>
+                                            <td><b>Brand Name:</b><%=Encode.forHtml(String.valueOf(f.getBN()))%>
                                             </td>
-                                            <td colspan=5><b>Generic Name:</b><%= f.getGN() %>
+                                            <td colspan=5><b>Generic Name:</b><%=Encode.forHtml(String.valueOf(f.getGN()))%>
                                             </td>
                                             <td colspan=1>&nbsp; <input type="hidden"
                                                                         name="fldCustomName<%= i%>" value=""/></td>
@@ -231,37 +232,37 @@
                                                                                           size="50"
                                                                                           name="fldCustomName<%= i%>"
                                                                                           class=tblRow size=80
-                                                                                          value="<%= f.getCustomName() %>"/>
+                                                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(f.getCustomName()))%>"/>
                                             </td>
                                         </tr>
                                         <% } %>
                                         <tr class=tblRow <%= style %> name="record<%= i%>Line3">
                                             <td nowrap><b>Take:</b> <input type=text
                                                                            name="fldTakeMin<%= i%>" class=tblRow size=3
-                                                                           value="<%= f.getTakeMin() %>"/>
+                                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(f.getTakeMin()))%>"/>
                                                 <span>to</span> <input
                                                         type=text name="fldTakeMax<%= i%>" class=tblRow size=3
-                                                        value="<%= f.getTakeMax() %>"/> <select
+                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(f.getTakeMax()))%>"/> <select
                                                         name="fldFrequencyCode<%= i%>" class=tblRow>
                                                     <%
                                                         for (j = 0; j < freq.length; j++) {
                                                     %>
                                                     <option
-                                                            value="<%= freq[j].getFreqCode() %>"
+                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(freq[j].getFreqCode()))%>"
                                                             <%
                                                                 if (freq[j].getFreqCode().equals(f.getFrequencyCode())) {
                                                             %>
                                                             selected="selected"
                                                             <%
                                                                 }
-                                                            %>><%=freq[j].getFreqCode()%>
+                                                            %>><%=Encode.forHtml(String.valueOf(freq[j].getFreqCode()))%>
                                                     </option>
                                                     <%
                                                         }
                                                     %>
                                                 </select> <b>For:</b> <input type=text name="fldDuration<%= i%>"
                                                                              class=tblRow size=3
-                                                                             value="<%= f.getDuration() %>"/> <select
+                                                                             value="<%=Encode.forHtmlAttribute(String.valueOf(f.getDuration()))%>"/> <select
                                                         name="fldDurationUnit<%= i%>" class=tblRow>
                                                     <option
                                                             <%
@@ -293,10 +294,10 @@
                                             <td nowrap><b>Quantity:</b> <input type=text
                                                                                name="fldQuantity<%= i%>" class=tblRow
                                                                                size=5
-                                                                               value="<%= f.getQuantity() %>"/></td>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(f.getQuantity()))%>"/></td>
                                             <td></td>
                                             <td><b>Repeats:</b><input type=text name="fldRepeat<%= i%>"
-                                                                      class=tblRow size=3 value="<%= f.getRepeat() %>"/>
+                                                                      class=tblRow size=3 value="<%=Encode.forHtmlAttribute(String.valueOf(f.getRepeat()))%>"/>
                                             </td>
 
                                             <td><b>No Subs:</b><input type=checkbox
@@ -322,7 +323,7 @@
                                     String s = f.getSpecial();
                                     if (s != null) {
                                         if (!s.equals("null")) {
-                                %><%= s.trim()%>
+                                %><%=Encode.forHtml(String.valueOf(s.trim()))%>
 								<%
                                         }
                                     }

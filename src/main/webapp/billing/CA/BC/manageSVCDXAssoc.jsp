@@ -18,6 +18,7 @@
 <%@page
         import="java.util.*,ca.openosp.openo.billings.ca.bc.data.BillingCodeData,ca.openosp.openo.billing.ca.bc.pageUtil.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.ServiceCodeAssociation" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -38,7 +39,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -69,7 +70,7 @@
                     %>
                     <tr align="center" class="assocRow"
                         bgcolor="<%=i%2==0?"FFFFFF":"EEEEFF"%>">
-                        <td><%=assoc.getServiceCode()%>
+                        <td><%=Encode.forHtml(String.valueOf(assoc.getServiceCode()))%>
                         </td>
                         <td>
                             <%
@@ -81,10 +82,10 @@
                             %>
                         </td>
                         <td><a
-                                href="editServiceCodeAssocAction.do?svcCode=<%=assoc.getServiceCode()%>">Edit</a>
+                                href="editServiceCodeAssocAction.do?svcCode=<%=Encode.forUriComponent(String.valueOf(assoc.getServiceCode()))%>">Edit</a>
                             <br>
                             <a
-                                    href="deleteServiceCodeAssoc.do?svcCode=<%=assoc.getServiceCode()%>">Remove</a>
+                                    href="deleteServiceCodeAssoc.do?svcCode=<%=Encode.forUriComponent(String.valueOf(assoc.getServiceCode()))%>">Remove</a>
                         </td>
                     </tr>
                     <%} %>

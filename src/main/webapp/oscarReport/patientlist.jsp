@@ -1,6 +1,7 @@
 <%@ page import="ca.openosp.openo.report.data.DoctorList" %>
 <%@ page import="ca.openosp.openo.providers.bean.ProviderNameBean" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -44,7 +45,7 @@
                             for (int i = 0; i < dnl.size(); i++) {
                                 ProviderNameBean pb = (ProviderNameBean) dnl.get(i);
                         %>
-                        <option value="<%=pb.getProviderID()%>"><%=pb.getProviderName()%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(pb.getProviderID()))%>"><%=Encode.forHtml(String.valueOf(pb.getProviderName()))%>
                         </option>
                         <%
                             }

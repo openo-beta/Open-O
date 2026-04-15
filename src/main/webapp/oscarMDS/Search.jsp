@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -52,7 +53,7 @@
                 return false;
             }
 
-            var url = "<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=request.getParameter("providerNo")%>";
+            var url = "<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forJavaScript(request.getParameter("providerNo"))%>";
             if ($("#provfind").val().trim() != "") {
                 url += "&searchProviderNo=" + $("#provfind").val().trim();
             } else {
@@ -181,7 +182,7 @@
                                        ondblclick="this.checked = false;">
                                 <label for="searchProviderAll-unclaimed"><fmt:message key="oscarMDS.search.formPhysicianUnclaimed"/></label>
                                 <input type="hidden" name="providerNo"
-                                       value="<%= request.getParameter("providerNo") %>">
+                                       value="<%= Encode.forHtmlAttribute(request.getParameter("providerNo")) %>">
                             </td>
                         </tr>
                         <tr>

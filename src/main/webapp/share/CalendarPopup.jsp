@@ -39,6 +39,7 @@
 
 %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*"
         errorPage="/errorpage.jsp" %>
@@ -82,11 +83,11 @@
             <%
                 if (param.startsWith("&formdatebox=")) {
             %>
-            opener.<%=param.substring("&formdatebox=".length())%> = year1 + "-" + month1 + "-" + day1;
+            opener.<%=Encode.forJavaScript(String.valueOf(param.substring("&formdatebox=".length())))%> = year1 + "-" + month1 + "-" + day1;
             <%
                 } else {
             %>
-            opener.location.href = "<%=urlfrom%>" + "?year=" + year1 + "&month=" + month1 + "&day=" + day1 + "<%=param%>";
+            opener.location.href = "<%=Encode.forJavaScript(String.valueOf(urlfrom))%>" + "?year=" + year1 + "&month=" + month1 + "&day=" + day1 + "<%=Encode.forJavaScript(String.valueOf(param))%>";
             <%  }  %>
             self.close();
         }
@@ -122,7 +123,7 @@
 <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
     <tr BGCOLOR="#CCCCFF">
         <td width="5%" align="center" nowrap><a
-                href="CalendarPopup.jsp?urlfrom=<%=urlfrom%>&year=<%=year%>&month=<%=month%>&param=<%=URLEncoder.encode(param, StandardCharsets.UTF_8)%>&delta=-12">
+                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>&delta=-12">
             <img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                  ALT="<fmt:message key="share.CalendarPopUp.msgNextYear"/>"
                  vspace="2"> <img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10"
@@ -130,18 +131,18 @@
                                   ALT="<fmt:message key="share.CalendarPopUp.msgLastYear"/>"
                                   vspace="2"> </a></td>
         <td align="center" nowrap><a
-                href="CalendarPopup.jsp?urlfrom=<%=urlfrom%>&year=<%=year%>&month=<%=month%>&param=<%=URLEncoder.encode(param, StandardCharsets.UTF_8)%>&delta=-1">
+                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>&delta=-1">
             <img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                  ALT="<fmt:message key="share.CalendarPopUp.msgViewLastMonth"/>"
-                 vspace="2"> <fmt:message key="share.CalendarPopUp.msgLastMonth"/> </a> <b><span CLASS=title><%=year%>-<%=month%></span></b>
+                 vspace="2"> <fmt:message key="share.CalendarPopUp.msgLastMonth"/> </a> <b><span CLASS=title><%=Encode.forHtml(String.valueOf(year))%>-<%=Encode.forHtml(String.valueOf(month))%></span></b>
             <a
-                    href="CalendarPopup.jsp?urlfrom=<%=urlfrom%>&year=<%=year%>&month=<%=month%>&param=<%=URLEncoder.encode(param, StandardCharsets.UTF_8)%>&delta=1">
+                    href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>&delta=1">
                 <fmt:message key="share.CalendarPopUp.msgNextMonth"/> <img
                     src="<%= request.getContextPath() %>/images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                     ALT="<fmt:message key="share.CalendarPopUp.msgNextMonth"/>"
                     vspace="2"></a></td>
         <td align='right'><a
-                href="CalendarPopup.jsp?urlfrom=<%=urlfrom%>&year=<%=year%>&month=<%=month%>&param=<%=URLEncoder.encode(param, StandardCharsets.UTF_8)%>&delta=12">
+                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>&delta=12">
             <img src="<%= request.getContextPath() %>/images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                  ALT="Next Year" vspace="2"> <img src="<%= request.getContextPath() %>/images/next.gif"
                                                   WIDTH="10" HEIGHT="9" BORDER="0" ALT="Next Year" vspace="2"></a></td>
@@ -154,8 +155,8 @@
             <%
                 for (int i = 0; i < 12; i++) {
             %> <a
-                href="CalendarPopup.jsp?urlfrom=<%=urlfrom%>&year=<%=year%>&month=<%=i+1%>&param=<%=URLEncoder.encode(param, StandardCharsets.UTF_8)%>"><font
-                SIZE="2" <%=(i+1)==month?"color='red'":"color='blue'"%>><%=arrayMonth[i]%>
+                href="CalendarPopup.jsp?urlfrom=<%=Encode.forUriComponent(String.valueOf(urlfrom))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(i+1))%>&param=<%=Encode.forUriComponent(String.valueOf(param))%>"><font
+                SIZE="2" <%=(i+1)==month?"color='red'":"color='blue'"%>><%=Encode.forHtml(String.valueOf(arrayMonth[i]))%>
         </a>
             <% } %>
         </th>
@@ -194,8 +195,8 @@
     %>
     <td align="center" bgcolor='<%=bTodayDate?"gold":"#EEEEFF"%>'><a
             href="#"
-            onClick="typeInDate(<%=year%>,<%=month%>,<%= dateGrid[i][j] %>)">
-        <%= dateGrid[i][j] %>
+            onClick="typeInDate(<%=Encode.forJavaScript(String.valueOf(year))%>,<%=Encode.forJavaScript(String.valueOf(month))%>,<%=Encode.forJavaScript(String.valueOf(dateGrid[i][j]))%>)">
+        <%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
     </a></td>
     <%
                 }

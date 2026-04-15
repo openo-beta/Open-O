@@ -51,6 +51,7 @@
 <%@ page import="ca.openosp.openo.demographic.pageUtil.PGPEncrypt" %>
 <%@ page import="ca.openosp.openo.report.data.DemographicSets" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -418,8 +419,8 @@
             <form id="DemographicExportForm" name="DemographicExportForm" action="${pageContext.request.contextPath}/demographic/DemographicExport.do" method="get" target="exportDownloadFrame" onsubmit="return handleExportSubmit();">
 
                 <% if (demographicNo != null) { %>
-                <input type="hidden" name="demographicNo" id="demographicNo" value="<%=demographicNo%>"/>
-                <fmt:message key="demographic.demographicexport.exportingdemographicno"/><%=demographicNo%>
+                <input type="hidden" name="demographicNo" id="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>"/>
+                <fmt:message key="demographic.demographicexport.exportingdemographicno"/><%=Encode.forHtml(String.valueOf(demographicNo))%>
                 <%} else {%>
                 <fmt:message key="demographic.demographicexport.patientset"/><br>
                 <select style="width: 189px" name="patientSet" id="patientSet">
@@ -433,7 +434,7 @@
                         for (int i = 0; i < sets.size(); i++) {
                             String setName = sets.get(i);
                     %>
-                    <option value="<%=setName%>"><%=setName%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(setName))%>"><%=Encode.forHtml(String.valueOf(setName))%>
                     </option>
                     <%}%>
                 </select>
@@ -454,7 +455,7 @@
                         for (int i = 0; i < providers.size(); i++) {
                             Provider p = providers.get(i);
                     %>
-                    <option value="<%=p.getProviderNo()%>"><%=p.getFormattedName()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                     </option>
                     <%}%>
                 </select>
@@ -468,8 +469,8 @@
                 <fmt:message key="demographic.demographicexport.exporttemplate"/><br>
                 <select style="width: 189px" name="template">
                     <option
-                            value="<%=(new Integer(DemographicExportAction42Action.CMS4)).toString() %>">EMR DM 5.0</option>
-                    <option value="<%=(new Integer(DemographicExportAction42Action.E2E)).toString() %>">E2E</option>
+                            value="<%=Encode.forHtmlAttribute(String.valueOf((new Integer(DemographicExportAction42Action.CMS4)).toString()))%>">EMR DM 5.0</option>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf((new Integer(DemographicExportAction42Action.E2E)).toString()))%>">E2E</option>
                 </select>
 
                 <br>
@@ -495,7 +496,7 @@
                 <input type="checkbox" name="exAlertsAndSpecialNeeds" value="true" /><fmt:message key="demographic.demographicexport.alertsandspecialneeds"/>
 
                 <br>
-                <input type="hidden" name="pgpReady" id="pgpReady" value="<%=pgp_ready%>"/>
+                <input type="hidden" name="pgpReady" id="pgpReady" value="<%=Encode.forHtmlAttribute(String.valueOf(pgp_ready))%>"/>
 
                 <% boolean pgpReady = pgp_ready.equals("Yes") ? true : false;
 //    pgpReady = true; //To be removed after CMS4

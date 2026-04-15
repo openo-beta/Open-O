@@ -27,6 +27,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingPaymentType" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -80,15 +81,15 @@
                 count++;
         %>
         <tr>
-            <td><%=paymentType.getId()%>
+            <td><%=Encode.forHtml(String.valueOf(paymentType.getId()))%>
             </td>
-            <td><%=paymentType.getPaymentType()%>
-            </td>
-            <td>
-                <a href="<%=request.getContextPath()%>/billing/CA/ON/editBillingPaymentType.jsp?id=<%=paymentType.getId()%>&type=<%=paymentType.getPaymentType()%>">Edit</a>
+            <td><%=Encode.forHtml(String.valueOf(paymentType.getPaymentType()))%>
             </td>
             <td>
-                <a href="#" data-paymentTypeId="<%=paymentType.getId()%>">Delete</a>
+                <a href="<%=request.getContextPath()%>/billing/CA/ON/editBillingPaymentType.jsp?id=<%=Encode.forUriComponent(String.valueOf(paymentType.getId()))%>&type=<%=Encode.forUriComponent(String.valueOf(paymentType.getPaymentType()))%>">Edit</a>
+            </td>
+            <td>
+                <a href="#" data-paymentTypeId="<%=Encode.forHtmlAttribute(String.valueOf(paymentType.getId()))%>">Delete</a>
             </td>
         </tr>
         <%

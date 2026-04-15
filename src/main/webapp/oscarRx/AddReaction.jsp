@@ -29,6 +29,7 @@
 
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -91,7 +92,7 @@
                     <!----Start new rows here-->
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><%=name%>
+                            <div class="DivContentSectionHead"><%=Encode.forHtml(String.valueOf(name))%>
                             </div>
                         </td>
                     </tr>
@@ -102,9 +103,9 @@
 
                                     <td colspan="2">
                                         <textarea name="reactionDescription" cols="40" rows="3"></textarea>
-                                        <input type="hidden" name="ID" id="ID" value="<%=allergyId%>"/>
-                                        <input type="hidden" name="name" id="name" value="<%=name%>"/>
-                                        <input type="hidden" name="type" id="type" value="<%=type%>"/></td>
+                                        <input type="hidden" name="ID" id="ID" value="<%=Encode.forHtmlAttribute(String.valueOf(allergyId))%>"/>
+                                        <input type="hidden" name="name" id="name" value="<%=Encode.forHtmlAttribute(String.valueOf(name))%>"/>
+                                        <input type="hidden" name="type" id="type" value="<%=Encode.forHtmlAttribute(String.valueOf(type))%>"/></td>
                                 </tr>
 
                                 <tr valign="center">
@@ -165,7 +166,7 @@
                             <%
                                 String sBack = request.getContextPath() + "/oscarRx/ShowAllergies.jsp";
                             %> <input type=button class="ControlPushButton"
-                                      onclick="javascript:window.location.href='<%=sBack%>';"
+                                      onclick="javascript:window.location.href='<%=Encode.forJavaScript(String.valueOf(sBack))%>';"
                                       value="Back to View Allergies"/></td>
                     </tr>
                     <!----End new rows here-->

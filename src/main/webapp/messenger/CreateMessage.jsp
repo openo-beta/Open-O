@@ -418,10 +418,10 @@
                                                                 <!--list of the providers cell Start-->
                                                                 <%if (recall) { %>
                                                                 <div>
-                                                                    <input name="provider" value="<%=delegate%>"
+                                                                    <input name="provider" value="<%=Encode.forHtmlAttribute(String.valueOf(delegate))%>"
                                                                            type="checkbox" checked>
                                                                     <strong><a
-                                                                            title="default recall delegate: <%=delegateName%>">default: <%=delegateName%>
+                                                                            title="default recall delegate: <%=Encode.forHtmlAttribute(String.valueOf(delegateName))%>">default: <%=Encode.forHtml(String.valueOf(delegateName))%>
                                                                     </a></strong>
                                                                 </div>
                                                                 <%} %>
@@ -595,7 +595,7 @@
                                             <td bgcolor="#EEEEFF">
                                                 <input type="text" name="keyword" size="30"/> <input type="hidden"
                                                                                                      name="demographic_no"
-                                                                                                     value="<%=demographic_no%>"/>
+                                                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
                                             </td>
                                             <td bgcolor="#EEEEFF">
                                                 <input type="button" class="ControlPushButton" name="searchDemo"

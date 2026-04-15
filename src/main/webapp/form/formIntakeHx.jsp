@@ -41,6 +41,7 @@
 
 <!DOCTYPE html>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 <html>
@@ -63,22 +64,22 @@
         <table>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.chartNo"/>:</td>
-                <td><input type="text" name="student_number" value="<%=props.getProperty("student_number","")%>"/></td>
+                <td><input type="text" name="student_number" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_number","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.firstName"/>:</td>
-                <td><input type="text" name="student_firstname" value="<%=props.getProperty("student_firstname","")%>"/>
+                <td><input type="text" name="student_firstname" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_firstname","")))%>"/>
                 </td>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.lastName"/>:</td>
-                <td><input type="text" name="student_surname" value="<%=props.getProperty("student_surname","")%>"/>
+                <td><input type="text" name="student_surname" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_surname","")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.dob"/>:</td>
-                <td><input type="text" name="student_dob" value="<%=props.getProperty("student_dob","")%>"/></td>
+                <td><input type="text" name="student_dob" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_dob","")))%>"/></td>
 
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.sex"/>:</td>
-                <td><input type="text" name="student_sex" value="<%=props.getProperty("student_sex","")%>"/></td>
+                <td><input type="text" name="student_sex" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_sex","")))%>"/></td>
             </tr>
         </table>
 
@@ -89,22 +90,22 @@
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.emergencyName"/>:</td>
                 <td><input type="text" name="student_ercontact_name"
-                           value="<%=props.getProperty("student_ercontact_name","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_ercontact_name","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.emergencyPhone"/>:</td>
                 <td><input type="text" name="student_ercontact_phone"
-                           value="<%=props.getProperty("student_ercontact_phone","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_ercontact_phone","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.emergencyAddress"/>:</td>
                 <td><input type="text" name="student_ercontact_address"
-                           value="<%=props.getProperty("student_ercontact_address","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_ercontact_address","")))%>"/></td>
             </tr>
             <tr>
                 <td></td>
                 <td><input type="text" name="student_ercontact_address2"
-                           value="<%=props.getProperty("student_ercontact_address2","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_ercontact_address2","")))%>"/></td>
             </tr>
         </table>
 
@@ -115,22 +116,22 @@
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.physicianName"/>:</td>
                 <td><input type="text" name="student_physician_name"
-                           value="<%=props.getProperty("student_physician_name","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_physician_name","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.physicianTelephone"/>:</td>
                 <td><input type="text" name="student_physician_phone"
-                           value="<%=props.getProperty("student_physician_phone","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_physician_phone","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.physicianAddress"/>:</td>
                 <td><input type="text" name="student_physician_address"
-                           value="<%=props.getProperty("student_physician_address","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_physician_address","")))%>"/></td>
             </tr>
             <tr>
                 <td></td>
                 <td><input type="text" name="student_physician_address2"
-                           value="<%=props.getProperty("student_physician_address2","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_physician_address2","")))%>"/></td>
             </tr>
         </table>
 
@@ -141,7 +142,7 @@
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.academicFaculty"/>:</td>
                 <td><input type="text" name="student_faculty_phone"
-                           value="<%=props.getProperty("student_faculty_phone","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_faculty_phone","")))%>"/></td>
             </tr>
             <%
                 String enrollment = props.getProperty("pt_ft", LocaleUtils.getMessage(request, "oscarEncounter.formIntakeHx.notSpecified"));
@@ -154,11 +155,11 @@
             %>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.academicEnrollment"/>:</td>
-                <td><input type="text" name="pt_ft" value="<%=enrollment%>"/></td>
+                <td><input type="text" name="pt_ft" value="<%=Encode.forHtmlAttribute(String.valueOf(enrollment))%>"/></td>
             </tr>
             <tr>
                 <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.academicYear"/>:</td>
-                <td><input type="text" name="academic_year" value="<%=props.getProperty("academic_year","")%>"/></td>
+                <td><input type="text" name="academic_year" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("academic_year","")))%>"/></td>
             </tr>
         </table>
 

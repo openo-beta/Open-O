@@ -47,6 +47,7 @@
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -192,7 +193,7 @@
     <tr bgcolor="#333333">
         <th align='CENTRE'>
             <form action="genRASummary.jsp"><input type="hidden"
-                                                   name="rano" value="<%=raNo%>"> <select name="proNo">
+                                                   name="rano" value="<%=Encode.forHtmlAttribute(String.valueOf(raNo))%>"> <select name="proNo">
                 <!--option value="all"  <%--=proNo.equals("all")?"selected":""--%>>All Providers</option-->
 
                 <%
@@ -204,8 +205,8 @@
                         plast = prov.getLastName();
                         pfirst = prov.getFirstName();
                 %>
-                <option value="<%=pohipno%>"
-                "selected"><%=plast%>,<%=pfirst%></option>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(pohipno))%>"
+                "selected"><%=Encode.forHtml(String.valueOf(plast))%>,<%=Encode.forHtml(String.valueOf(pfirst))%></option>
                 <% } %>
             </select> <input type="submit" name="submit" value="Generate"></form>
         </th>
@@ -330,29 +331,29 @@
 %>
 
         <tr>
-            <td height="16"><%=account%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(account))%>
             </td>
-            <td height="16"><%=demo_docname%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(demo_docname))%>
             </td>
-            <td height="16"><%=demo_name%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(demo_name))%>
             </td>
-            <td height="16"><%=demo_hin%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(demo_hin))%>
             </td>
-            <td height="16"><%=servicedate%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(servicedate))%>
             </td>
-            <td height="16"><%=servicecode%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(servicecode))%>
             </td>
-            <!-- <td width="8%" height="16"><%=serviceno%></td>-->
-            <td height="16" align=right><%=amountsubmit%>
+            <!-- <td width="8%" height="16"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
             </td>
-            <td height="16" align=right><%=amountpay%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
             </td>
             <td height="16" align=right>N/A</td>
-            <td height="16" align=right><%=amountpay%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
             </td>
-            <td height="16" align=right><%=amountOB%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountOB))%>
             </td>
-            <td height="16" align=right><%=explain%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(explain))%>
             </td>
         </tr>
 
@@ -365,29 +366,29 @@
 				BigTotal = BigTotal.add(bdFee);
 %>
         <tr>
-            <td height="16"><%=account%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(account))%>
             </td>
-            <td height="16"><%=demo_docname%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(demo_docname))%>
             </td>
-            <td height="16"><%=demo_name%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(demo_name))%>
             </td>
-            <td height="16"><%=demo_hin%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(demo_hin))%>
             </td>
-            <td height="16"><%=servicedate%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(servicedate))%>
             </td>
-            <td height="16"><%=servicecode%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(servicecode))%>
             </td>
-            <!-- <td width="8%" height="16"><%=serviceno%></td>-->
-            <td height="16" align=right><%=amountsubmit%>
+            <!-- <td width="8%" height="16"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
             </td>
-            <td height="16" align=right><%=amountpay%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
             </td>
-            <td height="16" align=right><%=amountpay%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
             </td>
             <td height="16" align=right>N/A</td>
-            <td height="16" align=right><%=amountOB%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountOB))%>
             </td>
-            <td height="16" align=right><%=explain%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(explain))%>
             </td>
         </tr>
 
@@ -398,28 +399,28 @@
 				BigOTotal = BigOTotal.add(bdOFee);
 %>
         <tr>
-            <td height="16"><%=account%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(account))%>
             </td>
-            <td height="16"><%=demo_docname%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(demo_docname))%>
             </td>
-            <td height="16"><%=demo_name%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(demo_name))%>
             </td>
-            <td height="16"><%=demo_hin%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(demo_hin))%>
             </td>
-            <td height="16"><%=servicedate%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(servicedate))%>
             </td>
-            <td height="16"><%=servicecode%>
+            <td height="16"><%=Encode.forHtml(String.valueOf(servicecode))%>
             </td>
-            <!-- <td width="8%" height="16"><%=serviceno%></td>-->
-            <td height="16" align=right><%=amountsubmit%>
+            <!-- <td width="8%" height="16"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
             </td>
-            <td height="16" align=right><%=amountpay%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
             </td>
             <td height="16" align=right>N/A</td>
             <td height="16" align=right>N/A</td>
-            <td height="16" align=right><%=amountOB%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountOB))%>
             </td>
-            <td height="16" align=right><%=explain%>
+            <td height="16" align=right><%=Encode.forHtml(String.valueOf(explain))%>
             </td>
         </tr>
             <%
@@ -543,29 +544,29 @@
                         }
             %>
             <tr>
-                <td height="16"><%=account%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(account))%>
                 </td>
-                <td height="16"><%=demo_docname%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(demo_docname))%>
                 </td>
-                <td height="16"><%=demo_name%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(demo_name))%>
                 </td>
-                <td height="16"><%=demo_hin%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(demo_hin))%>
                 </td>
-                <td height="16"><%=servicedate%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(servicedate))%>
                 </td>
-                <td height="16"><%=servicecode%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(servicecode))%>
                 </td>
-                <!--<td width="8%" height="16"><%=serviceno%></td>-->
-                <td height="16" align=right><%=amountsubmit%>
+                <!--<td width="8%" height="16"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
                 </td>
-                <td height="16" align=right><%=amountpay%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
                 </td>
                 <td height="16" align=right>N/A</td>
-                <td height="16" align=right><%=amountpay%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
                 </td>
-                <td height="16" align=right><%=amountOB%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountOB))%>
                 </td>
-                <td height="16" align=right><%=explain%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(explain))%>
                 </td>
             </tr>
 
@@ -577,29 +578,29 @@
                     BigTotal = BigTotal.add(bdFee);
             %>
             <tr>
-                <td height="16"><%=account%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(account))%>
                 </td>
-                <td height="16"><%=demo_docname%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(demo_docname))%>
                 </td>
-                <td height="16"><%=demo_name%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(demo_name))%>
                 </td>
-                <td height="16"><%=demo_hin%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(demo_hin))%>
                 </td>
-                <td height="16"><%=servicedate%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(servicedate))%>
                 </td>
-                <td height="16"><%=servicecode%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(servicecode))%>
                 </td>
-                <!-- <td width="8%" height="16"><%=serviceno%></td>-->
-                <td height="16" align=right><%=amountsubmit%>
+                <!-- <td width="8%" height="16"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
                 </td>
-                <td height="16" align=right><%=amountpay%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
                 </td>
-                <td height="16" align=right><%=amountpay%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
                 </td>
                 <td height="16" align=right>N/A</td>
-                <td height="16" align=right><%=amountOB%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountOB))%>
                 </td>
-                <td height="16" align=right><%=explain%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(explain))%>
                 </td>
             </tr>
 
@@ -610,28 +611,28 @@
                 BigOTotal = BigOTotal.add(bdOFee);
             %>
             <tr>
-                <td height="16"><%=account%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(account))%>
                 </td>
-                <td height="16"><%=demo_docname%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(demo_docname))%>
                 </td>
-                <td height="16"><%=demo_name%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(demo_name))%>
                 </td>
-                <td height="16"><%=demo_hin%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(demo_hin))%>
                 </td>
-                <td height="16"><%=servicedate%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(servicedate))%>
                 </td>
-                <td height="16"><%=servicecode%>
+                <td height="16"><%=Encode.forHtml(String.valueOf(servicecode))%>
                 </td>
-                <!-- <td width="8%" height="16"><%=serviceno%></td>-->
-                <td height="16" align=right><%=amountsubmit%>
+                <!-- <td width="8%" height="16"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
                 </td>
-                <td height="16" align=right><%=amountpay%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
                 </td>
                 <td height="16" align=right>N/A</td>
                 <td height="16" align=right>N/A</td>
-                <td height="16" align=right><%=amountOB%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountOB))%>
                 </td>
-                <td height="16" align=right><%=explain%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(explain))%>
                 </td>
             </tr>
 
@@ -655,13 +656,13 @@
                 <td height="16"></td>
                 <td height="16"></td>
                 <td height="16">Total</td>
-                <td height="16" align=right><%=BigCTotal%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(BigCTotal))%>
                 </td>
-                <td height="16" align=right><%=BigPTotal%><!-- <%=BigOTotal%>--></td>
-                <td height="16" align=right><%=BigTotal%><!--<%=BigLTotal%>--></td>
-                <td height="16" align=right><%=BigHTotal%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(BigPTotal))%><!-- <%=Encode.forHtml(String.valueOf(BigOTotal))%>--></td>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(BigTotal))%><!--<%=Encode.forHtml(String.valueOf(BigLTotal))%>--></td>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(BigHTotal))%>
                 </td>
-                <td height="16" align=right><%=BigOBTotal%>
+                <td height="16" align=right><%=Encode.forHtml(String.valueOf(BigOBTotal))%>
                 </td>
                 <td height="16"></td>
             </tr>

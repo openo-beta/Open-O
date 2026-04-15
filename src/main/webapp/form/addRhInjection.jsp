@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -136,7 +137,7 @@
         var choiceFormat = new Array(6, 7, 8, 9, 12, 13);
         var allNumericField = new Array(14, 15);
         var allMatch = null;
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
 
     </script>
 
@@ -221,9 +222,9 @@
 
     <form action="${pageContext.request.contextPath}/oscarPrevention/AddPrevention.do" method="post" onsubmit="return process(this);" id="injectForm">
         <input type="hidden" name="prevention" value="RH"/>
-        <input type="hidden" name="demographic_no" value="<%=demographicNo%>"/>
-        <input type="hidden" name="workflowId" value="<%=workflowId%>"/>
-        <input type="hidden" name="formId" value="<%=formIdStr%>"/>
+        <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>"/>
+        <input type="hidden" name="workflowId" value="<%=Encode.forHtmlAttribute(String.valueOf(workflowId))%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formIdStr))%>"/>
         <input type="hidden" name="reason" value=""/>
 
 
@@ -237,21 +238,21 @@
             <div style="float: left; margin-left: 30px;"><label
                     for="prevDate" class="fields">Date:</label> <input type="text"
                                                                        name="prevDate" id="prevDate"
-                                                                       value="<%=prevDate%>" size="9">
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(prevDate))%>" size="9">
                 <a id="date"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif"
                                   alt="Calendar" border="0"/></a> <br>
                 <label for="provider" class="fields">Provider:</label> <input
                         type="text" name="providerName" id="providerName"
-                        value="<%=providerName%>"/> <select
+                        value="<%=Encode.forHtmlAttribute(String.valueOf(providerName))%>"/> <select
                         onchange="javascript:hideExtraName(this);" id="providerDrop"
                         name="provider">
                     <%
                         for (int i = 0; i < providers.size(); i++) {
                             Map h = (Map) providers.get(i);
                     %>
-                    <option value="<%= h.get("providerNo")%>"
-                            <%= (h.get("providerNo").equals(provider) ? " selected" : "") %>><%= h.get("lastName") %>
-                        <%= h.get("firstName") %>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("providerNo")))%>"
+                            <%=Encode.forHtml(String.valueOf((h.get("providerNo").equals(provider) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(h.get("lastName")))%>
+                        <%=Encode.forHtml(String.valueOf(h.get("firstName")))%>
                     </option>
                     <%}%>
                     <option value="-1" <%= ("-1".equals(provider) ? " selected" : "") %>>Other</option>
@@ -272,15 +273,15 @@
 
         <%--
                             <div class="boxed2">
-                                <label for="prevDate" class="fields" >Date:</label>    <input type="text" name="prevDate" id="prevDate" value="<%=prevDate%>" size="9" > <a id="date" style="float:left;"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0" /></a>
+                                <label for="prevDate" class="fields" >Date:</label>    <input type="text" name="prevDate" id="prevDate" value="<%=Encode.forHtmlAttribute(String.valueOf(prevDate))%>" size="9" > <a id="date" style="float:left;"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0" /></a>
                                 <label >Hospital/Clinic:</label><input type="text" name="location" size="9"/>
                                 <br/>
 
-                                <label for="providers" class="fields">Provider:</label> <input type="text" name="providerName" id="providerName" value="<%=providerName%>"/>
+                                <label for="providers" class="fields">Provider:</label> <input type="text" name="providerName" id="providerName" value="<%=Encode.forHtmlAttribute(String.valueOf(providerName))%>"/>
                                       <select onchange="javascript:hideExtraName(this);" id="providerDrop" name="providers">
                                           <%for (int i=0; i < providers.size(); i++) {
                                                Hashtable ph = (Hashtable) providers.get(i);%>
-                                            <option value="<%= ph.get("providerNo")%>" <%= ( ph.get("providerNo").equals(providers) ? " selected" : "" ) %>><%= ph.get("lastName") %> <%= ph.get("firstName") %></option>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(ph.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf(( ph.get("providerNo").equals(providers) ? " selected" : "" )))%>><%=Encode.forHtml(String.valueOf(ph.get("lastName")))%> <%=Encode.forHtml(String.valueOf(ph.get("firstName")))%></option>
                                           <%}%>
                                           <option value="-1" <%= ( "-1".equals(providers) ? " selected" : "" ) %> >Other</option>
                                       </select>

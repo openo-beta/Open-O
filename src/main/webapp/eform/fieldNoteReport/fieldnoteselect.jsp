@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.commn.model.EForm, ca.openosp.openo.commn.dao.EFormDao" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -100,23 +101,23 @@
             %>
             <tr>
                 <td width="25%" style="padding-left: 4px;">
-                    <a href="<%= request.getContextPath() %>/efmshowform_data.jsp?fid=<%=fieldNoteEform.getId()%>"
-                       target="_blank"><%=fieldNoteEform.getFormName()%>
+                    <a href="<%= request.getContextPath() %>/efmshowform_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(fieldNoteEform.getId()))%>"
+                       target="_blank"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getFormName()))%>
                     </a>
                 </td>
-                <td width="30%" style="padding-left: 4px"><%=fieldNoteEform.getSubject()%>
+                <td width="30%" style="padding-left: 4px"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getSubject()))%>
                 </td>
-                <td width="25%" style="padding-left: 4px"><%=fieldNoteEform.getFileName()%>
+                <td width="25%" style="padding-left: 4px"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getFileName()))%>
                 </td>
-                <td nowrap align='center' width="10%"><%=fieldNoteEform.getFormDate()%>
+                <td nowrap align='center' width="10%"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getFormDate()))%>
                 </td>
-                <td nowrap align='center' width="10%"><%=fieldNoteEform.getFormTime()%>
+                <td nowrap align='center' width="10%"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getFormTime()))%>
                 </td>
-                <td nowrap align='center' width="10%"><%=fieldNoteEform.getRoleType()%>
+                <td nowrap align='center' width="10%"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getRoleType()))%>
                 </td>
                 <td nowrap align='center'>
                     <a href="#" title="<fmt:message key="admin.fieldNote.unselectEform"/>"
-                       onclick="remove_select(<%=fieldNoteEform.getId()%>);"><fmt:message key="admin.fieldNote.unselect"/></a>
+                       onclick="remove_select(<%=Encode.forJavaScript(String.valueOf(fieldNoteEform.getId()))%>);"><fmt:message key="admin.fieldNote.unselect"/></a>
                 </td>
             </tr>
             <%
@@ -133,22 +134,22 @@
             %>
             <tr style="background-color: #F2F2F2;">
                 <td width="25%" style="padding-left: 4px;">
-                    <a href="<%= request.getContextPath() %>/efmshowform_data.jsp?fid=<%=fieldNoteEform.getId()%>"
-                       target="_blank"><%=fieldNoteEform.getFormName()%>
+                    <a href="<%= request.getContextPath() %>/efmshowform_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(fieldNoteEform.getId()))%>"
+                       target="_blank"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getFormName()))%>
                     </a>
                 </td>
-                <td width="30%" style="padding-left: 4px"><%=fieldNoteEform.getSubject()%>
+                <td width="30%" style="padding-left: 4px"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getSubject()))%>
                 </td>
-                <td width="25%" style="padding-left: 4px"><%=fieldNoteEform.getFileName()%>
+                <td width="25%" style="padding-left: 4px"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getFileName()))%>
                 </td>
-                <td nowrap align='center' width="10%"><%=fieldNoteEform.getFormDate()%>
+                <td nowrap align='center' width="10%"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getFormDate()))%>
                 </td>
-                <td nowrap align='center' width="10%"><%=fieldNoteEform.getFormTime()%>
+                <td nowrap align='center' width="10%"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getFormTime()))%>
                 </td>
-                <td nowrap align='center' width="10%"><%=fieldNoteEform.getRoleType()%>
+                <td nowrap align='center' width="10%"><%=Encode.forHtml(String.valueOf(fieldNoteEform.getRoleType()))%>
                 </td>
                 <td nowrap align='center'>
-                    <input type="checkbox" value="<%=fieldNoteEform.getId()%>"
+                    <input type="checkbox" value="<%=Encode.forHtmlAttribute(String.valueOf(fieldNoteEform.getId()))%>"
                            title="<fmt:message key="admin.fieldNote.addEform"/>" name="selected_eform"/>
                 </td>
             </tr>

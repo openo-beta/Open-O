@@ -44,6 +44,7 @@
 <fmt:setBundle basename="oscarResources"/>
 
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -64,7 +65,7 @@
         <table>
             <tr>
                 <td colspan="2" class="title"><fmt:message key="oscarEncounter.formIntakeHx.allergicToDrugsYN"/>?</td>
-                <td><input type="text" name="AllergicYesNo" value="<%=props.getProperty("AllergicYesNo","")%>"/></td>
+                <td><input type="text" name="AllergicYesNo" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("AllergicYesNo","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="4" class="title"><fmt:message key="oscarEncounter.formIntakeHx.allergicDrugNames"/>:</td>
@@ -75,66 +76,66 @@
                         <tr>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.drug1"/>:</td>
                             <td><input type="text" name="DrugAllergy1"
-                                       value="<%=props.getProperty("DrugAllergy1","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergy1","")))%>"/></td>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.reactionSymptoms"/>:</td>
                             <td><input type="text" name="DrugAllergyRS1"
-                                       value="<%=props.getProperty("DrugAllergyRS1","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergyRS1","")))%>"/></td>
                         </tr>
                         <tr>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.drug2"/>:</td>
                             <td><input type="text" name="DrugAllergy2"
-                                       value="<%=props.getProperty("DrugAllergy2","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergy2","")))%>"/></td>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.reactionSymptoms"/>:</td>
                             <td><input type="text" name="DrugAllergyRS2"
-                                       value="<%=props.getProperty("DrugAllergyRS2","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergyRS2","")))%>"/></td>
                         </tr>
                         <tr>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.drug3"/>:</td>
                             <td><input type="text" name="DrugAllergy3"
-                                       value="<%=props.getProperty("DrugAllergy3","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergy3","")))%>"/></td>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.reactionSymptoms"/>:</td>
                             <td><input type="text" name="DrugAllergyRS3"
-                                       value="<%=props.getProperty("DrugAllergyRS3","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergyRS3","")))%>"/></td>
                         </tr>
                         <tr>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.drug4"/>:</td>
                             <td><input type="text" name="DrugAllergy4"
-                                       value="<%=props.getProperty("DrugAllergy4","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergy4","")))%>"/></td>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.reactionSymptoms"/>:</td>
                             <td><input type="text" name="DrugAllergyRS4"
-                                       value="<%=props.getProperty("DrugAllergyRS4","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergyRS4","")))%>"/></td>
                         </tr>
                         <tr>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.drug5"/>:</td>
                             <td><input type="text" name="DrugAllergy5"
-                                       value="<%=props.getProperty("DrugAllergy5","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergy5","")))%>"/></td>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.reactionSymptoms"/>:</td>
                             <td><input type="text" name="DrugAllergyRS5"
-                                       value="<%=props.getProperty("DrugAllergyRS5","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergyRS5","")))%>"/></td>
                         </tr>
                         <tr>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.drug6"/>:</td>
                             <td><input type="text" name="DrugAllergy6"
-                                       value="<%=props.getProperty("DrugAllergy6","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergy6","")))%>"/></td>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.reactionSymptoms"/>:</td>
                             <td><input type="text" name="DrugAllergyRS6"
-                                       value="<%=props.getProperty("DrugAllergyRS6","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergyRS6","")))%>"/></td>
                         </tr>
                         <tr>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.drug7"/>:</td>
                             <td><input type="text" name="DrugAllergy7"
-                                       value="<%=props.getProperty("DrugAllergy7","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergy7","")))%>"/></td>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.reactionSymptoms"/>:</td>
                             <td><input type="text" name="DrugAllergyRS7"
-                                       value="<%=props.getProperty("DrugAllergyRS7","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergyRS7","")))%>"/></td>
                         </tr>
                         <tr>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.drug8"/>:</td>
                             <td><input type="text" name="DrugAllergy8"
-                                       value="<%=props.getProperty("DrugAllergy8","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergy8","")))%>"/></td>
                             <td><fmt:message key="oscarEncounter.formIntakeHx.reactionSymptoms"/>:</td>
                             <td><input type="text" name="DrugAllergyRS8"
-                                       value="<%=props.getProperty("DrugAllergyRS8","")%>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DrugAllergyRS8","")))%>"/></td>
                         </tr>
                     </table>
                 </td>
@@ -142,44 +143,44 @@
             <tr>
                 <td colspan="3" class="title"><fmt:message key="oscarEncounter.formIntakeHx.allergyShotYN"/>?</td>
                 <td><input type="text" name="AllergicShotsYesNo"
-                           value="<%=props.getProperty("AllergicShotsYesNo","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("AllergicShotsYesNo","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="3" class="title"><fmt:message key="oscarEncounter.formIntakeHx.allergyNonDrugYN"/>?</td>
                 <td><input type="text" name="AllergicNonDrugYesNo"
-                           value="<%=props.getProperty("AllergicNonDrugYesNo","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("AllergicNonDrugYesNo","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="4" class="title"><fmt:message key="oscarEncounter.formIntakeHx.allergicNonDrug"/>:</td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.allergicNonDrugBeeSting"/></td>
-                <td><input type="checkbox" name="allergicbee" <%=props.getProperty("allergicbee", "")%>/></td>
+                <td><input type="checkbox" name="allergicbee" <%=Encode.forHtml(String.valueOf(props.getProperty("allergicbee", "")))%>/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.allergicNonDrugRagweedPollen"/></td>
-                <td><input type="checkbox" name="allergicragweed" <%=props.getProperty("allergicragweed", "")%>/></td>
+                <td><input type="checkbox" name="allergicragweed" <%=Encode.forHtml(String.valueOf(props.getProperty("allergicragweed", "")))%>/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.allergicNonDrugOtherPollen"/></td>
                 <td><input type="checkbox"
-                           name="allergicOtherPollens" <%=props.getProperty("allergicOtherPollens", "")%>/></td>
+                           name="allergicOtherPollens" <%=Encode.forHtml(String.valueOf(props.getProperty("allergicOtherPollens", "")))%>/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.allergicNonDrugGrasses"/></td>
-                <td><input type="checkbox" name="allergicgrasses" <%=props.getProperty("allergicgrasses", "")%>/></td>
+                <td><input type="checkbox" name="allergicgrasses" <%=Encode.forHtml(String.valueOf(props.getProperty("allergicgrasses", "")))%>/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.allergicNonDrugDust"/></td>
-                <td><input type="checkbox" name="allergicdust" <%=props.getProperty("allergicdust", "")%>/></td>
+                <td><input type="checkbox" name="allergicdust" <%=Encode.forHtml(String.valueOf(props.getProperty("allergicdust", "")))%>/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.allergicNonDrugAnimalFur"/></td>
-                <td><input type="checkbox" name="allergicanimal" <%=props.getProperty("allergicanimal", "")%>/></td>
+                <td><input type="checkbox" name="allergicanimal" <%=Encode.forHtml(String.valueOf(props.getProperty("allergicanimal", "")))%>/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.allergicNonDrugOtherAgent"/></td>
-                <td><input type="checkbox" name="allergicother" <%=props.getProperty("allergicother", "")%>/></td>
+                <td><input type="checkbox" name="allergicother" <%=Encode.forHtml(String.valueOf(props.getProperty("allergicother", "")))%>/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.allergicNonDrugFood"/></td>
-                <td><input type="checkbox" name="allergicfood" <%=props.getProperty("allergicfood", "")%>/></td>
+                <td><input type="checkbox" name="allergicfood" <%=Encode.forHtml(String.valueOf(props.getProperty("allergicfood", "")))%>/></td>
             </tr>
         </table>
     </form>

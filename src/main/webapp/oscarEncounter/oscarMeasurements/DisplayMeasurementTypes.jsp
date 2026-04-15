@@ -32,6 +32,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/encounterStyles.css">
 <html>
     <head>
@@ -54,7 +55,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -85,7 +86,7 @@
                                     if (messages != null && !messages.isEmpty()) {
                                 %>
                                     <tr>
-                                <%      for (String msg : messages) { %><%= msg %><br><%}%>
+                                <%      for (String msg : messages) { %><%=Encode.forHtml(String.valueOf(msg))%><br><%}%>
                                     </tr>
                                 <%
 

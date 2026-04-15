@@ -76,6 +76,7 @@
 
 <%@ page import="ca.openosp.openo.commn.model.ProviderData" %>
 <%@ page import="ca.openosp.openo.commn.dao.ProviderDataDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -149,7 +150,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td>Audit Log Information for User : <%=provider.getFormattedName()%>(<%=provider.getId()%>)
+                        <td>Audit Log Information for User : <%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>(<%=Encode.forHtml(String.valueOf(provider.getId()))%>)
                         </td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a href="javascript:popupStart(300,400, '<%= request.getContextPath() %>/oscarEncounter/About.jsp/About.jsp')">
@@ -187,15 +188,15 @@
                             Demographic demographic = demographicDao.getDemographicById(log.getDemographicId());
                     %>
                     <tr bgcolor="<%=(index%2==0)?"ivory":"white"%>">
-                        <td><%=fmt.format(log.getCreated()) %>
+                        <td><%=Encode.forHtml(String.valueOf(fmt.format(log.getCreated())))%>
                         </td>
-                        <td><%=demographic != null ? demographic.getFormattedName() : ""%>
+                        <td><%=Encode.forHtml(String.valueOf(demographic != null ? demographic.getFormattedName() : ""))%>
                         </td>
-                        <td><%=log.getAction() %>
+                        <td><%=Encode.forHtml(String.valueOf(log.getAction()))%>
                         </td>
-                        <td><%=log.getContent() %>
+                        <td><%=Encode.forHtml(String.valueOf(log.getContent()))%>
                         </td>
-                        <td><%=log.getContentId() != null && !"null".equals(log.getContentId()) ? log.getContentId() : "" %>
+                        <td><%=Encode.forHtml(String.valueOf(log.getContentId() != null && !"null".equals(log.getContentId()) ? log.getContentId() : ""))%>
                         </td>
 
 

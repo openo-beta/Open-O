@@ -36,6 +36,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.model.ClinicLocation" %>
 <%@page import="ca.openosp.openo.commn.dao.ClinicLocationDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ClinicLocationDao clinicLocationDao = (ClinicLocationDao) SpringUtils.getBean(ClinicLocationDao.class);
 %>
@@ -170,14 +171,14 @@
                         <tr>
                             <form name="serviceform" method="post"
                                   action="manageBillingLocation.jsp"
-                                  onsubmit="return confirmthis(<%=clinicLocation.getClinicLocationNo()%>);">
-                                <td align="center"><%=clinicLocation.getClinicLocationNo()%>
+                                  onsubmit="return confirmthis(<%=Encode.forJavaScript(String.valueOf(clinicLocation.getClinicLocationNo()))%>);">
+                                <td align="center"><%=Encode.forHtml(String.valueOf(clinicLocation.getClinicLocationNo()))%>
                                 </td>
-                                <td><%=clinicLocation.getClinicLocationName()%>
+                                <td><%=Encode.forHtml(String.valueOf(clinicLocation.getClinicLocationName()))%>
                                 </td>
                                 <td align="center"><input class="btn" type="submit" name="submit"
                                                           value="Delete"/> <input type="hidden" name="location_no"
-                                                                                  value="<%=clinicLocation.getClinicLocationNo()%>"/>
+                                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(clinicLocation.getClinicLocationNo()))%>"/>
                                 </td>
                             </form>
                         </tr>

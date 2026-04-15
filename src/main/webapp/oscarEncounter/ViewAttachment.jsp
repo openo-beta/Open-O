@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -201,27 +202,27 @@
                     <tr>
                         <td bgcolor="#DDDDFF"><fmt:message key="oscarEncounter.ViewAttachment.msgFrom"/>:
                         </td>
-                        <td bgcolor="#CCCCFF"><%= sentBy%> <fmt:message key="oscarEncounter.ViewAttachment.msgAt"/> <%=remoteName%>
+                        <td bgcolor="#CCCCFF"><%=Encode.forHtml(String.valueOf(sentBy))%> <fmt:message key="oscarEncounter.ViewAttachment.msgAt"/> <%=Encode.forHtml(String.valueOf(remoteName))%>
                         </td>
                     </tr>
                     <tr>
                         <td bgcolor="#DDDDFF"><fmt:message key="oscarEncounter.ViewAttachment.msgSubject"/>:
                         </td>
-                        <td bgcolor="#BBBBFF"><%= thesubject%>
+                        <td bgcolor="#BBBBFF"><%=Encode.forHtml(String.valueOf(thesubject))%>
                         </td>
                     </tr>
 
                     <tr>
                         <td bgcolor="#DDDDFF"><fmt:message key="oscarEncounter.ViewAttachment.msgDate"/>:
                         </td>
-                        <td bgcolor="#B8B8FF"><%= thedate %>&nbsp;&nbsp; <%= theime %>
+                        <td bgcolor="#B8B8FF"><%=Encode.forHtml(String.valueOf(thedate))%>&nbsp;&nbsp; <%=Encode.forHtml(String.valueOf(theime))%>
                         </td>
                     </tr>
 
                     <tr>
                         <td bgcolor="#EEEEFF"></td>
                         <td bgcolor="#EEEEFF"><textarea name="Message" wrap="hard"
-                                                        readonly="true" rows="18" cols="60"><%=themessage%></textarea>
+                                                        readonly="true" rows="18" cols="60"><%=Encode.forHtml(String.valueOf(themessage))%></textarea>
                         </td>
                     </tr>
 

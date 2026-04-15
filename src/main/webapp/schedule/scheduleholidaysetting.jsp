@@ -62,6 +62,7 @@
 <%@ page import="ca.openosp.openo.commn.model.ScheduleHoliday" %>
 <%@ page import="ca.openosp.openo.commn.dao.ScheduleHolidayDao" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ScheduleHolidayDao scheduleHolidayDao = SpringUtils.getBean(ScheduleHolidayDao.class);
 %>
@@ -204,13 +205,13 @@
                     <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="95%">
                         <tr>
                             <td width="50%" align="center"><a
-                                    href="scheduleholidaysetting.jsp?year=<%=year%>&month=<%=month%>&day=<%=day%>&delta=-1&bFirstDisp=0">
+                                    href="scheduleholidaysetting.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(day))%>&delta=-1&bFirstDisp=0">
                                 &nbsp;&nbsp;<img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10" HEIGHT="9"
                                                  BORDER="0"
                                                  ALT='<fmt:message key="schedule.scheduleholidaysetting.btnLastMonthTip"/>'
                                                  vspace="2"> <fmt:message key="schedule.scheduleholidaysetting.btnLastMonth"/>&nbsp;&nbsp; </a>
-                                <b><span CLASS=title><%=year%>-<%=month%></span></b> <a
-                                        href="scheduleholidaysetting.jsp?year=<%=year%>&month=<%=month%>&day=<%=day%>&delta=1&bFirstDisp=0">
+                                <b><span CLASS=title><%=Encode.forHtml(String.valueOf(year))%>-<%=Encode.forHtml(String.valueOf(month))%></span></b> <a
+                                        href="scheduleholidaysetting.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(day))%>&delta=1&bFirstDisp=0">
                                     &nbsp;&nbsp;<fmt:message key="schedule.scheduleholidaysetting.btnNextMonth"/> <img
                                         src="<%= request.getContextPath() %>/images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                                         ALT='<fmt:message key="schedule.scheduleholidaysetting.btnNextMonthTip"/>'
@@ -250,12 +251,12 @@
                                         }
 
                         %>
-                        <td bgcolor='<%=bgcolor.toString()%>'><font color="red"><%= dateGrid[i][j] %>
+                        <td bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(bgcolor.toString()))%>'><font color="red"><%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
                         </font>
-                            <input type="checkbox" name="sdate_<%=month+"_"+dateGrid[i][j]%>"
-                                   value="<%=year+"-"+MyDateFormat.getDigitalXX(month)+"-"+MyDateFormat.getDigitalXX(dateGrid[i][j])%>">
+                            <input type="checkbox" name="sdate_<%=Encode.forHtmlAttribute(String.valueOf(month+"_"+dateGrid[i][j]))%>"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(year+"-"+MyDateFormat.getDigitalXX(month)+"-"+MyDateFormat.getDigitalXX(dateGrid[i][j])))%>">
                             <font size="-2"> <br>
-                                &nbsp;<%=strHolidayName.toString()%>
+                                &nbsp;<%=Encode.forHtml(String.valueOf(strHolidayName.toString()))%>
                             </font></td>
                         <%
                                     }
@@ -275,10 +276,10 @@
                                        onclick="deleteHoliday();"></td>
                             <td>
                                 <div align="right"><input type="hidden" name="year"
-                                                          value="<%=year%>"> <input type="hidden" name="month"
-                                                                                    value="<%=month%>"> <input
+                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(year))%>"> <input type="hidden" name="month"
+                                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(month))%>"> <input
                                         type="hidden" name="day"
-                                        value="<%=day%>"> <input type="hidden" name="bFirstDisp"
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(day))%>"> <input type="hidden" name="bFirstDisp"
                                                                  value="0"> <input type="button"
                                                                                    value='<fmt:message key="schedule.scheduleholidaysetting.btnSave"/>'
                                                                                    onclick="return(saveHoliday());">

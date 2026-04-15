@@ -24,6 +24,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingService" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
@@ -82,7 +83,7 @@
 
             <%
             if(request.getParameter("nameF") != null) {
-                    out.println("self.opener." + request.getParameter("nameF") + " = File0;");
+                    out.println("self.opener." + Encode.forJavaScript(request.getParameter("nameF")) + " = File0;");
             } else {
             %>
             self.opener.document.serviceform.xml_other1.value = File0;
@@ -144,27 +145,27 @@
 
         %>
 
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td width="12%"><font face="Arial, Helvetica, sans-serif"
                                   size="2">
                 <% if (Dcode.compareTo(xcodeName) == 0 || Dcode.compareTo(xcodeName1) == 0 || Dcode.compareTo(xcodeName2) == 0) { %><input
-                    type="checkbox" name="code_<%=Dcode%>" checked>
-                <%} else {%><input type="checkbox" name="code_<%=Dcode%>">
-                <%}%><%=Dcode%>
+                    type="checkbox" name="code_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>" checked>
+                <%} else {%><input type="checkbox" name="code_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>">
+                <%}%><%=Encode.forHtml(String.valueOf(Dcode))%>
             </font></td>
             <td width="88%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"><input type="hidden" name="codedesc_<%=Dcode%>"
-                                                  value="<%=DcodeDesc%>"><input type="text" name="<%=Dcode%>"
-                                                                                value="<%=DcodeDesc%>" size="50"><input
+                                  size="2"><input type="hidden" name="codedesc_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
+                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>"><input type="text" name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>" size="50"><input
                     type="submit"
-                    name="update" value="update <%=Dcode%>"></font></td>
+                    name="update" value="update <%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"></font></td>
         </tr>
         <%
             }
         %>
 
         <% if (intCount == 0) { %>
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td colspan="2"><font face="Arial, Helvetica, sans-serif"
                                   size="2">No match found. <%// =i%>
             </font></td>
@@ -175,7 +176,7 @@
         <% if (intCount == 1) { %>
         <script LANGUAGE="JavaScript">
             <!--
-            CodeAttach('<%=Dcode%>');
+            CodeAttach('<%=Encode.forJavaScript(String.valueOf(Dcode))%>');
             -->
 
         </script>
@@ -185,7 +186,7 @@
         type="button" name="cancel" value="Cancel"
         onclick="javascript:window.close()"> <%
     if (request.getParameter("nameF") != null) {
-        out.println("<input type='hidden' name='nameF' value=\"" + request.getParameter("nameF") + "\"/>");
+        out.println("<input type='hidden' name='nameF' value=\"" + Encode.forHtmlAttribute(request.getParameter("nameF")) + "\"/>");
     }
 %>
 </form>

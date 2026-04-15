@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -60,11 +61,11 @@
 <%
  if (request.getParameter("ID") != null && type != null && type.equals("Edit")){ %>
 	$(function() {
-		var data = "pharmacyId=<%=request.getParameter("ID")%>";
+		var data = "pharmacyId=<%=Encode.forJavaScript(request.getParameter("ID"))%>";
 		$.post("<%=request.getContextPath()%>/oscarRx/managePharmacy.do?method=getPharmacyInfo",
 				  data, function( data ) {
 			if(data.name) {
-			  $('#pharmacyId').val(<%=request.getParameter("ID")%>);
+			  $('#pharmacyId').val(<%=Encode.forJavaScript(request.getParameter("ID"))%>);
 			  $('#pharmacyName').val(data.name);
 			  $('#pharmacyAddress').val(data.address);
 			  $('#pharmacyCity').val(data.city);
@@ -210,7 +211,7 @@
                                         <td>
                                             <input type="hidden" id="pharmacyId" name="pharmacyId"/>
                                             <input type="hidden" id="demographicNo" name="demographicNo"
-                                                   value="<%=bean.getDemographicNo()%>"/>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(bean.getDemographicNo()))%>"/>
                                             <fmt:message key="ManagePharmacy.txtfld.label.pharmacyName"/> :
                                         </td>
                                         <td><input type="text" id="pharmacyName" name="pharmacyName"/></td>

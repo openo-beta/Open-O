@@ -27,6 +27,7 @@
 <%@page import="java.util.*,ca.openosp.openo.eform.*" %>
 <%@page import="ca.openosp.openo.web.eform.EfmPatientFormList" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String demographic_no = request.getParameter("demographic_no");
@@ -120,7 +121,7 @@
             }
 
             function updateAjax() {
-                var parentAjaxId = "<%=parentAjaxId%>";
+                var parentAjaxId = "<%=Encode.forJavaScript(String.valueOf(parentAjaxId))%>";
                 if (parentAjaxId != "null") {
                     window.opener.document.forms['encForm'].elements['reloadDiv'].value = parentAjaxId;
                     window.opener.updateNeeded = true;
@@ -156,9 +157,9 @@
                         <tr bgcolor=<%=deepColor%>>
                             <th><fmt:message key="eform.showmyform.btnFormName"/></th>
                             <th><a
-                                    href="efmpatientformlistsingle.jsp?fdid=<%=fdid%>&demographic_no=<%=demographic_no%>&orderby=form_subject&parentAjaxId=<%=parentAjaxId%>"><fmt:message key="eform.showmyform.btnSubject"/></a></th>
+                                    href="efmpatientformlistsingle.jsp?fdid=<%=Encode.forUriComponent(String.valueOf(fdid))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&orderby=form_subject&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>"><fmt:message key="eform.showmyform.btnSubject"/></a></th>
                             <th><a
-                                    href="efmpatientformlistsingle.jsp?fdid=<%=fdid%>&demographic_no=<%=demographic_no%>&parentAjaxId=<%=parentAjaxId%>"><fmt:message key="eform.showmyform.formDate"/></a></th>
+                                    href="efmpatientformlistsingle.jsp?fdid=<%=Encode.forUriComponent(String.valueOf(fdid))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>"><fmt:message key="eform.showmyform.formDate"/></a></th>
                             <th><fmt:message key="eform.showmyform.msgAction"/></th>
                         </tr>
                         <%
@@ -171,17 +172,17 @@
                         <tr bgcolor="<%=((i % 2) == 1)?"#F2F2F2":"white"%>">
                             <td>
                                 <a href="#"
-                                   ONCLICK="popupPage('efmshowform_data.jsp?fdid=<%=curform.get("fdid")%>&appointment=<%=appointment%>', '<%="FormP" + i%>'); return false;"
+                                   ONCLICK="popupPage('efmshowform_data.jsp?fdid=<%=Encode.forJavaScript(String.valueOf(curform.get("fdid")))%>&appointment=<%=Encode.forJavaScript(String.valueOf(appointment))%>', '<%=Encode.forJavaScript(String.valueOf("FormP" + i))%>'); return false;"
                                    TITLE="<fmt:message key="eform.showmyform.msgViewFrm"/>"
-                                   onmouseover="window.status='<fmt:message key="eform.showmyform.msgViewFrm"/>'; return true"><%=curform.get("formName")%>
+                                   onmouseover="window.status='<fmt:message key="eform.showmyform.msgViewFrm"/>'; return true"><%=Encode.forHtmlAttribute(String.valueOf(curform.get("formName")))%>
                                 </a>
                             </td>
-                            <td><%=curform.get("formSubject")%>
+                            <td><%=Encode.forHtml(String.valueOf(curform.get("formSubject")))%>
                             </td>
-                            <td align='center'><%=curform.get("formDate")%>
+                            <td align='center'><%=Encode.forHtml(String.valueOf(curform.get("formDate")))%>
                             </td>
                             <td align='center'><a
-                                    href="<%= request.getContextPath() %>/eform/removeEForm.do?fdid=<%=curform.get("fdid")%>&demographic_no=<%=demographic_no%>&callpage=single&parentAjaxId=<%=parentAjaxId%>"
+                                    href="<%= request.getContextPath() %>/eform/removeEForm.do?fdid=<%=Encode.forUriComponent(String.valueOf(curform.get("fdid")))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&callpage=single&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>"
                                     onClick="javascript: return confirm('Are you sure you want to delete this eform?');"><fmt:message key="eform.uploadimages.btnDelete"/></a></td>
                         </tr>
                         <%

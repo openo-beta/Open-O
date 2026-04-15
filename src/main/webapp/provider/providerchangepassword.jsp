@@ -26,6 +26,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Security" %>
 <%@ page import="ca.openosp.openo.commn.dao.SecurityDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -76,8 +77,8 @@
                 var pin1 = null;
                 var pin2 = null;
 
-                var jsLocallockset = '<%=BLocallockset%>';
-                var jsRemotelockset = '<%=BRemotelockset%>';
+                var jsLocallockset = '<%=Encode.forJavaScript(String.valueOf(BLocallockset))%>';
+                var jsRemotelockset = '<%=Encode.forJavaScript(String.valueOf(BRemotelockset))%>';
 
                 if (jsLocallockset == '1' || jsRemotelockset == '1') {
                     pin1 = document.updatepassword.newpin.value;
@@ -118,7 +119,7 @@
                         return false;
                     }
 
-                    var pin_min_length = <%=op.getProperty("password_pin_min_length")%>;
+                    var pin_min_length = <%=Encode.forJavaScript(String.valueOf(op.getProperty("password_pin_min_length")))%>;
 
                     if (pin1.length < pin_min_length) {
                         alert('<fmt:message key="password.policy.violation.msgPinLengthError"/> ' +
@@ -147,7 +148,7 @@
             </tr>
         </table>
 
-        <p><b><font color='red'><%=errormsg%>
+        <p><b><font color='red'><%=Encode.forHtml(String.valueOf(errormsg))%>
         </font></b>
 
         <table width="100%" border="0" cellpadding="2" bgcolor="#eeeeee">
@@ -167,13 +168,13 @@
                     <td width="50%" align="right"><font face="arial"><fmt:message key="provider.providerchangepassword.msgChooseNew"/> &nbsp;<b><fmt:message key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
                     <td><input type=password name="mypassword" value="" size=20
                                maxlength=32> <font size="-2">(<fmt:message key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_min_length")))%> <fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
                 <tr>
                     <td width="50%" align="right"><font face="arial"><fmt:message key="provider.providerchangepassword.msgConfirm"/> &nbsp;<b><fmt:message key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
                     <td><input type=password name="confirmpassword" value="" size=20
                                maxlength=32> <font size="-2">(<fmt:message key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_min_length")))%> <fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
 
                 <% if (BLocallockset != null && BRemotelockset != null && (BLocallockset.intValue() == 1 || BRemotelockset.intValue() == 1)) { %>
@@ -187,13 +188,13 @@
                     <td width="50%" align="right"><font face="arial"><fmt:message key="provider.providerchangepassword.msgChooseNew"/>&nbsp;<b><fmt:message key="provider.providerchangepassword.newPIN"/>:</b></font></td>
                     <td><input type=password name="newpin" value="" size=20
                                maxlength=32> <font size="-2">(<fmt:message key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_pin_min_length")%> <fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_pin_min_length")))%> <fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
                 <tr>
                     <td width="50%" align="right"><font face="arial"><fmt:message key="provider.providerchangepassword.msgConfirm"/>&nbsp;<b><fmt:message key="provider.providerchangepassword.newPIN"/>:</b></font></td>
                     <td><input type=password name="confirmpin" value="" size=20
                                maxlength=32> <font size="-2">(<fmt:message key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_pin_min_length")%> <fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_pin_min_length")))%> <fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
                 <% } %>
 

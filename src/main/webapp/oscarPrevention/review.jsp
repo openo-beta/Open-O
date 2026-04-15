@@ -61,6 +61,7 @@
 <%@page import="ca.openosp.openo.commn.dao.PreventionsLotNrsDao" %>
 <%@page import="ca.openosp.openo.commn.model.PreventionsLotNrs" %>
 <%@page import="org.hl7.fhir.dstu3.model.Bundle" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -541,17 +542,17 @@
                                 </thead>
                                 <tr>
                                     <td width="15%"><b>Name:</b></td>
-                                    <td><%=submitterName != null ? submitterName : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(submitterName != null ? submitterName : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>OneId username:</b></td>
-                                    <td><%=submitterUsername != null ? submitterUsername : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(submitterUsername != null ? submitterUsername : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Phone:</b></td>
-                                    <td><%=submitterPhone != null ? submitterPhone : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(submitterPhone != null ? submitterPhone : "N/A"))%>
                                     </td>
                                 </tr>
                             </table>
@@ -569,22 +570,22 @@
                                 </thead>
                                 <tr>
                                     <td width="15%"><b>Name:</b></td>
-                                    <td><%=sourceName %>
+                                    <td><%=Encode.forHtml(String.valueOf(sourceName))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Software:</b></td>
-                                    <td><%=sourceSoftware %>
+                                    <td><%=Encode.forHtml(String.valueOf(sourceSoftware))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Version:</b></td>
-                                    <td><%=sourceVersion != null ? sourceVersion : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(sourceVersion != null ? sourceVersion : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Endpoint:</b></td>
-                                    <td><%=(sourceEndpoint != null) ? sourceEndpoint : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf((sourceEndpoint != null) ? sourceEndpoint : "N/A"))%>
                                     </td>
                                 </tr>
                             </table>
@@ -602,7 +603,7 @@
                                 </thead>
                                 <tr>
                                     <td width="15%"><b>Name:</b></td>
-                                    <td><%=sender != null ? sender : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(sender != null ? sender : "N/A"))%>
                                     </td>
                                 </tr>
                             </table>
@@ -620,12 +621,12 @@
                                 </thead>
                                 <tr>
                                     <td width="15%"><b>Phu Id:</b></td>
-                                    <td><%=phu != null ? phu : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(phu != null ? phu : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>PHU Name:</b></td>
-                                    <td><%=phuName != null ? phuName : "N/A"%>
+                                    <td><%=Encode.forHtml(String.valueOf(phuName != null ? phuName : "N/A"))%>
                                     </td>
                                 </tr>
 
@@ -644,40 +645,40 @@
                                 </thead>
                                 <tr>
                                     <td width="15%"><b>Demographic No:</b></td>
-                                    <td><%=patientId %>
+                                    <td><%=Encode.forHtml(String.valueOf(patientId))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Name:</b></td>
-                                    <td><%=patientName != null ? patientName : "N/A"%>
+                                    <td><%=Encode.forHtml(String.valueOf(patientName != null ? patientName : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>HIN:</b></td>
-                                    <td><%=patientHin != null ? patientHin : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(patientHin != null ? patientHin : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Phone:</b></td>
-                                    <td><%=(patientPhone != null) ? patientPhone : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf((patientPhone != null) ? patientPhone : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Gender:</b></td>
-                                    <td><%=patientGender != null ? patientGender : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(patientGender != null ? patientGender : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>DOB:</b></td>
-                                    <td><%=patientDOB != null ? patientDOB : "N/A"%>
+                                    <td><%=Encode.forHtml(String.valueOf(patientDOB != null ? patientDOB : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%" valign="top"><b>Address:</b></td>
-                                    <td><%=StringUtils.trimToEmpty(patientAddress) %>
-                                        <br/><%=StringUtils.trimToEmpty(patientCity) %>
-                                        <br/><%=StringUtils.trimToEmpty(patientState) %>
-                                        <br/><%=StringUtils.trimToEmpty(patientPostal) %>
+                                    <td><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(patientAddress)))%>
+                                        <br/><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(patientCity)))%>
+                                        <br/><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(patientState)))%>
+                                        <br/><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(patientPostal)))%>
                                     </td>
                                 </tr>
 
@@ -707,74 +708,74 @@
                                 <!--
 				<tr>
 					<td width="15%"><b>Status:</b></td>
-					<td><%=immunization.getStatus() %></td>
+					<td><%=Encode.forHtml(String.valueOf(immunization.getStatus()))%></td>
 				</tr>
 				<tr>
 					<td width="15%"><b>Not Given:</b></td>
-					<td><%=immunization.getNotGiven() %></td>
+					<td><%=Encode.forHtml(String.valueOf(immunization.getNotGiven()))%></td>
 				</tr>
 				-->
                                 <tr>
                                     <td width="15%"><b>Vaccine Code:</b></td>
-                                    <td><%=getVaccineCode(immunization, 0)%>
+                                    <td><%=Encode.forHtml(String.valueOf(getVaccineCode(immunization, 0)))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Vaccine Code Display:</b></td>
-                                    <td><%=getVaccineCodeDisplay(immunization, 0)%>
+                                    <td><%=Encode.forHtml(String.valueOf(getVaccineCodeDisplay(immunization, 0)))%>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td width="15%"><b>Date Given:</b></td>
-                                    <td><%=immunization.getDate() %>
+                                    <td><%=Encode.forHtml(String.valueOf(immunization.getDate()))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Primary Source:</b></td>
-                                    <td><%=immunization.getPrimarySource() %>
+                                    <td><%=Encode.forHtml(String.valueOf(immunization.getPrimarySource()))%>
                                     </td>
                                 </tr>
                                 <%if (!immunization.getPrimarySource()) { %>
                                 <tr>
                                     <td width="15%"><b>Report Origin:</b></td>
-                                    <td><%=getReportOrigin(immunization) %>
+                                    <td><%=Encode.forHtml(String.valueOf(getReportOrigin(immunization)))%>
                                     </td>
                                 </tr>
                                 <% } %>
                                 <tr>
                                     <td width="15%"><b>Lot #:</b></td>
-                                    <td><%=immunization.getLotNumber() != null ? immunization.getLotNumber() : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(immunization.getLotNumber() != null ? immunization.getLotNumber() : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Expiration Date:</b></td>
-                                    <td><%=immunization.getExpirationDate() != null ? immunization.getExpirationDate() : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(immunization.getExpirationDate() != null ? immunization.getExpirationDate() : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Site:</b></td>
-                                    <td><%=getSite(immunization) != null ? getSite(immunization) : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(getSite(immunization) != null ? getSite(immunization) : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Route Display:</b></td>
-                                    <td><%=getRoute(immunization) != null ? getRoute(immunization) : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(getRoute(immunization) != null ? getRoute(immunization) : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Dose Qty:</b></td>
-                                    <td><%=getDoseQuantity(immunization) != null ? getDoseQuantity(immunization) : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(getDoseQuantity(immunization) != null ? getDoseQuantity(immunization) : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Dose Unit:</b></td>
-                                    <td><%=getDoseUnit(immunization) != null ? getDoseUnit(immunization) : "N/A"%>
+                                    <td><%=Encode.forHtml(String.valueOf(getDoseUnit(immunization) != null ? getDoseUnit(immunization) : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Reason:</b></td>
-                                    <td><%=getReason(immunization) != null ? getReason(immunization) : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(getReason(immunization) != null ? getReason(immunization) : "N/A"))%>
                                     </td>
                                 </tr>
 
@@ -787,27 +788,27 @@
 
                                 <tr>
                                     <td width="15%"><b>Provider No:</b></td>
-                                    <td><%=performer.getId() %>
+                                    <td><%=Encode.forHtml(String.valueOf(performer.getId()))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Name:</b></td>
-                                    <td><%=getPractitionerName(performer) != null ? getPractitionerName(performer) : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(getPractitionerName(performer) != null ? getPractitionerName(performer) : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Id Type:</b></td>
-                                    <td><%=getPractitionerCollegeIdType(performer) != null ? getPractitionerCollegeIdType(performer) : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(getPractitionerCollegeIdType(performer) != null ? getPractitionerCollegeIdType(performer) : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Id:</b></td>
-                                    <td><%=getPractitionerCollegeId(performer) != null ? getPractitionerCollegeId(performer) : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(getPractitionerCollegeId(performer) != null ? getPractitionerCollegeId(performer) : "N/A"))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%"><b>Qualification:</b></td>
-                                    <td><%=getPractitionerQualification(performer) != null ? getPractitionerQualification(performer) : "N/A" %>
+                                    <td><%=Encode.forHtml(String.valueOf(getPractitionerQualification(performer) != null ? getPractitionerQualification(performer) : "N/A"))%>
                                     </td>
                                 </tr>
                             </table>
@@ -824,7 +825,7 @@
                                 <!-- enter validation errors here -->
                                 <%for (String error : validationErrors) { %>
                                 <tr>
-                                    <td><%=error %>
+                                    <td><%=Encode.forHtml(String.valueOf(error))%>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -840,13 +841,13 @@
                 <% } %>
 
                 <form action="<%=request.getContextPath()%>/dhir/submit.do">
-                    <input type="hidden" name="uuid" value="<%=bundle.getId()%>"/>
+                    <input type="hidden" name="uuid" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getId()))%>"/>
 
                     <input type="submit"
-                           value="Submit" <%=(!validationErrors.isEmpty()) ? " disabled=\"disabled\" " : "" %>/>
+                           value="Submit" <%=Encode.forHtml(String.valueOf((!validationErrors.isEmpty()) ? " disabled=\"disabled\" " : ""))%>/>
                     &nbsp;&nbsp;
                     <input type="button" value="Edit Prevention"
-                           onClick="window.location.href='<%=request.getContextPath()%>/oscarPrevention/AddPreventionData.jsp?id=<%=preventionId %>&demographic_no=<%=demographicNo%>'"/>
+                           onClick="window.location.href='<%=request.getContextPath()%>/oscarPrevention/AddPreventionData.jsp?id=<%=Encode.forJavaScript(String.valueOf(preventionId))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>'"/>
                     &nbsp;&nbsp;
                     <input type="button" value="Cancel" onClick="window.close()"/>
                 </form>

@@ -43,6 +43,7 @@
 <%@ page import="java.util.Vector" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     EctSessionBean bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean");
     MeasurementMapConfig measurementMapConfig = new MeasurementMapConfig();
@@ -75,12 +76,12 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
 <% } %>
-    <%=WebUtils.popErrorAndInfoMessagesAsHtml(session)%>
+    <%=Encode.forHtml(String.valueOf(WebUtils.popErrorAndInfoMessagesAsHtml(session)))%>
 
     <div style="display:inline-block; text-align:center">
         <fmt:message key="oscarEncounter.oscarMeasurements.oldmesurementindex"/>

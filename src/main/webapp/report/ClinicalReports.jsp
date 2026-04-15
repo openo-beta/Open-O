@@ -305,7 +305,7 @@
 
             <%if(max_numerator != null) {%>
             $(document).ready(function () {
-                var maxNumerator = <%=max_numerator%>;
+                var maxNumerator = <%=Encode.forJavaScript(String.valueOf(max_numerator))%>;
                 if (maxNumerator != -1) {
                     for (var x = 0; x <= maxNumerator; x++) {
                         showNextNumerator();
@@ -328,7 +328,7 @@
                 <table class="TopStatusBar">
                     <tr>
                         <td>
-                            <%=  request.getAttribute("name") != null ? request.getAttribute("name") : ""%>
+                            <%=Encode.forHtml(String.valueOf(request.getAttribute("name") != null ? request.getAttribute("name") : ""))%>
                         </td>
                         <td>&nbsp;
 
@@ -354,7 +354,7 @@
                     <% for (int i = 0; i < arrList.size(); i++) {
                         ReportEvaluator re = arrList.get(i);
                     %>
-                    <li title="<%=re.getName()%>"><%=re.getNumeratorCount()%> / <%=re.getDenominatorCount()%>&nbsp;
+                    <li title="<%=Encode.forHtmlAttribute(String.valueOf(re.getName()))%>"><%=Encode.forHtml(String.valueOf(re.getNumeratorCount()))%> / <%=Encode.forHtml(String.valueOf(re.getDenominatorCount()))%>&nbsp;
                         <a style="text-decoration:none;" target="_blank" href="<%= request.getContextPath() %>/report/reportExport.jsp?id=<%=i%>"><fmt:message key="report.ClinicalReports.msgCSV"/></a>&nbsp;
                         <a style="text-decoration:none;" href="<%= request.getContextPath() %>/report/RemoveClinicalReport.do?id=<%=i%>"><fmt:message key="report.ClinicalReports.msgDel"/></a>
                     </li>
@@ -383,15 +383,15 @@
                                             }
 
                                     %>
-                                    <option value="<%=n.getId()%>"  <%=sel(numeratorId, n.getId())%> ><%=n.getNumeratorName()%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(n.getId()))%>"  <%=Encode.forHtml(String.valueOf(sel(numeratorId, n.getId())))%> ><%=Encode.forHtml(String.valueOf(n.getNumeratorName()))%>
                                     </option>
                                     <%}%>
                                 </select>
 
                                 <select id="numerator_measurements" name="numerator_measurements">
                                     <% for (EctMeasurementTypesBean measurementTypes : vec) {%>
-                                    <option value="<%=measurementTypes.getType()%>"  <%=sel(measurementTypes.getType(), "" + request.getAttribute("numerator_measurements"))%>   ><%=measurementTypes.getTypeDisplayName()%>
-                                        (<%=measurementTypes.getType()%>) (<%=measurementTypes.getMeasuringInstrc() %>)
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(measurementTypes.getType()))%>"  <%=Encode.forHtml(String.valueOf(sel(measurementTypes.getType(), "" + request.getAttribute("numerator_measurements"))))%>   ><%=Encode.forHtml(String.valueOf(measurementTypes.getTypeDisplayName()))%>
+                                        (<%=Encode.forHtml(String.valueOf(measurementTypes.getType()))%>) (<%=Encode.forHtml(String.valueOf(measurementTypes.getMeasuringInstrc()))%>)
                                     </option>
                                     <% }%>
                                 </select>
@@ -404,7 +404,7 @@
                                     %>
                                     <fmt:message key="report.ClinicalReports.msgValue"/> : <input type="text"
                                                                                                    name="numerator_value"
-                                                                                                   value="<%=numer_val[0]%>"><br>
+                                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(numer_val[0]))%>"><br>
 
                                 </div>
                                 <div id="numerator_startDate">
@@ -415,7 +415,7 @@
                                         }
                                     %>
                                     Start Date : <input type="text" name="numerator_startDate"
-                                                        value="<%=numer_startDate[0]%>"><br>
+                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(numer_startDate[0]))%>"><br>
 
                                 </div>
                                 <div id="numerator_endDate">
@@ -426,7 +426,7 @@
                                         }
                                     %>
                                     End Date : <input type="text" name="numerator_endDate"
-                                                      value="<%=numer_endDate[0]%>"><br>
+                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(numer_endDate[0]))%>"><br>
 
                                 </div>
 
@@ -451,15 +451,15 @@
                                             }
 
                                     %>
-                                    <option value="<%=n.getId()%>"  <%=sel(arrNumeratorId[i], n.getId())%> ><%=n.getNumeratorName()%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(n.getId()))%>"  <%=Encode.forHtml(String.valueOf(sel(arrNumeratorId[i], n.getId())))%> ><%=Encode.forHtml(String.valueOf(n.getNumeratorName()))%>
                                     </option>
                                     <%}%>
                                 </select>
 
                                 <select id="numerator<%=i %>_measurements" name="numerator<%=i %>_measurements">
                                     <% for (EctMeasurementTypesBean measurementTypes : vec) {%>
-                                    <option value="<%=measurementTypes.getType()%>"  <%=sel(measurementTypes.getType(), "" + request.getAttribute("numerator" + i + "_measurements"))%>   ><%=measurementTypes.getTypeDisplayName()%>
-                                        (<%=measurementTypes.getType()%>) (<%=measurementTypes.getMeasuringInstrc() %>)
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(measurementTypes.getType()))%>"  <%=Encode.forHtml(String.valueOf(sel(measurementTypes.getType(), "" + request.getAttribute("numerator" + i + "_measurements"))))%>   ><%=Encode.forHtml(String.valueOf(measurementTypes.getTypeDisplayName()))%>
+                                        (<%=Encode.forHtml(String.valueOf(measurementTypes.getType()))%>) (<%=Encode.forHtml(String.valueOf(measurementTypes.getMeasuringInstrc()))%>)
                                     </option>
                                     <% }%>
                                 </select>
@@ -472,7 +472,7 @@
                                     %>
                                     <fmt:message key="report.ClinicalReports.msgValue"/> : <input type="text"
                                                                                                    name="numerator<%=i %>_value"
-                                                                                                   value="<%=numer_val[i]%>"><br>
+                                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(numer_val[i]))%>"><br>
 
                                 </div>
                                 <div id="numerator<%=i %>_startDate">
@@ -483,7 +483,7 @@
                                         }
                                     %>
                                     Start Date : <input type="text" name="numerator<%=i %>_startDate"
-                                                        value="<%=numer_startDate[i]%>"><br>
+                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(numer_startDate[i]))%>"><br>
 
                                 </div>
                                 <div id="numerator<%=i %>_endDate">
@@ -494,7 +494,7 @@
                                         }
                                     %>
                                     End Date : <input type="text" name="numerator<%=i %>_endDate"
-                                                      value="<%=numer_endDate[i]%>"><br>
+                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(numer_endDate[i]))%>"><br>
 
                                 </div>
                                 <br/>
@@ -519,7 +519,7 @@
                                                 rep.put(d.getId(), d.getReplaceableKeys());
                                             }
                                     %>
-                                    <option value="<%=d.getId()%>" <%=sel(denominatorId, d.getId())%> ><%=d.getDenominatorName()%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(d.getId()))%>" <%=Encode.forHtml(String.valueOf(sel(denominatorId, d.getId())))%> ><%=Encode.forHtml(String.valueOf(d.getDenominatorName()))%>
                                     </option>
                                     <%}%>
                                 </select>
@@ -532,7 +532,7 @@
                                 %>
                                 <select id="denominator_provider_no" name="denominator_provider_no">
                                     <%for (Map<String, String> h : providers) {%>
-                                    <option value="<%= h.get("providerNo")%>" <%= (h.get("providerNo").equals(defaultDenominatorProviderNo) ? " selected" : "")%>><%= h.get("lastName")%> <%= h.get("firstName")%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf((h.get("providerNo").equals(defaultDenominatorProviderNo) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(h.get("lastName")))%> <%=Encode.forHtml(String.valueOf(h.get("firstName")))%>
                                     </option>
                                     <%}%>
                                 </select>
@@ -545,7 +545,7 @@
                                     %>
                                     <%for (String listName : demoSetList) {%>
                                     <input type="checkbox" name="denominator_patientSet"
-                                           value="<%=listName%>" <%=listName.equals(defaultDenominatorPatientSet) ? " checked=\"checked\" " : "" %>><%=listName%>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(listName))%>" <%=listName.equals(defaultDenominatorPatientSet) ? " checked=\"checked\" " : ""%>><%=Encode.forHtml(String.valueOf(listName))%>
                                     <br>
                                     <%}%>
                                 </div>
@@ -571,7 +571,7 @@
                                        value="address"><fmt:message key="report.ClinicalReports.msgAddress"/></input>
                                 <br/>
                                 <%for (int rm = 0; rm < 3; rm++) {%>
-                                <select name="report_measurement<%=rm%>">
+                                <select name="report_measurement<%=Encode.forHtmlAttribute(String.valueOf(rm))%>">
                                     <option value="-1"><fmt:message key="report.ClinicalReports.msgNoMeasurements"/></option>
                                     <% for (EctMeasurementTypesBean measurementTypes : vec) {
                                         String measInst = measurementTypes.getMeasuringInstrc();
@@ -579,8 +579,8 @@
                                             measInst = StringUtils.abbreviate(measurementTypes.getMeasuringInstrc(), 25);
                                         }
                                     %>
-                                    <option value="<%=measurementTypes.getType()%>" <%=sel(measurementTypes.getType(), "" + request.getAttribute("report_measurement" + rm))%> ><%=measurementTypes.getTypeDisplayName()%>
-                                        (<%=measurementTypes.getType()%>) (<%=measInst %>)
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(measurementTypes.getType()))%>" <%=Encode.forHtml(String.valueOf(sel(measurementTypes.getType(), "" + request.getAttribute("report_measurement" + rm))))%> ><%=Encode.forHtml(String.valueOf(measurementTypes.getTypeDisplayName()))%>
+                                        (<%=Encode.forHtml(String.valueOf(measurementTypes.getType()))%>) (<%=Encode.forHtml(String.valueOf(measInst))%>)
                                     </option>
                                     <% }%>
                                 </select>
@@ -596,7 +596,7 @@
                                 }
                             %>
                             <input type="checkbox" name="includeNonPositiveResults"
-                                   id="includeNonPositiveResults" <%=includeNonPositiveResultsCheck %>/>&nbsp;Include All Results (includes results where numerator evaluates to false)
+                                   id="includeNonPositiveResults" <%=Encode.forHtml(String.valueOf(includeNonPositiveResultsCheck))%>/>&nbsp;Include All Results (includes results where numerator evaluates to false)
 
                             <br/>
                             <input type="submit" value="<fmt:message key="report.ClinicalReports.btnEvaluate"/>"/>
@@ -609,14 +609,14 @@
                 <div>
                     <H3><fmt:message key="report.ClinicalReports.msgResults"/></H3>
                     <ul>
-                        <li><fmt:message key="report.ClinicalReports.msgNumerator"/>:   <%=request.getAttribute("numerator")%>
+                        <li><fmt:message key="report.ClinicalReports.msgNumerator"/>:   <%=Encode.forHtml(String.valueOf(request.getAttribute("numerator")))%>
                         </li>
-                        <li><fmt:message key="report.ClinicalReports.msgDenominator"/>: <%=request.getAttribute("denominator")%>
+                        <li><fmt:message key="report.ClinicalReports.msgDenominator"/>: <%=Encode.forHtml(String.valueOf(request.getAttribute("denominator")))%>
                         </li>
-                        <li><fmt:message key="report.ClinicalReports.msgPercentage"/>:  <%=request.getAttribute("percentage")%> %
+                        <li><fmt:message key="report.ClinicalReports.msgPercentage"/>:  <%=Encode.forHtml(String.valueOf(request.getAttribute("percentage")))%> %
                         </li>
                     </ul>
-                    CSV:<input type="text" size="30" value="<%=request.getAttribute("csv")%>"/>
+                    CSV:<input type="text" size="30" value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("csv")))%>"/>
                 </div>
                 <%}%>
 
@@ -653,7 +653,7 @@
                             for (String heading : headings) {
                                 csvp.write(head(heading));
                         %>
-                        <th><%=head(heading)%>
+                        <th><%=Encode.forHtml(String.valueOf(head(heading)))%>
                         </th>
                         <%}%>
 
@@ -661,7 +661,7 @@
                             for (int i = 0; i < outputfields.length; i++) {
                                 csvp.write(replaceHeading(outputfields[i], forView, measurementTitles));
                         %>
-                        <th><%=replaceHeading(outputfields[i], forView, measurementTitles)%>
+                        <th><%=Encode.forHtml(String.valueOf(replaceHeading(outputfields[i], forView, measurementTitles)))%>
                         </th>
                         <%}%>
                     </tr>
@@ -691,7 +691,7 @@
                             for (String outputfield : outputfields) {
                                 csvp.write("" + display(h.get(outputfield)));
                         %>
-                        <td><%=display(h.get(outputfield))%>
+                        <td><%=Encode.forHtml(String.valueOf(display(h.get(outputfield))))%>
                         </td>
                         <%}%>
                     </tr>
@@ -744,22 +744,22 @@
            while (e.hasMoreElements()) {
             String key = (String) e.nextElement();
             String[] repValues = (String[]) rep.get(key);%>
-        var repVal<%=key%> = new Array();
+        var repVal<%=Encode.forJavaScript(String.valueOf(key))%> = new Array();
         <%for (int i = 0; i < repValues.length; i++) {%>
-        repVal<%=key%>[<%=i%>] = "denominator_<%=repValues[i]%>";
+        repVal<%=Encode.forJavaScript(String.valueOf(key))%>[<%=i%>] = "denominator_<%=Encode.forJavaScript(String.valueOf(repValues[i]))%>";
         <%}%>
-        denom_xtras['<%=key%>'] = repVal<%=key%>;
+        denom_xtras['<%=Encode.forJavaScript(String.valueOf(key))%>'] = repVal<%=Encode.forJavaScript(String.valueOf(key))%>;
         <% }%>
 
         <% Enumeration e2 = repNum.keys();
            while (e2.hasMoreElements()) {
             String key = (String) e2.nextElement();
             String[] repNumValues = (String[]) repNum.get(key);%>
-        var repNumVal<%=key%> = new Array();
+        var repNumVal<%=Encode.forJavaScript(String.valueOf(key))%> = new Array();
         <%for (int i = 0; i < repNumValues.length; i++) {%>
-        repNumVal<%=key%>[<%=i%>] = "numerator_<%=repNumValues[i]%>";
+        repNumVal<%=Encode.forJavaScript(String.valueOf(key))%>[<%=i%>] = "numerator_<%=Encode.forJavaScript(String.valueOf(repNumValues[i]))%>";
         <%}%>
-        numer_xtras['<%=key%>'] = repNumVal<%=key%>;
+        numer_xtras['<%=Encode.forJavaScript(String.valueOf(key))%>'] = repNumVal<%=Encode.forJavaScript(String.valueOf(key))%>;
         <% }%>
 
 
@@ -769,11 +769,11 @@
             while (en.hasMoreElements()) {
                  String key = (String) en.nextElement();
                  String[] repNumValues = (String[]) arrRepNum[x].get(key);%>
-        var repNumVal<%=x%><%=key%> = new Array();
+        var repNumVal<%=x%><%=Encode.forJavaScript(String.valueOf(key))%> = new Array();
         <%for (int i = 0; i < repNumValues.length; i++) {%>
-        repNumVal<%=x%><%=key%>[<%=i%>] = "numerator<%=x%>_<%=repNumValues[i]%>";
+        repNumVal<%=x%><%=Encode.forJavaScript(String.valueOf(key))%>[<%=i%>] = "numerator<%=x%>_<%=Encode.forJavaScript(String.valueOf(repNumValues[i]))%>";
         <%}%>
-        numer<%=x%>_xtras['<%=key%>'] = repNumVal<%=x%><%=key%>;
+        numer<%=x%>_xtras['<%=Encode.forJavaScript(String.valueOf(key))%>'] = repNumVal<%=x%><%=Encode.forJavaScript(String.valueOf(key))%>;
         <%	}
          } %>
 

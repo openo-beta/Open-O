@@ -57,6 +57,7 @@
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -83,7 +84,7 @@
             curDoc = privatedocs.get(idx);
             val += "D" + curDoc.getDocId() + "|";
     %>
-    <li class="doc"><%=StringUtils.maxLenString(curDoc.getDescription(), 19, 16, "...")%>
+    <li class="doc"><%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(curDoc.getDescription(), 19, 16, "...")))%>
     </li>
     <%
         }
@@ -95,7 +96,7 @@
             resData = (LabResultData) labs.get(idx);
             val += "L" + resData.segmentID + "|";
     %>
-    <li class="lab"><%=resData.getDiscipline() + " " + resData.getDateTime()%>
+    <li class="lab"><%=Encode.forHtml(String.valueOf(resData.getDiscipline() + " " + resData.getDateTime()))%>
     </li>
     <%
         }
@@ -122,7 +123,7 @@
             val += "H" + hrmDocumentToDemographic.getHrmDocumentId() + "|";
             //Outputs the list item
     %>
-    <li class="hrm"><%=truncatedDisplayName%>
+    <li class="hrm"><%=Encode.forHtml(String.valueOf(truncatedDisplayName))%>
     </li>
     <%
         }
@@ -133,13 +134,13 @@
             val += "E" + eForm.getId() + "|";
 
     %>
-    <li class="eForm"><%=(eForm.getFormName().length() > 14) ? eForm.getFormName().substring(0, 11) + "..." : eForm.getFormName()%>
+    <li class="eForm"><%=Encode.forHtml(String.valueOf((eForm.getFormName().length() > 14) ? eForm.getFormName().substring(0, 11) + "..." : eForm.getFormName()))%>
     </li>
     <%
         }
     %>
 </ul>
-<input type="text" name="selectDocs" value="<%=val %>" style="display:none">
+<input type="text" name="selectDocs" value="<%=Encode.forHtmlAttribute(String.valueOf(val))%>" style="display:none">
 <%
     if (privatedocs.size() == 0 && labs.size() == 0 && hrmDocumentToDemographicList.size() == 0 && eForms.isEmpty()) {
 %>

@@ -36,6 +36,7 @@
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.mds.data.ProviderData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -219,16 +220,16 @@
                 <table width="100%">
                     <tr>
                         <td align="left" valign="center" width="30%"><input
-                                type="hidden" name="providerNo" value="<%= providerNo %>">
+                                type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>">
                             <input type="hidden" name="searchProviderNo"
-                                   value="<%= searchProviderNo %>"> <%= (request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">") %>
-                            <%= (request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">") %>
-                            <%= (request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">") %>
-                            <input type="hidden" name="status" value="<%= ackStatus %>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(searchProviderNo))%>"> <%=Encode.forHtml((request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">"))%>
+                            <%=Encode.forHtml((request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">"))%>
+                            <%=Encode.forHtml((request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">"))%>
+                            <input type="hidden" name="status" value="<%=Encode.forHtmlAttribute(String.valueOf(ackStatus))%>">
                             <input type="hidden" name="selectedProviders"> <% if (demographicNo == null) { %>
                             <input type="button" class="smallButton"
                                    value="<fmt:message key="oscarMDS.index.btnSearch"/>"
-                                   onClick="window.location='Search.jsp?providerNo=<%= providerNo %>'">
+                                   onClick="window.location='Search.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'">
                             <% } %> <input type="button" class="smallButton"
                                            value="<fmt:message key="oscarMDS.index.btnClose"/>"
                                            onClick="window.close()">
@@ -236,13 +237,13 @@
                             <% if (demographicNo != null) { %>
                             <input type="button" class="smallButton"
                                    value="Search OLIS"
-                                   onClick="popupStart('1000','1200','<%=request.getContextPath() %>/olis/Search.jsp?demographicNo=<%=demographicNo %>','OLIS_SEARCH')">
+                                   onClick="popupStart('1000','1200','<%=request.getContextPath() %>/olis/Search.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>','OLIS_SEARCH')">
                             <% } %>
 
                             <% if (demographicNo == null && request.getParameter("fname") != null) { %>
                             <input type="button" class="smallButton"
                                    value="<fmt:message key="oscarMDS.index.btnDefaultView"/>"
-                                   onClick="window.location='lab/DemographicLab.jsp?providerNo=<%= providerNo %>'">
+                                   onClick="window.location='lab/DemographicLab.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'">
                             <% } %> <% if (demographicNo == null && labs.size() > 0) { %>
                             <!-- <input type="button" class="smallButton" value="Reassign" onClick="popupStart(300, 400, 'SelectProvider.jsp', 'providerselect')"> -->
                             <input type="button" class="smallButton"
@@ -262,7 +263,7 @@
 				<fmt:message key="oscarMDS.index.msgAcknowledgedLabReportsFor"/> <%} else {%>
 				<fmt:message key="oscarMDS.index.msgAllLabReportsFor"/> <%}%>&nbsp;
 				<% if (searchProviderNo.equals("")) {%> <fmt:message key="oscarMDS.index.msgAllPhysicians"/> <%} else if (searchProviderNo.equals("0")) {%>
-				<fmt:message key="oscarMDS.index.msgUnclaimed"/> <%} else {%> <%=ProviderData.getProviderName(searchProviderNo)%>
+				<fmt:message key="oscarMDS.index.msgUnclaimed"/> <%} else {%> <%=Encode.forHtml(String.valueOf(ProviderData.getProviderName(searchProviderNo)))%>
 				<%}%> &nbsp;&nbsp;&nbsp; Page : <%=pageNum%> </span> <% } %>
                         </td>
                         <td align="right" valign="center" width="30%"><a
@@ -311,14 +312,14 @@
                 }
         %>
 
-        <tr bgcolor="<%=bgcolor%>" class="<%= (result.isAbnormal() ? "AbnormalRes" : "NormalRes" ) %>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>" class="<%=Encode.forHtmlAttribute(String.valueOf((result.isAbnormal() ? "AbnormalRes" : "NormalRes" )))%>">
             <td>
                 <%
                     Date d1 = getServiceDate(loggedInInfo, result);
                     String formattedDate = DateUtils.getDate(d1);
 
                 %>
-                <%=formattedDate %>
+                <%=Encode.forHtml(String.valueOf(formattedDate))%>
             </td>
             <td>
                 <%
@@ -334,35 +335,35 @@
                     }
 
                     if (result.isMDS()) { %> <a
-                    href="javascript:reportWindow('<%= request.getContextPath() %>/oscarMDS/SegmentDisplay.jsp?demographicId=<%=demographicNo%>&segmentID=<%=segmentID%>&providerNo=<%=providerNo%>&searchProviderNo=<%=searchProviderNo%>&status=<%=status%><%=remoteFacilityIdQueryString%>')"><%= result.getDiscipline()%>
+                    href="javascript:reportWindow('<%= request.getContextPath() %>/oscarMDS/SegmentDisplay.jsp?demographicId=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&status=<%=Encode.forUriComponent(String.valueOf(status))%><%=Encode.forUriComponent(String.valueOf(remoteFacilityIdQueryString))%>')"><%=Encode.forHtml(String.valueOf(result.getDiscipline()))%>
             </a>
                 <% } else if (result.isCML()) { %> <a
-                    href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ON/CMLDisplay.jsp?demographicId=<%=demographicNo%>&segmentID=<%=segmentID%>&providerNo=<%=providerNo%>&searchProviderNo=<%=searchProviderNo%>&status=<%=status%><%=remoteFacilityIdQueryString%>')"><%=(String) result.getDiscipline()%>
+                    href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ON/CMLDisplay.jsp?demographicId=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&status=<%=Encode.forUriComponent(String.valueOf(status))%><%=Encode.forUriComponent(String.valueOf(remoteFacilityIdQueryString))%>')"><%=Encode.forHtml(String.valueOf((String) result.getDiscipline()))%>
             </a>
                 <% } else if (result.isHL7TEXT()) {%>
-                <a href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ALL/labDisplay.jsp?demographicId=<%=demographicNo%>&segmentID=<%=segmentID%>&providerNo=<%=providerNo%>&searchProviderNo=<%=searchProviderNo%>&status=<%=status%><%=remoteFacilityIdQueryString%>')">
-                    <%=StringUtils.trimToEmpty(result.getLabel())%>
+                <a href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ALL/labDisplay.jsp?demographicId=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&status=<%=Encode.forUriComponent(String.valueOf(status))%><%=Encode.forUriComponent(String.valueOf(remoteFacilityIdQueryString))%>')">
+                    <%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(result.getLabel())))%>
                 </a>
                 <% } else {%>
-                <a href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/BC/labDisplay.jsp?demographicId=<%=demographicNo%>&segmentID=<%=segmentID%>&providerNo=<%=providerNo%>&searchProviderNo=<%=searchProviderNo%>&status=<%=status%><%=remoteFacilityIdQueryString%>')">
-                    <%=StringUtils.trimToEmpty(result.getLabel())%>
+                <a href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/BC/labDisplay.jsp?demographicId=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&status=<%=Encode.forUriComponent(String.valueOf(status))%><%=Encode.forUriComponent(String.valueOf(remoteFacilityIdQueryString))%>')">
+                    <%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(result.getLabel())))%>
                 </a>
                 <% }%>
             </td>
 
-            <td><%= StringUtils.trimToEmpty(result.getRequestingClient())%>
+            <td><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(result.getRequestingClient())))%>
             </td>
-            <td><%= (result.isAbnormal() ? "Abnormal" : "") %>
+            <td><%=Encode.forHtml(String.valueOf((result.isAbnormal() ? "Abnormal" : "")))%>
             </td>
 
             <!--td >
-                    <%= result.getPriority()%>
+                    <%=Encode.forHtml(String.valueOf(result.getPriority()))%>
                 </td-->
 
 
-            <td><%= ((result.isFinal() ? "Final" : "Partial"))%>
+            <td><%=Encode.forHtml(String.valueOf(((result.isFinal() ? "Final" : "Partial"))))%>
             </td>
-            <td><%=StringUtils.trimToEmpty(result.getDiscipline()) %>
+            <td><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(result.getDiscipline())))%>
             </td>
         </tr>
         <% }
@@ -381,13 +382,13 @@
                             <% if (demographicNo == null) { %> <input type="button"
                                                                       class="smallButton"
                                                                       value="<fmt:message key="oscarMDS.index.btnSearch"/>"
-                                                                      onClick="window.location='Search.jsp?providerNo=<%= providerNo %>'">
+                                                                      onClick="window.location='Search.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'">
                             <% } %> <input type="button" class="smallButton"
                                            value="<fmt:message key="oscarMDS.index.btnClose"/>"
                                            onClick="window.close()"> <% if (request.getParameter("fname") != null) { %>
                             <input type="button" class="smallButton"
                                    value="<fmt:message key="oscarMDS.index.btnDefaultView"/>"
-                                   onClick="window.location='lab/DemographicLab.jsp?providerNo=<%= providerNo %>'">
+                                   onClick="window.location='lab/DemographicLab.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'">
                             <% } %> <% if (demographicNo == null && labs.size() > 0) { %>
                             <!-- <input type="button" class="smallButton" value="Reassign" onClick="popupStart(300, 400, 'SelectProvider.jsp', 'providerselect')"> -->
                             <input type="button" class="smallButton"
@@ -400,7 +401,7 @@
                             <div class="Nav">
                                 <% if (pageNum > 1 || labs.size() > endIndex) {
                                     if (pageNum > 1) { %> <a class="visLink"
-                                                             href="lab/DemographicLab.jsp?providerNo=<%=providerNo%><%= (demographicNo == null ? "" : "&demographicNo="+demographicNo ) %>&searchProviderNo=<%=searchProviderNo%>&status=<%=ackStatus%><%= (request.getParameter("lname") == null ? "" : "&lname="+request.getParameter("lname")) %><%= (request.getParameter("fname") == null ? "" : "&fname="+request.getParameter("fname")) %><%= (request.getParameter("hnum") == null ? "" : "&hnum="+request.getParameter("hnum")) %>&pageNum=<%=pageNum-1%>&startIndex=<%=startIndex-20%>"><
+                                                             href="lab/DemographicLab.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%><%=Encode.forUriComponent(String.valueOf((demographicNo == null ? "" : "&demographicNo="+demographicNo )))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&status=<%=Encode.forUriComponent(String.valueOf(ackStatus))%><%=Encode.forUriComponent((request.getParameter("lname") == null ? "" : "&lname="+request.getParameter("lname")))%><%=Encode.forUriComponent((request.getParameter("fname") == null ? "" : "&fname="+request.getParameter("fname")))%><%=Encode.forUriComponent((request.getParameter("hnum") == null ? "" : "&hnum="+request.getParameter("hnum")))%>&pageNum=<%=Encode.forUriComponent(String.valueOf(pageNum-1))%>&startIndex=<%=Encode.forUriComponent(String.valueOf(startIndex-20))%>"><
                                 <fmt:message key="oscarMDS.index.msgPrevious"/></a> <% } else { %>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <% } %> <%
@@ -408,7 +409,7 @@
                                 for (int i = 0; i < labs.size(); i = i + 20) {
                             %>
                                 <a style="text-decoration: none;" class="visLink"
-                                   href="lab/DemographicLab.jsp?providerNo=<%=providerNo%><%= (demographicNo == null ? "" : "&demographicNo="+demographicNo ) %>&searchProviderNo=<%=searchProviderNo%>&status=<%=ackStatus%><%= (request.getParameter("lname") == null ? "" : "&lname="+request.getParameter("lname")) %><%= (request.getParameter("fname") == null ? "" : "&fname="+request.getParameter("fname")) %><%= (request.getParameter("hnum") == null ? "" : "&hnum="+request.getParameter("hnum")) %>&pageNum=<%=count%>&startIndex=<%=i%>">[<%=count%>
+                                   href="lab/DemographicLab.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%><%=Encode.forUriComponent(String.valueOf((demographicNo == null ? "" : "&demographicNo="+demographicNo )))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&status=<%=Encode.forUriComponent(String.valueOf(ackStatus))%><%=Encode.forUriComponent((request.getParameter("lname") == null ? "" : "&lname="+request.getParameter("lname")))%><%=Encode.forUriComponent((request.getParameter("fname") == null ? "" : "&fname="+request.getParameter("fname")))%><%=Encode.forUriComponent((request.getParameter("hnum") == null ? "" : "&hnum="+request.getParameter("hnum")))%>&pageNum=<%=count%>&startIndex=<%=i%>">[<%=count%>
                                     ]</a>
                                 <%
                                         count++;
@@ -416,7 +417,7 @@
                                 %> <% if (labs.size() > endIndex) { %>
                                 <a
                                         class="visLink"
-                                        href="lab/DemographicLab.jsp?providerNo=<%=providerNo%><%= (demographicNo == null ? "" : "&demographicNo="+demographicNo ) %>&searchProviderNo=<%=searchProviderNo%>&status=<%=ackStatus%><%= (request.getParameter("lname") == null ? "" : "&lname="+request.getParameter("lname")) %><%= (request.getParameter("fname") == null ? "" : "&fname="+request.getParameter("fname")) %><%= (request.getParameter("hnum") == null ? "" : "&hnum="+request.getParameter("hnum")) %>&pageNum=<%=pageNum+1%>&startIndex=<%=startIndex+20%>"><fmt:message key="oscarMDS.index.msgNext"/> ></a> <% } else { %>
+                                        href="lab/DemographicLab.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%><%=Encode.forUriComponent(String.valueOf((demographicNo == null ? "" : "&demographicNo="+demographicNo )))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&status=<%=Encode.forUriComponent(String.valueOf(ackStatus))%><%=Encode.forUriComponent((request.getParameter("lname") == null ? "" : "&lname="+request.getParameter("lname")))%><%=Encode.forUriComponent((request.getParameter("fname") == null ? "" : "&fname="+request.getParameter("fname")))%><%=Encode.forUriComponent((request.getParameter("hnum") == null ? "" : "&hnum="+request.getParameter("hnum")))%>&pageNum=<%=Encode.forUriComponent(String.valueOf(pageNum+1))%>&startIndex=<%=Encode.forUriComponent(String.valueOf(startIndex+20))%>"><fmt:message key="oscarMDS.index.msgNext"/> ></a> <% } else { %>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <% }
                                 } %>

@@ -29,6 +29,7 @@
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -155,7 +156,7 @@
                 <!--<fmt:message key="admin.resourcebaseurl.formBaseUrl"/><br>-->
                 <input type="text" name="resource_baseurl" style="width:100%;margin-bottom:10px"
                        placeholder="<fmt:message key="admin.resourcebaseurl.formBaseUrlExample"/>"
-                       value="<%if(resource_baseurl_value!=null){ out.print(resource_baseurl_value);}%>">
+                       value="<%if(resource_baseurl_value!=null){ out.print(Encode.forHtmlAttribute(resource_baseurl_value));}%>">
                 <div class="span8">
                     <input type="submit" class="btn pull-right" name="websiteSave" id="websiteSave"
                            value="<fmt:message key="admin.resourcebaseurl.btnSave"/>">
@@ -179,7 +180,7 @@
                 <textarea class="textarea" name="resource_helpHtml" id="resource_helpHtml" placeholder="Enter text ..."
                           style="width:100%;height:160px"><%
                     if (resource_helpHtml_value != null) {
-                        out.print(resource_helpHtml_value);
+                        out.print(Encode.forHtml(resource_helpHtml_value));
                     }
                 %></textarea>
                 <div class="span8" style="padding-left:0px;padding-right:0px;">

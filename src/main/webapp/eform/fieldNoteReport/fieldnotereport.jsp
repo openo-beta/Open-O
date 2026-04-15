@@ -27,6 +27,7 @@
 <%@ page import="ca.openosp.openo.commn.service.FieldNoteManager" %>
 <%@ page import="java.util.*, java.text.*" %>
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -127,8 +128,8 @@
             }
 
             function setDefaultDates() {
-                document.fieldNoteReportForm.date_start.value = "<%=dateStartDefault%>";
-                document.fieldNoteReportForm.date_end.value = "<%=dateEndDefault%>";
+                document.fieldNoteReportForm.date_start.value = "<%=Encode.forJavaScript(String.valueOf(dateStartDefault))%>";
+                document.fieldNoteReportForm.date_end.value = "<%=Encode.forJavaScript(String.valueOf(dateEndDefault))%>";
                 document.fieldNoteReportForm.action = "";
                 document.fieldNoteReportForm.submit();
             }
@@ -177,11 +178,11 @@
             <tr style="background-color: #F2F2F2;">
                 <td>
                     <fmt:message key="admin.fieldNote.startDate"/>:<input type="text" name="date_start" size="8"
-                                                                           value="<%=dateStart%>" id="startDate"><a
+                                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(dateStart))%>" id="startDate"><a
                         id="SCal"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                     &nbsp;
                     <fmt:message key="admin.fieldNote.endDate"/>:<input type="text" name="date_end" size="8"
-                                                                         value="<%=dateEnd%>" id="endDate"><a id="ECal"><img
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(dateEnd))%>" id="endDate"><a id="ECal"><img
                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                     &nbsp;
                     <input type="submit" value="<fmt:message key="admin.fieldNote.getFieldNotes"/>"
@@ -214,7 +215,7 @@
             if (!showData) return;
         %>
         <input type="button" id="supervisorReportButton"
-               value="<fmt:message key="admin.fieldNote.observerNoteCount"/> (<%=totalCount%>)"
+               value="<fmt:message key="admin.fieldNote.observerNoteCount"/> (<%=Encode.forHtml(String.valueOf(totalCount))%>)"
                onclick="showSupervisorReport(true);"/>
         <table id="supervisorReport" style="display:none">
             <tr>
@@ -236,7 +237,7 @@
                         %>
                         <tr>
                             <td class="bordered" rowspan="<%=residentCountList.size()%>" valign="top">
-                                <%=supervisor%>
+                                <%=Encode.forHtml(String.valueOf(supervisor))%>
                             </td>
                                     <%					boolean first = true;
 					for (String resident : residentCountList.keySet()) {
@@ -244,16 +245,16 @@
 							first = false;
 %>
                             <td class="bordered" rowspan="<%=residentCountList.size()%>" valign="top" align="center">
-                                <%=supervisorCountList.get(supervisor)%>
+                                <%=Encode.forHtml(String.valueOf(supervisorCountList.get(supervisor)))%>
                             </td>
                                     <%						} else {
 %>
                         <tr>
                             <% }
                             %>
-                            <td class="bordered"><%=resident%>
+                            <td class="bordered"><%=Encode.forHtml(String.valueOf(resident))%>
                             </td>
-                            <td class="bordered" align="center"><%=residentCountList.get(resident)%>
+                            <td class="bordered" align="center"><%=Encode.forHtml(String.valueOf(residentCountList.get(resident)))%>
                             </td>
                         </tr>
                         <% }
@@ -261,7 +262,7 @@
                         %>
                         <tr>
                             <td colspan="3" align="right"><fmt:message key="admin.fieldNote.total"/>:</td>
-                            <td align="center"><%=totalCount%>
+                            <td align="center"><%=Encode.forHtml(String.valueOf(totalCount))%>
                             </td>
                         </tr>
                     </table>
@@ -277,15 +278,15 @@
                     String resNameSend = residentName.replace("'", "\\'");
             %>
             <tr>
-                <td><%=residentName%>
+                <td><%=Encode.forHtml(String.valueOf(residentName))%>
                 </td>
                 <td>
                     <input type="button" value="<fmt:message key="admin.fieldNote.view"/>"
                            title="<fmt:message key="admin.fieldNote.viewReport"/>"
-                           onclick="send('<%=residentId%>','<%=resNameSend%>','view');"/>
+                           onclick="send('<%=Encode.forJavaScript(String.valueOf(residentId))%>','<%=Encode.forJavaScript(String.valueOf(resNameSend))%>','view');"/>
                     <input type="button" value="<fmt:message key="admin.fieldNote.download"/>"
                            title="<fmt:message key="admin.fieldNote.downloadReport"/>"
-                           onclick="send('<%=residentId%>','<%=resNameSend%>','download');"/>
+                           onclick="send('<%=Encode.forJavaScript(String.valueOf(residentId))%>','<%=Encode.forJavaScript(String.valueOf(resNameSend))%>','download');"/>
                 </td>
             </tr>
             <% }

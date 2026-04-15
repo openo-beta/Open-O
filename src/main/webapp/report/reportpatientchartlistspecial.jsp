@@ -49,6 +49,7 @@
 
 <%@ page import="ca.openosp.openo.commn.model.ProviderData" %>
 <%@ page import="ca.openosp.openo.commn.dao.ProviderDataDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -183,7 +184,7 @@
     %>
     <table width="480" border="0" cellspacing="1" cellpadding="0">
         <tr>
-            <td><%=providerBean.getProperty(strTemp) %>
+            <td><%=Encode.forHtml(String.valueOf(providerBean.getProperty(strTemp)))%>
             </td>
             <td align="right"></td>
         </tr>
@@ -191,49 +192,49 @@
     <table width="100%" border="0" bgcolor="#ffffff" cellspacing="1" cellpadding="2">
         <tr bgcolor="#CCCCFF" align="center">
             <TH width="12%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=last_name"><fmt:message key="report.reportpatientchartlistspecial.btnLastName"/></a></b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=last_name"><fmt:message key="report.reportpatientchartlistspecial.btnLastName"/></a></b></TH>
             <TH width="12%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=first_name"><fmt:message key="report.reportpatientchartlistspecial.btnFisrtName"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=first_name"><fmt:message key="report.reportpatientchartlistspecial.btnFisrtName"/></a> </b></TH>
             <TH width="2%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=sex"><fmt:message key="report.reportpatientchartlistspecial.btnSex"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=sex"><fmt:message key="report.reportpatientchartlistspecial.btnSex"/></a> </b></TH>
             <TH width="5%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=chart_no"><fmt:message key="report.reportpatientchartlistspecial.btnChart"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=chart_no"><fmt:message key="report.reportpatientchartlistspecial.btnChart"/></a> </b></TH>
             <TH width="12%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=appointment_date"><fmt:message key="report.reportpatientchartlistspecial.btnApptDate"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=appointment_date"><fmt:message key="report.reportpatientchartlistspecial.btnApptDate"/></a> </b></TH>
             <TH width="20%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=address"><fmt:message key="report.reportpatientchartlistspecial.btnAddress"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=address"><fmt:message key="report.reportpatientchartlistspecial.btnAddress"/></a> </b></TH>
             <TH width="10%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=city"><fmt:message key="report.reportpatientchartlistspecial.btnCity"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=city"><fmt:message key="report.reportpatientchartlistspecial.btnCity"/></a> </b></TH>
             <TH width="10%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=postal"><fmt:message key="report.reportpatientchartlistspecial.btnPostal"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=postal"><fmt:message key="report.reportpatientchartlistspecial.btnPostal"/></a> </b></TH>
             <TH width="12%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=dob"><fmt:message key="report.reportpatientchartlistspecial.btnDOB"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=dob"><fmt:message key="report.reportpatientchartlistspecial.btnDOB"/></a> </b></TH>
             <TH width="2%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=patient_status"><fmt:message key="report.reportpatientchartlistspecial.btnStatus"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=patient_status"><fmt:message key="report.reportpatientchartlistspecial.btnStatus"/></a> </b></TH>
         </tr>
         <%
             }
         %>
         <tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">
-            <td><%=rsdemo.getString("last_name")%>
+            <td><%=Encode.forHtml(String.valueOf(rsdemo.getString("last_name")))%>
             </td>
-            <td><%=rsdemo.getString("first_name")%>
+            <td><%=Encode.forHtml(String.valueOf(rsdemo.getString("first_name")))%>
             </td>
-            <td><%=rsdemo.getString("sex")%>
+            <td><%=Encode.forHtml(String.valueOf(rsdemo.getString("sex")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("chart_no")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("chart_no")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("appointment_date")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("appointment_date")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("address")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("address")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("city") + ", " + rsdemo.getString("province")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("city") + ", " + rsdemo.getString("province")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("postal")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("postal")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("dob")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("dob")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("patient_status")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("patient_status")))%>
             </td>
         </tr>
         <%

@@ -136,7 +136,7 @@
                     <tr>
                         <td style="font-size: small;"><br/>
                             <br/>
-                            <b>Patient Name:</b> <%=patient.getFirstName()%> <%=patient.getSurname()%> <br/>
+                            <b>Patient Name:</b> <%=Encode.forHtml(String.valueOf(patient.getFirstName()))%> <%=Encode.forHtml(String.valueOf(patient.getSurname()))%> <br/>
                             <br/>
                         </td>
                     </tr>
@@ -158,16 +158,16 @@
                                             arch = "text-decoration: line-through;";
                                         }
                                 %>
-                                <tr style="height:20px;<%=arch%>">
-                                    <td><%=drug.providerName%>
+                                <tr style="height:20px;<%=Encode.forHtmlAttribute(String.valueOf(arch))%>">
+                                    <td><%=Encode.forHtml(String.valueOf(drug.providerName))%>
                                     </td>
-                                    <td><%=drug.startDate%>
+                                    <td><%=Encode.forHtml(String.valueOf(drug.startDate))%>
                                     </td>
-                                    <td><%=drug.endDate%>
+                                    <td><%=Encode.forHtml(String.valueOf(drug.endDate))%>
                                     </td>
-                                    <td><%=drug.writtenDate%>
+                                    <td><%=Encode.forHtml(String.valueOf(drug.writtenDate))%>
                                     </td>
-                                    <td><%=drug.prescriptionDetails%>
+                                    <td><%=Encode.forHtml(String.valueOf(drug.prescriptionDetails))%>
                                     </td>
                                     <td>
                                         <%
@@ -182,7 +182,7 @@
                                         %>
                                         <input type="button" value="Annotation" title="Annotation" style="width: 55px"
                                                class="ControlPushButton"
-                                               onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=drug.localDrugId%>&demo=<%=currentDemographicNo%>','anwin','width=400,height=500');">
+                                               onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(drug.localDrugId))%>&demo=<%=Encode.forJavaScript(String.valueOf(currentDemographicNo))%>','anwin','width=400,height=500');">
                                         <%
                                             }
                                         %>
@@ -192,27 +192,27 @@
                                             if (drug.isLocal) {
                                         %>
                                         <form action="${pageContext.request.contextPath}/oscarRx/rePrescribe.do" method="post">
-                                            <input type="hidden" name="drugList" id="drugList" value="<%=drug.localDrugId.toString()%>"/>
+                                            <input type="hidden" name="drugList" id="drugList" value="<%=Encode.forHtmlAttribute(String.valueOf(drug.localDrugId.toString()))%>"/>
                                             <input type="hidden" name="method" value="represcribe">
                                             <input type="submit" name="submit" style="width:100px" class="ControlPushButton"
                                                          value="Re-prescribe"/>
                                         </form> <input type="button" align="top" value="Add to Favorites"
                                                             style="width: 100px" class="ControlPushButton"
-                                                            onclick="javascript:addFavorite(<%=drug.localDrugId%>, '<%=(drug.customName!=null&&(!drug.customName.equalsIgnoreCase("null")))?drug.customName:drug.brandName%>');"/>
+                                                            onclick="javascript:addFavorite(<%=Encode.forJavaScript(String.valueOf(drug.localDrugId))%>, '<%=Encode.forJavaScript(String.valueOf((drug.customName!=null&&(!drug.customName.equalsIgnoreCase("null")))?drug.customName:drug.brandName))%>');"/>
                                         <%
                                         } else {
                                         %>
                                         <form action="<%=request.getContextPath()%>/oscarRx/searchDrug.do"
                                               method="post">
                                             <input type="hidden" name="demographicNo"
-                                                   value="<%=currentDemographicNo%>"/>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(currentDemographicNo))%>"/>
                                             <%
                                                 String searchString = drug.brandName;
                                                 if (searchString == null) searchString = drug.customName;
                                                 if (searchString == null) searchString = drug.genericName;
                                                 if (searchString == null) searchString = drug.prescriptionDetails;
                                             %>
-                                            <input type="hidden" name="searchString" value="<%=searchString%>"/>
+                                            <input type="hidden" name="searchString" value="<%=Encode.forHtmlAttribute(String.valueOf(searchString))%>"/>
                                             <input type="submit" class="ControlPushButton"
                                                    value="Search to Re-prescribe"/>
                                         </form>

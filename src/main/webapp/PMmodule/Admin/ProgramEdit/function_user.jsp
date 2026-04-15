@@ -24,6 +24,7 @@
 --%>
 
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/taglibs.jsp" %>
 <script>
     function search_provider(name) {
@@ -100,7 +101,7 @@
                     providerName = "";
                 }
             %>
-            <input type="text" name="providerName" size="30" value="<%=providerName%>"/>
+            <input type="text" name="providerName" size="30" value="<%=Encode.forHtmlAttribute(String.valueOf(providerName))%>"/>
             <input type="button" value="Search" onclick="search_provider(this.form.providerName.value);"/>
         </td>
     </tr>

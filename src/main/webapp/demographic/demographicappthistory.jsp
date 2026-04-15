@@ -183,10 +183,10 @@
                 if (value) {
                     //show deleted
                     //appt_history_w_deleted
-                    location.href = '<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=demographic_no%>&last_name=<%=Encode.forUriComponent(demolastname)%>&first_name=<%=Encode.forUriComponent(demofirstname)%>&orderby=<%=orderby%>&displaymode=appt_history&dboperation=appt_history_w_deleted&limit1=<%=strLimit1%>&limit2=<%=strLimit2%>&deleted=true';
+                    location.href = '<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&last_name=<%=Encode.forUriComponent(demolastname)%>&first_name=<%=Encode.forUriComponent(demofirstname)%>&orderby=<%=Encode.forJavaScript(String.valueOf(orderby))%>&displaymode=appt_history&dboperation=appt_history_w_deleted&limit1=<%=Encode.forJavaScript(String.valueOf(strLimit1))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>&deleted=true';
                 } else {
                     //don't show deleted
-                    location.href = '<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=demographic_no%>&last_name=<%=Encode.forUriComponent(demolastname)%>&first_name=<%=Encode.forUriComponent(demofirstname)%>&orderby=<%=orderby%>&displaymode=appt_history&dboperation=appt_history&limit1=<%=strLimit1%>&limit2=<%=strLimit2%>';
+                    location.href = '<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&last_name=<%=Encode.forUriComponent(demolastname)%>&first_name=<%=Encode.forUriComponent(demofirstname)%>&orderby=<%=Encode.forJavaScript(String.valueOf(orderby))%>&displaymode=appt_history&dboperation=appt_history&limit1=<%=Encode.forJavaScript(String.valueOf(strLimit1))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>';
                 }
             }
 
@@ -222,8 +222,8 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><fmt:message key="demographic.demographicappthistory.msgResults"/>: <%=demolastname%>
-                            ,<%=demofirstname%>(<%=request.getParameter("demographic_no")%>)
+                        <td><fmt:message key="demographic.demographicappthistory.msgResults"/>: <%=Encode.forHtml(String.valueOf(demolastname))%>
+                            ,<%=Encode.forHtml(String.valueOf(demofirstname))%>(<%=Encode.forHtml(request.getParameter("demographic_no"))%>)
                         </td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
@@ -238,7 +238,7 @@
         </tr>
         <tr>
             <td class="MainTableLeftColumn" valign="top"><a
-                    href="<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=request.getParameter("demographic_no")%>&apptProvider=<%=session.getAttribute("user") %>&displaymode=edit&dboperation=search_detail"
+                    href="<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&apptProvider=<%=Encode.forUriComponent(String.valueOf(session.getAttribute("user")))%>&displaymode=edit&dboperation=search_detail"
                     onMouseOver="self.status=document.referrer;return true">
                 <fmt:message key="global.btnBack"/></a>
                 <br/>
@@ -247,7 +247,7 @@
             </td>
             <td class="MainTableRightColumn">
                 <table width="95%" border="0" bgcolor="#ffffff" id="apptHistoryTbl">
-                    <tr bgcolor="<%=deepColor%>">
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepColor))%>">
                         <TH width="10%"><b><fmt:message key="demographic.demographicappthistory.msgApptDate"/></b></TH>
                         <TH width="10%"><b><fmt:message key="demographic.demographicappthistory.msgFrom"/></b></TH>
                         <TH width="10%"><b><fmt:message key="demographic.demographicappthistory.msgTo"/></b></TH>
@@ -347,26 +347,26 @@
 
                     %>
                     <tr <%=(deleted) ? "style='text-decoration: line-through' " : "" %>
-                            bgcolor="<%=bodd?weakColor:"white"%>" appt_no="<%=appointment.getId().toString()%>"
-                            demographic_no="<%=demographic_no%>" provider_no="<%=provider!=null?provider.getId():""%>">
+                            bgcolor="<%=bodd?weakColor:"white"%>" appt_no="<%=Encode.forHtmlAttribute(String.valueOf(appointment.getId().toString()))%>"
+                            demographic_no="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>" provider_no="<%=Encode.forHtmlAttribute(String.valueOf(provider!=null?provider.getId():""))%>">
                         <td align="center"><a href=#
-                                              onClick="popupPageNew(360,680, '<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?demographic_no=<%=demographic_no%>&appointment_no=<%=appointment.getId().toString()%>&displaymode=edit&dboperation=search');return false;"><%=appointment.getAppointmentDate()%>
+                                              onClick="popupPageNew(360,680, '<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId().toString()))%>&displaymode=edit&dboperation=search');return false;"><%=Encode.forHtml(String.valueOf(appointment.getAppointmentDate()))%>
                         </a></td>
-                        <td align="center"><%=appointment.getStartTime()%>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(appointment.getStartTime()))%>
                         </td>
-                        <td align="center"><%=appointment.getEndTime()%>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(appointment.getEndTime()))%>
                         </td>
                         <td align="center">
                             <%if (as != null && as.getDescription() != null) {%>
-                            <%=as.getDescription()%>
+                            <%=Encode.forHtml(String.valueOf(as.getDescription()))%>
                             <% } %>
                         </td>
-                        <td><%=appointment.getType() %>
+                        <td><%=Encode.forHtml(String.valueOf(appointment.getType()))%>
                         </td>
-                        <td><%=(reasonCodeName != null && !reasonCodeName.isEmpty()) ? reasonCodeName : ""%><%=(appointment.getReason() != null && !appointment.getReason().isEmpty()) ? ((reasonCodeName != null && !reasonCodeName.isEmpty()) ? " - " : "") + UtilMisc.htmlEscape(appointment.getReason()) : ""%>
+                        <td><%=Encode.forHtml(String.valueOf((reasonCodeName != null && !reasonCodeName.isEmpty()) ? reasonCodeName : ""))%><%=(appointment.getReason() != null && !appointment.getReason().isEmpty()) ? ((reasonCodeName != null && !reasonCodeName.isEmpty()) ? " - " : "") + UtilMisc.htmlEscape(appointment.getReason()) : ""%>
                         </td>
                         <% if (provider != null) {%>
-                        <td><%=(provider.getLastName() == null ? "N/A" : provider.getLastName()) + "," + (provider.getFirstName() == null ? "N/A" : provider.getFirstName())%>
+                        <td><%=Encode.forHtml(String.valueOf((provider.getLastName() == null ? "N/A" : provider.getLastName()) + "," + (provider.getFirstName() == null ? "N/A" : provider.getFirstName())))%>
                         </td>
                         <%} else { %>
                         <td>N/A</td>
@@ -393,13 +393,13 @@
                                 newline = true;
                             }
                         %>
-                        <td>&nbsp;<%=remarks%><% if (newline) {%><br/>&nbsp;<%}%><%=comments%>
+                        <td>&nbsp;<%=Encode.forHtml(String.valueOf(remarks))%><% if (newline) {%><br/>&nbsp;<%}%><%=Encode.forHtml(String.valueOf(comments))%>
                         </td>
                         <%
                             if (IsPropertiesOn.isMultisitesEnable()) {
                                 String[] sbc = siteBgColor.get(appointment.getLocation());
                         %>
-                        <td style='background-color:<%= sbc[0] %>'><%= sbc[1] %>
+                        <td style='background-color:<%=Encode.forHtmlAttribute(String.valueOf(sbc[0]))%>'><%=Encode.forHtml(String.valueOf(sbc[1]))%>
                         </td>
                         <%
                             }
@@ -421,26 +421,26 @@
                                 AppointmentStatus as = appointmentStatusDao.findByStatus(a.getStatus());
                     %>
                     <tr bgcolor="<%=bodd?weakColor:"white"%>">
-                        <td align="center"><%=DateUtils.formatDate(a.getAppointmentDate(), request.getLocale())%>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(a.getAppointmentDate(), request.getLocale())))%>
                         </td>
-                        <td align="center"><%=DateUtils.formatTime(a.getStartTime(), request.getLocale())%>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(DateUtils.formatTime(a.getStartTime(), request.getLocale())))%>
                         </td>
-                        <td align="center"><%=DateUtils.formatTime(a.getEndTime(), request.getLocale())%>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(DateUtils.formatTime(a.getEndTime(), request.getLocale())))%>
                         </td>
                         <td align="center">
                             <%if (as != null && as.getDescription() != null) {%>
-                            <%=as.getDescription()%>
+                            <%=Encode.forHtml(String.valueOf(as.getDescription()))%>
                             <% } %>
                         </td>
-                        <td><%=a.getType() %>
+                        <td><%=Encode.forHtml(String.valueOf(a.getType()))%>
                         </td>
-                        <td><%=StringUtils.trimToEmpty(a.getReason())%>
-                        </td>
-                        <td>
-                            <%=(p != null ? p.getLastName() + "," + p.getFirstName() : "") %> (remote)
+                        <td><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(a.getReason())))%>
                         </td>
                         <td>
-                            &nbsp;<%=a.getStatus() == null ? "" : (a.getStatus().startsWith("N") ? "No Show" : (a.getStatus().startsWith("C") ? "Cancelled" : "")) %>
+                            <%=Encode.forHtml(String.valueOf((p != null ? p.getLastName() + "," + p.getFirstName() : "")))%> (remote)
+                        </td>
+                        <td>
+                            &nbsp;<%=Encode.forHtml(String.valueOf(a.getStatus() == null ? "" : (a.getStatus().startsWith("N") ? "No Show" : (a.getStatus().startsWith("C") ? "Cancelled" : ""))))%>
                         </td>
                     </tr>
                     <%
@@ -464,14 +464,14 @@
                             showRemoteStr = String.valueOf(showRemote);
                         }
                 %>
-                <a href="demographiccontrol.jsp?demographic_no=<%=request.getParameter("demographic_no")%>&last_name=<%=URLEncoder.encode(demolastname,"UTF-8")%>&first_name=<%=URLEncoder.encode(demofirstname,"UTF-8")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nPrevPage%>&limit2=<%=strLimit2%>&showRemote=<%=showRemoteStr%>">
+                <a href="demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&last_name=<%=Encode.forUriComponent(String.valueOf(demolastname))%>&first_name=<%=Encode.forUriComponent(String.valueOf(demofirstname))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nPrevPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>&showRemote=<%=Encode.forUriComponent(String.valueOf(showRemoteStr))%>">
                     <fmt:message key="demographic.demographicappthistory.btnPrevPage"/></a>
                 <%
                     }
 
                     if (nItems >= Integer.parseInt(strLimit2)) {
                 %>
-                <a href="demographiccontrol.jsp?demographic_no=<%=request.getParameter("demographic_no")%>&last_name=<%=URLEncoder.encode(demolastname,"UTF-8")%>&first_name=<%=URLEncoder.encode(demofirstname,"UTF-8")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>&showRemote=<%=showRemote%>">
+                <a href="demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&last_name=<%=Encode.forUriComponent(String.valueOf(demolastname))%>&first_name=<%=Encode.forUriComponent(String.valueOf(demofirstname))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>&showRemote=<%=Encode.forUriComponent(String.valueOf(showRemote))%>">
                     <fmt:message key="demographic.demographicappthistory.btnNextPage"/></a>
                 <%
                     }
@@ -488,7 +488,7 @@
                     <%
                         for (ProviderData prov : providerMap.values()) {
                     %>
-                    <option value="<%=prov.getId()%>"><%=prov.getLastName() + ", " + prov.getFirstName() %>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(prov.getId()))%>"><%=Encode.forHtml(String.valueOf(prov.getLastName() + ", " + prov.getFirstName()))%>
                     </option>
                     <%
                         }

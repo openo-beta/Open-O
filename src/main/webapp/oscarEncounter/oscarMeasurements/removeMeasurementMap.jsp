@@ -31,6 +31,7 @@
 <%@ page
         import="java.util.*, ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig, ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.openo.commn.model.MeasurementMap" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
 
@@ -97,7 +98,7 @@
                                                                                                         name="type"
                                                                                                         value=""> <input
         type="hidden" name="provider_no"
-        value="<%= session.getValue("user") %>">
+        value="<%=Encode.forHtmlAttribute(String.valueOf(session.getValue("user")))%>">
     <table width="100%" height="100%" border="0">
         <tr class="MainTableTopRow">
             <td class="MainTableTopRow" colspan="9" align="left">
@@ -130,7 +131,7 @@
                                         searchstring = "";
                                 %> Search
                                 table for name: <input type="text" size="30" name="searchstring"
-                                                       value="<%= searchstring %>"/> <input type="submit" value="Search"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(searchstring))%>"/> <input type="submit" value="Search"
                                                                                             onclick="return reloadPage()"/>
                             </td>
                         <tr>
@@ -153,17 +154,17 @@
                         %>
                         <tr>
                             <td class="ButtonCell"><input type="submit" value="DELETE"
-                                                          onclick="deleteMapping(<%= mapping.getId() %>)"></td>
+                                                          onclick="deleteMapping(<%=Encode.forJavaScript(String.valueOf(mapping.getId()))%>)"></td>
                             <td class="ButtonCell"><input type="button" value="REMAP"
-                                                          onclick="remap(<%= "'"+ mapping.getId() +"','"+ mapping.getIdentCode() +"','"+ mapping.getName() +"','"+ mapping.getLabType()+"'" %>)">
+                                                          onclick="remap(<%=Encode.forJavaScript(String.valueOf("'"+ mapping.getId() +"','"+ mapping.getIdentCode() +"','"+ mapping.getName() +"','"+ mapping.getLabType()+"'"))%>)">
                             </td>
-                            <td class="TableCell"><%= mapping.getIdentCode() %>
+                            <td class="TableCell"><%=Encode.forHtml(String.valueOf(mapping.getIdentCode()))%>
                             </td>
-                            <td class="TableCell"><%= mapping.getLoincCode() %>
+                            <td class="TableCell"><%=Encode.forHtml(String.valueOf(mapping.getLoincCode()))%>
                             </td>
-                            <td class="TableCell"><%= mapping.getName() %>
+                            <td class="TableCell"><%=Encode.forHtml(String.valueOf(mapping.getName()))%>
                             </td>
-                            <td class="TableCell"><%= mapping.getLabType() %>
+                            <td class="TableCell"><%=Encode.forHtml(String.valueOf(mapping.getLabType()))%>
                             </td>
                         </tr>
                         <%}%>

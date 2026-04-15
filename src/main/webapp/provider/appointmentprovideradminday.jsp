@@ -114,7 +114,7 @@
 <jsp:useBean id="as" class="ca.openosp.openo.appt.ApptStatusData"/>
 <jsp:useBean id="dateTimeCodeBean" class="java.util.HashMap"/>
 
-<c:set var="rand"><%= java.lang.Math.round(java.lang.Math.random() * 2345) %>
+<c:set var="rand"><%=Encode.forHtml(String.valueOf(java.lang.Math.round(java.lang.Math.random() * 2345)))%>
 </c:set>
 
 <%!
@@ -441,7 +441,7 @@
 
 <html>
     <head>
-        <title><%=WordUtils.capitalize(userlastname + ", " + org.apache.commons.lang3.StringUtils.substring(userfirstname, 0, 1)) + "-"%><fmt:message key="provider.appointmentProviderAdminDay.title"/></title>
+        <title><%=Encode.forHtml(String.valueOf(WordUtils.capitalize(userlastname + ", " + org.apache.commons.lang3.StringUtils.substring(userfirstname, 0, 1)) + "-"))%><fmt:message key="provider.appointmentProviderAdminDay.title"/></title>
         <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/global.js"></script>
 
         <link rel="stylesheet"
@@ -519,7 +519,7 @@
                     newGroupNo = s.options[s.selectedIndex].value;
                 }
                 var programId = 0;
-                popupPage(10, 10, "${pageContext.request.contextPath}/provider/providercontrol.jsp?provider_no=<%=loggedInInfo1.getLoggedInProviderNo()%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&default_servicetype=<%=defaultServiceType%>&prescriptionQrCodes=<%=prescriptionQrCodes%>&erx_enable=<%=erx_enable%>&erx_training_mode=<%=erx_training_mode%>&mygroup_no=" + newGroupNo + "&programId_oscarView=" + programId + "<%=eformIds.toString()%><%=ectFormNames.toString()%>");
+                popupPage(10, 10, "${pageContext.request.contextPath}/provider/providercontrol.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&start_hour=<%=Encode.forJavaScript(String.valueOf(startHour))%>&end_hour=<%=Encode.forJavaScript(String.valueOf(endHour))%>&every_min=<%=Encode.forJavaScript(String.valueOf(everyMin))%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&default_servicetype=<%=Encode.forJavaScript(String.valueOf(defaultServiceType))%>&prescriptionQrCodes=<%=Encode.forJavaScript(String.valueOf(prescriptionQrCodes))%>&erx_enable=<%=Encode.forJavaScript(String.valueOf(erx_enable))%>&erx_training_mode=<%=Encode.forJavaScript(String.valueOf(erx_training_mode))%>&mygroup_no=" + newGroupNo + "&programId_oscarView=" + programId + "<%=Encode.forJavaScript(String.valueOf(eformIds.toString()))%><%=Encode.forJavaScript(String.valueOf(ectFormNames.toString()))%>");
             }
 
             function ts1(s) {
@@ -531,15 +531,15 @@
             }
 
             function goFilpView(s) {
-                self.location.href = "<%= request.getContextPath() %>/schedule/scheduleflipview.jsp?originalpage=<%= request.getContextPath() %>/provider/providercontrol.jsp&startDate=<%=year+"-"+month+"-"+day%>" + "&provider_no=" + s;
+                self.location.href = "<%= request.getContextPath() %>/schedule/scheduleflipview.jsp?originalpage=<%= request.getContextPath() %>/provider/providercontrol.jsp&startDate=<%=Encode.forJavaScript(String.valueOf(year+"-"+month+"-"+day))%>" + "&provider_no=" + s;
             }
 
             function goWeekView(s) {
-                self.location.href = "providercontrol.jsp?year=<%=year%>&month=<%=month%>&day=<%=day%>&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1&provider_no=" + s;
+                self.location.href = "providercontrol.jsp?year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=<%=Encode.forJavaScript(String.valueOf(day))%>&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1&provider_no=" + s;
             }
 
             function goZoomView(s, n) {
-                self.location.href = "providercontrol.jsp?year=<%=strYear%>&month=<%=strMonth%>&day=<%=strDay%>&view=1&curProvider=" + s + "&curProviderName=" + encodeURIComponent(n) + "&displaymode=day&dboperation=searchappointmentday";
+                self.location.href = "providercontrol.jsp?year=<%=Encode.forJavaScript(String.valueOf(strYear))%>&month=<%=Encode.forJavaScript(String.valueOf(strMonth))%>&day=<%=Encode.forJavaScript(String.valueOf(strDay))%>&view=1&curProvider=" + s + "&curProviderName=" + encodeURIComponent(n) + "&displaymode=day&dboperation=searchappointmentday";
             }
 
             function findProvider(p, m, d) {
@@ -756,7 +756,7 @@
         //later in the code there is a complex inline ternary function that uses view as a parameter.
         //the following code "caches" the result of this function (as viewString) before setting view=1
         String curProviderString = request.getParameter("curProvider") != null ? "&curProvider=" + request.getParameter("curProvider") : "";
-        String curProviderNameString = request.getParameter("curProviderName") != null ? "&curProviderName=" + URLEncoder.encode(request.getParameter("curProviderName"), StandardCharsets.UTF_8) : "";
+        String curProviderNameString = request.getParameter("curProviderName") != null ? "&curProviderName=" + request.getParameter("curProviderName") : "";
         String viewString = view == 0 ? "&view=0" : "&view=1" + curProviderString + curProviderNameString;
 
         //Edge case: If the 'displaymode' is set to 'day' and 'viewall' is not equal to 1, then 'view' will be set to 1 to display all links.
@@ -821,7 +821,7 @@
                         </li>
                         <% } else { %>
                         <li>
-                            <a href='providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1'>
+                            <a href='providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(curDay))%>&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1'>
                                 <fmt:message key="provider.appointmentProviderAdminDay.schedView"/>
                             </a>
                         </li>
@@ -829,13 +829,13 @@
                     </c:if>
 
                     <li>
-                        <a href='providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday&caseload=1&clProv=<%=loggedInInfo1.getLoggedInProviderNo()%>'><fmt:message key="global.caseload"/></a>
+                        <a href='providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(curDay))%>&view=0&displaymode=day&dboperation=searchappointmentday&caseload=1&clProv=<%=Encode.forUriComponent(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>'><fmt:message key="global.caseload"/></a>
                     </li>
 
                     <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
                         <security:oscarSec roleName="<%=roleName$%>" objectName="_resource" rights="r">
                             <li>
-                                <a href="#" ONCLICK="popupPage2('<%=resourcebaseurl%>');return false;"
+                                <a href="#" ONCLICK="popupPage2('<%=Encode.forJavaScript(String.valueOf(resourcebaseurl))%>');return false;"
                                    title="<fmt:message key="provider.appointmentProviderAdminDay.viewResources"/>"
                                    onmouseover="window.status='<fmt:message key="provider.appointmentProviderAdminDay.viewResources"/>';return true"><fmt:message key="oscarEncounter.Index.clinicalResources"/></a>
                             </li>
@@ -892,7 +892,7 @@
                                     <c:if test="${billingRights}">
                                         <li>
                                             <a HREF="#"
-                                               ONCLICK="popupPage2('<%= request.getContextPath() %>/billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=loggedInInfo1.getLoggedInProviderNo()%>');return false;"
+                                               ONCLICK="popupPage2('<%= request.getContextPath() %>/billing/CA/<%=Encode.forJavaScript(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>');return false;"
                                                TITLE='<fmt:message key="global.genBillReport"/>'
                                                onMouseOver="window.status='<fmt:message key="global.genBillReport"/>';return true"><fmt:message key="global.billing"/></a>
                                         </li>
@@ -919,7 +919,7 @@
                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r">
                                     <li>
                                         <a HREF="#"
-                                           ONCLICK="popupOscarRx(600,1024,'<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>&userName=<%=URLEncoder.encode(loggedInInfo1.getLoggedInProvider().getFirstName()+" "+loggedInInfo1.getLoggedInProvider().getLastName(), StandardCharsets.UTF_8)%>')"
+                                           ONCLICK="popupOscarRx(600,1024,'<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(loggedInInfo1.getLoggedInProvider().getFirstName()+" "+loggedInInfo1.getLoggedInProvider().getLastName(), StandardCharsets.UTF_8)))%>')"
                                            title="<fmt:message key="global.messenger"/>">
                                             <span id="oscar_new_msg"><fmt:message key="global.msg"/></span></a>
                                     </li>
@@ -929,7 +929,7 @@
                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_con" rights="r">
                                     <li id="con">
                                         <a HREF="#"
-                                           ONCLICK="popupOscarRx(625,1024,'<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>&userName=<%=URLEncoder.encode(loggedInInfo1.getLoggedInProvider().getFirstName()+" "+loggedInInfo1.getLoggedInProvider().getLastName(), StandardCharsets.UTF_8)%>')"
+                                           ONCLICK="popupOscarRx(625,1024,'<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(loggedInInfo1.getLoggedInProvider().getFirstName()+" "+loggedInInfo1.getLoggedInProvider().getLastName(), StandardCharsets.UTF_8)))%>')"
                                            title="<fmt:message key="provider.appointmentProviderAdminDay.viewConReq"/>">
                                             <span id="oscar_aged_consults"><fmt:message key="global.con"/></span></a>
                                     </li>
@@ -950,7 +950,7 @@
                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_edoc" rights="r">
                                     <li>
                                         <a HREF="#"
-                                           onclick="popup('700', '1024', '<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=providers&functionid=<%=loggedInInfo1.getLoggedInProviderNo()%>&curUser=<%=loggedInInfo1.getLoggedInProviderNo()%>', 'edocView');"
+                                           onclick="popup('700', '1024', '<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&curUser=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>', 'edocView');"
                                            TITLE='<fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:message key="global.edoc"/></a>
                                     </li>
                                 </security:oscarSec>
@@ -1032,7 +1032,7 @@
                             <li id="helpLink">
                                 <%if (resourcehelpHtml == "") { %>
                                 <a href="javascript:void(0)"
-                                   onClick="popupPage(600,750,'<%=resourcebaseurl%>')"><fmt:message key="global.help"/></a>
+                                   onClick="popupPage(600,750,'<%=Encode.forJavaScript(String.valueOf(resourcebaseurl))%>')"><fmt:message key="global.help"/></a>
                                 <%} else {%>
                                 <div id="help-link">
                                     <a href="javascript:void(0)"
@@ -1043,7 +1043,7 @@
 
                                         <div class="help-body">
 
-                                            <%=resourcehelpHtml%>
+                                            <%=Encode.forHtml(String.valueOf(resourcehelpHtml))%>
                                         </div>
                                         <a href="javascript:void(0)" class="help-close"
                                            onclick="document.getElementById('helpHtml').style.right='-280px';document.getElementById('helpHtml').style.display='none'">(X)</a>
@@ -1077,7 +1077,7 @@
                     </li>
                     <li>
                         <a href="javascript:void(0)" style="display: flex; align-items: flex-end;"
-                           onClick="popupPage(715,680,'providerpreference.jsp?provider_no=<%=loggedInInfo1.getLoggedInProviderNo()%>')"
+                           onClick="popupPage(715,680,'providerpreference.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>')"
                            title='<fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>'>
                             <span class="glyphicon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -1086,7 +1086,7 @@
                                 </svg>
 						    </span>
                             <div>
-                                <c:out value='<%= userfirstname + " " + userlastname %>'/>
+                                <c:out value='<%=Encode.forHtmlAttribute(String.valueOf(userfirstname + " " + userlastname))%>'/>
                             </div>
                         </a>
                     </li>
@@ -1126,19 +1126,19 @@
         <tr id="ivoryBar">
             <td id="dateAndCalendar">
                 <a class="redArrow"
-                   href="providercontrol.jsp?year=<%=year%>&month=<%=month%>&day=<%=isWeekView?(day-7):(day-1)%><%=viewString%>&displaymode=day&dboperation=searchappointmentday<%=isWeekView?"&provider_no="+provNum:""%>&viewall=<%=viewall%>">
+                   href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(isWeekView?(day-7):(day-1)))%><%=Encode.forUriComponent(String.valueOf(viewString))%>&displaymode=day&dboperation=searchappointmentday<%=Encode.forUriComponent(String.valueOf(isWeekView?"&provider_no="+provNum:""))%>&viewall=<%=Encode.forUriComponent(String.valueOf(viewall))%>">
                     <span class="glyphicon glyphicon-step-backward"
                           title="<fmt:message key="provider.appointmentProviderAdminDay.viewPrevDay"/>"></span>
                 </a>
                 <b><span class="dateAppointment"><%
                     if (isWeekView) {
-                %><fmt:message key="provider.appointmentProviderAdminDay.week"/> <%=week%><%
+                %><fmt:message key="provider.appointmentProviderAdminDay.week"/> <%=Encode.forHtml(String.valueOf(week))%><%
                 } else {
-                %><%=formatDate%><%
+                %><%=Encode.forHtml(String.valueOf(formatDate))%><%
                     }
                 %></span></b>
                 <a class="redArrow"
-                   href="providercontrol.jsp?year=<%=year%>&month=<%=month%>&day=<%=isWeekView?(day+7):(day+1)%><%=viewString%>&displaymode=day&dboperation=searchappointmentday<%=isWeekView?"&provider_no="+provNum:""%>&viewall=<%=viewall%>">
+                   href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(isWeekView?(day+7):(day+1)))%><%=Encode.forUriComponent(String.valueOf(viewString))%>&displaymode=day&dboperation=searchappointmentday<%=Encode.forUriComponent(String.valueOf(isWeekView?"&provider_no="+provNum:""))%>&viewall=<%=Encode.forUriComponent(String.valueOf(viewall))%>">
                     <span class="glyphicon glyphicon-step-forward"
                           title="<fmt:message key="provider.appointmentProviderAdminDay.viewNextDay"/>"></span>
                 </a>
@@ -1151,7 +1151,7 @@
                     }
                 %>
 
-                <a id="calendarLink" href="#" onClick="popupPage(425,430,'<%=calendarUrl%>')">
+                <a id="calendarLink" href="#" onClick="popupPage(425,430,'<%=Encode.forJavaScript(String.valueOf(calendarUrl))%>')">
                     <fmt:message key="global.calendar"/>
                 </a>
 
@@ -1169,14 +1169,14 @@
                 <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_day" rights="r">
                         <a class="rightButton top"
-                           href="providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%><%=viewString%>&displaymode=day&dboperation=searchappointmentday"
+                           href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(curDay))%><%=Encode.forUriComponent(String.valueOf(viewString))%>&displaymode=day&dboperation=searchappointmentday"
                            TITLE='<fmt:message key="provider.appointmentProviderAdminDay.viewDaySched"/>'
                            OnMouseOver="window.status='<fmt:message key="provider.appointmentProviderAdminDay.viewDaySched"/>' ; return true"><fmt:message key="global.today"/></a>
                     </security:oscarSec>
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_month" rights="r">
 
                         <a
-                                href="providercontrol.jsp?year=<%=year%>&month=<%=month%>&day=1<%=viewString%>&displaymode=month&dboperation=searchappointmentmonth"
+                                href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=1<%=Encode.forUriComponent(String.valueOf(viewString))%>&displaymode=month&dboperation=searchappointmentmonth"
                                 TITLE='<fmt:message key="provider.appointmentProviderAdminDay.viewMonthSched"/>'
                                 OnMouseOver="window.status='<fmt:message key="provider.appointmentProviderAdminDay.viewMonthSched"/>' ; return true"><fmt:message key="global.month"/></a>
 
@@ -1192,7 +1192,7 @@
                     if (anonymousEnabled) {
                 %>
                 &nbsp;&nbsp;(<a href="#" onclick="popupPage(710, 1024,
-                '<%=(request.getContextPath() + "/PMmodule/createAnonymousClient.jsp")%>?programId=<%=(String)session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID)%>');return false;">New
+                '<%=(request.getContextPath() + "/PMmodule/createAnonymousClient.jsp")%>?programId=<%=Encode.forHtml(String.valueOf((String)session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID)))%>');return false;">New
                 Anon Client</a>)
                 <%
                     }
@@ -1205,7 +1205,7 @@
                     if (epe) {
                 %>
                 &nbsp;&nbsp;(<a href="#" onclick="popupPage(710, 1024,
-                '<%=(request.getContextPath() + "/PMmodule/createPEClient.jsp")%>?programId=<%=(String)session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID)%>');return false;">Phone
+                '<%=(request.getContextPath() + "/PMmodule/createPEClient.jsp")%>?programId=<%=Encode.forHtml(String.valueOf((String)session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID)))%>');return false;">Phone
                 Encounter</a>)
                 <%
                     }
@@ -1228,7 +1228,7 @@
                     <%--                    else {--%>
                     <%--                    if (view == 1) {--%>
                     <%--                %>--%>
-                    <%--                <a href='providercontrol.jsp?year=<%=strYear%>&month=<%=strMonth%>&day=<%=strDay%>&view=0&displaymode=day&dboperation=searchappointmentday'><fmt:message--%>
+                    <%--                <a href='providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(strYear))%>&month=<%=Encode.forUriComponent(String.valueOf(strMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(strDay))%>&view=0&displaymode=day&dboperation=searchappointmentday'><fmt:message--%>
                     <%--                        key="providers.appointmentProviderAdminDay.grpView"/></a>--%>
                     <%--                <% } %>--%>
                     <%--&lt;%&ndash;                <% if (!isMobileOptimized) { %> <fmt:message key="global.hello"/> <% } %>&ndash;%&gt;--%>
@@ -1242,14 +1242,14 @@
                 <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
                     <div>
                         <form method="post" name="findprovider"
-                              onSubmit="findProvider(<%=year%>,<%=month%>,<%=day%>);return false;"
+                              onSubmit="findProvider(<%=Encode.forJavaScript(String.valueOf(year))%>,<%=Encode.forJavaScript(String.valueOf(month))%>,<%=Encode.forJavaScript(String.valueOf(day))%>);return false;"
                               target="apptReception"
                               action="receptionistfindprovider.jsp">
                             <INPUT TYPE="text" NAME="providername" VALUE=""
                                    maxlength="10" class="noprint" title="Find a Provider" placeholder="Enter Lastname">
                             <INPUT TYPE="SUBMIT" NAME="Go"
                                    VALUE='<fmt:message key="provider.appointmentprovideradminmonth.btnGo"/>'
-                                   class="noprint" onClick="findProvider(<%=year%>,<%=month%>,<%=day%>);return false;">
+                                   class="noprint" onClick="findProvider(<%=Encode.forJavaScript(String.valueOf(year))%>,<%=Encode.forJavaScript(String.valueOf(month))%>,<%=Encode.forJavaScript(String.valueOf(day))%>);return false;">
                         </form>
                     </div>
                 </caisi:isModuleLoad>
@@ -1261,7 +1261,7 @@
                             <%
                                 for (nProvider = 0; nProvider < numProvider; nProvider++) {
                             %>
-                            <option value="<%=curProvider_no[nProvider]%>"<%=curProvider_no[nProvider].equals(provNum) ? " selected" : ""%>><%=curProviderName[nProvider]%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(curProvider_no[nProvider]))%>"<%=curProvider_no[nProvider].equals(provNum) ? " selected" : ""%>><%=Encode.forHtml(String.valueOf(curProviderName[nProvider]))%>
                             </option>
                             <%
                                 }
@@ -1276,13 +1276,13 @@
                         <table>
                             <tr>
                                 <td align="right">
-                                    <caisi:ProgramExclusiveView providerNo="<%=loggedInInfo1.getLoggedInProviderNo()%>"
+                                    <caisi:ProgramExclusiveView providerNo="<%=Encode.forHtmlAttribute(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>"
                                                                 value="appointment">
                                         <%
                                             session.setAttribute("infirmaryView_isOscar", "true");
                                         %>
                                     </caisi:ProgramExclusiveView>
-                                    <caisi:ProgramExclusiveView providerNo="<%=loggedInInfo1.getLoggedInProviderNo()%>"
+                                    <caisi:ProgramExclusiveView providerNo="<%=Encode.forHtmlAttribute(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>"
                                                                 value="case-management">
                                         <%
                                             session.setAttribute("infirmaryView_isOscar", "false");
@@ -1311,21 +1311,21 @@
                                             function changeSite(sel) {
                                                 sel.style.backgroundColor = sel.options[sel.selectedIndex].style.backgroundColor;
                                                 var siteName = sel.options[sel.selectedIndex].value;
-                                                var newGroupNo = "<%=(mygroupno == null ? ".default" : mygroupno)%>";
-                                                popupPage(10, 10, "providercontrol.jsp?provider_no=<%=loggedInInfo1.getLoggedInProviderNo()%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "&site=" + siteName);
+                                                var newGroupNo = "<%=Encode.forJavaScript(String.valueOf((mygroupno == null ? ".default" : mygroupno)))%>";
+                                                popupPage(10, 10, "providercontrol.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&start_hour=<%=Encode.forJavaScript(String.valueOf(startHour))%>&end_hour=<%=Encode.forJavaScript(String.valueOf(endHour))%>&every_min=<%=Encode.forJavaScript(String.valueOf(everyMin))%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "&site=" + siteName);
                                             }
                                         </script>
 
                                         <select id="site" name="site" onchange="changeSite(this)"
-                                                style="background-color: <%=( selectedSite == null || siteBgColor.get(selectedSite) == null ? "#FFFFFF" : siteBgColor.get(selectedSite))%>">
+                                                style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(( selectedSite == null || siteBgColor.get(selectedSite) == null ? "#FFFFFF" : siteBgColor.get(selectedSite))))%>">
                                             <option value="none" style="background-color:white">all clinics</option>
                                             <%
                                                 for (int i = 0; i < curUserSites.size(); i++) {
                                             %>
-                                            <option value="<%=curUserSites.get(i).getName()%>"
-                                                    style="background-color:<%=curUserSites.get(i).getBgColor()%>"
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(curUserSites.get(i).getName()))%>"
+                                                    style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(curUserSites.get(i).getBgColor()))%>"
                                                     <%=(curUserSites.get(i).getName().equals(selectedSite)) ? " selected " : ""%> >
-                                                <%=curUserSites.get(i).getName()%>
+                                                <%=Encode.forHtml(String.valueOf(curUserSites.get(i).getName()))%>
                                             </option>
                                             <%
                                                 }
@@ -1352,8 +1352,8 @@
                                                         boolean skip = checkRestriction(restrictions, p.getProviderNo());
                                                         if (!skip) {
                                                 %>
-                                                <option value='<%=p.getProviderNo()%>'<%=mygroupno.equals(p.getProviderNo()) ? " selected" : ""%> >
-                                                    <c:out value="<%=p.getFormattedName()%>"/>
+                                                <option value='<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>'<%=mygroupno.equals(p.getProviderNo()) ? " selected" : ""%> >
+                                                    <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(p.getFormattedName()))%>"/>
                                                 </option>
                                                 <%
                                                         }
@@ -1372,8 +1372,8 @@
 
                                                         if (!skip && (!bMultisites || siteGroups == null || siteGroups.size() == 0 || siteGroups.contains(g.getId().getMyGroupNo()))) {
                                                 %>
-                                                <option value='<%="_grp_"+g.getId().getMyGroupNo()%>' <%=mygroupno.equals(g.getId().getMyGroupNo()) ? "selected" : ""%>>
-                                                    <c:out value="<%=g.getId().getMyGroupNo()%>"/>
+                                                <option value='<%=Encode.forHtmlAttribute(String.valueOf("_grp_"+g.getId().getMyGroupNo()))%>' <%=mygroupno.equals(g.getId().getMyGroupNo()) ? "selected" : ""%>>
+                                                    <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(g.getId().getMyGroupNo()))%>"/>
                                                 </option>
                                                 <%
                                                         }
@@ -1384,8 +1384,8 @@
 
                                                         if (!skip && (!bMultisites || siteProviderNos == null || siteProviderNos.size() == 0 || siteProviderNos.contains(p.getProviderNo()))) {
                                                 %>
-                                                <option value='<%=p.getProviderNo()%>' <%=mygroupno.equals(p.getProviderNo()) ? "selected" : ""%>>
-                                                    <c:out value="<%=p.getFormattedName()%>"/>
+                                                <option value='<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>' <%=mygroupno.equals(p.getProviderNo()) ? "selected" : ""%>>
+                                                    <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(p.getFormattedName()))%>"/>
                                                 </option>
                                                 <%
                                                         }
@@ -1548,7 +1548,7 @@
                                 }
                                 bColor = bColor ? false : true;
                         %>
-                        <td valign="top" width="<%=isWeekView?100/7:100/numProvider%>%">
+                        <td valign="top" width="<%=Encode.forHtmlAttribute(String.valueOf(isWeekView?100/7:100/numProvider))%>%">
                             <!-- for the first providers's schedule -->
 
                             <table bgcolor="#486ebd">
@@ -1561,7 +1561,7 @@
                                             <%
                                                 if (isWeekView) {
                                             %>
-                                            <b><a href="providercontrol.jsp?year=<%=year%>&month=<%=month%>&day=<%=day%>&view=0&displaymode=day&dboperation=searchappointmentday"><%=formatDate%>
+                                            <b><a href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(day))%>&view=0&displaymode=day&dboperation=searchappointmentday"><%=Encode.forHtml(String.valueOf(formatDate))%>
                                             </a></b>
                                             <%
                                             } else {
@@ -1569,34 +1569,34 @@
                                             <input type='button'
                                                    value="<fmt:message key="provider.appointmentProviderAdminDay.weekLetter"/>"
                                                    name='weekview'
-                                                   onClick="goWeekView('<%=curProvider_no[nProvider]%>')"
+                                                   onClick="goWeekView('<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>')"
                                                    title="<fmt:message key="provider.appointmentProviderAdminDay.weekView"/>"
                                                    style="color:black" class="noprint">
                                             <% if (OscarProperties.getInstance().isPropertyActive("view.appointmentdaysheetbutton")) { %>
                                             <input type='button' value="DS" name='daysheetview'
-                                                   onClick=goDaySheet('<%=curProvider_no[nProvider]%>')
+                                                   onClick=goDaySheet('<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>')
                                                    title="Day Sheet" style="color:black">
                                             <% } %>
                                             <input type='button'
                                                    value="<fmt:message key="provider.appointmentProviderAdminDay.searchLetter"/>"
                                                    name='searchview'
-                                                   onClick="goSearchView('<%=curProvider_no[nProvider]%>')"
+                                                   onClick="goSearchView('<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>')"
                                                    title="<fmt:message key="provider.appointmentProviderAdminDay.searchView"/>"
                                                    style="color:black" class="noprint">
                                             <input type='radio' name='flipview' class="noprint"
-                                                   onClick="goFilpView('<%=curProvider_no[nProvider]%>')"
+                                                   onClick="goFilpView('<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>')"
                                                    title="Flip view">
                                             <a href=#
-                                               onClick="goZoomView('<%=curProvider_no[nProvider]%>','<%= Encode.forJavaScript(curProviderName[nProvider])%>')"
-                                               onDblClick="goFilpView('<%=curProvider_no[nProvider]%>')"
+                                               onClick="goZoomView('<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>','<%= Encode.forJavaScript(curProviderName[nProvider])%>')"
+                                               onDblClick="goFilpView('<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>')"
                                                title='<fmt:message key="provider.appointmentProviderAdminDay.zoomView"/>'>
-                                                <c:out value='<%=curProviderName[nProvider]  + " (" + appointmentCount + ") " %>'/>
+                                                <c:out value='<%=Encode.forHtmlAttribute(String.valueOf(curProviderName[nProvider]  + " (" + appointmentCount + ") "))%>'/>
                                             </a>
                                                 <oscar:oscarPropertiesCheck value="yes" property="TOGGLE_REASON_BY_PROVIDER" defaultVal="yes">
                                                     <a href="#"
                                                        class="expand-reason-btn"
-                                                       data-provider="<%= curProvider_no[nProvider] %>"
-                                                       onclick="toggleReason(event, '<%= curProvider_no[nProvider] %>');"
+                                                       data-provider="<%=Encode.forHtmlAttribute(String.valueOf(curProvider_no[nProvider]))%>"
+                                                       onclick="toggleReason(event, '<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>');"
                                                        title="<fmt:message key='provider.appointmentProviderAdminDay.expandreason'/>"
                                                     >*</a>
                                                 </oscar:oscarPropertiesCheck>
@@ -1706,15 +1706,15 @@
                                                 <tr>
                                                     <td class="<%=bColorHour?"scheduleTime00":"scheduleTimeNot00"%>">
                                                         <a href="javascript:void(0)"
-                                                           onClick="confirmPopupPage(600,780, '<%= request.getContextPath() %>/appointment/addappointment.jsp?provider_no=<%=curProvider_no[nProvider]%>&bFirstDisp=<%=true%>&year=<%=strYear%>&month=<%=strMonth%>&day=<%=strDay%>&start_time=<%=(hourCursor>9?(""+hourCursor):("0"+hourCursor))+":"+ (minuteCursor<10?"0":"") +minuteCursor%>&end_time=<%=(hourCursor>9?(""+hourCursor):("0"+hourCursor))+":"+(minuteCursor+depth-1)%>&duration=<%=dateTimeCodeBean.get("duration"+hourmin.toString())%>','<%=dateTimeCodeBean.get("confirm"+hourmin.toString())%>','<%=allowDay%>','<%=allowWeek%>');return false;"
-                                                           title='<%=MyDateFormat.getTimeXX_XXampm(hourCursor +":"+ (minuteCursor<10?"0":"")+minuteCursor)%> - <%=MyDateFormat.getTimeXX_XXampm(hourCursor +":"+((minuteCursor+depth-1)<10?"0":"")+(minuteCursor+depth-1))%>'
+                                                           onClick="confirmPopupPage(600,780, '<%= request.getContextPath() %>/appointment/addappointment.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&bFirstDisp=<%=true%>&year=<%=Encode.forJavaScript(String.valueOf(strYear))%>&month=<%=Encode.forJavaScript(String.valueOf(strMonth))%>&day=<%=Encode.forJavaScript(String.valueOf(strDay))%>&start_time=<%=Encode.forJavaScript(String.valueOf((hourCursor>9?(""+hourCursor):("0"+hourCursor))+":"+ (minuteCursor<10?"0":"") +minuteCursor))%>&end_time=<%=Encode.forJavaScript(String.valueOf((hourCursor>9?(""+hourCursor):("0"+hourCursor))+":"+(minuteCursor+depth-1)))%>&duration=<%=Encode.forJavaScript(String.valueOf(dateTimeCodeBean.get("duration"+hourmin.toString())))%>','<%=Encode.forJavaScript(String.valueOf(dateTimeCodeBean.get("confirm"+hourmin.toString())))%>','<%=Encode.forJavaScript(String.valueOf(allowDay))%>','<%=Encode.forJavaScript(String.valueOf(allowWeek))%>');return false;"
+                                                           title='<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getTimeXX_XXampm(hourCursor +":"+ (minuteCursor<10?"0":"")+minuteCursor)))%> - <%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getTimeXX_XXampm(hourCursor +":"+((minuteCursor+depth-1)<10?"0":"")+(minuteCursor+depth-1))))%>'
                                                            class="adhour">
-                                                            <%=(hourCursor < 10 ? "0" : "") + hourCursor + ":"%><%=(minuteCursor < 10 ? "0" : "") + minuteCursor%>&nbsp;</a>
+                                                            <%=Encode.forHtml(String.valueOf((hourCursor < 10 ? "0" : "") + hourCursor + ":"))%><%=Encode.forHtml(String.valueOf((minuteCursor < 10 ? "0" : "") + minuteCursor))%>&nbsp;</a>
                                                     </td>
                                                     <td class="hourmin"
-                                                        width='1%' <%=dateTimeCodeBean.get("color" + hourmin.toString()) != null ? ("bgcolor=" + dateTimeCodeBean.get("color" + hourmin.toString())) : ""%>
-                                                        title='<%=dateTimeCodeBean.get("description"+hourmin.toString())%>'>
-                                                                        <span color='<%=(dateTimeCodeBean.get("color"+hourmin.toString())!=null && !dateTimeCodeBean.get("color"+hourmin.toString()).equals(bgcolordef) )?"black":"white"%>'><%=hourmin.toString()%>
+                                                        width='1%' <%=Encode.forHtml(String.valueOf(dateTimeCodeBean.get("color" + hourmin.toString()) != null ? ("bgcolor=" + dateTimeCodeBean.get("color" + hourmin.toString())) : ""))%>
+                                                        title='<%=Encode.forHtmlAttribute(String.valueOf(dateTimeCodeBean.get("description"+hourmin.toString())))%>'>
+                                                                        <span color='<%=(dateTimeCodeBean.get("color"+hourmin.toString())!=null && !dateTimeCodeBean.get("color"+hourmin.toString()).equals(bgcolordef) )?"black":"white"%>'><%=Encode.forHtml(String.valueOf(hourmin.toString()))%>
                                                                         </span>
                                                     </td>
                                                             <%
@@ -1835,13 +1835,13 @@
                                                          //multi-site. if a site have been selected, only display appointment in that site
                                                    if (!bMultisites || (selectedSite == null && CurrentSiteMap.get(sitename) != null) || sitename.equals(selectedSite)) {
                                                     %>
-                                                    <td class="appt" bgcolor='<%=as.getBgColor()%>'
-                                                        rowspan="<%=iRows%>"
+                                                    <td class="appt" bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(as.getBgColor()))%>'
+                                                        rowspan="<%=Encode.forHtmlAttribute(String.valueOf(iRows))%>"
                                                         nowrap>
                                                         <!-- multisites : add colour-coded to the "location" value of that appointment. -->
                                                         <%if (bMultisites) {%>
-                                                        <span title="<%= sitename %>"
-                                                              style="background-color:<%=siteBgColor.get(sitename)%>;">&nbsp;</span>|
+                                                        <span title="<%=Encode.forHtmlAttribute(String.valueOf(sitename))%>"
+                                                              style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(siteBgColor.get(sitename)))%>;">&nbsp;</span>|
                                                         <%} %>
 
                                                         <%
@@ -1850,8 +1850,8 @@
                                                         %>
                                                         <!-- Short letters -->
                                                         <a class="apptStatus" href="javascript:void(0)"
-                                                           onclick="refreshSameLoc('providercontrol.jsp?appointment_no=<%=appointment.getId()%>&amp;provider_no=<%=curProvider_no[nProvider]%>&amp;status=&amp;statusch=<%=nextStatus%>&amp;year=<%=year%>&amp;month=<%=month%>&amp;day=<%=day%>&amp;<%=viewString%>&amp;displaymode=addstatus&amp;dboperation=updateapptstatus&amp;viewall=${ not empty param.viewall ? param.viewall : "0" }<%= isWeekView ? "&amp;viewWeek=1" : "" %>');"
-                                                           title='<c:out value="<%=as.getTitleString(request.getLocale())%>" />'>
+                                                           onclick="refreshSameLoc('providercontrol.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&amp;provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&amp;status=&amp;statusch=<%=Encode.forJavaScript(String.valueOf(nextStatus))%>&amp;year=<%=Encode.forJavaScript(String.valueOf(year))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(month))%>&amp;day=<%=Encode.forJavaScript(String.valueOf(day))%>&amp;<%=Encode.forJavaScript(String.valueOf(viewString))%>&amp;displaymode=addstatus&amp;dboperation=updateapptstatus&amp;viewall=${ not empty param.viewall ? param.viewall : "0" }<%= isWeekView ? "&amp;viewWeek=1" : "" %>');"
+                                                           title='<c:out value="<%=Encode.forHtmlAttribute(String.valueOf(as.getTitleString(request.getLocale())))%>" />'>
                                                             <%
                                                                 }
                                                                 if (nextStatus != null) {
@@ -1865,16 +1865,16 @@
 
                                                             %>
                                                             <span class='short_letters'
-                                                                  style='color:<%= colour%>;border:0;height:10px'>
+                                                                  style='color:<%=Encode.forHtmlAttribute(String.valueOf(colour))%>;border:0;height:10px'>
                                                                     [<%=UtilMisc.htmlEscape(as.getShortLetters())%>]
                                                             </span>
                                                             <%
                                                             } else {
                                                             %>
 
-                                                            <img src="<%= request.getContextPath() %>/images/<%=as.getImageName()%>"
+                                                            <img src="<%= request.getContextPath() %>/images/<%=Encode.forHtmlAttribute(String.valueOf(as.getImageName()))%>"
                                                                  border="0" height="10"
-                                                                 alt="<c:out value='<%=(as.getTitleString(request.getLocale()).length()>0)?as.getTitleString(request.getLocale()):as.getTitle()%>' /> ">
+                                                                 alt="<c:out value='<%=Encode.forHtmlAttribute(String.valueOf((as.getTitleString(request.getLocale()).length()>0)?as.getTitleString(request.getLocale()):as.getTitle()))%>' /> ">
 
                                                             <%
                                                                     }
@@ -1943,15 +1943,15 @@
                                                             boolean showTooltipDot = OscarProperties.getInstance().getBooleanProperty("SHOW_APPT_REASON_TOOLTIP", "yes");
                                                         %>
                                                         <a href="javascript:void(0)"
-                                                           class="<%= showTooltipDot ? "appt-reason-tooltip appt-tooltip-provider-" + curProvider_no[nProvider] : "" %>"
-                                                           onClick="popupPage(600,780,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?appointment_no=<%=appointment.getId()%>&provider_no=<%=curProvider_no[nProvider]%>&year=<%=year%>&month=<%=month%>&day=<%=day%>&start_time=<%=iS+":"+iSm%>&demographic_no=0&displaymode=edit&dboperation=search');return false;"
-                                                           <%= showTooltipDot ? "data-title-full=\"" + dotTooltipFull + "\" data-title-short=\"" + dotTooltipShort + "\" title=\"" + dotTooltipFull + "\"" : "" %>>
+                                                           class="<%=Encode.forHtmlAttribute(String.valueOf(showTooltipDot ? "appt-reason-tooltip appt-tooltip-provider-" + curProvider_no[nProvider] : ""))%>"
+                                                           onClick="popupPage(600,780,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=<%=Encode.forJavaScript(String.valueOf(day))%>&start_time=<%=Encode.forJavaScript(String.valueOf(iS+":"+iSm))%>&demographic_no=0&displaymode=edit&dboperation=search');return false;"
+                                                           <%=Encode.forHtml(String.valueOf(showTooltipDot ? "data-title-full=\"" + dotTooltipFull + "\" data-title-short=\"" + dotTooltipShort + "\" title=\"" + dotTooltipFull + "\"" : ""))%>>
                                                             <span>
                                                             .<%=(view == 0 && numAvailProvider != 1) ? (name.length() > len ? name.substring(0, len).toUpperCase() : Encode.forHtmlContent(name.toUpperCase())) : Encode.forHtmlContent(name.toUpperCase())%>
                                                             </span>
                                                         </a><!--Inline display of reason -->
 
-                                                        <span class="reason reason_<%=curProvider_no[nProvider]%> hideReason">
+                                                        <span class="reason reason_<%=Encode.forHtmlAttribute(String.valueOf(curProvider_no[nProvider]))%> hideReason">
                                                             <%= Encode.forHtmlContent(reasonCodeName) %>
                                                         </span>
 
@@ -1960,7 +1960,7 @@
                                                         } else {
                                                         %> <% if (tickler_no.compareTo("") != 0) {%>
                                                             <a href="#"
-                                                               onClick="popupPage(700,1024, '<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=demographic_no%>');return false;"
+                                                               onClick="popupPage(700,1024, '<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>');return false;"
                                                                title="<fmt:message key="provider.appointmentProviderAdminDay.ticklerMsg"/>: <%=UtilMisc.htmlEscape(tickler_note)%>"><span
                                                                     color="red">!</span></a>
                                                         <%} %>
@@ -2043,9 +2043,9 @@
                                                             // Check if tooltips should be shown (defaults to true if property not set)
                                                             boolean showTooltip = OscarProperties.getInstance().getBooleanProperty("SHOW_APPT_REASON_TOOLTIP", "yes");
                                                         %>
-                                                        <a class="apptLink<%= showTooltip ? " appt-reason-tooltip appt-tooltip-provider-" + curProvider_no[nProvider] : "" %>" href="javascript:void(0)"
-                                                           onClick="popupPage(535,860,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?appointment_no=<%=appointment.getId()%>&provider_no=<%=curProvider_no[nProvider]%>&year=<%=year%>&month=<%=month%>&day=<%=day%>&start_time=<%=iS+":"+iSm%>&demographic_no=<%=demographic_no%>&displaymode=edit&dboperation=search');return false;"
-                                                           <%= showTooltip ? "data-title-full=\"" + tooltipFull + "\" data-title-short=\"" + tooltipShort + "\" title=\"" + tooltipFull + "\"" : "" %> >
+                                                        <a class="apptLink<%=Encode.forHtmlAttribute(String.valueOf(showTooltip ? " appt-reason-tooltip appt-tooltip-provider-" + curProvider_no[nProvider] : ""))%>" href="javascript:void(0)"
+                                                           onClick="popupPage(535,860,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=<%=Encode.forJavaScript(String.valueOf(day))%>&start_time=<%=Encode.forJavaScript(String.valueOf(iS+":"+iSm))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&displaymode=edit&dboperation=search');return false;"
+                                                           <%=Encode.forHtml(String.valueOf(showTooltip ? "data-title-full=\"" + tooltipFull + "\" data-title-short=\"" + tooltipShort + "\" title=\"" + tooltipFull + "\"" : ""))%> >
                                                             <%=(name.length() > len ? Encode.forHtmlContent(name.substring(0, len)) : Encode.forHtmlContent(name))%>
                                                         </a>
                                                         <% if (len == lenLimitedL || view != 0 || numAvailProvider == 1) {%>
@@ -2054,7 +2054,7 @@
                                                         <oscar:oscarPropertiesCheck
                                                                 property="eform_in_appointment" value="yes">
                                                             &#124; <b><a href="#"
-                                                                         onclick="popupPage(500,1024,'<%= request.getContextPath() %>/eform/efmformslistadd.jsp?parentAjaxId=eforms&demographic_no=<%=demographic_no%>&appointment=<%=appointment.getId()%>'); return false;"
+                                                                         onclick="popupPage(500,1024,'<%= request.getContextPath() %>/eform/efmformslistadd.jsp?parentAjaxId=eforms&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&appointment=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>'); return false;"
                                                                          title="eForm Library">F</a></b>
                                                         </oscar:oscarPropertiesCheck>
 
@@ -2069,7 +2069,7 @@
                                                                 + "&curProviderNo="
                                                                 + curProvider_no[nProvider]
                                                                 + "&reason="
-                                                                + URLEncoder.encode(Encode.forHtmlContent(reason), StandardCharsets.UTF_8)
+                                                                + Encode.forHtmlContent(reason)
                                                                 + "&reasonCode=" + (appointment.getReasonCode() != null ? appointment.getReasonCode() : "")
                                                                 + "&encType="
                                                                 + URLEncoder.encode("face to face encounter with client", "UTF-8")
@@ -2086,13 +2086,13 @@
 
                                                         <% if (showOldEchartLink) { %>
                                                         &#124; <a href="javascript:void(0)" class="encounterBtn"
-                                                                  onClick="popupWithApptNo(710, 1024,'<%=eURL%>','encounter',<%=appointment.getId()%>);return false;"
+                                                                  onClick="popupWithApptNo(710, 1024,'<%=Encode.forJavaScript(String.valueOf(eURL))%>','encounter',<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>);return false;"
                                                                   title="<fmt:message key="global.encounter"/>">
                                                         <fmt:message key="provider.appointmentProviderAdminDay.btnE"/></a>
                                                         <% }
                                                         } // end if not is week view %>
 
-                                                        <%= (bShortcutIntakeForm) ? "| <a href='#' onClick='popupPage(700, 1024, \"formIntake.jsp?demographic_no=" + demographic_no + "\")' title='Intake Form'>In</a>" : "" %>
+                                                        <%=(bShortcutIntakeForm) ? "| <a href='#' onClick='popupPage(700, 1024, \"formIntake.jsp?demographic_no=" + demographic_no + "\")' title='Intake Form'>In</a>" : ""%>
 
                                                         <!-- billing code block -->
                                                         <% if (!isWeekView) { %>
@@ -2101,20 +2101,20 @@
                                                                 if (status.indexOf('B') == -1) {
                                                             %>
                                                             &#124; <a href=#
-                                                                      onClick='popupPage(755,1200, "<%=request.getContextPath()%>/billing.do?billRegion=<%=URLEncoder.encode(prov, StandardCharsets.UTF_8)%>&billForm=<%=URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8)%>&hotclick=<%=URLEncoder.encode("", StandardCharsets.UTF_8)%>&appointment_no=<%=appointment.getId()%>&demographic_name=<%=URLEncoder.encode(name, StandardCharsets.UTF_8)%>&status=<%=status%>&demographic_no=<%=demographic_no%>&providerview=<%=curProvider_no[nProvider]%>&user_no=<%=loggedInInfo1.getLoggedInProviderNo()%>&apptProvider_no=<%=curProvider_no[nProvider]%>&xml_provider=<%=curProvider_no[nProvider]%>&appointment_date=<%=year+"-"+month+"-"+day%>&start_time=<%=start_time%>&bNewForm=1");return false;'
+                                                                      onClick='popupPage(755,1200, "<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(prov, StandardCharsets.UTF_8)))%>&billForm=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8)))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("", StandardCharsets.UTF_8)))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(name, StandardCharsets.UTF_8)))%>&status=<%=Encode.forJavaScript(String.valueOf(status))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&providerview=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&user_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&xml_provider=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(year+"-"+month+"-"+day))%>&start_time=<%=Encode.forJavaScript(String.valueOf(start_time))%>&bNewForm=1");return false;'
                                                                       title="<fmt:message key="global.billingtag"/>"><fmt:message key="provider.appointmentProviderAdminDay.btnB"/></a>
                                                             <%
                                                             } else {
                                                                 if (caisiBillingPreferenceNotDelete != null && caisiBillingPreferenceNotDelete.equals("1")) {
                                                             %>
                                                             &#124; <a href=#
-                                                                      onClick='onUpdatebill("<%= request.getContextPath() %>/billing/CA/ON/billingEditWithApptNo.jsp?billRegion=<%=URLEncoder.encode(prov, StandardCharsets.UTF_8)%>&billForm=<%=URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8)%>&hotclick=<%=URLEncoder.encode("", StandardCharsets.UTF_8)%>&appointment_no=<%=appointment.getId()%>&demographic_name=<%=URLEncoder.encode(name, StandardCharsets.UTF_8)%>&status=<%=status%>&demographic_no=<%=demographic_no%>&providerview=<%=curProvider_no[nProvider]%>&user_no=<%=loggedInInfo1.getLoggedInProviderNo()%>&apptProvider_no=<%=curProvider_no[nProvider]%>&appointment_date=<%=year+"-"+month+"-"+day%>&start_time=<%=iS+":"+iSm%>&bNewForm=1");return false;'
+                                                                      onClick='onUpdatebill("<%= request.getContextPath() %>/billing/CA/ON/billingEditWithApptNo.jsp?billRegion=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(prov, StandardCharsets.UTF_8)))%>&billForm=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8)))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("", StandardCharsets.UTF_8)))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(name, StandardCharsets.UTF_8)))%>&status=<%=Encode.forJavaScript(String.valueOf(status))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&providerview=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&user_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(year+"-"+month+"-"+day))%>&start_time=<%=Encode.forJavaScript(String.valueOf(iS+":"+iSm))%>&bNewForm=1");return false;'
                                                                       title="<fmt:message key="global.billingtag"/>">=<fmt:message key="provider.appointmentProviderAdminDay.btnB"/></a>
                                                             <%
                                                             } else {
                                                             %>
                                                             &#124; <a href=#
-                                                                      onClick='onUnbilled("<%= request.getContextPath() %>/billing/CA/<%=prov%>/billingDeleteWithoutNo.jsp?status=<%=status%>&appointment_no=<%=appointment.getId()%>");return false;'
+                                                                      onClick='onUnbilled("<%= request.getContextPath() %>/billing/CA/<%=Encode.forJavaScript(String.valueOf(prov))%>/billingDeleteWithoutNo.jsp?status=<%=Encode.forJavaScript(String.valueOf(status))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>");return false;'
                                                                       title="<fmt:message key="global.billingtag"/>">-<fmt:message key="provider.appointmentProviderAdminDay.btnB"/></a>
                                                             <%
                                                                     }
@@ -2127,7 +2127,7 @@
 
                                                             &#124; <a class="masterBtn"
                                                                       href="javascript:void(0)"
-                                                                      onClick="popupWithApptNo(700,1024, '<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=demographic_no%>&apptProvider=<%=curProvider_no[nProvider]%>&appointment=<%=appointment.getId()%>&displaymode=edit&dboperation=search_detail','master',<%=appointment.getId()%>)"
+                                                                      onClick="popupWithApptNo(700,1024, '<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&apptProvider=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&appointment=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&displaymode=edit&dboperation=search_detail','master',<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>)"
                                                                       title="<fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>"><fmt:message key="provider.appointmentProviderAdminDay.btnM"/></a>
 
                                                         </c:if>
@@ -2137,7 +2137,7 @@
 
                                                         <c:if test="${doctorLinkRights}">
                                                             &#124; <a href=#
-                                                                      onClick="popupWithApptNo(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>&demographicNo=<%=demographic_no%>','rx',<%=appointment.getId()%>)"
+                                                                      onClick="popupWithApptNo(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>','rx',<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>)"
                                                                       title="<fmt:message key="global.prescriptions"/>"><fmt:message key="global.rx"/>
                                                         </a>
 
@@ -2156,10 +2156,10 @@
                                                                         }
                                                                     }
                                                                 %>
-                                                                <%= (providerColor != null ? "<span style=\"background-color:" + providerColor + ";width:5px\">&nbsp;</span>" : "") %>
+                                                                <%=(providerColor != null ? "<span style=\"background-color:" + providerColor + ";width:5px\">&nbsp;</span>" : "")%>
                                                             </oscar:oscarPropertiesCheck>
 
-                                                            <span class='reason reason_<%=curProvider_no[nProvider]%> hideReason'>
+                                                            <span class='reason reason_<%=Encode.forHtmlAttribute(String.valueOf(curProvider_no[nProvider]))%> hideReason'>
                                                         &#124; <strong><i>
                                                             <%= Encode.forHtmlContent(reasonCodeName)%>
                                                         </i></strong>
@@ -2168,12 +2168,12 @@
 
                                                         <!-- add one link to caisi Program Management Module -->
                                                         <caisi:isModuleLoad moduleName="caisi">
-                                                            <a href=${pageContext.servletContext.contextPath}'/PMmodule/ClientManager.do?id=<%=demographic_no%>'
+                                                            <a href=${pageContext.servletContext.contextPath}'/PMmodule/ClientManager.do?id=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>'
                                                                title="Program Management">|P</a>
                                                         </caisi:isModuleLoad>
 
-                                                        <span class="birthday-cake" data-month="<%= monthDay %>"
-                                                              data-bday="<%= demBday %>" style="display:none;">
+                                                        <span class="birthday-cake" data-month="<%=Encode.forHtmlAttribute(String.valueOf(monthDay))%>"
+                                                              data-bday="<%=Encode.forHtmlAttribute(String.valueOf(demBday))%>" style="display:none;">
                                                             &#124;<img
                                                                 src="${pageContext.servletContext.contextPath}/images/cake.gif"
                                                                 width="14" height="14"
@@ -2206,7 +2206,7 @@
                                                                 defaultVal="false">
 
                                                             <c:set var="demographicNo"
-                                                                   value="<%=demographic_no %>"/>
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
                                                             <jsp:include page="appointmentPregnancy.jspf">
                                                                 <jsp:param value="${demographicNo}"
                                                                            name="demographicNo"/>
@@ -2283,48 +2283,48 @@
                         newWindow("<%= request.getContextPath() %>/administration/", "admin");
                         return false;  //run code for 'A'dmin
                     case <fmt:message key="global.billingShortcut"/> :
-                        popupOscarRx(600, 1024, '<%= request.getContextPath() %>/billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=loggedInInfo1.getLoggedInProviderNo()%>');
+                        popupOscarRx(600, 1024, '<%= request.getContextPath() %>/billing/CA/<%=Encode.forJavaScript(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>');
                         return false;  //code for 'B'illing
                     case <fmt:message key="global.calendarShortcut"/> :
-                        popupOscarRx(425, 430, '<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/provider/providercontrol.jsp&year=<%=strYear%>&month=<%=strMonth%>&param=<%=URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday","UTF-8")%>');
+                        popupOscarRx(425, 430, '<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/provider/providercontrol.jsp&year=<%=Encode.forJavaScript(String.valueOf(strYear))%>&month=<%=Encode.forJavaScript(String.valueOf(strMonth))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday","UTF-8")))%>');
                         return false;  //run code for 'C'alendar
                     case <fmt:message key="global.edocShortcut"/> :
-                        popupOscarRx('700', '1024', '<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=providers&functionid=<%=loggedInInfo1.getLoggedInProviderNo()%>&curUser=<%=loggedInInfo1.getLoggedInProviderNo()%>', 'edocView');
+                        popupOscarRx('700', '1024', '<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&curUser=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>', 'edocView');
                         return false;  //run code for e'D'oc
                     case <fmt:message key="global.resourcesShortcut"/> :
-                        popupOscarRx(550, 687, '<%=resourcebaseurl%>');
+                        popupOscarRx(550, 687, '<%=Encode.forJavaScript(String.valueOf(resourcebaseurl))%>');
                         return false; // code for R'e'sources
                     case <fmt:message key="global.helpShortcut"/> :
-                        popupOscarRx(600, 750, '<%=resourcebaseurl%>');
+                        popupOscarRx(600, 750, '<%=Encode.forJavaScript(String.valueOf(resourcebaseurl))%>');
                         return false;  //run code for 'H'elp
                     case <fmt:message key="global.ticklerShortcut"/> : {
                         popupOscarRx(700, 1024, '<%= request.getContextPath() %>/tickler/ticklerMain.jsp', '<fmt:message key="global.tickler"/>') //run code for t'I'ckler
                         return false;
                     }
                     case <fmt:message key="global.labShortcut"/> :
-                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>', '<fmt:message key="global.lab"/>');
+                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>', '<fmt:message key="global.lab"/>');
                         return false;  //run code for 'L'ab
                     case <fmt:message key="global.msgShortcut"/> :
-                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>&userName=<%=URLEncoder.encode(userfirstname+" "+userlastname, StandardCharsets.UTF_8)%>');
+                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname, StandardCharsets.UTF_8)))%>');
                         return false;  //run code for 'M'essage
                     case <fmt:message key="global.monthShortcut"/> :
-                        window.open("providercontrol.jsp?year=<%=year%>&month=<%=month%>&day=1<%=viewString%>&displaymode=month&dboperation=searchappointmentmonth", "_self");
+                        window.open("providercontrol.jsp?year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=1<%=Encode.forJavaScript(String.valueOf(viewString))%>&displaymode=month&dboperation=searchappointmentmonth", "_self");
                         return false;  //run code for Mo'n'th
                     case <fmt:message key="global.conShortcut"/> :
-                        popupOscarRx(625, 1024, '<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>&userName=<%=URLEncoder.encode(userfirstname+" "+userlastname, StandardCharsets.UTF_8)%>');
+                        popupOscarRx(625, 1024, '<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname, StandardCharsets.UTF_8)))%>');
                         return false;  //run code for c'O'nsultation
                     case <fmt:message key="global.reportShortcut"/> :
                         popupOscarRx(650, 1024, '<%= request.getContextPath() %>/report/reportindex.jsp', 'reportPage');
                         return false;  //run code for 'R'eports
                     case <fmt:message key="global.prefShortcut"/> : {
-                        popupOscarRx(715, 680, 'providerpreference.jsp?provider_no=<%=loggedInInfo1.getLoggedInProviderNo()%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&mygroup_no=<%=mygroupno%>'); //run code for 'P'references
+                        popupOscarRx(715, 680, 'providerpreference.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>&start_hour=<%=Encode.forJavaScript(String.valueOf(startHour))%>&end_hour=<%=Encode.forJavaScript(String.valueOf(endHour))%>&every_min=<%=Encode.forJavaScript(String.valueOf(everyMin))%>&mygroup_no=<%=Encode.forJavaScript(String.valueOf(mygroupno))%>'); //run code for 'P'references
                         return false;
                     }
                     case <fmt:message key="global.searchShortcut"/> :
                         popupOscarRx(550, 687, '<%= request.getContextPath() %>/demographic/search.jsp');
                         return false;  //run code for 'S'earch
                     case <fmt:message key="global.dayShortcut"/> :
-                        window.open("providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%><%=viewString%>&displaymode=day&dboperation=searchappointmentday", "_self");
+                        window.open("providercontrol.jsp?year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&day=<%=Encode.forJavaScript(String.valueOf(curDay))%><%=Encode.forJavaScript(String.valueOf(viewString))%>&displaymode=day&dboperation=searchappointmentday", "_self");
                         return false;  //run code for 'T'oday
                     case <fmt:message key="global.viewShortcut"/> : {
                         <% if(request.getParameter("viewall")!=null && request.getParameter("viewall").equals("1") ) { %>
@@ -2358,11 +2358,11 @@
     <script>
         jQuery(document).ready(function () {
             jQuery('.ds-btn').click(function () {
-                //var provider_no = '<%=loggedInInfo1.getLoggedInProviderNo()%>';
+                //var provider_no = '<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>';
                 var provider_no = jQuery(this).attr('data-provider_no');
-                var y = '<%=request.getParameter("year")%>';
-                var m = '<%=request.getParameter("month")%>';
-                var d = '<%=request.getParameter("day")%>';
+                var y = '<%=Encode.forJavaScript(request.getParameter("year"))%>';
+                var m = '<%=Encode.forJavaScript(request.getParameter("month"))%>';
+                var d = '<%=Encode.forJavaScript(request.getParameter("day"))%>';
                 var sTime = 8;
                 var eTime = 20;
                 var dateStr = y + '-' + m + '-' + d;
@@ -2392,7 +2392,7 @@
 
 <script>
     const contextPath = document.getElementById("contextPath").value;
-    const originalInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>');return false;";
+    const originalInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo1.getLoggedInProviderNo()))%>');return false;";
     const newInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/web/inboxhub/Inboxhub.do?method=displayInboxForm', 800);return false;";
 
     const originalUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=0&searchProviderNo=0&status=N&lname=&fname=&hnum=&pageNum=1&startIndex=0');return false;"

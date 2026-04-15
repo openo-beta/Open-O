@@ -226,7 +226,7 @@
                                                 <fmt:message key="SearchDrug.drugSearchRouteLabel"/><br>
                                                 <% for (int j = 0; j < d_route.length; j++) { %>
                                                 <input type=checkbox <%=selRoute[j]%> name=route<%=j%>
-                                                       value="<%=d_route[j].trim()%>"><%=d_route[j].trim()%> &nbsp;</input>
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(d_route[j].trim()))%>"><%=Encode.forHtml(String.valueOf(d_route[j].trim()))%> &nbsp;</input>
                                                 <% } %>
                                                 <input type="hidden" name="searchRoute" id="searchRoute"/>
                                             </oscar:oscarPropertiesCheck>
@@ -283,10 +283,10 @@
                                                         RxDrugData.MinDrug t = (RxDrugData.MinDrug) gen.get(i);
                                                 %>
                                                 <tr>
-                                                    <td bgcolor="<%=bgColor%>">
+                                                    <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>">
                                                         <a href="<%= request.getContextPath() %>/oscarRx/searchDrug.do?genericSearch=<%= Encode.forUriComponent(t.pKey) %>&demographicNo=<%= Encode.forUriComponent(demoNo) %>"
-                                                           title="<%=t.name%>">
-                                                            <%= getMaxVal(t.name)%>
+                                                           title="<%=Encode.forHtmlAttribute(String.valueOf(t.name))%>">
+                                                            <%=Encode.forHtml(String.valueOf(getMaxVal(t.name)))%>
                                                         </a>
                                                         <span>&nbsp;&nbsp;(<a
                                                                 href="javascript:ShowDrugInfoGN('<%=Encode.forJavaScript(t.name)%>');"><fmt:message key="ChooseDrug.msgInfo"/></a>)</span>
@@ -308,15 +308,15 @@
                                                         String brandName = t.name;
                                                 %>
                                                 <tr>
-                                                    <td bgcolor="<%=bgColor%>">
+                                                    <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>">
                                                         <%if (request.getParameter("rx2") != null && request.getParameter("rx2").equals("true")) {%>
                                                         <a href="javascript: void(0);"
                                                            onclick="setDrugRx2('<%=Encode.forJavaScript(t.pKey)%>','<%=Encode.forJavaScript(brandName)%>')">
                                                                     <%}else{%>
                                                             <a href="<%= request.getContextPath() %>/oscarRx/chooseDrug.do?BN=<%=Encode.forUriComponent(brandName)%>&drugId=<%= Encode.forUriComponent(t.pKey) %>&demographicNo=<%= Encode.forUriComponent(demoNo) %>"
-                                                               title="<%=brandName %>">
+                                                               title="<%=Encode.forHtmlAttribute(String.valueOf(brandName))%>">
                                                                 <%}%>
-                                                                <%=brandName%>
+                                                                <%=Encode.forHtml(String.valueOf(brandName))%>
                                                             </a>
                                                             <span>&nbsp;&nbsp;(<a
                                                                     href="javascript:ShowDrugInfoBN('<%=Encode.forJavaScript(t.pKey)%>');"><fmt:message key="ChooseDrug.msgInfo"/></a>)</span>
@@ -368,9 +368,9 @@
                                             RxDrugData.MinDrug t = (RxDrugData.MinDrug) afhcClass.get(i);
                                     %>
                                     <tr>
-                                        <td bgcolor="<%=bgColor%>">
+                                        <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>">
                                             <a href="<%= request.getContextPath() %>/oscarRx/searchDrug.do?genericSearch=<%= Encode.forUriComponent(t.pKey) %>&demographicNo=<%= Encode.forUriComponent(demoNo) %>">
-                                                <%= t.name%>
+                                                <%=Encode.forHtml(String.valueOf(t.name))%>
                                             </a>
                                             <span>&nbsp;&nbsp;(<a
                                                     href="javascript:ShowDrugInfo('<%=Encode.forJavaScript(t.pKey)%>');"><fmt:message key="ChooseDrug.msgInfo"/></a>)</span>

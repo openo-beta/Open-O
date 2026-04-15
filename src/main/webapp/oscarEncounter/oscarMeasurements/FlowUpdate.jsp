@@ -8,6 +8,7 @@
     and "gnu.org/licenses/gpl-2.0.html".
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 
 <head>
@@ -20,7 +21,7 @@
 <body>
 <b>Following fields had bad input and could not be updated:</b>
 <br>
-<pre><%=request.getAttribute("testOutput") %></pre>
+<pre><%=Encode.forHtml(String.valueOf(request.getAttribute("testOutput")))%></pre>
 </body>
 
 </html>

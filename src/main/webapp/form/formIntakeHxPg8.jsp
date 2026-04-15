@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName3$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -67,249 +68,249 @@
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.migraine"/>:</td>
                 <td><input type="text" name="biologicalmigraine"
-                           value="<%=props.getProperty("biologicalmigraine","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalmigraine","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescmigraine"
-                           value="<%=props.getProperty("biologicalDescmigraine","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescmigraine","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.neuroDisorder"/>:</td>
                 <td><input type="text" name="biologicalneurologic"
-                           value="<%=props.getProperty("biologicalneurologic","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalneurologic","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescneurologic"
-                           value="<%=props.getProperty("biologicalDescneurologic","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescneurologic","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.asthma"/>:</td>
-                <td><input type="text" name="biologicalasthma" value="<%=props.getProperty("biologicalasthma","")%>"/>
+                <td><input type="text" name="biologicalasthma" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalasthma","")))%>"/>
                 </td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescasthma"
-                           value="<%=props.getProperty("biologicalDescasthma","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescasthma","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.pheumonia"/>:</td>
                 <td><input type="text" name="biologicalpneumonia"
-                           value="<%=props.getProperty("biologicalpneumonia","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalpneumonia","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescpneumonia"
-                           value="<%=props.getProperty("biologicalDescpneumonia","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescpneumonia","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.lungDisease"/>:</td>
                 <td><input type="text" name="biologicallungdisease"
-                           value="<%=props.getProperty("biologicallungdisease","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicallungdisease","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDesclungdisease"
-                           value="<%=props.getProperty("biologicalDesclungdisease","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDesclungdisease","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.heartDisease"/>:</td>
                 <td><input type="text" name="biologicalheartdisease"
-                           value="<%=props.getProperty("biologicalheartdisease","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalheartdisease","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescheartdisease"
-                           value="<%=props.getProperty("biologicalDescheartdisease","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescheartdisease","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.ulcer"/>:</td>
-                <td><input type="text" name="biologicalulcer" value="<%=props.getProperty("biologicalulcer","")%>"/>
+                <td><input type="text" name="biologicalulcer" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalulcer","")))%>"/>
                 </td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDesculcer"
-                           value="<%=props.getProperty("biologicalDesculcer","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDesculcer","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.bowelDisease"/>:</td>
                 <td><input type="text" name="biologicalboweldisease"
-                           value="<%=props.getProperty("biologicalboweldisease","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalboweldisease","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescboweldisease"
-                           value="<%=props.getProperty("biologicalDescboweldisease","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescboweldisease","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.hepatitis"/>:</td>
                 <td><input type="text" name="biologicalhepatitis"
-                           value="<%=props.getProperty("biologicalhepatitis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalhepatitis","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDeschepatitis"
-                           value="<%=props.getProperty("biologicalDeschepatitis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDeschepatitis","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.thyroid"/>:</td>
-                <td><input type="text" name="biologicalthyroid" value="<%=props.getProperty("biologicalthyroid","")%>"/>
+                <td><input type="text" name="biologicalthyroid" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalthyroid","")))%>"/>
                 </td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescthyroid"
-                           value="<%=props.getProperty("biologicalDescthyroid","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescthyroid","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.bloodDisorder"/>:</td>
                 <td><input type="text" name="biologicalblooddisorder"
-                           value="<%=props.getProperty("biologicalblooddisorder","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalblooddisorder","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescblooddisorder"
-                           value="<%=props.getProperty("biologicalDescblooddisorder","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescblooddisorder","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.diabetes"/>:</td>
                 <td><input type="text" name="biologicaldiabetes"
-                           value="<%=props.getProperty("biologicaldiabetes","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicaldiabetes","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescdiabetes"
-                           value="<%=props.getProperty("biologicalDescdiabetes","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescdiabetes","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.bloodTransfusion"/>:</td>
                 <td><input type="text" name="biologicalbloodtransfusion"
-                           value="<%=props.getProperty("biologicalbloodtransfusion","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalbloodtransfusion","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescbloodtransfusion"
-                           value="<%=props.getProperty("biologicalDescbloodtransfusion","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescbloodtransfusion","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.cancer"/>:</td>
                 <td><input type="text" name="biologicalcancerorleukemia"
-                           value="<%=props.getProperty("biologicalcancerorleukemia","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalcancerorleukemia","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDesccancerorleukemia"
-                           value="<%=props.getProperty("biologicalDesccancerorleukemia","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDesccancerorleukemia","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.uri"/>:</td>
-                <td><input type="text" name="biologicalURI" value="<%=props.getProperty("biologicalURI","")%>"/></td>
+                <td><input type="text" name="biologicalURI" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalURI","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
-                <td><input type="text" name="biologicalDescURI" value="<%=props.getProperty("biologicalDescURI","")%>"/>
+                <td><input type="text" name="biologicalDescURI" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescURI","")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.emotional"/>:</td>
                 <td><input type="text" name="biologicalemotional"
-                           value="<%=props.getProperty("biologicalemotional","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalemotional","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescemotional"
-                           value="<%=props.getProperty("biologicalDescemotional","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescemotional","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.arthritis"/>:</td>
                 <td><input type="text" name="biologicalarthritis"
-                           value="<%=props.getProperty("biologicalarthritis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalarthritis","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescarthritis"
-                           value="<%=props.getProperty("biologicalDescarthritis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescarthritis","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.osteoporosis"/>:</td>
                 <td><input type="text" name="biologicalosteoporosis"
-                           value="<%=props.getProperty("biologicalosteoporosis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalosteoporosis","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescosteoporosis"
-                           value="<%=props.getProperty("biologicalDescosteoporosis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescosteoporosis","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.skinProblems"/>:</td>
-                <td><input type="text" name="biologicalskin" value="<%=props.getProperty("biologicalskin","")%>"/></td>
+                <td><input type="text" name="biologicalskin" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalskin","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescskin"
-                           value="<%=props.getProperty("biologicalDescskin","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescskin","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.highBP"/>:</td>
-                <td><input type="text" name="biologicalHBP" value="<%=props.getProperty("biologicalHBP","")%>"/></td>
+                <td><input type="text" name="biologicalHBP" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalHBP","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
-                <td><input type="text" name="biologicalDescHBP" value="<%=props.getProperty("biologicalDescHBP","")%>"/>
+                <td><input type="text" name="biologicalDescHBP" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescHBP","")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.learningDisability"/>:</td>
                 <td><input type="text" name="biologicallearningdisability"
-                           value="<%=props.getProperty("biologicallearningdisability","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicallearningdisability","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDesclearningdisability"
-                           value="<%=props.getProperty("biologicalDesclearningdisability","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDesclearningdisability","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.schizophrenia"/>:</td>
                 <td><input type="text" name="biologicalschizophrenia"
-                           value="<%=props.getProperty("biologicalschizophrenia","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalschizophrenia","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescschizophrenia"
-                           value="<%=props.getProperty("biologicalDescschizophrenia","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescschizophrenia","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.alcoholDependency"/>:</td>
-                <td><input type="text" name="biologicalalcohol" value="<%=props.getProperty("biologicalalcohol","")%>"/>
+                <td><input type="text" name="biologicalalcohol" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalalcohol","")))%>"/>
                 </td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescalcohol"
-                           value="<%=props.getProperty("biologicalDescalcohol","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescalcohol","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.multipleSclerosis"/>:</td>
-                <td><input type="text" name="biologicalMS" value="<%=props.getProperty("biologicalMS","")%>"/></td>
+                <td><input type="text" name="biologicalMS" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalMS","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
-                <td><input type="text" name="biologicalDescMS" value="<%=props.getProperty("biologicalDescMS","")%>"/>
+                <td><input type="text" name="biologicalDescMS" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescMS","")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.stroke"/>:</td>
-                <td><input type="text" name="biologicalstroke" value="<%=props.getProperty("biologicalstroke","")%>"/>
+                <td><input type="text" name="biologicalstroke" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalstroke","")))%>"/>
                 </td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescstroke"
-                           value="<%=props.getProperty("biologicalDescstroke","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescstroke","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.cholesterol"/>:</td>
                 <td><input type="text" name="biologicalhighcholesterol"
-                           value="<%=props.getProperty("biologicalhighcholesterol","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalhighcholesterol","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDeschighcholesterol"
-                           value="<%=props.getProperty("biologicalDeschighcholesterol","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDeschighcholesterol","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.depression"/>:</td>
                 <td><input type="text" name="biologicaldepression"
-                           value="<%=props.getProperty("biologicaldepression","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicaldepression","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescdepression"
-                           value="<%=props.getProperty("biologicalDescdepression","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescdepression","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="oscarEncounter.formIntakeHx.familyHistory.drugDependency"/>:</td>
-                <td><input type="text" name="biologicaldrug" value="<%=props.getProperty("biologicaldrug","")%>"/></td>
+                <td><input type="text" name="biologicaldrug" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicaldrug","")))%>"/></td>
 
                 <td><fmt:message key="oscarEncounter.formIntakeHx.describe"/>:</td>
                 <td><input type="text" name="biologicalDescdrug"
-                           value="<%=props.getProperty("biologicalDescdrug","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("biologicalDescdrug","")))%>"/></td>
             </tr>
         </table>
     </form>

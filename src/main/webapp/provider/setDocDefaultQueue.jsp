@@ -27,6 +27,7 @@
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <fmt:setBundle basename="oscarResources"/>
 <%@ page import="java.util.ResourceBundle"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     if (session.getValue("user") == null)
@@ -53,7 +54,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <title><%=bundle.getString(providertitle)%></title>
+        <title><%=Encode.forHtml(String.valueOf(bundle.getString(providertitle)))%></title>
 
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
@@ -122,15 +123,15 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><%=bundle.getString(providermsgPrefs)%></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><%=bundle.getString(providermsgProvider)%></td>
+            <td class="MainTableTopRowLeftColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgPrefs)))%></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgProvider)))%></td>
         </tr>
         <%if (request.getAttribute("status") == null) {%>
         <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
             <tr>
                 <td class="MainTableLeftColumn">&nbsp;</td>
                 <td class="MainTableRightColumn">
-                    <a href="javascript:void(0);" onclick="showhide();"> <%=bundle.getString(providermsgEditFromExisting)%></a>
+                    <a href="javascript:void(0);" onclick="showhide();"> <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgEditFromExisting)))%></a>
                 </td>
             </tr>
             <tr>
@@ -152,7 +153,7 @@
             <tr>
                 <td class="MainTableLeftColumn">&nbsp;</td>
                 <td class="MainTableRightColumn">
-                    <a href="javascript:void(0);" onclick="showhide();"> <%=bundle.getString(providermsgEditSaveNew)%></a>
+                    <a href="javascript:void(0);" onclick="showhide();"> <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgEditSaveNew)))%></a>
                 </td>
             </tr>
             <tr>
@@ -168,14 +169,14 @@
                 <td class="MainTableLeftColumn">&nbsp;</td>
                 <td class="MainTableRightColumn">
                     <input id="chooseMode" name="chooseMode" type="hidden" value="existing"/>
-                    <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
+                    <input type="submit" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getString(providerbtnSubmit)))%>"/>
                 </td>
             </tr>
         </form>
         <%} else {%>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
-            <td><%=bundle.getString(providermsgSuccess)%></td>
+            <td><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgSuccess)))%></td>
         </tr>
         <%}%>
         <tr>

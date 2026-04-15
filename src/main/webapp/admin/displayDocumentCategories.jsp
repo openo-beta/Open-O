@@ -12,6 +12,7 @@
 <%@ page
         import="java.util.*, ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -110,9 +111,9 @@
                     <tbody>
                     <% for (String doctypeD : doctypesD) { %>
                     <tr>
-                        <td><%=doctypeD%>
+                        <td><%=Encode.forHtml(String.valueOf(doctypeD))%>
                         </td>
-                        <td><%=EDocUtil.getDocStatus("demographic", doctypeD)%>
+                        <td><%=Encode.forHtml(String.valueOf(EDocUtil.getDocStatus("demographic", doctypeD)))%>
                         </td>
                     </tr>
                     <% }%>
@@ -131,9 +132,9 @@
                     <tbody>
                     <% for (String doctypeP : doctypesP) { %>
                     <tr>
-                        <td><%=doctypeP%>
+                        <td><%=Encode.forHtml(String.valueOf(doctypeP))%>
                         </td>
-                        <td><%=EDocUtil.getDocStatus("provider", doctypeP)%>
+                        <td><%=Encode.forHtml(String.valueOf(EDocUtil.getDocStatus("provider", doctypeP)))%>
                         </td>
                     </tr>
                     <% }%>

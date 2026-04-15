@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -75,7 +76,7 @@
             if (autoFileLabs != null && autoFileLabs.equalsIgnoreCase("yes")){%>
             return confirm("Are you sure you would like to update the forwarding rules?")
             <%}else{%>
-            if (document.RULES.providerNums.value == '' && document.RULES.status[1].checked && <%= (frwdProviders.size() == 0)%>) {
+            if (document.RULES.providerNums.value == '' && document.RULES.status[1].checked && <%=Encode.forJavaScript(String.valueOf((frwdProviders.size() == 0)))%>) {
                 alert("You must select a physician to forward your incoming labs to if you wish to automatically file them");
                 return false;
             } else {
@@ -89,7 +90,7 @@
 
 <body>
 <form method="post" name="RULES" action="ForwardingRules.do"><input
-        type="hidden" name="providerNo" value="<%= providerNo %>"> <input
+        type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"> <input
         type="hidden" name="operation" value="update"> <input
         type="hidden" name="remProviderNum" value="">
     <table width="100%" height="100%" border="0">
@@ -136,10 +137,10 @@
                             <td valign="top" class="Cell">Labs are currently forwarded to:
                             </td>
                             <td class="Cell">
-                                <%for (int i = 0; i < frwdProviders.size(); i++) {%> <%= (String) ((ArrayList) frwdProviders.get(i)).get(1) %>
-                                <%= (String) ((ArrayList) frwdProviders.get(i)).get(2) %> <a
+                                <%for (int i = 0; i < frwdProviders.size(); i++) {%> <%=Encode.forHtml(String.valueOf((String) ((ArrayList) frwdProviders.get(i)).get(1)))%>
+                                <%=Encode.forHtml(String.valueOf((String) ((ArrayList) frwdProviders.get(i)).get(2)))%> <a
                                     href="#"
-                                    onclick="return removeProvider('<%= (String) ((ArrayList) frwdProviders.get(i)).get(0) %>', '<%= (String) ((ArrayList) frwdProviders.get(i)).get(1) %> <%= (String) ((ArrayList) frwdProviders.get(i)).get(2) %>')">REMOVE</a>
+                                    onclick="return removeProvider('<%=Encode.forJavaScript(String.valueOf((String) ((ArrayList) frwdProviders.get(i)).get(0)))%>', '<%=Encode.forJavaScript(String.valueOf((String) ((ArrayList) frwdProviders.get(i)).get(1)))%> <%=Encode.forJavaScript(String.valueOf((String) ((ArrayList) frwdProviders.get(i)).get(2)))%>')">REMOVE</a>
                                 <br/>
                                 <%}%>
                             </td>
@@ -182,8 +183,8 @@
                                         for (int i = 0; i < providers.size(); i++) {
                                             String prov_no = (String) ((ArrayList) providers.get(i)).get(0);
                                             if (!providerNo.equals(prov_no) && !frwdProviders.contains(providers.get(i))) {%>
-                                    <option value="<%= prov_no %>"><%= (String) ((ArrayList) providers.get(i)).get(1) %>
-                                        <%= (String) ((ArrayList) providers.get(i)).get(2) %>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(prov_no))%>"><%=Encode.forHtml(String.valueOf((String) ((ArrayList) providers.get(i)).get(1)))%>
+                                        <%=Encode.forHtml(String.valueOf((String) ((ArrayList) providers.get(i)).get(2)))%>
                                     </option>
                                     <% }
                                     } %>

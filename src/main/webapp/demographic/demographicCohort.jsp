@@ -44,6 +44,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.report.data.DemographicSets, ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -122,8 +123,8 @@
                 demoSets.addDemographicSet(setName, arrDemo);
                 arrCurDemoSets.add(setName);
     %>
-    <p style="font-size:small; font-variant:small-caps"><fmt:message key="demographic.demographiccohort.saved"/> <%=demoData.getDemographic(loggedInInfo, demoNo).getFirstName() + " " + demoData.getDemographic(loggedInInfo, demoNo).getLastName()%>
-        <fmt:message key="demographic.demographiccohort.to"/> <%=setName%>
+    <p style="font-size:small; font-variant:small-caps"><fmt:message key="demographic.demographiccohort.saved"/> <%=Encode.forHtml(String.valueOf(demoData.getDemographic(loggedInInfo, demoNo).getFirstName() + " " + demoData.getDemographic(loggedInInfo, demoNo).getLastName()))%>
+        <fmt:message key="demographic.demographiccohort.to"/> <%=Encode.forHtml(String.valueOf(setName))%>
     </p>
     <%
             }
@@ -140,13 +141,13 @@
     <h3><fmt:message key="demographic.demographiccohort.addtopatientset"/></h3>
     <ul>
         <c:forEach var="set" items="${arrDemoSets}">
-            <li><a href="<%= request.getContextPath() %>/demographic/demographicCohort.jsp?demographic_no=<%=demoNo%>&setName=<c:out value="${set}"/>"><c:out
+            <li><a href="<%= request.getContextPath() %>/demographic/demographicCohort.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&setName=<c:out value="${set}"/>"><c:out
                     value="${set}"/></a></li>
         </c:forEach>
     </ul>
     <br>
     <form method="get" action="demographicCohort.jsp">
-        <input type="hidden" name="demographic_no" value="<%=demoNo%>">
+        <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>">
         <h3><fmt:message key="demographic.demographiccohort.newpatientset"/></h3>
         <input type="text" name="setName">&nbsp;<input type="submit"
                                                        value="<fmt:message key="demographic.demographiccohort.save"/>">

@@ -62,6 +62,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.commn.dao.DemographicDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicDao demographicDao = SpringUtils
             .getBean(DemographicDao.class);
@@ -122,19 +123,19 @@
             nItems++;
     %>
     <tr>
-        <td><%=d.getLastName()%>,<%=d.getFirstName()%>
+        <td><%=Encode.forHtml(String.valueOf(d.getLastName()))%>,<%=Encode.forHtml(String.valueOf(d.getFirstName()))%>
         </td>
-        <td><%=d.getSex()%>
+        <td><%=Encode.forHtml(String.valueOf(d.getSex()))%>
         </td>
-        <td><%=d.getDateOfBirth()%>-<%=d.getMonthOfBirth()%>-<%=d.getYearOfBirth()%>
+        <td><%=Encode.forHtml(String.valueOf(d.getDateOfBirth()))%>-<%=Encode.forHtml(String.valueOf(d.getMonthOfBirth()))%>-<%=Encode.forHtml(String.valueOf(d.getYearOfBirth()))%>
         </td>
-        <td><%=d.getCity()%>
+        <td><%=Encode.forHtml(String.valueOf(d.getCity()))%>
         </td>
-        <td><%=d.getProvince()%>
+        <td><%=Encode.forHtml(String.valueOf(d.getProvince()))%>
         </td>
-        <td><%=d.getPostal()%>
+        <td><%=Encode.forHtml(String.valueOf(d.getPostal()))%>
         </td>
-        <td><%=d.getPatientStatus()%>
+        <td><%=Encode.forHtml(String.valueOf(d.getPatientStatus()))%>
         </td>
     </tr>
     <%
@@ -152,13 +153,13 @@
 
 <ul class="pager">
     <li class="previous <%=nLastPage >= 0 ? "" : "disabled"%>"><a
-            href="${ctx}/oscarReport/oscarReportCatchment.jsp?limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"
+            href="${ctx}/oscarReport/oscarReportCatchment.jsp?limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>"
             class="contentLink"> &larr; Previous Page
     </a></li>
     <li
             class="next <%=nItems == Integer.parseInt(strLimit2) ? "" : "disabled"%>">
         <a
-                href="${ctx}/oscarReport/oscarReportCatchment.jsp?limit1=<%=nNextPage%>&limit2=<%=strLimit2%>"
+                href="${ctx}/oscarReport/oscarReportCatchment.jsp?limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>"
                 class="contentLink"> <fmt:message key="oscarReport.oscarReportCatchment.msgNextPage"/> &rarr;
         </a>
     </li>

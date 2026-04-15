@@ -188,15 +188,15 @@
 
         <div id="content_bar" class="innertube">
             <form action="${pageContext.request.contextPath}/form/BCAR2020.do" method="post">
-                <input type="hidden" id="demographicNo" name="demographicNo" value="<%=demoNo%>"/>
-                <input type="hidden" id="formId" name="formId" value="<%=formId%>"/>
+                <input type="hidden" id="demographicNo" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>"/>
+                <input type="hidden" id="formId" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
                 <input type="hidden" name="provider_no" value=<%=Encode.forHtmlAttribute(providerNo)%>/>
                 <input type="hidden" id="user" name="provNo" value=<%=provNo%>/>
                 <input type="hidden" name="method" value="exit"/>
 
                 <input type="hidden" name="forwardTo" value="<%=Encode.forHtmlAttribute(pageNo)%>"/>
                 <input type="hidden" name="pageNo" value="<%=Encode.forHtmlAttribute(pageNo)%>"/>
-                <input type="hidden" name="formCreated" value="<%= props.getProperty("formCreated", "") %>"/>
+                <input type="hidden" name="formCreated" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
 
                 <input type="hidden" id="printPg1" name="printPg1" value=""/>
                 <input type="hidden" id="printPg2" name="printPg2" value=""/>
@@ -301,7 +301,7 @@
                                     <td width="25%">
                                         Age at EDD<br/>
                                         <input type="text" name="t_ageAtEDD" class="calcField"
-                                               ondblclick="calcAgeAtEDD('<%= props.getProperty("d_confirmedEDD", "") %>', document.forms[0].t_patientDOB.value, this);"
+                                               ondblclick="calcAgeAtEDD('<%=Encode.forJavaScript(String.valueOf(props.getProperty("d_confirmedEDD", "")))%>', document.forms[0].t_patientDOB.value, this);"
                                                style="width: 100%" size="30" maxlength="10"
                                                value="<%= UtilMisc.htmlEscape(props.getProperty("t_ageAtEDD", "")) %>"/>
                                     </td>
@@ -1491,11 +1491,11 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyBleeding", "Bleeding")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyNausea", "Nausea")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyTravel", "Travel (self/partner)")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyInfection", "Infection/rash/fever")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyOther", "Other")%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyBleeding", "Bleeding")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyNausea", "Nausea")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyTravel", "Travel (self/partner)")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyInfection", "Infection/rash/fever")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "presentPregnancyOther", "Other")))%>
                                         </table>
                                     </td>
                                     <td width="33%" rowspan="2">
@@ -1510,10 +1510,10 @@
                                                 <th width="8%"><span class="title">Yes</span></th>
                                                 <th width="84%"><span class="sub-text">(specify)</span></th>
                                             </tr>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistorySurgery", "Surgery")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryAnestheticComplications", "Anesthetic complications")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryNeuro", "Neuro.")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryResp", "Resp.")%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistorySurgery", "Surgery")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryAnestheticComplications", "Anesthetic complications")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryNeuro", "Neuro.")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryResp", "Resp.")))%>
                                             <tr>
                                                 <td>
                                                     <input type="checkbox"
@@ -1546,8 +1546,8 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryAbdo", "Abdo./GI")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryGyne", "Gyne./GU")%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryAbdo", "Abdo./GI")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryGyne", "Gyne./GU")))%>
                                             <tr>
                                                 <td>
                                                     <input type="checkbox"
@@ -1862,7 +1862,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryOther", "Other")%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "medicalHistoryOther", "Other")))%>
                                         </table>
                                     </td>
                                     <td width="33%" rowspan="2">
@@ -1882,12 +1882,12 @@
                                                             <th width="8%"><span class="title">Yes</span></th>
                                                             <th width="84%"><span class="sub-text">(specify)</span></th>
                                                         </tr>
-                                                        <%=((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleDiet", "Diet/nutrition")%>
-                                                        <%=((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleExercise", "Exercise")%>
-                                                        <%=((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleFinancial", "Financial")%>
-                                                        <%=((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleHousing", "Housing/food sec")%>
-                                                        <%=((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleTransportation", "Transportation")%>
-                                                        <%=((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleSafety", "Safety")%>
+                                                        <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleDiet", "Diet/nutrition")))%>
+                                                        <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleExercise", "Exercise")))%>
+                                                        <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleFinancial", "Financial")))%>
+                                                        <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleHousing", "Housing/food sec")))%>
+                                                        <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleTransportation", "Transportation")))%>
+                                                        <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleSafety", "Safety")))%>
                                                         <tr>
                                                             <td>
                                                                 <input type="checkbox"
@@ -1921,8 +1921,8 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
-                                                        <%=((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleRelationships", "Relationships/support")%>
-                                                        <%=((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleOther", "Other")%>
+                                                        <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleRelationships", "Relationships/support")))%>
+                                                        <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "lifestyleOther", "Other")))%>
 
                                                     </table>
                                                 </td>
@@ -2297,12 +2297,12 @@
                                                 <th width="8%"><span class="title">Yes</span></th>
                                                 <th width="84%"><span class="sub-text">(specify)</span></th>
                                             </tr>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryAnestheticComp", "Anesthetic complications")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryHypertension", "Hypertension")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryThromboembolic", "Thromboembolic")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryDiabetes", "Diabetes")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryMentalHealth", "Mental health")%>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistorySubstanceUse", "Substance use disorder")%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryAnestheticComp", "Anesthetic complications")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryHypertension", "Hypertension")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryThromboembolic", "Thromboembolic")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryDiabetes", "Diabetes")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryMentalHealth", "Mental health")))%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistorySubstanceUse", "Substance use disorder")))%>
                                             <tr>
                                                 <td>
                                                     <input type="checkbox"
@@ -2344,7 +2344,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <%=((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryOther", "Other")%>
+                                            <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createToggleOption(props, "familyHistoryOther", "Other")))%>
                                         </table>
                                     </td>
 
@@ -2371,7 +2371,7 @@
                                                         BP
                                                         <input type="text" id="t_initialExamBP" name="t_initialExamBP"
                                                                size="6" maxlength="150" class="calcField"
-                                                               ondblclick="displayDemographicMeasurements('t_initialExamBP', 'BP', '<%=demoNo%>', '<%= UtilMisc.htmlEscape(props.getProperty("t_patientDOB", "")) %>', '')"
+                                                               ondblclick="displayDemographicMeasurements('t_initialExamBP', 'BP', '<%=Encode.forJavaScript(String.valueOf(demoNo))%>', '<%= UtilMisc.htmlEscape(props.getProperty("t_patientDOB", "")) %>', '')"
                                                                value="<%= UtilMisc.htmlEscape(props.getProperty("t_initialExamBP", "0")) %>"/>
                                                     </div>
                                                 </td>
@@ -2381,7 +2381,7 @@
                                                         <span class="sub-text">(per min)</span>
                                                         <input type="text" id="t_initialExamHR" name="t_initialExamHR"
                                                                size="6" maxlength="150" class="calcField"
-                                                               ondblclick="displayDemographicMeasurements('t_initialExamHR', 'HR', '<%=demoNo%>', '<%= UtilMisc.htmlEscape(props.getProperty("t_patientDOB", "")) %>', '')"
+                                                               ondblclick="displayDemographicMeasurements('t_initialExamHR', 'HR', '<%=Encode.forJavaScript(String.valueOf(demoNo))%>', '<%= UtilMisc.htmlEscape(props.getProperty("t_patientDOB", "")) %>', '')"
                                                                value="<%= UtilMisc.htmlEscape(props.getProperty("t_initialExamHR", "0")) %>"/>
                                                     </div>
                                                 </td>
@@ -2391,7 +2391,7 @@
                                                         <span class="sub-text">(cm)</span>
                                                         <input type="text" id="t_initialExamHT" name="t_initialExamHT"
                                                                size="6" maxlength="150" class="calcField"
-                                                               ondblclick="displayDemographicMeasurements('t_initialExamHT', 'HT', '<%=demoNo%>', '<%= UtilMisc.htmlEscape(props.getProperty("t_patientDOB", "")) %>', '')"
+                                                               ondblclick="displayDemographicMeasurements('t_initialExamHT', 'HT', '<%=Encode.forJavaScript(String.valueOf(demoNo))%>', '<%= UtilMisc.htmlEscape(props.getProperty("t_patientDOB", "")) %>', '')"
                                                                value="<%= UtilMisc.htmlEscape(props.getProperty("t_initialExamHT", "0")) %>"/>
                                                     </div>
                                                 </td>
@@ -2401,7 +2401,7 @@
                                                         <span class="sub-text">(kg)</span>
                                                         <input type="text" id="t_initialExamWT" name="t_initialExamWT"
                                                                size="6" maxlength="150" class="calcField"
-                                                               ondblclick="displayDemographicMeasurements('t_initialExamWT', 'WT', '<%=demoNo%>', '<%= UtilMisc.htmlEscape(props.getProperty("t_patientDOB", "")) %>', '')"
+                                                               ondblclick="displayDemographicMeasurements('t_initialExamWT', 'WT', '<%=Encode.forJavaScript(String.valueOf(demoNo))%>', '<%= UtilMisc.htmlEscape(props.getProperty("t_patientDOB", "")) %>', '')"
                                                                value="<%= UtilMisc.htmlEscape(props.getProperty("t_initialExamWT", "0")) %>"/>
                                                     </div>
                                                 </td>

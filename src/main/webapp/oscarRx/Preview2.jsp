@@ -29,7 +29,6 @@
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="ca.openosp.openo.providers.data.ProSignatureData, ca.openosp.openo.providers.data.ProviderData" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
 <%@ page import="ca.openosp.*,
                  java.lang.*,
@@ -304,7 +303,7 @@
         }
     %>
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post" id="preview2Form">
-        <input type="hidden" name="demographic_no" value="<%=bean.getDemographicNo()%>"/>
+        <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(bean.getDemographicNo()))%>"/>
         <table>
             <tr>
                 <td>
@@ -347,7 +346,7 @@
                                     }
                                 %>
                                 <input type="hidden" name="doctorName"
-                                       value="<%= StringEscapeUtils.escapeHtml4(doctorName) %>"/>
+                                       value="<%= Encode.forHtml(doctorName) %>"/>
                                 <c:choose>
                                     <c:when test="${empty infirmaryView_programAddress}">
                                         <%
@@ -361,9 +360,9 @@
                                             request.setAttribute("phone", finalPhone);
                                         %>
                                         <input type="hidden" name="clinicName"
-                                               value="<%= StringEscapeUtils.escapeHtml4(clinicTitle.replaceAll("(<br>)","\\\n")) %>"/>
+                                               value="<%= Encode.forHtml(clinicTitle.replaceAll("(<br>)","\\\n")) %>"/>
                                         <input type="hidden" name="clinicPhone"
-                                               value="<%= StringEscapeUtils.escapeHtml4(finalPhone) %>"/>
+                                               value="<%= Encode.forHtml(finalPhone) %>"/>
                                         <input type="hidden" id="finalFax" name="clinicFax" value=""/>
                                     </c:when>
                                     <c:otherwise>
@@ -385,21 +384,21 @@
                                         %>
                                         <input type="hidden" name="clinicName"
                                                value="<c:out value="${infirmaryView_programAddress}"/>"/>
-                                        <input type="hidden" name="clinicPhone" value="<%=finalPhone%>"/>
+                                        <input type="hidden" name="clinicPhone" value="<%=Encode.forHtmlAttribute(String.valueOf(finalPhone))%>"/>
                                         <input type="hidden" id="finalFax" name="clinicFax" value=""/>
                                     </c:otherwise>
                                 </c:choose>
                                 <input type="hidden" name="patientName"
-                                       value="<%= StringEscapeUtils.escapeHtml4(patient.getFirstName())+ " " +StringEscapeUtils.escapeHtml4(patient.getSurname()) %>"/>
+                                       value="<%= Encode.forHtml(patient.getFirstName())+ " " +Encode.forHtml(patient.getSurname()) %>"/>
                                 <input type="hidden" name="patientDOB"
-                                       value="<%= StringEscapeUtils.escapeHtml4(patientDOBStr) %>"/>
-                                <input type="hidden" name="pharmaFax" value="<%=pharmaFax%>"/>
-                                <input type="hidden" name="pharmaName" value="<%=pharmaName%>"/>
-                                <input type="hidden" name="pracNo" value="<%= StringEscapeUtils.escapeHtml4(pracNo) %>"/>
-                                <input type="hidden" name="showPatientDOB" value="<%=showPatientDOB%>"/>
+                                       value="<%= Encode.forHtml(patientDOBStr) %>"/>
+                                <input type="hidden" name="pharmaFax" value="<%=Encode.forHtmlAttribute(String.valueOf(pharmaFax))%>"/>
+                                <input type="hidden" name="pharmaName" value="<%=Encode.forHtmlAttribute(String.valueOf(pharmaName))%>"/>
+                                <input type="hidden" name="pracNo" value="<%= Encode.forHtml(pracNo) %>"/>
+                                <input type="hidden" name="showPatientDOB" value="<%=Encode.forHtmlAttribute(String.valueOf(showPatientDOB))%>"/>
                                 <input type="hidden" name="pdfId" id="pdfId" value=""/>
                                 <input type="hidden" name="patientAddress"
-                                       value="<%= StringEscapeUtils.escapeHtml4(patientAddress) %>"/>
+                                       value="<%= Encode.forHtml(patientAddress) %>"/>
                                 <%
                                     int check = (patientCity.trim().length() > 0 ? 1 : 0) | (patientProvince.trim().length() > 0 ? 2 : 0);
                                     String patientCityPostal = String.format("%s%s%s %s",
@@ -414,31 +413,31 @@
                                     }
                                 %>
                                 <input type="hidden" name="patientCityPostal"
-                                       value="<%= StringEscapeUtils.escapeHtml4(patientCityPostal)%>"/>
+                                       value="<%= Encode.forHtml(patientCityPostal)%>"/>
                                 <input type="hidden" name="patientHIN"
-                                       value="<%= StringEscapeUtils.escapeHtml4(patientHin) %>"/>
+                                       value="<%= Encode.forHtml(patientHin) %>"/>
                                 <input type="hidden" name="patientChartNo"
-                                       value="<%=StringEscapeUtils.escapeHtml4(ptChartNo)%>"/>
+                                       value="<%=Encode.forHtml(ptChartNo)%>"/>
                                 <input type="hidden" name="bandNumber" value="${ bandNumber }"/>
                                 <input type="hidden" name="patientPhone"
-                                       value="<fmt:message key="RxPreview.msgTel"/>: <%=StringEscapeUtils.escapeHtml4(patientPhone) %>"/>
+                                       value="<fmt:message key="RxPreview.msgTel"/>: <%=Encode.forHtml(patientPhone) %>"/>
                                 <input type="hidden" name="rxDate"
-                                       value="<%= StringEscapeUtils.escapeHtml4(RxUtil.DateToString(rxDate, "MMMM d, yyyy")) %>"/>
+                                       value="<%= Encode.forHtml(RxUtil.DateToString(rxDate, "MMMM d, yyyy")) %>"/>
                                 <input type="hidden" name="sigDoctorName"
-                                       value="<%= StringEscapeUtils.escapeHtml4(doctorName) %>"/>
+                                       value="<%= Encode.forHtml(doctorName) %>"/>
                                 <!--img src="img/prescript.gif" border="0"-->
                             </th>
                             <th valign=top height="100px" id="clinicAddress">
-                                <b><%=doctorName%>
+                                <b><%=Encode.forHtml(String.valueOf(doctorName))%>
                                 </b><br>
                                 <c:choose>
                                     <c:when test="${empty infirmaryView_programAddress}">
-                                        <%= provider.getClinicName().replaceAll("\\(\\d{6}\\)", "") %><br>
-                                        <%= provider.getClinicAddress() %><br>
-                                        <%= provider.getClinicCity() %>&nbsp;&nbsp;<%=provider.getClinicProvince()%>&nbsp;&nbsp;
-                                        <%= provider.getClinicPostal() %>
+                                        <%=Encode.forHtml(String.valueOf(provider.getClinicName().replaceAll("\\(\\d{6}\\)", "")))%><br>
+                                        <%=Encode.forHtml(String.valueOf(provider.getClinicAddress()))%><br>
+                                        <%=Encode.forHtml(String.valueOf(provider.getClinicCity()))%>&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(provider.getClinicProvince()))%>&nbsp;&nbsp;
+                                        <%=Encode.forHtml(String.valueOf(provider.getClinicPostal()))%>
                                         <% if (provider.getPractitionerNo() != null && !provider.getPractitionerNo().equals("")) { %>
-                                        <br><fmt:message key="RxPreview.PractNo"/>:<%= provider.getPractitionerNo() %>
+                                        <br><fmt:message key="RxPreview.PractNo"/>:<%=Encode.forHtml(String.valueOf(provider.getPractitionerNo()))%>
                                         <% } %>
                                         <br>
                                         <%
@@ -461,9 +460,9 @@
                                             request.setAttribute("phone", finalPhone);
 
                                         %>
-                                        <fmt:message key="RxPreview.msgTel"/>: <%= finalPhone %><br>
+                                        <fmt:message key="RxPreview.msgTel"/>: <%=Encode.forHtml(String.valueOf(finalPhone))%><br>
                                         <oscar:oscarPropertiesCheck property="RXFAX" value="yes">
-                                            <fmt:message key="RxPreview.msgFax"/>: <%= finalFax %><br>
+                                            <fmt:message key="RxPreview.msgFax"/>: <%=Encode.forHtml(String.valueOf(finalFax))%><br>
                                         </oscar:oscarPropertiesCheck>
                                     </c:when>
                                     <c:otherwise>
@@ -489,9 +488,9 @@
 
                                         %>
                                         <c:out value="${infirmaryView_programAddress}" escapeXml="false"/><br>
-                                        <fmt:message key="RxPreview.msgTel"/>: <%=finalPhone %><br>
+                                        <fmt:message key="RxPreview.msgTel"/>: <%=Encode.forHtml(String.valueOf(finalPhone))%><br>
                                         <oscar:oscarPropertiesCheck property="RXFAX" value="yes">
-                                            <fmt:message key="RxPreview.msgFax"/>: <%=finalFax %>
+                                            <fmt:message key="RxPreview.msgFax"/>: <%=Encode.forHtml(String.valueOf(finalFax))%>
                                         </oscar:oscarPropertiesCheck>
                                     </c:otherwise>
                                 </c:choose>
@@ -500,7 +499,7 @@
                         <tr>
                             <th colspan=2 valign=top height="75px">
 								<span style="float: left">
-									<%= Encode.forHtmlContent(patient.getFirstName()) %> <%= Encode.forHtmlContent(patient.getSurname()) %> <%if (showPatientDOB) {%><br>DOB:<%= Encode.forHtmlContent(StringEscapeUtils.escapeHtml4(patientDOBStr)) %> <%}%><br>
+									<%= Encode.forHtmlContent(patient.getFirstName()) %> <%= Encode.forHtmlContent(patient.getSurname()) %> <%if (showPatientDOB) {%><br>DOB:<%= Encode.forHtmlContent(Encode.forHtml(patientDOBStr)) %> <%}%><br>
 										<%= Encode.forHtmlContent(patientAddress) %><br>
 										<%= Encode.forHtmlContent(patientCityPostal) %><br>
 										<%= Encode.forHtmlContent(patientPhone) %><br>
@@ -517,11 +516,11 @@
 											<% } %>
 										</b><br>
 										<% if (props.getProperty("showRxChartNo", "").equalsIgnoreCase("true")) { %>
-											<fmt:message key="ca.openosp.openo.rx.chartNo"/><%=ptChartNo%>
+											<fmt:message key="ca.openosp.openo.rx.chartNo"/><%=Encode.forHtml(String.valueOf(ptChartNo))%>
 										<% } %>
 								</span>
                                 <span style="float:right">
-									<%= RxUtil.DateToString(rxDate, "MMMM d, yyyy", request.getLocale()) %>
+									<%=Encode.forHtml(String.valueOf(RxUtil.DateToString(rxDate, "MMMM d, yyyy", request.getLocale())))%>
 								</span>
                             </th>
                         </tr>
@@ -552,8 +551,8 @@
 
                                 %>
 
-								<input type="hidden" name="<%= DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY %>" value="<%=signatureRequestId%>" />
-								<img id="signature" style="width:260px; height:130px; object-fit: contain;" src="<%=startimageUrl%>" alt="digital_signature" />
+								<input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(signatureRequestId))%>" />
+								<img id="signature" style="width:260px; height:130px; object-fit: contain;" src="<%=Encode.forHtmlAttribute(String.valueOf(startimageUrl))%>" alt="digital_signature" />
 								<input type="hidden" name="imgFile" id="imgFile" value="" />
 
                                 <script type="text/javascript">
@@ -563,10 +562,10 @@
                                     function refreshImage() {
                                         counter++;
                                         var img = document.getElementById("signature");
-                                        img.src = '<%=imageUrl%>&rand=' + counter;
+                                        img.src = '<%=Encode.forJavaScript(String.valueOf(imageUrl))%>&rand=' + counter;
 
                                         // Modern fetch API
-                                        fetch('<%=statusUrl%>', {
+                                        fetch('<%=Encode.forJavaScript(String.valueOf(statusUrl))%>', {
                                             method: 'POST',
                                             headers: {
                                                 'Accept': 'text/html'
@@ -595,7 +594,7 @@
                                 &nbsp; <%= Encode.forHtmlContent(doctorName) %>
                                 <% if (pracNo != null && !pracNo.equals("") && !pracNo.equalsIgnoreCase("null")) { %>
                                 <br>
-                                &nbsp;<fmt:message key="RxPreview.PractNo"/> <%= pracNo%>
+                                &nbsp;<fmt:message key="RxPreview.PractNo"/> <%=Encode.forHtml(String.valueOf(pracNo))%>
                                 <% } %>
                             </td>
                         </tr>
@@ -609,11 +608,11 @@
                             <td height=55px colspan="2">
 										<span style="float:right; font-size:10px;">
 											<fmt:message key="RxPreview.msgReprintBy"/> <%=Encode.forHtmlContent(ProviderData.getProviderName(strUser))%> <br>
-											<fmt:message key="RxPreview.msgOrigPrinted"/>:&nbsp;<%=rx.getPrintDate()%> <br>
-											<fmt:message key="RxPreview.msgTimesPrinted"/>:&nbsp;<%=String.valueOf(rx.getNumPrints())%>
+											<fmt:message key="RxPreview.msgOrigPrinted"/>:&nbsp;<%=Encode.forHtml(String.valueOf(rx.getPrintDate()))%> <br>
+											<fmt:message key="RxPreview.msgTimesPrinted"/>:&nbsp;<%=Encode.forHtml(String.valueOf(String.valueOf(rx.getNumPrints())))%>
 										</span>
-                                <input type="hidden" name="origPrintDate" value="<%=rx.getPrintDate()%>"/>
-                                <input type="hidden" name="numPrints" value="<%=String.valueOf(rx.getNumPrints())%>"/>
+                                <input type="hidden" name="origPrintDate" value="<%=Encode.forHtmlAttribute(String.valueOf(rx.getPrintDate()))%>"/>
+                                <input type="hidden" name="numPrints" value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(rx.getNumPrints())))%>"/>
                                 <input type="hidden" name="rxReprint" value="true"/>
                             </td>
                         </tr>
@@ -625,7 +624,7 @@
                         <% if (PrescriptionQrCodeUIBean.isPrescriptionQrCodeEnabledForProvider(providerNo) && rx != null && rx.getScript_no() != null) { %>
                         <tr>
                             <td colspan="2">
-                                <img src="<%=request.getContextPath()%>/contentRenderingServlet/prescription_qr_code_<%=rx.getScript_no()%>.png?source=prescriptionQrCode&prescriptionId=<%=rx.getScript_no()%>"
+                                <img src="<%=request.getContextPath()%>/contentRenderingServlet/prescription_qr_code_<%=Encode.forHtmlAttribute(String.valueOf(rx.getScript_no()))%>.png?source=prescriptionQrCode&prescriptionId=<%=Encode.forUriComponent(String.valueOf(rx.getScript_no()))%>"
                                      alt="qr_code"/>
                             </td>
                         </tr>
@@ -655,7 +654,7 @@
                         %>
                         <tr style="page-break-inside: avoid;">
                             <td colspan=2>
-                              <%=fullOutLine%>
+                              <%=Encode.forHtml(String.valueOf(fullOutLine))%>
                             </td>
                         </tr>
                         <%
@@ -663,8 +662,8 @@
                                 strRxNoNewLines.append(rx.getFullOutLine().replaceAll(";", " ")).append("\n");
                             }
                         %>
-						<input type="hidden" name="rx" value="<%= StringEscapeUtils.escapeHtml4(strRx.toString().replaceAll(";","\\\n")) %>" />
-						<input type="hidden" name="rx_no_newlines" value="<%= strRxNoNewLines.toString() %>" />
+						<input type="hidden" name="rx" value="<%= Encode.forHtml(strRx.toString().replaceAll(";","\\\n")) %>" />
+						<input type="hidden" name="rx_no_newlines" value="<%=Encode.forHtmlAttribute(String.valueOf(strRxNoNewLines.toString()))%>" />
 						<input type="hidden" name="additNotes" value=""/>
 					</tbody>
 				</table>

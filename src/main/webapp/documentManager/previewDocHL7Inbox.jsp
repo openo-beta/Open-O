@@ -54,6 +54,7 @@
 <%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <html>
     <head>
@@ -196,7 +197,7 @@
                             <div id="documentsInnerDiv<%=i%>" style="background-color: #f2f7ff;">
                                 <table id="privateDocs" class="docTable">
                                     <tr>
-                                        <th align="center" colspan="7"><a style="color:black;"><%=demoName%>'s
+                                        <th align="center" colspan="7"><a style="color:black;"><%=Encode.forHtml(String.valueOf(demoName))%>'s
                                             Documents</a></th>
 
                                     </tr>
@@ -237,19 +238,19 @@
                                     <tr>
 
                                         <td><a>
-                                            <%=curdoc.getDescription()%>
+                                            <%=Encode.forHtml(String.valueOf(curdoc.getDescription()))%>
                                         </a></td>
-                                        <td><%=contentType%>
+                                        <td><%=Encode.forHtml(String.valueOf(contentType))%>
                                         </td>
-                                        <td><%=curdoc.getType()%>
+                                        <td><%=Encode.forHtml(String.valueOf(curdoc.getType()))%>
                                         </td>
-                                        <td><%=curdoc.getCreatorName()%>
+                                        <td><%=Encode.forHtml(String.valueOf(curdoc.getCreatorName()))%>
                                         </td>
-                                        <td><%=curdoc.getResponsibleName()%>
+                                        <td><%=Encode.forHtml(String.valueOf(curdoc.getResponsibleName()))%>
                                         </td>
-                                        <td><%=curdoc.getObservationDate()%>
+                                        <td><%=Encode.forHtml(String.valueOf(curdoc.getObservationDate()))%>
                                         </td>
-                                        <td><%=reviewerName%>
+                                        <td><%=Encode.forHtml(String.valueOf(reviewerName))%>
                                         </td>
                                     </tr>
 
@@ -277,7 +278,7 @@
         <table oldclass="MainTable" id="scrollNumber1" border="0"
                name="encounterTable" cellspacing="0" cellpadding="3" width="100%" style="background-color:#f2f7ff">
             <tr>
-                <th align="center" colspan="5"><%=demoName%>'s Labs</th>
+                <th align="center" colspan="5"><%=Encode.forHtml(String.valueOf(demoName))%>'s Labs</th>
             </tr>
             <tr>
                 <th align="left" valign="bottom" class="cell"><fmt:message key="oscarMDS.index.msgDiscipline"/></th>
@@ -312,25 +313,25 @@
                     }
             %>
 
-            <tr bgcolor="<%=bgcolor%>"
-                class="<%= (result.isAbnormal() ? "AbnormalRes" : "NormalRes" ) %>">
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>"
+                class="<%=Encode.forHtmlAttribute(String.valueOf((result.isAbnormal() ? "AbnormalRes" : "NormalRes" )))%>">
                 <td nowrap>
                     <% if (result.isHL7TEXT()) {%> <a>
-                    <!--href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ALL/labDisplay.jsp?segmentID=<%=segmentID%>&providerNo=<%=providerNo%>&searchProviderNo=<%=searchProviderNo%>&status=<%=status%>')"--><%=(String) result.getDiscipline()%>
+                    <!--href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&status=<%=Encode.forUriComponent(String.valueOf(status))%>')"--><%=Encode.forHtml(String.valueOf((String) result.getDiscipline()))%>
                 </a>
                     <% } else {%> <a>
-                    <!--href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/BC/labDisplay.jsp?segmentID=<%=segmentID%>&providerNo=<%=providerNo%>&searchProviderNo=<%=searchProviderNo%>&status=<%=status%>')"--><%=(String) result.getDiscipline()%>
+                    <!--href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/BC/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&status=<%=Encode.forUriComponent(String.valueOf(status))%>')"--><%=Encode.forHtml(String.valueOf((String) result.getDiscipline()))%>
                 </a>
                     <% }%>
                 </td>
-                <td nowrap><%= (String) result.getDateTime()%>
+                <td nowrap><%=Encode.forHtml(String.valueOf((String) result.getDateTime()))%>
                 </td>
-                <td nowrap><%= (String) result.getRequestingClient()%>
+                <td nowrap><%=Encode.forHtml(String.valueOf((String) result.getRequestingClient()))%>
                 </td>
-                <td nowrap><%= (result.isAbnormal() ? "Abnormal" : "") %>
+                <td nowrap><%=Encode.forHtml(String.valueOf((result.isAbnormal() ? "Abnormal" : "")))%>
                 </td>
 
-                <td nowrap><%= ((String) (result.isFinal() ? "Final" : "Partial"))%>
+                <td nowrap><%=Encode.forHtml(String.valueOf(((String) (result.isFinal() ? "Final" : "Partial"))))%>
                 </td>
             </tr>
             <% }

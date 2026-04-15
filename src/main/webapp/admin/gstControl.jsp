@@ -21,6 +21,7 @@
 <%@ page
         import="java.util.*,ca.openosp.openo.report.data.*, java.util.Properties, ca.openosp.openo.billing.ca.on.administration.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.administration.GstControl2Action" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -71,7 +72,7 @@
     <form action="<%=request.getContextPath() %>/admin/GstControl.do">
         GST:<br>
         <div class="input-append">
-            <input type="text" class="span2" maxlength="3" id="gstPercent" name="gstPercent" value="<%=percent%>"/>
+            <input type="text" class="span2" maxlength="3" id="gstPercent" name="gstPercent" value="<%=Encode.forHtmlAttribute(String.valueOf(percent))%>"/>
             <span class="add-on">%</span>
         </div>
         <br>

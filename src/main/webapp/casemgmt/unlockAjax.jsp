@@ -46,6 +46,7 @@
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementIssue" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <% CaseManagementNote note = (CaseManagementNote) request.getAttribute("Note");
     pageContext.setAttribute("provName", note.getProviderName());
@@ -72,9 +73,9 @@
         <div class="sig" id="summary<c:out value="${Note.id}"/>">
             <div id="observation<c:out value="${Note.id}"/>"
                  style="float: right; margin-right: 3px;"><i>Encounter Date:&nbsp;<span
-                    id="obs<c:out value="${Note.id}"/>"><%=DateUtils.getDate(note.getObservation_date(), dateFormat)%></span>&nbsp;rev<a
+                    id="obs<c:out value="${Note.id}"/>"><%=Encode.forHtmlAttribute(String.valueOf(DateUtils.getDate(note.getObservation_date(), dateFormat)))%></span>&nbsp;rev<a
                     href="#"
-                    onclick="return showHistory('<c:out value="${Note.id}"/>', event);"><%=note.getRevision()%>
+                    onclick="return showHistory('<c:out value="${Note.id}"/>', event);"><%=Encode.forHtmlAttribute(String.valueOf(note.getRevision()))%>
             </a></i></div>
             <div><span style="float: left;">Editors:</span>
                 <ul style="list-style: none inside none; margin: 0px;">
@@ -101,7 +102,7 @@
             </div>
             <div style="clear: right; margin-right: 3px; float: right;">Enc
                 Type:&nbsp;<span
-                        id="encType<%=note.getId()%>"><%=note.getEncounter_type().equals("") ? "" : "&quot;" + note.getEncounter_type() + "&quot;"%></span>
+                        id="encType<%=Encode.forHtmlAttribute(String.valueOf(note.getId()))%>"><%=Encode.forHtml(String.valueOf(note.getEncounter_type().equals("") ? "" : "&quot;" + note.getEncounter_type() + "&quot;"))%></span>
             </div>
 
             <%
@@ -114,7 +115,7 @@
                     while (i.hasNext()) {
                         CaseManagementIssue iss = (CaseManagementIssue) i.next();
                 %>
-                <li><%=iss.getIssue().getDescription()%>
+                <li><%=Encode.forHtml(String.valueOf(iss.getIssue().getDescription()))%>
                 </li>
                 <%
                     }
@@ -136,7 +137,7 @@
          alt="Minimize Display" onclick='resetView(true, true, event)'
          style='float: right; margin-right: 5px;'
          src='<c:out value="${ctx}"/>/oscarEncounter/graphics/triangle_up.gif'/>
-    <span id="txt<c:out value="${Note.id}"/>"><fmt:message key="oscarEncounter.Index.msgLocked"/> <%=DateUtils.getDate(note.getUpdate_date(), dateFormat)%>
+    <span id="txt<c:out value="${Note.id}"/>"><fmt:message key="oscarEncounter.Index.msgLocked"/> <%=Encode.forHtml(String.valueOf(DateUtils.getDate(note.getUpdate_date(), dateFormat)))%>
 	<c:out value="${provName}"/></span>
     <p id="passwdError" style="color: red;">Incorrect password</p>
     <p id='passwdPara' class="passwd">Password:&nbsp;<input

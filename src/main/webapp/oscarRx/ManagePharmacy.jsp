@@ -31,6 +31,7 @@
         import="ca.openosp.openo.rx.pageUtil.*,ca.openosp.openo.rx.data.*,java.util.*" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -115,8 +116,8 @@
                                 <tr>
                                     <td>
                                         <%String type = request.getParameter("type"); %>
-                                        <input type="hidden" name="pharmacyAction" id="pharmacyAction" value="<%=type%>"/>
-                                        <input type="hidden" name="ID" id="ID" value="<%=ID%>"/> <fmt:message key="ManagePharmacy.txtfld.label.pharmacyName"/> :
+                                        <input type="hidden" name="pharmacyAction" id="pharmacyAction" value="<%=Encode.forHtmlAttribute(String.valueOf(type))%>"/>
+                                        <input type="hidden" name="ID" id="ID" value="<%=Encode.forHtmlAttribute(String.valueOf(ID))%>"/> <fmt:message key="ManagePharmacy.txtfld.label.pharmacyName"/> :
                                     </td>
                                     <td><input type="text" name="name" id="name" /></td>
                                 </tr>
@@ -189,7 +190,7 @@
                             <%
                                 String sBack = request.getContextPath() + "/oscarRx/SearchDrug.jsp";
                             %> <input type=button class="ControlPushButton"
-                                      onclick="javascript:window.location.href='<%=sBack%>';"
+                                      onclick="javascript:window.location.href='<%=Encode.forJavaScript(String.valueOf(sBack))%>';"
                                       value="Back to Search Drug"/></td>
                     </tr>
                     <!----End new rows here-->

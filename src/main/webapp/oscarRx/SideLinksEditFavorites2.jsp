@@ -29,7 +29,6 @@
 <%@page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="ca.openosp.openo.casemgmt.model.Issue" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
@@ -37,6 +36,7 @@
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
@@ -58,10 +58,10 @@
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
         <dl>
-        <dt class="PropSheetLevel1CurrentItem<%=alle%>">
+        <dt class="PropSheetLevel1CurrentItem<%=Encode.forHtmlAttribute(String.valueOf(alle))%>">
             <fmt:message key="oscarRx.sideLinks.msgAllergies"/>
             <a href="javascript:void(0);"
-               onclick="window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=request.getParameter("demographicNo")%>';"
+               onclick="window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>';"
                style="width: 200px">+</a>
         </dt>
 
@@ -70,8 +70,8 @@
         for (int j=0; j<allergies.length; j++){%>
 
         <dd><a
-                title="<%= allergies[j].getDescription() %> - <%= allergies[j].getReaction() %>">
-            <%=allergies[j].getShortDesc(13, 8, "...")%>
+                title="<%=Encode.forHtmlAttribute(String.valueOf(allergies[j].getDescription()))%> - <%=Encode.forHtmlAttribute(String.valueOf(allergies[j].getReaction()))%>">
+            <%=Encode.forHtml(String.valueOf(allergies[j].getShortDesc(13, 8, "...")))%>
         </a>
         </dd>
         <%}%>
@@ -101,7 +101,7 @@
 
                 if (codeDescr != null) {
         %>
-        <dd><%=StringEscapeUtils.escapeHtml4(codeDescr)%>
+        <dd><%=Encode.forHtml(codeDescr)%>
         </dd>
         <%
                 }
@@ -124,7 +124,7 @@
                 if (!note.isLocked() && !note.isArchived()) {
 
         %>
-        <dd><%=StringEscapeUtils.escapeHtml4(note.getNote()) %>
+        <dd><%=Encode.forHtml(note.getNote()) %>
         </dd>
         <%
                 }
@@ -146,10 +146,10 @@
         for (int j=0; j<favorites.length; j++){%>
 
     <dd><a
-            href="javascript:void(0);" onclick="useFav2('<%= favorites[j].getFavoriteId() %>');"
-            title="<%= favorites[j].getFavoriteName() %>"><%if (favorites[j].getFavoriteName().length() > 13) {%>
-        <%= favorites[j].getFavoriteName().substring(0, 10) + "..." %> <%} else {%>
-        <%= favorites[j].getFavoriteName() %> <%}%></a></dd>
+            href="javascript:void(0);" onclick="useFav2('<%=Encode.forJavaScript(String.valueOf(favorites[j].getFavoriteId()))%>');"
+            title="<%=Encode.forHtmlAttribute(String.valueOf(favorites[j].getFavoriteName()))%>"><%if (favorites[j].getFavoriteName().length() > 13) {%>
+        <%=Encode.forHtml(String.valueOf(favorites[j].getFavoriteName().substring(0, 10) + "..."))%> <%} else {%>
+        <%=Encode.forHtml(String.valueOf(favorites[j].getFavoriteName()))%> <%}%></a></dd>
     <%}%>
 </dl>
 </div>

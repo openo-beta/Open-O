@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -126,12 +127,12 @@
                     %>
                     <tr bgcolor="<%= i%2==0? "#EEEEFF" : "#CCCCFF"%>">
                         <td width="3%"><input type="checkbox" name="chkSetId"
-                                              value="<%=id%>"/></td>
+                                              value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>"/></td>
                         <td width="70%"><a
-                                href="javascript:popupImmunizationSet(768,1024,'oscarEncounter/immunization/config/ImmunizationSetDisplay.do?setId=<%=id%>')">
-                            <%=name%>
+                                href="javascript:popupImmunizationSet(768,1024,'oscarEncounter/immunization/config/ImmunizationSetDisplay.do?setId=<%=Encode.forUriComponent(String.valueOf(id))%>')">
+                            <%=Encode.forHtml(String.valueOf(name))%>
                         </a></td>
-                        <td align="center"><%=createDate%>
+                        <td align="center"><%=Encode.forHtml(String.valueOf(createDate))%>
                         </td>
                     </tr>
                     <%}%>

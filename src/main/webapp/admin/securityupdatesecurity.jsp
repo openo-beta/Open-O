@@ -51,6 +51,7 @@
 <%@ page import="ca.openosp.openo.security.MfaActions2Action" %>
 <%@ page import="ca.openosp.openo.managers.MfaManager" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%!
@@ -187,7 +188,7 @@
 		if (confirm("<fmt:message key="admin.securityAddRecord.mfa.reset.confirm"/>")) {
 			let url = "${pageContext.request.contextPath}/securityRecord/mfa.do";
 			let data = {
-				method: '<%= MfaActions2Action.METHOD_RESET_MFA %>',
+				method: '<%=Encode.forJavaScript(String.valueOf(MfaActions2Action.METHOD_RESET_MFA))%>',
 				securityId: securityId
 			};
 			new Ajax.Request(url, {
@@ -234,14 +235,14 @@
                     <td width="50%" align="right"><fmt:message key="admin.securityrecord.formUserName"/>:
                     </td>
                     <td><input type="text" name="user_name" maxlength="10"
-                               value="<%= security.getUserName() %>"></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(security.getUserName()))%>"></td>
                 </tr>
                 <tr>
                     <td align="right" nowrap><fmt:message key="admin.securityrecord.formPassword"/>:
                     </td>
                     <td><input type="password" name="password" value="*********" maxlength="15"> <font
                             size="-2">(<fmt:message key="admin.securityrecord.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <fmt:message key="admin.securityrecord.msgSymbols"/>)</font></td>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_min_length")))%> <fmt:message key="admin.securityrecord.msgSymbols"/>)</font></td>
                 </tr>
                 <tr>
                     <td align="right"><fmt:message key="admin.securityrecord.formConfirm"/>:
@@ -253,9 +254,9 @@
                         <div align="right"><fmt:message key="admin.securityrecord.formProviderNo"/>:
                         </div>
                     </td>
-                    <td><%= security.getProviderNo() %>
+                    <td><%=Encode.forHtml(String.valueOf(security.getProviderNo()))%>
                         <input type="hidden" name="provider_no"
-                               value="<%= security.getProviderNo() %>"></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(security.getProviderNo()))%>"></td>
                 </tr>
                 <!-- new sec -->
                 <tr>
@@ -264,7 +265,7 @@
                     <td><input type="checkbox" name="b_ExpireSet" value="1"
                             <%= security.getBExpireset()==0?"":"checked" %>> <fmt:message key="admin.securityrecord.formDate"/>: <input
                             type="text" name="date_ExpireDate" id="date_ExpireDate"
-                            value="<%=  security.getDateExpiredate() ==null?"": security.getDateExpiredate()  %>"
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(security.getDateExpiredate() ==null?"": security.getDateExpiredate()))%>"
                             size="10" readonly/> <img src="<%= request.getContextPath() %>/images/cal.gif"
                                                       id="date_ExpireDate_cal"/></td>
                 </tr>
@@ -295,7 +296,7 @@
                     </td>
                     <td><input type="password" name="pin" value="****" <%=security.isUsingMfa() ? "disabled" : ""%> size="6" maxlength="6"> <font
                             size="-2">(<fmt:message key="admin.securityrecord.msgAtLeast"/>
-                        <%=op.getProperty("password_pin_min_length")%> <fmt:message key="admin.securityrecord.msgDigits"/>)</font>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_pin_min_length")))%> <fmt:message key="admin.securityrecord.msgDigits"/>)</font>
                     </td>
                 </tr>
                 <tr>
@@ -342,7 +343,7 @@
 					<fmt:message key="admin.securityAddRecord.mfa.description"/>
 				</label>
 				<% if (security.isUsingMfa() && !security.isMfaRegistrationNeeded()) { %>
-				<a id="resetMfaLink" onclick="handleResetMfa(<%=securityId%>)"
+				<a id="resetMfaLink" onclick="handleResetMfa(<%=Encode.forJavaScript(String.valueOf(securityId))%>)"
 				   style="margin-left: 4px; font-size: small; color: blue; text-decoration:
 				   underline; cursor: pointer;"><fmt:message key="admin.securityAddRecord.mfa.reset.link"/></a>
 				<% } %>
@@ -361,11 +362,11 @@
 
                 <tr>
                     <td colspan="2" align="center">
-                        <input type="hidden" name="security_no" value="<%= security.getSecurityNo() %>">
+                        <input type="hidden" name="security_no" value="<%=Encode.forHtmlAttribute(String.valueOf(security.getSecurityNo()))%>">
                         <input type="submit" name="subbutton"
                                value='<fmt:message key="admin.securityupdatesecurity.btnSubmit"/>'>
                         <input type="button" value="<fmt:message key="admin.securityupdatesecurity.btnDelete"/>"
-                               onclick="window.location='securitydelete.jsp?keyword=<%=security.getSecurityNo()%>'">
+                               onclick="window.location='securitydelete.jsp?keyword=<%=Encode.forJavaScript(String.valueOf(security.getSecurityNo()))%>'">
                     </td>
                 </tr>
                 <%

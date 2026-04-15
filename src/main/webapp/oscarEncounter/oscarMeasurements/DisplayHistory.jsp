@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String userroleName = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -84,7 +85,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -122,7 +123,7 @@
                                                 <tr>
                                                     <td>
                                                         <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formPatientName"/>: </strong>
-                                                            <oscar:nameage demographicNo="<%=demo%>"/></div>
+                                                            <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demo))%>"/></div>
 
                                                     </td>
                                                     <td>
@@ -175,7 +176,7 @@
                                     <fmt:message key="oscarEncounter.oscarMeasurements.displayHistory.headingDateEntered"/>
                                 </th>
                                 <!-- Delete column shown only if user has rights -->
-                                <security:oscarSec roleName="<%=userroleName%>" objectName="_flowsheet" rights="w">
+                                <security:oscarSec roleName="<%=Encode.forHtmlAttribute(String.valueOf(userroleName))%>" objectName="_flowsheet" rights="w">
                                     <th class="Header DoNotPrint">
                                         <fmt:message key="oscarEncounter.oscarMeasurements.displayHistory.headingDelete"/>
                                     </th>
@@ -226,7 +227,7 @@
                                     </td>
 
                                     <!-- Delete Checkbox (only render if user has rights & not remote data) -->
-                                    <security:oscarSec roleName="<%=userroleName%>" objectName="_flowsheet" rights="w">
+                                    <security:oscarSec roleName="<%=Encode.forHtmlAttribute(String.valueOf(userroleName))%>" objectName="_flowsheet" rights="w">
                                         <td class="DoNotPrint">
                                             <c:if test="${empty data.remoteFacility}">
                                                 <input type="checkbox" name="deleteCheckbox" value="${data.id}">
@@ -264,7 +265,7 @@
                             </td>
 
                             <!-- Delete button (only show if user has rights AND there is at least one row) -->
-                            <security:oscarSec roleName="<%=userroleName%>" objectName="_flowsheet" rights="w">
+                            <security:oscarSec roleName="<%=Encode.forHtmlAttribute(String.valueOf(userroleName))%>" objectName="_flowsheet" rights="w">
                                 <c:if test="${not empty measurementsData.measurementsDataVector}">
                                     <td>
                                         <input type="button" name="Button" class="btn DoNotPrint"
@@ -279,7 +280,7 @@
                                 <td>
                                     <input type="button" name="Button" class="btn DoNotPrint"
                                         value="<fmt:message key="oscarEncounter.oscarMeasurements.displayHistory.plot"/>"
-                                        onclick="javascript: popupPage(600,1000,'<%=request.getContextPath()%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=demo%>&type=${type}')">
+                                        onclick="javascript: popupPage(600,1000,'<%=request.getContextPath()%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demo))%>&type=${type}')">
                                 </td>
                             </c:if>
                         </tr>

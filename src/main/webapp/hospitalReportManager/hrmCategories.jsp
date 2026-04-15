@@ -24,10 +24,10 @@
     }
 %>
 
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMCategoryDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 
@@ -76,13 +76,13 @@
 
             <form method="post" action="hrm_categories_action.jsp">
                 <input type="hidden" name="action" value="add"/>
-                <input type="hidden" name="id" value="<%=existingCategory != null ? existingCategory.getId() : ""%>"/>
+                <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(existingCategory != null ? existingCategory.getId() : ""))%>"/>
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label">Category Name:</label>
                         <div class="controls">
                             <input type="text" name="categoryName" class="form-control input-normal"
-                                   value="<%=existingCategory != null ? existingCategory.getCategoryName() : ""  %>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(existingCategory != null ? existingCategory.getCategoryName() : ""))%>"/>
                         </div>
                     </div>
                     <div class="w-100"></div>
@@ -90,7 +90,7 @@
                         <label class="control-label">SubClass Name Mnemonic:</label>
                         <div class="controls">
                             <input type="text" name="subClassNameMnemonic" class="form-control"
-                                   value="<%=existingCategory != null ? existingCategory.getSubClassNameMnemonic() : ""  %>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(existingCategory != null ? existingCategory.getSubClassNameMnemonic() : ""))%>"/>
                             (should be of the format &lt;subclass_name&gt;:&lt;subclass_mnemonic&gt;)
                         </div>
                     </div>
@@ -115,12 +115,12 @@
                     for (HRMCategory category : hrmCategoryDao.findAll()) {
                 %>
                 <tr>
-                    <td><a href="hrm_categories_action.jsp?action=delete&id=<%=category.getId()%>"><img
+                    <td><a href="hrm_categories_action.jsp?action=delete&id=<%=Encode.forHtmlAttribute(String.valueOf(category.getId()))%>"><img
                             src="<%=request.getContextPath()%>/images/icons/101.png" alt="alert"></a></td>
-                    <td><a href="hrmCategories.jsp?id=<%=category.getId()%>"><%=category.getId()%>
+                    <td><a href="hrmCategories.jsp?id=<%=Encode.forUriComponent(String.valueOf(category.getId()))%>"><%=Encode.forHtml(String.valueOf(category.getId()))%>
                     </a></td>
-                    <td><%=StringEscapeUtils.escapeHtml4(category.getCategoryName())%>&nbsp;</td>
-                    <td><%=StringEscapeUtils.escapeHtml4(category.getSubClassNameMnemonic())%>&nbsp;</td>
+                    <td><%=Encode.forHtml(category.getCategoryName())%>&nbsp;</td>
+                    <td><%=Encode.forHtml(category.getSubClassNameMnemonic())%>&nbsp;</td>
                 </tr>
                 <%
                     }

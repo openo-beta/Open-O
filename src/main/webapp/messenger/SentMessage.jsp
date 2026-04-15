@@ -53,6 +53,7 @@
   @since 2003
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -174,7 +175,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="messenger.SentMessage.msgMessageSentTo"/> <%= request.getAttribute("SentMessageProvs") %>
+                        <td><fmt:message key="messenger.SentMessage.msgMessageSentTo"/> <%=Encode.forHtml(String.valueOf(request.getAttribute("SentMessageProvs")))%>
                         </td>
                     </tr>
                 </table>

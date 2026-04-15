@@ -202,7 +202,7 @@
             </td>
             <td class="MainTableTopRowRightColumn">
                 <form action="${pageContext.request.contextPath}/report/DemographicReport.do" method="post" onsubmit="return checkQuery();">
-                <input type="hidden" name="studyId" id="studyId" value='<%=studyId == null ? "" : studyId%>'/>
+                <input type="hidden" name="studyId" id="studyId" value='<%=Encode.forHtmlAttribute(String.valueOf(studyId == null ? "" : studyId))%>'/>
                 <table class="TopStatusBar">
                     <tr>
                         <td>
@@ -215,7 +215,7 @@
                                         RptSearchData.SearchCriteria sc = (RptSearchData.SearchCriteria) queryArray.get(i);
                                         String qId = sc.id;
                                         String qName = sc.queryName;%>
-                                <option value="<%=qId%>"><%=qName%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(qId))%>"><%=Encode.forHtml(String.valueOf(qName))%>
                                 </option>
 
                                 <%}%>
@@ -479,12 +479,12 @@
                                     </td>
                                 </tr>
                             </table>
-                            <input type="text" name="queryName" id="queryName" value="<%= safeValue(formBean.getQueryName()) %>"/><br>
+                            <input type="text" name="queryName" id="queryName" value="<%=Encode.forHtmlAttribute(String.valueOf(safeValue(formBean.getQueryName())))%>"/><br>
                             <input type="submit" value="Save Query" name="query"/>
                             <input type="submit" value="Run Query" name="query"/><br/>
                             <span id="submitPatientSet">
 	<input type="submit" value="Run Query And Save to Patient Set" name="query"/>&nbsp;<input type="text" name="setName"
-                                                                                              placeholder="Set Name" value="<%= safeValue(formBean.getSetName()) %>"/>
+                                                                                              placeholder="Set Name" value="<%=Encode.forHtmlAttribute(String.valueOf(safeValue(formBean.getSetName())))%>"/>
 </span>
                             <%if (studyId != null && !studyId.equals("") && !studyId.equalsIgnoreCase("null")) {%>
                             <input type="submit" value="Add to Study" name="query"/>
@@ -513,8 +513,8 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="text" name="startYear" size="4" value="<%= safeValue(formBean.getStartYear()) %>"/>
-                                        <input type="text" name="endYear" size="4" value="<%= safeValue(formBean.getEndYear()) %>"/>
+                                        <input type="text" name="startYear" size="4" value="<%=Encode.forHtmlAttribute(String.valueOf(safeValue(formBean.getStartYear())))%>"/>
+                                        <input type="text" name="endYear" size="4" value="<%=Encode.forHtmlAttribute(String.valueOf(safeValue(formBean.getEndYear())))%>"/>
                                     </td>
                                     <td>
 
@@ -523,7 +523,7 @@
                                         <input type="radio" name="ageStyle" value="1" <%= "1".equals(formBean.getAgeStyle()) ? "checked" : "" %>/>
                                         In the year
                                         <input type="radio" name="ageStyle" value="2" <%= "2".equals(formBean.getAgeStyle()) ? "checked" : "" %>/>
-                                        As of : <input type="text" name="asofDate" size="9" id="asofDate" value="<%= safeValue(formBean.getAsofDate()) %>"/> <a
+                                        As of : <input type="text" name="asofDate" size="9" id="asofDate" value="<%=Encode.forHtmlAttribute(String.valueOf(safeValue(formBean.getAsofDate())))%>"/> <a
                                             id="date"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar"
                                                            border="0"/></a> <br>
                                     </td>
@@ -534,13 +534,13 @@
                                         First Name
                                     </td>
                                     <td>
-                                        <input type="text" name="firstName" id="firstName" value="<%= safeValue(formBean.getFirstName()) %>"/>
+                                        <input type="text" name="firstName" id="firstName" value="<%=Encode.forHtmlAttribute(String.valueOf(safeValue(formBean.getFirstName())))%>"/>
                                     </td>
                                     <td>
                                         Last Name
                                     </td>
                                     <td>
-                                        <input type="text" name="lastName" id="lastName" value="<%= safeValue(formBean.getLastName()) %>"/>
+                                        <input type="text" name="lastName" id="lastName" value="<%=Encode.forHtmlAttribute(String.valueOf(safeValue(formBean.getLastName())))%>"/>
                                     </td>
                                 </tr>
 
@@ -556,8 +556,8 @@
                                                 <%
                                                     for (int i = 0; i < rosterArray.size(); i++) {
                                                         String ros = (String) rosterArray.get(i);%>
-                                                <td><%=ros%><br>
-                                                    <input type="checkbox" name="rosterStatus" value="<%=ros%>" <%= containsValue(formBean.getRosterStatus(), ros) ? "checked" : "" %>/>
+                                                <td><%=Encode.forHtml(String.valueOf(ros))%><br>
+                                                    <input type="checkbox" name="rosterStatus" value="<%=Encode.forHtmlAttribute(String.valueOf(ros))%>" <%= containsValue(formBean.getRosterStatus(), ros) ? "checked" : "" %>/>
                                                 </td>
                                                 <%
                                                     }
@@ -599,8 +599,8 @@
                                                     String pro = (String) providerArray.get(i);
                                                     if (pro != null && !"".equals(pro)) {
                                             %>
-                                            <li><%=providerBean.getProperty(pro, pro)%>
-                                                <input type="checkbox" name="providerNo" value="<%=pro%>" <%= containsValue(formBean.getProviderNo(), pro) ? "checked" : "" %>/>
+                                            <li><%=Encode.forHtml(String.valueOf(providerBean.getProperty(pro, pro)))%>
+                                                <input type="checkbox" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(pro))%>" <%= containsValue(formBean.getProviderNo(), pro) ? "checked" : "" %>/>
                                             </li>
                                             <%
                                                     }
@@ -621,8 +621,8 @@
                                                 <%
                                                     for (int i = 0; i < patientArray.size(); i++) {
                                                         String pat = (String) patientArray.get(i);%>
-                                                <td><%=pat%><br>
-                                                    <input type="checkbox" name="patientStatus" value="<%=pat%>" <%= containsValue(formBean.getPatientStatus(), pat) ? "checked" : "" %>/>
+                                                <td><%=Encode.forHtml(String.valueOf(pat))%><br>
+                                                    <input type="checkbox" name="patientStatus" value="<%=Encode.forHtmlAttribute(String.valueOf(pat))%>" <%= containsValue(formBean.getPatientStatus(), pat) ? "checked" : "" %>/>
                                                 </td>
                                                 <%
                                                     }
@@ -735,7 +735,7 @@
         <tr>
             <%for (int i = 0; i < selectArray.length; i++) {%>
             <th>
-                <%=dcn.getColumnTitle(selectArray[i])%>
+                <%=Encode.forHtml(String.valueOf(dcn.getColumnTitle(selectArray[i])))%>
             </th>
             <%}%>
         </tr>
@@ -753,7 +753,7 @@
                     }
             %>
             <td>
-                <%=str%>
+                <%=Encode.forHtml(String.valueOf(str))%>
 
             </td>
 

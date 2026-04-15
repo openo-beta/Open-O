@@ -31,6 +31,7 @@
 <%@ page import="java.util.*, java.sql.*, java.io.*, ca.openosp.*" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 
 <html>
@@ -77,7 +78,7 @@
                                                                            name='submit' value=' Save '> <input
                         type="button"
                         name="Button"
-                        value="&nbsp;<%=request.getParameter("submit")!=null?" Exit ":"Cancel"%>&nbsp;"
+                        value="&nbsp;<%=Encode.forHtmlAttribute(request.getParameter("submit")!=null?" Exit ":"Cancel")%>&nbsp;"
                         onClick="onExit();">&nbsp;
                 </div>
             </th>

@@ -306,9 +306,9 @@
                 String temp[] = ( pList.get(i)).split("\\|");
                 %>
 
-                var temp_provider_no = <%=temp[0]%>;
+                var temp_provider_no = <%=Encode.forJavaScript(String.valueOf(temp[0]))%>;
                 if (provider_no == temp_provider_no) {
-                    var provider_ohipNo = "<%=temp[3]%>";
+                    var provider_ohipNo = "<%=Encode.forJavaScript(String.valueOf(temp[3]))%>";
                     document.serviceform.provider_ohipNo.value = provider_ohipNo;
                     if (shouldSubmit) {
                         if (document.getElementById("xml_vdate").value.length > 0 && document.getElementById("xml_appointment_date").value.length > 0)
@@ -431,8 +431,8 @@
             <a href="javascript: function myFunction() {return false; }" onClick="popupPage(700,720,'<%= request.getContextPath() %>/oscarReport/manageProvider.jsp?action=billingreport')">Manage Provider List</a>-->
         <form name="serviceform" class="form-inline" method="get" action="billingONStatus.jsp"
               onsubmit="ShowSpin(true);">
-            <input type="hidden" id="sortName" name="sortName" value="<%=sortName%>">
-            <input type="hidden" id="sortOrder" name="sortOrder" value="<%=sortOrder%>">
+            <input type="hidden" id="sortName" name="sortName" value="<%=Encode.forHtmlAttribute(String.valueOf(sortName))%>">
+            <input type="hidden" id="sortOrder" name="sortOrder" value="<%=Encode.forHtmlAttribute(String.valueOf(sortOrder))%>">
             <div class="row well hidden-print">
                 <%
                     String tmpStrBillType = Arrays.toString(strBillType);
@@ -485,19 +485,19 @@
                                 Set<Provider> siteProviders = sites.get(i).getProviders();
                                 List<Provider>  siteProvidersList = new ArrayList<Provider> (siteProviders);
                                 Collections.sort(siteProvidersList,(new Provider()).ComparatorName());%>
-                            _providers["<%= sites.get(i).getName() %>"] = "<% Iterator<Provider> iter = siteProvidersList.iterator();
+                            _providers["<%=Encode.forJavaScript(String.valueOf(sites.get(i).getName()))%>"] = "<% Iterator<Provider> iter = siteProvidersList.iterator();
                                     while (iter.hasNext()) {
                                     	Provider p=iter.next();
                                     	if (pros.contains(p.getProviderNo())) {
-                                    %><option value='<%= p.getProviderNo() %>'><%= Encode.forHtml(p.getLastName()) %>, <%= Encode.forHtml(p.getFirstName()) %></option><% }} %>";
+                                    %><option value='<%=Encode.forJavaScript(String.valueOf(p.getProviderNo()))%>'><%= Encode.forHtml(p.getLastName()) %>, <%= Encode.forHtml(p.getFirstName()) %></option><% }} %>";
                             <% } %>
 
                             function changeSite(sel) {
                                 sel.form.providerview.innerHTML = sel.value == "none" ? "" : "<option value='none'>---select providers---</option>" + _providers[sel.value];
                                 sel.style.backgroundColor = sel.options[sel.selectedIndex].style.backgroundColor;
-                                if (sel.value == '<%=request.getParameter("site")%>') {
+                                if (sel.value == '<%=Encode.forJavaScript(request.getParameter("site"))%>') {
                                     if (document.serviceform.provider_ohipNo.value != '')
-                                        sel.form.providerview.value = '<%=request.getParameter("providerview")%>';
+                                        sel.form.providerview.value = '<%=Encode.forJavaScript(request.getParameter("providerview"))%>';
                                 }
                                 changeProvider(false);
                             }
@@ -510,7 +510,7 @@
                                     for (int i = 0; i < sites.size(); i++) {
                                 %>
                                 <option value="<%= Encode.forHtml(sites.get(i).getName()) %>"
-                                        style="background-color:<%= sites.get(i).getBgColor() %>"
+                                        style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(sites.get(i).getBgColor()))%>"
                                         <%=sites.get(i).getName().toString().equals(curSite) ? "selected" : "" %>><%= Encode.forHtml(sites.get(i).getName()) %>
                                 </option>
                                 <% } %>
@@ -536,7 +536,7 @@
                                     if (pList.size() == 1) {
                                         String temp[] = (pList.get(0)).split("\\|");
                                 %>
-                                <option value="<%=temp[0]%>"><%=temp[1]%>, <%=temp[2]%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(temp[0]))%>"><%=Encode.forHtml(String.valueOf(temp[1]))%>, <%=Encode.forHtml(String.valueOf(temp[2]))%>
                                 </option>
                                 <%
                                 } else {
@@ -545,8 +545,8 @@
                                 <% for (int i = 0; i < pList.size(); i++) {
                                     String temp[] = (pList.get(i)).split("\\|");
                                 %>
-                                <option value="<%=temp[0]%>" <%=providerNo.equals(temp[0]) ? "selected" : ""%>><%=temp[1]%>
-                                    , <%=temp[2]%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(temp[0]))%>" <%=providerNo.equals(temp[0]) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(temp[1]))%>
+                                    , <%=Encode.forHtml(String.valueOf(temp[2]))%>
                                 </option>
                                 <% }
                                 } %>
@@ -555,28 +555,28 @@
                         <% } %>
                         <label>
                             OHIP No.:
-                            <input type="text" class="input-small" name="provider_ohipNo" readonly value="<%=ohipNo%>"></label>
+                            <input type="text" class="input-small" name="provider_ohipNo" readonly value="<%=Encode.forHtmlAttribute(String.valueOf(ohipNo))%>"></label>
                     </div>
                     <div class="span6">
                         <label for="xml_vdate">Start:</label>
                         <div class="input-append">
-                            <input type="text" name="xml_vdate" id="xml_vdate" style="width:90px" value="<%=startDate%>"
+                            <input type="text" name="xml_vdate" id="xml_vdate" style="width:90px" value="<%=Encode.forHtmlAttribute(String.valueOf(startDate))%>"
                                    pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off" required>
                             <span class="add-on"><i class="icon-calendar"></i></span>
                         </div>
                         <label for="xml_appointment_date">End:
                             <small>
                                 <a href="javascript: function myFunction() {return false; }"
-                                   onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-30")%>')">30</a>
+                                   onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-30")))%>')">30</a>
                                 <a href="javascript: function myFunction() {return false; }"
-                                   onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-60")%>')">60</a>
+                                   onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-60")))%>')">60</a>
                                 <a href="javascript: function myFunction() {return false; }"
-                                   onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-90")%>')">90</a>
+                                   onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-90")))%>')">90</a>
                                 days back
                             </small></label>
                         <div class="input-append">
                             <input type="text" name="xml_appointment_date" style="width:90px" id="xml_appointment_date"
-                                   value="<%=endDate%>" pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(endDate))%>" pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$"
                                    autocomplete="off" required>
                             <span class="add-on"><i class="icon-calendar"></i></span>
                         </div>
@@ -586,18 +586,18 @@
                 <div class="row">
                     <div class="span12">
                         <label>Dx:
-                            <input type="text" name="dx" class="input-mini" placeholder="123" value="<%=dx%>"></label>
+                            <input type="text" name="dx" class="input-mini" placeholder="123" value="<%=Encode.forHtmlAttribute(String.valueOf(dx))%>"></label>
                         <label>Serv. Code:
                             <input type="text" name="serviceCode" class="input-mini" placeholder="A123A"
-                                   value="<%=serviceCode%>"></label>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"></label>
                         <label>Demographic:
                             <input type="text" name="demographicNo" class="input-mini" placeholder="1234"
-                                   value="<%=demoNo%>"></label>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>"></label>
                         <label>RA Code:
                             <input type="text" name="raCode" class="input-mini" placeholder=""
-                                   value="<%=raCode%>"></label>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(raCode))%>"></label>
                         <label>Claim No (% for any):
-                            <input type="text" name="claimNo" class="input-small" value="<%=claimNo%>"></label>
+                            <input type="text" name="claimNo" class="input-small" value="<%=Encode.forHtmlAttribute(String.valueOf(claimNo))%>"></label>
                         <label>
                             Visit Type:
                             <select name="visitType" style="background-color:white;">
@@ -630,7 +630,7 @@
                                             }
                                         }
                                 %>
-                                <option value="<%= form.getValue()%>" <%= selected%> ><%= form.getLabel()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(form.getValue()))%>" <%=selected%> ><%=Encode.forHtml(String.valueOf(form.getLabel()))%>
                                 </option>
                                 <%
                                     }
@@ -649,7 +649,7 @@
                                     billLocation = (String) lLocation.get(i + 1);
                                     String locationSelected = visitLocation.equals(billLocationNo) ? " selected=\"selected\" " : "";
                             %>
-                            <option value="<%=billLocationNo%>" <%=locationSelected %>>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(billLocationNo))%>" <%=Encode.forHtml(String.valueOf(locationSelected))%>>
                                 <%=Encode.forHtml(billLocation)%>
                             </option>
                             <% } %>
@@ -657,14 +657,14 @@
                         <label for="paymentStartDate">Payment Start:</label>
                         <div class="input-append">
                             <input type="text" name="paymentStartDate" id="paymentStartDate" style="width:90px"
-                                   value="<%=paymentStartDate%>" pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(paymentStartDate))%>" pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$"
                                    autocomplete="off">
                             <span class="add-on"><i class="icon-calendar"></i></span>
                         </div>
                         <label for="paymentEndDate">Payment End:</label>
                         <div class="input-append">
                             <input type="text" name="paymentEndDate" id="paymentEndDate" style="width:90px"
-                                   value="<%=paymentEndDate%>" pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(paymentEndDate))%>" pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$"
                                    autocomplete="off">
                             <span class="add-on"><i class="icon-calendar"></i></span>
                         </div>
@@ -776,23 +776,23 @@
                             }
                             color = nC ? "class='success'" : "";
                 %>
-                <tr <%=color %> name="BillingErrorRow" id="BillingErrorRow_<%=bObj.getId() %>">
-                    <td><small><%=bObj.getHin() %> <%=bObj.getVer() %>
+                <tr <%=color %> name="BillingErrorRow" id="BillingErrorRow_<%=Encode.forHtmlAttribute(String.valueOf(bObj.getId()))%>">
+                    <td><small><%=Encode.forHtml(String.valueOf(bObj.getHin()))%> <%=Encode.forHtml(String.valueOf(bObj.getVer()))%>
                     </small></td>
-                    <td><font size="-1"><%=bObj.getDob() %>
+                    <td><font size="-1"><%=Encode.forHtml(String.valueOf(bObj.getDob()))%>
                     </font></td>
                     <td style="text-align:right"><a href=#
-                                                    onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=bObj.getBilling_no()%>','BillCorrection<%=bObj.getBilling_no()%>');return false;"><%=bObj.getBilling_no() %>
+                                                    onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(bObj.getBilling_no()))%>','BillCorrection<%=Encode.forJavaScript(String.valueOf(bObj.getBilling_no()))%>');return false;"><%=Encode.forHtml(String.valueOf(bObj.getBilling_no()))%>
                     </a></td>
-                    <td><%=bObj.getRef_no() %>
+                    <td><%=Encode.forHtml(String.valueOf(bObj.getRef_no()))%>
                     </td>
-                    <td><%=bObj.getFacility() %>
+                    <td><%=Encode.forHtml(String.valueOf(bObj.getFacility()))%>
                     </td>
-                    <td><%=bObj.getAdmitted_date() %>
+                    <td><%=Encode.forHtml(String.valueOf(bObj.getAdmitted_date()))%>
                     </td>
-                    <td><%=bObj.getClaim_error() %>
+                    <td><%=Encode.forHtml(String.valueOf(bObj.getClaim_error()))%>
                     </td>
-                    <td><%=bObj.getCode() %>
+                    <td><%=Encode.forHtml(String.valueOf(bObj.getCode()))%>
                     </td>
                     <%
                         String formattedFee = null;
@@ -803,24 +803,24 @@
                             formattedFee = "N/A";
                         }
                     %>
-                    <td style="text-align:right"><%=ch2StdCurrFromNoDot(formattedFee)%>
+                    <td style="text-align:right"><%=Encode.forHtml(String.valueOf(ch2StdCurrFromNoDot(formattedFee)))%>
                     </td>
-                    <td style="text-align:right"><%=bObj.getUnit() %>
+                    <td style="text-align:right"><%=Encode.forHtml(String.valueOf(bObj.getUnit()))%>
                     </td>
-                    <td><font size="-1"><%=bObj.getCode_date() %>
+                    <td><font size="-1"><%=Encode.forHtml(String.valueOf(bObj.getCode_date()))%>
                     </font></td>
-                    <td><%=bObj.getDx() %>
+                    <td><%=Encode.forHtml(String.valueOf(bObj.getDx()))%>
                     </td>
-                    <td><%=bObj.getExp() %>
+                    <td><%=Encode.forHtml(String.valueOf(bObj.getExp()))%>
                     </td>
-                    <td><%=bObj.getCode_error() %>
+                    <td><%=Encode.forHtml(String.valueOf(bObj.getCode_error()))%>
                     </td>
                     <td style="text-align:center">
-                        <input type="checkbox" id="status<%=bObj.getId() %>" name="status<%=bObj.getId() %>"
+                        <input type="checkbox" id="status<%=Encode.forHtmlAttribute(String.valueOf(bObj.getId()))%>" name="status<%=Encode.forHtmlAttribute(String.valueOf(bObj.getId()))%>"
                                value="Y" <%="N".equals(bObj.getStatus()) ? "" : "checked" %>
-                               onclick="startRequest('<%=bObj.getId() %>');"/>
+                               onclick="startRequest('<%=Encode.forJavaScript(String.valueOf(bObj.getId()))%>');"/>
                     </td>
-                    <td id="<%=bObj.getId() %>"><%=bObj.getReport_name() %>
+                    <td id="<%=Encode.forHtmlAttribute(String.valueOf(bObj.getId()))%>"><%=Encode.forHtml(String.valueOf(bObj.getReport_name()))%>
                     </td>
                 </tr>
                 <% }
@@ -967,55 +967,55 @@
 
                     %>
                     <tr <%=color %>>
-                        <td style="text-align:center"><%= ch1Obj.getBilling_date()%>  <%--=ch1Obj.getBilling_time()--%></td>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(ch1Obj.getBilling_date()))%>  <%--=ch1Obj.getBilling_time()--%></td>
                         <!--SERVICE DATE-->
-                        <td style="text-align:center"><%=ch1Obj.getDemographic_no()%>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(ch1Obj.getDemographic_no()))%>
                         </td>
                         <!--PATIENT-->
                         <td style="text-align:center" class="<%=hideName?"hidden-print":""%>"><a href=#
-                                                                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=ch1Obj.getDemographic_no()%>&displaymode=edit&dboperation=search_detail');return false;"><%= Encode.forHtml(ch1Obj.getDemographic_name())%>
+                                                                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(ch1Obj.getDemographic_no()))%>&displaymode=edit&dboperation=search_detail');return false;"><%= Encode.forHtml(ch1Obj.getDemographic_name())%>
                         </a></td>
-                        <td style="text-align:center"><%=ch1Obj.getFacilty_num() != null ? ch1Obj.getFacilty_num() : "" %>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(ch1Obj.getFacilty_num() != null ? ch1Obj.getFacilty_num() : ""))%>
                         </td>
-                        <td style="text-align:center"><%=ch1Obj.getStatus()%>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(ch1Obj.getStatus()))%>
                         </td>
                         <!--STAT-->
-                        <td style="text-align:center"><%=settleDate%>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(settleDate))%>
                         </td>
                         <!--SETTLE DATE-->
                         <td style="text-align:center"><%=getHtmlSpace(ch1Obj.getTransc_id())%>
                         </td>
                         <!--CODE-->
-                        <td style="text-align:right"><%=getStdCurr(ch1Obj.getTotal())%>
+                        <td style="text-align:right"><%=Encode.forHtml(String.valueOf(getStdCurr(ch1Obj.getTotal())))%>
                         </td>
                         <!--BILLED-->
-                        <td style="text-align:right"><%=amountPaid%>
+                        <td style="text-align:right"><%=Encode.forHtml(String.valueOf(amountPaid))%>
                         </td>
                         <!--PAID-->
-                        <td style="text-align:center"><%=adj.toString()%>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(adj.toString()))%>
                         </td>
                         <!--SETTLE DATE-->
                         <td style="text-align:center"><%=getHtmlSpace(ch1Obj.getRec_id())%>
                         </td>
                         <!--DX1-->
                         <!--td>&nbsp;</td--><!--DX2-->
-                        <td style="text-align:center"><%=payProgram%>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(payProgram))%>
                         </td>
                         <td style="text-align:center"><a href=#
-                                                         onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=ch1Obj.getId()%>','BillCorrection<%=ch1Obj.getId()%>');nav_colour_swap(this.id, <%=bList.size()%>);return false;"><%=ch1Obj.getId()%>
+                                                         onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>','BillCorrection<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>');nav_colour_swap(this.id, <%=bList.size()%>);return false;"><%=Encode.forHtml(String.valueOf(ch1Obj.getId()))%>
                         </a></td>
                         <!--ACCOUNT-->
                         <td class="highlightBox"><a id="A<%=i%>" href=#
-                                                    onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=ch1Obj.getId()%>','BillCorrection<%=ch1Obj.getId()%>');nav_colour_swap(this.id, <%=bList.size()%>);return false;">Edit</a> <%=errorCode%>
+                                                    onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>','BillCorrection<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>');nav_colour_swap(this.id, <%=bList.size()%>);return false;">Edit</a> <%=Encode.forHtml(String.valueOf(errorCode))%>
                         </td>
                         <!--MESSAGES-->
-                        <td style="text-align:center">$<%=cash%>
+                        <td style="text-align:center">$<%=Encode.forHtml(String.valueOf(cash))%>
                         </td>
-                        <td style="text-align:center">$<%=debit%>
+                        <td style="text-align:center">$<%=Encode.forHtml(String.valueOf(debit))%>
                         </td>
-                        <td style="text-align:center"><%=qty %>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(qty))%>
                         </td>
-                        <td style="text-align:center"><%=ch1Obj.getProviderName() %>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(ch1Obj.getProviderName()))%>
                         </td>
                         <% if (bMultisites) {%>
                         <td <%=(ch1Obj.getClinic() == null || ch1Obj.getClinic().equalsIgnoreCase("null") ? "" : "style='background-color:" + siteBgColor.get(ch1Obj.getClinic()) + ";'")%>>
@@ -1025,8 +1025,8 @@
                         <% }%>
                         <td style="text-align:center" class="hidden-print">
                             <% if (newInvoice && b3rdParty) { %>
-                            <input type="checkbox" name="invoiceAction" id="invoiceAction<%=invoiceNo%>"
-                                   value="<%=invoiceNo%>"/>
+                            <input type="checkbox" name="invoiceAction" id="invoiceAction<%=Encode.forHtmlAttribute(String.valueOf(invoiceNo))%>"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(invoiceNo))%>"/>
                             <% }%>
                         </td>
                         <!--ACTION-->
@@ -1047,7 +1047,7 @@
                 <table>
                     <tr class="warning">
                         <td>Count:</td>
-                        <td style="text-align:center"><%=patientCount%>
+                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(patientCount))%>
                         </td>
                         <td style="text-align:center" class="<%=hideName?"hidden-print":""%>">&nbsp;</td>
                         <td>&nbsp;</td>
@@ -1057,13 +1057,13 @@
                         <td>&nbsp;</td>
                         <td>Total:</td>
                         <!--CODE-->
-                        <td style="text-align:right">$<%=total.toString()%>
+                        <td style="text-align:right">$<%=Encode.forHtml(String.valueOf(total.toString()))%>
                         </td>
                         <!--BILLED-->
-                        <td style="text-align:right"> Paid: $<%=paidTotal.toString()%>
+                        <td style="text-align:right"> Paid: $<%=Encode.forHtml(String.valueOf(paidTotal.toString()))%>
                         </td>
                         <!--PAID-->
-                        <td style="text-align:right"> Adj: $<%=adjTotal.toString()%>
+                        <td style="text-align:right"> Adj: $<%=Encode.forHtml(String.valueOf(adjTotal.toString()))%>
                         </td>
                         <!--ADJUSTMENTS-->
                         <td>&nbsp;</td>
@@ -1074,9 +1074,9 @@
                         <!--ACCOUNT-->
                         <td>&nbsp;</td>
                         <!--MESSAGES-->
-                        <td style="text-align:center">Cash: $<%=formatter.format(totalCash)%>
+                        <td style="text-align:center">Cash: $<%=Encode.forHtml(String.valueOf(formatter.format(totalCash)))%>
                         </td>
-                        <td style="text-align:center">Debit: $<%=formatter.format(totalDebit) %>
+                        <td style="text-align:center">Debit: $<%=Encode.forHtml(String.valueOf(formatter.format(totalDebit)))%>
                         </td>
                         <td style="text-align:center">&nbsp;</td>
                         <td>&nbsp;</td>

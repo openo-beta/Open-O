@@ -37,6 +37,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
@@ -63,7 +64,7 @@
     <body onLoad="setfocus()" topmargin="0" leftmargin="0" rightmargin="0">
 
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
-        <tr bgcolor="<%=deepcolor%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>">
             <th><font face="Helvetica"><fmt:message key="report.reportnewdblist.msgEDBList"/></font></th>
         </tr>
         <tr>
@@ -84,7 +85,7 @@
         <table class="sortable" width="100%" border="0" bgcolor="silver"
                cellspacing="2" cellpadding="2">
             <thead>
-            <tr bgcolor='<%=deepcolor%>'>
+            <tr bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>'>
                 <TH style="text-decoration: bold; text-align: center;">#</TH>
                 <TH style="text-decoration: bold; text-align: center;" width="10%"
                     nowrap><fmt:message key="report.reportnewdblist.msgEDB"/></TH>
@@ -157,24 +158,24 @@
                     nItems++;
             %>
             <tr bgcolor="<%=bodd?weakcolor:"white"%>">
-                <td><%=nItems%>
+                <td><%=Encode.forHtml(String.valueOf(nItems))%>
                 </td>
-                <td align="center" nowrap><%=finalEdb != null ? finalEdb.replace('-', '/') : "----/--/--"%>
+                <td align="center" nowrap><%=Encode.forHtml(String.valueOf(finalEdb != null ? finalEdb.replace('-', '/') : "----/--/--"))%>
                 </td>
-                <td><%=name%>
+                <td><%=Encode.forHtml(String.valueOf(name))%>
                 </td>
-                <!--td align="center" ><%=demographicNo%> </td-->
-                <td><%=age%>
+                <!--td align="center" ><%=Encode.forHtml(String.valueOf(demographicNo))%> </td-->
+                <td><%=Encode.forHtml(String.valueOf(age))%>
                 </td>
-                <td><%=gravida%>
+                <td><%=Encode.forHtml(String.valueOf(gravida))%>
                 </td>
-                <td><%=term%>
+                <td><%=Encode.forHtml(String.valueOf(term))%>
                 </td>
-                <td nowrap><%=phone%>
+                <td nowrap><%=Encode.forHtml(String.valueOf(phone))%>
                 </td>
-                <td><%=providerNameBean.getProperty(providerNo, "")%>
+                <td><%=Encode.forHtml(String.valueOf(providerNameBean.getProperty(providerNo, "")))%>
                 </td>
-                <td><%=providerNameBean.getProperty(prov, "")%>
+                <td><%=Encode.forHtml(String.valueOf(providerNameBean.getProperty(prov, "")))%>
                 </td>
             </tr>
             <%
@@ -189,11 +190,11 @@
   nLastPage=Integer.parseInt(strLimit1)-Integer.parseInt(strLimit2);
   if(nLastPage>=0) {
 %> <a
-            href="reportonedblist.jsp?startDate=<%=request.getParameter("startDate")%>&endDate=<%=request.getParameter("endDate")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><fmt:message key="report.reportnewdblist.msgLastPage"/></a> | <%
+            href="reportonedblist.jsp?startDate=<%=Encode.forUriComponent(request.getParameter("startDate"))%>&endDate=<%=Encode.forUriComponent(request.getParameter("endDate"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>"><fmt:message key="report.reportnewdblist.msgLastPage"/></a> | <%
   }
   if(nItems==Integer.parseInt(strLimit2)) {
 %> <a
-            href="reportonedblist.jsp?startDate=<%=request.getParameter("startDate")%>&endDate=<%=request.getParameter("endDate")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
+            href="reportonedblist.jsp?startDate=<%=Encode.forUriComponent(request.getParameter("startDate"))%>&endDate=<%=Encode.forUriComponent(request.getParameter("endDate"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">
         <fmt:message key="report.reportnewdblist.msgNextPage"/></a> <%
 }
 %>

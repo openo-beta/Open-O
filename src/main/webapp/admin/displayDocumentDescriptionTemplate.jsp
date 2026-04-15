@@ -35,6 +35,7 @@
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String curProvider_no = (String) session.getAttribute("user");
@@ -210,13 +211,13 @@
                 document.docDescriptionForm.deleteDescription.style.visibility = 'hidden';
                 document.docDescriptionForm.addDescription.style.visibility = 'hidden';
                 var url = "<%=request.getContextPath()%>/DocumentDescriptionTemplate.do";
-                var data = 'method=saveDocumentDescriptionTemplatePreference&defaultShortcut=<%=UserProperty.CLINIC%>';
+                var data = 'method=saveDocumentDescriptionTemplatePreference&defaultShortcut=<%=Encode.forJavaScript(String.valueOf(UserProperty.CLINIC))%>';
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, onSuccess: function (transport) {
                     }
                 });
             } else {
-                useDocumentDescriptionTemplateType = document.docDescriptionForm.providerNo.value != "null" ? "<%=UserProperty.USER%>" : "<%=UserProperty.CLINIC%>";
+                useDocumentDescriptionTemplateType = document.docDescriptionForm.providerNo.value != "null" ? "<%=Encode.forJavaScript(String.valueOf(UserProperty.USER))%>" : "<%=Encode.forJavaScript(String.valueOf(UserProperty.CLINIC))%>";
                 var url = "<%=request.getContextPath()%>/DocumentDescriptionTemplate.do";
                 var data = 'method=saveDocumentDescriptionTemplatePreference&defaultShortcut=' + useDocumentDescriptionTemplateType;
                 new Ajax.Request(url, {
@@ -258,7 +259,7 @@
                         for (int j = 0; j < docTypes.size(); j++) {
                             String docType = (String) docTypes.get(j);
                     %>
-                    <option value="<%= docType%>"><%= docType%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(docType))%>"><%=Encode.forHtml(String.valueOf(docType))%>
                     </option>
                     <%}%>
                 </select>
@@ -282,7 +283,7 @@
             <th align="left"><fmt:message key="provider.setDocumentDescriptionTemplate.Description"/></th>
         </tr>
         <tr>
-            <td><input type="hidden" name="providerNo" value="<%=(providerNo==null?"null":providerNo)%>"><input
+            <td><input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf((providerNo==null?"null":providerNo)))%>"><input
                     type="hidden" name="descriptionId"><input name="docDescriptionShortcut" maxlength="20" size="20"
                                                               value=""></td>
             <td><input name="docDescription" maxlength="255" size="60" value=""></td>

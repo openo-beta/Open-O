@@ -48,6 +48,7 @@
 -->
 <%@page import="ca.openosp.openo.providers.data.*,java.util.*,ca.openosp.openo.lab.ca.on.CommonLabResultData,ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.commn.dao.QueueDao" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -331,8 +332,8 @@
         &nbsp;&nbsp;&nbsp; <fmt:message key="inboxmanager.document.addMultipleDocuments"/>
     </div>
     <div>
-        <input type="hidden" id="queue" value="<%=queueId%>"/>
-        <input type="hidden" id="provider" value="<%=provider%>"/>
+        <input type="hidden" id="queue" value="<%=Encode.forHtmlAttribute(String.valueOf(queueId))%>"/>
+        <input type="hidden" id="provider" value="<%=Encode.forHtmlAttribute(String.valueOf(provider))%>"/>
         <label for="queueDrop" class="fields">Send to Queue:</label>
         <select onchange="javascript:addQueueToPost(this);" id="queueDrop" name="queueDrop">
 
@@ -341,7 +342,7 @@
                     int id = (Integer) ht.get("id");
                     String qName = (String) ht.get("queue");
             %>
-            <option value="<%=id%>" <%=((id == queueId) ? " selected" : "")%>><%= qName%>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>" <%=Encode.forHtml(String.valueOf(((id == queueId) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(qName))%>
             </option>
             <%}%>
         </select>
@@ -353,14 +354,14 @@
                 for (int i = 0; i < providers.size(); i++) {
                     Map h = (Map) providers.get(i);
             %>
-            <option value="<%= h.get("providerNo")%>" <%= (h.get("providerNo").equals(provider) ? " selected" : "")%>><%= h.get("lastName")%> <%= h.get("firstName")%>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("providerNo")))%>" <%=Encode.forHtml(String.valueOf((h.get("providerNo").equals(provider) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(h.get("lastName")))%> <%=Encode.forHtml(String.valueOf(h.get("firstName")))%>
             </option>
             <%}%>
         </select>
     </div>
     <div class="form">
         <form id="noswfupload_form" method="post"
-              action="<%=request.getContextPath()%>/documentManager/addEditDocument.do?method=html5MultiUpload&queue=<%=queueId%>&providers=<%=provider%>"
+              action="<%=request.getContextPath()%>/documentManager/addEditDocument.do?method=html5MultiUpload&queue=<%=Encode.forUriComponent(String.valueOf(queueId))%>&providers=<%=Encode.forUriComponent(String.valueOf(provider))%>"
               enctype="multipart/form-data">
             <div>
                 <input type="file" name="filedata"/>

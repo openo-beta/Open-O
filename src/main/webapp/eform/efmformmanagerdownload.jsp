@@ -37,6 +37,7 @@
 <fmt:setBundle basename="oscarResources"/>
 
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -51,7 +52,7 @@
         </style>
     </head>
     <body>
-    <div style="background: #CCCCFF; width: 100%; text-align:center; font-family:Helvetica,sans-serif; "><fmt:message key="eform.download.msgDownloadEform"/> <a href="efmformmanagerdownload.jsp?grid=<%=!gridlayout%>">grid</a>
+    <div style="background: #CCCCFF; width: 100%; text-align:center; font-family:Helvetica,sans-serif; "><fmt:message key="eform.download.msgDownloadEform"/> <a href="efmformmanagerdownload.jsp?grid=<%=Encode.forUriComponent(String.valueOf(!gridlayout))%>">grid</a>
     </div>
 
     <% if (gridlayout) {%>
@@ -68,19 +69,19 @@
         %>
 
         <tr>
-            <td><%=ht.get("name")%>
+            <td><%=Encode.forHtml(String.valueOf(ht.get("name")))%>
             </td>
-            <td><%=ht.get("creator")%>
+            <td><%=Encode.forHtml(String.valueOf(ht.get("creator")))%>
             </td>
-            <td><%=ht.get("category")%>
+            <td><%=Encode.forHtml(String.valueOf(ht.get("category")))%>
             </td>
-            <td><%=ht.get("created_at")%>
+            <td><%=Encode.forHtml(String.valueOf(ht.get("created_at")))%>
             </td>
             <td valign="middle">
                 <form action="<%=request.getContextPath()%>/eform/manageEForm.do" method="POST">
                     <input type="hidden" name="method"
                            value="importEFormFromRemote"/>
-                    <input type="hidden" name="url" value="<%=stripDrugref(ht.get("url"))%>"/>
+                    <input type="hidden" name="url" value="<%=Encode.forHtmlAttribute(String.valueOf(stripDrugref(ht.get("url"))))%>"/>
                     <input type="submit" value="<fmt:message key="eform.download.btnLoadEform"/>"/>
                 </form>
             </td>
@@ -98,29 +99,29 @@
         <table class="listing">
             <tr>
                 <td><fmt:message key="eform.download.msgName"/>:</td>
-                <td><%=ht.get("name")%>
+                <td><%=Encode.forHtml(String.valueOf(ht.get("name")))%>
                 </td>
             </tr>
             <tr>
                 <td><fmt:message key="eform.download.msgCreator"/>:</td>
-                <td><%=ht.get("creator")%>
+                <td><%=Encode.forHtml(String.valueOf(ht.get("creator")))%>
                 </td>
             </tr>
             <tr>
                 <td><fmt:message key="eform.download.msgCategory"/>:</td>
-                <td><%=ht.get("category")%>
+                <td><%=Encode.forHtml(String.valueOf(ht.get("category")))%>
                 </td>
             </tr>
             <tr>
                 <td><fmt:message key="eform.download.msgCreated"/>:</td>
-                <td><%=ht.get("created_at")%>
+                <td><%=Encode.forHtml(String.valueOf(ht.get("created_at")))%>
                 </td>
             </tr>
         </table>
 
         <form action="<%=request.getContextPath()%>/eform/manageEForm.do" method="POST">
             <input type="hidden" name="method" value="importEFormFromRemote"/>
-            <input type="hidden" name="url" value="<%=stripDrugref(ht.get("url"))%>"/>
+            <input type="hidden" name="url" value="<%=Encode.forHtmlAttribute(String.valueOf(stripDrugref(ht.get("url"))))%>"/>
             <input type="submit" value="<fmt:message key="eform.download.btnLoadEform"/>"/>
         </form>
 

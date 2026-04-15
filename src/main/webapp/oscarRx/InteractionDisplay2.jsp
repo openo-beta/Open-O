@@ -26,6 +26,7 @@
 
 <%@ page import="java.util.*,ca.openosp.openo.rx.data.*,ca.openosp.openo.rx.pageUtil.*" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -62,10 +63,10 @@
 
 %>
 <div
-        style="background-color:<%=sigColor((String)ht.get("significance"))%>;margin-right:100px;margin-left:20px;margin-top:10px;padding-left:10px;padding-top:10px;padding-bottom:5px;border-bottom: 2px solid gray;border-right: 2px solid #999;border-top: 1px solid #CCC;border-left: 1px solid #CCC;">
-    <%=interactStr%>
-    &nbsp;&nbsp;&nbsp;&nbsp;SIGNIFICANCE = <%=significance((String) ht.get("significance"))%>
-    &nbsp;&nbsp;&nbsp;EVIDENCE = <%=evidence((String) ht.get("evidence"))%><br/>
+        style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(sigColor((String)ht.get("significance"))))%>;margin-right:100px;margin-left:20px;margin-top:10px;padding-left:10px;padding-top:10px;padding-bottom:5px;border-bottom: 2px solid gray;border-right: 2px solid #999;border-top: 1px solid #CCC;border-left: 1px solid #CCC;">
+    <%=Encode.forHtml(String.valueOf(interactStr))%>
+    &nbsp;&nbsp;&nbsp;&nbsp;SIGNIFICANCE = <%=Encode.forHtml(String.valueOf(significance((String) ht.get("significance"))))%>
+    &nbsp;&nbsp;&nbsp;EVIDENCE = <%=Encode.forHtml(String.valueOf(evidence((String) ht.get("evidence"))))%><br/>
     <%--=commentsVec--%></div>
 <% } else ;
 }

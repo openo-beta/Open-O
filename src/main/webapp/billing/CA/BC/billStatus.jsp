@@ -106,6 +106,7 @@
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -241,7 +242,7 @@
                                            onClick="popupPage(700,720,'<%= request.getContextPath() %>/oscarReport/manageProvider.jsp?action=billingreport')">
             Manage Provider List</a></div>
 
-        <div style="text-align: right;"><%=DateUtils.sumDate("yyyy-M-d", "0")%>
+        <div style="text-align: right;"><%=Encode.forHtml(String.valueOf(DateUtils.sumDate("yyyy-M-d", "0")))%>
         </div>
 
 
@@ -252,18 +253,18 @@
             <div class="col-lg-12">
                 <i>Results for Demographic</i>
                 :
-                <%=request.getParameter("lastName")%>      ,
-                <%=request.getParameter("firstName")%>      (
-                <%=request.getParameter("demographicNo")%>      )
+                <%=Encode.forHtml(request.getParameter("lastName"))%>      ,
+                <%=Encode.forHtml(request.getParameter("firstName"))%>      (
+                <%=Encode.forHtml(request.getParameter("demographicNo"))%>      )
             </div>
         </div>
         <%}%>
 
 
         <form name="serviceform" method="get" action="billStatus.jsp" class="form-inline">
-            <input type="hidden" name="filterPatient" value="<%=readonly%>"/>
-            <input type="hidden" name="lastName" value="<%=request.getParameter("lastName")%>"/>
-            <input type="hidden" name="firstName" value="<%=request.getParameter("firstName")%>"/>
+            <input type="hidden" name="filterPatient" value="<%=Encode.forHtmlAttribute(String.valueOf(readonly))%>"/>
+            <input type="hidden" name="lastName" value="<%=Encode.forHtmlAttribute(request.getParameter("lastName"))%>"/>
+            <input type="hidden" name="firstName" value="<%=Encode.forHtmlAttribute(request.getParameter("firstName"))%>"/>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group">
@@ -305,8 +306,8 @@
                                     proLast = p.getLastName();
                                     proOHIP = p.getProviderNo();
                             %>
-                            <option value="<%=proOHIP%>" <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=proLast%>
-                                , <%=proFirst%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>" <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(proLast))%>
+                                , <%=Encode.forHtml(String.valueOf(proFirst))%>
                             </option>
                             <% } %>
                         </select>
@@ -318,7 +319,7 @@
                         <label for="xml_vdate">Service Start Date:</label>
                         <div class="input-group">
                             <input type="text" name="xml_vdate" class="form-control" id="xml_vdate"
-                                   value="<%=xml_vdate%>" placeholder="yyyy-mm-dd"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>" placeholder="yyyy-mm-dd"
                                    pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                             <span class="input-group-addon"><i class="icon-calendar"></i></span>
                         </div>
@@ -327,13 +328,13 @@
                 <div class="col-sm-3">
                     <div class="form-group">
     <label style="white-space: nowrap;" for="xml_appointment_date">Service End Date:
-        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-30")%>')" >30</a>
-        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-60")%>')" >60</a>
-        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-90")%>')" >90</a>
+        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-30")))%>')" >30</a>
+        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-60")))%>')" >60</a>
+        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-90")))%>')" >90</a>
     </label>
                         <div class="input-group">
                             <input type="text" class="form-control" name="xml_appointment_date" placeholder="yyyy-mm-dd"
-                                   id="xml_appointment_date" value="<%=xml_appointment_date%>"
+                                   id="xml_appointment_date" value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>"
                                    pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                             <span class="input-group-addon"><i class="icon-calendar"></i></span>
                         </div>
@@ -346,7 +347,7 @@
                             String readonlyStr = "true".equals(readonly) ? "readonly" : "";
                         %>
                         <input type="text" class="form-control" id="demographicNo" name="demographicNo" size="6"
-                               value="<%=xml_demoNo%>" <%=readonlyStr%> />
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(xml_demoNo))%>" <%=Encode.forHtml(String.valueOf(readonlyStr))%> />
                     </div>
                 </div>
 
@@ -366,77 +367,77 @@
                         %>
                         <label class="radio-inline">
                             <input type="radio" name="billTypes"
-                                   value="<%=MSPReconcile.REJECTED%>"     <%=billTypes.equals(MSPReconcile.REJECTED) ? "checked" : ""%>/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.REJECTED))%>"     <%=billTypes.equals(MSPReconcile.REJECTED) ? "checked" : ""%>/>
                             Rejected
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="billTypes"
-                                   value="<%=MSPReconcile.NOTSUBMITTED%>" <%=billTypes.equals(MSPReconcile.NOTSUBMITTED) ? "checked" : ""%>/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.NOTSUBMITTED))%>" <%=billTypes.equals(MSPReconcile.NOTSUBMITTED) ? "checked" : ""%>/>
                             Not Submitted
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="billTypes"
-                                   value="<%=MSPReconcile.SUBMITTED%>"    <%=billTypes.equals(MSPReconcile.SUBMITTED) ? "checked" : ""%>/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.SUBMITTED))%>"    <%=billTypes.equals(MSPReconcile.SUBMITTED) ? "checked" : ""%>/>
                             Submitted
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="billTypes"
-                                   value="<%=MSPReconcile.SETTLED%>"      <%=billTypes.equals(MSPReconcile.SETTLED) ? "checked" : ""%>/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.SETTLED))%>"      <%=billTypes.equals(MSPReconcile.SETTLED) ? "checked" : ""%>/>
                             Settled
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="billTypes"
-                                   value="<%=MSPReconcile.DELETED%>"      <%=billTypes.equals(MSPReconcile.DELETED) ? "checked" : ""%>/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.DELETED))%>"      <%=billTypes.equals(MSPReconcile.DELETED) ? "checked" : ""%>/>
                             Deleted
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="billTypes"
-                                   value="<%=MSPReconcile.HELD%>"         <%=billTypes.equals(MSPReconcile.HELD) ? "checked" : ""%>/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.HELD))%>"         <%=billTypes.equals(MSPReconcile.HELD) ? "checked" : ""%>/>
                             Held
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="billTypes" value="<%=MSPReconcile.DATACENTERCHANGED%>"
+                            <input type="radio" name="billTypes" value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.DATACENTERCHANGED))%>"
                                    title="Data Center Changed" <%=billTypes.equals(MSPReconcile.DATACENTERCHANGED) ? "checked" : ""%>/>
                             DCC
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="billTypes" value="<%=MSPReconcile.PAIDWITHEXP%>"
+                            <input type="radio" name="billTypes" value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.PAIDWITHEXP))%>"
                                    title="Paid with Explanation"     <%=billTypes.equals(MSPReconcile.PAIDWITHEXP) ? "checked" : ""%>/>
                             PwE
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="billTypes"
-                                   value="<%=MSPReconcile.BADDEBT%>"      <%=billTypes.equals(MSPReconcile.BADDEBT) ? "checked" : ""%>/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.BADDEBT))%>"      <%=billTypes.equals(MSPReconcile.BADDEBT) ? "checked" : ""%>/>
                             Bad Debt
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="billTypes"
-                                   value="<%=MSPReconcile.REFUSED%>"      <%=billTypes.equals(MSPReconcile.REFUSED) ? "checked" : ""%>/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.REFUSED))%>"      <%=billTypes.equals(MSPReconcile.REFUSED) ? "checked" : ""%>/>
                             Refused
                         </label>
                         <label class="radio-inline">
-                            <!--<input type="radio" name="billTypes" value="<%=MSPReconcile.WCB%>"          <%=billTypes.equals(MSPReconcile.WCB)?"checked":""%>/> WCB-->
-                            <input type="radio" name="billTypes" value="<%=MSPReconcile.CAPITATED%>"
+                            <!--<input type="radio" name="billTypes" value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.WCB))%>"          <%=billTypes.equals(MSPReconcile.WCB)?"checked":""%>/> WCB-->
+                            <input type="radio" name="billTypes" value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.CAPITATED))%>"
                                    title="Capitated"   <%=billTypes.equals(MSPReconcile.CAPITATED) ? "checked" : ""%>/>
                             Cap
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="billTypes" value="<%=MSPReconcile.DONOTBILL%>"
+                            <input type="radio" name="billTypes" value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.DONOTBILL))%>"
                                    title="Do Not Bill"    <%=billTypes.equals(MSPReconcile.DONOTBILL) ? "checked" : ""%>/>
                             DNBill
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="billTypes"
-                                   value="<%=MSPReconcile.BILLPATIENT%>"  <%=billTypes.equals(MSPReconcile.BILLPATIENT) ? "checked" : ""%>/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.BILLPATIENT))%>"  <%=billTypes.equals(MSPReconcile.BILLPATIENT) ? "checked" : ""%>/>
                             Bill Patient
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="billTypes" value="<%=MSPReconcile.PAIDPRIVATE%>"
+                            <input type="radio" name="billTypes" value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.PAIDPRIVATE))%>"
                                    title="Paid Private"  <%=billTypes.equals(MSPReconcile.PAIDPRIVATE) ? "checked" : ""%>/>
                             Private
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="billTypes" value="<%=MSPReconcile.COLLECTION%>"
+                            <input type="radio" name="billTypes" value="<%=Encode.forHtmlAttribute(String.valueOf(MSPReconcile.COLLECTION))%>"
                                    title="Transfered to Collection"<%=billTypes.equals(MSPReconcile.COLLECTION) ? "checked" : ""%>/>
                             Collection
                         </label>
@@ -471,7 +472,7 @@
     <form name="ReProcessBillingForm" method="get" action="reprocessBill.do">
 
         <input type="hidden" id="hiddenFilterType" name="hiddenFilterType"
-               value="<%=request.getParameter("billTypes")%>">
+               value="<%=Encode.forHtmlAttribute(request.getParameter("billTypes"))%>">
 
 
         <table class="table table-striped table-condensed sortable" id="resultsTable">
@@ -549,47 +550,47 @@
             <tr>
                 <td>
                     <label>
-                        <input type="checkbox" id="billCheck_<%=b.getBilling_no()%>" name="billCheck"
-                               value="<%=b.getBilling_no() + "_" + b.getBillMasterNo()%>">
+                        <input type="checkbox" id="billCheck_<%=Encode.forHtmlAttribute(String.valueOf(b.getBilling_no()))%>" name="billCheck"
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(b.getBilling_no() + "_" + b.getBillMasterNo()))%>">
                     </label>
                 </td>
                 <td>
                     <%if ("Pri".equals(b.billingtype)) {%>
-                    <a href="javascript:popupPage(800,800, '<%=request.getContextPath()%>/billing/CA/BC/billingView.do?billing_no=<%=b.billing_no%>&receipt=yes')"><%=b.billing_no%>
+                    <a href="javascript:popupPage(800,800, '<%=request.getContextPath()%>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forUriComponent(String.valueOf(b.billing_no))%>&receipt=yes')"><%=Encode.forHtml(String.valueOf(b.billing_no))%>
                     </a>
                     <%
                     } else {
                     %>
-                    <%=b.billing_no%>
+                    <%=Encode.forHtml(String.valueOf(b.billing_no))%>
                     <%}%></td>
 
 
                 <td><a href="javascript: function myFunction() {return false; }"
-                       onClick="popupPage2(500,1020,'genTAS00ByOfficeNo.jsp?officeNo=<%=b.billMasterNo%>','RecValues');"><%=b.seqNum%>
+                       onClick="popupPage2(500,1020,'genTAS00ByOfficeNo.jsp?officeNo=<%=Encode.forJavaScript(String.valueOf(b.billMasterNo))%>','RecValues');"><%=Encode.forHtml(String.valueOf(b.seqNum))%>
                 </a></td>
-                <td><%=b.apptDate%>
+                <td><%=Encode.forHtml(String.valueOf(b.apptDate))%>
                 </td>
-                <td><%=b.billingtype%>
+                <td><%=Encode.forHtml(String.valueOf(b.billingtype))%>
                 </td>
                 <%
                     if (!"true".equals(readonly)) {
                 %>
-                <td><a href="javascript: setDemographic('<%=b.demoNo%>');"><%=b.demoName%>
+                <td><a href="javascript: setDemographic('<%=Encode.forHtmlAttribute(String.valueOf(b.demoNo))%>');"><%=Encode.forHtml(String.valueOf(b.demoName))%>
                 </a></td>
                 <%}%>
-                <td><%=b.providerLastName%>,<%=b.providerFirstName%>
+                <td><%=Encode.forHtml(String.valueOf(b.providerLastName))%>,<%=Encode.forHtml(String.valueOf(b.providerFirstName))%>
                 </td>
-                <td title="<%=msp.getStatusDesc(b.reason)%>"><%=msp.getStatusDesc(b.reason) == null ? "&nbsp" : msp.getStatusDesc(b.reason)%>
+                <td title="<%=Encode.forHtmlAttribute(String.valueOf(msp.getStatusDesc(b.reason)))%>"><%=Encode.forHtml(String.valueOf(msp.getStatusDesc(b.reason) == null ? "&nbsp" : msp.getStatusDesc(b.reason)))%>
                 </td>
 
 
-                <td><%=b.code%>
+                <td><%=Encode.forHtml(String.valueOf(b.code))%>
                 </td>
-                <td <%=isBadVal(incorrectVal)%> ><%=b.quantity%>
+                <td <%=isBadVal(incorrectVal)%> ><%=Encode.forHtml(String.valueOf(b.quantity))%>
                 </td>
-                <td <%=isBadVal(incorrectVal)%> ><%=nf.format(Double.parseDouble(b.amount))%>
+                <td <%=isBadVal(incorrectVal)%> ><%=Encode.forHtml(String.valueOf(nf.format(Double.parseDouble(b.amount))))%>
                 </td>
-                <td><%=nf.format(pAmount)%>
+                <td><%=Encode.forHtml(String.valueOf(nf.format(pAmount)))%>
                 </td>
                 <%
                     double dblAmtOwed = msp.getAmountOwing(b.billMasterNo, b.amount, b.billingtype);
@@ -597,18 +598,18 @@
                     owedTotal = owedTotal.add(amtOwed);
 
                 %>
-                <td><%=nf.format(amtOwed)%>
+                <td><%=Encode.forHtml(String.valueOf(nf.format(amtOwed)))%>
                 </td>
-                <td><%=s(b.dx1)%>
+                <td><%=Encode.forHtml(String.valueOf(s(b.dx1)))%>
                 </td>
 
                 <td>
                     <% if (adminAccess) { %>
-                    <a href="javascript: popupPage(700,1000,'adjustBill.jsp?billingmaster_no=<%=b.billMasterNo%>&invoiceNo=<%=b.billing_no%>')">Edit </a>
+                    <a href="javascript: popupPage(700,1000,'adjustBill.jsp?billingmaster_no=<%=Encode.forUriComponent(String.valueOf(b.billMasterNo))%>&invoiceNo=<%=Encode.forUriComponent(String.valueOf(b.billing_no))%>')">Edit </a>
                     <% } %>
 
 
-                    <%=rejected%><%=rejected2%>
+                    <%=Encode.forHtml(String.valueOf(rejected))%><%=Encode.forHtml(String.valueOf(rejected2))%>
                 </td>
             </tr>
 
@@ -639,11 +640,11 @@
                 </td>
                 <td></td>
                 <td>Total:</td>
-                <td><%=nf.format(total.doubleValue())%>
+                <td><%=Encode.forHtml(String.valueOf(nf.format(total.doubleValue())))%>
                 </td>
-                <td><%=nf.format(paidTotal.doubleValue())%>
+                <td><%=Encode.forHtml(String.valueOf(nf.format(paidTotal.doubleValue())))%>
                 </td>
-                <td><%=nf.format(owedTotal.doubleValue())%>
+                <td><%=Encode.forHtml(String.valueOf(nf.format(owedTotal.doubleValue())))%>
                 </td>
                 <td></td>
                 <td></td>

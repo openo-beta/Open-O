@@ -109,6 +109,7 @@
 <%@ page import="ca.openosp.openo.util.*" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -292,7 +293,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td>Attach document for: <%=demoName%>
+                        <td>Attach document for: <%=Encode.forHtml(String.valueOf(demoName))%>
                         </td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
@@ -341,17 +342,17 @@
                                 <tr>
                                     <td>
                                         <% String currentURI = request.getContextPath() + "/demographic/demographiccontrol.jsp?demographic_no=" + demographic_no + "&displaymode=pdflabel&dboperation=search_detail"; %>
-                                        <input type="checkbox" name="uriArray" value="<%=currentURI%>"
+                                        <input type="checkbox" name="uriArray" value="<%=Encode.forHtmlAttribute(String.valueOf(currentURI))%>"
                                                        style="display:none"/>
 
-                                        <input type="checkbox" name="indexArray" value="<%= Integer.toString(indexCount++) %>"/>
+                                        <input type="checkbox" name="indexArray" value="<%=Encode.forHtmlAttribute(String.valueOf(Integer.toString(indexCount++)))%>"/>
                                         <input
                                                 type=checkbox name="titleArray"
-                                                value="<%=demoName%> information" style="display: none"/></td>
-                                    <td><%=demoName%> Information</td>
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(demoName))%> information" style="display: none"/></td>
+                                    <td><%=Encode.forHtml(String.valueOf(demoName))%> Information</td>
                                     <td>
                                         <% if (request.getParameter("isAttaching") == null) { %> <input
-                                            type="button" value=Preview onclick="PreviewPDF( '<%=currentURI%>')"/>
+                                            type="button" value=Preview onclick="PreviewPDF( '<%=Encode.forJavaScript(String.valueOf(currentURI))%>')"/>
                                         <% } %> &nbsp;
                                     </td>
                                 </tr>
@@ -374,18 +375,18 @@
                                 <tr>
                                     <td>
                                         <% currentURI = request.getContextPath() + "/oscarEncounter/echarthistoryprint.jsp?echartid=" + ec.getId() + "&demographic_no=" + demographic_no; %>
-                                        <input type="checkbox" name="uriArray" value="<%=currentURI%>"
+                                        <input type="checkbox" name="uriArray" value="<%=Encode.forHtmlAttribute(String.valueOf(currentURI))%>"
                                                        style="display:none"/>
-                                        <input type="checkbox" name="indexArray" value="<%= Integer.toString(indexCount++) %>"/>
+                                        <input type="checkbox" name="indexArray" value="<%=Encode.forHtmlAttribute(String.valueOf(Integer.toString(indexCount++)))%>"/>
                                         <input
                                                 type=checkbox name="titleArray"
-                                                value='Encounter: <%=ec.getTimestamp().toString()%>'
+                                                value='Encounter: <%=Encode.forHtmlAttribute(String.valueOf(ec.getTimestamp().toString()))%>'
                                                 style="display: none"/></td>
-                                    <td><%=ec.getTimestamp().toString()%>
+                                    <td><%=Encode.forHtml(String.valueOf(ec.getTimestamp().toString()))%>
                                     </td>
                                     <td>
                                         <% if (request.getParameter("isAttaching") == null) { %> <input
-                                            type=button value="Preview" onclick="PreviewPDF( '<%=currentURI%>')"/>
+                                            type=button value="Preview" onclick="PreviewPDF( '<%=Encode.forJavaScript(String.valueOf(currentURI))%>')"/>
                                         <% } %> &nbsp;
                                     </td>
                                 </tr>
@@ -431,16 +432,16 @@
 
                                         %> <% currentURI = request.getContextPath() + "/oscarRx/PrintDrugProfile.jsp?demographic_no=" + demographic_no; %>
 
-                                        <input type="checkbox" name="uriArray" value="<%=currentURI%>"
+                                        <input type="checkbox" name="uriArray" value="<%=Encode.forHtmlAttribute(String.valueOf(currentURI))%>"
                                                        style="display:none"/>
-                                        <input type="checkbox" name="indexArray" value="<%= Integer.toString(indexCount++) %>"/>
+                                        <input type="checkbox" name="indexArray" value="<%=Encode.forHtmlAttribute(String.valueOf(Integer.toString(indexCount++)))%>"/>
                                         <input
                                                 type=checkbox name="titleArray" value='Current prescriptions'
                                                 style="display: none"/></td>
                                     <td>Current prescriptions</td>
                                     <td>
                                         <% if (request.getParameter("isAttaching") == null) { %> <input
-                                            type="button" value=Preview onclick="PreviewPDF( '<%=currentURI%>')"/>
+                                            type="button" value=Preview onclick="PreviewPDF( '<%=Encode.forJavaScript(String.valueOf(currentURI))%>')"/>
                                         <% } %> &nbsp;
                                     </td>
                                 </tr>
@@ -457,10 +458,10 @@
                                 <tr>
                                     <td colspan="3"><input type="hidden" name="srcText" id="srcText" value=''/>
 
-                                        <input type="hidden" name="attachmentCount" id="attachmentCount" value='<%=request.getParameter("attachmentCount")==null?"0":request.getParameter("attachmentCount")%>'/>
-                                        <input type="hidden" name="demographic_no" id="demographic_no" value='<%=demographic_no%>'/>
-                                        <input type="hidden" name="isPreview" id="isPreview" value='<%=request.getParameter("isPreview")==null?"false":request.getParameter("isPreview")%>'/>
-                                        <input type="hidden" name="isAttaching" id="isAttaching" value='<%=request.getParameter("isAttaching")==null?"false":request.getParameter("isAttaching")%>'/>
+                                        <input type="hidden" name="attachmentCount" id="attachmentCount" value='<%=Encode.forHtmlAttribute(request.getParameter("attachmentCount")==null?"0":request.getParameter("attachmentCount"))%>'/>
+                                        <input type="hidden" name="demographic_no" id="demographic_no" value='<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>'/>
+                                        <input type="hidden" name="isPreview" id="isPreview" value='<%=Encode.forHtmlAttribute(request.getParameter("isPreview")==null?"false":request.getParameter("isPreview"))%>'/>
+                                        <input type="hidden" name="isAttaching" id="isAttaching" value='<%=Encode.forHtmlAttribute(request.getParameter("isAttaching")==null?"false":request.getParameter("isAttaching"))%>'/>
                                         <input type="hidden" name="isNew" id="isNew" value='true'/>
                                         <input type="hidden" name="attachmentTitle" id="attachmentTitle" value=''/></td>
                                 </tr>
@@ -478,8 +479,8 @@
                                         }
                                     }
 
-                                    document.forms[0].status.value = "Attaching <%=MsgSessionBean.getCurrentAttachmentCount() + 1%> out of " + j;
-                                    AttachingPDF(<%=MsgSessionBean.getCurrentAttachmentCount()%>);
+                                    document.forms[0].status.value = "Attaching <%=Encode.forJavaScript(String.valueOf(MsgSessionBean.getCurrentAttachmentCount() + 1))%> out of " + j;
+                                    AttachingPDF(<%=Encode.forJavaScript(String.valueOf(MsgSessionBean.getCurrentAttachmentCount()))%>);
 
                                 }
 

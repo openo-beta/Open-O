@@ -48,6 +48,7 @@
 <%@page import="ca.openosp.openo.util.*, ca.openosp.*, java.util.*" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <div class="page-header">
     <h4>
@@ -80,7 +81,7 @@
             <label class="control-label">Date</label>
             <div class="controls">
                 <input type="text" id="reportDate" name="reportDate" class="span3"
-                       size="10" value="<%=reportDate%>">
+                       size="10" value="<%=Encode.forHtmlAttribute(String.valueOf(reportDate))%>">
             </div>
         </div>
         <div class="control-group">

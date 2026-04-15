@@ -32,6 +32,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao, ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@include file="/casemgmt/taglibs.jsp" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -164,7 +165,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="demographic_no" readonly
-                                    value="<%=request.getParameter("demographic_no").trim()%> " size="20">
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no").trim())%> " size="20">
                             </font></td>
                             <td rowspan="8" width="21%" valign="middle">
                                 <p><br>
@@ -179,7 +180,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="demo_name" readonly
-                                    value="<%=request.getParameter("demographic_name")%>" size="20">
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_name"))%>" size="20">
                             </font></td>
                         </tr>
                         <tr>
@@ -190,7 +191,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="demo_dob" readonly
-                                    value="<%=request.getParameter("dob")%>" size="20"> </font></td>
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("dob"))%>" size="20"> </font></td>
                         </tr>
                         <tr>
                             <td width="29%"><font
@@ -200,7 +201,7 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="demo_hin" readonly
-                                    value="<%=request.getParameter("hin")%>" size="20"> </font></td>
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("hin"))%>" size="20"> </font></td>
                         </tr>
                         <tr>
                             <td width="29%"><font
@@ -209,7 +210,7 @@
                             </td>
                             <td width="50%"><select name="providers">
                                 <option value=""
-                                        <%=request.getParameter("creator").equals("") ? "selected" : ""%>>Select
+                                        <%=Encode.forHtml(request.getParameter("creator").equals("") ? "selected" : "")%>>Select
                                     Provider
                                 </option>
 
@@ -225,10 +226,10 @@
                                         // specialty_code = SxmlMisc.getXmlContent(rslocal.getString("comments"),"<xml_p_specialty_code>","</xml_p_specialty_code>");
                                         proNo = p.getProviderNo();
                                 %>
-                                <option value="<%=proNo%>"
-                                        <%=request.getParameter("creator").equals(proNo) ? "selected" : ""%>><%=proLast%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(proNo))%>"
+                                        <%=Encode.forHtml(request.getParameter("creator").equals(proNo) ? "selected" : "")%>><%=Encode.forHtml(String.valueOf(proLast))%>
                                     ,
-                                    <%=proFirst%>
+                                    <%=Encode.forHtml(String.valueOf(proFirst))%>
                                 </option>
                                 <%
                                     }
@@ -259,7 +260,7 @@
                                     color="#000000"><fmt:message key="billing.batchbilling.CreateDate"/></font></td>
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
-                                    type="text" name="createdate" readonly value="<%=nowDate%>" size="20">
+                                    type="text" name="createdate" readonly value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>" size="20">
                             </font></td>
                         </tr>
                         <tr>
@@ -269,9 +270,9 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="dispcreator" readonly
-                                    value="<%=creator.getFormattedName()%>" size="20"> <input
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(creator.getFormattedName()))%>" size="20"> <input
                                     type="hidden" name="creator"
-                                    value="<%=request.getParameter("creator")%>" size="20">
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("creator"))%>" size="20">
                             </font></td>
                         </tr>
                         <tr>

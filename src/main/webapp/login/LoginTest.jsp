@@ -31,6 +31,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.commn.dao.PropertyDao,ca.openosp.openo.commn.model.Property" %>
 <%@page import="ca.openosp.openo.commn.service.AcceptableUseAgreementManager" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.PMmodule.dao.ProviderDao,ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 %>
@@ -73,7 +74,7 @@
 <body>
 <div style="text-align:center;">
     <h3><fmt:message key="provider.login.title.confidentiality"/></h3>
-    <div style="margin-left:auto; margin-right:auto; text-align:left; width:70%; padding:5px; border:2px groove black;"><%=AcceptableUseAgreementManager.getAUAText()%>
+    <div style="margin-left:auto; margin-right:auto; text-align:left; width:70%; padding:5px; border:2px groove black;"><%=Encode.forHtml(String.valueOf(AcceptableUseAgreementManager.getAUAText()))%>
     </div>
     <br>
     <form method="post" action="<c:out value="${pageContext.request.contextPath}/login/recordLogin.do"/>">

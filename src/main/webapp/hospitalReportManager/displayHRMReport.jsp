@@ -409,49 +409,49 @@
 <% return;
 } %>
 
-<div id="hrmdoc_<%=hrmReportId%>">
+<div id="hrmdoc_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>">
     <div id="buttonBox">
-        <input type="button" id="msgBtn_<%=hrmReportId%>" value="Msg"
-               onclick="popupPatient(700,960,'<%= request.getContextPath() %>/messenger/SendDemoMessage.do?demographic_no=','msg', '<%=hrmReportId%>','<%=demographicNo %>')" <%=btnDisabled %>/>
-        <input type="button" id="mainTickler_<%=hrmReportId%>" value="Tickler"
-               onClick="popupPatient(710, 1024,'<%= request.getContextPath() %>/tickler/ForwardDemographicTickler.do?docType=HRM&docId=<%=hrmReportId%>&demographic_no=', 'Tickler','<%=hrmReportId%>','<%=demographicNo %>')" <%=btnDisabled %>>
-        <input type="button" id="mainEchart_<%=hrmReportId%>"
+        <input type="button" id="msgBtn_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" value="Msg"
+               onclick="popupPatient(700,960,'<%= request.getContextPath() %>/messenger/SendDemoMessage.do?demographic_no=','msg', '<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>/>
+        <input type="button" id="mainTickler_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" value="Tickler"
+               onClick="popupPatient(710, 1024,'<%= request.getContextPath() %>/tickler/ForwardDemographicTickler.do?docType=HRM&docId=<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>&demographic_no=', 'Tickler','<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
+        <input type="button" id="mainEchart_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"
                value=" <fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
                onClick="popupPatient(710, 1024,'<%= request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?updateParent=false&reason=
-               <fmt:message key="oscarMDS.segmentDisplay.labResults"/>&curDate=<%=currentDate%>>&appointmentNo=&appointmentDate=&startTime=&status=&demographicNo=', 'encounter', '<%=hrmReportId%>','<%=demographicNo %>')" <%=btnDisabled %>>
-        <input type="button" id="mainMaster_<%=hrmReportId%>"
+               <fmt:message key="oscarMDS.segmentDisplay.labResults"/>&curDate=<%=Encode.forHtml(String.valueOf(currentDate))%>>&appointmentNo=&appointmentDate=&startTime=&status=&demographicNo=', 'encounter', '<%=Encode.forHtml(String.valueOf(hrmReportId))%>','<%=Encode.forHtml(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
+        <input type="button" id="mainMaster_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"
                value=" <fmt:message key="oscarMDS.segmentDisplay.btnMaster"/>"
-               onClick="popupPatient(710,1024,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?displaymode=edit&dboperation=search_detail&demographic_no=','master','<%=hrmReportId%>','<%=demographicNo %>')" <%=btnDisabled %>>
-        <input type="button" id="mainApptHistory_<%=hrmReportId%>"
+               onClick="popupPatient(710,1024,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?displaymode=edit&dboperation=search_detail&demographic_no=','master','<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
+        <input type="button" id="mainApptHistory_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"
                value=" <fmt:message key="oscarMDS.segmentDisplay.btnApptHist"/>"
-               onClick="popupPatient(710,1024,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?orderby=appttime&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25&demographic_no=','ApptHist','<%=hrmReportId%>','<%=demographicNo %>')" <%=btnDisabled %>>
+               onClick="popupPatient(710,1024,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?orderby=appttime&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25&demographic_no=','ApptHist','<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
         <% if (obgynShortcuts && demographicLink != null) {%>
         <input type="button" value="AR1-ILI"
-               onClick="popupONAREnhanced(290, 625, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=demographicNo %>&formId=<%=formId%>&section='+this.value)"/>
+               onClick="popupONAREnhanced(290, 625, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&section='+this.value)"/>
         <input type="button" value="AR1-PGI"
-               onClick="popupONAREnhanced(225, 590,'<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=demographicNo %>&formId=<%=formId%>&section='+this.value)"/>
+               onClick="popupONAREnhanced(225, 590,'<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&section='+this.value)"/>
         <input type="button" value="AR2-US"
-               onClick="popupONAREnhanced(395, 655, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=demographicNo %>&formId=<%=formId%>&section='+this.value)"/>
+               onClick="popupONAREnhanced(395, 655, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&section='+this.value)"/>
         <input type="button" value="AR2-ALI"
-               onClick="popupONAREnhanced(375, 430, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=demographicNo %>&formId=<%=formId%>&section='+this.value)"/>
+               onClick="popupONAREnhanced(375, 430, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&section='+this.value)"/>
         <input type="button" value="AR2"
-               onClick="popupPage(700, 1024, '<%=request.getContextPath()%>/form/formonarenhancedpg2.jsp?demographic_no=<%=demographicNo %>&formId=<%=formId%>&update=true')"/>
+               onClick="popupPage(700, 1024, '<%=request.getContextPath()%>/form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&update=true')"/>
         <% } %>
     </div>
 
     <div id="reportViewer">
         <div id="hrmReportContent">
             <div id="hrmHeader"><b>Demographic Info:</b><br/>
-                <%=hrmReport.getLegalName() %> <br/>
-                <%=hrmReport.getHCN() %> &nbsp; <%=hrmReport.getHCNVersion() %> &nbsp; <%=hrmReport.getGender() %><br/>
-                <b>DOB:</b><%=hrmReport.getDateOfBirthAsString() %>
+                <%=Encode.forHtml(String.valueOf(hrmReport.getLegalName()))%> <br/>
+                <%=Encode.forHtml(String.valueOf(hrmReport.getHCN()))%> &nbsp; <%=Encode.forHtml(String.valueOf(hrmReport.getHCNVersion()))%> &nbsp; <%=Encode.forHtml(String.valueOf(hrmReport.getGender()))%><br/>
+                <b>DOB:</b><%=Encode.forHtml(String.valueOf(hrmReport.getDateOfBirthAsString()))%>
             </div>
 
 
             <div id="hrmNotice">
-                This report was received from the Hospital Report Manager (HRM) at <%=(String) hrmReportTime %>.
+                This report was received from the Hospital Report Manager (HRM) at <%=Encode.forHtml(String.valueOf((String) hrmReportTime))%>.
                 <% if (hrmDuplicateNum != null && (hrmDuplicateNum > 0)) { %><br/><i>OSCAR has
-                received <%=String.valueOf(hrmDuplicateNum) %> duplicates of this report.</i><% } %>
+                received <%=Encode.forHtml(String.valueOf(String.valueOf(hrmDuplicateNum)))%> duplicates of this report.</i><% } %>
                 <%
                     allDocumentsWithRelationship = (List<HRMDocument>) request.getAttribute("allDocumentsWithRelationship");
                     if (allDocumentsWithRelationship != null && allDocumentsWithRelationship.size() > 1) {
@@ -461,16 +461,16 @@
             List<Integer> seenBefore = new LinkedList<Integer>();
             for (HRMDocument relationshipDocument : allDocumentsWithRelationship) {
                 if (!seenBefore.contains(relationshipDocument.getId().intValue())) { %>
-			<span class="documentLink_status<%=relationshipDocument.getReportStatus() %>"
-                  title="<%=relationshipDocument.getReportDate().toString() %>">
+			<span class="documentLink_status<%=Encode.forHtmlAttribute(String.valueOf(relationshipDocument.getReportStatus()))%>"
+                  title="<%=Encode.forHtmlAttribute(String.valueOf(relationshipDocument.getReportDate().toString()))%>">
 			<% if (relationshipDocument.getId().intValue() != hrmReportId.intValue()) { %><a
-                    href="<%=request.getContextPath() %>/hospitalReportManager/Display.do?id=<%=relationshipDocument.getId() %>&segmentId=<%=relationshipDocument.getId() %> "><% } %>[<%=relationshipDocument.getId() %>]<% if (relationshipDocument.getId().intValue() != hrmReportId.intValue()) { %></a><% } %>
+                    href="<%=request.getContextPath() %>/hospitalReportManager/Display.do?id=<%=Encode.forUriComponent(String.valueOf(relationshipDocument.getId()))%>&segmentId=<%=Encode.forUriComponent(String.valueOf(relationshipDocument.getId()))%> "><% } %>[<%=Encode.forHtml(String.valueOf(relationshipDocument.getId()))%>]<% if (relationshipDocument.getId().intValue() != hrmReportId.intValue()) { %></a><% } %>
 			</span>&nbsp;&nbsp;
 		<% seenBefore.add(relationshipDocument.getId().intValue());
         }
         } %>
 		 <div class="boxButton">
-		   <input type="button" onClick="makeIndependent('<%=hrmReportId %>')"
+		   <input type="button" onClick="makeIndependent('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>')"
                   value="Mark this report as not similar to the other report(s)"/>
 		 </div>  
 		</span>
@@ -485,11 +485,11 @@
 
                     if (hrmReport.getFileExtension() != null && (".gif".equals(hrmReport.getFileExtension()) || ".jpg".equals(hrmReport.getFileExtension()) || ".png".equals(hrmReport.getFileExtension()))) {
             %><img
-                src="<%=request.getContextPath() %>/hospitalReportManager/HRMDownloadFile.do?hash=<%=noMessageIdHash%>"/><br/><%
+                src="<%=request.getContextPath() %>/hospitalReportManager/HRMDownloadFile.do?hash=<%=Encode.forUriComponent(String.valueOf(noMessageIdHash))%>"/><br/><%
             }
             if (hrmReport.getFileExtension() != null && ".pdf".equals(hrmReport.getFileExtension())) {
         %>
-            <object data="<%=request.getContextPath() %>/hospitalReportManager/HRMDownloadFile.do?hash=<%=noMessageIdHash%>"
+            <object data="<%=request.getContextPath() %>/hospitalReportManager/HRMDownloadFile.do?hash=<%=Encode.forHtmlAttribute(String.valueOf(noMessageIdHash))%>"
                     width="100%" height="600" type="application/pdf">
                 <p>(Your browser could not display the pdf)</p>
             </object>
@@ -497,7 +497,7 @@
             <%
                 }
             %><a
-                href="<%=request.getContextPath() %>/hospitalReportManager/HRMDownloadFile.do?hash=<%=noMessageIdHash%>"><%=(hrmReport.getLegalLastName() + "-" + hrmReport.getLegalFirstName() + "-" + hrmReport.getFirstReportClass() + hrmReport.getFileExtension()).replaceAll("\\s", "_") %>
+                href="<%=request.getContextPath() %>/hospitalReportManager/HRMDownloadFile.do?hash=<%=Encode.forUriComponent(String.valueOf(noMessageIdHash))%>"><%=Encode.forHtml(String.valueOf((hrmReport.getLegalLastName() + "-" + hrmReport.getLegalFirstName() + "-" + hrmReport.getFirstReportClass() + hrmReport.getFileExtension()).replaceAll("\\s", "_")))%>
         </a>&nbsp;&nbsp;
             <br/>
             <%
@@ -515,7 +515,7 @@
             } else {
 
             %>
-            <%=hrmReport.getFirstReportTextContent().replaceAll("\n", "<br />") %>
+            <%=Encode.forHtml(hrmReport.getFirstReportTextContent()).replaceAll("\n", "<br />")%>
 
             <% } %>
 
@@ -523,7 +523,7 @@
                 if (confidentialityStatement != null && confidentialityStatement.trim().length() > 0) {
             %>
             <hr/>
-            <em><strong>Provider Confidentiality Statement</strong><br/><%=confidentialityStatement %>
+            <em><strong>Provider Confidentiality Statement</strong><br/><%=Encode.forHtml(String.valueOf(confidentialityStatement))%>
             </em>
             <% } %>
         </div>
@@ -532,23 +532,23 @@
             <table>
                 <tr>
                     <th>Report Date:</th>
-                    <td><%=(hrmReport.getFirstReportEventTime() != null ? hrmReport.getFirstReportEventTime().getTime().toString() :
-                            hrmReport.getFirstAccompanyingSubClassDateTime()) %>
+                    <td><%=Encode.forHtml(String.valueOf((hrmReport.getFirstReportEventTime() != null ? hrmReport.getFirstReportEventTime().getTime().toString() :
+                            hrmReport.getFirstAccompanyingSubClassDateTime())))%>
                     </td>
                 </tr>
                 <tr>
                     <th>Demographic Info:</th>
                     <td>
-                        <%=hrmReport.getLegalName() %><br/>
-                        <%=hrmReport.getAddressLine1() %><br/>
-                        <%=hrmReport.getAddressLine2() != null ? hrmReport.getAddressLine2() : "" %><br/>
-                        <%=hrmReport.getAddressCity() %>
+                        <%=Encode.forHtml(String.valueOf(hrmReport.getLegalName()))%><br/>
+                        <%=Encode.forHtml(String.valueOf(hrmReport.getAddressLine1()))%><br/>
+                        <%=Encode.forHtml(String.valueOf(hrmReport.getAddressLine2() != null ? hrmReport.getAddressLine2() : ""))%><br/>
+                        <%=Encode.forHtml(String.valueOf(hrmReport.getAddressCity()))%>
                     </td>
                 </tr>
 
                 <tr>
                     <th>Report Class:</th>
-                    <td><%=hrmReport.getFirstReportClass() %>
+                    <td><%=Encode.forHtml(String.valueOf(hrmReport.getFirstReportClass()))%>
                     </td>
                 </tr>
                 <% if (hrmReport.getFirstReportClass().equalsIgnoreCase("Diagnostic Imaging Report") || hrmReport.getFirstReportClass().equalsIgnoreCase("Cardio Respiratory Report")) { %>
@@ -563,21 +563,21 @@
                         %>
                         <i>From the Report</i><br/>
                         <% for (List<Object> subClass : subClassListFromReport) { %>
-                        <abbr title="Type: <%=(String) subClass.get(0) %>; Date of Observation: <%=((Date) subClass.get(3)).toString() %>">(<%=(String) subClass.get(1) %>
-                            ) <%=(String) subClass.get(2) %>
+                        <abbr title="Type: <%=Encode.forHtmlAttribute(String.valueOf((String) subClass.get(0)))%>; Date of Observation: <%=Encode.forHtmlAttribute(String.valueOf(((Date) subClass.get(3)).toString()))%>">(<%=Encode.forHtml(String.valueOf((String) subClass.get(1)))%>
+                            ) <%=Encode.forHtml(String.valueOf((String) subClass.get(2)))%>
                         </abbr><br/>
                         <% }
                         } %><br/>
                         <%
                             if (subClassListFromDb != null && subClassListFromDb.size() > 0) { %>
                         <i>Stored in Database</i><br/>
-                        <div id="subclassstatus<%=hrmReportId %>"></div>
+                        <div id="subclassstatus<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"></div>
                         <% for (HRMDocumentSubClass subClass : subClassListFromDb) { %>
-                        <abbr title="Type: <%=subClass.getSubClass() %>; Date of Observation: <%=subClass.getSubClassDateTime().toString() %>">(<%=subClass.getSubClassMnemonic() %>
-                            ) <%=subClass.getSubClassDescription() %>
+                        <abbr title="Type: <%=Encode.forHtmlAttribute(String.valueOf(subClass.getSubClass()))%>; Date of Observation: <%=Encode.forHtmlAttribute(String.valueOf(subClass.getSubClassDateTime().toString()))%>">(<%=Encode.forHtml(String.valueOf(subClass.getSubClassMnemonic()))%>
+                            ) <%=Encode.forHtml(String.valueOf(subClass.getSubClassDescription()))%>
                         </abbr>
                         <% if (!subClass.isActive()) { %> (<a href="#"
-                                                              onclick="makeActiveSubClass('<%=hrmReportId %>', '<%=subClass.getId() %>')">make
+                                                              onclick="makeActiveSubClass('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', '<%=Encode.forJavaScript(String.valueOf(subClass.getId()))%>')">make
                         active</a>)<% } %><br/>
                         <% }
                         } %>
@@ -591,10 +591,10 @@
                             String[] subClassFromReport = hrmReport.getFirstReportSubClass().split("\\^");
                             if (subClassFromReport.length == 2) {
                         %>
-                        <abbr title="<%=subClassFromReport[0] %>"><%=subClassFromReport[1] %>
+                        <abbr title="<%=Encode.forHtmlAttribute(String.valueOf(subClassFromReport[0]))%>"><%=Encode.forHtml(String.valueOf(subClassFromReport[1]))%>
                         </abbr>
                         <% } else {%>
-                        <abbr><%=subClassFromReport[0] %>
+                        <abbr><%=Encode.forHtml(String.valueOf(subClassFromReport[0]))%>
                         </abbr>
                         <% } %>
                     </td>
@@ -607,7 +607,7 @@
                     <%
                         for (String author : hrmReport.getFirstReportAuthorPhysician()) {
                     %>
-                    <%=author %>&nbsp;
+                    <%=Encode.forHtml(String.valueOf(author))%>&nbsp;
                     <%} %>
 
                 </td>
@@ -622,35 +622,35 @@
                 <tr>
                     <th>Linked with Demographic:</th>
                     <td>
-                        <div id="demostatus<%=hrmReportId %>">
+                        <div id="demostatus<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>">
                             <% if (demographicLink != null) { %>
-                            <oscar:nameage demographicNo="<%=demographicLink.getDemographicNo().toString()%>"/> <br/>
-                            <a href="#" onclick="removeDemoFromHrm('<%=hrmReportId %>', <%=csrfTokenJs%>)">(remove)</a>
+                            <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographicLink.getDemographicNo().toString()))%>"/> <br/>
+                            <a href="#" onclick="removeDemoFromHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(csrfTokenJs))%>)">(remove)</a>
                             <% } else { %>
                             <i>Not currently linked</i>
                             <% } %>
                         </div>
-                        <input type="hidden" id="demofind<%=hrmReportId %>hrm" value="<%=demographicNo%>"/>
-                        <input type="hidden" id="demofind<%=hrmReportId %>hrm" value=""/>
-                        <input type="hidden" id="routetodemo<%=hrmReportId %>hrm" value=""/>
-                        <input type="checkbox" id="activeOnly<%=hrmReportId%>hrm" name="activeOnly" checked="checked"
-                               value="true" onclick="setupHrmDemoAutoCompletion('<%=hrmReportId%>', <%=csrfTokenJs%>)">Active
+                        <input type="hidden" id="demofind<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>"/>
+                        <input type="hidden" id="demofind<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" value=""/>
+                        <input type="hidden" id="routetodemo<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" value=""/>
+                        <input type="checkbox" id="activeOnly<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" name="activeOnly" checked="checked"
+                               value="true" onclick="setupHrmDemoAutoCompletion('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(csrfTokenJs))%>)">Active
                         Only<br>
-                        <input type="text" id="autocompletedemo<%=hrmReportId %>hrm"
-                               onchange="checkSave('<%=hrmReportId%>hrm')" name="demographicKeyword"
+                        <input type="text" id="autocompletedemo<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm"
+                               onchange="checkSave('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>hrm')" name="demographicKeyword"
                                style="display:<%=(demographicLink != null) ? "none" : "block"%> "/>
                     </td>
                 </tr>
                 <tr>
                     <th>Assigned Providers:</th>
                     <td>
-                        <div id="provstatus<%=hrmReportId %>"></div>
+                        <div id="provstatus<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"></div>
                         <% if (providerLinkList != null && providerLinkList.size() > 0) {
                             for (HRMDocumentToProvider p : providerLinkList) {
                                 if (!p.getProviderNo().equalsIgnoreCase("-1")) { %>
-                        <%=Encode.forHtml(providerDao.getProviderName(p.getProviderNo()))%> <%=p.getSignedOff() != null && p.getSignedOff() == 1 ? "<abbr title='" + p.getSignedOffTimestamp() + "'>(Signed-Off " + p.getSignedOffTimestamp() + ")</abbr>" : "" %>
+                        <%=Encode.forHtml(providerDao.getProviderName(p.getProviderNo()))%> <%=p.getSignedOff() != null && p.getSignedOff() == 1 ? "<abbr title='" + Encode.forHtmlAttribute(String.valueOf(p.getSignedOffTimestamp())) + "'>(Signed-Off " + Encode.forHtml(String.valueOf(p.getSignedOffTimestamp())) + ")</abbr>" : ""%>
                         <a href="#"
-                           onclick="removeProvFromHrm('<%=p.getId() %>', '<%=hrmReportId %>')">(remove)</a><br/>
+                           onclick="removeProvFromHrm('<%=Encode.forJavaScript(String.valueOf(p.getId()))%>', '<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>')">(remove)</a><br/>
                         <% }
                         }
                         } else { %>
@@ -659,14 +659,14 @@
                         <% if (document.getUnmatchedProviders() != null && document.getUnmatchedProviders().trim().length() >= 1) {
                             String[] unmatchedProviders = document.getUnmatchedProviders().substring(1).split("\\|");
                             for (String unmatchedProvider : unmatchedProviders) { %>
-                        <i><abbr title="From the HRM document"><%=unmatchedProvider %>
+                        <i><abbr title="From the HRM document"><%=Encode.forHtml(String.valueOf(unmatchedProvider))%>
                         </abbr></i><br/>
                         <% }
                         } %>
-                        <div id="providerList<%=hrmReportId %>hrm"></div>
-                        <input type="hidden" name="provi" id="provfind<%=hrmReportId%>hrm"/>
-                        <input type="text" id="autocompleteprov<%=hrmReportId%>hrm" name="demographicKeyword"/>
-                        <div id="autocomplete_choicesprov<%=hrmReportId%>hrm" class="autocomplete"></div>
+                        <div id="providerList<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm"></div>
+                        <input type="hidden" name="provi" id="provfind<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm"/>
+                        <input type="text" id="autocompleteprov<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" name="demographicKeyword"/>
+                        <div id="autocomplete_choicesprov<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" class="autocomplete"></div>
                     </td>
                 </tr>
                 <tr>
@@ -676,7 +676,7 @@
                 </tr>
                 <tr>
                     <th>Report Class:</th>
-                    <td><%=hrmReport.getFirstReportClass() %>
+                    <td><%=Encode.forHtml(String.valueOf(hrmReport.getFirstReportClass()))%>
                     </td>
                 </tr>
                 <% if (hrmReport.getFirstReportClass().equalsIgnoreCase("Diagnostic Imaging Report") || hrmReport.getFirstReportClass().equalsIgnoreCase("Cardio Respiratory Report")) { %>
@@ -691,21 +691,21 @@
                         %>
                         <i>From the Report</i><br/>
                         <% for (List<Object> subClass : subClassListFromReport) { %>
-                        <abbr title="Date of Observation: <%=((String)subClass.get(4)) %>">(<%=(String) subClass.get(0) %>
-                            : <%=(String) subClass.get(1) %>) <%=(String) subClass.get(2) %>
+                        <abbr title="Date of Observation: <%=Encode.forHtmlAttribute(String.valueOf(((String)subClass.get(4))))%>">(<%=Encode.forHtml(String.valueOf((String) subClass.get(0)))%>
+                            : <%=Encode.forHtml(String.valueOf((String) subClass.get(1)))%>) <%=Encode.forHtml(String.valueOf((String) subClass.get(2)))%>
                         </abbr><br/>
                         <% }
                         } %><br/>
                         <%
                             if (subClassListFromDb != null && subClassListFromDb.size() > 0) { %>
                         <i>Stored in Database</i><br/>
-                        <div id="subclassstatus<%=hrmReportId %>"></div>
+                        <div id="subclassstatus<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"></div>
                         <% for (HRMDocumentSubClass subClass : subClassListFromDb) { %>
-                        <abbr title="Date of Observation: <%=subClass.getSubClassDateTime().toString() %>">(<%=subClass.getSubClass() %>
-                            : <%=subClass.getSubClassMnemonic() %>) <%=subClass.getSubClassDescription() %>
+                        <abbr title="Date of Observation: <%=Encode.forHtmlAttribute(String.valueOf(subClass.getSubClassDateTime().toString()))%>">(<%=Encode.forHtml(String.valueOf(subClass.getSubClass()))%>
+                            : <%=Encode.forHtml(String.valueOf(subClass.getSubClassMnemonic()))%>) <%=Encode.forHtml(String.valueOf(subClass.getSubClassDescription()))%>
                         </abbr>
                         <% if (!subClass.isActive()) { %> (<a href="#"
-                                                              onclick="makeActiveSubClass('<%=hrmReportId %>', '<%=subClass.getId() %>')">make
+                                                              onclick="makeActiveSubClass('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', '<%=Encode.forJavaScript(String.valueOf(subClass.getId()))%>')">make
                         active</a>)<% } %><br/>
                         <% }
                         } %>
@@ -719,7 +719,7 @@
                             String[] subClassFromReport = hrmReport.getFirstReportSubClass().split("\\^");
                             if (subClassFromReport.length == 2) {
                         %>
-                        <abbr title="Subclass: <%=subClassFromReport[0] %>"><%=subClassFromReport[1] %>
+                        <abbr title="Subclass: <%=Encode.forHtmlAttribute(String.valueOf(subClassFromReport[0]))%>"><%=Encode.forHtml(String.valueOf(subClassFromReport[1]))%>
                         </abbr>
                         <% } %>
                     </td>
@@ -728,17 +728,17 @@
                 <tr>
                     <th>Categorization:</th>
                     <td>
-				<span id="chooseCategory_<%=hrmReportId%>" onchange="updateCategory('<%=hrmReportId %>');"
+				<span id="chooseCategory_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" onchange="updateCategory('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>');"
                       style="display:none">
-					<select id="selectedCategory_<%=hrmReportId%>">
+					<select id="selectedCategory_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>">
 						<% for (HRMCategory hrmCategory : hrmCategories) { %>
-						<option value="<%=hrmCategory.getId()%>" <%=(category != null && category.getId().equals(hrmCategory.getId())) ? "selected" : ""%>><%=hrmCategory.getCategoryName()%></option>
+						<option value="<%=Encode.forHtmlAttribute(String.valueOf(hrmCategory.getId()))%>" <%=(category != null && category.getId().equals(hrmCategory.getId())) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(hrmCategory.getCategoryName()))%></option>
 						<%}%>
 					</select>
 				</span>
 
-                        <span id="showCategory_<%=hrmReportId%>">
-					<span id="hrmCategory_<%=hrmReportId%>">
+                        <span id="showCategory_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>">
+					<span id="hrmCategory_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>">
 						<%
                             if (category != null) {
                         %>
@@ -746,7 +746,7 @@
 						<% }%>
 					</span>
 
-					<a href="javascript:void(0)" onclick="editCategory('<%=hrmReportId %>');">(edit)</a>
+					<a href="javascript:void(0)" onclick="editCategory('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>');">(edit)</a>
 				</span>
 
                     </td>
@@ -754,30 +754,30 @@
                 <tr>
                     <td colspan=2>
                         <form action="<%=request.getContextPath() %>/hospitalReportManager/PrintHRMReport.do">
-                            <input type="hidden" value="<%=hrmReportId %>" name="hrmReportId"/>
+                            <input type="hidden" value="<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" name="hrmReportId"/>
                             <% if (request.getRequestURI().contains("oscarMDS/Page.jsp")) {%>
-                            <input type="button" value="Print" onclick="printHrm('<%=hrmReportId%>')"/>
+                            <input type="button" value="Print" onclick="printHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>')"/>
                             <%} else { %>
                             <input type="submit" value="Print"/>
                             <% }%>
 
-                            <input type="button" style="display: none;" value="Save" id="save<%=hrmReportId %>hrm"/>
+                            <input type="button" style="display: none;" value="Save" id="save<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm"/>
                             <%
                                 HRMDocumentToProvider hrmDocumentToProvider = HRMDisplayReport2Action.getHRMDocumentFromProvider(loggedInInfo.getLoggedInProviderNo(), hrmReportId);
                                 if (hrmDocumentToProvider != null && hrmDocumentToProvider.getSignedOff() != null && hrmDocumentToProvider.getSignedOff() == 1) {
                             %>
-                            <input type="button" id="signoff<%=hrmReportId %>" value="Revoke Sign-Off"
-                                   onClick="revokeSignOffHrm('<%=hrmReportId %>')"/>
+                            <input type="button" id="signoff<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" value="Revoke Sign-Off"
+                                   onClick="revokeSignOffHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>')"/>
                             <%
                             } else {
                             %>
-                            <input type="button" id="signoff<%=hrmReportId %>" value="Sign-Off"
-                                   onClick="signOffHrm('<%=hrmReportId %>', <%=isListView%>)"/>
+                            <input type="button" id="signoff<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" value="Sign-Off"
+                                   onClick="signOffHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(isListView))%>)"/>
                             <%
                                 }
                             %>
                             <input type="button" value="Annotations"
-                                   onClick="popupPage(500, 400, '<%=request.getContextPath() %>/annotation/annotation.jsp?display=HRM&table_id=<%=hrmReportId%>&demo=<%=demographicNo%>')"/>
+                                   onClick="popupPage(500, 400, '<%=request.getContextPath() %>/annotation/annotation.jsp?display=HRM&table_id=<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>&demo=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')"/>
                         </form>
                     </td>
                 </tr>
@@ -789,7 +789,7 @@
     <div class="aBox" id="duplicateAndSimilarBox">
 
         <% if (request.getAttribute("hrmDuplicateNum") != null && ((Integer) request.getAttribute("hrmDuplicateNum")) > 0) { %>
-        Duplicates Received by HRM:  <%=request.getAttribute("hrmDuplicateNum") %>.<br/>
+        Duplicates Received by HRM:  <%=Encode.forHtml(String.valueOf(request.getAttribute("hrmDuplicateNum")))%>.<br/>
         <% } else { %>
         Duplicates Received by HRM: 0.<br/>
         <% } %>
@@ -810,11 +810,11 @@
             </tr>
             <%for (HRMDocument child : children) { %>
             <tr>
-                <td><a href="javascript:void(0)" onClick="openReport('<%=child.getId()%>')"><%=child.getId() %>
+                <td><a href="javascript:void(0)" onClick="openReport('<%=Encode.forJavaScript(String.valueOf(child.getId()))%>')"><%=Encode.forHtml(String.valueOf(child.getId()))%>
                 </a></td>
-                <td><%=child.getReportDate() %>
+                <td><%=Encode.forHtml(String.valueOf(child.getReportDate()))%>
                 </td>
-                <td><%=child.getTimeReceived() %>
+                <td><%=Encode.forHtml(String.valueOf(child.getTimeReceived()))%>
                 </td>
             </tr>
             <% } %>
@@ -827,23 +827,23 @@
     <div id="descriptionBox">
 
         Add a description:
-        <input type="text" id="descriptionField_<%=hrmReportId %>_hrm" size="100"
+        <input type="text" id="descriptionField_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>_hrm" size="100"
                value="<%=Encode.forHtml(document.getDescription())%>"/><br/>
 
         <div class="boxButton">
-            <input type="button" onClick="setDescription('<%=hrmReportId %>')" value="Set Description"/><span
-                id="descriptionstatus<%=hrmReportId %>"></span><br/><br/>
+            <input type="button" onClick="setDescription('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>')" value="Set Description"/><span
+                id="descriptionstatus<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"></span><br/><br/>
         </div>
 
     </div>
 
     <div id="commentBox">
         Add a comment:
-        <textarea rows="10" cols="50" id="commentField_<%=hrmReportId %>_hrm"></textarea>
+        <textarea rows="10" cols="50" id="commentField_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>_hrm"></textarea>
 
         <div class="boxButton">
-            <input type="button" onClick="addComment('<%=hrmReportId %>')" value="Add Comment"/><span
-                id="commentstatus<%=hrmReportId %>"></span><br/><br/>
+            <input type="button" onClick="addComment('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>')" value="Add Comment"/><span
+                id="commentstatus<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"></span><br/><br/>
         </div>
         <%
 
@@ -852,10 +852,10 @@
         <% for (HRMDocumentComment comment : documentComments) {
             String commentTime = comment.getCommentTime() != null ? " on " + comment.getCommentTime().toString() : ""; %>
         <div class="documentComment">
-            <strong><%=Encode.forHtml(providerDao.getProviderName(comment.getProviderNo())) %><%=commentTime%>
+            <strong><%=Encode.forHtml(providerDao.getProviderName(comment.getProviderNo())) %><%=Encode.forHtml(String.valueOf(commentTime))%>
                 wrote...</strong><br/>
             <%=Encode.forHtml(comment.getComment()) %><br/>
-            <a href="#" onClick="deleteComment('<%=comment.getId() %>', '<%=hrmReportId %>'); return false;">(Delete
+            <a href="#" onClick="deleteComment('<%=Encode.forJavaScript(String.valueOf(comment.getId()))%>', '<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>'); return false;">(Delete
                 this comment)</a></div>
         <% }
         }
@@ -867,34 +867,34 @@
             <tr>
 
                 <th>Media</th>
-                <td><%=hrmReport.getMediaType()%>
+                <td><%=Encode.forHtml(String.valueOf(hrmReport.getMediaType()))%>
                 </td>
             </tr>
             <tr>
                 <th>Message Unique ID</th>
-                <td><%=hrmReport.getMessageUniqueId() %>
+                <td><%=Encode.forHtml(String.valueOf(hrmReport.getMessageUniqueId()))%>
                 </td>
             </tr>
             <tr>
                 <th>Sending Author</th>
-                <td><%=hrmReport.getSendingAuthor()%>
+                <td><%=Encode.forHtml(String.valueOf(hrmReport.getSendingAuthor()))%>
                 </td>
             </tr>
             <tr>
                 <th>Sending Facility ID</th>
 
-                <td><%=hrmReport.getSendingFacilityId() %>
+                <td><%=Encode.forHtml(String.valueOf(hrmReport.getSendingFacilityId()))%>
                 </td>
             </tr>
             <tr>
                 <th>Sending Facility Report No.</th>
-                <td><%=hrmReport.getSendingFacilityReportNo() %>
+                <td><%=Encode.forHtml(String.valueOf(hrmReport.getSendingFacilityReportNo()))%>
                 </td>
             </tr>
             <tr>
 
                 <th>Date and Time of Report</th>
-                <td><%=HRMReportParser.getAppropriateDateStringFromReport(hrmReport) %>
+                <td><%=Encode.forHtml(String.valueOf(HRMReportParser.getAppropriateDateStringFromReport(hrmReport)))%>
                 </td>
 
             </tr>
@@ -908,7 +908,7 @@
 
 
     <script type="text/javascript">
-        jQuery(setupHrmDemoAutoCompletion(<%=hrmReportId%>, <%=csrfTokenJs%>));
+        jQuery(setupHrmDemoAutoCompletion(<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>, <%=Encode.forJavaScript(String.valueOf(csrfTokenJs))%>));
 
         YAHOO.example.BasicRemote = function () {
             var url = "<%= request.getContextPath() %>/provider/SearchProvider.do";
@@ -922,7 +922,7 @@
             // Enable caching
             oDS.maxCacheEntries = 0;
             // Instantiate the AutoComplete
-            var oAC = new YAHOO.widget.AutoComplete("autocompleteprov<%=hrmReportId%>hrm", "autocomplete_choicesprov<%=hrmReportId%>hrm", oDS);
+            var oAC = new YAHOO.widget.AutoComplete("autocompleteprov<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>hrm", "autocomplete_choicesprov<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>hrm", oDS);
             oAC.queryMatchSubset = true;
             oAC.minQueryLength = 3;
             oAC.maxResultsDisplayed = 25;
@@ -942,12 +942,12 @@
                 idoc.setAttribute("value", oData[0]);
                 adoc.appendChild(idoc);
 
-                var providerList = $('providerList<%=hrmReportId%>hrm');
+                var providerList = $('providerList<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>hrm');
                 providerList.appendChild(adoc);
 
                 myAC.getInputEl().value = '';//;oData.fname + " " + oData.lname ;
 
-                addProvToHrm('<%=hrmReportId %>', args[2][0]);
+                addProvToHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', args[2][0]);
             });
 
 
@@ -980,14 +980,14 @@
                 for (String tempId : duplicateLabIdsStringSplit) {
             %>
             <tr>
-                <td><%=tempId %>
+                <td><%=Encode.forHtml(String.valueOf(tempId))%>
                 </td>
-                <td><%=formatter.format(dupReportDates.get(Integer.parseInt(tempId))) %>
+                <td><%=Encode.forHtml(String.valueOf(formatter.format(dupReportDates.get(Integer.parseInt(tempId)))))%>
                 </td>
-                <td><%=formatter.format(dupTimeReceived.get(Integer.parseInt(tempId))) %>
+                <td><%=Encode.forHtml(String.valueOf(formatter.format(dupTimeReceived.get(Integer.parseInt(tempId)))))%>
                 </td>
                 <td><input type="button" value="Open Report"
-                           onclick="window.open('?id=<%=tempId%>&segmentId=<%=tempId%>&providerNo=<%=request.getParameter("providerNo")%>&searchProviderNo=<%=request.getParameter("searchProviderNo")%>&status=<%=request.getParameter("status")%>&demoName=<%=Encode.forHtml(request.getParameter("demoName"))%>', null)"/>
+                           onclick="window.open('?id=<%=Encode.forJavaScript(String.valueOf(tempId))%>&segmentId=<%=Encode.forJavaScript(String.valueOf(tempId))%>&providerNo=<%=Encode.forJavaScript(request.getParameter("providerNo"))%>&searchProviderNo=<%=Encode.forJavaScript(request.getParameter("searchProviderNo"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&demoName=<%=Encode.forHtml(request.getParameter("demoName"))%>', null)"/>
                 </td>
             </tr>
 

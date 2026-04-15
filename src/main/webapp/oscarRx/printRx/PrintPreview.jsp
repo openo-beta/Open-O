@@ -27,8 +27,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 <%@ taglib prefix="oscar" uri="/oscarPropertiestag" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ page import="ca.openosp.openo.commn.model.enumerator.ModuleType" %>
 <%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="myDrugRefEnabled">
@@ -55,7 +57,7 @@
                                     <jsp:param name="scriptId"
                                                value="${requestScope.sessionBean.getStashItem(0).script_no}"/>
                                     <jsp:param name="rePrint" value="${requestScope.reprint}"/>
-                                    <jsp:param name="pharmacyId" value="${param.pharmacyId}"/>
+                                    <jsp:param name="pharmacyId" value="${e:forHtmlAttribute(param.pharmacyId)}"/>
                                     <jsp:param name="pharmaAddress" value="${requestScope.pharmacyAddress}"/>
                                 </jsp:include>
                             </div>
@@ -182,7 +184,7 @@
                                         <button type="button"
                                                 class="btn btn-secondary mb-2 w-100"
                                                 id="faxButton"
-                                                onClick="sendFax(${param.scriptId},
+                                                onClick="sendFax(${e:forJavaScript(param.scriptId)},
                                                     ${requestScope.signatureRequestId},
                                                     ${requestScope.useSC != null ? requestScope.useSC : false},
                                                     ${requestScope.selectedAddress != null ? requestScope.selectedAddress : ''}
@@ -205,7 +207,7 @@
                                                     '${requestScope.pharmacyName}',
                                                     '${requestScope.pharmacyFax}',
                                                     '${requestScope.prescribedBy}');
-                                                        sendFax(${param.scriptId},
+                                                        sendFax(${e:forHtml(param.scriptId)},
                                                     ${requestScope.signatureRequestId},
                                                     ${requestScope.useSC != null ? requestScope.useSC : false},
                                                     ${requestScope.selectedAddress != null ? requestScope.selectedAddress : ''}
@@ -231,9 +233,9 @@
                                 <div class="form-group">
                                     <label for="additionalNotes"></label>
                                     <textarea id="additionalNotes" class="form-control mb-2"
-                                              onchange="addNotes(${param.scriptId});"></textarea>
+                                              onchange="addNotes(${e:forJavaScript(param.scriptId)});"></textarea>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="addNotes(${param.scriptId});">
+                                            onclick="addNotes(${e:forJavaScript(param.scriptId)});">
                                         Additional Rx Notes
                                     </button>
                                 </div>

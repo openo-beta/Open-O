@@ -44,6 +44,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getAttribute("userrole") == null) {
         response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -75,11 +76,11 @@
     <%} else {%>
     <fmt:message key="report.printLabel.DefaultPrinter"/>
     <%}%>
-    <%=defaultPrinterName%>
+    <%=Encode.forHtml(String.valueOf(defaultPrinterName))%>
     <%}%>
     <br>
     <object id="pdf" type="application/pdf"
-            data="printDemoChartLabelAction.do?demographic_no=<%=request.getParameter("demographic_no")%><%=request.getParameter("labelName")==null?"":"&labelName="+request.getParameter("labelName")%>"
+            data="printDemoChartLabelAction.do?demographic_no=<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%><%=Encode.forHtmlAttribute(request.getParameter("labelName")==null?"":"&labelName="+request.getParameter("labelName"))%>"
             height="80%" width="100%"></object>
     </body>
 </html>

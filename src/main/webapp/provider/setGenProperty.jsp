@@ -27,6 +27,7 @@
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <fmt:setBundle basename="oscarResources"/>
 <%@ page import="java.util.ResourceBundle"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     if (session.getValue("user") == null)
@@ -52,7 +53,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <title><%=bundle.getString(providertitle)%></title>
+        <title><%=Encode.forHtml(String.valueOf(bundle.getString(providertitle)))%></title>
 
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
@@ -125,13 +126,13 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><%=bundle.getString(providermsgPrefs)%></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><%=bundle.getString(providermsgProvider)%></td></td>
+            <td class="MainTableTopRowLeftColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgPrefs)))%></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgProvider)))%></td></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
-                <%if (request.getAttribute("status") == null) {%> <%=bundle.getString(providermsgEdit)%> <c:out value="${dateProperty.value}"/>
+                <%if (request.getAttribute("status") == null) {%> <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgEdit)))%> <c:out value="${dateProperty.value}"/>
                 <form id="providerForm" action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post" onsubmit="return validateForm();">
                 <input type="hidden" name="method" value="<c:out value="${method}"/>">
 
@@ -158,8 +159,8 @@
 
                 <%}%>
                 <input type="submit"
-                       value="<%=bundle.getString(providerbtnSubmit)%>"/>
-            </form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getString(providerbtnSubmit)))%>"/>
+            </form> <%} else {%> <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgSuccess)))%> <br>
                 <%}%>
             </td>
         </tr>

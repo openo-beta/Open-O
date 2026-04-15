@@ -31,6 +31,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypeBeanHandler" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
 <%@ page import="ca.openosp.openo.prescript.util.RxUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/common/webAppContextAndSuperMgr.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -94,7 +95,7 @@
 <html>
 
 <head>
-    <title><%=flowSheet%> - <oscar:nameage demographicNo="<%=demographic_no%>"/></title><!--I18n-->
+    <title><%=Encode.forHtml(String.valueOf(flowSheet))%> - <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/></title><!--I18n-->
 	<script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
 	<script src="<%=request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath() %>/share/javascript/Oscar.js"></script>
@@ -139,7 +140,7 @@
 
     <script>
         function getDemographicNo() {
-            return '<%=demographic_no%>';
+            return '<%=Encode.forJavaScript(String.valueOf(demographic_no))%>';
         }
 
         function getContextPath() {
@@ -255,7 +256,7 @@
                     method: 'POST',
                     data: deletevalue,
                     success: function (returnData) {
-                        window.location = "<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?ycoord=" + ycoord + "&demographic_no=<%=demographic_no%>&template=diab3";
+                        window.location = "<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?ycoord=" + ycoord + "&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&template=diab3";
 
                     }
                 });
@@ -786,7 +787,7 @@
 <form id="mainForm" name="mainForm" action="<%=request.getContextPath()%>/oscarEncounter/FormUpdate.do">
     <input type="hidden" name="ycoord"
             <%if (request.getParameter("ycoord") != null) { %>
-           value="<%=request.getParameter("ycoord")%>"
+           value="<%=Encode.forHtmlAttribute(request.getParameter("ycoord"))%>"
             <%} else {%>
            value="0"
             <%}%>
@@ -807,15 +808,15 @@
 
     <table class="formTable" id="headTable">
         <tr>
-            <th colspan="8"><oscar:nameage demographicNo="<%=demographic_no%>"/></th>
+            <th colspan="8"><oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/></th>
         </tr>
         <tr>
 
             <td class="rowheader"><a class="header" href="javascript:void(0)"
-                                     onclick="popupPage('700', '1000', '<%=project%>/CaseManagementEntry.do?method=issuehistory&demographicNo=<%=demographic_no%>&issueIds=38'); return false;">Reminders</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/CaseManagementEntry.do?method=issuehistory&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&issueIds=38'); return false;">Reminders</a>
             </td>
 
-            <td width="650px"><%=remindersList%>
+            <td width="650px"><%=Encode.forHtml(String.valueOf(remindersList))%>
             </td>
             <td>
                 <div class="highlightBox">
@@ -824,10 +825,10 @@
                             id="highlightSliderLength"></span></div>
                 </div>
                 <div>
-                    # of Previous Shown: <input type="text" name="numPrev" id="numPrev" value="<%=numPrev%>" size="1"/>
+                    # of Previous Shown: <input type="text" name="numPrev" id="numPrev" value="<%=Encode.forHtmlAttribute(String.valueOf(numPrev))%>" size="1"/>
                 </div>
                 <div>
-                    <input type="text" name="date" id="date" value="<%=date%>" size="10"> <a id="dateImg"><img
+                    <input type="text" name="date" id="date" value="<%=Encode.forHtmlAttribute(String.valueOf(date))%>" size="10"> <a id="dateImg"><img
                         title="Calendar" src="<%=request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                 </div>
                 <script type="text/javascript">
@@ -846,20 +847,20 @@
         <tr>
 
             <td class="rowheader"><a class="header" href="javascript:void(0)"
-                                     onclick="popupPage('700', '1000', '<%=project%>/oscarRx/showAllergy.do?demographicNo=<%=demographic_no%>'); return false;">Allergies</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Allergies</a>
             </td>
 
-            <td width="650px"><%=allergiesList%>
+            <td width="650px"><%=Encode.forHtml(String.valueOf(allergiesList))%>
             </td>
         </tr>
 
         <tr>
 
             <td class="rowheader"><a class="header" href="javascript:void(0)"
-                                     onclick="popupPage('700', '1000', '<%=project%>/oscarRx/choosePatient.do?providerNo=<%=curUser_no%>&demographicNo=<%=demographic_no%>'); return false;">Medications</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Medications</a>
             </td>
 
-            <td width="650px"><%=medicationsList%>
+            <td width="650px"><%=Encode.forHtml(String.valueOf(medicationsList))%>
             </td>
             <td>
             </td>
@@ -867,8 +868,8 @@
 
     </table>
 
-    <input type="hidden" name="demographic_no" value="<%=demographic_no%>"/>
-    <input type="hidden" name="template" value="<%=temp%>"/>
+    <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
+    <input type="hidden" name="template" value="<%=Encode.forHtmlAttribute(String.valueOf(temp))%>"/>
 
     <table class="formTable" id="mainTable">
         <%
@@ -883,7 +884,7 @@
         %>
         <tr>
             <th>
-                <b><%=item.getDisplayName()%>
+                <b><%=Encode.forHtml(String.valueOf(item.getDisplayName()))%>
                 </b>
             </th>
             <th>Value</th>
@@ -914,12 +915,12 @@
                         }
         %>
         <%//This part here grabs the field name %>
-        <tr class="dataRow <%=currentSection%>">
+        <tr class="dataRow <%=Encode.forHtmlAttribute(String.valueOf(currentSection))%>">
             <td class="field">
                 <a style="color: black; text-decoration : underline;"
                    href="javascript: function myFunction() {return false; }"
-                   onclick="javascript:popup(465,635,'<%=project%>/oscarEncounter/oscarMeasurements/AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=demographic_no%>&amp;template=<%= URLEncoder.encode(temp,"UTF-8") %>','addMeasurementData<%=Math.abs(h.get("name").hashCode()) %>')">
-                    <b><%=child.flowSheetItem.getDisplayName()%>
+                   onclick="javascript:popup(465,635,'<%=Encode.forJavaScript(String.valueOf(project))%>/oscarEncounter/oscarMeasurements/AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(temp,"UTF-8")))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs(h.get("name").hashCode())))%>')">
+                    <b><%=Encode.forHtml(String.valueOf(child.flowSheetItem.getDisplayName()))%>
                     </b>
                 </a>
             </td>
@@ -932,12 +933,12 @@
             <td class="inputData">
                 <%//This part here grabs the type of input %>
                 <% if (mtypeBean.getValidationName() != null && mtypeBean.getValidationName().equals("Yes/No")) { %>
-                <input type="radio" name="<%=name%>" value="Yes">Yes
-                <input type="radio" name="<%=name%>" value="No">No
-                <input type="radio" name="<%=name%>" style="display:none;" value="">
-                <input type="button" onclick="document.mainForm.<%=name%>[2].checked = true;" value="Clear">
+                <input type="radio" name="<%=Encode.forHtmlAttribute(String.valueOf(name))%>" value="Yes">Yes
+                <input type="radio" name="<%=Encode.forHtmlAttribute(String.valueOf(name))%>" value="No">No
+                <input type="radio" name="<%=Encode.forHtmlAttribute(String.valueOf(name))%>" style="display:none;" value="">
+                <input type="button" onclick="document.mainForm.<%=Encode.forJavaScript(String.valueOf(name))%>[2].checked = true;" value="Clear">
                 <%} else {%>
-                <input type="text" id="<%=name%>" name="<%=name%>" size="14"
+                <input type="text" id="<%=Encode.forHtmlAttribute(String.valueOf(name))%>" name="<%=Encode.forHtmlAttribute(String.valueOf(name))%>" size="14"
                         <% if (name.equals("Weight") || name.equals("Height")) { %> onchange="calcBMI();"
                        onkeyup="calcBMI();"<%}%>
                         <% if (name.equals("Weight")) { %> title="Double click to automatically convert from lbs to kg"
@@ -949,14 +950,14 @@
                        title="Double click to automatically calculate BMI from height and weight"
                        onDblClick="calcBMI();"<%}%>
                 />
-                <%=child.flowSheetItem.getValueName()%>
+                <%=Encode.forHtml(String.valueOf(child.flowSheetItem.getValueName()))%>
 
                 <%}%>
             </td>
 
             <td class="comments">
-                <input type="text" size="15" name="<%=name + "_comments"%>"/>
-                <input type="hidden" name="<%=name%>_note" id="<%=name%>_note" value="addtonote">
+                <input type="text" size="15" name="<%=Encode.forHtmlAttribute(String.valueOf(name + "_comments"))%>"/>
+                <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(name))%>_note" id="<%=Encode.forHtmlAttribute(String.valueOf(name))%>_note" value="addtonote">
             </td>
 
             <%
@@ -985,18 +986,18 @@
 
                         String onclick = "";
                         if (!differentInstr) {
-                            onclick = "onclick=\"popup(600,1000,'" + request.getContextPath() + "/oscarEncounter/GraphMeasurements.do?demographic_no=" + demographic_no + "&type=" + h2.get("measurement_type") + "');\"";
+                            onclick = "onclick=\"popup(600,1000,'" + request.getContextPath() + "/oscarEncounter/GraphMeasurements.do?demographic_no=" + Encode.forUriComponent(demographic_no) + "&type=" + Encode.forUriComponent(h2.get("measurement_type").toString()) + "');\"";
                         }
                 %>
                 <span  <%=onclick %> class="inlinesparkline" values="
-			               	 <%=alist.get(alist.size()-1).getDataField()%>
+			               	 <%=Encode.forHtml(String.valueOf(alist.get(alist.size()-1).getDataField()))%>
 			               	 <%for (int x=alist.size()-2; x>=0; x--){
 			               	 %>
 			               	 ,
 				               	 <%if (alist.get(x).getDataField().equals("")) { %>
 				               	 null
 				               	 <%}else{ %>
-				               	 <%=alist.get(x).getDataField()%>
+				               	 <%=Encode.forHtml(String.valueOf(alist.get(x).getDataField()))%>
 				               	 <%} %>
 			               	 <%}%>
 			               	 "></span>
@@ -1029,7 +1030,7 @@
 
                         String onclick = "";
                         if (!differentInstr) {
-                            onclick = "onclick=\"popup(600,1000,'" + request.getContextPath() + "/oscarEncounter/GraphMeasurements.do?demographic_no=" + demographic_no + "&type=" + h2.get("measurement_type") + "');\"";
+                            onclick = "onclick=\"popup(600,1000,'" + request.getContextPath() + "/oscarEncounter/GraphMeasurements.do?demographic_no=" + Encode.forUriComponent(demographic_no) + "&type=" + Encode.forUriComponent(h2.get("measurement_type").toString()) + "');\"";
                         }
 
                         List<String> first = new ArrayList<String>();
@@ -1050,8 +1051,8 @@
                     var second = new Array();
 
                     <%for (int x = 0; x < first.size(); x++) {%>
-                    first[<%=x%>] = "<%=first.get(x)%>";
-                    second[<%=x%>] = "<%=second.get(x)%>";
+                    first[<%=x%>] = "<%=Encode.forJavaScript(String.valueOf(first.get(x)))%>";
+                    second[<%=x%>] = "<%=Encode.forJavaScript(String.valueOf(second.get(x)))%>";
                     <%}%>
 
                     $('.bpline').sparkline(first, {
@@ -1094,22 +1095,22 @@
                         hdata.put("unixTime", Long.toString(mdb.getDateEnteredAsDate().getTime()));
                 %>
 
-                <div itemtime="<%=hdata.get("unixTime")%>" class="recentBlock measurements"
-                     id="mView-<%=hdata.get("id")%>">
+                <div itemtime="<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("unixTime")))%>" class="recentBlock measurements"
+                     id="mView-<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("id")))%>">
 
-                    <b><%=hdata.get("data")%>
-                    </b>; <%=hdata.get("prevention_date")%> <br>
+                    <b><%=Encode.forHtml(String.valueOf(hdata.get("data")))%>
+                    </b>; <%=Encode.forHtml(String.valueOf(hdata.get("prevention_date")))%> <br>
                     <b>
-                        <%=hdata.get("comments")%>
+                        <%=Encode.forHtml(String.valueOf(hdata.get("comments")))%>
                     </b>
                 </div>
 
-                <div id="mMessage-<%=hdata.get("id")%>" style="display:none;">
+                <div id="mMessage-<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("id")))%>" style="display:none;">
 
-                    <h1><%=name%>: <%=hdata.get("data")%>
+                    <h1><%=Encode.forHtml(String.valueOf(name))%>: <%=Encode.forHtml(String.valueOf(hdata.get("data")))%>
                     </h1>
-                    Date Observed: <%=hdata.get("prevention_date")%><br>
-                    <%=hdata.get("comments")%><br>
+                    Date Observed: <%=Encode.forHtml(String.valueOf(hdata.get("prevention_date")))%><br>
+                    <%=Encode.forHtml(String.valueOf(hdata.get("comments")))%><br>
 
 
                 </div>
@@ -1135,14 +1136,14 @@
                         hdata.put("unixTime", Long.toString(mdb.getDateEnteredAsDate().getTime()));
                 %>
 
-                <div itemtime="<%=hdata.get("unixTime")%>"
-                     id="mView-<%=hdata.get("id")%>"  <%if (mdb.getIndicationColour() != null) {%> <%}%>
-                     class="block measurements <%=name%>">
+                <div itemtime="<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("unixTime")))%>"
+                     id="mView-<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("id")))%>"  <%if (mdb.getIndicationColour() != null) {%> <%}%>
+                     class="block measurements <%=Encode.forHtmlAttribute(String.valueOf(name))%>">
                     <%if (!hdata.get("data").equals("")) { %>
-                    <b><%=hdata.get("data")%>
-                    </b>, <%=hdata.get("prevention_date")%><br>
+                    <b><%=Encode.forHtml(String.valueOf(hdata.get("data")))%>
+                    </b>, <%=Encode.forHtml(String.valueOf(hdata.get("prevention_date")))%><br>
                     <%} else { %>
-                    <%=hdata.get("prevention_date")%><br>
+                    <%=Encode.forHtml(String.valueOf(hdata.get("prevention_date")))%><br>
                     <%}%>
 
                     <%
@@ -1153,21 +1154,21 @@
                             }
                             if (hdata.get("comments").toString().length() >= 19) {
                                 String tempComments = hdata.get("comments").toString().substring(0, 15) + "...";
-                    %> <%=tempComments%><%
+                    %> <%=Encode.forHtml(String.valueOf(tempComments))%><%
                 } else {
                     String tempComments = hdata.get("comments").toString();
-                %> <%=tempComments%><%
+                %> <%=Encode.forHtml(String.valueOf(tempComments))%><%
                         }
                     }
                 %>
                 </div>
 
-                <div id="mMessage-<%=hdata.get("id")%>" style="display:none;">
+                <div id="mMessage-<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("id")))%>" style="display:none;">
 
-                    <h1><%=name%>: <%=hdata.get("data")%>
+                    <h1><%=Encode.forHtml(String.valueOf(name))%>: <%=Encode.forHtml(String.valueOf(hdata.get("data")))%>
                     </h1>
-                    Date Observed: <%=hdata.get("prevention_date")%><br>
-                    <%=hdata.get("comments")%><br>
+                    Date Observed: <%=Encode.forHtml(String.valueOf(hdata.get("prevention_date")))%><br>
+                    <%=Encode.forHtml(String.valueOf(hdata.get("comments")))%><br>
 
                 </div>
                 <%
@@ -1176,7 +1177,7 @@
                         String className = "\".block.measurements." + name + "\"";
                 %>
                 <script type="text/javascript">
-                    $(<%=className%>).css("min-height", "25px")
+                    $(<%=Encode.forJavaScript(String.valueOf(className))%>).css("min-height", "25px")
                 </script>
                 <%}%></td>
         </tr>
@@ -1187,13 +1188,13 @@
 
         }%>
 
-        <tr id="<%=header.getDisplayName()%>_update">
+        <tr id="<%=Encode.forHtmlAttribute(String.valueOf(header.getDisplayName()))%>_update">
             <td><input type="submit" name="submit" value="Add"/></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td id="<%=header.getDisplayName()%>_update_comments" align="right" style="border-top: 1px solid #9d9d9d;">
+            <td id="<%=Encode.forHtmlAttribute(String.valueOf(header.getDisplayName()))%>_update_comments" align="right" style="border-top: 1px solid #9d9d9d;">
             </td>
         </tr>
         <%

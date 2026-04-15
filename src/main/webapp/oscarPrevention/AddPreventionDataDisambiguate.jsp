@@ -45,6 +45,7 @@
 <%@page import="ca.openosp.openo.commn.model.PreventionsLotNrs" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionData" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -265,7 +266,7 @@
                 <table class="TopStatusBar">
                     <tr>
                         <td>
-                            <%=nameage%>
+                            <%=Encode.forHtml(String.valueOf(nameage))%>
                         </td>
                         <td>&nbsp;
 
@@ -296,7 +297,7 @@
                     %>
 
                     <li>
-                        <a href="<%=request.getContextPath()%>/oscarPrevention/AddPreventionData.jsp?snomedId=<%=mapping.getCvcSnomedId() %>&prevention=<%=prevention %>&demographic_no=<%=demographicNo %>&prevResultDesc=<%=prevResultDesc%>"><%=i.getPicklistName()%>
+                        <a href="<%=request.getContextPath()%>/oscarPrevention/AddPreventionData.jsp?snomedId=<%=Encode.forUriComponent(String.valueOf(mapping.getCvcSnomedId()))%>&prevention=<%=Encode.forUriComponent(String.valueOf(prevention))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&prevResultDesc=<%=Encode.forUriComponent(String.valueOf(prevResultDesc))%>"><%=Encode.forHtml(String.valueOf(i.getPicklistName()))%>
                         </a></li>
                     <% }
                     } %>

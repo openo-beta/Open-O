@@ -62,6 +62,7 @@
 <%@page import="ca.openosp.openo.commn.model.EForm" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     InstitutionDao institutionDao = SpringUtils.getBean(InstitutionDao.class);
@@ -97,7 +98,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script src="<%= request.getContextPath() %>/js/jquery-1.7.1.min.js"></script>
-        <title><%=transactionType%>
+        <title><%=Encode.forHtml(String.valueOf(transactionType))%>
         </title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
@@ -107,7 +108,7 @@
                 <%
                 for(Institution i: institutionDao.findAll()) {
                     %>
-                if (i == '<%=i.getId()%>') {
+                if (i == '<%=Encode.forJavaScript(String.valueOf(i.getId()))%>') {
                     $('#department').empty();
                     $('#department').append($("<option></option>").attr("value", '0').text('Select Below'));
                     <%
@@ -117,7 +118,7 @@
                         Department d = departmentDao.find(deptId);
                         if(d != null) {
                         %>
-                    $('#department').append($("<option></option>").attr("value", '<%=deptId%>').text('<%=d.getName()%>'));
+                    $('#department').append($("<option></option>").attr("value", '<%=Encode.forJavaScript(String.valueOf(deptId))%>').text('<%=Encode.forJavaScript(String.valueOf(d.getName()))%>'));
                     <%
                 } }
                 %>
@@ -162,7 +163,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -174,7 +175,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td class="Header"><%=transactionType%>
+                        <td class="Header"><%=Encode.forHtml(String.valueOf(transactionType))%>
                         </td>
                     </tr>
                 </table>
@@ -199,7 +200,7 @@
                     <tr>
                         <td style="color: red;">
                             <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.msgSpecialistAdded">
-                                <fmt:param value="<%=added%>" />
+                                <fmt:param value="<%=Encode.forHtmlAttribute(String.valueOf(added))%>" />
                             </fmt:message>
                         </td>
                     </tr>
@@ -244,9 +245,9 @@
                                 %>
                                 <script>
                                     $(document).ready(function () {
-                                        $('#institution').val('<%=request.getAttribute("institution")%>');
+                                        $('#institution').val('<%=Encode.forJavaScript(String.valueOf(request.getAttribute("institution")))%>');
                                         changeInstitution();
-                                        $('#department').val('<%=request.getAttribute("department")%>');
+                                        $('#department').val('<%=Encode.forJavaScript(String.valueOf(request.getAttribute("department")))%>');
                                     });
                                 </script>
                                 <%
@@ -254,7 +255,7 @@
                                 %>
                                 <table>
 
-                                    <input type="hidden" name="specId" id="specId" value="<%=specId%>"/>
+                                    <input type="hidden" name="specId" id="specId" value="<%=Encode.forHtmlAttribute(String.valueOf(specId))%>"/>
                                     <tr>
                                         <td><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.firstName"/></td>
                                         <td><input type="text" name="firstName" value="<e:forHtmlAttribute value='${EctConAddSpecialistForm.firstName}'/>"/></td>
@@ -268,7 +269,7 @@
                                         <td><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.address"/>
                                         </td>
                                         <td><textarea name="address" cols="30"
-                                                           rows="3"><e:forHtmlContent value='${EctConAddSpecialistForm.address}'/></textarea> <%=oscarVariables.getProperty("consultation_comments", "") %>
+                                                           rows="3"><e:forHtmlContent value='${EctConAddSpecialistForm.address}'/></textarea> <%=Encode.forHtml(String.valueOf(oscarVariables.getProperty("consultation_comments", "")))%>
                                         </td>
                                         <td><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EditSpecialists.Annotation"/>
                                         </td>
@@ -350,7 +351,7 @@
                                             <select name="institution" id="institution">
                                                 <option value="0">Select Below</option>
                                                 <%for (Institution institution : institutionDao.findAll()) { %>
-                                                <option value="<%=institution.getId()%>"><%=institution.getName() %>
+                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(institution.getId()))%>"><%=Encode.forHtml(String.valueOf(institution.getName()))%>
                                                 </option>
                                                 <%} %>
                                             </select>
@@ -409,8 +410,8 @@
                                     </tr>
                                     <tr>
                                         <td colspan="6">
-                                            <input type="hidden" name="whichType" value="<%=whichType%>"/>
-                                            <input type="submit" name="transType" value="<%=transactionType%>"/>
+                                            <input type="hidden" name="whichType" value="<%=Encode.forHtmlAttribute(String.valueOf(whichType))%>"/>
+                                            <input type="submit" name="transType" value="<%=Encode.forHtmlAttribute(String.valueOf(transactionType))%>"/>
                                         </td>
                                     </tr>
                                 </table>

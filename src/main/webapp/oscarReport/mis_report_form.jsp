@@ -50,7 +50,7 @@
 <%@page import="java.text.DateFormatSymbols" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProgramDao" %>
 <%@page import="ca.openosp.openo.PMmodule.model.Program" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -102,7 +102,7 @@
                     <%
                         for (FunctionalCentre functionalCentre : functionalCentres) {
                     %>
-                    <option value="<%=functionalCentre.getAccountId()%>"><%=StringEscapeUtils.escapeHtml4(functionalCentre.getAccountId() + ", " + functionalCentre.getDescription())%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(functionalCentre.getAccountId()))%>"><%=Encode.forHtml(functionalCentre.getAccountId() + ", " + functionalCentre.getDescription())%>
                     </option>
                     <%
                         }
@@ -122,7 +122,7 @@
                         for (Program program : programs) {
                             if ("Service".equalsIgnoreCase(program.getType())) {
                     %>
-                    <option value="<%=program.getId()%>"><%=StringEscapeUtils.escapeHtml4(program.getName() + " (" + program.getType() + ')')%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(program.getId()))%>"><%=Encode.forHtml(program.getName() + " (" + program.getType() + ')')%>
                     </option>
                     <%
                             }
@@ -146,7 +146,7 @@
                     int year = cal.get(GregorianCalendar.YEAR);
                     for (int i = 0; i < 10; i++) {
                 %>
-                <option value="<%=year-i%>"><%=year - i%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(year-i))%>"><%=Encode.forHtml(String.valueOf(year - i))%>
                 </option>
                 <%
                     }
@@ -159,7 +159,7 @@
 
                     for (int i = 1; i < 13; i++) {
                 %>
-                <option value="<%=i%>" title="<%=months[i-1]%>"><%=i%>
+                <option value="<%=i%>" title="<%=Encode.forHtmlAttribute(String.valueOf(months[i-1]))%>"><%=i%>
                 </option>
                 <%
                     }
@@ -174,7 +174,7 @@
                 <%
                     for (int i = 0; i < 10; i++) {
                 %>
-                <option value="<%=year-i%>"><%=year - i%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(year-i))%>"><%=Encode.forHtml(String.valueOf(year - i))%>
                 </option>
                 <%
                     }
@@ -183,7 +183,7 @@
             <%
                 for (int i = 1; i < 13; i++) {
             %>
-            <option value="<%=i%>" title="<%=months[i-1]%>"><%=i%>
+            <option value="<%=i%>" title="<%=Encode.forHtmlAttribute(String.valueOf(months[i-1]))%>"><%=i%>
             </option>
             <%
                 }
@@ -235,7 +235,7 @@
         <%
             for (String header : misReportUIBean.getHeaderRow()) {
         %>
-        <th><%=header%>
+        <th><%=Encode.forHtml(String.valueOf(header))%>
         </th>
         <%
             }
@@ -247,14 +247,14 @@
         for (MisReportUIBean.DataRow dataRow : misReportUIBean.getDataRows()) {
     %>
     <tr>
-        <td><%=dataRow.dataReportId%>
+        <td><%=Encode.forHtml(String.valueOf(dataRow.dataReportId))%>
         </td>
-        <td><%=dataRow.dataReportDescription%>
+        <td><%=Encode.forHtml(String.valueOf(dataRow.dataReportDescription))%>
         </td>
         <%
             for (Integer tempResult : dataRow.dataReportResult) {
         %>
-        <td><%=tempResult == null ? "-" : tempResult%>
+        <td><%=Encode.forHtml(String.valueOf(tempResult == null ? "-" : tempResult))%>
         </td>
         <%
             }

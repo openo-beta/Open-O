@@ -20,6 +20,7 @@
 <%@ page import="ca.openosp.openo.report.data.RptReportConfigData" %>
 <%@ page import="ca.openosp.openo.report.data.RptReportItem" %>
 <%@ page import="ca.openosp.openo.report.data.RptTableFieldNameCaption" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String reportId = request.getParameter("id") != null ? request.getParameter("id") : "0";
     String SAVE_AS = "default";
@@ -107,7 +108,7 @@
             }
 
             function goCaption() {
-                //self.location.href = "reportFormCaption.jsp?id=<%=reportId%>&tableName=<%=tableName%>";
+                //self.location.href = "reportFormCaption.jsp?id=<%=Encode.forJavaScript(String.valueOf(reportId))%>&tableName=<%=Encode.forJavaScript(String.valueOf(tableName))%>";
             }
 
             function goPage(id) {
@@ -123,9 +124,9 @@
     <center></center>
     <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
         <tr BGCOLOR="#CCCCFF">
-            <td><%=reportName%> Configuration</td>
+            <td><%=Encode.forHtml(String.valueOf(reportName))%> Configuration</td>
             <td width="10%" align="right" nowrap><a
-                    href="reportFilter.jsp?id=<%=reportId%>">Back to the Report</a></td>
+                    href="reportFilter.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>">Back to the Report</a></td>
         </tr>
     </table>
 
@@ -149,7 +150,7 @@
             <% } %>
             <tr bgcolor="<%="#EEEEFF"%>">
                 <td align="center" width="45%">Form | <a
-                        href="reportFormDemoConfig.jsp?id=<%=reportId%>&tableName=<%="demographic"%>&formTableName=<%=tableName%>&configTableName=<%=tableName%>">Patient
+                        href="reportFormDemoConfig.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>&tableName=<%="demographic"%>&formTableName=<%=Encode.forUriComponent(String.valueOf(tableName))%>&configTableName=<%=Encode.forUriComponent(String.valueOf(tableName))%>">Patient
                     Profile</a> <br/>
                     <select size=28 name="selField" ondblclick="javascript:onSelField();">
                         <%
@@ -161,14 +162,14 @@
                                 String color = i % 2 == 0 ? "#EEEEFF" : "";
                                 String captionName = (String) vecTableField.get(i);
                                 if (captionName.matches(strMatchConfig)) continue;
-                                captionName = StringEscapeUtils.escapeHtml4(captionName);
+                                captionName = Encode.forHtml(captionName);
                         %>
-                        <option value="<%=captionName%>"><%=captionName%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(captionName))%>"><%=Encode.forHtml(String.valueOf(captionName))%>
                         </option>
                         <% } %>
                     </select> <br>
                     <a
-                            href="reportFormCaption.jsp?id=<%=reportId%>&tableName=<%=tableName%>">Add
+                            href="reportFormCaption.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>&tableName=<%=Encode.forUriComponent(String.valueOf(tableName))%>">Add
                         Caption</a></td>
 
                 <td align="center" width="20%" nowrap valign="top">
@@ -187,17 +188,17 @@
                                                        ondblclick="javascript:onSelField();">
                     <% for (int i = 0; i < vecConfigField.size(); i++) {
                         String captionName = (String) vecConfigField.get(i);
-                        captionName = StringEscapeUtils.escapeHtml4(captionName);
+                        captionName = Encode.forHtml(captionName);
                     %>
-                    <option value="<%=captionName%>"><%=captionName%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(captionName))%>"><%=Encode.forHtml(String.valueOf(captionName))%>
                     </option>
                     <% } %>
                 </select> <br>
                     <a
-                            href="reportFormOrder.jsp?id=<%=reportId%>&save=<%=SAVE_AS%>&tableName=<%=tableName%>">Change
-                        Order</a> <input type="hidden" name="id" value="<%=reportId%>"> <input
-                            type="hidden" name="tableName" value="<%=tableName%>"> <input
-                            type="hidden" name="configTableName" value="<%=tableName%>">
+                            href="reportFormOrder.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>&save=<%=Encode.forUriComponent(String.valueOf(SAVE_AS))%>&tableName=<%=Encode.forUriComponent(String.valueOf(tableName))%>">Change
+                        Order</a> <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(reportId))%>"> <input
+                            type="hidden" name="tableName" value="<%=Encode.forHtmlAttribute(String.valueOf(tableName))%>"> <input
+                            type="hidden" name="configTableName" value="<%=Encode.forHtmlAttribute(String.valueOf(tableName))%>">
                 </td>
             </tr>
         </form>

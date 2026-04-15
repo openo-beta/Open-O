@@ -31,6 +31,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxCodesData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     FavoritesDao favoritesDao = SpringUtils.getBean(FavoritesDao.class);
     FavoritesPrivilegeDao favoritesPrivilegeDao = SpringUtils.getBean(FavoritesPrivilegeDao.class);
@@ -154,7 +155,7 @@
                                                     %>
 
                                                     <option
-                                                            value=<%=((String) allProviders.get(p))%>  <%=((String) allProviders.get(p)).equalsIgnoreCase(copyProviderNo) ? "SELECTED" : ""%>><%=(providerDao.getProvider((String) allProviders.get(p)).getFormattedName())%>
+                                                            value=<%=Encode.forHtml(String.valueOf(((String) allProviders.get(p))))%>  <%=((String) allProviders.get(p)).equalsIgnoreCase(copyProviderNo) ? "SELECTED" : ""%>><%=Encode.forHtml(String.valueOf((providerDao.getProvider((String) allProviders.get(p)).getFormattedName())))%>
                                                     </option>
                                                     <% }%>
 
@@ -184,16 +185,16 @@
                                         <tr class=tblRow <%= style%> name="record<%= i%>Line1">
                                             <td colspan=2><b>Favorite Name:</b><input type=hidden
                                                                                       name="fldFavoriteId<%= i%>"
-                                                                                      value="<%= fav.getId()%>"/>
+                                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(fav.getId()))%>"/>
                                                 <input type=text size="50" name="fldFavoriteName<%= i%>"
-                                                       class=tblRow size=80 value="<%= fav.getFavoriteName()%>"/>&nbsp;&nbsp;&nbsp;
+                                                       class=tblRow size=80 value="<%=Encode.forHtmlAttribute(String.valueOf(fav.getFavoriteName()))%>"/>&nbsp;&nbsp;&nbsp;
                                             </td>
                                         </tr>
                                         <% if (!isCustom) {%>
                                         <tr class=tblRow <%= style%> name="record<%= i%>Line2">
-                                            <td><b>Brand Name:</b><%= fav.getBn()%>
+                                            <td><b>Brand Name:</b><%=Encode.forHtml(String.valueOf(fav.getBn()))%>
                                             </td>
-                                            <td colspan=5><b>Generic Name:</b><%= fav.getGn()%>
+                                            <td colspan=5><b>Generic Name:</b><%=Encode.forHtml(String.valueOf(fav.getGn()))%>
                                             </td>
                                             <td colspan=1>&nbsp; <input type="hidden"
                                                                         name="fldCustomName<%= i%>" value=""/></td>
@@ -204,36 +205,36 @@
                                                                                           size="50"
                                                                                           name="fldCustomName<%= i%>"
                                                                                           class=tblRow size=80
-                                                                                          value="<%= fav.getCustomName()%>"/>
+                                                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(fav.getCustomName()))%>"/>
                                             </td>
                                         </tr>
                                         <% }%>
                                         <tr class=tblRow <%= style%> name="record<%= i%>Line3">
                                             <td nowrap><b>Take:</b> <input type=text
                                                                            name="fldTakeMin<%= i%>" class=tblRow size=3
-                                                                           value="<%= fav.getTakeMin()%>"/>
+                                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(fav.getTakeMin()))%>"/>
                                                 <span>to</span> <input
                                                         type=text name="fldTakeMax<%= i%>" class=tblRow size=3
-                                                        value="<%= fav.getTakeMax()%>"/> <select
+                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(fav.getTakeMax()))%>"/> <select
                                                         name="fldFrequencyCode<%= i%>" class=tblRow>
                                                     <%
                                                         for (j = 0; j < freq.length; j++) {
                                                     %>
                                                     <option
-                                                            value="<%= freq[j].getFreqCode()%>"
+                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(freq[j].getFreqCode()))%>"
                                                             <%
                                                                 if (freq[j].getFreqCode().equals(fav.getFreqCode())) {
                                                             %>
                                                             selected="selected"
                                                             <% }
-                                                            %>><%=freq[j].getFreqCode()%>
+                                                            %>><%=Encode.forHtml(String.valueOf(freq[j].getFreqCode()))%>
                                                     </option>
                                                     <%
                                                         }
                                                     %>
                                                 </select> <b>For:</b> <input type=text name="fldDuration<%= i%>"
                                                                              class=tblRow size=3
-                                                                             value="<%= fav.getDuration()%>"/> <select
+                                                                             value="<%=Encode.forHtmlAttribute(String.valueOf(fav.getDuration()))%>"/> <select
                                                         name="fldDurationUnit<%= i%>" class=tblRow>
                                                     <option
                                                             <%
@@ -265,11 +266,11 @@
                                             <td nowrap><b>Quantity:</b> <input type=text
                                                                                name="fldQuantity<%= i%>" class=tblRow
                                                                                size=5
-                                                                               value="<%= fav.getQuantity()%>"/></td>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(fav.getQuantity()))%>"/></td>
                                             <td></td>
                                             <td><b>Repeats:</b><input type=text name="fldRepeat<%= i%>"
                                                                       class=tblRow size=3
-                                                                      value="<%= fav.getRepeat()%>"/></td>
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(fav.getRepeat()))%>"/></td>
 
                                             <td><b>No Subs:</b><input type=checkbox
                                                                       name="fldNosubs<%= i%>" <% if (fav.isNoSubs() == true) {%>
@@ -294,7 +295,7 @@
                                     String s = fav.getSpecial();
                                     if (s != null) {
                                         if (!s.equals("null")) {
-                                %><%= s.trim()%>
+                                %><%=Encode.forHtml(String.valueOf(s.trim()))%>
                                 <%
                                         }
                                     }

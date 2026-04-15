@@ -24,6 +24,7 @@
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -132,15 +133,15 @@ opener.refreshView();</script>
         $(document).ready(function () {
 
             $("[name='requestingHic']").each(function () {
-                $(this).val('<%=loggedInInfo.getLoggedInProviderNo()%>');
+                $(this).val('<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>');
             });
 
             <%if(demographicNo != null && demographicKeyword != null) {%>
             $("[name='demographic']").each(function () {
-                $(this).val('<%=demographicNo %>');
+                $(this).val('<%=Encode.forJavaScript(String.valueOf(demographicNo))%>');
             });
             $("[name='demographicKeyword']").each(function () {
-                $(this).val('<%=demographicKeyword%>');
+                $(this).val('<%=Encode.forJavaScript(String.valueOf(demographicKeyword))%>');
             });
             <% } %>
 
@@ -454,10 +455,10 @@ opener.refreshView();</script>
                         <td><span>Patient</span></td>
                         <td>
                             <%String currentDocId = "1"; %>
-                            <input type="hidden" name="demographic" id="demofind<%=currentDocId%>"/>
-                            <input type="text" id="autocompletedemo<%=currentDocId%>"
-                                   onchange="checkSave('<%=currentDocId%>')" name="demographicKeyword"/>
-                            <div id="autocomplete_choices<%=currentDocId%>" class="autocomplete"></div>
+                            <input type="hidden" name="demographic" id="demofind<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"/>
+                            <input type="text" id="autocompletedemo<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"
+                                   onchange="checkSave('<%=Encode.forJavaScript(String.valueOf(currentDocId))%>')" name="demographicKeyword"/>
+                            <div id="autocomplete_choices<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>" class="autocomplete"></div>
 
                             <script type="text/javascript">       <%-- testDemocomp2.jsp    --%>
 
@@ -479,7 +480,7 @@ opener.refreshView();</script>
                                 //oDS.connXhrMode ="cancelStaleRequests";
 
                                 // Instantiate the AutoComplete
-                                var oAC = new YAHOO.widget.AutoComplete("autocompletedemo<%=currentDocId%>", "autocomplete_choices<%=currentDocId%>", oDS);
+                                var oAC = new YAHOO.widget.AutoComplete("autocompletedemo<%=Encode.forJavaScript(String.valueOf(currentDocId))%>", "autocomplete_choices<%=Encode.forJavaScript(String.valueOf(currentDocId))%>", oDS);
                                 oAC.queryMatchSubset = true;
                                 oAC.minQueryLength = 3;
                                 oAC.maxResultsDisplayed = 25;
@@ -520,8 +521,8 @@ opener.refreshView();</script>
                                 <%
                                     for (Provider provider : allProvidersList) {
                                 %>
-                                <option value="<%=provider.getProviderNo() %>">[<%=provider.getProviderNo()%>
-                                    ] <%=provider.getLastName() %>, <%=provider.getFirstName() %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>">[<%=Encode.forHtml(String.valueOf(provider.getProviderNo()))%>
+                                    ] <%=Encode.forHtml(String.valueOf(provider.getLastName()))%>, <%=Encode.forHtml(String.valueOf(provider.getFirstName()))%>
                                 </option>
                                 <%
                                     }
@@ -542,8 +543,8 @@ opener.refreshView();</script>
                                 <%
                                     for (Provider provider : allProvidersList) {
                                 %>
-                                <option value="<%=provider.getProviderNo() %>">[<%=provider.getProviderNo()%>
-                                    ] <%=provider.getLastName() %>, <%=provider.getFirstName() %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>">[<%=Encode.forHtml(String.valueOf(provider.getProviderNo()))%>
+                                    ] <%=Encode.forHtml(String.valueOf(provider.getLastName()))%>, <%=Encode.forHtml(String.valueOf(provider.getFirstName()))%>
                                 </option>
                                 <%
                                     }
@@ -558,8 +559,8 @@ opener.refreshView();</script>
                                 <%
                                     for (Provider provider : allProvidersList) {
                                 %>
-                                <option value="<%=provider.getProviderNo() %>">[<%=provider.getProviderNo()%>
-                                    ] <%=provider.getLastName() %>, <%=provider.getFirstName() %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>">[<%=Encode.forHtml(String.valueOf(provider.getProviderNo()))%>
+                                    ] <%=Encode.forHtml(String.valueOf(provider.getLastName()))%>, <%=Encode.forHtml(String.valueOf(provider.getFirstName()))%>
                                 </option>
                                 <%
                                     }
@@ -574,8 +575,8 @@ opener.refreshView();</script>
                                 <%
                                     for (Provider provider : allProvidersList) {
                                 %>
-                                <option value="<%=provider.getProviderNo() %>">[<%=provider.getProviderNo()%>
-                                    ] <%=provider.getLastName() %>, <%=provider.getFirstName() %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>">[<%=Encode.forHtml(String.valueOf(provider.getProviderNo()))%>
+                                    ] <%=Encode.forHtml(String.valueOf(provider.getLastName()))%>, <%=Encode.forHtml(String.valueOf(provider.getFirstName()))%>
                                 </option>
                                 <%
                                     }
@@ -590,8 +591,8 @@ opener.refreshView();</script>
                                 <%
                                     for (Provider provider : allProvidersList) {
                                 %>
-                                <option value="<%=provider.getProviderNo() %>">[<%=provider.getProviderNo()%>
-                                    ] <%=provider.getLastName() %>, <%=provider.getFirstName() %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>">[<%=Encode.forHtml(String.valueOf(provider.getProviderNo()))%>
+                                    ] <%=Encode.forHtml(String.valueOf(provider.getLastName()))%>, <%=Encode.forHtml(String.valueOf(provider.getFirstName()))%>
                                 </option>
                                 <%
                                     }
@@ -631,7 +632,7 @@ opener.refreshView();</script>
 
                                             for (OLISResultNomenclature nomenclature : resultNomenclatureList) {
                                         %>
-                                        <option value="<%=nomenclature.getId() %>"><%=Misc.getStr(nomenclature.getName(), "").trim()%>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(nomenclature.getId()))%>"><%=Encode.forHtml(String.valueOf(Misc.getStr(nomenclature.getName(), "").trim()))%>
                                         </option>
                                         <%
                                             }
@@ -644,7 +645,7 @@ opener.refreshView();</script>
 
                                             for (OLISRequestNomenclature nomenclature : requestNomenclatureList) {
                                         %>
-                                        <option value="<%=nomenclature.getId() %>"><%=Misc.getStr(nomenclature.getName(), "").trim() %>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(nomenclature.getId()))%>"><%=Encode.forHtml(String.valueOf(Misc.getStr(nomenclature.getName(), "").trim()))%>
                                         </option>
                                         <%
                                             }
@@ -704,10 +705,10 @@ opener.refreshView();</script>
                         <td width="20%"><span>Patient</span></td>
                         <td>
                             <%currentDocId = "2"; %>
-                            <input type="hidden" name="demographic" id="demofind<%=currentDocId%>"/>
-                            <input type="text" id="autocompletedemo<%=currentDocId%>"
-                                   onchange="checkSave('<%=currentDocId%>')" name="demographicKeyword"/>
-                            <div id="autocomplete_choices<%=currentDocId%>" class="autocomplete"></div>
+                            <input type="hidden" name="demographic" id="demofind<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"/>
+                            <input type="text" id="autocompletedemo<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"
+                                   onchange="checkSave('<%=Encode.forJavaScript(String.valueOf(currentDocId))%>')" name="demographicKeyword"/>
+                            <div id="autocomplete_choices<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>" class="autocomplete"></div>
 
                             <script type="text/javascript">       <%-- testDemocomp2.jsp    --%>
 
@@ -728,7 +729,7 @@ opener.refreshView();</script>
                                 oDS.maxCacheEntries = 100;
 
                                 // Instantiate the AutoComplete
-                                var oAC = new YAHOO.widget.AutoComplete("autocompletedemo<%=currentDocId%>", "autocomplete_choices<%=currentDocId%>", oDS);
+                                var oAC = new YAHOO.widget.AutoComplete("autocompletedemo<%=Encode.forJavaScript(String.valueOf(currentDocId))%>", "autocomplete_choices<%=Encode.forJavaScript(String.valueOf(currentDocId))%>", oDS);
                                 oAC.queryMatchSubset = true;
                                 oAC.minQueryLength = 3;
                                 oAC.maxResultsDisplayed = 25;
@@ -769,8 +770,8 @@ opener.refreshView();</script>
                             <%
                                 for (Provider provider : allProvidersList) {
                             %>
-                            <option value="<%=provider.getProviderNo() %>">[<%=provider.getProviderNo()%>
-                                ] <%=provider.getLastName() %>, <%=provider.getFirstName() %>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>">[<%=Encode.forHtml(String.valueOf(provider.getProviderNo()))%>
+                                ] <%=Encode.forHtml(String.valueOf(provider.getLastName()))%>, <%=Encode.forHtml(String.valueOf(provider.getFirstName()))%>
                             </option>
                             <%
                                 }
@@ -816,8 +817,8 @@ opener.refreshView();</script>
                             <%
                                 for (Provider provider : allProvidersList) {
                             %>
-                            <option value="<%=provider.getProviderNo() %>">[<%=provider.getProviderNo()%>
-                                ] <%=provider.getLastName() %>, <%=provider.getFirstName() %>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>">[<%=Encode.forHtml(String.valueOf(provider.getProviderNo()))%>
+                                ] <%=Encode.forHtml(String.valueOf(provider.getLastName()))%>, <%=Encode.forHtml(String.valueOf(provider.getFirstName()))%>
                             </option>
                             <%
                                 }

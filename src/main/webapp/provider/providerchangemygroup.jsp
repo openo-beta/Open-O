@@ -34,6 +34,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.MyGroup" %>
 <%@ page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     MyGroupDao dao = SpringUtils.getBean(MyGroupDao.class);
@@ -86,8 +87,8 @@
                             Collections.sort(myGroups, MyGroup.MyGroupNoComparator);
                             for (MyGroup myGroup : myGroups) {
                         %>
-                        <option value="<%=myGroup.getId().getMyGroupNo()%>"
-                                <%=oldGroup_no.equals(myGroup.getId().getMyGroupNo()) ? "selected" : ""%>><%=myGroup.getId().getMyGroupNo()%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(myGroup.getId().getMyGroupNo()))%>"
+                                <%=oldGroup_no.equals(myGroup.getId().getMyGroupNo()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(myGroup.getId().getMyGroupNo()))%>
                         </option>
                         <%
                             }
@@ -121,9 +122,9 @@
                                     }
                             %>
                             <tr BGCOLOR="<%=bNewNo?"white":"ivory"%>">
-                                <td ALIGN="center"><font face="arial"><%=myGroup.getId().getMyGroupNo()%>
+                                <td ALIGN="center"><font face="arial"><%=Encode.forHtml(String.valueOf(myGroup.getId().getMyGroupNo()))%>
                                 </font></td>
-                                <td><font face="arial"> &nbsp;<%=myGroup.getLastName() + ", " + myGroup.getFirstName()%>
+                                <td><font face="arial"> &nbsp;<%=Encode.forHtml(String.valueOf(myGroup.getLastName() + ", " + myGroup.getFirstName()))%>
                                 </font>
                                 </td>
                             </tr>
@@ -133,13 +134,13 @@
                                 ProviderPreference providerPreference = (ProviderPreference) session.getAttribute(SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE);
                             %>
                             <INPUT TYPE="hidden" NAME="start_hour"
-                                   VALUE='<%=providerPreference.getStartHour()%>'>
+                                   VALUE='<%=Encode.forHtmlAttribute(String.valueOf(providerPreference.getStartHour()))%>'>
                             <INPUT TYPE="hidden" NAME="end_hour"
-                                   VALUE='<%=providerPreference.getEndHour()%>'>
+                                   VALUE='<%=Encode.forHtmlAttribute(String.valueOf(providerPreference.getEndHour()))%>'>
                             <INPUT TYPE="hidden" NAME="every_min"
-                                   VALUE='<%=providerPreference.getEveryMin()%>'>
+                                   VALUE='<%=Encode.forHtmlAttribute(String.valueOf(providerPreference.getEveryMin()))%>'>
                             <INPUT TYPE="hidden" NAME="provider_no"
-                                   VALUE='<%=(String) session.getAttribute("user")%>'>
+                                   VALUE='<%=Encode.forHtmlAttribute(String.valueOf((String) session.getAttribute("user")))%>'>
                             <INPUT TYPE="hidden" NAME="color_template" VALUE='deepblue'>
                             <INPUT TYPE="hidden" NAME="dboperation" VALUE='updatepreference'>
                             <INPUT TYPE="hidden" NAME="displaymode" VALUE='updatepreference'>

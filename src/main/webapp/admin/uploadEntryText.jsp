@@ -39,6 +39,7 @@
 %>
 
 <%@page import="ca.openosp.openo.utility.WebUtils,ca.openosp.openo.commn.service.AcceptableUseAgreementManager,ca.openosp.openo.commn.model.Property" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 
     Property latestProperty = AcceptableUseAgreementManager.findLatestProperty();
@@ -145,7 +146,7 @@
 
                 <br>OR<br>
                 <input type="checkbox" name="validForever" value="forever" <%=checked%>> Forever with an agreement past
-                <input name="foreverFrom" type="text" id="foreverFrom" value="<%=fromDate%>"/>
+                <input name="foreverFrom" type="text" id="foreverFrom" value="<%=Encode.forHtmlAttribute(String.valueOf(fromDate))%>"/>
                 <img src="<%= request.getContextPath() %>/images/cal.gif" id="foreverFrom_cal">
 
 
@@ -183,7 +184,7 @@
             <hr>
             <%if (AcceptableUseAgreementManager.hasAUA()) { %>
             <div style="float:right;text-align:center;" id="auaText">
-                <div style="margin-left:auto; margin-right:auto; text-align:left; width:70%; padding:5px; border:2px groove black;"><%=AcceptableUseAgreementManager.getAUAText()%>
+                <div style="margin-left:auto; margin-right:auto; text-align:left; width:70%; padding:5px; border:2px groove black;"><%=Encode.forHtml(String.valueOf(AcceptableUseAgreementManager.getAUAText()))%>
                 </div>
             </div>
             <%} else {%>

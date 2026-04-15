@@ -25,6 +25,7 @@
 --%>
 
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -68,7 +69,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -88,10 +89,10 @@
            style="border-collapse: collapse; width: 7in; padding-left: 3px;">
         <tr>
             <td style="text-align: left; height: 34px;"><span
-                    style="font-weight: bold;"><%=bean.patientLastName %>, <%=bean.patientFirstName%>
-		<%=bean.patientSex%> <%=bean.patientAge%></span></td>
+                    style="font-weight: bold;"><%=Encode.forHtml(String.valueOf(bean.patientLastName))%>, <%=Encode.forHtml(String.valueOf(bean.patientFirstName))%>
+		<%=Encode.forHtml(String.valueOf(bean.patientSex))%> <%=Encode.forHtml(String.valueOf(bean.patientAge))%></span></td>
             <td style="text-align: right; height: 34px;"><span
-                    style="font-weight: bold;">Dr. <%=providerBean.getProperty(bean.familyDoctorNo)%></span>
+                    style="font-weight: bold;">Dr. <%=Encode.forHtml(String.valueOf(providerBean.getProperty(bean.familyDoctorNo)))%></span>
             </td>
         </tr>
     </table>
@@ -119,15 +120,15 @@
                                 <tr>
                                     <td valign="top" align="left" class="TableWithBorder"><pre
                                             name='shTextarea'
-                                            style="font-size: 8pt;"><%=bean.socialHistory%>&nbsp;</pre>
+                                            style="font-size: 8pt;"><%=Encode.forHtml(String.valueOf(bean.socialHistory))%>&nbsp;</pre>
                                     </td>
                                     <td valign="top" class="TableWithBorder"><pre
                                             name='fhTextarea'
-                                            style="font-size: 8pt;"><%=bean.familyHistory%>&nbsp;</pre>
+                                            style="font-size: 8pt;"><%=Encode.forHtml(String.valueOf(bean.familyHistory))%>&nbsp;</pre>
                                     </td>
                                     <td valign="top" class="TableWithBorder"><pre
                                             name='mhTextarea'
-                                            style="font-size: 8pt;"><%=bean.medicalHistory%>&nbsp;</pre>
+                                            style="font-size: 8pt;"><%=Encode.forHtml(String.valueOf(bean.medicalHistory))%>&nbsp;</pre>
                                     </td>
                                 </tr>
                             </table>
@@ -148,10 +149,10 @@
                                 <tr width="100%">
                                     <td valign="top" class="TableWithBorder"><pre
                                             name='ocTextarea'
-                                            style="font-size: 8pt;"><%=bean.ongoingConcerns%>&nbsp;</pre>
+                                            style="font-size: 8pt;"><%=Encode.forHtml(String.valueOf(bean.ongoingConcerns))%>&nbsp;</pre>
                                     </td>
                                     <td valign="top" class="TableWithBorder"><pre
-                                            name='reTextarea' style="font-size: 8pt;"><%=bean.reminders%>&nbsp;</pre>
+                                            name='reTextarea' style="font-size: 8pt;"><%=Encode.forHtml(String.valueOf(bean.reminders))%>&nbsp;</pre>
                                     </td>
                                 </tr>
                             </table>
@@ -169,7 +170,7 @@
                                 <tr>
                                     <td class="TableWithBorder" valign="top" style="text-align: left"
                                         width=100%>
-                                        <pre name='enTextarea' style="font-size: 8pt;"><%=bean.encounter%></pre>
+                                        <pre name='enTextarea' style="font-size: 8pt;"><%=Encode.forHtml(String.valueOf(bean.encounter))%></pre>
                                     </td>
                                 </tr>
                             </table>

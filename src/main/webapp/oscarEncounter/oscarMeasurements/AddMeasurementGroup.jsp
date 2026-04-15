@@ -28,6 +28,7 @@
     if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
 %>
 <%@ page import="java.util.*,ca.openosp.openo.report.pageUtil.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -62,7 +63,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -90,13 +91,13 @@
                                         <th align="left" class="td.tite"><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementGroup.allTypes"/>
                                         </th>
 
-                                        <th align="left" class="td.tite"><%= session.getAttribute("groupName") %></th>
+                                        <th align="left" class="td.tite"><%=Encode.forHtml(String.valueOf(session.getAttribute("groupName")))%></th>
                                     </tr>
                                     <tr>
                                         <td><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementGroup.add2Group"/>
-                                            <%= session.getAttribute("groupName") %></td>
+                                            <%=Encode.forHtml(String.valueOf(session.getAttribute("groupName")))%></td>
                                         <td><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementGroup.deleteTypes"/>
-                                            <%= session.getAttribute("groupName") %></td>
+                                            <%=Encode.forHtml(String.valueOf(session.getAttribute("groupName")))%></td>
                                     <tr>
                                         <td><select multiple="true" name="selectedAddTypes" size="10">
                                             <c:forEach var="allTypeDisplayName" items="${allTypeDisplayNames}">
@@ -128,7 +129,7 @@
                                                    onClick="window.close()"></td>
                                         <td></td>
                                     </tr>
-                                    <input type="hidden" name="groupName" value="<%= groupName %>"/>
+                                    <input type="hidden" name="groupName" value="<%=Encode.forHtmlAttribute(String.valueOf(groupName))%>"/>
                                 </table>
                             </td>
                         </tr>

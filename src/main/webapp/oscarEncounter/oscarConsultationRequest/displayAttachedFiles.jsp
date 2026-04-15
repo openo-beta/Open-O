@@ -54,6 +54,7 @@
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -72,7 +73,7 @@
         for (int idx = 0; idx < privatedocs.size(); ++idx) {
             curDoc = (EDoc) privatedocs.get(idx);
     %>
-    <li class="doc"><%=StringUtils.maxLenString(curDoc.getDescription(), 19, 16, "...")%>
+    <li class="doc"><%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(curDoc.getDescription(), 19, 16, "...")))%>
     </li>
     <%
         }
@@ -83,7 +84,7 @@
         for (int idx = 0; idx < labs.size(); ++idx) {
             resData = (LabResultData) labs.get(idx);
     %>
-    <li class="lab"><%=resData.getDiscipline() + " " + resData.getDateTime()%>
+    <li class="lab"><%=Encode.forHtml(String.valueOf(resData.getDiscipline() + " " + resData.getDateTime()))%>
     </li>
     <%
         }
@@ -109,7 +110,7 @@
 
             //Outputs the list item
     %>
-    <li class="hrm"><%=truncatedDisplayName%>
+    <li class="hrm"><%=Encode.forHtml(String.valueOf(truncatedDisplayName))%>
     </li>
     <%
         }
@@ -117,7 +118,7 @@
         //Get attached eForms
         List<EFormData> eForms = EFormUtil.listPatientEformsCurrentAttachedToConsult(requestId);
         for (EFormData eForm : eForms) { %>
-    <li class="eForm"><%=(eForm.getFormName().length() > 14) ? eForm.getFormName().substring(0, 11) + "..." : eForm.getFormName()%>
+    <li class="eForm"><%=Encode.forHtml(String.valueOf((eForm.getFormName().length() > 14) ? eForm.getFormName().substring(0, 11) + "..." : eForm.getFormName()))%>
     </li>
     <%
         }

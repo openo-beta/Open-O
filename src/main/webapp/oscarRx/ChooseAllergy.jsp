@@ -45,6 +45,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -264,7 +265,7 @@
                             <%
                                 String sBack = request.getContextPath() + "/oscarRx/ShowAllergies.jsp";
                             %> <input type=button class="ControlPushButton"
-                                      onclick="javascript:window.location.href='<%=sBack%>';"
+                                      onclick="javascript:window.location.href='<%=Encode.forJavaScript(String.valueOf(sBack))%>';"
                                       value="Back to View Allergies"/></td>
                     </tr>
                     <!----End new rows here-->
