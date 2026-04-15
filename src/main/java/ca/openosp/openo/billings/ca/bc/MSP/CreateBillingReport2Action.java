@@ -34,6 +34,7 @@ import ca.openosp.openo.billings.ca.bc.data.PayRefSummary;
  * @author Joel Legris
  * @version 1.0
  */
+import ca.openosp.openo.util.SqlUtils;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
@@ -126,9 +127,11 @@ public class CreateBillingReport2Action extends ActionSupport {
                 reportParams.put("payee", payeeProv.getFullName());
                 reportParams.put("payeeno", payee);
                 String s21id = request.getParameter("rano");
+                SqlUtils.validateNumericId(s21id, "rano");
                 osc.fillDocumentStream(reportParams, outputStream, docFmt, reportInstream, msp.getMSPRemittanceQuery(payee, s21id));
             } else if (repType.equals(MSPReconcile.REP_MSPREMSUM)) {
                 String s21id = request.getParameter("rano");
+                SqlUtils.validateNumericId(s21id, "rano");
                 S21 s21 = msp.getS21Record(s21id);
 
                 Provider payeeProv = msp.getProvider(provider, 1);

@@ -28,6 +28,7 @@
 
     String demographic_no = request.getParameter("demographic_no") != null ? request.getParameter("demographic_no") : ("null");
     String form_no = request.getParameter("formId") != null ? request.getParameter("formId") : ("0");
+    try { Integer.parseInt(form_no); } catch (NumberFormatException e) { form_no = "0"; }
     String curUser_no = (String) session.getAttribute("user");
 %>
 <%@ page
@@ -67,7 +68,7 @@
 
     ResultSet rsdemo = null;
     if (!form_no.equals("0")) {
-        rsdemo = DBHandler.GetSQL("select * from formAR where ID = " + form_no);
+        rsdemo = DBHandler.GetPreSQL("select * from formAR where ID = ?", Integer.parseInt(form_no));
 
         ResultSetMetaData resultsetmetadata = rsdemo.getMetaData();
         while (rsdemo.next()) {

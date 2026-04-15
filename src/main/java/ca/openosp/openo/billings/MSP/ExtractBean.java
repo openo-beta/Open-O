@@ -40,10 +40,14 @@ import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
+
+import ca.openosp.openo.db.DBHandler;
+import ca.openosp.openo.utility.DbConnectionFilter;
 
 
 public class ExtractBean extends Object implements Serializable {
@@ -151,9 +155,9 @@ public class ExtractBean extends Object implements Serializable {
             MiscUtils.getLogger().debug("1st billing query d");
 
             dbExt.openConnection();
-            query = "select * from billing where provider_ohip_no='" + providerNo + "' and (status='O' or status='W') " + dateRange;
-            MiscUtils.getLogger().debug("1st billing query " + query);
-            ResultSet rs = dbExt.executeQuery(query);
+            query = "select * from billing where provider_ohip_no=? and (status='O' or status='W')";
+            MiscUtils.getLogger().debug("1st billing query providerNo=" + providerNo);
+            ResultSet rs = DBHandler.GetPreSQL(query, providerNo);
             if (rs != null) {
                 while (rs.next()) {
                     patientCount = patientCount + 1;
@@ -251,9 +255,11 @@ public class ExtractBean extends Object implements Serializable {
 
 
                     invCount = 0;
-                    query2 = "select * from billingmaster where billing_no='" + invNo + "' and billingstatus='O'";
+                    query2 = "select * from billingmaster where billing_no=? and billingstatus='O'";
 
-                    ResultSet rs2 = dbExt.executeQuery2(query2);
+                    try (PreparedStatement ps2 = DbConnectionFilter.getThreadLocalDbConnection().prepareStatement(query2)) {
+                    ps2.setString(1, invNo);
+                    ResultSet rs2 = ps2.executeQuery();
                     while (rs2.next()) {
                         recordCount = recordCount + 1;
 
@@ -287,6 +293,7 @@ public class ExtractBean extends Object implements Serializable {
                             setAsBilledMaster(rs2.getString("billingmaster_no"));
                         }
                     }
+                    } // close try-with-resources for ps2
                     if (eFlag.compareTo("1") == 0) {
                         setAsBilled(invNo);
                     }

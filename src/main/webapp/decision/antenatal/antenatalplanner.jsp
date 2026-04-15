@@ -28,6 +28,7 @@
     if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String demographic_no = request.getParameter("demographic_no") != null ? request.getParameter("demographic_no") : ("null");
     String form_no = request.getParameter("formId") != null ? request.getParameter("formId") : ("0");
+    try { Integer.parseInt(form_no); } catch (NumberFormatException e) { form_no = "0"; }
     String query_name = request.getParameter("query_name") != null ? request.getParameter("query_name") : ("");
     String curUser_no = (String) session.getAttribute("user");
 
@@ -98,7 +99,7 @@
         ResultSet rsdemo = null;
         if (!form_no.equals("0")) {
             //we don't have forms converted at this time
-            rsdemo = DBHandler.GetSQL("select * from formONAR where ID = " + form_no);
+            rsdemo = DBHandler.GetPreSQL("select * from formONAR where ID = ?", Integer.parseInt(form_no));
 
             ResultSetMetaData resultsetmetadata = rsdemo.getMetaData();
             while (rsdemo.next()) {

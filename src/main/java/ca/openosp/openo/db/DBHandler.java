@@ -98,4 +98,15 @@ public final class DBHandler {
 		return ps.executeQuery();
 	}
 
+	/**
+	 * Parameterized query with updatable ResultSet support.
+	 * Used by form record classes that insert/update rows via ResultSet cursor operations.
+	 */
+	public static ResultSet GetPreSQLUpdatable(String sql, Object... params) throws SQLException {
+		PreparedStatement ps = DbConnectionFilter.getThreadLocalDbConnection()
+			.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		bindParams(ps, params);
+		return ps.executeQuery();
+	}
+
 }

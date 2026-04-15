@@ -17,7 +17,6 @@
     //reportbilledvisit1.jsp?sdate=2002-04-15&edate=2003-03-31
 
     String curUser_no = (String) session.getAttribute("user");
-    String orderby = request.getParameter("orderby") != null ? request.getParameter("orderby") : ("b.billing_date");
     String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF";
 %>
 <%@ page
@@ -69,8 +68,8 @@
     }
 
 // get total patPhys
-    sql = "select count(distinct(b.demographic_no)) from billing b, provider p where b.creator=p.provider_no  and b.billing_date>='" + sdate + "' and b.billing_date<='" + edate + "' and b.status!='D' and p.provider_type='doctor'";
-    rs = db.queryResults(sql);
+    sql = "select count(distinct(b.demographic_no)) from billing b, provider p where b.creator=p.provider_no  and b.billing_date>=? and b.billing_date<=? and b.status!='D' and p.provider_type='doctor'";
+    rs = db.queryResults(sql, params);
     while (rs.next()) {
         props.setProperty("patPhys", ca.openosp.Misc.getString(rs, 1));
     }
@@ -96,8 +95,12 @@ out.flush();
 
 // get pat num for Nurses
     for (int i = 0; i < vNurseNo.size(); i++) {
-        sql = "select count(distinct(b.demographic_no)) from billing b  where b.creator='" + vNurseNo.get(i) + "' and b.billing_date>=? and b.billing_date<=? and b.status!='D'";
-        rs = db.queryResults(sql, params);
+        sql = "select count(distinct(b.demographic_no)) from billing b  where b.creator=? and b.billing_date>=? and b.billing_date<=? and b.status!='D'";
+        DBPreparedHandlerParam[] nursePatParams = new DBPreparedHandlerParam[3];
+        nursePatParams[0] = new DBPreparedHandlerParam((String) vNurseNo.get(i));
+        nursePatParams[1] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(sdate));
+        nursePatParams[2] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(edate));
+        rs = db.queryResults(sql, nursePatParams);
         while (rs.next()) {
             props.setProperty("patNurse" + i, ca.openosp.Misc.getString(rs, 1));
         }
@@ -141,8 +144,12 @@ out.flush();
 
 // get vis num for Nurses
     for (int i = 0; i < vNurseNo.size(); i++) {
-        sql = "select count(distinct(b.billing_no)) from billing b  where b.creator='" + vNurseNo.get(i) + "' and b.billing_date>=? and b.billing_date<=? and b.status!='D'";
-        rs = db.queryResults(sql, params);
+        sql = "select count(distinct(b.billing_no)) from billing b  where b.creator=? and b.billing_date>=? and b.billing_date<=? and b.status!='D'";
+        DBPreparedHandlerParam[] nurseVisParams = new DBPreparedHandlerParam[3];
+        nurseVisParams[0] = new DBPreparedHandlerParam((String) vNurseNo.get(i));
+        nurseVisParams[1] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(sdate));
+        nurseVisParams[2] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(edate));
+        rs = db.queryResults(sql, nurseVisParams);
         while (rs.next()) {
             props.setProperty("visNurse" + i, ca.openosp.Misc.getString(rs, 1));
         }

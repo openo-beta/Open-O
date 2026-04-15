@@ -144,7 +144,7 @@
         </tr>
         </thead>
         <%
-            List<Security> securityList = securityDao.findAllOrderBy("user_name");
+            List<Security> securityList = securityDao.findAllOrderByUserName();
 
             //if action is good, then give me the result
             String searchMode = request.getParameter("search_mode");

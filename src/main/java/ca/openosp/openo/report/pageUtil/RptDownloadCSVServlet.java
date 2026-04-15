@@ -40,6 +40,7 @@ import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.login.DBHelp;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.report.data.RptReportConfigData;
 import ca.openosp.openo.report.data.RptReportCreator;
 import ca.openosp.openo.report.data.RptReportItem;
@@ -105,6 +106,10 @@ public class RptDownloadCSVServlet extends HttpServlet {
 
         String SAVE_AS = "default";
         String reportId = request.getParameter("id") != null ? request.getParameter("id") : "0";
+        // Validate reportId is numeric to prevent SQL injection
+        if (!SqlUtils.isNumericId(reportId)) {
+            return "";
+        }
         // get form name
         //String reportName = "";
         String in = "";
@@ -118,6 +123,10 @@ public class RptDownloadCSVServlet extends HttpServlet {
             Vector vecFieldCaption = vecField[1];
 
 
+            // SQL Injection Note: reportSql is built by RptFormQuery.getQueryStr() from admin-configured
+            // report templates in the database. User-supplied parameter values are validated via regex
+            // (^[a-zA-Z0-9_ \-/:.,%]*$) in RptFormQuery.getQueryValue(). reportId is validated as
+            // numeric-only above. This is a controlled, admin-only reporting execution path.
             Vector vecFieldValue = (new RptReportCreator()).query(reportSql, vecFieldCaption);
 
             StringWriter swr = new StringWriter();
@@ -289,13 +298,18 @@ public class RptDownloadCSVServlet extends HttpServlet {
             Vector vecVar = RptReportCreator.getVarVec(tempVal);
             Vector vecVarValue = new Vector();
             for (int j = 0; j < vecVar.size(); j++) {
+                String paramValue;
                 // conver date format if needed
                 if (((String) vecVar.get(j)).matches(VARNAME_FORMAT) && ((String) vecDateFormat.get(i)).length() > 1) {
-                    vecVarValue.add(RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
-                            (String) vecDateFormat.get(i), "yyyy-MM-dd"));
+                    paramValue = RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
+                            (String) vecDateFormat.get(i), "yyyy-MM-dd");
                 } else {
-                    vecVarValue.add(request.getParameter((String) vecVar.get(j)));
+                    paramValue = request.getParameter((String) vecVar.get(j));
                 }
+                if (paramValue != null && !paramValue.matches("^[a-zA-Z0-9_ \\-/:.,%]*$")) {
+                    throw new SecurityException("Invalid characters in report query parameter");
+                }
+                vecVarValue.add(paramValue);
             }
             String strFilter = RptReportCreator.getWhereValueClause(tempVal, vecVarValue);
             if (strFilter.indexOf("demographic.") >= 0) {
