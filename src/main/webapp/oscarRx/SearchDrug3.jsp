@@ -325,6 +325,7 @@
   </style>
 
   <script type="text/javascript" src="${ctx}/js/global.js"></script>
+  <script src="${ctx}/csrfguard"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/prototype.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/screen.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/rx.js"/>"></script>
@@ -334,7 +335,6 @@
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/Oscar.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/dragiframe.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/js/checkDate.js"/>"></script>
-  <script src="${pageContext.request.contextPath}/csrfguard"></script>
 
   <link rel="stylesheet" type="text/css" href="<c:out value="${ctx}/share/yui/css/autocomplete.css"/>">
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/yahoo-dom-event.js"/>"></script>
