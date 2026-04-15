@@ -249,6 +249,7 @@
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/Oscar.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/dragiframe.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/js/checkDate.js"/>"></script>
+  <script src="${pageContext.request.contextPath}/csrfguard"></script>
 
   <link rel="stylesheet" type="text/css" href="<c:out value="${ctx}/share/yui/css/autocomplete.css"/>">
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/yahoo-dom-event.js"/>"></script>
@@ -891,7 +892,6 @@
       height: 150px;
       overflow: auto;
       border: thin solid #DCDCDC;
-      display: none;
     }
 
     .text-indent-5 {
@@ -1141,7 +1141,7 @@
                         basename="oscarResources"/><fmt:message key="SearchDrug.Print"/></a>
 
                       <%if (securityManager.hasWriteAccess("_rx", roleName2$, true)) {%>
-                      <a href="javascript:void(0);"  class="btn btn-link"  onclick="$('reprint').toggle();return false;"><fmt:setBundle
+                      <a href="javascript:void(0);"  class="btn btn-link"  onclick="document.getElementById('reprint').toggleAttribute('hidden');return false;"><fmt:setBundle
                         basename="oscarResources"/><fmt:message key="SearchDrug.Reprint"/></a>
 
                       <a href="javascript:void(0);"  class="btn btn-link"  id="cmdRePrescribe" onclick="RePrescribeLongTerm();"><fmt:setBundle basename="oscarResources"/><fmt:message
@@ -1157,7 +1157,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="reprint">
+                  <%-- hidden attribute is toggled by JS via toggleAttribute('hidden') — do not move to CSS or the reprint section will not open --%>
+                  <td id="reprint" hidden>
 
 
                       <% for (int i = 0; prescribedDrugs.length > i; i++) {
