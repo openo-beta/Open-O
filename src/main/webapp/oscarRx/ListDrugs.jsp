@@ -463,7 +463,7 @@
       //     });
       // },
 
-      // order: [[4, 'desc']]
+      order: [[0, 'desc']]
 
     };
     drugListTable = jQuery('#${e:forJavaScript(drugTableId)}').dataTable(window.drugListTableConfig);
