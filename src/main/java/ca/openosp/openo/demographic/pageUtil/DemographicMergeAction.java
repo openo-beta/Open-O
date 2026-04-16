@@ -49,8 +49,8 @@ import java.util.List;
  * Delegates all business logic to {@link DemographicMergeManager} and
  * {@link DemographicManager}.
  * <p>
- * Requires {@code _demographic} write privilege. Throws {@link SecurityException}
- * if the logged-in provider lacks this privilege.
+ * Requires both {@code _demographic} and {@code _admin} write privileges.
+ * Throws {@link SecurityException} if the logged-in provider lacks either.
  *
  * @since 2026-03-25
  */
@@ -82,9 +82,7 @@ public class DemographicMergeAction extends ActionSupport {
     public String execute() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", "w", null)) {
-            throw new SecurityException("missing required sec object (_demographic)");
-        }
+        checkPrivilege(loggedInInfo);
 
         String mtd = request.getParameter("method");
 
@@ -204,6 +202,22 @@ public class DemographicMergeAction extends ActionSupport {
     }
 
     /**
+     * Enforces that the logged-in provider holds both {@code _demographic w} and
+     * {@code _admin w} privileges, mirroring the gate applied by the JSP.
+     *
+     * @param loggedInInfo LoggedInInfo the authenticated provider
+     * @throws SecurityException if either privilege is missing
+     */
+    private void checkPrivilege(LoggedInInfo loggedInInfo) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", "w", null)) {
+            throw new SecurityException("missing required sec object (_demographic)");
+        }
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", "w", null)) {
+            throw new SecurityException("missing required sec object (_admin)");
+        }
+    }
+
+    /**
      * Performs the unmerge and returns a result for redirect.
      *
      * @param loggedInInfo LoggedInInfo the authenticated provider
@@ -216,7 +230,7 @@ public class DemographicMergeAction extends ActionSupport {
             return "successUnMerge";
         } catch (Exception e) {
             logger.error("DemographicMergeAction.doUnmerge: unmerge failed", e);
-            return "failure";
+            return "failureUnMerge";
         }
     }
 

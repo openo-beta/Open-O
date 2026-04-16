@@ -1350,7 +1350,7 @@
                                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_demographic"
                                                                    rights="w">
                                                     <%
-                                                        if (true) {
+                                                        if (!"IN".equals(demographic.getPatientStatus())) {
                                                     %>
                                                     <a id="editBtn" href="javascript: showHideDetail();"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgEdit"/></a>
                                                     <a id="closeBtn" href="javascript: showHideDetail();"

@@ -589,11 +589,24 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             System.out.println("    [CtlDocument] copied " + ctlDocCopied + " row(s)  [" + (System.currentTimeMillis() - tCtl) + "ms]");
         }
 
-        // demographicArchive — Long PK
-        copyEntityRows(DemographicArchive.class, "DemographicArchive", "demographicNo",
+        // demographicArchive — Long PK; capture map so we can fix up the archiveId FK in
+        // demographicExtArchive rows that were already bulk-copied in copyIdentityTables().
+        Map<Long, Long> archivePkMap = copyEntityRows(DemographicArchive.class, "DemographicArchive", "demographicNo",
                 sourceDemoNo, targetDemoNo,
                 e -> e.getId(), e -> e.setId(null),
                 (e, d) -> e.setDemographicNo(d));
+
+        // Remap archiveId in the DemographicExtArchive rows that were bulk-copied for this source.
+        // Without this, getDemographicExtArchiveByArchiveId() returns nothing for the target's
+        // history view because the rows still carry the source's (now stale) archive IDs.
+        for (Map.Entry<Long, Long> entry : archivePkMap.entrySet()) {
+            entityManager.createQuery(
+                "UPDATE DemographicExtArchive e SET e.archiveId = :newId WHERE e.archiveId = :oldId AND e.demographicNo = :targetDemo")
+                .setParameter("newId", entry.getValue())
+                .setParameter("oldId", entry.getKey())
+                .setParameter("targetDemo", targetDemoNo)
+                .executeUpdate();
+        }
 
         // DemographicContact
         copyEntityRows(DemographicContact.class, "DemographicContact", "demographicNo",
