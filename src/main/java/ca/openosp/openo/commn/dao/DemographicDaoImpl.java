@@ -1,29 +1,5 @@
 //CHECKSTYLE:OFF
-/**
- * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- * <p>
- * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
- * This software is published under the GPL GNU General Public License.
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * <p>
- * This software was written for
- * Centre for Research on Inner City Health, St. Michael's Hospital,
- * Toronto, Ontario, Canada
- * <p>
- * Modifications made by Magenta Health in 2024.
- */
+
 package ca.openosp.openo.commn.dao;
 
 import java.util.Objects;
@@ -2441,6 +2417,20 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         }
 
         return (List<Demographic>) this.getHibernateTemplate().find(sql, (Object[]) params.toArray(new String[params.size()]));
+    }
+
+    /**
+     * Checks whether a demographic record exists with the given first and last name.
+     *
+     * @param firstName String the patient's first name (exact match)
+     * @param lastName String the patient's last name (exact match)
+     * @return boolean true if at least one matching record exists, false otherwise
+     */
+    @Override
+    public boolean existsByFirstAndLastName(String firstName, String lastName) {
+        String sql = "SELECT COUNT(*) FROM Demographic WHERE FirstName = ?0 AND LastName = ?1";
+        Long count = (Long) this.getHibernateTemplate().find(sql, new Object[]{firstName, lastName}).get(0);
+        return count > 0;
     }
 
     @SuppressWarnings("unchecked")

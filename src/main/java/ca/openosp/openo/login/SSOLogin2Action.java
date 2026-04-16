@@ -29,7 +29,7 @@ import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.Error;
 import com.onelogin.saml2.exception.SettingsException;
 import com.onelogin.saml2.settings.Saml2Settings;
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.codec.binary.Base64;
@@ -213,12 +213,7 @@ public final class SSOLogin2Action extends ActionSupport {
                     session.setAttribute("delegateOneIdEmail", providerInformation[6]);
                 }
 
-                String operation = request.getParameter("operation");
-                if (operation != null && "launch".equals(operation)) {
-                    actionForward = "/clinicalConnectEHRViewer.do?method=launchNonPatientContext";
-                } else {
-                    actionForward = "/index.jsp";
-                }
+                actionForward = "/index.jsp";
             } else {
                 actionForward = "/logout.jsp?errorMessage=A different OSCAR account is linked to the ONE ID account";
             }

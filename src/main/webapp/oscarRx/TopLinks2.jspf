@@ -75,9 +75,9 @@ document.addEventListener("DOMContentLoaded", getDrugRefStatus);
 
 <tr>
   <td>
-    <h4 class="ScreenTitle">Medications</h4>
+    <h2 class="ScreenTitle">Medications</h2>
   </td>
-  <td colspan="2">
+  <td style="padding-left: 10px;">
     <table>
       <tr>
         <td>
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", getDrugRefStatus);
         </td>
           <tr>
         <td>
-          <label for="Calcs">Selected Pharmacy:</label>
+          <label style="font-weight: bold;" for="Calcs">Selected Pharmacy:</label>
           <select id="Calcs" name="pharmacyId" onchange="populatePharmacy(this.value); showpic('Layer1');">
             <%
               if (pharmacyList != null) {
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", getDrugRefStatus);
             %>
           </select>
 
-            <a style="color:white;" href="<%= request.getContextPath() %>/oscarRx/SelectPharmacy2.jsp"
+            <a style="color: #0000FF; text-decoration: underline;" href="<%= request.getContextPath() %>/oscarRx/SelectPharmacy2.jsp"
                onclick="ShowSpin(true); return true;">
               (Edit List)
             </a>

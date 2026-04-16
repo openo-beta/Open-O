@@ -33,7 +33,7 @@ import ca.openosp.openo.prescript.util.RxUtil;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.ServletException;
@@ -85,7 +85,7 @@ public final class RxChooseDrug2Action extends ActionSupport {
             try {
 
                 RxDrugData.DrugMonograph f = drugData.getDrug(drugId);
-//                    rx.setGCN_SEQNO(f.gcnCode);
+                rx.setGCN_SEQNO(drugId);
                 String genName = "";
                 genName = f.name;
                 rx.setAtcCode(f.atc);

@@ -34,7 +34,7 @@ import ca.openosp.openo.prescript.data.RxPatientData;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.web.context.WebApplicationContext;
@@ -95,9 +95,7 @@ public final class RxChoosePatient2Action extends ActionSupport {
         RxSessionBean.saveToSession(request, bean);
 
         RxPatientData rx = null;
-        RxPatientData.Patient patient = null;
-
-        patient = RxPatientData.getPatient(loggedInInfo, bean.getDemographicNo());
+        RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, bean.getDemographicNo());
 
         String provider = (String) request.getSession().getAttribute("user");
         WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
