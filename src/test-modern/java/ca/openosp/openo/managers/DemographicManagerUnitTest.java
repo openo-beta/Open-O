@@ -81,7 +81,6 @@ public class DemographicManagerUnitTest extends DemographicUnitTestBase {
     @Mock private DemographicArchiveDao mockDemographicArchiveDao;
     @Mock private DemographicExtArchiveDao mockDemographicExtArchiveDao;
     @Mock private DemographicCustArchiveDao mockDemographicCustArchiveDao;
-    @Mock private DemographicMergedDao mockDemographicMergedDao;
     @Mock private AdmissionDao mockAdmissionDao;
     @Mock private AppManager mockAppManager;
     @Mock private ContactSpecialtyDao mockContactSpecialtyDao;
@@ -159,7 +158,6 @@ public class DemographicManagerUnitTest extends DemographicUnitTestBase {
         injectDependency(manager, "demographicArchiveDao", mockDemographicArchiveDao);
         injectDependency(manager, "demographicExtArchiveDao", mockDemographicExtArchiveDao);
         injectDependency(manager, "demographicCustArchiveDao", mockDemographicCustArchiveDao);
-        injectDependency(manager, "demographicMergedDao", mockDemographicMergedDao);
         injectDependency(manager, "admissionDao", mockAdmissionDao);
         injectDependency(manager, "securityInfoManager", mockSecurityInfoManager);
         injectDependency(manager, "appManager", mockAppManager);
@@ -886,22 +884,6 @@ public class DemographicManagerUnitTest extends DemographicUnitTestBase {
         }
 
         @Test
-        @DisplayName("should retain subRecord when updating demographic")
-        void shouldRetainSubRecord_whenUpdatingDemographic() {
-            Demographic previous = createTestDemographicWithId(TEST_DEMO_NO);
-            Set<Integer> subRecords = new HashSet<>(Set.of(100, 101));
-            previous.setSubRecord(subRecords);
-
-            Demographic updated = createTestDemographicWithId(TEST_DEMO_NO);
-
-            when(mockDemographicDao.getDemographicById(TEST_DEMO_NO)).thenReturn(previous);
-
-            manager.updateDemographic(mockLoggedInInfo, updated);
-
-            assertThat(updated.getSubRecord()).isEqualTo(subRecords);
-        }
-
-        @Test
         @DisplayName("should set lastUpdateUser when updating demographic")
         void shouldSetLastUpdateUser_whenUpdatingDemographic() {
             Demographic previous = createTestDemographicWithId(TEST_DEMO_NO);
@@ -1335,80 +1317,20 @@ public class DemographicManagerUnitTest extends DemographicUnitTestBase {
     // ==================== MERGE OPERATIONS ====================
 
     /**
-     * Tests for demographic merge and unmerge operations.
+     * Tests for demographic merge-related operations in DemographicManager.
      *
-     * <p>Merging allows combining duplicate patient records while maintaining
-     * data integrity. The parent record becomes the primary, and children
-     * are marked as merged (soft-linked). Tests cover:</p>
+     * <p>Full merge/unmerge orchestration lives in DemographicMergeManager. This
+     * manager retains helper operations used by the merge UI:</p>
      * <ul>
-     *   <li>Merging multiple children to a parent</li>
-     *   <li>Unmerging (restoring) children from parent</li>
-     *   <li>Retrieving merged demographic information</li>
-     *   <li>Getting merged demographic IDs</li>
+     *   <li>Retrieving merged demographic IDs for a patient record</li>
+     *   <li>Searching active demographics as merge candidates</li>
+     *   <li>Searching already-merged demographics for unmerge</li>
      * </ul>
      */
     @Nested
     @DisplayName("Merge Operations")
     @Tag("merge")
     class MergeOperationsTests {
-
-        @Test
-        @DisplayName("should merge multiple children to parent")
-        void shouldMergeMultipleChildren_toParent() {
-            Integer parentId = 1000;
-            List<Integer> children = List.of(1001, 1002, 1003);
-
-            manager.mergeDemographics(mockLoggedInInfo, parentId, children);
-
-            verify(mockDemographicMergedDao, times(3)).persist(any(DemographicMerged.class));
-        }
-
-        @Test
-        @DisplayName("should unmerge children from parent")
-        void shouldUnmergeChildren_fromParent() {
-            Integer parentId = 1000;
-            Integer childId = 1001;
-            List<Integer> children = List.of(childId);
-
-            DemographicMerged mergeRecord = createTestDemographicMergedWithId(1, childId, parentId);
-            when(mockDemographicMergedDao.findByParentAndChildIds(parentId, childId))
-                .thenReturn(List.of(mergeRecord));
-
-            manager.unmergeDemographics(mockLoggedInInfo, parentId, children);
-
-            assertThat(mergeRecord.getDeleted()).isEqualTo(1);
-            verify(mockDemographicMergedDao).merge(mergeRecord);
-        }
-
-        @Test
-        @DisplayName("should throw exception when unmerging non-existent merge")
-        void shouldThrowException_whenUnmergingNonExistentMerge() {
-            Integer parentId = 1000;
-            List<Integer> children = List.of(1001);
-
-            when(mockDemographicMergedDao.findByParentAndChildIds(parentId, 1001))
-                .thenReturn(Collections.emptyList());
-
-            assertThatThrownBy(() -> manager.unmergeDemographics(mockLoggedInInfo, parentId, children))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to find merge record");
-        }
-
-        @Test
-        @DisplayName("should return merged demographics for parent")
-        void shouldReturnMergedDemographics_forParent() {
-            int parentId = 1000;
-            List<DemographicMerged> expected = List.of(
-                createTestDemographicMerged(1001, parentId),
-                createTestDemographicMerged(1002, parentId)
-            );
-
-            when(mockDemographicMergedDao.findCurrentByMergedTo(parentId)).thenReturn(expected);
-
-            List<DemographicMerged> result = manager.getMergedDemographics(mockLoggedInInfo, parentId);
-
-            assertThat(result).hasSize(2);
-        }
 
         @Test
         @DisplayName("should return merged demographic IDs")
@@ -1422,17 +1344,27 @@ public class DemographicManagerUnitTest extends DemographicUnitTestBase {
         }
 
         @Test
-        @DisplayName("should do nothing when merging with empty children list")
-        void shouldDoNothing_whenMergingWithEmptyChildrenList() {
-            // Edge case: empty children list should be handled gracefully
-            Integer parentId = 1000;
-            List<Integer> emptyChildren = Collections.emptyList();
+        @DisplayName("should return demographics matching keyword for merge search")
+        void shouldReturnDemographics_matchingKeywordForMergeSearch() {
+            List<Demographic> expected = List.of(createTestDemographic(), createTestDemographic());
+            when(mockDemographicDao.searchDemographicByName(anyString(), anyInt(), anyInt(), anyString(), anyBoolean()))
+                .thenReturn(expected);
 
-            // The implementation iterates over children, so empty list means no iterations
-            manager.mergeDemographics(mockLoggedInInfo, parentId, emptyChildren);
+            List<Demographic> result = manager.searchDemographicsForMerge(mockLoggedInInfo, "Smith", "search_name", 10, 0);
 
-            // Verify no merge records were persisted and no exceptions thrown
-            verify(mockDemographicMergedDao, never()).persist(any(DemographicMerged.class));
+            assertThat(result).hasSize(2);
+        }
+
+        @Test
+        @DisplayName("should return merged demographics matching keyword for unmerge search")
+        void shouldReturnMergedDemographics_matchingKeywordForUnmergeSearch() {
+            List<Demographic> expected = List.of(createTestDemographic());
+            when(mockDemographicDao.findActiveMergedDemographicByName(anyString(), anyInt(), anyInt()))
+                .thenReturn(expected);
+
+            List<Demographic> result = manager.searchMergedDemographicsForUnmerge(mockLoggedInInfo, "Smith", "search_name", 10, 0);
+
+            assertThat(result).hasSize(1);
         }
     }
 

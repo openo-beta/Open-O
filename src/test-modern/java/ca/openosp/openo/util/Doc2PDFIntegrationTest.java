@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import ca.openosp.openo.test.integration.OpenOTestBase;
+import ca.openosp.openo.test.base.OpenOTestBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
