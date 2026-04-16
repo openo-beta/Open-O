@@ -84,20 +84,21 @@
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.title"/></title>
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <%
-            // Get session bean using demographicNo parameter for per-patient isolation
-            RxSessionBean bean = RxSessionBean.getFromSession(request);
-            if (bean == null || !bean.isValid()) {
-                response.sendRedirect("error.html");
-                return;
-            }
-            pageContext.setAttribute("bean", bean);
-        %>
+        <c:if test="${empty sessionScope.RxSessionBean}">
+            <c:redirect url="error.html"/>
+        </c:if>
+        <c:if test="${not empty sessionScope.RxSessionBean}">
+            <c:set var="bean" value="${sessionScope.RxSessionBean}" scope="page"/>
+            <c:if test="${bean.valid == false}">
+                <c:redirect url="error.html"/>
+            </c:if>
+        </c:if>
         <c:set var="ctx" value="${pageContext.request.contextPath}"/>
         <%!
             ProviderManager providerManager = SpringUtils.getBean(ProviderManager.class);
         %>
         <%
+            RxSessionBean bean = (RxSessionBean) pageContext.findAttribute("bean");
             Provider provider = providerManager.getProvider(bean.getProviderNo());
             String providerFax = provider.getWorkPhone();
             if (providerFax == null) {
@@ -239,16 +240,18 @@
             var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(bean.getDemographicNo())) %>';
         </script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/oscarRx/js/rxSessionInterceptor.js"></script>
+
         <script type="text/javascript">
             function resetStash() {
 
                 var url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearStash";
                 var data = "";
+                console.log(url);
                 new Ajax.Request(url, {
                     method: 'post', parameters: data,
                   requestHeaders: {'Accept': 'application/json'},
                   onSuccess: function (transport) {
-                        parent.document.getElementById('rxText').textContent = "";//make pending prescriptions disappear.
+                        parent.document.getElementById('rxText').innerHTML = "";//make pending prescriptions disappear.
                         parent.document.getElementById('searchString').focus();
                     }
                 });
@@ -258,7 +261,7 @@
                 var url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
                 var data = "";
                 new Ajax.Request(url, {
-                    method: 'post'
+                    method: 'post', parameters: data
                 });
             }
 
