@@ -1572,6 +1572,7 @@
     };
   }
   let mb = new modalBox();
+  window.mb = mb; // exposed for iframe close buttons (parent.mb.hide())
 
   function displayMedHistory(randomId) {
     let data = "randomId=" + randomId;
