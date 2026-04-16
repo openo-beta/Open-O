@@ -77,20 +77,15 @@
         };
     }
 
-    // Intercept fetch API
+    // Intercept fetch API — only rewrite string URLs. Request instances are
+    // passed through unchanged since their custom method/headers/body can't
+    // be safely round-tripped through the Request constructor.
     if (typeof window.fetch === 'function') {
         var originalFetch = window.fetch;
         window.fetch = function(url, options) {
-            var isRequest = url instanceof Request;
-            var urlStr = isRequest ? url.url : String(url);
-            if (urlStr.indexOf('demographicNo=') === -1) {
-                var separator = urlStr.indexOf('?') === -1 ? '?' : '&';
-                var newUrl = urlStr + separator + 'demographicNo=' + encodeURIComponent(demoNo);
-                if (isRequest) {
-                    url = new Request(newUrl, url.clone());
-                } else {
-                    url = newUrl;
-                }
+            if (typeof url === 'string' && url.indexOf('demographicNo=') === -1) {
+                var separator = url.indexOf('?') === -1 ? '?' : '&';
+                url = url + separator + 'demographicNo=' + encodeURIComponent(demoNo);
             }
             return originalFetch.call(this, url, options || {});
         };
