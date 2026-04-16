@@ -96,17 +96,20 @@ public class DemographicMergeService extends AbstractServiceImpl {
      *
      * @param parentId Integer the demographic_no of the primary patient (A)
      * @param childId  Integer the demographic_no of the secondary patient (B) to merge
+     * @return Integer the demographic_no of the newly created merged record (C)
      */
     @PUT
     @Path("/")
-    public void mergeDemographic(@QueryParam("parentId") Integer parentId, @QueryParam("childId") Integer childId) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer mergeDemographic(@QueryParam("parentId") Integer parentId, @QueryParam("childId") Integer childId) {
         if (!securityInfoManager.hasPrivilege(getLoggedInInfo(), "_demographic", SecurityInfoManager.WRITE, null)) {
             throw new SecurityException("missing required privilege: _demographic/w");
         }
         List<Integer> children = new ArrayList<Integer>();
         children.add(childId);
-        demographicMergeManager.merge(getLoggedInInfo(), parentId, children);
+        Integer mergedDemographicNo = demographicMergeManager.merge(getLoggedInInfo(), parentId, children);
         demographicMergeManager.applyMergeStatuses(getLoggedInInfo(), parentId, children);
+        return mergedDemographicNo;
     }
 
     /**
