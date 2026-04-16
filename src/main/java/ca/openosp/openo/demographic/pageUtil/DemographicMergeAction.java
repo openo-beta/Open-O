@@ -149,8 +149,8 @@ public class DemographicMergeAction extends ActionSupport {
         if (unmerge && demoList != null && !demoList.isEmpty()) {
             List<Integer> mergedNos = new ArrayList<>();
             for (Demographic demo : demoList) mergedNos.add(demo.getDemographicNo());
-            request.setAttribute("mergeEventMap", mergeManager.findMergeEventsForDemographics(mergedNos));
-            request.setAttribute("mergeSourcesMap", mergeManager.findMergeSourcesForDemographics(mergedNos));
+            request.setAttribute("mergeEventMap", mergeManager.findMergeEventsForDemographics(loggedInInfo, mergedNos));
+            request.setAttribute("mergeSourcesMap", mergeManager.findMergeSourcesForDemographics(loggedInInfo, mergedNos));
         }
 
         request.setAttribute("demoList", demoList);
@@ -195,7 +195,7 @@ public class DemographicMergeAction extends ActionSupport {
             mergedDemoNo = mergeManager.merge(loggedInInfo, primaryNo, secondaryNos);
             // Status updates run in a separate short transaction to avoid the legacy
             // Hibernate session connection timing out during the long data-copy above.
-            mergeManager.applyMergeStatuses(primaryNo, secondaryNos);
+            mergeManager.applyMergeStatuses(loggedInInfo, primaryNo, secondaryNos);
             return "success";
         } catch (Exception e) {
             logger.error("DemographicMergeAction.doMerge: merge failed", e);

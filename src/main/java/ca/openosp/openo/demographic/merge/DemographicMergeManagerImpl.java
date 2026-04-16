@@ -31,6 +31,7 @@ import ca.openosp.openo.commn.dao.DemographicMergeOperationDao;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.DemographicMerge;
 import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
@@ -64,6 +65,9 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     private static final String STATUS_ACTIVE = Demographic.PatientStatus.AC.name();
 
     @Autowired
+    private SecurityInfoManager securityInfoManager;
+
+    @Autowired
     private DemographicDao demographicDao;
 
     @Autowired
@@ -87,6 +91,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     @Override
     @Transactional
     public Integer merge(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
         System.out.println("\n");
         System.out.println("╔══════════════════════════════════════════════════════════════╗");
         System.out.println("║            DEMOGRAPHIC MERGE STARTED                        ║");
@@ -151,7 +156,8 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      */
     @Override
     @Transactional
-    public void applyMergeStatuses(Integer primaryDemographicNo, List<Integer> secondaryDemographicNos) {
+    public void applyMergeStatuses(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
         System.out.println("\n--- APPLYING MERGE STATUSES ---");
         Demographic demographicA = loadAndValidateExists(primaryDemographicNo, "Primary");
         markInactive(demographicA);
@@ -172,6 +178,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     @Override
     @Transactional
     public void unmerge(LoggedInInfo loggedInInfo, Integer mergedDemographicNo) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
         System.out.println("\n");
         System.out.println("╔══════════════════════════════════════════════════════════════╗");
         System.out.println("║            DEMOGRAPHIC UNMERGE STARTED                      ║");
@@ -238,7 +245,8 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * {@inheritDoc}
      */
     @Override
-    public Map<Integer, DemographicMerge> findMergeEventsForDemographics(List<Integer> mergedDemographicNos) {
+    public Map<Integer, DemographicMerge> findMergeEventsForDemographics(LoggedInInfo loggedInInfo, List<Integer> mergedDemographicNos) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
         Map<Integer, DemographicMerge> result = new HashMap<>();
         for (Integer no : mergedDemographicNos) {
             DemographicMerge event = mergeDao.findLatestMergeEventByMergedDemographicNo(no);
@@ -253,7 +261,8 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
      * {@inheritDoc}
      */
     @Override
-    public Map<Integer, List<Demographic>> findMergeSourcesForDemographics(List<Integer> mergedDemographicNos) {
+    public Map<Integer, List<Demographic>> findMergeSourcesForDemographics(LoggedInInfo loggedInInfo, List<Integer> mergedDemographicNos) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
         Map<Integer, List<Demographic>> result = new HashMap<>();
         for (Integer no : mergedDemographicNos) {
             DemographicMerge event = mergeDao.findLatestMergeEventByMergedDemographicNo(no);
@@ -268,6 +277,16 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
             result.put(no, sources);
         }
         return result;
+    }
+
+    // -------------------------------------------------------------------------
+    // Security
+    // -------------------------------------------------------------------------
+
+    private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", privilege, null)) {
+            throw new RuntimeException("missing required sec object (_demographic)");
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -573,20 +592,30 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     private void writeAuditEntriesForMerge(LoggedInInfo loggedInInfo, Integer primaryDemographicNo,
                                            List<Demographic> secondaries, Integer targetDemographicNo) {
         String mergedTo = "mergedTo=" + targetDemographicNo;
-        LogAction.addLogSynchronous(loggedInInfo, "DemographicMerge",
-                "primary=" + primaryDemographicNo + " " + mergedTo);
 
-        for (Demographic secondary : secondaries) {
-            LogAction.addLog(loggedInInfo, "DemographicMerge", "demographic",
-                    String.valueOf(secondary.getDemographicNo()),
-                    String.valueOf(secondary.getDemographicNo()),
-                    mergedTo);
-        }
-
+        // Entry on the primary's own audit trail
+        LogAction.addLog(loggedInInfo, "DemographicMerge", "demographic",
+                String.valueOf(primaryDemographicNo),
+                String.valueOf(primaryDemographicNo),
+                mergedTo);
+        // Entry on C's audit trail showing the primary source
         LogAction.addLog(loggedInInfo, "DemographicMerge", "demographic",
                 String.valueOf(targetDemographicNo),
                 String.valueOf(targetDemographicNo),
                 "mergedFrom=" + primaryDemographicNo);
+
+        for (Demographic secondary : secondaries) {
+            // Entry on each secondary's own audit trail
+            LogAction.addLog(loggedInInfo, "DemographicMerge", "demographic",
+                    String.valueOf(secondary.getDemographicNo()),
+                    String.valueOf(secondary.getDemographicNo()),
+                    mergedTo);
+            // Entry on C's audit trail showing this secondary source
+            LogAction.addLog(loggedInInfo, "DemographicMerge", "demographic",
+                    String.valueOf(targetDemographicNo),
+                    String.valueOf(targetDemographicNo),
+                    "mergedFrom=" + secondary.getDemographicNo());
+        }
     }
 
     /**
@@ -600,19 +629,29 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     private void writeAuditEntriesForUnmerge(LoggedInInfo loggedInInfo, DemographicMerge event,
                                              Integer mergedDemographicNo) {
         String unmergedFrom = "unmergedFrom=" + mergedDemographicNo;
-        LogAction.addLogSynchronous(loggedInInfo, "DemographicUnmerge",
-                "primary=" + event.getPrimaryDemographicNo() + " " + unmergedFrom);
+
+        // Entry on the primary's own audit trail
+        LogAction.addLog(loggedInInfo, "DemographicUnmerge", "demographic",
+                String.valueOf(event.getPrimaryDemographicNo()),
+                String.valueOf(event.getPrimaryDemographicNo()),
+                unmergedFrom);
+        // Entry on C's audit trail showing the primary was restored
+        LogAction.addLog(loggedInInfo, "DemographicUnmerge", "demographic",
+                String.valueOf(mergedDemographicNo),
+                String.valueOf(mergedDemographicNo),
+                "restoredTo=" + event.getPrimaryDemographicNo());
 
         for (Integer secondaryNo : event.getSecondaryDemographicNos()) {
+            // Entry on each secondary's own audit trail
             LogAction.addLog(loggedInInfo, "DemographicUnmerge", "demographic",
                     String.valueOf(secondaryNo),
                     String.valueOf(secondaryNo),
                     unmergedFrom);
+            // Entry on C's audit trail showing this secondary was restored
+            LogAction.addLog(loggedInInfo, "DemographicUnmerge", "demographic",
+                    String.valueOf(mergedDemographicNo),
+                    String.valueOf(mergedDemographicNo),
+                    "restoredTo=" + secondaryNo);
         }
-
-        LogAction.addLog(loggedInInfo, "DemographicUnmerge", "demographic",
-                String.valueOf(mergedDemographicNo),
-                String.valueOf(mergedDemographicNo),
-                "deactivated; primary=" + event.getPrimaryDemographicNo());
     }
 }

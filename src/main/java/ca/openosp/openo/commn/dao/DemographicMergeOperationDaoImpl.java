@@ -120,8 +120,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -340,9 +342,9 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                     (e, d) -> e.setDemographicNo(d));
         } else {
             // Secondary pass: skip rows whose key_val already exists for the target
-            List<String> existingKeys = entityManager.createQuery("SELECT e.key FROM DemographicExt e WHERE e.demographicNo = :demo", String.class)
+            Set<String> existingKeys = new HashSet<>(entityManager.createQuery("SELECT e.key FROM DemographicExt e WHERE e.demographicNo = :demo", String.class)
                 .setParameter("demo", targetDemoNo)
-                .getResultList();
+                .getResultList());
 
             List<DemographicExt> sourceExts = entityManager.createQuery("SELECT e FROM DemographicExt e WHERE e.demographicNo = :demo", DemographicExt.class)
                 .setParameter("demo", sourceDemoNo)
@@ -422,9 +424,9 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             }
         } else {
             // Secondary pass: skip rows whose otherKey already exists for the target
-            List<String> existingOtherKeys = entityManager.createQuery("SELECT e.otherKey FROM OtherId e WHERE e.tableId = :tid", String.class)
+            Set<String> existingOtherKeys = new HashSet<>(entityManager.createQuery("SELECT e.otherKey FROM OtherId e WHERE e.tableId = :tid", String.class)
                 .setParameter("tid", String.valueOf(targetDemoNo))
-                .getResultList();
+                .getResultList());
 
             List<OtherId> sourceOtherIds = entityManager.createQuery("SELECT e FROM OtherId e WHERE e.tableId = :tid", OtherId.class)
                 .setParameter("tid", String.valueOf(sourceDemoNo))
@@ -1504,6 +1506,12 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             Integer psId = a.getSpecialistId();
             a.setId(null);
             a.setDemographicId(targetDemoNo);
+            if (a.getRequestId() != null) {
+                Long newRequestId = requestPkMap.get((long) a.getRequestId());
+                if (newRequestId != null) {
+                    a.setRequestId(newRequestId.intValue());
+                }
+            }
             if (psId != null) {
                 ProfessionalSpecialist managedPs = managedPsCache.computeIfAbsent(
                     psId, id -> entityManager.find(ProfessionalSpecialist.class, id));
@@ -1671,9 +1679,9 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         System.out.println("    Found " + sourceIssues.size() + " issue(s) for source=" + sourceDemoNo);
 
         // Dedup: collect issue_id values already on the target to avoid duplicates
-        List<Integer> existingIssueIds = entityManager.createQuery("SELECT e.issueId FROM CaseMgmtIssue e WHERE e.demographicNo = :demo", Integer.class)
+        Set<Integer> existingIssueIds = new HashSet<>(entityManager.createQuery("SELECT e.issueId FROM CaseMgmtIssue e WHERE e.demographicNo = :demo", Integer.class)
             .setParameter("demo", targetDemoNo)
-            .getResultList();
+            .getResultList());
 
         Map<Long, Long> issuePkMap = new HashMap<>();
         for (CaseMgmtIssue issue : sourceIssues) {
@@ -1736,7 +1744,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
 
                 StringBuilder hql = new StringBuilder(
                     "INSERT INTO CaseMgmtIssueNotes (id, noteId) " +
-                    "SELECT " + newIssueId + ", CASE n.noteId");
+                    "SELECT :newIssueId, CASE n.noteId");
                 List<Integer> oldNoteIds = new ArrayList<>(chunk.size());
                 for (Map.Entry<Long, Long> noteEntry : chunk) {
                     hql.append(" WHEN ").append(noteEntry.getKey()).append(" THEN ").append(noteEntry.getValue());
@@ -1745,6 +1753,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
                 hql.append(" END FROM CaseMgmtIssueNotes n WHERE n.id = :oldIssueId AND n.noteId IN :oldNoteIds");
 
                 entityManager.createQuery(hql.toString())
+                    .setParameter("newIssueId", (int) newIssueId)
                     .setParameter("oldIssueId", (int) oldIssueId)
                     .setParameter("oldNoteIds", oldNoteIds)
                     .executeUpdate();
