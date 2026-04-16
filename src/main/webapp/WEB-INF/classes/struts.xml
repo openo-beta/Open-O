@@ -1229,6 +1229,7 @@
             <result name="success" type="redirect">/admin/DemographicMerge.do?outcome=success&amp;mergedDemoNo=%{mergedDemoNo}</result>
             <result name="successUnMerge" type="redirect">/admin/DemographicMerge.do?outcome=successUnMerge&amp;mode=unmerge</result>
             <result name="failure" type="redirect">/admin/DemographicMerge.do?outcome=failure</result>
+            <result name="failureUnMerge" type="redirect">/admin/DemographicMerge.do?outcome=failure&amp;mode=unmerge</result>
         </action>
         <action name="oscarReport/RptViewAllQueryByExamples" class="ca.openosp.openo.report.pageUtil.RptViewAllQueryByExamples2Action">
             <result name="success">/oscarReport/RptViewAllQueryByExamples.jsp</result>

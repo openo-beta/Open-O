@@ -279,13 +279,12 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         return result;
     }
 
-    // -------------------------------------------------------------------------
-    // Security
-    // -------------------------------------------------------------------------
-
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", privilege, null)) {
             throw new RuntimeException("missing required sec object (_demographic)");
+        }
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", privilege, null)) {
+            throw new RuntimeException("missing required sec object (_admin)");
         }
     }
 
@@ -437,6 +436,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         c.setOfficialLanguage(source.getOfficialLanguage());
         c.setCountryOfOrigin(source.getCountryOfOrigin());
         c.setNewsletter(source.getNewsletter());
+        c.setAnonymous(source.getAnonymous());
 
         // New merged record is always active; extension rows copied separately by copyIdentityTables.
         c.setPatientStatus(STATUS_ACTIVE);
