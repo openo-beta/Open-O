@@ -2463,7 +2463,7 @@
 
           if (section.label) {
               jQuery('#drugProfile').append(
-                  jQuery('<h4 style="margin-bottom:1px;margin-top:3px;"></h4>').text(section.label)
+                  jQuery('<h4 style="margin-bottom:1px;margin-top:10px;font-size:16px;"></h4>').text(section.label)
               );
           }
 
