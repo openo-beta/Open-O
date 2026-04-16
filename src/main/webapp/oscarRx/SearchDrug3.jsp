@@ -1170,7 +1170,7 @@
                                                     %>
 
 
-                    <div class="btn btn-link text-indent-5">
+                    <div class="text-indent-5">
                       <a href="javascript:void(0);" onclick="reprint2('<%=drug.getScript_no()%>')">
                         <%=drug.getRxDisplay()%>
                       </a>
