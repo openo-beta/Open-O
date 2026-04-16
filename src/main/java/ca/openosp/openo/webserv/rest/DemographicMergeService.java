@@ -83,7 +83,7 @@ public class DemographicMergeService extends AbstractServiceImpl {
         }
         DemographicMergedConverter converter = new DemographicMergedConverter();
         Map<Integer, DemographicMerge> events = demographicMergeManager.findMergeEventsForDemographics(
-                Collections.singletonList(mergedDemographicNo));
+                getLoggedInInfo(), Collections.singletonList(mergedDemographicNo));
         OscarSearchResponse<DemographicMergedTo1> response = new OscarSearchResponse<DemographicMergedTo1>();
         for (DemographicMerge dm : events.values()) {
             response.getContent().add(converter.getAsTransferObject(getLoggedInInfo(), dm));
@@ -106,7 +106,7 @@ public class DemographicMergeService extends AbstractServiceImpl {
         List<Integer> children = new ArrayList<Integer>();
         children.add(childId);
         demographicMergeManager.merge(getLoggedInInfo(), parentId, children);
-        demographicMergeManager.applyMergeStatuses(parentId, children);
+        demographicMergeManager.applyMergeStatuses(getLoggedInInfo(), parentId, children);
     }
 
     /**

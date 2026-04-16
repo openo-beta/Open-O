@@ -217,7 +217,7 @@
                                     <input type="radio" name="mergedDemographicNo" value="${demo.demographicNo}">
                                 </td>
                                 <td>
-                                    <a href="javascript:popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=${demo.demographicNo}&amp;displaymode=edit&amp;dboperation=search_detail')">
+                                    <a href="javascript:popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=${e:forHtml(demo.demographicNo)}&amp;displaymode=edit&amp;dboperation=search_detail')">
                                         <e:forHtml value="${demo.demographicNo}"/>
                                     </a>
                                 </td>
@@ -262,7 +262,7 @@
                                                                 </c:choose>
                                                             </td>
                                                             <td>
-                                                                <a href="javascript:popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=${src.demographicNo}&amp;displaymode=edit&amp;dboperation=search_detail')">
+                                                                <a href="javascript:popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=${e:forHtml(src.demographicNo)}&amp;displaymode=edit&amp;dboperation=search_detail')">
                                                                     <e:forHtml value="${src.demographicNo}"/>
                                                                 </a>
                                                             </td>
@@ -335,7 +335,7 @@
                                     </c:if>
                                 </td>
                                 <td>
-                                    <a href="javascript:popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=${demo.demographicNo}&amp;displaymode=edit&amp;dboperation=search_detail')">
+                                    <a href="javascript:popupWindow('${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=${e:forHtml(demo.demographicNo)}&amp;displaymode=edit&amp;dboperation=search_detail')">
                                         <e:forHtml value="${demo.demographicNo}"/>
                                     </a>
                                 </td>

@@ -3140,7 +3140,8 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
                 + "WHERE de.year_of_birth LIKE :yearOfBirth "
                 + "AND de.month_of_birth LIKE :monthOfBirth "
                 + "AND de.date_of_birth LIKE :dateOfBirth "
-                + ACTIVE_MERGED_SUBQUERY;
+                + ACTIVE_MERGED_SUBQUERY
+                + "ORDER BY de.last_name, de.first_name";
         SQLQuery q = currentSession().createSQLQuery(sql).addEntity("de", Demographic.class);
         q.setFirstResult(offset);
         q.setMaxResults(limit);
@@ -3155,7 +3156,8 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     public List<Demographic> findActiveMergedDemographicByPhone(String phoneStr, int limit, int offset) {
         String sql = "SELECT {de.*} FROM demographic de "
                 + "WHERE de.phone LIKE :phone "
-                + ACTIVE_MERGED_SUBQUERY;
+                + ACTIVE_MERGED_SUBQUERY
+                + "ORDER BY de.last_name, de.first_name";
         SQLQuery q = currentSession().createSQLQuery(sql).addEntity("de", Demographic.class);
         q.setFirstResult(offset);
         q.setMaxResults(limit);
@@ -3168,7 +3170,8 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     public List<Demographic> findActiveMergedDemographicByHIN(String hinStr, int limit, int offset) {
         String sql = "SELECT {de.*} FROM demographic de "
                 + "WHERE de.hin LIKE :hin "
-                + ACTIVE_MERGED_SUBQUERY;
+                + ACTIVE_MERGED_SUBQUERY
+                + "ORDER BY de.last_name, de.first_name";
         SQLQuery q = currentSession().createSQLQuery(sql).addEntity("de", Demographic.class);
         q.setFirstResult(offset);
         q.setMaxResults(limit);
@@ -3181,7 +3184,8 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     public List<Demographic> findActiveMergedDemographicByAddress(String addressStr, int limit, int offset) {
         String sql = "SELECT {de.*} FROM demographic de "
                 + "WHERE de.address LIKE :address "
-                + ACTIVE_MERGED_SUBQUERY;
+                + ACTIVE_MERGED_SUBQUERY
+                + "ORDER BY de.last_name, de.first_name";
         SQLQuery q = currentSession().createSQLQuery(sql).addEntity("de", Demographic.class);
         q.setFirstResult(offset);
         q.setMaxResults(limit);
