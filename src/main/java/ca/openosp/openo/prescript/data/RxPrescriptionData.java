@@ -37,6 +37,7 @@ import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.Logger;
@@ -1657,10 +1658,13 @@ public class RxPrescriptionData {
             // clean up fields
             if (this.takeMin > this.takeMax) this.takeMax = this.takeMin;
 
-            if (this.special == null || this.special.length() < 6) {
-                logger.warn("drug special appears to be null or empty (length={})",
-                        this.special == null ? 0 : this.special.length());
-            }
+            if (getSpecial() == null || getSpecial().length() < 6)
+                logger.warn("drug special appears to be null or empty : " + getSpecial());
+
+			String escapedSpecial = StringEscapeUtils.escapeSql(this.getSpecial());
+
+            if (escapedSpecial == null || escapedSpecial.length() < 6)
+                logger.warn("drug special after escaping appears to be null or empty : " + escapedSpecial);
 
             DrugDao dao = SpringUtils.getBean(DrugDao.class);
             Drug drug = new Drug();

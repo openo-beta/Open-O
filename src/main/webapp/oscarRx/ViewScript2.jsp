@@ -234,6 +234,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
 
+        <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls --%>
         <script type="text/javascript">
             var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(bean.getDemographicNo())) %>';
         </script>
@@ -652,7 +653,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
 					<% } %>
                                 </td>
 
-                                <td valign=top><form action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
+                                <td valign=top><form name="RxClearPendingForm" action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
                                     <input type="hidden" name="action" id="action" value=""/>
                                     <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(bean.getDemographicNo()))%>"/>
                                     <div class="warning-note" id="faxWarningNote">
