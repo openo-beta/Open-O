@@ -74,20 +74,22 @@ public interface DemographicMergeManager {
      * no dirty entities in the legacy session, then this short transaction applies the
      * status changes without risk of a connection timeout.
      *
+     * @param loggedInInfo            LoggedInInfo the authenticated provider performing the operation
      * @param primaryDemographicNo    Integer the demographic_no of the primary patient (A)
      * @param secondaryDemographicNos List&lt;Integer&gt; demographic_nos of all secondary patients
      */
-    void applyMergeStatuses(Integer primaryDemographicNo, List<Integer> secondaryDemographicNos);
+    void applyMergeStatuses(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos);
 
     /**
      * Loads the latest MERGE event for each given merged demographic number.
      * Used by the unmerge tab to populate the accordion showing merge history.
      * Demographics with no matching event are silently omitted from the result.
      *
+     * @param loggedInInfo         LoggedInInfo the authenticated provider
      * @param mergedDemographicNos List&lt;Integer&gt; the demographic_nos of merged records (C)
      * @return Map&lt;Integer, DemographicMerge&gt; keyed by merged demographic_no
      */
-    Map<Integer, DemographicMerge> findMergeEventsForDemographics(List<Integer> mergedDemographicNos);
+    Map<Integer, DemographicMerge> findMergeEventsForDemographics(LoggedInInfo loggedInInfo, List<Integer> mergedDemographicNos);
 
     /**
      * Loads the source demographics (primary first, then secondaries in order) for each
@@ -95,11 +97,12 @@ public interface DemographicMergeManager {
      * Demographics with no matching event, or whose source records cannot be loaded, are
      * silently omitted from the result.
      *
+     * @param loggedInInfo         LoggedInInfo the authenticated provider
      * @param mergedDemographicNos List&lt;Integer&gt; the demographic_nos of merged records (C)
      * @return Map&lt;Integer, List&lt;Demographic&gt;&gt; keyed by merged demographic_no;
      *         each list contains the primary first, followed by secondaries in event order
      */
-    Map<Integer, List<Demographic>> findMergeSourcesForDemographics(List<Integer> mergedDemographicNos);
+    Map<Integer, List<Demographic>> findMergeSourcesForDemographics(LoggedInInfo loggedInInfo, List<Integer> mergedDemographicNos);
 
     /**
      * Reverses a previous merge: reactivates the primary and all secondaries (back to
