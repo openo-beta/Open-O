@@ -39,14 +39,13 @@ import java.util.Vector;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import ca.openosp.openo.utility.MiscUtils;
 
+import ca.openosp.Misc;
 import ca.openosp.openo.db.DBHandler;
-import ca.openosp.openo.login.DBHelp;
 
 /**
  * @author yilee18
  */
 public final class RptReportCreator {
-    DBHelp dbObj = new DBHelp();
 
     // select formBCAR.pg1_ethOrig as Ethnic Origin, ...
     public String getSelectField(String recordId) throws SQLException {
@@ -54,10 +53,10 @@ public final class RptReportCreator {
         String sql = "select * from reportConfig where report_id = ? order by order_no";
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(recordId));
         while (rs.next()) {
-            String caption = DBHelp.getString(rs, "caption");
-            ret.append((ret.length() < 8 ? " " : ", ") + DBHelp.getString(rs, "table_name") + "." + DBHelp.getString(rs, "name"));
+            String caption = Misc.getString(rs, "caption");
+            ret.append((ret.length() < 8 ? " " : ", ") + Misc.getString(rs, "table_name") + "." + Misc.getString(rs, "name"));
             if (caption != null && caption.length() > 0) {
-                ret.append(" as '" + DBHelp.getString(rs, "caption") + "'");
+                ret.append(" as '" + Misc.getString(rs, "caption") + "'");
             }
         }
         rs.close();
@@ -70,7 +69,7 @@ public final class RptReportCreator {
         String sql = "select distinct table_name from reportConfig where report_id = ? order by table_name desc";
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(recordId));
         if (rs.next()) {
-            ret = DBHelp.getString(rs, "table_name");
+            ret = Misc.getString(rs, "table_name");
         }
         rs.close();
         return ret;
@@ -83,7 +82,7 @@ public final class RptReportCreator {
         String sql = "select distinct table_name from reportConfig where report_id = ? order by table_name desc";
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(recordId));
         while (rs.next()) {
-            vec.add(DBHelp.getString(rs, "table_name"));
+            vec.add(Misc.getString(rs, "table_name"));
         }
         rs.close();
         for (int i = 0; i < vec.size(); i++) {
@@ -177,7 +176,7 @@ public final class RptReportCreator {
     public String getRltSubQuery(String sql) throws SQLException {
         String ret = "0";
 
-        ResultSet rs = DBHelp.searchDBRecord(sql);
+        ResultSet rs = DBHandler.GetPreSQL(sql);
         MiscUtils.getLogger().debug(" tempVal: " + sql);
         while (rs.next()) {
             if ("0".equals(ret)) {
@@ -191,17 +190,17 @@ public final class RptReportCreator {
     }
 
     // from formBCAR, demographic
-    public Vector query(String sql, Vector vecFieldName) throws SQLException {
+    public Vector query(String sql, Vector vecFieldName, Object... params) throws SQLException {
         Vector ret = new Vector();
         Properties prop = null;
 
-        ResultSet rs = DBHelp.searchDBRecord(sql);
+        ResultSet rs = DBHandler.GetPreSQL(sql, params);
         while (rs.next()) {
             prop = new Properties();
             for (int i = 0; i < vecFieldName.size(); i++) {
                 try {
                     prop.setProperty((String) vecFieldName.get(i),
-                            DBHelp.getString(rs, (String) vecFieldName.get(i)) == null ? "" : rs
+                            Misc.getString(rs, (String) vecFieldName.get(i)) == null ? "" : rs
                                     .getString((String) vecFieldName.get(i)));
                 } catch (SQLException e) {
                     prop.setProperty((String) vecFieldName.get(i), "" + rs.getInt((String) vecFieldName.get(i)));

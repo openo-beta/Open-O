@@ -38,8 +38,8 @@ import ca.openosp.openo.commn.dao.ReportItemDao;
 import ca.openosp.openo.commn.model.ReportItem;
 import ca.openosp.openo.utility.SpringUtils;
 
+import ca.openosp.Misc;
 import ca.openosp.openo.db.DBHandler;
-import ca.openosp.openo.login.DBHelp;
 
 /**
  * @author yilee18
@@ -47,7 +47,6 @@ import ca.openosp.openo.login.DBHelp;
 public class RptReportItem {
     String report_name;
     int status = 1;
-    DBHelp dbObj = new DBHelp();
     private ReportItemDao dao = SpringUtils.getBean(ReportItemDao.class);
 
 
@@ -83,7 +82,7 @@ public class RptReportItem {
         String sql = "select report_name from reportItem where id = ?";
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(recordId));
         while (rs.next()) {
-            ret = DBHelp.getString(rs, "report_name");
+            ret = Misc.getString(rs, "report_name");
         }
         rs.close();
         return ret;
@@ -98,7 +97,7 @@ public class RptReportItem {
         while (rs.next()) {
             prop = new Properties();
             prop.setProperty("id", "" + rs.getInt("id"));
-            prop.setProperty("" + rs.getInt("id"), DBHelp.getString(rs, "report_name"));
+            prop.setProperty("" + rs.getInt("id"), Misc.getString(rs, "report_name"));
             ret.add(prop);
         }
         rs.close();
