@@ -45,6 +45,13 @@ public class DemographicMergedConverter extends AbstractConverter<DemographicMer
         d.setMergedDemographicNo(t.getMergedDemographicNo());
         d.setProviderNo(t.getProviderNo());
         d.setEventDate(t.getEventDate());
+        if (t.getEventType() != null) {
+            try {
+                d.setEventType(DemographicMerge.EventType.valueOf(t.getEventType()));
+            } catch (IllegalArgumentException e) {
+                throw new ConversionException("Unknown eventType value: " + t.getEventType());
+            }
+        }
         return d;
     }
 
