@@ -109,7 +109,7 @@
     request.setAttribute("drugTableId", tableId);
 %>
 <c:if test="${not empty sectionHeading}">
-    <h4 style="margin-bottom:1px;margin-top:3px;"><e:forHtml value="${sectionHeading}"/></h4>
+    <h4 style="margin-bottom:1px;margin-top:10px;font-size:16px"><e:forHtml value="${sectionHeading}"/></h4>
 </c:if>
 <div class="drugProfileText" style="">
     <table class="table table-condensed list-drugs" id="<e:forHtmlAttribute value="${drugTableId}"/>">
