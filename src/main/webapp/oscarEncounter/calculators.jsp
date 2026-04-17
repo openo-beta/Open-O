@@ -47,6 +47,7 @@
         import="ca.openosp.openo.demographic.data.*, ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%
@@ -94,13 +95,13 @@
             <td align="center" class="menuLayer"><a
                     href="javascript: function myFunction() {return false; }"
                     onclick="popperup(650,775,'https://www.mcw.edu/calculators/body-mass-index','BodyMassIndex');">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.bodyMass"/> </a></td>
+                <fmt:message key="oscarEncounter.Index.bodyMass"/> </a></td>
         </tr>
         <tr>
             <td align="center" class="menuLayer"><a
                     href="javascript: function myFunction() {return false; }"
                     onclick="popperup(525,775,'${ctx}/oscarEncounter/calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=${sexEncoded}&age=${ageEncoded}','CoronaryArteryDiseaseRisk');">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/> </a></td>
+                <fmt:message key="oscarEncounter.Index.coronary"/> </a></td>
         </tr>
         <tr>
             <td align="center" class="menuLayer"><a
@@ -120,25 +121,25 @@
             <td align="center" class="menuLayer"><a
                     href="javascript: function myFunction() {return false; }"
                     onclick="popperup(525,775,'${ctx}/oscarEncounter/calculators/OsteoporoticFracture.jsp?sex=${sexEncoded}&age=${ageEncoded}','OsteoporoticFracture');">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/> </a></td>
+                <fmt:message key="oscarEncounter.Index.msgOsteoporotic"/> </a></td>
         </tr>
         <tr>
             <td align="center" class="menuLayer"><a
                     href="javascript: function myFunction() {return false; }"
                     onclick="popperup(650,775,'https://www.mcw.edu/calculators/pregnancy-date','PregancyCalculator');">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.pregnancy"/> </a></td>
+                <fmt:message key="oscarEncounter.Index.pregnancy"/> </a></td>
         </tr>
         <tr>
             <td align="center" class="menuLayer"><a
                     href="javascript: function myFunction() {return false; }"
                     onclick="popperup(400,500,'${ctx}/oscarEncounter/calculators/SimpleCalculator.jsp','SimpleCalc');">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.simpleCalculator"/> </a></td>
+                <fmt:message key="oscarEncounter.Index.simpleCalculator"/> </a></td>
         </tr>
         <tr>
             <td align="center" class="menuLayer"><a
                     href="javascript: function myFunction() {return false; }"
                     onclick="popperup(650,775,'${ctx}/oscarEncounter/calculators/GeneralCalculators.jsp','GeneralConversions'); ">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.generalConversions"/> </a></td>
+                <fmt:message key="oscarEncounter.Index.generalConversions"/> </a></td>
         </tr>
     </table>
     </body>

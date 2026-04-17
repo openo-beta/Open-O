@@ -25,6 +25,7 @@
 --%>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
     String curUser_no = (String) session.getAttribute("user");
     String tab = request.getParameter("id");
@@ -32,16 +33,16 @@
     if (tab.equals("oscar_new_lab")) { %>
 <%@page import="ca.openosp.OscarProperties" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<oscar:newLab providerNo="<%=Encode.forHtmlAttribute(String.valueOf(curUser_no))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.lab"/></oscar:newLab>
+<oscar:newLab providerNo="<%=Encode.forHtmlAttribute(String.valueOf(curUser_no))%>"><fmt:message key="global.lab"/></oscar:newLab>
 <% }
     if (tab.equals("oscar_new_msg")) { %>
-<oscar:newMessage providerNo="<%=Encode.forHtmlAttribute(String.valueOf(curUser_no))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.msg"/></oscar:newMessage>
+<oscar:newMessage providerNo="<%=Encode.forHtmlAttribute(String.valueOf(curUser_no))%>"><fmt:message key="global.msg"/></oscar:newMessage>
 <% }
     if (tab.equals("oscar_new_tickler")) { %>
-<oscar:newTickler providerNo="<%=Encode.forHtmlAttribute(String.valueOf(curUser_no))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btntickler"/></oscar:newTickler>
+<oscar:newTickler providerNo="<%=Encode.forHtmlAttribute(String.valueOf(curUser_no))%>"><fmt:message key="global.btntickler"/></oscar:newTickler>
 <% }
     if (tab.equals("oscar_aged_consults")) { %>
-<oscar:agedConsult providerNo="<%=Encode.forHtmlAttribute(String.valueOf(curUser_no))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.con"/></oscar:agedConsult>
+<oscar:agedConsult providerNo="<%=Encode.forHtmlAttribute(String.valueOf(curUser_no))%>"><fmt:message key="global.con"/></oscar:agedConsult>
 <%
     }
     if (!OscarProperties.getInstance().isTorontoRFQ() && tab.equals("oscar_scratch")) {

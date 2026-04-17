@@ -25,6 +25,7 @@
 --%>
 
 <%@ include file="/casemgmt/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ page import="ca.openosp.openo.provider.web.CppPreferencesUIBean" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%
@@ -42,7 +43,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.cppPrefs"/></title>
+        <title><fmt:message key="provider.cppPrefs"/></title>
 
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
         <link rel="stylesheet" type="text/css" media="all" href="<c:out value="${ctx}"/>/share/calendar/calendar.css"
@@ -94,8 +95,8 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setNoteStaleDate.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.cppPrefs"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:message key="provider.setNoteStaleDate.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:message key="provider.cppPrefs"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>

@@ -34,13 +34,14 @@
 <%@ page import="ca.openosp.openo.eform.data.*, ca.openosp.openo.eform.*, java.util.*, ca.openosp.openo.util.*" %>
 <%@ page import="java.util.*,ca.openosp.openo.rx.data.*,ca.openosp.openo.rx.pageUtil.*,java.io.*,org.apache.xmlrpc.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgDownloadEform"/></title>
+        <title><fmt:message key="eform.download.msgDownloadEform"/></title>
         <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
         <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/eformStyle.css">
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
@@ -51,16 +52,16 @@
         </style>
     </head>
     <body>
-    <div style="background: #CCCCFF; width: 100%; text-align:center; font-family:Helvetica,sans-serif; "><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgDownloadEform"/> <a href="efmformmanagerdownload.jsp?grid=<%=Encode.forUriComponent(String.valueOf(!gridlayout))%>">grid</a>
+    <div style="background: #CCCCFF; width: 100%; text-align:center; font-family:Helvetica,sans-serif; "><fmt:message key="eform.download.msgDownloadEform"/> <a href="efmformmanagerdownload.jsp?grid=<%=Encode.forUriComponent(String.valueOf(!gridlayout))%>">grid</a>
     </div>
 
     <% if (gridlayout) {%>
     <table class="listing" style="width:100%; background-color:#EEEEFF">
         <tr>
-            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgName"/></th>
-            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgCreator"/></th>
-            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgCategory"/></th>
-            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgCreated"/></th>
+            <th><fmt:message key="eform.download.msgName"/></th>
+            <th><fmt:message key="eform.download.msgCreator"/></th>
+            <th><fmt:message key="eform.download.msgCategory"/></th>
+            <th><fmt:message key="eform.download.msgCreated"/></th>
         </tr>
 
         <%
@@ -81,7 +82,7 @@
                     <input type="hidden" name="method"
                            value="importEFormFromRemote"/>
                     <input type="hidden" name="url" value="<%=Encode.forHtmlAttribute(String.valueOf(stripDrugref(ht.get("url"))))%>"/>
-                    <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.btnLoadEform"/>"/>
+                    <input type="submit" value="<fmt:message key="eform.download.btnLoadEform"/>"/>
                 </form>
             </td>
         </tr>
@@ -97,22 +98,22 @@
     <div style="background-color:#EEEEFF;margin-right:100px;margin-left:20px;margin-top:10px;padding-left:10px;padding-top:10px;padding-bottom:5px;border-bottom: 2px solid gray;border-right: 2px solid #999;border-top: 1px solid #CCC;border-left: 1px solid #CCC;">
         <table class="listing">
             <tr>
-                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgName"/>:</td>
+                <td><fmt:message key="eform.download.msgName"/>:</td>
                 <td><%=Encode.forHtml(String.valueOf(ht.get("name")))%>
                 </td>
             </tr>
             <tr>
-                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgCreator"/>:</td>
+                <td><fmt:message key="eform.download.msgCreator"/>:</td>
                 <td><%=Encode.forHtml(String.valueOf(ht.get("creator")))%>
                 </td>
             </tr>
             <tr>
-                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgCategory"/>:</td>
+                <td><fmt:message key="eform.download.msgCategory"/>:</td>
                 <td><%=Encode.forHtml(String.valueOf(ht.get("category")))%>
                 </td>
             </tr>
             <tr>
-                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.msgCreated"/>:</td>
+                <td><fmt:message key="eform.download.msgCreated"/>:</td>
                 <td><%=Encode.forHtml(String.valueOf(ht.get("created_at")))%>
                 </td>
             </tr>
@@ -121,7 +122,7 @@
         <form action="<%=request.getContextPath()%>/eform/manageEForm.do" method="POST">
             <input type="hidden" name="method" value="importEFormFromRemote"/>
             <input type="hidden" name="url" value="<%=Encode.forHtmlAttribute(String.valueOf(stripDrugref(ht.get("url"))))%>"/>
-            <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.btnLoadEform"/>"/>
+            <input type="submit" value="<fmt:message key="eform.download.btnLoadEform"/>"/>
         </form>
 
     </div>

@@ -25,6 +25,7 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <html>
@@ -39,7 +40,7 @@
         </script>
     </head>
     <body>
-    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.close.msgClick1"/>
-    <a href="javascript:window.close();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.close.btnHere"/></a>
+    <fmt:message key="oscarEncounter.close.msgClick1"/>
+    <a href="javascript:window.close();"><fmt:message key="oscarEncounter.close.btnHere"/></a>
     </body>
 </html>

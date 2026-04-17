@@ -79,6 +79,7 @@
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
@@ -151,7 +152,7 @@
 
         <oscar:customInterface section="appthistory"/>
 
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.title"/></title>
+        <title><fmt:message key="demographic.demographicappthistory.title"/></title>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
         <script type="text/javascript">
 
@@ -217,19 +218,19 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgHistory"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:message key="demographic.demographicappthistory.msgHistory"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgResults"/>: <%=Encode.forHtml(String.valueOf(demolastname))%>
+                        <td><fmt:message key="demographic.demographicappthistory.msgResults"/>: <%=Encode.forHtml(String.valueOf(demolastname))%>
                             ,<%=Encode.forHtml(String.valueOf(demofirstname))%>(<%=Encode.forHtml(request.getParameter("demographic_no"))%>)
                         </td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
                                 href="javascript:popupStart(300,400,'About.jsp')">
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                            <fmt:message key="global.about"/></a> | <a
                                 href="javascript:popupStart(300,400,'License.jsp')">
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
+                            <fmt:message key="global.license"/></a>
                         </td>
                     </tr>
                 </table>
@@ -239,22 +240,22 @@
             <td class="MainTableLeftColumn" valign="top"><a
                     href="<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&apptProvider=<%=Encode.forUriComponent(String.valueOf(session.getAttribute("user")))%>&displaymode=edit&dboperation=search_detail"
                     onMouseOver="self.status=document.referrer;return true">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/></a>
+                <fmt:message key="global.btnBack"/></a>
                 <br/>
-                <input type="checkbox" name="showDeleted" id="showDeleted" onChange="toggleShowDeleted(this.checked);"/><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgShowDeleted"/>
+                <input type="checkbox" name="showDeleted" id="showDeleted" onChange="toggleShowDeleted(this.checked);"/><fmt:message key="demographic.demographicappthistory.msgShowDeleted"/>
                 <br/>
             </td>
             <td class="MainTableRightColumn">
                 <table width="95%" border="0" bgcolor="#ffffff" id="apptHistoryTbl">
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepColor))%>">
-                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgApptDate"/></b></TH>
-                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgFrom"/></b></TH>
-                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgTo"/></b></TH>
-                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgStatus"/></b></TH>
-                        <TH width="10%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgType"/></b></TH>
-                        <TH width="15%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgReason"/></b></TH>
-                        <TH width="15%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgProvider"/></b></TH>
-                        <TH><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.msgComments"/></b></TH>
+                        <TH width="10%"><b><fmt:message key="demographic.demographicappthistory.msgApptDate"/></b></TH>
+                        <TH width="10%"><b><fmt:message key="demographic.demographicappthistory.msgFrom"/></b></TH>
+                        <TH width="10%"><b><fmt:message key="demographic.demographicappthistory.msgTo"/></b></TH>
+                        <TH width="10%"><b><fmt:message key="demographic.demographicappthistory.msgStatus"/></b></TH>
+                        <TH width="10%"><b><fmt:message key="demographic.demographicappthistory.msgType"/></b></TH>
+                        <TH width="15%"><b><fmt:message key="demographic.demographicappthistory.msgReason"/></b></TH>
+                        <TH width="15%"><b><fmt:message key="demographic.demographicappthistory.msgProvider"/></b></TH>
+                        <TH><b><fmt:message key="demographic.demographicappthistory.msgComments"/></b></TH>
 
                         <% if (IsPropertiesOn.isMultisitesEnable()) { %>
                         <TH width="5%">Location</TH>
@@ -464,14 +465,14 @@
                         }
                 %>
                 <a href="demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&last_name=<%=Encode.forUriComponent(String.valueOf(demolastname))%>&first_name=<%=Encode.forUriComponent(String.valueOf(demofirstname))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nPrevPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>&showRemote=<%=Encode.forUriComponent(String.valueOf(showRemoteStr))%>">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.btnPrevPage"/></a>
+                    <fmt:message key="demographic.demographicappthistory.btnPrevPage"/></a>
                 <%
                     }
 
                     if (nItems >= Integer.parseInt(strLimit2)) {
                 %>
                 <a href="demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&last_name=<%=Encode.forUriComponent(String.valueOf(demolastname))%>&first_name=<%=Encode.forUriComponent(String.valueOf(demofirstname))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>&showRemote=<%=Encode.forUriComponent(String.valueOf(showRemote))%>">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicappthistory.btnNextPage"/></a>
+                    <fmt:message key="demographic.demographicappthistory.btnNextPage"/></a>
                 <%
                     }
                 %>

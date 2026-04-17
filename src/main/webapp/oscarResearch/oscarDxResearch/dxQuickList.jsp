@@ -33,6 +33,7 @@ Required Parameters to plug-in:
 
  --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -43,7 +44,7 @@ Required Parameters to plug-in:
             ${ quickList }
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.quickList"/>
+                    <fmt:message key="oscarResearch.oscarDxResearch.quickList"/>
                     <small class="pull-right">
                         <a class="oscar-dialog-link" href="${pageContext.request.contextPath}/oscarResearch/oscarDxResearch/dxResearchCustomization.jsp">
                             add/edit

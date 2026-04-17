@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.login.UAgentInfo" %>
 <%@ page import="ca.openosp.openo.managers.MfaManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page contentType="text/html;charset=UTF-8" session="false" %>
@@ -53,7 +54,7 @@
                 <%--	    		<c:out value="${ LoginResourceBean.tabName }" />--%>
                 <%--	    	</c:when>--%>
                 <%--	    	<c:otherwise>--%>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.title"/>
+            <fmt:message key="loginApplication.title"/>
                 <%--	    	</c:otherwise>--%>
                 <%--	    </c:choose>--%>
         </title>
@@ -608,14 +609,14 @@
 
                     <!-- default text if logo is missing -->
                     <h2 id="default_logo" style="display:none;">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.formLabel"/>
+                        <fmt:message key="loginApplication.formLabel"/>
                     </h2>
                 </div>
 
                 <c:if test='${ param.login eq "failed" }'>
                     <c:set var="login_error" value="has-error" scope="page"/>
                     <div class="alert">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.formFailedLabel"/>
+                        <fmt:message key="loginApplication.formFailedLabel"/>
                     </div>
                 </c:if>
 
@@ -633,7 +634,7 @@
                         <form action="login.do" method="POST" name="loginForm">
 
                             <div class="form-group ${ login_error }">
-                                <input type="text" name="username" id="username" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Logon.userName"/>"
+                                <input type="text" name="username" id="username" placeholder="<fmt:message key="Logon.userName"/>"
                                        value="" size="15" maxlength="15" autocomplete="off"
                                        class="form-control" required>
                             </div>
@@ -687,16 +688,16 @@
                                id="oneIdLogin" onclick="addStartTime()" class="btn btn-primary btn-block oneIDLogin">
                                 <span class="oneIDLogo"></span>
                                 <span class="oneIdText">
-    									<fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.oneid"/>
+    									<fmt:message key="loginApplication.oneid"/>
     								</span>
                             </a>
                         </oscar:oscarPropertiesCheck>
 
                         <c:if test="${ LoginResourceBean.acceptableUseAgreementManager.auaAvailable }">
     			            <span class="extrasmall">
-	                        	<fmt:setBundle basename="oscarResources"/><fmt:message key="global.aua"/> &nbsp;
+	                        	<fmt:message key="global.aua"/> &nbsp;
 	                        	<a href="javascript:void(0);" onclick="showHideItem('auaText');">
-	                        		<fmt:setBundle basename="oscarResources"/><fmt:message key="global.showhide"/>
+	                        		<fmt:message key="global.showhide"/>
 	                        	</a>
 	                        </span>
                         </c:if>
@@ -753,7 +754,7 @@
     </div>
     <footer>
      	<span id="license" class="extrasmall">
-     		<fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.leftRmk2"/>
+     		<fmt:message key="loginApplication.leftRmk2"/>
      	</span>
     </footer>
 

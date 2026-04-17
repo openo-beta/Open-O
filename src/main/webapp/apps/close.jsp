@@ -26,9 +26,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <html>
 <head>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/></title>
+    <title><fmt:message key="global.btnClose"/></title>
 
     <link href="<%= request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
 </head>
@@ -40,12 +41,12 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.resources"/></h3>
+                    <h3 class="panel-title"><fmt:message key="global.resources"/></h3>
                 </div>
                 <div class="panel-body">
                     <%=Encode.forHtml(String.valueOf(session.getAttribute("oauthMessage")))%>
                     <%session.removeAttribute("oauthMessage"); %>
-                    <a class="pull-right" onclick="window.close()"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/></a>
+                    <a class="pull-right" onclick="window.close()"><fmt:message key="global.btnClose"/></a>
                 </div>
             </div>
 

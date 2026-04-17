@@ -26,6 +26,7 @@
 <%@ page import="ca.openosp.Misc" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <%
@@ -78,7 +79,7 @@ opener.refreshView();</script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="olis.olisSearch"/></title>
+    <title><fmt:message key="olis.olisSearch"/></title>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
     <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>

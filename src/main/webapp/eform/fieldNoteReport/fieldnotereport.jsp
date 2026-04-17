@@ -30,6 +30,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%
     Calendar c = Calendar.getInstance();
@@ -87,7 +88,7 @@
 <html>
     <head>
 
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/></title>
+        <title><fmt:message key="admin.fieldNote.report"/></title>
         <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
         <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/eformStyle.css">
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/calendar/calendar.css"
@@ -161,33 +162,33 @@
 
         <table>
             <tr>
-                <th class="eformInputHeading"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.report"/></th>
+                <th class="eformInputHeading"><fmt:message key="admin.fieldNote.report"/></th>
             </tr>
             <tr style="background-color: <%=fieldNoteEforms.isEmpty()?"#FFFF00":"#FFFFFF"%>;">
                 <td align="<%=fieldNoteEforms.isEmpty()?"left":"right"%>">
                     <%
                         if (fieldNoteEforms.isEmpty()) {
-                    %> <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.noEformAssigned"/>
+                    %> <fmt:message key="admin.fieldNote.noEformAssigned"/>
                     <% }
-                    %> <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.selectEformsButton"/>"
-                              title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.selectEforms"/>"
+                    %> <input type="button" value="<fmt:message key="admin.fieldNote.selectEformsButton"/>"
+                              title="<fmt:message key="admin.fieldNote.selectEforms"/>"
                               onclick="window.location.href='fieldnoteselect.jsp'"/>
                 </td>
             </tr>
             <tr style="background-color: #F2F2F2;">
                 <td>
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.startDate"/>:<input type="text" name="date_start" size="8"
+                    <fmt:message key="admin.fieldNote.startDate"/>:<input type="text" name="date_start" size="8"
                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(dateStart))%>" id="startDate"><a
                         id="SCal"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                     &nbsp;
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.endDate"/>:<input type="text" name="date_end" size="8"
+                    <fmt:message key="admin.fieldNote.endDate"/>:<input type="text" name="date_end" size="8"
                                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(dateEnd))%>" id="endDate"><a id="ECal"><img
                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                     &nbsp;
-                    <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.getFieldNotes"/>"
+                    <input type="submit" value="<fmt:message key="admin.fieldNote.getFieldNotes"/>"
                            style="font-weight:bold; font-size:large" onclick="getFieldNotes();"/>
-                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.reset"/>"
-                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.resetDates"/>" onclick="setDefaultDates();"/>
+                    <input type="button" value="<fmt:message key="admin.fieldNote.reset"/>"
+                           title="<fmt:message key="admin.fieldNote.resetDates"/>" onclick="setDefaultDates();"/>
                     <script language='javascript'>
                         Calendar.setup({
                             inputField: "startDate",
@@ -214,7 +215,7 @@
             if (!showData) return;
         %>
         <input type="button" id="supervisorReportButton"
-               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.observerNoteCount"/> (<%=Encode.forHtml(String.valueOf(totalCount))%>)"
+               value="<fmt:message key="admin.fieldNote.observerNoteCount"/> (<%=Encode.forHtml(String.valueOf(totalCount))%>)"
                onclick="showSupervisorReport(true);"/>
         <table id="supervisorReport" style="display:none">
             <tr>
@@ -225,10 +226,10 @@
                 <td>
                     <table class="bordered">
                         <tr>
-                            <th class="bordered"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.observerSupervisor"/></th>
-                            <th class="bordered"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.count"/></th>
-                            <th class="bordered"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.resident"/></th>
-                            <th class="bordered"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.count"/></th>
+                            <th class="bordered"><fmt:message key="admin.fieldNote.observerSupervisor"/></th>
+                            <th class="bordered"><fmt:message key="admin.fieldNote.count"/></th>
+                            <th class="bordered"><fmt:message key="admin.fieldNote.resident"/></th>
+                            <th class="bordered"><fmt:message key="admin.fieldNote.count"/></th>
                         </tr>
                         <%
                             for (String supervisor : supervisorResidentCountList.keySet()) {
@@ -260,7 +261,7 @@
                         }
                         %>
                         <tr>
-                            <td colspan="3" align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.total"/>:</td>
+                            <td colspan="3" align="right"><fmt:message key="admin.fieldNote.total"/>:</td>
                             <td align="center"><%=Encode.forHtml(String.valueOf(totalCount))%>
                             </td>
                         </tr>
@@ -269,7 +270,7 @@
             </tr>
         </table>
         <br/><br/>
-        <div style="text-decoration:underline; font-size:large"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.residentReports"/></div>
+        <div style="text-decoration:underline; font-size:large"><fmt:message key="admin.fieldNote.residentReports"/></div>
         <table>
             <%
                 for (String residentName : residentNameList.keySet()) {
@@ -280,11 +281,11 @@
                 <td><%=Encode.forHtml(String.valueOf(residentName))%>
                 </td>
                 <td>
-                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.view"/>"
-                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.viewReport"/>"
+                    <input type="button" value="<fmt:message key="admin.fieldNote.view"/>"
+                           title="<fmt:message key="admin.fieldNote.viewReport"/>"
                            onclick="send('<%=Encode.forJavaScript(String.valueOf(residentId))%>','<%=Encode.forJavaScript(String.valueOf(resNameSend))%>','view');"/>
-                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.download"/>"
-                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.fieldNote.downloadReport"/>"
+                    <input type="button" value="<fmt:message key="admin.fieldNote.download"/>"
+                           title="<fmt:message key="admin.fieldNote.downloadReport"/>"
                            onclick="send('<%=Encode.forJavaScript(String.valueOf(residentId))%>','<%=Encode.forJavaScript(String.valueOf(resNameSend))%>','download');"/>
                 </td>
             </tr>

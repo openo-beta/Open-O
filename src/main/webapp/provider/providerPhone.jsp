@@ -26,6 +26,7 @@
 
 <%@ page language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ page import="ca.openosp.openo.providers.data.*" %>
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
@@ -45,11 +46,11 @@
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
 
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxPhone.title"/></title>
+        <title><fmt:message key="provider.editRxPhone.title"/></title>
 
         <script type="text/javascript">
             function validate() {
-                var msg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.msgPhoneFormat"/>";
+                var msg = "<fmt:message key="provider.editRxFax.msgPhoneFormat"/>";
                 var strnum = document.forms[0].elements[0].value;
                 if (strnum.length > 0) {
                     if (!strnum.match(/^\d{3}-\d{3}-\d{4}$/)) {
@@ -68,8 +69,8 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.msgPrefs"/></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxPhone.msgProviderPhoneNumber"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:message key="provider.editRxFax.msgPrefs"/></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><fmt:message key="provider.editRxPhone.msgProviderPhoneNumber"/></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
@@ -100,10 +101,10 @@
                 <br>
 
                 <input type="submit" onclick="return validate();"
-                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxFax.btnSubmit"/>"/>
+                       value="<fmt:message key="provider.editRxFax.btnSubmit"/>"/>
             </form> <%
             } else if (((String) request.getAttribute("status")).equals("complete")) {
-            %> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editRxPhone.msgSuccess"/> <br>
+            %> <fmt:message key="provider.editRxPhone.msgSuccess"/> <br>
                 <%=Encode.forHtml(String.valueOf(phoneNum))%> <%
                 }
             %>

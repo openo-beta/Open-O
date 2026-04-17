@@ -42,10 +42,11 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.title"/></title>
+        <title><fmt:message key="billing.billingDigSearch.title"/></title>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
         <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"> <!-- Bootstrap 2.3.1 -->
         <script>
@@ -72,7 +73,7 @@
     <body onLoad="setfocus()">
     <table style="width:100%">
         <tr>
-            <th style="text-align:center; background-color:silver;"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgDiagnostic"/><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgMaxSelections"/></th>
+            <th style="text-align:center; background-color:silver;"><fmt:message key="billing.billingDigSearch.msgDiagnostic"/><fmt:message key="billing.billingDigSearch.msgMaxSelections"/></th>
         </tr>
     </table>
     <% String coderange = request.getParameter("coderange");
@@ -93,8 +94,8 @@
         <input type="hidden" name="name2"
                value="<%=Encode.forHtmlAttribute(request.getParameter("name2"))%>"/>
         <%}%>
-        <p><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgRefine"/></b><br>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgCodeRange"/>: <select
+        <p><b><fmt:message key="billing.billingDigSearch.msgRefine"/></b><br>
+            <fmt:message key="billing.billingDigSearch.msgCodeRange"/>: <select
                     name="coderange">
                 <option value="0" selected>000-099</option>
                 <option value="1">100-199</option>
@@ -106,14 +107,14 @@
                 <option value="7">700-799</option>
                 <option value="8">800-899</option>
                 <option value="9">900-999</option>
-            </select> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgOR"/> <br/>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgDescription"/>: <input
+            </select> <fmt:message key="billing.billingDigSearch.msgOR"/> <br/>
+            <fmt:message key="billing.billingDigSearch.msgDescription"/>: <input
                     type="text" name="codedesc" value=""> <input type="submit" class="btn"
                                                                  name="search1"
-                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnSearch"/>"/>
+                                                                 value="<fmt:message key="billing.billingDigSearch.btnSearch"/>"/>
         </p>
         <input type="hidden" name="search"
-               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnSearch"/>"/>
+               value="<fmt:message key="billing.billingDigSearch.btnSearch"/>"/>
     </form>
 
     <form name="diagcode" id="diagcode" method="post"
@@ -121,8 +122,8 @@
         <table style="width:800px; margin:auto" class="table-striped table-condensed">
             <thead>
             <tr>
-                <th style="width:12%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.formCode"/></b></th>
-                <th style="width:88%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.formDescription"/></b></th>
+                <th style="width:12%"><b><fmt:message key="billing.billingDigSearch.formCode"/></b></th>
+                <th style="width:88%"><b><fmt:message key="billing.billingDigSearch.formDescription"/></b></th>
             </tr>
             </thead>
             <tbody>
@@ -212,7 +213,7 @@
                                              name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
                                              value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>">&nbsp;<input type="submit" class="btn"
                                                                                  name="update"
-                                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Encode.forHtml(String.valueOf(Dcode))%>">
+                                                                                 value="<fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Encode.forHtml(String.valueOf(Dcode))%>">
                 </td>
             </tr>
             <%
@@ -240,7 +241,7 @@
                                              name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
                                              value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>">&nbsp;<input type="submit" class="btn"
                                                                                  name="update"
-                                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Encode.forHtml(String.valueOf(Dcode))%>">
+                                                                                 value="<fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Encode.forHtml(String.valueOf(Dcode))%>">
                 </td>
             </tr>
             <%
@@ -267,7 +268,7 @@
                                              name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode2))%>"
                                              value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc2))%>">&nbsp;<input type="submit" class="btn"
                                                                                   name="update"
-                                                                                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Encode.forHtml(String.valueOf(Dcode2))%>">
+                                                                                  value="<fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Encode.forHtml(String.valueOf(Dcode2))%>">
                 </td>
             </tr>
             <%
@@ -277,7 +278,7 @@
 
             <% if (intCount == 0) { %>
             <tr>
-                <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgNoMatch"/>. <%// =i%></td>
+                <td colspan="2"><fmt:message key="billing.billingDigSearch.msgNoMatch"/>. <%// =i%></td>
 
             </tr>
             <% }%>

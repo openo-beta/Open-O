@@ -39,6 +39,7 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ page import="ca.openosp.openo.form.*" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
@@ -47,7 +48,7 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.title"/></title>
+        <title><fmt:message key="oscarEncounter.formFemaleAnnual.title"/></title>
         <link rel="stylesheet" type="text/css" href="annualStyle.css">
         <link rel="stylesheet" type="text/css" media="print" href="print.css">
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
@@ -66,7 +67,7 @@
             document.forms[0].submit.value = "save";
             var ret = checkAllDates();
             if (ret == true) {
-                ret = confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgWannaSave"/>");
+                ret = confirm("<fmt:message key="oscarEncounter.formFemaleAnnual.msgWannaSave"/>");
             }
             return ret;
         }
@@ -75,7 +76,7 @@
             document.forms[0].submit.value = "exit";
             var ret = checkAllDates();
             if (ret == true) {
-                ret = confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgSaveExit"/>");
+                ret = confirm("<fmt:message key="oscarEncounter.formFemaleAnnual.msgSaveExit"/>");
             }
             return ret;
         }
@@ -167,7 +168,7 @@
 
         function checkTypeIn(obj) {
             if (!checkTypeNum(obj.value)) {
-                alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgTypeANumber"/>");
+                alert("<fmt:message key="oscarEncounter.formFemaleAnnual.msgTypeANumber"/>");
             }
         }
 
@@ -252,36 +253,36 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit"
-                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnSave"/>"
+                                        value="<fmt:message key="oscarEncounter.formFemaleAnnual.btnSave"/>"
                                         onclick="javascript:return onSave();"/> <input type="submit"
-                                                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnSaveExit"/>"
+                                                                                       value="<fmt:message key="oscarEncounter.formFemaleAnnual.btnSaveExit"/>"
                                                                                        onclick="javascript:return onSaveExit();"/>
                     <input type="submit"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnExit"/>"
+                           value="<fmt:message key="oscarEncounter.formFemaleAnnual.btnExit"/>"
                            onclick="javascript:return onExit();"/> <input type="button"
-                                                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnPrint"/>"
+                                                                          value="<fmt:message key="oscarEncounter.formFemaleAnnual.btnPrint"/>"
                                                                           onclick="javascript:return onPrint();"/>
                     <input type="button"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnPrintPage"/>"
+                           value="<fmt:message key="oscarEncounter.formFemaleAnnual.btnPrintPage"/>"
                            onclick="javascript: popupPage(700,950,'formannualfemaleprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>')"/>
                 </td>
                 <td align='right'><a
-                        href="javascript: popupPage(700,950,'<%= request.getContextPath() %>/decision/annualreview/annualreviewplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnAnnualReview"/></a></td>
+                        href="javascript: popupPage(700,950,'<%= request.getContextPath() %>/decision/annualreview/annualreviewplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');"><fmt:message key="oscarEncounter.formFemaleAnnual.btnAnnualReview"/></a></td>
             </tr>
         </table>
 
         <table cellspacing="3" cellpadding="0" width="100%">
             <tr>
-                <td><big><i><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgAnnualFemaleReview"/></b></i></big></td>
-                <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formName"/>:</b> <input
+                <td><big><i><b><fmt:message key="oscarEncounter.formFemaleAnnual.msgAnnualFemaleReview"/></b></i></big></td>
+                <td><b><fmt:message key="oscarEncounter.formFemaleAnnual.formName"/>:</b> <input
                         type="text" class="Input" name="pName" readonly="true" size="30"
                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pName", "")))%>"/></td>
-                <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formAge"/>:</b> <input type="text"
+                <td><b><fmt:message key="oscarEncounter.formFemaleAnnual.formAge"/>:</b> <input type="text"
                                                                                     class="Input" readonly="true"
                                                                                     name="age" size="11"
                                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("age", "")))%>"
                                                                                     readonly="true"/></td>
-                <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formDate"/></b><small>(yyyy/mm/dd)</small>:
+                <td><b><fmt:message key="oscarEncounter.formFemaleAnnual.formDate"/></b><small>(yyyy/mm/dd)</small>:
                     <input type="text" class="Input" name="formDate" size="11"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formDate", "")))%>"/></td>
             </tr>
@@ -291,7 +292,7 @@
                 <td rowspan="4">
                     <table class="DashedBorder" width="100%">
                         <tr>
-                            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgCurrentConcerns"/>:</b></td>
+                            <td><b><fmt:message key="oscarEncounter.formFemaleAnnual.msgCurrentConcerns"/>:</b></td>
                         </tr>
                         <tr>
                             <td><textarea style="height: 480px; width: 400px;"
@@ -299,30 +300,30 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgSeeChart"/>
+                            <td align="center"><fmt:message key="oscarEncounter.formFemaleAnnual.msgSeeChart"/>
                                 &nbsp;&nbsp;&nbsp; <input type="checkbox" name="currentConcernsNo"
-                                        <%=Encode.forHtml(String.valueOf(props.getProperty("currentConcernsNo", "")))%> /> &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.brtNo"/>&nbsp;&nbsp;&nbsp; <input
+                                        <%=Encode.forHtml(String.valueOf(props.getProperty("currentConcernsNo", "")))%> /> &nbsp;<fmt:message key="oscarEncounter.formFemaleAnnual.brtNo"/>&nbsp;&nbsp;&nbsp; <input
                                         type="checkbox" name="currentConcernsYes"
-                                        <%=Encode.forHtml(String.valueOf(props.getProperty("currentConcernsYes", "")))%> /> &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnYes"/></td>
+                                        <%=Encode.forHtml(String.valueOf(props.getProperty("currentConcernsYes", "")))%> /> &nbsp;<fmt:message key="oscarEncounter.formFemaleAnnual.btnYes"/></td>
                         </tr>
                     </table>
                 </td>
                 <td>
                     <table width="100%">
                         <tr>
-                            <td colspan="3"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgSystemReview"/>:</b></td>
+                            <td colspan="3"><b><fmt:message key="oscarEncounter.formFemaleAnnual.msgSystemReview"/>:</b></td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
-                            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formN"/></b></td>
-                            <td colspan="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formAbN"/></b></td>
+                            <td><b><fmt:message key="oscarEncounter.formFemaleAnnual.formN"/></b></td>
+                            <td colspan="2"><b><fmt:message key="oscarEncounter.formFemaleAnnual.formAbN"/></b></td>
                         </tr>
                         <tr>
                             <td><input type="checkbox" name="headN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("headN", "")))%> /></td>
                             <td><input type="checkbox" name="headAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("headAbN", "")))%> /></td>
-                            <td align="left" nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formHeadNeck"/>:
+                            <td align="left" nowrap="true"><fmt:message key="oscarEncounter.formFemaleAnnual.formHeadNeck"/>:
                             </td>
                             <td align="right"><input type="text" name="head"
                                                      class="SystemsReview"
@@ -333,7 +334,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("respN", "")))%> /></td>
                             <td><input type="checkbox" name="respAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("respAbN", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.fomrResp"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.fomrResp"/>:
                             </td>
                             <td align="right"><input type="text" name="resp"
                                                      class="SystemsReview"
@@ -344,7 +345,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("cardioN", "")))%> /></td>
                             <td><input type="checkbox" name="cardioAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("cardioAbN", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formCardio"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formCardio"/>:
                             </td>
                             <td align="right"><input type="text" name="cardio"
                                                      class="SystemsReview"
@@ -355,7 +356,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("giN", "")))%> /></td>
                             <td><input type="checkbox" name="giAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("giAbN", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formGI"/>:</td>
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formGI"/>:</td>
                             <td align="right"><input type="text" name="gi"
                                                      class="SystemsReview" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("gi", "")))%>"/>
                             </td>
@@ -365,7 +366,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("guN", "")))%> /></td>
                             <td><input type="checkbox" name="guAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("guAbN", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formGU"/>:</td>
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formGU"/>:</td>
                             <td align="right"><input type="text" name="gu"
                                                      class="SystemsReview" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("gu", "")))%>"/>
                             </td>
@@ -375,7 +376,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("skinN", "")))%> /></td>
                             <td><input type="checkbox" name="skinAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("skinAbN", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formSkin"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formSkin"/>:
                             </td>
                             <td colspan="3" align="right"><input type="text" name="skin"
                                                                  class="SystemsReview"
@@ -386,7 +387,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("mskN", "")))%> /></td>
                             <td><input type="checkbox" name="mskAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("mskAbN", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formMSK"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formMSK"/>:
                             </td>
                             <td colspan="3" align="right"><input type="text" name="msk"
                                                                  class="SystemsReview"
@@ -397,7 +398,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("endocrinN", "")))%> /></td>
                             <td><input type="checkbox" name="endocrinAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("endocrinAbN", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formEndocrin"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formEndocrin"/>:
                             </td>
                             <td colspan="3" align="right"><input type="text"
                                                                  name="endocrin" class="SystemsReview"
@@ -408,7 +409,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("otherN", "")))%> /></td>
                             <td valign="top"><input type="checkbox" name="otherAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("otherAbN", "")))%> /></td>
-                            <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formOther"/>:
+                            <td valign="top"><fmt:message key="oscarEncounter.formFemaleAnnual.formOther"/>:
                             </td>
                             <td colspan="3" align="right"><textarea name="other"
                                                                     class="SystemsReview"
@@ -425,30 +426,30 @@
                         <tr>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-                            <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgGTPALRevisions"/>&nbsp; <input
+                            <td nowrap="true"><fmt:message key="oscarEncounter.formFemaleAnnual.msgGTPALRevisions"/>&nbsp; <input
                                     type="checkbox" name="noGtpalRevisions"
-                                    <%=Encode.forHtml(String.valueOf(props.getProperty("noGtpalRevisions", "")))%> /> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.brtNo"/> <input
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("noGtpalRevisions", "")))%> /> <fmt:message key="oscarEncounter.formFemaleAnnual.brtNo"/> <input
                                     type="checkbox" name="yesGtpalRevisions"
-                                    <%=Encode.forHtml(String.valueOf(props.getProperty("yesGtpalRevisions", "")))%> /> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnYes"/> <input
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("yesGtpalRevisions", "")))%> /> <fmt:message key="oscarEncounter.formFemaleAnnual.btnYes"/> <input
                                     type="checkbox" name="frontSheet"
-                                    <%=Encode.forHtml(String.valueOf(props.getProperty("frontSheet", "")))%> /> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formFrontSheeyUpdated"/></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("frontSheet", "")))%> /> <fmt:message key="oscarEncounter.formFemaleAnnual.formFrontSheeyUpdated"/></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formLMP"/><small>(yyyy/mm/dd)</small>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formLMP"/><small>(yyyy/mm/dd)</small>:
                                 <input type="text" name="lmp"
                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("lmp", "")))%>" size="11"/>
-                                &nbsp;&nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formMenopause"/>: <input
+                                &nbsp;&nbsp;&nbsp; <fmt:message key="oscarEncounter.formFemaleAnnual.formMenopause"/>: <input
                                         type="text" name="menopause" size="3" maxlength="3"
-                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("menopause", "")))%>"/> /<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formMenopauseUnit"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("menopause", "")))%>"/> /<fmt:message key="oscarEncounter.formFemaleAnnual.formMenopauseUnit"/></td>
                         </tr>
                         <tr>
                             <td><input type="checkbox" name="papSmearsN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("papSmearsN", "")))%> /></td>
                             <td><input type="checkbox" name="papSmearsAbN"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("papSmearsAbN", "")))%> /></td>
-                            <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formPreviousPap"/>: <input
+                            <td nowrap="true"><fmt:message key="oscarEncounter.formFemaleAnnual.formPreviousPap"/>: <input
                                     type="text" name="papSmears" style="width: 285px;"
                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("papSmears", "")))%>"/></td>
                         </tr>
@@ -461,36 +462,36 @@
                         <tr>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-                            <td colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.forReview"/>:
+                            <td colspan="4"><fmt:message key="oscarEncounter.formFemaleAnnual.forReview"/>:
                             </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td><input type="checkbox" name="drugs"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("drugs", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formDrugs"/></td>
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formDrugs"/></td>
                             <td style="width: 190px;">&nbsp;</td>
                             <td align="right"><input type="checkbox" name="medSheet"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("medSheet", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formMedSheet"/></td>
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formMedSheet"/></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td><input type="checkbox" name="allergies"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("allergies", "")))%> /></td>
-                            <td colspan="2" nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formAllergies"/></td>
+                            <td colspan="2" nowrap="true"><fmt:message key="oscarEncounter.formFemaleAnnual.formAllergies"/></td>
                             <td align="right"><input type="checkbox" name="frontSheet1"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("frontSheet1", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formFrontSheet"/></td>
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formFrontSheet"/></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td><input type="checkbox" name="familyHistory"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("familyHistory", "")))%> /></td>
-                            <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formFamilyHist"/></td>
+                            <td colspan="2"><fmt:message key="oscarEncounter.formFemaleAnnual.formFamilyHist"/></td>
                             <td align="right"><input type="checkbox" name="frontSheet2"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("frontSheet2", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formFrontSheet"/></td>
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formFrontSheet"/></td>
                         </tr>
                     </table>
                 </td>
@@ -501,12 +502,12 @@
                 <td class="DashedBorder">
                     <table>
                         <tr>
-                            <td colspan="3" nowrap="true"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgLifestyleReview"/>:</b></td>
-                            <td><b><i><small>("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgAnyConcerns"/>")</small></i></b></td>
+                            <td colspan="3" nowrap="true"><b><fmt:message key="oscarEncounter.formFemaleAnnual.msgLifestyleReview"/>:</b></td>
+                            <td><b><i><small>("<fmt:message key="oscarEncounter.formFemaleAnnual.msgAnyConcerns"/>")</small></i></b></td>
                         </tr>
                         <tr>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formNo"/></td>
-                            <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formYes"/></td>
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formNo"/></td>
+                            <td colspan="2"><fmt:message key="oscarEncounter.formFemaleAnnual.formYes"/></td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -514,7 +515,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("smokingNo", "")))%> /></td>
                             <td><input type="checkbox" name="smokingYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("smokingYes", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formSmoking"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formSmoking"/>:
                             </td>
                             <td align="right"><input type="text" name="smoking"
                                                      class="LifestyleReview"
@@ -525,7 +526,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("alcoholNo", "")))%> /></td>
                             <td><input type="checkbox" name="alcoholYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("alcoholYes", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formAlcohol"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formAlcohol"/>:
                             </td>
                             <td align="right"><input type="text" name="alcohol"
                                                      class="LifestyleReview"
@@ -536,7 +537,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("otcNo", "")))%> /></td>
                             <td><input type="checkbox" name="otcYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("otcYes", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formIllicitDrugs"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formIllicitDrugs"/>:
                             </td>
                             <td align="right"><input type="text" name="otc"
                                                      class="LifestyleReview"
@@ -547,7 +548,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("exerciseNo", "")))%> /></td>
                             <td><input type="checkbox" name="exerciseYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("exerciseYes", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formExercise"/></td>
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formExercise"/></td>
                             <td align="right"><input type="text" name="exercise"
                                                      class="LifestyleReview"
                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("exercise", "")))%>"/></td>
@@ -557,7 +558,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("nutritionNo", "")))%> /></td>
                             <td><input type="checkbox" name="nutritionYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("nutritionYes", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formNutrition"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formNutrition"/>:
                             </td>
                             <td align="right"><input type="text" name="nutrition"
                                                      class="LifestyleReview"
@@ -568,7 +569,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("dentalNo", "")))%> /></td>
                             <td><input type="checkbox" name="dentalYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("dentalYes", "")))%> /></td>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formDentalHygiene"/>:
+                            <td><fmt:message key="oscarEncounter.formFemaleAnnual.formDentalHygiene"/>:
                             </td>
                             <td align="right"><input type="text" name="dental"
                                                      class="LifestyleReview"
@@ -579,7 +580,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("relationshipNo", "")))%> /></td>
                             <td valign="top"><input type="checkbox" name="relationshipYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("relationshipYes", "")))%> /></td>
-                            <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formRelationship"/>:
+                            <td valign="top"><fmt:message key="oscarEncounter.formFemaleAnnual.formRelationship"/>:
                             </td>
                             <td align="right"><textarea name="relationship"
                                                         class="LifestyleReview"
@@ -591,7 +592,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("sexualityNo", "")))%> /></td>
                             <td><input type="checkbox" name="sexualityYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("sexualityYes", "")))%> /></td>
-                            <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formSexualityRisks"/>:
+                            <td nowrap="true"><fmt:message key="oscarEncounter.formFemaleAnnual.formSexualityRisks"/>:
                             </td>
                             <td align="right"><input type="text" name="sexuality"
                                                      class="LifestyleReview"
@@ -602,7 +603,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("occupationalNo", "")))%> /></td>
                             <td><input type="checkbox" name="occupationalYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("occupationalYes", "")))%> /></td>
-                            <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formOccupationalRisks"/>:
+                            <td nowrap="true"><fmt:message key="oscarEncounter.formFemaleAnnual.formOccupationalRisks"/>:
                             </td>
                             <td align="right"><input type="text" name="occupational"
                                                      class="LifestyleReview"
@@ -613,7 +614,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("drivingNo", "")))%> /></td>
                             <td><input type="checkbox" name="drivingYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("drivingYes", "")))%> /></td>
-                            <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formDrivingSafety"/>:
+                            <td nowrap="true"><fmt:message key="oscarEncounter.formFemaleAnnual.formDrivingSafety"/>:
                             </td>
                             <td align="right"><input type="text" name="driving"
                                                      class="LifestyleReview"
@@ -624,7 +625,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("travelNo", "")))%> /></td>
                             <td><input type="checkbox" name="travelYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("travelYes", "")))%> /></td>
-                            <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formForeignTravel"/>:
+                            <td nowrap="true"><fmt:message key="oscarEncounter.formFemaleAnnual.formForeignTravel"/>:
                             </td>
                             <td align="right"><input type="text" name="travel"
                                                      class="LifestyleReview"
@@ -635,7 +636,7 @@
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("otherNo", "")))%> /></td>
                             <td valign="top"><input type="checkbox" name="otherYes"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("otherYes", "")))%> /></td>
-                            <td nowrap="true" valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formOther"/>:
+                            <td nowrap="true" valign="top"><fmt:message key="oscarEncounter.formFemaleAnnual.formOther"/>:
                             </td>
                             <td rowspan="3" align="right"><textarea name="otherLifestyle"
                                                                     class="LifestyleReview"
@@ -647,7 +648,7 @@
                 <td width="100%" valign="top" class="DashedBorder">
                     <table width="100%">
                         <tr>
-                            <td width="50%" colspan="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgScreeningReview"/>:</b></td>
+                            <td width="50%" colspan="2"><b><fmt:message key="oscarEncounter.formFemaleAnnual.msgScreeningReview"/>:</b></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -655,35 +656,35 @@
                         <tr>
                             <td><a
                                     href="javascript: popupPage(700,950,'<%= request.getContextPath() %>/decision/annualreview/annualreviewplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provN
-o=<%=Encode.forHtml(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnRisk"/></a></td>
+o=<%=Encode.forHtml(String.valueOf(provNo))%>');"><fmt:message key="oscarEncounter.formFemaleAnnual.btnRisk"/></a></td>
                         </tr>
                         <!--tr>
                     <td><input type="checkbox" name="mammogram" <%=Encode.forHtml(String.valueOf(props.getProperty("mammogram", "")))%> /></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formMammogram"/></td>
+                    <td><fmt:message key="oscarEncounter.formFemaleAnnual.formMammogram"/></td>
                 </tr>
                 <tr>
                     <td><input type="checkbox" name="breast" <%=Encode.forHtml(String.valueOf(props.getProperty("breast", "")))%> /></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formBreastSelf"/></td>
+                    <td><fmt:message key="oscarEncounter.formFemaleAnnual.formBreastSelf"/></td>
                 </tr>
                 <tr>
                     <td><input type="checkbox" name="pap" <%=Encode.forHtml(String.valueOf(props.getProperty("pap", "")))%> /></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formPapSmear"/></td>
+                    <td><fmt:message key="oscarEncounter.formFemaleAnnual.formPapSmear"/></td>
                 </tr>
                 <tr>
                     <td><input type="checkbox" name="femaleImmunization" <%=Encode.forHtml(String.valueOf(props.getProperty("femaleImmunization", "")))%> /></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formImmunization"/></td>
+                    <td><fmt:message key="oscarEncounter.formFemaleAnnual.formImmunization"/></td>
                 </tr>
                 <tr>
                     <td><input type="checkbox" name="precontraceptive" <%=Encode.forHtml(String.valueOf(props.getProperty("precontraceptive", "")))%> /></td>
-                    <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formPrecontraceptive"/></td>
+                    <td nowrap="true"><fmt:message key="oscarEncounter.formFemaleAnnual.formPrecontraceptive"/></td>
                 </tr>
                 <tr>
                     <td><input type="checkbox" name="femaleCardiac" <%=Encode.forHtml(String.valueOf(props.getProperty("femaleCardiac", "")))%> /></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formCardiacRiskFactors"/></td>
+                    <td><fmt:message key="oscarEncounter.formFemaleAnnual.formCardiacRiskFactors"/></td>
                 </tr>
                 <tr>
                     <td><input type="checkbox" name="osteoporosis" <%=Encode.forHtml(String.valueOf(props.getProperty("osteoporosis", "")))%> /></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formOsteoporosisRisk"/></td>
+                    <td><fmt:message key="oscarEncounter.formFemaleAnnual.formOsteoporosisRisk"/></td>
                 </tr>
                 <tr>
                     <td><input type="checkbox" name="femaleOther1c" <%=Encode.forHtml(String.valueOf(props.getProperty("femaleOther1c", "")))%> /></td>
@@ -699,39 +700,39 @@ o=<%=Encode.forHtml(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscar
         </table>
         <table width="100%" class="tableWithBorder">
             <tr>
-                <td colspan="9"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgPhysicalExam"/>:</b></td>
+                <td colspan="9"><b><fmt:message key="oscarEncounter.formFemaleAnnual.msgPhysicalExam"/>:</b></td>
             </tr>
             <tr>
-                <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgVitals"/>: </b></td>
-                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formBP"/>:
+                <td><b><fmt:message key="oscarEncounter.formFemaleAnnual.msgVitals"/>: </b></td>
+                <td><fmt:message key="oscarEncounter.formFemaleAnnual.formBP"/>:
                     <input type="text" name="bprTop" size="5" maxlength="3"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bprTop", "")))%>"/>/ <input
                             type="text" name="bprBottom" size="5" maxlength="3"
-                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bprBottom", "")))%>"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgR"/></td>
-                <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formPulse"/>:
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bprBottom", "")))%>"/> <fmt:message key="oscarEncounter.formFemaleAnnual.msgR"/></td>
+                <td align="right"><fmt:message key="oscarEncounter.formFemaleAnnual.formPulse"/>:
                 </td>
                 <td><input type="text" name="pulse" size="10" maxlength="10"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pulse", "")))%>"/> /min
                 </td>
-                <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formHeight"/>:
+                <td align="right"><fmt:message key="oscarEncounter.formFemaleAnnual.formHeight"/>:
                 </td>
                 <td><input type="text" name="height" size="10" maxlength="4"
-                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("height", "")))%>"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.HeightUnit"/></td>
-                <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formWeight"/>: <input
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("height", "")))%>"/> <fmt:message key="oscarEncounter.formFemaleAnnual.HeightUnit"/></td>
+                <td align="right"><fmt:message key="oscarEncounter.formFemaleAnnual.formWeight"/>: <input
                         type="text" name="weight" size="10" maxlength="4"
-                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight", "")))%>"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formWeightUnit"/></td>
+                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight", "")))%>"/> <fmt:message key="oscarEncounter.formFemaleAnnual.formWeightUnit"/></td>
             <tr>
                 <td>&nbsp;</td>
-                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formBP"/>:
+                <td><fmt:message key="oscarEncounter.formFemaleAnnual.formBP"/>:
                     <input type="text" name="bplTop" size="5" maxlength="3"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bplTop", "")))%>"/>/ <input
                             type="text" name="bplBottom" size="5" maxlength="3"
-                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bplBottom", "")))%>"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgL"/></td>
-                <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formRhythm"/>:
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bplBottom", "")))%>"/> <fmt:message key="oscarEncounter.formFemaleAnnual.msgL"/></td>
+                <td align="right"><fmt:message key="oscarEncounter.formFemaleAnnual.formRhythm"/>:
                 </td>
                 <td><input type="text" name="rhythm" size="10" maxlength="10"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rhythm", "")))%>"/></td>
-                <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formUrineDipstick"/>:
+                <td align="right"><fmt:message key="oscarEncounter.formFemaleAnnual.formUrineDipstick"/>:
                 </td>
                 <td><input type="text" name="urine" size="20" maxlength="30"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("urine", "")))%>"/></td>
@@ -742,7 +743,7 @@ o=<%=Encode.forHtml(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscar
                 <td rowspan="3">
                     <table width="100%" class="DashedBorder">
                         <tr>
-                            <td><b> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.msgPhysicalExam"/>: </b></td>
+                            <td><b> <fmt:message key="oscarEncounter.formFemaleAnnual.msgPhysicalExam"/>: </b></td>
                         </tr>
                         <tr>
                             <td><textarea name="physicalSigns"
@@ -758,7 +759,7 @@ o=<%=Encode.forHtml(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscar
                 <td>
                     <table width="100%">
                         <tr>
-                            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formAssessment"/></b></td>
+                            <td><b><fmt:message key="oscarEncounter.formFemaleAnnual.formAssessment"/></b></td>
                         </tr>
                         <tr>
                             <td align="center"><textarea name="assessment"
@@ -770,7 +771,7 @@ o=<%=Encode.forHtml(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscar
                 <td>
                     <table width="100%">
                         <tr>
-                            <td align="center"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formPlan"/></b></td>
+                            <td align="center"><b><fmt:message key="oscarEncounter.formFemaleAnnual.formPlan"/></b></td>
                         </tr>
                         <tr>
                             <td align="center"><textarea name="plan"
@@ -781,7 +782,7 @@ o=<%=Encode.forHtml(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscar
                 </td>
             </tr>
             <tr>
-                <td colspan="2" align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.formSignature"/>: <input
+                <td colspan="2" align="right"><fmt:message key="oscarEncounter.formFemaleAnnual.formSignature"/>: <input
                         type="text" name="signature" size="30"
                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("signature", "")))%>"/></td>
             </tr>
@@ -793,17 +794,17 @@ o=<%=Encode.forHtml(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscar
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit"
-                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnSave"/>"
+                                        value="<fmt:message key="oscarEncounter.formFemaleAnnual.btnSave"/>"
                                         onclick="javascript:return onSave();"/> <input type="submit"
-                                                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnSaveExit"/>"
+                                                                                       value="<fmt:message key="oscarEncounter.formFemaleAnnual.btnSaveExit"/>"
                                                                                        onclick="javascript:return onSaveExit();"/>
                     <input type="submit"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnExit"/>"
+                           value="<fmt:message key="oscarEncounter.formFemaleAnnual.btnExit"/>"
                            onclick="javascript:return onExit();"/> <input type="button"
-                                                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnPrint"/>"
+                                                                          value="<fmt:message key="oscarEncounter.formFemaleAnnual.btnPrint"/>"
                                                                           onclick="javascript:return onPrint();"/></td>
                 <td align='right'><a
-                        href="javascript: popupPage(700,950,'<%= request.getContextPath() %>/decision/annualreview/annualreviewplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnAnnualReview"/></a></td>
+                        href="javascript: popupPage(700,950,'<%= request.getContextPath() %>/decision/annualreview/annualreviewplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');"><fmt:message key="oscarEncounter.formFemaleAnnual.btnAnnualReview"/></a></td>
             </tr>
         </table>
 

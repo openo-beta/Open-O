@@ -26,6 +26,7 @@
 
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -51,7 +52,7 @@
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.title"/>
+        <title><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.title"/>
         </title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
@@ -109,12 +110,12 @@
                         <td>
                             <c:choose>
                                 <c:when test="${not empty requestScope.transType and requestScope.transType eq '1'}">
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgConsReq"/>
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgUpdated"/>
+                                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgConsReq"/>
+                                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgUpdated"/>
                                 </c:when>
                                 <c:when test="${not empty requestScope.transType and requestScope.transType eq '2'}">
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgConsReq"/>
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgCreated"/>
+                                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgConsReq"/>
+                                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgCreated"/>
                                 </c:when>
                                 <c:otherwise>
                                 </c:otherwise>
@@ -129,11 +130,11 @@
                         </c:if>
                     </tr>
                     <tr>
-                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgClose5Sec"/>
+                        <td><fmt:message key="oscarEncounter.oscarConsultationRequest.ConfirmConsultationRequest.msgClose5Sec"/>
                         </td>
                     </tr>
                     <tr>
-                        <td><a href="javascript: BackToOscar();"> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> </a></td>
+                        <td><a href="javascript: BackToOscar();"> <fmt:message key="global.btnClose"/> </a></td>
                     </tr>
                 </table>
             </td>

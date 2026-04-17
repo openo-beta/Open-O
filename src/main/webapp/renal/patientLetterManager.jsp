@@ -28,6 +28,7 @@
 <%@page import="java.util.*, java.io.*, ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -51,7 +52,7 @@
 <html>
 
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.renal.managePatientLetter"/></title>
+        <title><fmt:message key="admin.renal.managePatientLetter"/></title>
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
         <%
@@ -97,7 +98,7 @@
     </head>
 
     <body>
-    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.renal.managePatientLetter"/></h3>
+    <h3><fmt:message key="admin.renal.managePatientLetter"/></h3>
 
     <div class="container-fluid well">
         Use this section to customize the patient letter generated from the screening report.

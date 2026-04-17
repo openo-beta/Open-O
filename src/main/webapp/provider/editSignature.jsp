@@ -29,6 +29,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- add by caisi end<style>* {border:1px solid black;}</style> -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ page import="ca.openosp.openo.providers.data.*" %>
@@ -52,7 +53,7 @@
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
 
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editSignature.title"/></title>
+        <title><fmt:message key="provider.editSignature.title"/></title>
 
     </head>
 
@@ -71,15 +72,15 @@
     <!-- add by caisi end-->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editSignature.msgPrefs"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:message key="provider.editSignature.msgPrefs"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editSignature.msgProviderSignature"/></td>
+                        <td><fmt:message key="provider.editSignature.msgProviderSignature"/></td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
-                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
-                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a></td>
+                                href="javascript:popupStart(300,400,'About.jsp')"><fmt:message key="global.about"/></a> | <a
+                                href="javascript:popupStart(300,400,'License.jsp')"><fmt:message key="global.license"/></a></td>
                     </tr>
                 </table>
             </td>
@@ -90,7 +91,7 @@
                 <%
                     if (sig.hasSignature(curUser_no)) {
                 %>
-                <label for="signature"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editSignature.msgEdit"/></label>
+                <label for="signature"><fmt:message key="provider.editSignature.msgEdit"/></label>
                 <br>
                 <input type="text" name="signature" id="signature" size="40" value="<%= Encode.forHtmlAttribute(sig.getSignature(curUser_no)) %>" />
                 <br>
@@ -104,9 +105,9 @@
                 <!-- add by caisi end-->
 
                 <input type="submit"
-                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editSignature.btnUpdate"/>"/>
+                       value="<fmt:message key="provider.editSignature.btnUpdate"/>"/>
                 <% } else {%>
-                <label for="signature"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editSignature.msgNew"/></label>
+                <label for="signature"><fmt:message key="provider.editSignature.msgNew"/></label>
                 <br>
                 <input type="text" name="signature" id="signature" size="40" />
                 <br>
@@ -118,7 +119,7 @@
                 </caisi:isModuleLoad>
                 <!-- add by caisi end-->
                 <input type="submit"
-                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editSignature.btnSubmit"/>"/>
+                       value="<fmt:message key="provider.editSignature.btnSubmit"/>"/>
                 <%}%>
             </form></td>
         </tr>

@@ -40,6 +40,7 @@
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
@@ -64,14 +65,14 @@
 %>
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.title"/></title>
+        <title><fmt:message key="report.printLabel.title"/></title>
     </head>
     <body>
     <% if (!defaultPrinterName.isEmpty()) {
         if (silentPrint == true) {%>
-    <fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.SilentlyPrintToDefaultPrinter"/>
+    <fmt:message key="report.printLabel.SilentlyPrintToDefaultPrinter"/>
     <%} else {%>
-    <fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.DefaultPrinter"/>
+    <fmt:message key="report.printLabel.DefaultPrinter"/>
     <%}%>
     <%=Encode.forHtml(String.valueOf(defaultPrinterName))%>
     <%}%>

@@ -22,6 +22,7 @@
 
 
 <%@ include file="/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -49,15 +50,15 @@
 
     <table>
         <tr>
-            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="issueAdmin.code"/>:</th>
+            <th><fmt:message key="issueAdmin.code"/>:</th>
             <td><input type="text" name="issueAdmin.code" id="issueAdmin.code" /></td>
         </tr>
         <tr>
-            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="issueAdmin.description"/>:</th>
+            <th><fmt:message key="issueAdmin.description"/>:</th>
             <td><input type="text" name="issueAdmin.description" id="issueAdmin.description" /></td>
         </tr>
         <tr>
-            <th><fmt:setBundle basename="oscarResources"/><fmt:message key="issueAdmin.role"/>:</th>
+            <th><fmt:message key="issueAdmin.role"/>:</th>
             <td>
                 <%
                     String role = (String) request.getAttribute("issueRole");
@@ -81,7 +82,7 @@
         </tr>
         <!--
 <tr>
-     <th><fmt:setBundle basename="oscarResources"/><fmt:message key="issueAdmin.update_date"/>: </th>
+     <th><fmt:message key="issueAdmin.update_date"/>: </th>
      <td><input type="text" name="issueAdmin.update_date" id="issueAdmin.update_date" /></td>
 </tr>
 -->

@@ -25,6 +25,7 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 
@@ -32,7 +33,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <td><a href="search.jsp"> <img src="<%= request.getContextPath() %>/images/leftarrow.gif"
-                                       border="0" width="25" height="20" align="absmiddle"> <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.footer.btnBack"/></a></td>
+                                       border="0" width="25" height="20" align="absmiddle"> <fmt:message key="demographic.footer.btnBack"/></a></td>
 
         <td align="right">
             <caisi:isModuleLoad moduleName="caisi">
@@ -41,7 +42,7 @@
                 <caisi:isModuleLoad moduleName="caisi" reverse="true">
                 <a href="#" onClick="self.close();">
                     </caisi:isModuleLoad>
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.footer.btnClose"/><img
+                    <fmt:message key="demographic.footer.btnClose"/><img
                         src="<%= request.getContextPath() %>/images/rightarrow.gif" border="0" width="25" height="20"
                         align="absmiddle"></a>
 

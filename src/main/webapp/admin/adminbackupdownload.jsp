@@ -40,6 +40,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"   prefix="c"   %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"    prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%
     // 1) Null-safe session check
@@ -95,7 +96,6 @@
   </head>
   <body>
     <h3>
-      <fmt:setBundle basename="oscarResources"/>
       <fmt:message key="admin.admin.btnAdminBackupDownload"/>
     </h3>
 

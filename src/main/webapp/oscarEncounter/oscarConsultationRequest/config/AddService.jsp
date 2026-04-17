@@ -29,6 +29,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -45,7 +46,6 @@
         return;
     }
 %>
-<fmt:setBundle basename="oscarResources"/>
 <html>
 
 

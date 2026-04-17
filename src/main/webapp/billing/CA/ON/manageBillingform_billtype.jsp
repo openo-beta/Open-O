@@ -26,6 +26,7 @@
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, ca.openosp.*, java.net.*,ca.openosp.MyDateFormat" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.CtlBillingType" %>
@@ -59,7 +60,7 @@
         <td>&nbsp;</td>
         <td class="white">
             <p>&nbsp;<br>
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.manageBillingform_add.formDefaultBillType"/>
+                <fmt:message key="billing.manageBillingform_add.formDefaultBillType"/>
                 :<br>
                 <input type="hidden" name="bill_servicetype" value="<%=Encode.forHtmlAttribute(String.valueOf(type_id))%>">
                 <input type="hidden" name="billtype_old" value="<%=Encode.forHtmlAttribute(String.valueOf(billtype))%>">

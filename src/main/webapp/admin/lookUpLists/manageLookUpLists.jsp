@@ -25,6 +25,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <c:choose>
@@ -39,6 +40,6 @@
         <c:import url="./lookupList.jsp"/>
     </c:when>
     <c:otherwise>
-        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.lookuplists.nonfound"/>
+        <fmt:message key="admin.admin.lookuplists.nonfound"/>
     </c:otherwise>
 </c:choose>

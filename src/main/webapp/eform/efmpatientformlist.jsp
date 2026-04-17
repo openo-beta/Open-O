@@ -35,6 +35,7 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -71,7 +72,6 @@
     Demographic demographic = demographicManager.getDemographic(loggedInInfo, demographic_no);
 %>
 
-<fmt:setBundle basename="oscarResources"/>
 
 <html>
     <head>

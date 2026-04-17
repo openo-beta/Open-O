@@ -44,6 +44,7 @@
         import="java.sql.*, java.util.*, ca.openosp.MyDateFormat, ca.openosp.openo.commn.OtherIdManager,ca.openosp.openo.demographic.data.*,java.text.SimpleDateFormat,ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.event.EventService" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Appointment" %>
@@ -67,7 +68,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="90%">
             <tr bgcolor="#486ebd">
                 <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabel"/></font></th>
+                    <fmt:message key="appointment.addappointment.msgMainLabel"/></font></th>
             </tr>
         </table>
         <%
@@ -122,7 +123,7 @@
             if (rowsAffected == 1) {
         %>
         <p>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddSuccess"/></h1>
+        <h1><fmt:message key="appointment.addappointment.msgAddSuccess"/></h1>
 
         <script LANGUAGE="JavaScript">
             self.opener.refresh();
@@ -146,7 +147,7 @@
         } else {
         %>
         <p>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddFailure"/></h1>
+        <h1><fmt:message key="appointment.addappointment.msgAddFailure"/></h1>
 
         <%
             }
@@ -154,7 +155,7 @@
         <p></p>
         <hr width="90%"/>
         <form>
-            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>" onClick="window.close();">
+            <input type="button" value="<fmt:message key="global.btnClose"/>" onClick="window.close();">
         </form>
     </center>
     </body>

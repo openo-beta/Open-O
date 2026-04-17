@@ -40,6 +40,7 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ page import="ca.openosp.openo.report.data.RptSearchData,java.util.*" %>
@@ -116,7 +117,7 @@
 
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
 
         <script language="JavaScript">
@@ -322,7 +323,7 @@
                                         <input type="checkbox" name="select" id="select_email" value="email" <%= containsValue(formBean.getSelect(), "email") ? "checked" : "" %>/>
                                     </td>
                                     <td>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgEmail"/>
+                                        <fmt:message key="oscarReport.oscarReportscpbDemo.msgEmail"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -474,7 +475,7 @@
                                         <input type="checkbox" name="select" id="select_newsletter" value="newsletter" <%= containsValue(formBean.getSelect(), "newsletter") ? "checked" : "" %>/>
                                     </td>
                                     <td>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportDemoReport.frmNewsletter"/>
+                                        <fmt:message key="oscarReport.oscarReportDemoReport.frmNewsletter"/>
                                     </td>
                                 </tr>
                             </table>

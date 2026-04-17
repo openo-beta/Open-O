@@ -32,6 +32,7 @@
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <html>
     <head>
@@ -43,7 +44,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="90%">
             <tr bgcolor="#486ebd">
                 <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentupdatearecord.msgMainLabel"/></font></th>
+                    <fmt:message key="appointment.appointmentupdatearecord.msgMainLabel"/></font></th>
             </tr>
         </table>
         <%
@@ -51,7 +52,7 @@
             if (true) {
         %>
         <p>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentupdatearecord.msgUpdateSuccess"/></h1>
+        <h1><fmt:message key="appointment.appointmentupdatearecord.msgUpdateSuccess"/></h1>
         </p>
         <script LANGUAGE="JavaScript">
             self.opener.refresh();
@@ -61,7 +62,7 @@
         } else {
         %>
         <p>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentupdatearecord.msgUpdateFailure"/></h1>
+        <h1><fmt:message key="appointment.appointmentupdatearecord.msgUpdateFailure"/></h1>
         </p>
         <%
             }
@@ -69,7 +70,7 @@
         <p></p>
         <hr width="90%"/>
         <form>
-            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>" onClick="closeit()">
+            <input type="button" value="<fmt:message key="global.btnClose"/>" onClick="closeit()">
         </form>
     </center>
     </body>

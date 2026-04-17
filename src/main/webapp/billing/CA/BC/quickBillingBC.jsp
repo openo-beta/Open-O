@@ -53,6 +53,7 @@
                 org.springframework.web.context.WebApplicationContext" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <html>
 <head>
@@ -274,7 +275,7 @@
     <div id="header" class="bgLilac">
         <ul>
             <li>
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.provider.billProvider"/>
+                <fmt:message key="billing.provider.billProvider"/>
 
                 <select id="providers" name="provider">
                     <option value="empty">- Select Provider -</option>

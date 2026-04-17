@@ -41,6 +41,7 @@
 <!DOCTYPE html>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
@@ -49,55 +50,55 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.title"/></title>
+        <title><fmt:message key="oscarEncounter.formIntakeHx.title"/></title>
         <link rel="stylesheet" type="text/css" href="westernuStyle.css">
     </head>
     <body bgproperties="fixed" topmargin="0" leftmargin="0" rightmargin="0" onload="window.resizeTo(768,768)"
           bgcolor="#eeeeee">
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.title"/></h1>
+        <h1><fmt:message key="oscarEncounter.formIntakeHx.title"/></h1>
 
         <%@include file="formIntakeHxTitleBar.jsp" %>
 
         <!--Social History-->
-        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.socialHistoryTitle"/></h2>
+        <h2><fmt:message key="oscarEncounter.formIntakeHx.socialHistoryTitle"/></h2>
         <hr/>
         <table>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.wearSeatbelt"/></td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.wearSeatbelt"/></td>
                 <td><input type="text" name="SeatBelt" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("SeatBelt","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.smoker"/></td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.smoker"/></td>
                 <td><input type="text" name="smoker" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("smoker","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.smokingAmount"/></td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.smokingAmount"/></td>
                 <td><input type="text" name="HowMuchSmoke" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HowMuchSmoke","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pastSmoking"/></td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.pastSmoking"/></td>
                 <td><input type="text" name="smokeInPast" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("smokeInPast","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.streetDrugs"/></td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.streetDrugs"/></td>
                 <td><input type="text" name="UseDrugs" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("UseDrugs","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.drinkAlcohol"/></td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.drinkAlcohol"/></td>
                 <td><input type="text" name="Alcohol" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Alcohol","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.numberOfDrinks"/></td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.numberOfDrinks"/></td>
                 <td><input type="text" name="HowManyDrinks" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HowManyDrinks","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.drinksPerWeek"/></td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.drinksPerWeek"/></td>
                 <td><input type="text" name="HowManyDrinksWeek" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HowManyDrinksWeek","")))%>"/>
                 </td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.hoursOfExercise"/></td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.hoursOfExercise"/></td>
                 <td><input type="text" name="exercise" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("exercise","")))%>"/></td>
             </tr>
         </table>

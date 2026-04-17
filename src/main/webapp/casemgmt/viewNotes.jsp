@@ -28,6 +28,7 @@
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay"%>
 <%  long start = System.currentTimeMillis(); %>
 <%@include file="/casemgmt/taglibs.jsp"%>
+<fmt:setBundle basename="oscarResources"/>
 <%@page
 	import="java.util.List, java.util.Set, java.util.Iterator, ca.openosp.openo.casemgmt.model.CaseManagementIssue, ca.openosp.openo.casemgmt.model.CaseManagementNoteExt, ca.openosp.openo.casemgmt.model.CaseManagementNote"%>
 <%@page import="ca.openosp.openo.commn.model.Provider"%>
@@ -74,7 +75,7 @@
 	SecurityManager securityManager = new SecurityManager();
 	if(securityManager.hasWriteAccess("_" + request.getParameter("issue_code"),roleName$)) {
 %>
-<a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${e:forHtmlAttribute(param.title)}" />','',0,'','','','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("addUrl")))%>0', '<c:out value="${e:forHtmlAttribute(param.cmd)}"/>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("identUrl")))%>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("cppIssue")))%>','','<c:out value="${e:forHtmlAttribute(param.demographicNo)}"/>');">+</a>
+<a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<fmt:message key="${e:forHtmlAttribute(param.title)}" />','',0,'','','','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("addUrl")))%>0', '<c:out value="${e:forHtmlAttribute(param.cmd)}"/>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("identUrl")))%>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("cppIssue")))%>','','<c:out value="${e:forHtmlAttribute(param.demographicNo)}"/>');">+</a>
 <% } else { %>
 	&nbsp;
 <% } %>
@@ -82,7 +83,7 @@
 </div>
 <div class="nav-menu-title">
 <h3>
-	<a href="javascript:void(0)" onclick="return showIssueHistory('<c:out value="${e:forHtmlAttribute(param.demographicNo)}"/>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("issueIds")))%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="${e:forJavaScript(param.title)}" /></a>
+	<a href="javascript:void(0)" onclick="return showIssueHistory('<c:out value="${e:forHtmlAttribute(param.demographicNo)}"/>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("issueIds")))%>');"><fmt:message key="${e:forJavaScript(param.title)}" /></a>
 </h3>
 </div>
 </div>
@@ -165,7 +166,7 @@
                    title="Rev:<%=Encode.forHtmlAttribute(String.valueOf(note.getRevision()))%> - Last update:<%=Encode.forHtmlAttribute(String.valueOf(note.getUpdate_date()))%>"
                    id="listNote<%=Encode.forHtmlAttribute(String.valueOf(note.getId()))%>"
                    href="javascript:void(0)"
-                   onclick="showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${e:forHtmlAttribute(param.title)}" />','<%=Encode.forJavaScript(String.valueOf(note.getId()))%>','<%= Encode.forJavaScript(editors.toString()) %>','<%=Encode.forJavaScript(String.valueOf(note.getObservation_date()))%>','<%=Encode.forJavaScript(String.valueOf(note.getRevision()))%>','<%=Encode.forJavaScript(String.valueOf(noteTxt))%>', '<%=Encode.forJavaScript(String.valueOf(request.getAttribute("addUrl")))%><%=Encode.forJavaScript(String.valueOf(note.getId()))%>', '<%=Encode.forJavaScript(request.getParameter("cmd"))%>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("identUrl")))%>','<%=Encode.forJavaScript(String.valueOf(strNoteIssues.toString()))%>','<%=Encode.forJavaScript(String.valueOf(strNoteExts))%>','<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>');return false;">
+                   onclick="showEdit(event,'<fmt:message key="${e:forHtmlAttribute(param.title)}" />','<%=Encode.forJavaScript(String.valueOf(note.getId()))%>','<%= Encode.forJavaScript(editors.toString()) %>','<%=Encode.forJavaScript(String.valueOf(note.getObservation_date()))%>','<%=Encode.forJavaScript(String.valueOf(note.getRevision()))%>','<%=Encode.forJavaScript(String.valueOf(noteTxt))%>', '<%=Encode.forJavaScript(String.valueOf(request.getAttribute("addUrl")))%><%=Encode.forJavaScript(String.valueOf(note.getId()))%>', '<%=Encode.forJavaScript(request.getParameter("cmd"))%>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("identUrl")))%>','<%=Encode.forJavaScript(String.valueOf(strNoteIssues.toString()))%>','<%=Encode.forJavaScript(String.valueOf(strNoteExts))%>','<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>');return false;">
             </c:when>
             <c:otherwise>
                 <a class="topLinks"
@@ -174,7 +175,7 @@
                    title="Rev:<%=Encode.forHtmlAttribute(String.valueOf(note.getRevision()))%> - Last update:<%=Encode.forHtmlAttribute(String.valueOf(note.getUpdate_date()))%>"
                    id="listNote<%=Encode.forHtmlAttribute(String.valueOf(note.getId()))%>"
                    href="javascript:void(0)"
-                   onclick="showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${e:forHtmlAttribute(param.title)}" />','<%=Encode.forJavaScript(String.valueOf(note.getId()))%>','<%= Encode.forJavaScript(editors.toString()) %>','<%=Encode.forJavaScript(String.valueOf(note.getObservation_date()))%>','<%=Encode.forJavaScript(String.valueOf(note.getRevision()))%>','<%=Encode.forJavaScript(String.valueOf(noteTxt))%>', '<%=Encode.forJavaScript(String.valueOf(request.getAttribute("addUrl")))%><%=Encode.forJavaScript(String.valueOf(note.getId()))%>', '<%=Encode.forJavaScript(request.getParameter("cmd"))%>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("identUrl")))%>','<%=Encode.forJavaScript(String.valueOf(strNoteIssues.toString()))%>','<%=Encode.forJavaScript(String.valueOf(strNoteExts))%>','<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>');return false;">
+                   onclick="showEdit(event,'<fmt:message key="${e:forHtmlAttribute(param.title)}" />','<%=Encode.forJavaScript(String.valueOf(note.getId()))%>','<%= Encode.forJavaScript(editors.toString()) %>','<%=Encode.forJavaScript(String.valueOf(note.getObservation_date()))%>','<%=Encode.forJavaScript(String.valueOf(note.getRevision()))%>','<%=Encode.forJavaScript(String.valueOf(noteTxt))%>', '<%=Encode.forJavaScript(String.valueOf(request.getAttribute("addUrl")))%><%=Encode.forJavaScript(String.valueOf(note.getId()))%>', '<%=Encode.forJavaScript(request.getParameter("cmd"))%>','<%=Encode.forJavaScript(String.valueOf(request.getAttribute("identUrl")))%>','<%=Encode.forJavaScript(String.valueOf(strNoteIssues.toString()))%>','<%=Encode.forJavaScript(String.valueOf(strNoteExts))%>','<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>');return false;">
             </c:otherwise>
         </c:choose>
 
@@ -186,7 +187,6 @@
 %>
 
     <%-- Remote Notes Section --%>
-    <fmt:setBundle basename="oscarResources"/>
 <fmt:message key="${e:forHtmlAttribute(param.title)}" var="resolvedTitleRaw"/>
 <c:set var="resolvedTitle" value="${fn:escapeXml(resolvedTitleRaw)}"/>
 

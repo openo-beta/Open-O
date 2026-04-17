@@ -43,61 +43,62 @@
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.title"/></title>
+        <title><fmt:message key="oscarEncounter.formIntakeHx.title"/></title>
         <link rel="stylesheet" type="text/css" href="westernuStyle.css">
     </head>
     <body bgproperties="fixed" topmargin="0" leftmargin="0" rightmargin="0" onload="window.resizeTo(768,768)"
           bgcolor="#eeeeee">
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.title"/></h1>
+        <h1><fmt:message key="oscarEncounter.formIntakeHx.title"/></h1>
 
         <%@include file="formIntakeHxTitleBar.jsp" %>
 
         <!--Demographic Information-->
-        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.sectionDemographicTitle"/></h2>
+        <h2><fmt:message key="oscarEncounter.formIntakeHx.sectionDemographicTitle"/></h2>
         <hr/>
 
         <table>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.chartNo"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.chartNo"/>:</td>
                 <td><input type="text" name="student_number" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_number","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.firstName"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.firstName"/>:</td>
                 <td><input type="text" name="student_firstname" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_firstname","")))%>"/>
                 </td>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.lastName"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.lastName"/>:</td>
                 <td><input type="text" name="student_surname" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_surname","")))%>"/>
                 </td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.dob"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.dob"/>:</td>
                 <td><input type="text" name="student_dob" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_dob","")))%>"/></td>
 
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.sex"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.sex"/>:</td>
                 <td><input type="text" name="student_sex" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_sex","")))%>"/></td>
             </tr>
         </table>
 
         <!--Emergency Contact-->
-        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.sectionEmergencyContact"/></h2>
+        <h2><fmt:message key="oscarEncounter.formIntakeHx.sectionEmergencyContact"/></h2>
         <hr/>
         <table>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.emergencyName"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.emergencyName"/>:</td>
                 <td><input type="text" name="student_ercontact_name"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_ercontact_name","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.emergencyPhone"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.emergencyPhone"/>:</td>
                 <td><input type="text" name="student_ercontact_phone"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_ercontact_phone","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.emergencyAddress"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.emergencyAddress"/>:</td>
                 <td><input type="text" name="student_ercontact_address"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_ercontact_address","")))%>"/></td>
             </tr>
@@ -109,21 +110,21 @@
         </table>
 
         <!--Home Physician-->
-        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.sectionHomePhysician"/></h2>
+        <h2><fmt:message key="oscarEncounter.formIntakeHx.sectionHomePhysician"/></h2>
         <hr/>
         <table>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.physicianName"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.physicianName"/>:</td>
                 <td><input type="text" name="student_physician_name"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_physician_name","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.physicianTelephone"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.physicianTelephone"/>:</td>
                 <td><input type="text" name="student_physician_phone"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_physician_phone","")))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.physicianAddress"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.physicianAddress"/>:</td>
                 <td><input type="text" name="student_physician_address"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_physician_address","")))%>"/></td>
             </tr>
@@ -135,11 +136,11 @@
         </table>
 
         <!--Academic Information-->
-        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.sectionAcademicInfo"/></h2>
+        <h2><fmt:message key="oscarEncounter.formIntakeHx.sectionAcademicInfo"/></h2>
         <hr/>
         <table>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.academicFaculty"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.academicFaculty"/>:</td>
                 <td><input type="text" name="student_faculty_phone"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("student_faculty_phone","")))%>"/></td>
             </tr>
@@ -153,11 +154,11 @@
                 }
             %>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.academicEnrollment"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.academicEnrollment"/>:</td>
                 <td><input type="text" name="pt_ft" value="<%=Encode.forHtmlAttribute(String.valueOf(enrollment))%>"/></td>
             </tr>
             <tr>
-                <td class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.academicYear"/>:</td>
+                <td class="title"><fmt:message key="oscarEncounter.formIntakeHx.academicYear"/>:</td>
                 <td><input type="text" name="academic_year" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("academic_year","")))%>"/></td>
             </tr>
         </table>

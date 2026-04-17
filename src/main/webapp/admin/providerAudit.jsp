@@ -80,6 +80,7 @@
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
@@ -153,9 +154,9 @@
                         </td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a href="javascript:popupStart(300,400, '<%= request.getContextPath() %>/oscarEncounter/About.jsp/About.jsp')">
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
+                            <fmt:message key="global.about"/></a> | <a
                                 href="javascript:popupStart(300,400, '<%= request.getContextPath() %>/oscarEncounter/License.jsp')">
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
+                            <fmt:message key="global.license"/></a>
                         </td>
                     </tr>
                 </table>

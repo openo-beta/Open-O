@@ -61,6 +61,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%
     String curProvider_no = (String) session.getAttribute("user");
@@ -196,7 +197,7 @@
 
     <head>
         <title>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="ectViewConsultationRequests.title"/>
+            <fmt:message key="ectViewConsultationRequests.title"/>
         </title>
 
 
@@ -206,7 +207,7 @@
               title="win2k-cold-1"/>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
         <!--META HTTP-EQUIV="Refresh" CONTENT="20;"-->
 
@@ -248,7 +249,7 @@ background-color:rgb(212, 212, 254);
         function popupOscarRx(vheight, vwidth, varpage) { //open a new popup window
             var page = varpage;
             windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsReq"/>", windowprops);
+            var popup = window.open(varpage, "<fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsReq"/>", windowprops);
             if (popup != null) {
                 if (popup.opener == null) {
                     popup.opener = self;
@@ -260,7 +261,7 @@ background-color:rgb(212, 212, 254);
         function popupOscarConsultationConfig(vheight, vwidth, varpage) { //open a new popup window
             var page = varpage;
             windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsConfig"/>", windowprops);
+            var popup = window.open(varpage, "<fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsConfig"/>", windowprops);
             if (popup != null) {
                 if (popup.opener == null) {
                     popup.opener = self;
@@ -307,14 +308,14 @@ background-color:rgb(212, 212, 254);
                 <table class="TopStatusBar">
                     <tr>
                         <td class="Header" NOWRAP>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msfConsReqForTeam"/>
+                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msfConsReqForTeam"/>
                             =
                             <%
                                 if (team.equals("-1")) {
                             %>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/>
+                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/>
                             <% } else if (team.isEmpty()) { %>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/>
+                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/>
                             <% } else { %>
                             <%= Encode.forHtml(team) %>
                             <% } %>
@@ -332,7 +333,7 @@ background-color:rgb(212, 212, 254);
                         <td NOWRAP>
                             <a href="javascript:popupOscarConsultationConfig(700,960,'<%=request.getContextPath()%>/oscarEncounter/oscarConsultationRequest/config/ShowAllServices.jsp')"
                                class="consultButtonsActive">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEditSpecialists"/>
+                                <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEditSpecialists"/>
                             </a>
                         </td>
                     </tr>
@@ -343,15 +344,15 @@ background-color:rgb(212, 212, 254);
                     <tr>
                         <td style="margin: 0; padding: 0;">
                             <form action="${pageContext.request.contextPath}/oscarEncounter/ViewConsultation.do" method="get">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formSelectTeam"/>:
+                                <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formSelectTeam"/>:
                                 <select name="sendTo">
-                                    <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/></option>
+                                    <option value=""><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/></option>
                                     <%
                                         if (team.equals("-1")) { %>
-                                    <option value="-1" selected><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/></option>
+                                    <option value="-1" selected><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/></option>
                                     <% } else {
                                     %>
-                                    <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/></option>
+                                    <option value="-1"><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/></option>
                                     <% }
                                         for (int i = 0; i < consultUtil.teamVec.size(); i++) {
                                             String te = (String) consultUtil.teamVec.get(i);
@@ -368,20 +369,20 @@ background-color:rgb(212, 212, 254);
                                     %>
                                 </select>
                                 <input type="submit"
-                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.btnConsReq"/>"/>
+                                       value="<fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.btnConsReq"/>"/>
                                 <div style="margin: 0; padding: 0; ">
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStart"/>:
+                                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStart"/>:
                                     <input type="text" name="startDate" size="8" id="startDate" value="<%=Encode.forHtmlAttribute(String.valueOf(formattedStartDate))%>" /><a id="SCal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEnd"/>:
+                                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEnd"/>:
                                     <input type="text" name="endDate" size="8" id="endDate" value="<%=Encode.forHtmlAttribute(String.valueOf(formattedEndDate))%>" /><a id="ECal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:
+                                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:
                                     <input type="checkbox" name="includeCompleted" <%= includeCompleted ? "checked" : "" %> />
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSearchon"/>
+                                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSearchon"/>
                                     <input type="radio" name="searchDate" value="0" titleKey="Search on Referal Date"
                                         <%= "0".equals(searchDate) ? "checked" : "" %> />
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgApptDate"/>
+                                    <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgApptDate"/>
                                     <input type="radio" name="searchDate" value="1" titleKey="Search on Appt. Date"
                                         <%= "1".equals(searchDate) ? "checked" : "" %> />
                                     <input type="hidden" name="currentTeam" id="currentTeam" value="<%= Encode.forHtmlAttribute(team != null ? team : "") %>"/>
@@ -399,56 +400,56 @@ background-color:rgb(212, 212, 254);
                                 <tr>
                                     <th align="left" class="VCRheads" width="10%">
                                         <a href=# onclick="setOrder('1'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStatus"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStatus"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads" width="10%">
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgUrgency"/>
+                                        <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgUrgency"/>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('2'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgTeam"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgTeam"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads" width="75">
                                         <a href=# onclick="setOrder('3'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPatient"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPatient"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('4'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgProvider"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgProvider"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('5'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgService"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgService"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('6'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsultant"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsultant"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('7'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgRefDate"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgRefDate"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('8'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgAppointmentDate"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgAppointmentDate"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('9'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgFollowUpDate"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgFollowUpDate"/>
                                         </a>
                                     </th>
                                     <% if (bMultisites) { %>
                                     <th align="left" class="VCRheads">
                                         <a href=# onclick="setOrder('10'); return false;">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSiteName"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSiteName"/>
                                         </a>
                                     </th>
                                     <%} %>
@@ -528,15 +529,15 @@ background-color:rgb(212, 212, 254);
                                 <tr <%=overdue ? "style='color:red;'" : ""%>>
                                     <td class="stat<%=Encode.forHtmlAttribute(status)%>">
                                         <% if (status.equals("1")) { %>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgND"/>
+                                        <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgND"/>
                                         <% } else if (status.equals("2")) { %>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSR"/>
+                                        <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSR"/>
                                         <% } else if (status.equals("3")) { %>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPR"/>
+                                        <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPR"/>
                                         <% } else if (status.equals("4")) { %>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgDONE"/>
+                                        <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgDONE"/>
                                         <% }else if(status.equals("5")) { %>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgBC"/>
+                                        <fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgBC"/>
                                         <%}%>
                                     </td>
                                     <td class="stat<%=Encode.forHtmlAttribute(status)%>">

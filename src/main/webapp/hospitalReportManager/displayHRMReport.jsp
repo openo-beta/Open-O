@@ -13,6 +13,7 @@
 <%@page import="java.text.SimpleDateFormat" %>
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -415,14 +416,14 @@
         <input type="button" id="mainTickler_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" value="Tickler"
                onClick="popupPatient(710, 1024,'<%= request.getContextPath() %>/tickler/ForwardDemographicTickler.do?docType=HRM&docId=<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>&demographic_no=', 'Tickler','<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
         <input type="button" id="mainEchart_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"
-               value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
+               value=" <fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
                onClick="popupPatient(710, 1024,'<%= request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?updateParent=false&reason=
-               <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.labResults"/>&curDate=<%=Encode.forHtml(String.valueOf(currentDate))%>>&appointmentNo=&appointmentDate=&startTime=&status=&demographicNo=', 'encounter', '<%=Encode.forHtml(String.valueOf(hrmReportId))%>','<%=Encode.forHtml(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
+               <fmt:message key="oscarMDS.segmentDisplay.labResults"/>&curDate=<%=Encode.forHtml(String.valueOf(currentDate))%>>&appointmentNo=&appointmentDate=&startTime=&status=&demographicNo=', 'encounter', '<%=Encode.forHtml(String.valueOf(hrmReportId))%>','<%=Encode.forHtml(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
         <input type="button" id="mainMaster_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"
-               value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnMaster"/>"
+               value=" <fmt:message key="oscarMDS.segmentDisplay.btnMaster"/>"
                onClick="popupPatient(710,1024,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?displaymode=edit&dboperation=search_detail&demographic_no=','master','<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
         <input type="button" id="mainApptHistory_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"
-               value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnApptHist"/>"
+               value=" <fmt:message key="oscarMDS.segmentDisplay.btnApptHist"/>"
                onClick="popupPatient(710,1024,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?orderby=appttime&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25&demographic_no=','ApptHist','<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
         <% if (obgynShortcuts && demographicLink != null) {%>
         <input type="button" value="AR1-ILI"

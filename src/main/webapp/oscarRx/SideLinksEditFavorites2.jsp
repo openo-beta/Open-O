@@ -43,6 +43,7 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
     RxSessionBean bean2 = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
@@ -58,7 +59,7 @@
     <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
         <dl>
         <dt class="PropSheetLevel1CurrentItem<%=Encode.forHtmlAttribute(String.valueOf(alle))%>">
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/>
+            <fmt:message key="oscarRx.sideLinks.msgAllergies"/>
             <a href="javascript:void(0);"
                onclick="window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>';"
                style="width: 200px">+</a>
@@ -81,7 +82,7 @@
     <security:oscarSec roleName="<%=roleName$%>" objectName="_rxresearch" rights="r" reverse="<%=false%>">
 <dl>
         <dt>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgDiseases"/>
+            <fmt:message key="oscarRx.sideLinks.msgDiseases"/>
         </dt>
         <%
             DxresearchDAO dxreasearchDao = SpringUtils.getBean(DxresearchDAO.class);
@@ -112,7 +113,7 @@
     <security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="r" reverse="<%=false%>">
 <dl>
         <dt>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgMedHistory"/>
+            <fmt:message key="oscarRx.sideLinks.msgMedHistory"/>
         </dt>
         <%
             CaseManagementManager cmgmtMgr1 = SpringUtils.getBean(CaseManagementManager.class);
@@ -133,9 +134,9 @@
 </dl>
     </security:oscarSec>
 <dl>
-    <dt><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/>
+    <dt><fmt:message key="oscarRx.sideLinks.msgFavorites"/>
         <a href="${pageContext.request.contextPath}/oscarRx/EditFavorites2.jsp">edit</a>
-        <a href="${pageContext.request.contextPath}/oscarRx/CopyFavorites2.jsp">copy</a> <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="rx.sideLinks.msgCopyFavorites"/> --%>
+        <a href="${pageContext.request.contextPath}/oscarRx/CopyFavorites2.jsp">copy</a> <%-- <fmt:message key="rx.sideLinks.msgCopyFavorites"/> --%>
     </dt>
 
             <%

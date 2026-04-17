@@ -26,6 +26,7 @@
 
 <%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="java.sql.*, java.util.*, ca.openosp.*" errorPage="/errorpage.jsp" %>
@@ -54,7 +55,7 @@
     <center>
         <table border="0" cellspacing="0" cellpadding="0" width="90%">
             <tr bgcolor="#486ebd">
-                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerupdatepreference.description"/></font></th>
+                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><fmt:message key="provider.providerupdatepreference.description"/></font></th>
             </tr>
         </table>
         <%
@@ -97,7 +98,7 @@
         <hr width="90%"/>
         <form><input type="button"
                      value=
-                         <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> onClick="self.close()">
+                         <fmt:message key="global.btnClose"/> onClick="self.close()">
         </form>
     </center>
     </body>

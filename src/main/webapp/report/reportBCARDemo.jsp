@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -28,7 +29,7 @@
 <html lang="en">
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.title"/></title>
+    <title><fmt:message key="oscarReport.oscarReportscpbDemo.title"/></title>
     <LINK REL="StyleSheet" HREF="<%= request.getContextPath() %>/web.css" TYPE="text/css">
     <!-- calendar stylesheet -->
     <link rel="stylesheet" type="text/css" media="all"
@@ -86,16 +87,16 @@
           action="reportBCARDemo2.jsp">
         <table BORDER="1" CELLPADDING="0" CELLSPACING="0" WIDTH="80%">
             <tr BGCOLOR="#CCFFFF">
-                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgHeader"/></th>
+                <th><fmt:message key="oscarReport.oscarReportscpbDemo.msgHeader"/></th>
             </tr>
         </table>
 </center>
 <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
     <tr bgcolor="silver">
         <td><input type="hidden" name="demoReport" value="1"> <input
-                type="submit" name="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.btnHTML"/>"> |
+                type="submit" name="submit" value="<fmt:message key="oscarReport.oscarReportscpbDemo.btnHTML"/>"> |
             <input
-                    type="submit" name="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.btnCSV"/>">
+                    type="submit" name="submit" value="<fmt:message key="oscarReport.oscarReportscpbDemo.btnCSV"/>">
             BCAR: <input
                     type="radio" name="bcartype" value="BCAR"/> BCAR2007: <input
                     type="radio" id="bcartype" checked name="bcartype" value="BCAR2007"/>
@@ -107,67 +108,67 @@
 
             <table width="100%" border="0" cellspacing="2" cellpadding="0">
                 <tr bgcolor="#EEdddd">
-                    <td colspan="2" align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgColHeader"/></td>
+                    <td colspan="2" align="center"><fmt:message key="oscarReport.oscarReportscpbDemo.msgColHeader"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right" width="10%"><b><input type="checkbox"
                                                             name="last_name"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgLastName"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgLastName"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox"
                                                 name="first_name"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgFirstName"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgFirstName"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox"
                                                 name="date_joined"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgDateJoined"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgDateJoined"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="hin"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgPHN"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgPHN"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="hc_type"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgProvince"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgProvince"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="address"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgAddress"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgAddress"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="city"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgCity"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgCity"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="postal"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgPostalCode"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgPostalCode"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="phone"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgHPhone"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgHPhone"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="phone2"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgWPhone"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgWPhone"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="email"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgEmail"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgEmail"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox"
                                                 name="prefer_language"></b></td>
-                    <td nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgPrefLang"/></td>
+                    <td nowrap><fmt:message key="oscarReport.oscarReportscpbDemo.msgPrefLang"/></td>
                 </tr>
 
                 <% if (oscarVariables.getProperty("demographicExt") != null) {
@@ -187,7 +188,7 @@
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="c_EDD"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgEDD"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgEDD"/></td>
                 </tr>
                 <!--  tr bgcolor="#EEEEFF">
                 <td align="right">
@@ -200,12 +201,12 @@
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox"
                                                 name="pg1_famPhy"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgFamPhys"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgFamPhys"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox"
                                                 name="pg1_partnerName"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgPartner"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgPartner"/></td>
                 </tr>
             </table>
 
@@ -213,12 +214,12 @@
         <td valign="top"><!-- right hand -->
             <table width="100%" border="0" cellspacing="2" cellpadding="2">
                 <tr bgcolor="#EEdddd">
-                    <td colspan="3" align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgLimit"/></td>
+                    <td colspan="3" align="center"><fmt:message key="oscarReport.oscarReportscpbDemo.msgLimit"/></td>
                 </tr>
                 <tr bgcolor="#EEEEFF">
                     <td align="right" width="6%"><b><input type="checkbox"
                                                            name="filter_1" checked></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgActiveClient"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgActiveClient"/></td>
                     <td width="1%" align="right"><input type="hidden"
                                                         name="value_1" value="demographic.patient_status='AC'"> <input
                             type="hidden" name="position_1" value="sql"> <input
@@ -228,7 +229,7 @@
                 <tr bgcolor="">
                     <td align="right"><b><input type="checkbox" name="filter_2"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgInActiveClient"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgInActiveClient"/></td>
                     <td align="right"><input type="hidden" name="value_2"
                                              value="demographic.patient_status='IN'"> <input
                             type="hidden" name="position_2" value="sql"> <input
@@ -238,7 +239,7 @@
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="filter_3"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgDeliveredClient"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgDeliveredClient"/></td>
                     <td align="right"><input type="hidden" name="value_3"
                                              value="formBCAR.demographic_no in (select distinct demographic_no from formBCBirthSumMo)">
                         <input type="hidden" name="position_3" value="sql"> <input
@@ -248,11 +249,11 @@
                 <tr bgcolor="">
                     <td align="right"><b><input type="checkbox" name="filter_4"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgDOB"/> <input type="text"
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgDOB"/> <input type="text"
                                                                                             name="startDate4"
                                                                                             id="startDate4" value=""
                                                                                             size="10" readonly><img
-                            src="<%= request.getContextPath() %>/images/cal.gif" id="startDate4_cal"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgAnd"/> <input
+                            src="<%= request.getContextPath() %>/images/cal.gif" id="startDate4_cal"> <fmt:message key="oscarReport.oscarReportscpbDemo.msgAnd"/> <input
                             type="text" name="endDate4" id="endDate4" value="" size="10"
                             readonly><img src="<%= request.getContextPath() %>/images/cal.gif" id="endDate4_cal">
                     </td>
@@ -265,12 +266,12 @@
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox" name="filter_8"></b>
                     </td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgEDDbetween"/> <input type="text"
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgEDDbetween"/> <input type="text"
                                                                                                    name="startDate8"
                                                                                                    id="startDate8"
                                                                                                    value="" size="10"
                                                                                                    readonly><img
-                            src="<%= request.getContextPath() %>/images/cal.gif" id="startDate8_cal"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgAnd"/> <input
+                            src="<%= request.getContextPath() %>/images/cal.gif" id="startDate8_cal"> <fmt:message key="oscarReport.oscarReportscpbDemo.msgAnd"/> <input
                             type="text" name="endDate8" id="endDate8" value="" size="10"
                             readonly><img src="<%= request.getContextPath() %>/images/cal.gif" id="endDate8_cal">
                     </td>
@@ -283,10 +284,10 @@
                 <tr bgcolor="">
                     <td align="right"><b><input type="checkbox"
                                                 name="filter_12"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgIndyClientSearch"/>: <font
-                            size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgLNameBracket"/>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgIndyClientSearch"/>: <font
+                            size="-1"><fmt:message key="oscarReport.oscarReportscpbDemo.msgLNameBracket"/>
                         <input type="text" name="pLastName12" value="" size="15">,
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgFNameBracket"/> <input type="text"
+                        <fmt:message key="oscarReport.oscarReportscpbDemo.msgFNameBracket"/> <input type="text"
                                                                                                      name="pFirstName12"
                                                                                                      value=""
                                                                                                      size="15"></font>
@@ -300,7 +301,7 @@
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox"
                                                 name="filter_14"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgPrimiparous"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgPrimiparous"/></td>
                     <td align="right"><input type="hidden" name="value_14"
                                              value="formBCAR.pg1_term =0 and formBCAR.pg1_preterm =0"> <input
                             type="hidden" name="position_14" value="sql"> <input
@@ -310,7 +311,7 @@
                 <tr bgcolor="">
                     <td align="right"><b><input type="checkbox"
                                                 name="filter_15"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgMultiparous"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgMultiparous"/></td>
                     <td align="right"><input type="hidden" name="value_15"
                                              value="(formBCAR.pg1_term >0 or formBCAR.pg1_preterm >0)">
                         <input type="hidden" name="position_15" value="sql"> <input
@@ -320,7 +321,7 @@
                 <tr bgcolor="#EEEEFF">
                     <td align="right"><b><input type="checkbox"
                                                 name="filter_16"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgEither"/></td>
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgEither"/></td>
                     <td align="right"><input type="hidden" name="value_16"
                                              value="formBCAR.pg1_gravida >0"> <input type="hidden"
                                                                                      name="position_16" value="sql">
@@ -331,12 +332,12 @@
                 <tr bgcolor="">
                     <td align="right"><b><input type="checkbox"
                                                 name="filter_100"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgApproxEDD"/> <input type="text"
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgApproxEDD"/> <input type="text"
                                                                                                   name="startDate100"
                                                                                                   id="startDate100"
                                                                                                   value="" size="10"
                                                                                                   readonly><img
-                            src="<%= request.getContextPath() %>/images/cal.gif" id="startDate100_cal"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgAnd"/> <input
+                            src="<%= request.getContextPath() %>/images/cal.gif" id="startDate100_cal"> <fmt:message key="oscarReport.oscarReportscpbDemo.msgAnd"/> <input
                             type="text" name="endDate100" id="endDate100" value="" size="10"
                             readonly><img src="<%= request.getContextPath() %>/images/cal.gif" id="endDate100_cal">
                     </td>
@@ -374,9 +375,9 @@
                 <tr bgcolor="">
                     <td align="right"><b><input type="checkbox"
                                                 name="filter_200"></b></td>
-                    <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.msgProvince"/> <select name="province">
+                    <td><fmt:message key="oscarReport.oscarReportscpbDemo.msgProvince"/> <select name="province">
                         <option value="OT"
-                                <%=prov.equals("") || prov.equals("OT") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.other"/></option>
+                                <%=prov.equals("") || prov.equals("OT") ? " selected" : ""%>><fmt:message key="global.other"/></option>
                         <% if (pNames.isDefined()) {
                             for (ListIterator li = pNames.listIterator(); li.hasNext(); ) {
                                 String province = (String) li.next(); %>
@@ -385,26 +386,26 @@
                         </option>
                         <% } %>
                         <% } else { %>
-                        <option value="AB" <%=prov.equals("AB") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.Alberta"/></option>
-                        <option value="BC" <%=prov.equals("BC") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.BC"/>
+                        <option value="AB" <%=prov.equals("AB") ? " selected" : ""%>><fmt:message key="global.Alberta"/></option>
+                        <option value="BC" <%=prov.equals("BC") ? " selected" : ""%>><fmt:message key="global.BC"/>
                         </option>
-                        <option value="MB" <%=prov.equals("MB") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.Manitoba"/></option>
-                        <option value="NB" <%=prov.equals("NB") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.NewBrun"/>
+                        <option value="MB" <%=prov.equals("MB") ? " selected" : ""%>><fmt:message key="global.Manitoba"/></option>
+                        <option value="NB" <%=prov.equals("NB") ? " selected" : ""%>><fmt:message key="global.NewBrun"/>
                         </option>
-                        <option value="NL" <%=prov.equals("NL") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.Nflnd"/>
+                        <option value="NL" <%=prov.equals("NL") ? " selected" : ""%>><fmt:message key="global.Nflnd"/>
                         </option>
-                        <option value="NT" <%=prov.equals("NT") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.NWTerr"/>
+                        <option value="NT" <%=prov.equals("NT") ? " selected" : ""%>><fmt:message key="global.NWTerr"/>
                         </option>
-                        <option value="NS" <%=prov.equals("NS") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.Nova"/>
+                        <option value="NS" <%=prov.equals("NS") ? " selected" : ""%>><fmt:message key="global.Nova"/>
                         </option>
-                        <option value="NU" <%=prov.equals("NU") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.Nunavut"/></option>
-                        <option value="ON" <%=prov.equals("ON") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.Ontario"/></option>
-                        <option value="PE" <%=prov.equals("PE") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.PEI"/>
+                        <option value="NU" <%=prov.equals("NU") ? " selected" : ""%>><fmt:message key="global.Nunavut"/></option>
+                        <option value="ON" <%=prov.equals("ON") ? " selected" : ""%>><fmt:message key="global.Ontario"/></option>
+                        <option value="PE" <%=prov.equals("PE") ? " selected" : ""%>><fmt:message key="global.PEI"/>
                         </option>
-                        <option value="QC" <%=prov.equals("QC") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.Quebec"/></option>
-                        <option value="SK" <%=prov.equals("SK") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.Sask"/></option>
-                        <option value="YT" <%=prov.equals("YT") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.Yukon"/></option>
-                        <option value="US" <%=prov.equals("US") ? " selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.US"/>
+                        <option value="QC" <%=prov.equals("QC") ? " selected" : ""%>><fmt:message key="global.Quebec"/></option>
+                        <option value="SK" <%=prov.equals("SK") ? " selected" : ""%>><fmt:message key="global.Sask"/></option>
+                        <option value="YT" <%=prov.equals("YT") ? " selected" : ""%>><fmt:message key="global.Yukon"/></option>
+                        <option value="US" <%=prov.equals("US") ? " selected" : ""%>><fmt:message key="global.US"/>
                         </option>
                         <% } %>
                     </select></td>
@@ -425,9 +426,9 @@
 <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
     <tr bgcolor="silver">
         <td><input type="hidden" name="id" value="1"> <input
-                type="submit" name="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.btnHTML"/>"> |
+                type="submit" name="submit" value="<fmt:message key="oscarReport.oscarReportscpbDemo.btnHTML"/>"> |
             <input
-                    type="submit" name="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportscpbDemo.btnCSV"/>">
+                    type="submit" name="submit" value="<fmt:message key="oscarReport.oscarReportscpbDemo.btnCSV"/>">
         </td>
         </form>
 </table>

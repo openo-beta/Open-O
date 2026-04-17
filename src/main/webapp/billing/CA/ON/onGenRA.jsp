@@ -19,6 +19,7 @@
 
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -76,7 +77,7 @@
 
 <html>
 <head>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnBillingReconciliation"/></title>
+    <title><fmt:message key="admin.admin.btnBillingReconciliation"/></title>
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
     <script language="JavaScript">
@@ -116,7 +117,7 @@
 </head>
 
 <body>
-<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnBillingReconciliation"/></h3>
+<h3><fmt:message key="admin.admin.btnBillingReconciliation"/></h3>
 
 <div class="container-fluid well">
     <button class="btn btn-primary pull-right" type='button' name='print' value='Print'

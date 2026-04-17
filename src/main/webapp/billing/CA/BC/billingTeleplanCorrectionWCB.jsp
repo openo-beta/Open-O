@@ -26,6 +26,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -94,7 +95,7 @@
         <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
         <script src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
         <script
-                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"
+                src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:message key="global.javascript.calendar"/>"
                 type="text/javascript"></script>
         <script src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"
                 type="text/javascript"></script>
@@ -190,8 +191,8 @@
             <tr>
                 <td colspan="2" class="SectionHead"><a href=#
                                                        onClick="popup(700,900,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(form.getDemographicNumber()))%>&displaymode=edit&dboperation=search_detail','
-                                                           <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>');return false;"
-                                                       title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">Patient
+                                                           <fmt:message key="oscarEncounter.Index.popupPage2Window"/>');return false;"
+                                                       title="<fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">Patient
                     Information</a> <input type="hidden" name="id" id="id" value="<%=Encode.forHtmlAttribute(String.valueOf(form.getId()))%>"/>
                     <input type="hidden"
                            name="demographicNumber" id="demographicNumber"

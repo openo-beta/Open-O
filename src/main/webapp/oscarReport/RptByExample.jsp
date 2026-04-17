@@ -25,6 +25,7 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -90,7 +91,7 @@
     </script>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/></title>
+        <title><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/></title>
 
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <style type="text/css" media="print">
@@ -163,11 +164,11 @@
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <form action="${pageContext.request.contextPath}/oscarReport/RptByExample.do" method="post">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.CDMReport.msgReport"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:message key="oscarReport.CDMReport.msgReport"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/></td>
+                        <td><fmt:message key="oscarReport.RptByExample.MsgQueryByExamples"/></td>
                     </tr>
                 </table>
             </td>
@@ -190,16 +191,16 @@
             <td class="MainTableRightColumn">
                 <table>
                     <tr>
-                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgEnterAQuery"/></td>
+                        <td><fmt:message key="oscarReport.RptByExample.MsgEnterAQuery"/></td>
                     </tr>
                     <tr>
                         <td><textarea name="sql" cols="80" rows="4"></textarea></td>
                     </tr>
                     <tr>
-                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgOr"/></td>
+                        <td><fmt:message key="oscarReport.RptByExample.MsgOr"/></td>
                     </tr>
                     <tr>
-                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgSelectFromMyFavorites"/></td>
+                        <td><fmt:message key="oscarReport.RptByExample.MsgSelectFromMyFavorites"/></td>
                     </tr>
                     <tr>
                         <td><select name="selectedRecentSearch"

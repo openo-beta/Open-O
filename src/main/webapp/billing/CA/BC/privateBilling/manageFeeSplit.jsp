@@ -8,6 +8,7 @@
 <%@ page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ taglib prefix="security" uri="/oscarSecuritytag" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 
@@ -65,12 +66,12 @@
 
 <html>
 <head>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageFeeSplit"/></title>
+    <title><fmt:message key="admin.admin.manageFeeSplit"/></title>
     <script src="<%=request.getContextPath()%>/csrfguard" type="text/javascript"></script>
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageFeeSplit"/></h3>
+<h3><fmt:message key="admin.admin.manageFeeSplit"/></h3>
 <form action="manageFeeSplit.jsp">
     <label for="providerNo">Provider:</label>
     <select name="providerNo" id="providerNo" onchange="setSplitProvider()">

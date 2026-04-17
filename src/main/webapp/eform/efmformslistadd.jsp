@@ -49,6 +49,7 @@ Ontario, Canada
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%
     String user = (String) session.getAttribute("user");
@@ -85,7 +86,6 @@ Ontario, Canada
     Demographic demographic = demographicManager.getDemographic(loggedInInfo, demographic_no);
 %>
 
-<fmt:setBundle basename="oscarResources"/>
 
 <html>
     <head>

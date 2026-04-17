@@ -25,6 +25,7 @@
 --%>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -66,7 +67,7 @@
 <html>
     <head>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="StaticScript.title"/></title>
+        <title><fmt:message key="StaticScript.title"/></title>
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
@@ -181,7 +182,7 @@
                        width="100%" height="100%">
                     <tr>
                         <td width="0%" valign="top">
-                            <div class="DivCCBreadCrumbs"><a href="<%= request.getContextPath() %>/oscarRx/SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a> &gt; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="StaticScript.title"/></b>
+                            <div class="DivCCBreadCrumbs"><a href="<%= request.getContextPath() %>/oscarRx/SearchDrug3.jsp"> <fmt:message key="SearchDrug.title"/></a> &gt; <b><fmt:message key="StaticScript.title"/></b>
                             </div>
                         </td>
                     </tr>
@@ -253,7 +254,7 @@
                                         <%}%>
 
                                         <% if (drug.nonAuthoritative) { %>
-                                        &nbsp;<fmt:setBundle basename="oscarResources"/>
+                                        &nbsp;
                                         <fmt:message key="WriteScript.msgNonAuthoritative"/>
                                         <% } %>
 
@@ -267,24 +268,24 @@
                                         <% }
                                         } %>
                                         <%if (drug.eTreatmentType != null && !drug.eTreatmentType.equals("null")) { %>
-                                        &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatmentType"/>:
+                                        &nbsp;<fmt:message key="WriteScript.msgETreatmentType"/>:
 
                                         <%if (drug.eTreatmentType.equals("CHRON")) {%>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.Continuous"/>
+                                        <fmt:message key="WriteScript.msgETreatment.Continuous"/>
                                         <%} else if (drug.eTreatmentType.equals("ACU")) {%>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.Acute"/>
+                                        <fmt:message key="WriteScript.msgETreatment.Acute"/>
                                         <%} else if (drug.eTreatmentType.equals("ONET")) {%>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.OneTime"/>
+                                        <fmt:message key="WriteScript.msgETreatment.OneTime"/>
                                         <%} else if (drug.eTreatmentType.equals("PRNL")) {%>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.LongTermPRN"/>
+                                        <fmt:message key="WriteScript.msgETreatment.LongTermPRN"/>
                                         <%} else if (drug.eTreatmentType.equals("PRNS")) {%>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgETreatment.ShortTermPRN"/>
+                                        <fmt:message key="WriteScript.msgETreatment.ShortTermPRN"/>
                                         <%
                                                 }
                                             }
                                         %>
                                         <%if (drug.rxStatus != null && !drug.rxStatus.equals("null")) { %>
-                                        &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgRxStatus"/>: <%=Encode.forHtml(String.valueOf(drug.rxStatus))%>
+                                        &nbsp;<fmt:message key="WriteScript.msgRxStatus"/>: <%=Encode.forHtml(String.valueOf(drug.rxStatus))%>
                                         <%}%>
 
                                     </td>

@@ -25,6 +25,7 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -32,7 +33,7 @@
 "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.title"/></title>
+        <title><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.title"/></title>
 
         <% boolean linkIncluded = StringUtils.isNotEmpty(request.getParameter("link")); %>
         <script type="text/javascript">

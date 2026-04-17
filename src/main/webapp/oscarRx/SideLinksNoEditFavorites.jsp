@@ -35,6 +35,7 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
     RxSessionBean bean2 = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
@@ -51,7 +52,7 @@
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
 
-        <p class="PropSheetLevel1CurrentItem<%=Encode.forHtmlAttribute(String.valueOf(alle))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></p>
+        <p class="PropSheetLevel1CurrentItem<%=Encode.forHtmlAttribute(String.valueOf(alle))%>"><fmt:message key="oscarRx.sideLinks.msgAllergies"/></p>
         <p class="PropSheetMenuItemLevel1">
                     <%for (int j=0; j<allergies.length; j++){%>
 
@@ -64,7 +65,7 @@
 
     </security:oscarSec>
 
-    <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/></p>
+    <p class="PropSheetLevel1CurrentItem"><fmt:message key="oscarRx.sideLinks.msgFavorites"/></p>
     <p class="PropSheetMenuItemLevel1">
             <%
         RxPrescriptionData.Favorite[] favorites = new RxPrescriptionData().getFavorites(bean2.getProviderNo());

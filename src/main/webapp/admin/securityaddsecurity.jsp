@@ -42,6 +42,7 @@
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ page import="java.sql.*, java.util.*,java.security.*,ca.openosp.*,ca.openosp.openo.db.*" errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.log.LogAction,ca.openosp.openo.log.LogConst" %>
@@ -55,7 +56,7 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityaddsecurity.title"/></title>
+        <title><fmt:message key="admin.securityaddsecurity.title"/></title>
         <script src="${pageContext.request.contextPath}/csrfguard"></script>
         <link rel="stylesheet" href="<%= request.getContextPath() %>/web.css">
     </head>
@@ -63,14 +64,14 @@
     <center>
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
             <tr bgcolor="#486ebd">
-                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityaddsecurity.description"/></font></th>
+                <th align="CENTER"><font face="Helvetica" color="#FFFFFF"><fmt:message key="admin.securityaddsecurity.description"/></font></th>
             </tr>
         </table>
         <%
             SecurityAddSecurityHelper helper = new SecurityAddSecurityHelper();
             helper.addProvider(pageContext);
         %>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="${message}"/></h1>
+        <h1><fmt:message key="${message}"/></h1>
 
     </center>
     </body>

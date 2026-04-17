@@ -46,6 +46,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%
@@ -67,7 +68,7 @@
 
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.title"/>
+        <title><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.title"/>
         </title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
@@ -82,7 +83,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td class="Header"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.title"/>
+                        <td class="Header"><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.title"/>
                         </td>
                         <td></td>
                     </tr>
@@ -108,7 +109,7 @@
                         String updated = (String) request.getAttribute("ENABLE_REQUEST_RESPONSE_UPDATED");
                         if (updated != null) { %>
                     <tr>
-                        <td><font color="red"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.msgUpdated"/></font>
+                        <td><font color="red"><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.msgUpdated"/></font>
                         </td>
                     </tr>
                     <%}%>
@@ -120,11 +121,11 @@
                                         <td>
                                             <input type="checkbox"
                                                    name="consultRequestEnabled" value="true" <%=consultRequestEnabled ? "checked" : "" %>/>
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableRequest"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableRequest"/>
                                             <br/>
                                             <input type="checkbox"
                                                    name="consultResponseEnabled" value="true" <%=consultResponseEnabled ? "checked" : "" %>/>
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableResponse"/>
+                                            <fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.enableResponse"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -132,7 +133,7 @@
                                     </tr>
                                     <tr>
                                         <td><input type="submit"
-                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.btnUpdate"/>"/>
+                                                   value="<fmt:message key="oscarEncounter.oscarConsultationRequest.config.EnableRequestResponse.btnUpdate"/>"/>
                                         </td>
                                     </tr>
                                 </form>

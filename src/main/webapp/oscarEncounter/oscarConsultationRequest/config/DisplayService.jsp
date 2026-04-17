@@ -44,9 +44,9 @@
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-
 <fmt:setBundle basename="oscarResources"/>
+
+
 <!DOCTYPE html>
 <html>
     <jsp:useBean id="displayServiceUtil" scope="request"

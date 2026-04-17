@@ -36,6 +36,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
     RxSessionBean bean2 = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
@@ -47,16 +48,16 @@
 %>
 
 <div class="PropSheetMenu">
-    <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgSpecial"/></p>
-    <p class="PropSheetMenuItemLevel1"><a href="<%= request.getContextPath() %>/oscarRx/SelectPharmacy.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgEditPharmacy"/></a></p>
-    <p class="PropSheetMenuItemLevel1"><a href="<%= request.getContextPath() %>/oscarRx/EditFavorites.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgEditFavorites"/></a></p>
-    <p class="PropSheetMenuItemLevel1"><a href="<%= request.getContextPath() %>/oscarRx/CopyFavorites.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgCopyFavorites"/></a></p>
+    <p class="PropSheetLevel1CurrentItem"><fmt:message key="oscarRx.sideLinks.msgSpecial"/></p>
+    <p class="PropSheetMenuItemLevel1"><a href="<%= request.getContextPath() %>/oscarRx/SelectPharmacy.jsp"><fmt:message key="oscarRx.sideLinks.msgEditPharmacy"/></a></p>
+    <p class="PropSheetMenuItemLevel1"><a href="<%= request.getContextPath() %>/oscarRx/EditFavorites.jsp"><fmt:message key="oscarRx.sideLinks.msgEditFavorites"/></a></p>
+    <p class="PropSheetMenuItemLevel1"><a href="<%= request.getContextPath() %>/oscarRx/CopyFavorites.jsp"><fmt:message key="oscarRx.sideLinks.msgCopyFavorites"/></a></p>
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
 
 
         <dl class="PropSheetMenuItemLevel1">
-          <dt class="PropSheetLevel1CurrentItem<%=Encode.forHtmlAttribute(String.valueOf(alle))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></dt>
+          <dt class="PropSheetLevel1CurrentItem<%=Encode.forHtmlAttribute(String.valueOf(alle))%>"><fmt:message key="oscarRx.sideLinks.msgAllergies"/></dt>
                     <%
 
         for (int j=0; j<allergies.length; j++){%>
@@ -71,7 +72,7 @@
     </security:oscarSec>
 
 
-    <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/></p>
+    <p class="PropSheetLevel1CurrentItem"><fmt:message key="oscarRx.sideLinks.msgFavorites"/></p>
     <p class="PropSheetMenuItemLevel1">
             <%
         RxPrescriptionData.Favorite[] favorites

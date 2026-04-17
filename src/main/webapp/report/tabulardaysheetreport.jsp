@@ -15,6 +15,7 @@
 
 <%@page import="org.apache.commons.lang3.time.DateUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
 
     String orderby = request.getParameter("orderby") != null ? request.getParameter("orderby") : ("a.start_time");
@@ -48,7 +49,7 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-    <title>OSCAR - <fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.title"/>=</title>
+    <title>OSCAR - <fmt:message key="report.tabulardaysheetreport.title"/>=</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/oscar.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/share/css/reporting.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/web.css">
@@ -69,12 +70,12 @@
         <td height="40" width="25"></td>
         <td width="90%" align="left">
             <p><font color="#4D4D4D"><b><font size="4">oscar<font
-                    size="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgTitle"/> (<%=Encode.forHtml(String.valueOf(createtime))%>)</font></font></b></font>
+                    size="3"><fmt:message key="report.tabulardaysheetreport.msgTitle"/> (<%=Encode.forHtml(String.valueOf(createtime))%>)</font></font></b></font>
             </p>
         </td>
-        <td><input type="button" name="Button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.btnPrint"/>"
+        <td><input type="button" name="Button" value="<fmt:message key="report.tabulardaysheetreport.btnPrint"/>"
                    onClick="window.print()">
-            <input type="button" name="Button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.btnExit"/> "
+            <input type="button" name="Button" value=" <fmt:message key="report.tabulardaysheetreport.btnExit"/> "
                    onClick="window.close()">
         </td>
     </tr>
@@ -91,22 +92,22 @@
 <table width="100%" border="0" bgcolor="#ffffff" cellspacing="0"
        cellpadding="0" class="smallerTable">
     <tr>
-        <td class="items"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgTime"/></b></td>
-        <td class="items"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgChart"/></b></td>
-        <td class="items"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgName"/></b></td>
-        <td class="items" align="center" width="79"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgDoB"/></b>
+        <td class="items"><b><fmt:message key="report.tabulardaysheetreport.msgTime"/></b></td>
+        <td class="items"><b><fmt:message key="report.tabulardaysheetreport.msgChart"/></b></td>
+        <td class="items"><b><fmt:message key="report.tabulardaysheetreport.msgName"/></b></td>
+        <td class="items" align="center" width="79"><b><fmt:message key="report.tabulardaysheetreport.msgDoB"/></b>
         </td>
-        <td class="items" align="center" width="55"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgPHN"/></b>
+        <td class="items" align="center" width="55"><b><fmt:message key="report.tabulardaysheetreport.msgPHN"/></b>
         </td>
-        <td class="items" align="center" width="55"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgFee1"/></b>
+        <td class="items" align="center" width="55"><b><fmt:message key="report.tabulardaysheetreport.msgFee1"/></b>
         </td>
-        <td class="items" align="center" width="55"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgDiag1"/></b>
+        <td class="items" align="center" width="55"><b><fmt:message key="report.tabulardaysheetreport.msgDiag1"/></b>
         </td>
-        <td class="items" align="center" width="55"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgDiag2"/></b>
+        <td class="items" align="center" width="55"><b><fmt:message key="report.tabulardaysheetreport.msgDiag2"/></b>
         </td>
-        <td class="items" align="center" width="55"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgDiag3"/></b>
+        <td class="items" align="center" width="55"><b><fmt:message key="report.tabulardaysheetreport.msgDiag3"/></b>
         </td>
-        <td class="items"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.tabulardaysheetreport.msgDescription"/></b></td>
+        <td class="items"><b><fmt:message key="report.tabulardaysheetreport.msgDescription"/></b></td>
     </tr>
     <%
         boolean bFistL = true;

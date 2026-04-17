@@ -27,6 +27,7 @@
 <%@ page import="java.util.ResourceBundle" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -123,7 +124,6 @@
                         if (added != null) { %>
                     <tr>
                         <td style="color: red;">
-                            <fmt:setBundle basename="oscarResources"/>
                             <fmt:message  key="oscarEncounter.oscarConsultationRequest.config.AddInstitution.msgInstitutionAdded">
                                 <fmt:param value="<%=Encode.forHtmlAttribute(String.valueOf(added))%>" />
                             </fmt:message>

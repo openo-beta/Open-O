@@ -26,6 +26,7 @@
 
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@page import="java.util.*" %>
 <%@ page import="java.util.ResourceBundle"%>
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -66,7 +67,7 @@
                 <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <input type="checkbox" name="dashboardShareProperty.checked" <c:if test="${dashboardShareProperty.checked}">checked</c:if> />
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.dashboardShare"/>
+                        <fmt:message key="provider.pref.dashboardShare"/>
                     <br/><br/>
                     <input type="submit" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getString(providerbtnSubmit)))%>"/>
                     <input type="button" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getString(providerbtnCancel)))%>"

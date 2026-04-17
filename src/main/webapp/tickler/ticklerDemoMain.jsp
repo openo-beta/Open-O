@@ -114,6 +114,7 @@
 %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <html>
     <head>
@@ -198,7 +199,7 @@
         </script>
 
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.title"/></title>
+        <title><fmt:message key="tickler.ticklerDemoMain.title"/></title>
         <script language="JavaScript">
             <!--
 
@@ -337,7 +338,7 @@
                 var ml = document.messageList;
                 var dbox = ml.destBox;
                 if (dbox.options[dbox.selectedIndex].value == "@NEW") {
-                    nn = window.prompt("<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.msgFolderName"/>", "");
+                    nn = window.prompt("<fmt:message key="tickler.ticklerDemoMain.msgFolderName"/>", "");
                     if (nn == null || nn == "null" || nn == "") {
                         dbox.selectedIndex = 0;
                         ml.destBox2.selectedIndex = 0;
@@ -742,13 +743,13 @@
         <tr bgcolor="#000000">
             <td height="40" width="10%" class="noprint"><input type='button' name='print'
                                                                value=
-                                                                   <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>
+                                                                   <fmt:message key="global.btnPrint"/>
                                                                        ' onClick=' window.print()' class="sbttn">
             </td>
             <td width="90%" align="left">
                 <p><font face="Verdana, Arial, Helvetica, sans-serif"
                          color="#FFFFFF"><b><font
-                        face="Arial, Helvetica, sans-serif" size="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.msgTitle"/></font></b></font></p>
+                        face="Arial, Helvetica, sans-serif" size="4"><fmt:message key="tickler.ticklerDemoMain.msgTitle"/></font></b></font></p>
             </td>
         </tr>
     </table>
@@ -757,11 +758,11 @@
             <tr class="noprint">
                 <td width="20%">
                     <div align="right"><font
-                            face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#333333"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.formMoveTo"/> </b> <select
+                            face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#333333"><b><fmt:message key="tickler.ticklerDemoMain.formMoveTo"/> </b> <select
                             name="ticklerview">
-                        <option value="A" <%=ticklerview.equals("A") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.formActive"/></option>
-                        <option value="C" <%=ticklerview.equals("C") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.formCompleted"/></option>
-                        <option value="D" <%=ticklerview.equals("D") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.formDeleted"/></option>
+                        <option value="A" <%=ticklerview.equals("A") ? "selected" : ""%>><fmt:message key="tickler.ticklerDemoMain.formActive"/></option>
+                        <option value="C" <%=ticklerview.equals("C") ? "selected" : ""%>><fmt:message key="tickler.ticklerDemoMain.formCompleted"/></option>
+                        <option value="D" <%=ticklerview.equals("D") ? "selected" : ""%>><fmt:message key="tickler.ticklerDemoMain.formDeleted"/></option>
                     </select> </font></div>
                 </td>
                 <td width="30%">
@@ -769,13 +770,13 @@
                                                value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>"> <font size="1"
                                                                              face="Arial, Helvetica, sans-serif"> <a
                             href="#"
-                            onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnBegin"/>:</a></font></div>
+                            onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:message key="tickler.ticklerDemoMain.btnBegin"/>:</a></font></div>
                 </td>
                 <td width="30%"><input type="text" name="xml_appointment_date"
                                        value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>"> <font size="1"
                                                                                 face="Arial, Helvetica, sans-serif"><a
                         href="#"
-                        onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnEnd"/>:</a></font></td>
+                        onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:message key="tickler.ticklerDemoMain.btnEnd"/>:</a></font></td>
                 <td width="20%">
                     <div align="right"><input type="hidden" name="demoview"
                                               value="<%=Encode.forHtmlAttribute(String.valueOf(demoview))%>"> <input type="hidden" name="Submit"
@@ -783,7 +784,7 @@
                                                                                              name="parentAjaxId"
                                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(parentAjaxId))%>">
                         <input type="submit"
-                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnCreateReport"/>"
+                               value="<fmt:message key="tickler.ticklerDemoMain.btnCreateReport"/>"
                                class="mbttn"
                                onclick="document.forms['serviceform'].Submit.value='Create Report'; document.forms['serviceform'].submit();">
                     </div>
@@ -806,22 +807,22 @@
                             <TD width="3%" class="noprint"><FONT FACE="verdana,arial,helvetica"
                                                                  COLOR="#FFFFFF" SIZE="-2"><B></B></FONT></TD>
                             <TD width="17%"><FONT FACE="verdana,arial,helvetica"
-                                                  COLOR="#FFFFFF" SIZE="-2"><B><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgDemographicName"/></B></FONT></TD>
+                                                  COLOR="#FFFFFF" SIZE="-2"><B><fmt:message key="tickler.ticklerMain.msgDemographicName"/></B></FONT></TD>
                             <TD width="8%"><FONT FACE="verdana,arial,helvetica"
-                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgDoctorName"/></B></FONT></TD>
+                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:message key="tickler.ticklerMain.msgDoctorName"/></B></FONT></TD>
                             <TD width="9%"><FONT FACE="verdana,arial,helvetica"
-                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgDate"/></B></FONT></TD>
+                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:message key="tickler.ticklerMain.msgDate"/></B></FONT></TD>
                             <TD width="9%"><FONT FACE="verdana,arial,helvetica"
-                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgCreationDate"/></B></FONT></TD>
+                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:message key="tickler.ticklerMain.msgCreationDate"/></B></FONT></TD>
                             <TD width="6%"><FONT FACE="verdana,arial,helvetica"
-                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.Priority"/></B></FONT></TD>
+                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:message key="tickler.ticklerMain.Priority"/></B></FONT></TD>
                             <TD width="12%"><FONT FACE="verdana,arial,helvetica"
-                                                  COLOR="#FFFFFF" SIZE="-2"><B><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.taskAssignedTo"/></B></FONT></TD>
+                                                  COLOR="#FFFFFF" SIZE="-2"><B><fmt:message key="tickler.ticklerMain.taskAssignedTo"/></B></FONT></TD>
 
                             <TD width="6%"><FONT FACE="verdana,arial,helvetica"
-                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgStatus"/></B></FONT></TD>
+                                                 COLOR="#FFFFFF" SIZE="-2"><B><fmt:message key="tickler.ticklerMain.msgStatus"/></B></FONT></TD>
                             <TD width="39%"><FONT FACE="verdana,arial,helvetica"
-                                                  COLOR="#FFFFFF" SIZE="-2"><B><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgMessage"/></B></FONT></TD>
+                                                  COLOR="#FFFFFF" SIZE="-2"><B><fmt:message key="tickler.ticklerMain.msgMessage"/></B></FONT></TD>
                             <td COLOR="#FFFFFF" SIZE="-2" class="noprint">&nbsp;</td>
                         </TR>
                         <%
@@ -901,7 +902,7 @@
                             <TD ROWSPAN="1" class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>">
                                 <%if (Boolean.parseBoolean(OscarProperties.getInstance().getProperty("tickler_edit_enabled"))) {%>
                                 <a href=#
-                                   onClick="popupPage(600,800, '<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forJavaScript(String.valueOf(t.getId()))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.editTickler"/></a>
+                                   onClick="popupPage(600,800, '<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forJavaScript(String.valueOf(t.getId()))%>')"><fmt:message key="tickler.ticklerMain.editTickler"/></a>
                                 <% } %>
                             </TD>
                             <TD ROWSPAN="1" class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><a
@@ -1018,7 +1019,7 @@
                             if (nItems == 0) {
                         %>
                         <tr>
-                            <td colspan="8" class="white"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.msgNoMessages"/></td>
+                            <td colspan="8" class="white"><fmt:message key="tickler.ticklerDemoMain.msgNoMessages"/></td>
                         </tr>
                         <%
                             }
@@ -1026,28 +1027,28 @@
                         %>
                         <tr bgcolor=#FFFFFF class="noprint">
                             <td colspan="11" class="white"><a id="checkAllLink" name="checkAllLink"
-                                                              href="javascript:CheckAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnCheckAll"/></a> - <a
-                                    href="javascript:ClearAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnClearAll"/></a> &nbsp; &nbsp; &nbsp;
+                                                              href="javascript:CheckAll();"><fmt:message key="tickler.ticklerDemoMain.btnCheckAll"/></a> - <a
+                                    href="javascript:ClearAll();"><fmt:message key="tickler.ticklerDemoMain.btnClearAll"/></a> &nbsp; &nbsp; &nbsp;
                                 &nbsp; &nbsp; <input type="button" name="button"
-                                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnAddTickler"/>"
+                                                     value="<fmt:message key="tickler.ticklerDemoMain.btnAddTickler"/>"
                                                      onClick="popupPage('400','600', 'ticklerAdd.jsp?updateParent=true&parentAjaxId=<%=Encode.forJavaScript(String.valueOf(parentAjaxId))%>&bFirstDisp=false&messageID=null&demographic_no=<%=Encode.forJavaScript(String.valueOf(d.getDemographicNo()))%>&chart_no=<%=Encode.forJavaScript(String.valueOf(d.getChartNo()))%>&name=<%=Encode.forJavaScript(String.valueOf(d.getDisplayName()))%>')"
                                                      class="sbttn"> <input type="hidden" name="submit_form"
                                                                            value=""> <% if (ticklerview.compareTo("D") == 0) {%>
                                 <input
                                         type="button"
-                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnErase"/>"
+                                        value="<fmt:message key="tickler.ticklerDemoMain.btnErase"/>"
                                         class="sbttn"
                                         onclick="document.forms['ticklerform'].submit_form.value='Erase Completely'; document.forms['ticklerform'].submit();">
                                 <%} else {%> <input type="button"
-                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnComplete"/>"
+                                                    value="<fmt:message key="tickler.ticklerDemoMain.btnComplete"/>"
                                                     class="sbttn"
                                                     onclick="document.forms['ticklerform'].submit_form.value='Complete'; document.forms['ticklerform'].submit();">
                                 <input type="button"
-                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnDelete"/>"
+                                       value="<fmt:message key="tickler.ticklerDemoMain.btnDelete"/>"
                                        class="sbttn"
                                        onclick="document.forms['ticklerform'].submit_form.value='Delete'; document.forms['ticklerform'].submit();">
                                 <%}%> <input type="button" name="button"
-                                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
+                                             value="<fmt:message key="global.btnCancel"/>"
                                              onClick="window.close()" class="sbttn"></td>
                         </tr>
                     </table>

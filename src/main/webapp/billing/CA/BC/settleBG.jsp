@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="ca.openosp.openo.billing.ca.bc.MSP.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
@@ -33,7 +34,7 @@
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.settlePaidClaims"/></h3>
+<h3><fmt:message key="admin.admin.settlePaidClaims"/></h3>
 
 <div class="container-fluid well">
     <%

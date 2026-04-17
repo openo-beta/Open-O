@@ -24,6 +24,7 @@
 
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String context = request.getContextPath();
@@ -96,7 +97,7 @@
         <link rel="stylesheet" type="text/css" media="all" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/calendar.css" title="win2k-cold-1"/>
         <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/lang/<fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/calendar-setup.js"></script>
 
         <script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/jquery-1.7.1.min.js" type="text/javascript"></script>

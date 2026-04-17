@@ -53,6 +53,7 @@
 <%@ page import="ca.openosp.openo.form.FrmBCAR2020Record" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
     String formClass = "BCAR2020";
     Integer pageNo = 6;
@@ -78,7 +79,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="<%=request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+                src="<%=request.getContextPath() %>/share/calendar/lang/<fmt:message key="global.javascript.calendar"/>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/formBCAR2020Record.js"></script>
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-1.12.0.min.js"
@@ -472,7 +473,7 @@
                                         <input id="fetchLongTermMedications|mt_attMedications" type="button"
                                                class="btn-small clinicalData" value="Long Term Medications"/>&nbsp;
                                         <input id="fetchOtherMeds" type="button" class="btn-small"
-                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportOtherMeds"/>"
+                                               value="<fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportOtherMeds"/>"
                                                onclick="importFromEnct('OtherMeds',document.forms[0].mt_attMedications);"/>
                                         <br/>
                                         <textarea name="mt_attMedications" id="mt_attMedications"
@@ -510,19 +511,19 @@
                                         <span class="title">Additional Information</span>
                                         <p>The buttons below will pull information in from the E-Chart.</p>
                                         <input id="fetchAddInfoSocHistory" type="button" class="btn-small"
-                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportSocHistory"/>"
+                                               value="<fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportSocHistory"/>"
                                                onclick="importFromEnct('SocialHistory',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchAddInfoFamHistory" type="button" class="btn-small"
-                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportFamHistory"/>"
+                                               value="<fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportFamHistory"/>"
                                                onclick="importFromEnct('FamilyHistory',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchAddInfoMedHistory" type="button" class="btn-small"
-                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportMedHistory"/>"
+                                               value="<fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportMedHistory"/>"
                                                onclick="importFromEnct('MedicalHistory',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchAddInfoConcerns" type="button" class="btn-small"
-                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportConcerns"/>"
+                                               value="<fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportConcerns"/>"
                                                onclick="importFromEnct('ongoingConcerns',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchAddInfoReminders" type="button" class="btn-small"
-                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportReminders"/>"
+                                               value="<fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnImportReminders"/>"
                                                onclick="importFromEnct('Reminders',document.forms[0].mt_attAdditionalInfo);"/>&nbsp;
                                         <input id="fetchRiskFactors|mt_attAdditionalInfo" type="button"
                                                class="btn-small clinicalData" value="Risk Factors"/>&nbsp;

@@ -27,6 +27,7 @@
 <%@ page import="ca.openosp.openo.eform.data.*, ca.openosp.OscarProperties, ca.openosp.openo.eform.*, java.util.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -117,13 +118,13 @@
                 </s:if>
                 <div class="control-group">
                     <div class="controls">
-                        <label class="control-label" for="zippedForm"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.msgFileName"/></label>
+                        <label class="control-label" for="zippedForm"><fmt:message key="eform.uploadimages.msgFileName"/></label>
                         <input type="file" name="image" id="image" class="check" size="40" required>
                         <span style="color:red;">
-		         <i class="icon-warning-sign" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"></i>
+		         <i class="icon-warning-sign" title="<fmt:message key="global.uploadWarningBody"/>"></i>
 		         </span>
                         <input type="submit" class="btn btn-primary upload" name="subm"
-                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.btnUpload"/>" disabled>
+                               value="<fmt:message key="eform.uploadimages.btnUpload"/>" disabled>
                     </div>
                 </div>
             </form>

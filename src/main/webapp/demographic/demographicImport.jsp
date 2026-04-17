@@ -45,6 +45,7 @@
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%
@@ -62,7 +63,7 @@
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
         <!--I18n-->
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DemoImport"/></title>
+        <title><fmt:message key="admin.admin.DemoImport"/></title>
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
@@ -192,12 +193,12 @@
     %>
 
     <div class="container-fluid well">
-        <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DemoImport"/></h3>
+        <h3><fmt:message key="admin.admin.DemoImport"/></h3>
 
         <form name="ImportDemographicDataForm" action="${pageContext.request.contextPath}/form/importUpload.do" method="POST"
                    enctype="multipart/form-data">
         <p><input type="file" name="importFile" id="importFile" multiple="multiple"/>
-            <span id="uploadWarn" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
+            <span id="uploadWarn" title="<fmt:message key="global.uploadWarningBody"/>"
                   style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                     border="0" src="<%= request.getContextPath() %>/images/icon_alertsml.gif"/></span></span>
 

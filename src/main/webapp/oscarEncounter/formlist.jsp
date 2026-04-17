@@ -25,6 +25,7 @@
 --%>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -64,7 +65,7 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.title"/></title>
+        <title><fmt:message key="oscarEncounter.formlist.title"/></title>
         <link rel="stylesheet" type="text/css" href="encounterStyles.css">
         <script type="text/javascript" language=javascript>
 
@@ -114,15 +115,15 @@
           rightmargin="0">
     <table border=0 cellspacing=0 cellpadding=0 width="100%">
         <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>">
-            <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.msgFormList"/></font></th>
+            <th><font face="Helvetica"><fmt:message key="oscarEncounter.formlist.msgFormList"/></font></th>
         </tr>
     </table>
     <center>
         <table BORDER="0" CELLPADDING="2" CELLSPACING="2" WIDTH="65%" BGCOLOR="white">
             <tr BGCOLOR="<%=Encode.forHtmlAttribute(String.valueOf(tableTitle))%>">
-                <th width=35% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formName"/></th>
-                <th width=30% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formCreated"/></th>
-                <th width=35% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formEditedTime"/></th>
+                <th width=35% nowrap><fmt:message key="oscarEncounter.formlist.formName"/></th>
+                <th width=30% nowrap><fmt:message key="oscarEncounter.formlist.formCreated"/></th>
+                <th width=35% nowrap><fmt:message key="oscarEncounter.formlist.formEditedTime"/></th>
             </tr>
 
             <%
@@ -182,7 +183,7 @@
                     if (nLastPage >= 0) {
             %>
             <a
-                    href="formlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formLastpage"/></a>
+                    href="formlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>"><fmt:message key="oscarEncounter.formlist.formLastpage"/></a>
             |
             <%
                 }
@@ -190,7 +191,7 @@
             %>
             <a
                     href="formlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formlist.formNextPage"/></a>
+                <fmt:message key="oscarEncounter.formlist.formNextPage"/></a>
             </td>
             </tr>
             <%

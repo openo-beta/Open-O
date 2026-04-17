@@ -23,6 +23,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.on.administration.GstControl2Action" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -61,12 +62,12 @@
         }
     </script>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageGSTControl"/></title>
+        <title><fmt:message key="admin.admin.manageGSTControl"/></title>
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body onload="loadData()">
 
-    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageGSTControl"/></h3>
+    <h3><fmt:message key="admin.admin.manageGSTControl"/></h3>
 
     <form action="<%=request.getContextPath() %>/admin/GstControl.do">
         GST:<br>

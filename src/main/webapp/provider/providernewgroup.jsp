@@ -27,6 +27,7 @@
 <%@ page import="java.util.*,java.sql.*" errorPage="/errorpage.jsp" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.MyGroup" %>
@@ -42,7 +43,7 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.title"/></title>
+        <title><fmt:message key="provider.providernewgroup.title"/></title>
         <script language="javascript">
             <!--
             start
@@ -91,7 +92,7 @@
           onSubmit="return checkForm();">
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="#486ebd">
-                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.msgTitle"/></font></th>
+                <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><fmt:message key="provider.providernewgroup.msgTitle"/></font></th>
             </tr>
         </table>
 
@@ -103,10 +104,10 @@
                         <table BORDER="0" CELLPADDING="0" CELLSPACING="1" WIDTH="100%"
                                BGCOLOR="#C0C0C0">
                             <tr BGCOLOR="#CCFFFF">
-                                <td ALIGN="center"><font face="arial"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.msgGroupNo"/></font></td>
+                                <td ALIGN="center"><font face="arial"> <fmt:message key="provider.providernewgroup.msgGroupNo"/></font></td>
                                 <td ALIGN="center"><font face="arial"> </font> <input
                                         type="text" name="mygroup_no" size="10" maxlength="10"> <font
-                                        size="-2"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.msgMaxChars"/></font></td>
+                                        size="-2"><fmt:message key="provider.providernewgroup.msgMaxChars"/></font></td>
                             </tr>
                             <%
                                 int i = 0;
@@ -142,9 +143,9 @@
             <tr>
                 <TD align="center"><input type="hidden" name="Submit"
                                           value=" Save "> <input type="submit"
-                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.btnSave"/>">
+                                                                 value="<fmt:message key="provider.providernewgroup.btnSave"/>">
                     <INPUT TYPE="RESET"
-                           VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providernewgroup.btnExit"/>"
+                           VALUE="<fmt:message key="provider.providernewgroup.btnExit"/>"
                            onClick="window.close();"></TD>
             </tr>
         </TABLE>

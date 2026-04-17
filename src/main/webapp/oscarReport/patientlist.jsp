@@ -4,6 +4,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}"
        scope="request"/>
 
@@ -30,7 +31,7 @@
 
     <fieldset>
         <h4>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.exportPatientbyAppt"/> <br> <small>Please select
+            <fmt:message key="admin.admin.exportPatientbyAppt"/> <br> <small>Please select
             the provider and appointment date from &amp; to.</small>
         </h4>
         <div class="row-fluid">

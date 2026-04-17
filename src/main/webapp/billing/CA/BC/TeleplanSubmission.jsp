@@ -50,6 +50,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillActivityDAO" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -134,7 +135,7 @@
 </head>
 
 <body>
-<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.genTeleplanFile2"/></h3>
+<h3><fmt:message key="admin.admin.genTeleplanFile2"/></h3>
 
 <div class="container-fluid well">
     <div id="Layer2"

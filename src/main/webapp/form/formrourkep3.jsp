@@ -42,6 +42,7 @@
 <%@ page import="ca.openosp.openo.form.*, ca.openosp.openo.form.data.*" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 
@@ -58,7 +59,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.title"/></title>
+        <title><fmt:message key="oscarEncounter.formRourke3.title"/></title>
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
@@ -112,7 +113,7 @@
 
 //        {
 
-//            ret = confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgSaveAndPrintPreview"/>");
+//            ret = confirm("<fmt:message key="oscarEncounter.formRourke3.msgSaveAndPrintPreview"/>");
 
 //        }
 
@@ -130,7 +131,7 @@
 
             if (ret == true) {
 
-                ret = confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgSave"/>");
+                ret = confirm("<fmt:message key="oscarEncounter.formRourke3.msgSave"/>");
 
             }
 
@@ -147,7 +148,7 @@
 
             if (ret == true) {
 
-                ret = confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgSaveExit"/>");
+                ret = confirm("<fmt:message key="oscarEncounter.formRourke3.msgSaveExit"/>");
 
             }
 
@@ -317,7 +318,7 @@
 
             if (!checkTypeNum(obj.value)) {
 
-                alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgTypeANumber"/>");
+                alert("<fmt:message key="oscarEncounter.formRourke3.msgTypeANumber"/>");
 
             }
 
@@ -451,29 +452,29 @@
             <tr>
 
                 <td nowrap="true"><input type="submit"
-                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnSave"/>"
+                                         value="<fmt:message key="oscarEncounter.formRourke3.btnSave"/>"
                                          onclick="javascript:return onSave();"/> <input type="submit"
-                                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnSaveExit"/>"
+                                                                                        value="<fmt:message key="oscarEncounter.formRourke3.btnSaveExit"/>"
                                                                                         onclick="javascript:return onSaveExit();"/>
                     <input type="submit"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnExit"/>"
+                           value="<fmt:message key="oscarEncounter.formRourke3.btnExit"/>"
                            onclick="javascript:return onExit();"> <input type="button"
-                                                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnPrint"/>"
+                                                                         value="<fmt:message key="oscarEncounter.formRourke3.btnPrint"/>"
                                                                          onclick="javascript:return onPrint();"/></td>
 
                 <td align="center" width="100%"><a name="length"
                                                    href="javascript:popup('form/graphLengthWeight.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">
 
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnGraphLenght"/></a><br>
+                    <fmt:message key="oscarEncounter.formRourke3.btnGraphLenght"/></a><br>
 
                     <a name="headCirc"
                        href="javascript:popup('form/graphHeadCirc.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">
 
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnGraphHead"/></a></td>
+                        <fmt:message key="oscarEncounter.formRourke3.btnGraphHead"/></a></td>
 
                 <td nowrap="true"><a
-                        href="form/formrourkep1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnPage1"/></a>&nbsp;|&nbsp; <a
-                        href="form/formrourkep2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnPage2"/></a>&nbsp;|&nbsp; <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgPage3"/></a></td>
+                        href="form/formrourkep1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke3.btnPage1"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourkep2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke3.btnPage2"/></a>&nbsp;|&nbsp; <a><fmt:message key="oscarEncounter.formRourke3.msgPage3"/></a></td>
 
             </tr>
 
@@ -484,7 +485,7 @@
 
             <tr class="titleBar">
 
-                <th><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgRourkeBabyRecord"/></th>
+                <th><fmt:message key="oscarEncounter.formRourke3.msgRourkeBabyRecord"/></th>
 
             </tr>
 
@@ -494,14 +495,14 @@
 
             <tr valign="top">
 
-                <td nowrap align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgBirthRemarks"/><br>
+                <td nowrap align="center"><fmt:message key="oscarEncounter.formRourke3.msgBirthRemarks"/><br>
 
                     <textarea name="c_birthRemarks" rows="2"
                               cols="17"><%=Encode.forHtml(String.valueOf(props.getProperty("c_birthRemarks", "")))%></textarea>
 
                 </td>
 
-                <td nowrap align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgRiskFactors"/><br>
+                <td nowrap align="center"><fmt:message key="oscarEncounter.formRourke3.msgRiskFactors"/><br>
 
                     <textarea name="c_riskFactors" rows="2"
                               cols="17"><%=Encode.forHtml(String.valueOf(props.getProperty("c_riskFactors", "")))%></textarea>
@@ -510,22 +511,22 @@
 
                 <td width="65%" nowrap align="center">
 
-                    <p><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgName"/>: <input
+                    <p><fmt:message key="oscarEncounter.formRourke3.msgName"/>: <input
                             type="text" name="c_pName" maxlength="60" size="30"
                             value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_pName", "")))%>" readonly="true"/>
 
-                        &nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgBirthDate"/> (yyyy/mm/dd): <input
+                        &nbsp;&nbsp; <fmt:message key="oscarEncounter.formRourke3.msgBirthDate"/> (yyyy/mm/dd): <input
                                 type="text" name="c_birthDate" size="10" maxlength="10"
                                 value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_birthDate", "")))%>" readonly="true">
 
                         &nbsp;&nbsp; <% if (!((FrmRourkeRecord) rec).isFemale(demoNo)) {
 
-                        %><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgMale"/>
+                        %><fmt:message key="oscarEncounter.formRourke3.msgMale"/>
                         <%
 
                         } else {
 
-                        %><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgFemale"/>
+                        %><fmt:message key="oscarEncounter.formRourke3.msgFemale"/>
                         <%
 
                             }
@@ -533,19 +534,19 @@
                         %>
                     </p>
 
-                    <p><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formLenght"/>:
+                    <p><fmt:message key="oscarEncounter.formRourke3.formLenght"/>:
                         <input type="text" name="c_length" size="6" maxlength="6"
-                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_length", "")))%>"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgLenghtUnit"/> &nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formHeadCirc"/>: <input type="text"
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_length", "")))%>"/> <fmt:message key="oscarEncounter.formRourke3.msgLenghtUnit"/> &nbsp;&nbsp; <fmt:message key="oscarEncounter.formRourke3.formHeadCirc"/>: <input type="text"
                                                                                         name="c_headCirc" size="6"
                                                                                         maxlength="6"
                                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_headCirc", "")))%>"/>
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgHeadCircUnit"/> &nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formBirthWt"/>: <input type="text"
+                        <fmt:message key="oscarEncounter.formRourke3.msgHeadCircUnit"/> &nbsp;&nbsp; <fmt:message key="oscarEncounter.formRourke3.formBirthWt"/>: <input type="text"
                                                                                        name="c_birthWeight" size="6"
                                                                                        maxlength="7"
                                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_birthWeight", "")))%>"/>
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgBirthUnit"/> &nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formDischargeWt"/>: <input
+                        <fmt:message key="oscarEncounter.formRourke3.msgBirthUnit"/> &nbsp;&nbsp; <fmt:message key="oscarEncounter.formRourke3.formDischargeWt"/>: <input
                                 type="text" name="c_dischargeWeight" size="6" maxlength="7"
-                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_dischargeWeight", "")))%>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgDischargeWtUnit"/></p>
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_dischargeWeight", "")))%>"> <fmt:message key="oscarEncounter.formRourke3.msgDischargeWtUnit"/></p>
 
                 </td>
 
@@ -557,19 +558,19 @@
 
             <tr align="center">
 
-                <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgAge"/></a></td>
+                <td class="column"><a><fmt:message key="oscarEncounter.formRourke3.msgAge"/></a></td>
 
-                <td class="row"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msg18Months"/></a></td>
+                <td class="row"><a><fmt:message key="oscarEncounter.formRourke3.msg18Months"/></a></td>
 
-                <td class="row"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msg2-3years"/></a></td>
+                <td class="row"><a><fmt:message key="oscarEncounter.formRourke3.msg2-3years"/></a></td>
 
-                <td class="row"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msg4-5years"/></a></td>
+                <td class="row"><a><fmt:message key="oscarEncounter.formRourke3.msg4-5years"/></a></td>
 
             </tr>
 
             <tr align="center">
 
-                <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgDate"/></a></td>
+                <td class="column"><a><fmt:message key="oscarEncounter.formRourke3.msgDate"/></a></td>
 
                 <td>(yyyy/mm/dd) <input type="text" name="p3_date18m" size="10"
                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p3_date18m", "")))%>"/></td>
@@ -584,7 +585,7 @@
 
             <tr align="center">
 
-                <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgGrowth"/></a></td>
+                <td class="column"><a><fmt:message key="oscarEncounter.formRourke3.msgGrowth"/></a></td>
 
                 <td>
 
@@ -592,15 +593,15 @@
 
                         <tr>
 
-                            <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formHt"/><br>
+                            <td align="center"><fmt:message key="oscarEncounter.formRourke3.formHt"/><br>
                                 <input type="text" class="wide" name="p3_ht18m" size="4"
                                        maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p3_ht18m", "")))%>"></td>
 
-                            <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formWt"/><br>
+                            <td align="center"><fmt:message key="oscarEncounter.formRourke3.formWt"/><br>
                                 <input type="text" class="wide" name="p3_wt18m" size="4"
                                        maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p3_wt18m", "")))%>"></td>
 
-                            <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formHdCirc"/><br>
+                            <td align="center"><fmt:message key="oscarEncounter.formRourke3.formHdCirc"/><br>
                                 <input type="text" class="wide" name="p3_hc18m" size="4"
                                        maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p3_hc18m", "")))%>"></td>
 
@@ -616,11 +617,11 @@
 
                         <tr>
 
-                            <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formHt"/><br>
+                            <td align="center"><fmt:message key="oscarEncounter.formRourke3.formHt"/><br>
                                 <input type="text" class="wide" name="p3_ht2y" size="4"
                                        maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p3_ht2y", "")))%>"></td>
 
-                            <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formWt"/><br>
+                            <td align="center"><fmt:message key="oscarEncounter.formRourke3.formWt"/><br>
                                 <input type="text" class="wide" name="p3_wt2y" size="4"
                                        maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p3_wt2y", "")))%>"></td>
 
@@ -636,11 +637,11 @@
 
                         <tr>
 
-                            <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formHt"/><br>
+                            <td align="center"><fmt:message key="oscarEncounter.formRourke3.formHt"/><br>
                                 <input type="text" class="wide" name="p3_ht4y" size="4"
                                        maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p3_ht4y", "")))%>"></td>
 
-                            <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formWt"/><br>
+                            <td align="center"><fmt:message key="oscarEncounter.formRourke3.formWt"/><br>
                                 <input type="text" class="wide" name="p3_wt4y" size="4"
                                        maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p3_wt4y", "")))%>"></td>
 
@@ -654,7 +655,7 @@
 
             <tr align="center">
 
-                <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgParentalConcerns"/></a></td>
+                <td class="column"><a><fmt:message key="oscarEncounter.formRourke3.msgParentalConcerns"/></a></td>
 
                 <td><textarea name="p3_pConcern18m" style="width: 100%"
                               cols="10" rows="2"><%=Encode.forHtml(String.valueOf(props.getProperty("p3_pConcern18m", "")))%></textarea>
@@ -671,7 +672,7 @@
 
             <tr>
 
-                <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgNutrition"/></a>:
+                <td class="column"><a><fmt:message key="oscarEncounter.formRourke3.msgNutrition"/></a>:
                 </td>
 
                 <td valign="top">
@@ -692,7 +693,7 @@
                                                     name="p3_bottle18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_bottle18m", "")))%> />
                             </td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formNoBottles"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formNoBottles"/></td>
 
                         </tr>
 
@@ -717,7 +718,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_milk2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_milk2y", "")))%>></td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formHomogenized"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formHomogenized"/></td>
 
                         </tr>
 
@@ -726,7 +727,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_food2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_food2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formFoodGuide"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formFoodGuide"/></td>
 
                         </tr>
 
@@ -751,7 +752,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_milk4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_milk4y", "")))%>></td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.form2-100milk"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.form2-100milk"/></td>
 
                         </tr>
 
@@ -760,7 +761,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_food4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_food4y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formFoodGuide"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formFoodGuide"/></td>
 
                         </tr>
 
@@ -778,41 +779,13 @@
 
                         <tr>
 
-                            <td align="center" nowrap="true"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgEducationalAdvice"/></b></td>
+                            <td align="center" nowrap="true"><b><fmt:message key="oscarEncounter.formRourke3.msgEducationalAdvice"/></b></td>
 
                         </tr>
 
                         <tr>
 
-                            <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgSafety"/></b></td>
-
-                        </tr>
-
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-
-                        <tr>
-
-                            <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgBehaviour"/></b></td>
-
-                        </tr>
-
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-
-                        <tr>
-
-                            <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msfFamily"/></b></td>
+                            <td align="right"><b><fmt:message key="oscarEncounter.formRourke3.msgSafety"/></b></td>
 
                         </tr>
 
@@ -825,8 +798,36 @@
                         </tr>
 
                         <tr>
+                            <td>&nbsp;</td>
+                        </tr>
 
-                            <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgOther"/></b></td>
+                        <tr>
+
+                            <td align="right"><b><fmt:message key="oscarEncounter.formRourke3.msgBehaviour"/></b></td>
+
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+
+                            <td align="right"><b><fmt:message key="oscarEncounter.formRourke3.msfFamily"/></b></td>
+
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+
+                            <td align="right"><b><fmt:message key="oscarEncounter.formRourke3.msgOther"/></b></td>
 
                         </tr>
 
@@ -853,7 +854,7 @@
                                                     name="p3_bath18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_bath18m", "")))%>></td>
 
                             <td width="100%"><i><a href="#"
-                                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_drowning');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnbathSafety"/></a>*</i></td>
+                                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_drowning');return false;"><fmt:message key="oscarEncounter.formRourke3.btnbathSafety"/></a>*</i></td>
 
                         </tr>
 
@@ -864,7 +865,7 @@
                             </td>
 
                             <td><a href="#"
-                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_choking');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnChokngSafeToys"/></a>*
+                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_choking');return false;"><fmt:message key="oscarEncounter.formRourke3.btnChokngSafeToys"/></a>*
                             </td>
 
                         </tr>
@@ -881,7 +882,7 @@
                                                     name="p3_temperment18m"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_temperment18m", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formTemperment"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formTemperment"/></td>
 
                         </tr>
 
@@ -896,7 +897,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_limit18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_limit18m", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formLimitSetting"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formLimitSetting"/></td>
 
                         </tr>
 
@@ -906,7 +907,7 @@
                                                     name="p3_social18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_social18m", "")))%>>
                             </td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formSocializingOpp"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formSocializingOpp"/></td>
 
                         </tr>
 
@@ -923,7 +924,7 @@
                             </td>
 
                             <td><b><a href="#"
-                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>o_dentalCare');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formDentalCare"/></a>*</b></td>
+                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>o_dentalCare');return false;"><fmt:message key="oscarEncounter.formRourke3.formDentalCare"/></a>*</b></td>
 
                         </tr>
 
@@ -933,7 +934,7 @@
                                                     name="p3_toilet18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_toilet18m", "")))%>>
                             </td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formToiletTraining"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formToiletTraining"/></td>
 
                         </tr>
 
@@ -960,7 +961,7 @@
                                                     name="p3_bike2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_bike2y", "")))%>></td>
 
                             <td width="100%"><i><a href="#"
-                                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_falls');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formBikeHelmets"/></a>*</i></td>
+                                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_falls');return false;"><fmt:message key="oscarEncounter.formRourke3.formBikeHelmets"/></a>*</i></td>
 
                         </tr>
 
@@ -970,7 +971,7 @@
                                                     name="p3_matches2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_matches2y", "")))%>>
                             </td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formMatches"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formMatches"/></td>
 
                         </tr>
 
@@ -979,8 +980,8 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_carbon2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_carbon2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formCarbonMonoxide"/>/ <i><a
-                                    href="#" onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_burns');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formSmokeDetectors"/></a>*</i></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formCarbonMonoxide"/>/ <i><a
+                                    href="#" onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_burns');return false;"><fmt:message key="oscarEncounter.formRourke3.formSmokeDetectors"/></a>*</i></td>
 
                         </tr>
 
@@ -1001,7 +1002,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_parent2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_parent2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formParentChildInteraction"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formParentChildInteraction"/></td>
 
                         </tr>
 
@@ -1010,7 +1011,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_social2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_social2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formSocializingOpp"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formSocializingOpp"/></td>
 
                         </tr>
 
@@ -1021,7 +1022,7 @@
                             </td>
 
                             <td><b><a href="#"
-                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>hri_dayCare');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formAssessDayCare"/></a>*</b></td>
+                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>hri_dayCare');return false;"><fmt:message key="oscarEncounter.formRourke3.formAssessDayCare"/></a>*</b></td>
 
                         </tr>
 
@@ -1031,7 +1032,7 @@
                                                     name="p3_dental2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_dental2y", "")))%>></td>
 
                             <td><b><a href="#"
-                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>o_dentalCare');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formDentalCareCheckUp"/></a>*</b></td>
+                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>o_dentalCare');return false;"><fmt:message key="oscarEncounter.formRourke3.formDentalCareCheckUp"/></a>*</b></td>
 
                         </tr>
 
@@ -1040,7 +1041,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_toilet2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_toilet2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formToiletTraining"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formToiletTraining"/></td>
 
                         </tr>
 
@@ -1067,7 +1068,7 @@
                                                     name="p3_bike4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_bike4y", "")))%>></td>
 
                             <td width="100%"><i><a href="#"
-                                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_falls');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formBikeHelmets"/></a>*</i></td>
+                                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_falls');return false;"><fmt:message key="oscarEncounter.formRourke3.formBikeHelmets"/></a>*</i></td>
 
                         </tr>
 
@@ -1077,7 +1078,7 @@
                                                     name="p3_matches4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_matches4y", "")))%>>
                             </td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formMatches"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formMatches"/></td>
 
                         </tr>
 
@@ -1086,8 +1087,8 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_carbon4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_carbon4y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formCarbonMonoxide"/>/ <i><a
-                                    href="#" onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_burns');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formSmokeDetectors"/></a>*</i></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formCarbonMonoxide"/>/ <i><a
+                                    href="#" onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_burns');return false;"><fmt:message key="oscarEncounter.formRourke3.formSmokeDetectors"/></a>*</i></td>
 
                         </tr>
 
@@ -1097,7 +1098,7 @@
                                                     name="p3_water4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_water4y", "")))%>></td>
 
                             <td><a href="#"
-                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_drowning');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formWaterSafety"/></a></td>
+                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>s_drowning');return false;"><fmt:message key="oscarEncounter.formRourke3.formWaterSafety"/></a></td>
 
                         </tr>
 
@@ -1118,7 +1119,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_social4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_social4y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formSocializingOpp"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formSocializingOpp"/></td>
 
                         </tr>
 
@@ -1134,7 +1135,7 @@
                                                     name="p3_dental4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_dental4y", "")))%>></td>
 
                             <td><b><a href="#"
-                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>o_dentalCare');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formDentalCareCheckUp"/></a>*</b></td>
+                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>o_dentalCare');return false;"><fmt:message key="oscarEncounter.formRourke3.formDentalCareCheckUp"/></a>*</b></td>
 
                         </tr>
 
@@ -1143,7 +1144,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_school4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_school4y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formSchoolReadiness"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formSchoolReadiness"/></td>
 
                         </tr>
 
@@ -1157,9 +1158,9 @@
 
                 <td class="column">
 
-                    <div align="center"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgDevelopment"/></b><br>
+                    <div align="center"><b><fmt:message key="oscarEncounter.formRourke3.msgDevelopment"/></b><br>
 
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgDevelopmentDesc"/>
+                        <fmt:message key="oscarEncounter.formRourke3.msgDevelopmentDesc"/>
 
                     </div>
 
@@ -1183,7 +1184,7 @@
                                                     name="p3_points18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_points18m", "")))%>>
                             </td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formPoints"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formPoints"/></td>
 
                         </tr>
 
@@ -1192,7 +1193,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_words18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_words18m", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.form5Words"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.form5Words"/></td>
 
                         </tr>
 
@@ -1201,7 +1202,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_picks18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_picks18m", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formFingerFood"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formFingerFood"/></td>
 
                         </tr>
 
@@ -1210,7 +1211,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_walks18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_walks18m", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formWalkAlone"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formWalkAlone"/></td>
 
                         </tr>
 
@@ -1220,7 +1221,7 @@
                                                     name="p3_stacks18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_stacks18m", "")))%>>
                             </td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formStack3Blocks"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formStack3Blocks"/></td>
 
                         </tr>
 
@@ -1230,7 +1231,7 @@
                                                     name="p3_affection18m"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_affection18m", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formShowAffection"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formShowAffection"/></td>
 
                         </tr>
 
@@ -1240,7 +1241,7 @@
                                                     name="p3_showParents18m"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_showParents18m", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formPointShow"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formPointShow"/></td>
 
                         </tr>
 
@@ -1249,7 +1250,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_looks18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_looks18m", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formLooksWhenTalk"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formLooksWhenTalk"/></td>
 
                         </tr>
 
@@ -1259,7 +1260,7 @@
                                                     name="p3_noParentsConcerns18m"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_noParentsConcerns18m", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
 
                         </tr>
 
@@ -1281,7 +1282,7 @@
 
                         <tr>
 
-                            <td colspan="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msg2Years"/></b></td>
+                            <td colspan="2"><b><fmt:message key="oscarEncounter.formRourke3.msg2Years"/></b></td>
 
                         </tr>
 
@@ -1290,7 +1291,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_word2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_word2y", "")))%>></td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formNewWordWeek"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formNewWordWeek"/></td>
 
                         </tr>
 
@@ -1300,7 +1301,7 @@
                                                     name="p3_sentence2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_sentence2y", "")))%>>
                             </td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.form2WordSentences"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.form2WordSentences"/></td>
 
                         </tr>
 
@@ -1309,7 +1310,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_run2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_run2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formTriesToRun"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formTriesToRun"/></td>
 
                         </tr>
 
@@ -1319,7 +1320,7 @@
                                                     name="p3_container2y"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_container2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formPutObjectsContainer"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formPutObjectsContainer"/></td>
 
                         </tr>
 
@@ -1328,7 +1329,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_copies2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_copies2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formCopies"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formCopies"/></td>
 
                         </tr>
 
@@ -1337,7 +1338,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_skills2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_skills2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formDevelopNewSkills"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formDevelopNewSkills"/></td>
 
                         </tr>
 
@@ -1347,7 +1348,7 @@
                                                     name="p3_noParentsConcerns2y"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_noParentsConcerns2y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
 
                         </tr>
 
@@ -1366,7 +1367,7 @@
 
                         <tr>
 
-                            <td colspan="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msg3Years"/></b></td>
+                            <td colspan="2"><b><fmt:message key="oscarEncounter.formRourke3.msg3Years"/></b></td>
 
                         </tr>
 
@@ -1376,7 +1377,7 @@
                                                     name="p3_understands3y"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_understands3y", "")))%>></td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formUnderstands2StepDirection"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formUnderstands2StepDirection"/></td>
 
                         </tr>
 
@@ -1385,7 +1386,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_twists3y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_twists3y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formTurnsKnobs"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formTurnsKnobs"/></td>
 
                         </tr>
 
@@ -1395,7 +1396,7 @@
                                                     name="p3_turnPages3y"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_turnPages3y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formTurnsOnePage"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formTurnsOnePage"/></td>
 
                         </tr>
 
@@ -1404,7 +1405,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_share3y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_share3y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formShareSomeTime"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formShareSomeTime"/></td>
 
                         </tr>
 
@@ -1414,7 +1415,7 @@
                                                     name="p3_listens3y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_listens3y", "")))%>>
                             </td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formListenMusic"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formListenMusic"/></td>
 
                         </tr>
 
@@ -1424,7 +1425,7 @@
                                                     name="p3_noParentsConcerns3y"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_noParentsConcerns3y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
 
                         </tr>
 
@@ -1446,7 +1447,7 @@
 
                         <tr>
 
-                            <td colspan="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msg4Years"/></b></td>
+                            <td colspan="2"><b><fmt:message key="oscarEncounter.formRourke3.msg4Years"/></b></td>
 
                         </tr>
 
@@ -1456,7 +1457,7 @@
                                                     name="p3_understands4y"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_understands4y", "")))%>></td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formUnderstandsRelated3PartDirection"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formUnderstandsRelated3PartDirection"/></td>
 
                         </tr>
 
@@ -1466,7 +1467,7 @@
                                                     name="p3_questions4y"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_questions4y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formAsksQuestions"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formAsksQuestions"/></td>
 
                         </tr>
 
@@ -1476,7 +1477,7 @@
                                                     name="p3_oneFoot4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_oneFoot4y", "")))%>>
                             </td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formStandsOn1Foot"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formStandsOn1Foot"/></td>
 
                         </tr>
 
@@ -1485,7 +1486,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_draws4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_draws4y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formDraw3PartsPerson"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formDraw3PartsPerson"/></td>
 
                         </tr>
 
@@ -1494,7 +1495,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_toilet4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_toilet4y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formToiletTrained"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formToiletTrained"/></td>
 
                         </tr>
 
@@ -1514,7 +1515,7 @@
                                                     name="p3_noParentsConcerns4y"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_noParentsConcerns4y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
 
                         </tr>
 
@@ -1533,7 +1534,7 @@
 
                         <tr>
 
-                            <td colspan="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msg5Years"/></b></td>
+                            <td colspan="2"><b><fmt:message key="oscarEncounter.formRourke3.msg5Years"/></b></td>
 
                         </tr>
 
@@ -1542,7 +1543,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_counts5y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_counts5y", "")))%>></td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formCounts10"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formCounts10"/></td>
 
                         </tr>
 
@@ -1551,7 +1552,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_speaks5y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_speaks5y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formSpeaksClearly"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formSpeaksClearly"/></td>
 
                         </tr>
 
@@ -1560,7 +1561,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_ball5y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_ball5y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formPlayWithBall"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formPlayWithBall"/></td>
 
                         </tr>
 
@@ -1569,7 +1570,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_hops5y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_hops5y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formHops1Foot"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formHops1Foot"/></td>
 
                         </tr>
 
@@ -1578,7 +1579,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_shares5y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_shares5y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formSharesWillingly"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formSharesWillingly"/></td>
 
                         </tr>
 
@@ -1587,7 +1588,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_alone5y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_alone5y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formWorksAlone20Minutes"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formWorksAlone20Minutes"/></td>
 
                         </tr>
 
@@ -1608,7 +1609,7 @@
                                                     name="p3_noParentsConcerns5y"
                                     <%=Encode.forHtml(String.valueOf(props.getProperty("p3_noParentsConcerns5y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formNoParentsConcerns"/></td>
 
                         </tr>
 
@@ -1620,9 +1621,9 @@
 
             <tr>
 
-                <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgPhysicalExamination"/></a><br>
+                <td class="column"><a><fmt:message key="oscarEncounter.formRourke3.msgPhysicalExamination"/></a><br>
 
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgPhysicalExaminationDecs"/></td>
+                    <fmt:message key="oscarEncounter.formRourke3.msgPhysicalExaminationDecs"/></td>
 
                 <td valign="top">
 
@@ -1641,7 +1642,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_eyes18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_eyes18m", "")))%>></td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formRedEyes"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formRedEyes"/></td>
 
                         </tr>
 
@@ -1651,7 +1652,7 @@
                                                     name="p3_cover18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_cover18m", "")))%>></td>
 
                             <td><b><a href="#"
-                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>pe_cover');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnCoverTest"/></a>*</b></td>
+                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>pe_cover');return false;"><fmt:message key="oscarEncounter.formRourke3.btnCoverTest"/></a>*</b></td>
 
                         </tr>
 
@@ -1661,7 +1662,7 @@
                                                     name="p3_hearing18m" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_hearing18m", "")))%>>
                             </td>
 
-                            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgHearing"/></b></td>
+                            <td><b><fmt:message key="oscarEncounter.formRourke3.msgHearing"/></b></td>
 
                         </tr>
 
@@ -1686,7 +1687,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_visual2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_visual2y", "")))%>></td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formVisualAcuity"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formVisualAcuity"/></td>
 
                         </tr>
 
@@ -1696,7 +1697,7 @@
                                                     name="p3_cover2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_cover2y", "")))%>></td>
 
                             <td><b><a href="#"
-                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>pe_cover');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnCoverTest"/></a>*</b></td>
+                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>pe_cover');return false;"><fmt:message key="oscarEncounter.formRourke3.btnCoverTest"/></a>*</b></td>
 
                         </tr>
 
@@ -1706,7 +1707,7 @@
                                                     name="p3_hearing2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_hearing2y", "")))%>>
                             </td>
 
-                            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgHearing"/></b></td>
+                            <td><b><fmt:message key="oscarEncounter.formRourke3.msgHearing"/></b></td>
 
                         </tr>
 
@@ -1731,7 +1732,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_visual4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_visual4y", "")))%>></td>
 
-                            <td width="100%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formVisualAcuity"/></td>
+                            <td width="100%"><fmt:message key="oscarEncounter.formRourke3.formVisualAcuity"/></td>
 
                         </tr>
 
@@ -1741,7 +1742,7 @@
                                                     name="p3_cover4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_cover4y", "")))%>></td>
 
                             <td><b><a href="#"
-                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>pe_cover');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnCoverTest"/></a>*</b></td>
+                                      onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>pe_cover');return false;"><fmt:message key="oscarEncounter.formRourke3.btnCoverTest"/></a>*</b></td>
 
                         </tr>
 
@@ -1751,7 +1752,7 @@
                                                     name="p3_hearing4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_hearing4y", "")))%>>
                             </td>
 
-                            <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgHearing"/></b></td>
+                            <td><b><fmt:message key="oscarEncounter.formRourke3.msgHearing"/></b></td>
 
                         </tr>
 
@@ -1760,7 +1761,7 @@
                             <td valign="top"><input type="checkbox" class="chk"
                                                     name="p3_blood4y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_blood4y", "")))%>></td>
 
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formBloodPressure"/></td>
+                            <td><fmt:message key="oscarEncounter.formRourke3.formBloodPressure"/></td>
 
                         </tr>
 
@@ -1774,7 +1775,7 @@
 
                 <td class="column">
 
-                    <div align="center"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgProblems"/></b></div>
+                    <div align="center"><b><fmt:message key="oscarEncounter.formRourke3.msgProblems"/></b></div>
 
                 </td>
 
@@ -1812,7 +1813,7 @@
                                                     name="p3_serum2y" <%=Encode.forHtml(String.valueOf(props.getProperty("p3_serum2y", "")))%>></td>
 
                             <td width="100%"><i><a href="#"
-                                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>pp_leadScreening');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgSerumLead"/></a>*</i></td>
+                                                   onclick="popup('<%=Encode.forJavaScript(String.valueOf(resource))%>pp_leadScreening');return false;"><fmt:message key="oscarEncounter.formRourke3.msgSerumLead"/></a>*</i></td>
 
                         </tr>
 
@@ -1842,9 +1843,9 @@
 
                 <td class="column">
 
-                    <div align="center"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgImmunization"/></b><br>
+                    <div align="center"><b><fmt:message key="oscarEncounter.formRourke3.msgImmunization"/></b><br>
 
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgImmunizationDesc"/>
+                        <fmt:message key="oscarEncounter.formRourke3.msgImmunizationDesc"/>
 
                     </div>
 
@@ -1877,7 +1878,7 @@
 
             <tr>
 
-                <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.formSignature"/></a></td>
+                <td class="column"><a><fmt:message key="oscarEncounter.formRourke3.formSignature"/></a></td>
 
                 <td><input type="text" class="wide" style="width: 100%"
                            name="p3_signature18m"
@@ -1902,29 +1903,29 @@
             <tr>
 
                 <td nowrap="true"><input type="submit"
-                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnSave"/>"
+                                         value="<fmt:message key="oscarEncounter.formRourke3.btnSave"/>"
                                          onclick="javascript:return onSave();"/> <input type="submit"
-                                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnSaveExit"/>"
+                                                                                        value="<fmt:message key="oscarEncounter.formRourke3.btnSaveExit"/>"
                                                                                         onclick="javascript:return onSaveExit();"/>
                     <input type="submit"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnExit"/>"
+                           value="<fmt:message key="oscarEncounter.formRourke3.btnExit"/>"
                            onclick="javascript:return onExit();"> <input type="button"
-                                                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnPrint"/>"
+                                                                         value="<fmt:message key="oscarEncounter.formRourke3.btnPrint"/>"
                                                                          onclick="javascript:return onPrint();"/></td>
 
                 <td align="center" width="100%"><a name="length"
                                                    href="javascript:popup('form/graphLengthWeight.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">
 
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnGraphLenght"/></a><br>
+                    <fmt:message key="oscarEncounter.formRourke3.btnGraphLenght"/></a><br>
 
                     <a name="headCirc"
                        href="javascript:popup('form/graphHeadCirc.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">
 
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnGraphHead"/></a></td>
+                        <fmt:message key="oscarEncounter.formRourke3.btnGraphHead"/></a></td>
 
                 <td nowrap="true"><a
-                        href="form/formrourkep1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnPage1"/></a>&nbsp;|&nbsp; <a
-                        href="form/formrourkep2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.btnPage2"/></a>&nbsp;|&nbsp; <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke3.msgPage3"/></a></td>
+                        href="form/formrourkep1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke3.btnPage1"/></a>&nbsp;|&nbsp; <a
+                        href="form/formrourkep2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>"><fmt:message key="oscarEncounter.formRourke3.btnPage2"/></a>&nbsp;|&nbsp; <a><fmt:message key="oscarEncounter.formRourke3.msgPage3"/></a></td>
 
             </tr>
 

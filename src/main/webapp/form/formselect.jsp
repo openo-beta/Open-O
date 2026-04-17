@@ -29,6 +29,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
@@ -36,11 +37,11 @@
 
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnSelectForm"/></title>
+        <title><fmt:message key="admin.admin.btnSelectForm"/></title>
     </head>
 
     <body>
-    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnSelectForm"/></h3>
+    <h3><fmt:message key="admin.admin.btnSelectForm"/></h3>
 
     <div class="well">
 
@@ -57,9 +58,9 @@
                                 <td>
                                     <table>
                                         <tr>
-                                            <th align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.form.msgAllAvailableForms"/></th>
+                                            <th align="left"><fmt:message key="oscarEncounter.form.msgAllAvailableForms"/></th>
                                             <th></th>
-                                            <th align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.form.msgSelectedForms"/></th>
+                                            <th align="left"><fmt:message key="oscarEncounter.form.msgSelectedForms"/></th>
                                         </tr>
                                         <td><select multiple="true" name="selectedAddTypes"
                                                          size="10" style="width:150">
@@ -77,14 +78,14 @@
                                                 <tr>
                                                     <td><input type="button" name="button" id="add" class="btn function"
                                                                style="width:80px"
-                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/> >>"
+                                                               value="<fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/> >>"
                                                     /></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <input type="button" name="button" class="btn function"
                                                                id="delete" style="width:80px"
-                                                               value="<< <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.deleteBtn"/>"/>
+                                                               value="<< <fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.deleteBtn"/>"/>
                                                     </td>
                                                 </tr>
                                             </table>

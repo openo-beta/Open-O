@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanUserPassDAO" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
@@ -40,7 +41,7 @@
 <html>
 
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageTeleplan"/></title>
+        <title><fmt:message key="admin.admin.manageTeleplan"/></title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
@@ -53,7 +54,7 @@
     </head>
 
     <body>
-    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.manageTeleplan"/></h3>
+    <h3><fmt:message key="admin.admin.manageTeleplan"/></h3>
 
     <div class="container-fluid well well-small">
 

@@ -43,6 +43,7 @@
 -->
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.math.*,java.util.*,java.sql.*,ca.openosp.*,java.net.*,java.text.*"
          errorPage="/errorpage.jsp" %>
@@ -124,7 +125,7 @@
 
     <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar.js"></script>
     <script type="text/javascript"
-            src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+            src="<%= request.getContextPath() %>/share/calendar/lang/<fmt:message key="global.javascript.calendar"/>"></script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.7.1.min.js"></script>
     <script type="text/javascript">
@@ -264,7 +265,7 @@
         }
 
     </script>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.editBillPaymentList"/></title>
+    <title><fmt:message key="admin.admin.editBillPaymentList"/></title>
 </head>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="w">
 <body bgcolor="ivory" text="#000000" topmargin="0" leftmargin="0" rightmargin="0">

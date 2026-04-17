@@ -45,6 +45,7 @@
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%
@@ -60,7 +61,7 @@
     String winName = "";
 %>
 
-<h3>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.clinicalModules"/></h3>
+<h3>&nbsp;<fmt:message key="oscarEncounter.Index.clinicalModules"/></h3>
 <ul id="ModuleList">
 
     <li><oscar:oscarPropertiesCheck property="PREVENTION" value="yes">
@@ -76,17 +77,17 @@
                         <%
                            winName = "Disease" + bean.demographicNo;
                         %>
-                        <a class="links" onmouseover="this.className='linkhover'"  onmouseout="this.className='links'" href=# onClick="popupPage(580,900,'<%=Encode.forJavaScript(String.valueOf(winName))%>','<%=request.getContextPath()%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&quickList=');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.disease"/></a>
+                        <a class="links" onmouseover="this.className='linkhover'"  onmouseout="this.className='links'" href=# onClick="popupPage(580,900,'<%=Encode.forJavaScript(String.valueOf(winName))%>','<%=request.getContextPath()%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&quickList=');return false;"><fmt:message key="global.disease"/></a>
                     </li>
                     <li>
                         <%
                            winName = "AddTickler" + bean.demographicNo;
                         %>
-                        <a class="links" onmouseover="this.className='linkhover'"  onmouseout="this.className='links'" href=# onClick="popupPage(580,800,'<%=Encode.forJavaScript(String.valueOf(winName))%>','<%=request.getContextPath()%>/appointment/appointmentcontrol.jsp?keyword=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&displaymode=<%=Encode.forJavaScript(String.valueOf("Search "))%>&search_mode=search_name&originalpage=<%=request.getContextPath() + "/tickler/ticklerAdd.jsp"%>&orderby=last_name&appointment_date=2000-01-01&limit1=0&limit2=5&status=t&start_time=10:45&end_time=10:59&duration=15&dboperation=search_demorecord&type=&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.addTickler"/></a>                        
+                        <a class="links" onmouseover="this.className='linkhover'"  onmouseout="this.className='links'" href=# onClick="popupPage(580,800,'<%=Encode.forJavaScript(String.valueOf(winName))%>','<%=request.getContextPath()%>/appointment/appointmentcontrol.jsp?keyword=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&displaymode=<%=Encode.forJavaScript(String.valueOf("Search "))%>&search_mode=search_name&originalpage=<%=request.getContextPath() + "/tickler/ticklerAdd.jsp"%>&orderby=last_name&appointment_date=2000-01-01&limit1=0&limit2=5&status=t&start_time=10:45&end_time=10:59&duration=15&dboperation=search_demorecord&type=&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:message key="oscarEncounter.Index.addTickler"/></a>                        
                         <%
                            winName = "ViewTickler" + bean.demographicNo;
                         %>                        
-                        <a class="links" onmouseover="this.className='linkhover'"  onmouseout="this.className='links'" href="#" onClick="popupPage(700,1000,'<%=Encode.forJavaScript(String.valueOf(winName))%>','<%=request.getContextPath()%>/tickler/ticklerDemoMain.jsp?demoview=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.viewTickler"/></a><br>
+                        <a class="links" onmouseover="this.className='linkhover'"  onmouseout="this.className='links'" href="#" onClick="popupPage(700,1000,'<%=Encode.forJavaScript(String.valueOf(winName))%>','<%=request.getContextPath()%>/tickler/ticklerDemoMain.jsp?demoview=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:message key="global.viewTickler"/></a><br>
                         
                     </li> --%>
     <li>
@@ -96,7 +97,7 @@
               onmouseover="this.className='linkhover'"
               onmouseout="this.className='links'"
               href="javascript: function myFunction() {return false; }"
-              onClick="popupPage(150,200,'<%=Encode.forJavaScript(String.valueOf(winName))%>','calculators.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/></a></li>
+              onClick="popupPage(150,200,'<%=Encode.forJavaScript(String.valueOf(winName))%>','calculators.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>'); return false;"><fmt:message key="oscarEncounter.Index.calculators"/></a></li>
 
 </ul>
 <input type="hidden" id="modCount" value="7">

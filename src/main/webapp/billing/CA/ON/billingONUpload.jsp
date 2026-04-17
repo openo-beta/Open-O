@@ -24,13 +24,14 @@
     session.setAttribute("homepath", props.getProperty("project_home", ""));
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ page import="ca.openosp.*" errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
 <head>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.uploadMOHFile"/></title>
+    <title><fmt:message key="admin.admin.uploadMOHFile"/></title>
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 
     <script type="text/javascript">
@@ -65,7 +66,7 @@
 </head>
 
 <body>
-<h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.uploadMOHFile"/></h3>
+<h3><fmt:message key="admin.admin.uploadMOHFile"/></h3>
 <div class="container-fluid well">
     <form id="form1" name="form1" method="post" action="" ENCTYPE="multipart/form-data" onsubmit="return onSubmit();">
         Select diskette<input style="margin-left:40px;" type="file" name="file1" value="" required>

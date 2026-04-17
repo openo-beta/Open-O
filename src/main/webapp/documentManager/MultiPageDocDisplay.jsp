@@ -46,6 +46,7 @@
 <%@ page import="ca.openosp.openo.utility.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -187,7 +188,7 @@
         //?segmentID=1&providerNo=999998&searchProviderNo=999998&status=A&demoName=
         function checkDelete(url, docDescription) {
             // revision Apr 05 2004 - we now allow anyone to delete documents
-            if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDelete"/> " + docDescription)) {
+            if (confirm("<fmt:message key="dms.documentReport.msgDelete"/> " + docDescription)) {
                 window.location = url;
             }
         }
@@ -230,17 +231,17 @@
                     </legend>
                     <table border="0">
                         <tr>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.DocumentUploaded"/></td>
+                            <td><fmt:message key="inboxmanager.document.DocumentUploaded"/></td>
                             <td><%=Encode.forHtml(String.valueOf(curdoc.getDateTimeStamp()))%>
                             </td>
                         </tr>
                         <tr>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.ContentType"/></td>
+                            <td><fmt:message key="inboxmanager.document.ContentType"/></td>
                             <td><%=Encode.forHtml(String.valueOf(contentType))%>
                             </td>
                         </tr>
                         <tr>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.NumberOfPages"/></td>
+                            <td><fmt:message key="inboxmanager.document.NumberOfPages"/></td>
                             <td><span id="viewedPage_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>"
                                       class="<%= numOfPage > 1 ? "multiPage" : "singlePage" %>">1</span>&nbsp; of &nbsp;<span
                                     id="numPages_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>"
@@ -257,10 +258,10 @@
                         <input type="hidden" name="status" value="<%=Encode.forHtmlAttribute(String.valueOf(status))%>"/>
                         <table border="0">
                             <tr>
-                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocType"/>:</td>
+                                <td><fmt:message key="dms.documentReport.msgDocType"/>:</td>
                                 <td>
                                     <select tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" name="docType" id="docType">
-                                        <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
+                                        <option value=""><fmt:message key="dms.addDocument.formSelect"/></option>
                                         <%
                                             for (int j = 0; j < doctypes.size(); j++) {
                                                 String doctype = (String) doctypes.get(j);
@@ -272,7 +273,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocDesc"/>:</td>
+                                <td><fmt:message key="dms.documentReport.msgDocDesc"/>:</td>
                                 <td><input tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" type="text" name="documentDescription"
                                            value="<%=Encode.forHtmlAttribute(String.valueOf(curdoc.getDescription()))%>"/></td>
                             </tr>
@@ -763,14 +764,14 @@
 
 
                             <tr>
-                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgCreator"/>:</td>
+                                <td><fmt:message key="dms.documentReport.msgCreator"/>:</td>
                                 <td><%=Encode.forHtml(String.valueOf(curdoc.getCreatorName()))%>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td colspan="2" align="right"><a id="saveSucessMsg_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>"
-                                                                 style="display:none;color:blue;"><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.SuccessfullySavedMsg"/></a><%if (!demographicID.equals("-1")) {%><input
+                                                                 style="display:none;color:blue;"><fmt:message key="inboxmanager.document.SuccessfullySavedMsg"/></a><%if (!demographicID.equals("-1")) {%><input
                                         type="submit" name="save" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" id="save<%=Encode.forHtmlAttribute(String.valueOf(docId))%>"
                                         value="Save"/><%} else {%><input type="submit" name="save"
                                                                          tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" id="save<%=Encode.forHtmlAttribute(String.valueOf(docId))%>"
@@ -868,7 +869,7 @@
                     </form>
                 </fieldset>
                 <fieldset>
-                    <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.Comment"/></legend>
+                    <legend><fmt:message key="inboxmanager.document.Comment"/></legend>
                     <form name="acknowledgeForm_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>" id="acknowledgeForm_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>"
                           onsubmit="updateStatus('acknowledgeForm_<%=Encode.forJavaScript(String.valueOf(docId))%>');" method="post"
                           action="javascript:void(0);">
@@ -892,21 +893,21 @@
                                         <tr>
                                             <td>
                                                 <input type="submit" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>"
-                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>">
+                                                       value="<fmt:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>">
                                                 <input type="button" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" class="smallButton"
                                                        value="Comment"
                                                        onclick="addDocComment('<%=Encode.forJavaScript(String.valueOf(docId))%>','<%=Encode.forJavaScript(String.valueOf(curAckStatus))%>')"/>
                                                 <input type="button" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" class="smallButton"
-                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
+                                                       value="<fmt:message key="oscarMDS.index.btnForward"/>"
                                                        onClick="ForwardSelectedRows(<%=Encode.forJavaScript(String.valueOf(docId))%> + ':DOC', null, null);">
                                                 <input type="button" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" class="smallButton"
-                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnFile"/>"
+                                                       value="<fmt:message key="oscarMDS.index.btnFile"/>"
                                                        onclick="fileDoc('<%=Encode.forJavaScript(String.valueOf(documentNo))%>');">
                                                 <input type="button" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>"
-                                                       value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
+                                                       value=" <fmt:message key="global.btnClose"/> "
                                                        onClick="window.close()">
                                                 <input type="button" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>"
-                                                       value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
+                                                       value=" <fmt:message key="global.btnPrint"/> "
                                                        onClick="popup(700,960,'<%=Encode.forJavaScript(String.valueOf(url2))%>','file download')">
                                                 <% if (demographicID != null && !demographicID.equals("") && !demographicID.equalsIgnoreCase("null") && !demographicID.equals("-1")) {
                                                     String eURL = request.getContextPath() + "/oscarEncounter/IncomingEncounter.do?providerNo=" + providerNo + "&appointmentNo=&demographicNo=" + demographicID + "&curProviderNo=&reason=" + java.net.URLEncoder.encode("Document Notes", "UTF-8") + "&encType=" + java.net.URLEncoder.encode("encounter without client", "UTF-8") + "&userName=" + java.net.URLEncoder.encode(provider.getFullName(), StandardCharsets.UTF_8) + "&curDate=" + UtilDateUtilities.getToday("yyyy-MM-dd") + "&appointmentDate=&startTime=&status=";

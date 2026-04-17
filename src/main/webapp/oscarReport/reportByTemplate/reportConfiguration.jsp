@@ -36,6 +36,7 @@
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportObject" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
@@ -61,7 +62,7 @@
         <script src="${pageContext.request.contextPath}/share/javascript/Oscar.js"></script>
 
         <script src="${pageContext.request.contextPath}/share/calendar/calendar.js"></script>
-        <script src="${pageContext.request.contextPath}/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+        <script src="${pageContext.request.contextPath}/share/calendar/lang/<fmt:message key="global.javascript.calendar"/>"></script>
         <script src="${pageContext.request.contextPath}/share/calendar/calendar-setup.js"></script>
         <script src="${pageContext.servletContext.contextPath}/library/jquery/jquery-3.6.4.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.2.js"></script>

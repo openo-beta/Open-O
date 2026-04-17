@@ -11,6 +11,7 @@
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
       String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
       boolean authed=true;
@@ -91,7 +92,6 @@ boolean onIPad = http_user_agent.indexOf("iPad") >= 0;
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.colorbox-min.js"></script>
 	
 <title>
-    <fmt:setBundle basename="oscarResources"/>
     <fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.title" />
 </title>
 
@@ -201,7 +201,7 @@ function save() {
        window.opener.document.EctConsultationFormRequestForm.documents.value = saved; 
       
        if( list.childNodes.length == 0 )
-            paragraph.innerHTML = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty"/>";
+            paragraph.innerHTML = "<fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty"/>";
             
        ret = false;
     }    
@@ -243,7 +243,7 @@ function toggleSelectAll() {
     </head>
     <body style="font-family: Verdana, Tahoma, Arial, sans-serif; background-color: #ddddff" onload="init()">
 
-    <h3 style="text-align: left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.header"/>
+    <h3 style="text-align: left"><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.header"/>
         <%=Encode.forHtml(String.valueOf(patientName))%>
     </h3>
     <form action="${pageContext.request.contextPath}/oscarConsultationRequest/attachDoc.do">
@@ -252,14 +252,14 @@ function toggleSelectAll() {
         <input type="hidden" name="providerNo" id="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"/>
         <table style="width:1080px; border: solid 1px blue; font-size: x-small; background-color:white;">
             <tr>
-                <th style="text-align: center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.available"/></th>
-                <th style="text-align: center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.preview"/></th>
+                <th style="text-align: center"><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.available"/></th>
+                <th style="text-align: center"><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.preview"/></th>
             </tr>
             <tr valign="top" style="border-top:thin dotted blue;">
                 <td style="width: 225px; text-align: left; background-color: white; border-right:thin dotted blue; position:absolute; height:600px;">
                     <input type="submit" class="btn" style="position: absolute; left: 35px; top: 5px;"
                            name="submit"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.submit"/>"
+                           value="<fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.submit"/>"
                            onclick="return save();"/>
                     <ul id="documentList"
                         style="list-style:none; padding:5px; margin-top:35px; height:515px; overflow:auto;">
@@ -446,7 +446,7 @@ function toggleSelectAll() {
                             printAlt = PRINTABLE_ALT;
 
                             if (hrmDocumentToDemographicList.size() > 0) { %>
-                        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.hrmDocuments"/></h2>
+                        <h2><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.hrmDocuments"/></h2>
                         <% }
 
                             List<HRMDocument> docs = new ArrayList<HRMDocument>();
@@ -566,7 +566,7 @@ function toggleSelectAll() {
                     </ul>
                     <input type="submit" class="btn" style="position: absolute; left: 35px; bottom: 5px;"
                            name="submit"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.submit"/>"
+                           value="<fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.submit"/>"
                            onclick="return save();"/>
                 </td>
                 <td style="background-color:white; position:relative; width: 850px;">

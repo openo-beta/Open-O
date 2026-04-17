@@ -26,6 +26,7 @@
 
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
@@ -90,7 +91,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-1.7.1.min.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.groupacl.title"/></title>
+        <title><fmt:message key="admin.groupacl.title"/></title>
 
         <script>
             function changeGroup() {
@@ -115,7 +116,7 @@
             <tr bgcolor="#486ebd">
                 <th align=CENTER NOWRAP>
                     <font face="Helvetica" color="#FFFFFF">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.groupacl.description"/>
+                        <fmt:message key="admin.groupacl.description"/>
                     </font>
                 </th>
             </tr>
@@ -192,8 +193,8 @@
             <tr>
                 <TD align="center">
                     <input type=button name="Submit" onClick="save_acl()"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.adminnewgroup.btnSubmit"/>"/>
-                    <INPUT TYPE="BUTTON" VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>" onClick="window.top.close();">
+                           value="<fmt:message key="admin.adminnewgroup.btnSubmit"/>"/>
+                    <INPUT TYPE="BUTTON" VALUE="<fmt:message key="global.btnClose"/>" onClick="window.top.close();">
                 </TD>
             </tr>
         </TABLE>

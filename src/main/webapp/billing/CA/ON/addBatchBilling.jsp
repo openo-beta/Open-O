@@ -35,6 +35,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@include file="/casemgmt/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%
     GregorianCalendar now = new GregorianCalendar();
@@ -51,7 +52,6 @@
 
 %>
 
-<fmt:setBundle basename="oscarResources"/>
 
 <html>
 <head>

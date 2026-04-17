@@ -51,6 +51,7 @@
 %>
 
 <%@ include file="/taglibs.jsp" %>
+<fmt:setBundle basename="oscarResources"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}"
        scope="request"/>
 
@@ -86,7 +87,7 @@
         <div class="pull-right">
             <button name="print" onclick="window.print()" class="btn">
                 <i class="icon-print icon-black"></i>
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>
+                <fmt:message key="global.btnPrint"/>
             </button>
         </div>
     </h4>

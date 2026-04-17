@@ -25,6 +25,7 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -63,7 +64,7 @@
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
             <tr bgcolor="#486ebd">
                 <th align="CENTER"><font face="Helvetica" color="#FFFFFF">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitydelete.description"/></font></th>
+                    <fmt:message key="admin.securitydelete.description"/></font></th>
             </tr>
         </table>
         <%
@@ -79,12 +80,12 @@
             if (rowsAffected == 1) {
         %>
         <p>
-        <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitydelete.msgDeletionSuccess"/>:
+        <h2><fmt:message key="admin.securitydelete.msgDeletionSuccess"/>:
             <%=Encode.forHtml(request.getParameter("keyword"))%>.</h2>
         <%
         } else {
         %>
-        <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securitydelete.msgDeletionFailure"/>:
+        <h1><fmt:message key="admin.securitydelete.msgDeletionFailure"/>:
             <%=Encode.forHtml(request.getParameter("keyword"))%>.</h1>
         <%
             }

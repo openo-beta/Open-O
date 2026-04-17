@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
@@ -30,7 +31,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 <%@ page import="ca.openosp.openo.mds.data.CategoryData" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
-<fmt:setBundle basename="oscarResources"/>
 
 <!DOCTYPE html>
 

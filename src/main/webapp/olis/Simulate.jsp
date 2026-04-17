@@ -10,6 +10,7 @@
 --%>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <html>
 <head>
     <link rel="stylesheet" type="text/css"
@@ -39,7 +40,7 @@
     <table>
         <tr>
             <td colspan="2"><b>Simulation File:</b><input type="file" name="simulateFile"/>
-                <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"
+                <span title="<fmt:message key="global.uploadWarningBody"/>"
                       style="vertical-align:middle;font-family:arial;font-size:20px;font-weight:bold;color:#ABABAB;cursor:pointer"><img
                         border="0" src="<%= request.getContextPath() %>/images/icon_alertsml.gif"/></span></span>
 

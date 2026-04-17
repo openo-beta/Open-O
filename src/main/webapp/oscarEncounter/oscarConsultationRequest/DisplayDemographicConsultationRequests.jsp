@@ -86,6 +86,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%
@@ -113,7 +114,7 @@
 
 <html>
 <head>
-    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.title"/>
+    <title><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.title"/>
     </title>
     <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
@@ -181,13 +182,13 @@
       function popupOscarRx(vheight, vwidth, varpage) { //open a new popup window
           var page = varpage;
           windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-          var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgConsReq"/>", windowprops);
+          var popup = window.open(varpage, "<fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgConsReq"/>", windowprops);
       }
 
       function popupOscarConS(vheight, vwidth, varpage) { //open a new popup window
           var page = varpage;
           windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-          var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.oscarConS"/>", windowprops);
+          var popup = window.open(varpage, "<fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.oscarConS"/>", windowprops);
           window.close();
       }
     </script>
@@ -201,7 +202,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="table">
                     <tr>
-                        <td class="Header" style="white-space:nowrap"><h4><fmt:setBundle basename="oscarResources"/>
+                        <td class="Header" style="white-space:nowrap"><h4>
                             <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgConsReqFor"/>
                           <%= Encode.forHtml(demographic.getLastName()) %>, <%= Encode.forHtml(demographic.getFirstName()) %> <%= Encode.forHtml(demographic.getSex()) %>
                           <%= Encode.forHtml(demographic.getAge()) %></h4></td>
@@ -216,7 +217,7 @@
                     <tr>
                         <td style="white-space:nowrap; padding-left: 0"><a
                                 href="javascript:popupOscarRx(700,960,'${pageContext.request.contextPath}/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de=<%=Encode.forUriComponent(demo)%>&teamVar=<%=Encode.forUriComponent(team)%>')">
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.btnNewCon"/></a>
+                            <fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultChoice.btnNewCon"/></a>
                         </td>
                     </tr>
                 </table>
@@ -224,7 +225,7 @@
             <td class="MainTableRightColumn">
                 <table class="table">
                     <tr>
-                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgClickLink"/>
+                        <td><fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgClickLink"/>
                         </td>
                     </tr>
                     <tr>
@@ -233,35 +234,27 @@
                                 <thead>
                                   <tr>
                                       <th>
-                                          <fmt:setBundle basename="oscarResources"/>
                                           <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgStatus"/>
                                       </th>
                                       <th>
-                                          <fmt:setBundle basename="oscarResources"/>
                                           <fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.formUrgency" />
 						              </th>
                                       <th>
-                                          <fmt:setBundle basename="oscarResources"/>
                                           <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgPat"/>
                                       </th>
                                       <th>
-                                          <fmt:setBundle basename="oscarResources"/>
                                           <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgMRP"/>
                                       </th>
                                       <th>
-                                          <fmt:setBundle basename="oscarResources"/>  
                                           <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgProvider"/>
                                       </th>
                                       <th>
-                                          <fmt:setBundle basename="oscarResources"/>
                                           <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgService"/>
                                       </th>
                                       <th >
-                                          <fmt:setBundle basename="oscarResources"/>
                                           <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgSpecialist" />
 						              </th>
                                       <th>
-                                          <fmt:setBundle basename="oscarResources"/>
                                           <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgRefDate"/>
                                       </th>
                                   </tr>
@@ -282,31 +275,23 @@
                                     <tr>
                                         <td class="stat<%=Encode.forHtmlAttribute(status)%>">
                                             <% if ("1".equals(status)) { %>
-                                                <fmt:setBundle basename="oscarResources"/>
                                                 <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgNothingDone"/>
                                             <% } else if ("2".equals(status)) { %>
-                                                <fmt:setBundle basename="oscarResources"/>
                                                 <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgSpecialistCall"/>
                                             <% } else if ("3".equals(status)) { %>
-                                                <fmt:setBundle basename="oscarResources"/>
                                                 <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgPatCall"/>
                                             <% } else if ("4".equals(status)) { %>
-                                                <fmt:setBundle basename="oscarResources"/>
                                                 <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgAppMade"/>
                                             <% } else if ("5".equals(status)) { %>
-                                                <fmt:setBundle basename="oscarResources"/>
                                                 <fmt:message key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgBookCon"/>
                                             <% } %>
                                             </td>
                                             <td class="stat<%=Encode.forHtmlAttribute(status)%>" >
                                             <% if (urgency.equals("1")){ %> 
-                                                <fmt:setBundle basename="oscarResources"/>
                                                 <fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgUrgent" />
                                             <% }else if(urgency.equals("2")) { %> 
-                                                <fmt:setBundle basename="oscarResources"/>
                                                 <fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgNUrgent" />
                                             <% }else if(urgency.equals("3")) { %> 
-                                                <fmt:setBundle basename="oscarResources"/>
                                                 <fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgReturn" />
                                             <% } %>
                                         </td>

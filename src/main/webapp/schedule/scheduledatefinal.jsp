@@ -33,6 +33,7 @@
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*"
         errorPage="/errorpage.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <jsp:useBean id="scheduleDateBean" class="java.util.Hashtable"
@@ -52,7 +53,7 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatefinal.title"/></title>
+        <title><fmt:message key="schedule.scheduledatefinal.title"/></title>
         <link rel="stylesheet" href="<%= request.getContextPath() %>/web.css"/>
 
         <script language="JavaScript">
@@ -82,7 +83,7 @@
                         <tr bgcolor="#486ebd">
                             <th align="CENTER" bgcolor="#009966">
                                 <p>&nbsp;</p>
-                                <p><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatefinal.msgMainLabel"/></font></p>
+                                <p><font face="Helvetica" color="#FFFFFF"><fmt:message key="schedule.scheduledatefinal.msgMainLabel"/></font></p>
                             </th>
                         </tr>
                     </table>
@@ -90,8 +91,8 @@
                         <tr>
                             <td>
                                 <p>&nbsp;</p>
-                                <p><font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatefinal.msgStepOne"/></font></p>
-                                <p><font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatefinal.msgStepTwo"/></font></p>
+                                <p><font size="-1"><fmt:message key="schedule.scheduledatefinal.msgStepOne"/></font></p>
+                                <p><font size="-1"><fmt:message key="schedule.scheduledatefinal.msgStepTwo"/></font></p>
                                 <p>&nbsp;</p>
                                 <p>&nbsp;</p>
                                 <p>&nbsp;</p>
@@ -107,7 +108,7 @@
                         <p>
                         <table width="95%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatefinal.msgSettingFinished"/></td>
+                                <td><fmt:message key="schedule.scheduledatefinal.msgSettingFinished"/></td>
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
@@ -121,7 +122,7 @@
                             <tr>
                                 <td bgcolor="#CCFFCC">
                                     <div align="right"><input type="button" name="Button"
-                                                              value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatefinal.btnDoAgain"/>'
+                                                              value='<fmt:message key="schedule.scheduledatefinal.btnDoAgain"/>'
                                                               onclick="self.location.href='scheduletemplatesetting.jsp'">
                                     </div>
                                 </td>

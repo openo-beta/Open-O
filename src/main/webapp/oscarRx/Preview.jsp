@@ -25,6 +25,7 @@
 --%>
 <%@page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -59,7 +60,7 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.title"/></title>
+        <title><fmt:message key="RxPreview.title"/></title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <c:if test="${empty RxSessionBean}">
@@ -180,7 +181,7 @@
                     <input type="hidden" name="patientCityPostal"
                            value="<%= Encode.forHtml(patient.getCity())+ ", " + Encode.forHtml(patient.getProvince()) + " " + Encode.forHtml(patient.getPostal())%>"/>
                     <input type="hidden" name="patientPhone"
-                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTel"/>: <%=Encode.forHtml(patient.getPhone()) %>"/>
+                           value="<fmt:message key="RxPreview.msgTel"/>: <%=Encode.forHtml(patient.getPhone()) %>"/>
 
                     <input type="hidden" name="rxDate"
                            value="<%= Encode.forHtml(RxUtil.DateToString(rxDate, "MMMM d, yyyy")) %>"/>
@@ -196,15 +197,15 @@
                             <%=Encode.forHtml(String.valueOf(provider.getClinicAddress()))%><br>
                             <%=Encode.forHtml(String.valueOf(provider.getClinicCity()))%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <%=Encode.forHtml(String.valueOf(provider.getClinicPostal()))%><br>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTel"/>: <%=Encode.forHtml(String.valueOf(provider.getClinicPhone()))%><br>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgFax"/>: <%=Encode.forHtml(String.valueOf(provider.getClinicFax()))%><br>
+                            <fmt:message key="RxPreview.msgTel"/>: <%=Encode.forHtml(String.valueOf(provider.getClinicPhone()))%><br>
+                            <fmt:message key="RxPreview.msgFax"/>: <%=Encode.forHtml(String.valueOf(provider.getClinicFax()))%><br>
                         </c:when>
                         <c:otherwise>
                             <c:out value="${infirmaryView_programAddress}" escapeXml="false"/>
                             <br/>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTel"/>: <c:out value="${infirmaryView_programTel}"/>
+                            <fmt:message key="RxPreview.msgTel"/>: <c:out value="${infirmaryView_programTel}"/>
                             <br/>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgFax"/>: <c:out value="${infirmaryView_programFax}"/>
+                            <fmt:message key="RxPreview.msgFax"/>: <c:out value="${infirmaryView_programFax}"/>
                         </c:otherwise>
                     </c:choose></td>
             </tr>
@@ -218,10 +219,10 @@
                                 <%=Encode.forHtml(String.valueOf(patient.getCity()))%>, <%=Encode.forHtml(String.valueOf(patient.getProvince()))%> <%=Encode.forHtml(String.valueOf(patient.getPostal()))%><br>
                                 <%=Encode.forHtml(String.valueOf(patient.getPhone()))%><br>
                                 <b><% if (!props.getProperty("showRxHin", "").equals("false")) { %>
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="ca.openosp.openo.rx.hin"/><%=Encode.forHtml(String.valueOf(patient.getHin()))%> <% } %>
+                                    <fmt:message key="ca.openosp.openo.rx.hin"/><%=Encode.forHtml(String.valueOf(patient.getHin()))%> <% } %>
                                 </b><br>
                                 <% if (props.getProperty("showRxChartNo", "").equalsIgnoreCase("true")) { %>
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="ca.openosp.openo.rx.chartNo"/><%=Encode.forHtml(String.valueOf(patient.getChartNo()))%> <% } %></td>
+                                <fmt:message key="ca.openosp.openo.rx.chartNo"/><%=Encode.forHtml(String.valueOf(patient.getChartNo()))%> <% } %></td>
                             <td align=right valign=top>
                                 <b><%=Encode.forHtml(String.valueOf(RxUtil.DateToString(rxDate, "MMMM d, yyyy", request.getLocale())))%>
                                 </b></td>
@@ -269,7 +270,7 @@
 
 
                         <tr valign=bottom>
-                            <td height=25px width=25%><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgSignature"/>:</td>
+                            <td height=25px width=25%><fmt:message key="RxPreview.msgSignature"/>:</td>
                             <td height=25px width=75%
                                 style="border-width: 0; border-bottom-width: 1; border-style: solid;">
                                 &nbsp;
@@ -280,17 +281,17 @@
 
                             <td height=25px>
                                 &nbsp; <%=Encode.forHtml(String.valueOf(doctorName))%> <% if (pracNo != null && !pracNo.equals("") && !pracNo.equalsIgnoreCase("null")) { %>
-                                <br/> &nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.PractNo"/> <%=Encode.forHtml(String.valueOf(pracNo))%> <% } %>
+                                <br/> &nbsp; <fmt:message key="RxPreview.PractNo"/> <%=Encode.forHtml(String.valueOf(pracNo))%> <% } %>
                             </td>
 
 
                         </tr>
                         <% if (rePrint.equalsIgnoreCase("true") && rx != null) { %>
                         <tr valign=bottom style="font-size: 6px;">
-                            <td height=25px colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgReprintBy"/> <%=Encode.forHtml(String.valueOf(user.getProviderName(strUser)))%><span
+                            <td height=25px colspan="2"><fmt:message key="RxPreview.msgReprintBy"/> <%=Encode.forHtml(String.valueOf(user.getProviderName(strUser)))%><span
                                     style="float: left;">
-					<fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgOrigPrinted"/>:&nbsp;<%=Encode.forHtml(String.valueOf(rx.getPrintDate()))%></span> <span
-                                    style="float: right;"><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTimesPrinted"/>:&nbsp;<%=Encode.forHtml(String.valueOf(String.valueOf(rx.getNumPrints())))%></span>
+					<fmt:message key="RxPreview.msgOrigPrinted"/>:&nbsp;<%=Encode.forHtml(String.valueOf(rx.getPrintDate()))%></span> <span
+                                    style="float: right;"><fmt:message key="RxPreview.msgTimesPrinted"/>:&nbsp;<%=Encode.forHtml(String.valueOf(String.valueOf(rx.getNumPrints())))%></span>
                             </td>
                             <input type="hidden" name="origPrintDate"
                                    value="<%=Encode.forHtmlAttribute(String.valueOf(rx.getPrintDate()))%>">

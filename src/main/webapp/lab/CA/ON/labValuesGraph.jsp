@@ -43,6 +43,7 @@
 <%@ page
         import="java.util.*,ca.openosp.openo.lab.ca.on.*,ca.openosp.openo.demographic.data.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
 <%
 
     String labType = request.getParameter("labType");
@@ -82,7 +83,7 @@
 <head>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
     <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-    <title><%=Encode.forHtml(String.valueOf(""/*lab.pLastName*/))%>, <%=Encode.forHtml(String.valueOf(""/*lab.pFirstName*/))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.title"/></title>
+    <title><%=Encode.forHtml(String.valueOf(""/*lab.pLastName*/))%>, <%=Encode.forHtml(String.valueOf(""/*lab.pFirstName*/))%> <fmt:message key="oscarMDS.segmentDisplay.title"/></title>
     <link rel="stylesheet" type="text/css"
           href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
@@ -90,7 +91,7 @@
 
 <script language="JavaScript">
     function getComment() {
-        var commentVal = prompt('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.msgComment"/>', '');
+        var commentVal = prompt('<fmt:message key="oscarMDS.segmentDisplay.msgComment"/>', '');
         document.acknowledgeForm.comment.value = commentVal;
         return true;
     }
@@ -112,7 +113,7 @@
                    bgcolor="#9999CC" bordercolordark="#bfcbe3">
                 <tr>
                     <td width="66%" align="middle" class="Cell">
-                        <div class="Field2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDetailResults"/></div>
+                        <div class="Field2"><fmt:message key="oscarMDS.segmentDisplay.formDetailResults"/></div>
                     </td>
                 </tr>
                 <tr>
@@ -127,24 +128,24 @@
                                                        width="50%">
                                                     <tr>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formPatientName"/>: </strong> <%=Encode.forHtml(String.valueOf(demographic.getLastName()))%>
+                                                            <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formPatientName"/>: </strong> <%=Encode.forHtml(String.valueOf(demographic.getLastName()))%>
                                                                 ,
                                                                 <%=Encode.forHtml(String.valueOf(demographic.getFirstName()))%>
                                                             </div>
 
                                                         </td>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=Encode.forHtml(String.valueOf(demographic.getSex()))%>
+                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:message key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=Encode.forHtml(String.valueOf(demographic.getSex()))%>
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDateBirth"/>: </strong> <%=Encode.forHtml(String.valueOf(DemographicData.getDob(demographic, "-")))%>
+                                                            <div class="FieldData"><strong><fmt:message key="oscarMDS.segmentDisplay.formDateBirth"/>: </strong> <%=Encode.forHtml(String.valueOf(DemographicData.getDob(demographic, "-")))%>
                                                             </div>
                                                         </td>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=Encode.forHtml(String.valueOf(demographic.getAge()))%>
+                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:message key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=Encode.forHtml(String.valueOf(demographic.getAge()))%>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -207,9 +208,9 @@
                    class="MainTableBottomRowRightColumn" bgcolor="#003399">
                 <tr>
                     <td align="left"><input type="button"
-                                            value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
+                                            value=" <fmt:message key="global.btnClose"/> "
                                             onClick="window.close()"> <input type="button"
-                                                                             value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
+                                                                             value=" <fmt:message key="global.btnPrint"/> "
                                                                              onClick="window.print()">
 
                     </td>
