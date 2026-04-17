@@ -24,6 +24,7 @@
  */
 package ca.openosp.openo.commn.web;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -39,6 +40,7 @@ import ca.openosp.openo.managers.BillingONManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConcatPDF;
@@ -132,10 +134,11 @@ public class BillingInvoice2Action extends ActionSupport {
                 try {
                     Integer invoiceNo = Integer.parseInt(invoiceNoStr);
                     String filename = "BillingInvoice" + invoiceNo + "_" + UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss") + ".pdf";
-                    String savePath = OscarProperties.getInstance().getProperty("INVOICE_DIR") + "/" + filename;
-                    fos = new FileOutputStream(savePath);
+                    File invoiceDir = new File(OscarProperties.getInstance().getProperty("INVOICE_DIR"));
+                    File safeFile = PathValidationUtils.validatePath(filename, invoiceDir);
+                    fos = new FileOutputStream(safeFile);
                     processPrintPDF(invoiceNo, request.getLocale(), fos);
-                    fileList.add(savePath);
+                    fileList.add(safeFile.getAbsolutePath());
                 } catch (Exception e) {
                     MiscUtils.getLogger().error("Error", e);
                 } finally {
