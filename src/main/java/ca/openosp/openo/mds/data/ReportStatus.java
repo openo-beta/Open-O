@@ -177,10 +177,22 @@ public class ReportStatus {
         this.oscarProviderNo = oscarProviderNo;
     }
 
+    /**
+     * Returns whether the provider associated with this report status has opted to allow
+     * other providers to file HL7 lab results on their behalf.
+     *
+     * @return {@code true} if others may file on this provider's behalf; {@code false} otherwise
+     */
     public boolean isHl7AllowOthersFileForYou() {
         return isHl7AllowOthersFileForYou;
     }
 
+    /**
+     * Sets whether the provider associated with this report status allows other providers
+     * to file HL7 lab results on their behalf.
+     *
+     * @param isHl7AllowOthersFileForYou {@code true} to permit on-behalf filing; {@code false} to disallow it
+     */
     public void setHl7AllowOthersFileForYou(boolean isHl7AllowOthersFileForYou) {
         this.isHl7AllowOthersFileForYou = isHl7AllowOthersFileForYou;
     }

@@ -985,13 +985,6 @@ request.setAttribute("missingTests", missingTests);
                         } else if (action === 'addComment') {
                             console.log("Adding comment. Formid: " + formid + " labid: " + labid);
                             addComment(formid, labid);
-                        } else if (action === 'ackLabAndFileForOther') {
-                            console.log("Acknowledging lab results");
-                            if(confirmAck()){
-                                console.log("Acknowledge confirmed. Labid: " + labid);
-                                jQuery("#labStatus_"+labid).val("A")
-                                updateStatus(formid,labid);
-                            }
                         }
 
                     } else {
