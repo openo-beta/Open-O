@@ -23,6 +23,7 @@
 
 package ca.openosp.openo.PMmodule.utility;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -62,47 +63,51 @@ public class MigrateStaffAssignments {
     }
 
     public boolean programExists(long programId) throws Exception {
-        Statement stmt = DbConnectionFilter.getThreadLocalDbConnection().createStatement();
-        stmt.execute("SELECT count(*) as num FROM program where program_id =" + programId);
-        ResultSet rs = stmt.getResultSet();
-        rs.next();
-        long num = rs.getInt("num");
-        if (num > 0) {
-            return true;
+        try (PreparedStatement ps = DbConnectionFilter.getThreadLocalDbConnection()
+                .prepareStatement("SELECT count(*) as num FROM program where program_id = ?")) {
+            ps.setLong(1, programId);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getInt("num") > 0;
+            }
         }
-        return false;
     }
 
     public boolean providerExists(long providerNo) throws Exception {
-        Statement stmt = DbConnectionFilter.getThreadLocalDbConnection().createStatement();
-        stmt.execute("SELECT count(*) as num FROM provider where provider_no =" + providerNo);
-        ResultSet rs = stmt.getResultSet();
-        rs.next();
-        long num = rs.getInt("num");
-        if (num > 0) {
-            return true;
+        try (PreparedStatement ps = DbConnectionFilter.getThreadLocalDbConnection()
+                .prepareStatement("SELECT count(*) as num FROM provider where provider_no = ?")) {
+            ps.setLong(1, providerNo);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getInt("num") > 0;
+            }
         }
-        return false;
     }
 
     public long getRoleId(String name) throws Exception {
-        Statement stmt = DbConnectionFilter.getThreadLocalDbConnection().createStatement();
-        stmt.execute("SELECT * FROM caisi_role where name = '" + name + "'");
-        ResultSet rs = stmt.getResultSet();
-        if (rs.next()) {
-            return rs.getInt("role_id");
-        } else {
-            throw new Exception("no Nurse role defined");
+        try (PreparedStatement ps = DbConnectionFilter.getThreadLocalDbConnection()
+                .prepareStatement("SELECT * FROM caisi_role where name = ?")) {
+            ps.setString(1, name);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("role_id");
+                } else {
+                    throw new Exception("no Nurse role defined");
+                }
+            }
         }
     }
 
     public void addProgramProvider(long programId, long providerNo, long groupNo) throws Exception {
-        Statement stmt = DbConnectionFilter.getThreadLocalDbConnection().createStatement();
-        long roleId = doctorRoleId;
-        if (groupNo == 9) {
-            roleId = nurseRoleId;
+        long roleId = groupNo == 9 ? nurseRoleId : doctorRoleId;
+        try (PreparedStatement ps = DbConnectionFilter.getThreadLocalDbConnection()
+                .prepareStatement("insert into program_provider (program_id,provider_no,role_id,team_id) values (?,?,?,?)")) {
+            ps.setLong(1, programId);
+            ps.setLong(2, providerNo);
+            ps.setLong(3, roleId);
+            ps.setLong(4, 0);
+            ps.executeUpdate();
         }
-        stmt.executeUpdate("insert into program_provider (program_id,provider_no,role_id,team_id) values (" + programId + "," + providerNo + "," + roleId + "," + "0)");
     }
 
     public static void main(String args[]) throws Exception {
