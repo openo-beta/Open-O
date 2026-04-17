@@ -105,6 +105,7 @@ public class GenericDownload extends HttpServlet {
         String sanitizedFilename = curfile.getName().replaceAll("[\r\n]", "").replaceAll("[\\p{Cntrl}]", "");
 
         res.setContentType(setContentType);
+        res.setHeader("X-Content-Type-Options", "nosniff");
         res.setHeader("Content-Disposition", "attachment;filename=\"" + sanitizedFilename + "\"");
         
         FileInputStream fis = new FileInputStream(curfile);

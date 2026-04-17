@@ -38,8 +38,13 @@
         function CodeAttach(File0, File1, File2) {
 
             <%
-            if(request.getParameter("nameF") != null) {
-                    out.println("self.opener." + Encode.forHtml(request.getParameter("nameF")) + " = File0;");
+            String nameF = request.getParameter("nameF");
+            // nameF is interpolated into a JS property access path. Encoders cannot make an
+            // attacker-controlled identifier safe — only an allowlist can. Accept only a
+            // dot-separated sequence of standard JS identifier characters, matching the legitimate
+            // callers that pass things like "document.serviceform.xml_other1".
+            if (nameF != null && nameF.matches("^[a-zA-Z_$][a-zA-Z0-9_$]*(\\.[a-zA-Z_$][a-zA-Z0-9_$]*)*$")) {
+                    out.println("self.opener." + nameF + " = File0;");
             } else {
             %>
             self.opener.document.serviceform.xml_other1.value = File0;

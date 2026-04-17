@@ -119,7 +119,7 @@
                 if (parentChanged) {
                     document.forms[0].elements["value(parentChanged)"].value = "true";
 
-                    if (!confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.msgParentChanged"/> <oscar:nameage demographicNo="<%=Encode.forJavaScript(String.valueOf(demo))%>"/>"))
+                    if (!confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.msgParentChanged"/> <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demo))%>"/>"))
                         ret = false;
                 }
 

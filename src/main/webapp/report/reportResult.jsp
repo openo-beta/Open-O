@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.report.data.RptReportCreator" %>
 <%@ page import="ca.openosp.openo.report.data.RptReportItem" %>
 <%@ page import="ca.openosp.openo.report.pageUtil.RptFormQuery" %>
+<%@ page import="ca.openosp.openo.util.ParameterizedClause" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%
     String VALUE = "value_";
@@ -47,13 +48,14 @@
     String reportName = (new RptReportItem()).getReportName(reportId);
 
     RptFormQuery formQuery = new RptFormQuery();
-    String reportSql = formQuery.getQueryStr(reportId, request);
+    ParameterizedClause reportQuery = formQuery.getQueryStr(reportId, request);
 
     RptReportConfigData formConfig = new RptReportConfigData();
     Vector[] vecField = formConfig.getAllFieldNameValue(SAVE_AS, reportId);
     Vector vecFieldCaption = vecField[1];
     Vector vecFieldName = vecField[0];
-    Vector vecFieldValue = (new RptReportCreator()).query(reportSql, vecFieldCaption);
+    Vector vecFieldValue = (new RptReportCreator()).query(
+        reportQuery.sql(), vecFieldCaption, reportQuery.params().toArray());
 
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

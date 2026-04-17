@@ -249,12 +249,12 @@
         {{/if}}
     </tr>
 </script>
-<script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/jquery-1.7.1.min.js"></script>
-<script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/jquery-ui-1.8.18.custom.min.js"></script>
-<script src="<%=Encode.forJavaScript(String.valueOf(resourcePath))%>jquery.tmpl.min.js"></script>
-<script src="<%=Encode.forJavaScript(String.valueOf(resourcePath))%>jquery.iframe-transport.js"></script>
-<script src="<%=Encode.forJavaScript(String.valueOf(resourcePath))%>jquery.fileupload.js"></script>
-<script src="<%=Encode.forJavaScript(String.valueOf(resourcePath))%>jquery.fileupload-ui.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/jquery-1.7.1.min.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/jquery-ui-1.8.18.custom.min.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.tmpl.min.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.iframe-transport.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.fileupload.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.fileupload-ui.js"></script>
 <script type="text/javascript">
     jQuery(function () {
         'use strict';

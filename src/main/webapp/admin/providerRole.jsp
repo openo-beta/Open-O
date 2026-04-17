@@ -418,7 +418,7 @@
         item = {
             providerNo: "<%=Encode.forJavaScript(String.valueOf(prop.get("provider_no")))%>",
             role_id: "<%=Encode.forJavaScript(String.valueOf(prop.get("role_id")))%>",
-            roleName: "<%=Encode.forHtmlAttribute((String)prop.get("role_name"))%>"
+            roleName: "<%=Encode.forJavaScript(String.valueOf(prop.get("role_name")))%>"
         };
         items.push(item);
         <%
@@ -535,7 +535,7 @@
               <td><%= Encode.forHtmlContent(item.getProperty("first_name", "")) %></td>
               <td><%= Encode.forHtmlContent(item.getProperty("last_name", "")) %></td>
             <td>
-              <select name="roleNew" onchange="enableAddRoleButton(this)" data-org="<%=Encode.forJavaScript(String.valueOf(item.getProperty("role_name", "")))%>">
+              <select name="roleNew" onchange="enableAddRoleButton(this)" data-org="<%=Encode.forHtmlAttribute(String.valueOf(item.getProperty("role_name", "")))%>">
                     <option value="-">-</option>
                     <%
                         for (int j = 0; j < vecRoleName.size(); j++) {

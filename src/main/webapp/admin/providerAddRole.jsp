@@ -230,7 +230,7 @@
                     List<SecRole> secRoles = secRoleDao.findAll();
                     for(SecRole secRole:secRoles) {
                         %>
-                    "<%=Encode.forHtmlAttribute(secRole.getName())%>",
+                    "<%=Encode.forJavaScript(secRole.getName())%>",
                     <%}%>
                     ""
                 ];

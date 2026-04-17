@@ -1020,7 +1020,7 @@
         }
 
         function prepareBack() {
-            document.forms[0].services_checked.value = "<%=Encode.forHtmlAttribute(request.getParameter("services_checked"))%>";
+            document.forms[0].services_checked.value = "<%=Encode.forJavaScript(String.valueOf(request.getParameter("services_checked")))%>";
             if (document.forms[0].services_checked.value == "null") document.forms[0].services_checked.value = 0;
             document.forms[0].url_back.value = location.href;
 

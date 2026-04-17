@@ -145,6 +145,26 @@ public class SqlUtils {
     }
 
     /**
+     * Validates a report query parameter value substituted into admin-defined SQL WHERE clause
+     * templates. Permits characters required by date formats (e.g. 2024-01-15, 12:30:45),
+     * decimals, LIKE wildcards ({@code %}), and space-separated names — but rejects quotes,
+     * semicolons, parentheses, and other characters that could break out of a string literal.
+     *
+     * Used by report-generation code where parameter values are concatenated into SQL rather
+     * than bound as PreparedStatement parameters; the allowlist is the primary injection defense.
+     *
+     * @param value the parameter value to validate (null is allowed)
+     * @return the validated value (unchanged)
+     * @throws SecurityException if the value contains characters outside the allowed set
+     */
+    public static String validateReportParameter(String value) {
+        if (value != null && !value.matches("^[a-zA-Z0-9_ \\-/:.,%]*$")) {
+            throw new SecurityException("Invalid characters in report query parameter");
+        }
+        return value;
+    }
+
+    /**
      * Generates a comma-separated string of ? placeholders for use in SQL IN clauses.
      * Example: {@code inClausePlaceholders(3)} returns {@code "?,?,?"}.
      *

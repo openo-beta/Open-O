@@ -554,7 +554,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                     if (!note.isReadOnly()) {
             %>
                 <a title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"
-                   href="javascript:void(0);" onclick="<%=Encode.forJavaScript(String.valueOf(editUrl))%> return false;" style="<%=Encode.forJavaScript(String.valueOf(bgColour))%> order: 1; padding: 2px 5px;">
+                   href="javascript:void(0);" onclick="<%=Encode.forJavaScript(String.valueOf(editUrl))%> return false;" style="<%=Encode.forCssString(String.valueOf(bgColour))%> order: 1; padding: 2px 5px;">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>
                 </a>
             <%

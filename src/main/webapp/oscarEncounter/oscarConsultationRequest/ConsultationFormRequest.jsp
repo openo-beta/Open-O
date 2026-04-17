@@ -531,7 +531,7 @@
             int randomNo = new Random().nextInt();%>
         <script id="mainScript"
                 src="${ pageContext.request.contextPath }/js/custom/ocean/conreq.js?no-cache=<%=Encode.forJavaScript(String.valueOf(randomNo))%>&autoRefresh=true"
-                ocean-host=<%=Encode.forUriComponent(props.getProperty("ocean_host"))%>></script>
+                ocean-host="<%=Encode.forHtmlAttribute(props.getProperty("ocean_host"))%>"></script>
         <% } %>
         <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/css/healthCareTeam.css"/>
         <link rel="stylesheet" type="text/css"
@@ -1501,17 +1501,17 @@ if (OscarProperties.getInstance().getBooleanProperty("consultation_program_lette
         function switchProvider(value) {
             if (value === -1) {
                 document.getElementById("letterheadName").value = value;
-                document.getElementById("letterheadAddress").value = '<%=Encode.forHtmlAttribute(clinic.getClinicAddress()) + " " + Encode.forHtmlAttribute(clinic.getClinicCity()) + " " + Encode.forHtmlAttribute(clinic.getClinicProvince()) + " " + Encode.forHtmlAttribute(clinic.getClinicPostal()) %>';
-                document.getElementById("letterheadAddressSpan").textContent = '<%=Encode.forHtmlContent(clinic.getClinicAddress()) + " " + Encode.forHtmlContent(clinic.getClinicCity()) + " " + Encode.forHtmlContent(clinic.getClinicProvince()) + " " + Encode.forHtmlContent(clinic.getClinicPostal()) %>';
-                document.getElementById("letterheadPhone").value = "<%=Encode.forHtmlAttribute(clinic.getClinicPhone()) %>";
-                document.getElementById("letterheadPhoneSpan").textContent = "<%=Encode.forHtmlContent(clinic.getClinicPhone()) %>";
-                document.getElementById("letterheadFax").value = "<%=Encode.forHtmlAttribute(clinic.getClinicFax()) %>";
+                document.getElementById("letterheadAddress").value = '<%=Encode.forJavaScript(clinic.getClinicAddress() + " " + clinic.getClinicCity() + " " + clinic.getClinicProvince() + " " + clinic.getClinicPostal()) %>';
+                document.getElementById("letterheadAddressSpan").textContent = '<%=Encode.forJavaScript(clinic.getClinicAddress() + " " + clinic.getClinicCity() + " " + clinic.getClinicProvince() + " " + clinic.getClinicPostal()) %>';
+                document.getElementById("letterheadPhone").value = "<%=Encode.forJavaScript(clinic.getClinicPhone()) %>";
+                document.getElementById("letterheadPhoneSpan").textContent = "<%=Encode.forJavaScript(clinic.getClinicPhone()) %>";
+                document.getElementById("letterheadFax").value = "<%=Encode.forJavaScript(clinic.getClinicFax()) %>";
 
-                document.getElementById("letterheadFaxSpan").textContent = "<%=Encode.forHtmlAttribute(clinic.getClinicFax()) %>";
+                document.getElementById("letterheadFaxSpan").textContent = "<%=Encode.forJavaScript(clinic.getClinicFax()) %>";
 
                 let faxAccountOptions = document.getElementById("faxAccount");
                 if (faxAccountOptions) {
-                    faxAccountOptions.value = "<%=Encode.forHtmlAttribute(clinic.getClinicFax()) %>".replace(/[^0-9.]/g, '');
+                    faxAccountOptions.value = "<%=Encode.forJavaScript(clinic.getClinicFax()) %>".replace(/[^0-9.]/g, '');
                     for(let i = 0; i < faxAccountOptions.options.length; i++) {
                         let option = faxAccountOptions.options[i];
                         if(option.value === "<%=Encode.forJavaScript(String.valueOf(clinic.getClinicFax()))%>".replace(/[^0-9.]/g, '')) {
@@ -2170,7 +2170,7 @@ if (userAgent != null) {
                                                 } else {
                                                 %>
                                                 <input type="text" id="referalDate" name="referalDate"
-                                                           ondblclick="this.value='';" value="<%=Encode.forJavaScript(String.valueOf(formattedDate))%>"/>
+                                                           ondblclick="this.value='';" value="<%=Encode.forHtmlAttribute(String.valueOf(formattedDate))%>"/>
                                                 <%
                                                     }
                                                 %>

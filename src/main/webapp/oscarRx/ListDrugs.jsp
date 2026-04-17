@@ -387,7 +387,7 @@
             		if (prescriptDrug.getRemoteFacilityId()==null && securityManager.hasWriteAccess("_rx",roleName$,true) )
             		{
             			%>
-			           	 	<a href="javascript:void(0);"  onclick="popupRxReasonWindow(<%=Encode.forJavaScript(String.valueOf(patient.getDemographicNo()))%>,<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>);"  title="<%=Encode.forJavaScript(String.valueOf(displayDrugReason(codingSystemManager,drugReasons,true)))%>">
+			           	 	<a href="javascript:void(0);"  onclick="popupRxReasonWindow(<%=Encode.forJavaScript(String.valueOf(patient.getDemographicNo()))%>,<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>);"  title="<%=Encode.forHtmlAttribute(String.valueOf(displayDrugReason(codingSystemManager,drugReasons,true)))%>">
             			<%
             		}
             	%>

@@ -90,18 +90,18 @@
 
 <html>
     <head>
-        <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/global.js"></script>
+        <script type="text/javascript" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/global.js"></script>
         <title>Antenatal Record 1</title>
         <link rel="stylesheet" type="text/css" href="<%=bView ? context + "/form/arStyleView.css" : context + "/form/arStyle.css"%>">
         <link rel="stylesheet" type="text/css" media="all" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/calendar.css" title="win2k-cold-1"/>
-        <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/calendar.js"></script>
+        <script type="text/javascript" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
-        <script type="text/javascript" src="<%=Encode.forJavaScript(String.valueOf(context))%>/share/calendar/calendar-setup.js"></script>
+                src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+        <script type="text/javascript" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/calendar-setup.js"></script>
 
-        <script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
-        <script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/jquery-ui-1.8.18.custom.min.js"></script>
-        <script src="<%=Encode.forJavaScript(String.valueOf(context))%>/js/fg.menu.js"></script>
+        <script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/jquery-ui-1.8.18.custom.min.js"></script>
+        <script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/fg.menu.js"></script>
 
 
         <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/css/cupertino/jquery-ui-1.8.18.custom.css">

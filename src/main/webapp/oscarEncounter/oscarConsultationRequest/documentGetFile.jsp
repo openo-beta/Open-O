@@ -81,6 +81,7 @@
         if (filetype.compareTo("active") == 0) {
             response.setContentType("application/octet-stream");
             String sanitizedFilename = filename.replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
+            response.setHeader("X-Content-Type-Options", "nosniff");
             response.setHeader("Content-Disposition", "attachment;filename=\"" + sanitizedFilename + "\"");
             //read the file name.
             File f = new File(filePath);
