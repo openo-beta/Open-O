@@ -25,6 +25,7 @@
 package ca.openosp.openo.dashboard.handler;
 
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.apache.logging.log4j.Logger;
 import org.hibernate.*;
@@ -241,7 +242,8 @@ public abstract class AbstractQueryHandler extends HibernateDaoSupport {
         }
 
         String pattern = getPattern(addPattern);
-        return patternReplace(pattern, query, range.getValue());
+        String safeValue = range.getValue().replace("'", "''");
+        return patternReplace(pattern, query, safeValue);
     }
 
     /**
@@ -299,33 +301,31 @@ public abstract class AbstractQueryHandler extends HibernateDaoSupport {
 
     /*
      * Replaces all given patterns in the given string with the given value.
+     * Uses Matcher.quoteReplacement to prevent regex replacement injection
+     * via $ or \ characters in the value.
      */
     private String patternReplace(String pattern, String query, String value) {
-        logger.debug("Inserting pattern " + pattern + " with a value of " + value);
-        return query.replaceAll(pattern, value);
+        logger.debug("Inserting pattern {} with value {}", pattern, value);
+        return query.replaceAll(pattern, Matcher.quoteReplacement(value));
     }
 
     /**
-     * parses a parameter value array into a comma delimited string for use
-     * in a SQL query.
+     * Parses a parameter value array into a comma-delimited string for use
+     * in a SQL query. Single quotes in values are escaped to prevent injection.
      */
     private static String parseParameterValue(String[] values) {
-        String value = "";
-
         if (values.length > 1) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("(");
+            StringBuilder sb = new StringBuilder("(");
             for (int i = 0; i < values.length; i++) {
-                stringBuilder.append("'").append(values[i]).append("',");
+                String escaped = values[i].trim().replace("'", "''");
+                sb.append("'").append(escaped).append("'");
+                if (i < values.length - 1) sb.append(",");
             }
-            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-            stringBuilder.append(")");
-            value = stringBuilder.toString();
+            sb.append(")");
+            return sb.toString();
         } else {
-            value = values[0].trim();
+            return values[0].trim().replace("'", "''");
         }
-
-        return value;
     }
 
     /**
