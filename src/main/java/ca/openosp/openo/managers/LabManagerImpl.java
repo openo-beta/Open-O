@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 import org.owasp.encoder.Encode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itextpdf.text.DocumentException;
 
@@ -160,6 +161,7 @@ public class LabManagerImpl implements LabManager {
      * @param onBehalfOfOtherProvider      if true, updates lab status only if it is 'N' (Not Acknowledged)
      */
     @Override
+    @Transactional
     public void fileLabsForProviderUpToFlaggedLab(LoggedInInfo loggedInInfo, String providerNo, String flaggedLabId, String labType, String comment, boolean fileUpToLabNo, boolean onBehalfOfOtherProvider) {
         checkPrivilege(loggedInInfo, "w");
 
@@ -206,9 +208,9 @@ public class LabManagerImpl implements LabManager {
                 skipCommentOnUpdate = false;
             }
 
-            // Skip if lab is already Acknowledged or Filed
+            // Skip if filing on behalf and lab is already Acknowledged or Filed
             String status = providerLabRouting.getStatus();
-            if (onBehalfOfOtherProvider && ProviderLabRoutingDao.STATUS.A.name().equals(status) || ProviderLabRoutingDao.STATUS.F.name().equals(status)) {
+            if (onBehalfOfOtherProvider && (ProviderLabRoutingDao.STATUS.A.name().equals(status) || ProviderLabRoutingDao.STATUS.F.name().equals(status))) {
                 continue;
             }
 
@@ -220,6 +222,7 @@ public class LabManagerImpl implements LabManager {
         }
     }
 
+    @Override
     public List<ProviderLabRoutingModel> getProviderLabRouting(LoggedInInfo loggedInInfo, int labNo, String labType, String provider) {
         checkPrivilege(loggedInInfo, "r");
         return providerLabRoutingDao.findByLabNoAndLabTypeAndProviderNo(labNo, labType, provider);

@@ -1531,6 +1531,9 @@ public class ProviderProperty2Action extends ActionSupport {
 
     public String setDisableAckCommentPref() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", SecurityInfoManager.WRITE, null)) {
+            throw new RuntimeException("missing required security object _lab");
+        }
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         String value = request.getParameter("value");
 

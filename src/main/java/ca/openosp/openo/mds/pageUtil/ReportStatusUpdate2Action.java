@@ -106,11 +106,10 @@ public class ReportStatusUpdate2Action extends ActionSupport {
                 int i = 0;
                 int idNum = Integer.parseInt(id[i]);
                 while (idNum != labNo) {
-                    List<ProviderLabRoutingModel> providerLabRoutingModels = labManager.findByLabNoAndLabTypeAndProviderNo(loggedInInfo, labNo, lab_type, providerNo);
-                    if (providerLabRoutingModels.size() != 0 && "A".equals(providerLabRoutingModels.get(0).getStatus())) {
-                        continue;
+                    List<ProviderLabRoutingModel> providerLabRoutingModels = labManager.findByLabNoAndLabTypeAndProviderNo(loggedInInfo, idNum, lab_type, providerNo);
+                    if (providerLabRoutingModels.isEmpty() || !"A".equals(providerLabRoutingModels.get(0).getStatus())) {
+                        CommonLabResultData.updateReportStatus(idNum, providerNo, 'F', "", lab_type);
                     }
-                    CommonLabResultData.updateReportStatus(idNum, providerNo, 'F', "", lab_type);
                     i++;
                     idNum = Integer.parseInt(id[i]);
                 }
