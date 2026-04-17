@@ -28,6 +28,7 @@ package ca.openosp.openo.scratch;
 import ca.openosp.openo.commn.dao.ScratchPadDao;
 import ca.openosp.openo.commn.model.JSONAction;
 import ca.openosp.openo.commn.model.ScratchPad;
+import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import org.codehaus.jettison.json.JSONObject;
@@ -72,10 +73,16 @@ public class Scratch2Action extends JSONAction {
             return delete();
         }
 
-        String providerNo =  (String) request.getSession().getAttribute("user");
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (loggedInInfo == null) {
+            MiscUtils.getLogger().error("Invalid or expired session in Scratch2Action");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return null;
+        }
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
         String pNo = request.getParameter("providerNo");
-                
-        if(providerNo.equals(pNo)){
+
+        if (providerNo.equals(pNo)) {
         String id = request.getParameter("id");
         String scratchPad = request.getParameter("scratchpad");
         String windowId = request.getParameter("windowId");
