@@ -1568,7 +1568,7 @@ request.setAttribute("missingTests", missingTests);
                 </c:otherwise>
             </c:choose>
         </c:forEach>
-        <p>Tip: In your user preferences, you can prevent others from filing results on your behalf.  See "Set HL7 Lab Result Preferences"</p>
+        <p>Tip: In your user preferences, you can prevent others from filing results on your behalf. See <a href="#" style="text-decoration: none; color: #001AE5;" onclick="popupPage(500,860,'${pageContext.request.contextPath}/setProviderStaleDate.do?method=viewCommentLab');return false;">Manage Comment Box When Acknowledging Labs</a>.</p>
     </form>
 </div>
 
@@ -1628,7 +1628,7 @@ request.setAttribute("missingTests", missingTests);
                     </c:if>
                 </c:forEach>
 
-                <p>Tip: in your user preferences, you can automatically show this prompt or prevent others from filing results on your behalf.  See "Set HL7 Lab Result Preferences"</p>
+                <p>Tip: In your user preferences, you can automatically expand this section or prevent others from filing results on your behalf. See <a href="#" style="text-decoration: none; color: #001AE5;" onclick="popupPage(500,860,'${pageContext.request.contextPath}/setProviderStaleDate.do?method=viewCommentLab');return false;">Manage Comment Box When Acknowledging Labs</a>.</p>
             </div>
         </div>
         </c:if>

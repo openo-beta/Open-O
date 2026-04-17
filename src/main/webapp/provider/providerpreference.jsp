@@ -675,7 +675,7 @@
             </tr>
             <tr>
                 <td align="center"><a href=#
-                                      onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewCommentLab');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnDisableAckCommentLab"/></a></td>
+                                      onClick="popupPage(500,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewCommentLab');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnDisableAckCommentLab"/></a></td>
             </tr>
             <tr>
                 <td align="center"><a href=#
@@ -809,9 +809,6 @@
         <tr>
             <td align="center"><a href=#
                                   onClick="popupPage(700,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewLabMacroPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewLabMacroPrefs"/></a></td>
-        </tr>
-        <tr>
-            <td align="center"><a href=# onClick ="popupPage(350,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewHl7LabResultPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewHl7LabPrefs"/></a></td>
         </tr>
         <tr>
             <td align="center"><a href=#
