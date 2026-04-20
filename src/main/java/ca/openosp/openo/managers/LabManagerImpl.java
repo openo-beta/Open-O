@@ -8,10 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
 import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
@@ -188,12 +186,18 @@ public class LabManagerImpl implements LabManager {
             throw new SecurityException("Provider " + providerNo + " has not allowed others to file on their behalf");
         }
 
-        // Filter labs: if fileUpToLabNo is true, include only those <= flaggedLabId
-        List<Integer> filteredLabs = Arrays.stream(labs.split(","))
-                .map(String::trim)
-                .map(Integer::parseInt)
-                .filter(labId -> !fileUpToLabNo || labId <= parsedFlaggedLabId)
-                .collect(Collectors.toList());
+        // Build the list of labs to file. getMatchingLabs returns them in version order
+        // (oldest → newest), so we stop after the flagged lab rather than comparing IDs
+        // numerically. ID-based comparison is unreliable because the query sorts by
+        // (finalResultCount, obrDate, labNumber), so version order ≠ ID order in general.
+        List<Integer> filteredLabs = new ArrayList<>();
+        for (String part : labs.split(",")) {
+            int labId = Integer.parseInt(part.trim());
+            filteredLabs.add(labId);
+            if (fileUpToLabNo && labId == parsedFlaggedLabId) {
+                break;
+            }
+        }
 
         for (Integer labId : filteredLabs) {
             // Get routing info for the lab and provider
