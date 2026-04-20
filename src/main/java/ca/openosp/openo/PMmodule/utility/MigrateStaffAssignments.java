@@ -92,7 +92,7 @@ public class MigrateStaffAssignments {
                 if (rs.next()) {
                     return rs.getInt("role_id");
                 } else {
-                    throw new Exception("no Nurse role defined");
+                    throw new Exception("Role not defined: " + name);
                 }
             }
         }

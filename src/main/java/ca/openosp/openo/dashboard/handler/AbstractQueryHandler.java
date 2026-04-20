@@ -314,17 +314,22 @@ public abstract class AbstractQueryHandler extends HibernateDaoSupport {
      * in a SQL query. Single quotes in values are escaped to prevent injection.
      */
     private static String parseParameterValue(String[] values) {
+        if (values == null || values.length == 0) {
+            return "";
+        }
         if (values.length > 1) {
             StringBuilder sb = new StringBuilder("(");
             for (int i = 0; i < values.length; i++) {
-                String escaped = values[i].trim().replace("'", "''");
+                String val = values[i];
+                String escaped = (val == null) ? "" : val.trim().replace("'", "''");
                 sb.append("'").append(escaped).append("'");
                 if (i < values.length - 1) sb.append(",");
             }
             sb.append(")");
             return sb.toString();
         } else {
-            return values[0].trim().replace("'", "''");
+            String val = values[0];
+            return (val == null) ? "" : val.trim().replace("'", "''");
         }
     }
 
