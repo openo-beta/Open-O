@@ -158,11 +158,10 @@ public class LabManagerImpl implements LabManager {
      * @param labType                      the type of the lab
      * @param comment                      the comment to add while filing
      * @param fileUpToLabNo                if true, file all labs up to and including flaggedLabId
-     * @param onBehalfOfOtherProvider      if true, updates lab status only if it is 'N' (Not Acknowledged)
      */
     @Override
     @Transactional
-    public void fileLabsForProviderUpToFlaggedLab(LoggedInInfo loggedInInfo, String providerNo, String flaggedLabId, String labType, String comment, boolean fileUpToLabNo, boolean onBehalfOfOtherProvider) {
+    public void fileLabsForProviderUpToFlaggedLab(LoggedInInfo loggedInInfo, String providerNo, String flaggedLabId, String labType, String comment, boolean fileUpToLabNo) {
         checkPrivilege(loggedInInfo, "w");
 
         int parsedFlaggedLabId;
@@ -183,8 +182,9 @@ public class LabManagerImpl implements LabManager {
             return;
         }
 
-        // The UI disables the checkbox, but this guards against crafted requests.
-        if (onBehalfOfOtherProvider && !providerManager2.isHl7AllowOthersFileForYou(loggedInInfo, providerNo)) {
+        // Derive on-behalf status from identity, not the request flag, to prevent bypass via crafted requests.
+        boolean isFilingOnBehalf = !providerNo.equals(loggedInInfo.getLoggedInProviderNo());
+        if (isFilingOnBehalf && !providerManager2.isHl7AllowOthersFileForYou(loggedInInfo, providerNo)) {
             throw new SecurityException("Provider " + providerNo + " has not allowed others to file on their behalf");
         }
 
@@ -210,7 +210,7 @@ public class LabManagerImpl implements LabManager {
 
             // Skip if filing on behalf and lab is already Acknowledged or Filed
             String status = providerLabRouting.getStatus();
-            if (onBehalfOfOtherProvider && (ProviderLabRoutingDao.STATUS.A.name().equals(status) || ProviderLabRoutingDao.STATUS.F.name().equals(status))) {
+            if (isFilingOnBehalf && (ProviderLabRoutingDao.STATUS.A.name().equals(status) || ProviderLabRoutingDao.STATUS.F.name().equals(status))) {
                 continue;
             }
 
@@ -218,7 +218,7 @@ public class LabManagerImpl implements LabManager {
             CommonLabResultData.updateReportStatus(labId, providerNo, ProviderLabRoutingDao.STATUS.F.name().charAt(0),comment, labType, skipCommentOnUpdate);
             CommonLabResultData.removeFromQueue(labId);
             LogAction.addLogSynchronous(loggedInInfo, "LabManager.fileLabsForProviderUpToFlaggedLab",
-                    "labId=" + labId + ", filedForProviderNo=" + providerNo + ", onBehalf=" + onBehalfOfOtherProvider);
+                    "labId=" + labId + ", filedForProviderNo=" + providerNo + ", onBehalf=" + isFilingOnBehalf);
         }
     }
 
