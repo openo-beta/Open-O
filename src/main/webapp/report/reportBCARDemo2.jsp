@@ -175,7 +175,7 @@
             } else {
                 paramValue = request.getParameter((String) vecVar.get(j));
             }
-            vecVarValue.add(SqlUtils.validateReportParameter(paramValue));
+            vecVarValue.add(paramValue);
         }
 
         ParameterizedClause strFilter = RptReportCreator.getWhereValueClauseParameterized(tempVal, vecVarValue);
@@ -183,11 +183,11 @@
 
         if (filterSql.indexOf("demographic.") >= 0) {
             bDemoFilter = true;
-            demoFilter = demoFilter.combine(" and ", strFilter);
+            demoFilter = demoFilter.and(strFilter);
         }
         if (filterSql.indexOf("demographicExt.") >= 0) {
             bSpecFilter = true;
-            specFilter = specFilter.combine(" and ", strFilter);
+            specFilter = specFilter.and(strFilter);
         }
         if (filterSql.indexOf(ARTYPE + ".") >= 0) {
             bARFilter = true;
@@ -208,7 +208,7 @@
                 }
             }
 
-            arFilter = arFilter.combine(" and ", strFilter);
+            arFilter = arFilter.and(strFilter);
         }
     }
 
@@ -236,8 +236,18 @@
     if ((bDemoSelect && !bARSelect && bSpecSelect && !bARFilter) || (!bARFilter && bSpecFilter)) {
         if (bDemoSelect && !bARSelect && bSpecSelect && !bSpecFilter) {
             vecFieldName.add("demographic_no");
-            String sql = String.join(" ", "select demographic_no,", sDemoSelect,
-                "from demographic where", demoFilter.sql(), ORDER_BY);
+            // bDemoFilter is not required to enter this branch, so demoFilter may be empty;
+            // only emit WHERE when there is an actual filter clause to emit.
+            List<String> sqlParts = new ArrayList<>();
+            sqlParts.add("select demographic_no,");
+            sqlParts.add(sDemoSelect);
+            sqlParts.add("from demographic");
+            if (!demoFilter.isEmpty()) {
+                sqlParts.add("where");
+                sqlParts.add(demoFilter.sql());
+            }
+            sqlParts.add(ORDER_BY);
+            String sql = String.join(" ", sqlParts);
 
             String[] temp = sDemoSelect.replaceAll("demographic.", "").split(",");
             for (int i = 0; i < temp.length; i++) {
@@ -278,7 +288,7 @@
             // get demoNo
             String sql = null;
             ResultSet rs = null;
-            ParameterizedClause subWhere = demoFilter.combine(" and ", specFilter);
+            ParameterizedClause subWhere = demoFilter.and(specFilter);
             String subQuery = String.join(" ",
                 "select distinct(demographic.demographic_no) from demographicExt, demographic where demographic.demographic_no=demographicExt.demographic_no and",
                 subWhere.sql());
@@ -328,7 +338,7 @@
     Vector vecARCaption = new Vector();
     Properties propARValue = new Properties();
     if ((bDemoSelect && bARSelect && !bSpecSelect && !bSpecFilter) || (!bSpecSelect && bARFilter && !bSpecFilter)) {
-        ParameterizedClause subWhere = demoFilter.combine(" and ", arFilter);
+        ParameterizedClause subWhere = demoFilter.and(arFilter);
         List<String> subParts = new ArrayList<>();
         subParts.add("select max(ID) from");
         subParts.add(ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no");
@@ -376,7 +386,7 @@
     if ((bDemoSelect && bARSelect && bSpecSelect) || (bARFilter && bSpecFilter)) {
         if (bDemoSelect && bARSelect && bSpecSelect && !bSpecFilter) {
             vecFieldName.add("demographic_no");
-            ParameterizedClause subWhere = demoFilter.combine(" and ", arFilter);
+            ParameterizedClause subWhere = demoFilter.and(arFilter);
             List<String> subParts = new ArrayList<>();
             subParts.add("select max(ID) from");
             subParts.add(ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no");
@@ -451,7 +461,7 @@
             // get demoNo
             String sql = null;
             ResultSet rs = null;
-            ParameterizedClause specSubWhere = demoFilter.combine(" and ", specFilter);
+            ParameterizedClause specSubWhere = demoFilter.and(specFilter);
             String subQuery = String.join(" ",
                 "select distinct(demographic.demographic_no) from demographicExt, demographic where demographic.demographic_no=demographicExt.demographic_no and",
                 specSubWhere.sql());
@@ -482,7 +492,7 @@
             }
 
             // formAR second
-            ParameterizedClause arSubWhere = demoFilter.combine(" and ", arFilter);
+            ParameterizedClause arSubWhere = demoFilter.and(arFilter);
             List<String> arSubParts = new ArrayList<>();
             arSubParts.add("select max(ID) from");
             arSubParts.add(ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no");

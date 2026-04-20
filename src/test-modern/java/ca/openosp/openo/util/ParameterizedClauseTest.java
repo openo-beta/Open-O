@@ -151,5 +151,81 @@ class ParameterizedClauseTest {
             assertThat(merged.sql()).isEqualTo("x in (?,?) and y in (?,?,?)");
             assertThat(merged.params()).containsExactly(1, 2, "a", "b", "c");
         }
+
+        @Test
+        void shouldProduceEquivalentSqlRegardlessOfJoinerWhitespace() {
+            ParameterizedClause a = new ParameterizedClause("x = ?", Arrays.asList(1));
+            ParameterizedClause b = new ParameterizedClause("y = ?", Arrays.asList(2));
+            assertThat(a.combine("and", b).sql()).isEqualTo("x = ? and y = ?");
+            assertThat(a.combine(" and ", b).sql()).isEqualTo("x = ? and y = ?");
+            assertThat(a.combine("  AND  ", b).sql()).isEqualTo("x = ? AND y = ?");
+        }
+
+        @Test
+        void shouldConcatenateDirectlyWhenJoinerIsNullOrEmpty() {
+            ParameterizedClause a = new ParameterizedClause("x=?", Arrays.asList(1));
+            ParameterizedClause b = new ParameterizedClause("y=?", Arrays.asList(2));
+            assertThat(a.combine("", b).sql()).isEqualTo("x=?y=?");
+            assertThat(a.combine(null, b).sql()).isEqualTo("x=?y=?");
+        }
+    }
+
+    @Nested
+    @DisplayName("and(...) convenience method")
+    class AndConvenience {
+
+        @Test
+        void shouldJoinWithSpacedAndAndConcatParams() {
+            ParameterizedClause a = new ParameterizedClause("x = ?", Arrays.asList("vx"));
+            ParameterizedClause b = new ParameterizedClause("y = ?", Arrays.asList("vy"));
+            ParameterizedClause merged = a.and(b);
+            assertThat(merged.sql()).isEqualTo("x = ? and y = ?");
+            assertThat(merged.params()).containsExactly("vx", "vy");
+        }
+
+        @Test
+        void shouldReturnLeftWhenRightIsEmpty() {
+            ParameterizedClause a = new ParameterizedClause("x = ?", Arrays.asList("vx"));
+            assertThat(a.and(ParameterizedClause.empty())).isSameAs(a);
+        }
+
+        @Test
+        void shouldReturnRightWhenLeftIsEmpty() {
+            ParameterizedClause b = new ParameterizedClause("y = ?", Arrays.asList("vy"));
+            ParameterizedClause merged = ParameterizedClause.empty().and(b);
+            assertThat(merged.sql()).isEqualTo("y = ?");
+            assertThat(merged.params()).containsExactly("vy");
+        }
+    }
+
+    @Nested
+    @DisplayName("joinAnd(...) static factory")
+    class JoinAnd {
+
+        @Test
+        void shouldReturnEmptyForNullOrEmptyInput() {
+            assertThat(ParameterizedClause.joinAnd(null).isEmpty()).isTrue();
+            assertThat(ParameterizedClause.joinAnd(Collections.emptyList()).isEmpty()).isTrue();
+        }
+
+        @Test
+        void shouldFoldMultipleClausesWithSpacedAnd() {
+            ParameterizedClause a = new ParameterizedClause("x = ?", Arrays.asList(1));
+            ParameterizedClause b = new ParameterizedClause("y = ?", Arrays.asList(2));
+            ParameterizedClause c = new ParameterizedClause("z = ?", Arrays.asList(3));
+            ParameterizedClause merged = ParameterizedClause.joinAnd(Arrays.asList(a, b, c));
+            assertThat(merged.sql()).isEqualTo("x = ? and y = ? and z = ?");
+            assertThat(merged.params()).containsExactly(1, 2, 3);
+        }
+
+        @Test
+        void shouldSkipEmptyClauses() {
+            ParameterizedClause a = new ParameterizedClause("x = ?", Arrays.asList(1));
+            ParameterizedClause b = new ParameterizedClause("y = ?", Arrays.asList(2));
+            ParameterizedClause merged = ParameterizedClause.joinAnd(
+                Arrays.asList(ParameterizedClause.empty(), a, ParameterizedClause.empty(), b));
+            assertThat(merged.sql()).isEqualTo("x = ? and y = ?");
+            assertThat(merged.params()).containsExactly(1, 2);
+        }
     }
 }

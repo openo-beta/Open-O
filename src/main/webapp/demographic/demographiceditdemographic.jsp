@@ -1503,7 +1503,7 @@
 														<span class="label" style="color:red;"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNameUsed"/>:
 														</span>
                                                                         <span class="info" style="color:red;">
-															<c:out value="<%=Encode.forHtml(demographic.getAlias())%>"/>
+															<%=Encode.forHtml(StringUtils.trimToEmpty(demographic.getAlias()))%>
 														</span>
                                                                     </li>
 
@@ -2660,7 +2660,7 @@
                                                         <td align="left"><input type="text"
                                                                                 name="nameUsed" <%=Encode.forHtml(String.valueOf(getDisabled("nameUsed")))%>
                                                                                 size="30"
-                                                                                value="<c:out value="<%=Encode.forHtmlAttribute(demographic.getAlias())%>" />"
+                                                                                value="<%=Encode.forHtmlAttribute(StringUtils.trimToEmpty(demographic.getAlias()))%>"
                                                                                 onBlur="upCaseCtrl(this)"></td>
                                                         <td style="text-align: right;">
                                                             <strong><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPronouns"/></strong>

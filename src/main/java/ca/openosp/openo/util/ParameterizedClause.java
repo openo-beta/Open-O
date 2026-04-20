@@ -76,6 +76,15 @@ public final class ParameterizedClause {
      * Concatenates this clause with {@code other}, separated by {@code joiner}.
      * If either side is empty, the other is returned unchanged (no joiner emitted).
      * Params of {@code this} come first, followed by params of {@code other}.
+     *
+     * <p>The joiner is trimmed of leading/trailing whitespace and then sandwiched with a
+     * single space on each side, so callers can pass {@code "and"}, {@code " and "}, or
+     * {@code " AND "} interchangeably — all produce {@code "<lhs> and <rhs>"}. Pass
+     * {@code null} or an empty string to concatenate the two clauses directly with no
+     * separator.</p>
+     *
+     * <p>Prefer {@link #and(ParameterizedClause)} or {@link #joinAnd(List)} for the common
+     * AND-combination case — they avoid the keyword-as-string at call sites entirely.</p>
      */
     public ParameterizedClause combine(String joiner, ParameterizedClause other) {
         if (other == null || other.isEmpty()) {
@@ -84,9 +93,33 @@ public final class ParameterizedClause {
         if (this.isEmpty()) {
             return other;
         }
+        String trimmed = joiner == null ? "" : joiner.trim();
+        String spacedJoiner = trimmed.isEmpty() ? "" : " " + trimmed + " ";
         List<Object> merged = new ArrayList<>(this.params.size() + other.params.size());
         merged.addAll(this.params);
         merged.addAll(other.params);
-        return new ParameterizedClause(this.sql + joiner + other.sql, merged);
+        return new ParameterizedClause(this.sql + spacedJoiner + other.sql, merged);
+    }
+
+    /**
+     * Combines this clause with {@code other} using SQL {@code AND}. If either side is
+     * empty, the other is returned unchanged (no {@code AND} is emitted).
+     */
+    public ParameterizedClause and(ParameterizedClause other) {
+        return combine(" and ", other);
+    }
+
+    /**
+     * Folds a list of clauses into a single AND-joined clause. Empty clauses are skipped;
+     * an empty input list yields {@link #empty()}.
+     */
+    public static ParameterizedClause joinAnd(List<ParameterizedClause> clauses) {
+        ParameterizedClause result = EMPTY;
+        if (clauses != null) {
+            for (ParameterizedClause c : clauses) {
+                result = result.and(c);
+            }
+        }
+        return result;
     }
 }

@@ -38,15 +38,17 @@
         function CodeAttach(File0, File1, File2) {
 
             <%
-            String nameF = request.getParameter("nameF");
-            // nameF is interpolated into a JS property access path. Encoders cannot make an
-            // attacker-controlled identifier safe — only an allowlist can. Accept only a
-            // dot-separated sequence of standard JS identifier characters, matching the legitimate
-            // callers that pass things like "document.serviceform.xml_other1".
-            if (nameF != null && nameF.matches("^[a-zA-Z_$][a-zA-Z0-9_$]*(\\.[a-zA-Z_$][a-zA-Z0-9_$]*)*$")) {
-                    out.println("self.opener." + nameF + " = File0;");
-            } else {
+            // formIndex and elementName together identify a form field. They are validated
+            // against strict allowlists so the access path below is emitted from a fixed
+            // server-side template — no caller-supplied text reaches the JS source.
+            String formIndex = request.getParameter("formIndex");
+            String elementName = request.getParameter("elementName");
+            boolean hasStructuredTarget = ("0".equals(formIndex) || "1".equals(formIndex))
+                    && elementName != null && elementName.matches("^[a-zA-Z_$][a-zA-Z0-9_$]*$");
+            if (hasStructuredTarget) {
             %>
+            self.opener.document.forms[<%=formIndex%>].elements['<%=elementName%>'].value = File0;
+            <% } else { %>
             self.opener.document.serviceform.xml_other1.value = File0;
             self.opener.document.serviceform.xml_other2.value = File1;
             self.opener.document.serviceform.xml_other3.value = File2;

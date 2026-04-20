@@ -44,6 +44,7 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.Misc;
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.ParameterizedClause;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  * @author yilee18
@@ -56,10 +57,12 @@ public final class RptReportCreator {
         String sql = "select * from reportConfig where report_id = ? order by order_no";
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(recordId));
         while (rs.next()) {
+            String tableName = SqlUtils.validateTableName(Misc.getString(rs, "table_name"));
+            String fieldName = SqlUtils.validateColumnName(Misc.getString(rs, "name"));
             String caption = Misc.getString(rs, "caption");
-            ret.append((ret.length() < 8 ? " " : ", ") + Misc.getString(rs, "table_name") + "." + Misc.getString(rs, "name"));
+            ret.append((ret.length() < 8 ? " " : ", ") + tableName + "." + fieldName);
             if (caption != null && caption.length() > 0) {
-                ret.append(" as '" + Misc.getString(rs, "caption") + "'");
+                ret.append(" as '" + caption.replace("'", "''") + "'");
             }
         }
         rs.close();
@@ -72,7 +75,7 @@ public final class RptReportCreator {
         String sql = "select distinct table_name from reportConfig where report_id = ? order by table_name desc";
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(recordId));
         if (rs.next()) {
-            ret = Misc.getString(rs, "table_name");
+            ret = SqlUtils.validateTableName(Misc.getString(rs, "table_name"));
         }
         rs.close();
         return ret;
@@ -280,9 +283,9 @@ public final class RptReportCreator {
             prop = new Properties();
             for (int i = 0; i < vecFieldName.size(); i++) {
                 try {
+                    // Misc.getString returns "" for SQL NULL — don't re-add a null check.
                     prop.setProperty((String) vecFieldName.get(i),
-                            Misc.getString(rs, (String) vecFieldName.get(i)) == null ? "" : rs
-                                    .getString((String) vecFieldName.get(i)));
+                            Misc.getString(rs, (String) vecFieldName.get(i)));
                 } catch (SQLException e) {
                     prop.setProperty((String) vecFieldName.get(i), "" + rs.getInt((String) vecFieldName.get(i)));
                 }

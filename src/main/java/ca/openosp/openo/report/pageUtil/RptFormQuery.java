@@ -68,9 +68,7 @@ public class RptFormQuery {
      *
      * <p>Structural pieces (table names, field names, report definitions) are read from the
      * admin-configured {@code reportConfig} / {@code reportFilter} tables and assembled into
-     * the SQL template. User filter values pass through
-     * {@link SqlUtils#validateReportParameter(String)} as defense-in-depth and are then bound
-     * via PreparedStatement.</p>
+     * the SQL template. User filter values are bound via PreparedStatement.</p>
      */
     public ParameterizedClause getQueryStr(String reportId, HttpServletRequest request) throws Exception {
         RptReportCreator reportCreator = new RptReportCreator();
@@ -86,10 +84,7 @@ public class RptFormQuery {
             bDemo = RptReportCreator.isIncludeDemo(c.sql()) ? true : bDemo;
         }
 
-        ParameterizedClause whereClause = ParameterizedClause.empty();
-        for (ParameterizedClause c : clauses) {
-            whereClause = whereClause.combine(KW_AND, c);
-        }
+        ParameterizedClause whereClause = ParameterizedClause.joinAnd(clauses);
         String joinClause = reportCreator.getWhereJoinClause(tableName, bDemo);
         boolean needDemoJoin = tableName.indexOf(",demographic") < 0 && bDemo;
 
@@ -106,6 +101,9 @@ public class RptFormQuery {
                 subParams.addAll(whereClause.params());
             }
             if (joinClause.length() > 0) {
+                if (!whereClause.isEmpty()) {
+                    subParts.add(KW_AND);
+                }
                 subParts.add(joinClause);
             }
         }
@@ -164,10 +162,9 @@ public class RptFormQuery {
     /**
      * Resolves each raw report-filter template in {@code vecValue} to a
      * {@link ParameterizedClause}. For each template the variables are pulled out of the
-     * request (with date-format conversion where needed), each value is validated via
-     * {@link SqlUtils#validateReportParameter(String)} as defense-in-depth, and the template
-     * is passed through {@link RptReportCreator#getWhereValueClauseParameterized(String, Vector)}
-     * which returns a fragment that binds values as {@code ?} rather than substituting them.
+     * request (with date-format conversion where needed) and the template is passed through
+     * {@link RptReportCreator#getWhereValueClauseParameterized(String, Vector)} which returns
+     * a fragment that binds values as {@code ?} rather than substituting them.
      */
     private List<ParameterizedClause> getQueryClauses(Vector vecValue, Vector vecDateFormat, HttpServletRequest request) throws Exception {
         List<ParameterizedClause> ret = new ArrayList<>();
@@ -183,7 +180,7 @@ public class RptFormQuery {
                 } else {
                     paramValue = request.getParameter((String) vecVar.get(j));
                 }
-                vecVarValue.add(SqlUtils.validateReportParameter(paramValue));
+                vecVarValue.add(paramValue);
             }
             ret.add(RptReportCreator.getWhereValueClauseParameterized(tempVal, vecVarValue));
         }

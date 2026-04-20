@@ -348,7 +348,7 @@
                         <span class="glyphicon glyphicon-user"></span>
 
                         <span>
-                                <c:out value='<%=Encode.forHtmlAttribute(String.valueOf(userfirstname + " " + userlastname))%>'/>
+                                <%=Encode.forHtml(String.valueOf(userfirstname + " " + userlastname))%>
                             </span>
                         <security:oscarSec roleName="<%=roleName$%>" objectName="_pref" rights="r">
                     </a>

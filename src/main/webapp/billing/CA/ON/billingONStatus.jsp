@@ -488,7 +488,7 @@
                                     while (iter.hasNext()) {
                                     	Provider p=iter.next();
                                     	if (pros.contains(p.getProviderNo())) {
-                                    %><option value='<%=Encode.forJavaScript(String.valueOf(p.getProviderNo()))%>'><%= Encode.forHtml(p.getLastName()) %>, <%= Encode.forHtml(p.getFirstName()) %></option><% }} %>";
+                                    %><option value='<%=Encode.forJavaScript(String.valueOf(p.getProviderNo()))%>'><%= Encode.forJavaScript(Encode.forHtml(p.getLastName())) %>, <%= Encode.forJavaScript(Encode.forHtml(p.getFirstName())) %></option><% }} %>";
                             <% } %>
 
                             function changeSite(sel) {

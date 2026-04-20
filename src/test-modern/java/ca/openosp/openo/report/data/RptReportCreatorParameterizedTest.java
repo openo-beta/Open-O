@@ -199,8 +199,7 @@ class RptReportCreatorParameterizedTest {
 
     @Test
     void shouldHandleAccentedAndApostropheValues() {
-        // These are the values that the regex allowlist currently rejects.
-        // With parameterization they pass through as bound values.
+        // Real patient names; PreparedStatement binding handles them.
         ParameterizedClause c = RptReportCreator.getWhereValueClauseParameterized(
             "name in ('${a}','${b}','${c}')", values("O'Brien", "François", "Sánchez"));
         assertThat(c.sql()).isEqualTo("name in (?,?,?)");
