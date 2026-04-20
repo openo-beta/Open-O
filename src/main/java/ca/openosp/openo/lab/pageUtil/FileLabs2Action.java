@@ -145,14 +145,13 @@ public class FileLabs2Action extends ActionSupport {
         String labType = request.getParameter("labType");
         String comment = request.getParameter("comment");
         boolean fileUpToLabNo = Boolean.valueOf(request.getParameter("fileUpToLabNo"));
-        boolean onBehalfOfOtherProvider = Boolean.valueOf(request.getParameter("onBehalfOfOtherProvider"));
 
         if (providerNo == null || flaggedLab == null || labType == null) { return null; }
         flaggedLab = flaggedLab.trim();
         labType = labType.trim();
         if (flaggedLab.isEmpty() || labType.isEmpty()) { return null; }
 
-        labManager.fileLabsForProviderUpToFlaggedLab(loggedInInfo, providerNo, flaggedLab, labType, comment, fileUpToLabNo, onBehalfOfOtherProvider);
+        labManager.fileLabsForProviderUpToFlaggedLab(loggedInInfo, providerNo, flaggedLab, labType, comment, fileUpToLabNo);
 
         return null;
     }

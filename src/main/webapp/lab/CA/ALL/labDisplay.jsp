@@ -1307,8 +1307,7 @@ request.setAttribute("missingTests", missingTests);
                             flaggedLabId: flaggedLabId,
                             labType: labType,
                             comment: comment,
-                            fileUpToLabNo: true,
-                            onBehalfOfOtherProvider: true
+                            fileUpToLabNo: true
                         },
                         success: function(response) {
                             console.log("Filed lab for provider: " + providerNo);
