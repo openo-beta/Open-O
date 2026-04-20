@@ -88,7 +88,7 @@ public final class RptReportCreator {
         String sql = "select distinct table_name from reportConfig where report_id = ? order by table_name desc";
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(recordId));
         while (rs.next()) {
-            vec.add(Misc.getString(rs, "table_name"));
+            vec.add(SqlUtils.validateTableName(Misc.getString(rs, "table_name")));
         }
         rs.close();
         for (int i = 0; i < vec.size(); i++) {
@@ -183,6 +183,14 @@ public final class RptReportCreator {
                         if (rightPctCount > 0) {
                             likeSuffix = repeat('%', rightPctCount);
                         }
+                    } else {
+                        // Left quote with no matching right quote — emitting `?` here would place
+                        // the placeholder inside a quoted literal, which JDBC treats as text rather
+                        // than a bind slot. Fail loudly at parse time instead of producing SQL that
+                        // blows up later with a confusing bind-count mismatch.
+                        throw new IllegalArgumentException(
+                                "Malformed template: ${...} preceded by "
+                                        + quoteChar + " has no matching closing quote: " + template);
                     }
                 }
             }

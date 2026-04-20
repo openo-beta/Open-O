@@ -91,7 +91,7 @@
                     && elementName != null && elementName.matches("^[a-zA-Z_$][a-zA-Z0-9_$]*$");
             if (hasStructuredTarget) {
             %>
-            self.opener.document.forms[<%=formIndex%>].elements['<%=elementName%>'].value = File0;
+            self.opener.document.forms[<%=Encode.forJavaScript(formIndex)%>].elements['<%=Encode.forJavaScript(elementName)%>'].value = File0;
             <% } else { %>
             self.opener.document.serviceform.xml_other1.value = File0;
             self.opener.document.serviceform.xml_other2.value = "";
@@ -197,8 +197,8 @@
     String elementNameParam = request.getParameter("elementName");
     if (("0".equals(formIndexParam) || "1".equals(formIndexParam))
             && elementNameParam != null && elementNameParam.matches("^[a-zA-Z_$][a-zA-Z0-9_$]*$")) {
-        out.println("<input type='hidden' name='formIndex' value='" + formIndexParam + "'/>");
-        out.println("<input type='hidden' name='elementName' value='" + elementNameParam + "'/>");
+        out.println("<input type='hidden' name='formIndex' value='" + Encode.forHtmlAttribute(formIndexParam) + "'/>");
+        out.println("<input type='hidden' name='elementName' value='" + Encode.forHtmlAttribute(elementNameParam) + "'/>");
     }
 %>
 </form>

@@ -85,12 +85,21 @@ class RptReportCreatorParameterizedTest {
     }
 
     @Test
-    void shouldNotStripMismatchedQuotes() {
-        // Leading ' but trailing " — leave both as-is
-        ParameterizedClause c = RptReportCreator.getWhereValueClauseParameterized(
-            "name = '${x}\"", values("v"));
-        assertThat(c.sql()).isEqualTo("name = '?\"");
-        assertThat(c.params()).containsExactly("v");
+    void shouldRejectMismatchedQuotes() {
+        // Leading ' but trailing " — emitting ? inside a quoted literal would produce SQL
+        // that JDBC treats as text (bind-count mismatch). Fail at parse time instead.
+        assertThatThrownBy(() -> RptReportCreator.getWhereValueClauseParameterized(
+                "name = '${x}\"", values("v")))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Malformed template");
+    }
+
+    @Test
+    void shouldRejectUnclosedQuoteBeforeToken() {
+        // Left quote with no right quote anywhere adjacent — same risk as mismatched.
+        assertThatThrownBy(() -> RptReportCreator.getWhereValueClauseParameterized(
+                "name like '${x} or other = 1", values("v")))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

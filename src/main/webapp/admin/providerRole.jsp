@@ -418,7 +418,10 @@
         item = {
             providerNo: "<%=Encode.forJavaScript(String.valueOf(prop.get("provider_no")))%>",
             role_id: "<%=Encode.forJavaScript(String.valueOf(prop.get("role_id")))%>",
-            roleName: "<%=Encode.forJavaScript(String.valueOf(prop.get("role_name")))%>"
+            // roleName is later spliced into HTML via $.append('<option ...>'+roleName+'</option>'),
+            // so JS-only encoding is insufficient. HTML-encode first (neutralises < > & in the
+            // markup context), then JS-encode the result so it's safe as a JS string literal too.
+            roleName: "<%=Encode.forJavaScript(Encode.forHtml(String.valueOf(prop.get("role_name"))))%>"
         };
         items.push(item);
         <%

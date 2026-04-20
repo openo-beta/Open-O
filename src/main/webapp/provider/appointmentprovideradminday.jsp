@@ -1847,12 +1847,21 @@
 
                                                         <%
                                                             String nextStatus = as.getNextStatus();
+                                                            // Resolve the title once with a null-safe fallback: getTitleString(locale) can
+                                                            // return null (e.g. missing bundle entry), which would render as "null" via
+                                                            // String.valueOf and NPE in the later .length() check below.
+                                                            String statusTitle = StringUtils.defaultString(
+                                                                    StringUtils.defaultIfBlank(
+                                                                            as.getTitleString(request.getLocale()),
+                                                                            as.getTitle()));
+                                                            String viewallParam = request.getParameter("viewall");
+                                                            if (viewallParam == null || viewallParam.isEmpty()) viewallParam = "0";
                                                             if (nextStatus != null && !nextStatus.equals("")) {
                                                         %>
                                                         <!-- Short letters -->
                                                         <a class="apptStatus" href="javascript:void(0)"
-                                                           onclick="refreshSameLoc('providercontrol.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&amp;provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&amp;status=&amp;statusch=<%=Encode.forJavaScript(String.valueOf(nextStatus))%>&amp;year=<%=Encode.forJavaScript(String.valueOf(year))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(month))%>&amp;day=<%=Encode.forJavaScript(String.valueOf(day))%>&amp;<%=Encode.forJavaScript(String.valueOf(viewString))%>&amp;displaymode=addstatus&amp;dboperation=updateapptstatus&amp;viewall=${ not empty param.viewall ? param.viewall : "0" }<%= isWeekView ? "&amp;viewWeek=1" : "" %>');"
-                                                           title='<%=Encode.forHtmlAttribute(String.valueOf(as.getTitleString(request.getLocale())))%>'>
+                                                           onclick="refreshSameLoc('providercontrol.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&amp;provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&amp;status=&amp;statusch=<%=Encode.forJavaScript(String.valueOf(nextStatus))%>&amp;year=<%=Encode.forJavaScript(String.valueOf(year))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(month))%>&amp;day=<%=Encode.forJavaScript(String.valueOf(day))%>&amp;<%=Encode.forJavaScript(String.valueOf(viewString))%>&amp;displaymode=addstatus&amp;dboperation=updateapptstatus&amp;viewall=<%=Encode.forJavaScript(viewallParam)%><%= isWeekView ? "&amp;viewWeek=1" : "" %>');"
+                                                           title='<%=Encode.forHtmlAttribute(statusTitle)%>'>
                                                             <%
                                                                 }
                                                                 if (nextStatus != null) {
@@ -1875,7 +1884,7 @@
 
                                                             <img src="<%= request.getContextPath() %>/images/<%=Encode.forHtmlAttribute(String.valueOf(as.getImageName()))%>"
                                                                  border="0" height="10"
-                                                                 alt="<%=Encode.forHtmlAttribute(String.valueOf((as.getTitleString(request.getLocale()).length()>0)?as.getTitleString(request.getLocale()):as.getTitle()))%>">
+                                                                 alt="<%=Encode.forHtmlAttribute(statusTitle)%>">
 
                                                             <%
                                                                     }

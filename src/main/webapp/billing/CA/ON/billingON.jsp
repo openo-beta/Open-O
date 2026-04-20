@@ -893,8 +893,8 @@
             // Send the element name and the parent form index as separate parameters so
             // billingCodeSearch.jsp / billingCodeUpdate.jsp can rebuild the access path
             // from a fixed server-side template rather than eval-ing a caller-supplied string.
-            f0 = escape(nameF.value);
-            awnd = rs('att', 'billingCodeSearch.jsp?name=' + f0 + '&search=&name1=&name2=&formIndex=0&elementName=' + escape(nameF.name), 600, 600, 1);
+            f0 = encodeURIComponent(nameF.value);
+            awnd = rs('att', 'billingCodeSearch.jsp?name=' + f0 + '&search=&name1=&name2=&formIndex=0&elementName=' + encodeURIComponent(nameF.name), 600, 600, 1);
             //awnd.focus();
         }
 
