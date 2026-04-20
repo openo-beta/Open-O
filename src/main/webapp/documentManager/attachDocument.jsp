@@ -188,7 +188,8 @@
             transform: rotate(45deg) !important;
         }
 
-        .deleted-doc label {
+        .deleted-doc label,
+        .foreign-doc label {
             color: #888 !important;
             font-style: italic;
         }
@@ -356,83 +357,11 @@
                                 </li>
                                 <c:forEach items="${ allDocuments }" var="document" varStatus="loop">
                                     <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
+                                    <c:set var="isAttached" value="${not empty attachedDocumentIds and attachedDocumentIds.contains(document.docId)}"/>
                                     <li class="doc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
-                                        <input class="document_check" type="checkbox" name="docNo"
+                                        <input class="document_${isAttached ? 'pre_check' : 'check'}" type="checkbox" name="docNo"
                                                id="docNo${document.docId}" value="${document.docId}"
-                                               title="${e:forHtmlAttribute(document.description)}"/>
-                                        <label for="docNo${document.docId}"><c:out
-                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if></label>
-                                        <button class="preview-button" type="button" title="Preview"
-                                                onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
-                                            Preview
-                                        </button>
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                        </td>
-                    </tr>
-                </c:if>
-
-                <c:if test="${not empty providerPrivateDocs }">
-                    <tr>
-                        <td><h2>Private Provider Documents</h2></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <ul id="providerPrivateDocumentList" style="list-style-type: none;padding:0px;">
-                                <li class="selectAllHeading ${providerPrivateDocs.size() > 20 ? 'flex' : ''}">
-                                    <input id="selectAllProviderPrivateDocuments" type="checkbox"
-                                           onclick="toggleSelectAll(this, 'providerPrivateDocument_');" value="providerPrivateDocument_check"
-                                           title="Select/un-select all private provider documents."/>
-                                    <label for="selectAllProviderPrivateDocuments">Select all</label>
-                                    <button class="show-all-button ${providerPrivateDocs.size() > 20 ? '' : 'hide'}"
-                                            type="button" title="Show ${providerPrivateDocs.size() - 20} More Private Provider Documents"
-                                            onclick="showAll(this, 'providerPrivateDoc')">Show ${providerPrivateDocs.size() - 20} More
-                                        Private Provider Documents
-                                    </button>
-                                </li>
-                                <c:forEach items="${ providerPrivateDocs }" var="document" varStatus="loop">
-                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
-                                    <li class="providerPrivateDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
-                                        <input class="providerPrivateDocument_check" type="checkbox" name="docNo"
-                                               id="docNo${document.docId}" value="${document.docId}"
-                                               title="${e:forHtmlAttribute(document.description)}"/>
-                                        <label for="docNo${document.docId}"><c:out
-                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if></label>
-                                        <button class="preview-button" type="button" title="Preview"
-                                                onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
-                                            Preview
-                                        </button>
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                        </td>
-                    </tr>
-                </c:if>
-
-                <c:if test="${not empty providerPublicDocs }">
-                    <tr>
-                        <td><h2>Public Provider Documents</h2></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <ul id="providerPublicDocumentList" style="list-style-type: none;padding:0px;">
-                                <li class="selectAllHeading ${providerPublicDocs.size() > 20 ? 'flex' : ''}">
-                                    <input id="selectAllProviderPublicDocuments" type="checkbox"
-                                           onclick="toggleSelectAll(this, 'providerPublicDocument_');" value="providerPublicDocument_check"
-                                           title="Select/un-select all public provider documents."/>
-                                    <label for="selectAllProviderPublicDocuments">Select all</label>
-                                    <button class="show-all-button ${providerPublicDocs.size() > 20 ? '' : 'hide'}"
-                                            type="button" title="Show ${providerPublicDocs.size() - 20} More Public Provider Documents"
-                                            onclick="showAll(this, 'providerPublicDoc')">Show ${providerPublicDocs.size() - 20} More
-                                        Public Provider Documents
-                                    </button>
-                                </li>
-                                <c:forEach items="${ providerPublicDocs }" var="document" varStatus="loop">
-                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
-                                    <li class="providerPublicDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
-                                        <input class="providerPublicDocument_check" type="checkbox" name="docNo"
-                                               id="docNo${document.docId}" value="${document.docId}"
+                                               ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
                                                title="${e:forHtmlAttribute(document.description)}"/>
                                         <label for="docNo${document.docId}"><c:out
                                                 value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if></label>
@@ -573,6 +502,85 @@
                                         </label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('FORM', '${form.formId}', 'method=renderFormPDF&formId=${form.formId}&formName=${form.formName}&demographicNo=${form.getDemoNo()}')">
+                                            Preview
+                                        </button>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                    </tr>
+                </c:if>
+
+                <c:if test="${not empty providerPublicDocs }">
+                    <tr>
+                        <td><h2>Public eDocs</h2></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul id="providerPublicDocumentList" style="list-style-type: none;padding:0px;">
+                                <li class="selectAllHeading ${providerPublicDocs.size() > 20 ? 'flex' : ''}">
+                                    <input id="selectAllProviderPublicDocuments" type="checkbox"
+                                           onclick="toggleSelectAll(this, 'providerPublicDocument_');" value="providerPublicDocument_check"
+                                           title="Select/un-select all public eDocs."/>
+                                    <label for="selectAllProviderPublicDocuments">Select all</label>
+                                    <button class="show-all-button ${providerPublicDocs.size() > 20 ? '' : 'hide'}"
+                                            type="button" title="Show ${providerPublicDocs.size() - 20} More Public eDocs"
+                                            onclick="showAll(this, 'providerPublicDoc')">Show ${providerPublicDocs.size() - 20} More
+                                        Public eDocs
+                                    </button>
+                                </li>
+                                <c:forEach items="${ providerPublicDocs }" var="document" varStatus="loop">
+                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
+                                    <c:set var="isAttached" value="${not empty attachedDocumentIds and attachedDocumentIds.contains(document.docId)}"/>
+                                    <li class="providerPublicDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
+                                        <input class="providerPublicDocument_${isAttached ? 'pre_check' : 'check'}" type="checkbox" name="docNo"
+                                               id="publicDocNo${document.docId}" value="${document.docId}"
+                                               ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
+                                               title="${e:forHtmlAttribute(document.description)}"/>
+                                        <label for="publicDocNo${document.docId}"><c:out
+                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if></label>
+                                        <button class="preview-button" type="button" title="Preview"
+                                                onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
+                                            Preview
+                                        </button>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                    </tr>
+                </c:if>
+
+                <c:if test="${not empty providerPrivateDocs }">
+                    <tr>
+                        <td><h2>Private eDocs</h2></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul id="providerPrivateDocumentList" style="list-style-type: none;padding:0px;">
+                                <li class="selectAllHeading ${providerPrivateDocs.size() > 20 ? 'flex' : ''}">
+                                    <input id="selectAllProviderPrivateDocuments" type="checkbox"
+                                           onclick="toggleSelectAll(this, 'providerPrivateDocument_');" value="providerPrivateDocument_check"
+                                           title="Select/un-select all private eDocs."/>
+                                    <label for="selectAllProviderPrivateDocuments">Select all</label>
+                                    <button class="show-all-button ${providerPrivateDocs.size() > 20 ? '' : 'hide'}"
+                                            type="button" title="Show ${providerPrivateDocs.size() - 20} More Private eDocs"
+                                            onclick="showAll(this, 'providerPrivateDoc')">Show ${providerPrivateDocs.size() - 20} More
+                                        Private eDocs
+                                    </button>
+                                </li>
+                                <c:forEach items="${ providerPrivateDocs }" var="document" varStatus="loop">
+                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
+                                    <c:set var="isAttached" value="${not empty attachedDocumentIds and attachedDocumentIds.contains(document.docId)}"/>
+                                    <c:set var="isForeign" value="${not empty foreignPrivateDocIds and foreignPrivateDocIds.contains(document.docId)}"/>
+                                    <li class="providerPrivateDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''} ${isForeign ? 'foreign-doc' : ''}">
+                                        <input class="providerPrivateDocument_${isAttached ? 'pre_check' : 'check'}" type="checkbox" name="docNo"
+                                               id="privateDocNo${document.docId}" value="${document.docId}"
+                                               ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
+                                               title="${e:forHtmlAttribute(document.description)}"/>
+                                        <label for="privateDocNo${document.docId}"><c:out
+                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if><c:if test="${isForeign}"> (other provider)</c:if></label>
+                                        <button class="preview-button" type="button" title="Preview"
+                                                onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
                                             Preview
                                         </button>
                                     </li>

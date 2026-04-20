@@ -134,6 +134,31 @@ function remoteSave() {
 }
 
 /**
+ * Keys prefix the delegate_<key> id on attachment rows for DOC-type items.
+ * These are now pre-rendered server-side, so the pre-check JS skips them.
+ */
+function isDocDelegateKey(delegateKey) {
+    return /^(docNo|privateDocNo|publicDocNo)\d/.test(delegateKey);
+}
+
+/**
+ * Prompts when new (not pre-attached) private eDocs are selected, warning the
+ * provider that attachment makes their personal docs visible to others with
+ * record access. Returns true to proceed, false to abort dialog close.
+ */
+function confirmPrivateDocsIfAny(formSelector) {
+    var newPrivate = jQuery(formSelector)
+        .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])")
+        .filter(function () { return !jQuery(this).data("pre-attached"); });
+    if (newPrivate.length === 0) return true;
+    return confirm("You have selected " + newPrivate.length +
+        " private eDoc(s) for attachment.\n\n" +
+        "Private documents are personal to your account. " +
+        "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
+        "Select OK to confirm, or Cancel to go back.");
+}
+
+/**
  * Triggers the eForm attach function
  */
 jQuery(document).on('click', '*[data-poload]', function () {
@@ -151,7 +176,13 @@ jQuery(document).on('click', '*[data-poload]', function () {
             eformFloatingToolbar.classList.add("disabled-toolbar");
 
             jQuery('#attachDocumentList').find(".delegateAttachment").each(function (index, data) {
-                let delegate = "#" + this.id.split("_")[1];
+                let delegateKey = this.id.split("_")[1];
+                // DOC delegates (docNo/privateDocNo/publicDocNo) are pre-rendered
+                // server-side with checked + _pre_check + data-pre-attached.
+                if (isDocDelegateKey(delegateKey)) {
+                    return;
+                }
+                let delegate = "#" + delegateKey;
                 let element = jQuery('#attachDocumentsForm').find(delegate);
                 if (element.length === 0) {
                     element = addFormIfNotFound(data, demographicNo, delegate);
@@ -187,18 +218,8 @@ jQuery(document).on('click', '*[data-poload]', function () {
         beforeClose: function (event, ui) {
             // before the dialog is closed:
 
-            // warn if NEW private provider documents are selected (not pre-attached ones)
-            var privateProviderDocsChecked = jQuery('#attachDocumentsForm')
-                .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])")
-                .filter(function() { return !jQuery(this).data("pre-attached"); });
-            if (privateProviderDocsChecked.length > 0) {
-                if (!confirm("You have selected " + privateProviderDocsChecked.length +
-                    " private provider document(s) for attachment.\n\n" +
-                    "Private documents are personal to your account. " +
-                    "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
-                    "Select OK to confirm, or Cancel to go back.")) {
-                    return false;
-                }
+            if (!confirmPrivateDocsIfAny('#attachDocumentsForm')) {
+                return false;
             }
 
             // check if list exists, if yes then empty it otherwise create new
@@ -208,8 +229,11 @@ jQuery(document).on('click', '*[data-poload]', function () {
             }
             jQuery('#attachDocumentList').empty();
 
-            // pass the checked documents to the eForm document list(attachDocumentList)
-            jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerPrivateDocument_check:checked:not(input[disabled='disabled']), .providerPublicDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
+            // Match both "<type>_check" (new) and "<type>_pre_check" (server-
+            // rendered pre-attached) so pre-existing DOC attachments are preserved
+            // when the list is rebuilt from the selected items.
+            jQuery('#attachDocumentsForm').find(
+                "[class$='_check']:checkbox:checked:not(input[disabled='disabled'])"
             ).each(function (index, data) {
                 let element = jQuery(this);
                 let input = jQuery("<input />", {
