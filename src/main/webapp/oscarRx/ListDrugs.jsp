@@ -26,13 +26,11 @@
 
 <%@page import="ca.openosp.openo.commn.model.PartialDate" %>
 <%@page import="org.apache.commons.text.StringEscapeUtils" %>
-<%@page import="ca.openosp.openo.casemgmt.web.PrescriptDrug" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ page import="ca.openosp.OscarProperties,ca.openosp.openo.log.*" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,
                 ca.openosp.openo.casemgmt.model.CaseManagementNoteLink,
@@ -71,7 +69,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <%
-    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="r" reverse="<%=true%>">
@@ -86,152 +84,70 @@
 
 
 
-<style>
-    /* Container for the drug-maintenance-switch */
-    .drug-maintenance-switch {
-        top: -2px;
-        position: relative;
-        width: 34px;
-        height: 16px;
-    }
-
-    /* Hide the default checkbox */
-    .drug-maintenance-switch-input {
-        display: none;
-    }
-
-    /* Style the switch track */
-    .drug-maintenance-switch-label {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #dfdfdf;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        border-radius: 5%;
-    }
-
-    /* Style the toggle knob, default label to blank if unchecked */
-    .drug-maintenance-switch-label::after {
-        text-align: center;
-        content: '';
-        font-size: xx-small;
-        font-stretch: extra-expanded;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        width: 12px;
-        height: 12px;
-        background-color: #FFFFFFAF;
-        border-radius: 50%;
-        transition: transform 0.3s, content 0.3s, width 0.3s, height 0.3s, border-radius 0.3s;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Change Label to LT (long term) when checked */
-    .drug-maintenance-switch-input:checked + .drug-maintenance-switch-label::after {
-        content: 'LT'; /* Change label when checked */
-        transform: translateX(14px);
-        border-radius: 5%;
-        width: 16px;
-        height: 12px;
-        color: white;
-        background-color: #1e7e34AF;
-    }
-
-    /* Disabled State Styling */
-    .drug-maintenance-switch-input:disabled + .drug-maintenance-switch-label {
-        background-color: #e0e0e0;
-        cursor: not-allowed;
-    }
-
-    /* Disabled State: Handle appearance */
-    .drug-maintenance-switch-input:disabled:checked + .drug-maintenance-switch-label::after {
-        background-color: #1e7e349F;
-        transform: translateX(14px);
-        content: 'LT';
-        width: 16px;
-        height: 12px;
-        border-radius: 5%;
-    }
-
-    .list-drugs td:nth-child(5) {
-        word-break: break-word;
-        white-space: normal;
-    }
-
-
-</style>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     SecurityManager securityManager = new SecurityManager();
     PartialDateDao partialDateDao = SpringUtils.getBean(PartialDateDao.class);
 
-    boolean showall = false;
-    if (request.getParameter("show") != null) {
-        if (request.getParameter("show").equals("all")) {
-            showall = true;
-        }
-    }
-
     CodingSystemManager codingSystemManager = SpringUtils.getBean(CodingSystemManager.class);
 
     boolean integratorEnabled = loggedInInfo.getCurrentFacility().isIntegratorEnabled();
     String annotation_display = CaseManagementNoteLink.DISP_PRESCRIP;
+
+    // The legend in SearchDrug3.jsp can load this page multiple times into #drugProfile —
+    // once as a replacement (e.g. "Long Term Meds") and one or more times as appended
+    // sections (e.g. "Acute", "Inactive", "External"). Each request passes a "heading"
+    // param that labels the section and is used to give its table a unique DOM id so that
+    // each section can be independently initialised as its own DataTable instance.
     String heading = request.getParameter("heading");
-
-    if (heading != null) {
+    
+    // Remove spaces so the heading is safe to embed directly in an HTML element id.
+    String headingSuffix = (heading != null) ? heading.replaceAll("\\s+", "") : "";
+    String tableId = "Drug_table" + headingSuffix;
+    request.setAttribute("sectionHeading", heading);
+    request.setAttribute("drugTableId", tableId);
 %>
-<h4 style="margin-bottom:1px;margin-top:3px;"><%=Encode.forHtmlContent(heading)%></h4>
-<%}%>
+<c:if test="${not empty sectionHeading}">
+    <h4 style="margin-bottom:1px;margin-top:10px;font-size:16px"><e:forHtml value="${sectionHeading}"/></h4>
+</c:if>
 <div class="drugProfileText" style="">
-    <table class="list-drugs sortable" id="Drug_table<%=Encode.forHtmlContent(heading)%>">
+    <table class="table table-condensed list-drugs" id="<e:forHtmlAttribute value="${drugTableId}"/>">
+      <thead>
         <tr>
-
-        	<th ><b>Entered Date</b></th>
-            <th ><b><fmt:message key="SearchDrug.msgRxDate"/></b></th>
-            <th ><b>Days to Exp</b></th>
-            <th ><b>LT Med</b></th>
-            <th ><b><fmt:message key="SearchDrug.msgPrescription"/></b></th>
+        	<th>Entered Date</th>
+            <th><fmt:message key="SearchDrug.msgRxDate"/></th>
+            <th>Days to Exp</th>
+            <th>LT Med</th>
+            <th><fmt:message key="SearchDrug.msgPrescription"/></th>
 			<%if(securityManager.hasWriteAccess("_rx",roleName$,true)) {%>
-            <th ><b><fmt:message key="SearchDrug.msgReprescribe"/></b></th>
+            <th><fmt:message key="SearchDrug.msgReprescribe"/></th>
             	<%if(!OscarProperties.getInstance().getProperty("rx.delete_drug.hide","false").equals("true")) {%>
-            	<th ><b><fmt:message key="SearchDrug.msgDelete"/></b></th>
+            	<th><fmt:message key="SearchDrug.msgDelete"/></th>
             <% 	}	 
 			}            
             %>
-            <th ><b><fmt:message key="SearchDrug.msgDiscontinue"/></b></th>		
-			<th  title="<fmt:message key="SearchDrug.msgReason_help"/>"><b><fmt:message key="SearchDrug.msgReason"/></b></th>    
-            <th ><b><fmt:message key="SearchDrug.msgPastMed"/></b></th>
+            <th><fmt:message key="SearchDrug.msgDiscontinue"/></th>		
+			<th title="<fmt:message key="SearchDrug.msgReason_help"/>"> <fmt:message key="SearchDrug.msgReason"/></th>
+            <th><fmt:message key="SearchDrug.msgPastMed"/></th>
             <%if(securityManager.hasWriteAccess("_rx",roleName$,true)) {%>
-            	<th>&nbsp;</th>
+            	<th><fmt:message key="SearchDrug.annotation"/></th>
             <% } %>
-            <th ><fmt:message key="SearchDrug.msgLocationPrescribed"/></th>
+            <th><fmt:message key="SearchDrug.msgLocationPrescribed"/></th>
             <th title="<fmt:message key="SearchDrug.msgHideCPP_help"/>"><fmt:message key="SearchDrug.msgHideCPP"/></th>
             <%if(OscarProperties.getInstance().getProperty("rx.enable_internal_dispensing","false").equals("true")) {%>
-             <th ><fmt:message key="SearchDrug.msgDispense"/></th>
+             <th><fmt:message key="SearchDrug.msgDispense"/></th>
              <%} %>
-             <th ></th>
-
         </tr>
-
+      </thead>
+      <tbody>
         <%
             List<Drug> prescriptDrugs = null;
-            CaseManagementManager caseManagementManager = (CaseManagementManager) SpringUtils.getBean(CaseManagementManager.class);
+            CaseManagementManager caseManagementManager = SpringUtils.getBean(CaseManagementManager.class);
 
-            if (showall) {
-                prescriptDrugs = caseManagementManager.getPrescriptions(loggedInInfo, patient.getDemographicNo(), showall);
-            } else {
-                prescriptDrugs = caseManagementManager.getCurrentPrescriptions(patient.getDemographicNo());
-            }
+            prescriptDrugs = caseManagementManager.getPrescriptions(loggedInInfo, patient.getDemographicNo(), true);
 
-            DrugReasonDao drugReasonDao = (DrugReasonDao) SpringUtils.getBean(DrugReasonDao.class);
+            DrugReasonDao drugReasonDao = SpringUtils.getBean(DrugReasonDao.class);
 
             DrugDispensingManager drugDispensingManager = SpringUtils.getBean(DrugDispensingManager.class);
             List<String> reRxDrugList = bean.getReRxDrugIdList();
@@ -261,29 +177,6 @@
                     isPrevAnnotation = true;
                 }
 
-                if (request.getParameter("status") != null) { //TODO: Redo this in a better way
-                    String stat = request.getParameter("status");
-                    if (stat.equals("active") && !prescriptDrug.isLongTerm() && !prescriptDrug.isCurrent()) {
-                        continue;
-                    } else if (stat.equals("inactive") && prescriptDrug.isCurrent()) {
-                        continue;
-                    }
-                }
-                if (request.getParameter("longTermOnly") != null && request.getParameter("longTermOnly").equals("true")) {
-                    if (!prescriptDrug.isLongTerm()) {
-                        continue;
-                    }
-                }
-
-                if (request.getParameter("longTermOnly") != null && request.getParameter("longTermOnly").equals("acute")) {
-                    if (prescriptDrug.isLongTerm()) {
-                        continue;
-                    }
-                }
-                if (request.getParameter("drugLocation") != null && request.getParameter("drugLocation").equals("external")) {
-                    if (!prescriptDrug.isExternal())
-                        continue;
-                }
 //add all long term med drugIds to an array.
                 styleColor = getClassColour(prescriptDrug, now, month);
                 String specialText = prescriptDrug.getSpecial();
@@ -293,9 +186,12 @@
 
                 boolean startDateUnknown = prescriptDrug.getStartDateUnknown();
         %>
-        <tr>
+        <tr data-is-archived="<%= prescriptDrug.isArchived() %>"
+            data-is-longterm="<%= prescriptDrug.isLongTerm() %>"
+            data-is-current="<%= prescriptDrug.isCurrent() %>"
+            data-is-external="<%= prescriptDrug.isExternal() %>">
 
-        <td><a id="createDate_<%=prescriptIdInt%>"   <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=DateToString(prescriptDrug.getCreateDate())%></a></td>
+        <td><a id="createDate_<%=prescriptIdInt%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=DateToString(prescriptDrug.getCreateDate())%></a></td>
             <td>
             	<% if(startDateUnknown) { %>
             		
@@ -315,7 +211,7 @@
                 <%=prescriptDrug.daysToExpire()%>
                 <% } %>
             </td>
-            <td valign="top">
+            <td>
                 <div class="drug-maintenance-switch" style="display: flex; align-items: baseline;">
                     <% String drugMaintenanceSwitch = "drugMaintenanceSwitch_" + prescriptIdInt + Math.abs(new Random().nextInt(10001)); %>
                     <input id="<%=drugMaintenanceSwitch%>" type="checkbox" name="checkBox_<%=prescriptIdInt%>"
@@ -337,7 +233,7 @@
 			}
 			
 			%>
-            <td ><a id="prescrip_<%=prescriptIdInt%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"   <%=tComment%>   ><%=RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")%></a></td>
+            <td><a id="prescrip_<%=prescriptIdInt%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"   <%=tComment%>   ><%=RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")%></a></td>
 			<%            			
 	           	if(securityManager.hasWriteAccess("_rx",roleName$,true)) {            		
            	%>
@@ -390,7 +286,7 @@
                 <%}%>
             </td>
   <%-- DRUG REASON --%>          
-            <td style="vertical-align:top;">
+            <td>
             	<% 	
             		List<DrugReason> drugReasons  = drugReasonDao.getReasonsForDrugID(prescriptDrug.getId(),true);            		            					        	
 			
@@ -427,7 +323,7 @@
             </td>
 
 			<%if(securityManager.hasWriteAccess("_rx",roleName$,true)) {%>
-            <td width="10px" align="center">
+            <td>
                 <%
                     if (prescriptDrug.getRemoteFacilityId() == null) {
                 %>
@@ -442,7 +338,7 @@
             </td>
             <% } %>
 
-            <td width="10px" align="center">
+            <td>
                 <%
                     if (prescriptDrug.getRemoteFacilityName() != null) { %>
                 <span class="external"><%=prescriptDrug.getRemoteFacilityName()%></span>
@@ -455,7 +351,7 @@
 
             </td>
 
-			<td >
+			<td>
 				<%
 					boolean hideCpp = prescriptDrug.getHideFromCpp();
 					String checked="";
@@ -467,7 +363,7 @@
 			</td>
 			
 			<%if(OscarProperties.getInstance().getProperty("rx.enable_internal_dispensing","false").equals("true")) {%>
-			<td >
+			<td>
 				<%
 					if(prescriptDrug.getDispenseInternal() != null && prescriptDrug.getDispenseInternal() == true ) {
 						if(securityManager.hasWriteAccess("_dispensing",roleName$,true)) {	
@@ -481,16 +377,18 @@
 			</td>
 			<% } %>
 			
-			<td nowrap="nowrap" >
-				<%if(!(prescriptDrugs.get(prescriptDrugs.size()-1) == prescriptDrug)) {%>
-				<img border="0" src="<%=request.getContextPath()%>/images/icon_down_sort_arrow.png" onclick="moveDrugDown(<%=prescriptDrug.getId() %>,<%=prescriptDrugs.get(x+1).getId() %>,<%=prescriptDrug.getDemographicId()%>);return false;"/>
-				<% } %>
-				<%if(!(prescriptDrugs.get(0) == prescriptDrug)) {%>
-				<img border="0" src="<%=request.getContextPath()%>/images/icon_up_sort_arrow.png" onclick="moveDrugUp(<%=prescriptDrug.getId() %>,<%=prescriptDrugs.get(x-1).getId() %>,<%=prescriptDrug.getDemographicId()%>);return false;"/>
-				<%} %>
-			</td>
+<%--			<td nowrap="nowrap" >--%>
+<%--				<%if(!(prescriptDrugs.get(prescriptDrugs.size()-1) == prescriptDrug)) {%>--%>
+<%--				<img border="0" src="<%=request.getContextPath()%>/images/icon_down_sort_arrow.png" onclick="moveDrugDown(<%=prescriptDrug.getId() %>,<%=prescriptDrugs.get(x+1).getId() %>,<%=prescriptDrug.getDemographicId()%>);return false;"/>--%>
+<%--				<% } %>--%>
+<%--				<%if(!(prescriptDrugs.get(0) == prescriptDrug)) {%>--%>
+<%--				<img border="0" src="<%=request.getContextPath()%>/images/icon_up_sort_arrow.png" onclick="moveDrugUp(<%=prescriptDrug.getId() %>,<%=prescriptDrugs.get(x-1).getId() %>,<%=prescriptDrug.getDemographicId()%>);return false;"/>--%>
+<%--				<%} %>--%>
+<%--			</td>--%>
 
         </tr>
+
+
         <script>
             (function() {
                 var element = $('hidecpp_<%=prescriptIdInt%>');
@@ -507,14 +405,68 @@
             })();
         </script>
         <%}%>
+      </tbody>
     </table>
 
 </div>
-<br>
-
 
 <script type="text/javascript">
-    sortables_init();
+
+    window.drugListTableConfig = window.drugListTableConfig || {
+      bStateSave: true,
+      fnStateSave: function (oSettings, oData) {
+        localStorage.setItem('drugListTable', JSON.stringify(oData));
+      },
+      fnStateLoad: function () {
+        return JSON.parse(localStorage.getItem('drugListTable'));
+      },
+      searching: true,
+      // "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
+      // "iDisplayLength": 50,
+      columns: [
+        {}, //entered date
+        {}, //start date
+        {}, //days to expire
+        {orderable: false}, //long term
+        {}, //medication
+        {orderable: false}, //rerx
+        {orderable: false}, //delete
+        {orderable: false}, //discontinue
+        {orderable: false}, //reason
+        {}, //pastmed
+        {orderable: false}, // note
+        {}, // location
+        {orderable: false} // checkbox
+      ],
+      // columnDefs: [
+      //   // {visible: false, targets: groupColumn}
+      // ],
+
+      // drawCallback: function (settings) {
+      //   let api = this.api();
+      //   let rows = api.rows({page: 'current'}).nodes();
+      //   let last = null;
+      //
+      //   api.column(groupColumn, {page: 'current'}) //TODO: this code reorders the rows on the current page, the global order based on the current sort.
+      //     //      this means if a global sort is done that results in the tickler comments to NOT be on the current page
+      //     //      they will not be visible.  A workaround has been implemented by adding the service date and priority
+      //     //      into the tickler comment rows as well.  The datatables row group plugin might be a better approach,
+      //     //      but will require refactoring of this code
+      //     .data()
+      //     .each(function (group, i) {
+      //       if (last !== group) {
+      //         jQuery(rows)
+      //           .eq(i)
+      //           .after(jQuery(".followup-comment-" + group))
+      //         last = group;
+      //       }
+      //     });
+      // },
+
+      // order: [[4, 'desc']]
+
+    };
+    drugListTable = jQuery('#${e:forJavaScript(drugTableId)}').dataTable(window.drugListTableConfig);
 </script>
 <%!
 

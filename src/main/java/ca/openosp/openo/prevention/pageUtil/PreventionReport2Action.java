@@ -57,7 +57,7 @@ import ca.openosp.openo.util.UtilDateUtilities;
 /**
  * @author Jay Gallagher
  */
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 public class PreventionReport2Action extends ActionSupport {
@@ -90,7 +90,11 @@ public class PreventionReport2Action extends ActionSupport {
         frm.addDemoIfNotPresent();
         frm.setAsofDate(asofDate);
         RptDemographicQueryBuilder demoQ = new RptDemographicQueryBuilder();
-        ArrayList<ArrayList<String>> list = demoQ.buildQuery(loggedInInfo, frm, asofDate);
+        // Use the overload without asofRosterDate so results are based on the demographic query and
+        // asofDate only. The overload that accepts an asofRosterDate may additionally apply a post-query
+        // rostering filter (skipping non-rostered patients) when an as-of roster date is provided and at
+        // least one provider filter is specified.
+        ArrayList<ArrayList<String>> list = demoQ.buildQuery(loggedInInfo, frm);
 
         log.debug("set size " + list.size());
 

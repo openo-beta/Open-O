@@ -53,18 +53,19 @@
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
 
-        <p class="PropSheetLevel1CurrentItem<%=alle%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></p>
-        <p class="PropSheetMenuItemLevel1">
+
+        <dl class="PropSheetMenuItemLevel1">
+          <dt class="PropSheetLevel1CurrentItem<%=alle%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></dt>
                     <%
 
         for (int j=0; j<allergies.length; j++){%>
 
-        <p class="PropSheetMenuItemLevel1"><a
+        <dd class="PropSheetMenuItemLevel1"><a
                 title="<%= allergies[j].getDescription() %> - <%= allergies[j].getReaction() %>">
             <%=allergies[j].getShortDesc(13, 8, "...")%>
-        </a></p>
+        </a></dd>
         <%}%>
-        </p>
+        </dl>
 
     </security:oscarSec>
 

@@ -225,7 +225,7 @@ public class RxSessionBean implements java.io.Serializable {
             } else {
                 if (rx.getBrandName() != null && item.getBrandName() != null) {
                     if (rx.getBrandName().equals(item.getBrandName())
-                            && rx.getGCN_SEQNO() == item.getGCN_SEQNO()) {
+                            && Objects.equals(rx.getGCN_SEQNO(), item.getGCN_SEQNO())) {
                         ret = i;
                         break;
                     }

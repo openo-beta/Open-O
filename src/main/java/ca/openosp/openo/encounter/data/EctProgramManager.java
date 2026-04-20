@@ -1,6 +1,6 @@
 //CHECKSTYLE:OFF
 /**
- * Copyright (c) 2025. Magenta Health. All Rights Reserved.
+ * 
  * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -22,7 +22,7 @@
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
  * <p>
- * Modifications made by Magenta Health in 2025.
+ * Modifications made by Magenta Health in collaboration with Open OSP in 2025.
  */
 package ca.openosp.openo.encounter.data;
 

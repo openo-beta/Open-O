@@ -34,7 +34,7 @@ package ca.openosp.openo.prescript.pageUtil;
 import ca.openosp.openo.prescript.util.RxDrugRef;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.ServletException;
