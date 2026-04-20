@@ -583,10 +583,10 @@ public final class EDocUtil {
             currentdoc.setDateTimeStampAsDate(d.getUpdatedatetime());
             currentdoc.setDateTimeStamp(ConversionUtils.toTimestampString(d.getUpdatedatetime()));
             currentdoc.setFileName(d.getDocfilename());
-            currentdoc.setDocPublic("" + d.getPublic1());
+            currentdoc.setDocPublic(String.valueOf(d.getPublic1()));
             currentdoc.setStatus(d.getStatus());
             currentdoc.setContentType(d.getContenttype());
-            currentdoc.setObservationDate(d.getObservationdate());
+            currentdoc.setObservationDate(ConversionUtils.toDateString(d.getObservationdate()));
             currentdoc.setReviewerId(d.getReviewer());
             currentdoc.setReviewDateTime(ConversionUtils.toTimestampString(d.getReviewdatetime()));
             currentdoc.setReviewDateTimeDate(d.getReviewdatetime());

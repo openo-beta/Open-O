@@ -37,7 +37,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -228,7 +230,7 @@ public class DocumentPreview2Action extends ActionSupport {
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         request.setAttribute("allEForms", allEForms);
 
-        mergeSoftDeletedAttachedDocs(loggedInInfo, demographicNo, requestId, null);
+        populateAttachedContext(loggedInInfo, demographicNo, requestId, null);
 
         return "fetchDocuments";
     }
@@ -243,7 +245,7 @@ public class DocumentPreview2Action extends ActionSupport {
 		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdid));
 		request.setAttribute("allEForms", allEForms);
 
-        mergeSoftDeletedAttachedDocs(loggedInInfo, demographicNo, null, fdid);
+        populateAttachedContext(loggedInInfo, demographicNo, null, fdid);
 
         return "fetchDocuments";
     }
@@ -272,17 +274,36 @@ public class DocumentPreview2Action extends ActionSupport {
     }
 
     /**
-     * Merges soft-deleted attached documents into the existing document lists so
-     * they render naturally in the attachment manager JSP in the correct section.
+     * Populates attached-doc context for the attachment manager JSP so it can render
+     * pre-checked state and cross-provider visibility server-side.
+     *
+     * Sets three request attributes that the JSP consumes:
+     * <ul>
+     *   <li>{@code attachedDocumentIds}: Set&lt;String&gt; of all doc IDs currently attached to the
+     *       consult/eform. Used by the JSP to render checkboxes with {@code checked} and the
+     *       {@code _pre_check} class directly, bypassing the legacy client-side #id lookup.</li>
+     *   <li>{@code foreignPrivateDocIds}: Set&lt;String&gt; of private provider docs attached by a
+     *       different provider than the current user. Rendered greyed with "(other provider)"
+     *       so the current user sees what's attached and can uncheck to remove.</li>
+     *   <li>Merges soft-deleted attached docs into {@code allDocuments}/{@code providerPrivateDocs}/
+     *       {@code providerPublicDocs} so they appear in their correct section marked as deleted.</li>
+     *   <li>Merges active cross-provider private docs into {@code providerPrivateDocs} so they're
+     *       visible to non-owner providers who need to manage the existing attachment.</li>
+     * </ul>
      *
      * @param loggedInInfo LoggedInInfo the logged-in user's session information
      * @param demographicNo String the patient's demographic number
      * @param requestId String the consultation request ID, or null for eForm context
      * @param fdid String the eForm data ID, or null for consultation context
-     * @since 2026-02-20
+     * @since 2026-04-20
      */
     @SuppressWarnings("unchecked")
-    private void mergeSoftDeletedAttachedDocs(LoggedInInfo loggedInInfo, String demographicNo, String requestId, String fdid) {
+    private void populateAttachedContext(LoggedInInfo loggedInInfo, String demographicNo, String requestId, String fdid) {
+        Set<String> attachedDocumentIds = new HashSet<>();
+        Set<String> foreignPrivateDocIds = new HashSet<>();
+        request.setAttribute("attachedDocumentIds", attachedDocumentIds);
+        request.setAttribute("foreignPrivateDocIds", foreignPrivateDocIds);
+
         List<EDoc> attachedDocs;
         if (requestId != null) {
             attachedDocs = EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED);
@@ -301,28 +322,62 @@ public class DocumentPreview2Action extends ActionSupport {
         List<EDoc> providerPublicDocs = (List<EDoc>) request.getAttribute("providerPublicDocs");
 
         if (allDocuments == null || providerPrivateDocs == null || providerPublicDocs == null) {
+            logger.warn("populateAttachedContext: expected document list attributes missing; skipping merge");
             return;
         }
 
-        // Only soft-deleted docs need merging — active docs are already in the lists
+        Set<String> allDocumentIds = collectDocIds(allDocuments);
+        Set<String> myPrivateDocIds = collectDocIds(providerPrivateDocs);
+        Set<String> publicDocIds = collectDocIds(providerPublicDocs);
+        String currentProviderNo = loggedInInfo.getLoggedInProviderNo();
+
         for (EDoc attachedDoc : attachedDocs) {
-            if (attachedDoc.getStatus() != 'D') {
+            String docId = attachedDoc.getDocId();
+            attachedDocumentIds.add(docId);
+
+            boolean isDeleted = attachedDoc.getStatus() == 'D';
+            boolean alreadyRendered = allDocumentIds.contains(docId)
+                    || myPrivateDocIds.contains(docId)
+                    || publicDocIds.contains(docId);
+
+            // Active + already in some list: nothing to merge. listDocs(ATTACHED)
+            // doesn't populate module, so membership is how we classify here.
+            if (!isDeleted && alreadyRendered) {
                 continue;
             }
-            EDoc fullDoc = EDocUtil.getEDocFromDocId(attachedDoc.getDocId());
+
+            EDoc fullDoc = EDocUtil.getEDocFromDocId(docId);
             if (fullDoc.getDocId() == null || fullDoc.getDocId().isEmpty()) {
                 continue;
             }
+
             if (EDocUtil.isProviderModule(fullDoc.getModule())) {
-                if ("1".equals(fullDoc.getDocPublic())) {
-                    providerPublicDocs.add(fullDoc);
+                boolean isPublic = "1".equals(fullDoc.getDocPublic());
+                if (isPublic) {
+                    if (isDeleted) {
+                        providerPublicDocs.add(fullDoc);
+                    }
+                    // active public is already in the global list
                 } else {
                     providerPrivateDocs.add(fullDoc);
+                    boolean ownedByCurrent = currentProviderNo != null
+                            && currentProviderNo.equals(fullDoc.getModuleId());
+                    if (!ownedByCurrent) {
+                        foreignPrivateDocIds.add(docId);
+                    }
                 }
-            } else {
+            } else if (isDeleted) {
                 allDocuments.add(fullDoc);
             }
         }
+    }
+
+    private static Set<String> collectDocIds(List<EDoc> docs) {
+        Set<String> ids = new HashSet<>();
+        for (EDoc doc : docs) {
+            ids.add(doc.getDocId());
+        }
+        return ids;
     }
 
     /**

@@ -3170,7 +3170,14 @@ if (userAgent != null) {
                 jQuery("#attachDocumentDisplay").load(trigger.data('poload'), function (response, status, xhr) {
                     if (status === "success") {
                         $mainForm.find(".delegateAttachment").each(function (index, data) {
-                            let delegate = "#" + this.id.split("_")[1];
+                            let delegateKey = this.id.split("_")[1];
+                            // DOC delegates (docNo/privateDocNo/publicDocNo) are
+                            // pre-rendered server-side with _pre_check class and
+                            // data-pre-attached. Skip client-side marking.
+                            if (/^(docNo|privateDocNo|publicDocNo)\d/.test(delegateKey)) {
+                                return;
+                            }
+                            let delegate = "#" + delegateKey;
                             let element = jQuery('#attachDocumentsForm').find(delegate);
                             if (element.length === 0) {
                                 element = addFormIfNotFound(data, '<%=demo%>', delegate);
@@ -3211,17 +3218,17 @@ if (userAgent != null) {
                     beforeClose: function (event, ui) {
                         // before the dialog is closed:
 
-                        // warn if private provider documents are selected
-                        var privateProviderDocsChecked = jQuery('#attachDocumentsForm')
-                            .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])");
-                        if (privateProviderDocsChecked.length > 0) {
-                            if (!confirm("You have selected " + privateProviderDocsChecked.length +
-                                " private provider document(s) for attachment.\n\n" +
+                        // warn on NEW (not pre-attached) private eDoc selections
+                        var newPrivate = jQuery('#attachDocumentsForm')
+                            .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])")
+                            .filter(function () { return !jQuery(this).data("pre-attached"); });
+                        if (newPrivate.length > 0 &&
+                            !confirm("You have selected " + newPrivate.length +
+                                " private eDoc(s) for attachment.\n\n" +
                                 "Private documents are personal to your account. " +
                                 "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
                                 "Select OK to confirm, or Cancel to go back.")) {
-                                return false;
-                            }
+                            return false;
                         }
 
                         // pass the checked elements to the consultation request form
@@ -3267,7 +3274,9 @@ if (userAgent != null) {
 
                             if (!checkedElement.is(':checked')) {
                                 var checkedElementClass = checkedElement.attr("class");
-                                $mainForm.find("#entry_" + checkedElement.attr("id")).remove();
+                                // Entry row id uses name+value (stable across
+                                // sections with different checkbox id prefixes).
+                                $mainForm.find("#entry_" + checkedElement.attr("name") + checkedElement.val()).remove();
                                 checkedElement.attr("class", checkedElementClass.split("_")[0] + "_check");
                             }
                         });
