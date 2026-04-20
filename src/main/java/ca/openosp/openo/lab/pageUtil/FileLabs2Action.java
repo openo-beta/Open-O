@@ -132,6 +132,27 @@ public class FileLabs2Action extends ActionSupport {
         return null;
     }
 
+    /**
+     * Files lab results on behalf of one or more providers up to and including a flagged lab version.
+     *
+     * <p>Reads the following parameters from the HTTP request:
+     * <ul>
+     *   <li>{@code providerNo}   – provider number to file on behalf of</li>
+     *   <li>{@code flaggedLabId} – ID of the lab version that was flagged (trimmed before use)</li>
+     *   <li>{@code labType}      – lab type string, e.g. {@code "HL7"} (trimmed before use)</li>
+     *   <li>{@code comment}      – comment to record on the filed routing entry (may be null)</li>
+     *   <li>{@code fileUpToLabNo} – when {@code true}, files all versions up to and including
+     *       {@code flaggedLabId}; when {@code false}, files all matching versions</li>
+     * </ul>
+     *
+     * <p>Returns {@code null} early (no-op) when {@code providerNo}, {@code flaggedLabId}, or
+     * {@code labType} are missing, or when {@code flaggedLabId} / {@code labType} are blank after
+     * trimming.
+     *
+     * @return {@code null} in all cases — this method is an AJAX action endpoint, not a
+     *         Struts result navigation point
+     * @throws SecurityException if the logged-in user lacks {@code _lab} write privilege
+     */
     @SuppressWarnings("unused")
 	public String fileOnBehalfOfMultipleProviders()
 	{
