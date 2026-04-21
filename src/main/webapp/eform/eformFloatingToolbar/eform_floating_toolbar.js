@@ -229,11 +229,12 @@ jQuery(document).on('click', '*[data-poload]', function () {
             }
             jQuery('#attachDocumentList').empty();
 
-            // Match both "<type>_check" (new) and "<type>_pre_check" (server-
-            // rendered pre-attached) so pre-existing DOC attachments are preserved
-            // when the list is rebuilt from the selected items.
+            // Match both "<type>_check" (new selection) and "<type>_pre_check"
+            // (server-rendered pre-attached) so pre-existing DOC attachments are
+            // preserved when the list is rebuilt. Two suffix selectors cover both.
             jQuery('#attachDocumentsForm').find(
-                "[class$='_check']:checkbox:checked:not(input[disabled='disabled'])"
+                "[class$='_check']:checkbox:checked:not(input[disabled='disabled']), " +
+                "[class$='_pre_check']:checkbox:checked:not(input[disabled='disabled'])"
             ).each(function (index, data) {
                 let element = jQuery(this);
                 let input = jQuery("<input />", {

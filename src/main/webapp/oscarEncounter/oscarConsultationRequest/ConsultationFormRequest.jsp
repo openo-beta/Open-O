@@ -3280,6 +3280,12 @@ if (userAgent != null) {
                                 // sections with different checkbox id prefixes).
                                 $mainForm.find("#entry_" + checkedElement.attr("name") + checkedElement.val()).remove();
                                 checkedElement.attr("class", checkedElementClass.split("_")[0] + "_check");
+                                // Once an unchecked pre-attached item is re-checked
+                                // within the same session, it should behave as a
+                                // new selection (e.g. trigger the private-doc
+                                // warning), so drop the pre-attached marker.
+                                checkedElement.removeAttr("data-pre-attached");
+                                checkedElement.removeData("pre-attached");
                             }
                         });
 
