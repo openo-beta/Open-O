@@ -437,7 +437,6 @@ public final class EDocUtil {
 
         for (Object[] o : docs) {
             Document d = (Document) o[0];
-            // o[1] is the attachment-link entity (ConsultDocs/EFormDocs/ConsultResponseDoc); o[2] is CtlDocument
             CtlDocument ctl = (CtlDocument) o[2];
 
             EDoc currentdoc = new EDoc();
@@ -457,9 +456,7 @@ public final class EDocUtil {
             }
             currentdoc.setType(d.getDoctype());
             currentdoc.setStatus(d.getStatus());
-            // Format as String (yyyy-MM-dd) rather than passing Date, which
-            // would use DMS_DATE_FORMAT (yyyy/MM/dd) and diverge from the
-            // rest of the system.
+            // yyyy-MM-dd to match rest of system; Date overload uses yyyy/MM/dd.
             currentdoc.setObservationDate(ConversionUtils.toDateString(d.getObservationdate()));
             currentdoc.setReviewerId(d.getReviewer());
             currentdoc.setReviewDateTime(ConversionUtils.toTimestampString(d.getReviewdatetime()));

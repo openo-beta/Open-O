@@ -3171,12 +3171,22 @@ if (userAgent != null) {
                     if (status === "success") {
                         $mainForm.find(".delegateAttachment").each(function (index, data) {
                             let delegateKey = this.id.split("_")[1];
-                            // DOC delegates (docNo/privateDocNo/publicDocNo) are
-                            // pre-rendered server-side with _pre_check class and
-                            // data-pre-attached. Skip client-side marking.
+
+                            // DOC sections share name="docNo" with distinct ids; look up by name+value.
+                            // Skip if server-pre-attached; else mark as unsaved client-side selection.
                             if (/^(docNo|privateDocNo|publicDocNo)\d/.test(delegateKey)) {
+                                let docValue = this.value;
+                                let matches = jQuery('#attachDocumentsForm').find('input[name="docNo"][value="' + docValue + '"]');
+                                if (matches.filter('[data-pre-attached="true"]').length > 0) {
+                                    return;
+                                }
+                                matches.prop("checked", true);
+                                let cls = matches.attr("class");
+                                if (cls) matches.attr("class", cls.split("_")[0] + "_pre_check");
+                                matches.attr("data-pre-attached", "true").data("pre-attached", true);
                                 return;
                             }
+
                             let delegate = "#" + delegateKey;
                             let element = jQuery('#attachDocumentsForm').find(delegate);
                             if (element.length === 0) {
@@ -3242,6 +3252,7 @@ if (userAgent != null) {
                                 id: "delegate_" + element.attr('id'),
                                 class: 'delegateAttachment'
                             });
+                            // entry_ row id uses name+value (not checkbox id) so the three DOC sections share a row key.
                             var row = jQuery("<tr>", {id: "entry_" + element.attr("name") + element.val()});
                             var column = jQuery("<td>");
                             var target = "#attachedDocumentsTable";
@@ -3274,14 +3285,9 @@ if (userAgent != null) {
 
                             if (!checkedElement.is(':checked')) {
                                 var checkedElementClass = checkedElement.attr("class");
-                                // Entry row id uses name+value (stable across
-                                // sections with different checkbox id prefixes).
                                 $mainForm.find("#entry_" + checkedElement.attr("name") + checkedElement.val()).remove();
                                 checkedElement.attr("class", checkedElementClass.split("_")[0] + "_check");
-                                // Once an unchecked pre-attached item is re-checked
-                                // within the same session, it should behave as a
-                                // new selection (e.g. trigger the private-doc
-                                // warning), so drop the pre-attached marker.
+                                // Drop pre-attached so a subsequent re-check fires the private-doc warning.
                                 checkedElement.removeAttr("data-pre-attached");
                                 checkedElement.removeData("pre-attached");
                             }
