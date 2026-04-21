@@ -43,9 +43,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import ca.openosp.openo.commn.dao.*;
 import org.apache.commons.io.FileUtils;
@@ -434,10 +436,14 @@ public final class EDocUtil {
     private static ArrayList<EDoc> listDocs(LoggedInInfo loggedInInfo, boolean attached, List<Object[]> docs, List<Object[]> ctlDocs) {
         ArrayList<EDoc> resultDocs = new ArrayList<EDoc>();
         ArrayList<EDoc> attachedDocs = new ArrayList<EDoc>();
+        // Dedupe: CtlDocument join can yield one tuple per ctl row per document_no.
+        Set<String> seenAttachedIds = new HashSet<>();
 
         for (Object[] o : docs) {
             Document d = (Document) o[0];
             CtlDocument ctl = (CtlDocument) o[2];
+            String docIdStr = String.valueOf(d.getDocumentNo());
+            if (!seenAttachedIds.add(docIdStr)) continue;
 
             EDoc currentdoc = new EDoc();
             currentdoc.setDocId("" + d.getDocumentNo());

@@ -294,6 +294,39 @@
             showButton.classList.add('hide');
             showButton.parentNode.classList.remove('flex');
         }
+
+        /**
+         * Helpers shared by consult and eForm attach flows. Defined here so both
+         * parents can call them from their beforeClose handlers without needing
+         * a separate script include. Safe because the dialog is guaranteed loaded
+         * when beforeClose fires.
+         */
+
+        /** Warn on new (not pre-attached) private eDoc selections; returns false to abort the close. */
+        function confirmPrivateDocsIfAny(formSelector) {
+            var newPrivate = jQuery(formSelector)
+                .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])")
+                .not('[data-pre-attached="true"]');
+            if (newPrivate.length === 0) return true;
+            return confirm("You have selected " + newPrivate.length +
+                " private eDoc(s) for attachment.\n\n" +
+                "Private documents are personal to your account. " +
+                "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
+                "Select OK to confirm, or Cancel to go back.");
+        }
+
+        /** Build a hidden delegate input from a checked attachment checkbox. */
+        function buildDelegateInput($element) {
+            var input = jQuery("<input />", {
+                type: 'hidden',
+                name: $element.attr('name'),
+                value: $element.val(),
+                id: "delegate_" + $element.attr('id'),
+                class: 'delegateAttachment'
+            });
+            if ($element.attr('name') === 'docNo') input.attr('data-delegate-type', 'doc');
+            return input;
+        }
     </script>
 
 </head>
@@ -321,7 +354,7 @@
                                 </li>
                                 <c:forEach items="${ allEForms }" var="eForm" varStatus="loop">
                                     <li class="eForm ${loop.index > 4 ? 'hide' : ''}">
-                                        <input class="eForm_check" type="checkbox" name="eFormNo"
+                                        <input class="eForm_check attachable_check" type="checkbox" name="eFormNo"
                                                id="eFormNo${ eForm.id }" value="${eForm.id}" title="${eForm.formName}"/>
                                         <label for="eFormNo${eForm.id}">
                                             <c:out value="${eForm.subject.length() > 0 ? eForm.subject : eForm.formName} ${ eForm.getFormDate() }"/>
@@ -359,7 +392,7 @@
                                     <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
                                     <c:set var="isAttached" value="${not empty attachedDocumentIds and attachedDocumentIds.contains(document.docId)}"/>
                                     <li class="doc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
-                                        <input class="document_${isAttached ? 'pre_check' : 'check'}" type="checkbox" name="docNo"
+                                        <input class="document_${isAttached ? 'pre_check' : 'check'} attachable_check" type="checkbox" name="docNo"
                                                id="docNo${document.docId}" value="${document.docId}"
                                                ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
                                                title="${e:forHtmlAttribute(document.description)}"/>
@@ -397,7 +430,7 @@
                                     <c:set var="labName" value="${fn:substring(lab.labName, 0, 30)}"/>
                                     <c:set var="totalVersions" value="${fn:length(lab.labVersionIds)}"/>
                                     <li class="lab ${loop.index > 19 ? 'hide' : ''}">
-                                        <input class="lab_check" type="checkbox" name="labNo"
+                                        <input class="lab_check attachable_check" type="checkbox" name="labNo"
                                                id="labNo${ lab.segmentID }" value="${lab.segmentID}"
                                                title="<c:out value='${ labName }' />"/>
                                         <label for="labNo${lab.segmentID}" title="<c:out value='${ labName }' />"><c:out
@@ -415,7 +448,7 @@
                                             <c:forEach items="${ lab.labVersionIds }" var="version"
                                                        varStatus="versionLoop">
                                                 <li>
-                                                    <input class="lab_check"
+                                                    <input class="lab_check attachable_check"
                                                            data-version="${totalVersions - versionLoop.index}"
                                                            type="checkbox" name="labNo" id="labNo${ version.key }"
                                                            value="${version.key}"
@@ -460,7 +493,7 @@
                                 </li>
                                 <c:forEach items="${ allHRMDocuments }" var="hrm" varStatus="loop">
                                     <li class="hrm ${loop.index > 19 ? 'hide' : ''}">
-                                        <input class="hrm_check" type="checkbox" name="hrmNo" id="hrmNo${ hrm['id'] }"
+                                        <input class="hrm_check attachable_check" type="checkbox" name="hrmNo" id="hrmNo${ hrm['id'] }"
                                                value="${hrm['id']}" title="${hrm['name']}"/>
                                         <label for="hrmNo${hrm['id']}">
                                             <c:out value="${ hrm['name'] } ${ hrm['report_date'] }"/>
@@ -494,7 +527,7 @@
                                 </li>
                                 <c:forEach items="${ allForms }" var="form" varStatus="loop">
                                     <li class="form ${loop.index > 19 ? 'hide' : ''}">
-                                        <input class="form_check" type="checkbox" name="formNo"
+                                        <input class="form_check attachable_check" type="checkbox" name="formNo"
                                                id="formNo${ form.formId }" value="${form.formId}"
                                                title="${form.formName}"/>
                                         <label for="formNo${form.formId}">
@@ -533,7 +566,7 @@
                                     <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
                                     <c:set var="isAttached" value="${not empty attachedDocumentIds and attachedDocumentIds.contains(document.docId)}"/>
                                     <li class="providerPublicDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
-                                        <input class="providerPublicDocument_${isAttached ? 'pre_check' : 'check'}" type="checkbox" name="docNo"
+                                        <input class="providerPublicDocument_${isAttached ? 'pre_check' : 'check'} attachable_check" type="checkbox" name="docNo"
                                                id="publicDocNo${document.docId}" value="${document.docId}"
                                                ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
                                                title="${e:forHtmlAttribute(document.description)}"/>
@@ -573,7 +606,7 @@
                                     <c:set var="isAttached" value="${not empty attachedDocumentIds and attachedDocumentIds.contains(document.docId)}"/>
                                     <c:set var="isForeign" value="${not empty foreignPrivateDocIds and foreignPrivateDocIds.contains(document.docId)}"/>
                                     <li class="providerPrivateDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''} ${isForeign ? 'foreign-doc' : ''}">
-                                        <input class="providerPrivateDocument_${isAttached ? 'pre_check' : 'check'}" type="checkbox" name="docNo"
+                                        <input class="providerPrivateDocument_${isAttached ? 'pre_check' : 'check'} attachable_check" type="checkbox" name="docNo"
                                                id="privateDocNo${document.docId}" value="${document.docId}"
                                                ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
                                                title="${e:forHtmlAttribute(document.description)}"/>
