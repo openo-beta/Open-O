@@ -380,7 +380,7 @@ public class DocumentPreview2Action extends ActionSupport {
         }
 
         String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
-        String requestId = StringUtils.isNullOrEmpty(request.getParameter("requestId")) ? null : request.getParameter("requestId");
+        String requestId = positiveIntParamOrNull(request.getParameter("requestId"));
 
         populateCommonDocs(loggedInInfo, demographicNo);
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
@@ -424,13 +424,15 @@ public class DocumentPreview2Action extends ActionSupport {
         }
 
         String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
-        String fdid = StringUtils.isNullOrEmpty(request.getParameter("fdid")) ? "0" : request.getParameter("fdid");
+        String rawFdid = request.getParameter("fdid");
+        String fdidForEformList = StringUtils.isNullOrEmpty(rawFdid) ? "0" : rawFdid;
+        String fdidForAttached = positiveIntParamOrNull(rawFdid);
 
         populateCommonDocs(loggedInInfo, demographicNo);
-		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdid));
+		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdidForEformList));
 		request.setAttribute("allEForms", allEForms);
 
-        populateAttachedContextForEForm(loggedInInfo, demographicNo, fdid);
+        populateAttachedContextForEForm(loggedInInfo, demographicNo, fdidForAttached);
 
         return "fetchDocuments";
     }
@@ -479,66 +481,40 @@ public class DocumentPreview2Action extends ActionSupport {
         }
     }
 
-    /**
-     * Populates attached-doc context for a consultation's attachment manager.
-     *
-     * @param loggedInInfo  LoggedInInfo the logged-in user's session information
-     * @param demographicNo String the patient's demographic number
-     * @param requestId     String the consultation request ID
-     * @since 2026-04-20
-     * @see #mergeAttachedContext for the full list of request attributes set and merge semantics
-     */
+    /** @see #mergeAttachedContext */
     private void populateAttachedContextForConsult(LoggedInInfo loggedInInfo, String demographicNo, String requestId) {
-        // Guard against missing requestId: fromIntString(null)==0 would otherwise
-        // issue a wasted query for requestId=0. Passing null to mergeAttachedContext
-        // still initializes the empty request attributes the JSP depends on.
         List<EDoc> attachedDocs = (requestId != null)
                 ? EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED)
                 : null;
         mergeAttachedContext(loggedInInfo, attachedDocs);
     }
 
-    /**
-     * Populates attached-doc context for an eForm's attachment manager.
-     *
-     * @param loggedInInfo  LoggedInInfo the logged-in user's session information
-     * @param demographicNo String the patient's demographic number
-     * @param fdid          String the eForm data ID
-     * @since 2026-04-20
-     * @see #mergeAttachedContext for the full list of request attributes set and merge semantics
-     */
+    /** @see #mergeAttachedContext */
     private void populateAttachedContextForEForm(LoggedInInfo loggedInInfo, String demographicNo, String fdid) {
-        // Skip the query when fdid is missing or the "0" sentinel (default for
-        // callers that don't bind to a specific eForm); mergeAttachedContext
-        // still initializes the empty request attributes the JSP depends on.
-        List<EDoc> attachedDocs = (fdid != null && !"0".equals(fdid))
+        List<EDoc> attachedDocs = (fdid != null)
                 ? EDocUtil.listDocsAttachedToEForm(loggedInInfo, demographicNo, fdid, EDocUtil.ATTACHED)
                 : null;
         mergeAttachedContext(loggedInInfo, attachedDocs);
     }
 
+    /** Returns {@code value} if it parses as a positive integer, else null. Treats "null"/empty/non-numeric as absent. */
+    private static String positiveIntParamOrNull(String value) {
+        if (StringUtils.isNullOrEmpty(value)) return null;
+        String trimmed = value.trim();
+        if (trimmed.isEmpty() || "null".equalsIgnoreCase(trimmed)) return null;
+        try {
+            return Integer.parseInt(trimmed) > 0 ? trimmed : null;
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     /**
-     * Shared merge logic for attached-doc context, independent of whether the context
-     * is a consultation or an eForm. Populates two request attributes and merges
-     * docs that need to be re-rendered in their correct section.
+     * Sets {@code attachedDocumentIds} and {@code foreignPrivateDocIds} request
+     * attributes, and merges deleted/cross-provider docs into the existing
+     * {@code allDocuments} / {@code providerPrivateDocs} / {@code providerPublicDocs}
+     * lists so the JSP can render them in the right section with the right markers.
      *
-     * Sets:
-     * <ul>
-     *   <li>{@code attachedDocumentIds}: Set&lt;String&gt; of all doc IDs currently attached.
-     *       The JSP uses this to render checkboxes with {@code checked} and the
-     *       {@code _pre_check} class directly, bypassing the legacy client-side #id lookup.</li>
-     *   <li>{@code foreignPrivateDocIds}: Set&lt;String&gt; of private provider docs attached by a
-     *       different provider than the current user. Rendered greyed with "(other provider)"
-     *       so the current user sees what's attached and can uncheck to remove.</li>
-     * </ul>
-     *
-     * Merges into the existing {@code allDocuments}/{@code providerPrivateDocs}/
-     * {@code providerPublicDocs} lists so soft-deleted docs render in their section
-     * with a "(deleted)" marker, and active cross-provider private docs become
-     * visible to non-owner providers.
-     *
-     * @param loggedInInfo LoggedInInfo the logged-in user's session information
-     * @param attachedDocs List&lt;EDoc&gt; the list of docs currently attached to the consult/eForm
      * @since 2026-04-20
      */
     @SuppressWarnings("unchecked")
@@ -549,7 +525,7 @@ public class DocumentPreview2Action extends ActionSupport {
         request.setAttribute("foreignPrivateDocIds", foreignPrivateDocIds);
 
         if (attachedDocs == null || attachedDocs.isEmpty()) {
-            logger.debug("mergeAttachedContext: no attached docs for current consult/eForm; nothing to merge");
+            logger.debug("mergeAttachedContext: no attached docs; nothing to merge");
             return;
         }
 
@@ -566,30 +542,28 @@ public class DocumentPreview2Action extends ActionSupport {
 
         for (EDoc attachedDoc : attachedDocs) {
             String docId = attachedDoc.getDocId();
-            attachedDocumentIds.add(docId);
+            // Dedupe by docId: the CtlDocument join can yield one tuple per ctl row for a doc.
+            if (!attachedDocumentIds.add(docId)) {
+                continue;
+            }
 
             boolean isDeleted = attachedDoc.getStatus() == 'D';
             boolean isProvider = EDocUtil.isProviderModule(attachedDoc.getModule());
             boolean ownedByCurrent = currentProviderNo != null
                     && currentProviderNo.equals(attachedDoc.getModuleId());
 
-            // Patient doc: only deleted ones need re-injecting (active is already listed).
+            // Patient doc: only deleted ones need re-injecting.
             if (!isProvider) {
                 if (isDeleted) allDocuments.add(attachedDoc);
                 continue;
             }
-
-            // Public provider doc: only deleted ones need re-injecting (active is global).
+            // Public provider doc: only deleted ones need re-injecting.
             if ("1".equals(attachedDoc.getDocPublic())) {
                 if (isDeleted) providerPublicDocs.add(attachedDoc);
                 continue;
             }
-
-            // Private provider doc: active-own is already in the list; skip it.
+            // Private provider doc: skip active-own (already listed); merge everything else.
             if (!isDeleted && ownedByCurrent) continue;
-
-            // Remaining cases all merge into providerPrivateDocs:
-            //   own-deleted, active cross-provider, deleted cross-provider.
             providerPrivateDocs.add(attachedDoc);
             if (!ownedByCurrent) foreignPrivateDocIds.add(docId);
         }

@@ -133,19 +133,12 @@ function remoteSave() {
 	return false;
 }
 
-/**
- * Keys prefix the delegate_<key> id on attachment rows for DOC-type items.
- * These are now pre-rendered server-side, so the pre-check JS skips them.
- */
+/** True if the delegate id prefix is one of the DOC sections. */
 function isDocDelegateKey(delegateKey) {
     return /^(docNo|privateDocNo|publicDocNo)\d/.test(delegateKey);
 }
 
-/**
- * Prompts when new (not pre-attached) private eDocs are selected, warning the
- * provider that attachment makes their personal docs visible to others with
- * record access. Returns true to proceed, false to abort dialog close.
- */
+/** Warn on new private eDoc selections; returns false to abort the close. */
 function confirmPrivateDocsIfAny(formSelector) {
     var newPrivate = jQuery(formSelector)
         .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])")
@@ -177,11 +170,20 @@ jQuery(document).on('click', '*[data-poload]', function () {
 
             jQuery('#attachDocumentList').find(".delegateAttachment").each(function (index, data) {
                 let delegateKey = this.id.split("_")[1];
-                // DOC delegates (docNo/privateDocNo/publicDocNo) are pre-rendered
-                // server-side with checked + _pre_check + data-pre-attached.
+
+                // DOC sections share name="docNo" with distinct ids; look up by name+value.
+                // Skip if server-pre-attached; else mark as unsaved client-side selection.
                 if (isDocDelegateKey(delegateKey)) {
+                    let docValue = this.value;
+                    let matches = jQuery('#attachDocumentsForm').find('input[name="docNo"][value="' + docValue + '"]');
+                    if (matches.filter('[data-pre-attached="true"]').length > 0) {
+                        return;
+                    }
+                    matches.prop("checked", true);
+                    matches.attr("data-pre-attached", "true").data("pre-attached", true);
                     return;
                 }
+
                 let delegate = "#" + delegateKey;
                 let element = jQuery('#attachDocumentsForm').find(delegate);
                 if (element.length === 0) {
@@ -229,9 +231,7 @@ jQuery(document).on('click', '*[data-poload]', function () {
             }
             jQuery('#attachDocumentList').empty();
 
-            // Match both "<type>_check" (new selection) and "<type>_pre_check"
-            // (server-rendered pre-attached) so pre-existing DOC attachments are
-            // preserved when the list is rebuilt. Two suffix selectors cover both.
+            // Two suffix selectors so both new and server-pre-attached checkboxes are rebuilt.
             jQuery('#attachDocumentsForm').find(
                 "[class$='_check']:checkbox:checked:not(input[disabled='disabled']), " +
                 "[class$='_pre_check']:checkbox:checked:not(input[disabled='disabled'])"

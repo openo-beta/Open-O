@@ -85,10 +85,6 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     @Override
     public List<Object[]> findDocsAndConsultDocsByConsultId(Integer consultationId) {
-        // Joining CtlDocument lets the attached-listing populate module/moduleId
-        // on each EDoc in a single round trip. Orphan attachments (no ctl row)
-        // have always been invisible in the attachment manager; INNER JOIN
-        // preserves that behavior.
         String sql = "SELECT d, cd, ctl FROM Document d, ConsultDocs cd, CtlDocument ctl WHERE d.documentNo = cd.documentNo AND ctl.id.documentNo = d.documentNo AND cd.requestId = ?1 AND cd.docType = ?2 AND cd.deleted IS NULL";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, consultationId);
