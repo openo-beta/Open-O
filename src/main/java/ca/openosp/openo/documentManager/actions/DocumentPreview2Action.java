@@ -254,7 +254,7 @@ public class DocumentPreview2Action extends ActionSupport {
             throw new SecurityException("missing required security object (_edoc)");
         }
 
-        String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
+        String demographicNo = positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
         String requestId = positiveIntParamOrNull(request.getParameter("requestId"));
 
         populateCommonDocs(loggedInInfo, demographicNo);
@@ -298,9 +298,9 @@ public class DocumentPreview2Action extends ActionSupport {
             throw new SecurityException("missing required security object (_edoc)");
         }
 
-        String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
+        String demographicNo = positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
         String rawFdid = request.getParameter("fdid");
-        String fdidForEformList = StringUtils.isNullOrEmpty(rawFdid) ? "0" : rawFdid;
+        String fdidForEformList = positiveIntParamOrDefault(rawFdid, "0");
         String fdidForAttached = positiveIntParamOrNull(rawFdid);
 
         populateCommonDocs(loggedInInfo, demographicNo);
@@ -363,6 +363,12 @@ public class DocumentPreview2Action extends ActionSupport {
         }
     }
 
+    /** Like {@link #positiveIntParamOrNull} but returns {@code defaultValue} instead of null. */
+    private static String positiveIntParamOrDefault(String value, String defaultValue) {
+        String parsed = positiveIntParamOrNull(value);
+        return parsed != null ? parsed : defaultValue;
+    }
+
     /**
      * Sets {@code attachedDocumentIds} and {@code foreignPrivateDocIds} request
      * attributes, and merges deleted/cross-provider docs into the existing
@@ -395,32 +401,55 @@ public class DocumentPreview2Action extends ActionSupport {
         String currentProviderNo = loggedInInfo.getLoggedInProviderNo();
 
         for (EDoc attachedDoc : attachedDocs) {
-            String docId = attachedDoc.getDocId();
-            // Dedupe by docId: the CtlDocument join can yield one tuple per ctl row for a doc.
-            if (!attachedDocumentIds.add(docId)) {
-                continue;
-            }
-
-            boolean isDeleted = attachedDoc.getStatus() == 'D';
-            boolean isProvider = EDocUtil.isProviderModule(attachedDoc.getModule());
-            boolean ownedByCurrent = currentProviderNo != null
-                    && currentProviderNo.equals(attachedDoc.getModuleId());
-
-            // Patient doc: only deleted ones need re-injecting.
-            if (!isProvider) {
-                if (isDeleted) allDocuments.add(attachedDoc);
-                continue;
-            }
-            // Public provider doc: only deleted ones need re-injecting.
-            if ("1".equals(attachedDoc.getDocPublic())) {
-                if (isDeleted) providerPublicDocs.add(attachedDoc);
-                continue;
-            }
-            // Private provider doc: skip active-own (already listed); merge everything else.
-            if (!isDeleted && ownedByCurrent) continue;
-            providerPrivateDocs.add(attachedDoc);
-            if (!ownedByCurrent) foreignPrivateDocIds.add(docId);
+            // Defensive dedupe: EDocUtil.listDocs already dedupes upstream, but keep this
+            // guard so future callers that pass a duped list don't double-merge sections.
+            if (!attachedDocumentIds.add(attachedDoc.getDocId())) continue;
+            mergeSingleAttachedDoc(
+                    attachedDoc,
+                    currentProviderNo,
+                    allDocuments,
+                    providerPrivateDocs,
+                    providerPublicDocs,
+                    foreignPrivateDocIds);
         }
+    }
+
+    /**
+     * Classifies one attached doc and appends it to the appropriate section list.
+     *
+     * @since 2026-04-21
+     */
+    private void mergeSingleAttachedDoc(
+            EDoc attachedDoc,
+            String currentProviderNo,
+            List<EDoc> allDocuments,
+            List<EDoc> providerPrivateDocs,
+            List<EDoc> providerPublicDocs,
+            Set<String> foreignPrivateDocIds) {
+
+        boolean isDeleted = attachedDoc.getStatus() == 'D';
+        boolean isProvider = EDocUtil.isProviderModule(attachedDoc.getModule());
+        boolean isPublic = "1".equals(attachedDoc.getDocPublic());
+        boolean ownedByCurrent = isOwnedByCurrentProvider(attachedDoc, currentProviderNo);
+
+        // Patient doc: only deleted ones need re-injecting.
+        if (!isProvider) {
+            if (isDeleted) allDocuments.add(attachedDoc);
+            return;
+        }
+        // Public provider doc: only deleted ones need re-injecting.
+        if (isPublic) {
+            if (isDeleted) providerPublicDocs.add(attachedDoc);
+            return;
+        }
+        // Private provider doc: skip active-own (already listed); merge everything else.
+        if (!isDeleted && ownedByCurrent) return;
+        providerPrivateDocs.add(attachedDoc);
+        if (!ownedByCurrent) foreignPrivateDocIds.add(attachedDoc.getDocId());
+    }
+
+    private boolean isOwnedByCurrentProvider(EDoc doc, String currentProviderNo) {
+        return currentProviderNo != null && currentProviderNo.equals(doc.getModuleId());
     }
 
     /**

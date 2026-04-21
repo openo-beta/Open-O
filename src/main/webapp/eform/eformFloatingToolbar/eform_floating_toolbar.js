@@ -200,24 +200,6 @@ function remoteSave() {
 	return false;
 }
 
-/** True if the delegate id prefix is one of the DOC sections. */
-function isDocDelegateKey(delegateKey) {
-    return /^(docNo|privateDocNo|publicDocNo)\d/.test(delegateKey);
-}
-
-/** Warn on new private eDoc selections; returns false to abort the close. */
-function confirmPrivateDocsIfAny(formSelector) {
-    var newPrivate = jQuery(formSelector)
-        .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])")
-        .filter(function () { return !jQuery(this).data("pre-attached"); });
-    if (newPrivate.length === 0) return true;
-    return confirm("You have selected " + newPrivate.length +
-        " private eDoc(s) for attachment.\n\n" +
-        "Private documents are personal to your account. " +
-        "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
-        "Select OK to confirm, or Cancel to go back.");
-}
-
 /**
  * Triggers the eForm attach function
  */
@@ -240,14 +222,13 @@ jQuery(document).on('click', '*[data-poload]', function () {
 
                 // DOC sections share name="docNo" with distinct ids; look up by name+value.
                 // Skip if server-pre-attached; else mark as unsaved client-side selection.
-                if (isDocDelegateKey(delegateKey)) {
+                if (jQuery(this).data("delegate-type") === "doc") {
                     let docValue = this.value;
                     let matches = jQuery('#attachDocumentsForm').find('input[name="docNo"][value="' + docValue + '"]');
                     if (matches.filter('[data-pre-attached="true"]').length > 0) {
                         return;
                     }
-                    matches.prop("checked", true);
-                    matches.attr("data-pre-attached", "true").data("pre-attached", true);
+                    matches.prop("checked", true).attr("data-pre-attached", "true");
                     return;
                 }
 
@@ -256,8 +237,7 @@ jQuery(document).on('click', '*[data-poload]', function () {
                 if (element.length === 0) {
                     element = addFormIfNotFound(data, demographicNo, delegate);
                 }
-                element.attr("checked", true);
-                element.data("pre-attached", true);
+                element.prop("checked", true).attr("data-pre-attached", "true");
 
                 // Expand list if selected lab is older version
                 if (element.attr('data-version')) {
@@ -298,20 +278,10 @@ jQuery(document).on('click', '*[data-poload]', function () {
             }
             jQuery('#attachDocumentList').empty();
 
-            // Two suffix selectors so both new and server-pre-attached checkboxes are rebuilt.
             jQuery('#attachDocumentsForm').find(
-                "[class$='_check']:checkbox:checked:not(input[disabled='disabled']), " +
-                "[class$='_pre_check']:checkbox:checked:not(input[disabled='disabled'])"
-            ).each(function (index, data) {
-                let element = jQuery(this);
-                let input = jQuery("<input />", {
-                    type: 'hidden',
-                    name: element.attr('name'),
-                    value: element.val(),
-                    id: "delegate_" + element.attr('id'),
-                    class: 'delegateAttachment'
-                });
-                jQuery('#attachDocumentList').append(input);
+                ".attachable_check:checkbox:checked:not(input[disabled='disabled'])"
+            ).each(function () {
+                jQuery('#attachDocumentList').append(buildDelegateInput(jQuery(this)));
             });
 
             // show total attachments
@@ -336,7 +306,7 @@ function addFormIfNotFound(form, demographicNo, delegate) {
     const formDate = document.getElementById("entry_" + formId).getAttribute('data-formDate');
 
     const checkbox = jQuery('<input>', {
-        class: 'form_check',
+        class: 'form_check attachable_check',
         type: 'checkbox',
         name: checkboxName,
         id: formId,
