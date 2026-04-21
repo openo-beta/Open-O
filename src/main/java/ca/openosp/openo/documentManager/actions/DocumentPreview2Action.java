@@ -17,6 +17,7 @@ import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
 import ca.openosp.openo.managers.FormsManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
@@ -51,6 +52,7 @@ public class DocumentPreview2Action extends ActionSupport {
     private static final Logger logger = MiscUtils.getLogger();
     private final DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
     private final FormsManager formsManager = SpringUtils.getBean(FormsManager.class);
+    private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public String execute() {
@@ -248,6 +250,9 @@ public class DocumentPreview2Action extends ActionSupport {
      */
     public String fetchConsultDocuments() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", "r", null)) {
+            throw new SecurityException("missing required security object (_edoc)");
+        }
 
         String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
         String requestId = StringUtils.isNullOrEmpty(request.getParameter("requestId")) ? null : request.getParameter("requestId");
@@ -289,6 +294,9 @@ public class DocumentPreview2Action extends ActionSupport {
      */
     public String fetchEFormDocuments() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", "r", null)) {
+            throw new SecurityException("missing required security object (_edoc)");
+        }
 
         String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
         String fdid = StringUtils.isNullOrEmpty(request.getParameter("fdid")) ? "0" : request.getParameter("fdid");
@@ -335,8 +343,13 @@ public class DocumentPreview2Action extends ActionSupport {
      * @see #mergeAttachedContext for the full list of request attributes set and merge semantics
      */
     private void populateAttachedContextForConsult(LoggedInInfo loggedInInfo, String demographicNo, String requestId) {
-        mergeAttachedContext(loggedInInfo,
-                EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED));
+        // Guard against missing requestId: fromIntString(null)==0 would otherwise
+        // issue a wasted query for requestId=0. Passing null to mergeAttachedContext
+        // still initializes the empty request attributes the JSP depends on.
+        List<EDoc> attachedDocs = (requestId != null)
+                ? EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED)
+                : null;
+        mergeAttachedContext(loggedInInfo, attachedDocs);
     }
 
     /**
@@ -349,8 +362,13 @@ public class DocumentPreview2Action extends ActionSupport {
      * @see #mergeAttachedContext for the full list of request attributes set and merge semantics
      */
     private void populateAttachedContextForEForm(LoggedInInfo loggedInInfo, String demographicNo, String fdid) {
-        mergeAttachedContext(loggedInInfo,
-                EDocUtil.listDocsAttachedToEForm(loggedInInfo, demographicNo, fdid, EDocUtil.ATTACHED));
+        // Skip the query when fdid is missing or the "0" sentinel (default for
+        // callers that don't bind to a specific eForm); mergeAttachedContext
+        // still initializes the empty request attributes the JSP depends on.
+        List<EDoc> attachedDocs = (fdid != null && !"0".equals(fdid))
+                ? EDocUtil.listDocsAttachedToEForm(loggedInInfo, demographicNo, fdid, EDocUtil.ATTACHED)
+                : null;
+        mergeAttachedContext(loggedInInfo, attachedDocs);
     }
 
     /**
