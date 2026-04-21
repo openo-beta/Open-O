@@ -355,13 +355,19 @@ public class DocumentPreview2Action extends ActionSupport {
      *
      * Expected request parameters:
      * - demographicNo: String the patient's demographic number (defaults to "0" if not provided)
+     * - requestId: String the consultation request ID (optional; enables attached-state rendering)
      *
      * Request attributes set:
      * - allDocuments: List&lt;EDoc&gt; all electronic documents for the patient
+     * - providerPrivateDocs: List&lt;EDoc&gt; the current provider's private eDocs (plus any foreign
+     *   cross-provider private docs attached to this consult)
+     * - providerPublicDocs: List&lt;EDoc&gt; all public provider eDocs
      * - allHRMDocuments: ArrayList&lt;HashMap&lt;String,? extends Object&gt;&gt; all HRM documents
      * - allLabsSortedByVersions: List&lt;AttachmentLabResultData&gt; lab results sorted by versions
      * - allForms: List&lt;EctFormData.PatientForm&gt; all encounter forms
      * - allEForms: List&lt;EFormData&gt; all current electronic forms
+     * - attachedDocumentIds: Set&lt;String&gt; doc IDs already attached to this consult
+     * - foreignPrivateDocIds: Set&lt;String&gt; attached private docs not owned by the current provider
      *
      * @return String "fetchDocuments" result name for Struts2 result mapping
      */
@@ -375,7 +381,7 @@ public class DocumentPreview2Action extends ActionSupport {
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         request.setAttribute("allEForms", allEForms);
 
-        populateAttachedContext(loggedInInfo, demographicNo, requestId, null);
+        populateAttachedContextForConsult(loggedInInfo, demographicNo, requestId);
 
         return "fetchDocuments";
     }
@@ -394,10 +400,15 @@ public class DocumentPreview2Action extends ActionSupport {
      *
      * Request attributes set:
      * - allDocuments: List&lt;EDoc&gt; all electronic documents for the patient
+     * - providerPrivateDocs: List&lt;EDoc&gt; the current provider's private eDocs (plus any foreign
+     *   cross-provider private docs attached to this eForm)
+     * - providerPublicDocs: List&lt;EDoc&gt; all public provider eDocs
      * - allHRMDocuments: ArrayList&lt;HashMap&lt;String,? extends Object&gt;&gt; all HRM documents
      * - allLabsSortedByVersions: List&lt;AttachmentLabResultData&gt; lab results sorted by versions
      * - allForms: List&lt;EctFormData.PatientForm&gt; all encounter forms
      * - allEForms: List&lt;EFormData&gt; all electronic forms excluding the specified fdid
+     * - attachedDocumentIds: Set&lt;String&gt; doc IDs already attached to this eForm
+     * - foreignPrivateDocIds: Set&lt;String&gt; attached private docs not owned by the current provider
      *
      * @return String "fetchDocuments" result name for Struts2 result mapping
      */
@@ -411,7 +422,7 @@ public class DocumentPreview2Action extends ActionSupport {
 		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdid));
 		request.setAttribute("allEForms", allEForms);
 
-        populateAttachedContext(loggedInInfo, demographicNo, null, fdid);
+        populateAttachedContextForEForm(loggedInInfo, demographicNo, fdid);
 
         return "fetchDocuments";
     }
@@ -461,46 +472,66 @@ public class DocumentPreview2Action extends ActionSupport {
     }
 
     /**
-     * Populates attached-doc context for the attachment manager JSP so it can render
-     * pre-checked state and cross-provider visibility server-side.
+     * Populates attached-doc context for a consultation's attachment manager.
      *
-     * Sets three request attributes that the JSP consumes:
+     * @param loggedInInfo  LoggedInInfo the logged-in user's session information
+     * @param demographicNo String the patient's demographic number
+     * @param requestId     String the consultation request ID
+     * @since 2026-04-20
+     * @see #mergeAttachedContext for the full list of request attributes set and merge semantics
+     */
+    private void populateAttachedContextForConsult(LoggedInInfo loggedInInfo, String demographicNo, String requestId) {
+        mergeAttachedContext(loggedInInfo,
+                EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED));
+    }
+
+    /**
+     * Populates attached-doc context for an eForm's attachment manager.
+     *
+     * @param loggedInInfo  LoggedInInfo the logged-in user's session information
+     * @param demographicNo String the patient's demographic number
+     * @param fdid          String the eForm data ID
+     * @since 2026-04-20
+     * @see #mergeAttachedContext for the full list of request attributes set and merge semantics
+     */
+    private void populateAttachedContextForEForm(LoggedInInfo loggedInInfo, String demographicNo, String fdid) {
+        mergeAttachedContext(loggedInInfo,
+                EDocUtil.listDocsAttachedToEForm(loggedInInfo, demographicNo, fdid, EDocUtil.ATTACHED));
+    }
+
+    /**
+     * Shared merge logic for attached-doc context, independent of whether the context
+     * is a consultation or an eForm. Populates two request attributes and merges
+     * docs that need to be re-rendered in their correct section.
+     *
+     * Sets:
      * <ul>
-     *   <li>{@code attachedDocumentIds}: Set&lt;String&gt; of all doc IDs currently attached to the
-     *       consult/eform. Used by the JSP to render checkboxes with {@code checked} and the
+     *   <li>{@code attachedDocumentIds}: Set&lt;String&gt; of all doc IDs currently attached.
+     *       The JSP uses this to render checkboxes with {@code checked} and the
      *       {@code _pre_check} class directly, bypassing the legacy client-side #id lookup.</li>
      *   <li>{@code foreignPrivateDocIds}: Set&lt;String&gt; of private provider docs attached by a
      *       different provider than the current user. Rendered greyed with "(other provider)"
      *       so the current user sees what's attached and can uncheck to remove.</li>
-     *   <li>Merges soft-deleted attached docs into {@code allDocuments}/{@code providerPrivateDocs}/
-     *       {@code providerPublicDocs} so they appear in their correct section marked as deleted.</li>
-     *   <li>Merges active cross-provider private docs into {@code providerPrivateDocs} so they're
-     *       visible to non-owner providers who need to manage the existing attachment.</li>
      * </ul>
      *
+     * Merges into the existing {@code allDocuments}/{@code providerPrivateDocs}/
+     * {@code providerPublicDocs} lists so soft-deleted docs render in their section
+     * with a "(deleted)" marker, and active cross-provider private docs become
+     * visible to non-owner providers.
+     *
      * @param loggedInInfo LoggedInInfo the logged-in user's session information
-     * @param demographicNo String the patient's demographic number
-     * @param requestId String the consultation request ID, or null for eForm context
-     * @param fdid String the eForm data ID, or null for consultation context
+     * @param attachedDocs List&lt;EDoc&gt; the list of docs currently attached to the consult/eForm
      * @since 2026-04-20
      */
     @SuppressWarnings("unchecked")
-    private void populateAttachedContext(LoggedInInfo loggedInInfo, String demographicNo, String requestId, String fdid) {
+    private void mergeAttachedContext(LoggedInInfo loggedInInfo, List<EDoc> attachedDocs) {
         Set<String> attachedDocumentIds = new HashSet<>();
         Set<String> foreignPrivateDocIds = new HashSet<>();
         request.setAttribute("attachedDocumentIds", attachedDocumentIds);
         request.setAttribute("foreignPrivateDocIds", foreignPrivateDocIds);
 
-        List<EDoc> attachedDocs;
-        if (requestId != null) {
-            attachedDocs = EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED);
-        } else if (fdid != null) {
-            attachedDocs = EDocUtil.listDocsAttachedToEForm(loggedInInfo, demographicNo, fdid, EDocUtil.ATTACHED);
-        } else {
-            return;
-        }
-
         if (attachedDocs == null || attachedDocs.isEmpty()) {
+            logger.debug("mergeAttachedContext: no attached docs for current consult/eForm; nothing to merge");
             return;
         }
 
@@ -509,13 +540,10 @@ public class DocumentPreview2Action extends ActionSupport {
         List<EDoc> providerPublicDocs = (List<EDoc>) request.getAttribute("providerPublicDocs");
 
         if (allDocuments == null || providerPrivateDocs == null || providerPublicDocs == null) {
-            logger.warn("populateAttachedContext: expected document list attributes missing; skipping merge");
+            logger.warn("mergeAttachedContext: expected document list attributes missing; skipping merge");
             return;
         }
 
-        Set<String> allDocumentIds = collectDocIds(allDocuments);
-        Set<String> myPrivateDocIds = collectDocIds(providerPrivateDocs);
-        Set<String> publicDocIds = collectDocIds(providerPublicDocs);
         String currentProviderNo = loggedInInfo.getLoggedInProviderNo();
 
         for (EDoc attachedDoc : attachedDocs) {
@@ -523,48 +551,30 @@ public class DocumentPreview2Action extends ActionSupport {
             attachedDocumentIds.add(docId);
 
             boolean isDeleted = attachedDoc.getStatus() == 'D';
-            boolean alreadyRendered = allDocumentIds.contains(docId)
-                    || myPrivateDocIds.contains(docId)
-                    || publicDocIds.contains(docId);
+            boolean isProvider = EDocUtil.isProviderModule(attachedDoc.getModule());
+            boolean ownedByCurrent = currentProviderNo != null
+                    && currentProviderNo.equals(attachedDoc.getModuleId());
 
-            // Active + already in some list: nothing to merge. listDocs(ATTACHED)
-            // doesn't populate module, so membership is how we classify here.
-            if (!isDeleted && alreadyRendered) {
+            // Patient doc: only deleted ones need re-injecting (active is already listed).
+            if (!isProvider) {
+                if (isDeleted) allDocuments.add(attachedDoc);
                 continue;
             }
 
-            EDoc fullDoc = EDocUtil.getEDocFromDocId(docId);
-            if (fullDoc.getDocId() == null || fullDoc.getDocId().isEmpty()) {
+            // Public provider doc: only deleted ones need re-injecting (active is global).
+            if ("1".equals(attachedDoc.getDocPublic())) {
+                if (isDeleted) providerPublicDocs.add(attachedDoc);
                 continue;
             }
 
-            if (EDocUtil.isProviderModule(fullDoc.getModule())) {
-                boolean isPublic = "1".equals(fullDoc.getDocPublic());
-                if (isPublic) {
-                    if (isDeleted) {
-                        providerPublicDocs.add(fullDoc);
-                    }
-                    // active public is already in the global list
-                } else {
-                    providerPrivateDocs.add(fullDoc);
-                    boolean ownedByCurrent = currentProviderNo != null
-                            && currentProviderNo.equals(fullDoc.getModuleId());
-                    if (!ownedByCurrent) {
-                        foreignPrivateDocIds.add(docId);
-                    }
-                }
-            } else if (isDeleted) {
-                allDocuments.add(fullDoc);
-            }
-        }
-    }
+            // Private provider doc: active-own is already in the list; skip it.
+            if (!isDeleted && ownedByCurrent) continue;
 
-    private static Set<String> collectDocIds(List<EDoc> docs) {
-        Set<String> ids = new HashSet<>();
-        for (EDoc doc : docs) {
-            ids.add(doc.getDocId());
+            // Remaining cases all merge into providerPrivateDocs:
+            //   own-deleted, active cross-provider, deleted cross-provider.
+            providerPrivateDocs.add(attachedDoc);
+            if (!ownedByCurrent) foreignPrivateDocIds.add(docId);
         }
-        return ids;
     }
 
     /**

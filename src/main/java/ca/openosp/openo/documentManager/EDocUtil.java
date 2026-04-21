@@ -41,6 +41,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -436,6 +437,8 @@ public final class EDocUtil {
 
         for (Object[] o : docs) {
             Document d = (Document) o[0];
+            // o[1] is the attachment-link entity (ConsultDocs/EFormDocs/ConsultResponseDoc); o[2] is CtlDocument
+            CtlDocument ctl = (CtlDocument) o[2];
 
             EDoc currentdoc = new EDoc();
             currentdoc.setDocId("" + d.getDocumentNo());
@@ -454,11 +457,17 @@ public final class EDocUtil {
             }
             currentdoc.setType(d.getDoctype());
             currentdoc.setStatus(d.getStatus());
-            currentdoc.setObservationDate(d.getObservationdate());
+            // Format as String (yyyy-MM-dd) rather than passing Date, which
+            // would use DMS_DATE_FORMAT (yyyy/MM/dd) and diverge from the
+            // rest of the system.
+            currentdoc.setObservationDate(ConversionUtils.toDateString(d.getObservationdate()));
             currentdoc.setReviewerId(d.getReviewer());
             currentdoc.setReviewDateTime(ConversionUtils.toTimestampString(d.getReviewdatetime()));
             currentdoc.setReviewDateTimeDate(d.getReviewdatetime());
             currentdoc.setContentDateTime(d.getContentdatetime());
+            currentdoc.setModule(ctl.getId().getModule());
+            currentdoc.setModuleId(String.valueOf(ctl.getId().getModuleId()));
+            currentdoc.setDocPublic(String.valueOf(d.getPublic1()));
 
             if (d.isRestrictToProgram() != null) {
                 currentdoc.setRestrictToProgram(d.isRestrictToProgram());
@@ -528,7 +537,7 @@ public final class EDocUtil {
     public static List<EDoc> getProviderPrivateDocs(LoggedInInfo loggedInInfo) {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         if (providerNo == null) {
-            return java.util.Collections.emptyList();
+            return Collections.emptyList();
         }
         return listDocs(loggedInInfo, "providers", providerNo, null, PRIVATE, EDocSort.OBSERVATIONDATE);
     }
@@ -536,21 +545,23 @@ public final class EDocUtil {
     /**
      * Retrieves public (shared) documents uploaded by any provider.
      *
-     * <p>When {@code PUBLIC} is passed to {@link #listDocs}, the underlying
+     * <p>Results are global, not scoped to the logged-in provider: when
+     * {@code PUBLIC} is passed to {@link #listDocs}, the underlying
      * {@code DocumentDaoImpl.findDocuments()} queries {@code d.public1 = 1}
-     * without filtering by {@code moduleId}, so all public provider documents
-     * across every provider are returned. The {@code providerNo} parameter is
-     * still required for the method signature but does not restrict results.</p>
+     * without filtering by {@code moduleId}. The {@code providerNo} argument
+     * is still required by the shared {@code listDocs} signature but does
+     * not restrict results.</p>
      *
      * @param loggedInInfo LoggedInInfo the logged-in user's session information
-     * @return List&lt;EDoc&gt; list of all public provider documents sorted by observation date,
-     *         or an empty list if the provider number is null
+     * @return List&lt;EDoc&gt; all public provider documents sorted by observation date;
+     *         empty list when no provider is in context (defensive — the query
+     *         itself does not depend on provider identity)
      * @since 2026-02-20
      */
     public static List<EDoc> getProviderPublicDocs(LoggedInInfo loggedInInfo) {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         if (providerNo == null) {
-            return java.util.Collections.emptyList();
+            return Collections.emptyList();
         }
         return listDocs(loggedInInfo, "providers", providerNo, null, PUBLIC, EDocSort.OBSERVATIONDATE);
     }

@@ -85,11 +85,11 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     @Override
     public List<Object[]> findDocsAndConsultDocsByConsultId(Integer consultationId) {
-        String sql = "FROM Document d, ConsultDocs cd " +
-                "WHERE d.documentNo = cd.documentNo " +
-                "AND cd.requestId = ?1 " +
-                "AND cd.docType = ?2 " +
-                "AND cd.deleted IS NULL";
+        // Joining CtlDocument lets the attached-listing populate module/moduleId
+        // on each EDoc in a single round trip. Orphan attachments (no ctl row)
+        // have always been invisible in the attachment manager; INNER JOIN
+        // preserves that behavior.
+        String sql = "SELECT d, cd, ctl FROM Document d, ConsultDocs cd, CtlDocument ctl WHERE d.documentNo = cd.documentNo AND ctl.id.documentNo = d.documentNo AND cd.requestId = ?1 AND cd.docType = ?2 AND cd.deleted IS NULL";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, consultationId);
         query.setParameter(2, ConsultDocs.DOCTYPE_DOC);
@@ -98,11 +98,7 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     @Override
     public List<Object[]> findDocsAndEFormDocsByFdid(Integer fdid) {
-        String sql = "FROM Document d, EFormDocs cd " +
-                "WHERE d.documentNo = cd.documentNo " +
-                "AND cd.fdid = ?1 " +
-                "AND cd.docType = ?2 " +
-                "AND cd.deleted IS NULL";
+        String sql = "SELECT d, cd, ctl FROM Document d, EFormDocs cd, CtlDocument ctl WHERE d.documentNo = cd.documentNo AND ctl.id.documentNo = d.documentNo AND cd.fdid = ?1 AND cd.docType = ?2 AND cd.deleted IS NULL";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, fdid);
         query.setParameter(2, EFormDocs.DOCTYPE_DOC);
@@ -111,11 +107,7 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     @Override
     public List<Object[]> findDocsAndConsultResponseDocsByConsultId(Integer consultationId) {
-        String sql = "FROM Document d, ConsultResponseDoc crd " +
-                "WHERE d.documentNo = crd.documentNo " +
-                "AND crd.responseId = ?1 " +
-                "AND crd.docType = 'D' " +
-                "AND crd.deleted IS NULL";
+        String sql = "SELECT d, crd, ctl FROM Document d, ConsultResponseDoc crd, CtlDocument ctl WHERE d.documentNo = crd.documentNo AND ctl.id.documentNo = d.documentNo AND crd.responseId = ?1 AND crd.docType = 'D' AND crd.deleted IS NULL";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, consultationId);
         return query.getResultList();
