@@ -1,28 +1,23 @@
 package ca.openosp.openo.documentManager.dao;
 
 import ca.openosp.openo.commn.model.ConsultDocs;
-import ca.openosp.openo.commn.model.CtlDocument;
+import ca.openosp.openo.commn.model.ConsultResponseDoc;
 import ca.openosp.openo.commn.model.Document;
+import ca.openosp.openo.commn.model.EFormDocs;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Integration tests for DocumentDao attached-document queries that rely on
- * the (Document, ConsultDocs|EFormDocs|ConsultResponseDoc, CtlDocument) join.
- *
- * The key scenario under test: a single document_no bound to multiple
- * ctl_document rows (e.g., provider-owned doc that has also been attached
- * to a patient document record). The join fans out per ctl row and the
- * caller has to reconcile which (module, moduleId) "wins" when building
- * the EDoc view model.
+ * Integration tests for DocumentDao attached-document queries. These return
+ * (Document, AttachmentRow) tuples scoped by consult/eForm/response id. Ctl
+ * classification is handled separately in {@code EDocUtil.enrichAttachedWithCtl}
+ * and is not part of these queries' contract.
  */
 @DisplayName("DocumentDao attached-document queries")
 @Tag("integration")
@@ -32,99 +27,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DocumentDaoAttachedFindIntegrationTest extends DocumentDaoBaseIntegrationTest {
 
     private static final Integer CONSULT_ID = 90001;
+    private static final Integer EFORM_FDID = 80001;
+    private static final Integer RESPONSE_ID = 70001;
     private static final Integer OWNER_PROVIDER_ID = 42;
-    private static final Integer PATIENT_DEMO_ID = 2001;
 
     @Nested
     @DisplayName("findDocsAndConsultDocsByConsultId")
     class FindDocsAndConsultDocsByConsultId {
 
         @Test
-        @DisplayName("returns one tuple when a document has a single ctl_document row")
-        void shouldReturnSingleTuple_whenDocHasOneCtlRow() {
-            Integer docNo = persistDocument("Provider-only doc", 0, Document.STATUS_ACTIVE);
+        @DisplayName("returns the attached document")
+        void shouldReturnAttachedDoc() {
+            Integer docNo = persistDocument("Attached doc", 0, Document.STATUS_ACTIVE);
             persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
             persistConsultDocAttachment(CONSULT_ID, docNo);
 
             List<Object[]> result = documentDao.findDocsAndConsultDocsByConsultId(CONSULT_ID);
 
             assertThat(result).hasSize(1);
-            CtlDocument ctl = (CtlDocument) result.get(0)[2];
-            assertThat(ctl.getId().getModule()).isEqualTo("provider");
-            assertThat(ctl.getId().getModuleId()).isEqualTo(OWNER_PROVIDER_ID);
+            assertThat(((Document) result.get(0)[0]).getDocumentNo()).isEqualTo(docNo);
         }
 
         @Test
-        @DisplayName("returns one tuple per attached document when multiple docs share the same consult")
-        void shouldReturnOneTuplePerDoc_whenMultipleDocsAttachedToSameConsult() {
-            Integer providerDocNo = persistDocument("Provider doc", 0, Document.STATUS_ACTIVE);
-            Integer demoDocNo = persistDocument("Demographic doc", 0, Document.STATUS_ACTIVE);
-            persistCtlDocument(providerDocNo, "provider", OWNER_PROVIDER_ID);
-            persistCtlDocument(demoDocNo, "demographic", PATIENT_DEMO_ID);
-            persistConsultDocAttachment(CONSULT_ID, providerDocNo);
-            persistConsultDocAttachment(CONSULT_ID, demoDocNo);
-
-            List<Object[]> result = documentDao.findDocsAndConsultDocsByConsultId(CONSULT_ID);
-
-            assertThat(result).hasSize(2);
-
-            Set<Integer> docNos = result.stream()
-                    .map(row -> ((Document) row[0]).getDocumentNo())
-                    .collect(Collectors.toSet());
-            assertThat(docNos).containsExactlyInAnyOrder(providerDocNo, demoDocNo);
-
-            Set<String> modules = result.stream()
-                    .map(row -> ((CtlDocument) row[2]).getId().getModule())
-                    .collect(Collectors.toSet());
-            assertThat(modules).containsExactlyInAnyOrder("provider", "demographic");
-        }
-
-        @Test
-        @DisplayName("fans out into multiple tuples when a document has multiple ctl_document rows")
-        void shouldReturnMultipleTuples_whenDocHasMultipleCtlRows() {
-            Integer docNo = persistDocument("Shared provider doc", 0, Document.STATUS_ACTIVE);
-            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
-            persistCtlDocument(docNo, "demographic", PATIENT_DEMO_ID);
+        @DisplayName("returns attachments even when the doc has no ctl_document row")
+        void shouldReturnOrphan_whenDocHasNoCtlRow() {
+            Integer docNo = persistDocument("Orphan doc with no ctl row", 0, Document.STATUS_ACTIVE);
             persistConsultDocAttachment(CONSULT_ID, docNo);
 
             List<Object[]> result = documentDao.findDocsAndConsultDocsByConsultId(CONSULT_ID);
 
             assertThat(result)
-                    .as("Expected one tuple per ctl_document row for the same documentNo")
-                    .hasSize(2);
-
-            Set<String> modules = result.stream()
-                    .map(row -> ((CtlDocument) row[2]).getId().getModule())
-                    .collect(Collectors.toSet());
-            assertThat(modules).containsExactlyInAnyOrder("provider", "demographic");
-        }
-
-        @Test
-        @DisplayName("returns both module bindings regardless of insertion order when doc has multiple ctl rows")
-        void shouldReturnBothModules_whenDocHasProviderAndDemographicCtlRows() {
-            Integer docA = persistDocument("Provider-inserted-first doc", 0, Document.STATUS_ACTIVE);
-            persistCtlDocument(docA, "provider", OWNER_PROVIDER_ID);
-            persistCtlDocument(docA, "demographic", PATIENT_DEMO_ID);
-            persistConsultDocAttachment(CONSULT_ID, docA);
-
-            Integer otherConsult = CONSULT_ID + 1000;
-            Integer docB = persistDocument("Demographic-inserted-first doc", 0, Document.STATUS_ACTIVE);
-            persistCtlDocument(docB, "demographic", PATIENT_DEMO_ID + 1);
-            persistCtlDocument(docB, "provider", OWNER_PROVIDER_ID + 1);
-            persistConsultDocAttachment(otherConsult, docB);
-
-            Set<String> modulesA = documentDao.findDocsAndConsultDocsByConsultId(CONSULT_ID).stream()
-                    .map(row -> ((CtlDocument) row[2]).getId().getModule())
-                    .collect(Collectors.toSet());
-            Set<String> modulesB = documentDao.findDocsAndConsultDocsByConsultId(otherConsult).stream()
-                    .map(row -> ((CtlDocument) row[2]).getId().getModule())
-                    .collect(Collectors.toSet());
-
-            // The query has no ORDER BY, so the tuple order is DB-dependent. Assert set
-            // membership rather than a specific winner: both bindings must be present,
-            // which is what downstream callers need to classify correctly.
-            assertThat(modulesA).containsExactlyInAnyOrder("provider", "demographic");
-            assertThat(modulesB).containsExactlyInAnyOrder("provider", "demographic");
+                    .as("2-table query does not depend on CtlDocument, so orphan docs still surface")
+                    .hasSize(1);
+            assertThat(((Document) result.get(0)[0]).getDocumentNo()).isEqualTo(docNo);
         }
 
         @Test
@@ -151,6 +86,110 @@ public class DocumentDaoAttachedFindIntegrationTest extends DocumentDaoBaseInteg
             persistConsultDocAttachment(CONSULT_ID, docNo);
 
             List<Object[]> result = documentDao.findDocsAndConsultDocsByConsultId(CONSULT_ID + 1);
+
+            assertThat(result).isEmpty();
+        }
+    }
+
+    @Nested
+    @DisplayName("findDocsAndEFormDocsByFdid")
+    class FindDocsAndEFormDocsByFdid {
+
+        @Test
+        @DisplayName("returns the attached document")
+        void shouldReturnAttachedDoc() {
+            Integer docNo = persistDocument("Attached eform doc", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
+            persistEFormDocAttachment(EFORM_FDID, docNo);
+
+            List<Object[]> result = documentDao.findDocsAndEFormDocsByFdid(EFORM_FDID);
+
+            assertThat(result).hasSize(1);
+            assertThat(((Document) result.get(0)[0]).getDocumentNo()).isEqualTo(docNo);
+        }
+
+        @Test
+        @DisplayName("returns attachments even when the doc has no ctl_document row")
+        void shouldReturnOrphan_whenDocHasNoCtlRow() {
+            Integer docNo = persistDocument("Orphan eform doc", 0, Document.STATUS_ACTIVE);
+            persistEFormDocAttachment(EFORM_FDID, docNo);
+
+            List<Object[]> result = documentDao.findDocsAndEFormDocsByFdid(EFORM_FDID);
+
+            assertThat(result).hasSize(1);
+            assertThat(((Document) result.get(0)[0]).getDocumentNo()).isEqualTo(docNo);
+        }
+
+        @Test
+        @DisplayName("skips docs marked deleted on the eform_docs row")
+        void shouldSkipSoftDeletedAttachments() {
+            Integer docNo = persistDocument("Soft-deleted eform attachment", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
+
+            EFormDocs ed = new EFormDocs(EFORM_FDID, docNo, EFormDocs.DOCTYPE_DOC, "999998");
+            ed.setDeleted(EFormDocs.DELETED);
+            entityManager.persist(ed);
+            entityManager.flush();
+
+            List<Object[]> result = documentDao.findDocsAndEFormDocsByFdid(EFORM_FDID);
+
+            assertThat(result).isEmpty();
+        }
+
+        @Test
+        @DisplayName("does not return attachments for a different fdid")
+        void shouldScopeByFdid() {
+            Integer docNo = persistDocument("Other eform doc", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
+            persistEFormDocAttachment(EFORM_FDID, docNo);
+
+            List<Object[]> result = documentDao.findDocsAndEFormDocsByFdid(EFORM_FDID + 1);
+
+            assertThat(result).isEmpty();
+        }
+    }
+
+    @Nested
+    @DisplayName("findDocsAndConsultResponseDocsByConsultId")
+    class FindDocsAndConsultResponseDocsByConsultId {
+
+        @Test
+        @DisplayName("returns the attached document")
+        void shouldReturnAttachedDoc() {
+            Integer docNo = persistDocument("Attached response doc", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
+            persistConsultResponseDocAttachment(RESPONSE_ID, docNo);
+
+            List<Object[]> result = documentDao.findDocsAndConsultResponseDocsByConsultId(RESPONSE_ID);
+
+            assertThat(result).hasSize(1);
+            assertThat(((Document) result.get(0)[0]).getDocumentNo()).isEqualTo(docNo);
+        }
+
+        @Test
+        @DisplayName("skips docs marked deleted on the consult_response_doc row")
+        void shouldSkipSoftDeletedAttachments() {
+            Integer docNo = persistDocument("Soft-deleted response attachment", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
+
+            ConsultResponseDoc crd = new ConsultResponseDoc(RESPONSE_ID, docNo, ConsultResponseDoc.DOCTYPE_DOC, "999998");
+            crd.setDeleted(ConsultResponseDoc.DELETED);
+            entityManager.persist(crd);
+            entityManager.flush();
+
+            List<Object[]> result = documentDao.findDocsAndConsultResponseDocsByConsultId(RESPONSE_ID);
+
+            assertThat(result).isEmpty();
+        }
+
+        @Test
+        @DisplayName("does not return attachments for a different response id")
+        void shouldScopeByResponseId() {
+            Integer docNo = persistDocument("Other response doc", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
+            persistConsultResponseDocAttachment(RESPONSE_ID, docNo);
+
+            List<Object[]> result = documentDao.findDocsAndConsultResponseDocsByConsultId(RESPONSE_ID + 1);
 
             assertThat(result).isEmpty();
         }

@@ -401,9 +401,7 @@ public class DocumentPreview2Action extends ActionSupport {
         String currentProviderNo = loggedInInfo.getLoggedInProviderNo();
 
         for (EDoc attachedDoc : attachedDocs) {
-            // Defensive dedupe: EDocUtil.listDocs already dedupes upstream, but keep this
-            // guard so future callers that pass a duped list don't double-merge sections.
-            if (!attachedDocumentIds.add(attachedDoc.getDocId())) continue;
+            attachedDocumentIds.add(attachedDoc.getDocId());
             mergeSingleAttachedDoc(
                     attachedDoc,
                     currentProviderNo,

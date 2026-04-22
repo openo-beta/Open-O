@@ -244,6 +244,18 @@ jQuery(document).on('click', '*[data-poload]', function () {
                     expandLabVersionList(element.parent().parent().parent().find('.collapse-arrow'));
                 }
             });
+
+            // Uncheck server-pre-checked boxes whose delegate was removed in an
+            // earlier dialog session (unsaved uncheck — #attachDocumentList wins).
+            jQuery('#attachDocumentsForm').find('[data-pre-attached="true"]').each(function () {
+                const $cb = jQuery(this);
+                const hasDelegate = jQuery('#attachDocumentList').find(
+                    '.delegateAttachment[name="' + this.name + '"][value="' + this.value + '"]'
+                ).length > 0;
+                if (!hasDelegate) {
+                    $cb.prop('checked', false).removeAttr('data-pre-attached');
+                }
+            });
         }
     }).dialog({
         title: title,
@@ -278,8 +290,7 @@ jQuery(document).on('click', '*[data-poload]', function () {
             }
             jQuery('#attachDocumentList').empty();
 
-            // Dedupe by name+value: a doc with multiple ctl bindings can appear
-            // in multiple sections (patient + provider) with shared name="docNo".
+            // Cross-section dedupe: same docNo can render in patient + provider sections.
             const seenDelegates = new Set();
             jQuery('#attachDocumentsForm').find(
                 ".attachable_check:checkbox:checked:not(input[disabled='disabled'])"
