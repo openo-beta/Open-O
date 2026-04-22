@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Represents a single merge or unmerge event recorded in the {@code demographic_merged} table.
+ * Represents a single merge or unmerge event recorded in the {@code demographic_merged_event} table.
  * <p>
  * One row is inserted per merge or unmerge operation. The unmerge path reads this
  * table to identify the primary and all secondary demographics to reactivate.
@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  * @since 2026-03-19
  */
 @Entity
-@Table(name = "demographic_merged")
+@Table(name = "demographic_merged_event")
 public class DemographicMerge extends AbstractModel<Integer> {
 
     /**

@@ -772,13 +772,12 @@ ALTER TABLE `demographicArchive`
 MODIFY COLUMN `myOscarUserName` VARCHAR(255);
 
 --
--- Replace demographic_merged with new merge event model schema.
--- Drops all legacy columns (demographic_no, merged_to, deleted, lastUpdateUser, lastUpdateDate).
+-- Create demographic_merged_event for the new merge/unmerge audit event model.
+-- The legacy demographic_merged table is left untouched so that a rollback to the
+-- old merge code continues to work without any schema remediation.
 --
 
-DROP TABLE IF EXISTS `demographic_merged`;
-
-CREATE TABLE `demographic_merged` (
+CREATE TABLE IF NOT EXISTS `demographic_merged_event` (
   `id` INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `primary_demographic_no` INT(10) NULL DEFAULT NULL,
   `secondary_demographic_no` VARCHAR(500) NULL DEFAULT NULL,
@@ -786,12 +785,12 @@ CREATE TABLE `demographic_merged` (
   `event_type` VARCHAR(20) NULL DEFAULT NULL,
   `provider_no` VARCHAR(6) NULL DEFAULT NULL,
   `event_date` DATETIME NULL DEFAULT NULL,
-  INDEX `idx_dm_merged_demo_no` (`merged_demographic_no`),
-  INDEX `idx_dm_event_type` (`event_type`)
+  INDEX `idx_dme_merged_demo_no` (`merged_demographic_no`),
+  INDEX `idx_dme_event_type` (`event_type`)
 );
 
 --
--- Alter table structure for table `demographic_merged`, modified column sequence
+-- Alter table structure for table `fax_config`
 --
 
 ALTER TABLE `fax_config`
