@@ -145,9 +145,6 @@
     if (request.getParameter("priority") != null) priority = request.getParameter("priority");
     if (request.getParameter("recall") != null) recall = true;
 
-    String ticklerMessage = request.getParameter("ticklerMessage");
-    if (ticklerMessage == null) ticklerMessage = "";
-
     UserProperty prop = propertyDao.getProp(user_no, UserProperty.TICKLER_TASK_ASSIGNEE);
     //don't override taskTo query param
     if (request.getParameter("taskTo") == null) {
@@ -455,11 +452,28 @@
             }
         }
 
+        // Prefill the message from the opener (same-origin, in-memory) instead of
+        // a URL parameter, since it may contain PHI.
+        function applyOpenerTicklerPrefill() {
+          try {
+            if (window.opener && typeof window.opener._eformTicklerPrefillMessage === 'string') {
+              var textarea = document.getElementById('ticklerMessage');
+              if (textarea) {
+                textarea.value = window.opener._eformTicklerPrefillMessage;
+              }
+              delete window.opener._eformTicklerPrefillMessage;
+            }
+          } catch (e) {
+            // Cross-origin or no opener: nothing to prefill.
+          }
+        }
+
         // on load
         document.addEventListener('DOMContentLoaded', function() {
           addQuickPick();
           setfocus();
           initResize();
+          applyOpenerTicklerPrefill();
         });
         </script>
 
@@ -726,7 +740,7 @@
                       <label for="ticklerMessage"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formReminder"/>:</label>
                       </td>
                     <td>
-                      <textarea name="ticklerMessage" id="ticklerMessage" class="form-control"><%=Encode.forHtmlContent(ticklerMessage)%></textarea>
+                      <textarea name="ticklerMessage" id="ticklerMessage" class="form-control"></textarea>
                     </td>
                 </tr>
                 <tr>
