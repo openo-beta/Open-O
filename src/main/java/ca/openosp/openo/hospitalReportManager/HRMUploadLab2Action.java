@@ -9,6 +9,7 @@
  */
 package ca.openosp.openo.hospitalReportManager;
 
+import ca.openosp.openo.hospitalReportManager.UploadResult.FileStatus;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -60,12 +62,6 @@ public class HRMUploadLab2Action extends ActionSupport {
         this.uploadsFileName = uploadsFileName;
     }
 
-    public enum FileStatus {
-        COMPLETED,
-        FAILED,
-        INVALID
-    }
-
     @Override
     public String execute() {
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -77,18 +73,16 @@ public class HRMUploadLab2Action extends ActionSupport {
         }
 
         if (uploads != null && !uploads.isEmpty()) {
-            Map<String, FileStatus> filesStatusMap = processFiles(loggedInInfo);
-            request.setAttribute("filesStatusMap", filesStatusMap);
+            request.setAttribute("uploadResults", processFiles(loggedInInfo));
         } else {
-            // No files uploaded - return empty map to preserve original flow
-            request.setAttribute("filesStatusMap", new HashMap<>());
+            request.setAttribute("uploadResults", new HashMap<>());
         }
 
         return SUCCESS;
     }
 
-    private Map<String, FileStatus> processFiles(LoggedInInfo loggedInInfo) {
-        Map<String, FileStatus> filesStatusMap = new HashMap<>();
+    private Map<String, UploadResult> processFiles(LoggedInInfo loggedInInfo) {
+        Map<String, UploadResult> resultsMap = new HashMap<>();
 
         for (int i = 0; i < uploads.size(); i++) {
             File file = uploads.get(i);
@@ -96,50 +90,46 @@ public class HRMUploadLab2Action extends ActionSupport {
             String contentType = (uploadsContentType != null && i < uploadsContentType.size())
                 ? uploadsContentType.get(i) : null;
 
-            // Validate content type
             if (!isValidContentType(contentType)) {
                 MiscUtils.getLogger().warn("Invalid content type '{}' for file '{}'", contentType, fileName);
-                filesStatusMap.put(fileName, FileStatus.INVALID);
+                resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, "Invalid content type: " + contentType));
                 continue;
             }
 
-            // Sanitize filename to prevent path traversal attacks
             String sanitizedFileName = sanitizeFileName(fileName);
             if (sanitizedFileName == null || sanitizedFileName.isEmpty()) {
                 MiscUtils.getLogger().error("Invalid filename provided: '{}'", fileName);
-                filesStatusMap.put(fileName, FileStatus.INVALID);
+                resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, "Invalid filename"));
                 continue;
             }
 
             try (InputStream inputStream = new FileInputStream(file)) {
                 String filePath = Utilities.saveFile(inputStream, sanitizedFileName);
-                HRMReport report = HRMReportParser.parseReport(loggedInInfo, filePath);
-                FileStatus fileStatus = handleHRMReport(loggedInInfo, report);
-                filesStatusMap.put(fileName, fileStatus);
+                List<Throwable> parseErrors = new ArrayList<>();
+                HRMReport report = HRMReportParser.parseReport(loggedInInfo, filePath, parseErrors);
+
+                if (report == null) {
+                    String errMsg = parseErrors.isEmpty() ? "Failed to parse HRM report" : parseErrors.get(0).getMessage();
+                    resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, errMsg));
+                } else {
+                    try {
+                        HRMReportParser.addReportToInbox(loggedInInfo, report);
+                        resultsMap.put(fileName, new UploadResult(FileStatus.COMPLETED, null));
+                    } catch (Exception e) {
+                        MiscUtils.getLogger().error("Couldn't handle uploaded HRM report", e);
+                        resultsMap.put(fileName, new UploadResult(FileStatus.FAILED, e.getMessage()));
+                    }
+                }
             } catch (IOException e) {
-                MiscUtils.getLogger().error("Error occurred while processing file '{}': {}", fileName, e);
-                filesStatusMap.put(fileName, FileStatus.INVALID);
+                MiscUtils.getLogger().error("Error reading file '{}': {}", fileName, e);
+                resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, e.getMessage()));
             } catch (SecurityException e) {
-                MiscUtils.getLogger().error("Security violation while processing file '{}': {}", fileName, e);
-                filesStatusMap.put(fileName, FileStatus.INVALID);
+                MiscUtils.getLogger().error("Security violation for file '{}': {}", fileName, e);
+                resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, e.getMessage()));
             }
         }
 
-        return filesStatusMap;
-    }
-
-    private FileStatus handleHRMReport(LoggedInInfo loggedInInfo, HRMReport report) {
-        if (report == null) {
-            return FileStatus.INVALID;
-        }
-
-        try {
-            HRMReportParser.addReportToInbox(loggedInInfo, report);
-            return FileStatus.COMPLETED;
-        } catch (Exception e) {
-            MiscUtils.getLogger().error("Couldn't handle uploaded HRM report", e);
-            return FileStatus.FAILED;
-        }
+        return resultsMap;
     }
 
     /**
