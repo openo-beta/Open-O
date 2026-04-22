@@ -417,7 +417,7 @@ public class DocumentPreview2Action extends ActionSupport {
      *
      * @since 2026-04-21
      */
-    private void mergeSingleAttachedDoc(
+    static void mergeSingleAttachedDoc(
             EDoc attachedDoc,
             String currentProviderNo,
             List<EDoc> allDocuments,
@@ -426,7 +426,7 @@ public class DocumentPreview2Action extends ActionSupport {
             Set<String> foreignPrivateDocIds) {
 
         boolean isDeleted = attachedDoc.getStatus() == 'D';
-        boolean isProvider = EDocUtil.isProviderModule(attachedDoc.getModule());
+        boolean isProvider = isProviderModule(attachedDoc.getModule());
         boolean isPublic = "1".equals(attachedDoc.getDocPublic());
         boolean ownedByCurrent = isOwnedByCurrentProvider(attachedDoc, currentProviderNo);
 
@@ -446,8 +446,17 @@ public class DocumentPreview2Action extends ActionSupport {
         if (!ownedByCurrent) foreignPrivateDocIds.add(attachedDoc.getDocId());
     }
 
-    private boolean isOwnedByCurrentProvider(EDoc doc, String currentProviderNo) {
+    static boolean isOwnedByCurrentProvider(EDoc doc, String currentProviderNo) {
         return currentProviderNo != null && currentProviderNo.equals(doc.getModuleId());
+    }
+
+    /**
+     * Local copy of {@link EDocUtil#isProviderModule} to avoid triggering EDocUtil's
+     * class-load (and its many SpringUtils-bean static initializers) from this
+     * classifier. Keeps {@link #mergeSingleAttachedDoc} unit-testable without Spring.
+     */
+    static boolean isProviderModule(String module) {
+        return "provider".equalsIgnoreCase(module) || "providers".equalsIgnoreCase(module);
     }
 
     /**
