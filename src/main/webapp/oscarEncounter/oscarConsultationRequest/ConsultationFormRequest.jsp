@@ -3207,24 +3207,7 @@ if (userAgent != null) {
                             }
                         });
 
-                        // Uncheck (and revert _pre_check → _check on) server-pre-checked boxes
-                        // whose delegate was removed in an earlier dialog session ($mainForm wins).
-                        jQuery('#attachDocumentsForm').find('[data-pre-attached="true"]').each(function () {
-                            var $cb = jQuery(this);
-                            var hasDelegate = $mainForm.find(
-                                '.delegateAttachment[name="' + this.name + '"][value="' + this.value + '"]'
-                            ).length > 0;
-                            if (!hasDelegate) {
-                                $cb.prop('checked', false).removeAttr('data-pre-attached');
-                                var tokens = ($cb.attr('class') || '').split(' ');
-                                for (var i = 0; i < tokens.length; i++) {
-                                    if (tokens[i].indexOf('_pre_check') > 0) {
-                                        $cb.removeClass(tokens[i]).addClass(tokens[i].split('_')[0] + '_check');
-                                        break;
-                                    }
-                                }
-                            }
-                        });
+                        syncPreCheckedToDelegates($mainForm, true);
 
                         // Disable all EncounterForm (form) checkboxes in the attachment window if a consultation request is created using OceanMD.
                         if (typeof disableFields !== 'undefined' && disableFields === true) {
