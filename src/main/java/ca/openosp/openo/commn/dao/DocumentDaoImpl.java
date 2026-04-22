@@ -85,7 +85,11 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     @Override
     public List<Object[]> findDocsAndConsultDocsByConsultId(Integer consultationId) {
-        String sql = "FROM Document d, ConsultDocs cd WHERE d.documentNo = cd.documentNo AND cd.requestId = ?1 AND cd.docType = ?2 AND cd.deleted IS NULL";
+        String sql = "FROM Document d, ConsultDocs cd " +
+                "WHERE d.documentNo = cd.documentNo " +
+                "AND cd.requestId = ?1 " +
+                "AND cd.docType = ?2 " +
+                "AND cd.deleted IS NULL";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, consultationId);
         query.setParameter(2, ConsultDocs.DOCTYPE_DOC);
@@ -94,7 +98,11 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     @Override
     public List<Object[]> findDocsAndEFormDocsByFdid(Integer fdid) {
-        String sql = "FROM Document d, EFormDocs cd WHERE d.documentNo = cd.documentNo AND cd.fdid = ?1 AND cd.docType = ?2 AND cd.deleted IS NULL";
+        String sql = "FROM Document d, EFormDocs cd " +
+                "WHERE d.documentNo = cd.documentNo " +
+                "AND cd.fdid = ?1 " +
+                "AND cd.docType = ?2 " +
+                "AND cd.deleted IS NULL";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, fdid);
         query.setParameter(2, EFormDocs.DOCTYPE_DOC);
@@ -103,7 +111,11 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
 
     @Override
     public List<Object[]> findDocsAndConsultResponseDocsByConsultId(Integer consultationId) {
-        String sql = "FROM Document d, ConsultResponseDoc crd WHERE d.documentNo = crd.documentNo AND crd.responseId = ?1 AND crd.docType = 'D' AND crd.deleted IS NULL";
+        String sql = "FROM Document d, ConsultResponseDoc crd " +
+                "WHERE d.documentNo = crd.documentNo " +
+                "AND crd.responseId = ?1 " +
+                "AND crd.docType = 'D' " +
+                "AND crd.deleted IS NULL";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, consultationId);
         return query.getResultList();
