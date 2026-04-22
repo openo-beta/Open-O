@@ -278,10 +278,17 @@ jQuery(document).on('click', '*[data-poload]', function () {
             }
             jQuery('#attachDocumentList').empty();
 
+            // Dedupe by name+value: a doc with multiple ctl bindings can appear
+            // in multiple sections (patient + provider) with shared name="docNo".
+            const seenDelegates = new Set();
             jQuery('#attachDocumentsForm').find(
                 ".attachable_check:checkbox:checked:not(input[disabled='disabled'])"
             ).each(function () {
-                jQuery('#attachDocumentList').append(buildDelegateInput(jQuery(this)));
+                const $el = jQuery(this);
+                const key = $el.attr('name') + "::" + $el.val();
+                if (seenDelegates.has(key)) return;
+                seenDelegates.add(key);
+                jQuery('#attachDocumentList').append(buildDelegateInput($el));
             });
 
             // show total attachments

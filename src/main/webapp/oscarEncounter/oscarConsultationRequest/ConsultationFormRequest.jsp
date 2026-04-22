@@ -3237,10 +3237,16 @@ if (userAgent != null) {
                             return false;
                         }
 
+                        // Dedupe by name+value: a doc with multiple ctl bindings can appear
+                        // in multiple sections (patient + provider) with shared name="docNo".
+                        var seenDelegates = {};
                         // pass the checked elements to the consultation request form
                         jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerPrivateDocument_check:checked:not(input[disabled='disabled']), .providerPublicDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
                         ).each(function (index, data) {
                             var element = jQuery(this);
+                            var key = element.attr('name') + "::" + element.val();
+                            if (seenDelegates[key]) return;
+                            seenDelegates[key] = true;
                             var input = buildDelegateInput(element);
                             // entry_ row id uses name+value (not checkbox id) so the three DOC sections share a row key.
                             var row = jQuery("<tr>", {id: "entry_" + element.attr("name") + element.val()});
