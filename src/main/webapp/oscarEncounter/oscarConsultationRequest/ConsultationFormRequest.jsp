@@ -3207,6 +3207,25 @@ if (userAgent != null) {
                             }
                         });
 
+                        // Uncheck (and revert _pre_check → _check on) server-pre-checked boxes
+                        // whose delegate was removed in an earlier dialog session ($mainForm wins).
+                        jQuery('#attachDocumentsForm').find('[data-pre-attached="true"]').each(function () {
+                            var $cb = jQuery(this);
+                            var hasDelegate = $mainForm.find(
+                                '.delegateAttachment[name="' + this.name + '"][value="' + this.value + '"]'
+                            ).length > 0;
+                            if (!hasDelegate) {
+                                $cb.prop('checked', false).removeAttr('data-pre-attached');
+                                var tokens = ($cb.attr('class') || '').split(' ');
+                                for (var i = 0; i < tokens.length; i++) {
+                                    if (tokens[i].indexOf('_pre_check') > 0) {
+                                        $cb.removeClass(tokens[i]).addClass(tokens[i].split('_')[0] + '_check');
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+
                         // Disable all EncounterForm (form) checkboxes in the attachment window if a consultation request is created using OceanMD.
                         if (typeof disableFields !== 'undefined' && disableFields === true) {
                             jQuery("#formList input[type='checkbox']").prop("disabled", true);
@@ -3239,8 +3258,7 @@ if (userAgent != null) {
                             return false;
                         }
 
-                        // Dedupe by name+value: a doc with multiple ctl bindings can appear
-                        // in multiple sections (patient + provider) with shared name="docNo".
+                        // Cross-section dedupe: same docNo can render in patient + provider sections.
                         var seenDelegates = {};
                         // pass the checked elements to the consultation request form
                         jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerPrivateDocument_check:checked:not(input[disabled='disabled']), .providerPublicDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"

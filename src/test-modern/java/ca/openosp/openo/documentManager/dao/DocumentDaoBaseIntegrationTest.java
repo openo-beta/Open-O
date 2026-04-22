@@ -2,9 +2,11 @@ package ca.openosp.openo.documentManager.dao;
 
 import ca.openosp.openo.commn.dao.DocumentDao;
 import ca.openosp.openo.commn.model.ConsultDocs;
+import ca.openosp.openo.commn.model.ConsultResponseDoc;
 import ca.openosp.openo.commn.model.CtlDocument;
 import ca.openosp.openo.commn.model.CtlDocumentPK;
 import ca.openosp.openo.commn.model.Document;
+import ca.openosp.openo.commn.model.EFormDocs;
 import ca.openosp.openo.test.base.OpenOTestBase;
 import org.junit.jupiter.api.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,22 @@ public abstract class DocumentDaoBaseIntegrationTest extends OpenOTestBase {
         ConsultDocs cd = new ConsultDocs(requestId, documentNo, ConsultDocs.DOCTYPE_DOC, "999998");
         cd.setAttachDate(new Date());
         entityManager.persist(cd);
+        entityManager.flush();
+    }
+
+    /** Attach a document to an eForm instance (fdid). */
+    protected void persistEFormDocAttachment(Integer fdid, Integer documentNo) {
+        EFormDocs ed = new EFormDocs(fdid, documentNo, EFormDocs.DOCTYPE_DOC, "999998");
+        ed.setAttachDate(new Date());
+        entityManager.persist(ed);
+        entityManager.flush();
+    }
+
+    /** Attach a document to a consultation response. */
+    protected void persistConsultResponseDocAttachment(Integer responseId, Integer documentNo) {
+        ConsultResponseDoc crd = new ConsultResponseDoc(responseId, documentNo, ConsultResponseDoc.DOCTYPE_DOC, "999998");
+        crd.setAttachDate(new Date());
+        entityManager.persist(crd);
         entityManager.flush();
     }
 }

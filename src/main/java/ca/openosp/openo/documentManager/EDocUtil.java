@@ -43,11 +43,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import ca.openosp.openo.commn.dao.*;
 import org.apache.commons.io.FileUtils;
@@ -436,14 +436,9 @@ public final class EDocUtil {
     private static ArrayList<EDoc> listDocs(LoggedInInfo loggedInInfo, boolean attached, List<Object[]> docs, List<Object[]> ctlDocs) {
         ArrayList<EDoc> resultDocs = new ArrayList<EDoc>();
         ArrayList<EDoc> attachedDocs = new ArrayList<EDoc>();
-        // Dedupe: CtlDocument join can yield one tuple per ctl row per document_no.
-        Set<String> seenAttachedIds = new HashSet<>();
 
         for (Object[] o : docs) {
             Document d = (Document) o[0];
-            CtlDocument ctl = (CtlDocument) o[2];
-            String docIdStr = String.valueOf(d.getDocumentNo());
-            if (!seenAttachedIds.add(docIdStr)) continue;
 
             EDoc currentdoc = new EDoc();
             currentdoc.setDocId("" + d.getDocumentNo());
@@ -468,9 +463,8 @@ public final class EDocUtil {
             currentdoc.setReviewDateTime(ConversionUtils.toTimestampString(d.getReviewdatetime()));
             currentdoc.setReviewDateTimeDate(d.getReviewdatetime());
             currentdoc.setContentDateTime(d.getContentdatetime());
-            currentdoc.setModule(ctl.getId().getModule());
-            currentdoc.setModuleId(String.valueOf(ctl.getId().getModuleId()));
             currentdoc.setDocPublic(String.valueOf(d.getPublic1()));
+            // ctl module/moduleId enriched below for the attached branch.
 
             if (d.isRestrictToProgram() != null) {
                 currentdoc.setRestrictToProgram(d.isRestrictToProgram());
@@ -480,6 +474,7 @@ public final class EDocUtil {
         }
 
         if (attached) { //listing attached documents only
+            enrichAttachedWithCtl(attachedDocs);
             resultDocs = attachedDocs;
         } else { //remove attached documents from full document list
             for (Object[] o : ctlDocs) {
@@ -518,6 +513,46 @@ public final class EDocUtil {
         }
 
         return resultDocs;
+    }
+
+    /**
+     * Enriches each attached EDoc with a CtlDocument module/moduleId. Provider
+     * bindings are preferred over demographic so a doc uploaded to a provider's
+     * library classifies as a provider doc even when it also has a demographic
+     * binding. Docs with no ctl row at all are left unclassified and fall through
+     * to the patient section (via {@link #isProviderModule}(null) == false).
+     *
+     * <p>Runs one batch ctl lookup for the whole attachment list to keep this
+     * O(1) queries regardless of attachment count.</p>
+     */
+    private static void enrichAttachedWithCtl(List<EDoc> attachedDocs) {
+        if (attachedDocs.isEmpty()) return;
+
+        List<Integer> docNos = new ArrayList<>(attachedDocs.size());
+        for (EDoc eDoc : attachedDocs) docNos.add(Integer.parseInt(eDoc.getDocId()));
+
+        Map<Integer, CtlDocument> preferredCtl = new HashMap<>();
+        for (CtlDocument c : ctlDocumentDao.findByDocumentNos(docNos)) {
+            Integer docNo = c.getId().getDocumentNo();
+            CtlDocument current = preferredCtl.get(docNo);
+            if (current == null || preferProvider(c, current)) {
+                preferredCtl.put(docNo, c);
+            }
+        }
+
+        for (EDoc eDoc : attachedDocs) {
+            CtlDocument ctl = preferredCtl.get(Integer.parseInt(eDoc.getDocId()));
+            if (ctl != null) {
+                eDoc.setModule(ctl.getId().getModule());
+                eDoc.setModuleId(String.valueOf(ctl.getId().getModuleId()));
+            }
+        }
+    }
+
+    /** Tiebreaker for multi-ctl docs: a provider binding replaces a non-provider one. */
+    private static boolean preferProvider(CtlDocument candidate, CtlDocument current) {
+        return isProviderModule(candidate.getId().getModule())
+                && !isProviderModule(current.getId().getModule());
     }
 
     /**
