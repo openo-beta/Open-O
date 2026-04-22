@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,6 +90,21 @@ public class DocumentDaoAttachedFindIntegrationTest extends DocumentDaoBaseInteg
 
             assertThat(result).isEmpty();
         }
+
+        @Test
+        @DisplayName("does not return attachments with a non-DOC docType")
+        void shouldScopeByDocType() {
+            Integer docNo = persistDocument("Lab-typed attachment", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
+            ConsultDocs cd = new ConsultDocs(CONSULT_ID, docNo, ConsultDocs.DOCTYPE_LAB, "999998");
+            cd.setAttachDate(new Date());
+            entityManager.persist(cd);
+            entityManager.flush();
+
+            List<Object[]> result = documentDao.findDocsAndConsultDocsByConsultId(CONSULT_ID);
+
+            assertThat(result).isEmpty();
+        }
     }
 
     @Nested
@@ -147,6 +163,21 @@ public class DocumentDaoAttachedFindIntegrationTest extends DocumentDaoBaseInteg
 
             assertThat(result).isEmpty();
         }
+
+        @Test
+        @DisplayName("does not return attachments with a non-DOC docType")
+        void shouldScopeByDocType() {
+            Integer docNo = persistDocument("Lab-typed eform attachment", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
+            EFormDocs ed = new EFormDocs(EFORM_FDID, docNo, EFormDocs.DOCTYPE_LAB, "999998");
+            ed.setAttachDate(new Date());
+            entityManager.persist(ed);
+            entityManager.flush();
+
+            List<Object[]> result = documentDao.findDocsAndEFormDocsByFdid(EFORM_FDID);
+
+            assertThat(result).isEmpty();
+        }
     }
 
     @Nested
@@ -190,6 +221,21 @@ public class DocumentDaoAttachedFindIntegrationTest extends DocumentDaoBaseInteg
             persistConsultResponseDocAttachment(RESPONSE_ID, docNo);
 
             List<Object[]> result = documentDao.findDocsAndConsultResponseDocsByConsultId(RESPONSE_ID + 1);
+
+            assertThat(result).isEmpty();
+        }
+
+        @Test
+        @DisplayName("does not return attachments with a non-DOC docType")
+        void shouldScopeByDocType() {
+            Integer docNo = persistDocument("Lab-typed response attachment", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(docNo, "provider", OWNER_PROVIDER_ID);
+            ConsultResponseDoc crd = new ConsultResponseDoc(RESPONSE_ID, docNo, ConsultResponseDoc.DOCTYPE_LAB, "999998");
+            crd.setAttachDate(new Date());
+            entityManager.persist(crd);
+            entityManager.flush();
+
+            List<Object[]> result = documentDao.findDocsAndConsultResponseDocsByConsultId(RESPONSE_ID);
 
             assertThat(result).isEmpty();
         }
