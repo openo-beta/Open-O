@@ -637,7 +637,7 @@
                                                ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
                                                title="${e:forHtmlAttribute(document.description)}"/>
                                         <label for="privateDocNo${document.docId}"><c:out
-                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if><c:if test="${isForeign}"> (other provider)</c:if></label>
+                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if><c:if test="${isForeign}"> (attached by another provider)</c:if></label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
                                             Preview
