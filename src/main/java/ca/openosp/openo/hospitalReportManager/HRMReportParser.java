@@ -15,11 +15,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -60,7 +65,9 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import org.springframework.core.io.ClassPathResource;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import omd.hrm.OmdCds;
 
@@ -121,6 +128,8 @@ public class HRMReportParser {
                     );
                 }
 
+                validateNoEmptyElements(tmpXMLholder);
+
                 // Load and compile the XSD schema
                 SchemaFactory factory = SchemaFactory
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -160,6 +169,49 @@ public class HRMReportParser {
 
         return null;
     }
+
+    private static void validateNoEmptyElements(File xmlFile) throws SAXException, IOException {
+        SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
+        try {
+            spf.newSAXParser().parse(xmlFile, new DefaultHandler() {
+                private final Deque<Boolean> hasChildrenStack = new ArrayDeque<>();
+                private final Deque<StringBuilder> textStack = new ArrayDeque<>();
+                private final Deque<String> nameStack = new ArrayDeque<>();
+
+                @Override
+                public void startElement(String uri, String localName, String qName, Attributes attrs) {
+                    if (!hasChildrenStack.isEmpty()) {
+                        hasChildrenStack.pop();
+                        hasChildrenStack.push(true);
+                    }
+                    hasChildrenStack.push(false);
+                    textStack.push(new StringBuilder());
+                    nameStack.push(localName);
+                }
+
+                @Override
+                public void characters(char[] ch, int start, int length) {
+                    textStack.peek().append(ch, start, length);
+                }
+
+                @Override
+                public void endElement(String uri, String localName, String qName) throws SAXException {
+                    boolean hasChildren = hasChildrenStack.pop();
+                    String text = textStack.pop().toString().trim();
+                    nameStack.pop();
+                    if (!hasChildren && text.isEmpty()) {
+                        String parent = nameStack.isEmpty() ? null : nameStack.peek();
+                        String location = parent != null ? "<" + localName + "> in <" + parent + ">" : "<" + localName + ">";
+                        throw new SAXException("Invalid content found: element " + location + " is empty");
+                    }
+                }
+            });
+        } catch (ParserConfigurationException e) {
+            throw new SAXException("XML parser configuration error", e);
+        }
+    }
+
 
     public static void addReportToInbox(LoggedInInfo loggedInInfo, HRMReport report) {
 
