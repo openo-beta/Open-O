@@ -535,19 +535,24 @@ public class DocumentPreview2Action extends ActionSupport {
             return;
         }
 
+        // attachedDocumentIds drives JSP pre-checking and is useful even when the
+        // per-section lists aren't loaded — populate it unconditionally.
+        for (EDoc attachedDoc : attachedDocs) {
+            attachedDocumentIds.add(attachedDoc.getDocId());
+        }
+
         List<EDoc> allDocuments = (List<EDoc>) request.getAttribute("allDocuments");
         List<EDoc> providerPrivateDocs = (List<EDoc>) request.getAttribute("providerPrivateDocs");
         List<EDoc> providerPublicDocs = (List<EDoc>) request.getAttribute("providerPublicDocs");
 
         if (allDocuments == null || providerPrivateDocs == null || providerPublicDocs == null) {
-            logger.warn("mergeAttachedContext: expected document list attributes missing; skipping merge");
+            logger.warn("mergeAttachedContext: expected document list attributes missing; skipping section merge");
             return;
         }
 
         String currentProviderNo = loggedInInfo.getLoggedInProviderNo();
 
         for (EDoc attachedDoc : attachedDocs) {
-            attachedDocumentIds.add(attachedDoc.getDocId());
             mergeSingleAttachedDoc(
                     attachedDoc,
                     currentProviderNo,
