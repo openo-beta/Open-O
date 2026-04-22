@@ -55,6 +55,31 @@ public class DocumentDaoAttachedFindIntegrationTest extends DocumentDaoBaseInteg
         }
 
         @Test
+        @DisplayName("returns one tuple per attached document when multiple docs share the same consult")
+        void shouldReturnOneTuplePerDoc_whenMultipleDocsAttachedToSameConsult() {
+            Integer providerDocNo = persistDocument("Provider doc", 0, Document.STATUS_ACTIVE);
+            Integer demoDocNo = persistDocument("Demographic doc", 0, Document.STATUS_ACTIVE);
+            persistCtlDocument(providerDocNo, "provider", OWNER_PROVIDER_ID);
+            persistCtlDocument(demoDocNo, "demographic", PATIENT_DEMO_ID);
+            persistConsultDocAttachment(CONSULT_ID, providerDocNo);
+            persistConsultDocAttachment(CONSULT_ID, demoDocNo);
+
+            List<Object[]> result = documentDao.findDocsAndConsultDocsByConsultId(CONSULT_ID);
+
+            assertThat(result).hasSize(2);
+
+            Set<Integer> docNos = result.stream()
+                    .map(row -> ((Document) row[0]).getDocumentNo())
+                    .collect(Collectors.toSet());
+            assertThat(docNos).containsExactlyInAnyOrder(providerDocNo, demoDocNo);
+
+            Set<String> modules = result.stream()
+                    .map(row -> ((CtlDocument) row[2]).getId().getModule())
+                    .collect(Collectors.toSet());
+            assertThat(modules).containsExactlyInAnyOrder("provider", "demographic");
+        }
+
+        @Test
         @DisplayName("fans out into multiple tuples when a document has multiple ctl_document rows")
         void shouldReturnMultipleTuples_whenDocHasMultipleCtlRows() {
             Integer docNo = persistDocument("Shared provider doc", 0, Document.STATUS_ACTIVE);
@@ -75,8 +100,8 @@ public class DocumentDaoAttachedFindIntegrationTest extends DocumentDaoBaseInteg
         }
 
         @Test
-        @DisplayName("first-tuple is always the 'demographic' ctl row when both demographic and provider bindings exist")
-        void shouldAlwaysReturnDemographicFirst_whenDocHasProviderAndDemographicCtlRows() {
+        @DisplayName("returns both module bindings regardless of insertion order when doc has multiple ctl rows")
+        void shouldReturnBothModules_whenDocHasProviderAndDemographicCtlRows() {
             Integer docA = persistDocument("Provider-inserted-first doc", 0, Document.STATUS_ACTIVE);
             persistCtlDocument(docA, "provider", OWNER_PROVIDER_ID);
             persistCtlDocument(docA, "demographic", PATIENT_DEMO_ID);
@@ -88,18 +113,18 @@ public class DocumentDaoAttachedFindIntegrationTest extends DocumentDaoBaseInteg
             persistCtlDocument(docB, "provider", OWNER_PROVIDER_ID + 1);
             persistConsultDocAttachment(otherConsult, docB);
 
-            String firstModuleA = ((CtlDocument) documentDao.findDocsAndConsultDocsByConsultId(CONSULT_ID).get(0)[2])
-                    .getId().getModule();
-            String firstModuleB = ((CtlDocument) documentDao.findDocsAndConsultDocsByConsultId(otherConsult).get(0)[2])
-                    .getId().getModule();
+            Set<String> modulesA = documentDao.findDocsAndConsultDocsByConsultId(CONSULT_ID).stream()
+                    .map(row -> ((CtlDocument) row[2]).getId().getModule())
+                    .collect(Collectors.toSet());
+            Set<String> modulesB = documentDao.findDocsAndConsultDocsByConsultId(otherConsult).stream()
+                    .map(row -> ((CtlDocument) row[2]).getId().getModule())
+                    .collect(Collectors.toSet());
 
-            // H2 orders by composite PK (module, module_id, document_no), so 'demographic'
-            // always precedes 'provider' alphabetically. A "first-wins" dedup in the caller
-            // therefore classifies provider-owned docs as patient docs whenever the doc
-            // also has a demographic ctl_document binding. This is the misclassification
-            // bug the EDocUtil.listDocs dedup needs to solve.
-            assertThat(firstModuleA).isEqualTo("demographic");
-            assertThat(firstModuleB).isEqualTo("demographic");
+            // The query has no ORDER BY, so the tuple order is DB-dependent. Assert set
+            // membership rather than a specific winner: both bindings must be present,
+            // which is what downstream callers need to classify correctly.
+            assertThat(modulesA).containsExactlyInAnyOrder("provider", "demographic");
+            assertThat(modulesB).containsExactlyInAnyOrder("provider", "demographic");
         }
 
         @Test
