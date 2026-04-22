@@ -477,8 +477,16 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     }
 
     /**
-     * Loads a demographic and verifies it exists and is active.
-     * Patients with status IN cannot participate in a new merge.
+     * Loads a demographic and verifies it is eligible to participate in a new merge.
+     * Two conditions disqualify a record:
+     * <ol>
+     *   <li>Status is IN (inactive) — catches source records from a completed merge and
+     *       merged-target records (C) that have already been unmerged.</li>
+     *   <li>The demographic is already a merged target (C) that has not been unmerged —
+     *       detected by the presence of a MERGE event in the audit table. After unmerge,
+     *       C is set to IN so condition 1 catches it first; this check only fires when
+     *       C is still AC and therefore genuinely still merged.</li>
+     * </ol>
      *
      * @param demographicNo Integer the demographic to load
      * @param label         String a human-readable label used in exception messages
@@ -489,6 +497,10 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         if (STATUS_INACTIVE.equals(demo.getPatientStatus())) {
             throw new IllegalStateException(
                     label + " demographic " + demographicNo + " is not active and cannot be merged");
+        }
+        if (mergeDao.findLatestMergeEventByMergedDemographicNo(demographicNo) != null) {
+            throw new IllegalStateException(
+                    label + " demographic " + demographicNo + " is already a merged record and cannot be used as a merge source");
         }
         return demo;
     }

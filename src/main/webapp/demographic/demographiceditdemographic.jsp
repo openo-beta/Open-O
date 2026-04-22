@@ -1336,12 +1336,12 @@
                                                     List<Integer> mergedIds = demographicManager.getMergedDemographicIds(loggedInInfo, Integer.parseInt(demographic_no));
 
                                                 %><a
-                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= demographic_no %>&displaymode=edit&dboperation=<%= dboperation %>"><%=demographic_no%>
+                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(demographic_no) %>&displaymode=edit&dboperation=<%= dboperation %>"><%= Encode.forHtml(demographic_no) %>
                                             </a>
                                                 <%
                                                     for (Integer mergedId : mergedIds) {
                                                 %>, <a
-                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= mergedId %>&displaymode=edit&dboperation=<%= dboperation %>"><%=mergedId%>
+                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(String.valueOf(mergedId)) %>&displaymode=edit&dboperation=<%= dboperation %>"><%= Encode.forHtml(String.valueOf(mergedId)) %>
                                             </a>
                                                 <%
                                                     }
