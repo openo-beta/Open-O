@@ -96,7 +96,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
      * not merged to any other record
      */
     @SuppressWarnings("unchecked")
-    @NativeSql("demographic_merged")
+    @NativeSql("demographic_merged_event")
     @Override
     public List<Integer> getMergedDemographics(Integer demographicNo) {
         // Please don't tell me anything about session handling - this hibernate stuff
@@ -105,7 +105,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         Session session = currentSession();
         try {
             SQLQuery sqlQuery = session.createSQLQuery(
-                "SELECT merged_demographic_no FROM demographic_merged WHERE primary_demographic_no = :parentId AND event_type = 'MERGE'");
+                "SELECT merged_demographic_no FROM demographic_merged_event WHERE primary_demographic_no = :parentId AND event_type = 'MERGE'");
             sqlQuery.setInteger("parentId", demographicNo);
             return sqlQuery.list();
         } finally {
@@ -3085,7 +3085,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     private static final String ACTIVE_MERGED_SUBQUERY =
             "AND de.patient_status = 'AC' "
             + "AND de.demographic_no IN ("
-            + "SELECT merged_demographic_no FROM demographic_merged WHERE event_type = 'MERGE'"
+            + "SELECT merged_demographic_no FROM demographic_merged_event WHERE event_type = 'MERGE'"
             + ") ";
 
     @SuppressWarnings("unchecked")
