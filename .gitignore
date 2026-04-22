@@ -2,6 +2,7 @@
 /target
 /eclipse-target
 /ui-test-runs
+/test-output
 /.playwright-mcp
 /override.properties
 /override_log4j.xml
@@ -39,6 +40,9 @@ __pycache__/
 .editorconfig
 .claude
 CLAUDE.md
+.classpath
+.factorypath
+.project
 
 # Docusaurus
 /website/node_modules/

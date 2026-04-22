@@ -76,26 +76,26 @@
                     <input type="submit" style="border:1px solid #666666;" value="Add New Site" />
                 </form>
 
-                <display-el:table name="sites" id="site" class="its"
+                <display:table name="sites" id="site" class="its"
                                   style="border:1px solid #666666; width:99%;margin-top:2px;">
-                    <display-el:column title="Active"><c:choose><c:when
-                            test="${site.status==0}">No</c:when><c:otherwise>Yes</c:otherwise></c:choose></display-el:column>
-                    <display-el:column title="Site Name">
+                    <display:column title="Active"><c:choose><c:when
+                            test="${site.status==0}">No</c:when><c:otherwise>Yes</c:otherwise></c:choose></display:column>
+                    <display:column title="Site Name">
                         <a href="<%= request.getContextPath() %>/admin/ManageSites.do?method=update&siteId=<c:out value='${site.siteId}'/>"><c:out
-                                value="${site.name}"/></a></display-el:column>
-                    <display-el:column property="shortName" title="Short Name"/>
-                    <display-el:column property="bgColor" title="Color" style="background-color:${site.bgColor}"/>
-                    <display-el:column property="phone" title="Telephone"/>
-                    <display-el:column property="fax" title="FAX"/>
-                    <display-el:column property="address" title="Address" style="width: 200px;"/>
-                    <display-el:column property="city" title="City"/>
-                    <display-el:column property="province" title="Province"/>
-                    <display-el:column property="postal" title="Postal Code"/>
+                                value="${site.name}"/></a></display:column>
+                    <display:column property="shortName" title="Short Name"/>
+                    <display:column property="bgColor" title="Color" style="background-color:${site.bgColor}"/>
+                    <display:column property="phone" title="Telephone"/>
+                    <display:column property="fax" title="FAX"/>
+                    <display:column property="address" title="Address" style="width: 200px;"/>
+                    <display:column property="city" title="City"/>
+                    <display:column property="province" title="Province"/>
+                    <display:column property="postal" title="Postal Code"/>
                     <% if (IsPropertiesOn.isProviderFormalizeEnable()) { %>
-                    <display-el:column property="providerIdFrom" title="ProviderID From"/>
-                    <display-el:column property="providerIdTo" title="ProviderID To"/>
+                    <display:column property="providerIdFrom" title="ProviderID From"/>
+                    <display:column property="providerIdTo" title="ProviderID To"/>
                     <% } %>
-                </display-el:table>
+                </display:table>
 
 
             </td>

@@ -41,7 +41,7 @@ import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 
 import org.owasp.encoder.Encode;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 /**

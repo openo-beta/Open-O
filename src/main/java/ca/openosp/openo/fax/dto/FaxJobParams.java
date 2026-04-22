@@ -1,6 +1,6 @@
 //CHECKSTYLE:OFF
 /**
- * Copyright (c) 2025. Magenta Health. All Rights Reserved.
+ * 
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
  * Hamilton
  * Ontario, Canada
  * <p>
- * Modifications made by Magenta Health in 2025.
+ * Modifications made by Magenta Health in collaboration with Open OSP in 2025.
  */
 
 package ca.openosp.openo.fax.dto;

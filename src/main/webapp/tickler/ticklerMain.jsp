@@ -203,9 +203,9 @@
                 text-underline: none !important;
             }
 
-            *:not(h2) {
-                line-height: 1 !important;
-                font-size: 12px !important;
+            *:not(h2):not(.btn) {
+              line-height: 1 !important;
+              font-size: 12px !important;
             }
 
             tr.comment-row td {
@@ -741,14 +741,16 @@
                 </div>
 
             </c:if>
-            <div class="pull-left" style="margin-bottom:10px;">
-                <label for="ticklerview">Filter</label>
-                <select id="ticklerview" class="form-control" name="ticklerview">
-                    <option value="A" <%=ticklerview.equals("A") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formActive"/></option>
-                    <option value="C" <%=ticklerview.equals("C") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formCompleted"/></option>
-                    <option value="D" <%=ticklerview.equals("D") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formDeleted"/></option>
-                </select>
-            </div>
+            <c:if test="${not empty param.demoview}">
+                <div class="pull-left" style="margin-bottom:10px;">
+                    <label for="ticklerview">Filter</label>
+                    <select id="ticklerview" class="form-control" name="ticklerview">
+                        <option value="A" <%=ticklerview.equals("A") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formActive"/></option>
+                        <option value="C" <%=ticklerview.equals("C") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formCompleted"/></option>
+                        <option value="D" <%=ticklerview.equals("D") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formDeleted"/></option>
+                    </select>
+                </div>
+            </c:if>
         </form>
 
         <form name="ticklerform" method="post" action="dbTicklerMain.jsp">
@@ -1005,16 +1007,21 @@
             <table id="tablefoot">
 
                 <tr class="noprint">
-                    <td class="white"><a id="checkAllLink" name="checkAllLink"
-                                         href="javascript:CheckAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnCheckAll"/></a> - <a href="javascript:ClearAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnClearAll"/></a>
+                    <td class="white">
+                      <a id="checkAllLink" class="btn btn-link" href="javascript:CheckAll();"><fmt:setBundle basename="oscarResources"/>
+                        <fmt:message key="tickler.ticklerMain.btnCheckAll"/>
+                      </a>
+                      <a href="javascript:ClearAll();" class="btn btn-link">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnClearAll"/>
+                      </a>
 
                         <input type="hidden" name="submit_form" value="">
                         <%
                             if (ticklerview.compareTo("D") == 0) {
                         %>
-                        <input type="button" class="btn"
-                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnEraseCompletely"/>" class="sbttn"
-                               onclick="document.forms['ticklerform'].submit_form.value='Erase Completely'; document.forms['ticklerform'].submit();">
+                        <input type="button" class="btn sbttn"
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnRestoreSelected"/>"
+                               onclick="document.forms['ticklerform'].submit_form.value='Activate'; document.forms['ticklerform'].submit();">
                         <%
                         } else {
                         %>

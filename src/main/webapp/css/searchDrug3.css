@@ -1,10 +1,43 @@
 
-:root * {
+:root *:not(h2) {
 	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
 	font-size: 12px;
 	overscroll-behavior: none;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+dl {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(38, 40, 42, 0.3);
+  border-radius: 4px;
+  border: lightgray thin solid;
+  padding:5px;
+}
+
+dt {
+  background-color: whitesmoke;
+}
+
+#prescriptionStageSet {
+  box-shadow: 0 2px 4px 0 rgba(38, 40, 42, 0.3);
+  border-radius: 4px;
+  border: lightgray thin solid;
+  background-color: whitesmoke;
+  padding: 0 10px;
+  margin-top: 5px;
+}
+
+#prescriptionStageSet fieldset {
+  border-radius: 4px;
+  background-color: white;
+  margin: 10px 0!important;
+  padding: 10px !important;
+}
+
+#searchPrescriptionRow {
+  display: flex;
+  flex-direction: column;
 }
 
 #medicationsHeadingRow {
@@ -89,13 +122,6 @@ table#AutoNumber1 table.legend td {
 /*table tr td#medicationsColumnThreeRowTwo, table#topLink td#topLinkRightColumn {*/
 /*	width:20% !important;*/
 /*}*/
-
-
-table td,table th {
-	text-align: left !important;
-  vertical-align: top !important;
-}
-
 
 #medicationMainTableFooter td {
 	display: none;

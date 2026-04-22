@@ -44,7 +44,7 @@ import javax.xml.ws.WebServiceException;
 
 import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.util.DateUtils;
-import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.BeanUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -102,7 +102,7 @@ import ca.openosp.openo.demographic.data.DemographicRelationship;
 
 import ca.openosp.openo.services.LookupManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 public class ClientManager2Action extends ActionSupport {
@@ -559,7 +559,7 @@ public class ClientManager2Action extends ActionSupport {
                 p.setName(cachedProgram.getName());
 
                 Program program = new Program();
-                BeanUtils.copyProperties(program, cachedProgram);
+                BeanUtils.copyProperties(cachedProgram, program);
 
                 request.setAttribute("program", program);
             } catch (Exception e) {
@@ -602,7 +602,7 @@ public class ClientManager2Action extends ActionSupport {
                 p.setName(cachedProgram.getName());
 
                 Program program = new Program();
-                BeanUtils.copyProperties(program, cachedProgram);
+                BeanUtils.copyProperties(cachedProgram, program);
 
                 request.setAttribute("program", program);
             } catch (Exception e) {

@@ -37,7 +37,6 @@ import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.Logger;
@@ -374,13 +373,23 @@ public class RxPrescriptionData {
         return prescription;
     }
 
+	/**
+	 * This function returns a list of prescriptions for a given script number and demographic number.
+	 * It retrieves the drug information and prescription details, then converts them into Prescription objects.
+	 *
+	 * @param script_no The script number to filter prescriptions by.
+	 * @param demographicNo The demographic number to filter prescriptions by.
+	 * @return A list of Prescription objects corresponding to the specified script number and demographic number.
+	 */
     public List<Prescription> getPrescriptionsByScriptNo(int script_no, int demographicNo) {
-        List<Prescription> lst = new ArrayList<Prescription>();
-        DrugDao dao = SpringUtils.getBean(DrugDao.class);
-        for (Object[] pair : dao.findDrugsAndPrescriptionsByScriptNumber(script_no)) {
-            Drug drug = (Drug) pair[0];
-            ca.openosp.openo.commn.model.Prescription rx = (ca.openosp.openo.commn.model.Prescription) pair[1];
+		List<Prescription> lst = new ArrayList<>();
+		DrugDao drugDao = SpringUtils.getBean(DrugDao.class);
+		PrescriptionDao rxDao = SpringUtils.getBean(PrescriptionDao.class);
 
+        ca.openosp.openo.commn.model.Prescription rx = rxDao.find(script_no);
+		List<Drug> drugQuery = drugDao.findBy(script_no, demographicNo);
+
+		for (Drug drug : drugQuery) {
             lst.add(toPrescription(demographicNo, drug, rx));
         }
         return lst;
@@ -1648,13 +1657,12 @@ public class RxPrescriptionData {
             // clean up fields
             if (this.takeMin > this.takeMax) this.takeMax = this.takeMin;
 
-            if (getSpecial() == null || getSpecial().length() < 6)
-                logger.warn("drug special appears to be null or empty : " + getSpecial());
-
-			String escapedSpecial = StringEscapeUtils.escapeSql(this.getSpecial());
-
-            if (escapedSpecial == null || escapedSpecial.length() < 6)
-                logger.warn("drug special after escaping appears to be null or empty : " + escapedSpecial);
+            // Redact PHI - log only metadata (length), not prescription instructions
+            String specialValue = getSpecial();
+            if (specialValue == null || specialValue.length() < 6) {
+                logger.warn("drug special appears to be null or empty (length={})",
+                        specialValue == null ? 0 : specialValue.length());
+            }
 
             DrugDao dao = SpringUtils.getBean(DrugDao.class);
             Drug drug = new Drug();
