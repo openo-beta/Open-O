@@ -17,7 +17,6 @@
 package ca.openosp.openo.lab.ca.all.parsers;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,13 +29,12 @@ import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
+import java.net.URL;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.hospitalReportManager.SFTPConnector;
+import org.springframework.core.io.ClassPathResource;
 import ca.openosp.openo.hospitalReportManager.xsd.DateFullOrPartial;
 import ca.openosp.openo.hospitalReportManager.xsd.HealthCard;
 import ca.openosp.openo.hospitalReportManager.xsd.OmdCds;
@@ -74,8 +72,8 @@ public class HRMXMLHandler implements MessageHandler {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             // Load a WXS schema, represented by a Schema instance.
-            Source schemaFile = new StreamSource(new File(SFTPConnector.OMD_directory + "report_manager_cds.xsd"));
-            Schema schema = factory.newSchema(schemaFile); //new File(SFTPConnector.OMD_directory + "report_manager_cds.xsd"));
+            URL schemaUrl = new ClassPathResource("/xsd/hrm/1.1.2/ontariomd_hrm.xsd").getURL();
+            Schema schema = factory.newSchema(schemaUrl);
 
             JAXBContext jc = JAXBContext.newInstance("ca.openosp.openo.hospitalReportManager.xsd");
             Unmarshaller u = jc.createUnmarshaller();

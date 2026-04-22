@@ -25,8 +25,7 @@ import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
+import java.net.URL;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
@@ -125,9 +124,8 @@ public class HRMReportParser {
                 // Load and compile the XSD schema
                 SchemaFactory factory = SchemaFactory
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                File schemaFile = new ClassPathResource("/xsd/hrm/1.1.2/ontariomd_hrm.xsd").getFile();
-                Source schemaSource = new StreamSource(schemaFile);
-                Schema schema = factory.newSchema(schemaSource);
+                URL schemaUrl = new ClassPathResource("/xsd/hrm/1.1.2/ontariomd_hrm.xsd").getURL();
+                Schema schema = factory.newSchema(schemaUrl);
 
                 // Unmarshal into JAXB model
                 JAXBContext jc = JAXBContext.newInstance("omd.hrm");
@@ -146,12 +144,13 @@ public class HRMReportParser {
                 if (errors != null) errors.add(e);
             } catch (JAXBException e) {
                 logger.error("error", e);
-                String msg = (e.getLinkedException() != null)
-                    ? e.getLinkedException().getMessage()
-                    : e.getMessage();
+                Throwable cause = e.getLinkedException() != null ? e.getLinkedException() : e;
+                String msg = cause.getMessage();
                 SFTPConnector.notifyHrmError(loggedInInfo, msg);
+                if (errors != null) errors.add(cause);
             } catch (IOException e) {
-                logger.error("ERROR READING report_manager_cds.xsd RESOURCE" + e);
+                logger.error("IO error during HRM report parsing: " + e.getMessage(), e);
+                if (errors != null) errors.add(e);
             }
 
             if (root != null && hrmReportFileLocation != null && fileData != null) {
