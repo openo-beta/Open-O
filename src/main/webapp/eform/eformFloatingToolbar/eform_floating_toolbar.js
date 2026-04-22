@@ -633,9 +633,10 @@ function createDialogDiv(id, title) {
 function initTicklerDialogs() {
     if (document.getElementById("ticklerConfirmDialog")) return;
 
-    // Fix near-invisible modal overlay (theme CSS sets opacity to .003)
+    // Scoped overlay style so we don't override every jQuery UI dialog overlay
+    // app-wide. Applied only to overlays we tag with the tickler-overlay class.
     const overlayStyle = document.createElement("style");
-    overlayStyle.textContent = ".ui-widget-overlay { background: #000 !important; opacity: 0.4 !important; }";
+    overlayStyle.textContent = ".tickler-overlay { background: #000 !important; opacity: 0.4 !important; }";
     document.head.appendChild(overlayStyle);
 
     // Confirm dialog (auto-open mode)
@@ -740,29 +741,24 @@ function initTicklerDialogs() {
  */
 function styleTicklerDialogCloseButton(dialogSelector) {
     jQuery(dialogSelector).on("dialogopen", function() {
+        // Tag the overlay so our scoped CSS rule applies (jQuery UI creates
+        // a fresh overlay element each time a modal dialog opens).
+        jQuery(".ui-widget-overlay").last().addClass("tickler-overlay");
+
         const closeBtn = jQuery(this).parent().find(".ui-dialog-titlebar-close");
         const titlebar = jQuery(this).parent().find(".ui-dialog-titlebar");
         titlebar.css("padding", "10px 14px");
         closeBtn.empty()
-            .removeClass("ui-button ui-corner-all ui-widget ui-button-icon-only ui-button-icon ui-icon ui-icon-closethick")
+            .removeClass("ui-button-icon-only ui-button-icon ui-icon ui-icon-closethick")
             .attr("aria-label", "Close")
             .text("×")
             .css({
-                "position": "absolute",
-                "right": "10px",
+                "width": "24px",
+                "height": "24px",
+                "font-size": "18px",
+                "line-height": "1",
                 "top": "50%",
-                "transform": "translateY(-50%)",
-                "width": "30px",
-                "height": "30px",
-                "padding": "0",
-                "font-size": "30px",
-                "line-height": "30px",
-                "text-align": "center",
-                "color": "#555",
-                "background": "transparent",
-                "border": "none",
-                "border-radius": "4px",
-                "cursor": "pointer"
+                "margin-top": "-12px"
             });
     });
 }
@@ -842,7 +838,7 @@ function showTicklerWaitingOverlay() {
     if (document.getElementById("ticklerWaitingOverlay")) return;
     const overlay = document.createElement("div");
     overlay.id = "ticklerWaitingOverlay";
-    overlay.className = "ui-widget-overlay";
+    overlay.className = "ui-widget-overlay tickler-overlay";
     document.body.appendChild(overlay);
 }
 
@@ -902,7 +898,11 @@ function promptTicklerAutoSave(proceedCallback) {
         dataType: "json",
         success: function(resp) {
             if (resp && resp.success) {
-                const ticklerId = resp.message;
+                const ticklerId = (resp.message != null) ? String(resp.message).trim() : "";
+                if (!ticklerId) {
+                    showTicklerError("Server reported success but did not return a tickler id.", proceedCallback);
+                    return;
+                }
                 const viewUrl = contextPath + "/tickler/ticklerEdit.jsp?tickler_no=" + encodeURIComponent(ticklerId);
                 jQuery("#ticklerViewLink").attr("href", viewUrl);
                 jQuery("#ticklerAutoSaveSuccessDialog").dialog("option", "buttons", {
