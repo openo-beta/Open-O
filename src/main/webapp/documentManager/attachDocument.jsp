@@ -327,6 +327,32 @@
             if ($element.attr('name') === 'docNo') input.attr('data-delegate-type', 'doc');
             return input;
         }
+
+        /**
+         * Uncheck server-pre-checked boxes whose delegate was removed in an earlier
+         * dialog session. The delegate container (#attachDocumentList for eForm,
+         * $mainForm for consult) is the source of truth for unsaved changes.
+         * Pass swapClass=true for the consult flow which tracks state via
+         * <type>_check vs <type>_pre_check class pairs.
+         */
+        function syncPreCheckedToDelegates(delegateContainer, swapClass) {
+            jQuery('#attachDocumentsForm').find('[data-pre-attached="true"]').each(function () {
+                var $cb = jQuery(this);
+                var hasDelegate = jQuery(delegateContainer).find(
+                    '.delegateAttachment[name="' + this.name + '"][value="' + this.value + '"]'
+                ).length > 0;
+                if (hasDelegate) return;
+                $cb.prop('checked', false).removeAttr('data-pre-attached');
+                if (!swapClass) return;
+                var tokens = ($cb.attr('class') || '').split(' ');
+                for (var i = 0; i < tokens.length; i++) {
+                    if (tokens[i].indexOf('_pre_check') > 0) {
+                        $cb.removeClass(tokens[i]).addClass(tokens[i].split('_')[0] + '_check');
+                        break;
+                    }
+                }
+            });
+        }
     </script>
 
 </head>

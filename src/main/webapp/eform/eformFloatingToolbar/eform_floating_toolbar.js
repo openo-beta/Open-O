@@ -245,17 +245,7 @@ jQuery(document).on('click', '*[data-poload]', function () {
                 }
             });
 
-            // Uncheck server-pre-checked boxes whose delegate was removed in an
-            // earlier dialog session (unsaved uncheck — #attachDocumentList wins).
-            jQuery('#attachDocumentsForm').find('[data-pre-attached="true"]').each(function () {
-                const $cb = jQuery(this);
-                const hasDelegate = jQuery('#attachDocumentList').find(
-                    '.delegateAttachment[name="' + this.name + '"][value="' + this.value + '"]'
-                ).length > 0;
-                if (!hasDelegate) {
-                    $cb.prop('checked', false).removeAttr('data-pre-attached');
-                }
-            });
+            syncPreCheckedToDelegates('#attachDocumentList', false);
         }
     }).dialog({
         title: title,
