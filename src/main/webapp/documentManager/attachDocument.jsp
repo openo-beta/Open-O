@@ -381,7 +381,7 @@
                                 <c:forEach items="${ allEForms }" var="eForm" varStatus="loop">
                                     <li class="eForm ${loop.index > 4 ? 'hide' : ''}">
                                         <input class="eForm_check attachable_check" type="checkbox" name="eFormNo"
-                                               id="eFormNo${ eForm.id }" value="${eForm.id}" title="${eForm.formName}"/>
+                                               id="eFormNo${ eForm.id }" value="${eForm.id}" title="${e:forHtmlAttribute(eForm.formName)}"/>
                                         <label for="eFormNo${eForm.id}">
                                             <c:out value="${eForm.subject.length() > 0 ? eForm.subject : eForm.formName} ${ eForm.getFormDate() }"/>
                                         </label>
@@ -520,7 +520,7 @@
                                 <c:forEach items="${ allHRMDocuments }" var="hrm" varStatus="loop">
                                     <li class="hrm ${loop.index > 19 ? 'hide' : ''}">
                                         <input class="hrm_check attachable_check" type="checkbox" name="hrmNo" id="hrmNo${ hrm['id'] }"
-                                               value="${hrm['id']}" title="${hrm['name']}"/>
+                                               value="${hrm['id']}" title="${e:forHtmlAttribute(hrm['name'])}"/>
                                         <label for="hrmNo${hrm['id']}">
                                             <c:out value="${ hrm['name'] } ${ hrm['report_date'] }"/>
                                         </label>
@@ -555,7 +555,7 @@
                                     <li class="form ${loop.index > 19 ? 'hide' : ''}">
                                         <input class="form_check attachable_check" type="checkbox" name="formNo"
                                                id="formNo${ form.formId }" value="${form.formId}"
-                                               title="${form.formName}"/>
+                                               title="${e:forHtmlAttribute(form.formName)}"/>
                                         <label for="formNo${form.formId}">
                                             <c:out value="${ form.formName } ${ form.getEdited() }"/>
                                         </label>
