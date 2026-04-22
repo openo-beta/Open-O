@@ -554,7 +554,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                     if (!note.isReadOnly()) {
             %>
                 <a title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"
-                   href="javascript:void(0);" onclick="<%=Encode.forJavaScript(String.valueOf(editUrl))%> return false;" style="<%=Encode.forJavaScript(String.valueOf(bgColour))%> order: 1; padding: 2px 5px;">
+                   href="javascript:void(0);" onclick="<%=Encode.forJavaScript(String.valueOf(editUrl))%> return false;" style="<%=Encode.forHtmlAttribute(String.valueOf(bgColour))%> order: 1; padding: 2px 5px;">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>
                 </a>
             <%
@@ -643,13 +643,13 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 String url = "viewEmailByLogId(1100,1000,'" + request.getContextPath() + "/admin/ManageEmails.do?method=resendEmail&logId=" + dispDocNo + "');" + "return false;";
 							if (fulltxt) {
 								%>
-									<img title='Minimize Display' id='quitImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>' style='float: right;' alt='Minimize Display' onclick='minNonEditableNoteView(<%=Encode.forJavaScript(String.valueOf(globalNoteId))%>)' src='<%=Encode.forJavaScript(String.valueOf(ctx))%>/oscarEncounter/graphics/triangle_up.gif'>
+									<img title='Minimize Display' id='quitImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>' style='float: right;' alt='Minimize Display' onclick='minNonEditableNoteView(<%=Encode.forJavaScript(String.valueOf(globalNoteId))%>)' src='<%=Encode.forHtmlAttribute(String.valueOf(ctx))%>/oscarEncounter/graphics/triangle_up.gif'>
 								<%
 							} else {
                                 // STRUTS2 TODO - below image MaxDisplay.title might need further setup to be available to the fmt bundle below
                                 // moved over from commit by Italiya 2025-02-10 as part of merging changes during STRUTS2 migration
                                %>
-                                    <img title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MaxDisplay.title"/>" id='fullImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>' alt="Maximize Display" onclick="fullView(event)" style='float: right;' src='<%=Encode.forJavaScript(String.valueOf(ctx))%>/oscarEncounter/graphics/triangle_down.gif' />
+                                    <img title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MaxDisplay.title"/>" id='fullImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>' alt="Maximize Display" onclick="fullView(event)" style='float: right;' src='<%=Encode.forHtmlAttribute(String.valueOf(ctx))%>/oscarEncounter/graphics/triangle_down.gif' />
                                <%
                             }
                             %>

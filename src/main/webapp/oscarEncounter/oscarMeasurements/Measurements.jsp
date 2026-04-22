@@ -36,6 +36,9 @@
         import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasuringInstructionBeanHandler, ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasuringInstructionBean" %>
 <%@ page import="ca.openosp.openo.managers.MeasurementManager" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicNameAgeString" %>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%
     String demo = request.getParameter("demographicNo"); //bean.getDemographicNo();
@@ -43,6 +46,16 @@
 
     MeasurementManager measurementManager = SpringUtils.getBean(MeasurementManager.class);
     String groupName = (String) request.getAttribute("groupName");
+
+    // Resolved server-side so it can be JS-encoded at the confirm() sink below.
+    String nameAgeLabel = "";
+    if (StringUtils.isNotBlank(demo) && demo.matches("^[0-9]+$")) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (loggedInInfo != null) {
+            nameAgeLabel = DemographicNameAgeString.getInstance()
+                    .getNameAgeString(loggedInInfo, Integer.parseInt(demo));
+        }
+    }
 %>
 
 <html>
@@ -119,7 +132,7 @@
                 if (parentChanged) {
                     document.forms[0].elements["value(parentChanged)"].value = "true";
 
-                    if (!confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.msgParentChanged"/> <oscar:nameage demographicNo="<%=Encode.forJavaScript(String.valueOf(demo))%>"/>"))
+                    if (!confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.Measurements.msgParentChanged"/> <%=Encode.forJavaScript(nameAgeLabel)%>"))
                         ret = false;
                 }
 

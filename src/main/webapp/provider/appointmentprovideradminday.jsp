@@ -1086,7 +1086,7 @@
                                 </svg>
 						    </span>
                             <div>
-                                <c:out value='<%=Encode.forHtmlAttribute(String.valueOf(userfirstname + " " + userlastname))%>'/>
+                                <%=Encode.forHtml(String.valueOf(userfirstname + " " + userlastname))%>
                             </div>
                         </a>
                     </li>
@@ -1354,7 +1354,7 @@
                                                         if (!skip) {
                                                 %>
                                                 <option value='<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>'<%=mygroupno.equals(p.getProviderNo()) ? " selected" : ""%> >
-                                                    <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(p.getFormattedName()))%>"/>
+                                                    <%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                                                 </option>
                                                 <%
                                                         }
@@ -1374,7 +1374,7 @@
                                                         if (!skip && (!bMultisites || siteGroups == null || siteGroups.size() == 0 || siteGroups.contains(g.getId().getMyGroupNo()))) {
                                                 %>
                                                 <option value='<%=Encode.forHtmlAttribute(String.valueOf("_grp_"+g.getId().getMyGroupNo()))%>' <%=mygroupno.equals(g.getId().getMyGroupNo()) ? "selected" : ""%>>
-                                                    <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(g.getId().getMyGroupNo()))%>"/>
+                                                    <%=Encode.forHtml(String.valueOf(g.getId().getMyGroupNo()))%>
                                                 </option>
                                                 <%
                                                         }
@@ -1386,7 +1386,7 @@
                                                         if (!skip && (!bMultisites || siteProviderNos == null || siteProviderNos.size() == 0 || siteProviderNos.contains(p.getProviderNo()))) {
                                                 %>
                                                 <option value='<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>' <%=mygroupno.equals(p.getProviderNo()) ? "selected" : ""%>>
-                                                    <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(p.getFormattedName()))%>"/>
+                                                    <%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                                                 </option>
                                                 <%
                                                         }
@@ -1591,7 +1591,7 @@
                                                onClick="goZoomView('<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>','<%= Encode.forJavaScript(curProviderName[nProvider])%>')"
                                                onDblClick="goFilpView('<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>')"
                                                title='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.zoomView"/>'>
-                                                <c:out value='<%=Encode.forHtmlAttribute(String.valueOf(curProviderName[nProvider]  + " (" + appointmentCount + ") "))%>'/>
+                                                <%=Encode.forHtml(String.valueOf(curProviderName[nProvider]  + " (" + appointmentCount + ") "))%>
                                             </a>
                                                 <oscar:oscarPropertiesCheck value="yes" property="TOGGLE_REASON_BY_PROVIDER" defaultVal="yes">
                                                     <a href="#"
@@ -1847,12 +1847,21 @@
 
                                                         <%
                                                             String nextStatus = as.getNextStatus();
+                                                            // Resolve the title once with a null-safe fallback: getTitleString(locale) can
+                                                            // return null (e.g. missing bundle entry), which would render as "null" via
+                                                            // String.valueOf and NPE in the later .length() check below.
+                                                            String statusTitle = StringUtils.defaultString(
+                                                                    StringUtils.defaultIfBlank(
+                                                                            as.getTitleString(request.getLocale()),
+                                                                            as.getTitle()));
+                                                            String viewallParam = request.getParameter("viewall");
+                                                            if (viewallParam == null || viewallParam.isEmpty()) viewallParam = "0";
                                                             if (nextStatus != null && !nextStatus.equals("")) {
                                                         %>
                                                         <!-- Short letters -->
                                                         <a class="apptStatus" href="javascript:void(0)"
-                                                           onclick="refreshSameLoc('providercontrol.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&amp;provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&amp;status=&amp;statusch=<%=Encode.forJavaScript(String.valueOf(nextStatus))%>&amp;year=<%=Encode.forJavaScript(String.valueOf(year))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(month))%>&amp;day=<%=Encode.forJavaScript(String.valueOf(day))%>&amp;<%=Encode.forJavaScript(String.valueOf(viewString))%>&amp;displaymode=addstatus&amp;dboperation=updateapptstatus&amp;viewall=${ not empty param.viewall ? param.viewall : "0" }<%= isWeekView ? "&amp;viewWeek=1" : "" %>');"
-                                                           title='<c:out value="<%=Encode.forHtmlAttribute(String.valueOf(as.getTitleString(request.getLocale())))%>" />'>
+                                                           onclick="refreshSameLoc('providercontrol.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId()))%>&amp;provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no[nProvider]))%>&amp;status=&amp;statusch=<%=Encode.forJavaScript(String.valueOf(nextStatus))%>&amp;year=<%=Encode.forJavaScript(String.valueOf(year))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(month))%>&amp;day=<%=Encode.forJavaScript(String.valueOf(day))%>&amp;<%=Encode.forJavaScript(String.valueOf(viewString))%>&amp;displaymode=addstatus&amp;dboperation=updateapptstatus&amp;viewall=<%=Encode.forJavaScript(Encode.forUriComponent(viewallParam))%><%= isWeekView ? "&amp;viewWeek=1" : "" %>');"
+                                                           title='<%=Encode.forHtmlAttribute(statusTitle)%>'>
                                                             <%
                                                                 }
                                                                 if (nextStatus != null) {
@@ -1875,7 +1884,7 @@
 
                                                             <img src="<%= request.getContextPath() %>/images/<%=Encode.forHtmlAttribute(String.valueOf(as.getImageName()))%>"
                                                                  border="0" height="10"
-                                                                 alt="<c:out value='<%=Encode.forHtmlAttribute(String.valueOf((as.getTitleString(request.getLocale()).length()>0)?as.getTitleString(request.getLocale()):as.getTitle()))%>' /> ">
+                                                                 alt="<%=Encode.forHtmlAttribute(statusTitle)%>">
 
                                                             <%
                                                                     }

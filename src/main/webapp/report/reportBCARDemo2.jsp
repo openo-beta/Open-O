@@ -15,9 +15,12 @@
 %>
 
 <%@ page
-        import="java.util.*, ca.openosp.openo.report.data.*, java.sql.*, ca.openosp.openo.login.*, java.net.*"
+        import="java.util.*, ca.openosp.openo.report.data.*, java.sql.*, java.net.*"
         errorPage="/errorpage.jsp" %>
-<%@ page import="ca.openosp.openo.login.DBHelp" %>
+<%@ page import="ca.openosp.openo.db.DBHandler" %>
+<%@ page import="ca.openosp.openo.util.SqlUtils" %>
+<%@ page import="ca.openosp.openo.util.ParameterizedClause" %>
+<%@ page import="ca.openosp.Misc" %>
 <%@ page import="ca.openosp.openo.report.data.RptReportCreator" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <% java.util.Properties oscarVariables = ca.openosp.OscarProperties.getInstance(); %>
@@ -35,8 +38,6 @@
     if (request.getParameter("bcartype") != null && request.getParameter("bcartype").equals("BCAR2007")) {
         ARTYPE = "formBCAR2007";
     }
-
-    DBHelp dbObj = new DBHelp();
 
     Properties propDemoSelect = new Properties();
     Properties propSpecSelect = new Properties();
@@ -155,55 +156,60 @@
 
 //get replaced filter
 // filling the var with the real date value
-    Vector vecFilter = new Vector();
     boolean bDemoFilter = false;
     boolean bARFilter = false;
     boolean bSpecFilter = false;
-    String sDemoFilter = "";
-    String sSpecFilter = "";
-    String sARFilter = "";
+    ParameterizedClause demoFilter = ParameterizedClause.empty();
+    ParameterizedClause specFilter = ParameterizedClause.empty();
+    ParameterizedClause arFilter = ParameterizedClause.empty();
     for (int i = 0; i < vecValue.size(); i++) {
         String tempVal = (String) vecValue.get(i);
         Vector vecVar = RptReportCreator.getVarVec(tempVal);
         Vector vecVarValue = new Vector();
         for (int j = 0; j < vecVar.size(); j++) {
+            String paramValue;
             // conver date format if needed
             if (((String) vecVar.get(j)).matches(VARNAME_FORMAT) && ((String) vecDateFormat.get(i)).length() > 1) {
-                vecVarValue.add(RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
-                        (String) vecDateFormat.get(i), "yyyy-MM-dd"));
+                paramValue = RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
+                        (String) vecDateFormat.get(i), "yyyy-MM-dd");
             } else {
-                vecVarValue.add(request.getParameter((String) vecVar.get(j)));
+                paramValue = request.getParameter((String) vecVar.get(j));
             }
+            vecVarValue.add(paramValue);
         }
 
+        ParameterizedClause strFilter = RptReportCreator.getWhereValueClauseParameterized(tempVal, vecVarValue);
+        String filterSql = strFilter.sql();
 
-        String strFilter = RptReportCreator.getWhereValueClause(tempVal, vecVarValue);
-
-
-        if (strFilter.indexOf("demographic.") >= 0) {
+        if (filterSql.indexOf("demographic.") >= 0) {
             bDemoFilter = true;
-            sDemoFilter += (sDemoFilter.length() < 1 ? "" : " and ") + strFilter;
+            demoFilter = demoFilter.and(strFilter);
         }
-        if (strFilter.indexOf("demographicExt.") >= 0) {
+        if (filterSql.indexOf("demographicExt.") >= 0) {
             bSpecFilter = true;
-            sSpecFilter += (sSpecFilter.length() < 1 ? "" : " and ") + strFilter;
+            specFilter = specFilter.and(strFilter);
         }
-        if (strFilter.indexOf(ARTYPE + ".") >= 0) {
+        if (filterSql.indexOf(ARTYPE + ".") >= 0) {
             bARFilter = true;
             //"formBCAR.demographic_no in (select distinct demographic_no from formBCBirthSumMo)"
-            if (strFilter.indexOf("formBCBirthSumMo") > 0) {
-                ResultSet rs = dbObj.searchDBRecord("select distinct demographic_no from formBCBirthSumMo");
-                String sBirthSumNo = "";
-                while (rs.next()) {
-                    sBirthSumNo += (sBirthSumNo.length() > 0 ? "," : "") + rs.getInt("demographic_no");
+            if (filterSql.indexOf("formBCBirthSumMo") > 0) {
+                List<Integer> birthSumDemos = new ArrayList<>();
+                try (ResultSet rs = DBHandler.GetPreSQL("select distinct demographic_no from formBCBirthSumMo")) {
+                    while (rs.next()) {
+                        birthSumDemos.add(rs.getInt("demographic_no"));
+                    }
                 }
-                sBirthSumNo = sBirthSumNo.length() > 0 ? sBirthSumNo : "0";
-                strFilter = ARTYPE + ".demographic_no in (" + sBirthSumNo + ")";
+                if (birthSumDemos.isEmpty()) {
+                    strFilter = new ParameterizedClause("1=0", new ArrayList<>());
+                } else {
+                    String inSql = ARTYPE + ".demographic_no in ("
+                        + SqlUtils.inClausePlaceholders(birthSumDemos.size()) + ")";
+                    strFilter = new ParameterizedClause(inSql, new ArrayList<>(birthSumDemos));
+                }
             }
 
-            sARFilter += (sARFilter.length() < 1 ? "" : " and ") + strFilter;
+            arFilter = arFilter.and(strFilter);
         }
-        vecFilter.add(strFilter);
     }
 
 //query sub
@@ -214,13 +220,14 @@
     Vector vecFieldValue = new Vector();
     String ORDER_BY = " order by demographic.last_name, demographic.first_name";
     if (bDemoSelect && !bARSelect && !bSpecSelect && bDemoFilter && !bARFilter && !bSpecFilter) {
-        String sql = "select " + sDemoSelect + " from demographic where " + sDemoFilter + ORDER_BY;
+        String sql = String.join(" ", "select", sDemoSelect, "from demographic where",
+            demoFilter.sql(), ORDER_BY);
         String[] temp = sDemoSelect.replaceAll("demographic.", "").split(",");
         for (int i = 0; i < temp.length; i++) {
             vecFieldCaption.add(propDemoSelect.getProperty(temp[i].trim()));
             vecFieldName.add(temp[i].trim());
         }
-        vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName);
+        vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName, demoFilter.params().toArray());
     }
 
 // table: demographic and demographicExt
@@ -229,7 +236,18 @@
     if ((bDemoSelect && !bARSelect && bSpecSelect && !bARFilter) || (!bARFilter && bSpecFilter)) {
         if (bDemoSelect && !bARSelect && bSpecSelect && !bSpecFilter) {
             vecFieldName.add("demographic_no");
-            String sql = "select demographic_no," + sDemoSelect + " from demographic where " + sDemoFilter + ORDER_BY;
+            // bDemoFilter is not required to enter this branch, so demoFilter may be empty;
+            // only emit WHERE when there is an actual filter clause to emit.
+            List<String> sqlParts = new ArrayList<>();
+            sqlParts.add("select demographic_no,");
+            sqlParts.add(sDemoSelect);
+            sqlParts.add("from demographic");
+            if (!demoFilter.isEmpty()) {
+                sqlParts.add("where");
+                sqlParts.add(demoFilter.sql());
+            }
+            sqlParts.add(ORDER_BY);
+            String sql = String.join(" ", sqlParts);
 
             String[] temp = sDemoSelect.replaceAll("demographic.", "").split(",");
             for (int i = 0; i < temp.length; i++) {
@@ -237,23 +255,30 @@
                 vecFieldName.add(temp[i].trim());
 
             }
-            vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName);
+            vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName, demoFilter.params().toArray());
             vecFieldName.remove(0); // remove "demographic_no"
 
             //get demographic_no
-            String strDemoNo = "";
+            List<Integer> demoNos = new ArrayList<>();
             for (int j = 0; j < vecFieldValue.size(); j++) {
                 Properties prop = (Properties) vecFieldValue.get(j);
-                strDemoNo += (strDemoNo.length() < 1 ? "" : ",") + prop.getProperty("demographic_no");
+                demoNos.add(Integer.parseInt(prop.getProperty("demographic_no")));
             }
             temp = sSpecSelect.replaceAll("demographicExt.", "").split(",");
             for (int i = 0; i < temp.length; i++) {
                 vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
-                sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
-                sql += strDemoNo + ") order by date_time desc limit 1";
-                ResultSet rs = dbObj.searchDBRecord(sql);
-                while (rs.next()) {
-                    propSpecValue.setProperty(dbObj.getString(rs, "demographic_no") + temp[i], dbObj.getString(rs, "value"));
+                if (!demoNos.isEmpty()) {
+                    sql = "select demographic_no,value from demographicExt where key_val = ? and demographic_no in ("
+                        + SqlUtils.inClausePlaceholders(demoNos.size())
+                        + ") order by date_time desc limit 1";
+                    List<Object> params = new ArrayList<>();
+                    params.add(temp[i].trim());
+                    params.addAll(demoNos);
+                    ResultSet rs = DBHandler.GetPreSQL(sql, params.toArray());
+                    while (rs.next()) {
+                        propSpecValue.setProperty(Misc.getString(rs, "demographic_no") + temp[i], Misc.getString(rs, "value"));
+                    }
+                    rs.close();
                 }
             }
 
@@ -263,32 +288,35 @@
             // get demoNo
             String sql = null;
             ResultSet rs = null;
-            String sTempEle = sSpecFilter.length() > 0 ? (" and " + sSpecFilter) : "";
-            String subQuery = "select distinct(demographic.demographic_no) from demographicExt, demographic where demographic.demographic_no=demographicExt.demographic_no ";
-            subQuery += " and " + sDemoFilter + sTempEle + "  ";
+            ParameterizedClause subWhere = demoFilter.and(specFilter);
+            String subQuery = String.join(" ",
+                "select distinct(demographic.demographic_no) from demographicExt, demographic where demographic.demographic_no=demographicExt.demographic_no and",
+                subWhere.sql());
 
-            String subFormDemoNo = "";
-            rs = dbObj.searchDBRecord(subQuery);
+            List<Integer> subFormDemoNos = new ArrayList<>();
+            rs = DBHandler.GetPreSQL(subQuery, subWhere.params().toArray());
             while (rs.next()) {
-                subFormDemoNo += (subFormDemoNo.length() > 0 ? "," : "") + rs.getInt("demographic.demographic_no");
+                subFormDemoNos.add(rs.getInt("demographic.demographic_no"));
             }
-            subFormDemoNo = subFormDemoNo.length() > 0 ? subFormDemoNo : "0";
+            rs.close();
             // get value for spec
             String[] temp = sSpecSelect.replaceAll("demographicExt.", "").split(",");
             for (int i = 0; i < temp.length; i++) {
                 vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
-                sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
-                sql += subFormDemoNo + ") order by date_time desc limit 1";
-                rs = dbObj.searchDBRecord(sql);
-                while (rs.next()) {
-                    propSpecValue.setProperty(dbObj.getString(rs, "demographic_no") + temp[i], dbObj.getString(rs, "value"));
+                if (!subFormDemoNos.isEmpty()) {
+                    sql = "select demographic_no,value from demographicExt where key_val = ? and demographic_no in ("
+                        + SqlUtils.inClausePlaceholders(subFormDemoNos.size())
+                        + ") order by date_time desc limit 1";
+                    List<Object> params = new ArrayList<>();
+                    params.add(temp[i].trim());
+                    params.addAll(subFormDemoNos);
+                    rs = DBHandler.GetPreSQL(sql, params.toArray());
+                    while (rs.next()) {
+                        propSpecValue.setProperty(Misc.getString(rs, "demographic_no") + temp[i], Misc.getString(rs, "value"));
+                    }
+                    rs.close();
                 }
             }
-
-            //sTempEle = sSpecSelect.length()>0? (","+sSpecSelect) : "";
-            sql = "select demographic.demographic_no," + sDemoSelect + " from demographic where ";
-            sql += " demographic.demographic_no in (" + subFormDemoNo + ") " + ORDER_BY;
-
 
             temp = sDemoSelect.replaceAll("demographic.", "").split(",");
             for (int i = 0; i < temp.length; i++) {
@@ -297,7 +325,11 @@
 
             }
 
-            vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName);
+            if (!subFormDemoNos.isEmpty()) {
+                sql = "select demographic.demographic_no," + sDemoSelect + " from demographic where "
+                    + " demographic.demographic_no in (" + SqlUtils.inClausePlaceholders(subFormDemoNos.size()) + ") " + ORDER_BY;
+                vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName, subFormDemoNos.toArray());
+            }
             vecFieldName.remove(0); // remove "demographic_no"
         }
     }
@@ -306,26 +338,26 @@
     Vector vecARCaption = new Vector();
     Properties propARValue = new Properties();
     if ((bDemoSelect && bARSelect && !bSpecSelect && !bSpecFilter) || (!bSpecSelect && bARFilter && !bSpecFilter)) {
-        String sTempEle = sARFilter.length() > 0 ? (" and " + sARFilter) : "";
-        String subQuery = "select max(ID) from " + ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no ";
-
-        ///here is the prob
-
-        subQuery += " and " + sDemoFilter + sTempEle + " group by " + ARTYPE + ".demographic_no," + ARTYPE + ".formCreated ";
-
-        String subFormId = "";
-        ResultSet rs = dbObj.searchDBRecord(subQuery);
-        while (rs.next()) {
-            subFormId += (subFormId.length() > 0 ? "," : "") + rs.getInt("max(ID)");
+        ParameterizedClause subWhere = demoFilter.and(arFilter);
+        List<String> subParts = new ArrayList<>();
+        subParts.add("select max(ID) from");
+        subParts.add(ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no");
+        if (!subWhere.isEmpty()) {
+            subParts.add("and");
+            subParts.add(subWhere.sql());
         }
+        subParts.add("group by");
+        subParts.add(ARTYPE + ".demographic_no," + ARTYPE + ".formCreated");
+        String subQuery = String.join(" ", subParts);
 
-        sTempEle = sARSelect.length() > 0 ? ("," + sARSelect) : "";
-        subFormId = subFormId.length() > 0 ? subFormId : "0";
+        List<Integer> subFormIds = new ArrayList<>();
+        ResultSet rs = DBHandler.GetPreSQL(subQuery, subWhere.params().toArray());
+        while (rs.next()) {
+            subFormIds.add(rs.getInt("max(ID)"));
+        }
+        rs.close();
 
-
-        String sql = "select demographic.demographic_no," + sDemoSelect + sTempEle + " from demographic," + ARTYPE + " where ";
-        sql += ARTYPE + ".ID in (" + subFormId + ") and demographic.demographic_no=" + ARTYPE + ".demographic_no " + ORDER_BY;
-
+        String arSelectSuffix = sARSelect.length() > 0 ? ("," + sARSelect) : "";
 
         String[] temp = sDemoSelect.replaceAll("demographic.", "").split(",");
         for (int i = 0; i < temp.length; i++) {
@@ -341,7 +373,11 @@
 
             }
         }
-        vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName);
+        if (!subFormIds.isEmpty()) {
+            String sql = "select demographic.demographic_no," + sDemoSelect + arSelectSuffix + " from demographic," + ARTYPE + " where "
+                + ARTYPE + ".ID in (" + SqlUtils.inClausePlaceholders(subFormIds.size()) + ") and demographic.demographic_no=" + ARTYPE + ".demographic_no " + ORDER_BY;
+            vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName, subFormIds.toArray());
+        }
 
         //vecFieldName.remove(0); // remove "demographic_no"
     }
@@ -350,21 +386,26 @@
     if ((bDemoSelect && bARSelect && bSpecSelect) || (bARFilter && bSpecFilter)) {
         if (bDemoSelect && bARSelect && bSpecSelect && !bSpecFilter) {
             vecFieldName.add("demographic_no");
-            String sTempEle = sARFilter.length() > 0 ? (" and " + sARFilter) : "";
-            String subQuery = "select max(ID) from " + ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no ";
-            subQuery += " and " + sDemoFilter + sTempEle + " group by " + ARTYPE + ".demographic_no," + ARTYPE + ".formCreated ";
-
-            String subFormId = "";
-            ResultSet rs = dbObj.searchDBRecord(subQuery);
-            while (rs.next()) {
-                subFormId += (subFormId.length() > 0 ? "," : "") + rs.getInt("max(ID)");
+            ParameterizedClause subWhere = demoFilter.and(arFilter);
+            List<String> subParts = new ArrayList<>();
+            subParts.add("select max(ID) from");
+            subParts.add(ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no");
+            if (!subWhere.isEmpty()) {
+                subParts.add("and");
+                subParts.add(subWhere.sql());
             }
+            subParts.add("group by");
+            subParts.add(ARTYPE + ".demographic_no," + ARTYPE + ".formCreated");
+            String subQuery = String.join(" ", subParts);
 
-            sTempEle = sARSelect.length() > 0 ? ("," + sARSelect) : "";
-            subFormId = subFormId.length() > 0 ? subFormId : "0";
-            String sql = "select demographic.demographic_no," + sDemoSelect + sTempEle + " from demographic," + ARTYPE + " where ";
-            sql += ARTYPE + ".ID in (" + subFormId + ") and demographic.demographic_no=" + ARTYPE + ".demographic_no " + ORDER_BY;
+            List<Integer> subFormIds = new ArrayList<>();
+            ResultSet rs = DBHandler.GetPreSQL(subQuery, subWhere.params().toArray());
+            while (rs.next()) {
+                subFormIds.add(rs.getInt("max(ID)"));
+            }
+            rs.close();
 
+            String arSelectSuffix = sARSelect.length() > 0 ? ("," + sARSelect) : "";
 
             String[] temp = sDemoSelect.replaceAll("demographic.", "").split(",");
             for (int i = 0; i < temp.length; i++) {
@@ -380,24 +421,35 @@
 
                 }
             }
-            vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName);
+            if (!subFormIds.isEmpty()) {
+                String sql = "select demographic.demographic_no," + sDemoSelect + arSelectSuffix + " from demographic," + ARTYPE + " where "
+                    + ARTYPE + ".ID in (" + SqlUtils.inClausePlaceholders(subFormIds.size()) + ") and demographic.demographic_no=" + ARTYPE + ".demographic_no " + ORDER_BY;
+                vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName, subFormIds.toArray());
+            }
             vecFieldName.remove(0); // remove "demographic_no"
 
             //get demographic_no
-            String strDemoNo = "";
+            List<Integer> demoNos = new ArrayList<>();
             for (int j = 0; j < vecFieldValue.size(); j++) {
                 Properties prop = (Properties) vecFieldValue.get(j);
-                strDemoNo += (strDemoNo.length() < 1 ? "" : ",") + prop.getProperty("demographic_no");
+                demoNos.add(Integer.parseInt(prop.getProperty("demographic_no")));
             }
 
             temp = sSpecSelect.replaceAll("demographicExt.", "").split(",");
             for (int i = 0; i < temp.length; i++) {
                 vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
-                sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
-                sql += strDemoNo + ") order by date_time ";
-                rs = dbObj.searchDBRecord(sql);
-                while (rs.next()) {
-                    propSpecValue.setProperty(dbObj.getString(rs, "demographic_no") + temp[i], dbObj.getString(rs, "value"));
+                if (!demoNos.isEmpty()) {
+                    String sql = "select demographic_no,value from demographicExt where key_val = ? and demographic_no in ("
+                        + SqlUtils.inClausePlaceholders(demoNos.size())
+                        + ") order by date_time";
+                    List<Object> params = new ArrayList<>();
+                    params.add(temp[i].trim());
+                    params.addAll(demoNos);
+                    rs = DBHandler.GetPreSQL(sql, params.toArray());
+                    while (rs.next()) {
+                        propSpecValue.setProperty(Misc.getString(rs, "demographic_no") + temp[i], Misc.getString(rs, "value"));
+                    }
+                    rs.close();
                 }
             }
         }
@@ -409,45 +461,58 @@
             // get demoNo
             String sql = null;
             ResultSet rs = null;
-            String sTempEle = sSpecFilter.length() > 0 ? (" and " + sSpecFilter) : "";
-            String subQuery = "select distinct(demographic.demographic_no) from demographicExt, demographic where demographic.demographic_no=demographicExt.demographic_no ";
-            subQuery += " and " + sDemoFilter + sTempEle + "  ";
+            ParameterizedClause specSubWhere = demoFilter.and(specFilter);
+            String subQuery = String.join(" ",
+                "select distinct(demographic.demographic_no) from demographicExt, demographic where demographic.demographic_no=demographicExt.demographic_no and",
+                specSubWhere.sql());
 
-            String subFormDemoNo = "";
-            rs = dbObj.searchDBRecord(subQuery);
+            List<Integer> subFormDemoNos = new ArrayList<>();
+            rs = DBHandler.GetPreSQL(subQuery, specSubWhere.params().toArray());
             while (rs.next()) {
-                subFormDemoNo += (subFormDemoNo.length() > 0 ? "," : "") + rs.getInt("demographic.demographic_no");
+                subFormDemoNos.add(rs.getInt("demographic.demographic_no"));
             }
+            rs.close();
             // get value for spec
             String[] temp = sSpecSelect.replaceAll("demographicExt.", "").split(",");
             for (int i = 0; i < temp.length; i++) {
                 vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
-                sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
-                sql += subFormDemoNo + ") order by date_time desc limit 1";
-                rs = dbObj.searchDBRecord(sql);
-                while (rs.next()) {
-                    propSpecValue.setProperty(dbObj.getString(rs, "demographic_no") + temp[i], dbObj.getString(rs, "value"));
+                if (!subFormDemoNos.isEmpty()) {
+                    sql = "select demographic_no,value from demographicExt where key_val = ? and demographic_no in ("
+                        + SqlUtils.inClausePlaceholders(subFormDemoNos.size())
+                        + ") order by date_time desc limit 1";
+                    List<Object> params = new ArrayList<>();
+                    params.add(temp[i].trim());
+                    params.addAll(subFormDemoNos);
+                    rs = DBHandler.GetPreSQL(sql, params.toArray());
+                    while (rs.next()) {
+                        propSpecValue.setProperty(Misc.getString(rs, "demographic_no") + temp[i], Misc.getString(rs, "value"));
+                    }
+                    rs.close();
                 }
             }
 
             // formAR second
-            sTempEle = sARFilter.length() > 0 ? (" and " + sARFilter) : "";
-            subQuery = "select max(ID) from " + ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no ";
-            subQuery += " and " + sDemoFilter + sTempEle + " group by " + ARTYPE + ".demographic_no," + ARTYPE + ".formCreated ";
-
-            String subFormId = "";
-            rs = dbObj.searchDBRecord(subQuery);
-            while (rs.next()) {
-                subFormId += (subFormId.length() > 0 ? "," : "") + rs.getInt("max(ID)");
+            ParameterizedClause arSubWhere = demoFilter.and(arFilter);
+            List<String> arSubParts = new ArrayList<>();
+            arSubParts.add("select max(ID) from");
+            arSubParts.add(ARTYPE + ", demographic where demographic.demographic_no=" + ARTYPE + ".demographic_no");
+            if (!arSubWhere.isEmpty()) {
+                arSubParts.add("and");
+                arSubParts.add(arSubWhere.sql());
             }
+            arSubParts.add("group by");
+            arSubParts.add(ARTYPE + ".demographic_no," + ARTYPE + ".formCreated");
+            subQuery = String.join(" ", arSubParts);
+
+            List<Integer> subFormIds = new ArrayList<>();
+            rs = DBHandler.GetPreSQL(subQuery, arSubWhere.params().toArray());
+            while (rs.next()) {
+                subFormIds.add(rs.getInt("max(ID)"));
+            }
+            rs.close();
 
             // total
-            sTempEle = sARSelect.length() > 0 ? ("," + sARSelect) : "";
-            subFormId = subFormId.length() > 0 ? subFormId : "0";
-            sql = "select demographic.demographic_no," + sDemoSelect + sTempEle + " from demographic," + ARTYPE + " where ";
-            sql += " demographic.demographic_no in (" + subFormDemoNo + ") and ";
-            sql += ARTYPE + ".ID in (" + subFormId + ") and demographic.demographic_no=" + ARTYPE + ".demographic_no " + ORDER_BY;
-
+            String arSelectSuffix = sARSelect.length() > 0 ? ("," + sARSelect) : "";
 
             temp = sDemoSelect.replaceAll("demographic.", "").split(",");
             for (int i = 0; i < temp.length; i++) {
@@ -463,7 +528,15 @@
 
                 }
             }
-            vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName);
+            if (!subFormDemoNos.isEmpty() && !subFormIds.isEmpty()) {
+                sql = "select demographic.demographic_no," + sDemoSelect + arSelectSuffix + " from demographic," + ARTYPE + " where "
+                    + " demographic.demographic_no in (" + SqlUtils.inClausePlaceholders(subFormDemoNos.size()) + ") and "
+                    + ARTYPE + ".ID in (" + SqlUtils.inClausePlaceholders(subFormIds.size()) + ") and demographic.demographic_no=" + ARTYPE + ".demographic_no " + ORDER_BY;
+                List<Object> totalParams = new ArrayList<>();
+                totalParams.addAll(subFormDemoNos);
+                totalParams.addAll(subFormIds);
+                vecFieldValue = (new RptReportCreator()).query(sql, vecFieldName, totalParams.toArray());
+            }
             vecFieldName.remove(0); // remove "demographic_no"
 
         }

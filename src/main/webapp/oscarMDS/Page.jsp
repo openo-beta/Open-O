@@ -379,7 +379,7 @@
                             <%=Encode.forHtml(String.valueOf((result.isAbnormal() ? "Abnormal" : "")))%>
                         </td>
                         <td class="lab-label">
-                            <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(result.getLabel()))%>"/>
+                            <%=Encode.forHtml(String.valueOf(result.getLabel()))%>
                         </td>
                         <td>
                             <%=Encode.forHtml(String.valueOf(result.getDateTime() + (result.isDocument() ? " / " + result.lastUpdateDate : "")))%>
@@ -388,13 +388,13 @@
                         <%--                                    <%=Encode.forHtml(String.valueOf(result.getPriority()))%>--%>
                         <%--                                </td>--%>
                         <td>
-                            <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(result.getRequestingClient()))%>"/>
+                            <%=Encode.forHtml(String.valueOf(result.getRequestingClient()))%>
                         </td>
                         <td>
-                            <c:out value='<%=Encode.forHtmlAttribute(String.valueOf(result.isDocument() ? result.description == null ? "" : result.description : result.getDisciplineDisplayString()))%>'/>
+                            <%=Encode.forHtml(String.valueOf(result.isDocument() ? result.description == null ? "" : result.description : result.getDisciplineDisplayString()))%>
                         </td>
                         <td>
-                            <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(result.getReportStatus()))%>"/>
+                            <%=Encode.forHtml(String.valueOf(result.getReportStatus()))%>
                         </td>
                         <td>
                             <% int multiLabCount = result.getMultipleAckCount(); %>

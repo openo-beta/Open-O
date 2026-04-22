@@ -411,8 +411,8 @@
                                                         <strong>Address:</strong>
 
                                                         <div style="padding-left: 5px;">
-                                                            <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getAddress()))%>"/><br>
-                                                            <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getCity()))%>"/>,
+                                                            <%=Encode.forHtml(String.valueOf(demo.getAddress()))%><br>
+                                                            <%=Encode.forHtml(String.valueOf(demo.getCity()))%>,
                                                             <%=Encode.forHtml(String.valueOf(demo.getProvince()))%><br>
                                                             <%=Encode.forHtmlContent(demo.getPostal())%>
                                                         </div>
@@ -574,7 +574,7 @@
                                                                 <% SystemPreferences invoiceClinicInfo = systemPreferencesDao.findPreferenceByName(SystemPreferences.GENERAL_SETTINGS_KEYS.invoice_use_custom_clinic_info);
                                                                     if (invoiceClinicInfo == null || StringUtils.isNullOrEmpty(invoiceClinicInfo.getValue())) { %>
                                                                 <td class="title4">
-                                                                    <c:out value="<%=Encode.forHtmlAttribute(String.valueOf(clinic.getClinicName()))%>"/>
+                                                                    <%=Encode.forHtml(String.valueOf(clinic.getClinicName()))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>

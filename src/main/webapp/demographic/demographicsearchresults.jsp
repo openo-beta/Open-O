@@ -440,7 +440,7 @@
 
                             if (fromMessenger) {
                         %>
-                        <a href="demographiccontrol.jsp?keyword=<%=Encode.forUriComponent(Encode.forHtml(Misc.toUpperLowerCase(demo.getLastName()+", "+demo.getFirstName())))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(dem_no))%>&displaymode=linkMsg2Demo&dboperation=search_detail"><%=Encode.forHtml(String.valueOf(demo.getDemographicNo()))%>
+                        <a href="demographiccontrol.jsp?keyword=<%=Encode.forUriComponent(Misc.toUpperLowerCase(demo.getLastName()+", "+demo.getFirstName()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(dem_no))%>&displaymode=linkMsg2Demo&dboperation=search_detail"><%=Encode.forHtml(String.valueOf(demo.getDemographicNo()))%>
                         </a></td>
                     <%
                     } else {

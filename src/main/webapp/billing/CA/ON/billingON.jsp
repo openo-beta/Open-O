@@ -890,9 +890,11 @@
         }
 
         function scScriptAttach(nameF) {
-            f0 = escape(nameF.value);
-            f1 = escape("document.forms[0].elements[\'" + nameF.name + "\'].value");
-            awnd = rs('att', 'billingCodeSearch.jsp?name=' + f0 + '&search=&name1=&name2=&nameF=' + f1, 600, 600, 1);
+            // Send the element name and the parent form index as separate parameters so
+            // billingCodeSearch.jsp / billingCodeUpdate.jsp can rebuild the access path
+            // from a fixed server-side template rather than eval-ing a caller-supplied string.
+            f0 = encodeURIComponent(nameF.value);
+            awnd = rs('att', 'billingCodeSearch.jsp?name=' + f0 + '&search=&name1=&name2=&formIndex=0&elementName=' + encodeURIComponent(nameF.name), 600, 600, 1);
             //awnd.focus();
         }
 
@@ -1020,7 +1022,7 @@
         }
 
         function prepareBack() {
-            document.forms[0].services_checked.value = "<%=Encode.forHtmlAttribute(request.getParameter("services_checked"))%>";
+            document.forms[0].services_checked.value = "<%=Encode.forJavaScript(String.valueOf(request.getParameter("services_checked")))%>";
             if (document.forms[0].services_checked.value == "null") document.forms[0].services_checked.value = 0;
             document.forms[0].url_back.value = location.href;
 
@@ -1460,7 +1462,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
 	while (iter.hasNext()) {
 		Provider p=iter.next();
 		if ("1".equals(p.getStatus()) && StringUtils.isNotBlank(p.getOhipNo())) {
-	%><option value='<%=Encode.forJavaScript(String.valueOf(p.getProviderNo()))%>|<%=Encode.forJavaScript(String.valueOf(p.getOhipNo()))%>' ><%=Encode.forHtmlAttribute(p.getLastName())%>, <%=Encode.forHtmlAttribute(p.getFirstName())%></option><%}}%>";
+	%><option value='<%=Encode.forJavaScript(String.valueOf(p.getProviderNo()))%>|<%=Encode.forJavaScript(String.valueOf(p.getOhipNo()))%>' ><%=Encode.forJavaScript(Encode.forHtml(p.getLastName()))%>, <%=Encode.forJavaScript(Encode.forHtml(p.getFirstName()))%></option><%}}%>";
                                             <%}%>
 
                                             function changeSite(sel) {

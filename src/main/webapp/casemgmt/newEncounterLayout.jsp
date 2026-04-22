@@ -371,7 +371,7 @@
             int randomNo = new Random().nextInt();%>
         <script id="mainScript"
                 src="${ pageContext.request.contextPath }/js/custom/ocean/cme.js?no-cache=<%=Encode.forJavaScript(String.valueOf(randomNo))%>&autoRefresh=true"
-                ocean-host=<%=Encode.forUriComponent(OscarProperties.getInstance().getProperty("ocean_host"))%>></script>
+                ocean-host="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("ocean_host"))%>"></script>
         <% } %>
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">

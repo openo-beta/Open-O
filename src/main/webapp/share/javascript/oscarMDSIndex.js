@@ -1619,36 +1619,68 @@ function createPatientDocLabEle(patientId, doclabid) {
     postForm(url, data)
         .then(response => response.json())
         .then(json => {
-        //oscarLog(json);
-        if (json != null) {
-            const patientName = json.demoName;//get name from id
+            if (json == null) return;
+
+            const patientName = json.demoName;
             addPatientId(patientId);
             addPatientIdName(patientId, patientName);
-            let e = '<dt><img id="plus' + patientId + '" alt="plus" src="' + ctx + '/images/plus.png" onclick="showhideSubCat(\'plus\',\'' + patientId + '\');"/><img id="minus' + patientId + '" alt="minus" style="display:none;" src="' + ctx + '/images/minus.png" onclick="showhideSubCat(\'minus\',\'' + patientId + '\');"/>' +
-            '<a id="patient' + patientId + 'all" href="javascript:void(0);" onclick="resetCurrentFirstDocLab();showThisPatientDocs(\'' + patientId + '\');un_bold(this);" title="' + patientName + '">' + patientName + ' (<span id="patientNumDocs' + patientId + '">1</span>)</a>' +
-            '<dl id="labdoc' + patientId + 'showSublist" style="display:none">';
-            const type = checkType(doclabid);
-            let s;
-            //oscarLog('type='+type);
-            //oscarLog('eee='+e);
-            if (type == 'DOC') {
-                s = createNewDocEle(patientId);
-            } else if (type == 'HL7') {
-                s = createNewHL7Ele(patientId);
-            } else {
-                return '';
-            }
-            e += s;
-            e += '</dl></dt>';
-            //oscarLog('jjjjje='+e);
-            //oscarLog('before return e');
-            const patientsdoclabsEl = document.getElementById('patientsdoclabs');
-            if (patientsdoclabsEl) patientsdoclabsEl.insertAdjacentHTML('beforeend', e);
-            return e;
-        }
-    })
-    .catch(error => console.error('Error:', error));
 
+            const type = checkType(doclabid);
+            if (type !== 'DOC' && type !== 'HL7') return;
+
+            const patientsdoclabsEl = document.getElementById('patientsdoclabs');
+            if (!patientsdoclabsEl) return;
+
+            // Build element tree via DOM API so patientName (which can legitimately
+            // contain apostrophes, e.g. "O'Brien") cannot break HTML/attribute parsing
+            // or be coerced into script execution.
+            const dt = document.createElement('dt');
+
+            const plusImg = document.createElement('img');
+            plusImg.id = 'plus' + patientId;
+            plusImg.alt = 'plus';
+            plusImg.src = ctx + '/images/plus.png';
+            plusImg.onclick = function () { showhideSubCat('plus', patientId); };
+            dt.appendChild(plusImg);
+
+            const minusImg = document.createElement('img');
+            minusImg.id = 'minus' + patientId;
+            minusImg.alt = 'minus';
+            minusImg.style.display = 'none';
+            minusImg.src = ctx + '/images/minus.png';
+            minusImg.onclick = function () { showhideSubCat('minus', patientId); };
+            dt.appendChild(minusImg);
+
+            const anchor = document.createElement('a');
+            anchor.id = 'patient' + patientId + 'all';
+            anchor.href = '#';
+            anchor.title = patientName;
+            anchor.onclick = function (evt) {
+                if (evt && evt.preventDefault) evt.preventDefault();
+                resetCurrentFirstDocLab();
+                showThisPatientDocs(patientId);
+                un_bold(this);
+            };
+            anchor.appendChild(document.createTextNode(patientName + ' ('));
+            const countSpan = document.createElement('span');
+            countSpan.id = 'patientNumDocs' + patientId;
+            countSpan.textContent = '1';
+            anchor.appendChild(countSpan);
+            anchor.appendChild(document.createTextNode(')'));
+            dt.appendChild(anchor);
+
+            const dl = document.createElement('dl');
+            dl.id = 'labdoc' + patientId + 'showSublist';
+            dl.style.display = 'none';
+            // Inner element generation interpolates only the numeric patientId,
+            // enforced by schema type INT upstream (see snyk-false-positives.md).
+            const innerHtml = (type === 'DOC') ? createNewDocEle(patientId) : createNewHL7Ele(patientId);
+            dl.insertAdjacentHTML('beforeend', innerHtml);
+            dt.appendChild(dl);
+
+            patientsdoclabsEl.appendChild(dt);
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 function createNewDocEle(patientId) {

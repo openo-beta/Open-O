@@ -498,7 +498,7 @@
                         <tr>
                             <th colspan=2 valign=top height="75px">
 								<span style="float: left">
-									<%= Encode.forHtmlContent(patient.getFirstName()) %> <%= Encode.forHtmlContent(patient.getSurname()) %> <%if (showPatientDOB) {%><br>DOB:<%= Encode.forHtmlContent(Encode.forHtml(patientDOBStr)) %> <%}%><br>
+									<%= Encode.forHtmlContent(patient.getFirstName()) %> <%= Encode.forHtmlContent(patient.getSurname()) %> <%if (showPatientDOB) {%><br>DOB:<%= Encode.forHtmlContent(patientDOBStr) %> <%}%><br>
 										<%= Encode.forHtmlContent(patientAddress) %><br>
 										<%= Encode.forHtmlContent(patientCityPostal) %><br>
 										<%= Encode.forHtmlContent(patientPhone) %><br>

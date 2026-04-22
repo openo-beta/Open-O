@@ -233,9 +233,11 @@
             }
 
             function scScriptAttach(nameF) {
+                // Send the element name and the parent form index as separate parameters so
+                // billingCodeSearch.jsp / billingCodeUpdate.jsp can rebuild the access path
+                // from a fixed server-side template rather than eval-ing a caller-supplied string.
                 f0 = document.forms[1].elements[nameF].value;
-                f1 = escape("document.forms[1].elements[\'" + nameF + "\'].value");
-                awnd = rs('att', 'billingCodeSearch.jsp?name=' + f0 + '&search=&name1=&name2=&nameF=' + f1, 600, 600, 1);
+                awnd = rs('att', 'billingCodeSearch.jsp?name=' + encodeURIComponent(f0) + '&search=&name1=&name2=&formIndex=1&elementName=' + encodeURIComponent(nameF), 600, 600, 1);
                 awnd.focus();
             }
 

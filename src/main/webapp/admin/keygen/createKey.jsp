@@ -87,6 +87,7 @@
                     response.setContentType("text/plain");
                     response.setContentLength(keyPairOut.length());
                     response.setHeader("Content-Disposition", "attachment; filename=keyPair.key");
+                    response.setHeader("X-Content-Type-Options", "nosniff");
                     ServletOutputStream output = null;
 
                     try {

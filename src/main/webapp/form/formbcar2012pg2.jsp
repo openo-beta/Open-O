@@ -2053,7 +2053,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date1" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date1", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date1", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2114,7 +2114,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date2" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date2", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date2", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2175,7 +2175,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date3" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date3", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date3", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2236,7 +2236,7 @@
             <tr valign="bottom">
                 <td>
                     <input type="text" name="pg2_date4" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date4", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date4", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2302,7 +2302,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date5" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date5", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date5", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2363,7 +2363,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date6" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date6", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date6", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2424,7 +2424,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date7" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date7", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date7", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2485,7 +2485,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date8" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date8", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date8", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2545,7 +2545,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date9" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date9", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date9", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2605,7 +2605,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date10" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date10", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date10", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2666,7 +2666,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date11" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date11", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date11", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2727,7 +2727,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date12" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date12", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date12", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2788,7 +2788,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date13" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date13", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date13", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2849,7 +2849,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date14" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date14", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date14", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2911,7 +2911,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date15" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date15", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date15", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>
@@ -2972,7 +2972,7 @@
             <tr>
                 <td>
                     <input type="text" name="pg2_date16" class="spe" style="width:100%;" size="10" maxlength="10"
-                           onDblClick="calToday(this)" value="<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg2_date16", "")))%>" @oscar.formDB
+                           onDblClick="calToday(this)" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date16", "")))%>" @oscar.formDB
                            dbType="date"/>
                 </td>
                 <td>

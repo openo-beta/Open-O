@@ -38,8 +38,8 @@ import ca.openosp.openo.commn.dao.ReportConfigDao;
 import ca.openosp.openo.commn.model.ReportConfig;
 import ca.openosp.openo.utility.SpringUtils;
 
+import ca.openosp.Misc;
 import ca.openosp.openo.db.DBHandler;
-import ca.openosp.openo.login.DBHelp;
 
 /**
  * @author yilee18
@@ -54,7 +54,6 @@ public class RptReportConfigData {
     int order;
     String table_name;
     String save;
-    DBHelp dbObj = new DBHelp();
 
     public boolean insertRecordWithOrder() throws SQLException {
         boolean ret = false;
@@ -112,15 +111,15 @@ public class RptReportConfigData {
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(reportId), saveAs);
         while (rs.next()) {
 
-            if (DBHelp.getString(rs, "name").matches(RptTableShadowFieldConst.fieldName)) {
+            if (Misc.getString(rs, "name").matches(RptTableShadowFieldConst.fieldName)) {
 
                 continue;
             }
-            ret[0].add(DBHelp.getString(rs, "table_name") + "." + DBHelp.getString(rs, "name"));
-            if ("".equals(DBHelp.getString(rs, "caption"))) {
-                ret[1].add(DBHelp.getString(rs, "name"));
+            ret[0].add(Misc.getString(rs, "table_name") + "." + Misc.getString(rs, "name"));
+            if ("".equals(Misc.getString(rs, "caption"))) {
+                ret[1].add(Misc.getString(rs, "name"));
             } else {
-                ret[1].add(DBHelp.getString(rs, "caption"));
+                ret[1].add(Misc.getString(rs, "caption"));
             }
         }
         rs.close();
@@ -133,11 +132,11 @@ public class RptReportConfigData {
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(reportId), saveAs);
         while (rs.next()) {
 
-            if (DBHelp.getString(rs, "name").matches(RptTableShadowFieldConst.fieldName)) {
+            if (Misc.getString(rs, "name").matches(RptTableShadowFieldConst.fieldName)) {
 
                 continue;
             }
-            ret.add(DBHelp.getString(rs, "caption") + " |" + DBHelp.getString(rs, "name"));
+            ret.add(Misc.getString(rs, "caption") + " |" + Misc.getString(rs, "name"));
         }
         rs.close();
         return ret;
@@ -150,8 +149,8 @@ public class RptReportConfigData {
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(reportId), saveAs);
         while (rs.next()) {
             prop = new Properties();
-            prop.setProperty("name", DBHelp.getString(rs, "name"));
-            prop.setProperty("caption", DBHelp.getString(rs, "caption"));
+            prop.setProperty("name", Misc.getString(rs, "name"));
+            prop.setProperty("caption", Misc.getString(rs, "caption"));
             prop.setProperty("id", "" + rs.getInt("id"));
             prop.setProperty("order_no", "" + rs.getInt("order_no"));
             ret.add(prop);
@@ -166,7 +165,7 @@ public class RptReportConfigData {
         String sql = "select distinct(table_name) from reportConfig where report_id=? and table_name like 'form%' order by table_name";
         ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(reportId));
         while (rs.next()) {
-            ret.add(DBHelp.getString(rs, "table_name"));
+            ret.add(Misc.getString(rs, "table_name"));
         }
         rs.close();
         return ret;

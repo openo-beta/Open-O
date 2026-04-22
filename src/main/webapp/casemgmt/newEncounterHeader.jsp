@@ -93,7 +93,7 @@
                             </svg>
                         </div>
                         <div>
-                            <c:out value='<%=Encode.forHtmlAttribute(String.valueOf(loggedInInfo.getLoggedInProvider().getFirstName() + " " + loggedInInfo.getLoggedInProvider().getLastName()))%>'/>
+                            <%=Encode.forHtml(String.valueOf(loggedInInfo.getLoggedInProvider().getFirstName() + " " + loggedInInfo.getLoggedInProvider().getLastName()))%>
                         </div>
                     </a>
                 </li>
