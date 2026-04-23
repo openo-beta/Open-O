@@ -456,9 +456,14 @@ public class CaseManagementView2Action extends ActionSupport {
             request.setAttribute("Prescriptions", prescriptions);
 
             // Setup RX bean start
-            RxSessionBean bean = new RxSessionBean();
-            bean.setProviderNo(loggedInInfo.getLoggedInProviderNo());
-            bean.setDemographicNo(Integer.parseInt(demoNo));
+            // Reuse existing per-patient bean so this tab render doesn't wipe a concurrent Rx stash.
+            int demoInt = Integer.parseInt(demoNo);
+            RxSessionBean bean = RxSessionBean.getFromSession(request, demoInt);
+            if (bean == null) {
+                bean = new RxSessionBean();
+                bean.setProviderNo(loggedInInfo.getLoggedInProviderNo());
+                bean.setDemographicNo(demoInt);
+            }
             RxSessionBean.saveToSession(request, bean);
             // Setup RX end
         }

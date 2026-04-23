@@ -76,10 +76,14 @@
         %>
         <%
             if (request.getParameter("demographicNo") != null) {
-                rxBean = new RxSessionBean();
-
-                rxBean.setProviderNo((String) session.getAttribute("user"));
-                rxBean.setDemographicNo(Integer.parseInt(request.getParameter("demographicNo")));
+                // Reuse existing per-patient bean so opening a script link doesn't wipe the stash.
+                int demoInt = Integer.parseInt(request.getParameter("demographicNo"));
+                rxBean = RxSessionBean.getFromSession(request.getSession(), demoInt);
+                if (rxBean == null) {
+                    rxBean = new RxSessionBean();
+                    rxBean.setProviderNo((String) session.getAttribute("user"));
+                    rxBean.setDemographicNo(demoInt);
+                }
 
                 RxSessionBean.saveToSession(request.getSession(), rxBean);
             }
