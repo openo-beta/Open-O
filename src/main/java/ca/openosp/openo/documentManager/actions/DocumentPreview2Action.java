@@ -23,6 +23,7 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.PDFGenerationException;
 import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.utility.WebUtils;
 
 import ca.openosp.openo.util.StringUtils;
 
@@ -254,14 +255,14 @@ public class DocumentPreview2Action extends ActionSupport {
             throw new SecurityException("missing required security object (_edoc)");
         }
 
-        String demographicNo = positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
-        String requestId = positiveIntParamOrNull(request.getParameter("requestId"));
+        String demographicNo = WebUtils.positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
+        String requestId = WebUtils.positiveIntParamOrNull(request.getParameter("requestId"));
 
         populateCommonDocs(loggedInInfo, demographicNo);
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         request.setAttribute("allEForms", allEForms);
 
-        populateAttachedContextForConsult(loggedInInfo, demographicNo, requestId);
+        populateAttachedContext(loggedInInfo, documentAttachmentManager.getAttachedDocsForConsult(loggedInInfo, demographicNo, requestId));
 
         return "fetchDocuments";
     }
@@ -298,16 +299,16 @@ public class DocumentPreview2Action extends ActionSupport {
             throw new SecurityException("missing required security object (_edoc)");
         }
 
-        String demographicNo = positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
+        String demographicNo = WebUtils.positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
         String rawFdid = request.getParameter("fdid");
-        String fdidForEformList = positiveIntParamOrDefault(rawFdid, "0");
-        String fdidForAttached = positiveIntParamOrNull(rawFdid);
+        String fdidForEformList = WebUtils.positiveIntParamOrDefault(rawFdid, "0");
+        String fdidForAttached = WebUtils.positiveIntParamOrNull(rawFdid);
 
         populateCommonDocs(loggedInInfo, demographicNo);
 		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdidForEformList));
 		request.setAttribute("allEForms", allEForms);
 
-        populateAttachedContextForEForm(loggedInInfo, demographicNo, fdidForAttached);
+        populateAttachedContext(loggedInInfo, documentAttachmentManager.getAttachedDocsForEForm(loggedInInfo, demographicNo, fdidForAttached));
 
         return "fetchDocuments";
     }
@@ -335,133 +336,28 @@ public class DocumentPreview2Action extends ActionSupport {
         }
     }
 
-    /** @see #mergeAttachedContext */
-    private void populateAttachedContextForConsult(LoggedInInfo loggedInInfo, String demographicNo, String requestId) {
-        List<EDoc> attachedDocs = (requestId != null)
-                ? EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED)
-                : null;
-        mergeAttachedContext(loggedInInfo, attachedDocs);
-    }
-
-    /** @see #mergeAttachedContext */
-    private void populateAttachedContextForEForm(LoggedInInfo loggedInInfo, String demographicNo, String fdid) {
-        List<EDoc> attachedDocs = (fdid != null)
-                ? EDocUtil.listDocsAttachedToEForm(loggedInInfo, demographicNo, fdid, EDocUtil.ATTACHED)
-                : null;
-        mergeAttachedContext(loggedInInfo, attachedDocs);
-    }
-
-    /** Returns {@code value} if it parses as a positive integer, else null. Treats "null"/empty/non-numeric as absent. */
-    private static String positiveIntParamOrNull(String value) {
-        if (StringUtils.isNullOrEmpty(value)) return null;
-        String trimmed = value.trim();
-        if (trimmed.isEmpty() || "null".equalsIgnoreCase(trimmed)) return null;
-        try {
-            return Integer.parseInt(trimmed) > 0 ? trimmed : null;
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
-    /** Like {@link #positiveIntParamOrNull} but returns {@code defaultValue} instead of null. */
-    private static String positiveIntParamOrDefault(String value, String defaultValue) {
-        String parsed = positiveIntParamOrNull(value);
-        return parsed != null ? parsed : defaultValue;
-    }
-
     /**
-     * Sets {@code attachedDocumentIds} and {@code foreignPrivateDocIds} request
-     * attributes, and merges deleted/cross-provider docs into the existing
-     * {@code allDocuments} / {@code providerPrivateDocs} / {@code providerPublicDocs}
-     * lists so the JSP can render them in the right section with the right markers.
+     * Pulls the three section lists out of the request, hands them to
+     * {@link DocumentAttachmentManager#mergeAttachedIntoSections} for the
+     * deleted / cross-provider merge, and writes the two resulting id Sets back
+     * to the request so the JSP can pre-check attached docs and label foreign
+     * private docs. Pure request-attribute plumbing — the classification lives
+     * on the manager.
      *
      * @since 2026-04-20
      */
     @SuppressWarnings("unchecked")
-    private void mergeAttachedContext(LoggedInInfo loggedInInfo, List<EDoc> attachedDocs) {
+    private void populateAttachedContext(LoggedInInfo loggedInInfo, List<EDoc> attachedDocs) {
         Set<String> attachedDocumentIds = new HashSet<>();
         Set<String> foreignPrivateDocIds = new HashSet<>();
         request.setAttribute("attachedDocumentIds", attachedDocumentIds);
         request.setAttribute("foreignPrivateDocIds", foreignPrivateDocIds);
 
-        if (attachedDocs == null || attachedDocs.isEmpty()) {
-            logger.debug("mergeAttachedContext: no attached docs; nothing to merge");
-            return;
-        }
-
-        // attachedDocumentIds drives JSP pre-checking and is useful even when the
-        // per-section lists aren't loaded — populate it unconditionally.
-        for (EDoc attachedDoc : attachedDocs) {
-            attachedDocumentIds.add(attachedDoc.getDocId());
-        }
-
         List<EDoc> allDocuments = (List<EDoc>) request.getAttribute("allDocuments");
         List<EDoc> providerPrivateDocs = (List<EDoc>) request.getAttribute("providerPrivateDocs");
         List<EDoc> providerPublicDocs = (List<EDoc>) request.getAttribute("providerPublicDocs");
 
-        if (allDocuments == null || providerPrivateDocs == null || providerPublicDocs == null) {
-            logger.warn("mergeAttachedContext: expected document list attributes missing; skipping section merge");
-            return;
-        }
-
-        String currentProviderNo = loggedInInfo.getLoggedInProviderNo();
-
-        for (EDoc attachedDoc : attachedDocs) {
-            mergeSingleAttachedDoc(
-                    attachedDoc,
-                    currentProviderNo,
-                    allDocuments,
-                    providerPrivateDocs,
-                    providerPublicDocs,
-                    foreignPrivateDocIds);
-        }
-    }
-
-    /**
-     * Classifies one attached doc and appends it to the appropriate section list.
-     *
-     * @since 2026-04-21
-     */
-    static void mergeSingleAttachedDoc(
-            EDoc attachedDoc,
-            String currentProviderNo,
-            List<EDoc> allDocuments,
-            List<EDoc> providerPrivateDocs,
-            List<EDoc> providerPublicDocs,
-            Set<String> foreignPrivateDocIds) {
-
-        boolean isDeleted = attachedDoc.getStatus() == 'D';
-        boolean isProvider = isProviderModule(attachedDoc.getModule());
-        boolean isPublic = "1".equals(attachedDoc.getDocPublic());
-        boolean ownedByCurrent = isOwnedByCurrentProvider(attachedDoc, currentProviderNo);
-
-        // Patient doc: only deleted ones need re-injecting.
-        if (!isProvider) {
-            if (isDeleted) allDocuments.add(attachedDoc);
-            return;
-        }
-        // Public provider doc: only deleted ones need re-injecting.
-        if (isPublic) {
-            if (isDeleted) providerPublicDocs.add(attachedDoc);
-            return;
-        }
-        // Private provider doc: skip active-own (already listed); merge everything else.
-        if (!isDeleted && ownedByCurrent) return;
-        providerPrivateDocs.add(attachedDoc);
-        if (!ownedByCurrent) foreignPrivateDocIds.add(attachedDoc.getDocId());
-    }
-
-    static boolean isOwnedByCurrentProvider(EDoc doc, String currentProviderNo) {
-        return currentProviderNo != null && currentProviderNo.equals(doc.getModuleId());
-    }
-
-    /**
-     * Local copy of {@link EDocUtil#isProviderModule} to avoid triggering EDocUtil's
-     * class-load (and its many SpringUtils-bean static initializers) from this
-     * classifier. Keeps {@link #mergeSingleAttachedDoc} unit-testable without Spring.
-     */
-    static boolean isProviderModule(String module) {
-        return "provider".equalsIgnoreCase(module) || "providers".equalsIgnoreCase(module);
+        documentAttachmentManager.mergeAttachedIntoSections(loggedInInfo, attachedDocs, allDocuments, providerPrivateDocs, providerPublicDocs, attachedDocumentIds, foreignPrivateDocIds);
     }
 
     /**
