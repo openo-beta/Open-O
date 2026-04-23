@@ -17,14 +17,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -72,7 +69,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import ca.openosp.openo.commn.model.enumerator.BinaryFileExtension;
+
 import omd.hrm.OmdCds;
+import omd.hrm.ReportContent;
+import omd.hrm.ReportFormat;
+import omd.hrm.ReportsReceived;
 
 import ca.openosp.OscarProperties;
 
@@ -143,11 +145,13 @@ public class HRMReportParser {
                 JAXBContext jc = JAXBContext.newInstance("omd.hrm");
                 Unmarshaller u = jc.createUnmarshaller();
                 u.setSchema(schema);
+                OmdCds parsed;
                 try (FileInputStream fileInputStream = new FileInputStream(tmpXMLholder)) {
-                    root = (OmdCds) u.unmarshal(fileInputStream);
+                    parsed = (OmdCds) u.unmarshal(fileInputStream);
                 }
 
-                validateReportContent(root);
+                validateReportContent(parsed);
+                root = parsed;  // only assign after validation passes
 
                 tmpXMLholder = null;
             } catch (FileNotFoundException e) {
@@ -175,44 +179,37 @@ public class HRMReportParser {
         return null;
     }
 
-    // Per OntarioMD HRM data dictionary: supported file formats for Binary report format
-    private static final Set<String> VALID_BINARY_EXTENSIONS = new HashSet<>(Arrays.asList(
-        ".pdf", ".tiff", ".rtf", ".jpeg", ".gif", ".png", ".html"
-    ));
-
     private static void validateReportContent(OmdCds root) throws SAXException {
         if (root == null || root.getPatientRecord() == null) return;
-        for (omd.hrm.ReportsReceived report : root.getPatientRecord().getReportsReceived()) {
-            String ext = report.getFileExtensionAndVersion();
-            if (omd.hrm.ReportFormat.BINARY.equals(report.getFormat())) {
-                if (ext != null && !VALID_BINARY_EXTENSIONS.contains(ext.toLowerCase())) {
-                    throw new SAXException("Invalid content found: <ReportsReceived> has Format=Binary"
-                        + " but <FileExtensionAndVersion> is '" + ext + "';"
-                        + " valid binary extensions are: " + VALID_BINARY_EXTENSIONS);
-                }
-                omd.hrm.ReportContent content = report.getContent();
-                if (content != null && content.getMedia() != null && looksLikeXml(content.getMedia())) {
-                    throw new SAXException("Invalid content found: <ReportsReceived> has Format=Binary"
-                        + " and <FileExtensionAndVersion> is '" + ext + "'"
-                        + " but <Content> contains XML data, not binary content");
-                }
-            } else if (omd.hrm.ReportFormat.TEXT.equals(report.getFormat())) {
-                if (ext != null && !"From OMD Report Manager".equals(ext)) {
-                    throw new SAXException("Invalid content found: <ReportsReceived> has Format=Text"
-                        + " but <FileExtensionAndVersion> is '" + ext + "';"
-                        + " expected: 'From OMD Report Manager'");
-                }
+        for (ReportsReceived report : root.getPatientRecord().getReportsReceived()) {
+            if (ReportFormat.BINARY.equals(report.getFormat())) {
+                validateBinaryReport(report);
+            } else if (ReportFormat.TEXT.equals(report.getFormat())) {
+                validateTextReport(report);
             }
         }
     }
 
-    private static boolean looksLikeXml(byte[] bytes) {
-        int i = 0;
-        while (i < bytes.length && bytes[i] <= 0x20) i++;
-        if (i >= bytes.length || bytes[i] != '<') return false;
-        String start = new String(bytes, i, Math.min(bytes.length - i, 20), StandardCharsets.UTF_8).toLowerCase();
-        // Valid binary HTML starts with <html or <!doctype html — everything else starting with '<' is XML
-        return !start.startsWith("<html") && !start.startsWith("<!doctype html");
+    private static void validateBinaryReport(ReportsReceived report) throws SAXException {
+        String ext = report.getFileExtensionAndVersion();
+        BinaryFileExtension type = BinaryFileExtension.fromExtension(ext);
+        if (type == null) {
+            throw new SAXException("Invalid content found: <FileExtensionAndVersion> is '" + ext + "'"
+                + " which is not a valid binary extension; supported: " + BinaryFileExtension.allValues());
+        }
+        ReportContent content = report.getContent();
+        if (content != null && content.getMedia() != null && !type.matchesContent(content.getMedia())) {
+            throw new SAXException("Invalid content found: <FileExtensionAndVersion> is '" + ext + "'"
+                + " but <Content> does not match the expected " + ext + " format");
+        }
+    }
+
+    private static void validateTextReport(ReportsReceived report) throws SAXException {
+        String ext = report.getFileExtensionAndVersion();
+        if (ext != null && !"From OMD Report Manager".equals(ext)) {
+            throw new SAXException("Invalid content found: <FileExtensionAndVersion> is '" + ext + "'"
+                + " for Format=Text; expected: 'From OMD Report Manager'");
+        }
     }
 
     private static void validateNoEmptyElements(File xmlFile) throws SAXException, IOException {
