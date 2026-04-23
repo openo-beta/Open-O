@@ -235,6 +235,7 @@
 <%@ page import="ca.openosp.openo.utility.*" %>
 <%@ page import="ca.openosp.openo.commn.model.*" %>
 <%@ page import="ca.openosp.openo.commn.dao.*" %>
+<%@ page import="ca.openosp.openo.demographic.merge.DemographicMergeManager" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 <!DOCTYPE html>
@@ -1333,19 +1334,23 @@
                                             <td>
                                                 <%
                                                     String dboperation = "search_detail";
-                                                    List<Integer> mergedIds = demographicManager.getMergedDemographicIds(loggedInInfo, Integer.parseInt(demographic_no));
-
+                                                    DemographicMergeManager demographicMergeManager = SpringUtils.getBean(DemographicMergeManager.class);
+                                                    int demoNoInt = Integer.parseInt(demographic_no);
+                                                    DemographicMerge mergeEventAsMergedRecord = demographicMergeManager.findActiveMergeEventForMergedRecord(loggedInInfo, demoNoInt);
+                                                    DemographicMerge mergeEventAsSource = (mergeEventAsMergedRecord == null) ? demographicMergeManager.findActiveMergeEventForSource(loggedInInfo, demoNoInt) : null;
                                                 %><a
-                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(demographic_no) %>&displaymode=edit&dboperation=<%= dboperation %>"><%= Encode.forHtml(demographic_no) %>
-                                            </a>
-                                                <%
-                                                    for (Integer mergedId : mergedIds) {
-                                                %>, <a
-                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(String.valueOf(mergedId)) %>&displaymode=edit&dboperation=<%= dboperation %>"><%= Encode.forHtml(String.valueOf(mergedId)) %>
-                                            </a>
-                                                <%
+                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(demographic_no) %>&displaymode=edit&dboperation=<%= dboperation %>"><%= Encode.forHtml(demographic_no) %></a><%
+                                                    if (mergeEventAsMergedRecord != null) {
+                                                        int primaryId = mergeEventAsMergedRecord.getPrimaryDemographicNo();
+                                                %>, merged from <a href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(String.valueOf(primaryId)) %>&displaymode=edit&dboperation=<%= dboperation %>"><%= Encode.forHtml(String.valueOf(primaryId)) %></a><%
+                                                        for (Integer secId : mergeEventAsMergedRecord.getSecondaryDemographicNos()) {
+                                                %>, <a href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(String.valueOf(secId)) %>&displaymode=edit&dboperation=<%= dboperation %>"><%= Encode.forHtml(String.valueOf(secId)) %></a><%
+                                                        }
+                                                    } else if (mergeEventAsSource != null) {
+                                                        int mergedId = mergeEventAsSource.getMergedDemographicNo();
+                                                %>, merged to <a href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(String.valueOf(mergedId)) %>&displaymode=edit&dboperation=<%= dboperation %>"><%= Encode.forHtml(String.valueOf(mergedId)) %></a><%
                                                     }
-                                                %> )
+                                                %>)
 
                                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_demographic"
                                                                    rights="w">

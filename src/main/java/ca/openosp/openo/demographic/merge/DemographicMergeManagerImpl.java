@@ -40,10 +40,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -277,6 +279,24 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
             result.put(no, sources);
         }
         return result;
+    }
+
+    @Override
+    public DemographicMerge findActiveMergeEventForMergedRecord(LoggedInInfo loggedInInfo, Integer mergedDemographicNo) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
+        return mergeDao.findActiveMergeEventForMergedRecord(mergedDemographicNo);
+    }
+
+    @Override
+    public DemographicMerge findActiveMergeEventForSource(LoggedInInfo loggedInInfo, Integer demographicNo) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
+        return mergeDao.findActiveMergeEventForSource(demographicNo);
+    }
+
+    @Override
+    public Set<Integer> findMergedSourcesAmong(LoggedInInfo loggedInInfo, Collection<Integer> demographicIds) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
+        return mergeDao.findMergedSourcesAmong(demographicIds);
     }
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {

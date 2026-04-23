@@ -82,6 +82,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.commn.dao.DemographicExtDao" %>
 <%@ page import="ca.openosp.openo.commn.model.DemographicExt" %>
+<%@ page import="ca.openosp.openo.demographic.merge.DemographicMergeManager" %>
 <%@ page import="ca.openosp.Misc" %>
 <%@ page import="ca.openosp.OscarProperties" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
@@ -327,6 +328,13 @@
                         demoList = new ArrayList<Demographic>();
                         for (Integer r : results) {
                             demoList.add(demographicDao.getDemographicById(r));
+                        }
+                        if ("active".equals(ptStatus)) {
+                            List<Integer> recentIds = new ArrayList<>();
+                            for (Demographic d : demoList) { if (d != null) recentIds.add(d.getDemographicNo()); }
+                            DemographicMergeManager demographicMergeManager = SpringUtils.getBean(DemographicMergeManager.class);
+                            Set<Integer> mergedSourceIds = demographicMergeManager.findMergedSourcesAmong(loggedInInfo, recentIds);
+                            demoList.removeIf(d -> d != null && mergedSourceIds.contains(d.getDemographicNo()));
                         }
                     } else {
                         demoList = doSearch(demographicDao, searchMode, ptStatus, keyword, limit, offset, orderBy, providerNo, outOfDomain);

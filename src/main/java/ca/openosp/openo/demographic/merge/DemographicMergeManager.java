@@ -28,8 +28,10 @@ import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.DemographicMerge;
 import ca.openosp.openo.utility.LoggedInInfo;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Orchestrates the demographic merge and unmerge operations.
@@ -114,4 +116,34 @@ public interface DemographicMergeManager {
      * @throws IllegalStateException if no MERGE event exists for the given demographic
      */
     void unmerge(LoggedInInfo loggedInInfo, Integer mergedDemographicNo);
+
+    /**
+     * Returns the active MERGE event if the given demographic is a current merged result (C),
+     * or null if it was never merged or has since been unmerged.
+     *
+     * @param loggedInInfo        LoggedInInfo the authenticated provider
+     * @param mergedDemographicNo Integer the demographic_no to check as a merged record
+     * @return DemographicMerge the active MERGE event, or null
+     */
+    DemographicMerge findActiveMergeEventForMergedRecord(LoggedInInfo loggedInInfo, Integer mergedDemographicNo);
+
+    /**
+     * Returns the active MERGE event in which the given demographic appears as a source
+     * (primary or secondary), or null if it is not currently a merge source.
+     *
+     * @param loggedInInfo LoggedInInfo the authenticated provider
+     * @param demographicNo Integer the demographic_no to check as a source
+     * @return DemographicMerge the active MERGE event where this record is a source, or null
+     */
+    DemographicMerge findActiveMergeEventForSource(LoggedInInfo loggedInInfo, Integer demographicNo);
+
+    /**
+     * Given a small collection of demographic IDs, returns only those that are currently
+     * active merge sources — used to filter recently-accessed patient lists.
+     *
+     * @param loggedInInfo   LoggedInInfo the authenticated provider
+     * @param demographicIds Collection&lt;Integer&gt; the candidate demographic IDs to check
+     * @return Set&lt;Integer&gt; the subset of the input IDs that are currently merge sources
+     */
+    Set<Integer> findMergedSourcesAmong(LoggedInInfo loggedInInfo, Collection<Integer> demographicIds);
 }
