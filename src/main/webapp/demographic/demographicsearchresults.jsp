@@ -329,15 +329,17 @@
                         for (Integer r : results) {
                             demoList.add(demographicDao.getDemographicById(r));
                         }
-                        if ("active".equals(ptStatus)) {
-                            List<Integer> recentIds = new ArrayList<>();
-                            for (Demographic d : demoList) { if (d != null) recentIds.add(d.getDemographicNo()); }
-                            DemographicMergeManager demographicMergeManager = SpringUtils.getBean(DemographicMergeManager.class);
-                            Set<Integer> mergedSourceIds = demographicMergeManager.findMergedSourcesAmong(loggedInInfo, recentIds);
-                            demoList.removeIf(d -> d != null && mergedSourceIds.contains(d.getDemographicNo()));
-                        }
                     } else {
                         demoList = doSearch(demographicDao, searchMode, ptStatus, keyword, limit, offset, orderBy, providerNo, outOfDomain);
+                    }
+                    // Exclude merge source records (A, B) from all search results — they are
+                    // inactive after a merge and should not appear regardless of search mode or status filter.
+                    if (demoList != null && !demoList.isEmpty()) {
+                        List<Integer> candidateIds = new ArrayList<>();
+                        for (Demographic d : demoList) { if (d != null) candidateIds.add(d.getDemographicNo()); }
+                        DemographicMergeManager demographicMergeManager = SpringUtils.getBean(DemographicMergeManager.class);
+                        Set<Integer> mergedSourceIds = demographicMergeManager.findMergedSourcesAmong(loggedInInfo, candidateIds);
+                        demoList.removeIf(d -> d != null && mergedSourceIds.contains(d.getDemographicNo()));
                     }
 
                     boolean toggleLine = false;
