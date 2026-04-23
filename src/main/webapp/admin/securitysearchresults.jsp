@@ -144,7 +144,7 @@
         </tr>
         </thead>
         <%
-            List<Security> securityList = securityDao.findAllOrderBy("user_name");
+            List<Security> securityList = securityDao.findAllOrderByUserName();
 
             //if action is good, then give me the result
             String searchMode = request.getParameter("search_mode");
@@ -162,10 +162,10 @@
         %>
         <tr>
             <td>
-                <a href='securityupdatesecurity.jsp?keyword=<%=securityRecord.getId()%>'><%= Encode.forHtmlContent(securityRecord.getUserName()) %>
+                <a href='securityupdatesecurity.jsp?keyword=<%=Encode.forUriComponent(String.valueOf(securityRecord.getId()))%>'><%= Encode.forHtmlContent(securityRecord.getUserName()) %>
                 </a></td>
             <td style="text-align:center">*********</td>
-            <td style="text-align:center"><%= securityRecord.getProviderNo() %>
+            <td style="text-align:center"><%=Encode.forHtml(String.valueOf(securityRecord.getProviderNo()))%>
             </td>
             <td style="text-align:center">****</td>
         </tr>

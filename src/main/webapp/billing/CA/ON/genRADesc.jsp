@@ -32,6 +32,7 @@
 <%@page import="ca.openosp.openo.commn.model.RaHeader" %>
 <%@page import="ca.openosp.openo.commn.dao.RaHeaderDao" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     RaHeaderDao dao = SpringUtils.getBean(RaHeaderDao.class);
 %>
@@ -204,15 +205,15 @@ Cheque amount:
 <%=total%>
 <br>
 <%="Local clinic "%>:
-<%=local_total%>
+<%=Encode.forHtml(String.valueOf(local_total))%>
 <br>
 Other clinic :
-<%=other_total%><br>
+<%=Encode.forHtml(String.valueOf(other_total))%><br>
 
 OB Total :
-<%=ob_total%><br>
+<%=Encode.forHtml(String.valueOf(ob_total))%><br>
 Colposcopy Total :
-<%=co_total%><br>
+<%=Encode.forHtml(String.valueOf(co_total))%><br>
 
 <br>
 <br>
@@ -239,7 +240,7 @@ Colposcopy Total :
     if (!bPremiumList.isEmpty()) {
 %>
 <form action="<%=request.getContextPath() %>/billing/CA/ON/ApplyPractitionerPremium.do">
-    <input type="hidden" name="rano" value="<%=raNo%>"/>
+    <input type="hidden" name="rano" value="<%=Encode.forHtmlAttribute(String.valueOf(raNo))%>"/>
     <input type="hidden" name="method" value="applyPremium"/>
     <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.on.genRADesc.premiumTitle"/></h3>
     <table>
@@ -262,10 +263,10 @@ Colposcopy Total :
                         isChecked = "checked";
         %>
         <tr>
-            <td><input name="choosePremium<%=premiumId%>" type="checkbox" value="Y" <%=isChecked%>/>
-            <td><%=premium.getProviderOHIPNo()%>
+            <td><input name="choosePremium<%=Encode.forHtmlAttribute(String.valueOf(premiumId))%>" type="checkbox" value="Y" <%=isChecked%>/>
+            <td><%=Encode.forHtml(String.valueOf(premium.getProviderOHIPNo()))%>
             </td>
-            <td><select name="providerNo<%=premiumId%>">
+            <td><select name="providerNo<%=Encode.forHtmlAttribute(String.valueOf(premiumId))%>">
                 <%
                     for (Provider p : pList) {
                         String selectedChoice = "";
@@ -275,14 +276,14 @@ Colposcopy Total :
                             selectedChoice = "selected=\"selected\"";
                         }
                 %>
-                <option value="<%=p.getProviderNo()%>" <%=selectedChoice%>><%=p.getFormattedName()%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=selectedChoice%>><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                 </option>
                 <% } %>
             </select>
             </td>
-            <td><%=premium.getAmountPay()%>
+            <td><%=Encode.forHtml(String.valueOf(premium.getAmountPay()))%>
             </td>
-            <td><%=DateUtils.formatDate(premium.getPayDate(), request.getLocale())%>
+            <td><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(premium.getPayDate(), request.getLocale())))%>
             </td>
         </tr>
         <%
@@ -297,7 +298,7 @@ Colposcopy Total :
     </table>
 </form>
 <% } %><%--  --%>
-<pre><%=message_txt%></pre>
+<pre><%=Encode.forHtml(String.valueOf(message_txt))%></pre>
 
 </body>
 </html>

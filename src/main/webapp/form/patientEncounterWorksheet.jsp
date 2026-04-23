@@ -53,6 +53,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Appointment" %>
 <%@ page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String formClass = "CostQuestionnaire";
@@ -141,8 +142,8 @@
 
     <div align="center">
         <form action="<%= request.getContextPath() %>/form/createpdf" method="POST">
-            <input type="hidden" name="demographic_no" value="<%=request.getParameter("demographic_no") %>"/>
-            <input type="hidden" name="form_id" value="<%=request.getParameter("form_id") %>"/>
+            <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no")) %>"/>
+            <input type="hidden" name="form_id" value="<%=Encode.forHtmlAttribute(request.getParameter("form_id")) %>"/>
             <input type="hidden" name="__title" value="PatientEcounterWorksheet"/>
             <input type="hidden" name="__cfgfile" value="patientEncounterWorksheetCfg"/>
             <input type="hidden" name="__template" value="patientEncounterWorksheet"/>
@@ -152,31 +153,31 @@
                 <tr>
                     <td valign="top" width="50%">
                         <table border="0" cellspacing="2" cellpadding="2">
-                            <input type="hidden" name="clinic_name" value="<%=clinic.getClinicName() %>"/>
-                            <input type="hidden" name="clinic_address1" value="<%=clinic.getClinicAddress() %>"/>
+                            <input type="hidden" name="clinic_name" value="<%=Encode.forHtmlAttribute(String.valueOf(clinic.getClinicName()))%>"/>
+                            <input type="hidden" name="clinic_address1" value="<%=Encode.forHtmlAttribute(String.valueOf(clinic.getClinicAddress()))%>"/>
                             <input type="hidden" name="clinic_address2"
-                                   value="<%=clinic.getClinicCity() + ", " + clinic.getClinicProvince() + ", " + clinic.getClinicPostal() %>"/>
-                            <input type="hidden" name="clinic_phone" value="<%=clinic.getClinicPhone() %>"/>
-                            <input type="hidden" name="clinic_fax" value="<%=clinic.getClinicFax() %>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(clinic.getClinicCity() + ", " + clinic.getClinicProvince() + ", " + clinic.getClinicPostal()))%>"/>
+                            <input type="hidden" name="clinic_phone" value="<%=Encode.forHtmlAttribute(String.valueOf(clinic.getClinicPhone()))%>"/>
+                            <input type="hidden" name="clinic_fax" value="<%=Encode.forHtmlAttribute(String.valueOf(clinic.getClinicFax()))%>"/>
                             <tr>
                                 <td valign="top"><b>Office:</b></td>
                                 <td valign="top">
-                                    <%=clinic.getClinicName() %>
+                                    <%=Encode.forHtml(String.valueOf(clinic.getClinicName()))%>
                                     <br/>
-                                    <%=clinic.getClinicAddress() %>
+                                    <%=Encode.forHtml(String.valueOf(clinic.getClinicAddress()))%>
                                     <br/>
-                                    <%=clinic.getClinicCity() %>, <%=clinic.getClinicProvince() %>
-                                    , <%=clinic.getClinicPostal() %>
+                                    <%=Encode.forHtml(String.valueOf(clinic.getClinicCity()))%>, <%=Encode.forHtml(String.valueOf(clinic.getClinicProvince()))%>
+                                    , <%=Encode.forHtml(String.valueOf(clinic.getClinicPostal()))%>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Phone:</td>
-                                <td><%=clinic.getClinicPhone() %>
+                                <td><%=Encode.forHtml(String.valueOf(clinic.getClinicPhone()))%>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Fax:</td>
-                                <td><%=clinic.getClinicFax() %>
+                                <td><%=Encode.forHtml(String.valueOf(clinic.getClinicFax()))%>
                                 </td>
                             </tr>
                         </table>
@@ -184,37 +185,37 @@
                     <td valign="top" width="50%">
                         <table border="0" cellspacing="2" cellpadding="2">
                             <input type="hidden" name="demo_name"
-                                   value="<%=demographic.getFormattedName() + " (" + demographic.getSex().toUpperCase()  + ")" %>"/>
-                            <input type="hidden" name="demo_address1" value="<%=demographic.getAddress() %>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demographic.getFormattedName() + " (" + demographic.getSex().toUpperCase()  + ")"))%>"/>
+                            <input type="hidden" name="demo_address1" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic.getAddress()))%>"/>
                             <input type="hidden" name="demo_address2"
-                                   value="<%=demographic.getCity() + ", " + demographic.getProvince() + ", " + demographic.getPostal() %>"/>
-                            <input type="hidden" name="demo_id" value="<%=demographic.getDemographicNo() %>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demographic.getCity() + ", " + demographic.getProvince() + ", " + demographic.getPostal()))%>"/>
+                            <input type="hidden" name="demo_id" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic.getDemographicNo()))%>"/>
                             <input type="hidden" name="demo_bday"
-                                   value="<%=demographic.getBirthDayAsString() + " (" + demographic.getAgeInYears() + ")" %>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demographic.getBirthDayAsString() + " (" + demographic.getAgeInYears() + ")"))%>"/>
                             <input type="hidden" name="demo_hin"
-                                   value="<%=demographic.getHin() + " (" + demographic.getHcType() + ")" %>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demographic.getHin() + " (" + demographic.getHcType() + ")"))%>"/>
                             <tr>
                                 <td valign="top"><b>Patient:</b></td>
                                 <td>
-                                    <b><%=demographic.getFormattedName() %>
-                                    </b> (<%=demographic.getSex().toUpperCase() %>)<br/>
-                                    <%=demographic.getAddress() %><br/>
-                                    <%=demographic.getCity() %>, <%=demographic.getProvince() %>
-                                    , <%=demographic.getPostal() %>
+                                    <b><%=Encode.forHtml(String.valueOf(demographic.getFormattedName()))%>
+                                    </b> (<%=Encode.forHtml(String.valueOf(demographic.getSex().toUpperCase()))%>)<br/>
+                                    <%=Encode.forHtml(String.valueOf(demographic.getAddress()))%><br/>
+                                    <%=Encode.forHtml(String.valueOf(demographic.getCity()))%>, <%=Encode.forHtml(String.valueOf(demographic.getProvince()))%>
+                                    , <%=Encode.forHtml(String.valueOf(demographic.getPostal()))%>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Pat ID:</td>
-                                <td><%=demographic.getDemographicNo() %>
+                                <td><%=Encode.forHtml(String.valueOf(demographic.getDemographicNo()))%>
                                 </td>
                             </tr>
                             <tr>
                                 <td>DOB:</td>
-                                <td><%=demographic.getBirthDayAsString() %>(<%=demographic.getAgeInYears() %>)</td>
+                                <td><%=Encode.forHtml(String.valueOf(demographic.getBirthDayAsString()))%>(<%=Encode.forHtml(String.valueOf(demographic.getAgeInYears()))%>)</td>
                             </tr>
                             <tr>
                                 <td>HC #:</td>
-                                <td><%=demographic.getHin() %> (<%=demographic.getHcType() %>)</td>
+                                <td><%=Encode.forHtml(String.valueOf(demographic.getHin()))%> (<%=Encode.forHtml(String.valueOf(demographic.getHcType()))%>)</td>
                             </tr>
                         </table>
                     </td>
@@ -224,13 +225,13 @@
                 <tr>
                     <td valign="top" width="50%">
                         <table border="0" cellspacing="2" cellpadding="2">
-                            <input type="hidden" name="mrp_provider" value="<%=providerName %>"/>
+                            <input type="hidden" name="mrp_provider" value="<%=Encode.forHtmlAttribute(String.valueOf(providerName))%>"/>
                             <input type="hidden" name="fam_provider" value="test,test"/>
                             <input type="hidden" name="ref_provider" value="test,test"/>
 
                             <tr>
                                 <td>Provider:</td>
-                                <td><%=providerName %>
+                                <td><%=Encode.forHtml(String.valueOf(providerName))%>
                                 </td>
                             </tr>
                             <tr>
@@ -247,16 +248,16 @@
                         <table border="0" cellspacing="2" cellpadding="2">
                             <% if (hasAppointment) { %>
                                 <input type="hidden" name="appt_date" 
-                                       value="<%=dateFormatter.format(appt.getAppointmentDate()) + " " + timeFormatter.format(appt.getStartTime()) %>"/>
-                                <input type="hidden" name="appt_type" value="<%=appt.getType() %>"/>
-                                <input type="hidden" name="appt_reason" value="<%=appt.getReason() %>"/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(dateFormatter.format(appt.getAppointmentDate()) + " " + timeFormatter.format(appt.getStartTime())))%>"/>
+                                <input type="hidden" name="appt_type" value="<%=Encode.forHtmlAttribute(String.valueOf(appt.getType()))%>"/>
+                                <input type="hidden" name="appt_reason" value="<%=Encode.forHtmlAttribute(String.valueOf(appt.getReason()))%>"/>
                             <% } %>
                         
                             <tr>
                                 <td>Appt. Date:</td>
                                 <td>
                                     <% if (hasAppointment) { %>
-                                        <%=dateFormatter.format(appt.getAppointmentDate()) %>&nbsp;<%=timeFormatter.format(appt.getStartTime()) %>
+                                        <%=Encode.forHtml(String.valueOf(dateFormatter.format(appt.getAppointmentDate())))%>&nbsp;<%=Encode.forHtml(String.valueOf(timeFormatter.format(appt.getStartTime())))%>
                                     <% } else { %>
                                         N/A
                                     <% } %>
@@ -266,7 +267,7 @@
                                 <td>Appt. Type:</td>
                                 <td>
                                     <% if (hasAppointment) { %>
-                                        <%=appt.getType() %>
+                                        <%=Encode.forHtml(String.valueOf(appt.getType()))%>
                                     <% } else { %>
                                         N/A
                                     <% } %>
@@ -276,7 +277,7 @@
                                 <td>Reason:</td>
                                 <td>
                                     <% if (hasAppointment) { %>
-                                        <%=appt.getReason() %>
+                                        <%=Encode.forHtml(String.valueOf(appt.getReason()))%>
                                     <% } else { %>
                                         N/A
                                     <% } %>
@@ -287,10 +288,10 @@
                 </tr>
 
                 <tr>
-                    <input type="hidden" name="allergies" value="<%=allergyString.toString() %>"/>
+                    <input type="hidden" name="allergies" value="<%=Encode.forHtmlAttribute(String.valueOf(allergyString.toString()))%>"/>
                     <td colspan="2">
                         Allergies:<br/>
-                        <%=allergyString.toString() %>
+                        <%=Encode.forHtml(String.valueOf(allergyString.toString()))%>
                     </td>
                 </tr>
 
@@ -317,7 +318,7 @@
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
-                                <td>Dr. <%=loggedInInfo.getLoggedInProvider().getFormattedName() %>
+                                <td>Dr. <%=Encode.forHtml(String.valueOf(loggedInInfo.getLoggedInProvider().getFormattedName()))%>
                                 </td>
                             </tr>
                         </table>

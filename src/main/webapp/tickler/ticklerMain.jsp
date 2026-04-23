@@ -54,6 +54,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
@@ -570,7 +571,7 @@
             }
 
             function generateRenalLabReq(demographicNo) {
-                var url = ctx + '/form/formlabreq<%=labReqVer%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=session.getAttribute("user")%>&fromSession=true';
+                var url = ctx + '/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>&fromSession=true';
                 jQuery.ajax({
                     url: ctx + '/renal/Renal.do?method=createLabReq&demographicNo=' + demographicNo,
                     async: false,
@@ -597,7 +598,7 @@
 
         <form name="serviceform" method="get" action="ticklerMain.jsp" class="form-inline">
             <input type="hidden" name="Submit" value="">
-            <input type="hidden" name="demoview" value="${param.demoview}">
+            <input type="hidden" name="demoview" value="${e:forHtmlAttribute(param.demoview)}">
 
             <c:if test="${empty param.demoview}">
                 <div class="control-container">
@@ -610,7 +611,7 @@
                     <div class="form-group">
                         <label for="xml_appointment_date">To</label>
                         <input type="date" class="form-control" name="xml_appointment_date" id="xml_appointment_date"
-                               value="<%=xml_appointment_date%>">
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>">
                     </div>
 
                     <div class="form-group">
@@ -622,8 +623,8 @@
                                 List<Provider> providers = providerDao.getActiveProviders();
                                 for (Provider p : providers) {
                             %>
-                            <option value="<%=p.getProviderNo()%>" <%=mrpview.equals(p.getProviderNo()) ? "selected" : ""%>><%=p.getLastName()%>
-                                ,<%=p.getFirstName()%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=mrpview.equals(p.getProviderNo()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(p.getLastName()))%>
+                                ,<%=Encode.forHtml(String.valueOf(p.getFirstName()))%>
                             </option>
                             <%
                                 }
@@ -638,8 +639,8 @@
                             <%
                                 for (Provider p : providers) {
                             %>
-                            <option value="<%=p.getProviderNo()%>" <%=providerview.equals(p.getProviderNo()) ? "selected" : ""%>><%=p.getLastName()%>
-                                ,<%=p.getFirstName()%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=providerview.equals(p.getProviderNo()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(p.getLastName()))%>
+                                ,<%=Encode.forHtml(String.valueOf(p.getFirstName()))%>
                             </option>
                             <%
                                 }
@@ -656,10 +657,10 @@
                         <script>
                             let _providers = [];
                             <%for (int i=0; i<sites.size(); i++) {%>
-                            _providers["<%=sites.get(i).getSiteId()%>"] = "<%Iterator<Provider> iter = sites.get(i).getProviders().iterator();
+                            _providers["<%=Encode.forJavaScript(String.valueOf(sites.get(i).getSiteId()))%>"] = "<%Iterator<Provider> iter = sites.get(i).getProviders().iterator();
 							while (iter.hasNext()) {
 								Provider p=iter.next();
-								if ("1".equals(p.getStatus())) {%><option value='<%=p.getProviderNo()%>'><%=p.getLastName()%>, <%=p.getFirstName()%></option><%}%>";
+								if ("1".equals(p.getStatus())) {%><option value='<%=Encode.forJavaScript(String.valueOf(p.getProviderNo()))%>'><%=Encode.forJavaScript(String.valueOf(p.getLastName()))%>, <%=Encode.forJavaScript(String.valueOf(p.getFirstName()))%></option><%}%>";
                             <%}}%>
 
                             function changeSite(sel) {
@@ -671,7 +672,7 @@
                             <%
                                 for (int i = 0; i < sites.size(); i++) {
                             %>
-                            <option value="<%=sites.get(i).getSiteId()%>" <%=sites.get(i).getSiteId().toString().equals(request.getParameter("site")) ? "selected" : ""%>><%=sites.get(i).getName()%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(sites.get(i).getSiteId()))%>" <%=Encode.forHtml(sites.get(i).getSiteId().toString().equals(request.getParameter("site")) ? "selected" : "")%>><%=Encode.forHtml(String.valueOf(sites.get(i).getName()))%>
                             </option>
                             <%
                                 }
@@ -683,7 +684,7 @@
                         %>
                         <script>
                             changeSite(document.getElementById("site"));
-                            document.getElementById("assignedTo").value = '<%=request.getParameter("assignedTo")%>';
+                            document.getElementById("assignedTo").value = '<%=Encode.forJavaScript(request.getParameter("assignedTo"))%>';
                         </script>
                         <%
                             }
@@ -704,8 +705,8 @@
                                 List<Provider> providersActive = providerDao.getActiveProviders();
                                 for (Provider p : providersActive) {
                             %>
-                            <option value="<%=p.getProviderNo()%>" <%=assignedTo.equals(p.getProviderNo()) ? "selected" : ""%>><%=p.getLastName()%>
-                                , <%=p.getFirstName()%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=assignedTo.equals(p.getProviderNo()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(p.getLastName()))%>
+                                , <%=Encode.forHtml(String.valueOf(p.getFirstName()))%>
                             </option>
                             <%
                                 }
@@ -753,7 +754,7 @@
 
         <form name="ticklerform" method="post" action="dbTicklerMain.jsp">
             <% Locale locale = request.getLocale();%>
-            <input type="hidden" name="parentAjaxId" value="<c:out value='${param.parentAjaxId}' />"/>
+            <input type="hidden" name="parentAjaxId" value="<c:out value='${e:forHtmlAttribute(param.parentAjaxId)}' />"/>
             <table id="ticklerResults" class="table table-striped table-compact" style="width:100%">
                 <thead>
                 <tr>
@@ -873,31 +874,31 @@
                 %>
 
                 <tr <%=warning ? "class='error'" : ""%> >
-                    <td class="<%=cellColour%>"><input type="checkbox" name="checkbox" value="<%=tickler.getId()%>"
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><input type="checkbox" name="checkbox" value="<%=Encode.forHtmlAttribute(String.valueOf(tickler.getId()))%>"
                                                        class="noprint"></td>
-                    <td class="<%=cellColour%>">
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>">
                         <a href="javascript:void(0)" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.editTickler"/>"
-                           onClick="window.open('<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=tickler.getId()%>', 'edit_tickler', 'width=800, height=650')">
+                           onClick="window.open('<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forJavaScript(String.valueOf(tickler.getId()))%>', 'edit_tickler', 'width=800, height=650')">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
                     </td>
-                    <td class="<%=cellColour%>"><a href="javascript:void(0)"
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><a href="javascript:void(0)"
                                                    onClick="popupPage(600,800,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(tickler.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')">
                         <%=Encode.forHtmlContent(tickler.getDemographicLastName())%>,<%=Encode.forHtmlContent(tickler.getDemographicFirstName())%>
                     </a></td>
-                    <td class="<%=cellColour%>"><%=Encode.forHtmlContent(tickler.getCreatorFormattedName())%>
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><%=Encode.forHtmlContent(tickler.getCreatorFormattedName())%>
                     </td>
-                    <td class="<%=cellColour%>"><%=dateOnlyFormat.format(tickler.getServiceDate())%>
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><%=Encode.forHtml(String.valueOf(dateOnlyFormat.format(tickler.getServiceDate())))%>
                     </td>
-                    <td class="<%=cellColour%>"><%=datetimeFormat.format(tickler.getCreateDate())%>
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><%=Encode.forHtml(String.valueOf(datetimeFormat.format(tickler.getCreateDate())))%>
                     </td>
-                    <td class="<%=cellColour%>"><%=tickler.getPriority()%>
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><%=Encode.forHtml(String.valueOf(tickler.getPriority()))%>
                     </td>
-                    <td class="<%=cellColour%>"><%=Encode.forHtmlContent(tickler.getAssigneeFormattedName())%>
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><%=Encode.forHtmlContent(tickler.getAssigneeFormattedName())%>
                     </td>
-                    <td class="<%=cellColour%>"><%=tickler.getStatusDesc(locale)%>
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><%=Encode.forHtml(String.valueOf(tickler.getStatusDesc(locale)))%>
                     </td>
-                    <td class="<%=cellColour%>"><span
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><span
                             style="white-space:pre-wrap"><%=Encode.forHtmlContent(tickler.getMessage())%></span>
 
                         <%
@@ -911,37 +912,37 @@
                             if (LabResultData.isMDS(type)) {
                         %>
                         <a title="View attachment"
-                           href="javascript:reportWindow('SegmentDisplay.jsp?segmentID=<%=tl.getTableId()%>&providerNo=<%=user_no%>&searchProviderNo=<%=user_no%>&status=')"><i
+                           href="javascript:reportWindow('SegmentDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
                                 class="glyphicon glyphicon-paperclip"></i></a>
                         <%
                         } else if (LabResultData.isCML(type)) {
                         %>
                         <a title="View attachment"
-                           href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ON/CMLDisplay.jsp?segmentID=<%=tl.getTableId()%>&providerNo=<%=user_no%>&searchProviderNo=<%=user_no%>&status=')"><i
+                           href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ON/CMLDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
                                 class="glyphicon glyphicon-paperclip"></i></a>
                         <%
                         } else if (LabResultData.isHL7TEXT(type)) {
                         %>
                         <a title="View attachment"
-                           href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ALL/labDisplay.jsp?segmentID=<%=tl.getTableId()%>&providerNo=<%=user_no%>&searchProviderNo=<%=user_no%>&status=')"><i
+                           href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
                                 class="glyphicon glyphicon-paperclip"></i></a>
                         <%
                         } else if (LabResultData.isDocument(type)) {
                         %>
                         <a title="View attachment"
-                           href="javascript:reportWindow('<%=request.getContextPath()%>/documentManager/ManageDocument.do?method=display&doc_no=<%=tl.getTableId()%>&providerNo=<%=user_no%>&searchProviderNo=<%=user_no%>&status=')"><i
+                           href="javascript:reportWindow('<%=request.getContextPath()%>/documentManager/ManageDocument.do?method=display&doc_no=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
                                 class="glyphicon glyphicon-paperclip"></i></a>
                         <%
                         } else if (LabResultData.isHRM(type)) {
                         %>
                         <a title="View attachment"
-                           href="javascript:reportWindow('<%=request.getContextPath()%>/hospitalReportManager/Display.do?id=<%=tl.getTableId()%>&segmentID=<%=tl.getTableId()%>')"><i
+                           href="javascript:reportWindow('<%=request.getContextPath()%>/hospitalReportManager/Display.do?id=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>')"><i
                                 class="glyphicon glyphicon-paperclip"></i></a>
                         <%
                         } else {
                         %>
                         <a title="View attachment"
-                           href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/BC/labDisplay.jsp?segmentID=<%=tl.getTableId()%>&providerNo=<%=user_no%>&searchProviderNo=<%=user_no%>&status=')"><i
+                           href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/BC/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
                                 class="glyphicon glyphicon-paperclip"></i></a>
                         <%
                             }
@@ -952,14 +953,14 @@
                         %>
 
                     </td>
-                    <td class="<%=cellColour%> noprint">
+                    <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%> noprint">
                         <a href="javascript:void(0)" class="noteDialogLink"
                            onClick="openNoteDialog('<%=Encode.forJavaScriptAttribute(String.valueOf(tickler.getDemographicNo()))%>','<%=Encode.forJavaScriptAttribute(String.valueOf(tickler.getId()))%>')"
                            title="Add Encounter Note">
                             <span class="glyphicon glyphicon-comment"></span>
                         </a>
                     </td>
-                    <td><%=tickler.getId()%>
+                    <td><%=Encode.forHtml(String.valueOf(tickler.getId()))%>
                     </td>
                 </tr>
                 <% List<TicklerCommentDTO> tcomments = tickler.getComments();
@@ -968,32 +969,32 @@
                 %>
 
 
-                <tr class="followup-comment-<%=tickler.getId()%> comment-row no-sort">
+                <tr class="followup-comment-<%=Encode.forHtmlAttribute(String.valueOf(tickler.getId()))%> comment-row no-sort">
                     <td></td>
                     <td></td>
                     <td><%=Encode.forHtmlContent(tickler.getDemographicLastName())%>,<%=Encode.forHtmlContent(tickler.getDemographicFirstName())%>
                     </td>
                     <td class="no-sort"><%=Encode.forHtmlContent(formattedName)%>
                     </td>
-                    <td><%=dateOnlyFormat.format(tickler.getServiceDate())%>
+                    <td><%=Encode.forHtml(String.valueOf(dateOnlyFormat.format(tickler.getServiceDate())))%>
                     </td>
 
                     <td class="no-sort">
                         <% if (tc.isUpdateDateToday()) { %>
-                        <%=timeOnlyFormat.format(tc.getUpdateDate())%>
+                        <%=Encode.forHtml(String.valueOf(timeOnlyFormat.format(tc.getUpdateDate())))%>
                         <% } else { %>
-                        <%=datetimeFormat.format(tc.getUpdateDate())%>
+                        <%=Encode.forHtml(String.valueOf(datetimeFormat.format(tc.getUpdateDate())))%>
                         <% } %>
                     </td>
 
-                    <td><%=tickler.getPriority()%>
+                    <td><%=Encode.forHtml(String.valueOf(tickler.getPriority()))%>
                     </td>
                     <td></td>
                     <td></td>
                     <td class="no-sort" style="white-space:pre-wrap"><%=Encode.forHtmlContent(tc.getMessage())%>
                     </td>
                     <td></td>
-                    <td><%=tickler.getId()%>
+                    <td><%=Encode.forHtml(String.valueOf(tickler.getId()))%>
                     </td>
                 </tr>
                 <% }
@@ -1034,7 +1035,7 @@
                         %>
                         <input type="button" class="btn btn-primary" name="button"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnAddTickler"/>"
-                               onClick="popupPage('500','800', 'ticklerAdd.jsp?updateParent=true&parentAjaxId=${parentAjaxId}&bFirstDisp=false&messageID=null&demographic_no=${param.demoview}')"
+                               onClick="popupPage('500','800', 'ticklerAdd.jsp?updateParent=true&parentAjaxId=${parentAjaxId}&bFirstDisp=false&messageID=null&demographic_no=${e:forJavaScript(param.demoview)}')"
                                class="sbttn">
                         <input type="button" name="button" class="btn btn-warning"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>" onClick="window.close()" class="sbttn">
@@ -1046,7 +1047,7 @@
         </form>
 
         <p class="yesprint">
-            <%=OscarProperties.getConfidentialityStatement()%>
+            <%=Encode.forHtml(String.valueOf(OscarProperties.getConfidentialityStatement()))%>
         </p>
 
         <div id="note-form" title="Edit Tickler Note" style="display:none;">
@@ -1090,7 +1091,7 @@
         </div>
 
         <div id="edit-form" title="Edit Tickler">
-                <%--    onclick="editFormDialog.load('${pageContext.request.contextPath}/tickler/ticklerEdit.jsp?tickler_no=<%=t.getId()%>').dialog('open')">--%>
+                <%--    onclick="editFormDialog.load('${pageContext.request.contextPath}/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forJavaScript(String.valueOf(t.getId()))%>').dialog('open')">--%>
         </div>
 
     </div>

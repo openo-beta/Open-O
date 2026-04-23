@@ -54,6 +54,7 @@
 <%@ page import="ca.openosp.openo.olis.dao.OLISSystemPreferencesDao" %>
 <%@ page import="ca.openosp.openo.olis.model.OLISSystemPreferences" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -224,7 +225,7 @@
                     <table>
                         <tr>
                             <td>Start Time:</td>
-                            <td><input type="text" name="startTime" value="<%=startTime%>"> (YYYY-MM-DD hh:mm:ss
+                            <td><input type="text" name="startTime" value="<%=Encode.forHtmlAttribute(String.valueOf(startTime))%>"> (YYYY-MM-DD hh:mm:ss
                                 [-/+]ZZZZ)
                             </td>
                         </tr>
@@ -236,7 +237,7 @@
                         </tr>
                         <tr>
                             <td>End Time (optional):</td>
-                            <td><input type="text" name="endTime" value="<%=endTime%>"> (YYYY-MM-DD hh:mm:ss [-/+]ZZZZ)
+                            <td><input type="text" name="endTime" value="<%=Encode.forHtmlAttribute(String.valueOf(endTime))%>"> (YYYY-MM-DD hh:mm:ss [-/+]ZZZZ)
                             </td>
                         </tr>
                         <tr id="endTimeError" style="display:none;">
@@ -247,7 +248,7 @@
                         </tr>
                         <tr>
                             <td>Frequency (in minutes):</td>
-                            <td><input type="text" name="pollFrequency" value="<%=pollFrequency%>"></td>
+                            <td><input type="text" name="pollFrequency" value="<%=Encode.forHtmlAttribute(String.valueOf(pollFrequency))%>"></td>
                         </tr>
                         <tr id="frequencyError" style="display:none;">
                             <td> &nbsp;</td>
@@ -257,7 +258,7 @@
                             <td>Filter out patients not in system</td>
                             <td>
                                 <input type="checkbox"
-                                       name="filter_patients" <%=(olisPreferences.isFilterPatients() ? "checked=\"checked\"" : "") %>/>
+                                       name="filter_patients" <%=(olisPreferences.isFilterPatients() ? "checked=\"checked\"" : "")%>/>
                             </td>
                         </tr>
                         <tr>

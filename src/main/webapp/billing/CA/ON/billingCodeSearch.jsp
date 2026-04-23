@@ -24,6 +24,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingService" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
@@ -81,10 +82,17 @@
         function CodeAttach(File0) {
 
             <%
-            if(request.getParameter("nameF") != null) {
-                    out.println("self.opener." + request.getParameter("nameF") + " = File0;");
-            } else {
+            // formIndex and elementName together identify a form field. They are validated
+            // against strict allowlists so the access path below is emitted from a fixed
+            // server-side template — no caller-supplied text reaches the JS source.
+            String formIndex = request.getParameter("formIndex");
+            String elementName = request.getParameter("elementName");
+            boolean hasStructuredTarget = ("0".equals(formIndex) || "1".equals(formIndex))
+                    && elementName != null && elementName.matches("^[a-zA-Z_$][a-zA-Z0-9_$]*$");
+            if (hasStructuredTarget) {
             %>
+            self.opener.document.forms[<%=Encode.forJavaScript(formIndex)%>].elements['<%=Encode.forJavaScript(elementName)%>'].value = File0;
+            <% } else { %>
             self.opener.document.serviceform.xml_other1.value = File0;
             self.opener.document.serviceform.xml_other2.value = "";
             self.opener.document.serviceform.xml_other3.value = "";
@@ -144,27 +152,27 @@
 
         %>
 
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td width="12%"><font face="Arial, Helvetica, sans-serif"
                                   size="2">
                 <% if (Dcode.compareTo(xcodeName) == 0 || Dcode.compareTo(xcodeName1) == 0 || Dcode.compareTo(xcodeName2) == 0) { %><input
-                    type="checkbox" name="code_<%=Dcode%>" checked>
-                <%} else {%><input type="checkbox" name="code_<%=Dcode%>">
-                <%}%><%=Dcode%>
+                    type="checkbox" name="code_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>" checked>
+                <%} else {%><input type="checkbox" name="code_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>">
+                <%}%><%=Encode.forHtml(String.valueOf(Dcode))%>
             </font></td>
             <td width="88%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"><input type="hidden" name="codedesc_<%=Dcode%>"
-                                                  value="<%=DcodeDesc%>"><input type="text" name="<%=Dcode%>"
-                                                                                value="<%=DcodeDesc%>" size="50"><input
+                                  size="2"><input type="hidden" name="codedesc_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
+                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>"><input type="text" name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>" size="50"><input
                     type="submit"
-                    name="update" value="update <%=Dcode%>"></font></td>
+                    name="update" value="update <%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"></font></td>
         </tr>
         <%
             }
         %>
 
         <% if (intCount == 0) { %>
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td colspan="2"><font face="Arial, Helvetica, sans-serif"
                                   size="2">No match found. <%// =i%>
             </font></td>
@@ -175,7 +183,7 @@
         <% if (intCount == 1) { %>
         <script LANGUAGE="JavaScript">
             <!--
-            CodeAttach('<%=Dcode%>');
+            CodeAttach('<%=Encode.forJavaScript(String.valueOf(Dcode))%>');
             -->
 
         </script>
@@ -184,8 +192,13 @@
     <input type="submit" name="update" value="Confirm"><input
         type="button" name="cancel" value="Cancel"
         onclick="javascript:window.close()"> <%
-    if (request.getParameter("nameF") != null) {
-        out.println("<input type='hidden' name='nameF' value=\"" + request.getParameter("nameF") + "\"/>");
+    // Carry the structured target identifier through to billingCodeUpdate.jsp on form submit.
+    String formIndexParam = request.getParameter("formIndex");
+    String elementNameParam = request.getParameter("elementName");
+    if (("0".equals(formIndexParam) || "1".equals(formIndexParam))
+            && elementNameParam != null && elementNameParam.matches("^[a-zA-Z_$][a-zA-Z0-9_$]*$")) {
+        out.println("<input type='hidden' name='formIndex' value='" + Encode.forHtmlAttribute(formIndexParam) + "'/>");
+        out.println("<input type='hidden' name='elementName' value='" + Encode.forHtmlAttribute(elementNameParam) + "'/>");
     }
 %>
 </form>

@@ -33,6 +33,7 @@ package ca.openosp.openo.eform;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.eform.data.EForm;
 import ca.openosp.openo.eform.upload.ImageUpload2Action;
@@ -223,7 +224,7 @@ public class EFormExportZip {
                 _log.debug("going in eform table >" + newEForm.getFormFileName() + "<");
             } else {
                 //store temp files on HD
-                File tempFile = new File(imageTempFolderDir, file.getName());
+                File tempFile = PathValidationUtils.validatePath(file.getName(), imageTempFolderDir);
                 tempFiles.put(file.getName(), tempFile); //reference so we can find it later
                 FileOutputStream fos = new FileOutputStream(tempFile);
                 inputToOutput(zis, fos);
@@ -254,7 +255,7 @@ public class EFormExportZip {
                 //do not save file if eform fails
             } else {
                 FileInputStream fis = new FileInputStream(tempFile.getValue());
-                File imageFile = new File(ImageUpload2Action.getImageFolder(), tempFile.getKey());
+                File imageFile = PathValidationUtils.validatePath(tempFile.getKey(), ImageUpload2Action.getImageFolder());
                 if (imageFile.exists()) {
                     errors.add("Image '" + tempFile.getKey() + "' already exists, skipping image, but the form may still be uploaded.  Please resolve.");
                     _log.info("EForm Import: Image with name '" + tempFile.getKey() + "' already exists, skipping image, but the form may still be uploaded.  Please resolve.");

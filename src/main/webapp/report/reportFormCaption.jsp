@@ -19,6 +19,7 @@
 <%@ page import="org.apache.commons.lang3.*" %>
 <%@ page import="ca.openosp.openo.report.data.RptReportItem" %>
 <%@ page import="ca.openosp.openo.report.data.RptTableFieldNameCaption" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String reportId = request.getParameter("id") != null ? request.getParameter("id") : "0";
     String tableName = request.getParameter("tableName") != null ? request.getParameter("tableName") : "";
@@ -79,7 +80,7 @@
             }
 
             function goCaption() {
-                //self.location.href = "reportFormCaption.jsp?id=<%=reportId%>&tableName=<%=tableName%>";
+                //self.location.href = "reportFormCaption.jsp?id=<%=Encode.forJavaScript(String.valueOf(reportId))%>&tableName=<%=Encode.forJavaScript(String.valueOf(tableName))%>";
             }
 
             function goPage(id) {
@@ -95,12 +96,12 @@
     <center></center>
     <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
         <tr BGCOLOR="#CCCCFF">
-            <td><%=reportName%> Caption</td>
+            <td><%=Encode.forHtml(String.valueOf(reportName))%> Caption</td>
             <td width="10%" align="right" nowrap>
                 <% if ("demographic".equals(tableName)) {%> <a
-                    href="reportFormDemoConfig.jsp?id=<%=reportId%>&tableName=<%=tableName%>&formTableName=<%=formTableName%>&configTableName=<%=configTableName%>">Back
+                    href="reportFormDemoConfig.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>&tableName=<%=Encode.forUriComponent(String.valueOf(tableName))%>&formTableName=<%=Encode.forUriComponent(String.valueOf(formTableName))%>&configTableName=<%=Encode.forUriComponent(String.valueOf(configTableName))%>">Back
                 to the Configuration</a> <% } else {%> <a
-                    href="reportFormConfig.jsp?id=<%=reportId%>&tableName=<%=tableName%>">Back
+                    href="reportFormConfig.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>&tableName=<%=Encode.forUriComponent(String.valueOf(tableName))%>">Back
                 to the Configuration</a> <% }%>
             </td>
         </tr>
@@ -120,8 +121,8 @@
                             String fieldCaption = "";
                             String action = " Add ";
                             if (strTemp.length > 1) {
-                                fieldName = StringEscapeUtils.escapeHtml4(strTemp[1]);
-                                fieldCaption = StringEscapeUtils.escapeHtml4(strTemp[0].trim());
+                                fieldName = Encode.forHtml(strTemp[1]);
+                                fieldCaption = Encode.forHtml(strTemp[0].trim());
                             }
                             if (fieldCaption.length() > 1) {
                                 color = "gold";
@@ -130,19 +131,19 @@
                     %>
                     <form method="post" name="baseurl<%=i%>"
                           action="reportFormCaption.jsp">
-                        <tr bgcolor="<%=color%>">
+                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
                             <td width="50%"><input type="text" name="caption"
-                                                   value="<%=fieldCaption%>" size="36"/></td>
-                            <td width="30%" nowrap><%=fieldName%>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(fieldCaption))%>" size="36"/></td>
+                            <td width="30%" nowrap><%=Encode.forHtml(String.valueOf(fieldName))%>
                             </td>
                             <td align="center"><input type="submit" name="submit"
-                                                      value="<%=action%>"/></td>
-                            <input type="hidden" name="name" value="<%=fieldName%>">
-                            <input type="hidden" name="id" value="<%=reportId%>">
-                            <input type="hidden" name="tableName" value="<%=tableName%>">
-                            <input type="hidden" name="formTableName" value="<%=formTableName%>">
+                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(action))%>"/></td>
+                            <input type="hidden" name="name" value="<%=Encode.forHtmlAttribute(String.valueOf(fieldName))%>">
+                            <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(reportId))%>">
+                            <input type="hidden" name="tableName" value="<%=Encode.forHtmlAttribute(String.valueOf(tableName))%>">
+                            <input type="hidden" name="formTableName" value="<%=Encode.forHtmlAttribute(String.valueOf(formTableName))%>">
                             <input type="hidden" name="configTableName"
-                                   value="<%=configTableName%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(configTableName))%>">
                         </tr>
                     </form>
                     <% } %>

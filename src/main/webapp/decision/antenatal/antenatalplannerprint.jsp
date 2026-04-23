@@ -28,6 +28,7 @@
 
     String demographic_no = request.getParameter("demographic_no") != null ? request.getParameter("demographic_no") : ("null");
     String form_no = request.getParameter("formId") != null ? request.getParameter("formId") : ("0");
+    try { Integer.parseInt(form_no); } catch (NumberFormatException e) { form_no = "0"; }
     String curUser_no = (String) session.getAttribute("user");
 %>
 <%@ page
@@ -45,6 +46,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DesapriskDao" %>
 <%@ page import="ca.openosp.openo.db.DBHandler" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DesapriskDao desapriskDao = SpringUtils.getBean(DesapriskDao.class);
 %>
@@ -67,7 +69,7 @@
 
     ResultSet rsdemo = null;
     if (!form_no.equals("0")) {
-        rsdemo = DBHandler.GetSQL("select * from formAR where ID = " + form_no);
+        rsdemo = DBHandler.GetPreSQL("select * from formAR where ID = ?", Integer.parseInt(form_no));
 
         ResultSetMetaData resultsetmetadata = rsdemo.getMetaData();
         while (rsdemo.next()) {
@@ -95,8 +97,8 @@
 %>
 <xml id="xml_list">
     <planner>
-        <%=risk_content%>
-        <%=checklist_content%>
+        <%=Encode.forHtml(String.valueOf(risk_content))%>
+        <%=Encode.forHtml(String.valueOf(checklist_content))%>
     </planner>
 </xml>
 <%
@@ -124,7 +126,7 @@
 %>
 <table bgcolor='silver' width='100%' cellspacing=0 cellpadding=0>
     <tr>
-        <td><font color='blue'><%=patientName%> | EDB: <%=finalEDB%>
+        <td><font color='blue'><%=Encode.forHtml(String.valueOf(patientName))%> | EDB: <%=Encode.forHtml(String.valueOf(finalEDB))%>
         </font></td>
         <td align="right"><input type="button" name="submit"
                                  value="Print" onclick="window.print();"/> <input type="button"

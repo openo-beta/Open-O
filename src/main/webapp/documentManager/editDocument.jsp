@@ -210,13 +210,13 @@
         function reviewed(ths) {
             if (ths.form.reviewerId.value == 'null') {
                 thisForm = ths.form;
-                thisForm.reviewerId.value = <%=user_no%>;
+                thisForm.reviewerId.value = <%=Encode.forJavaScript(String.valueOf(user_no))%>;
                 thisForm.reviewDoc.value = true;
                 thisForm.submit();
             } else {
                 alert('set extra');
                 thisForm = ths.form;
-                thisForm.extraReviewerId.value = <%=user_no%>;
+                thisForm.extraReviewerId.value = <%=Encode.forJavaScript(String.valueOf(user_no))%>;
                 thisForm.extraReviewDoc.value = true;
                 thisForm.submit();
             }
@@ -224,7 +224,7 @@
 
         var docSubClassList = [
             <% for (int i=0; i<subClasses.size(); i++) { %>
-            "<%=subClasses.get(i)%>"<%=(i<subClasses.size()-1)?",":""%>
+            "<%=Encode.forJavaScript(String.valueOf(subClasses.get(i)))%>"<%=(i<subClasses.size()-1)?",":""%>
             <% } %>
         ];
     </script>
@@ -233,18 +233,18 @@
 <div class="maindiv">
     <div class="maindivheading">Edit Document</div>
     <%-- Lists docerrors --%> <% for (Enumeration errorkeys = docerrors.keys(); errorkeys.hasMoreElements(); ) {%>
-    <font class="warning">Error: <fmt:setBundle basename="oscarResources"/><fmt:message key="<%=(String) docerrors.get(errorkeys.nextElement())%>"/></font><br/>
+    <font class="warning">Error: <fmt:setBundle basename="oscarResources"/><fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf((String) docerrors.get(errorkeys.nextElement())))%>"/></font><br/>
     <% } %> <form action="${pageContext.request.contextPath}/documentManager/addEditDocument.do" method="POST"
                        enctype="multipart/form-data" onsubmit="return submitUpload(this);">
     <input type="hidden" name="<csrf:tokenname />" value="<csrf:tokenvalue />"/>
     <input type="hidden" name="function"
-           value="<%=formdata.getFunction()%>" size="20"/>
+           value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getFunction()))%>" size="20"/>
     <input type="hidden" name="functionId"
-           value="<%=formdata.getFunctionId()%>" size="20"/>
-    <input type="hidden" name="functionid" value="<%=moduleid%>" size="20"/>
-    <input type="hidden" name="mode" value="<%=editDocumentNo%>"/>
-    <input type="hidden" name="reviewerId" value="<%=formdata.getReviewerId()%>"/>
-    <input type="hidden" name="reviewDateTime" value="<%=formdata.getReviewDateTime()%>"/>
+           value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getFunctionId()))%>" size="20"/>
+    <input type="hidden" name="functionid" value="<%=Encode.forHtmlAttribute(String.valueOf(moduleid))%>" size="20"/>
+    <input type="hidden" name="mode" value="<%=Encode.forHtmlAttribute(String.valueOf(editDocumentNo))%>"/>
+    <input type="hidden" name="reviewerId" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getReviewerId()))%>"/>
+    <input type="hidden" name="reviewDateTime" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getReviewDateTime()))%>"/>
     <input type="hidden" name="reviewDoc" value="false"/>
 
     <input type="hidden" name="extraReviewerId" value=""/>
@@ -320,7 +320,7 @@
                         String selected = "";
                         if (formdata.getResponsibleId().equals(pd.get("providerNo"))) selected = "selected";
                     %>
-                    <option value="<%=pd.get("providerNo")%>" <%=selected%>><%=Encode.forHtmlContent(pd.get("lastName"))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(pd.get("providerNo")))%>" <%=selected%>><%=Encode.forHtmlContent(pd.get("lastName"))%>
                         , <%=Encode.forHtmlContent(pd.get("firstName"))%>
                     </option>
                     <% } %>
@@ -364,7 +364,7 @@
         <tr>
             <td>Restricted to program:</td>
             <td>
-                <%=formdata.isRestrictToProgram()%>
+                <%=Encode.forHtml(String.valueOf(formdata.isRestrictToProgram()))%>
             </td>
         </tr>
 
@@ -412,7 +412,7 @@
                         }
                 %>
                 Reviewed: &nbsp; <%=Encode.forHtmlContent(EDocUtil.getProviderName(formdata.getReviewerId()))%>
-                &nbsp; [<%=formdata.getReviewDateTime()%>]
+                &nbsp; [<%=Encode.forHtml(String.valueOf(formdata.getReviewDateTime()))%>]
                 <% } %>
                 <%
                     for (DocumentExtraReviewer der : extraReviewers) {
@@ -422,7 +422,7 @@
                 %>
                 <br/>
                 Reviewed: &nbsp; <%=Encode.forHtmlContent(EDocUtil.getProviderName(der.getReviewerProviderNo()))%>
-                &nbsp; [<%=der.getReviewDateTime()%>]
+                &nbsp; [<%=Encode.forHtml(String.valueOf(der.getReviewDateTime()))%>]
                 <% } %>
 
                 <%if (!reviewedByMe) { %>
@@ -434,7 +434,7 @@
         <tr>
             <td colspan=2>
                 <input type="button" value="Annotation"
-                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=annotation_tableid%>&demo=<%=moduleid%>','anwin','width=400,height=500');"/>
+                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(annotation_tableid))%>&demo=<%=Encode.forJavaScript(String.valueOf(moduleid))%>','anwin','width=400,height=500');"/>
             </td>
         </tr>
         <tr>

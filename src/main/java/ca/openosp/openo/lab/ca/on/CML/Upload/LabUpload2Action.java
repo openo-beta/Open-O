@@ -27,6 +27,8 @@
 package ca.openosp.openo.lab.ca.on.CML.Upload;
 
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
@@ -46,8 +48,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.List;
 
-public class LabUpload2Action extends ActionSupport {
+public class LabUpload2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -73,7 +76,7 @@ public class LabUpload2Action extends ActionSupport {
         if (key != null && keyToMatch != null && keyToMatch.equals(key)) {
 
             try {
-                // Validate the uploaded file using PathValidationUtils
+                // Extract File from UploadedFile
                 if (importFile == null) {
                     outcome = "accessDenied";
                     request.setAttribute("outcome", outcome);
@@ -82,20 +85,20 @@ public class LabUpload2Action extends ActionSupport {
 
                 try {
                     // Validates source file is from an allowed temp location
-                    importFile = PathValidationUtils.validateUpload(importFile);
+                    importFileOnDisk = PathValidationUtils.validateUpload(importFileOnDisk);
                 } catch (SecurityException e) {
-                    _logger.error("Invalid upload source: " + importFile.getPath());
+                    _logger.error("Invalid upload source: " + importFileOnDisk.getPath());
                     outcome = "accessDenied";
                     request.setAttribute("outcome", outcome);
                     return SUCCESS;
                 }
 
-                MiscUtils.getLogger().debug("Lab Upload content type = " + importFile.getName());
-                File validatedImportFile = PathValidationUtils.validateUpload(importFile);
+                MiscUtils.getLogger().debug("Lab Upload content type = " + importFileOnDisk.getName());
+                File validatedImportFile = PathValidationUtils.validateUpload(importFileOnDisk);
                 InputStream is = Files.newInputStream(validatedImportFile.toPath());
 
                 // Get sanitized filename from the validated source
-                filename = importFile.getName();
+                filename = importFileOnDisk.getName();
 
                 String localFileName = saveFile(is, filename);
                 is.close();
@@ -220,13 +223,14 @@ public class LabUpload2Action extends ActionSupport {
         return retVal;
     }
 
-    private File importFile;
+    private UploadedFile importFile;
+    private File importFileOnDisk;
 
-    public File getImportFile() {
-        return importFile;
-    }
-
-    public void setImportFile(File importFile) {
-        this.importFile = importFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
+        }
     }
 }

@@ -51,9 +51,9 @@ public class EctAnnualRecord {
         if (existingID <= 0) {
             sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, "
                     + "year_of_birth, month_of_birth, date_of_birth "
-                    + "FROM demographic WHERE demographic_no = " + demographicNo;
+                    + "FROM demographic WHERE demographic_no = ?";
 
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql, demographicNo);
 
             if (rs.next()) {
                 java.util.Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
@@ -69,9 +69,9 @@ public class EctAnnualRecord {
             rs.close();
         } else {
             MiscUtils.getLogger().debug("Im exsiting");
-            sql = "SELECT * FROM formAnnual WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
+            sql = "SELECT * FROM formAnnual WHERE demographic_no = ? AND ID = ?";
 
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql, demographicNo, existingID);
 
             if (rs.next()) {
                 MiscUtils.getLogger().debug("getting metaData");
@@ -118,8 +118,8 @@ public class EctAnnualRecord {
 //        String ID = props.getProperty("ID");
 
 
-        String sql = "SELECT * FROM formAnnual WHERE demographic_no=" + demographic_no + " AND ID=0";
-        ResultSet rs = DBHandler.GetSQL(sql, true);
+        String sql = "SELECT * FROM formAnnual WHERE demographic_no = ? AND ID = 0";
+        ResultSet rs = DBHandler.GetPreSQLUpdatable(sql, demographic_no);
 
         rs.moveToInsertRow();
 
@@ -178,7 +178,7 @@ public class EctAnnualRecord {
         int ret = 0;
 
         sql = "SELECT LAST_INSERT_ID()";
-        rs = DBHandler.GetSQL(sql);
+        rs = DBHandler.GetPreSQL(sql);
         if (rs.next()) {
             ret = rs.getInt(1);
         }

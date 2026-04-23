@@ -10,12 +10,13 @@
 <link href="<%=request.getContextPath() %>/library/jquery/jquery-ui.theme-1.12.1.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath() %>/library/jquery/jquery-ui.structure-1.12.1.min.css" rel="stylesheet">
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 	String passedThroughHeadElement=(String)request.getAttribute("HEAD_ELEMENT");
 	if (passedThroughHeadElement!=null)
 	{
 		%>
-			<%=passedThroughHeadElement%>
+			<%=Encode.forHtml(String.valueOf(passedThroughHeadElement))%>
 		<%
 	}
 %>

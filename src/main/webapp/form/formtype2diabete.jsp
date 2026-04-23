@@ -47,6 +47,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -245,14 +246,14 @@
 
 
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="ID"
-               value="<%= props.getProperty("ID", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no" value=<%="" + provNo%>/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
 
         <table class="Head" class="hidePrint">
             <tr>
@@ -281,17 +282,17 @@
             <tr>
                 <td>Name: <input type="text" class="Type2DiabetesInput"
                                  name="pName" readonly="true" size="30"
-                                 value="<%= props.getProperty("pName", "") %>"/></td>
+                                 value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pName", "")))%>"/></td>
                 <td>DOB<small>(yyyy/mm/dd)</small>: <input type="text"
                                                            class="Type2DiabetesInput" readonly="true" name="birthDate"
-                                                           size="11" value="<%= props.getProperty("birthDate", "") %>"
+                                                           size="11" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("birthDate", "")))%>"
                                                            readonly="true"/></td>
                 <td>Date of Dx<small>(yyyy/mm/dd)</small>: <input type="text"
                                                                   class="Type2DiabetesInput" name="dateDx" size="11"
-                                                                  value="<%=props.getProperty("dateDx", "") %>"/></td>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dateDx", "")))%>"/></td>
                 <td>Height: <input type="text" class="Type2DiabetesInput"
                                    name="height" size="5"
-                                   value="<%= props.getProperty("height", "") %>"/></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("height", "")))%>"/></td>
             </tr>
         </table>
         <table border="1" cellspacing="0" cellpadding="0">
@@ -305,41 +306,41 @@
                     </table>
                 </td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="date1" value="<%= props.getProperty("date1", "") %>"/></td>
+                           name="date1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="date2" value="<%= props.getProperty("date2", "") %>"/></td>
+                           name="date2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="date3" value="<%= props.getProperty("date3", "") %>"/></td>
+                           name="date3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="date4" value="<%= props.getProperty("date4", "") %>"/></td>
+                           name="date4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="date5" value="<%= props.getProperty("date5", "") %>"/></td>
+                           name="date5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date5", "")))%>"/></td>
             </tr>
             <tr>
                 <td align="left">Weight (BMI ideally &lt;27)</td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="weight1" value="<%= props.getProperty("weight1", "") %>"/></td>
+                           name="weight1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="weight2" value="<%= props.getProperty("weight2", "") %>"/></td>
+                           name="weight2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="weight3" value="<%= props.getProperty("weight3", "") %>"/></td>
+                           name="weight3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="weight4" value="<%= props.getProperty("weight4", "") %>"/></td>
+                           name="weight4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="weight5" value="<%= props.getProperty("weight5", "") %>"/></td>
+                           name="weight5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight5", "")))%>"/></td>
             </tr>
             <tr>
                 <td align="left">*BP (ideally &lt;130/80)</td>
                 <td><input type="text" class="Type2DiabetesTextarea" name="bp1"
-                           value="<%= props.getProperty("bp1", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bp1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea" name="bp2"
-                           value="<%= props.getProperty("bp2", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bp2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea" name="bp3"
-                           value="<%= props.getProperty("bp3", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bp3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea" name="bp4"
-                           value="<%= props.getProperty("bp4", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bp4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea" name="bp5"
-                           value="<%= props.getProperty("bp5", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bp5", "")))%>"/></td>
             </tr>
             <tr>
                 <td align="left" rowspan="3">
@@ -382,53 +383,53 @@
                 </td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseA1"><%= props.getProperty("glucoseA1", "") %></textarea></td>
+                              name="glucoseA1"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseA1", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseA2"><%= props.getProperty("glucoseA2", "") %></textarea></td>
+                              name="glucoseA2"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseA2", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseA3"><%= props.getProperty("glucoseA3", "") %></textarea></td>
+                              name="glucoseA3"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseA3", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseA4"><%= props.getProperty("glucoseA4", "") %></textarea></td>
+                              name="glucoseA4"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseA4", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseA5"><%= props.getProperty("glucoseA5", "") %></textarea></td>
+                              name="glucoseA5"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseA5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseB1"><%= props.getProperty("glucoseB1", "") %></textarea></td>
+                              name="glucoseB1"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseB1", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseB2"><%= props.getProperty("glucoseB2", "") %></textarea></td>
+                              name="glucoseB2"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseB2", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseB3"><%= props.getProperty("glucoseB3", "") %></textarea></td>
+                              name="glucoseB3"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseB3", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseB4"><%= props.getProperty("glucoseB4", "") %></textarea></td>
+                              name="glucoseB4"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseB4", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseB5"><%= props.getProperty("glucoseB5", "") %></textarea></td>
+                              name="glucoseB5"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseB5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseC1"><%= props.getProperty("glucoseC1", "") %></textarea></td>
+                              name="glucoseC1"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseC1", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseC2"><%= props.getProperty("glucoseC2", "") %></textarea></td>
+                              name="glucoseC2"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseC2", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseC3"><%= props.getProperty("glucoseC3", "") %></textarea></td>
+                              name="glucoseC3"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseC3", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseC4"><%= props.getProperty("glucoseC4", "") %></textarea></td>
+                              name="glucoseC4"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseC4", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="glucoseC5"><%= props.getProperty("glucoseC5", "") %></textarea></td>
+                              name="glucoseC5"><%=Encode.forHtml(String.valueOf(props.getProperty("glucoseC5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td align="left">RENAL<br>
@@ -437,19 +438,19 @@
                         step 2, if +ve see step 3</small></td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="renal1"><%= props.getProperty("renal1", "") %></textarea></td>
+                              name="renal1"><%=Encode.forHtml(String.valueOf(props.getProperty("renal1", "")))%></textarea></td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="renal2"><%= props.getProperty("renal2", "") %></textarea></td>
+                              name="renal2"><%=Encode.forHtml(String.valueOf(props.getProperty("renal2", "")))%></textarea></td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="renal3"><%= props.getProperty("renal3", "") %></textarea></td>
+                              name="renal3"><%=Encode.forHtml(String.valueOf(props.getProperty("renal3", "")))%></textarea></td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="renal4"><%= props.getProperty("renal4", "") %></textarea></td>
+                              name="renal4"><%=Encode.forHtml(String.valueOf(props.getProperty("renal4", "")))%></textarea></td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="renal5"><%= props.getProperty("renal5", "") %></textarea></td>
+                              name="renal5"><%=Encode.forHtml(String.valueOf(props.getProperty("renal5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td align="left">2. <b>*Urine alb:creat ratio yearly</b><br>
@@ -457,19 +458,19 @@
                         (female &gt;=2.8 or male &gt;=2.0) see step 3</small></td>
                 <td><textarea style="height: 37px;"
                               class="Type2DiabetesTextarea"
-                              name="urineRatio1"><%= props.getProperty("urineRatio1", "") %></textarea></td>
+                              name="urineRatio1"><%=Encode.forHtml(String.valueOf(props.getProperty("urineRatio1", "")))%></textarea></td>
                 <td><textarea style="height: 37px;"
                               class="Type2DiabetesTextarea"
-                              name="urineRatio2"><%= props.getProperty("urineRatio2", "") %></textarea></td>
+                              name="urineRatio2"><%=Encode.forHtml(String.valueOf(props.getProperty("urineRatio2", "")))%></textarea></td>
                 <td><textarea style="height: 37px;"
                               class="Type2DiabetesTextarea"
-                              name="urineRatio3"><%= props.getProperty("urineRatio3", "") %></textarea></td>
+                              name="urineRatio3"><%=Encode.forHtml(String.valueOf(props.getProperty("urineRatio3", "")))%></textarea></td>
                 <td><textarea style="height: 37px;"
                               class="Type2DiabetesTextarea"
-                              name="urineRatio4"><%= props.getProperty("urineRatio4", "") %></textarea></td>
+                              name="urineRatio4"><%=Encode.forHtml(String.valueOf(props.getProperty("urineRatio4", "")))%></textarea></td>
                 <td><textarea style="height: 37px;"
                               class="Type2DiabetesTextarea"
-                              name="urineRatio5"><%= props.getProperty("urineRatio5", "") %></textarea></td>
+                              name="urineRatio5"><%=Encode.forHtml(String.valueOf(props.getProperty("urineRatio5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td align="left">3. <b>*24-hr urine cr clearance &
@@ -482,19 +483,19 @@
                 </td>
                 <td><textarea style="height: 67px;"
                               class="Type2DiabetesTextarea"
-                              name="urineClearance1"><%= props.getProperty("urineClearance1", "") %></textarea></td>
+                              name="urineClearance1"><%=Encode.forHtml(String.valueOf(props.getProperty("urineClearance1", "")))%></textarea></td>
                 <td><textarea style="height: 67px;"
                               class="Type2DiabetesTextarea"
-                              name="urineClearance2"><%= props.getProperty("urineClearance2", "") %></textarea></td>
+                              name="urineClearance2"><%=Encode.forHtml(String.valueOf(props.getProperty("urineClearance2", "")))%></textarea></td>
                 <td><textarea style="height: 67px;"
                               class="Type2DiabetesTextarea"
-                              name="urineClearance3"><%= props.getProperty("urineClearance3", "") %></textarea></td>
+                              name="urineClearance3"><%=Encode.forHtml(String.valueOf(props.getProperty("urineClearance3", "")))%></textarea></td>
                 <td><textarea style="height: 67px;"
                               class="Type2DiabetesTextarea"
-                              name="urineClearance4"><%= props.getProperty("urineClearance4", "") %></textarea></td>
+                              name="urineClearance4"><%=Encode.forHtml(String.valueOf(props.getProperty("urineClearance4", "")))%></textarea></td>
                 <td><textarea style="height: 67px;"
                               class="Type2DiabetesTextarea"
-                              name="urineClearance5"><%= props.getProperty("urineClearance5", "") %></textarea></td>
+                              name="urineClearance5"><%=Encode.forHtml(String.valueOf(props.getProperty("urineClearance5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td rowspan="3">
@@ -526,74 +527,74 @@
                 </td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsA1"><%= props.getProperty("lipidsA1", "") %></textarea></td>
+                              name="lipidsA1"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsA1", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsA2"><%= props.getProperty("lipidsA2", "") %></textarea></td>
+                              name="lipidsA2"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsA2", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsA3"><%= props.getProperty("lipidsA3", "") %></textarea></td>
+                              name="lipidsA3"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsA3", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsA4"><%= props.getProperty("lipidsA4", "") %></textarea></td>
+                              name="lipidsA4"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsA4", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsA5"><%= props.getProperty("lipidsA5", "") %></textarea></td>
+                              name="lipidsA5"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsA5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsB1"><%= props.getProperty("lipidsB1", "") %></textarea></td>
+                              name="lipidsB1"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsB1", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsB2"><%= props.getProperty("lipidsB2", "") %></textarea></td>
+                              name="lipidsB2"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsB2", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsB3"><%= props.getProperty("lipidsB3", "") %></textarea></td>
+                              name="lipidsB3"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsB3", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsB4"><%= props.getProperty("lipidsB4", "") %></textarea></td>
+                              name="lipidsB4"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsB4", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsB5"><%= props.getProperty("lipidsB5", "") %></textarea></td>
+                              name="lipidsB5"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsB5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsC1"><%= props.getProperty("lipidsC1", "") %></textarea></td>
+                              name="lipidsC1"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsC1", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsC2"><%= props.getProperty("lipidsC2", "") %></textarea></td>
+                              name="lipidsC2"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsC2", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsC3"><%= props.getProperty("lipidsC3", "") %></textarea></td>
+                              name="lipidsC3"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsC3", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsC4"><%= props.getProperty("lipidsC4", "") %></textarea></td>
+                              name="lipidsC4"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsC4", "")))%></textarea></td>
                 <td><textarea style="height: 30px;"
                               class="Type2DiabetesTextarea"
-                              name="lipidsC5"><%= props.getProperty("lipidsC5", "") %></textarea></td>
+                              name="lipidsC5"><%=Encode.forHtml(String.valueOf(props.getProperty("lipidsC5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td align="left"><b>EYES (@dx then q2-4yrs)</b><br>
                     Ophthalmologist: <input type="text" class="Type2DiabetesInput"
                                             name="ophthalmologist"
-                                            value="<%= props.getProperty("ophthalmologist", "") %>"/></td>
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ophthalmologist", "")))%>"/></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="eyes1"><%= props.getProperty("eyes1", "") %></textarea></td>
+                              name="eyes1"><%=Encode.forHtml(String.valueOf(props.getProperty("eyes1", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="eyes2"><%= props.getProperty("eyes2", "") %></textarea></td>
+                              name="eyes2"><%=Encode.forHtml(String.valueOf(props.getProperty("eyes2", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="eyes3"><%= props.getProperty("eyes3", "") %></textarea></td>
+                              name="eyes3"><%=Encode.forHtml(String.valueOf(props.getProperty("eyes3", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="eyes4"><%= props.getProperty("eyes4", "") %></textarea></td>
+                              name="eyes4"><%=Encode.forHtml(String.valueOf(props.getProperty("eyes4", "")))%></textarea></td>
                 <td><textarea style="height: 42px;"
                               class="Type2DiabetesTextarea"
-                              name="eyes5"><%= props.getProperty("eyes5", "") %></textarea></td>
+                              name="eyes5"><%=Encode.forHtml(String.valueOf(props.getProperty("eyes5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td align="left"><b>FEET</b> check skin (q visit)<br>
@@ -603,19 +604,19 @@
                 </td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="feet1"><%= props.getProperty("feet1", "") %></textarea></td>
+                              name="feet1"><%=Encode.forHtml(String.valueOf(props.getProperty("feet1", "")))%></textarea></td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="feet2"><%= props.getProperty("feet2", "") %></textarea></td>
+                              name="feet2"><%=Encode.forHtml(String.valueOf(props.getProperty("feet2", "")))%></textarea></td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="feet3"><%= props.getProperty("feet3", "") %></textarea></td>
+                              name="feet3"><%=Encode.forHtml(String.valueOf(props.getProperty("feet3", "")))%></textarea></td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="feet4"><%= props.getProperty("feet4", "") %></textarea></td>
+                              name="feet4"><%=Encode.forHtml(String.valueOf(props.getProperty("feet4", "")))%></textarea></td>
                 <td><textarea style="height: 50px;"
                               class="Type2DiabetesTextarea"
-                              name="feet5"><%= props.getProperty("feet5", "") %></textarea></td>
+                              name="feet5"><%=Encode.forHtml(String.valueOf(props.getProperty("feet5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td>
@@ -626,138 +627,138 @@
                         <tr>
                             <td>1. METFORMIN</td>
                             <td><input type="checkbox" name="metformin"
-                                    <%= props.getProperty("metformin", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("metformin", "")))%>></td>
                             <td>5. ACE INHIBITOR</td>
                             <td nowrap="true"><input type="checkbox" name="aceInhibitor"
-                                    <%= props.getProperty("aceInhibitor", "") %>>*
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("aceInhibitor", "")))%>>*
                             </td>
                         </tr>
                         <tr>
                             <td>2. GLYBURIDE</td>
                             <td><input type="checkbox" name="glyburide"
-                                    <%= props.getProperty("glyburide", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("glyburide", "")))%>></td>
                             <td>6. ASA &gt;30 YR</td>
                             <td align="left"><input type="checkbox" name="asa"
-                                    <%= props.getProperty("asa", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("asa", "")))%>></td>
                         </tr>
                         <tr>
                             <td>3. OTHER OHA</td>
                             <td><input type="checkbox" name="otherOha"
-                                    <%= props.getProperty("otherOha", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("otherOha", "")))%>></td>
                             <td colspan="2">7. <input type="text"
                                                       class="Type2DiabetesInput" name="otherBox7"
-                                                      value="<%= props.getProperty("otherBox7", "") %>"/></td>
+                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otherBox7", "")))%>"/></td>
                         </tr>
                         <tr>
                             <td>4. INSULIN</td>
                             <td><input type="checkbox" name="insulin"
-                                    <%= props.getProperty("insulin", "") %>></td>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("insulin", "")))%>></td>
                             <td colspan="2">8. <input type="text"
                                                       class="Type2DiabetesInput" name="otherBox8"
-                                                      value="<%= props.getProperty("otherBox8", "") %>"/></td>
+                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otherBox8", "")))%>"/></td>
                         </tr>
                     </table>
                 </td>
                 <td><textarea style="height: 120px;"
                               class="Type2DiabetesTextarea"
-                              name="meds1"><%= props.getProperty("meds1", "") %></textarea></td>
+                              name="meds1"><%=Encode.forHtml(String.valueOf(props.getProperty("meds1", "")))%></textarea></td>
                 <td><textarea style="height: 120px;"
                               class="Type2DiabetesTextarea"
-                              name="meds2"><%= props.getProperty("meds2", "") %></textarea></td>
+                              name="meds2"><%=Encode.forHtml(String.valueOf(props.getProperty("meds2", "")))%></textarea></td>
                 <td><textarea style="height: 120px;"
                               class="Type2DiabetesTextarea"
-                              name="meds3"><%= props.getProperty("meds3", "") %></textarea></td>
+                              name="meds3"><%=Encode.forHtml(String.valueOf(props.getProperty("meds3", "")))%></textarea></td>
                 <td><textarea style="height: 120px;"
                               class="Type2DiabetesTextarea"
-                              name="meds4"><%= props.getProperty("meds4", "") %></textarea></td>
+                              name="meds4"><%=Encode.forHtml(String.valueOf(props.getProperty("meds4", "")))%></textarea></td>
                 <td><textarea style="height: 120px;"
                               class="Type2DiabetesTextarea"
-                              name="meds5"><%= props.getProperty("meds5", "") %></textarea></td>
+                              name="meds5"><%=Encode.forHtml(String.valueOf(props.getProperty("meds5", "")))%></textarea></td>
             </tr>
             <tr>
                 <td align="left">*LIFESTYLE <b>Smoking</b> (Y/N)</td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="lifestyle1" value="<%= props.getProperty("lifestyle1", "") %>"/></td>
+                           name="lifestyle1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("lifestyle1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="lifestyle2" value="<%= props.getProperty("lifestyle2", "") %>"/></td>
+                           name="lifestyle2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("lifestyle2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="lifestyle3" value="<%= props.getProperty("lifestyle3", "") %>"/></td>
+                           name="lifestyle3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("lifestyle3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="lifestyle4" value="<%= props.getProperty("lifestyle4", "") %>"/></td>
+                           name="lifestyle4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("lifestyle4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="lifestyle5" value="<%= props.getProperty("lifestyle5", "") %>"/></td>
+                           name="lifestyle5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("lifestyle5", "")))%>"/></td>
             </tr>
             <tr>
                 <td style="padding-left: 60px;" align="left"><i>Exercise</i>
                     (min/wk)
                 </td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="exercise1" value="<%= props.getProperty("exercise1", "") %>"/></td>
+                           name="exercise1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("exercise1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="exercise2" value="<%= props.getProperty("exercise2", "") %>"/></td>
+                           name="exercise2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("exercise2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="exercise3" value="<%= props.getProperty("exercise3", "") %>"/></td>
+                           name="exercise3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("exercise3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="exercise4" value="<%= props.getProperty("exercise4", "") %>"/></td>
+                           name="exercise4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("exercise4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="exercise5" value="<%= props.getProperty("exercise5", "") %>"/></td>
+                           name="exercise5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("exercise5", "")))%>"/></td>
             </tr>
             <tr>
                 <td style="padding-left: 60px;" align="left">Alcohol</td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="alcohol1" value="<%= props.getProperty("alcohol1", "") %>"/></td>
+                           name="alcohol1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("alcohol1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="alcohol2" value="<%= props.getProperty("alcohol2", "") %>"/></td>
+                           name="alcohol2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("alcohol2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="alcohol3" value="<%= props.getProperty("alcohol3", "") %>"/></td>
+                           name="alcohol3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("alcohol3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="alcohol4" value="<%= props.getProperty("alcohol4", "") %>"/></td>
+                           name="alcohol4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("alcohol4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="alcohol5" value="<%= props.getProperty("alcohol5", "") %>"/></td>
+                           name="alcohol5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("alcohol5", "")))%>"/></td>
             </tr>
             <tr>
                 <td style="padding-left: 60px;" align="left">Sexual Function</td>
                 <td><input type="text" class="Type2DiabetesTextarea"
                            name="sexualFunction1"
-                           value="<%= props.getProperty("sexualFunction1", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sexualFunction1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
                            name="sexualFunction2"
-                           value="<%= props.getProperty("sexualFunction2", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sexualFunction2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
                            name="sexualFunction3"
-                           value="<%= props.getProperty("sexualFunction3", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sexualFunction3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
                            name="sexualFunction4"
-                           value="<%= props.getProperty("sexualFunction4", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sexualFunction4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
                            name="sexualFunction5"
-                           value="<%= props.getProperty("sexualFunction5", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sexualFunction5", "")))%>"/></td>
             </tr>
             <tr>
                 <td style="padding-left: 60px;" align="left"><i>Diet</i></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="diet1" value="<%= props.getProperty("diet1", "") %>"/></td>
+                           name="diet1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("diet1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="diet2" value="<%= props.getProperty("diet2", "") %>"/></td>
+                           name="diet2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("diet2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="diet3" value="<%= props.getProperty("diet3", "") %>"/></td>
+                           name="diet3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("diet3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="diet4" value="<%= props.getProperty("diet4", "") %>"/></td>
+                           name="diet4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("diet4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="diet5" value="<%= props.getProperty("diet5", "") %>"/></td>
+                           name="diet5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("diet5", "")))%>"/></td>
             </tr>
             <tr>
                 <td align="left">OTHER/PLAN</td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="otherPlan1" value="<%= props.getProperty("otherPlan1", "") %>"/></td>
+                           name="otherPlan1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otherPlan1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="otherPlan2" value="<%= props.getProperty("otherPlan2", "") %>"/></td>
+                           name="otherPlan2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otherPlan2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="otherPlan3" value="<%= props.getProperty("otherPlan3", "") %>"/></td>
+                           name="otherPlan3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otherPlan3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="otherPlan4" value="<%= props.getProperty("otherPlan4", "") %>"/></td>
+                           name="otherPlan4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otherPlan4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="otherPlan5" value="<%= props.getProperty("otherPlan5", "") %>"/></td>
+                           name="otherPlan5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otherPlan5", "")))%>"/></td>
             </tr>
             <tr>
                 <td rowspan="1">
@@ -766,49 +767,49 @@
                             <td>Consultant:</td>
                             <td><input type="text" class="Type2DiabetesInput"
                                        name="consultant"
-                                       value="<%= props.getProperty("consultant", "") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("consultant", "")))%>"/></td>
                         </tr>
                         <tr>
                             <td>Diabetic Educator:</td>
                             <td><input type="text" class="Type2DiabetesInput"
-                                       name="educator" value="<%= props.getProperty("educator", "") %>"/></td>
+                                       name="educator" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("educator", "")))%>"/></td>
                         </tr>
                         <tr>
                             <td>Nutritionist:</td>
                             <td><input type="text" class="Type2DiabetesInput"
                                        name="nutritionist"
-                                       value="<%= props.getProperty("nutritionist", "") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("nutritionist", "")))%>"/></td>
                         </tr>
                     </table>
                 </td>
                 <td><textarea style="height: 75px;"
-                              class="Type2DiabetesTextarea" name="cdn1"><%= props.getProperty("cdn1", "") %></textarea>
+                              class="Type2DiabetesTextarea" name="cdn1"><%=Encode.forHtml(String.valueOf(props.getProperty("cdn1", "")))%></textarea>
                 </td>
                 <td><textarea style="height: 75px;"
-                              class="Type2DiabetesTextarea" name="cdn2"><%= props.getProperty("cdn2", "") %></textarea>
+                              class="Type2DiabetesTextarea" name="cdn2"><%=Encode.forHtml(String.valueOf(props.getProperty("cdn2", "")))%></textarea>
                 </td>
                 <td><textarea style="height: 75px;"
-                              class="Type2DiabetesTextarea" name="cdn3"><%= props.getProperty("cdn3", "") %></textarea>
+                              class="Type2DiabetesTextarea" name="cdn3"><%=Encode.forHtml(String.valueOf(props.getProperty("cdn3", "")))%></textarea>
                 </td>
                 <td><textarea style="height: 75px;"
-                              class="Type2DiabetesTextarea" name="cdn4"><%= props.getProperty("cdn4", "") %></textarea>
+                              class="Type2DiabetesTextarea" name="cdn4"><%=Encode.forHtml(String.valueOf(props.getProperty("cdn4", "")))%></textarea>
                 </td>
                 <td><textarea style="height: 75px;"
-                              class="Type2DiabetesTextarea" name="cdn5"><%= props.getProperty("cdn5", "") %></textarea>
+                              class="Type2DiabetesTextarea" name="cdn5"><%=Encode.forHtml(String.valueOf(props.getProperty("cdn5", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td>Initials</td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="initials1" value="<%= props.getProperty("initials1", "") %>"/></td>
+                           name="initials1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("initials1", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="initials2" value="<%= props.getProperty("initials2", "") %>"/></td>
+                           name="initials2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("initials2", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="initials3" value="<%= props.getProperty("initials3", "") %>"/></td>
+                           name="initials3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("initials3", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="initials4" value="<%= props.getProperty("initials4", "") %>"/></td>
+                           name="initials4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("initials4", "")))%>"/></td>
                 <td><input type="text" class="Type2DiabetesTextarea"
-                           name="initials5" value="<%= props.getProperty("initials5", "") %>"/></td>
+                           name="initials5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("initials5", "")))%>"/></td>
             </tr>
             <tr class="Type2DiabetesFooter">
                 <td colspan="3">Revised 2004<br>
@@ -828,13 +829,13 @@
                         </tr>
                         <tr>
                             <td><input type="checkbox" name="resource1"
-                                    <%= props.getProperty("resource1", "") %> /> Things You Should
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("resource1", "")))%> /> Things You Should
                                 Know About Diabetes-Type2
                             </td>
                         </tr>
                         <tr>
                             <td><input type="checkbox" name="resource2"
-                                    <%= props.getProperty("resource2", "") %> /> Services Available
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("resource2", "")))%> /> Services Available
                                 for People with Diabetes in Hamilton
                             </td>
                         </tr>
