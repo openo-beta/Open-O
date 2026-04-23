@@ -258,11 +258,9 @@ public class DocumentPreview2Action extends ActionSupport {
         String demographicNo = WebUtils.positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
         String requestId = WebUtils.positiveIntParamOrNull(request.getParameter("requestId"));
 
-        populateCommonDocs(loggedInInfo, demographicNo);
+        populateCommonDocs(loggedInInfo, demographicNo, documentAttachmentManager.getAttachedDocsForConsult(loggedInInfo, demographicNo, requestId));
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         request.setAttribute("allEForms", allEForms);
-
-        populateAttachedContext(loggedInInfo, documentAttachmentManager.getAttachedDocsForConsult(loggedInInfo, demographicNo, requestId));
 
         return "fetchDocuments";
     }
@@ -304,11 +302,9 @@ public class DocumentPreview2Action extends ActionSupport {
         String fdidForEformList = WebUtils.positiveIntParamOrDefault(rawFdid, "0");
         String fdidForAttached = WebUtils.positiveIntParamOrNull(rawFdid);
 
-        populateCommonDocs(loggedInInfo, demographicNo);
+        populateCommonDocs(loggedInInfo, demographicNo, documentAttachmentManager.getAttachedDocsForEForm(loggedInInfo, demographicNo, fdidForAttached));
 		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdidForEformList));
 		request.setAttribute("allEForms", allEForms);
-
-        populateAttachedContext(loggedInInfo, documentAttachmentManager.getAttachedDocsForEForm(loggedInInfo, demographicNo, fdidForAttached));
 
         return "fetchDocuments";
     }
@@ -337,35 +333,18 @@ public class DocumentPreview2Action extends ActionSupport {
     }
 
     /**
-     * Pulls the three section lists out of the request, hands them to
-     * {@link DocumentAttachmentManager#mergeAttachedIntoSections} for the
-     * deleted / cross-provider merge, and writes the two resulting id Sets back
-     * to the request so the JSP can pre-check attached docs and label foreign
-     * private docs. Pure request-attribute plumbing — the classification lives
-     * on the manager.
+     * Fetches the shared view state the attachment-dialog JSP expects — patient
+     * docs, provider private/public eDocs, HRM docs, labs, encounter forms —
+     * runs {@link DocumentAttachmentManager#mergeAttachedIntoSections} to merge
+     * deleted / cross-provider attached docs into the matching section lists,
+     * and writes all eight collections as request attributes for the JSP to
+     * render.
      *
-     * @since 2026-04-20
+     * @param loggedInInfo  LoggedInInfo the current user's session
+     * @param demographicNo String the patient's demographic number
+     * @param attachedDocs  List&lt;EDoc&gt; docs already attached to this consult/eForm; drives the merge and the id Sets (empty when not applicable)
      */
-    @SuppressWarnings("unchecked")
-    private void populateAttachedContext(LoggedInInfo loggedInInfo, List<EDoc> attachedDocs) {
-        Set<String> attachedDocumentIds = new HashSet<>();
-        Set<String> foreignPrivateDocIds = new HashSet<>();
-        request.setAttribute("attachedDocumentIds", attachedDocumentIds);
-        request.setAttribute("foreignPrivateDocIds", foreignPrivateDocIds);
-
-        List<EDoc> allDocuments = (List<EDoc>) request.getAttribute("allDocuments");
-        List<EDoc> providerPrivateDocs = (List<EDoc>) request.getAttribute("providerPrivateDocs");
-        List<EDoc> providerPublicDocs = (List<EDoc>) request.getAttribute("providerPublicDocs");
-
-        documentAttachmentManager.mergeAttachedIntoSections(loggedInInfo, attachedDocs, allDocuments, providerPrivateDocs, providerPublicDocs, attachedDocumentIds, foreignPrivateDocIds);
-    }
-
-    /**
-     * Populate common documents like EDocs, Labs, Forms, HRM documents
-     * @param loggedInInfo Information about the logged-in user
-     * @param demographicNo Demographic number of the patient
-     */
-    private void populateCommonDocs(LoggedInInfo loggedInInfo, String demographicNo) {
+    private void populateCommonDocs(LoggedInInfo loggedInInfo, String demographicNo, List<EDoc> attachedDocs) {
         List<EDoc> allDocuments = new ArrayList<>(EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE));
         List<EDoc> providerPrivateDocs = new ArrayList<>(EDocUtil.getProviderPrivateDocs(loggedInInfo));
         List<EDoc> providerPublicDocs = new ArrayList<>(EDocUtil.getProviderPublicDocs(loggedInInfo));
@@ -373,11 +352,17 @@ public class DocumentPreview2Action extends ActionSupport {
         List<AttachmentLabResultData> allLabsSortedByVersions = documentAttachmentManager.getAllLabsSortedByVersions(loggedInInfo, demographicNo);
         List<EctFormData.PatientForm> allForms = formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, Integer.parseInt(demographicNo), false, true);
 
+        Set<String> attachedDocumentIds = new HashSet<>();
+        Set<String> foreignPrivateDocIds = new HashSet<>();
+        documentAttachmentManager.mergeAttachedIntoSections(loggedInInfo, attachedDocs, allDocuments, providerPrivateDocs, providerPublicDocs, attachedDocumentIds, foreignPrivateDocIds);
+
         request.setAttribute("allDocuments", allDocuments);
         request.setAttribute("providerPrivateDocs", providerPrivateDocs);
         request.setAttribute("providerPublicDocs", providerPublicDocs);
         request.setAttribute("allHRMDocuments", allHRMDocuments);
 		request.setAttribute("allLabsSortedByVersions", allLabsSortedByVersions);
 		request.setAttribute("allForms", allForms);
+        request.setAttribute("attachedDocumentIds", attachedDocumentIds);
+        request.setAttribute("foreignPrivateDocIds", foreignPrivateDocIds);
     }
 }
