@@ -80,6 +80,38 @@ public final class WebUtils {
         return temp != null && (temp.equalsIgnoreCase("on") || temp.equalsIgnoreCase("true") || temp.equalsIgnoreCase("checked"));
     }
 
+    /**
+     * Returns {@code value} when it parses as a positive integer; otherwise {@code null}.
+     * Treats empty/blank and the literal string {@code "null"} as absent (JSPs in this
+     * codebase commonly round-trip null identifiers as {@code String.valueOf(null)}).
+     *
+     * @param value String the raw request parameter value
+     * @return String the original value if it represents a positive integer, else {@code null}
+     */
+    public static String positiveIntParamOrNull(String value) {
+        if (value == null) return null;
+        String trimmed = value.trim();
+        if (trimmed.isEmpty() || "null".equalsIgnoreCase(trimmed)) return null;
+        try {
+            return Integer.parseInt(trimmed) > 0 ? trimmed : null;
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Like {@link #positiveIntParamOrNull(String)} but returns {@code defaultValue}
+     * when {@code value} is missing or not a positive integer.
+     *
+     * @param value        String the raw request parameter value
+     * @param defaultValue String the value to return when {@code value} is absent or invalid
+     * @return String the parsed positive integer (as a string) or {@code defaultValue}
+     */
+    public static String positiveIntParamOrDefault(String value, String defaultValue) {
+        String parsed = positiveIntParamOrNull(value);
+        return parsed != null ? parsed : defaultValue;
+    }
+
     public static String renderMessagesAsHtml(HttpSession session, String messageKey, String styleClass, String style, String id, String name) {
         ArrayList<String> messages = popMessages(session, messageKey);
         StringBuilder sb = new StringBuilder();

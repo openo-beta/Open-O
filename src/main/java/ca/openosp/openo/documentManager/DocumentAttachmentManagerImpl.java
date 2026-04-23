@@ -713,4 +713,53 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
         return true;
     }
+
+    @Override
+    public void mergeAttachedIntoSections(LoggedInInfo loggedInInfo, List<EDoc> attachedDocs, List<EDoc> allDocuments, List<EDoc> providerPrivateDocs, List<EDoc> providerPublicDocs, Set<String> attachedDocumentIds, Set<String> foreignPrivateDocIds) {
+        if (attachedDocs == null || attachedDocs.isEmpty()) {
+            return;
+        }
+
+        // attachedDocumentIds drives view pre-checking and is useful even when the
+        // per-section lists aren't loaded — populate it unconditionally.
+        for (EDoc attachedDoc : attachedDocs) {
+            attachedDocumentIds.add(attachedDoc.getDocId());
+        }
+
+        if (allDocuments == null || providerPrivateDocs == null || providerPublicDocs == null) {
+            return;
+        }
+
+        String currentProviderNo = loggedInInfo.getLoggedInProviderNo();
+
+        for (EDoc attachedDoc : attachedDocs) {
+            boolean isDeleted = attachedDoc.getStatus() == 'D';
+            boolean isPublic = "1".equals(attachedDoc.getDocPublic());
+            boolean ownedByCurrent = attachedDoc.isOwnedBy(currentProviderNo);
+
+            if (!attachedDoc.isProviderScoped()) {
+                // Patient doc: only deleted ones need re-injecting.
+                if (isDeleted) allDocuments.add(attachedDoc);
+            } else if (isPublic) {
+                // Public provider doc: only deleted ones need re-injecting.
+                if (isDeleted) providerPublicDocs.add(attachedDoc);
+            } else if (isDeleted || !ownedByCurrent) {
+                // Private provider doc: skip active-own (already listed); merge everything else.
+                providerPrivateDocs.add(attachedDoc);
+                if (!ownedByCurrent) foreignPrivateDocIds.add(attachedDoc.getDocId());
+            }
+        }
+    }
+
+    @Override
+    public List<EDoc> getAttachedDocsForConsult(LoggedInInfo loggedInInfo, String demographicNo, String requestId) {
+        if (requestId == null) return Collections.emptyList();
+        return EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED);
+    }
+
+    @Override
+    public List<EDoc> getAttachedDocsForEForm(LoggedInInfo loggedInInfo, String demographicNo, String fdid) {
+        if (fdid == null) return Collections.emptyList();
+        return EDocUtil.listDocsAttachedToEForm(loggedInInfo, demographicNo, fdid, EDocUtil.ATTACHED);
+    }
 }

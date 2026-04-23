@@ -314,6 +314,34 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
         this.moduleId = moduleId;
     }
 
+    /**
+     * Whether this doc is scoped to a provider's library (as opposed to a
+     * patient's demographic). Recognizes the legacy {@code "provider"} spelling
+     * and the current {@code "providers"} spelling, case-insensitive.
+     *
+     * <p>The rule is intentionally duplicated from {@link EDocUtil#isProviderModule(String)}:
+     * asking EDoc would force EDocUtil's class load, which triggers a chain of
+     * {@code SpringUtils.getBean(...)} static initializers — fine in production
+     * but breaks unit tests that don't stand up a Spring context.
+     *
+     * @return {@code true} when {@link #getModule()} is {@code "provider"} or {@code "providers"}
+     */
+    public boolean isProviderScoped() {
+        return "provider".equalsIgnoreCase(module) || "providers".equalsIgnoreCase(module);
+    }
+
+    /**
+     * Whether this doc's library ownership (its {@code moduleId}) matches the
+     * given provider. Only meaningful for provider-scoped docs; callers should
+     * gate on {@link #isProviderScoped()} if they need that precondition.
+     *
+     * @param providerNo the provider id to compare against; {@code null} short-circuits to {@code false}
+     * @return {@code true} when {@code providerNo} is non-null and equals {@link #getModuleId()}
+     */
+    public boolean isOwnedBy(String providerNo) {
+        return providerNo != null && providerNo.equals(moduleId);
+    }
+
     public String getType() {
         return type;
     }
