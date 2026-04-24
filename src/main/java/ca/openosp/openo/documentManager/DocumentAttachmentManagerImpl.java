@@ -481,17 +481,20 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
             boolean isPublic = "1".equals(attachedDoc.getDocPublic());
             boolean ownedByCurrent = attachedDoc.isOwnedBy(currentProviderNo);
 
+            // Patient doc: only deleted ones need re-injecting.
             if (!attachedDoc.isProviderScoped()) {
-                // Patient doc: only deleted ones need re-injecting.
                 if (isDeleted) allDocuments.add(attachedDoc);
-            } else if (isPublic) {
-                // Public provider doc: only deleted ones need re-injecting.
-                if (isDeleted) providerPublicDocs.add(attachedDoc);
-            } else if (isDeleted || !ownedByCurrent) {
-                // Private provider doc: skip active-own (already listed); merge everything else.
-                providerPrivateDocs.add(attachedDoc);
-                if (!ownedByCurrent) foreignPrivateDocIds.add(attachedDoc.getDocId());
+                continue;
             }
+            // Public provider doc: only deleted ones need re-injecting.
+            if (isPublic) {
+                if (isDeleted) providerPublicDocs.add(attachedDoc);
+                continue;
+            }
+            // Private provider doc: skip active-own (already listed); merge everything else.
+            if (!isDeleted && ownedByCurrent) continue;
+            providerPrivateDocs.add(attachedDoc);
+            if (!ownedByCurrent) foreignPrivateDocIds.add(attachedDoc.getDocId());
         }
     }
 
