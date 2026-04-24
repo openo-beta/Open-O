@@ -146,9 +146,9 @@
 
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="hrmShowMapping.jsp">Class Mappings</a></li>
-                        <li><a href="hrmCategories.jsp">Categories</a></li>
-                        <li><a href="inbox.jsp">HRM Inbox</a></li>
+                        <li><a href="hospitalReportManager/hrmShowMapping.jsp">Class Mappings</a></li>
+                        <li><a href="hospitalReportManager/hrmCategories.jsp">Categories</a></li>
+                        <li><a href="hospitalReportManager/inbox.jsp">HRM Inbox</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

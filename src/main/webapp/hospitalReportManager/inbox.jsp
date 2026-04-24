@@ -102,10 +102,10 @@
                             <li><a href="javascript:void(0)"><b>Status:<span id="hrm_status"></span></b></a></li>
                             <li><a href="javascript:void(0)" onClick="fetchNewData()">Fetch New Data</a></li>
                             <li><a id="uploadHRM" href="javascript:void(0);">Upload</a></li>
-                            <li><a href="log.jsp">Log</a></li>
-                            <li><a href="prefs.jsp">Prefs</a></li>
+                            <li><a href="hospitalReportManager/log.jsp">Log</a></li>
+                            <li><a href="hospitalReportManager/prefs.jsp">Prefs</a></li>
                             <%if (isAdmin) { %>
-                            <li><a href="configure.jsp">Configure</a></li>
+                            <li><a href="hospitalReportManager/configure.jsp">Configure</a></li>
                             <% } %>
                         </ul>
                     </div><!--/.nav-collapse -->
