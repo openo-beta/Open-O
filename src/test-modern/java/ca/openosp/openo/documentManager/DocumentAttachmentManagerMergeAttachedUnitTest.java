@@ -1,6 +1,7 @@
-package ca.openosp.openo.documentManager.actions;
+package ca.openosp.openo.documentManager;
 
-import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.utility.LoggedInInfo;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -8,39 +9,50 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link DocumentPreview2Action#mergeSingleAttachedDoc} — the
- * classification function that decides which section (patient / provider public /
- * provider private) an attached EDoc lands in when the attachment manager reopens
- * a saved consult or eForm. No Spring context; the method is a pure classifier.
+ * Unit tests for {@link DocumentAttachmentManagerImpl#mergeAttachedIntoSections}
+ * — the classification function that decides which section (patient / provider
+ * public / provider private) an attached EDoc lands in when the attachment
+ * manager reopens a saved consult or eForm. Exercised one doc at a time via a
+ * single-element attached list; no Spring context.
  *
  * Covers the full matrix of (module type, public flag, ownership, deleted state)
  * combinations that drive the UI's section placement and "(other provider)" label.
  */
-@DisplayName("DocumentPreview2Action.mergeSingleAttachedDoc")
+@DisplayName("DocumentAttachmentManagerImpl.mergeAttachedIntoSections")
 @Tag("unit")
 @Tag("document")
-class DocumentPreview2ActionMergeUnitTest {
+class DocumentAttachmentManagerMergeAttachedUnitTest {
 
     private static final String CURRENT_PROVIDER = "42";
     private static final String OTHER_PROVIDER = "99";
 
+    private final DocumentAttachmentManagerImpl manager = new DocumentAttachmentManagerImpl();
+
+    private LoggedInInfo loggedInInfo;
     private List<EDoc> allDocuments;
     private List<EDoc> providerPrivateDocs;
     private List<EDoc> providerPublicDocs;
+    private Set<String> attachedDocumentIds;
     private Set<String> foreignPrivateDocIds;
 
     @BeforeEach
     void resetSinks() {
+        loggedInInfo = mock(LoggedInInfo.class);
+        when(loggedInInfo.getLoggedInProviderNo()).thenReturn(CURRENT_PROVIDER);
         allDocuments = new ArrayList<>();
         providerPrivateDocs = new ArrayList<>();
         providerPublicDocs = new ArrayList<>();
+        attachedDocumentIds = new HashSet<>();
         foreignPrivateDocIds = new HashSet<>();
     }
 
@@ -52,7 +64,7 @@ class DocumentPreview2ActionMergeUnitTest {
         @DisplayName("active patient doc is a no-op — already listed in allDocuments")
         void shouldBeNoOp_whenActivePatientDoc() {
             merge(patientDoc("1", 'A'));
-            assertAllEmpty();
+            assertSectionListsEmpty();
         }
 
         @Test
@@ -75,7 +87,7 @@ class DocumentPreview2ActionMergeUnitTest {
         @DisplayName("active public provider doc is a no-op — already listed in providerPublicDocs")
         void shouldBeNoOp_whenActivePublicProviderDoc() {
             merge(providerDoc("3", 'A', true, OTHER_PROVIDER));
-            assertAllEmpty();
+            assertSectionListsEmpty();
         }
 
         @Test
@@ -98,7 +110,7 @@ class DocumentPreview2ActionMergeUnitTest {
         @DisplayName("active own private doc is a no-op — already listed in providerPrivateDocs")
         void shouldBeNoOp_whenActiveOwnPrivateDoc() {
             merge(providerDoc("5", 'A', false, CURRENT_PROVIDER));
-            assertAllEmpty();
+            assertSectionListsEmpty();
         }
 
         @Test
@@ -145,9 +157,9 @@ class DocumentPreview2ActionMergeUnitTest {
         @Test
         @DisplayName("no current provider means foreign private docs aren't misclassified as owned")
         void shouldFlagForeign_whenCurrentProviderIsNull() {
+            when(loggedInInfo.getLoggedInProviderNo()).thenReturn(null);
             EDoc doc = providerDoc("9", 'A', false, OTHER_PROVIDER);
-            DocumentPreview2Action.mergeSingleAttachedDoc(
-                    doc, null, allDocuments, providerPrivateDocs, providerPublicDocs, foreignPrivateDocIds);
+            merge(doc);
             assertThat(providerPrivateDocs).containsExactly(doc);
             assertThat(foreignPrivateDocIds).containsExactly("9");
         }
@@ -167,16 +179,30 @@ class DocumentPreview2ActionMergeUnitTest {
             assertThat(providerPrivateDocs).containsExactly(legacy);
             assertThat(foreignPrivateDocIds).containsExactly("10");
         }
+
+        @Test
+        @DisplayName("every attached doc's id is collected into attachedDocumentIds regardless of classification")
+        void shouldCollectId_whenDocIsAttached() {
+            merge(patientDoc("11", 'A'));
+            assertThat(attachedDocumentIds).containsExactly("11");
+        }
+
+        @Test
+        @DisplayName("empty attached list is a no-op across all section lists and id sets")
+        void shouldBeNoOp_whenAttachedListIsEmpty() {
+            manager.mergeAttachedIntoSections(loggedInInfo, Collections.emptyList(), allDocuments, providerPrivateDocs, providerPublicDocs, attachedDocumentIds, foreignPrivateDocIds);
+            assertSectionListsEmpty();
+            assertThat(attachedDocumentIds).isEmpty();
+        }
     }
 
     // --- helpers ---------------------------------------------------------
 
     private void merge(EDoc doc) {
-        DocumentPreview2Action.mergeSingleAttachedDoc(
-                doc, CURRENT_PROVIDER, allDocuments, providerPrivateDocs, providerPublicDocs, foreignPrivateDocIds);
+        manager.mergeAttachedIntoSections(loggedInInfo, Collections.singletonList(doc), allDocuments, providerPrivateDocs, providerPublicDocs, attachedDocumentIds, foreignPrivateDocIds);
     }
 
-    private void assertAllEmpty() {
+    private void assertSectionListsEmpty() {
         assertThat(allDocuments).isEmpty();
         assertThat(providerPrivateDocs).isEmpty();
         assertThat(providerPublicDocs).isEmpty();

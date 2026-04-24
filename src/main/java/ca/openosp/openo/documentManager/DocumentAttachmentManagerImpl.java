@@ -439,7 +439,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
         }
 
         if (!docIds.isEmpty()) {
-            List<Integer> found = documentDao.findDocumentNosForDemographic(demographicNo, new ArrayList<>(docIds));
+            List<Integer> found = documentDao.findValidAttachmentDocNos(demographicNo, new ArrayList<>(docIds));
             if (!found.containsAll(docIds)) return false;
         }
         if (!labIds.isEmpty()) {
