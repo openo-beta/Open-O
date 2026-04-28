@@ -68,6 +68,7 @@
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -343,6 +344,12 @@
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/datasource-min.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/autocomplete-min.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/js/checkDate.js"/>"></script>
+
+  <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls --%>
+  <script type="text/javascript">
+    var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(rxSessionBean.getDemographicNo())) %>';
+  </script>
+  <script type="text/javascript" src="${ctx}/oscarRx/js/rxSessionInterceptor.js"></script>
 
   <script type="text/javascript">
     let selectedReRxIDs = [];
@@ -1116,8 +1123,8 @@
                     name="drugForm" method="post">
                 <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 
-                <input type="hidden" property="demographicNo"
-                       value="<%=Integer.toString(patient.getDemographicNo())%>"/>
+                <input type="hidden" name="demographicNo"
+                       value="<%=Encode.forHtmlAttribute(Integer.toString(demoNo))%>"/>
                 <table>
                   <tr id="prescriptionStageRow">
                     <td>
@@ -1129,7 +1136,7 @@
                         <div id="rxText"></div>
                         <%-- Prescriptions are staged here via the prescribe.jsp widget --%>
 
-                        <input type="hidden" property="demographicNo" value="<%=patient.getDemographicNo()%>"/>
+                        <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(demoNo))%>"/>
 
                       </div>
                       <input type="hidden" id="rxPharmacyId" name="rxPharmacyId" value=""/>
@@ -2111,7 +2118,7 @@
 
   function Discontinue2(id, reason, comment, drugSpecial) {
     let url = ctx + "/oscarRx/deleteRx.do?parameterValue=Discontinue";
-    let demoNo = '<%=patient.getDemographicNo()%>';
+    let demoNo = '<%=demoNo%>';
     let data = "drugId=" + encodeURIComponent(id) + "&reason=" + encodeURIComponent(reason) + "&comment=" + encodeURIComponent(comment) + "&demoNo=" + demoNo + "&drugSpecial=" + encodeURIComponent(drugSpecial) + "&rand=" + generateSecureRandomId();
     new Ajax.Request(url, {
       method: 'post', postBody: data,
@@ -2155,7 +2162,7 @@
 
   //represcribe long term meds
   function RePrescribeLongTerm() {
-    let demoNo = '<%=patient.getDemographicNo()%>';
+    let demoNo = '<%=demoNo%>';
     let data = "demoNo=" + demoNo + "&showall=<%=showall%>&rand=" + Math.floor(Math.random() * 10001);
     let url = ctx + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
     new Ajax.Updater('rxText', url, {

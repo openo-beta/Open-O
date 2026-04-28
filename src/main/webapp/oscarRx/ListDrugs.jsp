@@ -63,6 +63,7 @@
             response.sendRedirect("error.html");
             return; // Ensure no further JSP processing
         }
+
         patient = (RxPatientData.Patient) request.getSession().getAttribute("Patient");
     %>
 </c:if>
