@@ -29,6 +29,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @XmlRootElement(name = "issue")
 public class IssueTo1 implements Serializable {
@@ -44,7 +46,10 @@ public class IssueTo1 implements Serializable {
     private String code;
     private String description;
     private String role;
+
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date update_date;
+    
     private String priority;
     private String type;
     private Integer sortOrderId;
