@@ -2193,10 +2193,6 @@
 
             }});
 }
-function updateDeleteOnCloseRxBox(){
-    $('deleteOnCloseRxBox').value='true';
-}
-
 function popForm2(scriptId){
         try{
             //oscarLog("popForm2 called");
@@ -2218,9 +2214,28 @@ function popForm2(scriptId){
                 var demoNo = (typeof currentDemographicNo !== 'undefined') ? currentDemographicNo : '';
                 //oscarLog(json);
                 if( json != null && json != "" ) {
+
+                	var pharmacy = JSON.parse(json);
+
+                    if( pharmacy != null ) {
+                    	url= ctx + "/oscarRx/ViewScript2.jsp?scriptId="+scriptId+"&pharmacyId="+pharmacy.id+"&demographicNo="+demoNo;
+                    }
+                    else {
+                    	url= ctx + "/oscarRx/ViewScript2.jsp?scriptId="+scriptId+"&demographicNo="+demoNo;
+                    }
+                }
+                else {
+                	url= ctx + "/oscarRx/ViewScript2.jsp?scriptId="+scriptId+"&demographicNo="+demoNo;
+                }
+
+                //oscarLog( "preview2 done");
+                myLightWindow.activateWindow({
+                    href: url,
+                    width: 980,
+                    height: h
+                });
                 var editRxMsg = '<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.Preview.EditRx"/>';
                 $('lightwindow_title_bar_close_link').update(editRxMsg);
-                $('lightwindow_title_bar_close_link').onclick=updateDeleteOnCloseRxBox;
             }});
 
         }
