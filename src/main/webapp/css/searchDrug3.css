@@ -53,6 +53,10 @@ br {
 	display: none !important;
 }
 
+#preview br {
+	display: revert !important;
+}
+
 form {
 	margin: 0 !important;
 	padding: 0 !important;

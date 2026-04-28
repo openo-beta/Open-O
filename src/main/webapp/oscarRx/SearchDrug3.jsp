@@ -68,6 +68,7 @@
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -325,6 +326,7 @@
   </style>
 
   <script type="text/javascript" src="${ctx}/js/global.js"></script>
+  <script src="${ctx}/csrfguard"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/prototype.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/screen.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/rx.js"/>"></script>
@@ -342,6 +344,12 @@
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/datasource-min.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/autocomplete-min.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/js/checkDate.js"/>"></script>
+
+  <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls --%>
+  <script type="text/javascript">
+    var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(rxSessionBean.getDemographicNo())) %>';
+  </script>
+  <script type="text/javascript" src="${ctx}/oscarRx/js/rxSessionInterceptor.js"></script>
 
   <script type="text/javascript">
     let selectedReRxIDs = [];
@@ -977,7 +985,6 @@
       height: 150px;
       overflow: auto;
       border: thin solid #DCDCDC;
-      display: none;
     }
 
     .text-indent-5 {
@@ -1116,8 +1123,8 @@
                     name="drugForm" method="post">
                 <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 
-                <input type="hidden" property="demographicNo"
-                       value="<%=Integer.toString(patient.getDemographicNo())%>"/>
+                <input type="hidden" name="demographicNo"
+                       value="<%=Encode.forHtmlAttribute(Integer.toString(demoNo))%>"/>
                 <table>
                   <tr id="prescriptionStageRow">
                     <td>
@@ -1129,7 +1136,7 @@
                         <div id="rxText"></div>
                         <%-- Prescriptions are staged here via the prescribe.jsp widget --%>
 
-                        <input type="hidden" property="demographicNo" value="<%=patient.getDemographicNo()%>"/>
+                        <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(demoNo))%>"/>
 
                       </div>
                       <input type="hidden" id="rxPharmacyId" name="rxPharmacyId" value=""/>
@@ -1234,7 +1241,7 @@
                         basename="oscarResources"/><fmt:message key="SearchDrug.Print"/></a>
 
                       <%if (securityManager.hasWriteAccess("_rx", roleName2$, true)) {%>
-                      <a href="javascript:void(0);"  class="btn btn-link"  onclick="$('reprint').toggle();return false;"><fmt:setBundle
+                      <a href="javascript:void(0);"  class="btn btn-link"  onclick="document.getElementById('reprint').toggleAttribute('hidden');return false;"><fmt:setBundle
                         basename="oscarResources"/><fmt:message key="SearchDrug.Reprint"/></a>
 
                       <a href="javascript:void(0);"  class="btn btn-link"  id="cmdRePrescribe" onclick="RePrescribeLongTerm();"><fmt:setBundle basename="oscarResources"/><fmt:message
@@ -1250,7 +1257,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="reprint">
+                  <%-- hidden attribute is toggled by JS via toggleAttribute('hidden') — do not move to CSS or the reprint section will not open --%>
+                  <td id="reprint" hidden>
 
 
                       <% for (int i = 0; prescribedDrugs.length > i; i++) {
@@ -1262,7 +1270,7 @@
                                                     %>
 
 
-                    <div class="btn btn-link text-indent-5">
+                    <div class="text-indent-5">
                       <a href="javascript:void(0);" onclick="reprint2('<%=drug.getScript_no()%>')">
                         <%=drug.getRxDisplay()%>
                       </a>
@@ -1282,7 +1290,7 @@
     </div>
     <div>
       <a href="javascript:void(0)" onclick="showPreviousPrints(<%=drug.getScript_no() %>);return false;">
-        <%=drug.getNumPrints()%>Print(s)
+        <%=drug.getNumPrints()%> Print(s)
       </a>
     </div>
   </div>
@@ -2110,7 +2118,7 @@
 
   function Discontinue2(id, reason, comment, drugSpecial) {
     let url = ctx + "/oscarRx/deleteRx.do?parameterValue=Discontinue";
-    let demoNo = '<%=patient.getDemographicNo()%>';
+    let demoNo = '<%=demoNo%>';
     let data = "drugId=" + encodeURIComponent(id) + "&reason=" + encodeURIComponent(reason) + "&comment=" + encodeURIComponent(comment) + "&demoNo=" + demoNo + "&drugSpecial=" + encodeURIComponent(drugSpecial) + "&rand=" + generateSecureRandomId();
     new Ajax.Request(url, {
       method: 'post', postBody: data,
@@ -2154,7 +2162,7 @@
 
   //represcribe long term meds
   function RePrescribeLongTerm() {
-    let demoNo = '<%=patient.getDemographicNo()%>';
+    let demoNo = '<%=demoNo%>';
     let data = "demoNo=" + demoNo + "&showall=<%=showall%>&rand=" + Math.floor(Math.random() * 10001);
     let url = ctx + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
     new Ajax.Updater('rxText', url, {

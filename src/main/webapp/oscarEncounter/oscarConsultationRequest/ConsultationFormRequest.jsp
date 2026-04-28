@@ -104,8 +104,6 @@
     <%
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
-        displayServiceUtil.estSpecialist();
-
         //multi-site support
         String appNo = request.getParameter("appNo");
         appNo = (appNo == null ? "" : appNo);

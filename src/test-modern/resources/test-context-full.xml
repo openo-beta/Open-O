@@ -194,6 +194,8 @@
     <!-- Document DAO for DocumentDao integration tests -->
     <bean id="documentDao" class="ca.openosp.openo.commn.dao.DocumentDaoImpl" autowire="byName" />
     <bean id="ctlDocumentDao" class="ca.openosp.openo.commn.dao.CtlDocumentDaoImpl" autowire="byName" />
+    <!-- Specialist DAOs -->
+    <bean id="professionalSpecialistDao" class="ca.openosp.openo.commn.dao.ProfessionalSpecialistDaoImpl" autowire="byName" />
 
     <!-- Additional DAOs required by TicklerManager -->
     <bean id="programAccessDAO" class="ca.openosp.openo.PMmodule.dao.ProgramAccessDAOImpl" autowire="byName" />

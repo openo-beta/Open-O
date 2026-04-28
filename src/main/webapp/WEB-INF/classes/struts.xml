@@ -14,6 +14,7 @@
     <constant name="struts.multipart.maxSize" value="524288000" />
     <!-- Default package extending struts-default -->
 	<package name="default" namespace="/" extends="struts-default">
+
         <action name="logout" class="ca.openosp.openo.login.Logout2Action">
             <result name="success">/index.jsp</result>
             <result name="logoutsso">/ssoLogin.do?method=ssoLogout</result>
@@ -978,6 +979,7 @@
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/EnableRequestResponse.jsp</result>
         </action>
         <action name="oscarEncounter/ConsultationLookup2Action" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.ConsultationLookup2Action"/>
+        <action name="oscarEncounter/SpecialistList" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.SpecialistList2Action"/>
         <action name="oscarEncounter/AddService" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConAddService2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/AddService.jsp</result>
         </action>
@@ -1531,6 +1533,8 @@
         </action>
         <action name="tickler/AddTickler" class="ca.openosp.openo.tickler.pageUtil.AddTickler2Action">
             <result name="close">/close.html</result>
+        </action>
+        <action name="tickler/ListTicklers" class="ca.openosp.openo.tickler.pageUtil.TicklerList2Action">
         </action>
         <action name="eform/uploadHtml" class="ca.openosp.openo.eform.upload.HtmlUpload2Action">
             <result name="success">/eform/partials/upload.jsp</result>
