@@ -486,10 +486,16 @@
                                         name="<%=Encode.forHtmlAttribute(String.valueOf("inputValue-" + ctr))%>">
                                     <option value=""></option>
                                     <% String[] opts = validations.getName().contains("/") ? validations.getName().split("/") : validations.getRegularExp().split("\\|");
-                                        for (String opt : opts) {%>
-                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(opt))%>"  <%=Encode.forHtml(String.valueOf(sel(opt, val)))%>><%=Encode.forHtml(String.valueOf(opt))%>
+                                        boolean valFoundInOpts = false;
+                                        for (String opt : opts) {
+                                            if (val != null && opt.equals(val)) valFoundInOpts = true;%>
+                                    <option value="<%=Encode.forHtmlAttribute(opt)%>"  <%=sel(opt, val)%>><%=Encode.forHtmlContent(opt)%>
                                     </option>
-                                    <% }%>
+                                    <% }
+                                        if (val != null && !val.isEmpty() && !valFoundInOpts) { %>
+                                    <option value="<%=Encode.forHtmlAttribute(val)%>" selected disabled><%=Encode.forHtmlContent(val)%>
+                                    </option>
+                                    <% } %>
                                 </select>
                                 <%} else if (validations != null && validations.getName().startsWith("Integer")) { %>
                                 <select id="<%=Encode.forHtmlAttribute(String.valueOf("inputValue-" + ctr))%>"
