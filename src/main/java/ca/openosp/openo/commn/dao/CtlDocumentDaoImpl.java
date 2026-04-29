@@ -2,6 +2,7 @@
 
 package ca.openosp.openo.commn.dao;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -30,6 +31,17 @@ public class CtlDocumentDaoImpl extends AbstractDaoImpl<CtlDocument> implements 
                 .createQuery("select x from CtlDocument x where x.id.documentNo=?1 and x.id.module = ?2");
         query.setParameter(1, ctlDocNo);
         query.setParameter(2, module);
+
+        @SuppressWarnings("unchecked")
+        List<CtlDocument> cList = query.getResultList();
+        return cList;
+    }
+
+    @Override
+    public List<CtlDocument> findByDocumentNos(List<Integer> documentNos) {
+        if (documentNos == null || documentNos.isEmpty()) return Collections.emptyList();
+        Query query = entityManager.createQuery("select x from CtlDocument x where x.id.documentNo in (?1)");
+        query.setParameter(1, documentNos);
 
         @SuppressWarnings("unchecked")
         List<CtlDocument> cList = query.getResultList();
