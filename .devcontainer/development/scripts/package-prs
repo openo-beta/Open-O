@@ -1,0 +1,227 @@
+#!/usr/bin/env bash
+#
+# package-prs — Build a "package" branch by cherry-picking the merge commits
+# of multiple source PRs into a single branch.
+#
+# Cherry-picks each PR's merge commit (using -m 1) instead of its individual
+# feature commits. This avoids conflicts that arise when feature commits
+# assume an older base than the package branch's target.
+#
+# See package-prs.md for full documentation.
+
+set -euo pipefail
+
+# ------------------------------------------------------------------- defaults
+SOURCE_BRANCH="develop"
+SOURCE_REMOTE="origin"
+DRY_RUN=0
+FORCE=0
+PR_LIST=""
+SOURCE_REPO=""
+TARGET_BASE=""
+BRANCH=""
+
+# --------------------------------------------------------------------- usage
+usage() {
+  cat <<'EOF'
+Usage: package-prs --pr <N,N,...> --source-repo <owner/repo>
+                   --target-base <ref> --branch <name> [options]
+
+Required:
+  --pr <N,N,...>           Comma-separated PR numbers from source repo
+  --source-repo <repo>     Source repo (e.g., openo-beta/Open-O)
+  --target-base <ref>      Base ref for new branch (e.g., upstream-base/main)
+  --branch <name>          Name of the new local branch
+
+Options:
+  --source-branch <ref>    Source branch to search for merges (default: develop)
+  --source-remote <name>   Local git remote for source repo (default: origin)
+  --dry-run                Print the plan without making changes
+  --force                  Overwrite the local branch if it exists
+  -h, --help               Show this help
+
+Example:
+  package-prs --pr 2343,2344,2345,2414,2404,2413,2415,2417,2261 \
+              --source-repo openo-beta/Open-O \
+              --target-base upstream-base/main \
+              --branch rx-bugfixes/20260428
+EOF
+}
+
+err()  { printf 'Error: %s\n' "$*" >&2; }
+info() { printf '==> %s\n' "$*"; }
+
+# --------------------------------------------------------------- arg parsing
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --pr)            PR_LIST="$2"; shift 2 ;;
+    --source-repo)   SOURCE_REPO="$2"; shift 2 ;;
+    --source-branch) SOURCE_BRANCH="$2"; shift 2 ;;
+    --source-remote) SOURCE_REMOTE="$2"; shift 2 ;;
+    --target-base)   TARGET_BASE="$2"; shift 2 ;;
+    --branch)        BRANCH="$2"; shift 2 ;;
+    --dry-run)       DRY_RUN=1; shift ;;
+    --force)         FORCE=1; shift ;;
+    -h|--help)       usage; exit 0 ;;
+    *) err "unknown option: $1"; usage >&2; exit 2 ;;
+  esac
+done
+
+# Validate required flags
+required_vars=(PR_LIST SOURCE_REPO TARGET_BASE BRANCH)
+required_flags=(--pr --source-repo --target-base --branch)
+for i in "${!required_vars[@]}"; do
+  if [[ -z "${!required_vars[$i]}" ]]; then
+    err "missing required flag: ${required_flags[$i]}"
+    usage >&2
+    exit 2
+  fi
+done
+
+# Tool availability
+command -v gh  >/dev/null || { err "gh (GitHub CLI) is required";  exit 1; }
+command -v git >/dev/null || { err "git is required";               exit 1; }
+
+# Working tree must be clean (we'll be checking out a new branch)
+if ! git diff-index --quiet HEAD -- 2>/dev/null; then
+  err "working tree has uncommitted changes; commit or stash before running"
+  exit 1
+fi
+
+# Strip whitespace from PR list
+PR_LIST="${PR_LIST// /}"
+
+# Source-repo owner is the part before "/"
+SOURCE_OWNER="${SOURCE_REPO%%/*}"
+
+# ---------------------------------------------------------------- resolution
+info "Fetching ${SOURCE_REMOTE}/${SOURCE_BRANCH}"
+if ! git fetch "$SOURCE_REMOTE" "$SOURCE_BRANCH" >/dev/null 2>&1; then
+  err "failed to fetch ${SOURCE_REMOTE}/${SOURCE_BRANCH}"
+  err "verify that --source-remote='$SOURCE_REMOTE' tracks $SOURCE_REPO"
+  exit 1
+fi
+
+# Resolve one PR -> merge SHA, with subject sanity check
+# Echoes a single line: "<sha>|<subject>|<stats>"
+resolve_one() {
+  local pr="$1"
+  local subject sha stat
+
+  # Look up by PR number in the merge commit subject
+  sha=$(git log --merges \
+        --grep="^Merge pull request #${pr} " \
+        --pretty=%H "${SOURCE_REMOTE}/${SOURCE_BRANCH}" \
+        2>/dev/null | head -1)
+
+  if [[ -z "$sha" ]]; then
+    err "PR #${pr}: no merge commit found on ${SOURCE_REMOTE}/${SOURCE_BRANCH}"
+    err "  (looked for 'Merge pull request #${pr} ...' — was it merged via squash/rebase?)"
+    return 1
+  fi
+
+  subject=$(git show --no-patch --format='%s' "$sha")
+
+  # Verify subject mentions the right PR (exact, with trailing space)
+  if [[ "$subject" != *"Merge pull request #${pr} "* ]]; then
+    err "PR #${pr}: SHA ${sha:0:10} subject doesn't match expected PR"
+    err "  got: $subject"
+    return 1
+  fi
+
+  # Optional: verify owner matches (catches wrong source repo)
+  if [[ "$subject" != *"from ${SOURCE_OWNER}/"* ]]; then
+    err "PR #${pr}: SHA ${sha:0:10} not from owner '${SOURCE_OWNER}'"
+    err "  got: $subject"
+    return 1
+  fi
+
+  # Stats: parse `git diff --shortstat`
+  stat=$(git diff --shortstat "${sha}^1..${sha}" 2>/dev/null \
+         | sed 's/^[[:space:]]*//')
+  : "${stat:=(no diff)}"
+
+  printf '%s|%s|%s\n' "$sha" "$subject" "$stat"
+}
+
+info "Resolving merge SHAs for PRs: ${PR_LIST}"
+
+IFS=',' read -ra PRS <<< "$PR_LIST"
+declare -a SHAS=() SUBJECTS=() STATS=()
+
+for pr in "${PRS[@]}"; do
+  if ! line=$(resolve_one "$pr"); then
+    err "aborting; resolution failed for PR #${pr}"
+    exit 1
+  fi
+  SHAS+=("${line%%|*}")
+  rest="${line#*|}"
+  SUBJECTS+=("${rest%%|*}")
+  STATS+=("${rest#*|}")
+done
+
+# --------------------------------------------------------------- print plan
+echo
+printf '%-6s  %-10s  %-55s  %s\n' "PR" "SHA" "SUBJECT" "STATS"
+printf -- '-%.0s' {1..120}; echo
+for i in "${!PRS[@]}"; do
+  short_subj="${SUBJECTS[$i]}"
+  if (( ${#short_subj} > 55 )); then
+    short_subj="${short_subj:0:52}..."
+  fi
+  printf '%-6s  %-10s  %-55s  %s\n' \
+    "${PRS[$i]}" "${SHAS[$i]:0:10}" "$short_subj" "${STATS[$i]}"
+done
+echo
+
+if [[ $DRY_RUN -eq 1 ]]; then
+  info "Dry-run complete. No changes made."
+  exit 0
+fi
+
+# ------------------------------------------------------- create new branch
+if git show-ref --verify --quiet "refs/heads/${BRANCH}"; then
+  if [[ $FORCE -eq 0 ]]; then
+    err "branch '${BRANCH}' already exists; pass --force to overwrite"
+    exit 1
+  fi
+  info "deleting existing branch '${BRANCH}' (--force)"
+  # Move off the branch first if we're on it
+  if [[ "$(git rev-parse --abbrev-ref HEAD)" == "${BRANCH}" ]]; then
+    git checkout --detach >/dev/null
+  fi
+  git branch -D "${BRANCH}" >/dev/null
+fi
+
+info "creating '${BRANCH}' off '${TARGET_BASE}'"
+if ! git checkout -b "${BRANCH}" "${TARGET_BASE}" >/dev/null 2>&1; then
+  err "failed to create branch from '${TARGET_BASE}' (does the ref exist locally?)"
+  exit 1
+fi
+
+# ------------------------------------------------------- cherry-pick loop
+for i in "${!PRS[@]}"; do
+  pr="${PRS[$i]}"
+  sha="${SHAS[$i]}"
+  info "cherry-picking PR #${pr} (${sha:0:10})"
+  if ! git cherry-pick -m 1 "$sha"; then
+    err "cherry-pick failed for PR #${pr} (${sha})"
+    git cherry-pick --abort 2>/dev/null || true
+    err "branch '${BRANCH}' is at the state before the failed cherry-pick"
+    err "options:"
+    err "  - delete and retry: git branch -D '${BRANCH}'"
+    err "  - resolve manually: git cherry-pick -m 1 ${sha}, fix conflicts,"
+    err "    then 'git cherry-pick --continue' and re-pick the remaining PRs"
+    exit 1
+  fi
+done
+
+# --------------------------------------------------------------- summary
+N="${#PRS[@]}"
+echo
+info "Done. Branch '${BRANCH}' has ${N} commits on top of '${TARGET_BASE}'."
+echo
+echo "Suggested next steps:"
+echo "  git log --oneline ${TARGET_BASE}..HEAD"
+echo "  git push -u <remote> HEAD:<remote-branch>"
+echo "  gh pr create --base <base> --head <remote-branch> --repo <target-repo>"
