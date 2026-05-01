@@ -88,9 +88,9 @@ var _hc_apptScreenHandler = function (args) {
                         jQuery(win).find("#_hc_match").show();
                         jQuery(win).find("#_hc_noMatch").hide();
                         jQuery(win).find("#_hc_match #_hc_match_name").text(data.lastName.toUpperCase() + ", " + data.firstName.toUpperCase());
-                        jQuery(win).find("#_hc_match #_hc_match_hin_num").html(data.hin.substring(0, 4) + "&#149; " + data.hin.substring(4, 7) + "&#149; " + data.hin.substring(7, 10) + "&#149;");
+                        jQuery(win).find("#_hc_match #_hc_match_hin_num").text(data.hin.substring(0, 4) + "\u2022 " + data.hin.substring(4, 7) + "\u2022 " + data.hin.substring(7, 10) + "\u2022");
                         jQuery(win).find("#_hc_match #_hc_match_hin_ver").text(data.hinVer);
-                        jQuery(win).find("#_hc_match #_hc_match_address").html(data.address.replace(/\n/g, "<br />"));
+                        jQuery(win).find("#_hc_match #_hc_match_address").css("white-space", "pre-line").text(data.address);
                         jQuery(win).find("#_hc_match #_hc_match_phone").text(data.phone);
 
                         // Check for issues with card data - maybe mismatches with patient data?

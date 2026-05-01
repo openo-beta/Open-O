@@ -54,6 +54,7 @@ import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.utility.DateRange;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.OscarProperties;
@@ -896,7 +897,9 @@ public class JdbcBillingCreateBillingFile {
         propBillingNo = new Properties();
         RandomAccessFile raf = null;
         try {
-            raf = new RandomAccessFile(home_dir + ohipFilename, "r");
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(ohipFilename, homeDir);
+            raf = new RandomAccessFile(validatedFile, "r");
             do {
                 String lineValue = raf.readLine();
                 if (lineValue == null) {
@@ -921,6 +924,9 @@ public class JdbcBillingCreateBillingFile {
                 }
             } while (true);
 
+        } catch (SecurityException e) {
+            _logger.error("Security violation reading OHIP file", e);
+            throw e;
         } catch (Exception e) {
             _logger.error("Read OHIP File Error");
         } finally {
@@ -936,12 +942,13 @@ public class JdbcBillingCreateBillingFile {
     public void renameFile() {
         String home_dir;
         home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
-        File file = new File(home_dir + ohipFilename);
+        File homeDir = new File(home_dir);
+        File file = PathValidationUtils.validatePath(ohipFilename, homeDir);
 
         // new filename
         String newName = ohipFilename + "." + GregorianCalendar.getInstance().getTimeInMillis();
 
-        File file2 = new File(home_dir + newName);
+        File file2 = PathValidationUtils.validatePath(newName, homeDir);
 
         boolean success = file.renameTo(file2);
         if (!success) {
@@ -952,9 +959,10 @@ public class JdbcBillingCreateBillingFile {
     // write OHIP file to it
     public void writeFile(String value1) {
         try {
-            String home_dir;
-            home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
-            FileOutputStream out = new FileOutputStream(home_dir + ohipFilename);
+            String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(ohipFilename, homeDir);
+            FileOutputStream out = new FileOutputStream(validatedFile);
             PrintStream p = new PrintStream(out);
             p.println(value1);
 
@@ -969,15 +977,15 @@ public class JdbcBillingCreateBillingFile {
     // OscarDocument/.../billing/download/, and then write to it
     public void writeHtml(String htmlvalue1) {
         try {
-            String home_dir1;
-            home_dir1 = OscarProperties.getInstance().getProperty("HOME_DIR");
+            String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(htmlFilename, homeDir);
+            FileOutputStream out = new FileOutputStream(validatedFile);
+            PrintStream p = new PrintStream(out);
+            p.println(htmlvalue1);
 
-            FileOutputStream out1 = new FileOutputStream(home_dir1 + htmlFilename);
-            PrintStream p1 = new PrintStream(out1);
-            p1.println(htmlvalue1);
-
-            p1.close();
-            out1.close();
+            p.close();
+            out.close();
         } catch (Exception e) {
             _logger.error("Write HTML File Error!!!", e);
         }

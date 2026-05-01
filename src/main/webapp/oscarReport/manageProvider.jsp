@@ -32,6 +32,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.commn.dao.ReportProviderDao" %>
 <%@ page import="ca.openosp.openo.commn.model.ReportProvider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -107,7 +108,7 @@
         <form name="form1" action="dbManageProvider.jsp" method="post">
 
             <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.manageProvider.msgManageProvider"/> <span
-                    class="text-info"><%=action.toUpperCase()%></span></h3>
+                    class="text-info"><%=Encode.forHtml(String.valueOf(action.toUpperCase()))%></span></h3>
 
             <table class="table table-hover table-condensed">
 
@@ -142,15 +143,15 @@
                 %>
 
                 <tr class="<%=bodd?"info":" "%>">
-                    <td width="40%"><%=mg.getId().getMyGroupNo()%>
+                    <td width="40%"><%=Encode.forHtml(String.valueOf(mg.getId().getMyGroupNo()))%>
                     </td>
                     <td width="50%" align="left">
-                        <%=p.getLastName()%>, <%=p.getFirstName()%>
+                        <%=Encode.forHtml(String.valueOf(p.getLastName()))%>, <%=Encode.forHtml(String.valueOf(p.getFirstName()))%>
                     </td>
                     <td>
                         <input type="checkbox"
-                               name="provider<%=count1%>"
-                               value="<%=p.getProviderNo()%>|<%=mg.getId().getMyGroupNo()%>"
+                               name="provider<%=Encode.forHtmlAttribute(String.valueOf(count1))%>"
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>|<%=Encode.forHtmlAttribute(String.valueOf(mg.getId().getMyGroupNo()))%>"
                                 <%=status.equals("A")?"checked":""%>>
                     </td>
                 </tr>
@@ -169,7 +170,7 @@
                    onClick='window.print()'>
             <input type="hidden" name="submit" value="Submit">
             <input class="btn btn-primary" type=submit value=<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.manageProvider.btnSubmit"/>>
-            <input type=hidden name=action value=<%=action%>> <input type=hidden name=count value=<%=count1%>>
+            <input type=hidden name=action value="<%=Encode.forHtmlAttribute(action)%>"> <input type=hidden name=count value=<%=Encode.forHtml(String.valueOf(count1))%>>
         </form>
     </div>
     </body>

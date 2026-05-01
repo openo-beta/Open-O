@@ -15,6 +15,7 @@
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -70,10 +71,10 @@
     <meta charset="utf-8">
 
     <title><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.title"/></title>
-    <link rel="stylesheet" href="<%=context%>/css/cupertino/jquery-ui-1.8.18.custom.css" id="theme">
-    <link rel="stylesheet" href="<%=resourcePath%>jquery.fileupload-ui.css">
-    <link rel="stylesheet" href="<%=resourcePath%>style.css">
-    <link rel="stylesheet" type="text/css" href="<%=context%>/share/css/OscarStandardLayout.css"/>
+    <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/css/cupertino/jquery-ui-1.8.18.custom.css" id="theme">
+    <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.fileupload-ui.css">
+    <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>style.css">
+    <link rel="stylesheet" type="text/css" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/css/OscarStandardLayout.css"/>
 
     <script type="text/javascript">
         function setProvider(select) {
@@ -89,7 +90,7 @@
             setDropList();
             var destination = select.options[select.selectedIndex].value;
             jQuery.ajax({
-                url: '<%=context%>/documentManager/documentUpload.do?method=setUploadDestination&destination=' + destination,
+                url: '<%=Encode.forJavaScript(String.valueOf(context))%>/documentManager/documentUpload.do?method=setUploadDestination&destination=' + destination,
                 async: false,
                 success: function (data) {
                 }
@@ -100,7 +101,7 @@
             var destFolder = select.options[select.selectedIndex].value;
             jQuery("#destFolder").val(destFolder);
             jQuery.ajax({
-                url: '<%=context%>/documentManager/documentUpload.do?method=setUploadIncomingDocumentFolder&destFolder=' + destFolder,
+                url: '<%=Encode.forJavaScript(String.valueOf(context))%>/documentManager/documentUpload.do?method=setUploadIncomingDocumentFolder&destFolder=' + destFolder,
                 async: false,
                 success: function (data) {
                 }
@@ -125,7 +126,7 @@
 </head>
 <body onload="setDropList();">
 <div id="fileupload">
-    <form action="<%=context%>/documentManager/documentUpload.do?method=executeUpload" method="POST"
+    <form action="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/documentManager/documentUpload.do?method=executeUpload" method="POST"
           enctype="multipart/form-data">
         <div class="fileupload-buttonbar">
             <label class="fileinput-button">
@@ -136,10 +137,10 @@
             <button id="cancel" type="reset" class="cancel">Cancel upload</button>
             <br>
             <span>
-				<input type="hidden" id="providers" name="providers" value="<%=provider%>"/>
-				<input type="hidden" id="queue" name="queue" value="<%=queueId%>"/>
-                                <input type="hidden" id="destination" name="destination" value="<%=destination%>"/>
-                                <input type="hidden" id="destFolder" name="destFolder" value="<%=destFolder%>"/>
+				<input type="hidden" id="providers" name="providers" value="<%=Encode.forHtmlAttribute(String.valueOf(provider))%>"/>
+				<input type="hidden" id="queue" name="queue" value="<%=Encode.forHtmlAttribute(String.valueOf(queueId))%>"/>
+                                <input type="hidden" id="destination" name="destination" value="<%=Encode.forHtmlAttribute(String.valueOf(destination))%>"/>
+                                <input type="hidden" id="destFolder" name="destFolder" value="<%=Encode.forHtmlAttribute(String.valueOf(destFolder))%>"/>
                                 <label style="font-family:Arial; font-weight:normal; font-size:12px"
                                        for="destinationDrop" class="fields"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentUploader.destination"/>:</label>
                                 <select onchange="javascript:setDestination(this);" id="destinationDrop"
@@ -157,7 +158,7 @@
                         for (int i = 0; i < providers.size(); i++) {
                             Provider h = providers.get(i);
                     %>
-					<option value="<%= h.getProviderNo()%>" <%= (h.getProviderNo().equals(provider) ? " selected" : "")%>><%= h.getLastName()%> <%= h.getFirstName()%></option>
+					<option value="<%=Encode.forHtmlAttribute(String.valueOf(h.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf((h.getProviderNo().equals(provider) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(h.getLastName()))%> <%=Encode.forHtml(String.valueOf(h.getFirstName()))%></option>
 					<%
                         }
                     %>
@@ -165,14 +166,14 @@
                                 </div>
 				<label style="font-family:Arial; font-weight:normal; font-size:12px" for="queueDrop" class="fields">Queue:</label>
 				<select onchange="javascript:setQueue(this);" id="queueDrop" name="queueDrop">
-					<%-- option value="0" <%=("0".equals(queueId) ? " selected" : "")%>>None</option  --%>
+					<%-- option value="0" <%=Encode.forHtml(String.valueOf(("0".equals(queueId) ? " selected" : "")))%>>None</option  --%>
 					<%
                         for (Map.Entry<Integer, String> entry : queues.entrySet()) {
                             int key = entry.getKey();
                             String value = entry.getValue();
 
                     %>
-					<option value="<%=key%>" <%=((key == queueId) ? " selected" : "")%>><%= value%></option>
+					<option value="<%=Encode.forHtmlAttribute(String.valueOf(key))%>" <%=Encode.forHtml(String.valueOf(((key == queueId) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(value))%></option>
 					<%
                         }
                     %>
@@ -248,12 +249,12 @@
         {{/if}}
     </tr>
 </script>
-<script src="<%=context%>/js/jquery-1.7.1.min.js"></script>
-<script src="<%=context%>/js/jquery-ui-1.8.18.custom.min.js"></script>
-<script src="<%=resourcePath%>jquery.tmpl.min.js"></script>
-<script src="<%=resourcePath%>jquery.iframe-transport.js"></script>
-<script src="<%=resourcePath%>jquery.fileupload.js"></script>
-<script src="<%=resourcePath%>jquery.fileupload-ui.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/jquery-1.7.1.min.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/jquery-ui-1.8.18.custom.min.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.tmpl.min.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.iframe-transport.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.fileupload.js"></script>
+<script src="<%=Encode.forHtmlAttribute(String.valueOf(resourcePath))%>jquery.fileupload-ui.js"></script>
 <script type="text/javascript">
     jQuery(function () {
         'use strict';

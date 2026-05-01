@@ -38,6 +38,7 @@
 <%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.time.LocalDateTime" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -120,10 +121,10 @@
 %>
 <script LANGUAGE="JavaScript">
 
-    var parentId = "<%=parentAjaxId%>";
-    var updateParent = <%=updateParent%>;
-    var demo = "<%=module_id%>";
-    var updateTicklerNav = <%=updateTicklerNav%>;
+    var parentId = "<%=Encode.forJavaScript(String.valueOf(parentAjaxId))%>";
+    var updateParent = <%=Encode.forJavaScript(String.valueOf(updateParent))%>;
+    var demo = "<%=Encode.forJavaScript(String.valueOf(module_id))%>";
+    var updateTicklerNav = <%=Encode.forJavaScript(String.valueOf(updateTicklerNav))%>;
     var Url = window.opener.URLs;
 
     /*because the url for demomaintickler is truncated by the delete action, we need

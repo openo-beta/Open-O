@@ -9,6 +9,7 @@
 
 --%>
 <%@ page import="java.io.*, java.util.*, ca.openosp.openo.eform.*, ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <option value="">template</option>
 
@@ -24,7 +25,7 @@
         }
 %>
 
-<option value="<%=template%>"><%=name%>
+<option value="<%=Encode.forHtmlAttribute(String.valueOf(template))%>"><%=Encode.forHtml(String.valueOf(name))%>
 </option>
 
 <%

@@ -43,6 +43,7 @@ import ca.openosp.openo.utility.SpringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.owasp.encoder.Encode;
 import org.apache.struts2.ActionSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
@@ -99,7 +100,7 @@ public final class RxShowAllergy2Action extends ActionSupport {
     public String reorder() {
         reorder(request);
         try {
-            response.sendRedirect(request.getContextPath() + "/oscarRx/ShowAllergies.jsp?demographicNo=" + request.getParameter("demographicNo"));
+            response.sendRedirect(request.getContextPath() + "/oscarRx/ShowAllergies.jsp?demographicNo=" + Encode.forUriComponent(request.getParameter("demographicNo")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -204,9 +205,10 @@ public final class RxShowAllergy2Action extends ActionSupport {
 
         RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, bean.getDemographicNo());
 
-        String forward = request.getContextPath() + "/oscarRx/ShowAllergies.jsp?demographicNo=" + demo_no;
+        String encodedDemoNo = Encode.forUriComponent(demo_no);
+        String forward = request.getContextPath() + "/oscarRx/ShowAllergies.jsp?demographicNo=" + encodedDemoNo;
         if (useRx3) {
-            forward = request.getContextPath() + "/oscarRx/ShowAllergies2.jsp?demographicNo=" + demo_no;
+            forward = request.getContextPath() + "/oscarRx/ShowAllergies2.jsp?demographicNo=" + encodedDemoNo;
         }
         if (patient != null) {
             request.getSession().setAttribute("Patient", patient);

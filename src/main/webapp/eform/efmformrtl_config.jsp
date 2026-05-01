@@ -11,6 +11,7 @@
 <%@ page
         import="java.util.*,ca.openosp.openo.demographic.data.*,ca.openosp.openo.prevention.*,ca.openosp.openo.providers.data.*,ca.openosp.openo.util.*,ca.openosp.openo.report.data.*,ca.openosp.openo.prevention.pageUtil.*,ca.openosp.openo.demographic.pageUtil.*" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.commn.dao.EFormDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -46,7 +47,7 @@
         <h3>Rich Text Letter</h3>
 
         <% if (status != null) { %>
-        Rich Text Letter is <%= status %>.
+        Rich Text Letter is <%=Encode.forHtml(String.valueOf(status))%>.
         <% } else { %>
         <form action="<%=request.getContextPath()%>/eform/IndivicaRichTextLetterSettings.do" method="post"
               class="form-inline" id="rtlConfigForm">

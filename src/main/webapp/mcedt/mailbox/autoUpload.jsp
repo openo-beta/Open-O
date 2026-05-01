@@ -25,6 +25,7 @@
 --%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -64,9 +65,9 @@
         <% if ( uploadResults!= null) {
             for (int i = 0; i<uploadResults.size();i++) {
                 %>
-        responseUploadFileNames.push('<%=uploadResults.get(i).getDescription()%>');
-        responseUploadMsg.push('<%=uploadResults.get(i).getResult().getMsg()%>');
-        responseUploadCode.push('<%=uploadResults.get(i).getResult().getCode()%>');
+        responseUploadFileNames.push('<%=Encode.forJavaScript(String.valueOf(uploadResults.get(i).getDescription()))%>');
+        responseUploadMsg.push('<%=Encode.forJavaScript(String.valueOf(uploadResults.get(i).getResult().getMsg()))%>');
+        responseUploadCode.push('<%=Encode.forJavaScript(String.valueOf(uploadResults.get(i).getResult().getCode()))%>');
         <%
     }
 }
@@ -75,9 +76,9 @@
         <% if ( submitResults!= null) {
             for (int i = 0; i<submitResults.size();i++) {
                 %>
-        responseSubmitFileNames.push('<%=submitResults.get(i).getDescription()%>');
-        responseSubmitMsg.push('<%=submitResults.get(i).getResult().getMsg()%>');
-        responseSubmitCode.push('<%=submitResults.get(i).getResult().getCode()%>');
+        responseSubmitFileNames.push('<%=Encode.forJavaScript(String.valueOf(submitResults.get(i).getDescription()))%>');
+        responseSubmitMsg.push('<%=Encode.forJavaScript(String.valueOf(submitResults.get(i).getResult().getMsg()))%>');
+        responseSubmitCode.push('<%=Encode.forJavaScript(String.valueOf(submitResults.get(i).getResult().getCode()))%>');
         <%
     }
 }
@@ -88,7 +89,7 @@
             var files = document.getElementsByClassName("fileNames");
             var progress = document.getElementsByClassName("progress");
             var status = document.getElementsByClassName("status");
-            var connection = '<%=connection %>';
+            var connection = '<%=Encode.forJavaScript(String.valueOf(connection))%>';
             if (connection != "failed") {
                 for (var i = 0; i < files.length; i++) {
                     // Step 1 set all the available statuses
@@ -103,7 +104,7 @@
                         }
                     }
                     //step 2 uploads
-                    if (<%= resourceId %> == -1
+                    if (<%=Encode.forJavaScript(String.valueOf(resourceId))%> == -1
                 )
                     { //if resource id==-1 (Upload phase)
                         if ((i > 0 && files[i - 1].value == responseUploadFileNames[responseUploadFileNames.length - 1]) || responseUploadFileNames.length == 0) {
@@ -122,9 +123,9 @@
                     }
                 else
                     { //if resourceid is not -1 submission phase
-                        if (files[i].value == '<%=fileUpload%>') {
+                        if (files[i].value == '<%=Encode.forJavaScript(String.valueOf(fileUpload))%>') {
                             // if this is the file intended for submission
-                            if (<%= resourceId %> !=
+                            if (<%=Encode.forJavaScript(String.valueOf(resourceId))%> !=
                             -2
                         )
                             {
@@ -217,9 +218,9 @@
                     <jsp:include page="spinner.jsp" flush="true"/>
                     <input id="method" name="method" type="hidden" value=""/>
                     <input type="hidden" id="description" name="description" value=""/>
-                    <input type="hidden" id="fileName" name="fileName" value='<%=fileUpload %>'/>
+                    <input type="hidden" id="fileName" name="fileName" value='<%=Encode.forHtmlAttribute(String.valueOf(fileUpload))%>'/>
                     <input type="hidden" name="resourceType" id="resourceType" value=""/>
-                    <input type="hidden" id="resourceId" name="resourceId" value='<%=resourceId.toString() %>'/>
+                    <input type="hidden" id="resourceId" name="resourceId" value='<%=Encode.forHtmlAttribute(String.valueOf(resourceId.toString()))%>'/>
                 </form>
 
                 <table class="whiteBox" width="100%" border="0" cellspacing="0" cellpadding="5"
@@ -238,9 +239,9 @@
                     %>
                     <tr>
                         <td><input style="border: 0;width: 95%;" class="fileNames" type="text"
-                                   value="<%=file.getName() %>"/></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(file.getName()))%>"/></td>
                         </td>
-                        <td><%=new java.util.Date(file.lastModified()) %>
+                        <td><%=Encode.forHtml(String.valueOf(new java.util.Date(file.lastModified())))%>
                         </td>
                         <td><input style="border: 0;width: 95%;" class="progress" id="prog<%=i %>" type="text"
                                    value=""/></td>

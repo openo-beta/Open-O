@@ -30,7 +30,7 @@
     Boolean raw = (Boolean) request.getAttribute("raw");
     if (raw) {
 %>
-<%=noteStr%>
+<%=Encode.forHtml(String.valueOf(noteStr))%>
 <% } else { %>
 <%=noteStr.replaceAll("\n", "<br>")%>
 <%}%>

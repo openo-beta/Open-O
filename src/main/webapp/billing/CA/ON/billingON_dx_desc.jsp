@@ -31,6 +31,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.DiagnosticCode" %>
 <%@ page import="ca.openosp.openo.commn.dao.DiagnosticCodeDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 %>
@@ -46,4 +47,4 @@
 
 %>
 
-<%=(!description.equals("") && description.length() > 32) ? description.substring(0, 32) + "..." : description%>
+<%=Encode.forHtml(String.valueOf((!description.equals("") && description.length() > 32) ? description.substring(0, 32) + "..." : description))%>

@@ -31,6 +31,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.renal.ReportHelper" %>
 <%@page import="ca.openosp.openo.renal.ReportDataContainer" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -126,32 +127,32 @@
             <table>
                 <tr>
                     <td># of Diabetics</td>
-                    <td><%=r.getTotalDiabetic() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getTotalDiabetic()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of Hypertensives</td>
-                    <td><%=r.getTotalHypertensive() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getTotalHypertensive()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of BP>140/90</td>
-                    <td><%=r.getTotalBp() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getTotalBp()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># w/ Family History</td>
-                    <td><%=r.getTotalFamHx()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getTotalFamHx()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of Aboriginals</td>
-                    <td><%=r.getTotalAboriginals()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getTotalAboriginals()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of Patients > 55</td>
-                    <td><%=r.getTotalAge()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getTotalAge()))%>
                     </td>
                 </tr>
             </table>
@@ -166,32 +167,32 @@
             <table>
                 <tr>
                     <td># of Diabetics</td>
-                    <td><%=r.getDiabeticScreened1yr() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getDiabeticScreened1yr()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of Hypertensives</td>
-                    <td><%=r.getHypertensiveScreened1yr() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getHypertensiveScreened1yr()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of BP>140/90</td>
-                    <td><%=r.getBpScreened1yr() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getBpScreened1yr()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># w/ Family History</td>
-                    <td><%=r.getFamHxScreened1yr()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getFamHxScreened1yr()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of Aboriginals</td>
-                    <td><%=r.getAboriginalScreened1yr()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getAboriginalScreened1yr()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of Patients > 55</td>
-                    <td><%=r.getAgeScreened1yr()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getAgeScreened1yr()))%>
                     </td>
                 </tr>
             </table>
@@ -206,32 +207,32 @@
             <table>
                 <tr>
                     <td># of Diabetics</td>
-                    <td><%=r.getDiabeticScreened() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getDiabeticScreened()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of Hypertensives</td>
-                    <td><%=r.getHypertensiveScreened() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getHypertensiveScreened()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of BP>140/90</td>
-                    <td><%=r.getBpScreened() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getBpScreened()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># w/ Family History</td>
-                    <td><%=r.getFamHxScreened()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getFamHxScreened()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of Aboriginals</td>
-                    <td><%=r.getAboriginalScreened()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getAboriginalScreened()))%>
                     </td>
                 </tr>
                 <tr>
                     <td># of Patients > 55</td>
-                    <td><%=r.getAgeScreened()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getAgeScreened()))%>
                     </td>
                 </tr>
             </table>
@@ -246,27 +247,27 @@
             <table>
                 <tr>
                     <td>Diabetics</td>
-                    <td><%=df.format(r.getDiabeticScreenedPerc()) %>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getDiabeticScreenedPerc())))%>%</td>
                 </tr>
                 <tr>
                     <td>Hypertensives</td>
-                    <td><%=df.format(r.getHypertensiveScreenedPerc()) %>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getHypertensiveScreenedPerc())))%>%</td>
                 </tr>
                 <tr>
                     <td>BP>140/90</td>
-                    <td><%=df.format(r.getBpScreenedPerc()) %>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getBpScreenedPerc())))%>%</td>
                 </tr>
                 <tr>
                     <td>w/ Family History</td>
-                    <td><%=df.format(r.getFamHxScreenedPerc())%>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getFamHxScreenedPerc())))%>%</td>
                 </tr>
                 <tr>
                     <td>Aboriginals</td>
-                    <td><%=df.format(r.getAboriginalScreenedPerc())%>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getAboriginalScreenedPerc())))%>%</td>
                 </tr>
                 <tr>
                     <td>Patients > 55</td>
-                    <td><%=df.format(r.getAgeScreenedPerc())%>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getAgeScreenedPerc())))%>%</td>
                 </tr>
             </table>
         </td>
@@ -280,27 +281,27 @@
             <table>
                 <tr>
                     <td>Diabetics</td>
-                    <td><%=df.format(r.getDiabeticScreenedPerc1yr()) %>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getDiabeticScreenedPerc1yr())))%>%</td>
                 </tr>
                 <tr>
                     <td>Hypertensives</td>
-                    <td><%=df.format(r.getHypertensiveScreenedPerc1yr()) %>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getHypertensiveScreenedPerc1yr())))%>%</td>
                 </tr>
                 <tr>
                     <td>BP>140/90</td>
-                    <td><%=df.format(r.getBpScreenedPerc1yr()) %>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getBpScreenedPerc1yr())))%>%</td>
                 </tr>
                 <tr>
                     <td>w/ Family History</td>
-                    <td><%=df.format(r.getFamHxScreenedPerc1yr())%>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getFamHxScreenedPerc1yr())))%>%</td>
                 </tr>
                 <tr>
                     <td>Aboriginals</td>
-                    <td><%=df.format(r.getAboriginalScreenedPerc1yr())%>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getAboriginalScreenedPerc1yr())))%>%</td>
                 </tr>
                 <tr>
                     <td>Patients > 55</td>
-                    <td><%=df.format(r.getAgeScreenedPerc1yr())%>%</td>
+                    <td><%=Encode.forHtml(String.valueOf(df.format(r.getAgeScreenedPerc1yr())))%>%</td>
                 </tr>
             </table>
         </td>
@@ -313,27 +314,27 @@
             <table>
                 <tr>
                     <td>Stage 1: "Kidney Damage with normal eGFR"</td>
-                    <td><%=r.getCkdStage1()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getCkdStage1()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Stage 2: "Kidney Damage with mild decline in eGFR"</td>
-                    <td><%=r.getCkdStage2()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getCkdStage2()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Stage 3: "Moderate decline in eGFR"</td>
-                    <td><%=r.getCkdStage3()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getCkdStage3()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Stage 4: "Severe decline in eGFR"</td>
-                    <td><%=r.getCkdStage4()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getCkdStage4()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Stage 5: "Kidney Failure"</td>
-                    <td><%=r.getCkdStage5()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getCkdStage5()))%>
                     </td>
                 </tr>
 
@@ -349,17 +350,17 @@
             <table>
                 <tr>
                     <td>Ordered</td>
-                    <td><%=r.getEgfrTestsOrdered()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getEgfrTestsOrdered()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Received</td>
-                    <td><%=r.getEgfrTestsReceived()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getEgfrTestsReceived()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Ratio</td>
-                    <td><%=r.getEgfrTestsRatio()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getEgfrTestsRatio()))%>
                     </td>
                 </tr>
             </table>
@@ -372,17 +373,17 @@
             <table>
                 <tr>
                     <td>Ordered</td>
-                    <td><%=r.getAcrTestsOrdered()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getAcrTestsOrdered()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Received</td>
-                    <td><%=r.getAcrTestsReceived()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getAcrTestsReceived()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Ratio</td>
-                    <td><%=r.getAcrTestsRatio()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getAcrTestsRatio()))%>
                     </td>
                 </tr>
             </table>
@@ -395,17 +396,17 @@
             <table>
                 <tr>
                     <td>Ordered</td>
-                    <td><%=r.getPcrTestsOrdered()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getPcrTestsOrdered()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Received</td>
-                    <td><%=r.getPcrTestsReceived()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getPcrTestsReceived()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Ratio</td>
-                    <td><%=r.getPcrTestsRatio()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getPcrTestsRatio()))%>
                     </td>
                 </tr>
             </table>
@@ -415,7 +416,7 @@
     <tr>
         <td># of patients in clinic</td>
         <td>
-            <%=r.getTotalPatients() %>
+            <%=Encode.forHtml(String.valueOf(r.getTotalPatients()))%>
         </td>
     </tr>
 
@@ -426,12 +427,12 @@
             <table>
                 <tr>
                     <td>Diabetics</td>
-                    <td><%=r.getDiabetesAndDrugs()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getDiabetesAndDrugs()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>High BP</td>
-                    <td><%=r.getBpAndDrugs()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getBpAndDrugs()))%>
                     </td>
                 </tr>
 
@@ -446,7 +447,7 @@
             <table>
                 <tr>
                     <td>Diabetics</td>
-                    <td><%=r.getDiabeticAndBpTarget()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getDiabeticAndBpTarget()))%>
                     </td>
                 </tr>
 
@@ -462,35 +463,35 @@
                 <tr>
                     <td>Diabetics</td>
                     <td>
-                        Average:<%=r.getDiabeticScreened1yr() %><br/>
-                        Median:<%=r.getDiabeticScreened1yr() %><br/>
-                        Low:<%=r.getDiabeticScreened1yr() %><br/>
-                        High:<%=r.getDiabeticScreened1yr() %><br/>
+                        Average:<%=Encode.forHtml(String.valueOf(r.getDiabeticScreened1yr()))%><br/>
+                        Median:<%=Encode.forHtml(String.valueOf(r.getDiabeticScreened1yr()))%><br/>
+                        Low:<%=Encode.forHtml(String.valueOf(r.getDiabeticScreened1yr()))%><br/>
+                        High:<%=Encode.forHtml(String.valueOf(r.getDiabeticScreened1yr()))%><br/>
                     </td>
                 </tr>
                 <tr>
                     <td>Hypertensives</td>
-                    <td><%=r.getHypertensiveScreened1yr() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getHypertensiveScreened1yr()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>BP>140/90</td>
-                    <td><%=r.getBpScreened1yr() %>
+                    <td><%=Encode.forHtml(String.valueOf(r.getBpScreened1yr()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Family History</td>
-                    <td><%=r.getFamHxScreened1yr()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getFamHxScreened1yr()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Aboriginals</td>
-                    <td><%=r.getAboriginalScreened1yr()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getAboriginalScreened1yr()))%>
                     </td>
                 </tr>
                 <tr>
                     <td>Patients age > 55</td>
-                    <td><%=r.getAgeScreened1yr()%>
+                    <td><%=Encode.forHtml(String.valueOf(r.getAgeScreened1yr()))%>
                     </td>
                 </tr>
             </table>

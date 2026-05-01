@@ -65,7 +65,7 @@
 %>
 
 
-<security:oscarSec roleName="<%=roleName$%>" objectName="<%=eChart$%>"
+<security:oscarSec roleName="<%=roleName$%>" objectName="<%=Encode.forHtmlAttribute(String.valueOf(eChart$))%>"
                    rights="o" reverse="<%=false%>">
     You have no rights to access the data!
     <% response.sendRedirect(request.getContextPath() + "/acctLocked.html"); %>
@@ -83,7 +83,7 @@
 </security:oscarSec>
 
 <%-- if this patients eChart is read only remove the save rights --%>
-<security:oscarSec roleName="_all" objectName="<%=eChart$%>" rights="or"
+<security:oscarSec roleName="_all" objectName="<%=Encode.forHtmlAttribute(String.valueOf(eChart$))%>" rights="or"
                    reverse="<%=false%>">
     <%
         bPrincipalControl = true;
@@ -239,11 +239,12 @@
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.title"/> - <oscar:nameage
-                demographicNo="<%=demoNo%>"/></title>
+                demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>"/></title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script language="javascript" type="text/javascript"
                 src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
@@ -287,11 +288,11 @@
             autoCompList.push("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.bodyMass"/>");
             itemColours["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.bodyMass"/>"] = calculatorColour;
 
-            autoCompleted["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>"] = "popupPage(525,775,'CoronaryArteryDiseaseRisk','calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>')";
+            autoCompleted["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>"] = "popupPage(525,775,'CoronaryArteryDiseaseRisk','calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>')";
             autoCompList.push("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>");
             itemColours["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>"] = calculatorColour;
 
-            autoCompleted["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>"] = "popupPage(525,775,'OsteoporoticFracture','calculators/OsteoporoticFracture.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>')";
+            autoCompleted["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>"] = "popupPage(525,775,'OsteoporoticFracture','calculators/OsteoporoticFracture.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>')";
             autoCompList.push("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>");
             itemColours["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>"] = calculatorColour;
 
@@ -314,11 +315,11 @@
            for(int j=0; j<bean.templateNames.size(); j++) {
               String encounterTmp = bean.templateNames.get(j);
               encounterTmp = StringUtils.maxLenString(encounterTmp, MaxLen, TruncLen, ellipses);
-              encounterTmp = StringEscapeUtils.escapeEcmaScript(encounterTmp);
+              encounterTmp = Encode.forJavaScript(encounterTmp);
             %>
-            autoCompleted["<%=encounterTmp%>"] = "ajaxInsertTemplate('<%=encounterTmp%>')";
-            autoCompList.push("<%=encounterTmp%>");
-            itemColours["<%=encounterTmp%>"] = "99CCCC";
+            autoCompleted["<%=Encode.forJavaScript(String.valueOf(encounterTmp))%>"] = "ajaxInsertTemplate('<%=Encode.forJavaScript(String.valueOf(encounterTmp))%>')";
+            autoCompList.push("<%=Encode.forJavaScript(String.valueOf(encounterTmp))%>");
+            itemColours["<%=Encode.forJavaScript(String.valueOf(encounterTmp))%>"] = "99CCCC";
             <%
            }
             %>
@@ -774,7 +775,7 @@
 
                 <%String popUrl = request.getParameter("popupUrl");
                   if (popUrl != null){           %>
-                window.setTimeout("popupPage(700,900,'<%=popUrl%>')", 2);
+                window.setTimeout("popupPage(700,900,'<%=Encode.forJavaScript(String.valueOf(popUrl))%>')", 2);
                 <%}%>
 
                 //new navbar loader
@@ -1163,7 +1164,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -1177,13 +1178,13 @@
             <td class="hidePrint" bgcolor="#003399"
                 style="width: auto; border-right: 2px solid #A9A9A9; height: 34px;">
 
-                <div class="Title">&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgEncounter"/>&nbsp;&nbsp; <%=famDocName%>&nbsp;<%=famDocSurname%>
+                <div class="Title">&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgEncounter"/>&nbsp;&nbsp; <%=Encode.forHtml(String.valueOf(famDocName))%>&nbsp;<%=Encode.forHtml(String.valueOf(famDocSurname))%>
                 </div>
 
                 <div class="Title" style="margin: 0 auto; text-align: center"><a
                         href="javascript: function myFunction() {return false; }"
                         title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/>"
-                        onClick="popupPage(150,200,'calculatorWin','calculators.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>'); return false;"><img
+                        onClick="popupPage(150,200,'calculatorWin','calculators.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>'); return false;"><img
                         alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/>"
                         src="graphics/calculator.gif"></a></div>
             </td>
@@ -1201,18 +1202,18 @@
                                 String url = request.getContextPath() + "/demographic/demographiccontrol.jsp?demographic_no=" + bean.demographicNo + "&displaymode=edit&dboperation=search_detail";
                             %> <a href="#"
                                   style="font-size: 11px; text-decoration: none"
-                                  onClick="popupPage(700,1000,'<%=winName%>','<%=url%>'); return false;"
-                                  title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>"><%=bean.patientLastName %>
+                                  onClick="popupPage(700,1000,'<%=Encode.forJavaScript(String.valueOf(winName))%>','<%=Encode.forJavaScript(String.valueOf(url))%>'); return false;"
+                                  title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>"><%=Encode.forHtmlAttribute(String.valueOf(bean.patientLastName))%>
                             ,
-                            <%=bean.patientFirstName%>
-                        </a>&nbsp;<%=bean.patientSex%> <%=bean.patientAge%>
+                            <%=Encode.forHtml(String.valueOf(bean.patientFirstName))%>
+                        </a>&nbsp;<%=Encode.forHtml(String.valueOf(bean.patientSex))%> <%=Encode.forHtml(String.valueOf(bean.patientAge))%>
 
                             <a
-                                    href="javascript:popupPage(400,850,'ApptHist','<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=bean.demographicNo%>&last_name=<%=bean.patientLastName%>&first_name=<%=bean.patientFirstName%>&orderby=appointment_date&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25')"
+                                    href="javascript:popupPage(400,850,'ApptHist','<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&last_name=<%=Encode.forUriComponent(String.valueOf(bean.patientLastName))%>&first_name=<%=Encode.forUriComponent(String.valueOf(bean.patientFirstName))%>&orderby=appointment_date&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25')"
                                     style="font-size: 11px; text-decoration: none;"
                                     title="Click to see appointment history"><span
                                     style="margin-left: 20px;">Next Appt: <oscar:nextAppt
-                                    demographicNo="<%=bean.demographicNo%>"/></span></a>
+                                    demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>"/></span></a>
 
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -1255,7 +1256,7 @@
                 <div id="leftNavbar" style="height: 100%; width: 100%;"><caisi:isModuleLoad
                         moduleName="caisi">
                     <%String hrefurl2 = request.getContextPath() + "/casemgmt/forward.jsp?action=view&demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&providerName=" + bean.userName;%>
-                    <a href="<%=hrefurl2%>">Case Management Encounter</a>
+                    <a href="<%=Encode.forHtmlAttribute(String.valueOf(hrefurl2))%>">Case Management Encounter</a>
                 </caisi:isModuleLoad></div>
             </td>
             <td style="background-color: #CCCCFF;" width="78%" valign="top">
@@ -1324,17 +1325,17 @@
                                         <td valign="top">
                                             <!-- Creating the table tag within the script allows you to adjust all table sizes at once, by changing the value of leftCol -->
                                             <textarea name="shTextarea" tabindex="1" wrap="hard" cols="28"
-                                                      style="height:<%=windowSizes.getProperty("rowOneSize")%>;overflow:auto"><%=bean.socialHistory%></textarea>
+                                                      style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowOneSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.socialHistory))%></textarea>
                                         </td>
                                         <!-- This is the Family History cell ...fh...-->
                                         <td valign="top"><textarea name="fhTextarea" tabindex="2"
                                                                    wrap="hard" cols="28"
-                                                                   style="height:<%=windowSizes.getProperty("rowOneSize")%>;overflow:auto"><%=bean.familyHistory%></textarea>
+                                                                   style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowOneSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.familyHistory))%></textarea>
                                         </td>
                                         <!-- This is the Medical History cell ...mh...-->
                                         <td valign="top" colspan="2"><textarea name="mhTextarea"
                                                                                tabindex="3" wrap="hard" cols="28"
-                                                                               style="height:<%=windowSizes.getProperty("rowOneSize")%>;overflow:auto"><%=bean.medicalHistory%></textarea>
+                                                                               style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowOneSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.medicalHistory))%></textarea>
                                         </td>
                                     </tr>
                                 </table>
@@ -1387,11 +1388,11 @@
                                     <tr width="100%">
                                         <td valign="top" style="border-right: 2px solid #ccccff"><textarea
                                                 name='ocTextarea' tabindex="4" wrap="hard" cols="44"
-                                                style="height:<%=windowSizes.getProperty("rowTwoSize")%>;overflow:auto"><%=bean.ongoingConcerns%></textarea>
+                                                style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowTwoSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.ongoingConcerns))%></textarea>
                                         </td>
                                         <td colspan="2" valign="top"><textarea name='reTextarea'
                                                                                tabindex="5" wrap="hard" cols="44"
-                                                                               style="height:<%=windowSizes.getProperty("rowTwoSize")%>;overflow:auto"><%=bean.reminders%></textarea>
+                                                                               style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowTwoSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.reminders))%></textarea>
                                         </td>
                                     </tr>
                                 </table>
@@ -1406,7 +1407,7 @@
                                         <!--hr style="border-bottom: 0pt solid #888888; background-color: #888888;"-->
                                         <td valign="top">
                                             <div class="RowTop"><a href=#
-                                                                   onClick="popupPage(700,960,'allergy','<%=request.getContextPath()%>/oscarRx/showAllergy.do?demographicNo=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.allergies"/></a>:&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;
+                                                                   onClick="popupPage(700,960,'allergy','<%=request.getContextPath()%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.allergies"/></a>:&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;
                                             </div>
                                             <div class="presBox" id="allergyBox">
                                                 <ul>
@@ -1415,8 +1416,8 @@
 
                                                         for (int j = 0; j < allergies.length; j++) {%>
                                                     <li><a
-                                                            title="<%= allergies[j].getDescription() %>">
-                                                        <%=allergies[j].getShortDesc(13, 8, "...")%>
+                                                            title="<%=Encode.forHtmlAttribute(String.valueOf(allergies[j].getDescription()))%>">
+                                                        <%=Encode.forHtml(String.valueOf(allergies[j].getShortDesc(13, 8, "...")))%>
                                                     </a></li>
                                                     <%}%>
                                                 </ul>
@@ -1432,7 +1433,7 @@
                                                     <td>
                                                         <div class="RowTop">
                                                             <div class="RowTop"><a href=#
-                                                                                   onClick="popupPage(700,1027,'Rx','<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=bean.providerNo%>&demographicNo=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a></div>
+                                                                                   onClick="popupPage(700,1027,'Rx','<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a></div>
                                                         </div>
                                                     </td>
                                                     <td align=right>
@@ -1486,10 +1487,10 @@
                                                     %>
                                                     <tr>
                                                         <td <%=styleColor%> valign=top
-                                                                            style="border-bottom: 1pt solid #888888; font-size: 10px;"><%=rxD%>
+                                                                            style="border-bottom: 1pt solid #888888; font-size: 10px;"><%=Encode.forHtml(String.valueOf(rxD))%>
                                                         </td>
                                                         <td <%=styleColor%>
-                                                                style="border-bottom: 1pt solid #888888; font-size: 10px;"><%=rxP%>
+                                                                style="border-bottom: 1pt solid #888888; font-size: 10px;"><%=Encode.forHtml(String.valueOf(rxP))%>
                                                         </td>
                                                     </tr>
                                                     <%}%>
@@ -1515,10 +1516,10 @@
                                                 <tr>
                                                     <td width='75%'>
                                                         <div class="RowTop"><a href=#
-                                                                               onClick="popupPage(600,700,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>','<%= request.getContextPath() %>/report/reportecharthistory.jsp?demographic_no=<%=bean.demographicNo%>');return false;">
-                                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>: <%=bean.patientLastName %>
+                                                                               onClick="popupPage(600,700,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>','<%= request.getContextPath() %>/report/reportecharthistory.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">
+                                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>: <%=Encode.forHtml(String.valueOf(bean.patientLastName))%>
                                                             ,
-                                                            <%=bean.patientFirstName%>
+                                                            <%=Encode.forHtml(String.valueOf(bean.patientFirstName))%>
                                                         </a> <%if (sChart) {%> &nbsp; &nbsp; &nbsp;
                                                             <!--http://localhost:8084/oscar/oscarEncounter/echarthistoryprint.jsp?echartid=7491&demographic_no=10090-->
                                                             <a href="javascript: function myFunction() {return false; }"
@@ -1558,14 +1559,14 @@
                                                             consumption = consumption == 0 ? 1 : consumption;
                                                             String ccolor = consumption >= 70 ? "red" : (consumption >= 50 ? "orange" : "green");
                                                         %>
-                                                        <div class="RowTop"><%=consumption + "%"%>
+                                                        <div class="RowTop"><%=Encode.forHtml(String.valueOf(consumption + "%"))%>
                                                         </div>
                                                     </td>
                                                     <td align='right'>
                                                         <table border="0" cellpadding="0" cellspacing="0"
                                                                bgcolor="white" width="100%" %>
                                                             <tr>
-                                                                <td width='<%=consumption+"%"%>' bgcolor='<%=ccolor%>'>
+                                                                <td width='<%=Encode.forHtmlAttribute(String.valueOf(consumption+"%"))%>' bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(ccolor))%>'>
                                                                     <div class="RowTop">&nbsp;</div>
                                                                 </td>
                                                                 <td>
@@ -1641,7 +1642,7 @@
                                     <tr>
                                         <td colspan="2" valign="top" style="text-align: left"><textarea
                                                 name='enTextarea' tabindex="7" wrap="hard" cols="90"
-                                                style="height:<%=windowSizes.getProperty("rowThreeSize")%>;overflow:auto"><%=encounterText%></textarea>
+                                                style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowThreeSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(encounterText))%></textarea>
                                         </td>
                                     </tr>
                                 </table>
@@ -1695,16 +1696,16 @@
                                                                                                      class="ControlPushButton2"
                                                                                                      onclick="document.forms['encForm'].btnPressed.value='Exit'; if (closeEncounterWindow()) {document.forms['encForm'].submit();}">
                                             <input type="hidden" name="rowOneSize"
-                                                   value="<%=windowSizes.getProperty("rowOneSize")%>"> <input
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowOneSize")))%>"> <input
                                                     type="hidden" name="rowTwoSize"
-                                                    value="<%=windowSizes.getProperty("rowTwoSize")%>"> <input
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowTwoSize")))%>"> <input
                                                     type="hidden" name="presBoxSize"
-                                                    value="<%=windowSizes.getProperty("presBoxSize")%>"> <input
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("presBoxSize")))%>"> <input
                                                     type="hidden" name="rowThreeSize"
-                                                    value="<%=windowSizes.getProperty("rowThreeSize")%>"> <input
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowThreeSize")))%>"> <input
                                                     type="hidden" name="status" value="t"/> <input type="hidden"
                                                                                                    name="appointment_no"
-                                                                                                   value="<%=bean.appointmentNo%>"/>
+                                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(bean.appointmentNo))%>"/>
                                         </td>
                                     </tr>
                                 </table>
@@ -1747,8 +1748,8 @@
                 String[] s = (String[]) splitChart.get(i);%>
             <tr class="background-color : #ccccff;">
                 <td class="wcblayerTitle"><a href=#
-                                             onClick="hidepic('splitChartLayer');popupPage(600,700,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>','echarthistoryprint.jsp?echartid=<%=s[0]%>&demographic_no=<%=bean.demographicNo%>');return false;">
-                    <%=s[1]%>
+                                             onClick="hidepic('splitChartLayer');popupPage(600,700,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>','echarthistoryprint.jsp?echartid=<%=Encode.forJavaScript(String.valueOf(s[0]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">
+                    <%=Encode.forHtml(String.valueOf(s[1]))%>
                 </a></td>
                 <td class="wcblayerItem">&nbsp;</td>
             </tr>

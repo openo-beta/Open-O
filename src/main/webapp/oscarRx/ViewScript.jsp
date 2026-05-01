@@ -37,6 +37,7 @@
 <%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -178,7 +179,7 @@
         <script type="text/javascript">
 
             function setComment() {
-                frames['preview'].document.getElementById('additNotes').innerHTML = '<%=comment%>';
+                frames['preview'].document.getElementById('additNotes').innerHTML = '<%=Encode.forJavaScript(String.valueOf(comment))%>';
             }
 
             function setDefaultAddr() {
@@ -196,7 +197,7 @@
                 var url = "<%= request.getContextPath() %>/oscarRx/AddRxComment.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
-                var params = "scriptNo=<%=request.getAttribute("scriptId")%>&comment=" + comment + "&rand=" + ran_number;  //]
+                var params = "scriptNo=<%=Encode.forJavaScript(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
                 new Ajax.Request(url, {method: 'post', parameters: params});
                 frames['preview'].document.getElementById('additNotes').innerHTML = document.getElementById('additionalNotes').value;
             }
@@ -221,7 +222,7 @@
             function printPaste2Parent() {
 
                 try {
-                    text = "****<%=ProviderData.getProviderName(bean.getProviderNo())%>********************************************************************************";
+                    text = "****<%=Encode.forJavaScript(String.valueOf(ProviderData.getProviderName(bean.getProviderNo())))%>********************************************************************************";
                     text = text.substring(0, 82) + "\n";
                     if (document.all) {
                         text += preview.document.forms[0].rx_no_newlines.value
@@ -248,7 +249,7 @@
                 setDefaultAddr();
                 <%      for(int i=0; i<vecAddressName.size(); i++) {%>
                 if (document.getElementById("addressSel").value == "<%=i%>") {
-                    frames['preview'].document.getElementById("clinicAddress").innerHTML = "<%=vecAddress.get(i)%>";
+                    frames['preview'].document.getElementById("clinicAddress").innerHTML = "<%=Encode.forJavaScript(String.valueOf(vecAddress.get(i)))%>";
                 }
                 <%       }
                       }%>
@@ -315,7 +316,7 @@
                                 <td width=440px>
                                     <div class="DivContentPadding">
                                         <iframe id=preview name=preview width=440px height=580px
-                                                src="oscarRx/Preview.jsp?rePrint=<%=reprint%>&demographicNo=<%=Encode.forUriComponent(Integer.toString(bean.getDemographicNo()))%>"
+                                                src="oscarRx/Preview.jsp?rePrint=<%=Encode.forUriComponent(String.valueOf(reprint))%>&demographicNo=<%=Encode.forUriComponent(Integer.toString(bean.getDemographicNo()))%>"
                                                 align=center border=0 frameborder=0></iframe>
                                     </div>
                                 </td>
@@ -350,7 +351,7 @@
 
                                                     <option value="<%=i%>"
                                                             <% if ( rxAddr != null && rxAddr.equals(""+i)){ %>SELECTED<%}%>
-                                                    ><%=te%>
+                                                    ><%=Encode.forHtml(String.valueOf(te))%>
                                                     </option>
                                                     <% }%>
 
@@ -381,7 +382,7 @@
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgCreateNewRx"/>"
                                                              class="ControlPushButton"
-                                                             style="width: 200px" onClick="<%=createAnewRx%>"/></span>
+                                                             style="width: 200px" onClick="<%=Encode.forJavaScript(String.valueOf(createAnewRx))%>"/></span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -421,8 +422,8 @@
                                         <tr>
                                             <td width=10px></td>
                                             <td><span><a
-                                                    href="javascript:ShowDrugInfo('<%= rx.getGenericName() %>');">
-						<%= rx.getGenericName() %> (<%= rx.getBrandName() %>) </a></span></td>
+                                                    href="javascript:ShowDrugInfo('<%=Encode.forHtmlAttribute(String.valueOf(rx.getGenericName()))%>');">
+						<%=Encode.forHtml(String.valueOf(rx.getGenericName()))%> (<%=Encode.forHtml(String.valueOf(rx.getBrandName()))%>) </a></span></td>
                                         </tr>
                                         <%
                                                 }

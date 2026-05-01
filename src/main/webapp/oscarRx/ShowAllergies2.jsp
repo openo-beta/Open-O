@@ -45,6 +45,7 @@
 <%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -402,7 +403,7 @@
 
     </head>
     <body>
-    <%=WebUtils.popErrorAndInfoMessagesAsHtml(session)%>
+    <%=Encode.forHtml(String.valueOf(WebUtils.popErrorAndInfoMessagesAsHtml(session)))%>
 
     <table id="AutoNumber1">
         <tr id="allergiesRowOne">
@@ -481,7 +482,7 @@
         if (strView.equals(navArray[i])) {
             out.print(" <span class='view_selected'>" + navArray[i] + "</span>");
         } else {
-            out.print("<span class='view_menu'><a href='ShowAllergies2.jsp?demographicNo=" + demoNo + "&view=" + navArray[i] + "'>");
+            out.print("<span class='view_menu'><a href='ShowAllergies2.jsp?demographicNo=" + Encode.forUriComponent(demoNo) + "&view=" + Encode.forUriComponent(navArray[i]) + "'>");
             out.print(navArray[i]);
             out.print("</a></span>");
          }
@@ -508,7 +509,7 @@
 				<table border="0">
 				<tr>
 					<td class="Step1Text">
-						<%=allergy_colour_codes%>
+						<%=Encode.forHtml(String.valueOf(allergy_colour_codes))%>
 			
                                         <table class="allergy_table">
 						<tr>
@@ -596,31 +597,31 @@
                                                         String entryDate = partialDateDao.getDatePartial(allergy.getEntryDate(), PartialDate.ALLERGIES, allergy.getAllergyId(), PartialDate.ALLERGIES_ENTRYDATE);
                                                         String startDate = partialDateDao.getDatePartial(allergy.getStartDate(), PartialDate.ALLERGIES, allergy.getAllergyId(), PartialDate.ALLERGIES_STARTDATE);
                                             %>
-                                            <tr bgcolor="<%=trColour%>" id="allergy_<%= allergy.getAllergyId() %>">
-                                                <td><%=labelStatus%>
+                                            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(trColour))%>" id="allergy_<%=Encode.forHtmlAttribute(String.valueOf(allergy.getAllergyId()))%>">
+                                                <td><%=Encode.forHtml(String.valueOf(labelStatus))%>
                                                 </td>
-                                                <td><%=entryDate == null ? "" : entryDate %>
+                                                <td><%=Encode.forHtml(String.valueOf(entryDate == null ? "" : entryDate))%>
                                                 </td>
-                                                <td><%=allergy.getLastUpdateDate() != null ? DateUtils.formatDate(allergy.getLastUpdateDate(), request.getLocale()) : "" %>
+                                                <td><%=Encode.forHtml(String.valueOf(allergy.getLastUpdateDate() != null ? DateUtils.formatDate(allergy.getLastUpdateDate(), request.getLocale()) : ""))%>
                                                 </td>
-                                                <td <%=title%> ><%=allergy.getDescription() %>
+                                                <td <%=title%> ><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%>
                                                 </td>
-                                                <td><%=allergy.getTypeDesc() %>
+                                                <td><%=Encode.forHtml(String.valueOf(allergy.getTypeDesc()))%>
                                                 </td>
 
                                                 <td><%=allergy.getTypeCode() == 0 && allergy.isNonDrug() == null ? "<i>&lt;Not Set&gt;</i>" : ""%><%=allergy.getTypeCode() == 0 && allergy.isNonDrug() != null && allergy.isNonDrug() ? "*" : "" %>
                                                 </td>
-                                                <td bgcolor="<%=sevColour%>"><%=allergy.getSeverityOfReactionDesc() %>
+                                                <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(sevColour))%>"><%=Encode.forHtml(String.valueOf(allergy.getSeverityOfReactionDesc()))%>
                                                 </td>
-                                                <td><%=allergy.getOnSetOfReactionDesc() %>
+                                                <td><%=Encode.forHtml(String.valueOf(allergy.getOnSetOfReactionDesc()))%>
                                                 </td>
-                                                <td><%=allergy.getReaction() != null ? allergy.getReaction() : "" %>
+                                                <td><%=Encode.forHtml(String.valueOf(allergy.getReaction() != null ? allergy.getReaction() : ""))%>
                                                 </td>
-                                                <td><%=startDate == null ? "" : startDate %>
+                                                <td><%=Encode.forHtml(String.valueOf(startDate == null ? "" : startDate))%>
                                                 </td>
-                                                <td><%=allergy.getLifeStageDesc() %>
+                                                <td><%=Encode.forHtml(String.valueOf(allergy.getLifeStageDesc()))%>
                                                 </td>
-                                                <td><%=allergy.getAgeOfOnset() == null ? "" : allergy.getAgeOfOnset()%>
+                                                <td><%=Encode.forHtml(String.valueOf(allergy.getAgeOfOnset() == null ? "" : allergy.getAgeOfOnset()))%>
                                                 </td>
                                                 <%
                                                     CaseManagementManager cmm = (CaseManagementManager) SpringUtils.getBean(CaseManagementManager.class);
@@ -631,7 +632,7 @@
                                                     <%
                                                         if (!allergy.isIntegratorResult()) {
                                                     %>
-                                                    <a href="#" title="Annotation" onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=String.valueOf(allergy.getAllergyId())%>&demo=${patient.getDemographicNo()}','anwin','width=400,height=500');">
+                                                    <a href="#" title="Annotation" onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(allergy.getAllergyId())))%>&demo=${patient.getDemographicNo()}','anwin','width=400,height=500');">
                                                         <% if (existingAnnots.size() > 0) {%>
                                                         <img src="<%= request.getContextPath() %>/images/filledNotes.gif" border="0"/>
                                                         <% } else { %>
@@ -646,13 +647,13 @@
                                                             if (intArchived == 0) {
                                                     %>
                                                     <a href="#" class="deleteAllergyLink"
-                                                       id="deleteAllergy:<%= labelAction %>_ID=<%=allergy.getAllergyId() %>&demographicNo=<%=demoNo %>&action=<%=actionPath %>">
-                                                        <%=labelAction%>
+                                                       id="deleteAllergy:<%=Encode.forHtmlAttribute(String.valueOf(labelAction))%>_ID=<%=Encode.forHtmlAttribute(String.valueOf(allergy.getAllergyId()))%>&demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>&action=<%=Encode.forHtmlAttribute(String.valueOf(actionPath))%>">
+                                                        <%=Encode.forHtml(String.valueOf(labelAction))%>
                                                     </a> |
                                                     <% } %>
                                                     <a href="#" class="modifyAllergyLink"
-                                                       id="modifyAllergy:<%= labelAction %>_ID=<%=allergy.getDrugrefId() %>&name=<%=allergy.getDescription() %>&type=<%=allergy.getTypeCode() %>&allergyToArchive=<%=allergy.getId() %>">
-                                                        <%=intArchived == 0 ? "Modify" : labelAction%>
+                                                       id="modifyAllergy:<%=Encode.forHtmlAttribute(String.valueOf(labelAction))%>_ID=<%=Encode.forHtmlAttribute(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forHtmlAttribute(String.valueOf(allergy.getDescription()))%>&type=<%=Encode.forHtmlAttribute(String.valueOf(allergy.getTypeCode()))%>&allergyToArchive=<%=Encode.forHtmlAttribute(String.valueOf(allergy.getId()))%>">
+                                                        <%=Encode.forHtml(String.valueOf(intArchived == 0 ? "Modify" : labelAction))%>
                                                     </a>
                                                     <% } %>
                                                 </td>
@@ -663,7 +664,7 @@
                                             %>
 					</table>
 
-                                        <%=allergy_colour_codes%>
+                                        <%=Encode.forHtml(String.valueOf(allergy_colour_codes))%>
 				</td>
 			</tr>
                             </table>
@@ -675,8 +676,8 @@
                             <form action="<%=request.getContextPath()%>/oscarRx/searchAllergy2.do" focus="searchString" id="searchAllergy2"
                                   onSubmit="return submitSearchForm()">
 
-                                <input type="hidden" name="iNKDA" value="<%=iNKDA%>"/>
-                                <input type="hidden" name="hasDrugAllergy" value="<%=hasDrugAllergy%>"/>
+                                <input type="hidden" name="iNKDA" value="<%=Encode.forHtmlAttribute(String.valueOf(iNKDA))%>"/>
+                                <input type="hidden" name="hasDrugAllergy" value="<%=Encode.forHtmlAttribute(String.valueOf(hasDrugAllergy))%>"/>
 
                                 <table>
                                     <tr>

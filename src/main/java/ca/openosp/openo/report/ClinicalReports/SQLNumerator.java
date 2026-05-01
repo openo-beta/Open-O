@@ -27,13 +27,16 @@
 package ca.openosp.openo.report.ClinicalReports;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import ca.openosp.Misc;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  * The class should evaluate a query that has a count returned.  If the count is = 0 then false is returned if >0 is returned true
@@ -90,13 +93,24 @@ public class SQLNumerator implements Numerator {
     }
 
 
+    /**
+     * Parameterizes the SQL template by replacing all ${processString} occurrences with ?
+     * and binding the demographicNo value for each occurrence.
+     * Strips surrounding quotes (e.g., '${demographic_no}' becomes ?) since
+     * PreparedStatement handles string quoting automatically.
+     */
+    private ResultSet executeParameterizedSQL(String demographicNo) throws Exception {
+        List<Object> params = new ArrayList<>();
+        String paramSql = SqlUtils.parameterizeToken(sql, processString, demographicNo, params);
+        return DBHandler.GetPreSQL(paramSql, params.toArray());
+    }
+
     //TODO:Do i change this to pull fields out of the query?
     public boolean evaluateOLD(String demographicNo) {
         boolean evalTrue = false;
 
         try {
-
-            ResultSet rs = DBHandler.GetSQL(sql.replaceAll("\\$\\{" + processString + "\\}", demographicNo));
+            ResultSet rs = executeParameterizedSQL(demographicNo);
             MiscUtils.getLogger().debug("SQL Statement: " + sql);
             while (rs.next()) {
                 int count = rs.getInt(identifier);
@@ -123,8 +137,7 @@ public class SQLNumerator implements Numerator {
 
         outputValues = null;
         try {
-
-            ResultSet rs = DBHandler.GetSQL(sql.replaceAll("\\$\\{" + processString + "\\}", demographicNo));
+            ResultSet rs = executeParameterizedSQL(demographicNo);
             MiscUtils.getLogger().debug("SQL Statement: " + sql);
             if (rs.next()) {
                 evalTrue = true;

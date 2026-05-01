@@ -13,6 +13,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="ca.openosp.openo.commn.dao.DocumentDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -95,7 +96,7 @@
                 %>
                 <li>
                     <img class="page"
-                         src='<%=request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&doc_no=" + documentId + "&curPage=" + i%>'/>
+                         src='<%=request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&doc_no=" + Encode.forUriComponent(documentId) + "&curPage=" + i%>'/>
                 </li>
                 <%
                     }

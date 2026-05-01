@@ -32,6 +32,7 @@ v<%
 
 <%@ page
         import="ca.openosp.openo.form.*, java.util.*,ca.openosp.openo.billing.ca.bc.pageUtil.*,ca.openosp.openo.db.*,ca.openosp.openo.billing.ca.bc.MSP.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -48,7 +49,7 @@ v<%
                 oscarLog("billingFormActive")
                 if (window.opener && window.opener.replaceWCB) {
                     oscarLog("Calling on replaceWCB");
-                    window.opener.replaceWCB('<%=request.getAttribute("WCBFormId")%>');
+                    window.opener.replaceWCB('<%=Encode.forJavaScript(String.valueOf(request.getAttribute("WCBFormId")))%>');
                 }
                 oscarLog("billingFormActiveEnd");
                 window.close();

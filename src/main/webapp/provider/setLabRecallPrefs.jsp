@@ -27,6 +27,7 @@
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.util.ResourceBundle"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect(request.getContextPath() + "/logout.htm");
@@ -44,7 +45,7 @@
     <head>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><%=bundle.getString(providertitle)%></title>
+        <title><%=Encode.forHtml(String.valueOf(bundle.getString(providertitle)))%></title>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
     </head>
 
@@ -52,14 +53,14 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><%=bundle.getString(providermsgPrefs)%></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><%=bundle.getString(providermsgProvider)%></td>
+            <td class="MainTableTopRowLeftColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgPrefs)))%></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgProvider)))%></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%>
-                <%=bundle.getString(providermsgEdit)%>
+                <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgEdit)))%>
                 <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <table>
@@ -100,7 +101,7 @@
                     </table>
                     <input type="submit" name="btnApply" value="Submit" />
                     <input type="button" name="delete" value="Delete" onclick="deleteProp();" style="display:none;">
-                </form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
+                </form> <%} else {%> <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgSuccess)))%> <br>
                 <%}%>
             </td>
         </tr>

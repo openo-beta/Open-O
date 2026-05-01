@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -105,7 +106,7 @@
                 <div class="controls">
 
                     <input id="xml_vdate" type="text" name="xml_vdate"
-                           value="<%=xml_vdate%>" placeholder="Service Begin Date">
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>" placeholder="Service Begin Date">
                 </div>
             </div>
             <div class="control-group" id="providerDiv">
@@ -113,7 +114,7 @@
 
                 <div class="controls">
 
-                    <input type="text" id="numDays" name="numDays" value="<%=numDays%>"
+                    <input type="text" id="numDays" name="numDays" value="<%=Encode.forHtmlAttribute(String.valueOf(numDays))%>"
                            class="input-mini">
                 </div>
             </div>
@@ -135,8 +136,8 @@
 <div class="alert alert-success">
     <h4>Success!</h4>
     <a
-            href="${ctx}/servlet/OscarDownload?homepath=obecdownload&filename=<%=obectxt%>">File
-        Created <%=obectxt%>
+            href="${ctx}/servlet/OscarDownload?homepath=obecdownload&filename=<%=Encode.forUriComponent(String.valueOf(obectxt))%>">File
+        Created <%=Encode.forHtml(String.valueOf(obectxt))%>
     </a>
 </div>
 <%

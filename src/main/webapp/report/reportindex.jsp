@@ -43,6 +43,7 @@
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.ProviderPreference" %>
 <%@ page import="ca.openosp.openo.utility.SessionConstants" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String country = request.getLocale().getCountry();
 
@@ -121,7 +122,7 @@
             }
 
             function ogo() {
-                var region = '<%=billingRegion%>';
+                var region = '<%=Encode.forJavaScript(String.valueOf(billingRegion))%>';
                 var s = document.getElementsByName("startDate")[0].value;
                 s = s.replace('/', '-');
                 var e = document.getElementsByName("endDate")[0].value;
@@ -133,7 +134,7 @@
             }
 
             function ogo2() {
-                var region = '<%=billingRegion%>';
+                var region = '<%=Encode.forJavaScript(String.valueOf(billingRegion))%>';
                 var s = document.getElementsByName("startDate")[0].value;
                 s = s.replace('/', '-');
                 var e = document.getElementsByName("endDate")[0].value;
@@ -290,15 +291,15 @@
                                                                            ONCLICK="ogo2()">05</a> <% } %>
                 </td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('startDate')[0].value", StandardCharsets.UTF_8)%>')">
+                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('startDate')[0].value", StandardCharsets.UTF_8)))%>')">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formFrom"/></a>
                         <%-- any early default start date should suffice for reporting all --%>
-                    <INPUT TYPE="text" NAME="startDate" VALUE="<%=today%>" size='10'>
+                    <INPUT TYPE="text" NAME="startDate" VALUE="<%=Encode.forHtmlAttribute(String.valueOf(today))%>" size='10'>
                 </td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('endDate')[0].value", StandardCharsets.UTF_8)%>')">
+                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('endDate')[0].value", StandardCharsets.UTF_8)))%>')">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formTo"/></a> <INPUT TYPE="text"
-                                                                               NAME="endDate" VALUE="<%=today%>"
+                                                                               NAME="endDate" VALUE="<%=Encode.forHtmlAttribute(String.valueOf(today))%>"
                                                                                size='10'></td>
                 <td><INPUT TYPE="button" NAME="button"
                            VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnCreateReport"/>"
@@ -333,8 +334,8 @@
                             if (isTeamAccessPrivacy)
                                 continue;    //skip mygroup display if user have TeamAccessPrivacy
                     %>
-                    <option value="<%="_grp_"+rsgroup.getString("mygroup_no")%>"
-                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%="GRP: " + rsgroup.getString("mygroup_no")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf("_grp_"+rsgroup.getString("mygroup_no")))%>"
+                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf("GRP: " + rsgroup.getString("mygroup_no")))%>
                     </option>
                     <%
                         }
@@ -343,8 +344,8 @@
                         rsgroup = reportMainBean.queryResults(provider_dboperation);
                         while (rsgroup.next()) {
                     %>
-                    <option value="<%=rsgroup.getString("provider_no")%>"
-                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(rsgroup.getString("provider_no")))%>"
+                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")))%>
                     </option>
                     <%
                         }
@@ -365,17 +366,17 @@
                     <sup>*</sup><a HREF="#" ONCLICK="go('all')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnAllAppt"/></a><br>&nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.chkRostered"/> <input type="checkbox" id="rosteredOnly" value="true">
                 </td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('asdate')[0].value", StandardCharsets.UTF_8)%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formFrom"/></a> <input type='text' name="asdate"
-                                                                       VALUE="<%=today%>" size=10></td>
+                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('asdate')[0].value", StandardCharsets.UTF_8)))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formFrom"/></a> <input type='text' name="asdate"
+                                                                       VALUE="<%=Encode.forHtmlAttribute(String.valueOf(today))%>" size=10></td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('aedate')[0].value", StandardCharsets.UTF_8)%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formTo"/> </a> <input type='text' name="aedate"
-                                                                      VALUE="<%=today%>" size=10></td>
+                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('aedate')[0].value", StandardCharsets.UTF_8)))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formTo"/> </a> <input type='text' name="aedate"
+                                                                      VALUE="<%=Encode.forHtmlAttribute(String.valueOf(today))%>" size=10></td>
                 <td><select name="sTime">
                     <%
                         for (int i = 0; i < 24; i++) {
                             String timeString = i < 12 && i >= 0 ? (i + " am") : ((i == 12 ? i : i - 12) + " pm");
                     %>
-                    <option value="<%=""+i%>" <%=i == 8 ? "selected" : ""%>><%=timeString%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(""+i))%>" <%=i == 8 ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(timeString))%>
                     </option>
                     <% } %>
                 </select> - <select name="eTime">
@@ -383,7 +384,7 @@
                         for (int i = 0; i < 24; i++) {
                             String timeString = i < 12 && i >= 0 ? (i + " am") : ((i == 12 ? i : i - 12) + " pm");
                     %>
-                    <option value="<%=""+i%>" <%=i == 20 ? "selected" : ""%>><%=timeString%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(""+i))%>" <%=i == 20 ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(timeString))%>
                     </option>
                     <% } %>
                 </select></td>
@@ -400,8 +401,8 @@
                         for (int i = 0; i < 31; i++) {
                             String dateString = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE);
                     %>
-                    <option value="<%=dateString%>"
-                            <%=dateString.equals(today) ? "selected" : ""%>><%=dateString%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(dateString))%>"
+                            <%=dateString.equals(today) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(dateString))%>
                     </option>
                     <%
                             cal.add(cal.DATE, 1);
@@ -439,7 +440,7 @@
                             for (int i = 0; i < 31; i++) {
                                 String dateString = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE);
                         %>
-                        <option value="<%=dateString%>" <%=dateString.equals(today) ? "selected" : ""%> ><%=dateString%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(dateString))%>" <%=dateString.equals(today) ? "selected" : ""%> ><%=Encode.forHtml(String.valueOf(dateString))%>
                         </option>
                         <%
                                 cal.add(cal.DATE, 1);
@@ -464,7 +465,7 @@
                             for (int i = 0; i < 31; i++) {
                                 String dateString = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE);
                         %>
-                        <option value="<%=dateString%>" <%=dateString.equals(today) ? "selected" : ""%> ><%=dateString%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(dateString))%>" <%=dateString.equals(today) ? "selected" : ""%> ><%=Encode.forHtml(String.valueOf(dateString))%>
                         </option>
                         <%
                                 cal.add(cal.DATE, 1);
@@ -485,7 +486,7 @@
                 </td>
                 <td width="1"></td>
                 <td width="300"><a href="#" ONCLICK="go('tab')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnDaySheetTable"/></a></td>
-                <td><input type='text' name="tabDay" VALUE="<%=today%>" size=10></td>
+                <td><input type='text' name="tabDay" VALUE="<%=Encode.forHtmlAttribute(String.valueOf(today))%>" size=10></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -502,8 +503,8 @@
                             if (isTeamAccessPrivacy)
                                 continue;    //skip mygroup display if user have TeamAccessPrivacy
                     %>
-                    <option value="<%="_grp_"+rsgroup.getString("mygroup_no")%>"
-                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%="GRP: " + rsgroup.getString("mygroup_no")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf("_grp_"+rsgroup.getString("mygroup_no")))%>"
+                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf("GRP: " + rsgroup.getString("mygroup_no")))%>
                     </option>
                     <%
                         }
@@ -512,8 +513,8 @@
                         rsgroup = reportMainBean.queryResults(provider_dboperation);
                         while (rsgroup.next()) {
                     %>
-                    <option value="<%=rsgroup.getString("provider_no")%>"
-                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(rsgroup.getString("provider_no")))%>"
+                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")))%>
                     </option>
                     <%
                         }
@@ -526,8 +527,8 @@
                         for (int i = 0; i < 31; i++) {
                             String dateString = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE);
                     %>
-                    <option value="<%=dateString%>"
-                            <%=dateString.equals(today) ? "selected" : ""%>><%=dateString%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(dateString))%>"
+                            <%=dateString.equals(today) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(dateString))%>
                     </option>
                     <%
                             cal.add(cal.DATE, 1);
@@ -549,8 +550,8 @@
                             if (isTeamAccessPrivacy)
                                 continue;    //skip mygroup display if user have TeamAccessPrivacy
                     %>
-                    <option value="<%="_grp_"+rsgroup.getString("mygroup_no")%>"
-                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%="GRP: " + rsgroup.getString("mygroup_no")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf("_grp_"+rsgroup.getString("mygroup_no")))%>"
+                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf("GRP: " + rsgroup.getString("mygroup_no")))%>
                     </option>
                     <%
                         }
@@ -559,8 +560,8 @@
                         rsgroup = reportMainBean.queryResults(provider_dboperation);
                         while (rsgroup.next()) {
                     %>
-                    <option value="<%=rsgroup.getString("provider_no")%>"
-                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(rsgroup.getString("provider_no")))%>"
+                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")))%>
                     </option>
                     <%
                         }
@@ -583,8 +584,8 @@
                             if (isTeamAccessPrivacy)
                                 continue;    //skip mygroup display if user have TeamAccessPrivacy
                     %>
-                    <option value="<%="_grp_"+rsgroup.getString("mygroup_no")%>"
-                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%="GRP: " + rsgroup.getString("mygroup_no")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf("_grp_"+rsgroup.getString("mygroup_no")))%>"
+                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf("GRP: " + rsgroup.getString("mygroup_no")))%>
                     </option>
                     <%
                         }
@@ -593,8 +594,8 @@
                         rsgroup = reportMainBean.queryResults(provider_dboperation);
                         while (rsgroup.next()) {
                     %>
-                    <option value="<%=rsgroup.getString("provider_no")%>"
-                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(rsgroup.getString("provider_no")))%>"
+                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")))%>
                     </option>
                     <%
                         }
@@ -618,8 +619,8 @@
                             if (isTeamAccessPrivacy)
                                 continue;    //skip mygroup display if user have TeamAccessPrivacy
                     %>
-                    <option value="<%="_grp_"+rsgroup.getString("mygroup_no")%>"
-                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%="GRP: " + rsgroup.getString("mygroup_no")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf("_grp_"+rsgroup.getString("mygroup_no")))%>"
+                            <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf("GRP: " + rsgroup.getString("mygroup_no")))%>
                     </option>
                     <%
                         }
@@ -628,8 +629,8 @@
                         rsgroup = reportMainBean.queryResults(provider_dboperation);
                         while (rsgroup.next()) {
                     %>
-                    <option value="<%=rsgroup.getString("provider_no")%>"
-                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(rsgroup.getString("provider_no")))%>"
+                            <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")))%>
                     </option>
                     <%
                         }
@@ -640,9 +641,9 @@
                         cal.add(cal.DATE, 0);
                         String NoShowEDate = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE);
                     %> <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.msgStart"/>: <input name="nsdate" type="input" size="8"
-                                                                                 id="NoShowDate" value="<%=NoShowEDate%>"> <a
+                                                                                 id="NoShowDate" value="<%=Encode.forHtmlAttribute(String.valueOf(NoShowEDate))%>"> <a
                         HREF="#"
-                        onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('nsdate')[0].value", StandardCharsets.UTF_8)%>')"><img
+                        onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('nsdate')[0].value", StandardCharsets.UTF_8)))%>')"><img
                         title=Calendar " src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"><a>
 
 
@@ -654,7 +655,7 @@
                 String dateString = cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.DATE) ;
             %>
 
-              <option value="<%=dateString%>" <%=dateString.equals(today)?"selected":""%> ><%=dateString%></option>
+              <option value="<%=Encode.forHtmlAttribute(String.valueOf(dateString))%>" <%=dateString.equals(today)?"selected":""%> ><%=Encode.forHtml(String.valueOf(dateString))%></option>
             <%
                 cal.add(cal.DATE, 1) ;
                     }

@@ -47,6 +47,7 @@
     if (request.getParameter("limit1") != null) strLimit1 = request.getParameter("limit1");
     if (request.getParameter("limit2") != null) strLimit2 = request.getParameter("limit2");
 %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.util.*, java.sql.*, ca.openosp.*"
          errorPage="/errorpage.jsp" %>
 <jsp:useBean id="reportMainBean" class="ca.openosp.AppointmentMainBean"
@@ -125,25 +126,25 @@
                     }
             %>
             <tr bgcolor="<%=bodd?"ivory":"white"%>">
-                <td nowrap><%=reportMainBean.getString(rs, "last_name")%>
+                <td nowrap><%=Encode.forHtml(String.valueOf(reportMainBean.getString(rs, "last_name")))%>
                 </td>
-                <td nowrap><%=reportMainBean.getString(rs, "first_name")%>
+                <td nowrap><%=Encode.forHtml(String.valueOf(reportMainBean.getString(rs, "first_name")))%>
                 </td>
-                <td align="center"><%=reportMainBean.getString(rs, "chart_no")%>
+                <td align="center"><%=Encode.forHtml(String.valueOf(reportMainBean.getString(rs, "chart_no")))%>
                 </td>
-                <td align="center"><%=age%>
+                <td align="center"><%=Encode.forHtml(String.valueOf(age))%>
                 </td>
-                <td align="center"><%=reportMainBean.getString(rs, "sex")%>
+                <td align="center"><%=Encode.forHtml(String.valueOf(reportMainBean.getString(rs, "sex")))%>
                 </td>
-                <td><%=reportMainBean.getString(rs, "hin")%>
+                <td><%=Encode.forHtml(String.valueOf(reportMainBean.getString(rs, "hin")))%>
                 </td>
-                <td align="center"><%=reportMainBean.getString(rs, "ver")%>
+                <td align="center"><%=Encode.forHtml(String.valueOf(reportMainBean.getString(rs, "ver")))%>
                 </td>
-                <td><%=reportMainBean.getString(rs, "provider_no").length() > 11 ? reportMainBean.getString(rs, "provider_no").substring(0, 11) : reportMainBean.getString(rs, "provider_no")%>
+                <td><%=Encode.forHtml(String.valueOf(reportMainBean.getString(rs, "provider_no").length() > 11 ? reportMainBean.getString(rs, "provider_no").substring(0, 11) : reportMainBean.getString(rs, "provider_no")))%>
                 </td>
-                <td><%=reportMainBean.getString(rs, "date_joined")%>
+                <td><%=Encode.forHtml(String.valueOf(reportMainBean.getString(rs, "date_joined")))%>
                 </td>
-                <td><%=reportMainBean.getString(rs, "phone")%>
+                <td><%=Encode.forHtml(String.valueOf(reportMainBean.getString(rs, "phone")))%>
                 </td>
             </tr>
             <%
@@ -160,11 +161,11 @@
   nLastPage=Integer.parseInt(strLimit1)-Integer.parseInt(strLimit2);
   if(nLastPage>=0) {
 %> <a
-            href="reportactivepatientlist.jsp?limit1=<%=nLastPage%>&limit2=<%=strLimit2%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportactivepatientlist.msgLastPage"/></a> | <%
+            href="reportactivepatientlist.jsp?limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportactivepatientlist.msgLastPage"/></a> | <%
   }
   if(nItems==Integer.parseInt(strLimit2)) {
 %> <a
-            href="reportactivepatientlist.jsp?limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
+            href="reportactivepatientlist.jsp?limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">
         <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportactivepatientlist.msgNextPage"/></a> <%
   }
 %>

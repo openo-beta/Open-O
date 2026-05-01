@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -187,7 +188,7 @@
                             List<String> types = map.getLabTypes();
                             types.remove("FLOWSHEET");
                             for (String type : types) {%>
-                        <th valign="bottom" class="Header"><%=type%>
+                        <th valign="bottom" class="Header"><%=Encode.forHtml(String.valueOf(type))%>
                         </th>
                         <%}%>
                     </tr>
@@ -211,22 +212,22 @@
 
                     %>
 
-                    <tr style="background-color:<%=rowColour(odd)%>">
+                    <tr style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(rowColour(odd)))%>">
                         <td class="Cell">
                             <% if (measurement != null && !measurement.equals("&nbsp;")) {%>
-                            <%=measurement%>
+                            <%=Encode.forHtml(String.valueOf(measurement))%>
                             <%} else {%>
-                            <a href="addMeasurementMap2.jsp?loinc=<%=s%>">map</a>
+                            <a href="addMeasurementMap2.jsp?loinc=<%=Encode.forUriComponent(String.valueOf(s))%>">map</a>
                             <%}%>
                         </td>
-                        <td class="Cell"><%=s%>
+                        <td class="Cell"><%=Encode.forHtml(String.valueOf(s))%>
                         </td>
-                        <td class="Cell"><%=desc%>
+                        <td class="Cell"><%=Encode.forHtml(String.valueOf(desc))%>
                         </td>
                         <td class="Cell">&nbsp;</td>
 
                         <%for (String type : types) {%>
-                        <td class="Cell"><%=getDisplay(h, type)%>
+                        <td class="Cell"><%=Encode.forHtml(String.valueOf(getDisplay(h, type)))%>
                         </td>
                         <%}%>
 
@@ -249,7 +250,7 @@
 
                         <td valign="top" style="border: 1px solid black;">
 
-                            <h4 class="Header" style="text-align:center"><%=type%>
+                            <h4 class="Header" style="text-align:center"><%=Encode.forHtml(String.valueOf(type))%>
                             </h4>
                             <ul>
                                 <li>test</li>
@@ -257,7 +258,7 @@
                                     ArrayList<HashMap<String, String>> unList = map.getUnmappedMeasurements(type);
                                     for (HashMap<String, String> h : unList) {
                                 %>
-                                <li><%=h.get(("name"))%>
+                                <li><%=Encode.forHtml(String.valueOf(h.get(("name"))))%>
                                 </li>
                                 <%}%>
                             </ul>

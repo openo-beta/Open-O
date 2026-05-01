@@ -43,6 +43,7 @@ import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 
 import ca.openosp.DocumentBean;
 import ca.openosp.OscarProperties;
@@ -95,11 +96,10 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet {
                 } else {
                     String pathName = item.getName();
                     String[] fullFile = pathName.split("[/|\\\\]");
-                    File savedFile = new File(foldername, fullFile[fullFile.length - 1]);
-
                     fileheader = fullFile[fullFile.length - 1];
-
-                    item.write(savedFile);
+                    File folderDir = new File(foldername);
+                    File validatedFile = PathValidationUtils.validatePath(fileheader, folderDir);
+                    item.write(validatedFile);
                 }
             }
         } catch (FileUploadException e) {
@@ -152,7 +152,9 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet {
                         filename = filename.substring(filename.lastIndexOf('\\')+1,filename.lastIndexOf('\"'));
 
                         fileheader = filename;
-                        fos = new FileOutputStream(foldername+ filename);
+                        File folderDir = new File(foldername);
+                        File validatedFile = PathValidationUtils.validatePath(filename, folderDir);
+                        fos = new FileOutputStream(validatedFile);
                         dest = new BufferedOutputStream(fos, BUFFER);
                     }
                     c =sis.readLine(data2, 0, BUFFER);

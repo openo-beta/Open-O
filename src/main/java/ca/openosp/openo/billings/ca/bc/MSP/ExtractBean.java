@@ -35,6 +35,7 @@ import ca.openosp.openo.commn.dao.BillingServiceDao;
 import ca.openosp.openo.commn.model.Billing;
 import ca.openosp.openo.utility.DateRange;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.Misc;
 import ca.openosp.OscarProperties;
@@ -42,6 +43,7 @@ import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 import ca.openosp.openo.util.ConversionUtils;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
@@ -323,8 +325,9 @@ public class ExtractBean extends Object implements Serializable {
     public void writeFile(String value1) {
         try {
             String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
-
-            FileOutputStream out = new FileOutputStream(home_dir + ohipFilename);
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(ohipFilename, homeDir);
+            FileOutputStream out = new FileOutputStream(validatedFile);
             PrintStream p = new PrintStream(out);
             p.println(value1);
             p.close();
@@ -337,7 +340,9 @@ public class ExtractBean extends Object implements Serializable {
         if (eFlag.equals("1")) {
             try {
                 String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
-                FileOutputStream out = new FileOutputStream(home_dir + htmlFilename);
+                File homeDir = new File(home_dir);
+                File validatedFile = PathValidationUtils.validatePath(htmlFilename, homeDir);
+                FileOutputStream out = new FileOutputStream(validatedFile);
                 PrintStream p = new PrintStream(out);
                 p.println(htmlvalue1);
                 p.close();

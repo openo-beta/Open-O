@@ -307,7 +307,7 @@
                 var url = '<c:out value="${ctx}"/>/oscarRx/AddRxComment.jsp';
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
-                var params = "scriptNo=<%=request.getAttribute("scriptId")%>&comment=" + comment + "&rand=" + ran_number;  //]
+                var params = "scriptNo=<%=Encode.forJavaScript(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
                 new Ajax.Request(url, {method: 'post', parameters: params});
                 frames['preview'].document.getElementById('additNotes').innerHTML = document.getElementById('additionalNotes').value.replace(/\n/g, "<br>");
                 frames['preview'].document.getElementsByName('additNotes')[0].value = document.getElementById('additionalNotes').value.replace(/\n/g, "\r\n");
@@ -350,12 +350,12 @@
                         <%--    	 <% if(echartPreferencesMap.getOrDefault("echart_paste_fax_note", false)) {--%>
                         <% String timeStamp = new SimpleDateFormat("dd-MMM-yyyy hh:mm a").format(Calendar.getInstance().getTime()); %>
                         // %>
-                        text = "[Rx faxed to " + '<%= pharmacy!=null?StringEscapeUtils.escapeEcmaScript(pharmacy.getName()):""%>' + " Fax#: " + '<%= pharmacy!=null?pharmacy.getFax():""%>';
+                        text = "[Rx faxed to " + '<%= pharmacy!=null?Encode.forJavaScript(pharmacy.getName()):""%>' + " Fax#: " + '<%=Encode.forJavaScript(String.valueOf(pharmacy!=null?pharmacy.getFax():""))%>';
 
                         <%--    	 <% if (rxPreferencesMap.getOrDefault("rx_paste_provider_to_echart", false)) { %>--%>
                         text += " prescribed by <%= Encode.forJavaScript(loggedInInfo.getLoggedInProvider().getFormattedName())%>";
                         <%--    	 <% } %>--%>
-                        text += ", <%= timeStamp %>]\n";
+                        text += ", <%=Encode.forJavaScript(String.valueOf(timeStamp))%>]\n";
                         <%--   		 <%--%>
                         <%--    	 }--%>
                         <%--    	 %>    	--%>
@@ -374,18 +374,18 @@
                     }
                     <% if (props.isPropertyActive("rx_paste_asterisk")) {
                             if(prefPharmacy!=null && prefPharmacy.trim()!=""){ %>
-                    text += "<%=prefPharmacy%>\n"
+                    text += "<%=Encode.forJavaScript(String.valueOf(prefPharmacy))%>\n"
                     <% } %>
                     text += "****<%=Encode.forJavaScript(ProviderData.getProviderName(bean.getProviderNo()))%>********************************************************************************\n";
                     <% } %>
 
                     //we support pasting into orig encounter and new casemanagement
-                    demographicNo = <%=bean.getDemographicNo()%>;
+                    demographicNo = <%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>;
                     noteEditor = "noteEditor" + demographicNo;
                     if (window.parent.opener) {
                         if (window.parent.opener.document.forms["caseManagementEntryForm"] != undefined &&
                             window.parent.opener.document.forms["caseManagementEntryForm"].demographicNo &&
-                            window.parent.opener.document.forms["caseManagementEntryForm"].demographicNo.value === "<%=bean.getDemographicNo()%>") {
+                            window.parent.opener.document.forms["caseManagementEntryForm"].demographicNo.value === "<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>") {
                             //oscarLog("3");
                             window.parent.opener.pasteToEncounterNote(text);
                             if (print) {
@@ -448,7 +448,7 @@
             function openEncounter() {
                 var windowprops = "height=710,width=1024,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=20,left=20";
                 var currentDate = new Date().toISOString().substring(0, 10);
-                var url = "<%= request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?providerNo=<%= bean.getProviderNo() %>&demographicNo=<%= bean.getDemographicNo() %>&curProviderNo=<%= bean.getProviderNo() %>&userName=<%=Encode.forUriComponent(ProviderData.getProviderName(bean.getProviderNo()))%>&curDate=" + currentDate;
+                var url = "<%= request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.getProviderNo()))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>&curProviderNo=<%=Encode.forJavaScript(String.valueOf(bean.getProviderNo()))%>&userName=<%=Encode.forUriComponent(ProviderData.getProviderName(bean.getProviderNo()))%>&curDate=" + currentDate;
 
                 if (window.parent.opener && window.parent.opener.document.forms["caseManagementEntryForm"] != undefined) {
                     // redirect if encounter window open
@@ -472,7 +472,7 @@
                 setDefaultAddr();
                 <%      for(int i=0; i<vecAddressName.size(); i++) {%>
                 if (document.getElementById("addressSel").value == "<%=i%>") {
-                    frames['preview'].document.getElementById("clinicAddress").innerHTML = "<%=vecAddress.get(i)%>";
+                    frames['preview'].document.getElementById("clinicAddress").innerHTML = "<%=Encode.forJavaScript(String.valueOf(vecAddress.get(i)))%>";
                 }
                 <%       }
                       }%>
@@ -516,9 +516,9 @@
             function refreshImage() {
                 counter = counter + 1;
                 if (frames["preview"].document.getElementById("signature") != null) {
-                    frames["preview"].document.getElementById("signature").src = "<%=imageUrl%>&rand=" + counter;
+                    frames["preview"].document.getElementById("signature").src = "<%=Encode.forJavaScript(String.valueOf(imageUrl))%>&rand=" + counter;
                 }
-                frames['preview'].document.getElementById('imgFile').value = '<%=System.getProperty("java.io.tmpdir").replaceAll("\\\\", "/")%>/signature_<%=signatureRequestId%>.jpg';
+                frames['preview'].document.getElementById('imgFile').value = '<%=System.getProperty("java.io.tmpdir").replaceAll("\\\\", "/")%>/signature_<%=Encode.forJavaScript(String.valueOf(signatureRequestId))%>.jpg';
             }
 
             function sendFax() {
@@ -527,8 +527,8 @@
                 }
                 let faxNumber = document.getElementById('faxNumber');
                 frames['preview'].document.getElementById('finalFax').value = faxNumber.options[faxNumber.selectedIndex].value;
-                frames['preview'].document.getElementById('pdfId').value = '<%=signatureRequestId%>';
-                onPrint2('oscarRxFax', "<%=request.getParameter("scriptId")%>");
+                frames['preview'].document.getElementById('pdfId').value = '<%=Encode.forJavaScript(String.valueOf(signatureRequestId))%>';
+                onPrint2('oscarRxFax', "<%=Encode.forJavaScript(request.getParameter("scriptId"))%>");
 
             }
 
@@ -565,7 +565,7 @@
 		%>
 		try {
 			let signId = new URLSearchParams(e.storedImageUrl.split('?')[1]).get('digitalSignatureId')
-			this.setDigitalSignatureToRx(signId, <%=bean.getStashItem(0).getScript_no() %>);
+			this.setDigitalSignatureToRx(signId, <%=Encode.forJavaScript(String.valueOf(bean.getStashItem(0).getScript_no()))%>);
 		} catch (e) {
 			console.error(e);
 		}
@@ -603,7 +603,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                 }
             }
 
-            var requestIdKey = "<%=signatureRequestId %>";
+            var requestIdKey = "<%=Encode.forJavaScript(String.valueOf(signatureRequestId))%>";
 
         </script>
         <style media="all">
@@ -624,7 +624,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
     </head>
 
 <body topmargin="0" leftmargin="0" vlink="#0000FF"
-	onload="addressSelect();printPharmacy('<%=prefPharmacyId%>');showFaxWarning();">
+	onload="addressSelect();printPharmacy('<%=Encode.forJavaScript(String.valueOf(prefPharmacyId))%>');showFaxWarning();">
 
     <!-- HSFO functionality removed -->
     <div id="bodyView">
@@ -651,7 +651,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>&demographicNo=<%=Encode.forUriComponent(Integer.toString(bean.getDemographicNo()))%>"
+							src="oscarRx/Preview2.jsp?scriptId=<%=Encode.forUriComponent(String.valueOf(bean.getStashItem(0).getScript_no()))%>&rePrint=<%=Encode.forUriComponent(String.valueOf(reprint))%>&pharmacyId=<%=Encode.forUriComponent(request.getParameter("pharmacyId"))%>&demographicNo=<%=Encode.forUriComponent(Integer.toString(bean.getDemographicNo()))%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>
@@ -742,7 +742,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
 
                                                     <option value="<%=i%>"
                                                             <% if ( rxAddr != null && rxAddr.equals(""+i)){ %>SELECTED<%}%>
-                                                    ><%=te%>
+                                                    ><%=Encode.forHtml(String.valueOf(te))%>
                                                     </option>
                                                     <% }%>
 
@@ -765,9 +765,9 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                                         for (int i = 0; i < vecPageSizes.size(); i++) {
                                                             String te = (String) vecPageSizes.get(i);
                                                             String tf = (String) vecPageSizeValues.get(i);%>
-                                                    <option value="<%=tf%>"
+                                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(tf))%>"
                                                             <%if(rxPageSize!=null && rxPageSize.equals(tf)){%>SELECTED<%}%>
-                                                    ><%=te%>
+                                                    ><%=Encode.forHtml(String.valueOf(te))%>
                                                     </option>
                                                     <% }%>
                                                 </select>
@@ -801,8 +801,8 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                                     <%
                                                         for (FaxConfig faxConfig : faxConfigs) {
                                                     %>
-                                                    <option value="<%=faxConfig.getFaxNumber()%>"
-                                                            selected="<%=providerFax.equals(faxConfig.getFaxNumber())%>"><%=faxConfig.getAccountName()%>
+                                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(faxConfig.getFaxNumber()))%>"
+                                                            selected="<%=Encode.forHtmlAttribute(String.valueOf(providerFax.equals(faxConfig.getFaxNumber())))%>"><%=Encode.forHtml(String.valueOf(faxConfig.getAccountName()))%>
                                                     </option>
                                                     <%
                                                         }
@@ -818,13 +818,13 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         <tr>
 						<td style="padding-top: 0; padding-bottom: 0"><span><input type=button value="Fax"
 										 class="ControlPushButton" id="faxButton" style="width: 210px"
-										 onClick="sendFax();" <%=isFaxDisabled%>/></span>
+										 onClick="sendFax();" <%=Encode.forHtml(String.valueOf(isFaxDisabled))%>/></span>
                                             </td>
                                         </tr>
                                         <tr>
                             <td style="padding-top: 0"><span><input type=button value="Fax &amp; Add to encounter note"
                                     class="ControlPushButton" id="faxPasteButton" style="width: 210px"
-                                    onClick="printPaste2Parent(false, true, true);sendFax();" <%=isFaxDisabled%>/></span>
+                                    onClick="printPaste2Parent(false, true, true);sendFax();" <%=Encode.forHtml(String.valueOf(isFaxDisabled))%>/></span>
 
                                             </td>
                                         </tr>
@@ -870,10 +870,10 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         </tr>
                                         <tr>
                                             <td>
-									<input type="hidden" name="<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY%>"
-										   value="<%=signatureRequestId%>"/>
+									<input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY))%>"
+										   value="<%=Encode.forHtmlAttribute(String.valueOf(signatureRequestId))%>"/>
 									<iframe style="width:500px; height:132px;" id="signatureFrame"
-											src="<%= request.getContextPath() %>/signature_pad/tabletSignature.jsp?inWindow=true&<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY%>=<%=signatureRequestId%>&saveToDB=true&demographicNo=<%=bean.getDemographicNo()%>&<%=ModuleType.class.getSimpleName()%>=<%=ModuleType.PRESCRIPTION%>"></iframe>
+											src="<%= request.getContextPath() %>/signature_pad/tabletSignature.jsp?inWindow=true&<%=Encode.forUriComponent(String.valueOf(DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY))%>=<%=Encode.forUriComponent(String.valueOf(signatureRequestId))%>&saveToDB=true&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.getDemographicNo()))%>&<%=ModuleType.class.getSimpleName()%>=<%=Encode.forUriComponent(String.valueOf(ModuleType.PRESCRIPTION))%>"></iframe>
                                             </td>
                                         </tr>
 						<% } %>
@@ -890,8 +890,8 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         %>
                                         <tr>
                                             <td><span><a
-                                                    href="javascript:ShowDrugInfo('<%= rx.getGenericName() %>');">
-						<%= rx.getGenericName() %> (<%= rx.getBrandName() %>) </a></span></td>
+                                                    href="javascript:ShowDrugInfo('<%=Encode.forHtmlAttribute(String.valueOf(rx.getGenericName()))%>');">
+						<%=Encode.forHtml(String.valueOf(rx.getGenericName()))%> (<%=Encode.forHtml(String.valueOf(rx.getBrandName()))%>) </a></span></td>
                                         </tr>
                                         <%
                                                 }

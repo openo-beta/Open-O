@@ -586,8 +586,8 @@
         var ctx = '${pageContext.servletContext.contextPath}';
 
         //creates a javaspt array of associated dx codes
-        <%=createAssociationJS(assocCodeMap,"jsAssocCodes")%>
-        <%=createAssociationJS(supDao.getAssociationKeyValues(),"trayAssocCodes")%>
+        <%=Encode.forJavaScript(String.valueOf(createAssociationJS(assocCodeMap,"jsAssocCodes")))%>
+        <%=Encode.forJavaScript(String.valueOf(createAssociationJS(supDao.getAssociationKeyValues(),"trayAssocCodes")))%>
 
 
         function codeEntered(svcCode) {
@@ -689,7 +689,7 @@
 
         function callReplacementWebService(url, id) {
             var ran_number = Math.round(Math.random() * 1000000);
-            var params = "demographicNo=<%=bean.getPatientNo()%>&wcb=&rand=" + ran_number;  //hack to get around ie caching the page
+            var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getPatientNo()))%>&wcb=&rand=" + ran_number;  //hack to get around ie caching the page
             new Ajax.Updater(id, url, {method: 'get', parameters: params, asynchronous: true});
         }
 
@@ -715,7 +715,7 @@
             %>
 
             if (document.BillingCreateBillingForm.xml_billtype.value == "WCB") {
-                callReplacementWebService("wcbForms.jsp<%=wcb%>", 'wcbForms');
+                callReplacementWebService("wcbForms.jsp<%=Encode.forJavaScript(String.valueOf(wcb))%>", 'wcbForms');
             } else {
                 jQuery("#wcbForms").empty();
             }
@@ -1012,7 +1012,7 @@
             });
 
             jQuery(document).on('change', '#xml_provider', function () {
-                let url = '${pageContext.servletContext.contextPath}/billing.do?demographic_no=' + '<%=Encode.forUriComponent(bean.getPatientNo())%>' + '&appointment_no=' + '<%=Encode.forUriComponent(bean.getApptNo())%>' + '&apptProvider_no=' + '<%=Encode.forUriComponent(bean.getApptProviderNo())%>' + '&demographic_name=' + '<%=URLEncoder.encode(bean.getPatientName(), StandardCharsets.UTF_8)%>' + '&billRegion=BC&xml_provider=' + this.value;
+                let url = '${pageContext.servletContext.contextPath}/billing.do?demographic_no=' + '<%=Encode.forUriComponent(bean.getPatientNo())%>' + '&appointment_no=' + '<%=Encode.forUriComponent(bean.getApptNo())%>' + '&apptProvider_no=' + '<%=Encode.forUriComponent(bean.getApptProviderNo())%>' + '&demographic_name=' + '<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.getPatientName(), StandardCharsets.UTF_8)))%>' + '&billRegion=BC&xml_provider=' + this.value;
 
                 jQuery("#billingPatientInfoWrapper").load(url + " #billingPatientInfo", function () {
                     // re-bind all the javascript
@@ -1032,7 +1032,7 @@
             /* New billing form selection method*/
             jQuery(document).on('change', "#selectBillingForm", function () {
                 let selectedValue = this.value;
-                let url = ctx + '/billing.do?demographic_no=' + '<%=Encode.forUriComponent(bean.getPatientNo())%>' + '&appointment_no=' + '<%=Encode.forUriComponent(bean.getApptNo())%>' + '&apptProvider_no=' + '<%=Encode.forUriComponent(bean.getApptProviderNo())%>' + '&demographic_name=' + '<%=URLEncoder.encode(bean.getPatientName(), StandardCharsets.UTF_8)%>' + '&xml_provider=none&billRegion=BC&billForm=' + selectedValue;
+                let url = ctx + '/billing.do?demographic_no=' + '<%=Encode.forUriComponent(bean.getPatientNo())%>' + '&appointment_no=' + '<%=Encode.forUriComponent(bean.getApptNo())%>' + '&apptProvider_no=' + '<%=Encode.forUriComponent(bean.getApptProviderNo())%>' + '&demographic_name=' + '<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.getPatientName(), StandardCharsets.UTF_8)))%>' + '&xml_provider=none&billRegion=BC&billForm=' + selectedValue;
                 jQuery("#billingFormTableWrapper").load(url + " #billingFormTable", function () {
                     // if the selected billing type is private, then change the billing type to private
                     if (selectedValue === 'PRI') {
@@ -1270,22 +1270,22 @@
     </label>
 
     <span class="badge badge-primary"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient.age"/></span>
-    <label class="label-text"><%=demo.getAge()%>
+    <label class="label-text"><%=Encode.forHtml(String.valueOf(demo.getAge()))%>
     </label>
 
     <%-- 	Keep until confirmed not needed.
 
             <span class="badge badge-primary"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient.status"/></span>
-            <strong class="label-text"><%=demo.getPatientStatus()%></label>
+            <strong class="label-text"><%=Encode.forHtml(String.valueOf(demo.getPatientStatus()))%></label>
 
       <span class="badge badge-primary"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient.roster"/></span>
-            <label><%=demo.getRosterStatus()%></label>
+            <label><%=Encode.forHtml(String.valueOf(demo.getRosterStatus()))%></label>
     --%>
     <span class="badge badge-primary" title="Most Responsible Provider"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.provider.assignedProvider"/></span>
     <label class="label-text">
         <c:choose>
-            <c:when test="<%= demo.getProviderNo() != null && ! demo.getProviderNo().trim().isEmpty() %>">
-                <%=billform.getProviderName(demo.getProviderNo())%>
+            <c:when test="<%=demo.getProviderNo() != null && ! demo.getProviderNo().trim().isEmpty()%>">
+                <%=Encode.forHtml(String.valueOf(billform.getProviderName(demo.getProviderNo())))%>
             </c:when>
             <c:otherwise>
                 Unknown
@@ -1295,13 +1295,13 @@
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="x">
         <button type="button" class="btn btn-link" title="View this patient's Electronic Chart"
-                onclick="popup(710, 1024,'${pageContext.servletContext.contextPath}/oscarEncounter/IncomingEncounter.do?providerNo=<%=loggedInInfo.getLoggedInProviderNo()%>&appointmentNo=&demographicNo=<%=demo.getDemographicNo()%>&curProviderNo=<%=loggedInInfo.getLoggedInProviderNo()%>&reason=&encType=face+to+face+encounter+with+client&userName=&curDate=<%= new Date().toString() %>&appointmentDate=&startTime=&status=&apptProvider_no=&providerview=<%=loggedInInfo.getLoggedInProviderNo()%>','encounter', 12556);return false;">
+                onclick="popup(710, 1024,'${pageContext.servletContext.contextPath}/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&appointmentNo=&demographicNo=<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>&curProviderNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&reason=&encType=face+to+face+encounter+with+client&userName=&curDate=<%=Encode.forJavaScript(String.valueOf(new Date().toString()))%>&appointmentDate=&startTime=&status=&apptProvider_no=&providerview=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>','encounter', 12556);return false;">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient.encounter"/>
         </button>
     </security:oscarSec>
 
     <button type="button" class="btn btn-link" title="View previous invoices for this patient"
-            onclick="popup(800, 1000, 'billStatus.jsp?lastName=<%=demo.getLastName()%>&firstName=<%=demo.getFirstName()%>&filterPatient=true&demographicNo=<%=demo.getDemographicNo()%>','InvoiceList');return false;">
+            onclick="popup(800, 1000, 'billStatus.jsp?lastName=<%=Encode.forJavaScript(String.valueOf(demo.getLastName()))%>&firstName=<%=Encode.forJavaScript(String.valueOf(demo.getFirstName()))%>&filterPatient=true&demographicNo=<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','InvoiceList');return false;">
         <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgInvoiceList"/>
     </button>
 
@@ -1316,7 +1316,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -1331,7 +1331,7 @@
             WCB Form needs:
             <ul>
                 <%for (String s : wcbneeds) { %>
-                <li><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=s%>"/></li>
+                <li><fmt:setBundle basename="oscarResources"/><fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"/></li>
                 <%}%>
             </ul>
         </div>
@@ -1454,7 +1454,7 @@
                                                 </option>
                                                 <% for (int j = 0; j < billphysician.length; j++) { %>
                                                 <option
-                                                        value="<%=billphysician[j].getProviderNo()%>"><%=Encode.forHtmlContent(billphysician[j].getProviderName())%>
+                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(billphysician[j].getProviderNo()))%>"><%=Encode.forHtmlContent(billphysician[j].getProviderName())%>
                                                 </option>
                                                 <%} %>
                                             </select>
@@ -1860,13 +1860,13 @@
                                                                 for (String r : recentReferralDoctorList) {
                                                                     rProvider = billingReferralDao.getReferralDocName(r);
                                                         %>
-                                                        <tr bgcolor="<%=bgColor%>">
+                                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>">
                                                             <td>
                                                                 <a href="javascript:void(0)" class="referral-doctor"
-                                                                   data-num="<%=r%>" data-doc="<%=rProvider%>"><%=r%>
+                                                                   data-num="<%=Encode.forHtmlAttribute(String.valueOf(r))%>" data-doc="<%=Encode.forHtmlAttribute(String.valueOf(rProvider))%>"><%=Encode.forHtml(String.valueOf(r))%>
                                                                 </a>
                                                             </td>
-                                                            <td><%=rProvider%>
+                                                            <td><%=Encode.forHtml(String.valueOf(rProvider))%>
                                                             </td>
                                                         </tr>
                                                         <%
@@ -1904,11 +1904,11 @@
                                                                 <a href="javascript:void(0)"
                                                                    title="Populate referral doctor from master record"
                                                                    class="referral-doctor"
-                                                                   data-num="<%=mRecRefDoctorNum%>"
-                                                                   data-doc="<%=mRecRefDoctor%>"><%=mRecRefDoctorNum%>
+                                                                   data-num="<%=Encode.forHtmlAttribute(String.valueOf(mRecRefDoctorNum))%>"
+                                                                   data-doc="<%=Encode.forHtmlAttribute(String.valueOf(mRecRefDoctor))%>"><%=Encode.forHtml(String.valueOf(mRecRefDoctorNum))%>
                                                                 </a>
                                                             </td>
-                                                            <td><%=mRecRefDoctor%>
+                                                            <td><%=Encode.forHtml(String.valueOf(mRecRefDoctor))%>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -2223,7 +2223,7 @@
                                                 <td width="25%">
                                                     <div align="left">
                                                         <label>
-                                                            <%=group1Header%>
+                                                            <%=Encode.forHtml(String.valueOf(group1Header))%>
                                                         </label>
                                                     </div>
                                                 </td>
@@ -2243,16 +2243,16 @@
                                                 <%String svcCall = "addSvcCode('" + billlist1[i].getServiceCode() + "')"; %>
                                                 <td width="25%" valign="middle">
                                                     <label class="checkbox">
-                                                        <input type="checkbox" name="service" value="<%=billlist1[i].getServiceCode()%>" onclick="<%=svcCall%>" />
-                                                        <%=billlist1[i].getServiceCode()%>
+                                                        <input type="checkbox" name="service" value="<%=Encode.forHtmlAttribute(String.valueOf(billlist1[i].getServiceCode()))%>" onclick="<%=Encode.forJavaScript(String.valueOf(svcCall))%>" />
+                                                        <%=Encode.forHtml(String.valueOf(billlist1[i].getServiceCode()))%>
                                                     </label>
                                                 </td>
                                                 <td width="61%">
-                                                    <%=billlist1[i].getDescription()%>
+                                                    <%=Encode.forHtml(String.valueOf(billlist1[i].getDescription()))%>
                                                 </td>
                                                 <td width="14%">
                                                     <div align="right">
-                                                        <%=billlist1[i].getPrice()%>
+                                                        <%=Encode.forHtml(String.valueOf(billlist1[i].getPrice()))%>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2267,7 +2267,7 @@
                                             <tr style="background-color:#CCCCFF;">
                                                 <td width="21%">
                                                     <label>
-                                                        <%=group2Header%>
+                                                        <%=Encode.forHtml(String.valueOf(group2Header))%>
                                                     </label>
                                                 </td>
                                                 <td width="60%" style="background-color:#CCCCFF;">
@@ -2282,16 +2282,16 @@
                                                 <%String svcCall = "addSvcCode('" + billlist2[i].getServiceCode() + "')"; %>
                                                 <td width="25%">
                                                     <label class="checkbox">
-                                                        <input type="checkbox" name="service" value="<%=billlist2[i].getServiceCode()%>" onclick="<%=svcCall%>"/>
-                                                        <%=billlist2[i].getServiceCode()%>
+                                                        <input type="checkbox" name="service" value="<%=Encode.forHtmlAttribute(String.valueOf(billlist2[i].getServiceCode()))%>" onclick="<%=Encode.forJavaScript(String.valueOf(svcCall))%>"/>
+                                                        <%=Encode.forHtml(String.valueOf(billlist2[i].getServiceCode()))%>
                                                     </label>
                                                 </td>
                                                 <td width="61%">
-                                                    <%=billlist2[i].getDescription()%>
+                                                    <%=Encode.forHtml(String.valueOf(billlist2[i].getDescription()))%>
                                                 </td>
                                                 <td width="14%">
                                                     <div align="right">
-                                                        <%=billlist2[i].getPrice()%>
+                                                        <%=Encode.forHtml(String.valueOf(billlist2[i].getPrice()))%>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2303,7 +2303,7 @@
                                         <table class="table table-condensed serviceCodesTable">
                                             <tr style="background-color:#CCCCFF;">
                                                 <td width="25%" align="left" valign="middle">
-                                                    <label><%=group3Header%>
+                                                    <label><%=Encode.forHtml(String.valueOf(group3Header))%>
                                                     </label>
                                                 </td>
                                                 <td width="61%" style="background-color:#CCCCFF;">
@@ -2318,15 +2318,15 @@
                                                 <%String svcCall = "addSvcCode('" + billlist3[i].getServiceCode() + "')"; %>
                                                 <td width="25%">
                                                     <label class="checkbox">
-                                                        <input type="checkbox" name="service" value="<%=billlist3[i].getServiceCode()%>"/>
-                                                        <%=billlist3[i].getServiceCode()%>
+                                                        <input type="checkbox" name="service" value="<%=Encode.forHtmlAttribute(String.valueOf(billlist3[i].getServiceCode()))%>"/>
+                                                        <%=Encode.forHtml(String.valueOf(billlist3[i].getServiceCode()))%>
                                                     </label>
                                                 </td>
                                                 <td width="61%">
-                                                    <%=billlist3[i].getDescription()%>
+                                                    <%=Encode.forHtml(String.valueOf(billlist3[i].getDescription()))%>
                                                 </td>
                                                 <td width="14%" align="right">
-                                                    <%=billlist3[i].getPrice()%>
+                                                    <%=Encode.forHtml(String.valueOf(billlist3[i].getPrice()))%>
                                                 </td>
                                             </tr>
                                             <%} %>
@@ -2353,7 +2353,7 @@
         function getDxInformation(origRequest) {
             let url = "DxReference.jsp";
             let ran_number = Math.round(Math.random() * 1000000);
-            let params = "demographicNo=<%=bean.getPatientNo()%>&rand=" + ran_number;  //hack to get around ie caching the page
+            let params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getPatientNo()))%>&rand=" + ran_number;  //hack to get around ie caching the page
             new Ajax.Updater('DX_REFERENCE', url, {method: 'get', parameters: params, asynchronous: true});
         }
 

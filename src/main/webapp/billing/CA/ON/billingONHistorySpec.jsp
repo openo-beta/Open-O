@@ -77,13 +77,13 @@
         <tr>
             <td style="text-align:left"><%=Encode.forHtml(request.getParameter("demo_name"))%>
                 (<%=Encode.forHtml(request.getParameter("demographic_no"))%>)
-                <%=strToday + " - " + strStartDay %>
+                <%=Encode.forHtml(String.valueOf(strToday + " - " + strStartDay))%>
             </td>
             <td style="text-align:right">Service Code <input type="text"
                                                              name="serviceCode"
                                                              value="<%=Encode.forHtml(serviceCode) %>" maxlength="5"
                                                              onBlur="upCaseCtrl(this)"/> <input type="hidden" name="day"
-                                                                                                value="<%=strDay %>"/>
+                                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(strDay))%>"/>
                 <input type="hidden" name="demo_name"
                        value="<%=Encode.forHtml(request.getParameter("demo_name")) %>"/> <input
                         type="hidden" name="demographic_no"
@@ -123,16 +123,16 @@ for(int i=0; i<aL.size(); i=i+2) {
 	}
 %>
     <tr>
-        <td style="text-align:center"><%=obj.getId()%>
+        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(obj.getId()))%>
         </td>
-        <td style="text-align:center"><%=obj.getBilling_date()%> <%--=obj.getBilling_time()--%></td>
-        <td style="text-align:center"><%=BillingDataHlp.propBillingType.getProperty(obj.getStatus(), "")%>
+        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(obj.getBilling_date()))%> <%--=obj.getBilling_time()--%></td>
+        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(BillingDataHlp.propBillingType.getProperty(obj.getStatus(), "")))%>
         </td>
-        <td style="text-align:center"><%=strServiceCode%>
+        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(strServiceCode))%>
         </td>
-        <td style="text-align:center"><%=itObj.getDx()%>
+        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(itObj.getDx()))%>
         </td>
-        <td style="text-align:center"><%=obj.getTotal()%>
+        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(obj.getTotal()))%>
         </td>
     </tr>
         <%
@@ -142,7 +142,7 @@ for(int i=0; i<aL.size(); i=i+2) {
     <tbody>
 
 </table>
-<br> &nbsp;<%=nItems %> Items
+<br> &nbsp;<%=Encode.forHtml(String.valueOf(nItems))%> Items
 <p>
 
 <table style="width:100%">

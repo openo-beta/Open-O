@@ -29,6 +29,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="ca.openosp.openo.provider.web.UserPreference2Action" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%
     @SuppressWarnings("unchecked")
@@ -86,9 +87,9 @@
         }
 
         function dxScriptAttach(name2) {
-            var ff = eval("document.forms[0].elements['pref.<%=UserProperty.DEFAULT_DX_CODE%>']");
+            var ff = eval("document.forms[0].elements['pref.<%=Encode.forJavaScript(String.valueOf(UserProperty.DEFAULT_DX_CODE))%>']");
             var f0 = ff.value;
-            var f1 = escape("document.forms[0].elements[\'pref.<%=UserProperty.DEFAULT_DX_CODE%>\'].value");
+            var f1 = escape("document.forms[0].elements[\'pref.<%=Encode.forJavaScript(String.valueOf(UserProperty.DEFAULT_DX_CODE))%>\'].value");
             awnd = rs('att', '<%= request.getContextPath() %>/billing/CA/ON/billingDigSearch.jsp?name=' + f0 + '&search=&name2=' + f1, 600, 600, 1);
             awnd.focus();
         }
@@ -156,7 +157,7 @@
     <div style="background-color:#CCCCFF;text-align:center;font-weight:bold;">
         <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.title"/>
         <span style="float:right;clear:right;text-align:right;font-weight:normal;font-size:10pt;margin-right:4px">
-			<%=loggedInInfo.getLoggedInProvider().getFormattedName() %>
+			<%=Encode.forHtml(String.valueOf(loggedInInfo.getLoggedInProvider().getFormattedName()))%>
 			</span>
     </div>
     <br/>
@@ -206,7 +207,7 @@
                     <tr>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.general.fax"/>:</td>
                         <td><input type="text"
-                                   size="25" <%=UserPreference2Action.getTextData(prefs, "pref." + UserProperty.FAX)%>/>
+                                   size="25" <%=Encode.forHtml(String.valueOf(UserPreference2Action.getTextData(prefs, "pref." + UserProperty.FAX)))%>/>
                         </td>
                     </tr>
                     <tr style="height:20px">
@@ -215,7 +216,7 @@
                     <tr>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.general.signature"/>:</td>
                         <td><input type="text"
-                                   size="45" <%=UserPreference2Action.getTextData(prefs, "pref." + UserProperty.SIGNATURE)%>/>
+                                   size="45" <%=Encode.forHtml(String.valueOf(UserPreference2Action.getTextData(prefs, "pref." + UserProperty.SIGNATURE)))%>/>
                         </td>
                     </tr>
                 </table>
@@ -237,19 +238,19 @@
                     <tr>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.general.sex"/>:</td>
                         <td>
-                            <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.SEX) %>
+                            <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.SEX)))%>
                         </td>
                     </tr>
                     <tr>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.general.hc_type"/>:</td>
                         <td>
-                            <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.HC_TYPE) %>
+                            <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.HC_TYPE)))%>
                         </td>
                     </tr>
                     <tr>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.general.workload"/>:</td>
                         <td>
-                            <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.WORKLOAD_MANAGEMENT) %>
+                            <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.WORKLOAD_MANAGEMENT)))%>
                         </td>
                     </tr>
                 </table>
@@ -264,17 +265,17 @@
             <table border="0">
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.scheduling.start_hour"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.SCHEDULE_START_HOUR) %>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.SCHEDULE_START_HOUR)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.scheduling.end_hour"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.SCHEDULE_END_HOUR) %>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.SCHEDULE_END_HOUR)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.scheduling.period"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.SCHEDULE_PERIOD) %>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.SCHEDULE_PERIOD)))%>
                     </td>
                 </tr>
                 <tr style="height:20px">
@@ -283,7 +284,7 @@
                 <tr>
                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.scheduling.group_no"/>:</td>
                     <td>
-                        <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.MYGROUP_NO) %>&nbsp;
+                        <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.MYGROUP_NO)))%>&nbsp;
                         <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.scheduling.group_no.btn"/>"/>
                     </td>
                 </tr>
@@ -299,7 +300,7 @@
                 <tr>
                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.billing.diag_code"/>:</td>
                     <td>
-                        <input type="text" size="5" maxlength="5" name="pref.<%=UserProperty.DEFAULT_DX_CODE%>"
+                        <input type="text" size="5" maxlength="5" name="pref.<%=Encode.forHtmlAttribute(String.valueOf(UserProperty.DEFAULT_DX_CODE))%>"
                                ondblClick="dxScriptAttach('dxCode')" value=""/>
                         <a href=# onclick="dxScriptAttach('dxCode');"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.billing.search"/></a>
                     </td>
@@ -309,13 +310,13 @@
                     <tr>
                         <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.billing.bc.referral_type"/>:</td>
                         <td>
-                            <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.DEFAULT_REFERRAL_TYPE) %>
+                            <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.DEFAULT_REFERRAL_TYPE)))%>
                         </td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.billing.bc.payee"/>:</td>
                         <td>
-                            <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.DEFAULT_PAYEE) %>
+                            <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.DEFAULT_PAYEE)))%>
                         </td>
                     </tr>
                 </oscar:oscarPropertiesCheck>
@@ -323,7 +324,7 @@
                     <tr>
                         <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.billing.on.form"/>:</td>
                         <td>
-                            <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.DEFAULT_BILLING_FORM) %>
+                            <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.DEFAULT_BILLING_FORM)))%>
                         </td>
                     </tr>
                 </oscar:oscarPropertiesCheck>
@@ -340,19 +341,19 @@
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.encounter.cme_ui"/>:</td>
                     <td>
-                        <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.NEW_CME) %>
+                        <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.NEW_CME)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.encounter.stale_date"/>:</td>
                     <td>
-                        <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.STALE_NOTEDATE) %> (months)
+                        <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.STALE_NOTEDATE)))%> (months)
                     </td>
                 </tr>
                 <tr>
                     <td>F<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.encounter.eform_group"/>:</td>
                     <td>
-                        <%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.EFORM_FAVOURITE_GROUP) %>
+                        <%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.EFORM_FAVOURITE_GROUP)))%>
                     </td>
                 </tr>
 
@@ -360,7 +361,7 @@
                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.encounter.form_length"/>:</td>
                     <td>
                         <input type="text"
-                               size="5" <%=UserPreference2Action.getTextData(prefs, "pref." + UserProperty.ENCOUNTER_FORM_LENGTH)%> />
+                               size="5" <%=Encode.forHtml(String.valueOf(UserPreference2Action.getTextData(prefs, "pref." + UserProperty.ENCOUNTER_FORM_LENGTH)))%> />
                     </td>
                 </tr>
 
@@ -373,7 +374,7 @@
                     <td>
 
                         <div style="height: 10em; border: 1px solid grey; overflow: auto; width: 25em;">
-                            <%=UserPreference2Action.getEncounterFormHTML(prefs, "pref." + UserProperty.ENCOUNTER_FORM_NAME)%>
+                            <%=Encode.forHtml(String.valueOf(UserPreference2Action.getEncounterFormHTML(prefs, "pref." + UserProperty.ENCOUNTER_FORM_NAME)))%>
                         </div>
 
 
@@ -385,7 +386,7 @@
                     <td>
 
                         <div style="height: 10em; border: 1px solid grey; overflow: auto; width: 25em;">
-                            <%=UserPreference2Action.getEformHTML(prefs, "pref." + UserProperty.EFORM_NAME)%>
+                            <%=Encode.forHtml(String.valueOf(UserPreference2Action.getEformHTML(prefs, "pref." + UserProperty.EFORM_NAME)))%>
                         </div>
 
 
@@ -404,28 +405,28 @@
             <table border="0">
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.rx.rx3"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.RX_USE_RX3) %>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.RX_USE_RX3)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.rx.qr"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.RX_SHOW_QR_CODE) %>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.RX_SHOW_QR_CODE)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.rx.page_size"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.RX_PAGE_SIZE) %>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.RX_PAGE_SIZE)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.rx.dob"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.RX_SHOW_PATIENT_DOB) %>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.RX_SHOW_PATIENT_DOB)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.rx.quantity"/>:</td>
                     <td><input type="text"
-                               size="20" <%=UserPreference2Action.getTextData(prefs, "pref." + UserProperty.RX_DEFAULT_QUANTITY)%>/>
+                               size="20" <%=Encode.forHtml(String.valueOf(UserPreference2Action.getTextData(prefs, "pref." + UserProperty.RX_DEFAULT_QUANTITY)))%>/>
                     </td>
                 </tr>
                 <tr style="height:20px">
@@ -444,17 +445,17 @@
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.consult.cutoff"/>:</td>
                     <td><input type="text"
-                               size="20" <%=UserPreference2Action.getTextData(prefs, "pref." + UserProperty.CONSULTATION_TIME_PERIOD_WARNING)%>/>
+                               size="20" <%=Encode.forHtml(String.valueOf(UserPreference2Action.getTextData(prefs, "pref." + UserProperty.CONSULTATION_TIME_PERIOD_WARNING)))%>/>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.consult.team"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.CONSULTATION_TEAM_WARNING)%>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.CONSULTATION_TEAM_WARNING)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.consult.paste"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.CONSULTATION_REQ_PASTE_FMT)%>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.CONSULTATION_REQ_PASTE_FMT)))%>
                     </td>
                 </tr>
                 <tr style="height:20px">
@@ -473,17 +474,17 @@
             <table border="0">
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.caisi.tickler_warning"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.NEW_TICKLER_WARNING_WINDOW)%>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.NEW_TICKLER_WARNING_WINDOW)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.caisi.pmm"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.CAISI_DEFAULT_PMM)%>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.CAISI_DEFAULT_PMM)))%>
                     </td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.caisi.prev_billing"/>:</td>
-                    <td><%=UserPreference2Action.getSelect(prefs, "pref." + UserProperty.CAISI_PREV_BILLING)%>
+                    <td><%=Encode.forHtml(String.valueOf(UserPreference2Action.getSelect(prefs, "pref." + UserProperty.CAISI_PREV_BILLING)))%>
                     </td>
                 </tr>
                 <tr style="height:20px">
