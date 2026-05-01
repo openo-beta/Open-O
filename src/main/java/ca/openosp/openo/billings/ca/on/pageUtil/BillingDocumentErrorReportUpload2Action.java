@@ -113,7 +113,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport imple
             OscarProperties props = OscarProperties.getInstance();
 
             // Get target directory
-            String place = props.getProperty("DOCUMENT_DIR");
+            String place = props.getDocumentDirectory();
             if (place == null || place.trim().isEmpty()) {
                 MiscUtils.getLogger().error("DOCUMENT_DIR property is not configured");
                 return false;

@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -69,10 +68,10 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet {
         String userHomePath = System.getProperty("user.home", "user.dir");
         MiscUtils.getLogger().debug(userHomePath);
 
-        Properties ap = OscarProperties.getInstance();
+        OscarProperties ap = OscarProperties.getInstance();
 
         forwardTo = ap.getProperty("TA_FORWARD");
-        foldername = ap.getProperty("DOCUMENT_DIR");
+        foldername = ap.getDocumentDirectory();
 
         //
         if (forwardTo == null || forwardTo.length() < 1) return;

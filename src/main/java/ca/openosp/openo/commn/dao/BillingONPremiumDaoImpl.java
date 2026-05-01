@@ -70,7 +70,7 @@ public class BillingONPremiumDaoImpl extends AbstractDaoImpl<BillingONPremium> i
 
     public void parseAndSaveRAPremiums(LoggedInInfo loggedInInfo, Integer raHeaderNo, Locale locale) {
 
-        String filepath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR").trim();
+        String filepath = OscarProperties.getInstance().getDocumentDirectory();
         RaHeaderDao raHeaderDao = (RaHeaderDao) SpringUtils.getBean(RaHeaderDao.class);
         RaHeader raHeader = raHeaderDao.find(raHeaderNo);
 

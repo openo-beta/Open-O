@@ -141,7 +141,7 @@
         for (HRMDocument hrmDocument : hrmDocumentDao.findAll()) {
             List<Throwable> errors = new ArrayList<Throwable>();
             String filename = hrmDocument.getReportFile();
-            filename = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + File.separator + filename;
+            filename = OscarProperties.getInstance().getDocumentDirectory() + File.separator + filename;
             HRMReport report = HRMReportParser.parseReport(LoggedInInfo.getLoggedInInfoFromSession(request), filename, errors);
             if (report != null) {
                 hrmDocument.setSourceFacilityReportNo(report.getSendingFacilityReportNo());

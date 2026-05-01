@@ -97,7 +97,7 @@ public class SplitDocument2Action extends ActionSupport {
 
         Document doc = documentDao.getDocument(docNum);
 
-        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getDocumentDirectory();
         if (!docdownload.endsWith(File.separator)) {
             docdownload = docdownload + File.separator;
         }
@@ -226,7 +226,7 @@ public class SplitDocument2Action extends ActionSupport {
     public String rotate180() throws Exception {
         Document doc = documentDao.getDocument(request.getParameter("document"));
 
-        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getDocumentDirectory();
         Path filePath = Paths.get(docdownload, doc.getDocfilename());
         File input = filePath.toFile();
         PDFParser parser = new PDFParser(new RandomAccessFile(input, "rw"));
@@ -251,7 +251,7 @@ public class SplitDocument2Action extends ActionSupport {
     public String rotate90() throws Exception {
         Document doc = documentDao.getDocument(request.getParameter("document"));
 
-        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getDocumentDirectory();
         Path filePath = Paths.get(docdownload, doc.getDocfilename());
         File file = filePath.toFile();
 
@@ -276,7 +276,7 @@ public class SplitDocument2Action extends ActionSupport {
     public String removeFirstPage() throws Exception {
         Document doc = documentDao.getDocument(request.getParameter("document"));
 
-        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getDocumentDirectory();
         Path filePath = Paths.get(docdownload, doc.getDocfilename());
         File file = filePath.toFile();
 

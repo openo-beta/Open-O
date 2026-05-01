@@ -129,7 +129,7 @@ public class DefaultHandler implements MessageHandler {
 
             // Validate the file is within the expected document directory
             OscarProperties props = OscarProperties.getInstance();
-            String documentDir = props.getProperty("DOCUMENT_DIR");
+            String documentDir = props.getDocumentDirectory();
             if (documentDir != null && !documentDir.isEmpty()) {
                 File docDir = new File(documentDir).getCanonicalFile();
                 PathValidationUtils.validateExistingPath(file, docDir);
@@ -162,7 +162,7 @@ public class DefaultHandler implements MessageHandler {
 
         // Validate the file is within the expected document directory
         OscarProperties props = OscarProperties.getInstance();
-        String documentDir = props.getProperty("DOCUMENT_DIR");
+        String documentDir = props.getDocumentDirectory();
         if (documentDir != null && !documentDir.isEmpty()) {
             File docDir = new File(documentDir).getCanonicalFile();
             PathValidationUtils.validateExistingPath(file, docDir);

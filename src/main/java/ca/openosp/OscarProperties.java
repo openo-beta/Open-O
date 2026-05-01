@@ -62,7 +62,7 @@ import java.util.*;
  * <p>Example usage:</p>
  * <pre>
  * OscarProperties props = OscarProperties.getInstance();
- * String docDir = props.getProperty("DOCUMENT_DIR");
+ * String docDir = props.getDocumentDirectory();
  * boolean isCaisiEnabled = props.isPropertyActive("caisi_enabled");
  * </pre>
  */
@@ -476,14 +476,16 @@ public class OscarProperties extends Properties {
     }
 
     public String getDocumentDirectory() {
-       String documents = oscarProperties.getProperty("DOCUMENT_DIR");
+        String documents = oscarProperties.getProperty("DOCUMENT_DIR");
 
-        // String value will equal null if property is not found
         if (documents == null) {
-            // Setting derived path for documents incase starting path is not found
-            documents = Paths.get(oscarProperties.getProperty("BASE_DOCUMENT_DIR"), "document").toString();
+            String baseDir = oscarProperties.getProperty("BASE_DOCUMENT_DIR");
+            if (baseDir == null) {
+                return null;
+            }
+            documents = Paths.get(baseDir, "document").toString();
         }
-       return documents;
+        return documents.trim();
     }
 
     public String getDocumentCacheDirectory() {
