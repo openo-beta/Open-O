@@ -43,6 +43,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DemographicExtDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="org.apache.commons.lang3.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -69,7 +70,7 @@
                 Consent
             </option>
         </select> <input type="hidden" name="ethnicityOrig"
-                         value="<%=StringUtils.trimToEmpty(demoExt.get("given_consent"))%>">
+                         value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demoExt.get("given_consent"))))%>">
     </td>
 
 </tr>

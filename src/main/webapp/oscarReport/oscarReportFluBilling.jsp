@@ -42,6 +42,7 @@
 <%@ page import="java.util.*,ca.openosp.openo.report.data.*" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.report.data.RptFluReportData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%@ include file="/taglibs.jsp" %>
@@ -87,7 +88,7 @@
 <div class="page-header">
     <h4>
         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportFluBilling.title"/>
-        <%=years%>
+        <%=Encode.forHtml(String.valueOf(years))%>
     </h4>
 </div>
 
@@ -96,7 +97,7 @@
         <%
             for (int i = curYear - 2; i <= curYear + 2; i++) {
         %>
-        <option value="<%=i%>" <%=selled(("" + i), years)%>><%=i%>
+        <option value="<%=i%>" <%=Encode.forHtml(String.valueOf(selled(("" + i), years)))%>><%=i%>
         </option>
         <%
             }
@@ -109,7 +110,7 @@
     <%
         for (Provider p : providers) {
     %>
-    <option value="<%=p.getProviderNo()%>" <%=selled(p.getProviderNo(), pros)%>><%=p.getFormattedName()%>
+    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf(selled(p.getProviderNo(), pros)))%>><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
     </option>
     <%
         }
@@ -142,19 +143,19 @@
             count = count + 1;
     %>
     <tr>
-        <td><%=demoData.demoName%>
+        <td><%=Encode.forHtml(String.valueOf(demoData.demoName))%>
         </td>
-        <td><%=demoData.getDemoDOB()%>
+        <td><%=Encode.forHtml(String.valueOf(demoData.getDemoDOB()))%>
         </td>
-        <td><%=demoData.getDemoAge()%>
+        <td><%=Encode.forHtml(String.valueOf(demoData.getDemoAge()))%>
         </td>
-        <td><%=demoData.demoRosterStatus%>
+        <td><%=Encode.forHtml(String.valueOf(demoData.demoRosterStatus))%>
         </td>
-        <td><%=demoData.demoPatientStatus%>
+        <td><%=Encode.forHtml(String.valueOf(demoData.demoPatientStatus))%>
         </td>
-        <td><%=demoData.getDemoPhone()%>
+        <td><%=Encode.forHtml(String.valueOf(demoData.getDemoPhone()))%>
         </td>
-        <td><%=demoData.getBillingDate(fluData.years)%>
+        <td><%=Encode.forHtml(String.valueOf(demoData.getBillingDate(fluData.years)))%>
         </td>
     </tr>
     <%

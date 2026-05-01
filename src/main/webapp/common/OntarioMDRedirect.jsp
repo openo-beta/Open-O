@@ -28,6 +28,7 @@
 <%@page import="org.springframework.web.context.WebApplicationContext,ca.openosp.openo.commn.dao.*,ca.openosp.openo.commn.model.*" %>
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 
     WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
@@ -82,17 +83,17 @@ Invalid Requestor Value. - Please contact your support vendor for configuration
 <body>
 <form id="loginFormID" name="loginForm" action="https://www.ontariomd.ca/AutoAuthentication/redirect.jsp" method="post">
     <p>JSESSIONID:</p>
-    <input type="text" size="70" id="jsessionID" name="jsessionID" value="<%=loginCreds.get("jsessionID")%>"/>
+    <input type="text" size="70" id="jsessionID" name="jsessionID" value="<%=Encode.forHtmlAttribute(String.valueOf(loginCreds.get("jsessionID")))%>"/>
     <p>PT login Token:</p>
-    <input type="text" size="70" id="ptLoginToken" name="ptLoginToken" value="<%=loginCreds.get("ptLoginToken")%>"/>
+    <input type="text" size="70" id="ptLoginToken" name="ptLoginToken" value="<%=Encode.forHtmlAttribute(String.valueOf(loginCreds.get("ptLoginToken")))%>"/>
     <p>Keyword:</p>
-    <input type="text" size="100" id="keyword" name="keyword" value="<%=keyword%>"/>
+    <input type="text" size="100" id="keyword" name="keyword" value="<%=Encode.forHtmlAttribute(String.valueOf(keyword))%>"/>
     <p>Params:</p>
-    <input type="text" size="200" id="params" name="params" value="<%=params%>"/>
+    <input type="text" size="200" id="params" name="params" value="<%=Encode.forHtmlAttribute(String.valueOf(params))%>"/>
     <p>Requestor:</p>
-    <input type="text" size="50" id="requestor" name="requestor" value="<%=requestor%>"/>
+    <input type="text" size="50" id="requestor" name="requestor" value="<%=Encode.forHtmlAttribute(String.valueOf(requestor))%>"/>
     <p>Username:</p>
-    <input type="text" size="50" id="username" name="username" value="<%=uname%>"/>
+    <input type="text" size="50" id="username" name="username" value="<%=Encode.forHtmlAttribute(String.valueOf(uname))%>"/>
     <p></p>
     <input type="submit" value="Submit"/>
 </form>

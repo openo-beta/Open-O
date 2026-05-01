@@ -41,6 +41,8 @@
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementViewFormBean" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementCPP" %>
 <%@ page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     Logger logger = MiscUtils.getLogger();
 
@@ -206,21 +208,21 @@
                     %>
                     <caisirole:SecurityAccess accessName="prescription Read"
                                             accessType="access"
-                                            providerNo='<%=request.getParameter("providerNo")%>'
-                                            demoNo='<%=request.getParameter("demographicNo")%>'
-                                            programId="<%=pId%>">
+                                            providerNo='<%=Encode.forHtmlAttribute(request.getParameter("providerNo"))%>'
+                                            demoNo='<%=Encode.forHtmlAttribute(request.getParameter("demographicNo"))%>'
+                                            programId="<%=Encode.forHtmlAttribute(String.valueOf(pId))%>">
                         <%
                             if (CaseManagementViewFormBean.tabs[x].equals(selectedTab)) {
                         %>
-                        <td style="background-color: #555;<%=extra%>"><a
+                        <td style="background-color: #555;<%=Encode.forHtmlAttribute(String.valueOf(extra))%>"><a
                                 href="javascript:void(0)"
-                                onclick="javascript:clickTab('<%=CaseManagementViewFormBean.tabs[x]%>'); return false;"><%=CaseManagementViewFormBean.tabs[x]%>
+                                onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>'); return false;"><%=Encode.forHtml(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>
                         </a></td>
                         <%
                         } else {
                         %>
-                        <td><a style="<%=extra%>" href="javascript:void(0)"
-                            onclick="javascript:clickTab('<%=CaseManagementViewFormBean.tabs[x]%>');return false;"><%=CaseManagementViewFormBean.tabs[x]%>
+                        <td><a style="<%=Encode.forHtmlAttribute(String.valueOf(extra))%>" href="javascript:void(0)"
+                            onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>');return false;"><%=Encode.forHtml(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>
                         </a></td>
                         <%
                             }
@@ -232,15 +234,15 @@
                     <%
                         if (CaseManagementViewFormBean.tabs[x].equals(selectedTab)) {
                     %>
-                    <td style="background-color: #555;<%=extra%>"><a
+                    <td style="background-color: #555;<%=Encode.forHtmlAttribute(String.valueOf(extra))%>"><a
                             href="javascript:void(0)"
-                            onclick="javascript:clickTab('<%=CaseManagementViewFormBean.tabs[x]%>'); return false;"><%=CaseManagementViewFormBean.tabs[x]%>
+                            onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>'); return false;"><%=Encode.forHtml(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>
                     </a></td>
                     <%
                     } else {
                     %>
-                    <td><a style="<%=extra%>" href="javascript:void(0)"
-                        onclick="javascript:clickTab('<%=CaseManagementViewFormBean.tabs[x]%>');return false;"><%=CaseManagementViewFormBean.tabs[x]%>
+                    <td><a style="<%=Encode.forHtmlAttribute(String.valueOf(extra))%>" href="javascript:void(0)"
+                        onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>');return false;"><%=Encode.forHtml(String.valueOf(CaseManagementViewFormBean.tabs[x]))%>
                     </a></td>
                     <%
                         }
@@ -331,7 +333,7 @@
             </tr>
         </table>
         <jsp:include
-                page='<%="/casemgmt/" + selectedTab.toLowerCase().replaceAll(" ", "_") + ".jsp"%>'/>
+                page='<%=Encode.forHtmlAttribute(String.valueOf("/casemgmt/" + selectedTab.toLowerCase().replaceAll(" ", "_") + ".jsp"))%>'/>
 
 
         <c:if
@@ -368,7 +370,7 @@
                             <security:oscarSec roleName="<%=roleName$%>" objectName="_casemgmt.notes" rights="w">
                                 <c:if test="${sessionScope.readonly=='false'}">
                                     <c:url
-                                            value="/CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                            value="/CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                             var="noteURL"/>
                                     &nbsp;|&nbsp;
                                     <span style="text-decoration: underline; cursor: pointer; color: blue"
@@ -380,7 +382,7 @@
                                     style="text-decoration: underline; cursor: pointer; color: blue"
                                     onclick="window.print();">Print</span> <c:if test="${can_restore}">
                                 <c:url
-                                        value="/CaseManagementEntry.do?method=restore&from=casemgmt&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                        value="/CaseManagementEntry.do?method=restore&from=casemgmt&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                         var="noteURL"/>
                                 &nbsp;|&nbsp;
                                 <span style="text-decoration: underline; cursor: pointer; color: blue"
@@ -397,7 +399,7 @@
                                 </option>
                             </c:forEach>
                         </select> &nbsp; &nbsp; &nbsp; Sort: <select name="note_sort"
-                                                                    onchange="document.caseManagementViewForm.method.value='view';document.caseManagementViewForm.note_view.value='${param.note_view}';document.caseManagementViewForm.submit()">
+                                                                    onchange="document.caseManagementViewForm.method.value='view';document.caseManagementViewForm.note_view.value='${e:forJavaScript(param.note_view)}';document.caseManagementViewForm.submit()">
                             <option value="observation_date_desc">Observation Date - Desc</option>
                             <option value="observation_date_asc">Observation Date - Asc</option>
                             <option value="providerName">Provider</option>
@@ -431,12 +433,12 @@
                                     bgcolor = "#EEEEFF";
                                 }
                             %>
-                            <tr bgcolor="<%=bgcolor%>" align="center">
+                            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>" align="center">
                                 <td>
                                     <security:oscarSec roleName="<%=roleName$%>" objectName="_casemgmt.notes" rights="u">
                                         <c:choose>
                                             <c:when test="${(note.editable) and (sessionScope.readonly=='false')}">
-                                                <c:url value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.noteId}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}&forceNote=true"
+                                                <c:url value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.noteId}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}&forceNote=true"
                                                     var="notesURL"/>
                                                 <img src="<c:out value="${ctx}"/>/images/edit_white.png"
                                                     title="Edit/Sign Note" style="cursor: pointer"
@@ -450,7 +452,7 @@
                                     </security:oscarSec>
                                     <c:choose>
                                         <c:when test="${note.hasHistory == true and note.locked != true}">
-                                            <c:url value="/CaseManagementEntry.do?method=history&from=casemgmt&noteId=${note.noteId}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                            <c:url value="/CaseManagementEntry.do?method=history&from=casemgmt&noteId=${note.noteId}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                                 var="historyURL"/>
                                             <img src="<c:out value="${ctx}"/>/images/history.gif" title="Note History"
                                                 style="cursor: pointer"
@@ -510,39 +512,39 @@
                             %>
                             <tr>
                                 <td>
-                                    <table id="test<%=index1%>" width="100%" border="0" style="margin-bottom: 5px">
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                    <table id="test<%=Encode.forHtmlAttribute(String.valueOf(index1))%>" width="100%" border="0" style="margin-bottom: 5px">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Facility</td>
                                             <td width="93%"><c:out value="${note.location}"/></td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Program</td>
                                             <td width="93%">
                                                 <c:out value="${note.programName}"/>
                                             </td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Provider</td>
                                             <td width="93%">
                                                 <c:out value="${note.providerName}"/>
                                             </td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Date</td>
                                             <td width="93%"><fmt:formatDate pattern="yyyy-MM-dd hh:mm a"
                                                                             value="${note.observationDate}"/></td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Status</td>
                                             <td width="93%"><c:out value="${note.status}"/></td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Action</td>
                                             <td width="93%">
                                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_casemgmt.notes"
                                                                 rights="u">
                                                     <c:if test="${(note.editable) and (sessionScope.readonly=='false')}">
-                                                        <c:url value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${requestScope.noteId}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                                        <c:url value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${requestScope.noteId}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                                             var="notesURL"/>
                                                         <input type="button" value="Edit and Sign"
                                                             onclick="popupNotePage('<c:out value="${notesURL}"
@@ -550,7 +552,7 @@
                                                     </c:if>
                                                 </security:oscarSec>
                                                 <c:if test="${note.hasHistory == true}">
-                                                    <c:url value="/CaseManagementEntry.do?method=history&from=casemgmt&noteId=${requestScope.noteId}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                                    <c:url value="/CaseManagementEntry.do?method=history&from=casemgmt&noteId=${requestScope.noteId}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                                         var="historyURL"/>
                                                     <input type="button" value="Note History"
                                                         onclick="popupHistoryPage('<c:out value="${historyURL}"
@@ -568,7 +570,7 @@
                                                 </security:oscarSec>
                                             </td>
                                         </tr>
-                                        <tr bgcolor="<%=bgcolor1%>">
+                                        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                             <td width="7%">Note</td>
                                             <td width="93%">
                                                 <c:choose>
@@ -609,7 +611,7 @@
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_casemgmt.notes" rights="w">
                     <c:if test="${sessionScope.readonly=='false'}">
                         <c:url
-                                value="/CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                value="/CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                 var="noteURL"/>
                         &nbsp;|&nbsp;
 
@@ -622,7 +624,7 @@
                 <span style="text-decoration: underline; cursor: pointer; color: blue"
                     onclick="window.print();">Print</span> <c:if test="${can_restore}">
                 <c:url
-                        value="/CaseManagementEntry.do?method=restore&from=casemgmt&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                        value="/CaseManagementEntry.do?method=restore&from=casemgmt&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                         var="noteURL"/>
                 &nbsp;|&nbsp;
                 <span style="text-decoration: underline; cursor: pointer; color: blue"
@@ -637,7 +639,7 @@
         <security:oscarSec roleName="<%=roleName$%>" objectName="_casemgmt.notes" rights="w">
             <c:if test="${'Current Issues'==selectedTab and empty Notes and sessionScope.readonly=='false'}">
                 <c:url
-                        value="/CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                        value="/CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                         var="noteURL"/>
                 <span style="text-decoration: underline; cursor: pointer; color: blue"
                     onclick="popupNotePage('<c:out value="${noteURL}" escapeXml="false"/>')">New

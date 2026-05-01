@@ -21,6 +21,7 @@
 --%>
 
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/taglibs.jsp" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -86,7 +87,7 @@
         </c:if>
 
 
-        <tr style="<%=style %>" bgcolor="<%=bgcolor %>">
+        <tr style="<%=Encode.forHtmlAttribute(String.valueOf(style))%>" bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>">
             <td valign="middle"><a
                     href="FacilityMessage.do?method=edit&id=<c:out value="${msg.id}"/>"><img
                     border="0" src="images/edit.jpg"/></a></td>

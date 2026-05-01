@@ -41,6 +41,8 @@
 %>
 
 <%@ page import="ca.openosp.openo.casemgmt.model.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <script>
     function popupNotePage(varpage) {
@@ -113,7 +115,7 @@
                         onclick="document.caseManagementViewForm.note_view.value='detailed';document.caseManagementViewForm.method.value='search';document.caseManagementViewForm.submit();return false;">Detailed</span>
             </td>
             <td align="right">Sort: <select name="note_sort"
-                                                    onchange="document.caseManagementViewForm.method.value='search';document.caseManagementViewForm.note_view.value='${param.note_view}';document.caseManagementViewForm.submit()">
+                                                    onchange="document.caseManagementViewForm.method.value='search';document.caseManagementViewForm.note_view.value='${e:forJavaScript(param.note_view)}';document.caseManagementViewForm.submit()">
                 <option value="update_date">Date</option>
                 <option value="providerName">Provider</option>
                 <option value="programName">Program</option>
@@ -147,12 +149,12 @@
                             bgcolor = "#EEEEFF";
                         }
                     %>
-                    <tr bgcolor="<%=bgcolor %>" align="center">
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>" align="center">
                         <td><c:choose>
                             <c:when
                                     test="${(!note.signed) and (sessionScope.readonly=='false')}">
                                 <c:url
-                                        value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.id}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                        value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.id}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                         var="notesURL"/>
                                 <img src="<c:out value="${ctx}"/>/images/edit_white.png"
                                      title="Edit/Sign Note" style="cursor: pointer"
@@ -161,7 +163,7 @@
                             <c:when
                                     test="${note.signed and param.providerNo eq note.providerNo}">
                                 <c:url
-                                        value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.id}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                        value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.id}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                         var="notesURL"/>
                                 <img src="<c:out value="${ctx}"/>/images/edit_white.png"
                                      title="Edit Note" style="cursor: pointer"
@@ -174,7 +176,7 @@
                         </c:choose> <c:choose>
                             <c:when test="${note.hasHistory == true}">
                                 <c:url
-                                        value="/CaseManagementEntry.do?method=history&from=casemgmt&noteId=${note.id}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                        value="/CaseManagementEntry.do?method=history&from=casemgmt&noteId=${note.id}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                         var="historyURL"/>
                                 <img src="<c:out value="${ctx}"/>/images/history.gif"
                                      title="Note History" style="cursor: pointer"
@@ -230,26 +232,26 @@
                     <tr>
                         <td>
                             <table width="100%" border="0" style="margin-bottom: 5px">
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Provider</td>
                                     <td width="93%"><c:out
                                             value="${note.provider.formattedName }"/></td>
                                 </tr>
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Date</td>
                                     <td width="93%"><fmt:formatDate pattern="yyyy-MM-dd hh:mm a"
                                                                     value="${note.update_date}"/></td>
                                 </tr>
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Status</td>
                                     <td width="93%"><c:out value="${note.status}"/></td>
                                 </tr>
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Action</td>
                                     <td width="93%"><c:if
                                             test="${(!note.signed) and (sessionScope.readonly=='false')}">
                                         <c:url
-                                                value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.id}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                                value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.id}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                                 var="notesURL"/>
                                         <input type="button" value="Edit and Sign"
                                                onclick="popupNotePage('<c:out value="${notesURL}"
@@ -257,14 +259,14 @@
                                     </c:if> <c:if
                                             test="${note.signed and param.providerNo eq note.providerNo}">
                                         <c:url
-                                                value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.id}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                                value="/CaseManagementEntry.do?method=edit&from=casemgmt&noteId=${note.id}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                                 var="notesURL"/>
                                         <input type="button" value="Edit This Note"
                                                onclick="popupNotePage('<c:out value="${notesURL}"
                                                                               escapeXml="false"/>')">
                                     </c:if> <c:if test="${note.hasHistory == true}">
                                         <c:url
-                                                value="/CaseManagementEntry.do?method=history&from=casemgmt&noteId=${note.id}&demographicNo=${param.demographicNo}&providerNo=${param.providerNo}"
+                                                value="/CaseManagementEntry.do?method=history&from=casemgmt&noteId=${note.id}&demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}"
                                                 var="historyURL"/>
                                         <input type="button" value="Note History"
                                                onclick="popupHistoryPage('<c:out value="${historyURL}"
@@ -277,7 +279,7 @@
                                                onclick="popupPage('<c:out value="${lockedURL}" escapeXml="false"/>')">
                                     </c:if></td>
                                 </tr>
-                                <tr bgcolor="<%=bgcolor1 %>">
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor1))%>">
                                     <td width="7%">Note</td>
 
                                     <td width="93%"><c:choose>

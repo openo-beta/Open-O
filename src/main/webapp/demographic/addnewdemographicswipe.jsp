@@ -62,6 +62,7 @@
 </table>
 <table BORDER="0" CELLPADDING="1" CELLSPACING="0" WIDTH="100%"
        BGCOLOR="#C4D9E7">
+<%@ page import="org.owasp.encoder.Encode" %>
     <% String card = request.getParameter("card_no");
         String hin = card.substring(8, card.indexOf("^"));
         String lastname = card.substring(card.indexOf("^") + 1, card.indexOf("/")).toUpperCase();
@@ -91,13 +92,13 @@
         }
 
     %>
-    <td>HIN: <%=hin%> FName: <%=firstname%> LName: <%=lastname%>
-        DOBYEAR: <%=dobyear%>-<%=dobmonth%>-<%=dobdate%> End Date: <%=endyear%>-<%=endmonth%>-<%=enddate%>
-        EFF Date: <%=effyear%>-<%=effmonth%>-<%=effdate%>
+    <td>HIN: <%=Encode.forHtml(String.valueOf(hin))%> FName: <%=Encode.forHtml(String.valueOf(firstname))%> LName: <%=Encode.forHtml(String.valueOf(lastname))%>
+        DOBYEAR: <%=Encode.forHtml(String.valueOf(dobyear))%>-<%=Encode.forHtml(String.valueOf(dobmonth))%>-<%=Encode.forHtml(String.valueOf(dobdate))%> End Date: <%=Encode.forHtml(String.valueOf(endyear))%>-<%=Encode.forHtml(String.valueOf(endmonth))%>-<%=Encode.forHtml(String.valueOf(enddate))%>
+        EFF Date: <%=Encode.forHtml(String.valueOf(effyear))%>-<%=Encode.forHtml(String.valueOf(effmonth))%>-<%=Encode.forHtml(String.valueOf(effdate))%>
     </td>
     <script LANGUAGE="JavaScript">
         <!--
-        Attach('<%=lastname%>', '<%=firstname%>', '<%=hin%>', '<%=dobyear%>', '<%=dobmonth%>', '<%=dobdate%>', '<%=vercode%>', '<%=sex%>', '<%=effyear%>', '<%=effmonth%>', '<%=effdate%>', '<%=endyear%>', '<%=endmonth%>', '<%=enddate%>');
+        Attach('<%=Encode.forJavaScript(String.valueOf(lastname))%>', '<%=Encode.forJavaScript(String.valueOf(firstname))%>', '<%=Encode.forJavaScript(String.valueOf(hin))%>', '<%=Encode.forJavaScript(String.valueOf(dobyear))%>', '<%=Encode.forJavaScript(String.valueOf(dobmonth))%>', '<%=Encode.forJavaScript(String.valueOf(dobdate))%>', '<%=Encode.forJavaScript(String.valueOf(vercode))%>', '<%=Encode.forJavaScript(String.valueOf(sex))%>', '<%=Encode.forJavaScript(String.valueOf(effyear))%>', '<%=Encode.forJavaScript(String.valueOf(effmonth))%>', '<%=Encode.forJavaScript(String.valueOf(effdate))%>', '<%=Encode.forJavaScript(String.valueOf(endyear))%>', '<%=Encode.forJavaScript(String.valueOf(endmonth))%>', '<%=Encode.forJavaScript(String.valueOf(enddate))%>');
 
         -->
 

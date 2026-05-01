@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingService" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getAttribute("user") == null) {
         response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -68,14 +69,14 @@
     <script language="JavaScript">
     function posttoText(index){
     self.close();
-    opener.document.<%=form%>.<%=field%>.value = index;
+    opener.document.<%=Encode.forJavaScript(String.valueOf(form))%>.<%=Encode.forJavaScript(String.valueOf(field))%>.value = index;
     opener.document.focus();
     }
     <%if (request.getParameter("corrections") != null) {%>
     function updateFeeCodeValues(code,description,fee){
     self.close();
-    opener.document.<%=form%>.<%=field%>.value = code;
-    opener.document.<%=form%>.<%=feeField%>.value = fee;
+    opener.document.<%=Encode.forJavaScript(String.valueOf(form))%>.<%=Encode.forJavaScript(String.valueOf(field))%>.value = code;
+    opener.document.<%=Encode.forJavaScript(String.valueOf(form))%>.<%=Encode.forJavaScript(String.valueOf(feeField))%>.value = fee;
 
     var valueEle = opener.document.getElementById('billValue');
     if (valueEle){
@@ -113,12 +114,12 @@
     <tr <%=((color) ? "bgcolor=\"#F6F6F6\"" : "")%> align="left" valign="top">
     <td class="SmallerText">
     <%if (request.getParameter("corrections") == null) {%>
-    <a href=# onClick="posttoText('<%=code.getServiceCode()%>');"><%=code.getServiceCode()%></a>
+    <a href=# onClick="posttoText('<%=Encode.forJavaScript(String.valueOf(code.getServiceCode()))%>');"><%=Encode.forHtml(String.valueOf(code.getServiceCode()))%></a>
     <%} else {%>
-    <a href=# onClick="updateFeeCodeValues('<%=code.getServiceCode()%>',' ','<%=code.getValue()%>');"><%=code.getServiceCode()%></a>
+    <a href=# onClick="updateFeeCodeValues('<%=Encode.forJavaScript(String.valueOf(code.getServiceCode()))%>',' ','<%=Encode.forJavaScript(String.valueOf(code.getValue()))%>');"><%=Encode.forHtml(String.valueOf(code.getServiceCode()))%></a>
     <%}%>
     </td>
-    <td class="SmallerText"><%=code.getDescription()%> (<%=code.getValue()%>) </td>
+    <td class="SmallerText"><%=Encode.forHtml(String.valueOf(code.getDescription()))%> (<%=Encode.forHtml(String.valueOf(code.getValue()))%>) </td>
     </tr>
     <%
             color = !(color);

@@ -43,6 +43,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String curUser_no = (String) session.getAttribute("user");
     UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
@@ -71,11 +72,11 @@
     <%} else {%>
     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.DefaultPrinter"/>
     <%}%>
-    <%=defaultPrinterName%>
+    <%=Encode.forHtml(String.valueOf(defaultPrinterName))%>
     <%}%>
     <br>
     <object id="pdf" type="application/pdf"
-            data="printClientLabLabelAction.do?demographic_no=<%=request.getParameter("demographic_no")%>" height="80%"
+            data="printClientLabLabelAction.do?demographic_no=<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>" height="80%"
             width="100%"></object>
     </body>
 </html>

@@ -301,7 +301,7 @@
                                                                     String fmtDate = fmt.format(new java.util.Date());
                                                                 %>
                                                                 <td class="secHead" align="right"> Date:
-                                                                    <%=fmtDate%>
+                                                                    <%=Encode.forHtml(String.valueOf(fmtDate))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -411,15 +411,15 @@
                                                         <strong>Address:</strong>
 
                                                         <div style="padding-left: 5px;">
-                                                            <c:out value="<%=demo.getAddress()%>"/><br>
-                                                            <c:out value="<%=demo.getCity()%>"/>,
-                                                            <%=demo.getProvince()%><br>
+                                                            <%=Encode.forHtml(String.valueOf(demo.getAddress()))%><br>
+                                                            <%=Encode.forHtml(String.valueOf(demo.getCity()))%>,
+                                                            <%=Encode.forHtml(String.valueOf(demo.getProvince()))%><br>
                                                             <%=Encode.forHtmlContent(demo.getPostal())%>
                                                         </div>
                                                         <strong>Gender:</strong>
-                                                        <%=demo.getSex()%>                              <br>
+                                                        <%=Encode.forHtml(String.valueOf(demo.getSex()))%>                              <br>
                                                         <strong>Birth Date :</strong>
-                                                        <%=DemographicData.getDob(demo, "-")%>
+                                                        <%=Encode.forHtml(String.valueOf(DemographicData.getDob(demo, "-")))%>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -445,9 +445,9 @@
                                                 <tr align="center">
                                                     <td><c:out value="${ billingViewBean.serviceDate }"/></td>
                                                     <td><c:out
-                                                            value="<%=billform.getProviderName(bean.getApptProviderNo())%>"/></td>
+                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(billform.getProviderName(bean.getApptProviderNo())))%>"/></td>
                                                     <td><c:out
-                                                            value="<%=billform.getProviderName(bean.getBillingProvider())%>"/></td>
+                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(billform.getProviderName(bean.getBillingProvider())))%>"/></td>
                                                     <td><c:out value="${ billingViewBean.referral1 }"/></td>
                                                     <td><c:out value="${ billingViewBean.referType1 }"/></td>
                                                     <td><c:out value="${ billingViewBean.referral2 }"/></td>
@@ -482,22 +482,22 @@
                                                     <td>
                                                             <span class="rcvPayment">
                                                             <a href="#"
-                                                               onClick="popupPage(300,450,'viewReceivePaymentAction.do?lineNo=<%=bi.getLineNo()%>&amp;billNo=<%=bean.getBillingNo()%> ')">Receive Payment</a>
+                                                               onClick="popupPage(300,450,'viewReceivePaymentAction.do?lineNo=<%=Encode.forJavaScript(String.valueOf(bi.getLineNo()))%>&amp;billNo=<%=Encode.forJavaScript(String.valueOf(bean.getBillingNo()))%> ')">Receive Payment</a>
                                                             </span>
                                                     </td>
-                                                    <td><%=bi.getLineNo()%>
+                                                    <td><%=Encode.forHtml(String.valueOf(bi.getLineNo()))%>
                                                     </td>
                                                     <td><%=Encode.forHtmlContent(bi.getDescription())%>
                                                     </td>
-                                                    <td><%=bi.getServiceCode()%>
+                                                    <td><%=Encode.forHtml(String.valueOf(bi.getServiceCode()))%>
                                                     </td>
-                                                    <td><%=bi.getUnit()%>
+                                                    <td><%=Encode.forHtml(String.valueOf(bi.getUnit()))%>
                                                     </td>
-                                                    <td align="right"><%=bean.getDx1()%>&nbsp;<%=bean.getDx2()%>&nbsp;<%=bean.getDx3()%>
+                                                    <td align="right"><%=Encode.forHtml(String.valueOf(bean.getDx1()))%>&nbsp;<%=Encode.forHtml(String.valueOf(bean.getDx2()))%>&nbsp;<%=Encode.forHtml(String.valueOf(bean.getDx3()))%>
                                                     </td>
-                                                    <td align="right"><%=java.text.NumberFormat.getCurrencyInstance().format(unitTotal).replace('$', ' ')%>
+                                                    <td align="right"><%=Encode.forHtml(String.valueOf(java.text.NumberFormat.getCurrencyInstance().format(unitTotal).replace('$', ' ')))%>
                                                     </td>
-                                                    <td align="right"><%=java.text.NumberFormat.getCurrencyInstance().format(lnTotal).replace('$', ' ')%>
+                                                    <td align="right"><%=Encode.forHtml(String.valueOf(java.text.NumberFormat.getCurrencyInstance().format(lnTotal).replace('$', ' ')))%>
                                                     </td>
                                                 </tr>
                                                 <%
@@ -521,11 +521,11 @@
                                                 %>
                                                 <tr align="center">
                                                     <td colspan="4">&nbsp;</td>
-                                                    <td><%=label%>(<%=item.getPaymentTypeDesc()%>)</td>
-                                                    <td colspan="2"><%=item.getArchiveDate()%>
+                                                    <td><%=Encode.forHtml(String.valueOf(label))%>(<%=Encode.forHtml(String.valueOf(item.getPaymentTypeDesc()))%>)</td>
+                                                    <td colspan="2"><%=Encode.forHtml(String.valueOf(item.getArchiveDate()))%>
                                                     </td>
 
-                                                    <td align="right"><%=java.text.NumberFormat.getCurrencyInstance().format(amtReceived * -1.0).replace('$', ' ')%>
+                                                    <td align="right"><%=Encode.forHtml(String.valueOf(java.text.NumberFormat.getCurrencyInstance().format(amtReceived * -1.0).replace('$', ' ')))%>
                                                     </td>
                                                 </tr>
                                                 <%
@@ -574,26 +574,26 @@
                                                                 <% SystemPreferences invoiceClinicInfo = systemPreferencesDao.findPreferenceByName(SystemPreferences.GENERAL_SETTINGS_KEYS.invoice_use_custom_clinic_info);
                                                                     if (invoiceClinicInfo == null || StringUtils.isNullOrEmpty(invoiceClinicInfo.getValue())) { %>
                                                                 <td class="title4">
-                                                                    <c:out value="<%=clinic.getClinicName()%>"/>
+                                                                    <%=Encode.forHtml(String.valueOf(clinic.getClinicName()))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="address"><c:out
-                                                                        value='<%=clinic.getClinicAddress()+", "+clinic.getClinicCity()+", "+clinic.getClinicProvince()+" "+clinic.getClinicPostal()%>'/></td>
+                                                                        value='<%=Encode.forHtmlAttribute(String.valueOf(clinic.getClinicAddress()+", "+clinic.getClinicCity()+", "+clinic.getClinicProvince()+" "+clinic.getClinicPostal()))%>'/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="address" id="Phone"> Telephone: <c:out
-                                                                        value="<%=vecPhones.size() >= 1 ? vecPhones.elementAt(0) : clinic.getClinicPhone()%>"/></td>
+                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(vecPhones.size() >= 1 ? vecPhones.elementAt(0) : clinic.getClinicPhone()))%>"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="address" id="Fax"> Fax: <c:out
-                                                                        value="<%=vecFaxes.size() >= 1 ? vecFaxes.elementAt(0) : clinic.getClinicFax()%>"/></td>
+                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(vecFaxes.size() >= 1 ? vecFaxes.elementAt(0) : clinic.getClinicFax()))%>"/></td>
                                                                 <% } else {
                                                                     SystemPreferences customInvoiceClinicInfo = systemPreferencesDao.findPreferenceByName(SystemPreferences.GENERAL_SETTINGS_KEYS.invoice_custom_clinic_info);
                                                                 %>
 
                                                                 <td class="payeeInfo"><c:out
-                                                                        value="<%= customInvoiceClinicInfo.getValue()%>"/></td>
+                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(customInvoiceClinicInfo.getValue()))%>"/></td>
 
                                                                 <% } %>
                                                             </tr>
@@ -601,22 +601,22 @@
                                                         </table>
                                                     </td>
                                                     <td align="right">Subtotal:</td>
-                                                    <td align="right"><%=java.text.NumberFormat.getCurrencyInstance().format(bean.calculateSubtotal()).replace('$', ' ')%>
+                                                    <td align="right"><%=Encode.forHtml(String.valueOf(java.text.NumberFormat.getCurrencyInstance().format(bean.calculateSubtotal()).replace('$', ' ')))%>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td align="right">Total:</td>
-                                                    <td align="right"><%=java.text.NumberFormat.getCurrencyInstance().format(bean.calculateTotal()).replace('$', ' ')%>
+                                                    <td align="right"><%=Encode.forHtml(String.valueOf(java.text.NumberFormat.getCurrencyInstance().format(bean.calculateTotal()).replace('$', ' ')))%>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td align="right">Payments:</td>
-                                                    <td align="right"><%=java.text.NumberFormat.getCurrencyInstance().format(totalPayments).replace('$', ' ')%>
+                                                    <td align="right"><%=Encode.forHtml(String.valueOf(java.text.NumberFormat.getCurrencyInstance().format(totalPayments).replace('$', ' ')))%>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td align="right">Refunds:</td>
-                                                    <td align="right"><%=java.text.NumberFormat.getCurrencyInstance().format(totalRefunds).replace('$', ' ')%>
+                                                    <td align="right"><%=Encode.forHtml(String.valueOf(java.text.NumberFormat.getCurrencyInstance().format(totalRefunds).replace('$', ' ')))%>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -628,7 +628,7 @@
                                                     </td>
                                                     <%double gtotal = bean.calculateTotal() - totalPayments - totalRefunds;%>
                                                     <td align="right">
-                                                        <strong><%=java.text.NumberFormat.getCurrencyInstance().format(gtotal).replace('$', ' ')%>
+                                                        <strong><%=Encode.forHtml(String.valueOf(java.text.NumberFormat.getCurrencyInstance().format(gtotal).replace('$', ' ')))%>
                                                         </strong></td>
                                                 </tr>
                                                 <tr>
@@ -662,7 +662,7 @@
                                                                 <td colspan="2" align="left" valign="bottom">
                                                                     <input type="submit" name="submit" class="header" value="Update Invoice" />
                                                                     <button class="header" value="Edit Invoice"
-                                                                            onclick="editInvoice('<%=bean.getBillingMasterNo()%>')">
+                                                                            onclick="editInvoice('<%=Encode.forJavaScript(String.valueOf(bean.getBillingMasterNo()))%>')">
                                                                         Edit Invoice
                                                                     </button>
                                                                     <button class="header" onclick="printInvoiceWithoutNotes()">Print</button>

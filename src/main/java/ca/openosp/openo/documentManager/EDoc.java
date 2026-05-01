@@ -33,6 +33,7 @@ import ca.openosp.openo.commn.model.CtlDocumentPK;
 import ca.openosp.openo.commn.model.Document;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.MyDateFormat;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.tags.TagObject;
@@ -217,8 +218,9 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
     public String getFilePath() {
 
         if (this.filePath == null) {
-            this.filePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
-            this.filePath = String.format("%1$s%2$s%3$s", this.filePath, File.separator, this.getFileName());
+            File docDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+            File validatedFile = PathValidationUtils.validatePath(this.getFileName(), docDir);
+            this.filePath = validatedFile.getPath();
         }
         return this.filePath;
 

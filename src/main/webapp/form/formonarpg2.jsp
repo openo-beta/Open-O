@@ -27,6 +27,7 @@
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ page import="ca.openosp.openo.form.graphic.FrmGraphicAR" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String formClass = "ONAR";
@@ -84,7 +85,7 @@
     <script type="text/javascript" language="Javascript">
         function reset() {
             document.forms[0].target = "";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function setLock(checked) {
@@ -515,7 +516,7 @@
             var mm = eval(str_date.substring(eval(str_date.indexOf("/") + 1), str_date.lastIndexOf("/")) - 1);
             var dd = str_date.substring(eval(str_date.lastIndexOf("/") + 1));
             var check_date = new Date(yyyy, mm, dd);
-            var start = new Date("<%=sDate%>");
+            var start = new Date("<%=Encode.forJavaScript(String.valueOf(sDate))%>");
 
             if (check_date.getUTCHours() != start.getUTCHours()) {
                 if (check_date.getUTCHours() > start.getUTCHours()) {
@@ -570,25 +571,25 @@
 
         <input type="hidden" name="commonField" value="ar2_"/>
         <input type="hidden" name="c_lastVisited"
-               value=<%=props.getProperty("c_lastVisited", "pg2")%>/>
+               value=<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "pg2")))%>/>
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="ID"
-               value="<%= props.getProperty("ID", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="provNo"
-               value="<%= request.getParameter("provNo") %>"/>
+               value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
         <%
             String historyet = "";
             if (request.getParameter("historyet") != null) {
-                out.println("<input type=\"hidden\" name=\"historyet\" value=\"" + request.getParameter("historyet") + "\">");
+                out.println("<input type=\"hidden\" name=\"historyet\" value=\"" + Encode.forHtmlAttribute(request.getParameter("historyet")) + "\">");
                 historyet = "&historyet=" + request.getParameter("historyet");
             }
         %>
@@ -612,22 +613,22 @@
                     if (!bView) {
                 %>
                 <td><a
-                        href="javascript: popPage('form/formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
+                        href="javascript: popPage('form/formlabreq07.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&labType=AnteNatal','LabReq');">LAB</a>
                 </td>
 
                 <td align="right"><b>View:</b> <a
-                        href="javascript: popupPage('form/formonarpg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo+historyet%>&view=1');">
+                        href="javascript: popupPage('form/formonarpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo+historyet))%>&view=1');">
                     AR1</a> | <a
-                        href="javascript: popupPage('form/formonarpg3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo+historyet%>&view=1');">AR2
+                        href="javascript: popupPage('form/formonarpg3.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo+historyet))%>&view=1');">AR2
                     <font size=-2>(pg.2)</font></a></td>
                 <td align="right"><b>Edit:</b> <a
-                        href="form/formonarpg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">AR1</a>
+                        href="form/formonarpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>">AR1</a>
                     | <a
-                            href="form/formonarpg3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">AR2
+                            href="form/formonarpg3.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>">AR2
                         <font size=-2>(pg.2)</font></a> | <a
-                            href="form/formonarpg4.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">AR2
+                            href="form/formonarpg4.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>">AR2
                         <font size=-2>(pg.3)</font></a> &nbsp;|&nbsp;
-                    <!--a href="javascript: popupFixedPage(700,950,'<%= request.getContextPath() %>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%--=demoNo%>&formId=<%=formId%>&provNo=<%=provNo--%>');">AR Planner</a-->
+                    <%-- a href="javascript: popupFixedPage(700,950,'<%= request.getContextPath() %>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">AR Planner</a --%>
                 </td>
                 <%
                     }
@@ -647,16 +648,16 @@
             <tr>
                 <td valign="top" width="50%">Patient's Last Name<br>
                     <input type="text" name="c_lastName" style="width: 100%" size="30"
-                           maxlength="60" value="<%= props.getProperty("c_lastName", "") %>"/>
+                           maxlength="60" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_lastName", "")))%>"/>
                 </td>
                 <td valign="top">Patient's First Name<br>
                     <input type="text" name="c_firstName" style="width: 100%" size="30"
-                           maxlength="60" value="<%= props.getProperty("c_firstName", "") %>"/>
+                           maxlength="60" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_firstName", "")))%>"/>
                 </td>
             </tr>
             <!--  tr>
         <td valign="top" colspan='2'>
-            Name<input type="text" name="c_pName"  style="width:100%" size="30" maxlength="60" value="<%= props.getProperty("c_pName", "") %>">
+            Name<input type="text" name="c_pName"  style="width:100%" size="30" maxlength="60" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_pName", "")))%>">
         </td>
     </tr>
     <tr>
@@ -682,19 +683,19 @@
                 <td width="25%" colspan="5">Family physician<br>
                     <input type="text" name="c_famPhys" size="30" maxlength="80"
                            style="width: 100%"
-                           value="<%= props.getProperty("c_famPhys", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_famPhys", "")))%>"/></td>
                 <td valign="top" rowspan="4" width="25%"><b>Final EDB</b>
                     (yyyy/mm/dd)<br>
                     <input type="text" name="c_finalEDB" style="width: 100%" size="10"
-                           maxlength="10" value="<%= props.getProperty("c_finalEDB", "") %>">
+                           maxlength="10" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_finalEDB", "")))%>">
                 </td>
                 <td valign="top" rowspan="4" width="25%">Allergies or
                     Sensitivities</br>
                     <textarea name="c_allergies" style="width: 100%" cols="30"
-                              rows="3"><%= props.getProperty("c_allergies", "") %></textarea></td>
+                              rows="3"><%=Encode.forHtml(String.valueOf(props.getProperty("c_allergies", "")))%></textarea></td>
                 <td valign="top" rowspan="4">Medications / Herbals</br>
                     <textarea name="c_meds" style="width: 100%" cols="30"
-                              rows="3"><%= props.getProperty("c_meds", "") %></textarea></td>
+                              rows="3"><%=Encode.forHtml(String.valueOf(props.getProperty("c_meds", "")))%></textarea></td>
             </tr>
             <tr>
                 <td bgcolor="#CCCCCC" width="5%">G</br>
@@ -729,65 +730,65 @@
             <tr>
                 <td><input type="text" name="c_riskFactors1" size="20"
                            maxlength="50" style="width: 100%"
-                           value="<%= props.getProperty("c_riskFactors1", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_riskFactors1", "")))%>"></td>
                 <td><input type="text" name="c_planManage1" size="60"
                            maxlength="100" style="width: 100%"
-                           value="<%= props.getProperty("c_planManage1", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_planManage1", "")))%>"></td>
             </tr>
             <tr>
                 <td><input type="text" name="c_riskFactors2" size="20"
                            maxlength="50" style="width: 100%"
-                           value="<%= props.getProperty("c_riskFactors2", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_riskFactors2", "")))%>"></td>
                 <td><input type="text" name="c_planManage2" size="60"
                            maxlength="100" style="width: 100%"
-                           value="<%= props.getProperty("c_planManage2", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_planManage2", "")))%>"></td>
             </tr>
             <tr>
                 <td><input type="text" name="c_riskFactors3" size="20"
                            maxlength="50" style="width: 100%"
-                           value="<%= props.getProperty("c_riskFactors3", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_riskFactors3", "")))%>"></td>
                 <td><input type="text" name="c_planManage3" size="60"
                            maxlength="100" style="width: 100%"
-                           value="<%= props.getProperty("c_planManage3", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_planManage3", "")))%>"></td>
             </tr>
             <tr>
                 <td><input type="text" name="c_riskFactors4" size="20"
                            maxlength="50" style="width: 100%"
-                           value="<%= props.getProperty("c_riskFactors4", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_riskFactors4", "")))%>"></td>
                 <td><input type="text" name="c_planManage4" size="60"
                            maxlength="100" style="width: 100%"
-                           value="<%= props.getProperty("c_planManage4", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_planManage4", "")))%>"></td>
             </tr>
             <tr>
                 <td><input type="text" name="c_riskFactors5" size="20"
                            maxlength="50" style="width: 100%"
-                           value="<%= props.getProperty("c_riskFactors5", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_riskFactors5", "")))%>"></td>
                 <td><input type="text" name="c_planManage5" size="60"
                            maxlength="100" style="width: 100%"
-                           value="<%= props.getProperty("c_planManage5", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_planManage5", "")))%>"></td>
             </tr>
             <tr>
                 <td><input type="text" name="c_riskFactors6" size="20"
                            maxlength="50" style="width: 100%"
-                           value="<%= props.getProperty("c_riskFactors6", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_riskFactors6", "")))%>"></td>
                 <td><input type="text" name="c_planManage6" size="60"
                            maxlength="100" style="width: 100%"
-                           value="<%= props.getProperty("c_planManage6", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_planManage6", "")))%>"></td>
             </tr>
             <tr>
                 <td><input type="text" name="c_riskFactors7" size="20"
                            maxlength="50" style="width: 100%"
-                           value="<%= props.getProperty("c_riskFactors7", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_riskFactors7", "")))%>"></td>
                 <td><input type="text" name="c_planManage7" size="60"
                            maxlength="100" style="width: 100%"
-                           value="<%= props.getProperty("c_planManage7", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_planManage7", "")))%>"></td>
             </tr>
             <tr>
                 <td colspan="2"
                     style="background-color: green; color: #FFFFFF; font-weight: bold;">
                     <%
                         if (ar1BloodWorkTestListSize == 9) {
-                    %> <%=ar1CompleteSignal%> <%
+                    %> <%=Encode.forHtml(String.valueOf(ar1CompleteSignal))%> <%
                     }
                 %>
                 </td>
@@ -801,18 +802,18 @@
             </tr>
             <tr>
                 <td width="30%"><b>Rh neg.</b> <input type="checkbox"
-                                                      name="ar2_rhNeg" <%= props.getProperty("ar2_rhNeg", "") %> />
+                                                      name="ar2_rhNeg" <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_rhNeg", "")))%> />
                     &nbsp;&nbsp;&nbsp;<b>Rh IG Given:</b> <input type="text"
                                                                  name="ar2_rhIG" size="7" maxlength="10"
                                                                  value="<%= UtilMisc.htmlEscape(props.getProperty("ar2_rhIG", "")) %>">
                 </td>
                 <td width="30%" nowrap><b>Rubella booster postpartum</b> <input
                         type="checkbox" name="ar2_rubella"
-                        <%= props.getProperty("ar2_rubella", "") %> /></td>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_rubella", "")))%> /></td>
                 <td><b>Newborn needs: Hep B IG</b> <input type="checkbox"
-                                                          name="ar2_hepBIG" <%= props.getProperty("ar2_hepBIG", "") %> />
+                                                          name="ar2_hepBIG" <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_hepBIG", "")))%> />
                     &nbsp;&nbsp;&nbsp;<b>Hep B vaccine</b> <input type="checkbox"
-                                                                  name="ar2_hepBVac" <%= props.getProperty("ar2_hepBVac", "") %> />
+                                                                  name="ar2_hepBVac" <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_hepBVac", "")))%> />
                 </td>
             </tr>
         </table>
@@ -857,7 +858,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date1" id="pg2_date1"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date1", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date1", "")))%>"></td>
                 <td><input type="text" name="pg2_gest1" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest1", "")) %>"
@@ -890,7 +891,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date2" id="pg2_date2"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date2", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date2", "")))%>"></td>
                 <td><input type="text" name="pg2_gest2" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest2", "")) %>"
@@ -923,7 +924,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date3" id="pg2_date3"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date3", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date3", "")))%>"></td>
                 <td><input type="text" name="pg2_gest3" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest3", "")) %>"
@@ -956,7 +957,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date4" id="pg2_date4"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date4", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date4", "")))%>"></td>
                 <td><input type="text" name="pg2_gest4" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest4", "")) %>"
@@ -989,7 +990,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date5" id="pg2_date5"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date5", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date5", "")))%>"></td>
                 <td><input type="text" name="pg2_gest5" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest5", "")) %>"
@@ -1022,7 +1023,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date6" id="pg2_date6"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date6", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date6", "")))%>"></td>
                 <td><input type="text" name="pg2_gest6" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest6", "")) %>"
@@ -1055,7 +1056,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date7" id="pg2_date7"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date7", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date7", "")))%>"></td>
                 <td><input type="text" name="pg2_gest7" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest7", "")) %>"
@@ -1088,7 +1089,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date8" id="pg2_date8"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date8", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date8", "")))%>"></td>
                 <td><input type="text" name="pg2_gest8" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest8", "")) %>"
@@ -1121,7 +1122,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date9" id="pg2_date9"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date9", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date9", "")))%>"></td>
                 <td><input type="text" name="pg2_gest9" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest9", "")) %>"
@@ -1154,7 +1155,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date10" id="pg2_date10"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date10", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date10", "")))%>"></td>
                 <td><input type="text" name="pg2_gest10" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest10", "")) %>"
@@ -1187,7 +1188,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date11" id="pg2_date11"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date11", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date11", "")))%>"></td>
                 <td><input type="text" name="pg2_gest11" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest11", "")) %>"
@@ -1220,7 +1221,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date12" id="pg2_date12"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date12", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date12", "")))%>"></td>
                 <td><input type="text" name="pg2_gest12" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest12", "")) %>"
@@ -1253,7 +1254,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date13" id="pg2_date13"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date13", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date13", "")))%>"></td>
                 <td><input type="text" name="pg2_gest13" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest13", "")) %>"
@@ -1286,7 +1287,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date14" id="pg2_date14"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date14", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date14", "")))%>"></td>
                 <td><input type="text" name="pg2_gest14" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest14", "")) %>"
@@ -1319,7 +1320,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date15" id="pg2_date15"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date15", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date15", "")))%>"></td>
                 <td><input type="text" name="pg2_gest15" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest15", "")) %>"
@@ -1352,7 +1353,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date16" id="pg2_date16"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date16", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date16", "")))%>"></td>
                 <td><input type="text" name="pg2_gest16" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest16", "")) %>"
@@ -1385,7 +1386,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date17" id="pg2_date17"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date17", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date17", "")))%>"></td>
                 <td><input type="text" name="pg2_gest17" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest17", "")) %>"
@@ -1418,7 +1419,7 @@
             <tr align="center">
                 <td nowrap><input type="text" name="pg2_date18" id="pg2_date18"
                                   class="spe" size="9" maxlength="10" onDblClick="calToday(this)"
-                                  value="<%= props.getProperty("pg2_date18", "") %>"></td>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_date18", "")))%>"></td>
                 <td><input type="text" name="pg2_gest18" class="spe" size="6"
                            maxlength="6" style="width: 90%"
                            value="<%= UtilMisc.htmlEscape(props.getProperty("pg2_gest18", "")) %>"
@@ -1470,7 +1471,7 @@
                         <tr>
                             <td nowrap><input type="text" name="ar2_uDate1"
                                               id="ar2_uDate1" class="spe" onDblClick="calToday(this)" size="10"
-                                              maxlength="10" value="<%= props.getProperty("ar2_uDate1", "") %>">
+                                              maxlength="10" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ar2_uDate1", "")))%>">
                                 <img src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_uDate1_cal"></td>
                             <td><input type="text" name="ar2_uGA1" class="spe"
                                        onDblClick="calcWeek(this)" size="5" maxlength="10"
@@ -1485,7 +1486,7 @@
                         <tr>
                             <td><input type="text" name="ar2_uDate2" id="ar2_uDate2"
                                        class="spe" onDblClick="calToday(this)" size="10" maxlength="10"
-                                       value="<%= props.getProperty("ar2_uDate2", "") %>"> <img
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ar2_uDate2", "")))%>"> <img
                                     src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_uDate2_cal"></td>
                             <td><input type="text" name="ar2_uGA2" class="spe"
                                        onDblClick="calcWeek(this)" size="5" maxlength="10"
@@ -1510,15 +1511,15 @@
                                 }
                             %>
                             <td><input type="text" name="ar2_bloodGroup" size="2"
-                                       maxlength="6" value="<%=abo%>"> /<input type="text"
+                                       maxlength="6" value="<%=Encode.forHtmlAttribute(String.valueOf(abo))%>"> /<input type="text"
                                                                                name="ar2_rh" size="1" maxlength="6"
-                                                                               value="<%=rh%>"></td>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(rh))%>"></td>
 
                         </tr>
                         <tr>
                             <td><input type="text" name="ar2_uDate3" id="ar2_uDate3"
                                        class="spe" onDblClick="calToday(this)" size="10" maxlength="10"
-                                       value="<%= props.getProperty("ar2_uDate3", "") %>"> <img
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ar2_uDate3", "")))%>"> <img
                                     src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_uDate3_cal"></td>
                             <td><input type="text" name="ar2_uGA3" class="spe"
                                        onDblClick="calcWeek(this)" size="5" maxlength="10"
@@ -1534,7 +1535,7 @@
                         <tr>
                             <td><input type="text" name="ar2_uDate4" id="ar2_uDate4"
                                        class="spe" onDblClick="calToday(this)" size="10" maxlength="10"
-                                       value="<%= props.getProperty("ar2_uDate4", "") %>"> <img
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ar2_uDate4", "")))%>"> <img
                                     src="<%= request.getContextPath() %>/images/cal.gif" id="ar2_uDate4_cal"></td>
                             <td><input type="text" name="ar2_uGA4" class="spe"
                                        onDblClick="calcWeek(this)" size="5" maxlength="10"
@@ -1560,56 +1561,56 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="100%">
                                     <tr>
                                         <td width="33%"><input type="checkbox" name="ar2_exercise"
-                                                <%= props.getProperty("ar2_exercise", "") %>>Exercise<br>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_exercise", "")))%>>Exercise<br>
                                             <input type="checkbox" name="ar2_workPlan"
-                                                    <%= props.getProperty("ar2_workPlan", "") %>>Work plan<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_workPlan", "")))%>>Work plan<br>
                                             <input type="checkbox" name="ar2_intercourse"
-                                                    <%= props.getProperty("ar2_intercourse", "") %>>Intercourse<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_intercourse", "")))%>>Intercourse<br>
                                             <input type="checkbox" name="ar2_travel"
-                                                    <%= props.getProperty("ar2_travel", "") %>>Travel<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_travel", "")))%>>Travel<br>
                                             <input type="checkbox" name="ar2_prenatal"
-                                                    <%= props.getProperty("ar2_prenatal", "") %>>Prenatal
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_prenatal", "")))%>>Prenatal
                                             classes<br>
                                             <input type="checkbox" name="ar2_birth"
-                                                    <%= props.getProperty("ar2_birth", "") %>>Birth plan<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_birth", "")))%>>Birth plan<br>
                                             <input type="checkbox" name="ar2_onCall"
-                                                    <%= props.getProperty("ar2_onCall", "") %>>On call
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_onCall", "")))%>>On call
                                             providers
                                         </td>
                                         <td width="33%"><input type="checkbox" name="ar2_preterm"
-                                                <%= props.getProperty("ar2_preterm", "") %>>Preterm
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_preterm", "")))%>>Preterm
                                             labour<br>
                                             <input type="checkbox" name="ar2_prom"
-                                                    <%= props.getProperty("ar2_prom", "") %>>PROM<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_prom", "")))%>>PROM<br>
                                             <input type="checkbox" name="ar2_aph"
-                                                    <%= props.getProperty("ar2_aph", "") %>>APH<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_aph", "")))%>>APH<br>
                                             <input type="checkbox" name="ar2_fetal"
-                                                    <%= props.getProperty("ar2_fetal", "") %>>Fetal movement<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_fetal", "")))%>>Fetal movement<br>
                                             <input type="checkbox" name="ar2_admission"
-                                                    <%= props.getProperty("ar2_admission", "") %>>Admission
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_admission", "")))%>>Admission
                                             timing<br>
                                             <input type="checkbox" name="ar2_pain"
-                                                    <%= props.getProperty("ar2_pain", "") %>>Pain management<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_pain", "")))%>>Pain management<br>
                                             <input type="checkbox" name="ar2_labour"
-                                                    <%= props.getProperty("ar2_labour", "") %>>Labour
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_labour", "")))%>>Labour
                                             support<br>
                                         </td>
                                         <td width="33%"><input type="checkbox" name="ar2_breast"
-                                                <%= props.getProperty("ar2_breast", "") %>>Breast
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_breast", "")))%>>Breast
                                             feeding<br>
                                             <input type="checkbox" name="ar2_circumcision"
-                                                    <%= props.getProperty("ar2_circumcision", "") %>>Circumcision<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_circumcision", "")))%>>Circumcision<br>
                                             <input type="checkbox" name="ar2_dischargePlan"
-                                                    <%= props.getProperty("ar2_dischargePlan", "") %>>Discharge
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_dischargePlan", "")))%>>Discharge
                                             planning<br>
                                             <input type="checkbox" name="ar2_car"
-                                                    <%= props.getProperty("ar2_car", "") %>>Car seat safety<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_car", "")))%>>Car seat safety<br>
                                             <input type="checkbox" name="ar2_depression"
-                                                    <%= props.getProperty("ar2_depression", "") %>>Depression<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_depression", "")))%>>Depression<br>
                                             <input type="checkbox" name="ar2_contraception"
-                                                    <%= props.getProperty("ar2_contraception", "") %>>Contraception<br>
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_contraception", "")))%>>Contraception<br>
                                             <input type="checkbox" name="ar2_postpartumCare"
-                                                    <%= props.getProperty("ar2_postpartumCare", "") %>>Postpartum
+                                                    <%=Encode.forHtml(String.valueOf(props.getProperty("ar2_postpartumCare", "")))%>>Postpartum
                                             care
                                         </td>
                                     </tr>
@@ -1677,7 +1678,7 @@
                     <input type="text" name="pg2_formDate" class="spe"
                            onDblClick="calToday(this)" size="10" maxlength="10"
                            style="width: 80%"
-                           value="<%= props.getProperty("pg2_formDate", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_formDate", "")))%>"></td>
                 <td width="30%">Signature<br>
                     <input type="text" name="pg2_signature2" size="30" maxlength="50"
                            style="width: 80%"
@@ -1687,7 +1688,7 @@
                     <input type="text" name="pg2_formDate2" class="spe"
                            onDblClick="calToday(this)" size="10" maxlength="10"
                            style="width: 80%"
-                           value="<%= props.getProperty("pg2_formDate2", "") %>"></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg2_formDate2", "")))%>"></td>
             </tr>
 
         </table>
@@ -1710,22 +1711,22 @@
                     if (!bView) {
                 %>
                 <td><a
-                        href="javascript: popPage('form/formlabreq07.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq');">LAB</a>
+                        href="javascript: popPage('form/formlabreq07.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&labType=AnteNatal','LabReq');">LAB</a>
                 </td>
 
                 <td align="right"><font size="-1"><b>View:</b> <a
-                        href="javascript: popupPage('form/formonarpg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>&view=1');">
+                        href="javascript: popupPage('form/formonarpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&view=1');">
                     AR1</a> | <a
-                        href="javascript: popupPage('form/formonarpg3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>&view=1');">AR2
+                        href="javascript: popupPage('form/formonarpg3.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&view=1');">AR2
                 </font><font size=-2>(pg.2)</font></a></td>
                 <td align="right"><b>Edit:</b> <a
-                        href="form/formonarpg1.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">AR1</a>
+                        href="form/formonarpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>">AR1</a>
                     | <a
-                            href="form/formonarpg3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">AR2
+                            href="form/formonarpg3.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>">AR2
                         <font size=-2>(pg.2)</font></a> | <a
-                            href="form/formonarpg4.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">AR2
+                            href="form/formonarpg4.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>">AR2
                         <font size=-2>(pg.3)</font></a> &nbsp;|&nbsp; <a
-                            href="javascript: popupFixedPage(700,950,'<%=request.getContextPath()%>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>&query_name=search_formonarrisk');">AR
+                            href="javascript: popupFixedPage(700,950,'<%=request.getContextPath()%>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&query_name=search_formonarrisk');">AR
                         Planner</a></td>
                 <%
                     }

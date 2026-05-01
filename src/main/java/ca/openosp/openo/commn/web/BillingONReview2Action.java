@@ -81,14 +81,18 @@ public class BillingONReview2Action extends ActionSupport {
         Demographic demographic = demographicDao.getDemographic(demographicNo);
 
         String json = objectMapper.writeValueAsString(demographic);
-        response.getOutputStream().write(json.getBytes());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 
     public String getClinic() throws IOException {
         Clinic clinic = clinicDao.getClinic();
         String json = objectMapper.writeValueAsString(clinic);
-        response.getOutputStream().write(json.getBytes());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 }

@@ -7,7 +7,7 @@ function addComment(reportId) {
         data: data,
         success: function (data) {
             if (data != null)
-                $("commentstatus" + reportId).innerHTML = data;
+                $("commentstatus" + reportId).textContent = data;
         }
     });
 }
@@ -19,7 +19,7 @@ function deleteComment(commentId, reportId) {
         data: "method=deleteComment&commentId=" + commentId,
         success: function (data) {
             if (data != null)
-                $("commentstatus" + reportId).innerHTML = data;
+                $("commentstatus" + reportId).textContent = data;
         }
     });
 }
@@ -84,9 +84,16 @@ function addDemoToHrm(reportId, csrfToken) {
         headers: headers,
         success: function (data) {
             if (data != null && data.indexOf('Success') !== -1) {
-                $("demostatus" + reportId).innerHTML = data + "<br/>" +
-                    $('autocompletedemo' + reportId + 'hrm').value.split('(')[0] +
-                    "<a href=\"#\" onclick=\"removeDemoFromHrm('" + reportId + "')\">(remove)</a>";
+                var statusEl = $("demostatus" + reportId);
+                statusEl.textContent = '';
+                statusEl.appendChild(document.createTextNode(data));
+                statusEl.appendChild(document.createElement('br'));
+                statusEl.appendChild(document.createTextNode($('autocompletedemo' + reportId + 'hrm').value.split('(')[0]));
+                var removeLink = document.createElement('a');
+                removeLink.href = '#';
+                removeLink.textContent = '(remove)';
+                removeLink.onclick = function() { removeDemoFromHrm(reportId); return false; };
+                statusEl.appendChild(removeLink);
                 $('autocompletedemo' + reportId + 'hrm').hide();
                 toggleButtonBar(true, reportId);
                 window.location.reload();
@@ -116,8 +123,13 @@ function removeDemoFromHrm(reportId, csrfToken) {
         headers: headers,
         success: function (data) {
             if (data != null && data.indexOf('Success') !== -1) {
-                $("demostatus" + reportId).innerHTML = data + "<br/>" +
-                    "<i>Not currently linked</i>";
+                var statusEl = $("demostatus" + reportId);
+                statusEl.textContent = '';
+                statusEl.appendChild(document.createTextNode(data));
+                statusEl.appendChild(document.createElement('br'));
+                var italicEl = document.createElement('i');
+                italicEl.textContent = 'Not currently linked';
+                statusEl.appendChild(italicEl);
                 $('autocompletedemo' + reportId + 'hrm').value = "";
                 $('autocompletedemo' + reportId + 'hrm').show();
                 $('demofind' + reportId + 'hrm').value = null;
@@ -134,7 +146,7 @@ function addProvToHrm(reportId, providerNo) {
         data: "method=assignProvider&reportId=" + reportId + "&providerNo=" + providerNo,
         success: function (data) {
             if (data != null)
-                $("provstatus" + reportId).innerHTML = data;
+                $("provstatus" + reportId).textContent = data;
         }
     });
 }
@@ -146,7 +158,7 @@ function removeProvFromHrm(mappingId, reportId) {
         data: "method=removeProvider&providerMappingId=" + mappingId,
         success: function (data) {
             if (data != null)
-                $("provstatus" + reportId).innerHTML = data;
+                $("provstatus" + reportId).textContent = data;
         }
     });
 }
@@ -158,7 +170,7 @@ function makeActiveSubClass(reportId, subClassId) {
         data: "method=makeActiveSubClass&reportId=" + reportId + "&subClassId=" + subClassId,
         success: function (data) {
             if (data != null)
-                $("subclassstatus" + reportId).innerHTML = data;
+                $("subclassstatus" + reportId).textContent = data;
         }
     });
 
@@ -179,7 +191,7 @@ function setDescription(reportId) {
         data: data,
         success: function (data) {
             if (data != null)
-                $("descriptionstatus" + reportId).innerHTML = data;
+                $("descriptionstatus" + reportId).textContent = data;
         }
     });
 }

@@ -52,6 +52,7 @@
 <%@page import="ca.openosp.openo.commn.model.ReportAgeSex" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String user_no = (String) session.getAttribute("user");
     int nItems = 0;
@@ -179,8 +180,8 @@
                                 billinggroup_no = SxmlMisc.getXmlContent(p.getComments(), "<xml_p_billinggroup_no>", "</xml_p_billinggroup_no>");
                                 specialty_code = SxmlMisc.getXmlContent(p.getComments(), "<xml_p_specialty_code>", "</xml_p_specialty_code>");
                         %>
-                        <option value="<%=proOHIP%>"
-                                <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=proLast%>,<%=proFirst%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"
+                                <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(proLast))%>,<%=Encode.forHtml(String.valueOf(proFirst))%>
                         </option>
                         <% } // -- end of providers dropdown %>
                     </select></div>
@@ -199,17 +200,17 @@
                         <font color="#333333"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgServiceDate"/></font></b></font></font> &nbsp;
                         &nbsp; <font
                                 size="1" face="Arial, Helvetica, sans-serif"><a href="#"
-                                                                                onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=curYear%>&amp;month=<%=curMonth%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnBegin"/>:</a></font> <input type="text"
+                                                                                onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnBegin"/>:</a></font> <input type="text"
                                                                                                   name="xml_vdate"
-                                                                                                  value="<%=xml_vdate%>">
+                                                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>">
                     </div>
                 </td>
                 <td colspan='2'>
                     <div align="left"><font size="1"
                                             face="Arial, Helvetica, sans-serif"><a href="#"
-                                                                                   onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=end&amp;year=<%=curYear%>&amp;month=<%=curMonth%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnEnd"/>:</a></font> <input type="text"
+                                                                                   onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnEnd"/>:</a></font> <input type="text"
                                                                                             name="xml_appointment_date"
-                                                                                            value="<%=xml_appointment_date%>">
+                                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>">
                     </div>
                 </td>
             </tr>
@@ -253,7 +254,7 @@
         BigDecimal LineTotal = new BigDecimal(0).setScale(0, BigDecimal.ROUND_HALF_UP);
         BigDecimal LinePerc = new BigDecimal(0).setScale(2, BigDecimal.ROUND_HALF_UP);
     %>
-    <pre><font face="Arial, Helvetica, sans-serif" size="2"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgDate"/>: <%=curYear%>-<%=curMonth%>-<%=curDay%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgUnit"/>: <%=clinic%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgPhysician"/>: <%=providerview%></font></pre>
+    <pre><font face="Arial, Helvetica, sans-serif" size="2"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgDate"/>: <%=Encode.forHtml(String.valueOf(curYear))%>-<%=Encode.forHtml(String.valueOf(curMonth))%>-<%=Encode.forHtml(String.valueOf(curDay))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgUnit"/>: <%=Encode.forHtml(String.valueOf(clinic))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgPhysician"/>: <%=Encode.forHtml(String.valueOf(providerview))%></font></pre>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr bgcolor="#CCCCFF">
             <td>
@@ -447,37 +448,37 @@
 
         <tr>
             <td>
-                <div align="center"><%=AgeMatrix[i][0]%>-<%=AgeMatrix[i][1]%>
+                <div align="center"><%=Encode.forHtml(String.valueOf(AgeMatrix[i][0]))%>-<%=Encode.forHtml(String.valueOf(AgeMatrix[i][1]))%>
                 </div>
             </td>
             <td>
-                <div align="right"><%=fNum%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(fNum))%>
                 </div>
             </td>
             <td>
-                <div align="right"><%=fPerc%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(fPerc))%>
                 </div>
             </td>
-            <%=WriteFemaleBar(Integer.parseInt(fPercId.toString()))%>
+            <%=Encode.forHtml(String.valueOf(WriteFemaleBar(Integer.parseInt(fPercId.toString()))))%>
             <td bgcolor="#000000">
                 <div align="center"><font color="#CCCCCC">|</font></div>
             </td>
-            <%=WriteMaleBar(Integer.parseInt(mPercId.toString()))%>
+            <%=Encode.forHtml(String.valueOf(WriteMaleBar(Integer.parseInt(mPercId.toString()))))%>
 
             <td>
-                <div align="right"><%=mPerc%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(mPerc))%>
                 </div>
             </td>
             <td>
-                <div align="right"><%=mNum%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(mNum))%>
                 </div>
             </td>
             <td>
-                <div align="right"><%=LineTotal%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(LineTotal))%>
                 </div>
             </td>
             <td>
-                <div align="right"><%=LinePerc%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(LinePerc))%>
                 </div>
             </td>
         </tr>
@@ -494,11 +495,11 @@
                 <div align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex_noroster.msgTotal"/></div>
             </td>
             <td width="8%">
-                <div align="right"><%=fTotal.toString().substring(0, fTotal.toString().indexOf("."))%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(fTotal.toString().substring(0, fTotal.toString().indexOf("."))))%>
                 </div>
             </td>
             <td width="8%">
-                <div align="right"><%=fPercTotal%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(fPercTotal))%>
                 </div>
             </td>
             <td width="2%">
@@ -565,19 +566,19 @@
                 <div align="center"></div>
             </td>
             <td width="8%">
-                <div align="right"><%=mPercTotal%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(mPercTotal))%>
                 </div>
             </td>
             <td width="8%">
-                <div align="right"><%=mTotal.toString().substring(0, mTotal.toString().indexOf("."))%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(mTotal.toString().substring(0, mTotal.toString().indexOf("."))))%>
                 </div>
             </td>
             <td width="8%">
-                <div align="right"><%=BigTotal.toString().substring(0, BigTotal.toString().indexOf("."))%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(BigTotal.toString().substring(0, BigTotal.toString().indexOf("."))))%>
                 </div>
             </td>
             <td width="8%">
-                <div align="right"><%=BigTotalPerc%>
+                <div align="right"><%=Encode.forHtml(String.valueOf(BigTotalPerc))%>
                 </div>
             </td>
         </tr>

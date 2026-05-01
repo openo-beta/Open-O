@@ -269,7 +269,7 @@
 
         function reset() {
             document.forms[0].target = "";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function onGraph(url, name) {
@@ -698,7 +698,7 @@
             //adjust height of divs/tables so they align properly
             adjustSizes();
 
-            var updated = "<%=props.getProperty("updated","")%>";
+            var updated = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("updated","")))%>";
             if (updated == "true") {
                 alert("Synchronizing demographic information\nRemember to save changes");
             }

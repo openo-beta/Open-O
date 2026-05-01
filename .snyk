@@ -1,0 +1,52 @@
+# Snyk (https://snyk.io) policy file.
+#
+# Scope: for Snyk Code (SAST) the CLI only honors this file's `exclude:`
+# section. Per-finding `ignore:` entries keyed by rule ID, UUID, or context
+# hash were empirically verified to have no effect — none of three targeted
+# test variants against RptDownloadCSVServlet.java suppressed the finding.
+# Snyk Code false positives must therefore be suppressed via either the
+# Snyk web UI or `// deepcode ignore <rule>: <reason>` inline comments.
+#
+# The authoritative list of reviewed false positives with code snippets,
+# fingerprints, and per-finding justifications lives at:
+#
+#     docs/security/snyk-false-positives.md
+#
+# Format: https://docs.snyk.io/manage-risk/policies/the-.snyk-file
+version: v1.25.0
+
+# ---------------------------------------------------------------------------
+# Path exclusions: files/directories that should not be scanned at all
+# because they are not part of this project's attack surface. This section
+# IS honored by the CLI.
+# ---------------------------------------------------------------------------
+exclude:
+  code:
+    # Third-party / vendored JavaScript libraries. Upstream-maintained; we do
+    # not modify these and fixing them here would drift from upstream.
+    - 'src/main/webapp/js/jquery*.js'
+    - 'src/main/webapp/library/**'
+
+    # Generated Javadoc output. Regenerated on every build.
+    - 'docs/static/javadoc/**'
+
+    # Command-line data import utilities. Not reachable over HTTP; inputs are
+    # operator-supplied file paths run manually during schema bootstrap.
+    - 'database/mysql/importCPP.java'
+    - 'database/mysql/importCasemgmt.java'
+
+    # Generated SOAP client stubs (wsimport output). Regenerated from WSDL and
+    # only used by internal integration test harnesses.
+    - 'src/main/java/ca/openosp/openo/caisi_integrator/ws/*_Client.java'
+
+    # CLI entry point for PathNet lab import. Not reachable over HTTP; input
+    # is an operator-supplied file path.
+    - 'src/main/java/ca/openosp/openo/lab/ca/bc/PathNet/PathNetController.java'
+
+    # Test code. Schema setup scripts, test fixtures, unit test support code —
+    # not deployed, no user reachability.
+    - 'src/test/**'
+    - 'src/test-modern/**'
+
+    # Internal ops/automation scripts. Not part of the deployed application.
+    - 'scripts/**'

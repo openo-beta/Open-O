@@ -22,6 +22,7 @@
     Toronto, Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/taglibs.jsp" %>
 
 <html>
@@ -38,9 +39,9 @@
     <form action="${pageContext.request.contextPath}/OnCallQuestionnaire.do" method="post">
         <input type="hidden" name="method" value="save"/>
         <input type="hidden" name="providerNo"
-               value="<%=request.getParameter("providerNo") %>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("providerNo")) %>"/>
         <input type="hidden" name="type"
-               value="<%=request.getParameter("type") %>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("type")) %>"/>
         <tr>
             <td>Type of Health problem:</td>
             <td><select name="type_health">

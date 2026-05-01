@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.ProviderDataDao, ca.openosp.openo.commn.model.ProviderData" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.util.List, java.util.Collections" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -324,7 +325,7 @@
 
                             for (ProviderData providerData : providerDataList) {
                         %>
-                        <option value="<%=providerData.getId()%>"><%=providerData.getLastName() + ", " + providerData.getFirstName()%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(providerData.getId()))%>"><%=Encode.forHtml(String.valueOf(providerData.getLastName() + ", " + providerData.getFirstName()))%>
                         </option>
 
                         <%
@@ -341,7 +342,7 @@
 
                             for (FaxConfig faxConfig : faxConfigList) {
                         %>
-                        <option value="<%=faxConfig.getFaxUser()%>"><%=faxConfig.getFaxUser() %>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(faxConfig.getFaxUser()))%>"><%=Encode.forHtml(String.valueOf(faxConfig.getFaxUser()))%>
                         </option>
                         <%
                             }
@@ -355,7 +356,7 @@
                         <%
                             for (FaxJob.STATUS status : FaxJob.STATUS.values()) {
                         %>
-                        <option value="<%=status%>"><%=status%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(status))%>"><%=Encode.forHtml(String.valueOf(status))%>
                         </option>
                         <%
                             }

@@ -2,6 +2,7 @@
 <%@page import="ca.openosp.openo.commn.dao.EFormDao" %>
 <%@page import="ca.openosp.openo.commn.model.EForm" %>
 <%@page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
@@ -41,11 +42,11 @@
 		<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.bodyMass"/>
 	</option>
 
-	<option onclick="popperup(525,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>','CoronaryArteryDiseaseRisk');">
+	<option onclick="popperup(525,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>','CoronaryArteryDiseaseRisk');">
 		<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>
 	</option>
 
-	<option onclick="popperup(525,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/riskcalc/index.html?sex=<%=bean.patientSex%>&age=<%=pAge%>','Framingham');">
+	<option onclick="popperup(525,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/riskcalc/index.html?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>','Framingham');">
 		Framingham/UKPDS Risk Calculator
 	</option>
 
@@ -53,7 +54,7 @@
 		CV Risk
 	</option>
 
-	<option onclick="popperup(525,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/OsteoporoticFracture.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>','OsteoporoticFracture');">
+	<option onclick="popperup(525,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/OsteoporoticFracture.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>','OsteoporoticFracture');">
 		<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>
 	</option>
 

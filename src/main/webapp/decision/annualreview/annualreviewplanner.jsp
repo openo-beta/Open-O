@@ -63,6 +63,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DesAnnualReviewPlanDao" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DesAnnualReviewPlanDao desAnnualReviewPlanDao = SpringUtils.getBean(DesAnnualReviewPlanDao.class);
 %>
@@ -95,7 +96,7 @@
 </head>
 <body bgproperties="fixed" topmargin="0" leftmargin="1" rightmargin="1">
 <form name="planner" method="post"
-      action="annualreviewplanner.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>">
+      action="annualreviewplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&formId=<%=Encode.forUriComponent(String.valueOf(form_no))%>">
     <%
         //save risk&checklist data if required
         if (request.getParameter("submit") != null &&
@@ -187,7 +188,7 @@
         }
     %>
     <script type="text/xml" id="xml_list">
-        <planner><%= risk_content %> <%= checklist_content %></planner>
+        <planner><%=Encode.forJavaScript(String.valueOf(risk_content))%> <%=Encode.forJavaScript(String.valueOf(checklist_content))%></planner>
     </script>
     <table bgcolor='silver' width='100%'>
         <tr>
@@ -198,7 +199,7 @@
                                                                                            onclick="javascript:return onExit();"/>
                 <input type="button"
                        name="submit" value="Print"
-                       onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>
+                       onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right"><a href=#
                                  onClick="popupPage(600,930,'riskedit.jsp');return false;"> Edit
@@ -230,7 +231,7 @@
                                                                                            onclick="javascript:return onExit();"/>
                 <input type="button"
                        name="submit" value="Print"
-                       onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>
+                       onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right"><a href=#
                                  onClick="popupPage(600,930,'riskedit.jsp');return false;"> Edit

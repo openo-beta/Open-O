@@ -119,7 +119,7 @@ Ontario, Canada
 			}
 
 			function updateAjax() {
-				var parentAjaxId = "<%=parentAjaxId%>";
+				var parentAjaxId = "<%=Encode.forJavaScript(String.valueOf(parentAjaxId))%>";
 				if (parentAjaxId != "null") {
 					window.opener.document.forms['encForm'].elements['reloadDiv'].value = parentAjaxId;
 					window.opener.updateNeeded = true;
@@ -191,18 +191,18 @@ Ontario, Canada
 
             <div class="left-column">
 
-                <a href="${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&displaymode=edit&dboperation=search_detail">
+                <a href="${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>&displaymode=edit&dboperation=search_detail">
                     <fmt:message key="demographic.demographiceditdemographic.btnMasterFile"/></a>
-                <a href="efmformslistadd.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&parentAjaxId=<%=parentAjaxId%>"
+                <a href="efmformslistadd.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>"
                    class="current"> <fmt:message key="eform.showmyform.btnAddEForm"/></a>
                 <jsp:include page="efmviewgroups.jsp">
                     <jsp:param name="url" value="${pageContext.request.contextPath}/eform/efmformslistadd.jsp"/>
-                    <jsp:param name="groupView" value="<%=groupView%>"/>
+                    <jsp:param name="groupView" value="<%=Encode.forHtmlAttribute(String.valueOf(groupView))%>"/>
                 </jsp:include>
 
-                <a href="efmpatientformlist.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&parentAjaxId=<%=parentAjaxId%>">
+                <a href="efmpatientformlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>">
                     <fmt:message key="eform.calldeletedformdata.btnGoToForm"/></a>
-                <a href="efmpatientformlistdeleted.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&parentAjaxId=<%=parentAjaxId%>">
+                <a href="efmpatientformlistdeleted.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>">
                     <fmt:message key="eform.showmyform.btnDeleted"/></a>
 
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.eform" rights="w"
@@ -237,13 +237,13 @@ Ontario, Canada
                     <tr>
                         <td>
                             <a HREF="#"
-                               ONCLICK="popupPage('efmformadd_data.jsp?fid=<%=curForm.get("fid")%>&demographic_no=<%=demographic_no%>&appointment=<%=appointment%>','<%=curForm.get("fid") + "_" + demographic_no %>'); return true;"
+                               ONCLICK="popupPage('efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(curForm.get("fid")))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&appointment=<%=Encode.forJavaScript(String.valueOf(appointment))%>','<%=Encode.forJavaScript(String.valueOf(curForm.get("fid") + "_" + demographic_no))%>'); return true;"
                                TITLE='Add This eForm' OnMouseOver="window.status='Add This eForm' ; return true">
                                 <%= Encode.forHtmlContent((String) curForm.get("formName")) %>
                             </a></td>
                         <td><%=Encode.forHtmlContent((String) curForm.get("formSubject"))%>
                         </td>
-                        <td><%=curForm.get("formDate")%>
+                        <td><%=Encode.forHtml(String.valueOf(curForm.get("formDate")))%>
                         </td>
                     </tr>
                     <%

@@ -47,6 +47,7 @@
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -80,7 +81,7 @@
 
 <html>
     <head>
-        <title><%=display %> Import</title>
+        <title><%=Encode.forHtml(String.valueOf(display))%> Import</title>
         <% if (isMobileOptimized) { %>
         <meta name="viewport"
               content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width"/>
@@ -108,7 +109,7 @@
     <div class="header"></div>
     <div class="panel">
         Extra data from Import:<br>
-        <textarea rows="10" name="dump" readonly="readonly"><%=dump%></textarea>
+        <textarea rows="10" name="dump" readonly="readonly"><%=Encode.forHtml(String.valueOf(dump))%></textarea>
         <input type="button" value="Close" onclick="window.close();"/>
     </div>
     </body>

@@ -31,6 +31,7 @@
 <%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <%@ page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     RxSessionBean bean = null;
@@ -97,9 +98,9 @@
                     <tr>
                         <td>
                             <div class="DivContentTitle"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>
-                                <%=surname%>
+                                <%=Encode.forHtml(String.valueOf(surname))%>
                                 ,
-                                <%=firstName%>
+                                <%=Encode.forHtml(String.valueOf(firstName))%>
                             </div>
                             <br/>
                             &nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.instructions"/></td>
@@ -132,18 +133,18 @@
                                     %>
                                     <tr>
                                         <td><a
-                                                href="<%= request.getContextPath() %>/oscarRx/LinkPharmacy.do?ID=<%=ph.getId()%>&DemoId=<%=patient.getDemographicNo()%>"><%=ph.getName()%>
+                                                href="<%= request.getContextPath() %>/oscarRx/LinkPharmacy.do?ID=<%=Encode.forUriComponent(String.valueOf(ph.getId()))%>&DemoId=<%=Encode.forUriComponent(String.valueOf(patient.getDemographicNo()))%>"><%=Encode.forHtml(String.valueOf(ph.getName()))%>
                                         </a></td>
-                                        <td><%=ph.getAddress()%>
+                                        <td><%=Encode.forHtml(String.valueOf(ph.getAddress()))%>
                                         </td>
-                                        <td><%=ph.getCity()%>
+                                        <td><%=Encode.forHtml(String.valueOf(ph.getCity()))%>
                                         </td>
-                                        <td><%=ph.getPhone1()%>
+                                        <td><%=Encode.forHtml(String.valueOf(ph.getPhone1()))%>
                                         </td>
-                                        <td><%=ph.getFax()%>
+                                        <td><%=Encode.forHtml(String.valueOf(ph.getFax()))%>
                                         </td>
-                                        <td><a href="<%= request.getContextPath() %>/oscarRx/ManagePharmacy.jsp?type=Edit&ID=<%=ph.getId()%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.editLink"/></a></td>
-                                        <td><a href="<%= request.getContextPath() %>/oscarRx/ManagePharmacy.jsp?type=Delete&ID=<%=ph.getId()%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.deleteLink"/></a></td>
+                                        <td><a href="<%= request.getContextPath() %>/oscarRx/ManagePharmacy.jsp?type=Edit&ID=<%=Encode.forUriComponent(String.valueOf(ph.getId()))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.editLink"/></a></td>
+                                        <td><a href="<%= request.getContextPath() %>/oscarRx/ManagePharmacy.jsp?type=Delete&ID=<%=Encode.forUriComponent(String.valueOf(ph.getId()))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.deleteLink"/></a></td>
                                     </tr>
                                     <% } %>
                                 </table>
@@ -156,7 +157,7 @@
                             <%
                                 String sBack = request.getContextPath() + "/oscarRx/SearchDrug.jsp";
                             %> <input type=button class="ControlPushButton"
-                                      onclick="javascript:window.location.href='<%=sBack%>';"
+                                      onclick="javascript:window.location.href='<%=Encode.forJavaScript(String.valueOf(sBack))%>';"
                                       value="Back to Search Drug"/></td>
                     </tr>
                     <!----End new rows here-->

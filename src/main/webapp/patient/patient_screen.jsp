@@ -33,6 +33,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
@@ -59,7 +60,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr bgcolor="#486ebd">
         <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF">Hello
-            <%=d.getFirstName()%> <%=d.getLastName()%>
+            <%=Encode.forHtml(String.valueOf(d.getFirstName()))%> <%=Encode.forHtml(String.valueOf(d.getLastName()))%>
         </font></th>
     </tr>
 </table>
@@ -96,34 +97,34 @@
         <tr>
             <td align="right"><b>Last Name: </b></td>
             <td align="left"><input type="text" name="last_name"
-                                    value="<%=d.getLastName()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getLastName()))%>"></td>
             <td align="right"><b>First Name: </b></td>
             <td align="left"><input type="text" name="first_name"
-                                    value="<%=d.getFirstName()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getFirstName()))%>"></td>
         </tr>
         <tr valign="top">
             <td align="right"><b>Address: </b></td>
             <td align="left"><input type="text" name="address"
-                                    value="<%=d.getAddress()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getAddress()))%>"></td>
             <td align="right"><b>City: </b></td>
             <td align="left"><input type="text" name="city"
-                                    value="<%=d.getCity()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getCity()))%>"></td>
         </tr>
         <tr valign="top">
             <td align="right"><b>Province: </b></td>
             <td align="left"><input type="text" name="province"
-                                    value="<%=d.getProvince()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getProvince()))%>"></td>
             <td align="right"><b>Postal: </b></td>
             <td align="left"><input type="text" name="postal"
-                                    value="<%=d.getPostal()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getPostal()))%>"></td>
         </tr>
         <tr valign="top">
             <td align="right"><b>Phone(H): </b></td>
             <td align="left"><input type="text" name="phone"
-                                    value="<%=d.getPhone()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getPhone()))%>"></td>
             <td align="right"><b>Phone(O):</b></td>
             <td align="left"><input type="text" name="phone2"
-                                    value="<%=d.getPhone2()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getPhone2()))%>"></td>
         </tr>
         <tr valign="top">
             <td align="right"><b>DOB</b><font size="-2">(yyyy-mm-dd)</font><b>:</b>
@@ -132,38 +133,38 @@
                 <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td><input type="text" name="year_of_birth"
-                                   value="<%=d.getYearOfBirth()%>" size="4"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(d.getYearOfBirth()))%>" size="4"
                                    maxlength="4"></td>
                         <td>-</td>
                         <td><input type="text" name="month_of_birth"
-                                   value="<%=d.getMonthOfBirth()%>" size="2"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(d.getMonthOfBirth()))%>" size="2"
                                    maxlength="2"></td>
                         <td>-</td>
                         <td><input type="text" name="date_of_birth"
-                                   value="<%=d.getDateOfBirth()%>" size="2"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(d.getDateOfBirth()))%>" size="2"
                                    maxlength="2"></td>
                     </tr>
                 </table>
             </td>
             <td align="right"><b>Age: </b></td>
             <td align="left"><input type="text" name="age" readonly
-                                    value="<%=age%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(age))%>"></td>
         </tr>
         <tr valign="top">
             <td align="right"><b>HIN: </b></td>
             <td align="left"><input type="text" name="hin"
-                                    value="<%=d.getHin()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getHin()))%>"></td>
             <td align="right"><b>Ver.</b></td>
             <td align="left"><input type="text" name="ver"
-                                    value="<%=d.getVer()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getVer()))%>"></td>
         </tr>
         <tr valign="top">
             <td align="right"><b>Roster Status: </b></td>
             <td align="left"><input type="text" name="roster_status"
-                                    value="<%=d.getRosterStatus()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getRosterStatus()))%>"></td>
             <td align="right" nowrap><b>Patient Status:</b> <b> </b></td>
             <td align="left"><input type="text" name="patient_status"
-                                    value="<%=d.getPatientStatus()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getPatientStatus()))%>"></td>
         </tr>
         <tr valign="top">
             <td align="right"><b>Date Joined: </b></td>
@@ -172,32 +173,32 @@
                     <tr>
                         <td><input type="text" name="date_joined_year" size="4"
                                    maxlength="4"
-                                   value="<%=MyDateFormat.getYearFromStandardDate(ConversionUtils.toDateString(d.getDateJoined()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getYearFromStandardDate(ConversionUtils.toDateString(d.getDateJoined()))))%>">
                         </td>
                         <td>-</td>
                         <td><input type="text" name="date_joined_month" size="2"
                                    maxlength="2"
-                                   value="<%=MyDateFormat.getMonthFromStandardDate(ConversionUtils.toDateString(d.getDateJoined()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getMonthFromStandardDate(ConversionUtils.toDateString(d.getDateJoined()))))%>">
                         </td>
                         <td>-</td>
                         <td><input type="text" name="date_joined_date" size="2"
                                    maxlength="2"
-                                   value="<%=MyDateFormat.getDayFromStandardDate(ConversionUtils.toDateString(d.getDateJoined()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getDayFromStandardDate(ConversionUtils.toDateString(d.getDateJoined()))))%>">
                         </td>
                     </tr>
                 </table>
             </td>
             <td align="right"><b>HC Type:</b></td>
             <td align="left"><input type="text" name="hc_type"
-                                    value="<%=d.getHcType()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getHcType()))%>"></td>
         </tr>
         <tr valign="top">
             <td align="right"><b>MC Doctor: </b></td>
             <td align="left"><input type="text" name="provider_no"
-                                    value="<%=d.getProviderNo()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getProviderNo()))%>"></td>
             <td align="right"><b>Family Doctor: </b></td>
             <td align="left"><input type="text" name="family_doctor"
-                                    value="<%=d.getFamilyDoctor()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getFamilyDoctor()))%>"></td>
         </tr>
         <tr valign="top">
             <td align="right"><b>End Date: </b></td>
@@ -206,17 +207,17 @@
                     <tr>
                         <td><input type="text" name="end_date_year" size="4"
                                    maxlength="4"
-                                   value="<%=MyDateFormat.getYearFromStandardDate(ConversionUtils.toDateString(d.getEndDate()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getYearFromStandardDate(ConversionUtils.toDateString(d.getEndDate()))))%>">
                         </td>
                         <td>-</td>
                         <td><input type="text" name="end_date_month" size="2"
                                    maxlength="2"
-                                   value="<%=MyDateFormat.getMonthFromStandardDate(ConversionUtils.toDateString(d.getEndDate()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getMonthFromStandardDate(ConversionUtils.toDateString(d.getEndDate()))))%>">
                         </td>
                         <td>-</td>
                         <td><input type="text" name="end_date_date" size="2"
                                    maxlength="2"
-                                   value="<%=MyDateFormat.getDayFromStandardDate(ConversionUtils.toDateString(d.getEndDate()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getDayFromStandardDate(ConversionUtils.toDateString(d.getEndDate()))))%>">
                         </td>
                     </tr>
                 </table>
@@ -227,17 +228,17 @@
                     <tr>
                         <td><input type="text" name="eff_date_year" size="4"
                                    maxlength="4"
-                                   value="<%=MyDateFormat.getYearFromStandardDate(ConversionUtils.toDateString(d.getEffDate()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getYearFromStandardDate(ConversionUtils.toDateString(d.getEffDate()))))%>">
                         </td>
                         <td>-</td>
                         <td><input type="text" name="eff_date_month" size="2"
                                    maxlength="2"
-                                   value="<%=MyDateFormat.getMonthFromStandardDate(ConversionUtils.toDateString(d.getEffDate()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getMonthFromStandardDate(ConversionUtils.toDateString(d.getEffDate()))))%>">
                         </td>
                         <td>-</td>
                         <td><input type="text" name="eff_date_date" size="2"
                                    maxlength="2"
-                                   value="<%=MyDateFormat.getDayFromStandardDate(ConversionUtils.toDateString(d.getEffDate()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getDayFromStandardDate(ConversionUtils.toDateString(d.getEffDate()))))%>">
                         </td>
                     </tr>
                 </table>
@@ -246,10 +247,10 @@
         <tr valign="top">
             <td align="right" nowrap><b>PCN Indicator: </b></td>
             <td align="left"><input type="text" name="pcn_indicator"
-                                    value="<%=d.getPcnIndicator()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getPcnIndicator()))%>"></td>
             <td align="right"><b>Your PIN No.:</b></td>
             <td align="left"><input type="text" name="chart_no"
-                                    value="<%=d.getChartNo()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getChartNo()))%>"></td>
         <tr valign="top">
             <td align="right" nowrap><b>HC Renew Date: </b></td>
             <td align="left">
@@ -257,24 +258,24 @@
                     <tr>
                         <td><input type="text" name="hc_renew_date_year" size="4"
                                    maxlength="4"
-                                   value="<%=MyDateFormat.getYearFromStandardDate(ConversionUtils.toDateString(d.getHcRenewDate()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getYearFromStandardDate(ConversionUtils.toDateString(d.getHcRenewDate()))))%>">
                         </td>
                         <td>-</td>
                         <td><input type="text" name="hc_renew_date_month" size="2"
                                    maxlength="2"
-                                   value="<%=MyDateFormat.getMonthFromStandardDate(ConversionUtils.toDateString(d.getHcRenewDate()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getMonthFromStandardDate(ConversionUtils.toDateString(d.getHcRenewDate()))))%>">
                         </td>
                         <td>-</td>
                         <td><input type="text" name="hc_renew_date_date" size="2"
                                    maxlength="2"
-                                   value="<%=MyDateFormat.getDayFromStandardDate(ConversionUtils.toDateString(d.getHcRenewDate()))%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getDayFromStandardDate(ConversionUtils.toDateString(d.getHcRenewDate()))))%>">
                         </td>
                     </tr>
                 </table>
             </td>
             <td align="right"><b>Sex: </b></td>
             <td align="left"><input type="text" name="sex"
-                                    value="<%=d.getSex()%>"></td>
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(d.getSex()))%>"></td>
         <tr>
             <td colspan="4">&nbsp;</td>
         </tr>

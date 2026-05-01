@@ -35,6 +35,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.ScheduleTemplateCode" %>
 <%@ page import="ca.openosp.openo.commn.dao.ScheduleTemplateCodeDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ScheduleTemplateCodeDao scheduleTemplateCodeDao = SpringUtils.getBean(ScheduleTemplateCodeDao.class);
 %>
@@ -114,7 +115,7 @@
                                 for (ScheduleTemplateCode stc : stcs) {
 
                             %>
-                            <option value="<%=String.valueOf(stc.getCode())%>"><%=String.valueOf(stc.getCode()) + " |" + stc.getDescription()%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(stc.getCode())))%>"><%=Encode.forHtml(String.valueOf(String.valueOf(stc.getCode()) + " |" + stc.getDescription()))%>
                             </option>
                             <%
                                 }

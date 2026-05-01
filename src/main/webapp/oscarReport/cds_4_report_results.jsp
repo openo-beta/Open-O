@@ -52,7 +52,7 @@
 <%@page import="java.util.List" %>
 <%@page import="ca.openosp.openo.commn.model.CdsFormOption" %>
 <%@page import="ca.openosp.openo.web.Cds4ReportUIBean" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     ProviderManager2 providerManager = (ProviderManager2) SpringUtils.getBean(ProviderManager2.class);
@@ -102,22 +102,22 @@
 %>
 
 <h3>CDS Report</h3>
-<span style="font-weight:bold">Functional Centre : </span><%=cds4ReportUIBean.getFunctionalCentreDescription()%>
+<span style="font-weight:bold">Functional Centre : </span><%=Encode.forHtml(String.valueOf(cds4ReportUIBean.getFunctionalCentreDescription()))%>
 <br/>
-<span style="font-weight:bold">Dates : </span><%=cds4ReportUIBean.getDateRangeForDisplay()%>
+<span style="font-weight:bold">Dates : </span><%=Encode.forHtml(String.valueOf(cds4ReportUIBean.getDateRangeForDisplay()))%>
 <br/>
 
 <%
     if (providerIdList != null) {
 %>
-<span style="font-weight:bold">Providers : </span><%=StringEscapeUtils.escapeHtml4(providerNamesList.toString())%>
+<span style="font-weight:bold">Providers : </span><%=Encode.forHtml(providerNamesList.toString())%>
 <br/>
 <%
     }
 
     if (programIds != null) {
 %>
-<span style="font-weight:bold">Programs : </span><%=StringEscapeUtils.escapeHtml4(programNamesList.toString())%>
+<span style="font-weight:bold">Programs : </span><%=Encode.forHtml(programNamesList.toString())%>
 <br/>
 <%
     }
@@ -146,19 +146,19 @@
             int[] dataRow = cds4ReportUIBean.getDataRow(cdsFormOption);
     %>
     <tr>
-        <td><%=StringEscapeUtils.escapeHtml4(cdsFormOption.getCdsDataCategory())%>
+        <td><%=Encode.forHtml(cdsFormOption.getCdsDataCategory())%>
         </td>
-        <td><%=StringEscapeUtils.escapeHtml4(cdsFormOption.getCdsDataCategoryName())%>
+        <td><%=Encode.forHtml(cdsFormOption.getCdsDataCategoryName())%>
         </td>
         <%
             for (int dataElement : dataRow) {
         %>
-        <td><%=dataElement == -1 ? "N/A" : String.valueOf(dataElement)%>
+        <td><%=Encode.forHtml(String.valueOf(dataElement == -1 ? "N/A" : String.valueOf(dataElement)))%>
         </td>
         <%
             }
         %>
-        <td><%=Cds4ReportUIBean.getCohortTotal(dataRow)%>
+        <td><%=Encode.forHtml(String.valueOf(Cds4ReportUIBean.getCohortTotal(dataRow)))%>
         </td>
     </tr>
     <%
