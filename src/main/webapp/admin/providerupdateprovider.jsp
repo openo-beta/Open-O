@@ -197,8 +197,8 @@
                     </td>
                     <td>
                                 <% String provider_no = provider.getId(); %>
-                                <%= provider_no %>
-                        <input type="hidden" name="provider_no" value="<%= provider_no %>">
+                                <%=Encode.forHtml(String.valueOf(provider_no))%>
+                        <input type="hidden" name="provider_no" value="<%=Encode.forHtmlAttribute(String.valueOf(provider_no))%>">
 
                 </tr>
                 <tr>
@@ -233,8 +233,8 @@
                             for (int i = 0; i < sites.size(); i++) {
                         %>
                         <input type="checkbox" name="sites"
-                               value="<%= sites.get(i).getSiteId() %>" <%= psites.contains(sites.get(i))?"checked='checked'":"" %> <%=((!isSiteAccessPrivacy) || siteIDs.contains(sites.get(i).getSiteId()) ? "" : " disabled ") %>>
-                        <%= sites.get(i).getName() %><br/>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(sites.get(i).getSiteId()))%>" <%= psites.contains(sites.get(i))?"checked='checked'":"" %> <%=Encode.forHtml(String.valueOf(((!isSiteAccessPrivacy) || siteIDs.contains(sites.get(i).getSiteId()) ? "" : " disabled ")))%>>
+                        <%=Encode.forHtml(String.valueOf(sites.get(i).getName()))%><br/>
                         <%
                             }
                         %>
@@ -266,7 +266,7 @@
                                     <% if ("admin".equals(provider.getProviderType())) { %>
                                     SELECTED <%}%>><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formType.optionAdmin"/></option>
                         </select>
-                        <!--input type="text" name="provider_type" value="<%= provider.getProviderType() %>" maxlength="15" -->
+                        <!--input type="text" name="provider_type" value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderType()))%>" maxlength="15" -->
                     </td>
                 </tr>
                 <%
@@ -288,8 +288,8 @@
                     for( ProviderData p : providerL ) {
                         
                     %>
-                        <option value="<%=p.getId()%>"
-                                <%if( provider.getSupervisor() != null &&  provider.getSupervisor().equals(p.getId())){%>SELECTED<%}%>><%=p.getLastName() + ", " + p.getFirstName()%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getId()))%>"
+                                <%if( provider.getSupervisor() != null &&  provider.getSupervisor().equals(p.getId())){%>SELECTED<%}%>><%=Encode.forHtml(String.valueOf(p.getLastName() + ", " + p.getFirstName()))%>
                         </option>
 
                                 <%
@@ -316,7 +316,7 @@
                         <td><select name="sex" id="sex">
                             <option value=""></option>
                             <% for (Gender gn : Gender.values()) { %>
-                            <option value=<%=gn.name()%> <%=((provider.getSex() != null && provider.getSex().toUpperCase().equals(gn.name())) ? "selected" : "") %>><%=gn.getText()%>
+                            <option value=<%=gn.name()%> <%=Encode.forHtml(String.valueOf(((provider.getSex() != null && provider.getSex().toUpperCase().equals(gn.name())) ? "selected" : "")))%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
                             </option>
                             <% } %>
                         </select>
@@ -326,7 +326,7 @@
                         <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formDOB"/>:
                         </td>
                         <td><input type="text" name="dob"
-                                   value="<%= MyDateFormat.getMyStandardDate(provider.getDob()) %>"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(MyDateFormat.getMyStandardDate(provider.getDob())))%>"
                                    maxlength="11"></td>
                     </tr>
                     <tr>
@@ -455,7 +455,7 @@
                                             }
                                 %>
 
-                                <option value="<%=llItem.getValue()%>" <%=selected %>><%=llItem.getLabel()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(llItem.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(llItem.getLabel()))%>
                                 </option>
                                 <%
                                     }
@@ -533,7 +533,7 @@
                                         ClinicNbr tempNbr = nbrIter.next();
                                         String valueString = tempNbr.getNbrValue() + " | " + tempNbr.getNbrString();
                                 %>
-                                <option value="<%=tempNbr.getNbrValue()%>" <%=SxmlMisc.getXmlContent(provider.getComments(), "xml_p_nbr").startsWith(tempNbr.getNbrValue()) ? "selected" : ""%>><%=valueString%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(tempNbr.getNbrValue()))%>" <%=SxmlMisc.getXmlContent(provider.getComments(), "xml_p_nbr").startsWith(tempNbr.getNbrValue()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(valueString))%>
                                 </option>
                                 <%}%>
 
@@ -556,7 +556,7 @@
                                     codeDesc = billCenter.getAllBillCenter().getProperty(billCode);
                             %>
                             <option value=<%= billCode %>
-                                    <%=currentBillCode.compareTo(billCode) == 0 ? "selected" : ""%>><%= codeDesc%>
+                                    <%=currentBillCode.compareTo(billCode) == 0 ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(codeDesc))%>
                             </option>
                             <%
                                 }

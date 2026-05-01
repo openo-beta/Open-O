@@ -29,6 +29,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.PMmodule.web.ManageLinkedClients" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -50,7 +51,7 @@
 
 <h4>Demographic</h4>
 <form action="manage_linked_clients_action.jsp">
-    <input type="hidden" name="demographicId" value="<%=currentDemographicId%>"/>
+    <input type="hidden" name="demographicId" value="<%=Encode.forHtmlAttribute(String.valueOf(currentDemographicId))%>"/>
     <table style="padding-left:20px" class="genericTable">
         <tr class="genericTableRow">
             <td class="genericTableHeader">Linked</td>
@@ -63,13 +64,13 @@
         <tr class="genericTableRow" style="background-color:#ccffcc">
             <td class="genericTableData">Local</td>
             <td class="genericTableData">100</td>
-            <td class="genericTableData"><%=demographic.getLastName()%>
+            <td class="genericTableData"><%=Encode.forHtml(String.valueOf(demographic.getLastName()))%>
             </td>
-            <td class="genericTableData"><%=demographic.getFirstName()%>
+            <td class="genericTableData"><%=Encode.forHtml(String.valueOf(demographic.getFirstName()))%>
             </td>
-            <td class="genericTableData"><%=demographic.getFormattedDob()%>
+            <td class="genericTableData"><%=Encode.forHtml(String.valueOf(demographic.getFormattedDob()))%>
             </td>
-            <td class="genericTableData"><%=demographic.getSex()%>
+            <td class="genericTableData"><%=Encode.forHtml(String.valueOf(demographic.getSex()))%>
             </td>
         </tr>
         <tr>
@@ -83,17 +84,17 @@
         <tr class="genericTableRow" style="background-color:#f3f3f3">
             <td class="genericTableData">
                 <input type="checkbox"
-                       name="linked.<%=temp.linkDestination+'.'+temp.remoteLinkId%>" <%=temp.linked ? "checked=\"on\"" : ""%> />
+                       name="linked.<%=Encode.forHtmlAttribute(String.valueOf(temp.linkDestination+'.'+temp.remoteLinkId))%>" <%=temp.linked ? "checked=\"on\"" : ""%> />
             </td>
-            <td class="genericTableData"><%=temp.matchingScore%>
+            <td class="genericTableData"><%=Encode.forHtml(String.valueOf(temp.matchingScore))%>
             </td>
-            <td class="genericTableData"><%=temp.lastName%>
+            <td class="genericTableData"><%=Encode.forHtml(String.valueOf(temp.lastName))%>
             </td>
-            <td class="genericTableData"><%=temp.firstName%>
+            <td class="genericTableData"><%=Encode.forHtml(String.valueOf(temp.firstName))%>
             </td>
-            <td class="genericTableData"><%=temp.birthDate%>
+            <td class="genericTableData"><%=Encode.forHtml(String.valueOf(temp.birthDate))%>
             </td>
-            <td class="genericTableData"><%=temp.gender%>
+            <td class="genericTableData"><%=Encode.forHtml(String.valueOf(temp.gender))%>
             </td>
         </tr>
         <%

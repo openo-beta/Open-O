@@ -27,6 +27,7 @@
 <%@ page import="java.util.*, ca.openosp.openo.report.reportByTemplate.*" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportManager" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportObject" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 
     if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -64,8 +65,8 @@
 	                String selectedTemplate = "";
 	                if (templateId.equals(templateViewId)) selectedTemplate = "selectedTemplate";%>
 
-        <li class="<%=selectedTemplate%>"><%=String.valueOf(i + 1)%>. <a
-                href="reportConfiguration.jsp?templateid=<%=templateId%>"><%=templateTitle%>
+        <li class="<%=Encode.forHtmlAttribute(String.valueOf(selectedTemplate))%>"><%=Encode.forHtml(String.valueOf(String.valueOf(i + 1)))%>. <a
+                href="reportConfiguration.jsp?templateid=<%=Encode.forUriComponent(String.valueOf(templateId))%>"><%=Encode.forHtml(String.valueOf(templateTitle))%>
         </a></li>
         <% } %>
     </ul>

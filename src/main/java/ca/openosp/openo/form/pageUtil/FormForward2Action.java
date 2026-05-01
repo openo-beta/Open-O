@@ -41,6 +41,7 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.form.data.FrmData;
+import ca.openosp.openo.util.SqlUtils;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -71,6 +72,10 @@ public class FormForward2Action extends ActionSupport {
         String appointmentNo = request.getParameter("appointmentNo");
         String formId = request.getParameter("formId");
         String provNo = request.getParameter("provNo");
+
+        // Validate demographicNo is numeric to prevent SQL injection in downstream queries
+        SqlUtils.validateNumericId(demographicNo, "demographic_no");
+
         String strFrm = URLDecoder.decode(formName, CharEncoding.UTF_8);
         int requestedForm = 0;
         int latestForm = 0;
@@ -81,6 +86,8 @@ public class FormForward2Action extends ActionSupport {
          */
         try {
             FrmData frmData = new FrmData();
+            // demographicNo validated as numeric above; strFrm is looked up via parameterized
+            // EncounterFormDao.findByFormName(); table names come from DB config, not user input
             formPath = frmData.getShortcutFormValue(demographicNo, strFrm);
             formPath[0] = formPath[0].trim();
 

@@ -269,7 +269,7 @@ public class MeasurementData2Action extends ActionSupport {
 
         if (isJsonRequest) {
             String json = objectMapper.writeValueAsString(measurementsMap);
-            response.getOutputStream().write(json.getBytes());
+            response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         }
         return null;
     }
@@ -322,11 +322,11 @@ public class MeasurementData2Action extends ActionSupport {
 
             hashMap.put("success", true);
             String json = objectMapper.writeValueAsString(hashMap);
-            response.getOutputStream().write(json.getBytes());
+            response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         } else {
             hashMap.put("success", false);
             String json = objectMapper.writeValueAsString(hashMap);
-            response.getOutputStream().write(json.getBytes());
+            response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         }
 
         return null;
@@ -377,7 +377,7 @@ public class MeasurementData2Action extends ActionSupport {
                 HashMap<String, Object> hashMap = new HashMap<String, Object>();
                 hashMap.put("success", true);
                 String json = objectMapper.writeValueAsString(hashMap);
-                response.getOutputStream().write(json.getBytes());
+                response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
             }
 
         } catch (Exception e) {
@@ -385,7 +385,7 @@ public class MeasurementData2Action extends ActionSupport {
             hashMap.put("success", false);
             MiscUtils.getLogger().error("Couldn't save measurements", e);
             String json = objectMapper.writeValueAsString(hashMap);
-            response.getOutputStream().write(json.getBytes());
+            response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         }
 
         return null;
@@ -447,7 +447,7 @@ public class MeasurementData2Action extends ActionSupport {
             }
         }
 
-        response.getOutputStream().write(json.toString().getBytes());
+        response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 }

@@ -39,6 +39,7 @@
 <%@ page import="ca.openosp.openo.appointment.web.NextAppointmentSearchResult" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="ca.openosp.openo.util.LabelValueBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     SimpleDateFormat dayFormatter = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
@@ -176,7 +177,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=provider.getProviderNo()%>" <%=selected%>><%=provider.getFormattedName()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>
                     </option>
                     <%
                         }
@@ -195,7 +196,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=lvb.getValue()%>" <%=selected%>><%=lvb.getLabel()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
                     </option>
                     <%
                         }
@@ -214,7 +215,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=lvb.getValue()%>" <%=selected%>><%=lvb.getLabel()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
                     </option>
                     <%
                         }
@@ -229,7 +230,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=lvb.getValue()%>" <%=selected%>><%=lvb.getLabel()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
                     </option>
                     <%
                         }
@@ -249,7 +250,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=c.getCode()%>" <%=selected%>><%=c.getCode()%> - <%=c.getDescription() %>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(c.getCode()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(c.getCode()))%> - <%=Encode.forHtml(String.valueOf(c.getDescription()))%>
                     </option>
                     <%
                         }
@@ -268,7 +269,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=lvb.getValue()%>" <%=selected%>><%=lvb.getLabel()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(lvb.getValue()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(lvb.getLabel()))%>
                     </option>
                     <%
                         }
@@ -300,12 +301,12 @@
         %>
         <tr onmouseover="this.style.cursor='hand';this.style.backgroundColor='pink';"
             onmouseout="this.style.backgroundColor='#FFFFFF';"
-            onclick="selectSlot('<%=result.getProviderNo()%>','<%=result.getYear()%>','<%=result.getMonth()%>','<%=result.getDay()%>','<%=result.getStartTime()%>','<%=result.getEndTime()%>','<%=result.getDuration()%>');">
-            <td><%=dayFormatter.format(result.getDate()) %>
+            onclick="selectSlot('<%=Encode.forJavaScript(String.valueOf(result.getProviderNo()))%>','<%=Encode.forJavaScript(String.valueOf(result.getYear()))%>','<%=Encode.forJavaScript(String.valueOf(result.getMonth()))%>','<%=Encode.forJavaScript(String.valueOf(result.getDay()))%>','<%=Encode.forJavaScript(String.valueOf(result.getStartTime()))%>','<%=Encode.forJavaScript(String.valueOf(result.getEndTime()))%>','<%=Encode.forJavaScript(String.valueOf(result.getDuration()))%>');">
+            <td><%=Encode.forHtml(String.valueOf(dayFormatter.format(result.getDate())))%>
             </td>
-            <td><%=timeFormatter.format(result.getDate()) %>
+            <td><%=Encode.forHtml(String.valueOf(timeFormatter.format(result.getDate())))%>
             </td>
-            <td><%=result.getProvider().getFormattedName() %>
+            <td><%=Encode.forHtml(String.valueOf(result.getProvider().getFormattedName()))%>
             </td>
         </tr>
         <% } %>

@@ -31,6 +31,7 @@
 <%@ page
         import="java.util.*, ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig, ca.openosp.OscarProperties, ca.openosp.openo.util.StringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.MeasurementMap" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
 
@@ -122,8 +123,8 @@
                                         HashMap ht = (HashMap) measurements.get(i);
                                         String value = (String) ht.get("identifier") + "," + (String) ht.get("type") + "," + (String) ht.get("name");
                                 %>
-                                <option value="<%= value %>"
-                                        <%= value.equals(identifier) ? "selected" : "" %>><%= "(" + (String) ht.get("type") + ") " + (String) ht.get("identifier") + " - " + ((String) ht.get("name")).trim() %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(value))%>"
+                                        <%= value.equals(identifier) ? "selected" : "" %>><%=Encode.forHtml(String.valueOf("(" + (String) ht.get("type") + ") " + (String) ht.get("identifier") + " - " + ((String) ht.get("name")).trim()))%>
                                 </option>
                                 <% }%>
                             </select></td>
@@ -137,7 +138,7 @@
                                         searchstring = "";
                                 %>
                                 <input type="text" size="30" name="searchstring"
-                                       value="<%= searchstring %>"/> <input type="submit" value="Search"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(searchstring))%>"/> <input type="submit" value="Search"
                                                                             onclick="return reloadPage()"/></td>
                         <tr>
                             <td class="Cell" width="20%">Select code to map to:</td>
@@ -145,7 +146,7 @@
                                 <option value="0">None Selected</option>
                                 <% List<MeasurementMap> loincCodes = mmc.getLoincCodes(searchstring);
                                     for (MeasurementMap loincCode : loincCodes) {%>
-                                <option value="<%= loincCode.getLoincCode() %>"><%= loincCode.getLoincCode() + " - " + loincCode.getName().trim()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(loincCode.getLoincCode()))%>"><%=Encode.forHtml(String.valueOf(loincCode.getLoincCode() + " - " + loincCode.getName().trim()))%>
                                 </option>
                                 <% }%>
                             </select></td>

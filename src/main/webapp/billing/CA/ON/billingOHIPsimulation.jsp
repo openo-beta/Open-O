@@ -55,6 +55,7 @@
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="SxmlMisc" class="ca.openosp.SxmlMisc" scope="session"/>
 
 <head>
@@ -305,8 +306,8 @@
             <input type="hidden" name="submit" value="Create Report">
 
             Bill Center:
-            <input type="hidden" name="billcenter" value="<%=billCenter%>">
-            <%=healthOffice%>
+            <input type="hidden" name="billcenter" value="<%=Encode.forHtmlAttribute(String.valueOf(billCenter))%>">
+            <%=Encode.forHtml(String.valueOf(healthOffice))%>
 
             <button type='button' name='print' value='Print' class="btn pull-right" onClick='window.print()'><i
                     class="icon icon-print"></i> Print
@@ -321,10 +322,10 @@
             %>
 
 
-            <input type="hidden" name="monthCode" value="<%=monthCode%>">
+            <input type="hidden" name="monthCode" value="<%=Encode.forHtmlAttribute(String.valueOf(monthCode))%>">
             <input type="hidden" name="verCode" value="V03">
-            <input type="hidden" name="curUser" value="<%=user_no%>">
-            <input type="hidden" name="curDate" value="<%=nowDate%>">
+            <input type="hidden" name="curUser" value="<%=Encode.forHtmlAttribute(String.valueOf(user_no))%>">
+            <input type="hidden" name="curDate" value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>">
 
 
             <div class="span12" style="margin:4px;">
@@ -354,10 +355,10 @@
                             for (int i = 0; i < providerStr.size(); i++) {
                                 String temp[] = ((String) providerStr.get(i)).split("\\|");
                         %>
-                        <option value="<%=temp[0]%>"
-                                <%=providerview.equals(temp[0]) ? "selected" : (providerStr.size() == 1 ? "selected" : "")%>><%=temp[1]%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(temp[0]))%>"
+                                <%=Encode.forHtml(String.valueOf(providerview.equals(temp[0]) ? "selected" : (providerStr.size() == 1 ? "selected" : "")))%>><%=Encode.forHtml(String.valueOf(temp[1]))%>
                             ,
-                            <%=temp[2]%>
+                            <%=Encode.forHtml(String.valueOf(temp[2]))%>
                         </option>
                         <%
                             }
@@ -368,7 +369,7 @@
                 <div class="span2">
                     From:<br>
                     <div class="input-append">
-                        <input type="text" name="xml_vdate" id="xml_vdate" value="<%=xml_vdate%>" style="width:90px"
+                        <input type="text" name="xml_vdate" id="xml_vdate" value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>" style="width:90px"
                                autocomplete="off"/>
                         <span class="add-on"><i class="icon-calendar"></i></span>
                     </div>
@@ -379,7 +380,7 @@
                     To:<br>
                     <div class="input-append">
                         <input type="text" name="xml_appointment_date" id="xml_appointment_date"
-                               value="<%=xml_appointment_date%>" style="width:90px" autocomplete="off"/>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>" style="width:90px" autocomplete="off"/>
                         <span class="add-on"><i class="icon-calendar"></i></span>
                     </div>
                 </div>
@@ -412,7 +413,7 @@
 
 </div><!--container-->
 
-<%=request.getAttribute("html") == null ? "" : request.getAttribute("html")%>
+<%=Encode.forHtml(String.valueOf(request.getAttribute("html") == null ? "" : request.getAttribute("html")))%>
 
 <script type="text/javascript">
 

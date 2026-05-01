@@ -54,6 +54,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 %>
@@ -193,7 +194,7 @@
                 <select name="facility.vacancyWithdrawnTicklerProvider" id="facility.vacancyWithdrawnTicklerProvider">
                     <option value="">Select Below</option>
                     <%for (Provider p : providerDao.getActiveProviders()) { %>
-                    <option value="<%=p.getProviderNo() %>"><%=p.getFormattedName() %>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                     </option>
                     <% } %>
                 </select>
@@ -208,7 +209,7 @@
                 <select name="facility.assignNewVacancyTicklerProvider" id="facility.assignNewVacancyTicklerProvider">
                     <option value="">Select Below</option>
                     <%for (Provider p : providerDao.getActiveProviders()) { %>
-                    <option value="<%=p.getProviderNo() %>"><%=p.getFormattedName() %>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                     </option>
                     <% } %>
                 </select>
@@ -223,7 +224,7 @@
                 <select name="facility.assignRejectedVacancyApplicant" id="facility.assignRejectedVacancyApplicant">
                     <option value="">Select Below</option>
                     <%for (Provider p : providerDao.getActiveProviders()) { %>
-                    <option value="<%=p.getProviderNo() %>"><%=p.getFormattedName() %>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                     </option>
                     <% } %>
                 </select>

@@ -48,6 +48,7 @@
 <%@ page import="ca.openosp.openo.form.*" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.graphic.FrmGraphicAR" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <HTML>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -113,9 +114,9 @@
         }
 %>
 <div ID="graphic"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=100+oox%>px; top:<%=50+ooy%>px; width:600px; height:600px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(100+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(50+ooy))%>px; width:600px; height:600px;">
     <embed type="image/svg+xml"
-           src="formar2wtsvg.jsp?bgimage=<%=URLEncoder.encode("graphics/pregnancyweightgain.jpg", StandardCharsets.UTF_8)%>&bgimagewidth=580&bgimageheight=498<%=urlparam%>"
+           src="formar2wtsvg.jsp?bgimage=<%=Encode.forUriComponent(String.valueOf("graphics/pregnancyweightgain.jpg"))%>&bgimagewidth=580&bgimageheight=498<%=Encode.forUriComponent(String.valueOf(urlparam))%>"
            width="600" height="600" wmode="transparent"/>
 </div>
 <%

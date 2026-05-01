@@ -44,6 +44,7 @@
         import="org.apache.commons.lang3.StringUtils,org.apache.commons.text.StringEscapeUtils,java.util.*,ca.openosp.openo.util.*,ca.openosp.openo.report.data.*,ca.openosp.openo.db.*,java.sql.*,ca.openosp.openo.demographic.data.*,ca.openosp.openo.eform.*,ca.openosp.openo.commn.model.Provider,ca.openosp.openo.managers.ProviderManager2,ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.eform.OneTimeConsultUtil" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -146,15 +147,15 @@
                 <fieldset>
                     <legend>OSIS Report</legend>
                     <label>Start Date:</label>
-                    <input type="text" size="9" id="startDate" name="startDate" value="<%=startStr%>"/>
+                    <input type="text" size="9" id="startDate" name="startDate" value="<%=Encode.forHtmlAttribute(String.valueOf(startStr))%>"/>
                     <a id="startdate"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
 
                     <label style="margin-left:20px;">End Date:</label>
-                    <input type="text" size="9" id="endDate" name="endDate" value="<%=endStr%>"/>
+                    <input type="text" size="9" id="endDate" name="endDate" value="<%=Encode.forHtmlAttribute(String.valueOf(endStr))%>"/>
                     <a id="enddate"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
 
                     <label style="margin-left:20px;">Form Id:</label><input type="text" size="3" name="formId"
-                                                                            value="<%=formId%>"/>
+                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
                     <br><br>
                     <label>Providers to include:</label>
                     <br>
@@ -168,7 +169,7 @@
                                 //skip (system,system)
                                 if (provider.getProviderNo().equals(Provider.SYSTEM_PROVIDER_NO)) continue;
                         %>
-                        <option value="<%=provider.getProviderNo()%>"
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>"
                                 <%
                                     if (providerNo != null) {
                                         if (Arrays.asList(providerNo).contains(provider.getProviderNo()))
@@ -176,7 +177,7 @@
                                     }
                                 %>
 
-                        ><%=StringEscapeUtils.escapeHtml4(provider.getFormattedName())%>
+                        ><%=Encode.forHtml(provider.getFormattedName())%>
                         </option>
                         <%
                             }
@@ -254,51 +255,51 @@
         <td>15-21 years</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "15-21", "008-01", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "15-21", "008-02", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "15-21", "008-03", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "15-21", "008-04", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "15-21", "008-01", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "15-21", "008-02", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "15-21", "008-03", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "15-21", "008-04", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -306,51 +307,51 @@
         <td>22-30 years</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "22-30", "008-01", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "22-30", "008-02", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "22-30", "008-03", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "22-30", "008-04", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "22-30", "008-01", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "22-30", "008-02", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "22-30", "008-03", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "22-30", "008-04", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -359,51 +360,51 @@
         <td>31-45 years</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "31-45", "008-01", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "31-45", "008-02", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "31-45", "008-03", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "31-45", "008-04", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "31-45", "008-01", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "31-45", "008-02", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "31-45", "008-03", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "31-45", "008-04", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -412,51 +413,51 @@
         <td>46-64 years</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "46-64", "008-01", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "46-64", "008-02", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "46-64", "008-03", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "46-64", "008-04", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "46-64", "008-01", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "46-64", "008-02", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "46-64", "008-03", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "46-64", "008-04", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -465,51 +466,51 @@
         <td>65+ years</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "65+", "008-01", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "65+", "008-02", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "65+", "008-03", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "65+", "008-04", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "65+", "008-01", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "65+", "008-02", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "65+", "008-03", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "65+", "008-04", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -518,51 +519,51 @@
         <td>unknown years</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "unknown", "008-01", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "unknown", "008-02", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "unknown", "008-03", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "unknown", "008-04", "CurrentlyHomeless", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "unknown", "008-01", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "unknown", "008-02", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "unknown", "008-03", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "unknown", "008-04", "CurrentlyHoused", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -579,126 +580,126 @@
         <td><strong>Assisted With Housing</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refAssistedWithHousing", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Assisted with Accessing Food</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refAssistedWithAccessingFood", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Assisted with Accessing Transportation</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refAssistedWithAccessTransport", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Assisted With Income Support</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refAssistedWithIncomeSupport", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Referred to Employment Services</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refReferredToEmploymentService", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Referred to Emergency Shelter</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refReferredToEmergShelter", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Referred to Mental Health Service</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refReferredToMentalHealthServi", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Referred to Addiction Service</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refReferredToAddictionService", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Referred to Health Service</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refReferredToHealthService", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Referred to Housing Help Centre</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refReferredToHousingHelpCentre", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Provided Heat/Cold Supplies</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refProvidedHeatColdSupplies", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>COAST Referral Made</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refReferredToCOAST", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Care Planning RE: Client/System Issue</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refCarePlanningClientSystemIss", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td><strong>Education to Agency RE: Service for Clients</strong></td>
         <%
             count = OneTimeConsultUtil.getOSISReport("refEducationToAgency", "", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 </table>
@@ -743,51 +744,51 @@
         <td>Aboriginal/Metis/First Nation/Inuit</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "", "008-01", "CurrentlyHomeless", "011-01", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "", "008-02", "CurrentlyHomeless", "011-01", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "", "008-03", "CurrentlyHomeless", "011-01", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "", "008-04", "CurrentlyHomeless", "011-01", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "", "008-01", "CurrentlyHoused", "011-01", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "", "008-02", "CurrentlyHoused", "011-01", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "", "008-03", "CurrentlyHoused", "011-01", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "", "", "008-04", "CurrentlyHoused", "011-01", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -809,18 +810,18 @@
         <td># Singles moved from street to emergency shelter</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Street to Emergency Shelter", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td># Singles moved from street to temporary/transitional housing</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Street to Temporary/Transitional Housing", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -828,18 +829,18 @@
         <td># Singles moved from street to supportive/supported housing</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Street to Supportive/Supported Housing", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td># Singles moved from street to regular/permanent housing</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Street to Regular/Permanent Housing", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -847,18 +848,18 @@
         <td># Singles moved from emergency shelter to temporary/transitional</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Emergency Shelter to Temporary/Transitional Housing", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td># Singles moved from emergency shelter to supportive/supported</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Emergency Shelter to Supportive/Supported Housing", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -866,18 +867,18 @@
         <td># Singles moved from emergency shelter to regular/permanent</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Emergency Shelter to Regular/Permanent Housing", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td># Singles moved from hidden homelessness to temporary/transitional</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Hidden Homelessness to Temporary/Transitional Housing", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -885,18 +886,18 @@
         <td># Singles moved from hidden homelessness to supportive/supported</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Hidden Homelessness to Supportive/Supported Housing", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
     <tr>
         <td># Singles moved from hidden homelessness to regular/permanent</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Hidden Homelessness to Regular/Permanent Housing", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 
@@ -905,9 +906,9 @@
             permanent)
         </td>
         <%count = OneTimeConsultUtil.getOSISReport("", "Other", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
 
     </tr>
@@ -915,9 +916,9 @@
         <td>Other type of service-street outreach provided</td>
         <%
             count = OneTimeConsultUtil.getOSISReport("", "Other2", "", "", "", "", providerNo, formId, startStr, endStr);%>
-        <td class="OSISdata"><%=count[0] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[0]))%>
         </td>
-        <td class="OSISdata"><%=count[1] %>
+        <td class="OSISdata"><%=Encode.forHtml(String.valueOf(count[1]))%>
         </td>
     </tr>
 </table>

@@ -27,6 +27,7 @@
 <%@page import="java.util.List" %>
 <%@page import="ca.openosp.openo.commn.model.CtlBillingServicePremium" %>
 <%@page import="ca.openosp.openo.commn.dao.CtlBillingServicePremiumDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <% 
@@ -84,7 +85,7 @@
 			</tr>
 			<% for (int x=0; x<10 ; x++) { %>
 			<tr>
-				<td><input type="text" name="service<%=x+1%>"></td>
+				<td><input type="text" name="service<%=Encode.forHtmlAttribute(String.valueOf(x+1))%>"></td>
 
 			</tr>
 			<%}%>
@@ -116,17 +117,17 @@
 			<tr class="list">
 
 				<td class="topRightBorder"><input type="checkbox"
-					name="service<%=service_code1[tCount1]%>"
-					value="<%=service_code1[tCount1]%>"><%=service_code1[tCount1]%>
-				<%=service_desc1[tCount1]%></td>
+					name="service<%=Encode.forHtmlAttribute(String.valueOf(service_code1[tCount1]))%>"
+					value="<%=Encode.forHtmlAttribute(String.valueOf(service_code1[tCount1]))%>"><%=Encode.forHtml(String.valueOf(service_code1[tCount1]))%>
+				<%=Encode.forHtml(String.valueOf(service_desc1[tCount1]))%></td>
 				<td class="topRightBorder"><input type="checkbox"
-					name="service<%=service_code1[tCount2]%>"
-					value="<%=service_code1[tCount2]%>"><%=service_code1[tCount2]%>
-				<%=service_desc1[tCount2]%></td>
+					name="service<%=Encode.forHtmlAttribute(String.valueOf(service_code1[tCount2]))%>"
+					value="<%=Encode.forHtmlAttribute(String.valueOf(service_code1[tCount2]))%>"><%=Encode.forHtml(String.valueOf(service_code1[tCount2]))%>
+				<%=Encode.forHtml(String.valueOf(service_desc1[tCount2]))%></td>
 				<td class="topBorder"><input type="checkbox"
-					name="service<%=service_code1[tCount3]%>"
-					value="<%=service_code1[tCount3]%>"><%=service_code1[tCount3]%>
-				<%=service_desc1[tCount3]%></td>
+					name="service<%=Encode.forHtmlAttribute(String.valueOf(service_code1[tCount3]))%>"
+					value="<%=Encode.forHtmlAttribute(String.valueOf(service_code1[tCount3]))%>"><%=Encode.forHtml(String.valueOf(service_code1[tCount3]))%>
+				<%=Encode.forHtml(String.valueOf(service_desc1[tCount3]))%></td>
 			</tr>
 			<%
        

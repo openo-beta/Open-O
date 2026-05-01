@@ -113,33 +113,33 @@
                 %>
                 <table width="100%" border="1">
                     <tr>
-                        <td width="65%"><b>Name: </b><%=d.getFormattedName()%>
+                        <td width="65%"><b>Name: </b><%=Encode.forHtml(String.valueOf(d.getFormattedName()))%>
                         </td>
-                        <td><b>Phone: </b><%=d.getPhone()%>
+                        <td><b>Phone: </b><%=Encode.forHtml(String.valueOf(d.getPhone()))%>
                         </td>
                     </tr>
                     <tr>
                         <td colspan='2'>
-                            <b>Address: </b><%=d.getAddress() + ",  " + d.getCity() + ",  " + d.getProvince() + "  " + d.getPostal()%>
+                            <b>Address: </b><%=Encode.forHtml(String.valueOf(d.getAddress() + ",  " + d.getCity() + ",  " + d.getProvince() + "  " + d.getPostal()))%>
                         </td>
                     </tr>
                     <tr>
                         <td width="50%">
-                            <b>DOB</b>(yyyy/mm/dd): <%=d.getYearOfBirth() + "/" + d.getMonthOfBirth() + "/" + d.getDateOfBirth()%>
+                            <b>DOB</b>(yyyy/mm/dd): <%=Encode.forHtml(String.valueOf(d.getYearOfBirth() + "/" + d.getMonthOfBirth() + "/" + d.getDateOfBirth()))%>
                         </td>
                         <td>
-                            <b>Age: </b><%=MyDateFormat.getAge(Integer.parseInt(d.getYearOfBirth()), Integer.parseInt(d.getMonthOfBirth()), Integer.parseInt(d.getDateOfBirth()))%>
-                            <%=d.getSex()%>
+                            <b>Age: </b><%=Encode.forHtml(String.valueOf(MyDateFormat.getAge(Integer.parseInt(d.getYearOfBirth()), Integer.parseInt(d.getMonthOfBirth()), Integer.parseInt(d.getDateOfBirth()))))%>
+                            <%=Encode.forHtml(String.valueOf(d.getSex()))%>
                         </td>
                     </tr>
                     <tr>
-                        <td width="50%"><b>PCN Roster Status: </b><%=d.getPcnIndicator()%>
+                        <td width="50%"><b>PCN Roster Status: </b><%=Encode.forHtml(String.valueOf(d.getPcnIndicator()))%>
                         </td>
-                        <td><b>HIN: </b><%=d.getHin()%> <%=d.getVer()%>
+                        <td><b>HIN: </b><%=Encode.forHtml(String.valueOf(d.getHin()))%> <%=Encode.forHtml(String.valueOf(d.getVer()))%>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan='2'><b>Family Doctor: </b><%=d.getFamilyDoctor()%>
+                        <td colspan='2'><b>Family Doctor: </b><%=Encode.forHtml(String.valueOf(d.getFamilyDoctor()))%>
                         </td>
                     </tr>
                 </table>
@@ -152,7 +152,7 @@
                         <td colspan="2">
                             <table border="0" width="100%">
                                 <tr>
-                                    <td><%=encounter_date%> <%=encounter_time%>
+                                    <td><%=Encode.forHtml(String.valueOf(encounter_date))%> <%=Encode.forHtml(String.valueOf(encounter_time))%>
                                     </td>
                                     <td align="right"><b>By: </b><span datafld='xml_username'></td>
                                 </tr>

@@ -25,6 +25,7 @@
 <%@page import="ca.openosp.openo.commn.model.BillingService" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getAttribute("user") == null) {
         response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -42,7 +43,7 @@
     <script language="JavaScript">
     function posttoText(index){
     self.close();
-    opener.document.<%=form%>.<%=field%>.value = index;
+    opener.document.<%=Encode.forJavaScript(String.valueOf(form))%>.<%=Encode.forJavaScript(String.valueOf(field))%>.value = index;
     opener.focus();
     }
     </script>
@@ -71,9 +72,9 @@
     <tr <%=((color) ? "bgcolor=\"#F6F6F6\"" : "")%> align="left"
     valign="top">
     <td class="SmallerText"><a href=#
-    onClick="posttoText('<%=bs.getServiceCode()%>');"><%=bs.getServiceCode()%></a>
+    onClick="posttoText('<%=Encode.forJavaScript(String.valueOf(bs.getServiceCode()))%>');"><%=Encode.forHtml(String.valueOf(bs.getServiceCode()))%></a>
     </td>
-    <td class="SmallerText"><%=bs.getDescription()%></td>
+    <td class="SmallerText"><%=Encode.forHtml(String.valueOf(bs.getDescription()))%></td>
     </tr>
     <%
             color = !(color);

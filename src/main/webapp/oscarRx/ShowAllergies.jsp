@@ -25,7 +25,6 @@
 --%>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.utility.LocaleUtils" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.prescript.pageUtil.AllergyHelperBean" %>
 <%@page import="ca.openosp.openo.prescript.pageUtil.AllergyDisplay" %>
 <%@page import="java.util.List" %>
@@ -34,6 +33,7 @@
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -171,11 +171,11 @@
             }
 
             function moveAllergyDown(allergyId) {
-                window.location = "<%= request.getContextPath() %>/oscarRx/showAllergy.do?method=reorder&direction=down&demographicNo=" + <%=bean.getDemographicNo()%> +"&allergyId=" + allergyId;
+                window.location = "<%= request.getContextPath() %>/oscarRx/showAllergy.do?method=reorder&direction=down&demographicNo=" + <%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%> +"&allergyId=" + allergyId;
             }
 
             function moveAllergyUp(allergyId) {
-                window.location = "<%= request.getContextPath() %>/oscarRx/showAllergy.do?method=reorder&direction=up&demographicNo=" + <%=bean.getDemographicNo()%> +"&allergyId=" + allergyId;
+                window.location = "<%= request.getContextPath() %>/oscarRx/showAllergy.do?method=reorder&direction=up&demographicNo=" + <%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%> +"&allergyId=" + allergyId;
             }
 
             function show_Search_Criteria() {
@@ -219,11 +219,11 @@
                             <table>
                                 <tr>
                                     <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>
-                                        <%=surname%>, <%=firstName%><br/>
+                                        <%=Encode.forHtml(String.valueOf(surname))%>, <%=Encode.forHtml(String.valueOf(firstName))%><br/>
                                     </td>
                                     <td>&nbsp;</td>
                                     <td><b>Age:</b>
-                                        <%=age%>
+                                        <%=Encode.forHtml(String.valueOf(age))%>
                                     </td>
                                 </tr>
                             </table>
@@ -258,7 +258,7 @@
 
 
                         } else {
-                            out.print("<span class='view_menu'><a href='showAllergy.do?demographicNo=" + demoNo + "&view=" + navArray[i] + "'>");
+                            out.print("<span class='view_menu'><a href='showAllergy.do?demographicNo=" + Encode.forUriComponent(demoNo) + "&view=" + Encode.forUriComponent(navArray[i]) + "'>");
                             out.print(navArray[i]);
                             out.print("</a></span>");
                         }
@@ -283,7 +283,7 @@
                             <table border="0">
                                 <tr>
                                     <td width="100%">
-                                        <%=allergy_colour_codes%>
+                                        <%=Encode.forHtml(String.valueOf(allergy_colour_codes))%>
                                         <div class="Step1Text" style="width: 830px;">
                                             <!-- frame="below" and rules="all"
                                             are here so the browser displays
@@ -360,36 +360,36 @@
 
                                                         if (!filterOut) {
                                                 %>
-                                                <tr bgcolor="<%=trColour%>">
+                                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(trColour))%>">
                                                     <td>
                                                         <%if (!(displayAllergies.get(displayAllergies.size() - 1) == displayAllergy)) {%>
                                                         <img border="0" align="bottom"
                                                              src="<%=request.getContextPath()%>/images/icon_down_sort_arrow.png"
-                                                             onclick="moveAllergyDown(<%=displayAllergy.getId() %>);return false;"/>
+                                                             onclick="moveAllergyDown(<%=Encode.forJavaScript(String.valueOf(displayAllergy.getId()))%>);return false;"/>
                                                         <% } %>
                                                         <%if (!(displayAllergies.get(0) == displayAllergy)) {%>
                                                         <img border="0" align="top"
                                                              src="<%=request.getContextPath()%>/images/icon_up_sort_arrow.png"
-                                                             onclick="moveAllergyUp(<%=displayAllergy.getId() %>);return false;"/>
+                                                             onclick="moveAllergyUp(<%=Encode.forJavaScript(String.valueOf(displayAllergy.getId()))%>);return false;"/>
                                                         <%} %>
                                                     </td>
-                                                    <td><%=labelStatus%>
+                                                    <td><%=Encode.forHtml(String.valueOf(labelStatus))%>
                                                     </td>
-                                                    <td><%=StringEscapeUtils.escapeHtml4(displayAllergy.getEntryDate())%>
+                                                    <td><%=Encode.forHtml(displayAllergy.getEntryDate())%>
                                                     </td>
-                                                    <td><%=StringEscapeUtils.escapeHtml4(displayAllergy.getLastUpdateDate() != null ? displayAllergy.getLastUpdateDate() : "")%>
+                                                    <td><%=Encode.forHtml(displayAllergy.getLastUpdateDate() != null ? displayAllergy.getLastUpdateDate() : "")%>
                                                     </td>
-                                                    <td><%=StringEscapeUtils.escapeHtml4(displayAllergy.getDescription())%>
+                                                    <td><%=Encode.forHtml(displayAllergy.getDescription())%>
                                                     </td>
-                                                    <td><%=StringEscapeUtils.escapeHtml4(displayAllergy.getTypeDesc())%>
+                                                    <td><%=Encode.forHtml(displayAllergy.getTypeDesc())%>
                                                     </td>
-                                                    <td bgcolor="<%=sevColour%>"><%=StringEscapeUtils.escapeHtml4(displayAllergy.getSeverityDesc())%>
+                                                    <td bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(sevColour))%>"><%=Encode.forHtml(displayAllergy.getSeverityDesc())%>
                                                     </td>
-                                                    <td><%=StringEscapeUtils.escapeHtml4(displayAllergy.getOnSetDesc())%>
+                                                    <td><%=Encode.forHtml(displayAllergy.getOnSetDesc())%>
                                                     </td>
-                                                    <td><%=StringEscapeUtils.escapeHtml4(displayAllergy.getReaction())%>
+                                                    <td><%=Encode.forHtml(displayAllergy.getReaction())%>
                                                     </td>
-                                                    <td><%=StringEscapeUtils.escapeHtml4(displayAllergy.getStartDate())%>
+                                                    <td><%=Encode.forHtml(displayAllergy.getStartDate())%>
                                                     </td>
                                                     <td>
                                                         <%
@@ -397,7 +397,7 @@
                                                             if (displayAllergy.getRemoteFacilityId() == null) {
                                                         %>
                                                         <a href="#" title="Annotation"
-                                                           onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=displayAllergy.getId()%>&demo=${patient.demographicNo}','anwin','width=400,height=500');"><img
+                                                           onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(displayAllergy.getId()))%>&demo=${patient.demographicNo}','anwin','width=400,height=500');"><img
                                                                 src="<%= request.getContextPath() %>/images/notes.gif" border="0"></a>
                                                         <%
                                                             }
@@ -407,8 +407,8 @@
                                                         <%
                                                             if (displayAllergy.getRemoteFacilityId() == null && securityManager.hasDeleteAccess("_allergies", roleName2$)) {
                                                         %>
-                                                        <a href="<%= request.getContextPath() %>/oscarRx/deleteAllergy.do?ID=<%= String.valueOf(displayAllergy.getId()) %>&demographicNo=<%=demoNo %>&action=<%=actionPath %>"
-                                                           onClick="return confirm('Are you sure you want to set the allergy <%=displayAllergy.getDescription() %> to <%=labelConfirmAction%>?');"><%=labelAction%>
+                                                        <a href="<%= request.getContextPath() %>/oscarRx/deleteAllergy.do?ID=<%=Encode.forUriComponent(String.valueOf(String.valueOf(displayAllergy.getId())))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&action=<%=Encode.forHtmlAttribute(String.valueOf(actionPath))%>"
+                                                           onClick="return confirm('Are you sure you want to set the allergy <%=Encode.forJavaScript(String.valueOf(displayAllergy.getDescription()))%> to <%=Encode.forJavaScript(String.valueOf(labelConfirmAction))%>?');"><%=Encode.forHtml(String.valueOf(labelAction))%>
                                                         </a>
                                                         <% } %>
                                                     </td>
@@ -469,11 +469,11 @@
                                 </tr>
                             </table>
                             &nbsp;
-                            <table bgcolor="#F5F5F5" cellpadding="3" id="advancedSearch" style="<%=shPref%>">
+                            <table bgcolor="#F5F5F5" cellpadding="3" id="advancedSearch" style="<%=Encode.forHtmlAttribute(String.valueOf(shPref))%>">
                                 <tr>
                                     <td colspan="3">Search the following categories: <i>(Listed
                                         general to specific)</i></td>
-                                    <td align="right"><%=showClose%>
+                                    <td align="right"><%=Encode.forHtml(String.valueOf(showClose))%>
                                     </td>
                                 </tr>
 
@@ -535,7 +535,7 @@
                                     sBack = "SearchDrug3.jsp";
                                 }
                             %> <input type=button class="ControlPushButton"
-                                      onclick="javascript:window.location.href='<%=sBack%>';"
+                                      onclick="javascript:window.location.href='<%=Encode.forJavaScript(String.valueOf(sBack))%>';"
                                       value="Back to Search Drug"/></td>
                     </tr>
                     <!----End new rows here-->

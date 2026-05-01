@@ -9,6 +9,8 @@ function refreshAllTabAlerts() {
 function refreshTabAlerts(idval) {
     var url = "../provider/tabAlertsRefresh.jsp";
     $.get(url, {id: idval}, function (data, textStatus) {
+        // Intentional use of .html(): response is trusted server-rendered HTML from tabAlertsRefresh.jsp
+        // containing custom tags (oscar:newLab, oscar:newMessage, etc.) that render badge/count markup.
         $("#" + idval).html(data);
     }, "html");
 }

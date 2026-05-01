@@ -43,6 +43,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String formClass = "GripStrength";
@@ -78,7 +79,7 @@
         var allNumericField = new Array(6, 7, 8, 9, 10, 11, 12, 13);
         var allMatch = null;
 
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         var domValues = new Array(6, 8, 10);
         var nonDomValues = new Array(7, 9, 11);
         var domResult = 12;
@@ -116,14 +117,14 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
-        <!--input type="hidden" name="provider_no" value=<%=request.getParameter("provNo")%> />
-        <input type="hidden" name="provNo" value="<%= request.getParameter("provNo") %>" /-->
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
+        <!--input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%> />
+        <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
 
         <table border="0" cellspacing="0" cellpadding="0" width="740px"
@@ -158,36 +159,36 @@
                                         <td bgcolor="white" align="center">1 = <input type="text"
                                                                                       onchange="javascript: calScore(domValues, domResult);"
                                                                                       name="dom1"
-                                                                                      value="<%= props.getProperty("dom1", "") %>"/>
+                                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dom1", "")))%>"/>
                                         </td>
                                         <td bgcolor="white" align="center">1 = <input type="text"
                                                                                       onchange="javascript: calScore(nonDomValues, nonDomResult);"
                                                                                       name="nonDom1"
-                                                                                      value="<%= props.getProperty("nonDom1", "") %>"/>
+                                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("nonDom1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td bgcolor="white" align="center">2 = <input type="text"
                                                                                       onchange="javascript: calScore(domValues, domResult);"
                                                                                       name="dom2"
-                                                                                      value="<%= props.getProperty("dom2", "") %>"/>
+                                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dom2", "")))%>"/>
                                         </td>
                                         <td bgcolor="white" align="center">2 = <input type="text"
                                                                                       onchange="javascript: calScore(nonDomValues, nonDomResult);"
                                                                                       name="nonDom2"
-                                                                                      value="<%= props.getProperty("nonDom2", "") %>"/>
+                                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("nonDom2", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td bgcolor="white" align="center">3 = <input type="text"
                                                                                       onchange="javascript: calScore(domValues, domResult);"
                                                                                       name="dom3"
-                                                                                      value="<%= props.getProperty("dom3", "") %>"/>
+                                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dom3", "")))%>"/>
                                         </td>
                                         <td bgcolor="white" align="center">3 = <input type="text"
                                                                                       onchange="javascript: calScore(nonDomValues, nonDomResult);"
                                                                                       name="nonDom3"
-                                                                                      value="<%= props.getProperty("nonDom3", "") %>"/>
+                                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("nonDom3", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -196,10 +197,10 @@
                                     <tr>
                                         <td bgcolor="white" align="center">Average = <input
                                                 type="text" readonly="true" name="domAvg"
-                                                value="<%= props.getProperty("domAvg", "") %>"/></td>
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("domAvg", "")))%>"/></td>
                                         <td bgcolor="white" align="center">Average = <input
                                                 type="text" readonly="true" name="nonDomAvg"
-                                                value="<%= props.getProperty("nonDomAvg", "") %>"/></td>
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("nonDomAvg", "")))%>"/></td>
                                     </tr>
                                 </table>
                             </td>
@@ -225,9 +226,9 @@
                                                                                          value="Print"
                                                                                          onclick="javascript:window.print();"/>
                             </td>
-                            <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
+                            <td align="right">Study ID: <%=Encode.forHtml(String.valueOf(props.getProperty("studyID", "N/A")))%>
                                 <input type="hidden" name="studyID"
-                                       value="<%= props.getProperty("studyID", "N/A") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("studyID", "N/A")))%>"/></td>
                         </tr>
                     </table>
                 </td>

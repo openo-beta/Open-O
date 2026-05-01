@@ -30,6 +30,8 @@
 <%@page import="ca.openosp.openo.commn.dao.DocumentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Document" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.utility.PathValidationUtils" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -57,7 +59,20 @@
         filename = request.getParameter("document");
         filetype = request.getParameter("type");
         doc_no = request.getParameter("doc_no");
-        String filePath = docdownload + '/' + filename;
+        if (filename == null || filename.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing document parameter");
+            return;
+        }
+        File docDir = new File(docdownload);
+        File validatedFile = null;
+        try {
+            validatedFile = PathValidationUtils.validatePath(filename, docDir);
+        } catch (SecurityException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        filename = validatedFile.getName();
+        String filePath = validatedFile.getPath();
         if (filetype.compareTo("active") == 0) {
             if (downloadMethod == null) {
                 filePath = request.getContextPath() + "/OscarDocument/document/" + filename;
@@ -71,7 +86,7 @@
               frames.opera
     /cache4/pacing="0" cols="*">
     <frame name="topFrame" scrolling="NO" noresize src="docViewerHead.jsp">
-    <frame name="mainFrame" src="<%=filePath%>">
+    <frame name="mainFrame" src="<%=Encode.forHtmlAttribute(String.valueOf(filePath))%>">
     </frameset>
     <noframes>
         <body bgcolor="#FFFFFF" text="#000000">
@@ -82,7 +97,9 @@
 <%
         } else {
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "inline;filename=\"" + filename + "\"");
+            String sanitizedFilename = filename.replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
+            response.setHeader("X-Content-Type-Options", "nosniff");
+            response.setHeader("Content-Disposition", "inline;filename=\"" + sanitizedFilename + "\"");
             //read the file name.
             File f = new File(filePath);
             InputStream is = new FileInputStream(f);
@@ -107,7 +124,7 @@
             List<Document> documents = documentDao.findActiveByDocumentNo(doc_no_as_int);
 
             for (Document d : documents) {
-                out.print(d.getDocxml());
+                out.print(Encode.forHtml(d.getDocxml()));
             }
         }
     }

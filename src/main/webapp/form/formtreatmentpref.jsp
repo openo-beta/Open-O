@@ -42,6 +42,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String formClass = "TreatmentPref";
@@ -76,7 +77,7 @@
         var choiceFormat = new Array(7, 9);
         var allNumericField = null;
         var allMatch = null;
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
 
     </script>
     <script type="text/javascript" src="formScripts.js">
@@ -96,12 +97,12 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table border="0" cellspacing="0" cellpadding="0" width="740px"
@@ -136,14 +137,14 @@
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="treatmentGr" <%= props.getProperty("treatmentGr", "") %> />
+                                                               name="treatmentGr" <%=Encode.forHtml(String.valueOf(props.getProperty("treatmentGr", "")))%> />
                                             I would prefer to be assigned to the treatment group
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="controlGr" <%= props.getProperty("controlGr", "") %> />
+                                                               name="controlGr" <%=Encode.forHtml(String.valueOf(props.getProperty("controlGr", "")))%> />
                                             I
                                             would prefer to be assigned to the control group
                                         </td>
@@ -151,7 +152,7 @@
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="eitherGr" <%= props.getProperty("eitherGr", "") %> />
+                                                               name="eitherGr" <%=Encode.forHtml(String.valueOf(props.getProperty("eitherGr", "")))%> />
                                             I
                                             have no preference for either group
                                         </td>
@@ -181,9 +182,9 @@
                                                                                          value="Print"
                                                                                          onclick="javascript:window.print();"/>
                             </td>
-                            <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
+                            <td align="right">Study ID: <%=Encode.forHtml(String.valueOf(props.getProperty("studyID", "N/A")))%>
                                 <input type="hidden" name="studyID"
-                                       value="<%= props.getProperty("studyID", "N/A") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("studyID", "N/A")))%>"/></td>
                         </tr>
                     </table>
                 </td>

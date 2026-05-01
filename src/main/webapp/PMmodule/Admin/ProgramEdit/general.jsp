@@ -25,6 +25,7 @@
 <%@ include file="/taglibs.jsp" %>
 <%@ page import="ca.openosp.openo.PMmodule.model.ProgramSignature" %>
 <%@ page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <script>
     function save() {
         var maxAllowed = document.programManagerForm.elements['program.maxAllowed'].value;
@@ -60,49 +61,49 @@
 
 %>
 <input type="hidden" name="old_maxAllowed"
-       value=<%if(p!=null) { %> "<%=p.getMaxAllowed() %>" <%} else { %> "0" <%} %> />
-<input type="hidden" name="old_name" value=<%if(p!=null) { %> "<%=p.getName()%>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_descr" value=<%if(p!=null) { %> "<%=p.getDescription()%>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_type" value=<%if(p!=null) { %> "<%=p.getType()%>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_address" value=<%if(p!=null) { %> "<%=p.getAddress()%>"<%} else { %> "" <%} %> />
-<input type="hidden" name="old_phone" value=<%if(p!=null) { %> "<%=p.getPhone()%>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_fax" value=<%if(p!=null) { %> "<%=p.getFax() %>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_url" value=<%if(p!=null) { %> "<%=p.getUrl()%>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_email" value=<%if(p!=null) { %> "<%=p.getEmail()%>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.getMaxAllowed()))%>" <%} else { %> "0" <%} %> />
+<input type="hidden" name="old_name" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getName()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_descr" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getDescription()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_type" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getType()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_address" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getAddress()))%>"<%} else { %> "" <%} %> />
+<input type="hidden" name="old_phone" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getPhone()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_fax" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getFax()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_url" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getUrl()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_email" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getEmail()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_emergencyNumber"
-       value=<%if(p!=null) { %> "<%=p.getEmergencyNumber()%>"<%} else { %> "" <%} %> />
-<input type="hidden" name="old_location" value=<%if(p!=null) { %> "<%=p.getLocation()%>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.getEmergencyNumber()))%>"<%} else { %> "" <%} %> />
+<input type="hidden" name="old_location" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getLocation()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_programStatus"
-       value=<%if(p!=null) { %> "<%=p.getProgramStatus()%>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_manOrWoman" value=<%if(p!=null) { %> "<%=p.getManOrWoman() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.getProgramStatus()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_manOrWoman" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.getManOrWoman()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_abstinenceSupport"
-       value=<%if(p!=null) { %> "<%=p.getAbstinenceSupport() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.getAbstinenceSupport()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_exclusiveView"
-       value=<%if(p!=null) { %> "<%=p.getExclusiveView() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.getExclusiveView()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_holdingTank"
-       value=<%if(p!=null) { %> "<%=p.isHoldingTank() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.isHoldingTank()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_allowBatchAdmission"
-       value=<%if(p!=null) { %> "<%=p.isAllowBatchAdmission() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.isAllowBatchAdmission()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_allowBatchDischarge"
-       value=<%if(p!=null) { %> "<%=p.isAllowBatchDischarge() %>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_hic" value=<%if(p!=null) { %> "<%=p.isHic() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.isAllowBatchDischarge()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_hic" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.isHic()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_transgender"
-       value=<%if(p!=null) { %> "<%=p.isTransgender() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.isTransgender()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_firstNation"
-       value=<%if(p!=null) { %> "<%=p.isFirstNation() %>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_alcohol" value=<%if(p!=null) { %> "<%=p.isAlcohol()%>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.isFirstNation()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_alcohol" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.isAlcohol()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_physicalHealth"
-       value=<%if(p!=null) { %> "<%=p.isPhysicalHealth() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.isPhysicalHealth()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_mentalHealth"
-       value=<%if(p!=null) { %> "<%=p.isMentalHealth() %>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_housing" value=<%if(p!=null) { %> "<%=p.isHousing() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.isMentalHealth()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_housing" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.isHousing()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_facility_id"
-       value=<%if(p!=null) { %> "<%=p.getFacilityId() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.getFacilityId()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_enableEncounterTime"
-       value=<%if(p!=null) { %> "<%=p.getEnableEncounterTime() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.getEnableEncounterTime()))%>" <%} else { %> "" <%} %> />
 <input type="hidden" name="old_enableEncounterTransportationTime"
-       value=<%if(p!=null) { %> "<%=p.isEnableEncounterTransportationTime() %>" <%} else { %> "" <%} %> />
-<input type="hidden" name="old_enableOCAN" value=<%if(p!=null) { %> "<%=p.isEnableOCAN() %>" <%} else { %> "" <%} %> />
+       value=<%if(p!=null) { %> "<%=Encode.forHtml(String.valueOf(p.isEnableEncounterTransportationTime()))%>" <%} else { %> "" <%} %> />
+<input type="hidden" name="old_enableOCAN" value=<%if(p!=null) { %> "<%=Encode.forHtmlAttribute(String.valueOf(p.isEnableOCAN()))%>" <%} else { %> "" <%} %> />
 
 <div class="tabs">
     <table cellpadding="3" cellspacing="0" border="0">

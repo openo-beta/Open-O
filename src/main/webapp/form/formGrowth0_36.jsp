@@ -19,6 +19,7 @@
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String formClass = "Growth0_36";
     String formLink = "formGrowth0_36.jsp";
@@ -65,7 +66,7 @@
     <script type="text/javascript" language="Javascript">
         function reset() {
             document.forms[0].target = "";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function onPrintStatureWeight(num) {
@@ -230,7 +231,7 @@
             //var mm = eval(str_date.substring(eval(str_date.indexOf("/")+1), str_date.lastIndexOf("/")) - 1);
             //var yyyy  = str_date.substring(eval(str_date.lastIndexOf("/")+1));
             var check_date = new Date(yyyy, mm, dd);
-            str_date = "<%=props.getProperty("dateOfBirth")%>";
+            str_date = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("dateOfBirth")))%>";
             if (document.forms[0].edc.value.length > 9) {
                 str_date = document.forms[0].edc.value;
             }
@@ -302,14 +303,14 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table class="Head" class="hidePrint">
@@ -346,10 +347,10 @@
                             <tr>
                                 <td align="right">Name <input type="text" name="patientName"
                                                               size="50" maxlength="80"
-                                                              value="<%= props.getProperty("patientName", "") %>"
+                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("patientName", "")))%>"
                                                               @oscar.formDB/>
                                     Record # <input type="text" name="recordNo" size="10"
-                                                    maxlength="10" value="<%= props.getProperty("recordNo", "") %>"
+                                                    maxlength="10" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("recordNo", "")))%>"
                                                     @oscar.formDB/></td>
                             </tr>
                         </table>
@@ -359,12 +360,12 @@
                                 <td nowrap>Mother's Stature</td>
                                 <td><input type="text" name="motherStature" size="50"
                                            maxlength="80"
-                                           value="<%= props.getProperty("motherStature", "") %>"
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("motherStature", "")))%>"
                                            @oscar.formDB/></td>
                                 <td nowrap align="right">Gestational Age:</td>
                                 <td><input type="text" name="gestationalAge" size="10"
                                            maxlength="5"
-                                           value="<%= props.getProperty("gestationalAge", "") %>"
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("gestationalAge", "")))%>"
                                            @oscar.formDB/> weeks
                                 </td>
                             </tr>
@@ -372,11 +373,11 @@
                                 <td nowrap>Father's Stature</td>
                                 <td><input type="text" name="fatherStature" size="50"
                                            maxlength="80"
-                                           value="<%= props.getProperty("fatherStature", "") %>"
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("fatherStature", "")))%>"
                                            @oscar.formDB/></td>
                                 <td nowrap align="right">Expected Date of Confinement:</td>
                                 <td><input type="text" name="edc" id="edc" size="10"
-                                           maxlength="10" value="<%= props.getProperty("edc", "") %>"
+                                           maxlength="10" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("edc", "")))%>"
                                            @oscar.formDB/> <img src="<%= request.getContextPath() %>/images/cal.gif" id="edc_cal">
                                 </td>
                             </tr>
@@ -417,26 +418,26 @@
                             <tr align="center">
                                 <td nowrap><input type="text" name="date_<%=i%>"
                                                   id="date_<%=i%>" readonly size="8" maxlength="10"
-                                                  value="<%= props.getProperty("date_"+i, "") %>" @oscar.formDB
+                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date_"+i, "")))%>" @oscar.formDB
                                                   dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif" id="date_<%=i%>_cal">
                                 </td>
                                 <td><input type="text" name="age_<%=i%>"
                                            onDblClick="calcAge(this)" size="1" maxlength="5"
-                                           value="<%= props.getProperty("age_"+i, "") %>" @oscar.formDB/></td>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("age_"+i, "")))%>" @oscar.formDB/></td>
                                 <td><input type="text" name="weight_<%=i%>"
                                            onDblClick="wtEnglish2Metric(this)" size="3" maxlength="6"
-                                           value="<%= props.getProperty("weight_"+i, "") %>" @oscar.formDB/>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight_"+i, "")))%>" @oscar.formDB/>
                                 </td>
                                 <td><input type="text" name="length_<%=i%>"
                                            onDblClick="htEnglish2Metric(this)" size="3" maxlength="6"
-                                           value="<%= props.getProperty("length_"+i, "") %>" @oscar.formDB/>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("length_"+i, "")))%>" @oscar.formDB/>
                                 </td>
                                 <td><input type="text" name="headCirc_<%=i%>"
                                            onDblClick="htEnglish2Metric(this)" size="3" maxlength="6"
-                                           value="<%= props.getProperty("headCirc_"+i, "") %>" @oscar.formDB/>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("headCirc_"+i, "")))%>" @oscar.formDB/>
                                 </td>
                                 <td><input type="text" name="comment_<%=i%>" size="20"
-                                           maxlength="25" value="<%= props.getProperty("comment_"+i, "") %>"
+                                           maxlength="25" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("comment_"+i, "")))%>"
                                            @oscar.formDB/></td>
                             </tr>
                             <% } %>
@@ -480,26 +481,26 @@
                             <tr align="center">
                                 <td nowrap><input type="text" name="date_<%=i%>"
                                                   id="date_<%=i%>" readonly size="8" maxlength="10"
-                                                  value="<%= props.getProperty("date_"+i, "") %>" @oscar.formDB
+                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date_"+i, "")))%>" @oscar.formDB
                                                   dbType="date"/> <img src="<%= request.getContextPath() %>/images/cal.gif" id="date_<%=i%>_cal">
                                 </td>
                                 <td><input type="text" name="age_<%=i%>"
                                            onDblClick="calcAge(this)" size="1" maxlength="5"
-                                           value="<%= props.getProperty("age_"+i, "") %>" @oscar.formDB/></td>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("age_"+i, "")))%>" @oscar.formDB/></td>
                                 <td><input type="text" name="weight_<%=i%>"
                                            onDblClick="wtEnglish2Metric(this)" size="3" maxlength="6"
-                                           value="<%= props.getProperty("weight_"+i, "") %>" @oscar.formDB/>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight_"+i, "")))%>" @oscar.formDB/>
                                 </td>
                                 <td><input type="text" name="length_<%=i%>"
                                            onDblClick="htEnglish2Metric(this)" size="3" maxlength="6"
-                                           value="<%= props.getProperty("length_"+i, "") %>" @oscar.formDB/>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("length_"+i, "")))%>" @oscar.formDB/>
                                 </td>
                                 <td><input type="text" name="headCirc_<%=i%>"
                                            onDblClick="htEnglish2Metric(this)" size="3" maxlength="6"
-                                           value="<%= props.getProperty("headCirc_"+i, "") %>" @oscar.formDB/>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("headCirc_"+i, "")))%>" @oscar.formDB/>
                                 </td>
                                 <td><input type="text" name="comment_<%=i%>" size="20"
-                                           maxlength="25" value="<%= props.getProperty("comment_"+i, "") %>"
+                                           maxlength="25" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("comment_"+i, "")))%>"
                                            @oscar.formDB/></td>
                             </tr>
                             <% } %>

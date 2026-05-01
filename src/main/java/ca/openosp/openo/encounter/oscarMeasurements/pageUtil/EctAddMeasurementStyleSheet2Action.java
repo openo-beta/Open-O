@@ -49,11 +49,12 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.OscarProperties;
 
-
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
 
-public class EctAddMeasurementStyleSheet2Action extends ActionSupport {
+public class EctAddMeasurementStyleSheet2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -70,7 +71,7 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport {
             ArrayList<String> messages = new ArrayList<String>();
             String contextPath = request.getContextPath();
 
-            if (!saveFile(file, fileName)) {
+            if (fileOnDisk == null || fileName == null || fileName.trim().isEmpty() || !saveFile(fileOnDisk, fileName)) {
                 addActionError(getText("errors.fileNotAdded"));
                 response.sendRedirect(contextPath + "/oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet.jsp");
                 return NONE;
@@ -160,22 +161,17 @@ public class EctAddMeasurementStyleSheet2Action extends ActionSupport {
         dao.persist(m);
     }
 
-    private File file;
+    private UploadedFile file;
+    private File fileOnDisk;
     private String fileName; // Name of the uploaded file
 
-    public File getFile() {
-        return file;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.file = uploadedFiles.get(0);
+            this.fileOnDisk = PathValidationUtils.toFile(file);
+            this.fileName = file.getOriginalName();
+        }
     }
 
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileFileName(String fileName) {
-        this.fileName = fileName;
-    }
 }

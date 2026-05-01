@@ -47,6 +47,8 @@
 <%@page import="ca.openosp.openo.commn.dao.DocumentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Document" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.utility.PathValidationUtils" %>
 
 <%
     DocumentDao documentDao = SpringUtils.getBean(DocumentDao.class);
@@ -62,10 +64,25 @@
         filename = request.getParameter("document");
         filetype = request.getParameter("type");
         doc_no = request.getParameter("doc_no");
-        String filePath = docdownload + filename;
+        if (filename == null || filename.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing document parameter");
+            return;
+        }
+        File docDir = new File(docdownload);
+        File validatedFile = null;
+        try {
+            validatedFile = PathValidationUtils.validatePath(filename, docDir);
+        } catch (SecurityException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        filename = validatedFile.getName();
+        String filePath = validatedFile.getPath();
         if (filetype.compareTo("active") == 0) {
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
+            String sanitizedFilename = filename.replaceAll("[\\r\\n]", "").replaceAll("[\\p{Cntrl}]", "");
+            response.setHeader("X-Content-Type-Options", "nosniff");
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + sanitizedFilename + "\"");
             //read the file name.
             File f = new File(filePath);
             InputStream is = new FileInputStream(f);
@@ -86,7 +103,7 @@
 
         } else {
             for (Document d : documentDao.findActiveByDocumentNo(Integer.parseInt(doc_no))) {
-                out.print(d.getDocxml());
+                out.print(Encode.forHtml(d.getDocxml()));
             }
         }
 
