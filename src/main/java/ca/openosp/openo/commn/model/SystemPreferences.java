@@ -40,7 +40,8 @@ public class SystemPreferences extends AbstractModel<Integer> {
     public enum ONEID_KEYS {
         oag_client_id, oag_client_secret, keystore_password,
         endpoint_access_token, endpoint_callback, endpoint_audience,
-        keystore_alias, keystore_path, timeout,endpoint_authorize
+        keystore_alias, keystore_path, timeout,endpoint_authorize, pcoi_key, dhdr_endpoint,
+        dhir_submissionUrl, dhir_endpoint
     }
 
     public enum SCHEDULE_PREFERENCE_KEYS {schedule_display_type, schedule_display_custom_roster_status}

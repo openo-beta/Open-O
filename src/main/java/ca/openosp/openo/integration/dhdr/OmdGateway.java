@@ -29,6 +29,7 @@ import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
 import ca.openosp.openo.commn.model.SystemPreferences;
 
+import ca.openosp.openo.integration.fhircast.Event;
 import ca.openosp.openo.integration.ohcms.CMSManager;
 import ca.openosp.openo.integration.oneId.OneIDTokenUtils;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
@@ -40,6 +41,9 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PKCEUtils;
 import ca.openosp.openo.utility.PathUtils;
 import ca.openosp.openo.utility.SpringUtils;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTCreator;
+import com.auth0.jwt.algorithms.Algorithm;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
@@ -78,7 +82,7 @@ public class OmdGateway {
 
 	private final String KEYSTORE_FILE = "keystore_file";
 	private final String KEYSTORE_PATH = "/opt/labs/olis/oneid.jks";
-	private static Logger logger = MiscUtils.getLogger();
+	private static final Logger logger = MiscUtils.getLogger();
 	
 	protected OMDGatewayTransactionLogDao transactionLogDao = SpringUtils.getBean(OMDGatewayTransactionLogDao.class);
 	private SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(SystemPreferencesDao.class);
@@ -347,7 +351,7 @@ public class OmdGateway {
 		return url;
 	}
 	
-	public Response doPost(LoggedInInfo loggedInInfo, WebClient wc, Event fhirCastEvent) throws TokenExpiredException {
+	public Response doPost(LoggedInInfo loggedInInfo, WebClient wc, Event fhirCastEvent) throws Exception {
 		String consumerKey = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getName();
 		String consumerSecret =systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret).getName();
 		if(loggedInInfo.getOneIdGatewayData().isAccessTokenExpired()) {
@@ -538,7 +542,7 @@ public class OmdGateway {
 			if(response2.getStatus() == 200) {
 				String body = response2.readEntity(String.class);
 				logger.debug("BODY FROM REFRESH "+body);
-				JSONObject respObj = JSONObject.fromObject(body);
+				JSONObject respObj = new JSONObject(body);
 				String accessToken = respObj.getString("access_token");
 				oneIdGatewayData.processAccessToken(accessToken);
 

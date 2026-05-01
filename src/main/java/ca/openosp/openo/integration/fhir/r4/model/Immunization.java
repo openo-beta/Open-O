@@ -157,11 +157,11 @@ public class Immunization<T extends AbstractModel<Integer> & ImmunizationInterfa
     PartialDateDao partialDateDao = SpringUtils.getBean(PartialDateDao.class);
     boolean partialDate = false;
     if (partialDateDao.getPartialDate(PartialDate.PREVENTION, getOscarResource().getId(),
-        PartialDate.PREVENTION_DATE) != null) {
+        PartialDate.PREVENTION_PREVENTIONDATE) != null) {
       String preventionDate = UtilDateUtilities.DateToString(
           getOscarResource().getImmunizationDate(), "yyyy-MM-dd HH:mm");
       String prevDate = partialDateDao.getDatePartial(preventionDate, PartialDate.PREVENTION,
-          getOscarResource().getId(), PartialDate.PREVENTION_DATE);
+          getOscarResource().getId(), PartialDate.PREVENTION_PREVENTIONDATE);
       immunization.getOccurrenceDateTimeType().setValueAsString(prevDate);
       partialDate = true;
     }

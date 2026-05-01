@@ -18,6 +18,7 @@
  */
 package ca.openosp.openo.integration.dhir;
 
+import ca.openosp.openo.integration.fhir.r4.api.DHIR;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
@@ -29,7 +30,6 @@ import org.hl7.fhir.r4.model.Practitioner;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
-import org.oscarehr.integration.fhir.r4.api.DHIR;
 
 import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;

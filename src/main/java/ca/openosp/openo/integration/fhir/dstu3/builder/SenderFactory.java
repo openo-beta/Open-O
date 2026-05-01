@@ -20,6 +20,7 @@ package ca.openosp.openo.integration.fhir.dstu3.builder;
 
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.integration.fhir.dstu3.model.Sender;
 import ca.openosp.openo.integration.fhir.dstu3.resources.Settings;
 import ca.openosp.openo.utility.SpringUtils;
@@ -50,7 +51,7 @@ public final class SenderFactory {
       sender = new Sender(vendorName, softwareName, buildName, senderEndpoint);
     }
     if (clinicDao != null) {
-      org.oscarehr.common.model.Clinic clinic = clinicDao.getClinic();
+      Clinic clinic = clinicDao.getClinic();
       sender.setClinic(clinic);
     }
     return sender;

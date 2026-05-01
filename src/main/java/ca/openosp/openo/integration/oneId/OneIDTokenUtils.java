@@ -18,14 +18,14 @@
  */
 package ca.openosp.openo.integration.oneId;
 
+import ca.openosp.openo.integration.dhdr.OmdGateway;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
-import org.oscarehr.integration.dhdr.OmdGateway;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.apache.logging.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -72,7 +72,7 @@ public class OneIDTokenUtils {
     StringBuilder sb = new StringBuilder(
         "===============================\nDEBUG ONEID TOKEN\n=======================\n");
     try {
-      JSONObject tokens = JSONObject.fromObject(tokenAttr);
+      JSONObject tokens = new JSONObject(tokenAttr);
       sb.append("\n" + tokens.toString(3));
 
       String accessToken = tokens.getString("access_token");
@@ -108,7 +108,7 @@ public class OneIDTokenUtils {
   }
 
   public static void verifyAccessTokenIsValid(LoggedInInfo loggedInInfo,
-      OneIdGatewayData oneIdGatewayData) throws TokenExpiredException {
+                                              OneIdGatewayData oneIdGatewayData) throws TokenExpiredException {
     if (oneIdGatewayData.isAccessTokenExpired()) {
       refreshToken(loggedInInfo, oneIdGatewayData);
     }

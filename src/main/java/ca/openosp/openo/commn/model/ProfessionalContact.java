@@ -26,7 +26,7 @@
 
 package ca.openosp.openo.commn.model;
 
-import ca.openosp.openo.integration.fhir.r4.resources.constants.ContactType;
+import ca.openosp.openo.commn.constants.ContactType;
 
 import javax.persistence.Entity;
 

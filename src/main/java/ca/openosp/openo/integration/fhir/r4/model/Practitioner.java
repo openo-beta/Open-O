@@ -28,7 +28,7 @@ import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointUse;
 
 public class Practitioner extends
-		AbstractOscarFhirResource<org.hl7.fhir.r4.model.Practitioner, org.oscarehr.common.model.Provider> {
+		AbstractOscarFhirResource<org.hl7.fhir.r4.model.Practitioner, Provider> {
 
   public enum LicenseType {CPSO, CNORNP, CNORN, CNORPN, OCP, DEFAULT, CMO}
 

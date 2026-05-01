@@ -5,18 +5,22 @@
  */
 package ca.openosp.openo.utility;
 
-import lombok.NonNull;
+import java.util.Objects;
 
 public class PathUtils {
-  public static String addTrailingSlash(@NonNull final String url) {
-    return !url.endsWith("/") ? url + "/" : url;
-  }
 
-  public static String addLeadingSlash(@NonNull final String url) {
-    return !url.startsWith("/") ? "/" + url : url;
-  }
+    public static String addTrailingSlash(final String url) {
+        Objects.requireNonNull(url, "url must not be null");
+        return !url.endsWith("/") ? url + "/" : url;
+    }
 
-  public static String surroundWithSlashes(@NonNull final String url) {
-    return addLeadingSlash(addTrailingSlash(url));
-  }
+    public static String addLeadingSlash(final String url) {
+        Objects.requireNonNull(url, "url must not be null");
+        return !url.startsWith("/") ? "/" + url : url;
+    }
+
+    public static String surroundWithSlashes(final String url) {
+        Objects.requireNonNull(url, "url must not be null");
+        return addLeadingSlash(addTrailingSlash(url));
+    }
 }

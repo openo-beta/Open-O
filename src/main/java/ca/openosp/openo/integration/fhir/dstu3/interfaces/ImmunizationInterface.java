@@ -18,7 +18,7 @@
  */
 package ca.openosp.openo.integration.fhir.dstu3.interfaces;
 
-import org.oscarehr.common.interfaces.Immunization;
+import ca.openosp.openo.commn.interfaces.Immunization;
 
 /**
  * An interface to be used with any object model that references data for an immunization.

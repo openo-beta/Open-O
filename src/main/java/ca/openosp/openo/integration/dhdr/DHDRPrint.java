@@ -18,6 +18,12 @@ package ca.openosp.openo.integration.dhdr;
  * Ontario, Canada
  */
 
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.printing.FontSettings;
+import ca.openosp.openo.commn.printing.PdfWriterFactory;
+import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -33,15 +39,9 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.printing.FontSettings;
-import org.oscarehr.common.printing.PdfWriterFactory;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import java.awt.*;
 import java.io.OutputStream;
@@ -120,7 +120,7 @@ public class DHDRPrint {
 
       try {
         JSONObject ahfsClassObj = med.getJSONObject("ahfsClass");
-        if (!ahfsClassObj.isEmpty()) {
+        if (ahfsClassObj.length() > 0) {
           table.addCell(getHeaderCell("Therapeutic Class"));
           table.addCell(getItemCell(ahfsClassObj.optString("display"))); // Brand
         }
@@ -129,7 +129,7 @@ public class DHDRPrint {
 
       try {
         JSONObject ahfsSubClassObj = med.getJSONObject("ahfsSubClass");
-        if (!ahfsSubClassObj.isEmpty()) {
+        if (ahfsSubClassObj.length() > 0) {
           table.addCell(getHeaderCell("Therapeutic Sub-Class"));
           table.addCell(getItemCell(ahfsSubClassObj.optString("display"))); // Brand
         }
@@ -143,7 +143,7 @@ public class DHDRPrint {
 
       StringBuilder reasonCodesStr = new StringBuilder();
       JSONArray reasonCodes = med.getJSONArray("reasonCode");
-      for (int i = 0; i < reasonCodes.size(); i++) {
+      for (int i = 0; i < reasonCodes.length(); i++) {
         JSONObject jsonObject = reasonCodes.getJSONObject(i);
 
         reasonCodesStr.append(jsonObject.opt("code") + " -- " + jsonObject.opt("display"));
@@ -175,13 +175,13 @@ public class DHDRPrint {
               med.optString("prescriberLastname")
                   + ", "
                   + med.optString("prescriberFirstname")
-                  + (prescriberLicenceNumberObj.isEmpty()
+                  + (prescriberLicenceNumberObj.length() > 0
                       ? ""
                       : (" ("
                           + prescriberLicenceNumberObj.optString("value")
                           + ")"))));
 
-      if (!prescriberLicenceNumberObj.isEmpty()) {
+      if (prescriberLicenceNumberObj.length() > 0) {
         table.addCell(getHeaderCell("Prescriber ID"));
         table.addCell(
             getItemCell(
@@ -207,7 +207,7 @@ public class DHDRPrint {
               med.optString("pharmacistLastname")
                   + ", "
                   + med.optString("pharmacistFirstname")
-                  + (pharmacistLicenceNumber.isEmpty()
+                  + (pharmacistLicenceNumber.length() > 0
                       ? ""
                       : (" ("
                           + pharmacistLicenceNumber.optString("value")
@@ -285,16 +285,16 @@ public class DHDRPrint {
             "Drug Product", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
     drugProductParagraph.add(
         new Phrase(
-            "(Found " + arr.size() + " Events)",
+            "(Found " + arr.length() + " Events)",
             FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
     drugProductParagraph.add(Chunk.NEWLINE);
     drugProductParagraph.setSpacingAfter(5f);
     document.add(drugProductParagraph);
 
     /////// table
-    if (arr.size() > 0) {
+    if (arr.length() > 0) {
 
-      for (var i = 0; i < arr.size(); i++) {
+      for (var i = 0; i < arr.length(); i++) {
         JSONObject med = arr.getJSONObject(i);
         PdfPTable table = new PdfPTable(new float[] {3, 3, 3, 1.5f, 1.5f, 1, 1});
         table.setSpacingAfter(10f);
@@ -312,7 +312,7 @@ public class DHDRPrint {
       noResults.add(Chunk.NEWLINE);
       document.add(noResults);
     }
-    if (jsonOb.containsKey("services")) {
+    if (jsonOb.has("services")) {
       JSONArray serviceArr = jsonOb.getJSONArray("services");
 
       document.add(Chunk.NEWLINE);
@@ -323,7 +323,7 @@ public class DHDRPrint {
               FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
       servicesProductParagraph.add(
           new Phrase(
-              "(Found " + serviceArr.size() + " Events)",
+              "(Found " + serviceArr.length() + " Events)",
               FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
       servicesProductParagraph.add(Chunk.NEWLINE);
       servicesProductParagraph.setSpacingAfter(5f);
@@ -332,7 +332,7 @@ public class DHDRPrint {
       PdfPTable serviceTable = new PdfPTable(8);
       serviceTable.setWidthPercentage(100.0f);
 
-      if (serviceArr.size() > 0) {
+      if (serviceArr.length() > 0) {
 
         serviceTable.addCell(getHeaderCell("Last Service Date"));
         serviceTable.addCell(getHeaderCell("Pickup Date"));
@@ -344,7 +344,7 @@ public class DHDRPrint {
         serviceTable.addCell(getHeaderCell("Pharmacy Fax"));
         serviceTable.setHeaderRows(1);
 
-        for (int i = 0; i < serviceArr.size(); i++) {
+        for (int i = 0; i < serviceArr.length(); i++) {
           JSONObject med = serviceArr.getJSONObject(i);
 
           serviceTable.addCell(getItemCell(med.optString("whenPrepared"))); // Dispense Date
@@ -382,7 +382,7 @@ public class DHDRPrint {
     addDocumentFooter(loggedInInfo, document);
   }
 
-  private PdfPCell populateSummaryDrugMetaData(PdfPTable table, JSONObject med) {
+  private PdfPCell populateSummaryDrugMetaData(PdfPTable table, JSONObject med) throws JSONException {
     PdfPTable headerTable = new PdfPTable(new float[] {1f, 3f, 1.5f, 3f, 1.5f, 2f});
     PdfPCell header = new PdfPCell(headerTable);
     header.setColspan(12);
@@ -395,15 +395,15 @@ public class DHDRPrint {
     String patientGender = patient.optString("gender");
     String patientHcn = "N/A";
     if (patient.has("identifier")
-        && !patient.getJSONArray("identifier").isEmpty()
+        && patient.getJSONArray("identifier").length() > 0
         && patient.getJSONArray("identifier").getJSONObject(0).has("value")) {
       patientHcn = patient.getJSONArray("identifier").getJSONObject(0).getString("value");
     }
     String patientFirstName = "N/A";
     String patientLastName = "N/A";
-    if (patient.has("name") && !patient.getJSONArray("name").isEmpty()) {
+    if (patient.has("name") && patient.getJSONArray("name").length() > 0) {
       JSONObject name = patient.getJSONArray("name").getJSONObject(0);
-      if (name.has("given") && !name.getJSONArray("given").isEmpty()) {
+      if (name.has("given") && name.getJSONArray("given").length() > 0) {
         patientFirstName = name.getJSONArray("given").getString(0);
       }
       patientLastName = name.optString("family");
@@ -411,7 +411,7 @@ public class DHDRPrint {
 
     JSONObject prescriberLicenceNumberObj = med.getJSONObject("prescriberLicenceNumber");
     String prescriberLicenseNumber =
-        prescriberLicenceNumberObj == null || prescriberLicenceNumberObj.isEmpty()
+        prescriberLicenceNumberObj == null || prescriberLicenceNumberObj.length() > 0
             ? ""
             : " (" + prescriberLicenceNumberObj.optString("value") + ")";
 
@@ -420,7 +420,7 @@ public class DHDRPrint {
             + (med.optString("prescriberLastname").length() > 0 ? ", " : "")
             + med.optString("prescriberFirstname")
             + prescriberLicenseNumber;
-    if (prescriberName.trim().isEmpty()) {
+    if (!prescriberName.trim().isEmpty()) {
       prescriberName = "N/A";
     }
 
@@ -464,7 +464,7 @@ public class DHDRPrint {
         getHeaderCell("Status"));
   }
 
-  private void populateSummaryDrugData(JSONObject med, PdfPTable table) {
+  private void populateSummaryDrugData(JSONObject med, PdfPTable table) throws JSONException {
     table.addCell(getItemCell(med.optString("genericName")));
     JSONObject brandObj = med.getJSONObject("brandName");
     table.addCell(
@@ -638,15 +638,15 @@ public class DHDRPrint {
             "DHDR Drugs", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
     drugProductParagraph.add(
         new Phrase(
-            "(Found " + arr.size() + " Events)",
+            "(Found " + arr.length() + " Events)",
             FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
     drugProductParagraph.add(Chunk.NEWLINE);
     drugProductParagraph.setSpacingAfter(5f);
     document.add(drugProductParagraph);
 
-    if (arr.size() > 0) {
+    if (arr.length() > 0) {
 
-      for (var i = 0; i < arr.size(); i++) {
+      for (var i = 0; i < arr.length(); i++) {
         JSONObject med = arr.getJSONObject(i);
         PdfPTable table = new PdfPTable(new float[] {3, 3, 3, 1.5f, 1.5f, 1, 1});
         table.setSpacingAfter(10f);
@@ -666,7 +666,7 @@ public class DHDRPrint {
       document.add(noResults);
     }
 
-    if (jsonOb.containsKey("services")) {
+    if (jsonOb.has("services")) {
       JSONArray serviceArr = jsonOb.getJSONArray("services");
 
       document.add(Chunk.NEWLINE);
@@ -677,7 +677,7 @@ public class DHDRPrint {
               FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
       servicesProductParagraph.add(
           new Phrase(
-              "(Found " + serviceArr.size() + " Events)",
+              "(Found " + serviceArr.length() + " Events)",
               FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
       servicesProductParagraph.add(Chunk.NEWLINE);
       servicesProductParagraph.setSpacingAfter(5f);
@@ -686,7 +686,7 @@ public class DHDRPrint {
       PdfPTable serviceTable = new PdfPTable(8);
       serviceTable.setWidthPercentage(100.0f);
 
-      if (serviceArr.size() > 0) {
+      if (serviceArr.length() > 0) {
 
         serviceTable.addCell(getHeaderCell("Last Service Date"));
         serviceTable.addCell(getHeaderCell("Pickup Date"));
@@ -698,7 +698,7 @@ public class DHDRPrint {
         serviceTable.addCell(getHeaderCell("Pharmacy #"));
         serviceTable.setHeaderRows(1);
 
-        for (int i = 0; i < serviceArr.size(); i++) {
+        for (int i = 0; i < serviceArr.length(); i++) {
           JSONObject med = serviceArr.getJSONObject(i);
 
           serviceTable.addCell(getItemCell(med.optString("whenPrepared")));
@@ -733,7 +733,7 @@ public class DHDRPrint {
       }
     }
 
-    if (jsonOb.containsKey("localData")) {
+    if (jsonOb.has("localData")) {
       JSONArray localArr = jsonOb.getJSONArray("localData");
 
       document.add(Chunk.NEWLINE);
@@ -744,7 +744,7 @@ public class DHDRPrint {
               FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
       servicesProductParagraph.add(
           new Phrase(
-              "(Found " + localArr.size() + " Events)",
+              "(Found " + localArr.length() + " Events)",
               FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
       servicesProductParagraph.add(Chunk.NEWLINE);
       servicesProductParagraph.setSpacingAfter(5f);
@@ -753,7 +753,7 @@ public class DHDRPrint {
       PdfPTable localTable = new PdfPTable(4);
       localTable.setWidthPercentage(100.0f);
 
-      if (localArr.size() > 0) {
+      if (localArr.length() > 0) {
 
         localTable.addCell(getHeaderCell("Start Date"));
         localTable.addCell(getHeaderCell("Medication"));
@@ -761,7 +761,7 @@ public class DHDRPrint {
         localTable.addCell(getHeaderCell("DIN"));
         localTable.setHeaderRows(1);
 
-        for (int i = 0; i < localArr.size(); i++) {
+        for (int i = 0; i < localArr.length(); i++) {
           JSONObject med = localArr.getJSONObject(i);
           localTable.addCell(getItemCell(med.optString("rxDate")));
           localTable.addCell(getItemCell(med.optString("instructions")));

@@ -18,28 +18,31 @@
  */
 package ca.openosp.openo.integration.dhir;
 
+import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowagie.text.DocumentException;
-import org.apache.log4j.Logger;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.struts2.ActionSupport;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.action.Action;
+import org.apache.struts2.dispatcher.mapper.ActionMapping;
+import org.codehaus.jettison.json.JSONException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class DHIRPrintAction extends Action {
+public class DHIRPrintAction extends ActionSupport {
 
   private static Logger logger = MiscUtils.getLogger();
-  private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+  private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+  private HttpServletRequest request = ServletActionContext.getRequest();
+  private  HttpServletResponse response = ServletActionContext.getResponse();
 
-  public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-      HttpServletResponse response) {
+  public String execute() {
 
     if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request),
         "_prevention", "r", null)) {
@@ -50,15 +53,14 @@ public class DHIRPrintAction extends Action {
       DHIRPrintPdf pdf = new DHIRPrintPdf();
       pdf.printPdf(request, response);
 
-    } catch (DocumentException de) {
+    } catch ( IOException de) {
       logger.error("", de);
-      request.setAttribute("printError", new Boolean(true));
-      return mapping.findForward("error");
-    } catch (IOException ioe) {
-      logger.error("", ioe);
-      request.setAttribute("printError", new Boolean(true));
-      return mapping.findForward("error");
+      request.setAttribute("printError", true);
+      return "error";
+    } catch (JSONException e) {
+        throw new RuntimeException(e);
     }
-    return null;
+      return null;
   }
+
 }

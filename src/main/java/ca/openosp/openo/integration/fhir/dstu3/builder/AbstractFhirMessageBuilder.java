@@ -356,4 +356,16 @@ public abstract class AbstractFhirMessageBuilder<T extends BaseResource> {
 final class ReferenceKey {
   private String className;
   private String id;
+
+  ReferenceKey(String className, String id) {
+    this.className = className;
+    this.id = id;
+  }
+
+  String getClassName() { return className; }
+  void setClassName(String className) { this.className = className; }
+
+  String getId() { return id; }
+  void setId(String id) { this.id = id; }
+
 }

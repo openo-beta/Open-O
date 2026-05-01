@@ -1,4 +1,4 @@
-package ca.openosp.openo.integration.fhir.model;
+package ca.openosp.openo.integration.fhir.dstu3.model;
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -27,16 +27,15 @@ import static org.junit.Assert.*;
 
 import java.util.Calendar;
 
-import ca.openosp.openo.integration.fhir.model.Patient;
 import org.apache.logging.log4j.Logger;
-import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
+
+import org.hl7.fhir.dstu3.model.codesystems.AdministrativeGender;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.Provider;
-//import ca.openosp.openo.managers.DemographicManager;
-//import ca.openosp.openo.util.LoggedInInfo;
+
 import ca.openosp.openo.utility.MiscUtils;
 
 public class PatientTest {

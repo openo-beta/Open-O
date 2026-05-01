@@ -128,11 +128,11 @@ public class Sender {
     this.organization = organization;
   }
 
-  public org.oscarehr.common.model.Clinic getClinic() {
+  public Clinic getClinic() {
     return this.clinic;
   }
 
-  public void setClinic(org.oscarehr.common.model.Clinic clinic) {
+  public void setClinic(Clinic clinic) {
     if (clinic != null) {
       setSenderName(clinic.getClinicName());
       setOscarFhirResource(new Organization<Clinic>(clinic));
@@ -140,7 +140,7 @@ public class Sender {
     this.clinic = clinic;
   }
 
-  public void setClinic(org.oscarehr.common.model.Clinic clinic,
+  public void setClinic(Clinic clinic,
       OscarFhirConfigurationManager configurationManager) {
     if (clinic != null) {
       setSenderName(clinic.getClinicName());

@@ -18,42 +18,19 @@
  */
 package ca.openosp.openo.commn.dao;
 
-import org.oscarehr.common.model.DHIRSubmissionLog;
+import ca.openosp.openo.commn.model.DHIRSubmissionLog;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Nullable;
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class DHIRSubmissionLogDao extends AbstractDao<DHIRSubmissionLog> {
+public interface DHIRSubmissionLogDao extends AbstractDao<DHIRSubmissionLog> {
 
-  public DHIRSubmissionLogDao() {
-    super(DHIRSubmissionLog.class);
-  }
+    List<DHIRSubmissionLog> findAll();
 
-  @SuppressWarnings("unchecked")
-  public List<DHIRSubmissionLog> findAll() {
-    Query query = createQuery("x", null);
-    return query.getResultList();
-  }
+    @Nullable
+    DHIRSubmissionLog findLatestPendingByPreventionId(Integer preventionId);
 
-  @Nullable
-  @SuppressWarnings("unchecked")
-  public DHIRSubmissionLog findLatestPendingByPreventionId(Integer preventionId) {
-    String sqlCommand = "select x from DHIRSubmissionLog x where x.preventionId=?1 and x.status = ?2 order by x.dateCreated DESC";
-    Query query = entityManager.createQuery(sqlCommand);
-    query.setParameter(1, preventionId);
-    query.setParameter(2, "pending");
-    List<DHIRSubmissionLog> results = query.getResultList();
-    return !results.isEmpty() ? results.get(0) : null;
-  }
-
-  @SuppressWarnings("unchecked")
-  public List<DHIRSubmissionLog> findByPreventionId(Integer preventionId) {
-    String sqlCommand = "select x from DHIRSubmissionLog x where x.preventionId=?1 order by x.dateCreated DESC";
-    Query query = entityManager.createQuery(sqlCommand);
-    query.setParameter(1, preventionId);
-    return (List<DHIRSubmissionLog>) query.getResultList();
-  }
+    List<DHIRSubmissionLog> findByPreventionId(Integer preventionId);
 }

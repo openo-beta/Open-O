@@ -1,4 +1,4 @@
-package ca.openosp.openo.integration.fhir.model;
+package ca.openosp.openo.integration.fhir.dstu3.model;
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -23,7 +23,7 @@ package ca.openosp.openo.integration.fhir.model;
  * Ontario, Canada
  */
 
-import ca.openosp.openo.integration.fhir.model.Practitioner;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

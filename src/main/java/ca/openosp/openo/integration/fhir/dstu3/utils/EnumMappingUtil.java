@@ -18,8 +18,8 @@
  */
 package ca.openosp.openo.integration.fhir.dstu3.utils;
 
+import ca.openosp.openo.commn.Gender;
 import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
-import org.oscarehr.common.Gender;
 
 public final class EnumMappingUtil {
 
@@ -29,8 +29,6 @@ public final class EnumMappingUtil {
         return AdministrativeGender.MALE;
       case F:
         return AdministrativeGender.FEMALE;
-      case T:
-        return AdministrativeGender.OTHER;
       case U:
       default:
         return AdministrativeGender.UNKNOWN;

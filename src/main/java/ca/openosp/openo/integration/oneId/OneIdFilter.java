@@ -1,13 +1,13 @@
 package ca.openosp.openo.integration.oneId;
 
-import lombok.val;
-import org.apache.log4j.Logger;
-import org.oscarehr.common.dao.SystemPreferencesDao;
-import org.oscarehr.integration.dhdr.OmdGateway;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SessionConstants;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.commn.dao.SystemPreferencesDao;
+import ca.openosp.openo.commn.model.SystemPreferences;
+import ca.openosp.openo.integration.dhdr.OmdGateway;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SessionConstants;
+import ca.openosp.openo.utility.SpringUtils;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -47,11 +47,11 @@ public class OneIdFilter implements Filter {
         }
         OneIdSession oneIdSession = oneIdSessionDao.find(loggedInUser);
         if (oneIdSession == null) {
-            session.removeAttribute(SessionConstants.OH_GATEWAY_DATA);
+            session.removeAttribute(LoggedInInfo.OH_GATEWAY_DATA);
             chain.doFilter(request, response);
             return;
         }
-        OneIdGatewayData gatewayData = (OneIdGatewayData) session.getAttribute(SessionConstants.OH_GATEWAY_DATA);
+        OneIdGatewayData gatewayData = (OneIdGatewayData) session.getAttribute(LoggedInInfo.OH_GATEWAY_DATA);
         if (gatewayData != null && ((gatewayData.getUao() != null
                 && !gatewayData.getUao().equals(oneIdSession.getUaoUpi())) ||
                 (!gatewayData.getLastKeptActive().equals(oneIdSession.getLastKeptActive())) ||
@@ -62,7 +62,7 @@ public class OneIdFilter implements Filter {
             // If the session exists and is valid, add the data to the OSCAR session
 
             // Get One ID session info here and fill OMDGatewayData
-            val pcoiKey = getPcoiKey();
+            String pcoiKey = getPcoiKey();
             OneIdGatewayData oneIdGatewayData = new OneIdGatewayData();
             oneIdGatewayData.setAccessTokenStr(oneIdSession.getAccessToken());
             oneIdGatewayData.processAccessToken(oneIdSession.getAccessToken());
@@ -80,7 +80,7 @@ public class OneIdFilter implements Filter {
             oneIdGatewayData.setLastKeptActive(oneIdSession.getLastKeptActive());
             oneIdGatewayData.setSso(oneIdSession.isSso());
 
-            session.setAttribute(SessionConstants.OH_GATEWAY_DATA, oneIdGatewayData);
+            session.setAttribute(LoggedInInfo.OH_GATEWAY_DATA, oneIdGatewayData);
             LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(session);
             loggedInInfo.setOneIdGatewayData(oneIdGatewayData);
             LoggedInInfo.setLoggedInInfoIntoSession(session, loggedInInfo);
@@ -91,8 +91,8 @@ public class OneIdFilter implements Filter {
     }
 
     private String getPcoiKey() {
-        val oneIdViewlet = oneIdViewletDao.queryOneIdViewletForKey(
-            systemPreferencesDao.getPreferenceValueByName("oneid.pcoi.key", "")
+        OneIdViewlet oneIdViewlet = oneIdViewletDao.queryOneIdViewletForKey(
+            systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.pcoi_key).getName()
         );
         return oneIdViewlet == null ? "" : oneIdViewlet.getKeyValue();
     }

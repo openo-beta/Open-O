@@ -18,15 +18,16 @@
  */
 package ca.openosp.openo.integration.dhir;
 
+import ca.openosp.openo.utility.MiscUtils;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.DataFormatException;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.Logger;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
-import org.oscarehr.util.MiscUtils;
 
 import java.util.ArrayList;
 import java.util.Date;

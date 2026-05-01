@@ -20,11 +20,11 @@ package ca.openosp.openo.integration.fhir.dstu3.model;
 
 import ca.openosp.openo.integration.fhir.dstu3.exception.MandatoryAttributeException;
 import ca.openosp.openo.integration.fhir.dstu3.manager.OscarFhirConfigurationManager;
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.dstu3.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.dstu3.model.ContactPoint.ContactPointUse;
 import ca.openosp.openo.commn.model.Provider;
-import org.oscarehr.util.MiscUtils;
 
 public class Practitioner extends
 		AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Practitioner, ca.openosp.openo.commn.model.Provider> {

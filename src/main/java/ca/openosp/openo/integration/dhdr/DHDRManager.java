@@ -20,6 +20,7 @@ package ca.openosp.openo.integration.dhdr;
 
 import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -39,8 +40,7 @@ public class DHDRManager extends OmdGateway {
   public String search2(LoggedInInfo loggedInInfo, Demographic demographic, Date startDate,
                         Date endDate, String searchId, Integer pageId) throws Exception {
 
-    String dhdrEndpoint = systemPreferencesDao.getPreferenceValueByName("oneid.dhdr.endpoint",
-        "/MedicationDispense");
+    String dhdrEndpoint = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.dhdr_endpoint).getName();
     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
     WebClient wc = getWebClient(loggedInInfo, dhdrEndpoint);
 

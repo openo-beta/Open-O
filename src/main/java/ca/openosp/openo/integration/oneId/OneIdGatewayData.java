@@ -18,13 +18,15 @@
  */
 package ca.openosp.openo.integration.oneId;
 
+import ca.openosp.openo.utility.MiscUtils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import net.sf.json.JSONObject;
+
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.apache.logging.log4j.Logger;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -106,7 +108,7 @@ public class OneIdGatewayData implements Serializable {
     if (oneIdString != null) {
       this.oneIdString = oneIdString;
       try {
-        tokens = JSONObject.fromObject(oneIdString);
+        tokens = new JSONObject(oneIdString);
         accessTokenStr = tokens.optString("access_token");
         refreshTokenStr = tokens.optString("refresh_token");
         idTokenStr = tokens.optString("id_token");
@@ -116,7 +118,7 @@ public class OneIdGatewayData implements Serializable {
         processRefreshToken(refreshTokenStr);
         processIdToken(idTokenStr);
         processToolBar(toolbarStr);
-        if (tokens.containsKey("hub.topic")) {
+        if (tokens.has("hub.topic")) {
           hubTopic = tokens.getString("hub.topic");
         }
       } catch (Exception e) {
@@ -152,14 +154,14 @@ public class OneIdGatewayData implements Serializable {
     idToken = JWT.decode(idTokenStr);
   }
 
-  public void processToolBar(String toolbarStr) {
+  public void processToolBar(String toolbarStr) throws JSONException {
     logger.debug("toolbar process " + toolbarStr);
     String toolbarStrDecoded = new String(Base64.decodeBase64(toolbarStr));
     logger.debug("toolbarStrDecoded: " + toolbarStrDecoded);
     toolbarStrDecoded = toolbarStrDecoded.replaceAll("[\\u201C\\u201D]",
         "\"");
     logger.debug("toolbarStrDecoded: " + toolbarStrDecoded);
-    endPointToolbar = JSONObject.fromObject(toolbarStrDecoded);
+    endPointToolbar = new JSONObject(toolbarStrDecoded);
     logger.debug("endPointToolbar " + endPointToolbar);
   }
 
@@ -265,9 +267,13 @@ public class OneIdGatewayData implements Serializable {
     if (tokens == null) {
       sb.append("ERROR no token");
     } else {
-      sb.append("\n" + tokens.toString(3));
+        try {
+            sb.append("\n" + tokens.toString(3));
+        } catch (JSONException e) {
+            // do nothing
+        }
 
-      if (accessToken == null) {
+        if (accessToken == null) {
         sb.append("ERROR no access token");
       } else {
         debugDecodedJWT(sb, "Access TOKEN", accessToken);
@@ -276,9 +282,11 @@ public class OneIdGatewayData implements Serializable {
       }
     }
     if (endPointToolbar != null) {
-      for (Object entry : endPointToolbar.entrySet()) {
-        logger.debug("E " + entry);
-        logger.debug("class " + entry.getClass());
+      java.util.Iterator<?> keys = endPointToolbar.keys();
+      while (keys.hasNext()) {
+        String key = (String) keys.next();
+        logger.debug("E " + key + "=" + endPointToolbar.opt(key));
+        logger.debug("class " + endPointToolbar.opt(key).getClass());
       }
     }
 

@@ -18,6 +18,8 @@
  */
 package ca.openosp.openo.integration.fhir.dstu3.model;
 
+import ca.openosp.openo.commn.Gender;
+import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.integration.fhir.dstu3.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.dstu3.utils.EnumMappingUtil;
 import ca.openosp.openo.integration.fhir.dstu3.utils.FhirUtils;
@@ -33,7 +35,7 @@ import org.hl7.fhir.dstu3.model.HumanName.NameUse;
 import org.hl7.fhir.dstu3.model.Identifier;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.oscarehr.common.Gender;
+
 import ca.openosp.openo.commn.model.Demographic;
 
 import java.sql.Date;
@@ -255,7 +257,7 @@ public class Patient extends
    * Set the managing organization.
    */
   public void setManagingOrganization(ca.openosp.openo.commn.model.Clinic clinic) {
-    setManagingOrganization(new Organization<ca.openosp.openo.commn.model.Clinic>(clinic));
+    setManagingOrganization(new Organization<Clinic>(clinic));
   }
 
   /**

@@ -18,28 +18,29 @@
  */
 package ca.openosp.openo.integration.fhir.dstu3.manager;
 
+import ca.openosp.OscarProperties;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicExt;
+import ca.openosp.openo.commn.model.LookupList;
+import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.commn.model.Prevention;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.integration.fhir.dstu3.model.AbstractOscarFhirResource;
 import ca.openosp.openo.integration.fhir.dstu3.model.Immunization;
 import ca.openosp.openo.integration.fhir.dstu3.model.Patient;
 import ca.openosp.openo.integration.fhir.dstu3.model.PerformingPractitioner;
 import ca.openosp.openo.integration.fhir.dstu3.model.Practitioner;
 import ca.openosp.openo.integration.fhir.dstu3.resources.types.PublicHealthUnitType;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.managers.LookupListManager;
+import ca.openosp.openo.managers.PreventionManager;
+import ca.openosp.openo.managers.ProviderManager2;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.hl7.fhir.dstu3.model.Identifier;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.common.model.LookupList;
-import org.oscarehr.common.model.LookupListItem;
-import org.oscarehr.common.model.Prevention;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.managers.LookupListManager;
-import org.oscarehr.managers.PreventionManager;
-import org.oscarehr.managers.ProviderManager2;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+
 import org.springframework.stereotype.Service;
-import oscar.OscarProperties;
-import oscar.log.LogAction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,12 +51,15 @@ import java.util.UUID;
 @Service
 public class OscarFhirResourceManager {
 
-  /**
-   * @param configurationManager
-   * @param demographicNo
-   * @return List<org.oscarehr.integration.fhir.model.Immunization < Prevention> >
-   */
-  public static final List<Immunization<Prevention>> getImmunizationsByDemographicNo(
+    /**
+     * Retrieves a list of immunizations for a specific demographic number.
+     *
+     * @param configurationManager The configuration manager providing access to logged-in user information and general configurations.
+     * @param demographicNo The unique demographic number identifying the individual whose immunization records are to be retrieved.
+     * @return A list of {@code Immunization<Prevention>} objects representing the immunizations associated with the specified demographic number,
+     *         or {@code null} if no immunizations are found.
+     */
+  public static List<Immunization<Prevention>> getImmunizationsByDemographicNo(
 		  OscarFhirConfigurationManager configurationManager, int demographicNo) {
     PreventionManager preventionManager = SpringUtils.getBean(PreventionManager.class);
     //TODO what kind of security check goes here?
@@ -81,12 +85,14 @@ public class OscarFhirResourceManager {
     return immunizations;
   }
 
-  /**
-   * @param configurationManager
-   * @param preventionId
-   * @return org.oscarehr.integration.fhir.model.Immunization<Prevention>
-   */
-  public static final Immunization<Prevention> getImmunizationById(
+    /**
+     * Retrieves an immunization object based on the specified prevention ID.
+     *
+     * @param configurationManager the OscarFhirConfigurationManager instance containing configuration and logged-in user details
+     * @param preventionId the unique identifier of the prevention associated with the immunization
+     * @return an Immunization instance associated with the specified prevention ID, or null if no matching prevention is found
+     */
+  public static Immunization<Prevention> getImmunizationById(
 		  OscarFhirConfigurationManager configurationManager, int preventionId) {
     PreventionManager preventionManager = SpringUtils.getBean(PreventionManager.class);
     Prevention prevention = preventionManager.getPrevention(configurationManager.getLoggedInInfo(),
@@ -102,12 +108,14 @@ public class OscarFhirResourceManager {
     return immunization;
   }
 
-  /**
-   * @param configurationManager
-   * @param demographic_no
-   * @return org.oscarehr.integration.fhir.model.Patient
-   */
-  public static final Patient getPatientByDemographicNumber(
+    /**
+     * Retrieves a patient using a specified demographic number.
+     *
+     * @param configurationManager the configuration manager used to access logged-in information
+     * @param demographic_no the demographic number of the patient to retrieve
+     * @return a Patient object if the demographic exists, otherwise returns null
+     */
+  public static Patient getPatientByDemographicNumber(
 		  OscarFhirConfigurationManager configurationManager, int demographic_no) {
     DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
     Demographic demographic = demographicManager.getDemographic(
@@ -122,13 +130,15 @@ public class OscarFhirResourceManager {
     return patient;
   }
 
-  /**
-   * @param configurationManager
-   * @param hcn
-   * @param hcnType
-   * @return List<org.oscarehr.integration.fhir.model.Patient>
-   */
-  public static final List<Patient> getPatientsByPHN(
+    /**
+     * Retrieves a list of patients based on the provided health card number (PHN) and health card type.
+     *
+     * @param configurationManager The configuration manager used for accessing logged-in information and context.
+     * @param hcn The health card number (PHN) used to search for patients.
+     * @param hcnType The type of the health card number (e.g., provincial, federal) used in the search.
+     * @return A list of patients matching the specified health card number and type, or null if none are found.
+     */
+  public static List<Patient> getPatientsByPHN(
 		  OscarFhirConfigurationManager configurationManager, String hcn, String hcnType) {
     DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
     List<Demographic> demographicList = demographicManager.getActiveDemosByHealthCardNo(
@@ -151,7 +161,21 @@ public class OscarFhirResourceManager {
     return patientList;
   }
 
-  public static final Practitioner getDemographicMostResponsiblePractitioner(
+    /**
+     * Retrieves the Practitioner who is the most responsible provider for a given demographic.
+     *
+     * This method accesses the demographic information and determines the most responsible provider.
+     * If no explicit most-responsible provider is associated with the demographic, the method retrieves
+     * the most-responsible providers list and selects the first provider from the list.
+     *
+     * @param configurationManager the configuration manager containing the logged-in user's context
+     *                             and configuration details
+     * @param demographic_no       the unique identifier of the demographic whose most
+     *                             responsible provider is to be retrieved
+     * @return the Practitioner object representing the most responsible provider for the provided
+     *         demographic, or null if no such provider exists
+     */
+  public static Practitioner getDemographicMostResponsiblePractitioner(
 		  OscarFhirConfigurationManager configurationManager, int demographic_no) {
     DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
     Demographic demographic = demographicManager.getDemographic(
@@ -172,12 +196,15 @@ public class OscarFhirResourceManager {
     return practitioner;
   }
 
-  /**
-   * @param configurationManager
-   * @param providerNo
-   * @return org.oscarehr.integration.fhir.model.PerformingPractitioner
-   */
-  public static final PerformingPractitioner getPerformingPractitionerByProviderNumber(
+    /**
+     * Retrieves the performing practitioner associated with the specified provider number.
+     *
+     * @param configurationManager The configuration manager containing the logged-in user's information.
+     * @param providerNo The provider number for which the performing practitioner needs to be retrieved.
+     * @return The PerformingPractitioner object if a valid provider is found for the given provider number, 
+     *         or null if no matching provider is found.
+     */
+  public static PerformingPractitioner getPerformingPractitionerByProviderNumber(
 		  OscarFhirConfigurationManager configurationManager, String providerNo) {
     ProviderManager2 providerManager = SpringUtils.getBean(ProviderManager2.class);
     Provider provider = providerManager.getProvider(configurationManager.getLoggedInInfo(),
@@ -193,12 +220,15 @@ public class OscarFhirResourceManager {
     return practitioner;
   }
 
-  /**
-   * @param configurationManager
-   * @param providerNo
-   * @return org.oscarehr.integration.fhir.model.Practitioner
-   */
-  public static final Practitioner getPractitionerByProviderNumber(
+    /**
+     * Retrieves a Practitioner based on the given provider number.
+     *
+     * @param configurationManager An instance of OscarFhirConfigurationManager used to obtain configuration and logged-in information.
+     * @param providerNo           The provider number used to identify the desired provider.
+     * @return A Practitioner object representing the provider associated with the given provider number,
+     *         or null if no such provider is found.
+     */
+  public static Practitioner getPractitionerByProviderNumber(
 		  OscarFhirConfigurationManager configurationManager, String providerNo) {
     ProviderManager2 providerManager = SpringUtils.getBean(ProviderManager2.class);
     Provider provider = providerManager.getProvider(configurationManager.getLoggedInInfo(),
@@ -219,7 +249,7 @@ public class OscarFhirResourceManager {
    * Bundle The returned HashSet contains: - Immunizations - Patient - SubmittingPractitioner -
    * PerformingPractitioner
    */
-  public static final HashSet<AbstractOscarFhirResource<?, ?>> getImmunizationResourceBundle(
+  public static HashSet<AbstractOscarFhirResource<?, ?>> getImmunizationResourceBundle(
       OscarFhirConfigurationManager configurationManager,
       Patient patient,
       HashSet<AbstractOscarFhirResource<?, ?>> resourceList) {
@@ -238,7 +268,7 @@ public class OscarFhirResourceManager {
    * Bundle The returned HashSet contains: - Immunizations - Patient - SubmittingPractitioner -
    * PerformingPractitioner
    */
-  public static final HashSet<AbstractOscarFhirResource<?, ?>> getImmunizationResourceBundle(
+  public static HashSet<AbstractOscarFhirResource<?, ?>> getImmunizationResourceBundle(
 		  OscarFhirConfigurationManager configurationManager,
 		  Patient patient, int preventionId,
 		  HashSet<AbstractOscarFhirResource<?, ?>> resourceList) {
@@ -253,12 +283,16 @@ public class OscarFhirResourceManager {
     return resourceList;
   }
 
-  /**
-   * @param configurationManager
-   * @param demographicNo
-   * @return org.hl7.fhir.dstu3.model.Organization
-   */
-  public static final org.hl7.fhir.dstu3.model.Organization getPublicHealthUnit(
+    /**
+     * Retrieves the public health unit as an HL7 FHIR Organization resource based on the
+     * provided demographic number and configuration manager.
+     *
+     * @param configurationManager the configuration manager providing logged-in user information and settings
+     * @param demographicNo the demographic number associated with the public health unit
+     * @return the public health unit as an {@code org.hl7.fhir.dstu3.model.Organization} object,
+     *         or {@code null} if the public health unit cannot be determined
+     */
+  public static org.hl7.fhir.dstu3.model.Organization getPublicHealthUnit(
 		  OscarFhirConfigurationManager configurationManager, int demographicNo) {
 
     DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
@@ -352,7 +386,7 @@ public class OscarFhirResourceManager {
    * @param phuId
    * @return
    */
-  private static final PublicHealthUnitType getPublicHealthUnitType(
+  private static PublicHealthUnitType getPublicHealthUnitType(
 		  OscarFhirConfigurationManager configurationManager, String phuId) {
     PublicHealthUnitType publicHealthUnitType = null;
     LookupListItem lookupListItem = null;

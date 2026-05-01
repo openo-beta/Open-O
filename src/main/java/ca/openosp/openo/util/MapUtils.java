@@ -3,10 +3,9 @@
  * General Public License, Version 2, 1991 (GPLv2). License details are available via
  * "gnu.org/licenses/gpl-2.0.html".
  */
-package ca.kai.util;
+package ca.openosp.openo.util;
 
 import java.util.Map;
-import lombok.NonNull;
 
 public class MapUtils {
 
@@ -18,7 +17,7 @@ public class MapUtils {
    * @param value the value to return if the key does not exist in the map
    * @return the mapped result, or value if the key does not exist in the map
    */
-  public static <K, V> V getOrDefault(final @NonNull Map<K, V> map, final K key, final V value) {
+  public static <K, V> V getOrDefault(final Map<K, V> map, final K key, final V value) {
     return map.containsKey(key) ? map.get(key) : value;
   }
 }

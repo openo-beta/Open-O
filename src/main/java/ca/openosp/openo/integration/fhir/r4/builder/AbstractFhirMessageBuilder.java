@@ -338,9 +338,37 @@ public abstract class AbstractFhirMessageBuilder<T extends BaseResource> {
   }
 }
 
-@Data
-@AllArgsConstructor
 final class ReferenceKey {
-  private String className;
-  private String id;
+    private String className;
+    private String id;
+
+    ReferenceKey(String className, String id) {
+        this.className = className;
+        this.id = id;
+    }
+
+    String getClassName() { return className; }
+    void setClassName(String className) { this.className = className; }
+
+    String getId() { return id; }
+    void setId(String id) { this.id = id; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReferenceKey)) return false;
+        ReferenceKey that = (ReferenceKey) o;
+        return java.util.Objects.equals(className, that.className) &&
+            java.util.Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(className, id);
+    }
+
+    @Override
+    public String toString() {
+        return "ReferenceKey{className='" + className + "', id='" + id + "'}";
+    }
 }

@@ -25,4 +25,15 @@ public enum FhirDestination {
 
   private final String title;
   private final String endpoint;
+
+  FhirDestination(String title, String endpoint) {
+    this.title = title;
+    this.endpoint = endpoint;
+  }
+  public String getTitle() {
+    return title;
+  }
+  public String getEndpoint() {
+    return endpoint;
+  }
 }

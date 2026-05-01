@@ -19,6 +19,16 @@ package ca.openosp.openo.integration.dhir;
  * Ontario, Canada
  */
 
+import ca.openosp.openo.commn.dao.PreventionDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Prevention;
+import ca.openosp.openo.commn.printing.FontSettings;
+import ca.openosp.openo.commn.printing.PdfWriterFactory;
+import ca.openosp.openo.integration.oneId.TokenExpiredException;
+import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -33,25 +43,19 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
-import org.oscarehr.common.dao.PreventionDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Prevention;
-import org.oscarehr.common.printing.FontSettings;
-import org.oscarehr.common.printing.PdfWriterFactory;
-import org.oscarehr.integration.TokenExpiredException;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,14 +93,14 @@ public class DHIRPrintPdf {
   }
 
   public void printPdf(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, DocumentException {
+      throws IOException, DocumentException, JSONException {
     response.setContentType("application/pdf");  //octet-stream
     response.setHeader("Content-Disposition", "attachment; filename=\"DHIR.pdf\"");
     printPdf(request, response.getOutputStream());
   }
 
   public void printPdf(HttpServletRequest request, OutputStream outputStream)
-      throws IOException, DocumentException {
+      throws IOException, DocumentException, JSONException {
 
     String demoNo = request.getParameter("demographicNo");
     Demographic demo = demographicManager.getDemographic(
@@ -360,7 +364,7 @@ public class DHIRPrintPdf {
               v.put("system", c.getSystem());
               v.put("code", c.getCode());
               v.put("display", c.getDisplay());
-              vaccineCodes.add(v);
+              vaccineCodes.put(v);
             }
             rec.put("vaccineCodes", vaccineCodes);
             rec.put("targetDisease", emptyIfNull(ir.getTargetDisease()));
@@ -376,7 +380,7 @@ public class DHIRPrintPdf {
 
             rec.put("dateGenerated", dateGenerated);
 
-            if (vaccineCodes.size() > 0) {
+            if (vaccineCodes.length() > 0) {
 
               if (mapByStatusVaccine.get(c.getDisplay()) == null) {
                 List<JSONObject> jList = new ArrayList<JSONObject>();
@@ -386,7 +390,7 @@ public class DHIRPrintPdf {
                 List<JSONObject> jList = mapByStatusVaccine.get(c.getDisplay());
                 jList.add(rec);
               }
-              recommendationsVaccine.add(rec);
+              recommendationsVaccine.put(rec);
             } else {
               if (mapByStatusDisease.get(c.getDisplay()) == null) {
                 List<JSONObject> jList = new ArrayList<JSONObject>();
@@ -396,19 +400,19 @@ public class DHIRPrintPdf {
                 List<JSONObject> jList = mapByStatusDisease.get(c.getDisplay());
                 jList.add(rec);
               }
-              recommendationsDisease.add(rec);
+              recommendationsDisease.put(rec);
             }
           }
 
           for (String key : mapByStatusVaccine.keySet()) {
             JSONArray arr = new JSONArray();
-            arr.addAll(mapByStatusVaccine.get(key));
+            arr.put(mapByStatusVaccine.get(key));
             rec2.put(key, arr);
           }
 
           for (String key : mapByStatusDisease.keySet()) {
             JSONArray arr = new JSONArray();
-            arr.addAll(mapByStatusDisease.get(key));
+            arr.put(mapByStatusDisease.get(key));
             rec3.put(key, arr);
           }
 
@@ -437,7 +441,7 @@ public class DHIRPrintPdf {
       JSONArray a3 = rec2.getJSONArray("Eligible but not due");
       JSONArray a4 = rec2.getJSONArray("Up to date");
 
-      int maxSize = NumberUtils.max(a1.size(), a2.size(), a3.size(), a4.size());
+      int maxSize = NumberUtils.max(a1.length(), a2.length(), a3.length(), a4.length());
 
       for (int x = 0; x < maxSize; x++) {
         JSONObject j1, j2, j3, j4;
@@ -477,7 +481,7 @@ public class DHIRPrintPdf {
       JSONArray b3 = rec2.getJSONArray("Eligible but not due");
       JSONArray b4 = rec2.getJSONArray("Up to date");
 
-      int maxSizeD = NumberUtils.max(a1.size(), a2.size(), a3.size(), a4.size());
+      int maxSizeD = NumberUtils.max(a1.length(), a2.length(), a3.length(), a4.length());
 
       for (int x = 0; x < maxSizeD; x++) {
         JSONObject j1, j2, j3, j4;
@@ -543,7 +547,7 @@ public class DHIRPrintPdf {
     return cell;
   }
 
-  private PdfPCell getForecastItemCell(JSONObject data) {
+  private PdfPCell getForecastItemCell(JSONObject data) throws JSONException {
     Font font = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.NORMAL, Color.BLACK);
     Font boldFont = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.BOLD, Color.BLACK);
 
@@ -556,12 +560,12 @@ public class DHIRPrintPdf {
     if (data.getString("targetDisease") != null && data.getString("targetDisease").length() > 0) {
       cell.addElement(new Phrase(data.getString("targetDisease"), boldFont));
     }
-    if (data.getJSONArray("vaccineCodes") != null && data.getJSONArray("vaccineCodes").size() > 0) {
+    if (data.getJSONArray("vaccineCodes") != null && data.getJSONArray("vaccineCodes").length() > 0) {
       cell.addElement(
           new Phrase(((JSONObject) data.getJSONArray("vaccineCodes").get(0)).getString("display"),
               boldFont));
     }
-    if (data.getJSONArray("vaccineCodes") != null && data.getJSONArray("vaccineCodes").size() > 1) {
+    if (data.getJSONArray("vaccineCodes") != null && data.getJSONArray("vaccineCodes").length() > 1) {
       cell.addElement(
           new Phrase(((JSONObject) data.getJSONArray("vaccineCodes").get(1)).getString("display"),
               boldFont));

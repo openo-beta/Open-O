@@ -24,8 +24,8 @@
 package ca.openosp.openo.commn.model;
 
 import ca.openosp.openo.integration.fhir.r4.interfaces.ContactInterface;
-import ca.openosp.openo.integration.fhir.r4.resources.constants.ContactRelationship;
-import ca.openosp.openo.integration.fhir.r4.resources.constants.ContactType;
+import ca.openosp.openo.commn.constants.ContactRelationship;
+import ca.openosp.openo.commn.constants.ContactType;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Column;

@@ -23,4 +23,11 @@ public enum Region {
   BC("British Columbia");
 
   private final String description;
+
+  Region(String description) {
+    this.description = description;
+  }
+  public String getDescription() {
+    return description;
+  }
 }

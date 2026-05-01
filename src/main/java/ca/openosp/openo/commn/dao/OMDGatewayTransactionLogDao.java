@@ -18,14 +18,14 @@
  */
 package ca.openosp.openo.commn.dao;
 
-import org.oscarehr.common.model.OMDGatewayTransactionLog;
+import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class OMDGatewayTransactionLogDao extends AbstractDao<OMDGatewayTransactionLog> {
+public class OMDGatewayTransactionLogDao extends AbstractDaoImpl<OMDGatewayTransactionLog> {
 
   public OMDGatewayTransactionLogDao() {
     super(OMDGatewayTransactionLog.class);

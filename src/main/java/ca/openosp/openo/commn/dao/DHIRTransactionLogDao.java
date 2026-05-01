@@ -18,13 +18,10 @@
  */
 package ca.openosp.openo.commn.dao;
 
-import org.oscarehr.common.model.DHIRTransactionLog;
+import ca.openosp.openo.commn.model.DHIRTransactionLog;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class DHIRTransactionLogDao extends AbstractDao<DHIRTransactionLog> {
+public interface DHIRTransactionLogDao extends AbstractDao<DHIRTransactionLog> {
 
-  public DHIRTransactionLogDao() {
-    super(DHIRTransactionLog.class);
-  }
 }

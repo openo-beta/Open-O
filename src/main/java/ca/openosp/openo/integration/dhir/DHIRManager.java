@@ -20,6 +20,7 @@ package ca.openosp.openo.integration.dhir;
 
 import ca.openosp.openo.PMmodule.dao.SecUserRoleDao;
 import ca.openosp.openo.PMmodule.model.SecUserRole;
+import ca.openosp.openo.commn.dao.DHIRTransactionLogDao;
 import ca.openosp.openo.commn.dao.SecObjPrivilegeDao;
 import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.DHIRTransactionLog;
@@ -31,13 +32,17 @@ import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.integration.dhdr.AuditInfo;
 import ca.openosp.openo.integration.dhdr.OmdGateway;
 import ca.openosp.openo.integration.oneId.TokenExpiredException;
+import ca.openosp.openo.managers.MessagingManager;
+import ca.openosp.openo.messenger.data.MessengerSystemMessage;
+import ca.openosp.openo.messenger.data.MsgMessageData;
 import ca.openosp.openo.messenger.data.MsgProviderData;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.uhn.fhir.context.FhirContext;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.Logger;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.OperationOutcome;
@@ -58,10 +63,11 @@ public class DHIRManager extends OmdGateway {
 
   private static HashSet<String> doNotSentMsgForOuttage = new HashSet<String>();
   Logger logger = MiscUtils.getLogger();
-  private DHIRTransactionLogDao dhirTransactionLogDao = SpringUtils.getBean(
+  private final DHIRTransactionLogDao dhirTransactionLogDao = SpringUtils.getBean(
       DHIRTransactionLogDao.class);
-  private SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(
+  private final SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(
       SystemPreferencesDao.class);
+  private static final MessagingManager messagingManager = SpringUtils.getBean(MessagingManager.class);
 
   protected static void notifyDHIRError(LoggedInInfo loggedInInfo, String errorMsg) {
     HashSet<String> sendToProviderList = new HashSet<String>();
@@ -107,26 +113,21 @@ public class DHIRManager extends OmdGateway {
         + " but there was an error during the task.\n\nSee below and DHIR log for further details:\n"
         + errorMsg;
 
-    oscar.oscarMessenger.data.MsgMessageData messageData = new oscar.oscarMessenger.data.MsgMessageData();
 
-    ArrayList<MsgProviderData> sendToProviderListData = new ArrayList<MsgProviderData>();
-    for (String providerNo : sendToProviderList) {
-      MsgProviderData mpd = new MsgProviderData(providerNo, "145");
-      sendToProviderListData.add(mpd);
-    }
+    MessengerSystemMessage messengerSystemMessage = new MessengerSystemMessage(sendToProviderList.toArray(new String[0]));
+    messengerSystemMessage.setSubject("DHIR Communication Error");
+    messengerSystemMessage.setMessage(message);
+    messagingManager.sendSystemMessage(loggedInInfo, messengerSystemMessage);
 
-    String sentToString = messageData.createSentToString(sendToProviderListData);
-    messageData.sendMessage2(message, "DHIR Communication Error", "System", sentToString, "-1",
-        sendToProviderListData, null, null, OscarMsgType.GENERAL_TYPE);
   }
 
   public Response submitImmunizations(LoggedInInfo loggedInInfo, String bundleJSON,
       Integer demographicNo, String uuid) throws Exception {
-    String submissionURL = systemPreferencesDao.getPreferenceValueByName("oneid.dhir.submissionUrl", "");
+    String submissionURL = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.dhir_submissionUrl).getName();
     WebClient wc = getWebClientWholeURL(loggedInInfo, submissionURL);
 
     String consumerKey = getConsumerKey();
-    String consumerSecret = systemPreferencesDao.getPreferenceValueByName(SystemPreferences.ONEID_KEYS.oag_client_secret);
+    String consumerSecret = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret).getName();
     if (loggedInInfo.getOneIdGatewayData().isAccessTokenExpired()) {
       throw new TokenExpiredException();
     }
@@ -220,8 +221,7 @@ public class DHIRManager extends OmdGateway {
       String firstName, Date startDate, Date endDate, List<OperationOutcome> outcomes)
       throws Exception {
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    String dhirEndpoint = systemPreferencesDao.getPreferenceValueByName("oneid.dhir.endpoint",
-        "/Immunization");
+    String dhirEndpoint = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.dhir_endpoint).getName();
 
     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
     FhirContext ctx = FhirContext.forR4();
@@ -296,8 +296,7 @@ public class DHIRManager extends OmdGateway {
       String hin, String dob, Date startDate, Date endDate, List<OperationOutcome> outcomes)
       throws Exception {
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    String dhirEndpoint = systemPreferencesDao.getPreferenceValueByName("oneid.dhir.endpoint",
-        "/Immunization");
+    String dhirEndpoint = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.dhir_endpoint).getName();
 
     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
     FhirContext ctx = FhirContext.forR4();

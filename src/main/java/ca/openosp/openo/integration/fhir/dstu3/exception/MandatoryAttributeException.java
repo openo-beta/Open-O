@@ -22,4 +22,8 @@ public class MandatoryAttributeException extends Exception {
   public MandatoryAttributeException() {
     super("This attribute is mandatory. It was found to be null or empty.");
   }
+
+    public MandatoryAttributeException(String message) {
+        super(message);
+    }
 }

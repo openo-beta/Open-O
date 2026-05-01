@@ -24,9 +24,8 @@
 
 package ca.openosp.openo.commn.model;
 
-import ca.openosp.openo.integration.fhir.r4.interfaces.ContactInterface;
-import ca.openosp.openo.integration.fhir.r4.resources.constants.ContactRelationship;
-import ca.openosp.openo.integration.fhir.r4.resources.constants.ContactType;
+import ca.openosp.openo.commn.constants.ContactRelationship;
+import ca.openosp.openo.commn.constants.ContactType;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import javax.persistence.Column;
@@ -44,7 +43,8 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "clinic")
-public class Clinic extends AbstractModel<Integer> implements Serializable, ContactInterface {
+public class Clinic extends AbstractModel<Integer> implements Serializable, ca.openosp.openo.integration.fhir.dstu3.interfaces.ContactInterface,
+    ca.openosp.openo.integration.fhir.r4.interfaces.ContactInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

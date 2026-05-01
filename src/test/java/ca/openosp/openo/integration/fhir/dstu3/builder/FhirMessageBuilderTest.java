@@ -1,4 +1,4 @@
-package ca.openosp.openo.integration.fhir.builder;
+package ca.openosp.openo.integration.fhir.dstu3.builder;
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -29,7 +29,16 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashSet;
 
-import ca.openosp.openo.integration.fhir.builder.FhirBundleBuilder;
+import ca.openosp.openo.integration.fhir.dstu3.manager.OscarFhirConfigurationManager;
+import ca.openosp.openo.integration.fhir.dstu3.model.AbstractOscarFhirResource;
+import ca.openosp.openo.integration.fhir.dstu3.model.Immunization;
+import ca.openosp.openo.integration.fhir.dstu3.model.Patient;
+import ca.openosp.openo.integration.fhir.dstu3.model.PerformingPractitioner;
+import ca.openosp.openo.integration.fhir.dstu3.model.SubmittingPractitioner;
+import ca.openosp.openo.integration.fhir.dstu3.resources.Settings;
+import ca.openosp.openo.integration.fhir.dstu3.resources.constants.FhirDestination;
+import ca.openosp.openo.integration.fhir.dstu3.resources.constants.Region;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import ca.openosp.openo.commn.model.Clinic;
@@ -37,16 +46,11 @@ import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.Prevention;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.Security;
-import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
-import ca.openosp.openo.integration.fhir.model.Immunization;
-import ca.openosp.openo.integration.fhir.model.AbstractOscarFhirResource;
-import ca.openosp.openo.integration.fhir.model.Patient;
-import ca.openosp.openo.integration.fhir.model.PerformingPractitioner;
-import ca.openosp.openo.integration.fhir.model.SubmittingPractitioner;
-import ca.openosp.openo.integration.fhir.resources.Settings;
-import ca.openosp.openo.integration.fhir.resources.constants.FhirDestination;
-import ca.openosp.openo.integration.fhir.resources.constants.Region;
+
 import ca.openosp.openo.utility.LoggedInInfo;
+
+import static org.hl7.fhir.dstu3.model.ResourceType.Immunization;
+import static org.hl7.fhir.dstu3.model.ResourceType.Patient;
 
 public class FhirMessageBuilderTest {
 

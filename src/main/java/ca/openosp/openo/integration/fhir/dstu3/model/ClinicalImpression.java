@@ -18,10 +18,11 @@
  */
 package ca.openosp.openo.integration.fhir.dstu3.model;
 
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.utility.MiscUtils;
 import org.hl7.fhir.dstu3.model.Attachment;
 import org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus;
-import org.oscarehr.caisi_integrator.util.MiscUtils;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
+
 import ca.openosp.openo.commn.model.AbstractModel;
 
 import javax.xml.bind.DatatypeConverter;

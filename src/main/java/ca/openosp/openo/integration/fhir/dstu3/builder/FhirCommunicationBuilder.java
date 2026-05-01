@@ -18,6 +18,7 @@
  */
 package ca.openosp.openo.integration.fhir.dstu3.builder;
 
+import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.integration.fhir.dstu3.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.dstu3.model.AbstractOscarFhirResource;
 import ca.openosp.openo.integration.fhir.dstu3.model.Destination;
@@ -30,7 +31,6 @@ import org.hl7.fhir.dstu3.model.Communication.CommunicationPayloadComponent;
 import org.hl7.fhir.dstu3.model.Communication.CommunicationStatus;
 import org.hl7.fhir.dstu3.model.Organization;
 import org.hl7.fhir.dstu3.model.Resource;
-import org.oscarehr.common.model.Clinic;
 
 import java.sql.Date;
 import java.util.List;

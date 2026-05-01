@@ -46,6 +46,30 @@ public final class LoggedInInfo implements Serializable {
 
     public final String LOGGED_IN_INFO_KEY = LoggedInInfo.class.getName() + ".LOGGED_IN_INFO_KEY";
 
+    /** Session key for current program ID in the infirmary view */
+    public static final String CURRENT_PROGRAM_ID = "infirmaryView_programId";
+
+    /** Session key for the currently selected facility */
+    public static final String CURRENT_FACILITY = "currentFacility";
+
+    /** Session key indicating if intake client is dependent of a family */
+    public static final String INTAKE_CLIENT_IS_DEPENDENT_OF_FAMILY = "isClientDependentOfFamily";
+
+    /** Session key for the logged-in provider information */
+    public static final String LOGGED_IN_PROVIDER = "providers";
+
+    /** Session key for the logged-in user's security context */
+    public static final String LOGGED_IN_SECURITY = "loggedInSecurity";
+
+    /** Session key for the logged-in provider's preferences */
+    public static final String LOGGED_IN_PROVIDER_PREFERENCE = "providerPreference";
+
+    /** Session key indicating if the integrator is offline */
+    public static final String INTEGRATOR_OFFLINE = "integratorOffline";
+
+    public static final String LOGIN_TYPE = "loginType";
+    public static final String OH_GATEWAY_DATA="ohGateWayData";
+
     private HttpSession session = null;
     private Facility currentFacility = null;
     private Provider loggedInProvider = null;
@@ -238,5 +262,9 @@ public final class LoggedInInfo implements Serializable {
 			}
 		}
 		return request.getRemoteAddr();
+    }
+
+    public String getLoggedInInfoKey() {
+        return LOGGED_IN_INFO_KEY;
     }
 }

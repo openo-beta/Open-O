@@ -18,8 +18,8 @@
  */
 package ca.openosp.openo.integration.fhir.dstu3.interfaces;
 
-import ca.openosp.openo.integration.fhir.dstu3.resources.constants.ContactRelationship;
-import ca.openosp.openo.integration.fhir.dstu3.resources.constants.ContactType;
+import ca.openosp.openo.commn.constants.ContactRelationship;
+import ca.openosp.openo.commn.constants.ContactType;
 
 /**
  * An interface used for all contact types in Oscar. 

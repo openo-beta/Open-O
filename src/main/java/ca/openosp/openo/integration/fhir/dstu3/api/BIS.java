@@ -18,6 +18,7 @@
  */
 package ca.openosp.openo.integration.fhir.dstu3.api;
 
+import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.integration.fhir.dstu3.builder.FhirCommunicationBuilder;
 import ca.openosp.openo.integration.fhir.dstu3.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.dstu3.manager.OscarFhirResourceManager;
@@ -26,10 +27,9 @@ import ca.openosp.openo.integration.fhir.dstu3.model.Patient;
 import ca.openosp.openo.integration.fhir.dstu3.resources.Settings;
 import ca.openosp.openo.integration.fhir.dstu3.resources.constants.FhirDestination;
 import ca.openosp.openo.integration.fhir.dstu3.resources.constants.Region;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.hl7.fhir.dstu3.model.Attachment;
 import org.hl7.fhir.dstu3.model.Organization;
-import org.oscarehr.common.model.Clinic;
-import org.oscarehr.util.LoggedInInfo;
 
 public class BIS {
 

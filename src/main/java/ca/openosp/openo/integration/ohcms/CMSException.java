@@ -18,8 +18,20 @@
  */
 package ca.openosp.openo.integration.ohcms;
 
-import lombok.experimental.StandardException;
-
-@StandardException
 public class CMSException extends Exception {
+
+    public CMSException() {
+    }
+
+    public CMSException(String message) {
+        super(message);
+    }
+
+    public CMSException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public CMSException(Throwable cause) {
+        super(cause);
+    }
 }

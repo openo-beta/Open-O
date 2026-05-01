@@ -528,6 +528,14 @@
             <version>2.10.9.2</version>
         </dependency>
 
+      <!-- support for oneID only-->
+      <dependency>
+        <groupId>com.auth0</groupId>
+        <artifactId>java-jwt</artifactId>
+        <version>4.5.1</version>
+        <scope>compile</scope>
+      </dependency>
+
         <dependency>
             <groupId>com.onelogin</groupId>
             <artifactId>java-saml</artifactId>

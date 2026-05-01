@@ -18,17 +18,19 @@
  */
 package ca.openosp.openo.integration.fhir.dstu3.model;
 
+import ca.openosp.openo.commn.dao.CVCImmunizationDao;
 import ca.openosp.openo.integration.fhir.dstu3.interfaces.ImmunizationInterface;
 import ca.openosp.openo.integration.fhir.dstu3.manager.OscarFhirConfigurationManager;
-import org.apache.commons.lang.StringUtils;
+
+import ca.openosp.openo.utility.SpringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus;
 import org.hl7.fhir.dstu3.model.Reference;
-import org.oscarehr.common.dao.CVCImmunizationDao;
+
 import ca.openosp.openo.commn.model.AbstractModel;
 import ca.openosp.openo.commn.model.CVCImmunization;
 import ca.openosp.openo.commn.model.Prevention;
-import org.oscarehr.util.SpringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

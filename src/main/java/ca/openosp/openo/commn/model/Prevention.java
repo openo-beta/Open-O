@@ -23,7 +23,7 @@
 
 package ca.openosp.openo.commn.model;
 
-import ca.openosp.openo.integration.fhir.r4.interfaces.ImmunizationInterface;
+import ca.openosp.openo.commn.interfaces.Immunization;
 import ca.openosp.openo.utility.MiscUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -50,7 +50,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "preventions")
-public class Prevention extends AbstractModel<Integer> implements Serializable, ImmunizationInterface, DemographicData {
+public class Prevention extends AbstractModel<Integer> implements Serializable, Immunization,
+        ca.openosp.openo.integration.fhir.dstu3.interfaces.ImmunizationInterface,
+        ca.openosp.openo.integration.fhir.r4.interfaces.ImmunizationInterface,
+        DemographicData {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -567,7 +570,6 @@ public class Prevention extends AbstractModel<Integer> implements Serializable, 
         };
 	}
 
-	@Override
 	public String getDIN() {
 		return getImmunizationProperty( ImmunizationProperty.din );
 	}
@@ -575,4 +577,8 @@ public class Prevention extends AbstractModel<Integer> implements Serializable, 
 	public boolean isComplete() {
 		return ( ! isNever() && ! isRefused() );
 	}
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
 }
