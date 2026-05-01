@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName3$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -59,101 +60,101 @@
         <table>
             <tr>
                 <td colspan="3" class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.hospitalization"/>?</td>
-                <td><input type="text" name="SeriousIllness" value="<%=props.getProperty("SeriousIllness","")%>"/></td>
+                <td><input type="text" name="SeriousIllness" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("SeriousIllness","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="4" class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pastIllness"/>:</td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pastIllness1"/>:</td>
-                <td><input type="text" name="PastIllness1" value="<%=props.getProperty("PastIllness1","")%>"/></td>
+                <td><input type="text" name="PastIllness1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("PastIllness1","")))%>"/></td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
-                <td><input type="text" name="IllnessAge1" value="<%=props.getProperty("IllnessAge1","")%>"/></td>
+                <td><input type="text" name="IllnessAge1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("IllnessAge1","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pastIllness2"/>:</td>
-                <td><input type="text" name="PastIllness2" value="<%=props.getProperty("PastIllness2","")%>"/></td>
+                <td><input type="text" name="PastIllness2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("PastIllness2","")))%>"/></td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
-                <td><input type="text" name="IllnessAge2" value="<%=props.getProperty("IllnessAge2","")%>"/></td>
+                <td><input type="text" name="IllnessAge2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("IllnessAge2","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pastIllness3"/>:</td>
-                <td><input type="text" name="PastIllness3" value="<%=props.getProperty("PastIllness3","")%>"/></td>
+                <td><input type="text" name="PastIllness3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("PastIllness3","")))%>"/></td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
-                <td><input type="text" name="IllnessAge3" value="<%=props.getProperty("IllnessAge3","")%>"/></td>
+                <td><input type="text" name="IllnessAge3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("IllnessAge3","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pastIllness4"/>:</td>
-                <td><input type="text" name="PastIllness4" value="<%=props.getProperty("PastIllness4","")%>"/></td>
+                <td><input type="text" name="PastIllness4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("PastIllness4","")))%>"/></td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
-                <td><input type="text" name="IllnessAge4" value="<%=props.getProperty("IllnessAge4","")%>"/></td>
+                <td><input type="text" name="IllnessAge4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("IllnessAge4","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pastIllness5"/>:</td>
-                <td><input type="text" name="PastIllness5" value="<%=props.getProperty("PastIllness5","")%>"/></td>
+                <td><input type="text" name="PastIllness5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("PastIllness5","")))%>"/></td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
-                <td><input type="text" name="IllnessAge5" value="<%=props.getProperty("IllnessAge5","")%>"/></td>
+                <td><input type="text" name="IllnessAge5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("IllnessAge5","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pastIllness6"/>:</td>
-                <td><input type="text" name="PastIllness6" value="<%=props.getProperty("PastIllness6","")%>"/></td>
+                <td><input type="text" name="PastIllness6" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("PastIllness6","")))%>"/></td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
-                <td><input type="text" name="IllnessAge6" value="<%=props.getProperty("IllnessAge6","")%>"/></td>
+                <td><input type="text" name="IllnessAge6" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("IllnessAge6","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="3" class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.operation"/>?</td>
-                <td><input type="text" name="operations" value="<%=props.getProperty("operations","")%>"/></td>
+                <td><input type="text" name="operations" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("operations","")))%>"/></td>
             </tr>
             <tr>
                 <td colspan="4" class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.operationAndAge"/>:</td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.operation1"/>:</td>
-                <td><input type="text" name="NameofOperation1" value="<%=props.getProperty("NameofOperation1","")%>"/>
+                <td><input type="text" name="NameofOperation1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperation1","")))%>"/>
                 </td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
                 <td><input type="text" name="NameofOperationAge1"
-                           value="<%=props.getProperty("NameofOperationAge1","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperationAge1","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.operation2"/>:</td>
-                <td><input type="text" name="NameofOperation2" value="<%=props.getProperty("NameofOperation2","")%>"/>
+                <td><input type="text" name="NameofOperation2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperation2","")))%>"/>
                 </td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
                 <td><input type="text" name="NameofOperationAge2"
-                           value="<%=props.getProperty("NameofOperationAge2","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperationAge2","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.operation3"/>:</td>
-                <td><input type="text" name="NameofOperation3" value="<%=props.getProperty("NameofOperation3","")%>"/>
+                <td><input type="text" name="NameofOperation3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperation3","")))%>"/>
                 </td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
                 <td><input type="text" name="NameofOperationAge3"
-                           value="<%=props.getProperty("NameofOperationAge3","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperationAge3","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.operation4"/>:</td>
-                <td><input type="text" name="NameofOperation4" value="<%=props.getProperty("NameofOperation4","")%>"/>
+                <td><input type="text" name="NameofOperation4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperation4","")))%>"/>
                 </td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
                 <td><input type="text" name="NameofOperationAge4"
-                           value="<%=props.getProperty("NameofOperationAge4","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperationAge4","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.operation5"/>:</td>
-                <td><input type="text" name="NameofOperation5" value="<%=props.getProperty("NameofOperation5","")%>"/>
+                <td><input type="text" name="NameofOperation5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperation5","")))%>"/>
                 </td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
                 <td><input type="text" name="NameofOperationAge5"
-                           value="<%=props.getProperty("NameofOperationAge5","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperationAge5","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.operation6"/>:</td>
-                <td><input type="text" name="NameofOperation6" value="<%=props.getProperty("NameofOperation6","")%>"/>
+                <td><input type="text" name="NameofOperation6" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperation6","")))%>"/>
                 </td>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.age"/>:</td>
                 <td><input type="text" name="NameofOperationAge6"
-                           value="<%=props.getProperty("NameofOperationAge6","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NameofOperationAge6","")))%>"/></td>
             </tr>
         </table>
     </form>

@@ -27,6 +27,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="ca.openosp.openo.commn.model.Contact" %>
 <%@page import="ca.openosp.openo.commn.model.DemographicContact" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -145,23 +146,23 @@
 
             function doPersonalSearch(id) {
                 var type = jQuery("select[name='contact_" + id + ".type']").val();
-                if (type == '<%=DemographicContact.TYPE_DEMOGRAPHIC%>') {
+                if (type == '<%=Encode.forJavaScript(String.valueOf(DemographicContact.TYPE_DEMOGRAPHIC))%>') {
                     search_demographic('contact_' + id + '.contactName', 'contact_' + id + '.contactId');
                 }
-                if (type == '<%=DemographicContact.TYPE_CONTACT%>') {
+                if (type == '<%=Encode.forJavaScript(String.valueOf(DemographicContact.TYPE_CONTACT))%>') {
                     search_contact('contact_' + id + '.contactName', 'contact_' + id + '.contactId');
                 }
             }
 
             function doProfessionalSearch(id) {
                 var type = jQuery("select[name='procontact_" + id + ".type']").val();
-                if (type == '<%=DemographicContact.TYPE_PROVIDER%>') {
+                if (type == '<%=Encode.forJavaScript(String.valueOf(DemographicContact.TYPE_PROVIDER))%>') {
                     search_provider('procontact_' + id + '.contactName', 'procontact_' + id + '.contactId');
                 }
-                if (type == '<%=DemographicContact.TYPE_CONTACT%>') {
+                if (type == '<%=Encode.forJavaScript(String.valueOf(DemographicContact.TYPE_CONTACT))%>') {
                     search_procontact('procontact_' + id + '.contactName', 'procontact_' + id + '.contactId');
                 }
-                if (type == '<%=DemographicContact.TYPE_PROFESSIONALSPECIALIST%>') {
+                if (type == '<%=Encode.forJavaScript(String.valueOf(DemographicContact.TYPE_PROFESSIONALSPECIALIST))%>') {
                     search_professionalSpecialist('procontact_' + id + '.contactName', 'procontact_' + id + '.contactId');
                 }
             }
@@ -288,14 +289,14 @@
                             %>
                 addContactExisting();
                 var num = jQuery("#contact_num").val();
-                setInput(num, 'contact', 'id', '<%=dc.getId()%>');
-                setSelect(num, 'contact', 'role', '<%=dc.getRole()%>');
-                setSelectExisting(num, 'contact', 'type', '<%=dc.getType()%>');
+                setInput(num, 'contact', 'id', '<%=Encode.forJavaScript(String.valueOf(dc.getId()))%>');
+                setSelect(num, 'contact', 'role', '<%=Encode.forJavaScript(String.valueOf(dc.getRole()))%>');
+                setSelectExisting(num, 'contact', 'type', '<%=Encode.forJavaScript(String.valueOf(dc.getType()))%>');
                 setSelect(num, 'contact', 'consentToContact', '<%=dc.isConsentToContact()?"1":"0"%>');
                 setSelect(num, 'contact', 'active', '<%=dc.isActive()?"1":"0"%>');
-                setInput(num, 'contact', 'contactId', '<%=dc.getContactId()%>');
-                setInput(num, 'contact', 'contactName', '<%=dc.getContactName()%>');
-                setTextarea(num, 'contact', 'note', `<%=dc.getNote()!=null?dc.getNote():""%>`);
+                setInput(num, 'contact', 'contactId', '<%=Encode.forJavaScript(String.valueOf(dc.getContactId()))%>');
+                setInput(num, 'contact', 'contactName', '<%=Encode.forJavaScript(String.valueOf(dc.getContactName()))%>');
+                setTextarea(num, 'contact', 'note', `<%=Encode.forJavaScript(String.valueOf(dc.getNote()!=null?dc.getNote():""))%>`);
 
                 <%if(dc.getSdm() != null && dc.getSdm().equals("true")) {%>setChecked(num, 'contact', 'sdm');
                 <%}%>
@@ -312,13 +313,13 @@
                 %>
                 addProContactExisting();
                 var num = jQuery("#procontact_num").val();
-                setInput(num, 'procontact', 'id', '<%=dc.getId()%>');
-                setSelect(num, 'procontact', 'role', '<%=dc.getRole()%>');
+                setInput(num, 'procontact', 'id', '<%=Encode.forJavaScript(String.valueOf(dc.getId()))%>');
+                setSelect(num, 'procontact', 'role', '<%=Encode.forJavaScript(String.valueOf(dc.getRole()))%>');
                 setSelect(num, 'procontact', 'consentToContact', '<%=dc.isConsentToContact()?"1":"0"%>');
                 setSelect(num, 'procontact', 'active', '<%=dc.isActive()?"1":"0"%>');
-                setSelectExisting(num, 'procontact', 'type', '<%=dc.getType()%>');
-                setInput(num, 'procontact', 'contactId', '<%=dc.getContactId()%>');
-                setInput(num, 'procontact', 'contactName', '<%=dc.getContactName()%>');
+                setSelectExisting(num, 'procontact', 'type', '<%=Encode.forJavaScript(String.valueOf(dc.getType()))%>');
+                setInput(num, 'procontact', 'contactId', '<%=Encode.forJavaScript(String.valueOf(dc.getContactId()))%>');
+                setInput(num, 'procontact', 'contactName', '<%=Encode.forJavaScript(String.valueOf(dc.getContactName()))%>');
                 <%
             }
         }
@@ -338,7 +339,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><oscar:nameage demographicNo="<%=demographic_no%>"/></td>
+                        <td><oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/></td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
                                 href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
@@ -354,7 +355,7 @@
 
                 <form method="post" name="contactForm" id="contactForm" action="<%= request.getContextPath() %>/demographic/Contact.do">
                     <input type="hidden" name="method" value="saveManage"/>
-                    <input type="hidden" name="demographic_no" value="<%=demographic_no%>"/>
+                    <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
 
                     <b>Personal Contacts:</b>
                     <br/>

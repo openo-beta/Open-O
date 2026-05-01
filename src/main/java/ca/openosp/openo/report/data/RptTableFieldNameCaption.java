@@ -47,7 +47,7 @@ import ca.openosp.openo.utility.DbConnectionFilter;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.login.DBHelp;
+import ca.openosp.Misc;
 
 /**
  * @author yilee18
@@ -60,7 +60,6 @@ public class RptTableFieldNameCaption {
     String table_name;
     String name;
     String caption;
-    DBHelp dbObj = new DBHelp();
 
     public boolean insertOrUpdateRecord() {
         boolean ret = false;
@@ -142,7 +141,7 @@ public class RptTableFieldNameCaption {
             ps.setString(1, tableName);
             rs = ps.executeQuery();
             while (rs.next()) {
-                ret.setProperty(DBHelp.getString(rs, "name"), DBHelp.getString(rs, "caption"));
+                ret.setProperty(Misc.getString(rs, "name"), Misc.getString(rs, "caption"));
             }
         } catch (SQLException e) {
             logger.error("getNameCaptionProp() error", e);

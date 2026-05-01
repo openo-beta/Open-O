@@ -33,6 +33,7 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <%@page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -87,7 +88,7 @@
 
     <form action="">
 
-        <h3>Current form is: <b><%=drugForm%>
+        <h3>Current form is: <b><%=Encode.forHtml(String.valueOf(drugForm))%>
         </b></h3>
         <br/>
         <b>Select new drug form :</b>
@@ -189,7 +190,7 @@
             <option value="Wipe">Wipe</option>
 
         </select>
-        <input type="hidden" name="id" value="<%=id%>"/>
+        <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>"/>
         <input type="hidden" name="action" value="update"/>
         <input type="submit" class="btn btn-primary" value="submit">
     </form>

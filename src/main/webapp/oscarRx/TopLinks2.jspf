@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", getDrugRefStatus);
           <b><fmt:message key="SearchDrug.nameText"/></b>
           <%=Encode.forHtmlContent(patient2.getFirstName()) %> <%= Encode.forHtmlContent(patient2.getSurname()) %>
           <b><fmt:message key="SearchDrug.ageText"/></b>
-          <%= patient2.getAge() %>
+          <%=Encode.forHtml(String.valueOf(patient2.getAge()))%>
         </td>
           <tr>
         <td>
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", getDrugRefStatus);
                       // escape single-quotes for safe attribute usage
                       String json = sw.toString().replace("'", "");
             %>
-              <option value='<%= json %>'>
+              <option value='<%=Encode.forHtmlAttribute(String.valueOf(json))%>'>
                 <%= Encode.forHtmlContent(pi.getName()) %> (<%= Encode.forHtmlContent(pi.getAddress()) %>, <%= Encode.forHtmlContent(pi.getCity()) %>, Fax: <%= Encode.forHtmlContent(pi.getFax()) %>)
               </option>
             <%

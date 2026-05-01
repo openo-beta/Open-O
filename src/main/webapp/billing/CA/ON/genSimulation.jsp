@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.OHIP.ExtractBean" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -99,7 +100,7 @@
 %>
 
 <jsp:forward page='billingOHIPsimulation.jsp'>
-    <jsp:param name="xml_appointment_date" value='<%=dateEnd%>'/>
-    <jsp:param name="xml_v_date" value='<%=dateBegin%>'/>
-    <jsp:param name="provider" value='<%=provider%>'/>
+    <jsp:param name="xml_appointment_date" value='<%=Encode.forHtmlAttribute(String.valueOf(dateEnd))%>'/>
+    <jsp:param name="xml_v_date" value='<%=Encode.forHtmlAttribute(String.valueOf(dateBegin))%>'/>
+    <jsp:param name="provider" value='<%=Encode.forHtmlAttribute(String.valueOf(provider))%>'/>
 </jsp:forward>

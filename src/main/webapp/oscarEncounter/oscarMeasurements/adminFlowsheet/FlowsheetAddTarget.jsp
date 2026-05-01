@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -73,7 +74,7 @@
             });
 
             function loadIndicators() {
-                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getIndicators&flowsheetId=<%=flowsheetId%>", {},
+                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getIndicators&flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>", {},
                     function (xml) {
                         var arr = new Array();
                         if (xml.indicators instanceof Array) {
@@ -97,7 +98,7 @@
                 jQuery.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=saveFlowsheetItemTarget',
                     jQuery('#theForm').serialize(),
                     function (data) {
-                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=flowsheetId %>&measurementType=<%=measurementType%>';
+                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forJavaScript(String.valueOf(measurementType))%>';
                     });
             }
 
@@ -114,8 +115,8 @@
     <h2>Flowsheet Target Editor</h2>
     <br/>
     <form name="theForm" id="theForm">
-        <input type="hidden" name="flowsheetId" value="<%=flowsheetId %>"/>
-        <input type="hidden" name="measurementType" value="<%=measurementType %>"/>
+        <input type="hidden" name="flowsheetId" value="<%=Encode.forHtmlAttribute(String.valueOf(flowsheetId))%>"/>
+        <input type="hidden" name="measurementType" value="<%=Encode.forHtmlAttribute(String.valueOf(measurementType))%>"/>
 
         <table style="width:20%">
             <tr>

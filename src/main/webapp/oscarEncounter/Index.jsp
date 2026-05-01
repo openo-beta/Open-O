@@ -58,7 +58,7 @@
 %>
 
 <security:oscarSec roleName="<%=roleName$%>"
-                   objectName='<%="_eChart$"+demographic$%>' rights="o"
+                   objectName='<%=Encode.forHtmlAttribute(String.valueOf("_eChart$"+demographic$))%>' rights="o"
                    reverse="<%=false%>">
     You have no rights to access the data!
     <% response.sendRedirect(request.getContextPath() + "/noRights.html"); %>
@@ -110,7 +110,7 @@
         session.setAttribute("casemgmt_oscar_baseurl", request.getContextPath());
         session.setAttribute("casemgmt_oscar_bean", bean);
         session.setAttribute("casemgmt_bean_flag", "true");
-        String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view&demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&providerName=" + bean.userName + "&appointmentNo=" + request.getParameter("appointmentNo") + "&reason=" + URLEncoder.encode(request.getParameter("reason") == null ? "" : request.getParameter("reason"), StandardCharsets.UTF_8) + "&reasonCode=" + (request.getParameter("reasonCode") != null ? request.getParameter("reasonCode") : "");
+        String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view&demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&providerName=" + URLEncoder.encode(bean.userName, StandardCharsets.UTF_8) + "&appointmentNo=" + (request.getParameter("appointmentNo") != null ? request.getParameter("appointmentNo") : "") + "&reason=" + URLEncoder.encode(request.getParameter("reason") == null ? "" : request.getParameter("reason"), StandardCharsets.UTF_8) + "&reasonCode=" + (request.getParameter("reasonCode") != null ? request.getParameter("reasonCode") : "");
         if (request.getParameter("casetoEncounter") == null) {
             response.sendRedirect(hrefurl);
             return;
@@ -170,11 +170,12 @@
 <%@ page import="ca.openosp.openo.dxresearch.bean.dxResearchBeanHandler" %>
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.title"/> - <oscar:nameage
-                demographicNo="<%=demoNo%>"/></title>
+                demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>"/></title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <script language="javascript" type="text/javascript"
                 src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
@@ -631,7 +632,7 @@
             function popUpMsg(vheight, vwidth, msgPosition) {
 
 
-                var page = "<%=request.getContextPath()%>/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=demoNo%>&messagePosition=" + msgPosition;
+                var page = "<%=request.getContextPath()%>/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&messagePosition=" + msgPosition;
                 windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
                 var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>", windowprops);
                 if (popup != null) {
@@ -643,7 +644,7 @@
             }
 
             //function sign(){
-            //        document.encForm.enTextarea.value =document.encForm.enTextarea.value +"\n[<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.signed"/> <%=dateConvert.DateToString(bean.currentDate)%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.by"/> <%=bean.userName%>]";
+            //        document.encForm.enTextarea.value =document.encForm.enTextarea.value +"\n[<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.signed"/> <%=Encode.forJavaScript(String.valueOf(dateConvert.DateToString(bean.currentDate)))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.by"/> <%=Encode.forJavaScript(String.valueOf(bean.userName))%>]";
             //}
 
             //function saveEncounter(){
@@ -664,7 +665,7 @@
 
                 <%String popUrl = request.getParameter("popupUrl");
                   if (popUrl != null){           %>
-                window.setTimeout("popupPageK('<%=popUrl%>')", 2);
+                window.setTimeout("popupPageK('<%=Encode.forJavaScript(String.valueOf(popUrl))%>')", 2);
                 <%}%>
 
                 //tmp = document.encForm.enTextarea.value; // these two lines cause the enTextarea to scroll to the bottom (only works in IE)
@@ -852,7 +853,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -880,10 +881,10 @@
                         <tr>
                             <td width=70% class="Header"
                                 style="padding-left: 2px; padding-right: 2px; border-right: 2px solid #003399; text-align: left; font-size: 80%; font-weight: bold; width: 100%;"
-                                NOWRAP><%=bean.patientLastName %>, <%=bean.patientFirstName%>
-                                <%=bean.patientSex%> <%=bean.patientAge%> <span
+                                NOWRAP><%=Encode.forHtml(String.valueOf(bean.patientLastName))%>, <%=Encode.forHtml(String.valueOf(bean.patientFirstName))%>
+                                <%=Encode.forHtml(String.valueOf(bean.patientSex))%> <%=Encode.forHtml(String.valueOf(bean.patientAge))%> <span
                                         style="margin-left: 20px;"><i>Next Appointment: <oscar:nextAppt
-                                        demographicNo="<%=bean.demographicNo%>"/></i></span></td>
+                                        demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>"/></i></span></td>
                             <td class="Header"
                                 style="text-align: center; border-right: 3px solid #003399" NOWRAP>
                                 <!--div class="FakeLink">
@@ -904,13 +905,13 @@
                             String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view"
                                 + "&demographicNo=" + bean.demographicNo
                                 + "&providerNo=" + bean.providerNo
-                                + "&providerName=" + bean.userName
-                                + "&appointmentNo=" + URLEncoder.encode(request.getParameter("appointmentNo") == null ? "" : request.getParameter("appointmentNo"), StandardCharsets.UTF_8)
-                                + "&reason=" + URLEncoder.encode(request.getParameter("reason") == null ? "" : request.getParameter("reason"), StandardCharsets.UTF_8)
-                                + "&reasonCode=" + URLEncoder.encode(request.getParameter("reasonCode") == null ? "" : request.getParameter("reasonCode"), StandardCharsets.UTF_8);
+                                + "&providerName=" + URLEncoder.encode(bean.userName, StandardCharsets.UTF_8)
+                                + "&appointmentNo=" + (request.getParameter("appointmentNo") != null ? request.getParameter("appointmentNo") : "")
+                                + "&reason=" + URLEncoder.encode(request.getParameter("reason") != null ? request.getParameter("reason") : "", StandardCharsets.UTF_8)
+                                + "&reasonCode=" + (request.getParameter("reasonCode") != null ? request.getParameter("reasonCode") : "");
                         %>
                         <tr>
-                            <td><a href="<%=hrefurl%>">Case Management Encounter</a></td>
+                            <td><a href="<%=Encode.forHtmlAttribute(String.valueOf(hrefurl))%>">Case Management Encounter</a></td>
                         </tr>
                     </caisi:isModuleLoad>
                     <tr class="Header">
@@ -920,23 +921,23 @@
                         <td>
                             <a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popup(700,1000,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=bean.demographicNo%>&displaymode=edit&dboperation=search_detail','master')"
+                                    onClick="popup(700,1000,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&displaymode=edit&dboperation=search_detail','master')"
                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.master"/></a>
                             <br>
                             <%
                                 if (bean.status.indexOf('B') == -1) { %>
                             <a href=#
-                               onClick='popupPage(700,1000, "<%=request.getContextPath()%>/billing.do?billRegion=<%=URLEncoder.encode(province, StandardCharsets.UTF_8)%>&billForm=<%=URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8)%>&hotclick=<%=URLEncoder.encode("", StandardCharsets.UTF_8)%>&appointment_no=<%=bean.appointmentNo%>&demographic_name=<%=URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)%>&demographic_no=<%=bean.demographicNo%>&providerview=<%=bean.curProviderNo%>&user_no=<%=bean.providerNo%>&apptProvider_no=<%=bean.curProviderNo%>&appointment_date=<%=bean.appointmentDate%>&start_time=<%=bean.startTime%>&bNewForm=1&status=t");return false;'
+                               onClick='popupPage(700,1000, "<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forJavaScript(String.valueOf(province))%>&billForm=<%=Encode.forJavaScript(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(""))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerview=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&user_no=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(bean.appointmentDate))%>&start_time=<%=Encode.forJavaScript(String.valueOf(bean.startTime))%>&bNewForm=1&status=t");return false;'
                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a> <% } else {%>
-                            <!--a href=# onClick='onUnbilled("<%= request.getContextPath() %>/billing/billingDeleteWithoutNo.jsp?appointment_no=<%=bean.appointmentNo%>");return false;' title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.unbil"/>">-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a-->
+                            <!--a href=# onClick='onUnbilled("<%= request.getContextPath() %>/billing/billingDeleteWithoutNo.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>");return false;' title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.unbil"/>">-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a-->
                             <a href=#
-                               onClick='onUnbilled("<%= request.getContextPath() %>/billing/CA/<%=province%>/billingDeleteWithoutNo.jsp?status=<%=bean.status%>&appointment_no=<%=bean.appointmentNo%>");return false;'
+                               onClick='onUnbilled("<%= request.getContextPath() %>/billing/CA/<%=Encode.forJavaScript(String.valueOf(province))%>/billingDeleteWithoutNo.jsp?status=<%=Encode.forJavaScript(String.valueOf(bean.status))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>");return false;'
                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.unbil"/>">-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a> <% } %> <br>
                             <a href=#
-                               onClick="popupOscarRx(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=bean.providerNo%>&demographicNo=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a><br>
+                               onClick="popupOscarRx(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a><br>
                             <a href=#
                                onClick="popupOscarCon(700,960,'<rewrite:reWrite
-                                       jspPage="oscarConsultationRequest/DisplayDemographicConsultationRequests.jsp"/>?de=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.consultations"/></a><br>
+                                       jspPage="oscarConsultationRequest/DisplayDemographicConsultationRequests.jsp"/>?de=<%=Encode.forHtml(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.consultations"/></a><br>
 
                             <oscar:oscarPropertiesCheck property="IMMUNIZATION" value="yes"
                                                         defaultVal="true">
@@ -951,16 +952,16 @@
                                 <% } %>
                             </oscar:oscarPropertiesCheck> <oscar:oscarPropertiesCheck property="PREVENTION" value="yes">
                             <a
-                                    href="javascript:popUpImmunizations(700,960,'<%= request.getContextPath() %>/oscarPrevention/index.jsp?demographic_no=<%=bean.demographicNo%>')">
+                                    href="javascript:popUpImmunizations(700,960,'<%= request.getContextPath() %>/oscarPrevention/index.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>')">
                                 <oscar:preventionWarnings
-                                        demographicNo="<%=bean.demographicNo%>">prevention</oscar:preventionWarnings></a>
+                                        demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>">prevention</oscar:preventionWarnings></a>
                             <br>
                         </oscar:oscarPropertiesCheck> <% if (OscarProperties.getInstance().getProperty("oscarcomm", "").equals("on")) { %>
                             <a href="javascript:popupOscarComm(700,960,'RemoteAttachments.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarComm"/></a><br>
                             <% } %> <a href=#
-                                       onClick="popupOscarComm(580,900,'<%=request.getContextPath()%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=bean.demographicNo%>&providerNo=<%=provNo%>&quickList=');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.disease"/></a><br>
+                                       onClick="popupOscarComm(580,900,'<%=request.getContextPath()%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&quickList=');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.disease"/></a><br>
                             <a href=#
-                               onClick="popupOscarCon(580,800,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?keyword=<%=URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)%>&displaymode=<%=URLEncoder.encode("Search ", StandardCharsets.UTF_8)%>&search_mode=search_name&originalpage=<%=URLEncoder.encode(request.getContextPath() + "/tickler/ticklerAdd.jsp", StandardCharsets.UTF_8)%>&orderby=last_name&appointment_date=2000-01-01&limit1=0&limit2=5&status=t&start_time=10:45&end_time=10:59&duration=15&dboperation=search_demorecord&type=&demographic_no=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.addTickler"/></a><br>
+                               onClick="popupOscarCon(580,800,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?keyword=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&displaymode=<%=Encode.forJavaScript(String.valueOf("Search "))%>&search_mode=search_name&originalpage=<%=request.getContextPath() + "/tickler/ticklerAdd.jsp"%>&orderby=last_name&appointment_date=2000-01-01&limit1=0&limit2=5&status=t&start_time=10:45&end_time=10:59&duration=15&dboperation=search_demorecord&type=&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.addTickler"/></a><br>
                         </td>
                     </tr>
                     <!-- <tr><td>&nbsp;</td></tr> -->
@@ -977,7 +978,7 @@
                         <tr>
                             <td><select name="selectCurrentForms"
                                         onChange="javascript:selectBox(this)" class="ControlSelect"
-                                        onMouseOver="javascript:window.status='View any of <%=patientName%>\'s current forms.'; return true;">
+                                        onMouseOver="javascript:window.status='View any of <%=Encode.forJavaScript(String.valueOf(patientName))%>\'s current forms.'; return true;">
                                 <option value="null" selected>-<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.currentForms"/>- <%
                             for(int j=0; j<forms.length; j++) {
                                 EctFormData.Form frm = forms[j];
@@ -988,8 +989,8 @@
                                         EctFormData.PatientForm pfrm = pforms[0];
                                 %>
 
-                                <option value="<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=<%=frm.getFormName()%>&demographic_no=<%=demoNo%>">
-                                    <%=frm.getFormName()%>&nbsp;Cr:<%=pfrm.getCreated()%>&nbsp;Ed:<%=pfrm.getEdited()%>
+                                <option value="<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=<%=Encode.forHtmlAttribute(String.valueOf(frm.getFormName()))%>&demographic_no=<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>">
+                                    <%=Encode.forHtml(String.valueOf(frm.getFormName()))%>&nbsp;Cr:<%=Encode.forHtml(String.valueOf(pfrm.getCreated()))%>&nbsp;Ed:<%=Encode.forHtml(String.valueOf(pfrm.getEdited()))%>
                                 </option>
                                             <%}}}
 
@@ -1001,7 +1002,7 @@
                             <td><select name="selectForm"
                                         onChange="javascript:selectBox(this)" class="ControlSelect"
                                         onMouseOver="javascript:window.status='
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.createForm"/> <%=patientName%>.'; return true;">
+                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.createForm"/> <%=Encode.forHtml(String.valueOf(patientName))%>.'; return true;">
                                 <option value="null" selected>-<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.addForm"/>- <%
                         for(int j=0; j<forms.length; j++) {
                             EctFormData.Form frm = forms[j];
@@ -1009,7 +1010,7 @@
                         %>
 
                                 <option
-                                        value="<%=frm.getFormPage()+demoNo+"&formId=0&provNo="+provNo%>"><%=frm.getFormName()%>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(frm.getFormPage()+demoNo+"&formId=0&provNo="+provNo))%>"><%=Encode.forHtml(String.valueOf(frm.getFormName()))%>
                                             <%
 
                             }
@@ -1022,7 +1023,7 @@
                         <tr>
                             <td><a href=#
                                    onClick='popupPage2("<rewrite:reWrite
-                                           jspPage="formlist.jsp"/>?demographic_no=<%=demoNo%>"); return false;'>
+                                           jspPage="formlist.jsp"/>?demographic_no=<%=Encode.forHtml(String.valueOf(demoNo))%>"); return false;'>
                                 -<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOldForms"/>-</a></td>
                         </tr>
 
@@ -1037,7 +1038,7 @@
                         <tr class="Header">
                             <td style="font-weight: bold">messenger <a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popup(700,960,'${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=<%=demoNo%>','msg')">Send
+                                    onClick="popup(700,960,'${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>','msg')">Send
                                 Msg</a></td>
                         </tr>
                         <tr>
@@ -1054,7 +1055,7 @@
                                 msgDate = msgData.getDate();
                          %>
 
-                                <option value="<%=j%>"><%=msgSubject + " - " + msgDate %>
+                                <option value="<%=j%>"><%=Encode.forHtml(String.valueOf(msgSubject + " - " + msgDate))%>
                                 </option>
                                 <% }%>
                             </select></td>
@@ -1072,7 +1073,7 @@
 
         <tr>
             <td>
-                <a href="#" onClick="popupOscarRx(600,900,'<%=msgUrl%>'); return false;">
+                <a href="#" onClick="popupOscarRx(600,900,'<%=Encode.forJavaScript(String.valueOf(msgUrl))%>'); return false;">
                 -All Messages-
                 </a>
             </td>
@@ -1098,7 +1099,7 @@
                                 encounterTmp = (String)bean.templateNames.get(j);
                          %>
 
-                    <option value="<%=encounterTmp%>"><%=encounterTmp %>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(encounterTmp))%>"><%=Encode.forHtml(String.valueOf(encounterTmp))%>
                     </option>
                     <% }%>
                 </select></td>
@@ -1120,7 +1121,7 @@
                         String flowsheetName = (String) flowsheets.get(f);
                 %> <a
                     href="javascript: function myFunction() {return false; }"
-                    onClick="popup(700,1000,'oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=bean.demographicNo%>&template=<%=flowsheetName%>','flowsheet')"><%=MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheetName)%>
+                    onClick="popup(700,1000,'oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&template=<%=Encode.forJavaScript(String.valueOf(flowsheetName))%>','flowsheet')"><%=Encode.forHtml(String.valueOf(MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheetName)))%>
             </a>
                 <%}%>
 
@@ -1135,7 +1136,7 @@
                             String tmp = (String)bean.measurementGroupNames.get(j);
                          %>
 
-                    <option value="<%=tmp%>"><%=tmp %> <%}%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(tmp))%> <%}%>
 
                 </select>
             </td>
@@ -1157,36 +1158,36 @@
                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.resource"/>"
                    onmouseover="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.viewResource"/>';return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.resource"/></a><br>
                 <a href="#"
-                   onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=bean.demographicNo%>&curUser=<%=bean.curProviderNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgDocuments"/></a><br>
+                   onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&curUser=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgDocuments"/></a><br>
                 <a href="#"
-                   onClick="popupPage(500,950, '<%= request.getContextPath() %>/eform/efmpatientformlist.jsp?demographic_no=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.eForms"/></a><br>
+                   onClick="popupPage(500,950, '<%= request.getContextPath() %>/eform/efmpatientformlist.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.eForms"/></a><br>
                 <a href="#"
-                   onClick="popupPage(700,1000, '<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.viewTickler"/></a><br>
+                   onClick="popupPage(700,1000, '<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.viewTickler"/></a><br>
                 <a href="javascript: function myFunction() {return false; }"
-                   onClick="popupPage(150,200,'calculators.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/></a><br>
-                <!--a href="#" onClick="popupPage(700,1000, '<%= request.getContextPath() %>/lab/CumulativeLabValues.jsp?demographic_no=<%=bean.demographicNo%>');return false;">Cumulative Labs</a><br-->
+                   onClick="popupPage(150,200,'calculators.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/></a><br>
+                <!--a href="#" onClick="popupPage(700,1000, '<%= request.getContextPath() %>/lab/CumulativeLabValues.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">Cumulative Labs</a><br-->
 
                 <select name="selectCurrentForms"
                         onChange="javascript:selectBox(this)" class="ControlSelect"
-                        onMouseOver="javascript:window.status='View <%=patientName%>\'s lab results'; return true;">
+                        onMouseOver="javascript:window.status='View <%=Encode.forJavaScript(String.valueOf(patientName))%>\'s lab results'; return true;">
                     <option value="null" selected>-lab results-</option>
                     <%
                         for (int j = 0; j < labs.size(); j++) {
                             LabResultData result = (LabResultData) labs.get(j);
                             if (result.isMDS()) { %>
                     <option
-                            value="<%= request.getContextPath() %>/oscarMDS/SegmentDisplay.jsp?providerNo=<%=provNo%>&segmentID=<%=result.segmentID%>&status=<%=result.getReportStatus()%>"><%=result.getDateTime()%>
-                        <%=result.getDiscipline()%>
+                            value="<%= request.getContextPath() %>/oscarMDS/SegmentDisplay.jsp?providerNo=<%=Encode.forHtmlAttribute(String.valueOf(provNo))%>&segmentID=<%=Encode.forHtmlAttribute(String.valueOf(result.segmentID))%>&status=<%=Encode.forHtmlAttribute(String.valueOf(result.getReportStatus()))%>"><%=Encode.forHtml(String.valueOf(result.getDateTime()))%>
+                        <%=Encode.forHtml(String.valueOf(result.getDiscipline()))%>
                     </option>
                     <% } else if (result.isCML()) { %>
                     <option
-                            value="<%= request.getContextPath() %>/lab/CA/ON/CMLDisplay.jsp?providerNo=<%=provNo%>&segmentID=<%=result.segmentID%>">
-                        <%=result.getDateTime()%> <%=result.getDiscipline()%>
+                            value="<%= request.getContextPath() %>/lab/CA/ON/CMLDisplay.jsp?providerNo=<%=Encode.forHtmlAttribute(String.valueOf(provNo))%>&segmentID=<%=Encode.forHtmlAttribute(String.valueOf(result.segmentID))%>">
+                        <%=Encode.forHtml(String.valueOf(result.getDateTime()))%> <%=Encode.forHtml(String.valueOf(result.getDiscipline()))%>
                     </option>
                     <% } else {%>
                     <option
-                            value="<%= request.getContextPath() %>/lab/CA/BC/labDisplay.jsp?segmentID=<%=result.segmentID%>&providerNo=<%=provNo%>"><%=result.getDateTime()%>
-                        <%=result.getDiscipline()%>
+                            value="<%= request.getContextPath() %>/lab/CA/BC/labDisplay.jsp?segmentID=<%=Encode.forHtmlAttribute(String.valueOf(result.segmentID))%>&providerNo=<%=Encode.forHtmlAttribute(String.valueOf(provNo))%>"><%=Encode.forHtml(String.valueOf(result.getDateTime()))%>
+                        <%=Encode.forHtml(String.valueOf(result.getDiscipline()))%>
                     </option>
                     <% }%>
 
@@ -1203,7 +1204,7 @@
                 <td style="font-weight: bold"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.internetResources"/></td>
             </tr>
             <tr>
-                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.searchFor"/><%= request.getParameter("userName")%>
+                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.searchFor"/><%=Encode.forHtml(request.getParameter("userName"))%>
                 </td>
             </tr>
             <tr>
@@ -1305,17 +1306,17 @@
                                 <td valign="top">
                                     <!-- Creating the table tag within the script allows you to adjust all table sizes at once, by changing the value of leftCol -->
                                     <textarea name="shTextarea" wrap="hard" cols="31"
-                                              style="height:<%=windowSizes.getProperty("rowOneSize")%>;overflow:auto"><%=bean.socialHistory%></textarea>
+                                              style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowOneSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.socialHistory))%></textarea>
                                 </td>
                                 <!-- This is the Family History cell ...fh...-->
                                 <td valign="top"><textarea name="fhTextarea" wrap="hard"
                                                            cols="31"
-                                                           style="height:<%=windowSizes.getProperty("rowOneSize")%>;overflow:auto"><%=bean.familyHistory%></textarea>
+                                                           style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowOneSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.familyHistory))%></textarea>
                                 </td>
                                 <!-- This is the Medical History cell ...mh...-->
                                 <td valign="top" colspan="2"><textarea name="mhTextarea"
                                                                        wrap="hard" cols="31"
-                                                                       style="height:<%=windowSizes.getProperty("rowOneSize")%>;overflow:auto"><%=bean.medicalHistory%></textarea>
+                                                                       style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowOneSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.medicalHistory))%></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -1370,11 +1371,11 @@
                             <tr width="100%">
                                 <td valign="top" style="border-right: 2px solid #ccccff"><textarea
                                         name='ocTextarea' wrap="hard" cols="48"
-                                        style="height:<%=windowSizes.getProperty("rowTwoSize")%>;overflow:auto"><%=bean.ongoingConcerns%></textarea>
+                                        style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowTwoSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.ongoingConcerns))%></textarea>
                                 </td>
                                 <td colspan="2" valign="top"><textarea name='reTextarea'
                                                                        wrap="hard" cols="48"
-                                                                       style="height:<%=windowSizes.getProperty("rowTwoSize")%>;overflow:auto"><%=bean.reminders%></textarea>
+                                                                       style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowTwoSize")))%>;overflow:auto"><%=Encode.forHtml(String.valueOf(bean.reminders))%></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -1388,7 +1389,7 @@
                                 <!--hr style="border-bottom: 0pt solid #888888; background-color: #888888;"-->
                                 <td valign="top">
                                     <div class="RowTop"><a href=#
-                                                           onClick="popupOscarRx(700,960,'<%=request.getContextPath()%>/oscarRx/showAllergy.do?demographicNo=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.allergies"/></a>:&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;
+                                                           onClick="popupOscarRx(700,960,'<%=request.getContextPath()%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.allergies"/></a>:&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;
                                     </div>
                                     <div class="presBox" id="allergyBox">
                                         <ul>
@@ -1397,8 +1398,8 @@
 
                                                 for (int j = 0; j < allergies.length; j++) {%>
                                             <li><a
-                                                    title="<%= allergies[j].getDescription() %>">
-                                                <%=allergies[j].getShortDesc(13, 8, "...")%>
+                                                    title="<%=Encode.forHtmlAttribute(String.valueOf(allergies[j].getDescription()))%>">
+                                                <%=Encode.forHtml(String.valueOf(allergies[j].getShortDesc(13, 8, "...")))%>
                                             </a></li>
                                             <%}%>
                                         </ul>
@@ -1414,7 +1415,7 @@
                                             <td>
                                                 <div class="RowTop">
                                                     <div class="RowTop"><a href=#
-                                                                           onClick="popupOscarRx(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=bean.providerNo%>&demographicNo=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a></div>
+                                                                           onClick="popupOscarRx(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a></div>
                                                 </div>
                                             </td>
                                             <td align=right>
@@ -1468,10 +1469,10 @@
                                             %>
                                             <tr>
                                                 <td <%=styleColor%> valign=top
-                                                                    style="border-bottom: 1pt solid #888888; font-size: 10px;"><%=rxD%>
+                                                                    style="border-bottom: 1pt solid #888888; font-size: 10px;"><%=Encode.forHtml(String.valueOf(rxD))%>
                                                 </td>
                                                 <td width=600 <%=styleColor%>
-                                                    style="border-bottom: 1pt solid #888888; font-size: 10px;"><%=rxP%>
+                                                    style="border-bottom: 1pt solid #888888; font-size: 10px;"><%=Encode.forHtml(String.valueOf(rxP))%>
                                                 </td>
                                             </tr>
                                             <%}%>
@@ -1497,9 +1498,9 @@
                                         <tr>
                                             <td width='75%'>
                                                 <div class="RowTop"><a href=#
-                                                                       onClick="popupPage2('<%= request.getContextPath() %>/report/reportecharthistory.jsp?demographic_no=<%=bean.demographicNo%>');return false;">
-                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>: <%=bean.patientLastName %>,
-                                                    <%=bean.patientFirstName%>
+                                                                       onClick="popupPage2('<%= request.getContextPath() %>/report/reportecharthistory.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">
+                                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>: <%=Encode.forHtml(String.valueOf(bean.patientLastName))%>,
+                                                    <%=Encode.forHtml(String.valueOf(bean.patientFirstName))%>
                                                 </a> <%if (sChart) {%> &nbsp; &nbsp; &nbsp;
                                                     <!--http://localhost:8084/oscar/oscarEncounter/echarthistoryprint.jsp?echartid=7491&demographic_no=10090-->
                                                     <a href="javascript: function myFunction() {return false; }"
@@ -1516,14 +1517,14 @@
                                                     consumption = consumption == 0 ? 1 : consumption;
                                                     String ccolor = consumption >= 70 ? "red" : (consumption >= 50 ? "orange" : "green");
                                                 %>
-                                                <div class="RowTop"><%=consumption + "%"%>
+                                                <div class="RowTop"><%=Encode.forHtml(String.valueOf(consumption + "%"))%>
                                                 </div>
                                             </td>
                                             <td align='right'>
                                                 <table border="0" cellpadding="0" cellspacing="0"
                                                        bgcolor="white" width="100%" %>
                                                     <tr>
-                                                        <td width='<%=consumption+"%"%>' bgcolor='<%=ccolor%>'>
+                                                        <td width='<%=Encode.forHtmlAttribute(String.valueOf(consumption+"%"))%>' bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(ccolor))%>'>
                                                             <div class="RowTop">&nbsp;</div>
                                                         </td>
                                                         <td>
@@ -1599,9 +1600,9 @@
                             <tr>
                                 <td colspan="2" valign="top" style="text-align: left"><textarea
                                         name='enTextarea' wrap="hard" cols="99"
-                                        style="height:<%=windowSizes.getProperty("rowThreeSize")%>;overflow:auto"
+                                        style="height:<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowThreeSize")))%>;overflow:auto"
                                         onfocus="javascript: encTextareaFocus=true;"
-                                        onblur="javascript: encTextareaFocus=false;"><%=encounterText%></textarea>
+                                        onblur="javascript: encTextareaFocus=false;"><%=Encode.forHtml(String.valueOf(encounterText))%></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -1664,16 +1665,16 @@
                                                                                              class="ControlPushButton"
                                                                                              onclick="document.forms['encForm'].btnPressed.value='Exit'; if (closeEncounterWindow()) {document.forms['encForm'].submit();}">
                                     <input type="hidden" name="rowOneSize"
-                                           value="<%=windowSizes.getProperty("rowOneSize")%>"> <input
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowOneSize")))%>"> <input
                                             type="hidden" name="rowTwoSize"
-                                            value="<%=windowSizes.getProperty("rowTwoSize")%>"> <input
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowTwoSize")))%>"> <input
                                             type="hidden" name="presBoxSize"
-                                            value="<%=windowSizes.getProperty("presBoxSize")%>"> <input
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("presBoxSize")))%>"> <input
                                             type="hidden" name="rowThreeSize"
-                                            value="<%=windowSizes.getProperty("rowThreeSize")%>"> <input
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(windowSizes.getProperty("rowThreeSize")))%>"> <input
                                             type="hidden" name="status" value="t"/> <input type="hidden"
                                                                                            name="appointment_no"
-                                                                                           value="<%=bean.appointmentNo%>"/>
+                                                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(bean.appointmentNo))%>"/>
                                 </td>
                             </tr>
                         </table>
@@ -1712,8 +1713,8 @@
                 String[] s = (String[]) splitChart.get(i);%>
             <tr class="background-color : #ccccff;">
                 <td class="wcblayerTitle"><a href=#
-                                             onClick="hidepic('splitChartLayer');popupPage2('echarthistoryprint.jsp?echartid=<%=s[0]%>&demographic_no=<%=bean.demographicNo%>');return false;">
-                    <%=s[1]%>
+                                             onClick="hidepic('splitChartLayer');popupPage2('echarthistoryprint.jsp?echartid=<%=Encode.forJavaScript(String.valueOf(s[0]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">
+                    <%=Encode.forHtml(String.valueOf(s[1]))%>
                 </a></td>
                 <td class="wcblayerItem">&nbsp;</td>
             </tr>

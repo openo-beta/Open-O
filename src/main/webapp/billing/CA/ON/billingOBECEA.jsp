@@ -17,6 +17,7 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -56,7 +57,7 @@
 %>
     <div class="action-errors">
         <% for (String error : actionErrors) { %>
-            <p><%= error %></p>
+            <p><%=Encode.forHtml(String.valueOf(error))%></p>
         <% } %>
     </div>
 <% } %>

@@ -58,11 +58,14 @@ function sendData(path, param, target) {
             if (target == "close") {
                 $('#assignTickler').modal('toggle');
             } else if (target == "modal") {
+                // Intentional use of .html(): response is trusted server-rendered tickler form HTML
+                // from AssignTickler.do containing form fields and controls for the modal dialog.
                 $('#assignTickler').modal('show').find('.modal-body').html(data);
             } else {
-                document.open();
-                document.write(data);
-                document.close();
+                // Full-page replacement with trusted server-rendered content from dashboard actions.
+                // Using DOM replacement to avoid XSS risk from document.write.
+                var newDoc = new DOMParser().parseFromString(data, 'text/html');
+                document.documentElement.replaceWith(newDoc.documentElement);
             }
         }
     });

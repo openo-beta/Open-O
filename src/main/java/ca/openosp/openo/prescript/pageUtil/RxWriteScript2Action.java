@@ -793,7 +793,7 @@ public final class RxWriteScript2Action extends ActionSupport {
                 hm.put("policyViolations", rx.getPolicyViolations());
                 ObjectNode jsonObject = objectMapper.valueToTree(hm);
                 logger.debug("jsonObject:" + jsonObject.toString());
-                response.getOutputStream().write(jsonObject.toString().getBytes());
+                response.getOutputStream().write(jsonObject.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
             } catch (Exception e) {
                 logger.error("Error", e);
             }
@@ -899,7 +899,7 @@ public final class RxWriteScript2Action extends ActionSupport {
                 hm.put("unitName", rx.getUnitName());
                 ObjectNode jsonObject = objectMapper.valueToTree(hm);
 
-                response.getOutputStream().write(jsonObject.toString().getBytes());
+                response.getOutputStream().write(jsonObject.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
             } catch (Exception e) {
                 logger.error("Error", e);
             }
@@ -1276,7 +1276,7 @@ public final class RxWriteScript2Action extends ActionSupport {
         Map<String, String> hm = new HashMap<>();
         hm.put("savedScriptId", savedScriptId);
         ObjectNode jo = objectMapper.valueToTree(hm);
-        response.getOutputStream().write(jo.toString().getBytes());
+        response.getOutputStream().write(jo.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
 		return null;
     }
 
@@ -1297,7 +1297,7 @@ public final class RxWriteScript2Action extends ActionSupport {
             hm.put("patientHIN", "Unknown");
         }
         ObjectNode jo = objectMapper.valueToTree(hm);
-        response.getOutputStream().write(jo.toString().getBytes());
+        response.getOutputStream().write(jo.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 
@@ -1334,7 +1334,7 @@ public final class RxWriteScript2Action extends ActionSupport {
         }
         response.setContentType("application/json");
         ObjectNode jsonObject = objectMapper.valueToTree(hm);
-        response.getOutputStream().write(jsonObject.toString().getBytes());
+        response.getOutputStream().write(jsonObject.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
   
@@ -1457,7 +1457,7 @@ public final class RxWriteScript2Action extends ActionSupport {
 
         response.setContentType("application/json");
 
-        response.getOutputStream().write(jsonObject.toString().getBytes());
+        response.getOutputStream().write(jsonObject.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 

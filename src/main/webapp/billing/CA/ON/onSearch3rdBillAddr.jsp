@@ -60,8 +60,8 @@
 %>
 <%@ page errorPage="/errorpage.jsp"
          import="java.util.*,java.sql.*,java.net.*" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.apache.commons.text.WordUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>
@@ -86,9 +86,9 @@
 
             function typeInData1(data) {
                 if (opener.updateElement != undefined) {
-                    opener.updateElement("<%=param%>", data);
+                    opener.updateElement("<%=Encode.forJavaScript(String.valueOf(param))%>", data);
                 } else {
-                    opener.<%=param%> = data;
+                    opener.<%=Encode.forJavaScript(String.valueOf(param))%> = data;
                 }
 
                 self.close();
@@ -97,8 +97,8 @@
             <%if(param2.length()>0) {%>
 
             function typeInData2(data1, data2) {
-                opener.<%=param%> = data1;
-                opener.<%=param2%> = data2;
+                opener.<%=Encode.forJavaScript(String.valueOf(param))%> = data1;
+                opener.<%=Encode.forJavaScript(String.valueOf(param2))%> = data2;
                 self.close();
             }
 
@@ -138,12 +138,12 @@
             </tr>
         </table>
         <input type='hidden' name='param'
-               value="<%=StringEscapeUtils.escapeHtml4(param)%>">
+               value="<%=Encode.forHtml(param)%>">
         <input type='hidden' name='param2'
-               value="<%=StringEscapeUtils.escapeHtml4(param2)%>">
+               value="<%=Encode.forHtml(param2)%>">
         <table width="95%" border="0">
             <tr>
-                <td align="left">Results based on keyword(s): <%=keyword == null ? "" : keyword%>
+                <td align="left">Results based on keyword(s): <%=Encode.forHtml(String.valueOf(keyword == null ? "" : keyword))%>
                 </td>
             </tr>
         </table>
@@ -165,35 +165,35 @@
                     prop = (Properties) vec.get(i);
                     String bgColor = i % 2 == 0 ? "#EEEEFF" : "ivory";
                     String strOnClick = param.length() > 0 ? "typeInData1('"
-                            + StringEscapeUtils.escapeEcmaScript((prop.getProperty("attention", "").equals("") ? "" : (prop.getProperty("attention") + "\n")))
-                            + StringEscapeUtils.escapeEcmaScript(prop.getProperty("company_name", "").equals("") ? "" : (prop.getProperty("company_name") + "\n"))
-                            + StringEscapeUtils.escapeEcmaScript(prop.getProperty("address", "").equals("") ? "" : (prop.getProperty("address") + "\n"))
-                            + StringEscapeUtils.escapeEcmaScript(prop.getProperty("city", "").equals("") ? "" : (prop.getProperty("city") + " "))
-                            + StringEscapeUtils.escapeEcmaScript(prop.getProperty("province", "").equals("") ? "" : (prop.getProperty("province") + " "))
-                            + StringEscapeUtils.escapeEcmaScript(prop.getProperty("postcode", "").equals("") ? "" : (prop.getProperty("postcode") + "\n"))
-                            + StringEscapeUtils.escapeEcmaScript(prop.getProperty("telephone", "").equals("") ? "" : (prop.getProperty("telephone") + "\n"))
-                            + StringEscapeUtils.escapeEcmaScript(prop.getProperty("fax", "").equals("") ? "" : (prop.getProperty("fax") + "\n"))
+                            + Encode.forJavaScript((prop.getProperty("attention", "").equals("") ? "" : (prop.getProperty("attention") + "\n")))
+                            + Encode.forJavaScript(prop.getProperty("company_name", "").equals("") ? "" : (prop.getProperty("company_name") + "\n"))
+                            + Encode.forJavaScript(prop.getProperty("address", "").equals("") ? "" : (prop.getProperty("address") + "\n"))
+                            + Encode.forJavaScript(prop.getProperty("city", "").equals("") ? "" : (prop.getProperty("city") + " "))
+                            + Encode.forJavaScript(prop.getProperty("province", "").equals("") ? "" : (prop.getProperty("province") + " "))
+                            + Encode.forJavaScript(prop.getProperty("postcode", "").equals("") ? "" : (prop.getProperty("postcode") + "\n"))
+                            + Encode.forJavaScript(prop.getProperty("telephone", "").equals("") ? "" : (prop.getProperty("telephone") + "\n"))
+                            + Encode.forJavaScript(prop.getProperty("fax", "").equals("") ? "" : (prop.getProperty("fax") + "\n"))
                             + "')" : "typeInData1('"
                             + prop.getProperty("city", "") + "')";
 
             %>
-            <tr align="center" bgcolor="<%=bgColor%>"
+            <tr align="center" bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                 onMouseOver="this.style.cursor='pointer';this.style.backgroundColor='pink';"
-                onMouseout="this.style.backgroundColor='<%=bgColor%>';"
-                onClick="<%=StringEscapeUtils.escapeHtml4(strOnClick)%>">
-                <td><%=prop.getProperty("attention", "")%>
+                onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
+                onClick="<%=Encode.forHtml(strOnClick)%>">
+                <td><%=Encode.forHtml(String.valueOf(prop.getProperty("attention", "")))%>
                 </td>
-                <td><%=WordUtils.capitalize(prop.getProperty("company_name", "").toLowerCase())%>
+                <td><%=Encode.forHtml(String.valueOf(WordUtils.capitalize(prop.getProperty("company_name", "").toLowerCase())))%>
                 </td>
-                <td><%=WordUtils.capitalize(prop.getProperty("address", "").toLowerCase())%>
+                <td><%=Encode.forHtml(String.valueOf(WordUtils.capitalize(prop.getProperty("address", "").toLowerCase())))%>
                 </td>
-                <td><%=prop.getProperty("city", "")%>
+                <td><%=Encode.forHtml(String.valueOf(prop.getProperty("city", "")))%>
                 </td>
-                <td><%=prop.getProperty("postcode", "")%>
+                <td><%=Encode.forHtml(String.valueOf(prop.getProperty("postcode", "")))%>
                 </td>
-                <td><%=prop.getProperty("telephone", "")%>
+                <td><%=Encode.forHtml(String.valueOf(prop.getProperty("telephone", "")))%>
                 </td>
-                <!--td><%=prop.getProperty("fax", "")%></td-->
+                <!--td><%=Encode.forHtml(String.valueOf(prop.getProperty("fax", "")))%></td-->
             </tr>
             <%
                 }
@@ -216,12 +216,12 @@
         <script language="JavaScript">
             <!--
             function last() {
-                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/ON/onSearch3rdBillAddr.jsp?param=<%=URLEncoder.encode(param,"UTF-8")%>&param2=<%=URLEncoder.encode(param2,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/ON/onSearch3rdBillAddr.jsp?param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(param,"UTF-8")))%>&param2=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(param2,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
                 document.nextform.submit();
             }
 
             function next() {
-                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/ON/onSearch3rdBillAddr.jsp?param=<%=URLEncoder.encode(param,"UTF-8")%>&param2=<%=URLEncoder.encode(param2,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/ON/onSearch3rdBillAddr.jsp?param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(param,"UTF-8")))%>&param2=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(param2,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
                 document.nextform.submit();
             }
 

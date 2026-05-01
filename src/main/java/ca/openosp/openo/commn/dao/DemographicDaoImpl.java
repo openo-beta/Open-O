@@ -262,15 +262,13 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         Set<Demographic> archivedClients = new java.util.LinkedHashSet<Demographic>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sqlQuery = "select distinct d.demographic_no,d.first_name,d.last_name,(select count(*) from admission a where client_id=d.demographic_no and admission_status='current' and program_id="
-            + programId + " and admission_date<='" + sdf.format(dt)
-            + "') as is_active from admission a,demographic d where a.client_id=d.demographic_no and (d.patient_status='AC' or d.patient_status='' or d.patient_status=null) and program_id="
-            + programId
-            + " and (d.anonymous is null or d.anonymous != 'one-time-anonymous') ORDER BY d.last_name,d.first_name";
-        // Session session = this.getSession();
+        String sqlQuery = "select distinct d.demographic_no,d.first_name,d.last_name,(select count(*) from admission a where client_id=d.demographic_no and admission_status='current' and program_id=?1 and admission_date<=?2) as is_active from admission a,demographic d where a.client_id=d.demographic_no and (d.patient_status='AC' or d.patient_status='' or d.patient_status=null) and program_id=?3 and (d.anonymous is null or d.anonymous != 'one-time-anonymous') ORDER BY d.last_name,d.first_name";
         Session session = currentSession();
 
         SQLQuery q = session.createSQLQuery(sqlQuery);
+        q.setParameter(1, programId);
+        q.setParameter(2, sdf.format(dt));
+        q.setParameter(3, programId);
         q.addScalar("d.demographic_no");
         q.addScalar("d.first_name");
         q.addScalar("d.last_name");
@@ -1609,19 +1607,25 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
     }
 
+    private static final java.util.Map<String, String> NATIVE_ORDER_FIELDS = java.util.Map.of(
+        "last_name", "de.last_name, de.first_name",
+        "last_name, first_name", "de.last_name, de.first_name",
+        "demographic_no", "de.demographic_no",
+        "chart_no", "de.chart_no",
+        "sex", "de.sex",
+        "dob", "de.year_of_birth, de.month_of_birth, de.date_of_birth",
+        "provider_no", "de.provider_no",
+        "roster_status", "de.roster_status",
+        "patient_status", "de.patient_status",
+        "phone", "de.phone"
+    );
+
     @Override
     public String getOrderField(String orderBy, boolean nativeQuery) {
         if (!nativeQuery) {
-            orderBy = getOrderField(orderBy);
-        } else {
-            if (orderBy.equals("dob")) {
-                orderBy = "de.year_of_birth, de.month_of_birth, de.date_of_birth ";
-            } else {
-                orderBy = "de." + orderBy;
-            }
+            return getOrderField(orderBy);
         }
-
-        return orderBy;
+        return NATIVE_ORDER_FIELDS.getOrDefault(orderBy, "de.last_name, de.first_name");
     }
 
     @Override
@@ -2485,13 +2489,28 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     public List<Demographic> findByField(String fieldName, Object fieldValue, String orderBy, int offset) {
         boolean isFieldValueEmpty = fieldValue == null || fieldValue.equals("");
 
-        String sql = "FROM Demographic d WHERE d." + fieldName + " LIKE :fieldValue";
+        // Whitelist valid Demographic field names to prevent HQL injection
+        Set<String> validFields = Set.of(
+            "LastName", "FirstName", "DemographicNo", "ChartNo", "Hin",
+            "Address", "Phone", "Sex", "DateOfBirth",
+            "last_name", "first_name", "demographic_no", "chart_no", "hin",
+            "address", "phone", "sex", "date_of_birth"
+        );
+        if (fieldName != null && !validFields.contains(fieldName)) {
+            fieldName = "LastName";
+        }
+        if (orderBy != null && !validFields.contains(orderBy)) {
+            orderBy = "LastName";
+        }
+
+        String safeField = (fieldName == null || fieldName.isEmpty()) ? "LastName" : fieldName;
+        String sql = "FROM Demographic d WHERE d.".concat(safeField).concat(" LIKE :fieldValue");
         if (isFieldValueEmpty) {
             sql = "FROM Demographic d";
         }
 
         if (orderBy != null && !orderBy.isEmpty()) {
-            sql = sql + " ORDER BY d." + orderBy;
+            sql = sql.concat(" ORDER BY d.").concat(orderBy);
         }
 
         // Session s = getSession();
@@ -2531,31 +2550,54 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         return (List<Demographic>) this.getHibernateTemplate().find(sSQL, c.getAll(true));
     }
 
+    /**
+     * SQL for flu report without provider filter.
+     * Finds demographics age >= 65, active/UHIP, with rostered status.
+     */
+    private static final String FLU_REPORT_SQL =
+        "select demographic_no, CONCAT(last_name,',',first_name) as demoname, phone, roster_status, patient_status, "
+        + "DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth), '-',(date_of_birth)),'%Y-%m-%d') as dob, "
+        + "(YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
+        + "(RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) as age "
+        + "from demographic  where (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth),'-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
+        + "(RIGHT(CURRENT_DATE,5)<"
+        + "RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) >= 65 "
+        + "and (patient_status = 'AC' or patient_status = 'UHIP') "
+        + "and (roster_status='RO' or roster_status='NR' or roster_status='FS' or roster_status='RF' or roster_status='PL') "
+        + "order by last_name";
+
+    /**
+     * SQL for flu report with provider filter (parameterized :providerNo).
+     */
+    private static final String FLU_REPORT_SQL_WITH_PROVIDER =
+        "select demographic_no, CONCAT(last_name,',',first_name) as demoname, phone, roster_status, patient_status, "
+        + "DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth), '-',(date_of_birth)),'%Y-%m-%d') as dob, "
+        + "(YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
+        + "(RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) as age "
+        + "from demographic  where (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth),'-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
+        + "(RIGHT(CURRENT_DATE,5)<"
+        + "RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) >= 65 "
+        + "and (patient_status = 'AC' or patient_status = 'UHIP') "
+        + "and (roster_status='RO' or roster_status='NR' or roster_status='FS' or roster_status='RF' or roster_status='PL') "
+        + "and provider_no = :providerNo "
+        + "order by last_name";
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Object[]> findDemographicsForFluReport(String providerNo) {
-        String sql = "select demographic_no, CONCAT(last_name,',',first_name) as demoname, phone, roster_status, patient_status, "
-            + "DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth), '-',(date_of_birth)),'%Y-%m-%d') as dob, "
-            + "(YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
-            + "(RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) as age "
-            + "from demographic  where (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((year_of_birth),'-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d')))-"
-            + "(RIGHT(CURRENT_DATE,5)<"
-            + "RIGHT(DATE_FORMAT(CONCAT((year_of_birth), '-', (month_of_birth),'-',(date_of_birth)),'%Y-%m-%d'),5)) >= 65 "
-            + "and (patient_status = 'AC' or patient_status = 'UHIP') "
-            + "and (roster_status='RO' or roster_status='NR' or roster_status='FS' or roster_status='RF' or roster_status='PL')";
-        if (providerNo != null && !providerNo.equals("-1")) {
-            sql = sql + " and provider_no = '" + providerNo + "' ";
-        }
-        sql = sql + " order by last_name ";
+        boolean filterByProvider = providerNo != null && !providerNo.equals("-1");
 
-        // Session session = getSession();
         Session session = currentSession();
         try {
-            SQLQuery sqlQuery = session.createSQLQuery(sql);
+            SQLQuery sqlQuery = filterByProvider
+                ? session.createSQLQuery(FLU_REPORT_SQL_WITH_PROVIDER)
+                : session.createSQLQuery(FLU_REPORT_SQL);
+            if (filterByProvider) {
+                sqlQuery.setParameter("providerNo", providerNo);
+            }
             return sqlQuery.list();
         } finally {
-            // this.releaseSession(session);
-            //session.close();
+            // session lifecycle managed by Spring
         }
     }
 
@@ -2750,8 +2792,13 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         try {
             SQLQuery sqlQuery = session.createSQLQuery(demographicQuery);
             for (String key : params.keySet()) {
-                sqlQuery.setParameter(key, params.get(key));
-                MiscUtils.getLogger().warn(key + "=" + params.get(key));
+                Object val = params.get(key);
+                if (val instanceof java.util.Collection) {
+                    sqlQuery.setParameterList(key, (java.util.Collection) val);
+                } else {
+                    sqlQuery.setParameter(key, val);
+                }
+                MiscUtils.getLogger().warn(key + "=" + val);
             }
             Integer result = ((BigInteger) sqlQuery.uniqueResult()).intValue();
             return result;
@@ -2778,7 +2825,12 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             SQLQuery sqlQuery = session.createSQLQuery(demographicQuery);
 
             for (String key : params.keySet()) {
-                sqlQuery.setParameter(key, params.get(key));
+                Object val = params.get(key);
+                if (val instanceof java.util.Collection) {
+                    sqlQuery.setParameterList(key, (java.util.Collection) val);
+                } else {
+                    sqlQuery.setParameter(key, val);
+                }
             }
 
             sqlQuery.setFirstResult(startIndex);
@@ -2884,12 +2936,16 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         String ptstatusexp = "";
 
         if (searchRequest.isActive()) {
-            ptstatusexp = " and d.patient_status not in ("
-                + props.getProperty("inactive_statuses", "'IN','DE','IC', 'ID', 'MO', 'FI'") + ") ";
+            ptstatusexp = " and d.patient_status not in (:inactiveStatuses) ";
         } else {
-            ptstatusexp = " and d.patient_status in ("
-                + props.getProperty("inactive_statuses", "'IN','DE','IC', 'ID', 'MO', 'FI'") + ") ";
+            ptstatusexp = " and d.patient_status in (:inactiveStatuses) ";
         }
+        String inactiveStatusesProp = props.getProperty("inactive_statuses", "'IN','DE','IC', 'ID', 'MO', 'FI'");
+        List<String> inactiveStatusList = new java.util.ArrayList<>();
+        for (String s : inactiveStatusesProp.split(",")) {
+            inactiveStatusList.add(s.trim().replace("'", ""));
+        }
+        params.put("inactiveStatuses", inactiveStatusList);
 
         String domainRestriction = "";
         if (!searchRequest.isOutOfDomain()) {

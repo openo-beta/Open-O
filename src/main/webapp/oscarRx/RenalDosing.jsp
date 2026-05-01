@@ -161,11 +161,11 @@ if (measurementHash != null &&
 <!--
 CIPRO : J01MA02 S01AX13 S03AA07
 
-RENAL DOSING INFORMATION ATC: <%=atc%>  Demographic: <%=demographicNo%>
+RENAL DOSING INFORMATION ATC: <%=Encode.forHtml(String.valueOf(atc))%>  Demographic: <%=Encode.forHtml(String.valueOf(demographicNo))%>
 <br/>
 Clcr = {(140 - age ) X weight[kg] )} / (sCr [umol/L] X 0.8) if female X 0.85
 <br/>
-Clcr = {(140 - <%=age%> ) X <%=weight%>[kg] )} / (sCr [umol/L] X 0.8)   <% if (female) {%> X 0.85 <%}%>
+Clcr = {(140 - <%=Encode.forHtml(String.valueOf(age))%> ) X <%=Encode.forHtml(String.valueOf(weight))%>[kg] )} / (sCr [umol/L] X 0.8)   <% if (female) {%> X 0.85 <%}%>
 -->
 <style type="text/css">
     table.sofT {
@@ -220,9 +220,9 @@ Clcr = {(140 - <%=age%> ) X <%=weight%>[kg] )} / (sCr [umol/L] X 0.8)   <% if (f
         %>
         <tr <%=sel%> >
 
-            <td><%=h.get("clcrrange")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("clcrrange")))%>
             </td>
-            <td><%=h.get("recommendation")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("recommendation")))%>
             </td>
         </tr>
         <%}%>
@@ -232,16 +232,16 @@ Clcr = {(140 - <%=age%> ) X <%=weight%>[kg] )} / (sCr [umol/L] X 0.8)   <% if (f
     <div style="width:410px; float:left;">
 
         <!--
-        <div style="float:left; border: 1px yellow solid;" >Clcr <%=Clcr%> =</div> <div style="float:left;" > (140 - <%=age%>[age] ) X <%=weight%>[kg] ) <hr/> (<%=sCr%> sCr [umol/L] X 0.8)   <% if(female){%> X 0.85 <%}%> </div>
+        <div style="float:left; border: 1px yellow solid;" >Clcr <%=Encode.forHtml(String.valueOf(Clcr))%> =</div> <div style="float:left;" > (140 - <%=Encode.forHtml(String.valueOf(age))%>[age] ) X <%=Encode.forHtml(String.valueOf(weight))%>[kg] ) <hr/> (<%=Encode.forHtml(String.valueOf(sCr))%> sCr [umol/L] X 0.8)   <% if(female){%> X 0.85 <%}%> </div>
       -->
         <table class="equation">
             <tr>
-                <th rowspan=2 valign="middle">Clcr <%=setNA(equate, Clcr)%> =</th>
+                <th rowspan=2 valign="middle">Clcr <%=Encode.forHtml(String.valueOf(setNA(equate, Clcr)))%> =</th>
                 <td align="center">
-                    (140 - <%=setNA(ageb, age)%>[age] ) X <%=setNA(weightb, weight)%>
+                    (140 - <%=Encode.forHtml(String.valueOf(setNA(ageb, age)))%>[age] ) X <%=Encode.forHtml(String.valueOf(setNA(weightb, weight)))%>
                     <a href="javascript: function myFunction() {return false; }"
                        onclick="popup(500,1000,'<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Renal Dosing&amp;demographic_no=<%=Encode.forUriComponent(demographicNo)%>','dddsfds'); return false;">
-                        [kg <%=UtilDateUtilities.DateToString(wtDate, "yyyy-MMM-dd")%>]
+                        [kg <%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(wtDate, "yyyy-MMM-dd")))%>]
                     </a> X 1.23
 
                 </td>
@@ -250,20 +250,20 @@ Clcr = {(140 - <%=age%> ) X <%=weight%>[kg] )} / (sCr [umol/L] X 0.8)   <% if (f
                 <%}%>
             </tr>
             <tr>
-                <td align="center" style="border-top: 2px black solid;"><%=setNA(sCrb, sCr)%> sCr
+                <td align="center" style="border-top: 2px black solid;"><%=Encode.forHtml(String.valueOf(setNA(sCrb, sCr)))%> sCr
                     <a href="javascript: function myFunction() {return false; }"
-                       onclick="popup(500,1000,'<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Renal Dosing&amp;demographic_no=<%=demographicNo%>','dddsfds'); return false;">
-                        [umol/L <%=UtilDateUtilities.DateToString(sCrDate, "yyyy-MMM-dd")%>]
+                       onclick="popup(500,1000,'<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Renal Dosing&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>','dddsfds'); return false;">
+                        [umol/L <%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(sCrDate, "yyyy-MMM-dd")))%>]
                     </a>
                 </td>
             </tr>
         </table>
     </div>
 
-    <div style="clear:left"><%=rd.getMoreinfo()%>
+    <div style="clear:left"><%=Encode.forHtml(String.valueOf(rd.getMoreinfo()))%>
     </div>
     <%if (request.getParameter("divId") != null) { %>
-    <div style="float:right"><a href="javascript:void(0);" onclick="$('<%=request.getParameter("divId")%>').toggle();">hide</a>
+    <div style="float:right"><a href="javascript:void(0);" onclick="$('<%=Encode.forJavaScript(request.getParameter("divId"))%>').toggle();">hide</a>
     </div>
     <%}%>
 </div>

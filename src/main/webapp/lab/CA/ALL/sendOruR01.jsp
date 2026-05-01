@@ -46,6 +46,7 @@
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.Gender" %>
 <%@page import="org.apache.commons.lang3.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <title>Send eData</title>
@@ -99,7 +100,7 @@ for pre-populating data.
         <div class="control-group">
             <label class="control-label">From Provider:</label>
             <div class="controls">
-                <%=SendOruR01UIBean.getLoggedInProviderDisplayLine(loggedInInfo)%>
+                <%=Encode.forHtml(String.valueOf(SendOruR01UIBean.getLoggedInProviderDisplayLine(loggedInInfo)))%>
             </div>
         </div>
         <div class="control-group">
@@ -110,7 +111,7 @@ for pre-populating data.
                     <%
                         for (ProfessionalSpecialist professionalSpecialist : SendOruR01UIBean.getRemoteCapableProfessionalSpecialists()) {
                     %>
-                    <option value="<%=professionalSpecialist.getId()%>" <%=sendOruR01UIBean.renderSelectedProfessionalSpecialistOption(professionalSpecialist.getId())%> ><%=SendOruR01UIBean.getProfessionalSpecialistDisplayString(professionalSpecialist)%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(professionalSpecialist.getId()))%>" <%=Encode.forHtml(String.valueOf(sendOruR01UIBean.renderSelectedProfessionalSpecialistOption(professionalSpecialist.getId())))%> ><%=Encode.forHtml(String.valueOf(SendOruR01UIBean.getProfessionalSpecialistDisplayString(professionalSpecialist)))%>
                     </option>
                     <%
                         }
@@ -126,27 +127,27 @@ for pre-populating data.
             <label class="control-label">First Name</label>
             <div class="controls">
                 <input type="text" id="clientFirstName" name="clientFirstName"
-                       value="<%=sendOruR01UIBean.getClientFirstName()%>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(sendOruR01UIBean.getClientFirstName()))%>"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Last Name</label>
             <div class="controls">
                 <input type="text" id="clientLastName" name="clientLastName"
-                       value="<%=sendOruR01UIBean.getClientLastName()%>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(sendOruR01UIBean.getClientLastName()))%>"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Health Number<br/>(excluding version code)</label>
             <div class="controls">
-                <input type="text" name="clientHealthNumber" value="<%=sendOruR01UIBean.getClientHin()%>"/>
+                <input type="text" name="clientHealthNumber" value="<%=Encode.forHtmlAttribute(String.valueOf(sendOruR01UIBean.getClientHin()))%>"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">BirthDay</label>
             <div class="controls">
                 <input type="text" id="clientBirthDay" name="clientBirthDay"
-                       value="<%=sendOruR01UIBean.getClientBirthDate()%>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(sendOruR01UIBean.getClientBirthDate()))%>"/>
                 <script>
                     jQuery(document).ready(function () {
                         Date.format = 'yy-mm-dd';
@@ -163,7 +164,7 @@ for pre-populating data.
                     <%
                         for (Gender gender : Gender.values()) {
                     %>
-                    <option value="<%=gender.name()%>" <%=sendOruR01UIBean.renderSelectedGenderOption(gender)%> ><%=gender.getText()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(gender.name()))%>" <%=Encode.forHtml(String.valueOf(sendOruR01UIBean.renderSelectedGenderOption(gender)))%> ><%=Encode.forHtml(String.valueOf(gender.getText()))%>
                     </option>
                     <%
                         }
@@ -175,14 +176,14 @@ for pre-populating data.
         <div class="control-group">
             <label class="control-label">Subject</label>
             <div class="controls">
-                <input type="text" id="subject" name="subject" value="<%=sendOruR01UIBean.getSubject()%>"/>
+                <input type="text" id="subject" name="subject" value="<%=Encode.forHtmlAttribute(String.valueOf(sendOruR01UIBean.getSubject()))%>"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Text Message</label>
             <div class="controls">
                 <textarea id="textMessage" name="textMessage"
-                          style="width:40em;height:8em"><%=sendOruR01UIBean.getTextMessage()%></textarea>
+                          style="width:40em;height:8em"><%=Encode.forHtml(String.valueOf(sendOruR01UIBean.getTextMessage()))%></textarea>
             </div>
         </div>
         <div class="control-group">

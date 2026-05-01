@@ -908,35 +908,35 @@
             String drugId = thisForm.getGCN_SEQNO();
         }
     %>
-    <input type="hidden" name="annotation_attrib" value="<%=annotation_attrib%>"/>
+    <input type="hidden" name="annotation_attrib" value="<%=Encode.forHtmlAttribute(String.valueOf(annotation_attrib))%>"/>
     <!--
-DemographicNo:   <%= thisForm.getDemographicNo() %><br>
-RxDate:          <%= thisForm.getRxDate() %><br>
-EndDate:         <%= thisForm.getEndDate() %><br>
-WrittenDate:     <%= thisForm.getWrittenDate() %><br>
-GenericName:     <%= thisForm.getGenericName() %><br>
-BrandName:       <%= thisForm.getBrandName() %><br>
-GCN_SEQNO:       <%= thisForm.getGCN_SEQNO() %><br>
-CustomName:      <%= thisForm.getCustomName() %><br>
-TakeMin:         <%= thisForm.getTakeMin() %><br>
-TakeMax:         <%= thisForm.getTakeMax() %><br>
-FrequencyCode:   <%= thisForm.getFrequencyCode() %><br>
-Duration:        <%= thisForm.getDuration() %><br>
-DurationUnit:    <%= thisForm.getDurationUnit() %><br>
-Quantity:        <%= thisForm.getQuantity() %><br>
-Repeat:          <%= thisForm.getRepeat() %><br>
-Nosubs:          <%= String.valueOf(thisForm.getNosubs()) %><br>
-Prn:             <%= String.valueOf(thisForm.getPrn()) %><br>
-Long Term Med:   <%= String.valueOf(thisForm.getLongTerm()) %><br>
-Past Med:	 <%= String.valueOf(thisForm.getPastMed()) %><br>
-Patient Complia: <%= String.valueOf(thisForm.getPatientCompliance()) %><br>
-Dosage:          <%= thisForm.getDosage() %><br>
-Special:         <%= thisForm.getSpecial() %><br>
-ATC:             <%= thisForm.getAtcCode() %><br>
-regional ident:  <%= thisForm.getRegionalIdentifier() %><br>
-Custom Instruct: <%= thisForm.getCustomInstr() %><br>
-Outside ProName: <%= thisForm.getOutsideProviderName() %><br>
-Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
+DemographicNo:   <%=Encode.forHtml(String.valueOf(thisForm.getDemographicNo()))%><br>
+RxDate:          <%=Encode.forHtml(String.valueOf(thisForm.getRxDate()))%><br>
+EndDate:         <%=Encode.forHtml(String.valueOf(thisForm.getEndDate()))%><br>
+WrittenDate:     <%=Encode.forHtml(String.valueOf(thisForm.getWrittenDate()))%><br>
+GenericName:     <%=Encode.forHtml(String.valueOf(thisForm.getGenericName()))%><br>
+BrandName:       <%=Encode.forHtml(String.valueOf(thisForm.getBrandName()))%><br>
+GCN_SEQNO:       <%=Encode.forHtml(String.valueOf(thisForm.getGCN_SEQNO()))%><br>
+CustomName:      <%=Encode.forHtml(String.valueOf(thisForm.getCustomName()))%><br>
+TakeMin:         <%=Encode.forHtml(String.valueOf(thisForm.getTakeMin()))%><br>
+TakeMax:         <%=Encode.forHtml(String.valueOf(thisForm.getTakeMax()))%><br>
+FrequencyCode:   <%=Encode.forHtml(String.valueOf(thisForm.getFrequencyCode()))%><br>
+Duration:        <%=Encode.forHtml(String.valueOf(thisForm.getDuration()))%><br>
+DurationUnit:    <%=Encode.forHtml(String.valueOf(thisForm.getDurationUnit()))%><br>
+Quantity:        <%=Encode.forHtml(String.valueOf(thisForm.getQuantity()))%><br>
+Repeat:          <%=Encode.forHtml(String.valueOf(thisForm.getRepeat()))%><br>
+Nosubs:          <%=Encode.forHtml(String.valueOf(String.valueOf(thisForm.getNosubs())))%><br>
+Prn:             <%=Encode.forHtml(String.valueOf(String.valueOf(thisForm.getPrn())))%><br>
+Long Term Med:   <%=Encode.forHtml(String.valueOf(String.valueOf(thisForm.getLongTerm())))%><br>
+Past Med:	 <%=Encode.forHtml(String.valueOf(String.valueOf(thisForm.getPastMed())))%><br>
+Patient Complia: <%=Encode.forHtml(String.valueOf(String.valueOf(thisForm.getPatientCompliance())))%><br>
+Dosage:          <%=Encode.forHtml(String.valueOf(thisForm.getDosage()))%><br>
+Special:         <%=Encode.forHtml(String.valueOf(thisForm.getSpecial()))%><br>
+ATC:             <%=Encode.forHtml(String.valueOf(thisForm.getAtcCode()))%><br>
+regional ident:  <%=Encode.forHtml(String.valueOf(thisForm.getRegionalIdentifier()))%><br>
+Custom Instruct: <%=Encode.forHtml(String.valueOf(thisForm.getCustomInstr()))%><br>
+Outside ProName: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderName()))%><br>
+Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhip()))%><br>
 
 <% regionalIdentifier = thisForm.getRegionalIdentifier(); %>
 
@@ -980,12 +980,12 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
     %>
 
     <script language=javascript>
-        freqMin = new Array(<%= freq.length%>);
-        freqMax = new Array(<%= freq.length%>);
+        freqMin = new Array(<%=Encode.forJavaScript(String.valueOf(freq.length))%>);
+        freqMax = new Array(<%=Encode.forJavaScript(String.valueOf(freq.length))%>);
 
         <%for(i=0;i<freq.length;i++){%>
-        freqMin[<%=i%>] = <%= freq[i].getDailyMin()%>;
-        freqMax[<%=i%>] = <%= freq[i].getDailyMax()%>;
+        freqMin[<%=i%>] = <%=Encode.forJavaScript(String.valueOf(freq[i].getDailyMin()))%>;
+        freqMax[<%=i%>] = <%=Encode.forJavaScript(String.valueOf(freq[i].getDailyMax()))%>;
         <%}%>
     </script>
 
@@ -1024,7 +1024,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                     <tr>
                         <td>
                             <div class="DivContentSectionHead"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.section2Title"/>
-                                for <%= patient.getFirstName() %> <%= patient.getSurname() %>
+                                for <%=Encode.forHtml(String.valueOf(patient.getFirstName()))%> <%=Encode.forHtml(String.valueOf(patient.getSurname()))%>
                             </div>
                         </td>
                     </tr>
@@ -1041,18 +1041,18 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                     </td>
                                     <td colspan=2>
                                         <input type="hidden" name="genericName" id="genericName"/>
-                                        <b><%= thisForm.getGenericName() %>
+                                        <b><%=Encode.forHtml(String.valueOf(thisForm.getGenericName()))%>
                                         </b>
                                         <%if (compString != null) {%>
                                         <a href="javascript: function myFunction() {return false; }"
-                                           title="<%=compString%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgComponents"/></a>
+                                           title="<%=Encode.forHtmlAttribute(String.valueOf(compString))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgComponents"/></a>
                                         <%}%>
                                     </td>
                                     <td valign=top rowspan=9>
                                         <select size=20 name="selSpecial" ondblclick="javascript:cmdSpecial_click();">
                                             <%for (i = 0; i < spec.length; i++) {%>
-                                            <option value="<%= spec[i] %>">
-                                                <%= spec[i] %>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(spec[i]))%>">
+                                                <%=Encode.forHtml(String.valueOf(spec[i]))%>
                                             </option>
                                             <%}%>
                                         </select>
@@ -1065,12 +1065,12 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                     </td>
                                     <td colspan=2>
                                         <input type="hidden" name="brandName" id="brandName"/>
-                                        <b title="<%=thisForm.getRegionalIdentifier()%>"><%= thisForm.getBrandName() %>
+                                        <b title="<%=Encode.forHtmlAttribute(String.valueOf(thisForm.getRegionalIdentifier()))%>"><%=Encode.forHtml(String.valueOf(thisForm.getBrandName()))%>
                                         </b>
                                         <oscar:oscarPropertiesCheck property="SHOW_ODB_LINK" value="yes">
-                                            <!--a href="javascript: function myFunction() {return false; }" onclick="javascript:popup(700,630,'http://216.176.50.202/formulary/SearchServlet?searchType=singleQuery&phrase=exact&keywords=<%=regionalIdentifier%>','ODBInfo')">ODB info</a-->
+                                            <!--a href="javascript: function myFunction() {return false; }" onclick="javascript:popup(700,630,'http://216.176.50.202/formulary/SearchServlet?searchType=singleQuery&phrase=exact&keywords=<%=Encode.forJavaScript(String.valueOf(regionalIdentifier))%>','ODBInfo')">ODB info</a-->
                                             <a href="javascript: function myFunction() {return false; }"
-                                               onclick="javascript:popup(725,690,'http://216.176.50.202/formulary/SearchServlet?sort=genericName&section=1&pcg=%25&manufacturerID=%25&keywords=<%=regionalIdentifier%>&searchType=drugID&Search=Search&phrase=exact','ODBInfo')">ODB
+                                               onclick="javascript:popup(725,690,'http://216.176.50.202/formulary/SearchServlet?sort=genericName&section=1&pcg=%25&manufacturerID=%25&keywords=<%=Encode.forJavaScript(String.valueOf(regionalIdentifier))%>&searchType=drugID&Search=Search&phrase=exact','ODBInfo')">ODB
                                                 info</a>
                                         </oscar:oscarPropertiesCheck>
                                     </td>
@@ -1091,7 +1091,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                         <div style="z-index: 0;"><select size=20 name="selSpecial"
                                                                          ondblclick="javascript:cmdSpecial_click();">
                                             <%for (i = 0; i < spec.length; i++) {%>
-                                            <option value="<%= spec[i] %>"><%= spec[i] %>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(spec[i]))%>"><%=Encode.forHtml(String.valueOf(spec[i]))%>
                                             </option>
                                             <%}%>
                                         </select></div>
@@ -1167,8 +1167,8 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                     </select> <select name="frequencyCode" style="width:80px"
                                                                 onchange="javascript:changeDuration();calcQty();">
                                         <%for (i = 0; i < freq.length; i++) {%>
-                                        <option value="<%= freq[i].getFreqCode() %>">
-                                            <%= freq[i].getFreqCode() %>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(freq[i].getFreqCode()))%>">
+                                            <%=Encode.forHtml(String.valueOf(freq[i].getFreqCode()))%>
                                         </option>
                                         <%}%>
                                     </select> <input type="hidden" name="takeMin" id="takeMin"/>
@@ -1354,7 +1354,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                                     </div>
                                                     <oscar:oscarPropertiesCheck property="billregion" value="ON">
                                                         <a target="_new"
-                                                           href="https://www.healthinfo.moh.gov.on.ca/formulary/SearchServlet?searchType=drugID&keywords=<%=regionalIdentifier%>">ODB
+                                                           href="https://www.healthinfo.moh.gov.on.ca/formulary/SearchServlet?searchType=drugID&keywords=<%=Encode.forUriComponent(String.valueOf(regionalIdentifier))%>">ODB
                                                             lookup</a>
                                                         <%
                                                             ArrayList<LimitedUseCode> luList = LimitedUseLookup.getLUInfoForDin(regionalIdentifier);
@@ -1370,11 +1370,11 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                                             <%for (LimitedUseCode limitedUseCode : luList) {%>
                                                             <tr>
                                                                 <td valign="top"><a
-                                                                        onclick="addLuCode('<%=limitedUseCode.getUseId()%>')"
-                                                                        href="javascript: return void(0);"><%=limitedUseCode.getUseId()%>
+                                                                        onclick="addLuCode('<%=Encode.forJavaScript(String.valueOf(limitedUseCode.getUseId()))%>')"
+                                                                        href="javascript: return void(0);"><%=Encode.forHtml(String.valueOf(limitedUseCode.getUseId()))%>
                                                                 </a>&nbsp;
                                                                 </td>
-                                                                <td><%=limitedUseCode.getTxt()%>
+                                                                <td><%=Encode.forHtml(String.valueOf(limitedUseCode.getTxt()))%>
                                                                 </td>
                                                             </tr>
                                                             <%}%>
@@ -1432,7 +1432,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                     <td align="right">
                                         <input type=button class="ControlPushButton" style="width: 100px"
                                                onclick="window.open('<c:out
-                                                       value="${pageContext.request.contextPath}"/>/annotation/annotation.jsp?atbname=<%=annotation_attrib%>&demo=<%=bean.getDemographicNo()%>&display=<%=annotation_display%>','anwin','width=400,height=500');"
+                                                       value="${pageContext.request.contextPath}"/>/annotation/annotation.jsp?atbname=<%=Encode.forHtml(String.valueOf(annotation_attrib))%>&demo=<%=Encode.forHtml(String.valueOf(bean.getDemographicNo()))%>&display=<%=Encode.forHtml(String.valueOf(annotation_display))%>','anwin','width=400,height=500');"
                                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgAnnotation"/>"/>
                                     </td>
                                 </tr>
@@ -1447,11 +1447,11 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                 if (allerg != null && allerg.length > 0) {
                                     for (int allergIndex = 0; allergIndex < allerg.length; allergIndex++) {
                             %>
-                            <div style="background-color:<%=severityOfReactionColor(allerg[allergIndex].getSeverityOfReaction())%>;margin-right:100px;margin-left:20px;margin-top:10px;padding-left:10px;padding-top:10px;padding-bottom:5px;border-bottom: 2px solid gray;border-right: 2px solid #999;border-top: 1px solid #CCC;border-left: 1px solid #CCC;">
-                                <b>Allergy:</b> <%= allerg[allergIndex].getDescription() %> <b>Reaction:</b>
-                                <%= allerg[allergIndex].getReaction() %>
-                                <b>Severity:</b> <%=severityOfReaction(allerg[allergIndex].getSeverityOfReaction())%>
-                                <b>Onset of Reaction:</b> <%=onSetOfReaction(allerg[allergIndex].getOnsetOfReaction())%>
+                            <div style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(severityOfReactionColor(allerg[allergIndex].getSeverityOfReaction())))%>;margin-right:100px;margin-left:20px;margin-top:10px;padding-left:10px;padding-top:10px;padding-bottom:5px;border-bottom: 2px solid gray;border-right: 2px solid #999;border-top: 1px solid #CCC;border-left: 1px solid #CCC;">
+                                <b>Allergy:</b> <%=Encode.forHtml(String.valueOf(allerg[allergIndex].getDescription()))%> <b>Reaction:</b>
+                                <%=Encode.forHtml(String.valueOf(allerg[allergIndex].getReaction()))%>
+                                <b>Severity:</b> <%=Encode.forHtml(String.valueOf(severityOfReaction(allerg[allergIndex].getSeverityOfReaction())))%>
+                                <b>Onset of Reaction:</b> <%=Encode.forHtml(String.valueOf(onSetOfReaction(allerg[allergIndex].getOnsetOfReaction())))%>
                             </div>
                             <% }
                             }%>
@@ -1601,7 +1601,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                     }
                 }
 
-                customQty(<%=quan%>);
+                customQty(<%=Encode.forJavaScript(String.valueOf(quan))%>);
                 writeScriptDisplay();
                 <oscar:oscarPropertiesCheck property="RENAL_DOSING_DS" value="yes">
 
@@ -1609,7 +1609,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                     var dummie = "";
                     var url = "<%= request.getContextPath() %>/oscarRx/RenalDosing.jsp";
                     var ran_number = Math.round(Math.random() * 1000000);
-                    var params = "demographicNo=<%=bean.getDemographicNo()%>&atcCode=<%=atcCode%>&rand=" + ran_number;  //hack to get around ie caching the page
+                    var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>&atcCode=<%=Encode.forJavaScript(String.valueOf(atcCode))%>&rand=" + ran_number;  //hack to get around ie caching the page
                     //alert(params);
                     new Ajax.Updater('renalDosing', url, {method: 'get', parameters: params, asynchronous: true});
                     //alert(origRequest.responseText);
@@ -1621,7 +1621,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                 function callReplacementWebService(url, id) {
                     oscarLog("in callReplacementWebService writescript.jsp: " + url + "--" + id);
                     var ran_number = Math.round(Math.random() * 1000000);
-                    var params = "demographicNo=<%=bean.getDemographicNo()%>&atcCode=<%=atcCode%>&rand=" + ran_number;  //hack to get around ie caching the page
+                    var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>&atcCode=<%=Encode.forJavaScript(String.valueOf(atcCode))%>&rand=" + ran_number;  //hack to get around ie caching the page
                     new Ajax.Updater(id, url, {method: 'get', parameters: params, asynchronous: true});
                 }
 

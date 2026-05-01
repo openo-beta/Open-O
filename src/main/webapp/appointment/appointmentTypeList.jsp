@@ -42,6 +42,7 @@
 <%@ page import="ca.openosp.openo.log.*" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <title>
@@ -136,7 +137,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -284,29 +285,29 @@
                         for (AppointmentType type : types) {
                             bgColor = bgColor.equals("#EEEEFF") ? color : "#EEEEFF";
                 %>
-                <tr bgcolor="<%=bgColor%>">
+                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>">
                     <td>
-                        <%= type.getName() %>
+                        <%=Encode.forHtml(String.valueOf(type.getName()))%>
                     </td>
                     <th>
-                        <%= Integer.toString(type.getDuration()) %> min
+                        <%=Encode.forHtml(String.valueOf(Integer.toString(type.getDuration())))%> min
                     </th>
                     <th>
-                        <%= type.getReason() %>
+                        <%=Encode.forHtml(String.valueOf(type.getReason()))%>
                     </th>
                     <th>
-                        <%= type.getNotes() %>
+                        <%=Encode.forHtml(String.valueOf(type.getNotes()))%>
                     </th>
                     <th nowrap>
-                        <%= type.getLocation() %>
+                        <%=Encode.forHtml(String.valueOf(type.getLocation()))%>
                     </th>
                     <th nowrap>
-                        <%= type.getResources() %>
+                        <%=Encode.forHtml(String.valueOf(type.getResources()))%>
                     </th>
                     <th nowrap>
-                        <a href="${pageContext.request.contextPath}/appointment/appointmentTypeAction.do?oper=edit&no=<%= type.getId() %>">edit</a>
+                        <a href="${pageContext.request.contextPath}/appointment/appointmentTypeAction.do?oper=edit&no=<%=Encode.forUriComponent(String.valueOf(type.getId()))%>">edit</a>
                         &nbsp;&nbsp;
-                        <a href="javascript:delType('<%= type.getId() %>')">delete</a>
+                        <a href="javascript:delType('<%=Encode.forHtmlAttribute(String.valueOf(type.getId()))%>')">delete</a>
                     </th>
                 </tr>
                 <%

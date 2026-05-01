@@ -39,7 +39,6 @@
 %>
 <%@page import="ca.openosp.openo.PMmodule.model.Program" %>
 <%@page import="ca.openosp.openo.PMmodule.service.ProgramManager" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
@@ -49,6 +48,7 @@
 <%@page import="ca.openosp.openo.managers.ProviderManager2" %>
 <%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     ProgramManager programManager = (ProgramManager) SpringUtils.getBean(ProgramManager.class);
@@ -142,7 +142,7 @@
                         }
                 %>
                 <option <%=selected%>
-                        value="<%=program.getId()%>"><%=StringEscapeUtils.escapeHtml4(program.getName() + " (" + program.getType() + ")")%>
+                        value="<%=Encode.forHtmlAttribute(String.valueOf(program.getId()))%>"><%=Encode.forHtml(program.getName() + " (" + program.getType() + ")")%>
                 </option>
                 <%
                     }
@@ -168,13 +168,13 @@
                     for (Provider p : providers) {
                 %>
                 <tr>
-                    <td><%=p.getLastName()%>,<%=p.getFirstName() %>
+                    <td><%=Encode.forHtml(String.valueOf(p.getLastName()))%>,<%=Encode.forHtml(String.valueOf(p.getFirstName()))%>
                     </td>
                     <td>
                         <%
                             String tmpUp = userPropertyDAO.getStringValue(p.getProviderNo(), "availabilityCode");
                         %>
-                        <%=(tmpUp != null && tmpUp.length() > 0) ? tmpUp : "<i>Not Set</i>" %>
+                        <%=(tmpUp != null && tmpUp.length() > 0) ? Encode.forHtml(tmpUp) : "<i>Not Set</i>"%>
 
                     </td>
                 </tr>
@@ -201,10 +201,10 @@
                         String tmpUp = userPropertyDAO.getStringValue(p.getProviderNo(), "availabilityCode");
                 %>
                 <tr>
-                    <td><%=p.getLastName()%>,<%=p.getFirstName() %>
+                    <td><%=Encode.forHtml(String.valueOf(p.getLastName()))%>,<%=Encode.forHtml(String.valueOf(p.getFirstName()))%>
                     </td>
                     <td>
-                        <select name="availabilityCode_<%=p.getProviderNo()%>">
+                        <select name="availabilityCode_<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>">
                             <option value=""></option>
                             <option <%=("GREEN".equals(tmpUp)) ? " selected=\"selected\" " : "" %> value="GREEN">GREEN
                             </option>

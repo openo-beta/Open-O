@@ -44,6 +44,7 @@
         import="ca.openosp.openo.encounter.immunization.pageUtil.*, java.util.*, org.w3c.dom.*" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctRemoteAttachments" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -96,7 +97,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><%= bean.patientLastName %> , <%= bean.patientFirstName%>
+                        <td><%=Encode.forHtml(String.valueOf(bean.patientLastName))%> , <%=Encode.forHtml(String.valueOf(bean.patientFirstName))%>
                         </td>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td style="text-align: right"><a
@@ -112,7 +113,7 @@
                     String prov = bean.getDemographicNo();
                     String demog = bean.providerNo;
                 %> <a
-                    href="javascript:popupSendAttach(700,960,'<%= request.getContextPath() %>/messenger/Transfer/SelectItems.jsp?val1=<%=demog%>&val2=<%=prov%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgSendEDoc"/></a></td>
+                    href="javascript:popupSendAttach(700,960,'<%= request.getContextPath() %>/messenger/Transfer/SelectItems.jsp?val1=<%=Encode.forUriComponent(String.valueOf(demog))%>&val2=<%=Encode.forUriComponent(String.valueOf(prov))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgSendEDoc"/></a></td>
             <td class="MainTableRightColumn">
                 <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgDemogAtt"/></h2>
                 <table border="0" width="80%" cellspacing="1">
@@ -136,13 +137,13 @@
                     %>
                     <tr>
                         <td bgcolor="#EEEEFF"><a
-                                href="javascript:popupViewAttach(700,960,'ViewAttachment.do?mesId=<%=mesId%>')"><%=subject%>
+                                href="javascript:popupViewAttach(700,960,'ViewAttachment.do?mesId=<%=Encode.forUriComponent(String.valueOf(mesId))%>')"><%=Encode.forHtml(String.valueOf(subject))%>
                         </a></td>
-                        <td bgcolor="#EEEEFF"><%=fromLoco%>
+                        <td bgcolor="#EEEEFF"><%=Encode.forHtml(String.valueOf(fromLoco))%>
                         </td>
-                        <td bgcolor="#EEEEFF"><%=svBy%>
+                        <td bgcolor="#EEEEFF"><%=Encode.forHtml(String.valueOf(svBy))%>
                         </td>
-                        <td bgcolor="#EEEEFF"><%=theDate%>
+                        <td bgcolor="#EEEEFF"><%=Encode.forHtml(String.valueOf(theDate))%>
                         </td>
 
                     </tr>

@@ -48,6 +48,7 @@
 <%@ page
         import="java.util.*, java.sql.*, ca.openosp.openo.util.*,ca.openosp.openo.providers.data.ProviderData,ca.openosp.openo.billing.ca.bc.data.*,ca.openosp.openo.entities.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillActivityDAO" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -145,7 +146,7 @@
             <% for (String year : yearArray) { %>
             <tr>
                 <td align='CENTER'><a
-                        href="TeleplanSubmission.jsp?year=<%=year%>">YEAR <%=year%>
+                        href="TeleplanSubmission.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>">YEAR <%=Encode.forHtml(String.valueOf(year))%>
                 </a></td>
             </tr>
             <% } %>
@@ -163,7 +164,7 @@
     </div>
 
 
-    <h4>Teleplan Group Report - <%=thisyear%>
+    <h4>Teleplan Group Report - <%=Encode.forHtml(String.valueOf(thisyear))%>
     </h4>
     <c:if test="${!empty error}"><c:out value="${error}"/></c:if>
 
@@ -179,7 +180,7 @@
                 for (String provNo : list) {
                     ProviderData provider = new ProviderData(provNo);
             %>
-            <option value="<%=provider.getOhip_no()%>"><%=provider.getLast_name()%>,<%=provider.getFirst_name()%>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getOhip_no()))%>"><%=Encode.forHtml(String.valueOf(provider.getLast_name()))%>,<%=Encode.forHtml(String.valueOf(provider.getFirst_name()))%>
             </option>
             <%}%>
         </select>
@@ -193,7 +194,7 @@
 
     <table class="table table-striped  table-condensed">
         <thead>
-        <tr style="background-color:<%=yearColor%>">
+        <tr style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(yearColor))%>">
             <th width="12%">Provider</th>
             <th width="14%">Group Number</th>
             <th width="20%">Creation Date</th>
@@ -210,7 +211,7 @@
                     <tr bgcolor="#E6F0F7" align="center">
                 </c:when>
                 <c:otherwise>
-                    <tr bgcolor="<%=yearColor%>" align="center">
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(yearColor))%>" align="center">
                 </c:otherwise>
             </c:choose>
 

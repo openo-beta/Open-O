@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String error = "Your note was not saved as you did not have the exclusive note lock";
 
@@ -43,7 +44,7 @@
 <body>
 
 <h3 style="text-align:center;">
-    <%=error %>
+    <%=Encode.forHtml(String.valueOf(error))%>
 </h3>
 </body>
 </html>

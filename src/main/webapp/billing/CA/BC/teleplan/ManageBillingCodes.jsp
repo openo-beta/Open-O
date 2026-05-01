@@ -52,6 +52,7 @@
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingService" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 
     <head>
@@ -411,17 +412,17 @@
                                 String lin = Misc.forwardSpace("" + h.get("code"), 5) + Misc.forwardSpace("" + h.get("fee"), 8) + Misc.forwardSpace("" + h.get("desc"), 50);
                         %>
 
-                        <tr class="<%=classStyle%>">
-                            <td><input type="checkbox" name="codes" value="<%=lin%>" <%=selected%>/></td>
-                            <td><%=h.get("code")%>
+                        <tr class="<%=Encode.forHtmlAttribute(String.valueOf(classStyle))%>">
+                            <td><input type="checkbox" name="codes" value="<%=Encode.forHtmlAttribute(String.valueOf(lin))%>" <%=selected%>/></td>
+                            <td><%=Encode.forHtml(String.valueOf(h.get("code")))%>
                             </td>
-                            <td><%=oldFee%>
+                            <td><%=Encode.forHtml(String.valueOf(oldFee))%>
                             </td>
-                            <td><%=h.get("fee")%>
+                            <td><%=Encode.forHtml(String.valueOf(h.get("fee")))%>
                             </td>
-                            <td><%=h.get("desc")%>
+                            <td><%=Encode.forHtml(String.valueOf(h.get("desc")))%>
                             </td>
-                            <td><%=classStyle%>
+                            <td><%=Encode.forHtml(String.valueOf(classStyle))%>
                             </td>
                         </tr>
                         <%}%>

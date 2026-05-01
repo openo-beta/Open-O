@@ -29,6 +29,7 @@
 <%@page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingInrDao dao = SpringUtils.getBean(BillingInrDao.class);
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
@@ -148,12 +149,12 @@
     } else {
     %>
 
-    <%=errorCode%>
+    <%=Encode.forHtml(String.valueOf(errorCode))%>
     <input type="button" value="Change" onClick="history.go(-1);return false;">
     <%
         }
     %>
-    <p><%=request.getParameter("inraction")%> Bill number <%=billinginr_no%>
+    <p><%=Encode.forHtml(request.getParameter("inraction"))%> Bill number <%=Encode.forHtml(String.valueOf(billinginr_no))%>
     </p>
     <hr width="90%"></hr>
     <form>

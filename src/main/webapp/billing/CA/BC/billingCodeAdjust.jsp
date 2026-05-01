@@ -43,6 +43,7 @@
 <%@page import="java.util.*,ca.openosp.openo.billings.ca.bc.data.BillingCodeData,ca.openosp.openo.billing.ca.bc.pageUtil.*" %>
 <%@ page import="ca.openosp.openo.commn.dao.BillingServiceDao,ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.commn.model.*" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingService" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%BillingServiceDao billingServiceDao = (BillingServiceDao) SpringUtils.getBean(BillingServiceDao.class); %>
 
 <html>
@@ -83,7 +84,7 @@
                     <%if (request.getAttribute("returnMessage") != null) { %>
                     <table>
                         <tr>
-                            <td style="font-color: red;"><%=request.getAttribute("returnMessage")%>
+                            <td style="font-color: red;"><%=Encode.forHtml(String.valueOf(request.getAttribute("returnMessage")))%>
                             </td>
                         </tr>
                     </table>
@@ -118,7 +119,7 @@
                 <table border=1 width="80%">
                     <tr>
                         <th>Service Code<a
-                                href="billingCodeAdjust.jsp?sortOrder=<%=newOrder%>"><%=arrow%>
+                                href="billingCodeAdjust.jsp?sortOrder=<%=Encode.forUriComponent(String.valueOf(newOrder))%>"><%=Encode.forHtml(String.valueOf(arrow))%>
                         </a></th>
                         <th>Description</th>
                         <th>Price</th>
@@ -129,16 +130,16 @@
                             BillingService bcd = (BillingService) list.get(i);
                     %>
                     <tr align="center">
-                        <td><strong><%=bcd.getServiceCode()%>
+                        <td><strong><%=Encode.forHtml(String.valueOf(bcd.getServiceCode()))%>
                         </strong></td>
-                        <td><%=bcd.getDescription()%>
+                        <td><%=Encode.forHtml(String.valueOf(bcd.getDescription()))%>
                         </td>
-                        <td><%=bcd.getValue()%>
+                        <td><%=Encode.forHtml(String.valueOf(bcd.getValue()))%>
                         </td>
                         <td><a
-                                href="billingEditCode.jsp?codeId=<%=bcd.getBillingserviceNo()%>&code=<%=bcd.getServiceCode()%>&desc=<%=bcd.getDescription()%>&value=<%=bcd.getValue()%>">Edit</a>
+                                href="billingEditCode.jsp?codeId=<%=Encode.forUriComponent(String.valueOf(bcd.getBillingserviceNo()))%>&code=<%=Encode.forUriComponent(String.valueOf(bcd.getServiceCode()))%>&desc=<%=Encode.forUriComponent(String.valueOf(bcd.getDescription()))%>&value=<%=Encode.forUriComponent(String.valueOf(bcd.getValue()))%>">Edit</a>
                             <br>
-                            <a href="deletePrivateCode.jsp?code=<%=bcd.getBillingserviceNo()%>">Delete</a></td>
+                            <a href="deletePrivateCode.jsp?code=<%=Encode.forUriComponent(String.valueOf(bcd.getBillingserviceNo()))%>">Delete</a></td>
                     </tr>
                     <%} %>
                 </table>

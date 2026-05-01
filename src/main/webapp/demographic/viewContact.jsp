@@ -28,6 +28,7 @@
 <%@ page import="java.util.Properties" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Contact" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 
     String msg = "View Contact Details.";
@@ -42,7 +43,7 @@
                 <%
                 Contact c = (Contact)request.getAttribute("contact");
                 %>
-                var id = '<%=c.getId()%>';
+                var id = '<%=Encode.forJavaScript(String.valueOf(c.getId()))%>';
                 location.href = '<%=request.getContextPath()%>/demographic/Contact.do?method=editContact&contact.id=' + id;
             }
         </script>
@@ -60,7 +61,7 @@
     <center>
         <table BORDER="1" CELLPADDING="0" CELLSPACING="0" WIDTH="80%">
             <tr BGCOLOR="#CCFFFF">
-                <th><%=msg%>
+                <th><%=Encode.forHtml(String.valueOf(msg))%>
                 </th>
             </tr>
         </table>

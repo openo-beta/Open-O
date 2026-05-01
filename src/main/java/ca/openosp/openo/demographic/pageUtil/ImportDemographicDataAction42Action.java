@@ -62,6 +62,8 @@ import cdsDt.DiabetesMotivationalCounselling.CounsellingPerformed;
 import cdsDt.PersonNameStandard.LegalName;
 import cdsDt.PersonNameStandard.OtherNames;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -136,7 +138,7 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class ImportDemographicDataAction42Action extends ActionSupport {
+public class ImportDemographicDataAction42Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -226,8 +228,13 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
          * save the upload stream to a temp directory.  This should allow the HTTP
          * thread to close gracefully while the import is being processed.
          */
+        if (importFileOnDisk == null || importFileFileName == null || importFileFileName.trim().isEmpty()) {
+            addActionError("No upload file was provided.");
+            return ERROR;
+        }
+
         String filename = importFileFileName;
-        Path filePath = importFile.toPath().normalize();
+        Path filePath = importFileOnDisk.toPath().normalize();
 
         // Get context of the temp directory, get the file path to the the temp directory
         ServletContext servletContext = ServletActionContext.getServletContext();
@@ -4843,26 +4850,20 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
         return ret;
     }
 
-    private File importFile = null;
+    private UploadedFile importFile = null;
+    private File importFileOnDisk;
     private String importFileFileName;
     private boolean matchProviderNames = true;
     private int timeshiftInDays;
     private String courseId;
 
-    public File getImportFile() {
-        return importFile;
-    }
-
-    public void setImportFile(File importFile) {
-        this.importFile = importFile;
-    }
-
-    public String getImportFileFileName() {
-        return importFileFileName;
-    }
-
-    public void setImportFileFileName(String importFileFileName) {
-        this.importFileFileName = importFileFileName;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
+            this.importFileFileName = importFile.getOriginalName();
+        }
     }
 
     public boolean isMatchProviderNames() {
