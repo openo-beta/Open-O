@@ -28,6 +28,7 @@ package ca.openosp;
 
 import ca.openosp.openo.utility.MiscUtils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -478,14 +479,14 @@ public class OscarProperties extends Properties {
     public String getDocumentDirectory() {
         String documents = oscarProperties.getProperty("DOCUMENT_DIR");
 
-        if (documents == null) {
+        if (documents == null || documents.isBlank()) {
             String baseDir = oscarProperties.getProperty("BASE_DOCUMENT_DIR");
-            if (baseDir == null) {
+            if (baseDir == null || baseDir.isBlank()) {
                 return null;
             }
-            documents = Paths.get(baseDir, "document").toString();
+            documents = Paths.get(baseDir.trim(), "document").toString();
         }
-        return documents.trim();
+        return Paths.get(documents.trim()).toString() + File.separator;
     }
 
     public String getDocumentCacheDirectory() {
