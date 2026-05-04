@@ -218,7 +218,7 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
     public String getFilePath() {
 
         if (this.filePath == null) {
-            File docDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+            File docDir = new File(OscarProperties.getInstance().getDocumentDirectory());
             File validatedFile = PathValidationUtils.validatePath(this.getFileName(), docDir);
             this.filePath = validatedFile.getPath();
         }

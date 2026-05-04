@@ -663,7 +663,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport implement
     private String[] importContacts(LoggedInInfo loggedInInfo, String xmlFile, ArrayList<String> warnings, HttpServletRequest request, int timeShiftInDays, Provider student, Program admitTo, int courseId) throws SQLException, Exception {
         DemographicData dd = new DemographicData();
 
-        String docDir = oscarProperties.getProperty("DOCUMENT_DIR");
+        String docDir = oscarProperties.getDocumentDirectory();
         docDir = Util.fixDirName(docDir);
         if (!Util.checkDir(docDir)) {
             logger.debug("Error! Cannot write to DOCUMENT_DIR - Check oscar.properties or dir permissions.");
@@ -869,7 +869,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport implement
         ArrayList<String> err_note = new ArrayList<String>(); //non-errors: notes
         importErrors = new ArrayList<String>();
 
-        String docDir = oscarProperties.getProperty("DOCUMENT_DIR");
+        String docDir = oscarProperties.getDocumentDirectory();
         docDir = Util.fixDirName(docDir);
         if (!Util.checkDir(docDir)) {
             logger.debug("Error! Cannot write to DOCUMENT_DIR - Check oscar.properties or dir permissions.");

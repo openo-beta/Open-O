@@ -69,7 +69,7 @@ import ca.openosp.openo.documentManager.EDocUtil;
 public class FaxImporter {
 
     private static String PATH = "/fax";
-    private static String DOCUMENT_DIR = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+    private static String DOCUMENT_DIR = OscarProperties.getInstance().getDocumentDirectory();
     private static String DEFAULT_USER = "-1";
     private FaxConfigDao faxConfigDao = SpringUtils.getBean(FaxConfigDao.class);
     private FaxJobDao faxJobDao = SpringUtils.getBean(FaxJobDao.class);

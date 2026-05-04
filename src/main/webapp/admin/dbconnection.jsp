@@ -24,4 +24,4 @@
 
 --%>
 
-<% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
+<% OscarProperties oscarVariables = OscarProperties.getInstance(); %>

@@ -160,7 +160,7 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
             OscarProperties props = OscarProperties.getInstance();
 
             //properties must exist
-            String place = props.getProperty("DOCUMENT_DIR");
+            String place = props.getDocumentDirectory();
 
             if (!place.endsWith("/"))
                 place = new StringBuilder(place).insert(place.length(), "/").toString();

@@ -67,7 +67,7 @@ public class ExcellerisOntarioHandler implements MessageHandler {
             
             // Get expected document directory for validation
             OscarProperties props = OscarProperties.getInstance();
-            String documentDir = props.getProperty("DOCUMENT_DIR");
+            String documentDir = props.getDocumentDirectory();
             if (documentDir == null || documentDir.isEmpty()) {
                 logger.error("DOCUMENT_DIR property not configured");
                 return null;
