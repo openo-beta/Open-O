@@ -178,9 +178,9 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         String description = request.getParameter("description");
 
         // Validate and sanitize the file path to prevent path traversal attacks
-        String documentDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String documentDir = OscarProperties.getInstance().getDocumentDirectory();
         if (documentDir == null || documentDir.trim().isEmpty()) {
-            logger.error("DOCUMENT_DIR property not configured");
+            logger.error("Document directory not configured");
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return;
         }

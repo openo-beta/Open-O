@@ -250,7 +250,7 @@ public class LabUploadWs extends AbstractWs {
         HttpServletRequest request = getHttpServletRequest();
 
         OscarProperties props = OscarProperties.getInstance();
-        String labFolderPath = props.getProperty("DOCUMENT_DIR") + "labs";
+        String labFolderPath = props.getDocumentDirectory() + "labs";
         String retVal = "";
 
         LoggedInInfo loggedInInfo =

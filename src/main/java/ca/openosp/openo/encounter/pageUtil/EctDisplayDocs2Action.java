@@ -27,6 +27,7 @@
 package ca.openosp.openo.encounter.pageUtil;
 
 import ca.openosp.openo.util.plugin.IsPropertiesOn;
+import ca.openosp.OscarProperties;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.dao.DocumentDao.DocumentType;
 import ca.openosp.openo.documentManager.EDoc;
@@ -155,7 +156,7 @@ public class EctDisplayDocs2Action extends EctDisplayAction {
                 hash = Math.abs(winName.hashCode());
 
                 if (inboxflag) {
-                    String path = IsPropertiesOn.getProperty("DOCUMENT_DIR");
+                    String path = OscarProperties.getInstance().getDocumentDirectory();
  		    url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/mod/docmgmtComp/FillARForm.do?method=showInboxDocDetails&path=" + Encode.forJavaScript(path) + "&demoNo=" + Encode.forJavaScript(bean.demographicNo) + "&name=" + Encode.forJavaScript(dispFilename) + "'); return false;";
                     isURLjavaScript = true;
                 } else if (curDoc.getRemoteFacilityId() == null && curDoc.isPDF()) {

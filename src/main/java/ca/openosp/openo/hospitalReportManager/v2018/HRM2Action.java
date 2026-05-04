@@ -161,7 +161,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
             throw new SecurityException("missing required sec object (_hrm)");
         }
 
-        String downloadDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String downloadDirectory = OscarProperties.getInstance().getDocumentDirectory();
         JSONObject obj = new JSONObject();
 
         try {
@@ -253,7 +253,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
         String privateKeyDirectory = OscarProperties.getInstance().getProperty("OMD_DIRECTORY");
         if (privateKeyDirectory == null) {
-            privateKeyDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + File.separator + ".." + File.separator + "hrm" + File.separator + "OMD";
+            privateKeyDirectory = OscarProperties.getInstance().getDocumentDirectory() + File.separator + ".." + File.separator + "hrm" + File.separator + "OMD";
         }
 
         JSONObject obj = new JSONObject();
@@ -346,7 +346,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
             String privateKeyDirectory = OscarProperties.getInstance().getProperty("OMD_DIRECTORY");
             if (privateKeyDirectory == null) {
-                privateKeyDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + ".." + File.separator + "hrm" + File.separator + "OMD" + File.separator;
+                privateKeyDirectory = OscarProperties.getInstance().getDocumentDirectory() + ".." + File.separator + "hrm" + File.separator + "OMD" + File.separator;
             }
 
 

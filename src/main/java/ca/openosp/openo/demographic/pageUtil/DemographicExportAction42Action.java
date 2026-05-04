@@ -2115,7 +2115,7 @@ public class DemographicExportAction42Action extends ActionSupport {
 
                                     //check the DOCUMENT_DIR
                                     if (!hrmFile.exists()) {
-                                        String place = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+                                        String place = OscarProperties.getInstance().getDocumentDirectory();
                                         reportFile = place + File.separator + reportFile;
                                         hrmFile = new File(reportFile);
                                     }

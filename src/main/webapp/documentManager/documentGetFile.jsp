@@ -52,7 +52,7 @@
 <%
     DocumentDao documentDao = SpringUtils.getBean(DocumentDao.class);
     String filename = "", filetype = "", doc_no = "";
-    String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+    String docdownload = OscarProperties.getInstance().getDocumentDirectory();
     String downloadMethod = OscarProperties.getInstance().getProperty("DOCUMENT_DOWNLOAD_METHOD");
     session.setAttribute("docdownload", docdownload);
     if (request.getParameter("document") != null) {
