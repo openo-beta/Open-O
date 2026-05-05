@@ -106,7 +106,7 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                         pdfid = pdfid.replaceAll("[^a-zA-Z0-9_-]", "");
                     }
                     String pdfFile = "prescription_" + pdfid + ".pdf";
-                    String document_dir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+                    String document_dir = OscarProperties.getInstance().getDocumentDirectory();
                     
                     // Use PathValidationUtils for proper path validation
                     File baseDirFile = new File(document_dir);

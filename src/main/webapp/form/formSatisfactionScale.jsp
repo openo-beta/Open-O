@@ -42,6 +42,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
@@ -76,7 +77,7 @@
         var choiceFormat = null;//new Array(6,7,8,9,10,11,12,14,15,17,18,20,21,22,23,24,25,27,28,30,31,33,34,36,37,38,39,40,41,42,43,44,45,46,47,49,50,52,53,55,56,58,59,60,61,63,64,65,66,68);
         var allNumericField = null;
         var allMatch = null;
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
 
         function backToPage1() {
             document.getElementById('page1').style.display = 'block';
@@ -138,12 +139,12 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table border="0" cellspacing="0" cellpadding="0" width="740px"
@@ -204,11 +205,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="believe1Y" <%= props.getProperty("believe1Y", "") %> />
+                                                               name="believe1Y" <%=Encode.forHtml(String.valueOf(props.getProperty("believe1Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="believe1N" <%= props.getProperty("believe1N", "") %> />
+                                                               name="believe1N" <%=Encode.forHtml(String.valueOf(props.getProperty("believe1N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -222,11 +223,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="receive2Y" <%= props.getProperty("receive2Y", "") %> />
+                                                               name="receive2Y" <%=Encode.forHtml(String.valueOf(props.getProperty("receive2Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="receive2N" <%= props.getProperty("receive2N", "") %> />
+                                                               name="receive2N" <%=Encode.forHtml(String.valueOf(props.getProperty("receive2N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -241,21 +242,21 @@
                                     <tr bgcolor="white">
                                         <td width="5%">&nbsp;</dh>
                                         <td colspan="3"><input type="checkbox" class="checkbox"
-                                                               name="receiveOT3Y" <%= props.getProperty("receiveOT3Y", "") %> />
+                                                               name="receiveOT3Y" <%=Encode.forHtml(String.valueOf(props.getProperty("receiveOT3Y", "")))%> />
                                             Occupational therapy
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%">&nbsp;</dh>
                                         <td colspan="3"><input type="checkbox" class="checkbox"
-                                                               name="receiveP3Y" <%= props.getProperty("receiveP3Y", "") %> />
+                                                               name="receiveP3Y" <%=Encode.forHtml(String.valueOf(props.getProperty("receiveP3Y", "")))%> />
                                             Physiotherapy
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%">&nbsp;</dh>
                                         <td colspan="3"><input type="checkbox" class="checkbox"
-                                                               name="receiveB3Y" <%= props.getProperty("receiveB3Y", "") %> />
+                                                               name="receiveB3Y" <%=Encode.forHtml(String.valueOf(props.getProperty("receiveB3Y", "")))%> />
                                             Both occupational therapy and physiotherapy
                                         </td>
                                     </tr>
@@ -270,7 +271,7 @@
                                         <td width="5%">&nbsp;</dh>
                                         <td colspan="3"><input type="text" name="otTreats4" size="5"
                                                                maxLength="2"
-                                                               value="<%= props.getProperty("otTreats4", "") %>"/>
+                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otTreats4", "")))%>"/>
                                             Occupational therapy
                                         </td>
                                     </tr>
@@ -278,7 +279,7 @@
                                         <td width="5%">&nbsp;</dh>
                                         <td colspan="3"><input type="text" name="ptTreats4" size="5"
                                                                maxLength="2"
-                                                               value="<%= props.getProperty("ptTreats4", "") %>"/>
+                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ptTreats4", "")))%>"/>
                                             Physiotherapy
                                         </td>
                                     </tr>
@@ -380,7 +381,7 @@
                                         </td>
                                         <td valign="top" align="center" width="5%"><input
                                                 type="text" name="explaining1" size="5" maxLength="2"
-                                                value="<%= props.getProperty("explaining1", "") %>"/></td>
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("explaining1", "")))%>"/></td>
                                     </tr>
 
                                     <tr bgcolor="white">
@@ -392,7 +393,7 @@
                                         <td valign="top" align="center"><input type="text"
                                                                                name="everythingNeeded2" size="5"
                                                                                maxLength="2"
-                                                                               value="<%= props.getProperty("everythingNeeded2", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("everythingNeeded2", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -404,7 +405,7 @@
                                         </td>
                                         <td valign="top" align="center"><input type="text"
                                                                                name="perfect3" size="5" maxLength="2"
-                                                                               value="<%= props.getProperty("perfect3", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("perfect3", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -417,7 +418,7 @@
                                         </td>
                                         <td valign="top" align="center"><input type="text"
                                                                                name="wonder4" size="5" maxLength="2"
-                                                                               value="<%= props.getProperty("wonder4", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("wonder4", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -428,7 +429,7 @@
                                         </td>
                                         <td valign="top" align="center"><input type="text"
                                                                                name="confident5" size="5" maxLength="2"
-                                                                               value="<%= props.getProperty("confident5", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("confident5", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -440,7 +441,7 @@
                                         </td>
                                         <td valign="top" align="center"><input type="text"
                                                                                name="careful6" size="5" maxLength="2"
-                                                                               value="<%= props.getProperty("careful6", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("careful6", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -452,7 +453,7 @@
                                         </td>
                                         <td valign="top" align="center"><input type="text"
                                                                                name="afford7" size="5" maxLength="2"
-                                                                               value="<%= props.getProperty("afford7", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("afford7", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -464,7 +465,7 @@
                                         </td>
                                         <td valign="top" align="center"><input type="text"
                                                                                name="easyaccess8" size="5" maxLength="2"
-                                                                               value="<%= props.getProperty("easyaccess8", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("easyaccess8", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -476,7 +477,7 @@
                                         </td>
                                         <td valign="top" align="center"><input type="text"
                                                                                name="toolong9" size="5" maxLength="2"
-                                                                               value="<%= props.getProperty("toolong9", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("toolong9", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -562,7 +563,7 @@
                                         </td>
                                         <td valign="top" align="center" width="5%"><input
                                                 type="text" name="businesslike10" size="5" maxLength="2"
-                                                value="<%= props.getProperty("businesslike10", "") %>"/></td>
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("businesslike10", "")))%>"/></td>
                                     </tr>
 
                                     <tr bgcolor="white">
@@ -573,7 +574,7 @@
                                         <td valign="top" align="center"><input type="text"
                                                                                name="veryfriendly11" size="5"
                                                                                maxLength="2"
-                                                                               value="<%= props.getProperty("veryfriendly11", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("veryfriendly11", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -586,7 +587,7 @@
                                         <td valign="top" align="center"><input type="text"
                                                                                name="hurrytoomuch12" size="5"
                                                                                maxLength="2"
-                                                                               value="<%= props.getProperty("hurrytoomuch12", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("hurrytoomuch12", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -597,7 +598,7 @@
                                         </td>
                                         <td valign="top" align="center"><input type="text"
                                                                                name="ignore13" size="5" maxLength="2"
-                                                                               value="<%= props.getProperty("ignore13", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ignore13", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -609,7 +610,7 @@
                                         <td valign="top" align="center"><input type="text"
                                                                                name="doubtability14" size="5"
                                                                                maxLength="2"
-                                                                               value="<%= props.getProperty("doubtability14", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doubtability14", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -621,7 +622,7 @@
                                         <td valign="top" align="center"><input type="text"
                                                                                name="plentyoftime15" size="5"
                                                                                maxLength="2"
-                                                                               value="<%= props.getProperty("plentyoftime15", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("plentyoftime15", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -633,7 +634,7 @@
                                         <td valign="top" align="center"><input type="text"
                                                                                name="hardtogetanappointment16" size="5"
                                                                                maxLength="2"
-                                                                               value="<%= props.getProperty("hardtogetanappointment16", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("hardtogetanappointment16", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -645,7 +646,7 @@
                                         <td valign="top" align="center"><input type="text"
                                                                                name="dissatisfied17" size="5"
                                                                                maxLength="2"
-                                                                               value="<%= props.getProperty("dissatisfied17", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dissatisfied17", "")))%>"/>
                                         </td>
                                     </tr>
 
@@ -657,7 +658,7 @@
                                         <td valign="top" align="center"><input type="text"
                                                                                name="abletogetrehabilitation18" size="5"
                                                                                maxLength="2"
-                                                                               value="<%= props.getProperty("abletogetrehabilitation18", "") %>"/>
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("abletogetrehabilitation18", "")))%>"/>
                                         </td>
                                     </tr>
                                     <!--27-->
@@ -701,9 +702,9 @@
                                                                                          value="Print"
                                                                                          onclick="javascript:window.print();"/>
                             </td>
-                            <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
+                            <td align="right">Study ID: <%=Encode.forHtml(String.valueOf(props.getProperty("studyID", "N/A")))%>
                                 <input type="hidden" name="studyID"
-                                       value="<%= props.getProperty("studyID", "N/A") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("studyID", "N/A")))%>"/></td>
                         </tr>
                     </table>
                 </td>

@@ -48,6 +48,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String formClass = "Policy";
@@ -83,7 +84,7 @@
 
         function onPrintPDF() {
             document.forms[0].submit.value = "printall";
-            document.forms[0].action = "<%= request.getContextPath() %>/form/formname.do?__title=Student+Health+Services+Policy&__cfgfile=PolicyFormPrint&__cfgfile=PolicyFormPrint&__template=PolicyForm-<%=props.getProperty("formVersion","")%>";
+            document.forms[0].action = "<%= request.getContextPath() %>/form/formname.do?__title=Student+Health+Services+Policy&__cfgfile=PolicyFormPrint&__cfgfile=PolicyFormPrint&__template=PolicyForm-<%=Encode.forJavaScript(String.valueOf(props.getProperty("formVersion","")))%>";
             document.forms[0].target = "_blank";
             return true;
         }
@@ -95,8 +96,8 @@
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
-        <input type="hidden" name="demographic_no" value="<%= props.getProperty("demographic_no", "0") %>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
+        <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <h1>No Show and Cancellation Policy</h1>
@@ -106,25 +107,25 @@
             <tr>
                 <td class="borderGrayBottomRight">
                     <font class="subHeading">Patient Name : </font>
-                    <input type="text" name="patientName" value="<%=demo.getFormattedName() %>"/>
+                    <input type="text" name="patientName" value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getFormattedName()))%>"/>
                 </td>
             </tr>
             <tr>
                 <td class="borderGrayBottomRight">
                     <font class="subHeading">Chart Number : </font>
-                    <input type="text" name="chartno" value="<%=demo.getChartNo() %>"/>
+                    <input type="text" name="chartno" value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getChartNo()))%>"/>
                 </td>
             </tr>
             <tr>
                 <td class="borderGrayBottomRight">
                     <font class="subHeading">Health Card Number : </font>
-                    <input type="text" name="hin" value="<%=demo.getHin() %>"/>
+                    <input type="text" name="hin" value="<%=Encode.forHtmlAttribute(String.valueOf(demo.getHin()))%>"/>
                 </td>
             </tr>
             <tr>
                 <td class="borderGrayBottomRight">
                     <font class="subHeading">Demographic Number: </font>
-                    <input type="text" name="demographic_no" value="<%=props.getProperty("demographic_no","")%>"/>
+                    <input type="text" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no","")))%>"/>
                 </td>
             </tr>
         </table>
@@ -136,12 +137,12 @@
         <table border="0" cellspacing="0" cellpadding="0" width="740px">
             <tr>
                 <td>Policy Form Version Signed: </font>
-                    <input type="text" name="formVersion" value="<%=props.getProperty("formVersion","")%>"/>
+                    <input type="text" name="formVersion" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formVersion","")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td>Date Policy Form Signed: </font>
-                    <input type="text" name="formCreated" value="<%=props.getProperty("formCreated","")%>"/>
+                    <input type="text" name="formCreated" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated","")))%>"/>
                 </td>
             </tr>
         </table>
@@ -150,7 +151,7 @@
         <table>
             <tr>
                 <td nowrap="true">
-                    <input type="submit" value="Print Policy v.<%=props.getProperty("formVersion","")%>"
+                    <input type="submit" value="Print Policy v.<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formVersion","")))%>"
                            onClick="javascript:return onPrintPDF();"/>
                     <input id="exitbut" type="submit" value="Exit" onclick="javascript: return onExit();"/>
                 </td>

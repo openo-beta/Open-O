@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -103,7 +104,7 @@
         var pageWindow = null;
 
         function popupDecisionSupport() {
-            var varpage = "<%=request.getAttribute("decisionSupportURL")%>";
+            var varpage = "<%=Encode.forJavaScript(String.valueOf(request.getAttribute("decisionSupportURL")))%>";
             var vheight = 760;
             var vwidth = 400;
             var posX = 400;
@@ -728,7 +729,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -853,7 +854,7 @@
                                                                     <span>On Going Concern</span></td>
                                                             </tr>
                                                             <tr>
-                                                                <td><%=request.getAttribute("ongoingConcerns")%>
+                                                                <td><%=Encode.forHtml(String.valueOf(request.getAttribute("ongoingConcerns")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -885,15 +886,15 @@
                                                             <tr>
                                                                 <td class="dataEntryTable">Last Data</td>
                                                                 <td class="dataEntryTable"><font style="font-size: 80%">
-                                                                    <%=request.getAttribute("SmkSLastData")%>
+                                                                    <%=Encode.forHtml(String.valueOf(request.getAttribute("SmkSLastData")))%>
                                                                 </font></td>
                                                                 <td class="dataEntryTable"><font style="font-size: 80%">
-                                                                    <%=request.getAttribute("SmkHLastData")%>
+                                                                    <%=Encode.forHtml(String.valueOf(request.getAttribute("SmkHLastData")))%>
                                                                 </font></td>
-                                                                <td class="dataEntryTable"><%=request.getAttribute("SmkCLastData")%>
+                                                                <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("SmkCLastData")))%>
                                                                 </td>
                                                                 <td class="dataEntryTable"><font style="font-size: 80%">
-                                                                    <%=request.getAttribute("SmkSLDDate")%>
+                                                                    <%=Encode.forHtml(String.valueOf(request.getAttribute("SmkSLDDate")))%>
                                                                 </font></td>
                                                                 <td class="dataEntryTable">&nbsp;</td>
                                                             </tr>
@@ -907,11 +908,11 @@
                                                                     <input type="text" name="value(SmkCValue)" size="8%" /></td>
                                                                 <td class="dataEntryTable" align="center"><input
                                                                         type="text" id="SmkDate" name="SmkDate"
-                                                                        value="<%=request.getAttribute("SmkSDate")%>"
+                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("SmkSDate")))%>"
                                                                         size="8%"/></td>
                                                                 <td class="dataEntryTable" align="center"><input
                                                                         type="text" id="SmkComments" name="SmkComments"
-                                                                        value="<%=request.getAttribute("SmkSComments")%>"
+                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("SmkSComments")))%>"
                                                                         size="25%"
                                                                         tabindex="9999"/></td>
                                                                 <input type="hidden" name="value(SmkSComments)" id="value(SmkSComments)"/>
@@ -943,18 +944,18 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><c:out value="${ExerDesc}"/>
-                                                        <font class="eightyPercent"><%=request.getAttribute("ExerMeasuringInstrc")%>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("ExerMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("ExerLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("ExerLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("ExerLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("ExerLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -969,18 +970,18 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="dataEntryTable"><c:out value="${DietDesc}"/>
-                                                        <font class="eightyPercent"><%=request.getAttribute("DietMeasuringInstrc")%>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("DietMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("DietLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("DietLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("DietLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("DietLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1014,18 +1015,18 @@
 									</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("DpScDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("DpScDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("DpScLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("DpScLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("DpScLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("DpScLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1043,18 +1044,18 @@
                                                         <input type="text" name="value(DpScComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("StScDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("StScDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("StScLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("StScLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("StScLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("StScLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1071,18 +1072,18 @@
                                                         <input type="text" name="value(StScComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("LcCtDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("LcCtDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("LcCtLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("LcCtLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("LcCtLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("LcCtLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1120,18 +1121,18 @@
 									</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("MedGDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedGDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("MedGLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedGLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("MedGLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedGLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1147,18 +1148,18 @@
                                                         <input type="text" name="value(MedGComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("MedNDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedNDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("MedNLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedNLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("MedNLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedNLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1174,18 +1175,18 @@
                                                         <input type="text" name="value(MedNComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("MedRDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedRDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("MedRLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedRLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("MedRLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedRLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1201,18 +1202,18 @@
                                                         <input type="text" name="value(MedRComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("MedADesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedADesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("MedALDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedALDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("MedALastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("MedALastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1268,20 +1269,20 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("BPDisplay")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("BPDisplay")))%>
                                                         <br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("BPMeasuringInstrc")%>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("BPMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("BPLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("BPLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("BPLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("BPLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1295,9 +1296,9 @@
 
 
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("WHRBDisplay")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("WHRBDisplay")))%>
                                                         <br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("WHRBMeasuringInstrc")%>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("WHRBMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <c:if test="${not empty WHRBLastData}">
@@ -1324,9 +1325,9 @@
 
 
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("WCDisplay")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("WCDisplay")))%>
                                                         <br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("WCMeasuringInstrc")%>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("WCMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <c:if test="${not empty WCLastData}">
@@ -1350,9 +1351,9 @@
                                                 <!--new-->
                                                 <tr>
                                                     <td width="36%"
-                                                        class="dataEntryTable"><%=request.getAttribute("HCDisplay")%>
+                                                        class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("HCDisplay")))%>
                                                         <br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("HCMeasuringInstrc")%>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("HCMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td width="16%" class="dataEntryTable" align="center">
                                                         <c:if test="${not empty HCLastData}">
@@ -1380,20 +1381,20 @@
                                                                style="display: none" id="detailVital">
 
                                                             <tr>
-                                                                <td class="dataEntryTable"><%=request.getAttribute("HRDisplay")%>
+                                                                <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("HRDisplay")))%>
                                                                     <br>
-                                                                    <font class="eightyPercent"><%=request.getAttribute("HRMeasuringInstrc")%>
+                                                                    <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("HRMeasuringInstrc")))%>
                                                                     </font></td>
                                                                 <td class="dataEntryTable" align="center">
                                                                     <table cellpadding='0' cellspacing='0'>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="left"><%=request.getAttribute("HRLDDate")%>
+                                                                                align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("HRLDDate")))%>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="right"><%=request.getAttribute("HRLastData")%>
+                                                                                align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("HRLastData")))%>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1406,20 +1407,20 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="dataEntryTable"><%=request.getAttribute("HTDisplay")%>
+                                                                <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("HTDisplay")))%>
                                                                     <br>
-                                                                    <font class="eightyPercent"><%=request.getAttribute("HTMeasuringInstrc")%>
+                                                                    <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("HTMeasuringInstrc")))%>
                                                                     </font></td>
                                                                 <td class="dataEntryTable" align="center">
                                                                     <table cellpadding='0' cellspacing='0'>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="left"><%=request.getAttribute("HTLDDate")%>
+                                                                                align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("HTLDDate")))%>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="right"><%=request.getAttribute("HTLastData")%>
+                                                                                align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("HTLastData")))%>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1435,9 +1436,9 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("WTDisplay")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("WTDisplay")))%>
                                                         <br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("WTMeasuringInstrc")%>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("WTMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <c:if test="${not empty WTLastData}">
@@ -1489,7 +1490,7 @@
                                                     <th class="dataEntryTable" colspan="3">Foot Exam</th>
                                                     <td class="dataEntryTable" valign="top" align="center"><input
                                                             type="text" id="FTDate" name="FTDate"
-                                                            value="<%=request.getAttribute("FTNeDate")%>" size="10%"
+                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("FTNeDate")))%>" size="10%"
                                                             tabindex="9999"/></td>
                                                     <td class="dataEntryTable" rowspan="8" valign="top"
                                                         align="center"><textarea name="FTComments" wrap="hard"
@@ -1502,18 +1503,18 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("FTExDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTExDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("FTExLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTExLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("FTExLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTExLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1533,18 +1534,18 @@
                                                     <input type="hidden" name="value(FTExComments)" id="value(FTExComments)"/>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("FTNeDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTNeDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("FTNeLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTNeLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("FTNeLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTNeLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1558,18 +1559,18 @@
                                                     <input type="hidden" name="value(FTNeComments)" id="value(FTNeComments)"/>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("FTIsDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTIsDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("FTIsLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTIsLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("FTIsLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTIsLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1583,18 +1584,18 @@
                                                     <input type="hidden" name="value(FTIsComments)" id="value(FTIsComments)"/>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("FTUlDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTUlDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("FTUlLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTUlLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("FTUlLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTUlLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1608,18 +1609,18 @@
                                                     <input type="hidden" name="value(FTUlComments)" id="value(FTUlComments)"/>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("FTInDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTInDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("FTInLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTInLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("FTInLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTInLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1638,18 +1639,18 @@
                                                                style="display: none" id="detailFT">
                                                             <tr>
                                                                 <td width="29%"
-                                                                    class="dataEntryTable"><%=request.getAttribute("FTOtDesc")%>
+                                                                    class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTOtDesc")))%>
                                                                 </td>
                                                                 <td width="16%" class="dataEntryTable" align="center">
                                                                     <table cellpadding='0' cellspacing='0'>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="left"><%=request.getAttribute("FTOtLDDate")%>
+                                                                                align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTOtLDDate")))%>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="right"><%=request.getAttribute("FTOtLastData")%>
+                                                                                align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTOtLastData")))%>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1672,18 +1673,18 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("FTReDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTReDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("FTReLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTReLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("FTReLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("FTReLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1714,7 +1715,7 @@
                                                     <th class="dataEntryTable" colspan="3">Eye Exam</th>
                                                     <td class="dataEntryTable" valign="top" align="center"><input
                                                             type="text" name="iDate"
-                                                            value="<%=request.getAttribute("iDiaDate")%>" size="10%"/>
+                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("iDiaDate")))%>" size="10%"/>
                                                     </td>
                                                     <td class="dataEntryTable" rowspan="8" valign="top"
                                                         align="center"><textarea name="iComments" wrap="hard"
@@ -1727,18 +1728,18 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("iDiaDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("iDiaDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("iDiaLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("iDiaLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("iDiaLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("iDiaLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1757,18 +1758,18 @@
                                                                style="display: none" id="detailEye">
                                                             <tr>
                                                                 <td width="29%"
-                                                                    class="dataEntryTable"><%=request.getAttribute("iHypDesc")%>
+                                                                    class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("iHypDesc")))%>
                                                                 </td>
                                                                 <td width="16%" class="dataEntryTable" align="center">
                                                                     <table cellpadding='0' cellspacing='0'>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="left"><%=request.getAttribute("iHypLDDate")%>
+                                                                                align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("iHypLDDate")))%>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="right"><%=request.getAttribute("iHypLastData")%>
+                                                                                align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("iHypLastData")))%>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1788,18 +1789,18 @@
                                                                 <input type="hidden" name="value(iHypComments)" id="value(iHypComments)"/>
                                                             </tr>
                                                             <tr>
-                                                                <td class="dataEntryTable"><%=request.getAttribute("iOthDesc")%>
+                                                                <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("iOthDesc")))%>
                                                                 </td>
                                                                 <td class="dataEntryTable" align="center">
                                                                     <table cellpadding='0' cellspacing='0'>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="left"><%=request.getAttribute("iOthLDDate")%>
+                                                                                align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("iOthLDDate")))%>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="right"><%=request.getAttribute("iOthLastData")%>
+                                                                                align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("iOthLastData")))%>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1826,12 +1827,12 @@
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("iRefLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("iRefLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("iRefLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("iRefLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1872,19 +1873,19 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("HbA1Desc")%><br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("HbA1MeasuringInstrc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("HbA1Desc")))%><br>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("HbA1MeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("HbA1LDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("HbA1LDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("HbA1LastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("HbA1LastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1900,19 +1901,19 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("LDLDesc")%><br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("LDLMeasuringInstrc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("LDLDesc")))%><br>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("LDLMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("LDLLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("LDLLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("LDLLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("LDLLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1927,19 +1928,19 @@
                                                         <input type="text" name="value(LDLComments)" size="30%" tabindex="9999" /></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("HDLDesc")%><br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("HDLMeasuringInstrc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("HDLDesc")))%><br>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("HDLMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("HDLLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("HDLLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("HDLLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("HDLLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1955,19 +1956,19 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("TCHLDesc")%><br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("TCHLMeasuringInstrc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("TCHLDesc")))%><br>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("TCHLMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("TCHLLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("TCHLLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("TCHLLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("TCHLLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1988,20 +1989,20 @@
                                                                style="display: none" id="detailLab">
                                                             <tr>
                                                                 <td width="34%"
-                                                                    class="dataEntryTable"><%=request.getAttribute("TRIGDesc")%>
+                                                                    class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("TRIGDesc")))%>
                                                                     <br>
-                                                                    <font class="eightyPercent"><%=request.getAttribute("TRIGMeasuringInstrc")%>
+                                                                    <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("TRIGMeasuringInstrc")))%>
                                                                     </font></td>
                                                                 <td width="16%" class="dataEntryTable" align="center">
                                                                     <table cellpadding='0' cellspacing='0'>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="left"><%=request.getAttribute("TRIGLDDate")%>
+                                                                                align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("TRIGLDDate")))%>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="right"><%=request.getAttribute("TRIGLastData")%>
+                                                                                align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("TRIGLastData")))%>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -2016,20 +2017,20 @@
                                                                             tabindex="9999"/></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="dataEntryTable"><%=request.getAttribute("BGDesc")%>
+                                                                <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("BGDesc")))%>
                                                                     <br>
-                                                                    <font class="eightyPercent"><%=request.getAttribute("BGMeasuringInstrc")%>
+                                                                    <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("BGMeasuringInstrc")))%>
                                                                     </font></td>
                                                                 <td class="dataEntryTable" align="center">
                                                                     <table cellpadding='0' cellspacing='0'>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="left"><%=request.getAttribute("BGLDDate")%>
+                                                                                align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("BGLDDate")))%>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="eightyPercent"
-                                                                                align="right"><%=request.getAttribute("BGLastData")%>
+                                                                                align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("BGLastData")))%>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -2048,19 +2049,19 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("UALBDesc")%><br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("UALBMeasuringInstrc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("UALBDesc")))%><br>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("UALBMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("UALBLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("UALBLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("UALBLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("UALBLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -2076,19 +2077,19 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("24UADesc")%><br>
-                                                        <font class="eightyPercent"><%=request.getAttribute("24UAMeasuringInstrc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("24UADesc")))%><br>
+                                                        <font class="eightyPercent"><%=Encode.forHtml(String.valueOf(request.getAttribute("24UAMeasuringInstrc")))%>
                                                         </font></td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("24UALDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("24UALDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("24UALastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("24UALastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -2232,18 +2233,18 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("NtrCDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("NtrCDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("NtrCLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("NtrCLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("NtrCLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("NtrCLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -2257,18 +2258,18 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("ExeCDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("ExeCDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("ExeCLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("ExeCLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("ExeCLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("ExeCLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -2282,18 +2283,18 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("SmCCDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("SmCCDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("SmCCLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("SmCCLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("SmCCLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("SmCCLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -2307,18 +2308,18 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("DiaCDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("DiaCDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("DiaCLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("DiaCLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("DiaCLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("DiaCLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -2332,18 +2333,18 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("PsyCDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("PsyCDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("PsyCLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("PsyCLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("PsyCLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("PsyCLastData")))%>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -2357,18 +2358,18 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="dataEntryTable"><%=request.getAttribute("OthCDesc")%>
+                                                    <td class="dataEntryTable"><%=Encode.forHtml(String.valueOf(request.getAttribute("OthCDesc")))%>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <table cellpadding='0' cellspacing='0'>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="left"><%=request.getAttribute("OthCLDDate")%>
+                                                                    align="left"><%=Encode.forHtml(String.valueOf(request.getAttribute("OthCLDDate")))%>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="eightyPercent"
-                                                                    align="right"><%=request.getAttribute("OthCLastData")%>
+                                                                    align="right"><%=Encode.forHtml(String.valueOf(request.getAttribute("OthCLastData")))%>
                                                                 </td>
                                                             </tr>
                                                             <input type="hidden" name="value(OthCLDDate)" id="value(OthCLDDate)"/>

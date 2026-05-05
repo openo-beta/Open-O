@@ -3,6 +3,7 @@
 <%@ page import="ca.openosp.openo.entities.Provider" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingHistoryDAO" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -55,13 +56,13 @@
             Provider provider = rec.getProvider(item.getPractitioner_no(), 0);
     %>
     <tr align="center">
-        <td><%=rec.getStatusDesc(item.getBillingStatus())%>
+        <td><%=Encode.forHtml(String.valueOf(rec.getStatusDesc(item.getBillingStatus())))%>
         </td>
-        <td><%=item.getSeqNum()%>
+        <td><%=Encode.forHtml(String.valueOf(item.getSeqNum()))%>
         </td>
-        <td><%=item.getBillingtype()%>
+        <td><%=Encode.forHtml(String.valueOf(item.getBillingtype()))%>
         </td>
-        <td><%=provider.getInitials()%>
+        <td><%=Encode.forHtml(String.valueOf(provider.getInitials()))%>
         </td>
         <%
             //for display purposes need to negate value so that
@@ -70,13 +71,13 @@
                 item.setAmountReceived(item.getAmountReceived() * -1);
             }
         %>
-        <td><%=nf.format(item.getAmount())%>
+        <td><%=Encode.forHtml(String.valueOf(nf.format(item.getAmount())))%>
         </td>
-        <td><%=item.getPaymentTypeDesc()%>
+        <td><%=Encode.forHtml(String.valueOf(item.getPaymentTypeDesc()))%>
         </td>
-        <td><%=nf.format(item.getAmountReceived())%>
+        <td><%=Encode.forHtml(String.valueOf(nf.format(item.getAmountReceived())))%>
         </td>
-        <td><%=item.getArchiveDate()%>
+        <td><%=Encode.forHtml(String.valueOf(item.getArchiveDate()))%>
         </td>
     </tr>
     <%}%>

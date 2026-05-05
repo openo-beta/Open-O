@@ -33,6 +33,7 @@
 <%@page import="ca.openosp.openo.commn.model.RSchedule" %>
 <%@page import="ca.openosp.openo.commn.dao.RScheduleDao" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     RScheduleDao rScheduleDao = SpringUtils.getBean(RScheduleDao.class);
@@ -251,15 +252,15 @@
                             <td colspan="2">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td bgcolor="#CCFFCC"><b><%=request.getParameter("provider_name")%>
+                            <td bgcolor="#CCFFCC"><b><%=Encode.forHtml(request.getParameter("provider_name"))%>
                             </b>
                                 <input type="hidden" name="provider_name"
-                                       value="<%=request.getParameter("provider_name")%>"></td>
+                                       value="<%=Encode.forHtmlAttribute(request.getParameter("provider_name"))%>"></td>
                             <td bgcolor="#CCFFCC">
                                 <div align="right"><select name="select"
                                                            onChange="selectrschedule(this)">
-                                    <option value="<%=today%>"
-                                            <%=request.getParameter("sdate") != null ? (today.equals(request.getParameter("sdate")) ? "selected" : "") : ""%>>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(today))%>"
+                                            <%=Encode.forHtml(request.getParameter("sdate") != null ? (today.equals(request.getParameter("sdate")) ? "selected" : "") : "")%>>
                                         Current
                                         R Schedule
                                     </option>
@@ -268,9 +269,9 @@
                                         for (RSchedule rs : rScheduleDao.search_rschedule_future(request.getParameter("provider_no"), "1", ConversionUtils.fromDateString(today))) {
 
                                     %>
-                                    <option value="<%=ConversionUtils.toDateString(rs.getsDate())%>"
-                                            <%=request.getParameter("sdate") != null ? (ConversionUtils.toDateString(rs.getsDate()).equals(request.getParameter("sdate")) ? "selected" : "") : ""%>>
-                                        <%=ConversionUtils.toDateString(rs.getsDate()) + " ~ " + ConversionUtils.toDateString(rs.geteDate())%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(ConversionUtils.toDateString(rs.getsDate())))%>"
+                                            <%=Encode.forHtml(request.getParameter("sdate") != null ? (ConversionUtils.toDateString(rs.getsDate()).equals(request.getParameter("sdate")) ? "selected" : "") : "")%>>
+                                        <%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(rs.getsDate()) + " ~ " + ConversionUtils.toDateString(rs.geteDate())))%>
                                     </option>
                                     <%
                                         }
@@ -288,14 +289,14 @@
                         <tr>
                             <td bgcolor="#CCFFCC" colspan="2">&nbsp; from<font size="-2">(yyyy-mm-dd)</font>:
                                 <input type="text" name="syear" size="4" maxlength="4"
-                                       value="<%=syear%>"> - <input type="text" name="smonth"
-                                                                    size="2" maxlength="2" value="<%=smonth%>"> - <input
-                                        type="text" name="sday" size="2" maxlength="2" value="<%=sday%>">
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(syear))%>"> - <input type="text" name="smonth"
+                                                                    size="2" maxlength="2" value="<%=Encode.forHtmlAttribute(String.valueOf(smonth))%>"> - <input
+                                        type="text" name="sday" size="2" maxlength="2" value="<%=Encode.forHtmlAttribute(String.valueOf(sday))%>">
                                 &nbsp; &nbsp; to<font size="-2">(yyyy-mm-dd)</font>: <input
-                                        type="text" name="eyear" size="4" maxlength="4" value="<%=eyear%>">
+                                        type="text" name="eyear" size="4" maxlength="4" value="<%=Encode.forHtmlAttribute(String.valueOf(eyear))%>">
                                 - <input type="text" name="emonth" size="2" maxlength="2"
-                                         value="<%=emonth%>"> - <input type="text" name="eday"
-                                                                       size="2" maxlength="2" value="<%=eday%>"> <input
+                                         value="<%=Encode.forHtmlAttribute(String.valueOf(emonth))%>"> - <input type="text" name="eday"
+                                                                       size="2" maxlength="2" value="<%=Encode.forHtmlAttribute(String.valueOf(eday))%>"> <input
                                         type="hidden" name="day_of_month1" size="3" maxlength="2"
                                         onBlur="addDataString1()"> <input type="hidden"
                                                                           name="day_of_month2" size="3" maxlength="2"
@@ -340,73 +341,73 @@
                                             <p><font size="-1"> <input type="checkbox"
                                                                        name="checksun" value="1"
                                                                        onClick="addDataString()"
-                                                <%=param2[0]%>> Sun. </font>
+                                                <%=Encode.forHtml(String.valueOf(param2[0]))%>> Sun. </font>
                                         </td>
                                         <td><font size="-1">from: <input type="text"
                                                                          name="sunfrom" size="5" maxlength="5"
-                                                                         value="<%=param3[0][0]%>">
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(param3[0][0]))%>">
                                             &nbsp;&nbsp;to: <input type="text" name="sunto" size="5"
-                                                                   maxlength="5" value="<%=param3[0][1]%>"> </font></td>
+                                                                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[0][1]))%>"> </font></td>
                                     </tr>
                                     <tr>
                                         <td><font size="-1"> <input type="checkbox"
                                                                     name="checkmon" value="2" onClick="addDataString()"
-                                            <%=param2[1]%>> Mon.</font></td>
+                                            <%=Encode.forHtml(String.valueOf(param2[1]))%>> Mon.</font></td>
                                         <td><font size="-1">from: <input type="text"
                                                                          name="monfrom" size="5" maxlength="5"
-                                                                         value="<%=param3[1][0]%>">
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(param3[1][0]))%>">
                                             &nbsp;&nbsp;to: <input type="text" name="monto" size="5"
-                                                                   maxlength="5" value="<%=param3[1][1]%>"> </font></td>
+                                                                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[1][1]))%>"> </font></td>
                                     </tr>
                                     <tr bgcolor="#CCFFCC">
                                         <td><font size="-1"> <input type="checkbox"
                                                                     name="checktue" value="3" onClick="addDataString()"
-                                            <%=param2[2]%>> Tue.</font></td>
+                                            <%=Encode.forHtml(String.valueOf(param2[2]))%>> Tue.</font></td>
                                         <td><font size="-1">from: <input type="text"
                                                                          name="tuefrom" size="5" maxlength="5"
-                                                                         value="<%=param3[2][0]%>">
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(param3[2][0]))%>">
                                             &nbsp;&nbsp;to: <input type="text" name="tueto" size="5"
-                                                                   maxlength="5" value="<%=param3[2][1]%>"> </font></td>
+                                                                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[2][1]))%>"> </font></td>
                                     </tr>
                                     <tr>
                                         <td><font size="-1"> <input type="checkbox"
                                                                     name="checkwed" value="4" onClick="addDataString()"
-                                            <%=param2[3]%>> Wed.</font></td>
+                                            <%=Encode.forHtml(String.valueOf(param2[3]))%>> Wed.</font></td>
                                         <td><font size="-1">from: <input type="text"
                                                                          name="wedfrom" size="5" maxlength="5"
-                                                                         value="<%=param3[3][0]%>">
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(param3[3][0]))%>">
                                             &nbsp;&nbsp;to: <input type="text" name="wedto" size="5"
-                                                                   maxlength="5" value="<%=param3[3][1]%>"> </font></td>
+                                                                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[3][1]))%>"> </font></td>
                                     </tr>
                                     <tr bgcolor="#CCFFCC">
                                         <td><font size="-1"> <input type="checkbox"
                                                                     name="checkthu" value="5" onClick="addDataString()"
-                                            <%=param2[4]%>> Thu.</font></td>
+                                            <%=Encode.forHtml(String.valueOf(param2[4]))%>> Thu.</font></td>
                                         <td><font size="-1">from: <input type="text"
                                                                          name="thufrom" size="5" maxlength="5"
-                                                                         value="<%=param3[4][0]%>">
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(param3[4][0]))%>">
                                             &nbsp;&nbsp;to: <input type="text" name="thuto" size="5"
-                                                                   maxlength="5" value="<%=param3[4][1]%>"> </font></td>
+                                                                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[4][1]))%>"> </font></td>
                                     </tr>
                                     <tr>
                                         <td><font size="-1"> <input type="checkbox"
                                                                     name="checkfri" value="6" onClick="addDataString()"
-                                            <%=param2[5]%>> Fri.</font></td>
+                                            <%=Encode.forHtml(String.valueOf(param2[5]))%>> Fri.</font></td>
                                         <td><font size="-1">from: <input type="text"
                                                                          name="frifrom" size="5" maxlength="5"
-                                                                         value="<%=param3[5][0]%>">
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(param3[5][0]))%>">
                                             &nbsp;&nbsp;to: <input type="text" name="frito" size="5"
-                                                                   maxlength="5" value="<%=param3[5][1]%>"> </font></td>
+                                                                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[5][1]))%>"> </font></td>
                                     </tr>
                                     <tr bgcolor="#CCFFCC">
                                         <td><font size="-1"> <input type="checkbox"
                                                                     name="checksat" value="7" onClick="addDataString()"
-                                            <%=param2[6]%>> Sat.</font></td>
+                                            <%=Encode.forHtml(String.valueOf(param2[6]))%>> Sat.</font></td>
                                         <td><font size="-1">from: <input type="text"
                                                                          name="satfrom" size="5" maxlength="5"
-                                                                         value="<%=param3[6][0]%>">
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(param3[6][0]))%>">
                                             &nbsp;&nbsp;to: <input type="text" name="satto" size="5"
-                                                                   maxlength="5" value="<%=param3[6][1]%>"> </font></td>
+                                                                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(param3[6][1]))%>"> </font></td>
                                     </tr>
                                 </table>
                             </td>
@@ -422,7 +423,7 @@
                         <tr>
                             <td bgcolor="#CCFFCC" colspan="2">
                                 <div align="right"><input type="hidden" name="provider_no"
-                                                          value="<%=request.getParameter("provider_no")%>"> <input
+                                                          value="<%=Encode.forHtmlAttribute(request.getParameter("provider_no"))%>"> <input
                                         type="hidden" name="available" value="1"> <input
                                         type="submit" name="Submit" value=" Next "> <input
                                         type="button" name="Cancel" value="Cancel" onClick="window.close()">

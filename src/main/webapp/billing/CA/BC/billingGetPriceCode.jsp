@@ -30,6 +30,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
 <%@page import="ca.openosp.openo.commn.model.BillingService" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -48,7 +49,7 @@
         function CodeAttach(cost) {
             self.close();
             self.opener.document
-        .<%=formName%>.<%=formElementPrice%>.
+        .<%=Encode.forJavaScript(String.valueOf(formName))%>.<%=Encode.forJavaScript(String.valueOf(formElementPrice))%>.
             value = cost;
         }
     </script>
@@ -71,7 +72,7 @@
             String cost = bss.get(0).getValue(); %>
     <script LANGUAGE="JavaScript">
         <!--
-        CodeAttach('<%=cost%>');
+        CodeAttach('<%=Encode.forJavaScript(String.valueOf(cost))%>');
         -->
     </script>
     <%} else {%>

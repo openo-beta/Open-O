@@ -28,6 +28,7 @@
     if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String demographic_no = request.getParameter("demographic_no") != null ? request.getParameter("demographic_no") : ("null");
     String form_no = request.getParameter("formId") != null ? request.getParameter("formId") : ("0");
+    try { Integer.parseInt(form_no); } catch (NumberFormatException e) { form_no = "0"; }
     String query_name = request.getParameter("query_name") != null ? request.getParameter("query_name") : ("");
     String curUser_no = (String) session.getAttribute("user");
 
@@ -42,6 +43,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DesapriskDao" %>
 <%@ page import="ca.openosp.openo.db.DBHandler" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DesapriskDao desapriskDao = SpringUtils.getBean(DesapriskDao.class);
 %>
@@ -66,7 +68,7 @@
     </script>
 </head>
 <body bgproperties="fixed" topmargin="0" leftmargin="1" rightmargin="1">
-<form name="planner" method="post" action="antenatalplanner.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>">
+<form name="planner" method="post" action="antenatalplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&formId=<%=Encode.forUriComponent(String.valueOf(form_no))%>">
     <%-- @ include file="zgetarriskdata.jsp" --%>
     <%
         //save risk&checklist data if required
@@ -98,7 +100,7 @@
         ResultSet rsdemo = null;
         if (!form_no.equals("0")) {
             //we don't have forms converted at this time
-            rsdemo = DBHandler.GetSQL("select * from formONAR where ID = " + form_no);
+            rsdemo = DBHandler.GetPreSQL("select * from formONAR where ID = ?", Integer.parseInt(form_no));
 
             ResultSetMetaData resultsetmetadata = rsdemo.getMetaData();
             while (rsdemo.next()) {
@@ -113,7 +115,7 @@
                             riskDataBean.setProperty(resultsetmetadata.getColumnName(k), "checked"); //"55", "risk_cinca"
 
     %>
-    <input type="hidden" name="<%=resultsetmetadata.getColumnName(k)%>" value="checked">
+    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(resultsetmetadata.getColumnName(k)))%>" value="checked">
     <% }
     }
     }
@@ -127,14 +129,14 @@
             String checklist_content = darp.getChecklistContent();
     %>
     <script type="text/javascript">
-        xmlText = "<xml><planner><%=risk_content%><%=checklist_content%></planner></xml>";
+        xmlText = "<xml><planner><%=Encode.forJavaScript(String.valueOf(risk_content))%><%=Encode.forJavaScript(String.valueOf(checklist_content))%></planner></xml>";
     </script>
     <%
             String riskFilePath = application.getRealPath("/decision/antenatal/desantenatalplannerrisks_99_12.xml");
 
-            File file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "desantenatalplannerrisks_99_12.xml");
+            File file = new File(OscarProperties.getInstance().getDocumentDirectory() + "desantenatalplannerrisks_99_12.xml");
             if (file.isFile() || file.canRead()) {
-                riskFilePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "desantenatalplannerrisks_99_12.xml";
+                riskFilePath = OscarProperties.getInstance().getDocumentDirectory() + "desantenatalplannerrisks_99_12.xml";
             }
 
             //set the riskdata bean from xml file
@@ -157,7 +159,7 @@
                 <input type="submit" name="submit" value="Save and Exit"/>
                 <input type="button" value="  Exit  " onclick="javascript:return onExit();"/>
                 <input type="button" name="submit" value="Print"
-                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>
+                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right">
                 <a href=# onClick="popupPage(600,930,'obarriskedit_99_12.jsp');return false;">Edit OB Risks</a> |
@@ -172,9 +174,9 @@
                 <%
                     String riskFilePath = application.getRealPath("/decision/antenatal/desantenatalplannerrisks_99_12.xml");
 
-                    File file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/desantenatalplannerrisks_99_12.xml");
+                    File file = new File(OscarProperties.getInstance().getDocumentDirectory() + "/desantenatalplannerrisks_99_12.xml");
                     if (file.isFile() || file.canRead()) {
-                        riskFilePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/desantenatalplannerrisks_99_12.xml";
+                        riskFilePath = OscarProperties.getInstance().getDocumentDirectory() + "/desantenatalplannerrisks_99_12.xml";
                     }
 
                     out.println(risks.doStuff(new String(riskFilePath)));
@@ -213,9 +215,9 @@ else {
 
     String checkListFilePath = application.getRealPath("/decision/antenatal/desantenatalplannerchecklist_99_12.xml");
 
-    file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR")+"/desantenatalplannerchecklist_99_12.xml");
+    file = new File(OscarProperties.getInstance().getDocumentDirectory()+"/desantenatalplannerchecklist_99_12.xml");
     if(file.isFile() || file.canRead()) {
-        checkListFilePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR")+"/desantenatalplannerchecklist_99_12.xml";
+        checkListFilePath = OscarProperties.getInstance().getDocumentDirectory()+"/desantenatalplannerchecklist_99_12.xml";
     }
 
   out.println(checklist.doStuff(new String(checkListFilePath), riskDataBean));
@@ -230,7 +232,7 @@ else {
                 <input type="submit" name="submit" value="Save and Exit"/>
                 <input type="button" value="  Exit  " onclick="javascript:return onExit();"/>
                 <input type="button" name="submit" value="Print"
-                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>
+                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right">
                 <a href=# onClick="popupPage(600,930,'obarriskedit_99_12.jsp');return false;">Edit OB Risks</a> |

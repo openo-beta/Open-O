@@ -105,6 +105,23 @@ public class JDBCUtil {
         }
     }
 
+    /** Pattern to validate table/form names: only alphanumeric characters and underscores allowed. */
+    private static final java.util.regex.Pattern VALID_NAME_PATTERN = java.util.regex.Pattern.compile("^[a-zA-Z0-9_]+$");
+
+    /**
+     * Builds a PreparedStatement with a validated table name.
+     * Table names cannot use ? placeholders, so they are validated via regex allowlist before use.
+     */
+    private static java.sql.PreparedStatement prepareWithValidatedTable(
+            java.sql.Connection conn, String validatedTable, String sqlTemplate, int rsType, int rsConcurrency, Object... params) throws java.sql.SQLException {
+        String sql = sqlTemplate.replace("{TABLE}", validatedTable);
+        java.sql.PreparedStatement ps = conn.prepareStatement(sql, rsType, rsConcurrency);
+        for (int i = 0; i < params.length; i++) {
+            ps.setObject(i + 1, params[i]);
+        }
+        return ps;
+    }
+
     public static void toDataBase(InputStream inputStream, String fileName) {
         boolean validation = true;
         Document doc;
@@ -120,33 +137,47 @@ public class JDBCUtil {
             String demographicNo = fileName.substring(indexForm + 1, indexDemo);
             String timeStamp = fileName.substring(indexDemo + 1, indexTimeStamp);
 
+            // Validate extracted values to prevent SQL injection from zip entry names
+            if (!VALID_NAME_PATTERN.matcher(formName).matches()) {
+                throw new SecurityException("Invalid form name in zip entry");
+            }
+            SqlUtils.validateNumericId(demographicNo, "demographic_no");
+            if (!timeStamp.matches("^[0-9 :\\-]+$")) {
+                throw new SecurityException("Invalid timestamp in zip entry");
+            }
 
             //check if the data existed in the database already...
-            String sql = "SELECT * FROM " + formName + " WHERE demographic_no='"
-                    + demographicNo + "' AND formEdited='" + timeStamp + "'";
-            MiscUtils.getLogger().debug(sql);
-            ResultSet rs = DBHandler.GetSQL(sql);
-            if (!rs.first()) {
+            // formName validated above; demographicNo and timeStamp are parameterized
+            java.sql.Connection conn = ca.openosp.openo.utility.DbConnectionFilter.getThreadLocalDbConnection();
+            try (java.sql.PreparedStatement psCheck = prepareWithValidatedTable(conn, formName,
+                    "SELECT * FROM {TABLE} WHERE demographic_no=? AND formEdited=?",
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY,
+                    demographicNo, timeStamp)) {
+                ResultSet rs = psCheck.executeQuery();
+                if (!rs.first()) {
+                    rs.close();
+                    try (java.sql.PreparedStatement psInsert = prepareWithValidatedTable(conn, formName,
+                            "SELECT * FROM {TABLE} WHERE demographic_no=? AND ID=?",
+                            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
+                            demographicNo, "0")) {
+                        rs = psInsert.executeQuery();
+                        rs.moveToInsertRow();
+                        //To validate or not
+                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                        factory.setXIncludeAware(false);
+                        factory.setExpandEntityReferences(false);
+                        factory.setValidating(validation);
+                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        doc = builder.parse(source);
+                        rs = toResultSet(doc, rs);
+                        rs.insertRow();
+                    }
+                }
                 rs.close();
-                sql = "SELECT * FROM " + formName + " WHERE demographic_no='"
-                        + demographicNo + "' AND ID='0'";
-                MiscUtils.getLogger().debug("sql: " + sql);
-                rs = DBHandler.GetSQL(sql, true);
-                rs.moveToInsertRow();
-                //To validate or not
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-                factory.setXIncludeAware(false);
-                factory.setExpandEntityReferences(false);
-                factory.setValidating(validation);
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                doc = builder.parse(source);
-                rs = toResultSet(doc, rs);
-                rs.insertRow();
             }
-            rs.close();
         } catch (Exception e) {
             MiscUtils.getLogger().debug("Errors " + e);
 

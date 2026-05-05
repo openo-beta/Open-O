@@ -42,6 +42,7 @@
 <%@ page
         import="ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -67,7 +68,7 @@
                     chgRefused(false);
                     setCurrent(frm.givenYear, frm.givenMonth, frm.givenDay);
                     if (frm.provider.value < 1) {
-                        frm.provider.value = <%= bean.providerNo %>;
+                        frm.provider.value = <%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>;
                     }
 
                     frm.lot.focus();
@@ -176,27 +177,27 @@
         function loadPage() {
             var frm = window.opener.document.forms[0];
             var vGivenDate = (frm
-        .<%=node + "_givenDate"%>.
+        .<%=Encode.forJavaScript(String.valueOf(node + "_givenDate"))%>.
             value
         )
             ;
             var vLot = (frm
-        .<%=node + "_lot"%>.
+        .<%=Encode.forJavaScript(String.valueOf(node + "_lot"))%>.
             value
         )
             ;
             var vProvider = (frm
-        .<%=node + "_provider"%>.
+        .<%=Encode.forJavaScript(String.valueOf(node + "_provider"))%>.
             value
         )
             ;
             var vRefusedDate = (frm
-        .<%=node + "_refusedDate"%>.
+        .<%=Encode.forJavaScript(String.valueOf(node + "_refusedDate"))%>.
             value
         )
             ;
             var vComments = (frm
-        .<%=node + "_comments"%>.
+        .<%=Encode.forJavaScript(String.valueOf(node + "_comments"))%>.
             value
         )
             ;
@@ -228,7 +229,7 @@
         }
 
         function saveClose() {
-            var node = '<%= node %>';
+            var node = '<%=Encode.forJavaScript(String.valueOf(node))%>';
             var frm = document.forms[0];
             var vGivenDate = '';
             var vRefusedDate = '';
@@ -279,8 +280,8 @@
                 <tr>
                     <td class="Header"
                         style="padding-left: 2px; padding-right: 2px; border-right: 2px solid #003399; text-align: left; font-size: 80%; font-weight: bold; width: 100%;"
-                        NOWRAP><%=bean.patientLastName %>, <%=bean.patientFirstName%>
-                        <%=bean.patientSex%> <%=bean.patientAge%>
+                        NOWRAP><%=Encode.forHtml(String.valueOf(bean.patientLastName))%>, <%=Encode.forHtml(String.valueOf(bean.patientFirstName))%>
+                        <%=Encode.forHtml(String.valueOf(bean.patientSex))%> <%=Encode.forHtml(String.valueOf(bean.patientAge))%>
                     </td>
                     <td></td>
                     <td style="text-align: right" NOWRAP> |</td>
@@ -294,7 +295,7 @@
             <form name="<%=request.getContextPath() %>/oscarEncounter/scheduleEdit.do">
                 <table>
                     <tr>
-                        <td style="font-weight: bold">&nbsp;<%=immName%>
+                        <td style="font-weight: bold">&nbsp;<%=Encode.forHtml(String.valueOf(immName))%>
                         </td>
                     </tr>
                     <tr>
@@ -342,7 +343,7 @@
                                 <tr>
                                     <td align="right">Provider:</td>
                                     <td><select id="provider">
-                                        <%= providerCombo() %>
+                                        <%=Encode.forHtml(String.valueOf(providerCombo()))%>
                                     </select></td>
                                 </tr>
                             </table>

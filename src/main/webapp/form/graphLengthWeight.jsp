@@ -42,6 +42,7 @@
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRourkeRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -95,17 +96,17 @@
         var colShift = 70.0;
         var lineShift = 16.6;
 
-        var ageBirth = "<%=age(props.getProperty("birthDate"),props.getProperty("birthDate"))%>";
-        var age1w = "<%=age(props.getProperty("birthDate"),props.getProperty("date1w"))%>";
-        var age2w = "<%=age(props.getProperty("birthDate"),props.getProperty("date2w"))%>";
-        var age1m = "<%=age(props.getProperty("birthDate"),props.getProperty("date1m"))%>";
-        var age2m = "<%=age(props.getProperty("birthDate"),props.getProperty("date2m"))%>";
-        var age4m = "<%=age(props.getProperty("birthDate"),props.getProperty("date4m"))%>";
-        var age6m = "<%=age(props.getProperty("birthDate"),props.getProperty("date6m"))%>";
-        var age9m = "<%=age(props.getProperty("birthDate"),props.getProperty("date9m"))%>";
-        var age12m = "<%=age(props.getProperty("birthDate"),props.getProperty("date12m"))%>";
-        var age18m = "<%=age(props.getProperty("birthDate"),props.getProperty("date18m"))%>";
-        var age2y = "<%=age(props.getProperty("birthDate"),props.getProperty("date2y"))%>";
+        var ageBirth = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("birthDate"))))%>";
+        var age1w = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date1w"))))%>";
+        var age2w = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date2w"))))%>";
+        var age1m = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date1m"))))%>";
+        var age2m = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date2m"))))%>";
+        var age4m = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date4m"))))%>";
+        var age6m = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date6m"))))%>";
+        var age9m = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date9m"))))%>";
+        var age12m = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date12m"))))%>";
+        var age18m = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date18m"))))%>";
+        var age2y = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date2y"))))%>";
 
         function addControl(controlString) {
             var anchor = document.anchors[0];
@@ -182,7 +183,7 @@
         function graphLength(a, h) {
             if ((h != "") && (a != "") && isInteger(h) && isInteger(a)) {
                 if ((h > 35) && (h < 110) && (a >= 0) && (a < 38)) {
-                    fLength(a, h, "<img src='<%=red%>'>");
+                    fLength(a, h, "<img src='<%=Encode.forJavaScript(String.valueOf(red))%>'>");
                 }
             }
         }
@@ -190,7 +191,7 @@
         function graphWeight(a, w) {
             if ((w != "") && (a >= 0) && isInteger(w) && isInteger(a)) {
                 if ((w > 0) && (w <= 18) && (a >= 0) && (a < 38)) {
-                    fWeight(a, w, "<img src='<%=blue%>'>");
+                    fWeight(a, w, "<img src='<%=Encode.forJavaScript(String.valueOf(blue))%>'>");
                 }
             }
         }
@@ -208,129 +209,129 @@
         }
 
         function graphChart() {
-            fPercent(65, 7.9, "<%=props.getProperty("pName", "")%>");
+            fPercent(65, 7.9, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pName", "")))%>");
 
-            graphLength(ageBirth, "<%=props.getProperty("length", "")%>");
-            graphLength(age1w, "<%=props.getProperty("ht1w", "")%>");
-            graphLength(age2w, "<%=props.getProperty("ht2w", "")%>");
-            graphLength(age1m, "<%=props.getProperty("ht1m", "")%>");
-            graphLength(age2m, "<%=props.getProperty("ht2m", "")%>");
-            graphLength(age4m, "<%=props.getProperty("ht4m", "")%>");
-            graphLength(age6m, "<%=props.getProperty("ht6m", "")%>");
-            graphLength(age9m, "<%=props.getProperty("ht9m", "")%>");
-            graphLength(age12m, "<%=props.getProperty("ht12m", "")%>");
-            graphLength(age18m, "<%=props.getProperty("ht18m", "")%>");
-            graphLength(age2y, "<%=props.getProperty("ht2y", "")%>");
+            graphLength(ageBirth, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("length", "")))%>");
+            graphLength(age1w, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht1w", "")))%>");
+            graphLength(age2w, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht2w", "")))%>");
+            graphLength(age1m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht1m", "")))%>");
+            graphLength(age2m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht2m", "")))%>");
+            graphLength(age4m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht4m", "")))%>");
+            graphLength(age6m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht6m", "")))%>");
+            graphLength(age9m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht9m", "")))%>");
+            graphLength(age12m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht12m", "")))%>");
+            graphLength(age18m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht18m", "")))%>");
+            graphLength(age2y, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht2y", "")))%>");
 
-            graphWeight(ageBirth, "<%=props.getProperty("birthWeight", "")%>");
-            graphWeight(age1w, "<%=props.getProperty("wt1w", "")%>");
-            graphWeight(age2w, "<%=props.getProperty("wt2w", "")%>");
-            graphWeight(age1m, "<%=props.getProperty("wt1m", "")%>");
-            graphWeight(age2m, "<%=props.getProperty("wt2m", "")%>");
-            graphWeight(age4m, "<%=props.getProperty("wt4m", "")%>");
-            graphWeight(age6m, "<%=props.getProperty("wt6m", "")%>");
-            graphWeight(age9m, "<%=props.getProperty("wt9m", "")%>");
-            graphWeight(age12m, "<%=props.getProperty("wt12m", "")%>");
-            graphWeight(age18m, "<%=props.getProperty("wt18m", "")%>");
-            graphWeight(age2y, "<%=props.getProperty("wt2y", "")%>");
+            graphWeight(ageBirth, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("birthWeight", "")))%>");
+            graphWeight(age1w, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt1w", "")))%>");
+            graphWeight(age2w, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt2w", "")))%>");
+            graphWeight(age1m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt1m", "")))%>");
+            graphWeight(age2m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt2m", "")))%>");
+            graphWeight(age4m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt4m", "")))%>");
+            graphWeight(age6m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt6m", "")))%>");
+            graphWeight(age9m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt9m", "")))%>");
+            graphWeight(age12m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt12m", "")))%>");
+            graphWeight(age18m, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt18m", "")))%>");
+            graphWeight(age2y, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt2y", "")))%>");
 
 //        fData(1, 1, "date1");
             var i = 1;
-            fData(1, i, "<%=props.getProperty("birthDate", "")%>");
-            fData(3, i, "<%=props.getProperty("birthWeight", "")%> kg");
-            fData(4, i, "<%=props.getProperty("length", "")%> cm");
-            fData(5, i, "<%=props.getProperty("headCirc", "")%> cm");
+            fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("birthDate", "")))%>");
+            fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("birthWeight", "")))%> kg");
+            fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("length", "")))%> cm");
+            fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("headCirc", "")))%> cm");
 
-            var d = "<%=props.getProperty("date1w","")%>";
+            var d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date1w","")))%>";
             if (d != "") {
                 i++;
-                fData(1, i, "<%=props.getProperty("date1w", "")%>");
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date1w", "")))%>");
                 fData(2, i, age1w.substring(0, 4) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt1w", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht1w", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc1w", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt1w", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht1w", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc1w", "")))%> cm");
             }
-            d = "<%=props.getProperty("date2w","")%>";
+            d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date2w","")))%>";
             if (d != "") {
                 i++;
-                fData(1, i, "<%=props.getProperty("date2w", "")%>");
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date2w", "")))%>");
                 fData(2, i, age2w.substring(0, 4) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt2w", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht2w", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc2w", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt2w", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht2w", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc2w", "")))%> cm");
             }
-            d = "<%=props.getProperty("date1m","")%>";
+            d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date1m","")))%>";
             if (d != "") {
                 i++;
-                fData(1, i, "<%=props.getProperty("date1m", "")%>");
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date1m", "")))%>");
                 fData(2, i, age1m.substring(0, 3) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt1m", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht1m", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc1m", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt1m", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht1m", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc1m", "")))%> cm");
             }
-            d = "<%=props.getProperty("date2m","")%>";
+            d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date2m","")))%>";
             if (d != "") {
                 i++;
-                fData(1, i, "<%=props.getProperty("date2m", "")%>");
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date2m", "")))%>");
                 fData(2, i, age2m.substring(0, 3) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt2m", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht2m", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc2m", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt2m", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht2m", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc2m", "")))%> cm");
             }
-            d = "<%=props.getProperty("date4m","")%>";
+            d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date4m","")))%>";
             if (d != "") {
                 i++;
-                fData(1, i, "<%=props.getProperty("date4m", "")%>");
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date4m", "")))%>");
                 fData(2, i, age4m.substring(0, 3) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt4m", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht4m", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc4m", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt4m", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht4m", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc4m", "")))%> cm");
             }
-            d = "<%=props.getProperty("date6m","")%>";
+            d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date6m","")))%>";
             if (d != "") {
                 i++;
-                fData(1, i, "<%=props.getProperty("date6m", "")%>");
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date6m", "")))%>");
                 fData(2, i, age6m.substring(0, 3) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt6m", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht6m", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc6m", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt6m", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht6m", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc6m", "")))%> cm");
             }
-            d = "<%=props.getProperty("date9m","")%>";
+            d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date9m","")))%>";
             if (d != "") {
                 i++;
-                var a = "<%=age(props.getProperty("birthDate"),props.getProperty("date9m"))%>";
-                fData(1, i, "<%=props.getProperty("date9m", "")%>");
+                var a = "<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date9m"))))%>";
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date9m", "")))%>");
                 fData(2, i, age9m.substring(0, 3) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt9m", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht9m", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc9m", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt9m", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht9m", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc9m", "")))%> cm");
             }
-            d = "<%=props.getProperty("date12m","")%>";
+            d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date12m","")))%>";
             if (d != "") {
                 i++;
-                fData(1, i, "<%=props.getProperty("date12m", "")%>");
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date12m", "")))%>");
                 fData(2, i, age12m.substring(0, 4) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt12m", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht12m", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc12m", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt12m", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht12m", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc12m", "")))%> cm");
             }
-            d = "<%=props.getProperty("date18m","")%>";
+            d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date18m","")))%>";
             if (d != "") {
                 i++;
-                fData(1, i, "<%=props.getProperty("date18m", "")%>");
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date18m", "")))%>");
                 fData(2, i, age18m.substring(0, 4) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt18m", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht18m", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc18m", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt18m", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht18m", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc18m", "")))%> cm");
             }
-            d = "<%=props.getProperty("date2y","")%>";
+            d = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date2y","")))%>";
             if (d != "") {
                 i++;
-                fData(1, i, "<%=props.getProperty("date2y", "")%>");
+                fData(1, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("date2y", "")))%>");
                 fData(2, i, age2y.substring(0, 4) + ' mo');
-                fData(3, i, "<%=props.getProperty("wt2y", "")%> kg");
-                fData(4, i, "<%=props.getProperty("ht2y", "")%> cm");
-                fData(5, i, "<%=props.getProperty("hc2y", "")%> cm");
+                fData(3, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt2y", "")))%> kg");
+                fData(4, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht2y", "")))%> cm");
+                fData(5, i, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc2y", "")))%> cm");
             }
         }
 
@@ -338,7 +339,7 @@
     </SCRIPT>
 
     <body class="graph">
-    <img name="chart" src="<%=chart%>" onLoad="javascript:graphChart();"
+    <img name="chart" src="<%=Encode.forHtmlAttribute(String.valueOf(chart))%>" onLoad="javascript:graphChart();"
          border="0"
          style="position: absolute; width: 943px; z-index: 0; top: 0; left: 0;"/>
     <a name="ctls" id="ctls"></a>

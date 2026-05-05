@@ -152,7 +152,7 @@ public class DisplayInvoiceLogo2Action extends ActionSupport {
             fileName = doc.getDocfilename();
         }
 
-        String document_dir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String document_dir = OscarProperties.getInstance().getDocumentDirectory();
 
         File file = null;
         try {

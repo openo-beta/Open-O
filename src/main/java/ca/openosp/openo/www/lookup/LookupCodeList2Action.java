@@ -22,6 +22,7 @@
 package ca.openosp.openo.www.lookup;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,12 +41,21 @@ public class LookupCodeList2Action extends ActionSupport {
 
     private LookupManager lookupManager = SpringUtils.getBean(LookupManager.class);
 
+    private static final Pattern VALID_TABLE_ID_PATTERN = Pattern.compile("^[A-Za-z0-9]{1,10}$");
+
+    private static void validateTableId(String tableId) {
+        if (tableId == null || !VALID_TABLE_ID_PATTERN.matcher(tableId).matches()) {
+            throw new SecurityException("Invalid lookup table identifier");
+        }
+    }
+
     public String execute() {
         return list();
     }
 
     private String list() {
         String tableId = request.getParameter("id");
+        validateTableId(tableId);
         LookupTableDefValue tableDef = lookupManager.GetLookupTableDef(tableId);
 
         List lst = lookupManager.LoadCodeList(tableId, false, null, null);

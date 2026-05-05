@@ -1,3 +1,4 @@
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <html>
@@ -65,7 +66,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -89,7 +90,7 @@
                 <td width="78%"><font
                         face="Verdana, Arial, Helvetica, sans-serif" size="1"><%
                     boolean state = mode.equals("edit") ? true : false;
-                %> <input type="text" name="xml_other1" size="40" readonly="<%=state%>"/> <a href="javascript:OtherScriptAttach()">
+                %> <input type="text" name="xml_other1" size="40" readonly="<%=Encode.forHtmlAttribute(String.valueOf(state))%>"/> <a href="javascript:OtherScriptAttach()">
                     <img src="<%= request.getContextPath() %>/images/search_code.jpg" border="0"> </a> </font></td>
             </tr>
             <tr bgcolor="CCCCFF">

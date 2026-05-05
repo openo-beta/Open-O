@@ -99,7 +99,7 @@
                 <caisi:isModuleLoad moduleName="caisi">
                     <INPUT TYPE="checkbox"
                             <%= ((Boolean)session.getAttribute("signOnNote")).booleanValue()?"checked":""%>
-                           onchange="toggleSig('<%= curUser_no %>')">also sign the signiture in encounter notes
+                           onchange="toggleSig('<%=Encode.forJavaScript(String.valueOf(curUser_no))%>')">also sign the signiture in encounter notes
                 </caisi:isModuleLoad>
                 <!-- add by caisi end-->
 
@@ -114,7 +114,7 @@
                 <caisi:isModuleLoad moduleName="caisi">
                     <INPUT TYPE="checkbox"
                             <%= ((Boolean)session.getAttribute("signOnNote")).booleanValue()?"checked":""%>
-                           onchange="toggleSig('<%= curUser_no %>')">also sign the signature in encounter notes
+                           onchange="toggleSig('<%=Encode.forJavaScript(String.valueOf(curUser_no))%>')">also sign the signature in encounter notes
                 </caisi:isModuleLoad>
                 <!-- add by caisi end-->
                 <input type="submit"

@@ -24,6 +24,7 @@
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     ReportProviderDao reportProviderDao = SpringUtils.getBean(ReportProviderDao.class);
@@ -171,7 +172,7 @@
                     </td>
                     <td nowrap valign="bottom"><font
                             face="Verdana, Arial, Helvetica, sans-serif" color="#FFFFFF">
-                        <b><%=DateUtils.sumDate("yyyy-M-d", "0")%>
+                        <b><%=Encode.forHtml(String.valueOf(DateUtils.sumDate("yyyy-M-d", "0")))%>
                         </b> </font></td>
                 </tr>
             </table>
@@ -202,7 +203,7 @@
                                         proOHIP = p.getProviderNo();
 
                             %>
-                            <option value="<%=proOHIP%>"><%=proLast%> , <%=proFirst%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"><%=Encode.forHtml(String.valueOf(proLast))%> , <%=Encode.forHtml(String.valueOf(proFirst))%>
                             </option>
                             <%
                                     }
@@ -230,7 +231,7 @@
                                         proLast = p.getLastName();
                                         proOHIP = p.getProviderNo();
                             %>
-                            <option value="<%=proOHIP%>"><%=proLast%> , <%=proFirst%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"><%=Encode.forHtml(String.valueOf(proLast))%> , <%=Encode.forHtml(String.valueOf(proFirst))%>
                             </option>
                             <%
                                     }
@@ -258,7 +259,7 @@
                                     proLast = p.getLastName();
                                     proOHIP = p.getProviderNo();
                             %>
-                            <option value="<%=proOHIP%>"><%=proLast%> , <%=proFirst%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"><%=Encode.forHtml(String.valueOf(proLast))%> , <%=Encode.forHtml(String.valueOf(proFirst))%>
                             </option>
                             <%} %>
                         </select></td>
@@ -289,7 +290,7 @@
                                         <a href="javascript: function myFunction() {return false; }"
                                            id="hlSDate">Start Date :</a> </font></td>
                                     <td><input type="text" name="xml_vdate" id="xml_vdate"
-                                               value="<%=xml_vdate%>" readonly="true"> <a
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>" readonly="true"> <a
                                             href="javascript: clearField('xml_vdate')">clear</a></td>
                                 </tr>
                                 <tr>
@@ -297,7 +298,7 @@
                                         <a href="javascript: function myFunction() {return false; }"
                                            id="hlADate">End Date :</a> </font></td>
                                     <td><input type="text" name="xml_appointment_date"
-                                               id="xml_appointment_date" value="<%=xml_appointment_date%>"
+                                               id="xml_appointment_date" value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>"
                                                readonly="true"> <a
                                             href="javascript: clearField('xml_appointment_date')">clear</a></td>
                                 </tr>

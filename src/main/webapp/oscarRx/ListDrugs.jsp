@@ -25,7 +25,6 @@
 --%>
 
 <%@page import="ca.openosp.openo.commn.model.PartialDate" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -286,7 +285,7 @@
         %>
         <tr>
 
-        <td><a id="createDate_<%=prescriptIdInt%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=DateToString(prescriptDrug.getCreateDate())%></a></td>
+        <td><a id="createDate_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=Encode.forHtml(String.valueOf(DateToString(prescriptDrug.getCreateDate())))%></a></td>
             <td>
             	<% if(startDateUnknown) { %>
             		
@@ -294,8 +293,8 @@
                     String startDate = UtilDateUtilities.DateToString(prescriptDrug.getRxDate());
                     startDate = partialDateDao.getDatePartial(startDate, PartialDate.DRUGS, prescriptDrug.getId(), PartialDate.DRUGS_STARTDATE);
                 %>
-                <a id="rxDate_<%=prescriptIdInt%>"   <%=styleColor%>
-                   href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>"><%=startDate%>
+                <a id="rxDate_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>"   <%=Encode.forHtml(String.valueOf(styleColor))%>
+                   href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>"><%=Encode.forHtml(String.valueOf(startDate))%>
                 </a>
                 <% } %>
             </td>
@@ -303,18 +302,18 @@
                 <% if (startDateUnknown) { %>
 
                 <% } else { %>
-                <%=prescriptDrug.daysToExpire()%>
+                <%=Encode.forHtml(String.valueOf(prescriptDrug.daysToExpire()))%>
                 <% } %>
             </td>
             <td>
                 <div class="drug-maintenance-switch" style="display: flex; align-items: baseline;">
                     <% String drugMaintenanceSwitch = "drugMaintenanceSwitch_" + prescriptIdInt + Math.abs(new Random().nextInt(10001)); %>
-                    <input id="<%=drugMaintenanceSwitch%>" type="checkbox" name="checkBox_<%=prescriptIdInt%>"
+                    <input id="<%=Encode.forHtmlAttribute(String.valueOf(drugMaintenanceSwitch))%>" type="checkbox" name="checkBox_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>"
                            class="drug-maintenance-switch-input"
-                           onclick="changeLt(this, '<%=prescriptIdInt%>');"
+                           onclick="changeLt(this, '<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>');"
                             <% if (!securityManager.hasWriteAccess("_rx", roleName$, true)) {%> disabled <%}%>
                             <% if (prescriptDrug.isLongTerm()) {%> checked <%}%> />
-                    <label id="drugMaintenanceSwitchLbl_<%=prescriptIdInt%>" for="<%=drugMaintenanceSwitch%>" class="drug-maintenance-switch-label">
+                    <label id="drugMaintenanceSwitchLbl_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" for="<%=Encode.forHtmlAttribute(String.valueOf(drugMaintenanceSwitch))%>" class="drug-maintenance-switch-label">
 
                     </label>
                 </div>
@@ -328,7 +327,7 @@
 			}
 			
 			%>
-            <td><a id="prescrip_<%=prescriptIdInt%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"   <%=tComment%>   ><%=RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")%></a></td>
+            <td><a id="prescrip_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"   <%=tComment%>   ><%=Encode.forHtml(String.valueOf(RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")))%></a></td>
 			<%            			
 	           	if(securityManager.hasWriteAccess("_rx",roleName$,true)) {            		
            	%>
@@ -337,16 +336,16 @@
                 <%if (prescriptDrug.getRemoteFacilityName() == null) {%>
                 <div style="display: flex; align-items: center;">
                     <% String cbxId = "reRxCheckBox_" + prescriptIdInt; %>
-                    <input id="<%=cbxId%>" type=CHECKBOX
-                           onclick="updateReRxStatusForPrescribedDrug(this, <%=prescriptIdInt%>)"
+                    <input id="<%=Encode.forHtmlAttribute(String.valueOf(cbxId))%>" type=CHECKBOX
+                           onclick="updateReRxStatusForPrescribedDrug(this, <%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>)"
                            <%if(reRxDrugList.contains(prescriptIdInt.toString())){%>checked<%}%>
-                           name="checkBox_<%=prescriptIdInt%>">
-                    <label id="reRx_<%=prescriptIdInt%>" for="<%=cbxId%>">ReRx</label>
+                           name="checkBox_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>">
+                    <label id="reRx_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" for="<%=Encode.forHtmlAttribute(String.valueOf(cbxId))%>">ReRx</label>
                 </div>
                 <%} else {%>
                 <form action="<%=request.getContextPath()%>/oscarRx/searchDrug.do" method="post">
-                    <input type="hidden" name="demographicNo" value="<%=patient.getDemographicNo()%>"/>
-                    <input type="hidden" name="searchString" value="<%=getName(prescriptDrug)%>"/>
+                    <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(patient.getDemographicNo()))%>"/>
+                    <input type="hidden" name="searchString" value="<%=Encode.forHtmlAttribute(String.valueOf(getName(prescriptDrug)))%>"/>
                     <input type="submit" class="ControlPushButton" value="Search to Re-prescribe"/>
                 </form>
                 <%}%>
@@ -356,7 +355,7 @@
             <td>
 
                 <%if (prescriptDrug.getRemoteFacilityName() == null) {%>
-                <a id="del_<%=prescriptIdInt%>" name="delete" <%=styleColor%> href="javascript:void(0);"
+                <a id="del_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" name="delete" <%=Encode.forHtml(String.valueOf(styleColor))%> href="javascript:void(0);"
                    onclick="Delete2(this);">Del</a>
                 <%}%>
             </td>
@@ -373,11 +372,11 @@
 					if(securityManager.hasWriteAccess("_rx",roleName$,true)) {            		
 				
                 %>
-                	<a id="discont_<%=prescriptIdInt%>" href="javascript:void(0);" onclick="Discontinue(event,this);" <%=styleColor%> >Discon</a>                
+                	<a id="discont_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" href="javascript:void(0);" onclick="Discontinue(event,this);" <%=Encode.forHtml(String.valueOf(styleColor))%> >Discon</a>                
                 <% }
                	 }
                 }else{%>
-                  <%=prescriptDrug.getArchivedReason()%>
+                  <%=Encode.forHtml(String.valueOf(prescriptDrug.getArchivedReason()))%>
                 <%}%>
             </td>
   <%-- DRUG REASON --%>          
@@ -388,11 +387,11 @@
             		if (prescriptDrug.getRemoteFacilityId()==null && securityManager.hasWriteAccess("_rx",roleName$,true) )
             		{
             			%>
-			           	 	<a href="javascript:void(0);"  onclick="popupRxReasonWindow(<%=patient.getDemographicNo()%>,<%=prescriptIdInt%>);"  title="<%=displayDrugReason(codingSystemManager,drugReasons,true) %>">
+			           	 	<a href="javascript:void(0);"  onclick="popupRxReasonWindow(<%=Encode.forJavaScript(String.valueOf(patient.getDemographicNo()))%>,<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>);"  title="<%=Encode.forHtmlAttribute(String.valueOf(displayDrugReason(codingSystemManager,drugReasons,true)))%>">
             			<%
             		}
             	%>
-            	<%=StringUtils.maxLenString(displayDrugReason(codingSystemManager,drugReasons,false), 4, 3, StringUtils.ELLIPSIS)%>
+            	<%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(displayDrugReason(codingSystemManager,drugReasons,false), 4, 3, StringUtils.ELLIPSIS)))%>
 				<%
 		      		if (prescriptDrug.getRemoteFacilityId()==null  && securityManager.hasWriteAccess("_rx",roleName$,true))
 		      		{
@@ -423,7 +422,7 @@
                     if (prescriptDrug.getRemoteFacilityId() == null) {
                 %>
                 <a href="javascript:void(0);" title="Annotation"
-                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=annotation_display%>&amp;table_id=<%=prescriptIdInt%>&amp;demo=<%=bean.getDemographicNo()%>&amp;drugSpecial=<%=StringEscapeUtils.escapeEcmaScript(specialText)%>','anwin','width=400,height=500');">
+                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>&amp;drugSpecial=<%=Encode.forJavaScript(specialText)%>','anwin','width=400,height=500');">
                     <%if (!isPrevAnnotation) {%> <img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation" height="16"
                                                       width="13" border="0"><%} else {%><img
                         src="<%= request.getContextPath() %>/images/filledNotes.gif" height="16" width="13" alt="rxFilledNotes" border="0"> <%}%></a>
@@ -436,9 +435,9 @@
             <td>
                 <%
                     if (prescriptDrug.getRemoteFacilityName() != null) { %>
-                <span class="external"><%=prescriptDrug.getRemoteFacilityName()%></span>
+                <span class="external"><%=Encode.forHtml(String.valueOf(prescriptDrug.getRemoteFacilityName()))%></span>
                 <%} else if (prescriptDrug.getOutsideProviderName() != null && !prescriptDrug.getOutsideProviderName().equals("")) {%>
-                <span class="external"><%=prescriptDrug.getOutsideProviderName()%></span>
+                <span class="external"><%=Encode.forHtml(String.valueOf(prescriptDrug.getOutsideProviderName()))%></span>
                 <%} else {%>
                 local
                 <%}%>
@@ -454,7 +453,7 @@
 						checked="checked=\"checked\"";
 					}
 				%>
-				<input type="checkbox" id="hidecpp_<%=prescriptIdInt%>" <%=checked%>/>
+				<input type="checkbox" id="hidecpp_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=checked%>/>
 			</td>
 			
 			<%if(OscarProperties.getInstance().getProperty("rx.enable_internal_dispensing","false").equals("true")) {%>
@@ -465,7 +464,7 @@
 							String dispensingStatus = drugDispensingManager.getStatus(prescriptDrug.getId());
 				               
 				%>
-					<a href="javascript:void(0)" onclick="popupWindow(720,700,'<%=request.getContextPath()%>/oscarRx/Dispense.do?method=view&id=<%=prescriptDrug.getId()%>','Dispense<%=prescriptIdInt %>'); return false;">Dispense (<%=dispensingStatus%>)</a>
+					<a href="javascript:void(0)" onclick="popupWindow(720,700,'<%=request.getContextPath()%>/oscarRx/Dispense.do?method=view&id=<%=Encode.forJavaScript(String.valueOf(prescriptDrug.getId()))%>','Dispense<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>'); return false;">Dispense (<%=Encode.forHtml(String.valueOf(dispensingStatus))%>)</a>
 				<% 
 					} }
 				%>
@@ -474,10 +473,10 @@
 			
 <%--			<td nowrap="nowrap" >--%>
 <%--				<%if(!(prescriptDrugs.get(prescriptDrugs.size()-1) == prescriptDrug)) {%>--%>
-<%--				<img border="0" src="<%=request.getContextPath()%>/images/icon_down_sort_arrow.png" onclick="moveDrugDown(<%=prescriptDrug.getId() %>,<%=prescriptDrugs.get(x+1).getId() %>,<%=prescriptDrug.getDemographicId()%>);return false;"/>--%>
+<%--				<img border="0" src="<%=request.getContextPath()%>/images/icon_down_sort_arrow.png" onclick="moveDrugDown(<%=Encode.forJavaScript(String.valueOf(prescriptDrug.getId()))%>,<%=Encode.forJavaScript(String.valueOf(prescriptDrugs.get(x+1).getId()))%>,<%=Encode.forJavaScript(String.valueOf(prescriptDrug.getDemographicId()))%>);return false;"/>--%>
 <%--				<% } %>--%>
 <%--				<%if(!(prescriptDrugs.get(0) == prescriptDrug)) {%>--%>
-<%--				<img border="0" src="<%=request.getContextPath()%>/images/icon_up_sort_arrow.png" onclick="moveDrugUp(<%=prescriptDrug.getId() %>,<%=prescriptDrugs.get(x-1).getId() %>,<%=prescriptDrug.getDemographicId()%>);return false;"/>--%>
+<%--				<img border="0" src="<%=request.getContextPath()%>/images/icon_up_sort_arrow.png" onclick="moveDrugUp(<%=Encode.forJavaScript(String.valueOf(prescriptDrug.getId()))%>,<%=Encode.forJavaScript(String.valueOf(prescriptDrugs.get(x-1).getId()))%>,<%=Encode.forJavaScript(String.valueOf(prescriptDrug.getDemographicId()))%>);return false;"/>--%>
 <%--				<%} %>--%>
 <%--			</td>--%>
 
@@ -486,11 +485,11 @@
 
         <script>
             (function() {
-                var element = $('hidecpp_<%=prescriptIdInt%>');
+                var element = $('hidecpp_<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>');
                 if (element) {
                     Event.observe(element, 'change', function (event) {
-                        var val = $('hidecpp_<%=prescriptIdInt%>').checked;
-                        new Ajax.Request('<c:out value="${ctx}"/>/oscarRx/hideCpp.do?method=update&prescriptId=<%=prescriptIdInt%>&value=' + val, {
+                        var val = $('hidecpp_<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>').checked;
+                        new Ajax.Request('<c:out value="${ctx}"/>/oscarRx/hideCpp.do?method=update&prescriptId=<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>&value=' + val, {
                             method: 'get',
                             onSuccess: function (transport) {
                             }
@@ -642,7 +641,7 @@
                 codeDescr = codingSystemManager.getCodeDescription(drugReason.getCodingSystem(), drugReason.getCode());
             }
             if (codeDescr != null) {
-                sb.append(StringEscapeUtils.escapeHtml4(codeDescr));
+                sb.append(Encode.forHtml(codeDescr));
             } else {
                 sb.append(drugReason.getCode());
             }

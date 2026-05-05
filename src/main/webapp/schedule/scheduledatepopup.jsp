@@ -59,6 +59,7 @@
 <%@page import="ca.openosp.openo.commn.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="ca.openosp.openo.commn.model.Site" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -93,10 +94,10 @@
                             <td bgcolor="#CCFFCC">
                                 <p align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.formDate"/>:</p>
                             </td>
-                            <td bgcolor="#CCFFCC"><%=year%>-<%=month%>-<%=day%>
+                            <td bgcolor="#CCFFCC"><%=Encode.forHtml(String.valueOf(year))%>-<%=Encode.forHtml(String.valueOf(month))%>-<%=Encode.forHtml(String.valueOf(day))%>
                             </td>
                             <input type="hidden" name="date"
-                                   value="<%=year%>-<%=month%>-<%=day%>">
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(year))%>-<%=Encode.forHtmlAttribute(String.valueOf(month))%>-<%=Encode.forHtmlAttribute(String.valueOf(day))%>">
                         </tr>
                         <tr>
                             <td>
@@ -113,22 +114,22 @@
                                 <div align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.formTemplate"/>:
                                 </div>
                             </td>
-                            <td><!--input type="text" name="hour1" <%=strHour%> --> <select
+                            <td><!--input type="text" name="hour1" <%=Encode.forHtml(String.valueOf(strHour))%> --> <select
                                     name="hour">
                                 <%
 
                                     for (ScheduleTemplate st : scheduleTemplateDao.findByProviderNo("Public")) {
 
                                 %>
-                                <option value="<%=st.getId().getName()%>"
-                                        <%=strHour.equals(st.getId().getName()) ? "selected" : ""%>><%=st.getId().getName() + " |" + st.getSummary()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(st.getId().getName()))%>"
+                                        <%=strHour.equals(st.getId().getName()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(st.getId().getName() + " |" + st.getSummary()))%>
                                 </option>
                                 <% }
                                     for (ScheduleTemplate st : scheduleTemplateDao.findByProviderNo(request.getParameter("provider_no"))) {
 
                                 %>
-                                <option value="<%=st.getId().getName()%>"
-                                        <%=st.getId().getName().equals(strHour) ? "selected" : ""%>><%=st.getId().getName() + " |" + st.getSummary()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(st.getId().getName()))%>"
+                                        <%=st.getId().getName().equals(strHour) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(st.getId().getName() + " |" + st.getSummary()))%>
                                 </option>
                                 <% } %>
                             </select></td>
@@ -165,8 +166,8 @@
                             <td><select id="reason" name="reason"
                                         onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor'>
                                 <% for (int i = 0; i < siteList.length; i++) { %>
-                                <option value="<%=siteList[i]%>" <%=(bMultisites ? " style='background-color:" + bgColors[i] + "'" : "")%>
-                                        <%=strReason.equals(siteList[i]) ? "selected" : ""%>><b><%=siteList[i]%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(siteList[i]))%>" <%=Encode.forHtml(String.valueOf((bMultisites ? " style='background-color:" + bgColors[i] + "'" : "")))%>
+                                        <%=strReason.equals(siteList[i]) ? "selected" : ""%>><b><%=Encode.forHtml(String.valueOf(siteList[i]))%>
                                 </b></option>
                                 <% } %>
                             </select></td>
@@ -178,7 +179,7 @@
                                 <div align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.formCreator"/>:
                                 </div>
                             </td>
-                            <td><%=strCreator%>
+                            <td><%=Encode.forHtml(String.valueOf(strCreator))%>
                             </td>
                         </tr>
                     </table>
@@ -193,7 +194,7 @@
                             <td bgcolor="#CCFFCC">
                                 <div align="right"><input type="hidden" name="Submit" value="">
                                     <input type="hidden" name="provider_no"
-                                           value="<%=request.getParameter("provider_no")%>"> <input
+                                           value="<%=Encode.forHtmlAttribute(request.getParameter("provider_no"))%>"> <input
                                             type="button"
                                             value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduledatepopup.btnSave"/>'
                                             onclick="document.forms['schedule'].Submit.value=' Save '; document.forms['schedule'].submit();">

@@ -29,6 +29,7 @@
 <%@ page
         import="ca.openosp.openo.commn.dao.ProviderLabRoutingFavoritesDao, ca.openosp.openo.commn.model.ProviderLabRoutingFavorite" %>
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao, ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -72,9 +73,9 @@
             }
         }
 
-        var isListView = <%=request.getParameter("isListView")%>;
-        var docId = '<%=request.getParameter("docId")%>';
-        var labDisplay = '<%=request.getParameter("labDisplay")%>';
+        var isListView = <%=Encode.forJavaScript(request.getParameter("isListView"))%>;
+        var docId = '<%=Encode.forJavaScript(request.getParameter("docId"))%>';
+        var labDisplay = '<%=Encode.forJavaScript(request.getParameter("labDisplay"))%>';
         var frm = "reassignForm";
 
         if (docId != "null" && labDisplay == "null") {
@@ -147,7 +148,7 @@
                     for (ProviderLabRoutingFavorite fav : currentFavorites) {
                         Provider prov = providerDao.getProvider(fav.getRoute_to_provider_no());
                 %>
-                <option id="<%=prov.getProviderNo()%>" value="<%=prov.getProviderNo()%>"><%=prov.getFormattedName()%>
+                <option id="<%=Encode.forHtmlAttribute(String.valueOf(prov.getProviderNo()))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(prov.getProviderNo()))%>"><%=Encode.forHtml(String.valueOf(prov.getFormattedName()))%>
                 </option>
                 <%
                     }

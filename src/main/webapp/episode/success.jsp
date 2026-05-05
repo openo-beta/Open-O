@@ -29,6 +29,7 @@
     <title></title>
     <script>
         function c() {
+<%@ page import="org.owasp.encoder.Encode" %>
             <%
                 String parentAjaxId = request.getParameter("parentAjaxId");
                 if(parentAjaxId == null) {
@@ -36,7 +37,7 @@
                 }
                 if(parentAjaxId != null) {
             %>
-            window.opener.reloadNav('<%=parentAjaxId%>');
+            window.opener.reloadNav('<%=Encode.forJavaScript(String.valueOf(parentAjaxId))%>');
             window.close();
             <% } else { %>
             window.opener.location.reload();

@@ -54,7 +54,7 @@ public class MspErrorCodes extends Properties {
                 String filename = OscarProperties.getInstance().getProperty("msp_error_codes");
                 is = new FileInputStream(filename);
             } else {
-                File file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"), "msp_error_codes.properties");
+                File file = new File(OscarProperties.getInstance().getDocumentDirectory(), "msp_error_codes.properties");
                 if (file != null && file.exists()) {
                     is = new FileInputStream(file);
                 }
@@ -74,7 +74,7 @@ public class MspErrorCodes extends Properties {
                 String filename = OscarProperties.getInstance().getProperty("msp_error_codes");
                 file = new File(filename);
             } else {
-                file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"), "msp_error_codes.properties");
+                file = new File(OscarProperties.getInstance().getDocumentDirectory(), "msp_error_codes.properties");
             }
 
             store(new FileOutputStream(file), "Written on " + new Date());

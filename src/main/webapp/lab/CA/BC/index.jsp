@@ -49,6 +49,7 @@
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.Hl7LinkDao" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.Hl7Link" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
 
@@ -157,34 +158,34 @@
                     Hl7Obr obr = (Hl7Obr) o[2];
                     Demographic demo = (Demographic) o[3];
             %>
-            <tr class="<%=(other? "WhiteBG" : "LightBG")%>">
+            <tr class="<%=Encode.forHtmlAttribute(String.valueOf((other? "WhiteBG" : "LightBG")))%>">
                 <td class="Text"><input type="checkbox" name="chk"
-                                        value="<%=pid.getId()%>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(pid.getId()))%>"/></td>
                 <td class="Text"><a href="#"
-                                    onclick="return PopupLab('<%=pid.getId()%>');"><%=Misc.check(pid.getPatientName(), "")%>
+                                    onclick="return PopupLab('<%=Encode.forJavaScript(String.valueOf(pid.getId()))%>');"><%=Encode.forHtml(String.valueOf(Misc.check(pid.getPatientName(), "")))%>
                 </a></td>
                 <td class="Text">
-                    <%=ConversionUtils.toDateString(pid.getDateOfBirth())%>
+                    <%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(pid.getDateOfBirth())))%>
                 </td>
                 <td class="Text" align="center">
-                    <%=Misc.check(pid.getSex(), "")%>
+                    <%=Encode.forHtml(String.valueOf(Misc.check(pid.getSex(), "")))%>
                 </td>
                 <td class="Text">
-                    <%=Misc.check(obr.getOrderingProvider(), "").replaceAll("~", ",<br/>")%>
+                    <%=Encode.forHtml(String.valueOf(Misc.check(obr.getOrderingProvider(), "").replaceAll("~", ",<br/>")))%>
                 </td>
                 <td class="Text" style="border-right: #464646 1px solid;">
-                    <%=Misc.check(obr.getResultCopiesTo(), "").replaceAll("~", ",<br/>")%>
+                    <%=Encode.forHtml(String.valueOf(Misc.check(obr.getResultCopiesTo(), "").replaceAll("~", ",<br/>")))%>
                 </td>
                 <td class="Text" style="border-left: #464646 1px solid;">
-                    <a href="#" onclick="return PopupDemo('<%=link.getId()%>');">
-                        <%=Misc.check("" + demo.getDemographicNo(), "select")%>
+                    <a href="#" onclick="return PopupDemo('<%=Encode.forJavaScript(String.valueOf(link.getId()))%>');">
+                        <%=Encode.forHtml(String.valueOf(Misc.check("" + demo.getDemographicNo(), "select")))%>
                     </a>
                 </td>
                 <td class="Text">
-                    <%= demo.getFullName()%>
+                    <%=Encode.forHtml(String.valueOf(demo.getFullName()))%>
                 </td>
                 <td class="Text">
-                    <%=    demo.getBirthDayAsString() %>
+                    <%=Encode.forHtml(String.valueOf(demo.getBirthDayAsString()))%>
                 </td>
             </tr>
             <%

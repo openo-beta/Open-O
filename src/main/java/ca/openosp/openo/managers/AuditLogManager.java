@@ -61,7 +61,7 @@ public class AuditLogManager {
     public int purgeAuditLog(LoggedInInfo loggedInInfo, Date endDateToPurge) throws Exception {
 
         if (outputDirectory == null || outputDirectory.isEmpty()) {
-            outputDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+            outputDirectory = OscarProperties.getInstance().getDocumentDirectory();
         }
         if (mysqldump == null) {
             logger.warn("No mysqldump command has been defined. Please set log.purge.mysqldump in the properties file");

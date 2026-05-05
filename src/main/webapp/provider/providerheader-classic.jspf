@@ -31,6 +31,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -155,7 +156,7 @@ function popupPage2(varpage) {
          </li>
  <% } else if((request.getParameter("caseload")!=null && request.getParameter("caseload").equals("1")) || (request.getParameter("displaymode")==null) ) {  %>
  <li>
- <a href='<%=request.getContextPath()%>/provider/providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1'>Schedule</a>
+ <a href='<%=request.getContextPath()%>/provider/providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(curDay))%>&view=0&displaymode=day&dboperation=searchappointmentday&viewall=1'>Schedule</a>
  </li>
          
 <% } else {  %>
@@ -166,7 +167,7 @@ function popupPage2(varpage) {
 </c:if>
 
  <li>
- <a href='<%=request.getContextPath()%>/provider/providercontrol.jsp?year=<%=curYear%>&month=<%=curMonth%>&day=<%=curDay%>&view=0&displaymode=day&dboperation=searchappointmentday&caseload=1&clProv=<%=curUser_no%>'>Caseload</a>
+ <a href='<%=request.getContextPath()%>/provider/providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(curDay))%>&view=0&displaymode=day&dboperation=searchappointmentday&caseload=1&clProv=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>'>Caseload</a>
  </li>
 
 <!-- TODO:mobile version code excluded here re-visit -->
@@ -174,7 +175,7 @@ function popupPage2(varpage) {
 <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
  <security:oscarSec roleName="<%=roleName$%>" objectName="_resource" rights="r">
  <li>
-    <a href="#" ONCLICK ="popupPage2('<%=resourcebaseurl%>');return false;" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewResources"/>" onmouseover="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewResources"/>';return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.clinicalResources"/></a>
+    <a href="#" ONCLICK ="popupPage2('<%=Encode.forJavaScript(String.valueOf(resourcebaseurl))%>');return false;" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewResources"/>" onmouseover="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewResources"/>';return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.clinicalResources"/></a>
  </li>
  </security:oscarSec>
 </caisi:isModuleLoad>
@@ -201,14 +202,14 @@ function popupPage2(varpage) {
 <security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="r">
 <li>
      
-	<a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=curUser_no%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>' onMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>';return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a>
+	<a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/billing/CA/<%=Encode.forJavaScript(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>' onMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>';return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a>
     
 </li>
 </security:oscarSec>
 
 <security:oscarSec roleName="<%=roleName$%>" objectName="_appointment.doctorLink" rights="r">
    <li>
-       <a HREF="#" ONCLICK ="popupInboxManager('<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=curUser_no%>', 'Lab');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewLabReports"/>'>
+       <a HREF="#" ONCLICK ="popupInboxManager('<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>', 'Lab');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewLabReports"/>'>
 	   <span id="oscar_new_lab"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.lab"/></span>
        </a>
        <oscar:newUnclaimedLab>
@@ -222,7 +223,7 @@ function popupPage2(varpage) {
  <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
  	<security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r">
      <li>
-	 <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=curUser_no%>&userName=<%=URLEncoder.encode(userfirstname+" "+userlastname)%>')" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.messenger"/>">
+	 <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname)))%>')" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.messenger"/>">
 	 <span id="oscar_new_msg"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.msg"/></span></a>
      </li>
    	</security:oscarSec>
@@ -230,7 +231,7 @@ function popupPage2(varpage) {
 <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
 <security:oscarSec roleName="<%=roleName$%>" objectName="_con" rights="r">
 <li id="con">
- <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=curUser_no%>&userName=<%=URLEncoder.encode(userfirstname+" "+userlastname)%>')" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewConReq"/>">
+ <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname)))%>')" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewConReq"/>">
  <span id="oscar_aged_consults"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.con"/></span></a>
 </li>
 </security:oscarSec>
@@ -238,14 +239,14 @@ function popupPage2(varpage) {
 
 <security:oscarSec roleName="<%=roleName$%>" objectName="_pref" rights="r">
 <li>  
-	<a href=# onClick ="popupPage2('<%=request.getContextPath()%>/provider/providerpreference.jsp?provider_no=<%=curUser_no%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' ; return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.pref"/></a>
+	<a href=# onClick ="popupPage2('<%=request.getContextPath()%>/provider/providerpreference.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' ; return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.pref"/></a>
 </li>
 </security:oscarSec>
 
  <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
 <security:oscarSec roleName="<%=roleName$%>" objectName="_edoc" rights="r">
 <li>
-   <a HREF="#" onclick="popupPage2('<%=request.getContextPath()%>/documentManager/documentReport.jsp?function=providers&functionid=<%=curUser_no%>&curUser=<%=curUser_no%>', 'edocView');" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="global.edoc"/></a>
+   <a HREF="#" onclick="popupPage2('<%=request.getContextPath()%>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&curUser=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>', 'edocView');" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="global.edoc"/></a>
 </li>
 </security:oscarSec>
  </caisi:isModuleLoad>
@@ -291,7 +292,7 @@ function popupPage2(varpage) {
 	<a href="javascript: function myFunction() {return false; }" onClick="popupPage2('<%=request.getContextPath()%>/scratch/index.jsp','scratch')"><span id="oscar_scratch"></span></a>&nbsp;
 
 	<caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
-	<a href=# onClick ="popupPage2('<%=resourcebaseurl%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a>
+	<a href=# onClick ="popupPage2('<%=Encode.forJavaScript(String.valueOf(resourcebaseurl))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a>
 	</caisi:isModuleLoad>
 
 	| <a href="<%=request.getContextPath()%>/logout.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnLogout"/>&nbsp;</a>

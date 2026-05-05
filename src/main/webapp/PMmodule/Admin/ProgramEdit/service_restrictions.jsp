@@ -1,5 +1,6 @@
 <%@ page import="ca.openosp.openo.PMmodule.model.ProgramClientRestriction" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%--
 
@@ -107,8 +108,8 @@ Please define the following parameters control the behaviour of new service rest
             String demographicNo = "" + ((ProgramClientRestriction) pageContext.getAttribute("restriction")).getDemographicNo();
         %>
         <caisirole:SecurityAccess accessName="Disable service restriction" accessType="access"
-                                  providerNo='<%=((Provider)request.getSession().getAttribute("provider")).getProviderNo()%>'
-                                  demoNo="<%=demographicNo%>" programId='<%=request.getParameter("id")%>'>
+                                  providerNo='<%=Encode.forHtmlAttribute(String.valueOf(((Provider)request.getSession().getAttribute("provider")).getProviderNo()))%>'
+                                  demoNo="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>" programId='<%=Encode.forHtmlAttribute(request.getParameter("id"))%>'>
             <a onclick="disableRestriction('<c:out value="${restriction.id}"/>');return false;"
                href="javascript:void(0);"> Disable </a>
         </caisirole:SecurityAccess>
@@ -141,8 +142,8 @@ Please define the following parameters control the behaviour of new service rest
             String demographicNo = "" + ((ProgramClientRestriction) pageContext.getAttribute("restriction")).getDemographicNo();
         %>
         <caisirole:SecurityAccess accessName="Create service restriction" accessType="access"
-                                  providerNo='<%=((Provider)request.getSession().getAttribute("provider")).getProviderNo()%>'
-                                  demoNo="<%=demographicNo%>" programId='<%=request.getParameter("id")%>'>
+                                  providerNo='<%=Encode.forHtmlAttribute(String.valueOf(((Provider)request.getSession().getAttribute("provider")).getProviderNo()))%>'
+                                  demoNo="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>" programId='<%=Encode.forHtmlAttribute(request.getParameter("id"))%>'>
             <a onclick="enableRestriction('<c:out value="${restriction.id}"/>');return false;"
                href="javascript:void(0);"> Enable </a>
         </caisirole:SecurityAccess>

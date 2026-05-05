@@ -43,6 +43,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Episode" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     Episode episode = (Episode) request.getAttribute("episode");
@@ -85,15 +86,15 @@
                 $('input[name="episode.codingSystem"]').val($("#search_coding_system").val());
 
                 <%if(episode != null) { %>
-                $("#code").val('<%=episode.getCode()%>');
-                $('input[name="episode.status"]').val('<%=episode.getStatus()%>');
-                $('input[name="episode.id"]').val('<%=episode.getId()%>');
-                $("#description").val('<%=episode.getDescription()%>');
-                $('select[name="episode.codingSystem"]').val('<%=episode.getCodingSystem()%>');
-                $('#search_coding_system').val('<%=episode.getCodingSystem()%>');
-                $('input[name="episode.demographicNo"]').val('<%=episode.getDemographicNo()%>');
-                $("#startDate").val('<%=episode.getStartDateStr()%>');
-                $("#endDate").val('<%=episode.getEndDateStr()%>');
+                $("#code").val('<%=Encode.forJavaScript(String.valueOf(episode.getCode()))%>');
+                $('input[name="episode.status"]').val('<%=Encode.forJavaScript(String.valueOf(episode.getStatus()))%>');
+                $('input[name="episode.id"]').val('<%=Encode.forJavaScript(String.valueOf(episode.getId()))%>');
+                $("#description").val('<%=Encode.forJavaScript(String.valueOf(episode.getDescription()))%>');
+                $('select[name="episode.codingSystem"]').val('<%=Encode.forJavaScript(String.valueOf(episode.getCodingSystem()))%>');
+                $('#search_coding_system').val('<%=Encode.forJavaScript(String.valueOf(episode.getCodingSystem()))%>');
+                $('input[name="episode.demographicNo"]').val('<%=Encode.forJavaScript(String.valueOf(episode.getDemographicNo()))%>');
+                $("#startDate").val('<%=Encode.forJavaScript(String.valueOf(episode.getStartDateStr()))%>');
+                $("#endDate").val('<%=Encode.forJavaScript(String.valueOf(episode.getEndDateStr()))%>');
                 <% } %>
 
             });
@@ -161,7 +162,7 @@
                 <form action="${pageContext.request.contextPath}/Episode.do" method="post">
                     <input type="hidden" name="method" value="save"/>
                     <input type="hidden" id="episode.demographicNo" name="episode.demographicNo"
-                           value="<%=request.getAttribute("demographicNo")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("demographicNo")))%>"/>
                     <input type="hidden" id="episode.id" name="episode.id" value=""/>
 
                     <table>
@@ -173,7 +174,7 @@
                                         List<String> codingSystems = (List<String>) request.getAttribute("codingSystems");
                                         for (String cs : codingSystems) {
                                     %>
-                                    <option value="<%=cs%>"><%=cs%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(cs))%>"><%=Encode.forHtml(String.valueOf(cs))%>
                                     </option>
                                     <% } %>
                                 </select>

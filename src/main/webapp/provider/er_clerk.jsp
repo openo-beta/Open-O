@@ -22,7 +22,8 @@
     Toronto, Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String url = request.getContextPath() + "/index.jsp";
 %>
-<META HTTP-EQUIV="refresh" content="0;URL=<%=url%>">
+<META HTTP-EQUIV="refresh" content="0;URL=<%=Encode.forHtmlAttribute(String.valueOf(url))%>">

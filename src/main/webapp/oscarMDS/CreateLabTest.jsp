@@ -44,28 +44,29 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.commn.model.DemographicContact" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String id = request.getParameter("id");
 %>
 
-<div id="test_<%=id%>">
-					<input type="hidden" name="test_<%=id%>.id" id="test_<%=id%>.id" value="<%=id%>"/>
+<div id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>">
+					<input type="hidden" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.id" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.id" value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>"/>
 
 					<fieldset>
                 <legend>Test Information</legend>
 
                 <table border="0" class="lab-test-table">
 					<tr>
-						<td  class="input-append"><label>Date:</label><input type="text" name="test_<%=id%>.valDate" id="test_<%=id%>.valDate" class="input-medium" required><img src="<%=request.getContextPath()%>/images/cal.gif" id="test_<%=id%>.valDate_cal" class="add-on" required></td>
+						<td  class="input-append"><label>Date:</label><input type="text" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.valDate" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.valDate" class="input-medium" required><img src="<%=request.getContextPath()%>/images/cal.gif" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.valDate_cal" class="add-on" required></td>
 						<td><label>Flag:</label>
-                 		<select name="test_<%=id%>.flag" id="test_<%=id%>.flag">
+                 		<select name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.flag" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.flag">
                         	<option value="">None</option>
                             <option value="A">Abnormal</option>
                             <option value="N">Normal</option>
                         </select>
                      </td>
                      <td><label>Status:</label>
- 						<select name="test_<%=id%>.stat" id="test_<%=id%>.stat">
+ 						<select name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.stat" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.stat">
                     		<option value="F">Final</option>
                    			<option value="P">Partial</option>
                         </select>
@@ -75,34 +76,34 @@
                 	<tr>
 
                 		<td><label>Code Type:</label>
-                			<select name="test_<%=id%>.codeType" id="test_<%=id%>.codeType">
+                			<select name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.codeType" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.codeType">
                             	<option value="ST">ST-short text</option>
                                 <option value="FT">FT-formatted text</option>
                             </select>
                         </td>
-                  	<td><label>Code:</label><input type="text" name="test_<%=id%>.code" size="10" id="test_<%=id%>.code"/></td>
-                  	<td><label>Name:</label><input type="text" name="test_<%=id%>.lab_test_name" size="15" id="test_<%=id%>.lab_test_name" required></td>
-                 	<td colspan="2"><label>Description:</label><input type="text" name="test_<%=id%>.test_descr" size="40" id="test_<%=id%>.test_descr"/></td>
+                  	<td><label>Code:</label><input type="text" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.code" size="10" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.code"/></td>
+                  	<td><label>Name:</label><input type="text" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.lab_test_name" size="15" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.lab_test_name" required></td>
+                 	<td colspan="2"><label>Description:</label><input type="text" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.test_descr" size="40" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.test_descr"/></td>
 
                   </tr>
 
 
                  <tr>
-                 	<td><label>Value:</label><input type="text" name="test_<%=id%>.codeVal" size="10" id="test_<%=id%>.codeVal"/></td>
-                 	<td><label>Unit:</label><input type="text" name="test_<%=id%>.codeUnit" size="10" id="test_<%=id%>.codeUnit"/></td>
+                 	<td><label>Value:</label><input type="text" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.codeVal" size="10" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.codeVal"/></td>
+                 	<td><label>Unit:</label><input type="text" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.codeUnit" size="10" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.codeUnit"/></td>
                  </tr>
 
                  <tr>
-                 	<td><label>refRange (low):</label><input type="text" name="test_<%=id%>.refRangeLow" id="test_<%=id%>.refRangeLow" size="5"/></td>
-                 	<td><label>refRange (high):</label><input type="text" name="test_<%=id%>.refRangeHigh" id="test_<%=id%>.refRangeHigh" size="5"/></td>
-                 	<td><label>refRange (text):</label><input type="text" name="test_<%=id%>.refRangeText" id="test_<%=id%>.refRangeText" size="15"/></td>
+                 	<td><label>refRange (low):</label><input type="text" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.refRangeLow" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.refRangeLow" size="5"/></td>
+                 	<td><label>refRange (high):</label><input type="text" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.refRangeHigh" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.refRangeHigh" size="5"/></td>
+                 	<td><label>refRange (text):</label><input type="text" name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.refRangeText" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.refRangeText" size="15"/></td>
                  </tr>
 
  			     <tr>
- 			     	<td valign="top"><label>Lab Notes:</label><textarea name="test_<%=id%>.labnotes" id="test_<%=id%>.labnotes" rows="5" cols="30"></textarea></td>
+ 			     	<td valign="top"><label>Lab Notes:</label><textarea name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.labnotes" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.labnotes" rows="5" cols="30"></textarea></td>
  			     	<td valign="top">
  			     		<label>Blocked Test Result:</label>
- 			     		<select name="test_<%=id%>.blocked" id="test_<%=id%>.blocked">
+ 			     		<select name="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.blocked" id="test_<%=Encode.forHtmlAttribute(String.valueOf(id))%>.blocked">
  			     			<option value="">No</option>
  			     			<option value="BLOCKED">Yes</option>
  			     		</select>
@@ -111,11 +112,11 @@
 
                 </table>
 
-                <a href="#" onclick="deleteTest(<%=id%>); return false;" class="btn btn-danger" style="width: 80px; margin-top: 10px;">Delete</a>
+                <a href="#" onclick="deleteTest(<%=Encode.forJavaScript(String.valueOf(id))%>); return false;" class="btn btn-danger" style="width: 80px; margin-top: 10px;">Delete</a>
 
 		       </fieldset>
 		       <script>
-			       Calendar.setup({ inputField : "test_<%=id%>.valDate", ifFormat : "%Y-%m-%d %H:%m", showsTime :true, button : "test_<%=id%>.valDate_cal" });
+			       Calendar.setup({ inputField : "test_<%=Encode.forJavaScript(String.valueOf(id))%>.valDate", ifFormat : "%Y-%m-%d %H:%m", showsTime :true, button : "test_<%=Encode.forJavaScript(String.valueOf(id))%>.valDate_cal" });
 
     </script>
 </div>

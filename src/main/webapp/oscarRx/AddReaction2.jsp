@@ -123,7 +123,7 @@
 
                     <tr>
                         <td>
-                            <div class="DivContentSectionHead"><%=name%>
+                            <div class="DivContentSectionHead"><%=Encode.forHtml(String.valueOf(name))%>
                             </div>
                         </td>
                     </tr>
@@ -174,7 +174,7 @@
 
                                 function confirmRemoveNKDA() {
                                     <% if (nkdaId!=null && !nkdaId.isEmpty()) { %>
-                                    if (parseInt("<%=nkdaId%>") > 0)
+                                    if (parseInt("<%=Encode.forJavaScript(String.valueOf(nkdaId))%>") > 0)
                                     {
                                         var yes = confirm("Remove \"No Known Drug Allergies\" from list?");
                                         if (!yes) document.forms.RxAddAllergyForm.allergyToArchive.value = "";
@@ -302,7 +302,7 @@
                                     <td>
                                         <input type="submit" name="submit" value="Add Allergy" class="ControlPushButton" onclick="return doSubmit()"/>
                                         <input type=button class="ControlPushButton" id="cancelAddReactionButton"
-                                               onclick="window.location='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=bean.getDemographicNo() %>'"
+                                               onclick="window.location='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>'"
                                                value="Cancel"/>
                                     </td>
                                 </tr>
@@ -316,7 +316,7 @@
                             <%
                                 String sBack = "ShowAllergies2.jsp";
                             %> <input type=button class="ControlPushButton"
-                                      onclick="window.location.href='<%=sBack%>';"
+                                      onclick="window.location.href='<%=Encode.forJavaScript(String.valueOf(sBack))%>';"
                                       value="Back to View Allergies"/></td>
                     </tr>
 

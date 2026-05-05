@@ -46,6 +46,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     Hl7LinkDao dao = SpringUtils.getBean(Hl7LinkDao.class);
 
@@ -97,15 +98,15 @@
             <td class="Text"><select name="provider_no" id="provider_no"
                                      size=1>
                 <option value="-APL"
-                        <%=(provider_no.equals("-APL") ? "selected" : "")%>>Linked
+                        <%=Encode.forHtml(String.valueOf((provider_no.equals("-APL") ? "selected" : "")))%>>Linked
                     Labs
                 </option>
                 <option value="-ULL"
-                        <%=(provider_no.equals("-ULL") ? "selected" : "")%>>Unlinked
+                        <%=Encode.forHtml(String.valueOf((provider_no.equals("-ULL") ? "selected" : "")))%>>Unlinked
                     Labs
                 </option>
                 <option value="-UAP"
-                        <%=(provider_no.equals("-UAP") ? "selected" : "")%>>Unassigned
+                        <%=Encode.forHtml(String.valueOf((provider_no.equals("-UAP") ? "selected" : "")))%>>Unassigned
                     Patients
                 </option>
 
@@ -120,8 +121,8 @@
                     }
                 %>
             </select></td>
-            <td class="Text"><input name="start" value="<%=start%>"/></td>
-            <td class="Text"><input name="end" value="<%=end%>"/></td>
+            <td class="Text"><input name="start" value="<%=Encode.forHtmlAttribute(String.valueOf(start))%>"/></td>
+            <td class="Text"><input name="end" value="<%=Encode.forHtmlAttribute(String.valueOf(end))%>"/></td>
             <td class="Text"><input type="submit" name="cmd_search"
                                     value="Search"/></td>
         </tr>
@@ -129,20 +130,20 @@
 </form>
 <table width="100%">
     <tr>
-        <td class="Header" nowrap><a href="<%=url%>">Lab Id</a></td>
+        <td class="Header" nowrap><a href="<%=Encode.forHtmlAttribute(String.valueOf(url))%>">Lab Id</a></td>
         <td class="Header" nowrap><a
-                href="<%=url + "&orderby=patient_name"%>">Patient Name</a></td>
+                href="<%=Encode.forHtmlAttribute(String.valueOf(url + "&orderby=patient_name"))%>">Patient Name</a></td>
         <td class="Header" nowrap><a
-                href="<%=url + "&orderby=ordering_provider"%>">Ordering Provider</a></td>
+                href="<%=Encode.forHtmlAttribute(String.valueOf(url + "&orderby=ordering_provider"))%>">Ordering Provider</a></td>
         <td class="Header" nowrap><a
-                href="<%=url + "&orderby=result_copies_to"%>">Result Copies To</a></td>
-        <td class="Header" nowrap><a href="<%=url + "&orderby=status"%>">Status</a></td>
+                href="<%=Encode.forHtmlAttribute(String.valueOf(url + "&orderby=result_copies_to"))%>">Result Copies To</a></td>
+        <td class="Header" nowrap><a href="<%=Encode.forHtmlAttribute(String.valueOf(url + "&orderby=status"))%>">Status</a></td>
         <td class="Header" nowrap><a
-                href="<%=url + "&orderby=signed_on"%>">Signed</a></td>
+                href="<%=Encode.forHtmlAttribute(String.valueOf(url + "&orderby=signed_on"))%>">Signed</a></td>
         <td class="Header" nowrap><a
-                href="<%=url + "&orderby=last_name"%>">Signing Provider</a></td>
+                href="<%=Encode.forHtmlAttribute(String.valueOf(url + "&orderby=last_name"))%>">Signing Provider</a></td>
         <td class="Header" nowrap><a
-                href="<%=url + "&orderby=date_time"%>">Date Received</a></td>
+                href="<%=Encode.forHtmlAttribute(String.valueOf(url + "&orderby=date_time"))%>">Date Received</a></td>
     </tr>
     <%
         if (command != null) {
@@ -160,15 +161,15 @@
                 String first_name = String.valueOf(o[7]);
                 String date_time = String.valueOf(o[8]);
     %>
-    <tr class="<%=(other? "LightBG" : "WhiteBG")%>">
+    <tr class="<%=Encode.forHtmlAttribute(String.valueOf((other? "LightBG" : "WhiteBG")))%>">
         <td class="Text"><a href="searchreports.jsp"
-                            onclick="PopupLab('<%=pid_id%>'); return false;"><%=pid_id%>
+                            onclick="PopupLab('<%=Encode.forJavaScript(String.valueOf(pid_id))%>'); return false;"><%=Encode.forHtml(String.valueOf(pid_id))%>
         </a></td>
-        <td class="Text" nowrap><%=Misc.check(patient_name, "")%>
+        <td class="Text" nowrap><%=Encode.forHtml(String.valueOf(Misc.check(patient_name, "")))%>
         </td>
-        <td class="Text" nowrap><%=Misc.check(ordering_provider, "").replaceAll("~", ",<br/>")%>
+        <td class="Text" nowrap><%=Encode.forHtml(String.valueOf(Misc.check(ordering_provider, "").replaceAll("~", ",<br/>")))%>
         </td>
-        <td class="Text"><%=Misc.check(result_copies_to, "").replaceAll("~", ",<br/>")%>
+        <td class="Text"><%=Encode.forHtml(String.valueOf(Misc.check(result_copies_to, "").replaceAll("~", ",<br/>")))%>
         </td>
         <td class="Text" nowrap>
             <%
@@ -197,9 +198,9 @@
             %>
         </td>
         <td class="Text"
-            nowrap><%=((last_name != null && !last_name.equals("")) ? Misc.check(last_name, "") + ", " + Misc.check(first_name, "") : "&nbsp;")%>
+            nowrap><%=Encode.forHtml(String.valueOf(((last_name != null && !last_name.equals("")) ? Misc.check(last_name, "") + ", " + Misc.check(first_name, "") : "&nbsp;")))%>
         </td>
-        <td class="Text" nowrap><%=date_time.substring(0, date_time.indexOf(" "))%>
+        <td class="Text" nowrap><%=Encode.forHtml(String.valueOf(date_time.substring(0, date_time.indexOf(" "))))%>
         </td>
     </tr>
     <%
