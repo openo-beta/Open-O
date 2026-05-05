@@ -29,16 +29,20 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashSet;
 
+import ca.openosp.openo.commn.dao.DaoTestFixtures;
 import ca.openosp.openo.integration.fhir.dstu3.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.dstu3.model.AbstractOscarFhirResource;
+import ca.openosp.openo.integration.fhir.dstu3.model.ClinicalImpression;
 import ca.openosp.openo.integration.fhir.dstu3.model.Immunization;
 import ca.openosp.openo.integration.fhir.dstu3.model.Patient;
 import ca.openosp.openo.integration.fhir.dstu3.model.PerformingPractitioner;
+import ca.openosp.openo.integration.fhir.dstu3.model.Practitioner;
 import ca.openosp.openo.integration.fhir.dstu3.model.SubmittingPractitioner;
 import ca.openosp.openo.integration.fhir.dstu3.resources.Settings;
 import ca.openosp.openo.integration.fhir.dstu3.resources.constants.FhirDestination;
 import ca.openosp.openo.integration.fhir.dstu3.resources.constants.Region;
 
+import org.hl7.fhir.dstu3.model.Attachment;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import ca.openosp.openo.commn.model.Clinic;
@@ -48,11 +52,12 @@ import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.Security;
 
 import ca.openosp.openo.utility.LoggedInInfo;
+import org.junit.Test;
 
 import static org.hl7.fhir.dstu3.model.ResourceType.Immunization;
 import static org.hl7.fhir.dstu3.model.ResourceType.Patient;
 
-public class FhirMessageBuilderTest {
+public class FhirMessageBuilderTest extends DaoTestFixtures {
 
     private static Clinic clinic;
 
@@ -195,55 +200,55 @@ public class FhirMessageBuilderTest {
      *
      * BIS formatted messages use a Communication resource.
      */
-    // @Test
-    // public void testGetBISFormattedMessage() {
+     @Test
+     public void testGetBISFormattedMessage() {
 
-    //     System.out.println(">>>-- testGetBISFormattedMessage() -->");
-    //     System.out.println();
+         System.out.println(">>>-- testGetBISFormattedMessage() -->");
+         System.out.println();
 
-    //     LoggedInInfo loggedInInfo = new LoggedInInfo();
-    //     Security sec = new Security();
-    //     sec.setOneIdEmail("oneid@oneidemail.com");
-    //     loggedInInfo.setLoggedInProvider(providers);
-    //     loggedInInfo.setLoggedInSecurity(sec);
+         LoggedInInfo loggedInInfo = new LoggedInInfo();
+         Security sec = new Security();
+         sec.setOneIdEmail("oneid@oneidemail.com");
+         loggedInInfo.setLoggedInProvider(provider);
+         loggedInInfo.setLoggedInSecurity(sec);
 
-    //     Settings settings = new Settings(FhirDestination.DHIR, Region.ON);
+         Settings settings = new Settings(FhirDestination.DHIR, Region.ON);
 
-    //     OscarFhirConfigurationManager configurationManager = new OscarFhirConfigurationManager(loggedInInfo, settings);
-    //     // normally this is done inside the Configuration manager but this test will not instantiate a DAO
-    //     configurationManager.getSender().setClinic(clinic);
+         OscarFhirConfigurationManager configurationManager = new OscarFhirConfigurationManager(loggedInInfo, settings);
+         // normally this is done inside the Configuration manager but this test will not instantiate a DAO
+         configurationManager.getSender().setClinic(clinic);
 
-    //     Patient patient = new Patient(demographic, configurationManager);
-    //     Practitioner practitioner = new Practitioner(providers, configurationManager);
+         Patient patient = new Patient(demographic, configurationManager);
+         Practitioner practitioner = new Practitioner(provider, configurationManager);
 
-    //     // Get the ClinicalImpresson as the Attachment resource for this message. ClinicalImpression is created
-    //     // to automatically map patient medical annotations. In this case it is being customized after instantiation.
-    //     ClinicalImpression clinicalImpression = new ClinicalImpression("<xml>This is a test of a clinical annotation</xml>");
-    //     clinicalImpression.setDescription("Well Baby");
+         // Get the ClinicalImpresson as the Attachment resource for this message. ClinicalImpression is created
+         // to automatically map patient medical annotations. In this case it is being customized after instantiation.
+         ClinicalImpression clinicalImpression = new ClinicalImpression("<xml>This is a test of a clinical annotation</xml>");
+         clinicalImpression.setDescription("Well Baby");
 
-    //     // The communication.sender attribute is set automatically.
-    //     FhirCommunicationBuilder fhirCommunicationBuilder = new FhirCommunicationBuilder(configurationManager);
+         // The communication.sender attribute is set automatically.
+         FhirCommunicationBuilder fhirCommunicationBuilder = new FhirCommunicationBuilder(configurationManager);
 
-    //     // this one is tricky.  The patient's managing organization Organization resource is contained inside the Communication resource.
-    //     // and is also represented as the Communication.sender.  So the link needs to be external.
-    //     // patient.setManagingOrganizationReference( SenderFactory.getSender().getOscarFhirResource().getContainedReferenceLink() );
+         // this one is tricky.  The patient's managing organization Organization resource is contained inside the Communication resource.
+         // and is also represented as the Communication.sender.  So the link needs to be external.
+         // patient.setManagingOrganizationReference( SenderFactory.getSender().getOscarFhirResource().getContainedReferenceLink() );
 
-    //     // Practitioner is referenced from inside the patient. It is contained inside the Communication resource.
-    //     patient.addGeneralPractitionerReference(practitioner.getContainedReferenceLink());
-    //     fhirCommunicationBuilder.addResource(practitioner);
+         // Practitioner is referenced from inside the patient. It is contained inside the Communication resource.
+         patient.addGeneralPractitionerReference(practitioner.getContainedReferenceLink());
+         fhirCommunicationBuilder.addResource(practitioner);
 
-    //     // Patient is contained in the communication.subject attribute
-    //     fhirCommunicationBuilder.setSubject(patient);
+         // Patient is contained in the communication.subject attribute
+         fhirCommunicationBuilder.setSubject(patient);
 
-    //     // The Attachment resource can be copied from the ClinicalImpression resource.
-    //     // an Attachment can also be added directly through 1 of 4 methods. I.E.:
-    //     // fhirCommunicationBuilder.attachXML( "<xml>This is a test of a clinical annotation</xml>" , "Well Baby" );
-    //     fhirCommunicationBuilder.addAttachment(clinicalImpression.copyToAttachement(new Attachment()));
+         // The Attachment resource can be copied from the ClinicalImpression resource.
+         // an Attachment can also be added directly through 1 of 4 methods. I.E.:
+         // fhirCommunicationBuilder.attachXML( "<xml>This is a test of a clinical annotation</xml>" , "Well Baby" );
+         fhirCommunicationBuilder.addAttachment(clinicalImpression.copyToAttachement(new Attachment()));
 
-    //     System.out.println(fhirCommunicationBuilder.getMessageJson());
-    // }
+         System.out.println(fhirCommunicationBuilder.getMessageJson());
+     }
 
-    // @Test
+    @Test
     public void testGetDHIRFormattedMessage() {
         System.out.println(">>>-- testGetDHIRFormattedMessage() -->");
         System.out.println();

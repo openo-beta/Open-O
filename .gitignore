@@ -46,3 +46,4 @@ CLAUDE.md
 /node_modules/
 /website/build/
 /website/.docusaurus/
+/src/test/resources/over_ride_config.properties

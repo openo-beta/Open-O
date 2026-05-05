@@ -42,6 +42,7 @@ import org.hl7.fhir.dstu3.model.Identifier;
 
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -49,7 +50,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class OscarFhirResourceManager {
+public class OscarFhirResourceManager implements Serializable {
 
     /**
      * Retrieves a list of immunizations for a specific demographic number.

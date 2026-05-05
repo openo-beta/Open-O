@@ -83,7 +83,6 @@ import java.util.List;
  }],
  "availabilityExceptions" : "<string>" // Description of availability exceptions
  }
- * @param <T>
  */
 public class PatientContact extends
 		AbstractOscarFhirResource<Patient, Contact> {

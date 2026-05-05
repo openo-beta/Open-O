@@ -52,42 +52,42 @@ import java.io.UnsupportedEncodingException;
 public class ClinicalImpression extends
 		AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.ClinicalImpression, AbstractModel<?>> {
 
-  private String annotation;
-  private CaseManagementNote caseManagementNote;
-  private String encodedBytes;
+    private String annotation;
+    private CaseManagementNote caseManagementNote;
+    private String encodedBytes;
 
-  /**
-   * Automatically encodes all string to Base64 encoding.
-   */
-  public ClinicalImpression(String annotation) {
+    /**
+    * Automatically encodes all string to Base64 encoding.
+    */
+    public ClinicalImpression(String annotation) {
     org.hl7.fhir.dstu3.model.ClinicalImpression clinicalImpression = new org.hl7.fhir.dstu3.model.ClinicalImpression();
     setAnnotation(annotation);
     setFhirResource(clinicalImpression);
     mapAttributes(clinicalImpression);
-  }
+    }
 
-  /**
-   * Convert to a basic Attachment resource with ContentType as text/plain, a Title, and Data as
-   * Base64.
-   */
-  public Attachment copyToAttachment(Attachment attachment) {
+    /**
+    * Convert to a basic Attachment resource with ContentType as text/plain, a Title, and Data as
+    * Base64.
+    */
+    public Attachment copyToAttachment(Attachment attachment) {
     attachment.setContentType("text/plain");
     attachment.setTitle(getDescription());
     attachment.setData(getEncodedBytes());
     return attachment;
-  }
+    }
 
-  @Override
-  protected void setId(org.hl7.fhir.dstu3.model.ClinicalImpression fhirResource) {
+    @Override
+    protected void setId(org.hl7.fhir.dstu3.model.ClinicalImpression fhirResource) {
     if (getCaseManagementNote() != null) {
       fhirResource.setId(getCaseManagementNote().getId() + "");
     } else {
       super.setId(fhirResource);
     }
-  }
+    }
 
-  @Override
-  protected void mapAttributes(org.hl7.fhir.dstu3.model.ClinicalImpression fhirResource) {
+    @Override
+    protected void mapAttributes(org.hl7.fhir.dstu3.model.ClinicalImpression fhirResource) {
 
     fhirResource.setStatus(ClinicalImpressionStatus.COMPLETED);
 
@@ -100,46 +100,46 @@ public class ClinicalImpression extends
 
     fhirResource.setSummary(getEncodedBytes().toString());
     setDescription(fhirResource);
-  }
+    }
 
-  @Override
-  protected void mapAttributes(AbstractModel<?> oscarResource) {
+    @Override
+    protected void mapAttributes(AbstractModel<?> oscarResource) {
     // TODO This should convert an incoming clinical impression into a readable annotation for Oscar to consume
-  }
+    }
 
-  private void setDescription(org.hl7.fhir.dstu3.model.ClinicalImpression fhirResource) {
+    private void setDescription(org.hl7.fhir.dstu3.model.ClinicalImpression fhirResource) {
     if (getCaseManagementNote() != null) {
       fhirResource.setDescription(getCaseManagementNote().getEncounter_type());
     }
-  }
+    }
 
-  /**
-   * Overrides any pre-set description inside the ClinicalImpression resource.
-   */
-  public void setDescription(String description) {
+    /**
+    * Overrides any pre-set description inside the ClinicalImpression resource.
+    */
+    public void setDescription(String description) {
     getFhirResource().setDescription(description);
-  }
+    }
 
-  public String getDescription() {
+    public String getDescription() {
     return getFhirResource().getDescription();
-  }
+    }
 
-  public String getAnnotation() {
+    public String getAnnotation() {
     if (annotation == null) {
       return "";
     }
     return annotation;
-  }
+    }
 
-  private void setAnnotation(String annotation) {
+    private void setAnnotation(String annotation) {
     this.annotation = annotation;
-  }
+    }
 
-  public CaseManagementNote getCaseManagementNote() {
+    public CaseManagementNote getCaseManagementNote() {
     return caseManagementNote;
-  }
+    }
 
-  private byte[] getEncodedBytes() {
+    private byte[] getEncodedBytes() {
     byte[] bytes = null;
     try {
       bytes = encodedBytes.getBytes("UTF-8");
@@ -147,13 +147,24 @@ public class ClinicalImpression extends
       MiscUtils.getLogger().error("Error encoding attachment. ");
     }
     return bytes;
-  }
+    }
 
-  private void setEncodedBytes(String string) {
+    private void setEncodedBytes(String string) {
     try {
       encodedBytes = DatatypeConverter.printBase64Binary(string.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
       MiscUtils.getLogger().error("Error encoding attachment. ");
     }
-  }
+    }
+
+    /**
+     * Convert to a basic Attachment resource with ContentType as text/plain,
+     * a Title, and Data as Base64.
+     */
+    public org.hl7.fhir.dstu3.model.Attachment copyToAttachement(org.hl7.fhir.dstu3.model.Attachment attachment) {
+        attachment.setContentType("text/plain");
+        attachment.setTitle(getDescription());
+        attachment.setData(getEncodedBytes());
+        return attachment;
+    }
 }

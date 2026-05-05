@@ -40,19 +40,27 @@ import ca.openosp.openo.utility.SpringUtils;
 import org.hl7.fhir.r4.model.Identifier;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-@Service
-public class OscarFhirResourceManager {
+@Service("oscarFhirR4ResourceManager")
+public class OscarFhirResourceManager implements Serializable {
 
-  /**
-   * @param configurationManager
-   * @param demographicNo
-   * @return List<org.oscarehr.integration.fhirR4.model.Immunization < Prevention> >
-   */
+
+    /**
+     * Retrieves a list of immunizations for a specific demographic number.
+     * This method queries the prevention records associated with the provided demographic number
+     * and filters only those records that qualify as immunizations.
+     *
+     * @param configurationManager the configuration manager providing the logged-in user information
+     *                              and other required configurations.
+     * @param demographicNo        the unique identifier for the demographic to retrieve immunizations for.
+     * @return a list of {@code Immunization<Prevention>} objects representing the immunizations
+     *         for the specified demographic, or {@code null} if no immunizations are found.
+     */
   public static List<Immunization<Prevention>> getImmunizationsByDemographicNo(
       OscarFhirConfigurationManager configurationManager,
       int demographicNo
