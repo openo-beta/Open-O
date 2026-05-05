@@ -132,7 +132,7 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport implements Up
             OscarProperties props = OscarProperties.getInstance();
 
             //properties must exist
-            String place = props.getProperty("DOCUMENT_DIR");
+            String place = props.getDocumentDirectory();
 
             if (!place.endsWith("/"))
                 place = new StringBuilder(place).insert(place.length(), "/").toString();

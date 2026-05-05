@@ -60,7 +60,7 @@
         String str = null;
         if (request.getParameter("submit") != null && request.getParameter("submit").compareTo(" Save ") == 0) {
             //FileWriter inf = new FileWriter(".."+sep+"webapps"+sep+oscarVariables.getProperty("project_home")+sep+"decision"+sep+"antenatal"+sep+"desantenatalplannerchecklist_99_12.xml");
-            FileWriter inf = new FileWriter(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "desantenatalplannerchecklist_99_12.xml");
+            FileWriter inf = new FileWriter(OscarProperties.getInstance().getDocumentDirectory() + "desantenatalplannerchecklist_99_12.xml");
             str = request.getParameter("checklist");
             str = SxmlMisc.replaceString(str, " & ", " &amp; ");
             str = SxmlMisc.replaceString(str, " > ", " &gt; ");
@@ -91,7 +91,7 @@
                     name="checklist" cols="100" rows="38" style="width: 100%">
 <%
     boolean fileFound = true;
-    File file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "desantenatalplannerchecklist_99_12.xml");
+    File file = new File(OscarProperties.getInstance().getDocumentDirectory() + "desantenatalplannerchecklist_99_12.xml");
     if (!file.isFile() || !file.canRead()) {
         file = new File(".." + sep + "webapps" + sep + oscarVariables.getProperty("project_home") + sep + "decision" + sep + "antenatal" + sep + "desantenatalplannerchecklist_99_12.xml");
         if (!file.isFile() || !file.canRead()) {

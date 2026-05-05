@@ -107,7 +107,7 @@ public class UploadLoginText2Action extends ActionSupport implements UploadedFil
 
         try {
             if (importFileOnDisk != null && importFileOnDisk.getName().length() > 0) {
-                String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/OSCARloginText.txt";
+                String savePath = OscarProperties.getInstance().getDocumentDirectory() + "/OSCARloginText.txt";
                 try (InputStream fis2 = Files.newInputStream(importFileOnDisk.toPath());
                      FileOutputStream fos2 = new FileOutputStream(savePath)) {
                     byte[] buf = new byte[128 * 1024];

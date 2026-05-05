@@ -224,7 +224,7 @@ public class DocumentUpload2Action extends ActionSupport implements UploadedFile
         FileOutputStream fos = null;
         try {
             fis = Files.newInputStream(docFile.toPath());
-            String documentDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+            String documentDir = OscarProperties.getInstance().getDocumentDirectory();
             if (!documentDir.endsWith(File.separator)) {
                 documentDir += File.separator;
             }

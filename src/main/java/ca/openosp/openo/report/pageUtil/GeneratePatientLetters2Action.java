@@ -169,7 +169,7 @@ public class GeneratePatientLetters2Action extends ActionSupport {
                 String moduleId = demos[i];
 
                 // Validate filename before it enters EDoc
-                File docDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+                File docDir = new File(OscarProperties.getInstance().getDocumentDirectory());
                 String fileName = PathValidationUtils.validatePath(rawFileName, docDir).getName();
 
                 EDoc newDoc = new EDoc(description, type, fileName, "", providerNo, providerNo, "", status, observationDate, "", "", module, moduleId);

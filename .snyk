@@ -30,11 +30,6 @@ exclude:
     # Generated Javadoc output. Regenerated on every build.
     - 'docs/static/javadoc/**'
 
-    # Command-line data import utilities. Not reachable over HTTP; inputs are
-    # operator-supplied file paths run manually during schema bootstrap.
-    - 'database/mysql/importCPP.java'
-    - 'database/mysql/importCasemgmt.java'
-
     # Generated SOAP client stubs (wsimport output). Regenerated from WSDL and
     # only used by internal integration test harnesses.
     - 'src/main/java/ca/openosp/openo/caisi_integrator/ws/*_Client.java'

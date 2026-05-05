@@ -596,7 +596,7 @@ public class ManageDocument2Action extends ActionSupport {
      */
     public File createCacheVersion(Document d) throws Exception {
 
-        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getDocumentDirectory();
         File documentDir = new File(docdownload);
         File documentCacheDir = getDocumentCacheDir(docdownload);
         log.debug("Document Dir is a dir" + documentDir.isDirectory());
@@ -739,7 +739,7 @@ public class ManageDocument2Action extends ActionSupport {
 
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.READ, LogConst.CON_DOCUMENT, doc_no, request.getRemoteAddr());
 
-        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getDocumentDirectory();
         File documentDir = new File(docdownload);
         log.debug("Document Dir is a dir" + documentDir.isDirectory());
 
@@ -791,7 +791,7 @@ public class ManageDocument2Action extends ActionSupport {
         }
 
         String doc_no = request.getParameter("doc_no");
-        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getDocumentDirectory();
         // File documentDir = new File(docdownload);
         Document d = documentDao.getDocument(doc_no);
         String filePath = docdownload + d.getDocfilename();
@@ -1048,7 +1048,7 @@ public class ManageDocument2Action extends ActionSupport {
             throw new SecurityException("Invalid filename");
         }
 
-        String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String savePath = OscarProperties.getInstance().getDocumentDirectory();
         if (!savePath.endsWith(File.separator)) {
             savePath += File.separator;
         }
@@ -1277,7 +1277,7 @@ public class ManageDocument2Action extends ActionSupport {
 
     public int countNumOfPages(String fileName) { // count number of pages in a pdf file
         int numOfPage = 0;
-        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getDocumentDirectory();
 
         if (!docdownload.endsWith(File.separator)) {
             docdownload += File.separator;

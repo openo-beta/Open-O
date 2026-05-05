@@ -102,7 +102,7 @@ public class RourkeExport2Action extends ActionSupport {
     public String getFile() {
         OscarProperties properties = OscarProperties.getInstance();
         String zipName = request.getParameter("zipFile");
-        String dir = properties.getProperty("DOCUMENT_DIR");
+        String dir = properties.getDocumentDirectory();
         Util.downloadFile(zipName, dir, response);
         return null;
 
@@ -3775,7 +3775,7 @@ public class RourkeExport2Action extends ActionSupport {
         //copy zip to document directory
         File zipFile = new File(tmpDir, zipName);
         OscarProperties properties = OscarProperties.getInstance();
-        File destDir = new File(properties.getProperty("DOCUMENT_DIR"));
+        File destDir = new File(properties.getDocumentDirectory());
         org.apache.commons.io.FileUtils.copyFileToDirectory(zipFile, destDir);
 
         //Remove zip & export files from temp dir

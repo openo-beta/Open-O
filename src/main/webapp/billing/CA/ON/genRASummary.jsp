@@ -90,7 +90,7 @@
         filename = rh.getFilename();
     }
 
-    filepath = oscarVariables.getProperty("DOCUMENT_DIR").trim(); //"/usr/local/OscarDocument/" + url +"/document/";
+    filepath = oscarVariables.getDocumentDirectory(); //"/usr/local/OscarDocument/" + url +"/document/";
     FileInputStream file = new FileInputStream(filepath + filename);
     InputStreamReader reader = new InputStreamReader(file);
     BufferedReader input = new BufferedReader(reader);
