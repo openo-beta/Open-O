@@ -31,6 +31,7 @@
 <%@ page import="ca.openosp.openo.providers.data.*, ca.openosp.openo.log.*" %>
 <%@ page import="org.apache.logging.log4j.Logger" %>
 <%@ page import="ca.openosp.*,java.lang.*,java.util.Date" %>
+<%@ page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
 <%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
@@ -239,14 +240,14 @@
                                     StringBuffer strRxNoNewLines = new StringBuffer();
                                     for (i = 0; i < bean.getStashSize(); i++) {
                                         rx = bean.getStashItem(i);
-                                        String fullOutLine = rx.getFullOutLine().replaceAll(";", "<br />");
+                                        String fullOutLine = HtmlEncodingUtils.encodeForHtmlWithSemicolonBreaks(rx.getFullOutLine());
 
                                         if (fullOutLine == null || fullOutLine.length() <= 6) {
                                             ca.openosp.openo.utility.MiscUtils.getLogger();
                                             fullOutLine = "<span style=\"color:red;font-size:16;font-weight:bold\">An error occurred, please write a new prescription.</span><br />" + fullOutLine;
                                         }
                                 %>
-                                <%=Encode.forHtml(String.valueOf(fullOutLine))%>
+                                <%=fullOutLine%>
                                 <hr>
                                 <%
                                         strRx += rx.getFullOutLine() + ";;";

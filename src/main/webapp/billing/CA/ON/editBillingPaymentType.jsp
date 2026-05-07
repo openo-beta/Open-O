@@ -77,7 +77,7 @@
                 type: "GET",
                 async: true,
                 data: {paymentType: document.getElementById("paymentType").value},
-                url: "<%=request.getContextPath()%>/billing/CA/ON/managePaymentType.do?method=<%=Encode.forJavaScript(String.valueOf(method))%>",
+                url: "<%=request.getContextPath()%>/billing/CA/ON/managePaymentType.do?method=<%=Encode.forUriComponent(String.valueOf(method))%>",
                 dataType: "json",
                 success: function (ret) {
                     if (!ret) {
@@ -113,7 +113,7 @@
                     oldPaymentType: "<%=Encode.forJavaScript(String.valueOf(type))%>",
                     paymentType: document.getElementById("paymentType").value
                 },
-                url: "<%=request.getContextPath()%>/billing/CA/ON/managePaymentType.do?method=<%=Encode.forJavaScript(String.valueOf(method))%>",
+                url: "<%=request.getContextPath()%>/billing/CA/ON/managePaymentType.do?method=<%=Encode.forUriComponent(String.valueOf(method))%>",
                 dataType: "json",
                 success: function (ret) {
                     if (!ret) {

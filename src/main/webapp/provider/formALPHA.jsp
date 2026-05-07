@@ -111,7 +111,7 @@
     %>
     <xml id="xml_list">
         <encounter>
-            <%=Encode.forHtml(String.valueOf(content))%>
+            <%=content%>
         </encounter>
     </xml>
     <%

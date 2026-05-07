@@ -29,6 +29,7 @@
 <%@page import="com.fasterxml.jackson.databind.node.ObjectNode" %>
 <%@page import="com.fasterxml.jackson.databind.node.ArrayNode" %>
 <%@page import="com.fasterxml.jackson.databind.JsonNode" %>
+<%@ page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.openo.commn.dao.PatientLabRoutingDao" %>
@@ -883,7 +884,7 @@ request.setAttribute("missingTests", missingTests);
 
         function matchMe() {
             <% if ( !isLinkedToDemographic) { %>
-            popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=Encode.forJavaScript(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'searchPatientWindow');
+            popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forUriComponent(String.valueOf(segmentID)) %>&name=<%=Encode.forUriComponent(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'searchPatientWindow');
             <% } %>
         }
 
@@ -923,7 +924,7 @@ request.setAttribute("missingTests", missingTests);
                             demoid = json.demoId;
                             if (demoid != null && demoid.length > 0) {
                                 window.popup(700, 980, '${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=' + demoid + "&recall", 'msgRecall');
-                                window.popup(450, 600, '${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=Encode.forJavaScript(String.valueOf(ticklerAssignee))%>&priority=<%=Encode.forJavaScript(String.valueOf(recallTicklerPriority))%>&recall', 'ticklerRecall');
+                                window.popup(450, 600, '${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=Encode.forJavaScript(String.valueOf(ticklerAssignee))%>&priority=<%=Encode.forUriComponent(String.valueOf(recallTicklerPriority))%>&recall', 'ticklerRecall');
                             }
                         } else if (action === 'ticklerLab') {
                             console.log("Setting lab Tickler. Labid: " + labid + " Demoid: " + demoid);
@@ -1103,7 +1104,7 @@ request.setAttribute("missingTests", missingTests);
         });
     });
 
-    var _in_window = <%=Encode.forJavaScript(String.valueOf(request.getParameter("inWindow") == null || "true".equals(request.getParameter("inWindow"))))%>;
+    var _in_window = <%=request.getParameter("inWindow") == null || "true".equals(request.getParameter("inWindow"))%>;
     var contextpath = "<%=request.getContextPath()%>";
 
 </script>
@@ -1112,7 +1113,7 @@ request.setAttribute("missingTests", missingTests);
     //first check to see if lab is linked, if it is, we can send the demographicNo to the macro
     function runMacro(name, formid, closeOnSuccess) {
         var url = '<%=request.getContextPath()%>/documentManager/inboxManage.do';
-        var data = 'method=isLabLinkedToDemographic&labid=<%= Encode.forJavaScript(segmentID) %>';
+        var data = 'method=isLabLinkedToDemographic&labid=<%= Encode.forUriComponent(String.valueOf(segmentID)) %>';
         fetch(url, {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -1272,10 +1273,10 @@ request.setAttribute("missingTests", missingTests);
                                        onclick="<%=Encode.forJavaScript(String.valueOf(ackLabFunc))%>">
                                 <% } %>
                                 <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment"/>"
-                                       onclick="return getComment('addComment',<%=Encode.forJavaScript(segmentID)%>);">
+                                       onclick="return getComment('addComment','<%=Encode.forJavaScript(segmentID)%>');">
                                 <input type="button" class="smallButton"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                                       onClick="ForwardSelectedRows(<%=Encode.forJavaScript(segmentID)%> + ':HL7', '', '')">
+                                       onClick="ForwardSelectedRows('<%=Encode.forJavaScript(segmentID)%>' + ':HL7', '', '')">
                                 <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                        onClick="window.close()">
                                 <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
@@ -1290,7 +1291,7 @@ request.setAttribute("missingTests", missingTests);
 
                                 <% if (searchProviderNo != null) { // null if we were called from e-chart%>
                                 <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/>"
-                                       onClick="popupStart(360, 680, '<%= request.getContextPath() %>/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=Encode.forJavaScript(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'encounter')">
+                                       onClick="popupStart(360, 680, '<%= request.getContextPath() %>/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forUriComponent(String.valueOf(segmentID)) %>&name=<%=Encode.forUriComponent(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'encounter')">
                                 <% } %>
                                 <input type="button" value="Req# <%=Encode.forHtmlAttribute(String.valueOf(reqTableID))%>" title="Link to Requisition"
                                        onclick="linkreq('<%=Encode.forJavaScript(segmentID)%>','<%=Encode.forJavaScript(String.valueOf(reqID))%>');"/>
@@ -1298,11 +1299,11 @@ request.setAttribute("missingTests", missingTests);
 
                                 <% if (bShortcutForm) { %>
                                 <input type="button" value="<%=Encode.forHtmlAttribute(String.valueOf(formNameShort))%>"
-                                       onClick="popupStart(700, 1024, '/form/forwardshortcutname.do?formname=<%=formName%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', '<%=Encode.forJavaScript(String.valueOf(formNameShort))%>')"/>
+                                       onClick="popupStart(700, 1024, '/form/forwardshortcutname.do?formname=<%=formName%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', '<%=Encode.forJavaScript(String.valueOf(formNameShort))%>')"/>
                                 <% } %>
                                 <% if (bShortcutForm2) { %>
                                 <input type="button" value="<%=Encode.forHtmlAttribute(String.valueOf(formName2Short))%>"
-                                       onClick="popupStart(700, 1024, '/form/forwardshortcutname.do?formname=<%=Encode.forJavaScript(String.valueOf(formName2))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', '<%=Encode.forJavaScript(String.valueOf(formName2Short))%>')"/>
+                                       onClick="popupStart(700, 1024, '/form/forwardshortcutname.do?formname=<%=Encode.forUriComponent(String.valueOf(formName2))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', '<%=Encode.forJavaScript(String.valueOf(formName2Short))%>')"/>
                                 <% } %>
 
                                 <% if (recall) {%>
@@ -1427,7 +1428,7 @@ request.setAttribute("missingTests", missingTests);
                                                                         <% if (searchProviderNo == null) { // we were called from e-chart%>
                                                                         <a href="javascript:window.close()">
                                                                                 <% } else { // we were called from lab module%>
-                                                                            <a href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=Encode.forUriComponent(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'searchPatientWindow')">
+                                                                            <a href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forUriComponent(String.valueOf(segmentID)) %>&name=<%=Encode.forUriComponent(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'searchPatientWindow')">
                                                                                 <% } %>
                                                                                 <%=Encode.forHtml(String.valueOf(handler.getPatientName()))%>
                                                                             </a>
@@ -1678,7 +1679,7 @@ request.setAttribute("missingTests", missingTests);
                                         </td>
                                         <td>
                                             <div class="FieldData" nowrap="nowrap">
-                                                <%=Encode.forHtml(String.valueOf(comment))%>
+                                                <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(comment)%>
                                             </div>
                                         </td>
                                     </tr>
@@ -1759,7 +1760,7 @@ request.setAttribute("missingTests", missingTests);
                                              class="<%=Encode.forHtmlAttribute(String.valueOf(ticklerClass))%>">
                                             <table width="100%">
                                                 <tr>
-                                                    <td><b>Priority:</b> <%=Encode.forHtml(String.valueOf(flag))%> <%=Encode.forHtml(String.valueOf(tickler.getPriority()))%>
+                                                    <td><b>Priority:</b> <%=flag%> <%=Encode.forHtml(String.valueOf(tickler.getPriority()))%>
                                                     </td>
                                                     <td><b>Service Date:</b> <%=Encode.forHtml(String.valueOf(tickler.getServiceDate()))%>
                                                     </td>
@@ -1831,7 +1832,7 @@ request.setAttribute("missingTests", missingTests);
                                                 <%=Encode.forHtml(String.valueOf(report.getTimestamp()))%>,
                                                 <% } %>
                                                 <span id="<%=Encode.forHtmlAttribute(String.valueOf(report.getOscarProviderNo() + "_" + segmentID))%>commentLabel"><%=report.getComment() == null || report.getComment().equals("") ? "no comment" : "comment : "%></span><span
-                                                    id="<%=Encode.forHtmlAttribute(String.valueOf(report.getOscarProviderNo() + "_" + segmentID))%>commentText"><%=Encode.forHtml(String.valueOf(report.getComment() == null ? "" : report.getComment()))%></span>
+                                                    id="<%=Encode.forHtmlAttribute(String.valueOf(report.getOscarProviderNo() + "_" + segmentID))%>commentText"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(report.getComment())%></span>
                                                 <br>
                                                 <% }
                                                     if (ackList.size() == 0) {
@@ -1903,12 +1904,12 @@ request.setAttribute("missingTests", missingTests);
             </tr>
             <tr class="TDISRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><b><%=Encode.forHtml(String.valueOf(handler.getOBXComment(1, 1, 1)))%></b></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><b><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(1, 1, 1))%></b></pre>
                 </td>
                 </td>
                 <td align="center" valign="top">
                     <a href="javascript:void(0);" title="Annotation"
-                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(segmentID)%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(1) + "-" + String.valueOf(1)))%>','anwin','width=400,height=500');">
+                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(segmentID)%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forUriComponent(String.valueOf(String.valueOf(1) + "-" + String.valueOf(1)))%>','anwin','width=400,height=500');">
                         <img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation" height="16" width="13" border="0"/>
                     </a>
                 </td>
@@ -2157,14 +2158,14 @@ request.setAttribute("missingTests", missingTests);
                     <%} %>
                 </td>
                 <td align="right">
-                    <%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     <%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
                 </td>
 
                 <td align="center">
                     <%=Encode.forHtml(String.valueOf(handler.getOBXAbnormalFlag(j, k)))%>
                 </td>
-                <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXReferenceRange(j, k)))%>
+                <td align="left"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXReferenceRange(j, k))%>
                 </td>
                 <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXUnits(j, k)))%>
                 </td>
@@ -2174,7 +2175,7 @@ request.setAttribute("missingTests", missingTests);
                 </td>
                 <td align="center" valign="top">
                     <a href="javascript:void(0);" title="Annotation"
-                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(segmentID)%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(j) + "-" + String.valueOf(k)))%>','anwin','width=400,height=500');">
+                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(segmentID)%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forUriComponent(String.valueOf(String.valueOf(j) + "-" + String.valueOf(k)))%>','anwin','width=400,height=500');">
                         <%if (!isPrevAnnotation) { %><img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation" height="16"
                                                           width="13" border="0"/><%} else { %><img
                             src="<%= request.getContextPath() %>/images/filledNotes.gif" alt="rxAnnotation" height="16" width="13"
@@ -2185,7 +2186,7 @@ request.setAttribute("missingTests", missingTests);
             <% } else if (handler.getOBXIdentifier(j, k).equals(headers.get(i)) && obxName.equals("")) { %>
             <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%></pre>
                 </td>
 
             </tr>
@@ -2203,14 +2204,14 @@ request.setAttribute("missingTests", missingTests);
                         info</a>
                     <%} %></td>
                 <td align="right">
-                    <%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     <%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
                 </td>
 
                 <td align="center">
                     <%=Encode.forHtml(String.valueOf(handler.getOBXAbnormalFlag(j, k)))%>
                 </td>
-                <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXReferenceRange(j, k)))%>
+                <td align="left"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXReferenceRange(j, k))%>
                 </td>
                 <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXUnits(j, k)))%>
                 </td>
@@ -2220,7 +2221,7 @@ request.setAttribute("missingTests", missingTests);
                 </td>
                 <td align="center" valign="top">
                     <a href="javascript:void(0);" title="Annotation"
-                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(segmentID)%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(j) + "-" + String.valueOf(k)))%>','anwin','width=400,height=500');">
+                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(segmentID)%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forUriComponent(String.valueOf(String.valueOf(j) + "-" + String.valueOf(k)))%>','anwin','width=400,height=500');">
                         <%if (!isPrevAnnotation) { %><img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation" height="16"
                                                           width="13" border="0"/><%} else { %><img
                             src="<%= request.getContextPath() %>/images/filledNotes.gif" alt="rxAnnotation" height="16" width="13"
@@ -2232,7 +2233,7 @@ request.setAttribute("missingTests", missingTests);
             <%} else { %>
             <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%></pre>
                 </td>
 
             </tr>
@@ -2242,14 +2243,14 @@ request.setAttribute("missingTests", missingTests);
             %>
             <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getNteForOBX(j, k)))%></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getNteForOBX(j, k))%></pre>
                 </td>
             </tr>
             <% }
                 for (l = 0; l < handler.getOBXCommentCount(j, k); l++) {%>
             <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXComment(j, k, l)))%></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
                 </td>
             </tr>
             <%
@@ -2269,7 +2270,7 @@ request.setAttribute("missingTests", missingTests);
                 %>
 
                 <td align="left" colspan="4">
-                    <%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     <%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
                 </td>
 
@@ -2298,12 +2299,12 @@ request.setAttribute("missingTests", missingTests);
                 } else {
                 %>
                 <td align="right" colspan="1">
-                    <%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     <%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
                 </td>
                 <td align="center"><%=Encode.forHtml(String.valueOf(handler.getOBXAbnormalFlag(j, k)))%>
                 </td>
-                <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXReferenceRange(j, k)))%>
+                <td align="left"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXReferenceRange(j, k))%>
                 </td>
                 <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXUnits(j, k)))%>
                 </td>
@@ -2318,7 +2319,7 @@ request.setAttribute("missingTests", missingTests);
 
                 <td align="center" valign="top">
                     <a href="javascript:void(0);" title="Annotation"
-                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(segmentID)%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(j) + "-" + String.valueOf(k)))%>','anwin','width=400,height=500');">
+                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(segmentID)%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forUriComponent(String.valueOf(String.valueOf(j) + "-" + String.valueOf(k)))%>','anwin','width=400,height=500');">
                         <%if (!isPrevAnnotation) { %><img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation" height="16"
                                                           width="13" border="0"/><%} else { %><img
                             src="<%= request.getContextPath() %>/images/filledNotes.gif" alt="rxAnnotation" height="16" width="13"
@@ -2330,7 +2331,7 @@ request.setAttribute("missingTests", missingTests);
             <%for (l = 0; l < handler.getOBXCommentCount(j, k); l++) {%>
             <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXComment(j, k, l)))%></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
                 </td>
             </tr>
             <%
@@ -2366,7 +2367,7 @@ request.setAttribute("missingTests", missingTests);
                 </td>
                     <%}else{%>
                 <td align="left">
-                    <span><%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%></span>
+                    <span><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%></span>
                 </td>
                     <%} %>
 
@@ -2409,7 +2410,7 @@ request.setAttribute("missingTests", missingTests);
 
                     <% if(handler instanceof AlphaHandler && "FT".equals(handler.getOBXValueType(j, k))) { %>
                 <td colspan="4">
-                    <pre style="font-family:Courier New, monospace;">       <%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%></pre>
+                    <pre style="font-family:Courier New, monospace;">       <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%></pre>
                 </td>
                     <%
                                        			lastObxSetId = ((AlphaHandler)handler).getObxSetId(j,k);
@@ -2417,7 +2418,7 @@ request.setAttribute("missingTests", missingTests);
                                            } else if(handler instanceof PATHL7Handler && "FT".equals(handler.getOBXValueType(j, k)) && (handler.getOBXReferenceRange(j,k).isEmpty() && handler.getOBXUnits(j,k).isEmpty())){
                                         	  %>
                 <td colspan="4">
-                    <%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     <%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
                 </td>
                     <%
@@ -2438,7 +2439,7 @@ request.setAttribute("missingTests", missingTests);
                                            		if(handler instanceof CLSHandler && ( (CLSHandler) handler).isUnstructured()) {
                                            	%>
                 <td align="left" colspan="4">
-                    <%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     <%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
                 </td>
 
@@ -2449,13 +2450,13 @@ request.setAttribute("missingTests", missingTests);
                                            	%>
 
                 <pre>
-					                             		<%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
+					                             		<%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%><%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
 					                             		</pre>
 
                     <% } else if(handler.getMsgType().equals("MEDITECH")  && ((MEDITECHHandler) handler).isReportData() ) { %>
             <tr>
                 <td>
-                    <%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     <%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
                 </td>
             </tr>
@@ -2482,9 +2483,9 @@ request.setAttribute("missingTests", missingTests);
             %>
             <td align="<%=Encode.forHtmlAttribute(String.valueOf(align))%>">
                 <% if (handler.getMsgType().equals("ExcellerisON") && !((ExcellerisOntarioHandler) handler).getOBXSubId(j, k).isEmpty()) { %>
-                <em><%=Encode.forHtml(String.valueOf(((ExcellerisOntarioHandler) handler).getOBXSubIdWithObservationValue( j, k)))%></em>
+                <em><%=((ExcellerisOntarioHandler) handler).getOBXSubIdWithObservationValue( j, k)%></em>
                 <% } else { %>
-                <%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                 <% } %>
                 <%= handler.isTestResultBlocked(j, k) ? "<a href='#' title='Do Not Disclose Without Explicit Patient Consent'>(BLOCKED)</a>" : ""%>
             </td>
@@ -2493,7 +2494,7 @@ request.setAttribute("missingTests", missingTests);
             <td align="center">
                 <%=Encode.forHtml(String.valueOf(handler.getOBXAbnormalFlag(j, k)))%>
             </td>
-            <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXReferenceRange(j, k)))%>
+            <td align="left"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXReferenceRange(j, k))%>
             </td>
             <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXUnits(j, k)))%>
             </td>
@@ -2516,7 +2517,7 @@ request.setAttribute("missingTests", missingTests);
 
             </td>
             <td align="center" valign="top"><a href="javascript:void(0);" title="Annotation"
-                                               onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(segmentID)%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(j) + "-" + String.valueOf(k)))%>','anwin','width=400,height=500');">
+                                               onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(segmentID)%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forUriComponent(String.valueOf(String.valueOf(j) + "-" + String.valueOf(k)))%>','anwin','width=400,height=500');">
                 <%if (!isPrevAnnotation) { %><img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation" height="16"
                                                   width="13" border="0"/><%} else { %><img
                     src="<%= request.getContextPath() %>/images/filledNotes.gif" alt="rxAnnotation" height="16" width="13" border="0"/> <%} %>
@@ -2543,7 +2544,7 @@ request.setAttribute("missingTests", missingTests);
             %>
             <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXComment(j, k, l)))%></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
                 </td>
             </tr>
             <%
@@ -2558,11 +2559,11 @@ request.setAttribute("missingTests", missingTests);
             %>
             <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="TDISRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXComment(j, k, l)))%></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
                 </td>
                 <td align="center" valign="top">
                     <a href="javascript:void(0);" title="Annotation"
-                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(segmentID)%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(1) + "-" + String.valueOf(1)))%>','anwin','width=400,height=500');">
+                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(segmentID)%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&amp;other_id=<%=Encode.forUriComponent(String.valueOf(String.valueOf(1) + "-" + String.valueOf(1)))%>','anwin','width=400,height=500');">
                         <%if (!isPrevAnnotation) { %><img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation" height="16"
                                                           width="13" border="0"/><%} else { %><img
                             src="<%= request.getContextPath() %>/images/filledNotes.gif" alt="rxAnnotation" height="16" width="13"
@@ -2604,7 +2605,7 @@ request.setAttribute("missingTests", missingTests);
             <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                 <td valign="top" align="left" colspan="1"></td>
                 <td valign="top" align="left" colspan="7">
-                    <pre style="margin:0px 0px 0px 0px;"><%=Encode.forHtml(String.valueOf(handler.getOBRComment(j, k)))%></pre>
+                    <pre style="margin:0px 0px 0px 0px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBRComment(j, k))%></pre>
                 </td>
             </tr>
             <% if (!handler.getMsgType().equals("HHSEMR") || !handler.getMsgType().equals("TRUENORTH")) {
@@ -2681,15 +2682,15 @@ request.setAttribute("missingTests", missingTests);
                            onclick="<%=Encode.forJavaScript(String.valueOf(ackLabFunc))%>">
                     <% } %>
                     <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment"/>"
-                           onclick="return getComment('addComment',<%=Encode.forJavaScript(segmentID)%>);">
+                           onclick="return getComment('addComment','<%=Encode.forJavaScript(segmentID)%>');">
                     <input type="button" class="smallButton" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                           onClick="ForwardSelectedRows(<%=Encode.forJavaScript(segmentID)%> + ':HL7', '', '')">
+                           onClick="ForwardSelectedRows('<%=Encode.forJavaScript(segmentID)%>' + ':HL7', '', '')">
                     <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> " onClick="window.close()">
                     <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                            onClick="printPDF('<%=Encode.forJavaScript(segmentID)%>')">
                     <% if (searchProviderNo != null) { // we were called from e-chart %>
                     <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                           onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=Encode.forJavaScript(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'encounter')">
+                           onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forUriComponent(String.valueOf(segmentID)) %>&name=<%=Encode.forUriComponent(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'encounter')">
 
                     <% } %>
                 </td>

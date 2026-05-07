@@ -430,10 +430,10 @@
 
     String remindersQuery = "intake_reminders";
     List<Map<String, Object>> remindersResult = oscarSuperManager.find("providerDao", remindersQuery, demographicParam);
-    String remindersList = (!remindersResult.isEmpty() && remindersResult.get(0).get("note") != null) ? remindersResult.get(0).get("note").toString() : "";
+    String remindersList = (!remindersResult.isEmpty() && remindersResult.get(0).get("note") != null) ? Encode.forHtml(remindersResult.get(0).get("note").toString()) : "";
     if (remindersResult.size() > 1) {
         for (int i = 1; i < remindersResult.size(); i++) {
-            remindersList += ",<br/>" + remindersResult.get(i).get("note").toString();
+            remindersList += ",<br/>" + Encode.forHtml(remindersResult.get(i).get("note").toString());
         }
     }
 
@@ -443,10 +443,10 @@
 
     String allergiesQuery = "intake_allergies";
     List<Map<String, Object>> allergiesResult = oscarSuperManager.find("providerDao", allergiesQuery, demographicParam);
-    String allergiesList = (!allergiesResult.isEmpty() && allergiesResult.get(0).get("DESCRIPTION") != null) ? allergiesResult.get(0).get("DESCRIPTION").toString() : "";
+    String allergiesList = (!allergiesResult.isEmpty() && allergiesResult.get(0).get("DESCRIPTION") != null) ? Encode.forHtml(allergiesResult.get(0).get("DESCRIPTION").toString()) : "";
     if (allergiesResult.size() > 1) {
         for (int i = 1; i < allergiesResult.size(); i++) {
-            allergiesList += ",<br/>" + allergiesResult.get(i).get("DESCRIPTION").toString();
+            allergiesList += ",<br/>" + Encode.forHtml(allergiesResult.get(i).get("DESCRIPTION").toString());
         }
     }
 
@@ -460,11 +460,11 @@
             }
 
             if (medicationsResult.get(i).get("customName") != null && !medicationsResult.get(i).get("customName").toString().equals("null")) {
-                medicationsList += medicationsResult.get(i).get("customName").toString();
+                medicationsList += Encode.forHtml(medicationsResult.get(i).get("customName").toString());
             } else if (Integer.parseInt(medicationsResult.get(i).get("GCN_SEQNO").toString()) == 0) {
                 medicationsList += "Unknown";
             } else {
-                medicationsList += medicationsResult.get(i).get("BN").toString();
+                medicationsList += Encode.forHtml(medicationsResult.get(i).get("BN").toString());
             }
 
             medicationsList += " " + RxUtil.FloatToString(Float.parseFloat(medicationsResult.get(i).get("takemin").toString()));
@@ -535,9 +535,9 @@
                     preventionsList += "<br/>";
                 }
                 curPrevention = preventionsResult.get(i).get("prevention_type").toString();
-                preventionsList += "<b>" + curPrevention + ":</b> " + preventionDateStr + " (" + demographicAge + ")";
+                preventionsList += "<b>" + Encode.forHtml(curPrevention) + ":</b> " + Encode.forHtml(preventionDateStr) + " (" + Encode.forHtml(demographicAge) + ")";
             } else {
-                preventionsList += ", " + preventionDateStr + " (" + demographicAge + ")";
+                preventionsList += ", " + Encode.forHtml(preventionDateStr) + " (" + Encode.forHtml(demographicAge) + ")";
             }
         }
     }
@@ -848,25 +848,25 @@
 
         function calcSmkSYear() {
             if (isNumber(document.getElementsByName("smokingstartage_value")[0].value)) {
-                document.getElementsByName("smokingstartyear_value")[0].value = <%=Encode.forJavaScript(String.valueOf(demographicBirthYear))%> +parseInt(document.getElementsByName("smokingstartage_value")[0].value);
+                document.getElementsByName("smokingstartyear_value")[0].value = <%=demographicBirthYear%> +parseInt(document.getElementsByName("smokingstartage_value")[0].value);
             }
         }
 
         function calcSmkSAge() {
             if (isNumber(document.getElementsByName("smokingstartyear_value")[0].value)) {
-                document.getElementsByName("smokingstartage_value")[0].value = parseInt(document.getElementsByName("smokingstartyear_value")[0].value) - <%=Encode.forJavaScript(String.valueOf(demographicBirthYear))%>;
+                document.getElementsByName("smokingstartage_value")[0].value = parseInt(document.getElementsByName("smokingstartyear_value")[0].value) - <%=demographicBirthYear%>;
             }
         }
 
         function calcSmkCYear() {
             if (isNumber(document.getElementsByName("smokingcessage_value")[0].value)) {
-                document.getElementsByName("smokingcessyear_value")[0].value = <%=Encode.forJavaScript(String.valueOf(demographicBirthYear))%> +parseInt(document.getElementsByName("smokingcessage_value")[0].value);
+                document.getElementsByName("smokingcessyear_value")[0].value = <%=demographicBirthYear%> +parseInt(document.getElementsByName("smokingcessage_value")[0].value);
             }
         }
 
         function calcSmkCAge() {
             if (isNumber(document.getElementsByName("smokingcessyear_value")[0].value)) {
-                document.getElementsByName("smokingcessage_value")[0].value = parseInt(document.getElementsByName("smokingcessyear_value")[0].value) - <%=Encode.forJavaScript(String.valueOf(demographicBirthYear))%>;
+                document.getElementsByName("smokingcessage_value")[0].value = parseInt(document.getElementsByName("smokingcessyear_value")[0].value) - <%=demographicBirthYear%>;
             }
         }
 
@@ -906,42 +906,42 @@
         </tr>
         <tr>
             <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/CaseManagementEntry.do?method=issuehistory&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&issueIds=38'); return false;">Reminders:</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/CaseManagementEntry.do?method=issuehistory&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&issueIds=38'); return false;">Reminders:</a>
             </td>
-            <td colspan="7"><%=Encode.forHtml(String.valueOf(remindersList))%>
+            <td colspan="7"><%=remindersList%>
             </td>
         </tr>
         <tr>
             <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/choosePatient.do?providerNo=999998&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&pharmaList=true'); return false;">Pharmacy:</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/choosePatient.do?providerNo=999998&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&pharmaList=true'); return false;">Pharmacy:</a>
             </td>
             <td colspan="7"><%=Encode.forHtml(String.valueOf(pharmacyName))%>
             </td>
         </tr>
         <tr>
             <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Allergies:</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>'); return false;">Allergies:</a>
             </td>
-            <td colspan="7"><%=Encode.forHtml(String.valueOf(allergiesList))%>
-            </td>
-        </tr>
-        <tr>
-            <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Medications:</a>
-            </td>
-            <td colspan="7"><%=Encode.forHtml(String.valueOf(medicationsList))%>
+            <td colspan="7"><%=allergiesList%>
             </td>
         </tr>
         <tr>
             <td class="rowheader"><a href="#"
-                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarPrevention/index.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Preventions:</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>'); return false;">Medications:</a>
             </td>
-            <td colspan="7"><%=Encode.forHtml(String.valueOf(preventionsList))%>
+            <td colspan="7"><%=medicationsList%>
+            </td>
+        </tr>
+        <tr>
+            <td class="rowheader"><a href="#"
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarPrevention/index.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>'); return false;">Preventions:</a>
+            </td>
+            <td colspan="7"><%=preventionsList%>
             </td>
         </tr>
         <tr>
             <td class="rowheader">Other:</td>
-            <td colspan="7"><%=Encode.forHtml(String.valueOf(dxCodeList))%>
+            <td colspan="7"><%=dxCodeList%>
             </td>
         </tr>
 

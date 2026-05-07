@@ -350,14 +350,14 @@
         <input type="hidden" name="ID"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+               value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
         <input type="hidden" name="formCreated"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="c_lastVisited"
-               value=<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "p1")))%>/>
+               value="<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "p1")))%>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table cellpadding="0" cellspacing="0" class="Header" class="hidePrint">
@@ -380,10 +380,10 @@
                 </td>
                 <td align="center" width="100%">
                     <% if (formId > 0) { %> <a name="length" href="#"
-                                               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Growth+Graph1&__cfgfile=<%=Encode.forJavaScript(String.valueOf(growthCharts[0]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');return false;">
+                                               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Growth+Graph1&__cfgfile=<%=Encode.forUriComponent(String.valueOf(growthCharts[0]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');return false;">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/></a><br>
                     <a name="headCirc" href="#"
-                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Head+Circumference&__cfgfile=<%=Encode.forJavaScript(String.valueOf(growthCharts[1]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');return false;">
+                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Head+Circumference&__cfgfile=<%=Encode.forUriComponent(String.valueOf(growthCharts[1]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');return false;">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphHead"/></a> <% } else { %>
                     &nbsp; <% } %>
                 </td>
@@ -1332,10 +1332,10 @@
                 </td>
                 <td align="center" width="100%">
                     <% if (formId > 0) { %> <a name="length" href="#"
-                                               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Growth+Graph1&__cfgfile=<%=Encode.forJavaScript(String.valueOf(growthCharts[0]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');return false;">
+                                               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Growth+Graph1&__cfgfile=<%=Encode.forUriComponent(String.valueOf(growthCharts[0]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');return false;">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/></a><br>
                     <a name="headCirc" href="#"
-                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Head+Circumference&__cfgfile=<%=Encode.forJavaScript(String.valueOf(growthCharts[1]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');return false;">
+                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2006&__title=Baby+Head+Circumference&__cfgfile=<%=Encode.forUriComponent(String.valueOf(growthCharts[1]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');return false;">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphHead"/></a> <% } else { %>
                     &nbsp; <% } %>
                 </td>

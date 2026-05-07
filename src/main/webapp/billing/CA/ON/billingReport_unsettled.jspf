@@ -97,7 +97,7 @@
 			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(note))%></font></b></TD>
 		<TD align="center" width="10%"><b> <font size="2"
 			face="Arial, Helvetica, sans-serif"><a href=#
-			onClick='popupPage(700,720, "<%= request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forJavaScript(String.valueOf(b.getId()))%>&dboperation=search_bill&hotclick=0")'
+			onClick='popupPage(700,720, "<%= request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forUriComponent(String.valueOf(b.getId()))%>&dboperation=search_bill&hotclick=0")'
 			title="<%=Encode.forHtmlAttribute(String.valueOf(reason))%>"> <%=Encode.forHtml(String.valueOf(b.getId()))%></a></font></b></TD>
 	</tr>
 	<%  rowCount = rowCount + 1;

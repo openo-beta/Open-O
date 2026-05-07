@@ -122,9 +122,9 @@
 <script LANGUAGE="JavaScript">
 
     var parentId = "<%=Encode.forJavaScript(String.valueOf(parentAjaxId))%>";
-    var updateParent = <%=Encode.forJavaScript(String.valueOf(updateParent))%>;
+    var updateParent = <%=Boolean.parseBoolean(updateParent)%>;
     var demo = "<%=Encode.forJavaScript(String.valueOf(module_id))%>";
-    var updateTicklerNav = <%=Encode.forJavaScript(String.valueOf(updateTicklerNav))%>;
+    var updateTicklerNav = <%=Boolean.parseBoolean(updateTicklerNav)%>;
     var Url = window.opener.URLs;
 
     /*because the url for demomaintickler is truncated by the delete action, we need

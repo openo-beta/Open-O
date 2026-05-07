@@ -210,13 +210,13 @@
         function reviewed(ths) {
             if (ths.form.reviewerId.value == 'null') {
                 thisForm = ths.form;
-                thisForm.reviewerId.value = <%=Encode.forJavaScript(String.valueOf(user_no))%>;
+                thisForm.reviewerId.value = "<%=Encode.forJavaScript(String.valueOf(user_no))%>";
                 thisForm.reviewDoc.value = true;
                 thisForm.submit();
             } else {
                 alert('set extra');
                 thisForm = ths.form;
-                thisForm.extraReviewerId.value = <%=Encode.forJavaScript(String.valueOf(user_no))%>;
+                thisForm.extraReviewerId.value = "<%=Encode.forJavaScript(String.valueOf(user_no))%>";
                 thisForm.extraReviewDoc.value = true;
                 thisForm.submit();
             }
@@ -434,7 +434,7 @@
         <tr>
             <td colspan=2>
                 <input type="button" value="Annotation"
-                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(annotation_tableid))%>&demo=<%=Encode.forJavaScript(String.valueOf(moduleid))%>','anwin','width=400,height=500');"/>
+                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&table_id=<%=Encode.forUriComponent(String.valueOf(annotation_tableid))%>&demo=<%=Encode.forUriComponent(String.valueOf(moduleid))%>','anwin','width=400,height=500');"/>
             </td>
         </tr>
         <tr>

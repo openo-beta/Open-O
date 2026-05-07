@@ -85,12 +85,12 @@
                 if (strForm.toLowerCase().compareTo("form") == 0 && st.hasMoreTokens()) {
                     strTemplateURL = "template" + (new String(st.nextToken())).trim().toLowerCase() + ".jsp";
             %> <a href=#
-                  onClick="popupPage(600,800,'providercontrol.jsp?encounter_no=<%=Encode.forJavaScript(String.valueOf(enc.getId()))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&dboperation=search_encountersingle&displaymodevariable=<%=Encode.forJavaScript(String.valueOf(strTemplateURL))%>&displaymode=vary&bNewForm=0')"><%=Encode.forHtml(String.valueOf(historysubject))%>
+                  onClick="popupPage(600,800,'providercontrol.jsp?encounter_no=<%=Encode.forUriComponent(String.valueOf(enc.getId()))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&dboperation=search_encountersingle&displaymodevariable=<%=Encode.forUriComponent(String.valueOf(strTemplateURL))%>&displaymode=vary&bNewForm=0')"><%=Encode.forHtml(String.valueOf(historysubject))%>
             </a></font><br>
                 <%
                 } else if (strForm.compareTo("") != 0) {
                 %> <a href=#
-                      onClick="popupPage(400,600,'providercontrol.jsp?encounter_no=<%=Encode.forJavaScript(String.valueOf(enc.getId()))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&template=<%=Encode.forJavaScript(String.valueOf(strForm))%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=Encode.forHtml(String.valueOf(historysubject))%>
+                      onClick="popupPage(400,600,'providercontrol.jsp?encounter_no=<%=Encode.forUriComponent(String.valueOf(enc.getId()))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&template=<%=Encode.forUriComponent(String.valueOf(strForm))%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=Encode.forHtml(String.valueOf(historysubject))%>
             </a></font><br>
                 <%
                         }

@@ -305,7 +305,7 @@
                 String temp[] = ( pList.get(i)).split("\\|");
                 %>
 
-                var temp_provider_no = <%=Encode.forJavaScript(String.valueOf(temp[0]))%>;
+                var temp_provider_no = "<%=Encode.forJavaScript(String.valueOf(temp[0]))%>";
                 if (provider_no == temp_provider_no) {
                     var provider_ohipNo = "<%=Encode.forJavaScript(String.valueOf(temp[3]))%>";
                     document.serviceform.provider_ohipNo.value = provider_ohipNo;
@@ -566,11 +566,11 @@
                         <label for="xml_appointment_date">End:
                             <small>
                                 <a href="javascript: function myFunction() {return false; }"
-                                   onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-30")))%>')">30</a>
+                                   onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-30")%>')">30</a>
                                 <a href="javascript: function myFunction() {return false; }"
-                                   onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-60")))%>')">60</a>
+                                   onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-60")%>')">60</a>
                                 <a href="javascript: function myFunction() {return false; }"
-                                   onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-90")))%>')">90</a>
+                                   onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-90")%>')">90</a>
                                 days back
                             </small></label>
                         <div class="input-append">
@@ -648,7 +648,7 @@
                                     billLocation = (String) lLocation.get(i + 1);
                                     String locationSelected = visitLocation.equals(billLocationNo) ? " selected=\"selected\" " : "";
                             %>
-                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(billLocationNo))%>" <%=Encode.forHtml(String.valueOf(locationSelected))%>>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(billLocationNo))%>" <%=locationSelected%>>
                                 <%=Encode.forHtml(billLocation)%>
                             </option>
                             <% } %>
@@ -781,7 +781,7 @@
                     <td><font size="-1"><%=Encode.forHtml(String.valueOf(bObj.getDob()))%>
                     </font></td>
                     <td style="text-align:right"><a href=#
-                                                    onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(bObj.getBilling_no()))%>','BillCorrection<%=Encode.forJavaScript(String.valueOf(bObj.getBilling_no()))%>');return false;"><%=Encode.forHtml(String.valueOf(bObj.getBilling_no()))%>
+                                                    onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(bObj.getBilling_no()))%>','BillCorrection<%=Encode.forJavaScript(String.valueOf(bObj.getBilling_no()))%>');return false;"><%=Encode.forHtml(String.valueOf(bObj.getBilling_no()))%>
                     </a></td>
                     <td><%=Encode.forHtml(String.valueOf(bObj.getRef_no()))%>
                     </td>
@@ -972,7 +972,7 @@
                         </td>
                         <!--PATIENT-->
                         <td style="text-align:center" class="<%=hideName?"hidden-print":""%>"><a href=#
-                                                                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(ch1Obj.getDemographic_no()))%>&displaymode=edit&dboperation=search_detail');return false;"><%= Encode.forHtml(ch1Obj.getDemographic_name())%>
+                                                                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(ch1Obj.getDemographic_no()))%>&displaymode=edit&dboperation=search_detail');return false;"><%= Encode.forHtml(ch1Obj.getDemographic_name())%>
                         </a></td>
                         <td style="text-align:center"><%=Encode.forHtml(String.valueOf(ch1Obj.getFacilty_num() != null ? ch1Obj.getFacilty_num() : ""))%>
                         </td>
@@ -1001,11 +1001,11 @@
                         <td style="text-align:center"><%=Encode.forHtml(String.valueOf(payProgram))%>
                         </td>
                         <td style="text-align:center"><a href=#
-                                                         onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>','BillCorrection<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>');nav_colour_swap(this.id, <%=bList.size()%>);return false;"><%=Encode.forHtml(String.valueOf(ch1Obj.getId()))%>
+                                                         onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(ch1Obj.getId()))%>','BillCorrection<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>');nav_colour_swap(this.id, <%=bList.size()%>);return false;"><%=Encode.forHtml(String.valueOf(ch1Obj.getId()))%>
                         </a></td>
                         <!--ACCOUNT-->
                         <td class="highlightBox"><a id="A<%=i%>" href=#
-                                                    onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>','BillCorrection<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>');nav_colour_swap(this.id, <%=bList.size()%>);return false;">Edit</a> <%=Encode.forHtml(String.valueOf(errorCode))%>
+                                                    onclick="popupPage(800,700,'billingONCorrection.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(ch1Obj.getId()))%>','BillCorrection<%=Encode.forJavaScript(String.valueOf(ch1Obj.getId()))%>');nav_colour_swap(this.id, <%=bList.size()%>);return false;">Edit</a> <%=Encode.forHtml(String.valueOf(errorCode))%>
                         </td>
                         <!--MESSAGES-->
                         <td style="text-align:center">$<%=Encode.forHtml(String.valueOf(cash))%>

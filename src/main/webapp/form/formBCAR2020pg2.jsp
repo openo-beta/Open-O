@@ -160,8 +160,8 @@
             <form action="${pageContext.request.contextPath}/form/BCAR2020.do" method="post">
                 <input type="hidden" id="demographicNo" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>"/>
                 <input type="hidden" id="formId" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
-                <input type="hidden" name="provider_no" value=<%=Encode.forHtmlAttribute(providerNo)%>/>
-                <input type="hidden" id="user" name="provNo" value=<%=provNo%>/>
+                <input type="hidden" name="provider_no" value="<%=Encode.forHtmlAttribute(providerNo)%>"/>
+                <input type="hidden" id="user" name="provNo" value="<%=provNo%>"/>
                 <input type="hidden" name="method" value="exit"/>
 
                 <input type="hidden" name="forwardTo" value="<%=Encode.forHtmlAttribute(String.valueOf(pageNo))%>"/>
@@ -1266,20 +1266,20 @@
                             Initials
                         </th>
                     </tr>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "1")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "2")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "3")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "4")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "5")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "6")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "7")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "8")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "9")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "10")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "11")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "12")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "13")))%>
-                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "14")))%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "1")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "2")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "3")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "4")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "5")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "6")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "7")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "8")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "9")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "10")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "11")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "12")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "13")%>
+                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "14")%>
                     <tr>
                         <td colspan="12" class="div-center">
                             <i>Please see the next page, British Columbia Antenatal Record part 2 (cont'd), to record

@@ -328,7 +328,7 @@
 
                 <div class="help-body">
 
-                    <%=Encode.forHtml(String.valueOf(resourcehelpHtml))%>
+                    <%=resourcehelpHtml%>
                 </div>
                 <a href="javascript:void(0)" class="help-close"
                    onclick="document.getElementById('helpHtml').style.right='-280px';document.getElementById('helpHtml').style.display='none'">(X)</a>

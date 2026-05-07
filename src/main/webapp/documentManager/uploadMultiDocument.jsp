@@ -157,7 +157,7 @@
 
             window.onload = function () {
                 var settings = {
-                    upload_url: "<%=request.getContextPath()%>/documentManager/addEditDocument.do;jsessionid=<%=Encode.forJavaScript(String.valueOf(request.getRequestedSessionId()))%>", 	// Relative to the SWF file
+                    upload_url: "<%=request.getContextPath()%>/documentManager/addEditDocument.do;jsessionid=<%=Encode.forUriComponent(String.valueOf(request.getRequestedSessionId()))%>", 	// Relative to the SWF file
                     file_post_name: "filedata",
                     post_params: {"method": "multifast"},
                     use_query_string: true,

@@ -197,7 +197,7 @@
                 var url = "<%= request.getContextPath() %>/oscarRx/AddRxComment.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
-                var params = "scriptNo=<%=Encode.forJavaScript(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
+                var params = "scriptNo=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
                 new Ajax.Request(url, {method: 'post', parameters: params});
                 frames['preview'].document.getElementById('additNotes').innerHTML = document.getElementById('additionalNotes').value;
             }

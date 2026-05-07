@@ -375,7 +375,7 @@
 
                             %>
                             <td bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(bgcolor.toString()))%>'><a href="#"
-                                                                     onclick="popupPage(260,720,'scheduledatepopup.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(provider_no))%>&year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=<%=Encode.forJavaScript(String.valueOf(dateGrid[i][j]))%>&bFistDisp=1')">
+                                                                     onclick="popupPage(260,720,'scheduledatepopup.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(dateGrid[i][j]))%>&bFistDisp=1')">
                                 <font color="red"><%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
                                 </font> <font size="-3"
                                               color="blue"><%=Encode.forHtml(String.valueOf(strHolidayName.toString()))%>

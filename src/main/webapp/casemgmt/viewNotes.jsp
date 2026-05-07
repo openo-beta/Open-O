@@ -124,7 +124,7 @@
                 editors.append(p.getFormattedName()).append(";");
             }
 
-            String htmlNoteTxt = note.getNote() + addlData;
+            String htmlNoteTxt = Encode.forHtml(note.getNote() + addlData);
 
             boolean singleLine = Boolean.valueOf(OscarProperties.getInstance().getProperty("echart.cpp.single_line", "false"));
             UserPropertyDAO userPropertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
@@ -178,7 +178,7 @@
             </c:otherwise>
         </c:choose>
 
-        <%=Encode.forHtml(String.valueOf(htmlNoteTxt))%></a>
+        <%=htmlNoteTxt%></a>
     </span></li>
 <%
         } // end for
@@ -205,8 +205,8 @@
          (NoteDisplay) pageContext.getAttribute("remoteNote");
 
        // now you can use 'note' in your scriptlet
-       String rawText   = note.getNote().replaceAll("\n","<br>");
-       String rawTextJs = Encode.forJavaScript(rawText);
+       String rawText   = Encode.forHtml(note.getNote()).replaceAll("\n","<br>");
+       String rawTextJs = Encode.forJavaScript(note.getNote());
 
        String locAttr = note.getLocation();
        String locJs   = Encode.forJavaScript(locAttr);
@@ -226,13 +226,13 @@
          title="<%= Encode.forHtmlAttribute(locAttr) %> by <%= Encode.forHtmlAttribute(provAttr) %> on <%= Encode.forHtmlAttribute(timestamp) %>"
          href="javascript:void(0)"
          onclick="showIntegratedNote(
-           '<%=Encode.forHtml(String.valueOf(resolvedTitleJs))%>',
-           '<%=Encode.forHtml(String.valueOf(rawTextJs))%>',
-           '<%=Encode.forHtml(String.valueOf(locJs))%>',
-           '<%=Encode.forHtml(String.valueOf(provJs))%>',
-           '<%=Encode.forHtml(String.valueOf(timeJs))%>'
+           '<%=resolvedTitleJs%>',
+           '<%=rawTextJs%>',
+           '<%=locJs%>',
+           '<%=provJs%>',
+           '<%=timeJs%>'
          ); return false;">
-        <%= Encode.forHtml(rawText) %>
+        <%=rawText%>
       </a>
     </li>
   </c:forEach>

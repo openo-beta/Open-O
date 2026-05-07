@@ -97,7 +97,7 @@
         <%
             for (int i = curYear - 2; i <= curYear + 2; i++) {
         %>
-        <option value="<%=i%>" <%=Encode.forHtml(String.valueOf(selled(("" + i), years)))%>><%=i%>
+        <option value="<%=i%>" <%=selled(("" + i), years)%>><%=i%>
         </option>
         <%
             }
@@ -110,7 +110,7 @@
     <%
         for (Provider p : providers) {
     %>
-    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf(selled(p.getProviderNo(), pros)))%>><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
+    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=selled(p.getProviderNo(), pros)%>><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
     </option>
     <%
         }
