@@ -117,7 +117,7 @@
                     var data = new Object();
                     var target = "#" + this.id.split("|")[1];
                     data.method = this.id.split("|")[0];
-                    data.demographicNo = <%=Encode.forJavaScript(String.valueOf(demoNo))%>;
+                    data.demographicNo = "<%=Encode.forJavaScript(String.valueOf(demoNo))%>";
                     getClinicalData(data, target)
                 });
 
@@ -275,8 +275,8 @@
             <form action="${pageContext.request.contextPath}/form/BCAR2020.do" method="post">
                 <input type="hidden" id="demographicNo" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>"/>
                 <input type="hidden" id="formId" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
-                <input type="hidden" name="provider_no" value=<%=Encode.forHtmlAttribute(providerNo)%>/>
-                <input type="hidden" id="user" name="provNo" value=<%=provNo%>/>
+                <input type="hidden" name="provider_no" value="<%=Encode.forHtmlAttribute(providerNo)%>"/>
+                <input type="hidden" id="user" name="provNo" value="<%=provNo%>"/>
                 <input type="hidden" name="method" value="exit"/>
 
                 <input type="hidden" name="forwardTo" value="<%=Encode.forHtmlAttribute(String.valueOf(pageNo))%>"/>

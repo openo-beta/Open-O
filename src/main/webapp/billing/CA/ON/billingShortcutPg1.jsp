@@ -771,7 +771,7 @@
                     <tr bgcolor="#33CCCC">
                         <td nowrap bgcolor="#FFCC99" width="10%" align="center"><%=Encode.forHtml(String.valueOf(demoname))%>
                         </td>
-                        <td bgcolor="#99CCCC" align="center"><font color="black"><%=Encode.forHtml(String.valueOf(msg))%>
+                        <td bgcolor="#99CCCC" align="center"><font color="black"><%=msg%>
                         </font>
                         </td>
                     </tr>

@@ -246,7 +246,7 @@
             }
         }
     %>
-    <input type="hidden" name="services_checked" id="services_checked" value=<%=services_checked_num %>>
+    <input type="hidden" name="services_checked" id="services_checked" value="<%=services_checked_num %>">
     <%
 
         }

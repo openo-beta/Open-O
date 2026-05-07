@@ -133,7 +133,7 @@
             <%
                 if(!(request.getParameter("printReceipt")==null) && request.getParameter("printReceipt").equals("1")) {
             %>
-            popupPage(350, 750, 'printappointment.jsp?appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>');
+            popupPage(350, 750, 'printappointment.jsp?appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>');
             <%}%>
             self.opener.refresh();
             self.close();

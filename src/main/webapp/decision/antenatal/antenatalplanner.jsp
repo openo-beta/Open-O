@@ -159,7 +159,7 @@
                 <input type="submit" name="submit" value="Save and Exit"/>
                 <input type="button" value="  Exit  " onclick="javascript:return onExit();"/>
                 <input type="button" name="submit" value="Print"
-                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
+                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&formId=<%=Encode.forUriComponent(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right">
                 <a href=# onClick="popupPage(600,930,'obarriskedit_99_12.jsp');return false;">Edit OB Risks</a> |
@@ -232,7 +232,7 @@ else {
                 <input type="submit" name="submit" value="Save and Exit"/>
                 <input type="button" value="  Exit  " onclick="javascript:return onExit();"/>
                 <input type="button" name="submit" value="Print"
-                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
+                       onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&formId=<%=Encode.forUriComponent(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right">
                 <a href=# onClick="popupPage(600,930,'obarriskedit_99_12.jsp');return false;">Edit OB Risks</a> |

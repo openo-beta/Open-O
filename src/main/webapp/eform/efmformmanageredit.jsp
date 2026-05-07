@@ -87,7 +87,7 @@
 
         <script type="text/javascript" language="JavaScript">
             function openLastSaved() {
-                window.open('<%=request.getContextPath()%>/eform/efmshowform_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(curform.get("fid")))%>', 'PreviewForm', 'toolbar=no, location=no, status=yes, menubar=no, scrollbars=yes, resizable=yes, width=700, height=600, left=300, top=100');
+                window.open('<%=request.getContextPath()%>/eform/efmshowform_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(curform.get("fid")))%>', 'PreviewForm', 'toolbar=no, location=no, status=yes, menubar=no, scrollbars=yes, resizable=yes, width=700, height=600, left=300, top=100');
             }
 
             //using this to check if page is being viewing in admin panel or in popup
@@ -209,7 +209,7 @@
 
             <br/>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.edithtml.msgEditHtml"/>:<br/>
-            <textarea wrap="off" name="formHtml" style="" class="span12" rows="40"><%=Encode.forHtml(String.valueOf(formHtml))%></textarea><br/>
+            <textarea wrap="off" name="formHtml" style="" class="span12" rows="40"><%=formHtml%></textarea><br/>
 
             <p>
             <div id="panelDisplay">

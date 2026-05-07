@@ -328,7 +328,7 @@
         <%} %>
 
         <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
-        <!--input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%> />
+        <!--input type="hidden" name="provider_no" value="<%=Encode.forHtml(request.getParameter("provNo"))%>" />
         <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
 
@@ -351,7 +351,7 @@
                 %> <% if (formId > 0) { %> <input type="submit"
                                                   value="Print Preview" onclick="javascript:return onPrintPreview();"/>
                     <!--
-            <input type="button" value="Print Preview" onclick="location.href='<%=Encode.forJavaScript(String.valueOf(appPath))%>/form/formDischargeSummaryPrint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&user=<%=Encode.forJavaScript(String.valueOf(provNo))%>' " />
+            <input type="button" value="Print Preview" onclick="location.href='<%=Encode.forJavaScript(String.valueOf(appPath))%>/form/formDischargeSummaryPrint.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&user=<%=Encode.forUriComponent(String.valueOf(provNo))%>' " />
             
             <a href='<%=Encode.forHtmlAttribute(String.valueOf(appPath))%>/form/formDischargeSummaryPrint.jsp' onClick="window.open(this.href,'Discharge Summary Form Print Preview','width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=yes,scrollbars=yes,copyhistory=no,resizable=yes');return false;">Print Preview</a> 
             --> <% } %>

@@ -232,7 +232,7 @@ nsult.do?requestId=<%=Encode.forHtml(String.valueOf(demoCon.requestId))%>')"><%=
                                             %>
                                             <tr>
                                                 <td class="fieldBox" bgcolor="#deddff"><a href=#
-                                                                                          onclick="javascript:rs('new','<%=request.getContextPath()%>/documentManager/documentGetFile.jsp?document=<%=Encode.forJavaScript(String.valueOf(demoLetter.docfileName))%>&type=active&doc_no=<%=Encode.forJavaScript(String.valueOf(demoLetter.document_no))%>', 480,480,1)"><%=Encode.forHtml(String.valueOf(demoLetter.docdesc))%>
+                                                                                          onclick="javascript:rs('new','<%=request.getContextPath()%>/documentManager/documentGetFile.jsp?document=<%=Encode.forUriComponent(String.valueOf(demoLetter.docfileName))%>&type=active&doc_no=<%=Encode.forUriComponent(String.valueOf(demoLetter.document_no))%>', 480,480,1)"><%=Encode.forHtml(String.valueOf(demoLetter.docdesc))%>
                                                 </a>
                                                 </td>
                                                 <td class="fieldBox"

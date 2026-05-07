@@ -121,7 +121,7 @@
     </center>
     <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
         <tr BGCOLOR="#CCCCFF">
-            <td align="right"><%=Encode.forHtml(String.valueOf(link))%>
+            <td align="right"><%=link%>
             </td>
         </tr>
     </table>

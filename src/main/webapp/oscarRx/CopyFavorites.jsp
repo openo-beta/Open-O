@@ -95,7 +95,7 @@
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
     <form action="<%= request.getContextPath() %>/oscarRx/copyFavorite.do">
         <input type="hidden" name="dispatch" value="refresh"/>
-        <input type="hidden" name="userProviderNo" value=<%=providerNo%>/>
+        <input type="hidden" name="userProviderNo" value="<%=providerNo%>"/>
         <input type="hidden" name="copyProviderNo" value=""/>
         <table border="0" cellpadding="0" cellspacing="0"
                style="border-collapse: collapse" bordercolor="#111111" width="100%"
@@ -154,7 +154,7 @@
                                                     %>
 
                                                     <option
-                                                            value=<%=Encode.forHtml(String.valueOf(((String) allProviders.get(p))))%>  <%=((String) allProviders.get(p)).equalsIgnoreCase(copyProviderNo) ? "SELECTED" : ""%>><%=Encode.forHtml(String.valueOf((providerDao.getProvider((String) allProviders.get(p)).getFormattedName())))%>
+                                                            value="<%=Encode.forHtml(String.valueOf(((String) allProviders.get(p))))%>"  <%=((String) allProviders.get(p)).equalsIgnoreCase(copyProviderNo) ? "SELECTED" : ""%>><%=Encode.forHtml(String.valueOf((providerDao.getProvider((String) allProviders.get(p)).getFormattedName())))%>
                                                     </option>
                                                     <% }%>
 

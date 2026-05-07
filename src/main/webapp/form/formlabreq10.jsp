@@ -414,7 +414,7 @@
         <input type="hidden" name="ID"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+               value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
         <input type="hidden" name="formCreated"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
@@ -440,7 +440,7 @@
                             for (Provider p : prList) {
                                 if (p.getProviderNo().compareTo("-1") != 0 && (p.getFirstName() != null || p.getSurname() != null)) {
                         %>
-                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf((!props.getProperty("letterhead", "-1").equals("-1") && p.getProviderNo().equals(props.getProperty("letterhead", "-1"))) ? " selected=\"selected\" " : ""))%>>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=(!props.getProperty("letterhead", "-1").equals("-1") && p.getProviderNo().equals(props.getProperty("letterhead", "-1"))) ? " selected=\"selected\" " : ""%>>
 
                             <%=Encode.forHtml(String.valueOf(p.getFirstName()))%> <%=Encode.forHtml(String.valueOf(p.getSurname()))%>
                         </option>
@@ -450,7 +450,7 @@
                             if (OscarProperties.getInstance().getBooleanProperty("consultation_program_letterhead_enabled", "true")) {
                                 for (Program p : programList) {
                         %>
-                        <option value="prog_<%=Encode.forHtmlAttribute(String.valueOf(p.getId()))%>" <%=Encode.forHtml(String.valueOf((!props.getProperty("letterhead", "-1").equals("-1") && props.getProperty("letterhead", "-1").equals("prog_" + p.getId())) ? " selected=\"selected\" " : ""))%>>
+                        <option value="prog_<%=Encode.forHtmlAttribute(String.valueOf(p.getId()))%>" <%=(!props.getProperty("letterhead", "-1").equals("-1") && props.getProperty("letterhead", "-1").equals("prog_" + p.getId())) ? " selected=\"selected\" " : ""%>>
                             <%=Encode.forHtml(String.valueOf(p.getName()))%>
                         </option>
                         <% }

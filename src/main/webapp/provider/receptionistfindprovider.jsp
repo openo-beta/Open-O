@@ -106,7 +106,7 @@
 
         function selectProvider(p, pn) {
             newGroupNo = p;
-            this.location.href = "providercontrol.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&start_hour=<%=Encode.forJavaScript(String.valueOf(startHour))%>&end_hour=<%=Encode.forJavaScript(String.valueOf(endHour))%>&every_min=<%=Encode.forJavaScript(String.valueOf(everyMin))%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&default_servicetype=<%=Encode.forJavaScript(String.valueOf(defaultServiceType))%>&mygroup_no=" + newGroupNo;
+            this.location.href = "providercontrol.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&start_hour=<%=Encode.forUriComponent(String.valueOf(startHour))%>&end_hour=<%=Encode.forUriComponent(String.valueOf(endHour))%>&every_min=<%=Encode.forUriComponent(String.valueOf(everyMin))%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&default_servicetype=<%=Encode.forUriComponent(String.valueOf(defaultServiceType))%>&mygroup_no=" + newGroupNo;
         }
 
         function selectProviderCaisi(p, pn) {

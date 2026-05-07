@@ -53,7 +53,7 @@
     <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
     <link rel="stylesheet" href="<c:out value="${ctx}"/>/css/casemgmt.css" type="text/css">
     <script type="text/javascript">
-        var flag =<%=Encode.forJavaScript(String.valueOf(request.getAttribute("change_flag")))%>;
+        var flag = <%="true".equalsIgnoreCase((String) request.getAttribute("change_flag"))%>;
 
         <%
 
@@ -375,7 +375,7 @@
         } else {
         %>
         <input id="showResolved" type="button" value="Show Resolved Issues"
-               onclick="document.location='CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>&providerNo=<%=Encode.forJavaScript(request.getParameter("providerNo"))%>&showResolved=true'"/>
+               onclick="document.location='CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=<%=Encode.forUriComponent(request.getParameter("demographicNo"))%>&providerNo=<%=Encode.forUriComponent(request.getParameter("providerNo"))%>&showResolved=true'"/>
         <%
             }
         %>

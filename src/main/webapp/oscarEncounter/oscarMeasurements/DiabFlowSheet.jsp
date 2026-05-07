@@ -255,7 +255,7 @@
                     method: 'POST',
                     data: deletevalue,
                     success: function (returnData) {
-                        window.location = "<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?ycoord=" + ycoord + "&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&template=diab3";
+                        window.location = "<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?ycoord=" + ycoord + "&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&template=diab3";
 
                     }
                 });
@@ -698,10 +698,10 @@
 
     String remindersQuery = "intake_reminders";
     List<Map<String, Object>> remindersResult = oscarSuperManager.find("providerDao", remindersQuery, demographicParam);
-    String remindersList = (!remindersResult.isEmpty() && remindersResult.get(0).get("note") != null) ? remindersResult.get(0).get("note").toString() : "";
+    String remindersList = (!remindersResult.isEmpty() && remindersResult.get(0).get("note") != null) ? Encode.forHtml(remindersResult.get(0).get("note").toString()) : "";
     if (remindersResult.size() > 1) {
         for (int i = 1; i < remindersResult.size(); i++) {
-            remindersList += ",<br/>" + remindersResult.get(i).get("note").toString();
+            remindersList += ",<br/>" + Encode.forHtml(remindersResult.get(i).get("note").toString());
         }
     }
 
@@ -712,7 +712,7 @@
             allergiesList += ",<br/>";
         }
         Allergy allergy = allergies.get(x);
-        allergiesList += allergy.getDescription();
+        allergiesList += Encode.forHtml(allergy.getDescription());
     }
 
     String curUser_no = (String) session.getAttribute("user");
@@ -727,11 +727,11 @@
             }
 
             if (medicationsResult.get(i).get("customName") != null && !medicationsResult.get(i).get("customName").toString().equals("null")) {
-                medicationsList += medicationsResult.get(i).get("customName").toString();
+                medicationsList += Encode.forHtml(medicationsResult.get(i).get("customName").toString());
             } else if (Integer.parseInt(medicationsResult.get(i).get("GCN_SEQNO").toString()) == 0) {
                 medicationsList += "Unknown";
             } else {
-                medicationsList += medicationsResult.get(i).get("BN").toString();
+                medicationsList += Encode.forHtml(medicationsResult.get(i).get("BN").toString());
             }
 
             medicationsList += " " + RxUtil.FloatToString(Float.parseFloat(medicationsResult.get(i).get("takemin").toString()));
@@ -812,10 +812,10 @@
         <tr>
 
             <td class="rowheader"><a class="header" href="javascript:void(0)"
-                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/CaseManagementEntry.do?method=issuehistory&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&issueIds=38'); return false;">Reminders</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/CaseManagementEntry.do?method=issuehistory&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&issueIds=38'); return false;">Reminders</a>
             </td>
 
-            <td width="650px"><%=Encode.forHtml(String.valueOf(remindersList))%>
+            <td width="650px"><%=remindersList%>
             </td>
             <td>
                 <div class="highlightBox">
@@ -846,20 +846,20 @@
         <tr>
 
             <td class="rowheader"><a class="header" href="javascript:void(0)"
-                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Allergies</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>'); return false;">Allergies</a>
             </td>
 
-            <td width="650px"><%=Encode.forHtml(String.valueOf(allergiesList))%>
+            <td width="650px"><%=allergiesList%>
             </td>
         </tr>
 
         <tr>
 
             <td class="rowheader"><a class="header" href="javascript:void(0)"
-                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>'); return false;">Medications</a>
+                                     onclick="popupPage('700', '1000', '<%=Encode.forJavaScript(String.valueOf(project))%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>'); return false;">Medications</a>
             </td>
 
-            <td width="650px"><%=Encode.forHtml(String.valueOf(medicationsList))%>
+            <td width="650px"><%=medicationsList%>
             </td>
             <td>
             </td>
@@ -918,7 +918,7 @@
             <td class="field">
                 <a style="color: black; text-decoration : underline;"
                    href="javascript: function myFunction() {return false; }"
-                   onclick="javascript:popup(465,635,'<%=Encode.forJavaScript(String.valueOf(project))%>/oscarEncounter/oscarMeasurements/AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(temp,"UTF-8")))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs(h.get("name").hashCode())))%>')">
+                   onclick="javascript:popup(465,635,'<%=Encode.forJavaScript(String.valueOf(project))%>/oscarEncounter/oscarMeasurements/AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forUriComponent(String.valueOf(temp))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs(h.get("name").hashCode())))%>')">
                     <b><%=Encode.forHtml(String.valueOf(child.flowSheetItem.getDisplayName()))%>
                     </b>
                 </a>

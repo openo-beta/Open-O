@@ -1579,7 +1579,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                 <select name="sex" id="sex">
                                     <option value=""></option>
                                     <% for (Gender gn : Gender.values()) { %>
-                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(gn.name()))%>" <%=Encode.forHtml(String.valueOf(((sex.toUpperCase().equals(gn.name())) ? "selected=\"selected\"" : "")))%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(gn.name()))%>" <%=((sex.toUpperCase().equals(gn.name())) ? "selected=\"selected\"" : "")%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
                                     </option>
                                     <% } %>
                                 </select>

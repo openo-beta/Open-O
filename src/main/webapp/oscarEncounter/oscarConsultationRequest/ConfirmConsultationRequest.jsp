@@ -120,7 +120,7 @@
                                 </c:otherwise>
                             </c:choose>
 
-                            <%=Encode.forHtml(String.valueOf(WebUtils.popInfoMessagesAsHtml(session)))%>
+                            <%=WebUtils.popInfoMessagesAsHtml(session)%>
                         </td>
                     </tr>
                     <tr>

@@ -218,7 +218,7 @@
                     LANGUAGE="JavaScript">
                 var removeList = confirm("Click OK to remove patient from the waiting list: <%=Encode.forJavaScript(String.valueOf(wln.getName()))%>");
                 if (removeList) {
-                    document.forms[0].action = "<%= request.getContextPath() %>/oscarWaitingList/RemoveFromWaitingList.jsp?demographicNo=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&listID=<%=Encode.forJavaScript(String.valueOf(wl1.getListId()))%>";
+                    document.forms[0].action = "<%= request.getContextPath() %>/oscarWaitingList/RemoveFromWaitingList.jsp?demographicNo=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&listID=<%=Encode.forUriComponent(String.valueOf(wl1.getListId()))%>";
                     document.forms[0].submit();
                 }
             </script>
@@ -241,7 +241,7 @@
                     if (aa != null) {
                         apptId = aa.getId();
                     }%>
-            popupPage(350, 750, 'printappointment.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(apptId))%>');
+            popupPage(350, 750, 'printappointment.jsp?appointment_no=<%=Encode.forUriComponent(String.valueOf(apptId))%>');
             <%}%>
             self.opener.refresh();
             self.close();

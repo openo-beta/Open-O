@@ -90,7 +90,7 @@
         }
 
         function generateLabReq(demographicNo) {
-            var url = '<%=request.getContextPath()%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>&fromSession=true';
+            var url = '<%=request.getContextPath()%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(session.getAttribute("user")))%>&fromSession=true';
             jQuery.ajax({
                 url: '<%=request.getContextPath()%>/renal/Renal.do?method=createLabReq&demographicNo=' + demographicNo,
                 async: false,
@@ -147,7 +147,7 @@
         message += "ACR: None" + "<br/>";
     }
 %>
-<%=Encode.forHtml(String.valueOf(message))%>
+<%=message%>
 
 <%
     message = "";
@@ -195,7 +195,7 @@
                 + "<a href=\"javascript:void(0);\" onclick=\"popupPage(580,900,'" + popupUrl + "');\">Click Here</a><br/>";
     }
 %>
-<%=Encode.forHtml(String.valueOf(message))%>
+<%=message%>
 
 
 <br/>
@@ -207,15 +207,15 @@ Order Labs - <a title="Create Lab Requisition" href="javascript:void(0);"
     if (flowsheet.equals("indicators")) {
 %>
 Go to CDM Indicators <a href="javascript:void(0);"
-                        onclick="popupPage(700,1000,'<%=request.getContextPath() %>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&amp;template=diab3');return false;">here</a><br/>
+                        onclick="popupPage(700,1000,'<%=request.getContextPath() %>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&amp;template=diab3');return false;">here</a><br/>
 <% } else if (flowsheet.equals("diabetes")) { %>
 
 Go to Diabetes Flowsheet <a href="javascript:void(0)"
-                            onclick="popupPage(700,1000,'<%=request.getContextPath() %>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&amp;template=diab2');return false;">here</a><br/>
+                            onclick="popupPage(700,1000,'<%=request.getContextPath() %>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&amp;template=diab2');return false;">here</a><br/>
 <% } %>
 
 Go to Disease Registry to mark CKD Screening as resolved/deleted <a href="javascript:void(0);"
-                                                                    onclick="popupPage(580,900,'<%=request.getContextPath() %>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&amp;quickList='); return false;">here</a><br/>
+                                                                    onclick="popupPage(580,900,'<%=request.getContextPath() %>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&amp;quickList='); return false;">here</a><br/>
 
 
 </body>

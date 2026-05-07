@@ -25,6 +25,7 @@
 --%>
 
 <%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.commn.model.PatientLabRouting" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
@@ -195,7 +196,7 @@
 
     getComment = function (labid, action) {
         var ret = true;
-        var text = "V" + <%=Encode.forJavaScript(String.valueOf(version))%> +"commentText" + labid + $("providerNo").value;
+        var text = "V" + <%=version%> +"commentText" + labid + $("providerNo").value;
 
         var commentVal = "";
 
@@ -261,7 +262,7 @@
                             demoid = json.demoId;
                             if (demoid != null && demoid.length > 0)
                                 window.popup(700, 980, contextPath + '/messenger/SendDemoMessage.do?demographic_no=' + demoid + "&recall", 'msgRecall');
-                            window.popup(450, 600, contextPath + '/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=Encode.forJavaScript(String.valueOf(ticklerAssignee))%>&priority=<%=Encode.forJavaScript(String.valueOf(recallTicklerPriority))%>&recall', 'ticklerRecall');
+                            window.popup(450, 600, contextPath + '/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=Encode.forJavaScript(String.valueOf(ticklerAssignee))%>&priority=<%=Encode.forUriComponent(String.valueOf(recallTicklerPriority))%>&recall', 'ticklerRecall');
                         } else if (action == 'ticklerLab') {
                             demoid = json.demoId;
                             if (demoid != null && demoid.length > 0)
@@ -300,8 +301,8 @@
         }
         var data = $(formid).serialize(true);
 
-        var label = "V" + <%=Encode.forJavaScript(String.valueOf(version))%> +"commentLabel" + labid + $F("providerNo");
-        var text = "V" + <%=Encode.forJavaScript(String.valueOf(version))%> +"commentText" + labid + $("providerNo").value;
+        var label = "V" + <%=version%> +"commentLabel" + labid + $F("providerNo");
+        var text = "V" + <%=version%> +"commentText" + labid + $("providerNo").value;
         var commentID = "comment_" + labid;
         var newComment;
 
@@ -409,7 +410,7 @@
                                 <% } %>
                                 <input type="button" class="smallButton"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                                       onClick="popupStart(300, 400, '<%= request.getContextPath() %>/oscarMDS/SelectProviderAltView.jsp?doc_no=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forJavaScript(String.valueOf(searchProviderNo))%>', 'providerselect')">
+                                       onClick="popupStart(300, 400, '<%= request.getContextPath() %>/oscarMDS/SelectProviderAltView.jsp?doc_no=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>', 'providerselect')">
                                 <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                                        onClick="printPDF('<%=Encode.forJavaScript(String.valueOf(segmentID))%>')">
 
@@ -419,7 +420,7 @@
 
                                 <% if (searchProviderNo != null) { // null if we were called from e-chart%>
                                 <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                                       onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&name=<%=Encode.forJavaScript(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'searchPatientWindow')">
+                                       onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&name=<%=Encode.forUriComponent(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'searchPatientWindow')">
                                 <% } %>
                                 <input type="button" value="Req# <%=Encode.forHtmlAttribute(String.valueOf(reqTableID))%>" title="Link to Requisition"
                                        onclick="linkreq('<%=Encode.forJavaScript(String.valueOf(segmentID))%>','<%=Encode.forJavaScript(String.valueOf(reqID))%>');"/>
@@ -474,11 +475,11 @@
                                 } else {
                                     if (searchProviderNo != null) { // null if we were called from e-chart
                                 %><a href="javascript:void(0);"
-                                     onclick="popup(850, 950, '${pageContext.request.contextPath}/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forJavaScript(String.valueOf(multiID[i]))%>&multiID=<%=Encode.forJavaScript(String.valueOf(multiLabId))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forJavaScript(String.valueOf(searchProviderNo))%>', 'labVersion');">v<%=Encode.forHtml(String.valueOf(i + 1))%>
+                                     onclick="popup(850, 950, '${pageContext.request.contextPath}/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(multiID[i]))%>&multiID=<%=Encode.forUriComponent(String.valueOf(multiLabId))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>', 'labVersion');">v<%=Encode.forHtml(String.valueOf(i + 1))%>
                                 </a>&#160;<%
                                 } else {
                                 %><a href="javascript:void(0);"
-                                     onclick="popup(850, 950, '${pageContext.request.contextPath}/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forJavaScript(String.valueOf(multiID[i]))%>&multiID=<%=Encode.forJavaScript(String.valueOf(multiLabId))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>', 'labVersion');">v<%=Encode.forHtml(String.valueOf(i + 1))%>
+                                     onclick="popup(850, 950, '${pageContext.request.contextPath}/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(multiID[i]))%>&multiID=<%=Encode.forUriComponent(String.valueOf(multiLabId))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>', 'labVersion');">v<%=Encode.forHtml(String.valueOf(i + 1))%>
                                 </a>&#160;<%
                                             }
                                         }
@@ -486,10 +487,10 @@
                                     if (multiID.length > 1) {
                                         if (searchProviderNo != null) { // null if we were called from e-chart
                                 %><a href="javascript:void(0);"
-                                     onclick="popup(850, 950, '${pageContext.request.contextPath}/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&multiID=<%=Encode.forJavaScript(String.valueOf(multiLabId))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forJavaScript(String.valueOf(searchProviderNo))%>&all=true', 'labVersion');">All</a>&#160;<%
+                                     onclick="popup(850, 950, '${pageContext.request.contextPath}/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&multiID=<%=Encode.forUriComponent(String.valueOf(multiLabId))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>&all=true', 'labVersion');">All</a>&#160;<%
                                 } else {
                                 %><a href="javascript:void(0);"
-                                     onclick="popup(850, 950, '${pageContext.request.contextPath}/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&multiID=<%=Encode.forJavaScript(String.valueOf(multiLabId))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>&all=true', 'labVersion');">All</a>&#160;<%
+                                     onclick="popup(850, 950, '${pageContext.request.contextPath}/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&multiID=<%=Encode.forUriComponent(String.valueOf(multiLabId))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&all=true', 'labVersion');">All</a>&#160;<%
                                         }
                                     }
                                 %>
@@ -798,7 +799,7 @@
                                              class="<%=Encode.forHtmlAttribute(String.valueOf(ticklerClass))%>">
                                             <table width="100%">
                                                 <tr>
-                                                    <td><b>Priority:</b> <%=Encode.forHtml(String.valueOf(flag))%> <%=Encode.forHtml(String.valueOf(tickler.getPriority()))%>
+                                                    <td><b>Priority:</b> <%=flag%> <%=Encode.forHtml(String.valueOf(tickler.getPriority()))%>
                                                     </td>
                                                     <td><b>Service Date:</b> <%=Encode.forHtml(String.valueOf(tickler.getServiceDate()))%>
                                                     </td>
@@ -878,7 +879,7 @@
                                                     }
                                                 %>
                                                 <span id="<%=Encode.forHtmlAttribute(String.valueOf("V" + j + "commentLabel" + segmentID + report.getProviderNo()))%>"><%=Encode.forHtml(String.valueOf(commentTitle))%></span><span
-                                                    id="<%=Encode.forHtmlAttribute(String.valueOf("V" + j + "commentText" + segmentID + report.getProviderNo()))%>"> <%=Encode.forHtml(String.valueOf(report.getComment() == null ? "" : report.getComment()))%></span>
+                                                    id="<%=Encode.forHtmlAttribute(String.valueOf("V" + j + "commentText" + segmentID + report.getProviderNo()))%>"> <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(report.getComment())%></span>
 
                                                 <br>
                                                 <% }
@@ -949,7 +950,7 @@
             </tr>
             <tr class="TDISRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><b><%=Encode.forHtml(String.valueOf(handler.getOBXComment(1, 1, 1)))%></b></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><b><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(1, 1, 1))%></b></pre>
                 </td>
                 </td>
             </tr>
@@ -1084,13 +1085,13 @@
                     <td valign="top" align="left"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
                             href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(j, k)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxName))%>
                     </a></td>
-                    <td align="right"><%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <td align="right"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     </td>
 
                     <td align="center">
                         <%=Encode.forHtml(String.valueOf(handler.getOBXAbnormalFlag(j, k)))%>
                     </td>
-                    <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXReferenceRange(j, k)))%>
+                    <td align="left"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXReferenceRange(j, k))%>
                     </td>
                     <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXUnits(j, k)))%>
                     </td>
@@ -1102,7 +1103,7 @@
                 <% } else if (handler.getOBXIdentifier(j, k).equals(headers.get(i)) && obxName.equals("")) { %>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%></pre>
                     </td>
                 </tr>
                 <% }
@@ -1112,13 +1113,13 @@
                     <td valign="top" align="left"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
                             href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(j, k)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxName))%>
                     </a></td>
-                    <td align="right"><%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <td align="right"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     </td>
 
                     <td align="center">
                         <%=Encode.forHtml(String.valueOf(handler.getOBXAbnormalFlag(j, k)))%>
                     </td>
-                    <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXReferenceRange(j, k)))%>
+                    <td align="left"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXReferenceRange(j, k))%>
                     </td>
                     <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXUnits(j, k)))%>
                     </td>
@@ -1131,7 +1132,7 @@
                 <%} else { %>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%></pre>
                     </td>
                 </tr>
                 <%
@@ -1140,14 +1141,14 @@
                 %>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getNteForOBX(j, k)))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getNteForOBX(j, k))%></pre>
                     </td>
                 </tr>
                 <% }
                     for (l = 0; l < handler.getOBXCommentCount(j, k); l++) {%>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXComment(j, k, l)))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
                     </td>
                 </tr>
                 <%
@@ -1181,7 +1182,7 @@
                     </td>
                     <%} %><%
                         else{%>
-                    <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <td align="left"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     </td>
                     <%} %>
                     <%
@@ -1210,7 +1211,7 @@
                     <%
                         //for pathl7, if it is an SG/CDC result greater than 100 characters, left justify it
                         if ((handler.getOBXResult(j, k) != null && handler.getOBXResult(j, k).length() > 100) && isSGorCDC) {%>
-                    <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXResult(j, k)))%>
+                    <td align="left"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                     </td>
                     <%
                     } else {%>
@@ -1230,16 +1231,16 @@
                     %>
 	                                            <td align="right">
                                                    <% if (handler.getMsgType().equals("ExcellerisON") && !((ExcellerisOntarioHandler) handler).getOBXSubId(j, k).isEmpty()) { %>
-                                                    <em><%=Encode.forHtml(String.valueOf(((ExcellerisOntarioHandler) handler).getOBXSubIdWithObservationValue( j, k)))%></em>
+                                                    <em><%=((ExcellerisOntarioHandler) handler).getOBXSubIdWithObservationValue( j, k)%></em>
                                                     <% } else { %>
-                                                    <%=Encode.forHtml(String.valueOf(handler.getOBXResult( j, k)))%>
+                                                    <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXResult(j, k))%>
                                                     <% } %>
                                                 </td><%}%>
                     <% } %>
                     <td align="center">
                         <%=Encode.forHtml(String.valueOf(handler.getOBXAbnormalFlag(j, k)))%>
                     </td>
-                    <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXReferenceRange(j, k)))%>
+                    <td align="left"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXReferenceRange(j, k))%>
                     </td>
                     <td align="left"><%=Encode.forHtml(String.valueOf(handler.getOBXUnits(j, k)))%>
                     </td>
@@ -1254,7 +1255,7 @@
                 <%for (l = 0; l < handler.getOBXCommentCount(j, k); l++) {%>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXComment(j, k, l)))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
                     </td>
                 </tr>
                 <%
@@ -1264,7 +1265,7 @@
                 <%for (l = 0; l < handler.getOBXCommentCount(j, k); l++) {%>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="TDISRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBXComment(j, k, l)))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
                     </td>
                 </tr>
                 <%
@@ -1296,7 +1297,7 @@
                 %>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=Encode.forHtml(String.valueOf(handler.getOBRComment(j, k)))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBRComment(j, k))%></pre>
                     </td>
                 </tr>
                 <% if (!handler.getMsgType().equals("HHSEMR")) {
@@ -1333,13 +1334,13 @@
                                onclick="getComment('<%=Encode.forJavaScript(String.valueOf(segmentID))%>','addComment')">
                         <% } %>
                         <input type="button" class="smallButton" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                               onClick="popupStart(300, 400, '${pageContext.request.contextPath}/oscarMDS/SelectProviderAltView.jsp?doc_no=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forJavaScript(String.valueOf(searchProviderNo))%>', 'providerselect')">
+                               onClick="popupStart(300, 400, '${pageContext.request.contextPath}/oscarMDS/SelectProviderAltView.jsp?doc_no=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(searchProviderNo))%>', 'providerselect')">
 
                         <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                                onClick="printPDF('<%=Encode.forJavaScript(String.valueOf(segmentID))%>')">
                         <% if (searchProviderNo != null) { // we were called from e-chart %>
                         <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                               onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&name=<%=Encode.forJavaScript(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'searchPatientWindow')">
+                               onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&name=<%=Encode.forUriComponent(String.valueOf(handler.getLastName()+", "+handler.getFirstName()))%>', 'searchPatientWindow')">
 
                         <% } %>
                     </td>

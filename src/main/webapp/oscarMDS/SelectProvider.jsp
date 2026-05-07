@@ -73,7 +73,7 @@
             }
         }
 
-        var isListView = <%=Encode.forJavaScript(request.getParameter("isListView"))%>;
+        var isListView = <%="true".equals(request.getParameter("isListView"))%>;
         var docId = '<%=Encode.forJavaScript(request.getParameter("docId"))%>';
         var labDisplay = '<%=Encode.forJavaScript(request.getParameter("labDisplay"))%>';
         var frm = "reassignForm";
@@ -87,7 +87,7 @@
             }
             self.opener.forwardDocument(docId);
             self.close();
-        } else if (isListView != "null" && isListView == true) {
+        } else if (isListView) {
             var forwardListEl = document.getElementById("forwardList");
             if (forwardListEl) {
                 forwardLabs(forwardListEl.value, fwdProviders);

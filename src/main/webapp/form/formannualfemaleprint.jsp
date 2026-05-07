@@ -73,7 +73,7 @@
         }
 
         function onClose() {
-            //window.location="formAnnual.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>";
+            //window.location="formAnnual.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>";
             //return true;
             window.close();
         }
@@ -86,7 +86,7 @@
     <input type="hidden" name="ID"
            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
     <input type="hidden" name="provider_no"
-           value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+           value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
     <input type="hidden" name="formCreated"
            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
     <input type="hidden" name="formEdited"

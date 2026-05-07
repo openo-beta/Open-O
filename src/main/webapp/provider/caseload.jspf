@@ -235,7 +235,7 @@ function getSortDir() {
 }
 
 function generateQuery(method) {
-	var query = "method="+method+"&year=<%=Encode.forJavaScript(String.valueOf(caseloadCurYear))%>&month=<%=Encode.forJavaScript(String.valueOf(caseloadCurMonth))%>&day=<%=Encode.forJavaScript(String.valueOf(caseloadCurDay))%>";
+	var query = "method="+method+"&year=<%=Encode.forUriComponent(String.valueOf(caseloadCurYear))%>&month=<%=Encode.forUriComponent(String.valueOf(caseloadCurMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(caseloadCurDay))%>";
 	if (method == "search") {
 		query += "&clDx=" + escape(document.getElementById("caseloadDx").value);
 		query += "&clProv=" + escape(document.getElementById("caseloadProv").value);

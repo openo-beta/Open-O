@@ -187,7 +187,7 @@
         <img class="logo" src="www/img/kai.png"/>
     </div> -->
     <div id="first"
-         class="greyBox" <%=Encode.forHtml(String.valueOf(((tab == null || tab.equals("first")) ? "style='display:block;'" : "style='display:none;'")))%> >
+         class="greyBox" <%=((tab == null || tab.equals("first")) ? "style='display:block;'" : "style='display:none;'")%> >
         <div class="center">
             <form action="${pageContext.request.contextPath}/mcedt/kaimcedt.do" method="post" id="form">
                 <table>
@@ -238,7 +238,7 @@
         </div>
     </div>
     <div id="upload"
-         class="greyBox" <%=Encode.forHtml(String.valueOf(((tab.equals("upload")) ? "style='display:block;'" : "style='display:none;'")))%> >
+         class="greyBox" <%=((tab.equals("upload")) ? "style='display:block;'" : "style='display:none;'")%> >
         <div class="center">
             <h1>Upload</h1>
             <p>
@@ -255,7 +255,7 @@
         </div>
     </div>
     <div id="download"
-         class="greyBox" <%=Encode.forHtml(String.valueOf(((tab.equals("download")) ? "style='display:block;'" : "style='display:none;'")))%> >
+         class="greyBox" <%=((tab.equals("download")) ? "style='display:block;'" : "style='display:none;'")%> >
         <div class="center">
             <h1>Download</h1>
             <p>

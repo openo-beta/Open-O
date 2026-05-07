@@ -980,12 +980,12 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
     %>
 
     <script language=javascript>
-        freqMin = new Array(<%=Encode.forJavaScript(String.valueOf(freq.length))%>);
-        freqMax = new Array(<%=Encode.forJavaScript(String.valueOf(freq.length))%>);
+        freqMin = new Array(<%=freq.length%>);
+        freqMax = new Array(<%=freq.length%>);
 
         <%for(i=0;i<freq.length;i++){%>
-        freqMin[<%=i%>] = <%=Encode.forJavaScript(String.valueOf(freq[i].getDailyMin()))%>;
-        freqMax[<%=i%>] = <%=Encode.forJavaScript(String.valueOf(freq[i].getDailyMax()))%>;
+        freqMin[<%=i%>] = <%=freq[i].getDailyMin()%>;
+        freqMax[<%=i%>] = <%=freq[i].getDailyMax()%>;
         <%}%>
     </script>
 
@@ -1068,9 +1068,9 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                                         <b title="<%=Encode.forHtmlAttribute(String.valueOf(thisForm.getRegionalIdentifier()))%>"><%=Encode.forHtml(String.valueOf(thisForm.getBrandName()))%>
                                         </b>
                                         <oscar:oscarPropertiesCheck property="SHOW_ODB_LINK" value="yes">
-                                            <!--a href="javascript: function myFunction() {return false; }" onclick="javascript:popup(700,630,'http://216.176.50.202/formulary/SearchServlet?searchType=singleQuery&phrase=exact&keywords=<%=Encode.forJavaScript(String.valueOf(regionalIdentifier))%>','ODBInfo')">ODB info</a-->
+                                            <!--a href="javascript: function myFunction() {return false; }" onclick="javascript:popup(700,630,'http://216.176.50.202/formulary/SearchServlet?searchType=singleQuery&phrase=exact&keywords=<%=Encode.forUriComponent(String.valueOf(regionalIdentifier))%>','ODBInfo')">ODB info</a-->
                                             <a href="javascript: function myFunction() {return false; }"
-                                               onclick="javascript:popup(725,690,'http://216.176.50.202/formulary/SearchServlet?sort=genericName&section=1&pcg=%25&manufacturerID=%25&keywords=<%=Encode.forJavaScript(String.valueOf(regionalIdentifier))%>&searchType=drugID&Search=Search&phrase=exact','ODBInfo')">ODB
+                                               onclick="javascript:popup(725,690,'http://216.176.50.202/formulary/SearchServlet?sort=genericName&section=1&pcg=%25&manufacturerID=%25&keywords=<%=Encode.forUriComponent(String.valueOf(regionalIdentifier))%>&searchType=drugID&Search=Search&phrase=exact','ODBInfo')">ODB
                                                 info</a>
                                         </oscar:oscarPropertiesCheck>
                                     </td>
@@ -1609,7 +1609,7 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                     var dummie = "";
                     var url = "<%= request.getContextPath() %>/oscarRx/RenalDosing.jsp";
                     var ran_number = Math.round(Math.random() * 1000000);
-                    var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>&atcCode=<%=Encode.forJavaScript(String.valueOf(atcCode))%>&rand=" + ran_number;  //hack to get around ie caching the page
+                    var params = "demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.getDemographicNo()))%>&atcCode=<%=Encode.forUriComponent(String.valueOf(atcCode))%>&rand=" + ran_number;  //hack to get around ie caching the page
                     //alert(params);
                     new Ajax.Updater('renalDosing', url, {method: 'get', parameters: params, asynchronous: true});
                     //alert(origRequest.responseText);
@@ -1621,7 +1621,7 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                 function callReplacementWebService(url, id) {
                     oscarLog("in callReplacementWebService writescript.jsp: " + url + "--" + id);
                     var ran_number = Math.round(Math.random() * 1000000);
-                    var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>&atcCode=<%=Encode.forJavaScript(String.valueOf(atcCode))%>&rand=" + ran_number;  //hack to get around ie caching the page
+                    var params = "demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.getDemographicNo()))%>&atcCode=<%=Encode.forUriComponent(String.valueOf(atcCode))%>&rand=" + ran_number;  //hack to get around ie caching the page
                     new Ajax.Updater(id, url, {method: 'get', parameters: params, asynchronous: true});
                 }
 

@@ -82,12 +82,12 @@
                 billingReferral.setReferralNo(referral_no);
                 billingReferralDao.updateBillingreferral(billingReferral);
 
-                msg = referral_no + " is updated.<br>" + "Type in a doctor's ref. # and search first to see if it is available.";
+                msg = Encode.forHtmlContent(referral_no) + " is updated.<br>" + "Type in a doctor's ref. # and search first to see if it is available.";
                 action = "search";
                 prop.setProperty("referral_no", referral_no);
 
             } else {
-                msg = "You can <font color='red'>NOT</font> save the doctor's ref. # - " + referral_no + ". Please search the doctor's ref. # first.";
+                msg = "You can <font color='red'>NOT</font> save the doctor's ref. # - " + Encode.forHtmlContent(referral_no) + ". Please search the doctor's ref. # first.";
                 action = "search";
                 prop.setProperty("referral_no", referral_no);
             }
@@ -109,12 +109,12 @@
                 billingReferral.setReferralNo(referral_no);
                 billingReferralDao.updateBillingreferral(billingReferral);
 
-                msg = referral_no + " is added.<br>" + "Type in a doctor's ref. # and search first to see if it is available.";
+                msg = Encode.forHtmlContent(referral_no) + " is added.<br>" + "Type in a doctor's ref. # and search first to see if it is available.";
                 action = "search";
                 prop.setProperty("referral_no", referral_no);
 
             } else {
-                msg = "You can <font color='red'>NOT</font> save the ref. code - " + referral_no + ". Please search the ref. # first.";
+                msg = "You can <font color='red'>NOT</font> save the ref. code - " + Encode.forHtmlContent(referral_no) + ". Please search the ref. # first.";
                 action = "search";
                 prop.setProperty("referral_no", referral_no);
             }
@@ -246,7 +246,7 @@
     <center>
         <table BORDER="1" CELLPADDING="0" CELLSPACING="0" WIDTH="80%">
             <tr BGCOLOR="#CCFFFF">
-                <th><%=Encode.forHtml(String.valueOf(msg))%>
+                <th><%=msg%>
                 </th>
             </tr>
         </table>

@@ -142,7 +142,7 @@
         }
 
         function updateForm() {
-            popup(250, 500, '<%=request.getContextPath()%>/oscarRx/updateForm.jsp?id=<%=Encode.forJavaScript(String.valueOf(drugId))%>', '<%=Encode.forJavaScript(String.valueOf(drugId))%>');
+            popup(250, 500, '<%=request.getContextPath()%>/oscarRx/updateForm.jsp?id=<%=Encode.forUriComponent(String.valueOf(drugId))%>', '<%=Encode.forJavaScript(String.valueOf(drugId))%>');
         }
 
         function popup(height, width, url, windowName) {
@@ -499,7 +499,7 @@
             <br/>
 
             <input type="button" value="Annotation" title="Annotation" class="ControlPushButton"
-                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(ca.openosp.openo.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP))%>&table_id=<%=Encode.forJavaScript(String.valueOf(drug.getId()))%>&demo=<%=Encode.forJavaScript(String.valueOf(drug.getDemographicId()))%>','anwin','width=400,height=500');">
+                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(ca.openosp.openo.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP))%>&table_id=<%=Encode.forUriComponent(String.valueOf(drug.getId()))%>&demo=<%=Encode.forUriComponent(String.valueOf(drug.getDemographicId()))%>','anwin','width=400,height=500');">
 
 
             <%--
