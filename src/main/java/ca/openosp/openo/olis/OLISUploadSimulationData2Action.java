@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.DefaultFileItemFactory;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -41,6 +42,11 @@ public class OLISUploadSimulationData2Action extends ActionSupport {
 
         String simulationData = null;
         boolean simulationError = false;
+
+        if (!ServletFileUpload.isMultipartContent(request)) {
+            request.setAttribute("result", "Open this page via /olis/Simulate.jsp and submit the upload form — direct GET access is not supported.");
+            return SUCCESS;
+        }
 
         try {
             FileUpload upload = new FileUpload(new DefaultFileItemFactory());
