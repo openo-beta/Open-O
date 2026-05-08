@@ -148,7 +148,8 @@ public class Driver {
                 olisQueryLog.setQueryExecutionDate(new Date());
                 olisQueryLog.setQueryType(query.getQueryType().toString());
                 olisQueryLog.setUuid(query.getUuid());
-                olisQueryLog.setDemographicNo(query.getDemographicNo() != null ? Integer.parseInt(query.getDemographicNo()) : null);
+                String demoNoStr = query.getDemographicNo();
+                olisQueryLog.setDemographicNo((demoNoStr != null && !demoNoStr.trim().isEmpty()) ? Integer.parseInt(demoNoStr.trim()) : null);
                 olisQueryLog.setRequestingHIC(query.getRequestingHICProviderNo());
 
                 olisQueryLogDao.persist(olisQueryLog);
