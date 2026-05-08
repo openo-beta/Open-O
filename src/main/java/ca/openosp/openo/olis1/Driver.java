@@ -116,8 +116,6 @@ public class Driver {
 
             OLISRequest olisRequest = new OLISRequest();
             olisRequest.setHIALRequest(new HIALRequest());
-            String olisRequestURL = OscarProperties.getInstance().getProperty("olis_request_url", "https://olis.ssha.ca/ssha.olis.webservices.ER7/OLIS.asmx");
-            OLISStub olis = new OLISStub(olisRequestURL);
 
             olisRequest.getHIALRequest().setClientTransactionID(message.getTransactionId());
             olisRequest.getHIALRequest().setSignedRequest(new HIALRequestSignedRequest());
@@ -170,6 +168,9 @@ public class Driver {
                 //this only happens for auto-polling when simulate is enabled
                 return "";
             } else {
+                String olisRequestURL = OscarProperties.getInstance().getProperty("olis_request_url", "https://olis.ssha.ca/ssha.olis.webservices.ER7/OLIS.asmx");
+                OLISStub olis = new OLISStub(olisRequestURL);
+
                 OLISRequestResponse olisResponse = olis.oLISRequest(olisRequest);
 
                 String signedData = olisResponse.getHIALResponse().getSignedResponse().getSignedData();

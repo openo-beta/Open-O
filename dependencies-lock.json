@@ -1386,6 +1386,14 @@
     "integrity" : "sha512:KrUj/ODzyqiG2581XSPEfq4etnJpgI8jA5QEEHPRZFcBBcR2XaP3VOoGxIfgOg1zM96GMR00O6ptiPcqd6qswQ=="
   }, {
     "groupId" : "org.apache.axis2",
+    "artifactId" : "axis2-transport-local",
+    "version" : "1.8.2",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:nNWhkkuXrt/qhkfNIz8JccJoWdE4j9HBU9iefha1OTOkzS18o3H7QQsF8pvgc/nGisJDVJGQQtIhWSrrb5qhKg=="
+  }, {
+    "groupId" : "org.apache.axis2",
     "artifactId" : "axis2",
     "version" : "1.8.2",
     "scope" : "compile",

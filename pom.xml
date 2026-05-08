@@ -921,6 +921,22 @@
             <version>1.8.2</version>
         </dependency>
 
+        <!--
+            Required at runtime by Axis2's bundled axis2_default.xml (inside
+            axis2-kernel.jar) which registers org.apache.axis2.transport.local.LocalTransportSender
+            as a transport sender. Without this artifact, every OLIS query throws
+            ClassNotFoundException from AxisConfigBuilder.processTransportSenders
+            during OLISStub construction, even when only HTTPS is used.
+
+            Looks unused to static analysis (no direct Java imports) but is
+            required at ServiceClient init.
+        -->
+        <dependency>
+            <groupId>org.apache.axis2</groupId>
+            <artifactId>axis2-transport-local</artifactId>
+            <version>1.8.2</version>
+        </dependency>
+
         <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/org.apache.ant/ant -->
         <dependency>
