@@ -156,7 +156,11 @@
         }
 
         function showMatch(name, uuid) {
-            popupPage(800, 1000, '<%=request.getContextPath()%>/oscarMDS/SearchPatient.do?labType=HL7&from=olis1&segmentID=' + uuid + '&name=' + encodeURIComponent(name));
+            // Pass the uuid as both segmentID (for the form's hidden fields) and labNo
+            // (for PatientSearch.jsp:346's onclick handler that calls back into our
+            // updateLabDemoStatus2 → saveMatch ajax). Without labNo the popup's onclick
+            // fires updateLabDemoStatus2 with an empty uuid and saveMatch silently no-ops.
+            popupPage(800, 1000, '<%=request.getContextPath()%>/oscarMDS/SearchPatient.do?labType=HL7&from=olis1&segmentID=' + uuid + '&labNo=' + uuid + '&name=' + encodeURIComponent(name));
         }
 
         function updateLabDemoStatus2(uuid, demo) {
