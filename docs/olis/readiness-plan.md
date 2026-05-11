@@ -1,0 +1,309 @@
+# OLIS Readiness Plan
+
+Ticket structure for closing the gaps identified in `requirements-analysis.md`
+plus the previously reported bugs in `bugs.md`.
+
+> **Pin this analysis to a commit.** Line numbers in `requirements-analysis.md`
+> will drift; the tracking epic should reference the SHA the analysis was performed
+> against (current branch: `bug/encoder-updates-and-fixes`).
+
+---
+
+## Track A — Bug fixes (customer-visible, higher priority)
+
+These are previously reported user-blocking bugs, separate from spec compliance work.
+
+### Status overview
+
+| ID  | Summary | Status | Commit(s) |
+|-----|---------|--------|-----------|
+| A1  | OLIS lab PDF rendering in consults | ❌ Open — needs Keith's dev env (patient 31359) | — |
+| A2  | Forward-OLIS-result submit button missing | ❌ Open — needs production screenshot context | — |
+| A3  | `axis2-transport-local` dependency removed by mistake | ✅ Fixed | `dcd2b54b20` |
+| A4  | NumberFormatException in audit log on empty `demographicNo` | ✅ Fixed | `9ac31fca2b` |
+| A5  | `OLISStub` bytecode incompatible with axis2 1.8.2 | ❌ **Open — production-blocker.** SOAP stub regen, ~half-day to a day. | — |
+| A6  | `olis_simulate=yes` not picked up at runtime | ⚠️ Local workaround only (dev-only edit; NOT committed) | — |
+| A7  | OLISUploadSimulationData2Action throws on non-multipart | ✅ Subsumed by A11 | `09f62661c9` |
+| A8  | OLIS Audit Log viewer broken end-to-end | ✅ Fixed across two commits (script-order/URL + viewLog method via A9) | `438227f210`, `f07aea1870` |
+| A9  | OLIS Results-management methods missing since 2019 | ✅ Fixed (with DAO multi-sort companion) | `f07aea1870`, `54e618401b` |
+| A10 | Dead `/oscarLab/FileLabs.do` JSP references | ✅ Fixed | `32530e613a` |
+| A11 | Simulator multipart consumption (CVE-2024-53677 followup) | ✅ Fixed | `09f62661c9` |
+| A12 | `Driver.readResponseFromXML` NPE on unset schema property | ✅ Fixed | `dd13c8ac75` |
+| A13 | OLIS manual-match popup never fires saveMatch ajax | ✅ Fixed | `5bd9193bf2` |
+
+**Net status (this dev environment):** all session-surfaced bugs (A3, A4, A7, A8, A9, A10, A11, A12, A13) closed.
+**Still open in Track A:** A1, A2 (need original reproduction environments — customer-reported), A5 (production-blocker, needs dedicated session for SOAP stub regen), A6 (dev-environment improvement, low priority).
+
+### A1: Fix OLIS lab PDF rendering in consults
+- **Status:** ❌ Open — needs Keith's dev environment (patient 31359) to reproduce.
+- **Source:** Trello mvJ6Ef1N (#177), `bugs.md`
+- **Repro:** consult generated for patient 31359 from Keith's dev environment
+- **Likely scope:** consult-PDF generation path (not OLIS code itself); confirm where rendering breaks
+- **Labels:** `type: bug`, `priority: high`, `area: olis`
+
+### A2: Restore Forward-OLIS-result submit button
+- **Status:** ❌ Open — needs production screenshot context for the working HL7 forwarding flow.
+- **Source:** Trello 5YEZvWp1 (#190), `bugs.md`
+- **Repro:** click Forward on an OLIS lab → forwarding screen renders → no submit/forward button visible
+- **Likely scope:** compare OLIS-lab forwarding JSP/action vs. the working HL7 forwarding flow shown in production screenshot
+- **Labels:** `type: bug`, `priority: high`, `area: olis`
+
+### A13: OLIS manual-match popup never fires saveMatch ajax (Results.jsp ↔ PatientSearch.jsp param mismatch)
+- **Status:** ✅ Fixed in commit `5bd9193bf2` — Results.jsp's `showMatch()` now passes the uuid as both `segmentID` (for the form's hidden fields) and `labNo` (for PatientSearch.jsp's onclick handler).
+- **Source:** local audit (Track G smoke test, 2026-05-11), surfaced while testing the saveMatch endpoint after the A9 port landed.
+- **Repro:** open OLIS Results.jsp with a result that has no matched demographic (name column shows `here.gif` icon) → click the icon → patient-search popup opens → search for a patient → click the demographic-number submit button → popup navigates to the patient's eChart, BUT the opener window's row is never updated to show a clickable patient link AND `OLISResults.demographicNo` is never set in the DB.
+- **Root cause:** parameter name mismatch between the two JSPs. `Results.jsp:158` opens the popup with the OLIS uuid as the `segmentID` query param (not `labNo`). `PatientSearch.jsp:346` renders the demographic-number button's onclick using `request.getParameter("labNo")` — which is null because the parent never set it. The onclick effectively becomes `updateOpener('', demoNo)` or `updateOpener('null', demoNo)` depending on how `Encode.forJavaScript(null)` resolves; either way the downstream `updateLabDemoStatus2` ajax call fires with an empty/garbage uuid and the server's saveMatch endpoint rejects it with a UUID-format validation failure (or never fires at all — access log shows no `?method=saveMatch` hits during the flow).
+- **Verified:** the saveMatch server endpoint works correctly (added in A9 port). The OLISResults table shows demographicNo=NULL even after a manual-match click — confirmed via catalina.out (no "Invalid UUID provided to saveMatch" entries logged) and localhost_access_log (no `?method=saveMatch` URI hits).
+- **Fix options:**
+  1. **Minimal**: change `PatientSearch.jsp:346` to fall back to `segmentID` when `labNo` is null, behind the existing `from=olis1` guard.
+  2. **Cleaner**: change `Results.jsp:158`'s `showMatch()` to pass the uuid as `labNo` (matching what PatientSearch.jsp expects). Less invasive on the shared MDS popup.
+  3. **Properest**: introduce an OLIS-specific `oscarOLIS/SearchPatient.jsp` per OLIS04.06 (the spec asks for an OLIS-specific match UI that shows original OLIS demographics next to EMR demographics — see D1 in this plan).
+- **Files:** `src/main/webapp/olis/Results.jsp:158` (showMatch JS), `src/main/webapp/oscarMDS/PatientSearch.jsp:346` (onclick handler)
+- **Note:** this is the JSP-side companion to D1 (OLIS-specific manual-match UI). Whether D1 ends up being "minimal port-saveMatch only" or "design an OLIS-specific match UI" determines which of the fix options above lands.
+- **Labels:** `type: bug`, `priority: medium`, `area: olis`, `compliance`
+
+### A12: Driver.readResponseFromXML NPEs when olis_response_schema is unset
+- **Status:** ✅ Fixed in commit `dd13c8ac75` — wrapped the schema load in a null-check, with a note that `factory.newSchema()` was already a side-effect-only check (the result was never bound to the Unmarshaller, so skipping it on missing config has no functional impact).
+- **Source:** local audit (Track G smoke test, 2026-05-11), surfaced while exercising the simulate-error path of the OLIS simulator after the A11 multipart fix landed.
+- **Repro:** with `olis_response_schema` unset in `oscar_mcmaster.properties` (its default state — the line is commented out at `:1391`), upload any file via `/olis/Simulate.jsp` with the "Simulate Error" checkbox checked → `java.lang.NullPointerException` thrown at `Driver.java:240` inside `new File(OscarProperties.getInstance().getProperty("olis_response_schema"))`. `getProperty` returns `null` and `new File(null)` blows up.
+- **Root cause:** `Driver.readResponseFromXML` constructs a `StreamSource` over the schema file unconditionally — no null-guard.
+- **The sister method already has the right pattern:** `OLISUtils.java:82-83` does `if (OscarProperties.getInstance().getProperty("olis_response_schema") != null) { schemaFile = new StreamSource(new File(...)); }`. Driver.java just needs to mirror it.
+- **Fix:** ~3-line defensive null-check at `Driver.java:240` mirroring `OLISUtils.java:82-83`. If the property is unset, skip schema validation (lose the XSD step but the simulate-error path still functions; production deploys would set the property properly anyway).
+- **Files:** `src/main/java/ca/openosp/openo/olis1/Driver.java:240`
+- **Note:** orthogonal to the A11 simulator-upload fix and the A9 port. Strictly a dev-environment / hardening item.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`
+
+### A11: OLISUploadSimulationData2Action multipart consumption regression (CVE-2024-53677 followup)
+- **Status:** ✅ Fixed in commit `09f62661c9` — migrated the action to `UploadedFilesAware` matching the 30 sibling upload actions. Subsumes A7.
+- **Source:** local audit (Track G smoke test, 2026-05-11) — discovered when behavioural testing of the A9 port surfaced 0 OLISResults rows despite the action appearing to return successfully.
+- **Repro:** with `olis_simulate=yes`, upload any HL7 file via `/olis/Simulate.jsp` → upload "succeeds" silently (no error, no result message in red) → any subsequent OLIS search returns empty results. Database has 0 rows in `OLISResults` but `OLISQueryLog` shows the queries ran. No errors logged.
+- **Root cause:** the CVE-2024-53677 mitigation in `struts.xml` (commit comment at struts.xml:18-34) replaced `FileUploadInterceptor` with `ActionFileUploadInterceptor`, which consumes the multipart body in the Struts 2 interceptor stack before `action.execute()` runs. `OLISUploadSimulationData2Action` was missed in the sweep of 30 sibling upload actions — it still called the legacy `new FileUpload(...).parseRequest(request)`, which sees an empty stream post-interceptor and silently set `simulationData` to null. The session attribute `olisResponseContent` never got set, so the subsequent search saw nothing to render.
+- **Fix applied on this branch:** migrated to the now-standard pattern used by all 30 sibling upload actions — implement `UploadedFilesAware`, add `withUploadedFiles(List<UploadedFile>)` calling `PathValidationUtils.toFile`, add `setSimulateError(String)` setter for the checkbox field (intentionally String — Struts 2's default `BooleanConverter` doesn't recognise plain HTML checkbox's `on` value as truthy, would silently coerce to false). Also subsumes the prior A7 isMultipartContent guard (the new null-file check handles it more cleanly) and replaced the verbose error message with "Please select a file to upload before submitting." since Simulate.jsp is reached through the OLIS UI and "direct access" framing was unhelpful.
+- **Audit confirmed:** only 1 missed action (this one). The 30 sibling actions are correctly migrated; the 2 remaining `parseRequest` callsites are plain Servlets that bypass Struts 2's interceptor stack and aren't affected.
+- **Labels:** `type: bug`, `priority: high`, `area: olis`, `regression`
+
+### A10: Dead `/oscarLab/FileLabs.do` references in OLIS-adjacent JSPs
+- **Status:** ✅ Fixed in commit `32530e613a` — both JSPs updated to `/oscarMDS/FileLabs.do` matching the live struts mapping.
+- **Source:** local audit (Track G — JSP dead-link sweep, 2026-05-08)
+- **Repro:** clicking the "File Lab" / lab-routing button on `lab/DemographicLab.jsp` (reachable from the OLIS user flow — this is the patient lab tab where OLIS results land) → POSTs to `/oscarLab/FileLabs.do` which has no struts mapping → 404. Same dead URL also referenced in `documentManager/previewDocHL7Inbox.jsp:146`.
+- **Root cause:** the action was originally mapped at `oscarLab/FileLabs` since the very first commit. During the Struts 2 migration (`ed4b1f2167`), the mapping was moved to `oscarMDS/FileLabs` (`<action name="oscarMDS/FileLabs" class="ca.openosp.openo.lab.pageUtil.FileLabs2Action">`). The two JSPs above still point at the old `/oscarLab/` path.
+- **Fix:** two-line search/replace — change both JSPs from `/oscarLab/FileLabs.do` to `/oscarMDS/FileLabs.do`.
+- **Files:** `src/main/webapp/lab/DemographicLab.jsp:179`, `src/main/webapp/documentManager/previewDocHL7Inbox.jsp:146`
+- **Note:** not strictly OLIS, but reachable from the OLIS user flow and surfaced by the OLIS audit. Worth bundling with the A9/A8 restoration PR or fixing as a tiny standalone PR.
+- **Labels:** `type: bug`, `priority: medium`, `regression`
+
+### A9: OLIS Results-management methods exist in git history but never settled into develop's working tree
+- **Status:** ✅ Fixed in commit `f07aea1870` (with DAO multi-column-sort companion `54e618401b`). Smoke-tested via simulator: bulkProcess + viewLog + checkbox-add flow all working end-to-end. See `olis-a9-commit-message.md` for the full restoration commit message.
+- **Source:** local audit (Track G smoke test, 2026-05-08), discovered while triaging A8 + C1
+- **What's missing:** six action methods + an audit-log helper that together implement Save / Sign-off / Remove / Bulk-process / Match / Audit-Log-view for OLIS results. Their absence on the current 2Action is the root cause of A8 (audit log viewer broken), C1 (server-side Remove not wired), and a chunk of D1 (manual-match flow).
+- **Where the working code lives:** commit `7aefabc840` (Mar 12, 2019, "initial commit of OLIS updates" by Marc Dumontier) on Bitbucket OSCAREMR via `OSCAREMR-6671 / pull request #457`. **Note:** that PR # is from the old Bitbucket repo before the GitHub migration — it won't resolve in openo-beta's PR list. The code is accessible only via git history at that SHA.
+- **Why they're not on develop now (corrected from the original "Struts 1 → 2 migration regression" framing):** PR #457 *did* land on develop in Mar 2019 but went through ~30 merge battles in 2019 alone. Marc Dumontier's branches kept restoring the 585-line version (with methods); Jason Gallagher's PHR / OSCAREMR-6608 work and Colcamex Resources' `oscar-bc-2019-1` line had branched from a base predating PR #457, and their merges into develop kept overwriting the file with the 109-line shell version (just `execute()`). By **late 2019 the 109-line version won permanently** and develop has had it ever since. **The Struts 1 → 2 migration commit `f90870dc15` (Dec 2024) only deleted the long-empty 109-line shell** — it didn't drop active functionality. The original "regression caused by recent migration" framing was wrong; this is **long-missing functionality from a 2019 merge-graph mess**, not a recent regression.
+- **What was lost (full inventory from `7aefabc840`):**
+
+  | Symbol | Visibility | Lines | Purpose | Tickets affected | Depends on |
+  |---|---|---|---|---|---|
+  | `saveMatch` | public action | ~30 | Match unmatched OLIS result to a demographic | OLIS04.06 / D1 | — |
+  | `bulkAddToInbox` | public action | ~50 | Bulk add multiple results to inbox | OLIS01.04 / 03.04 / C1 | private `addToInbox` |
+  | `viewLog` | public action | ~80 | JSON endpoint for OLIS Audit Log DataTable | A8 | `ColumnInfo` inner class |
+  | `remove` (public) | public action | ~20 | Single-result manual remove (thin wrapper) | OLIS01.04 / 03.04 / 06.03 / C1 | private `remove` |
+  | `bulkRemove` | public action | ~40 | Bulk manual remove | C1 | private `remove` |
+  | `bulkProcess` | public action | ~40 | Handles the "Process Changes" button — the exact endpoint the `bulkProcess()` JS in `Results.jsp` is calling | C1 (THIS is the missing server-side handler) | private `addToInbox`, private `remove` |
+  | `unspecified` | protected action | ~75 | Struts 1 DispatchAction default-fallback when no `method` param given. **NOT a clean port** — its behaviour overlaps with the existing 2Action `execute()`, but `execute()` is missing three real behaviours from `unspecified`: (1) reads `OLISResults` from DAO and writes file from DB if missing, (2) sets `result.setStatus("added")` after success, (3) honours `addToMyInbox=false` parameter to skip current user's inbox. The merge needs care — keep openo-beta's UUID validation + `PathValidationUtils` security additions. | C1 / OLIS01.04 / OLIS03.04 | — |
+  | `addToInbox` | private helper | ~85 | **Actual add-to-inbox implementation** called by `bulkProcess` and `bulkAddToInbox` — these public methods cannot work without it | C1 | — |
+  | `remove` (overload) | private helper | ~18 | **Actual remove implementation** called by public `remove`, `bulkRemove`, and `bulkProcess` | C1 | — |
+  | `logOLISRemoval` | helper | ~50 | Audit log row write for manual removals (matches OLIS06.03's hardcoded "System" rejection-type gap) | OLIS06.03 | — |
+  | `ColumnInfo` | inner class | ~25 | DataTables column metadata (index + data field) parsed from `columns[0][data]` request params; required by `viewLog` for sort handling | A8 | — |
+
+- **What survived in OpenO and does NOT need re-porting:**
+  - `execute()` (basic add-to-inbox via `uuid` / `file` / `ack` params) — but **needs the three `unspecified` behaviours merged in** (DAO/file write, status update, `addToMyInbox` flag).
+  - `getDemographicIdFromLab` (private helper) — already in `OLISAddToInbox2Action`.
+  - `logOLISDuplicate` (system-dedup audit) — lives on `OLISResults2Action` with a refactored signature `(LoggedInInfo, Query, String, String)` instead of the original `(LoggedInInfo, Date, String, String, String, Integer, String, String)`. Bodies functionally equivalent — verified by direct comparison; openo-beta's version is actually slightly better (handles all 8 query types via `query.getQueryType().toString()` rather than only Z01/Z04 via if-checks).
+- **Implication:** the OLIS-Results-management UI surface has been **partly non-functional since late 2019** — clicking Remove / Process Changes / Save Match / OLIS Log all hit endpoints that 404 or fall through to the wrong method. **No current branch (`develop`, `main`, `maintenance`, any `*-release-version`) has working code for these flows** — verified at branch tips. Not surfaced earlier because (a) simulator was also broken via A3, so nobody actually clicked through these flows in dev, and (b) the broken behaviour is at least 6 years old, predating the current maintainer team.
+- **Reference copies of the source:** stashed at `archive/struts1-reference/OLISAddToInboxAction.7aefabc840.java` (585-line working version) and `OLISAddToInboxAction.predeletion.java` (110-line shell that was deleted). Also confirmed canonical on `bitbucket/stable` (Bitbucket OSCAREMR `oscar.git`, last commit 2026-03-10) — 585 lines, same 6 methods + 2 helpers — meaning the working code is still live on the OSCAREMR fork's mainline.
+- **Suggested fix:** single restoration PR — port the public methods + private helpers + `ColumnInfo` from `7aefabc840` into `OLISAddToInbox2Action` (or a new dedicated `OLISLog2Action` for `viewLog`+`ColumnInfo` if you want better separation). The work has **two distinct shapes**:
+  1. **Mostly-mechanical conversion** for `saveMatch`, `bulkAddToInbox`, `viewLog`, `remove` (public+private), `bulkRemove`, `bulkProcess`, `addToInbox` (private), `logOLISRemoval`, `ColumnInfo`. Struts 1 → 2 boilerplate: drop `(ActionMapping, ActionForm, request, response)` params, use `ServletActionContext.getRequest()`, return `String` result name, swap `mapping.findForward(...)` for return strings, add `SecurityInfoManager.hasPrivilege()` checks per the 2Action pattern, register methods in `struts.xml`.
+  2. **Careful merge into existing `execute()`** for the three `unspecified` behaviours — DAO-driven file recreation, `setStatus("added")` on `OLISResults`, `addToMyInbox` flag handling. Must preserve openo-beta's UUID-format validation + `PathValidationUtils` security additions.
+- **Effort:** materially smaller than original C1/A8 estimates because the implementation already exists in git history. Revised to **~1 full day** (was "half-day" in earlier draft) — the inner-class + private-helper dependencies and the `unspecified` merge add real work beyond pure mechanical conversion. Still much smaller than the original "design and implement from scratch" framing of ~2-4 days.
+- **Labels:** `type: bug`, `priority: high`, `area: olis`, `compliance`
+
+### A8: OLIS Audit Log viewer is broken end-to-end
+- **Status:** ✅ Fixed across two commits — script-order swap + AJAX URL typo in commit `438227f210`; the missing `viewLog` method restored as part of the A9 port in commit `f07aea1870`.
+- **Source:** local audit (Track G smoke test, 2026-05-08)
+- **Repro:** click "OLIS Log" link from `Results.jsp` → DataTables JS error in browser console (`can't access property "defaults", f is undefined`); behind that, AJAX call to a wrong URL that 404s on the server.
+- **Three stacked issues at `src/main/webapp/olis/log.jsp`:**
+  1. **Script load order is wrong (lines 57-60):** `dataTables.bootstrap.min.js` loads before `jquery.dataTables.min.js`, but the bootstrap integration script depends on the main DataTables script being defined first. Result: DataTables never initializes, all calls fail. **Fixed on this branch** by swapping the order.
+  2. **AJAX URL typo (line 66):** points at `/olis1/AddToInbox.do?method=viewLog` but the struts namespace is `/olis/` (verified `struts.xml` has `<action name="olis/AddToInbox" class="ca.openosp.openo.olis.OLISAddToInbox2Action">`). The `olis1` prefix was likely a relic from when the package was `olis1` Java-side. **Fixed on this branch.**
+  3. **The action has no `viewLog` method:** `OLISAddToInbox2Action` only has `execute()` + a private helper. Even with the URL corrected, the request will 404 because Struts2 can't find a method named `viewLog` on the class. **NOT fixed.** The HRM equivalent (`/hospitalReportManager/log.jsp` → `hrm.do?method=viewLog`) does have a dedicated method that returns DataTables-compatible JSON of the audit log rows; OLIS needs an analogous method on `OLISAddToInbox2Action` (or a new dedicated `OLISLog2Action`) that reads from `OscarLog` rows where `action='OLIS'` and returns paginated JSON matching DataTables' server-side mode.
+- **Compliance relevance:** this is the user-facing surface for OLIS06.02 ("Log All Messages Sent/Received"). If the log is being written but the viewer is broken, the audit data is hidden — the compliance gap in OLIS06.02 has actually been *worse* than the analysis suggested because reviewers couldn't even read the rows that do exist.
+- **Suggested follow-up ticket scope:** **regression — restore the `viewLog` method from `7aefabc840:src/main/java/org/oscarehr/olis/OLISAddToInboxAction.java`** (lines 185-265 of that historical file). The original implementation already does exactly what's needed: reads DataTables `start`/`length`/`order` params, queries `OscarLogDao.findByAction("OLIS", ...)`, joins against `ProviderDao` and `DemographicDao` for human-readable names, returns DataTables-shaped JSON. See A9 for the full migration regression scope — `viewLog` is one of six action methods dropped during the Struts 1 → 2 migration in commit `f90870dc15` (Dec 2024). Bundle this fix with the rest of the A9 restoration; do not implement from scratch.
+- **Labels:** `type: bug`, `priority: medium`, `area: olis`, `compliance`
+
+### A7: OLISUploadSimulationData2Action throws on non-multipart requests
+- **Status:** ✅ Subsumed by A11 (commit `09f62661c9`) — the new `UploadedFilesAware` pattern's null-file check handles the direct-GET case more cleanly than the original `isMultipartContent` guard. Initial guard committed as `ee6906c8fd`, then folded into the A11 rewrite.
+- **Source:** local audit (Track G smoke test, 2026-05-08)
+- **Repro:** any GET to `/olis/UploadSimulationData.do` (direct URL, browser refresh after POST, back/forward navigation) → `org.apache.commons.fileupload.FileUploadBase$InvalidContentTypeException` logged; user gets a confusing blank page or stale data.
+- **Root cause:** the action calls `upload.parseRequest(request)` (line 48) without first checking `ServletFileUpload.isMultipartContent(request)`. The form on `/olis/Simulate.jsp` uses `enctype="multipart/form-data"` so a direct submit works, but URL refresh / direct navigation hits this path.
+- **Fix applied on this branch:** added an `isMultipartContent` guard up front; non-multipart requests now return SUCCESS with a friendly message instead of throwing.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`
+
+### A4: NumberFormatException in audit log when demographicNo is empty string
+- **Status:** ✅ Fixed in commit `9ac31fca2b` — added trim + non-empty check before parse in `Driver.java`.
+- **Source:** local audit (Track G smoke test, 2026-05-08)
+- **Repro:** open `/olis/Search.jsp` and click search with no fields filled (no patient selected) → `java.lang.NumberFormatException: For input string: ""` at `Driver.java:151` while writing `OLISQueryLog`. The error is caught (audit log is skipped), but the failed audit row is a real compliance gap (OLIS06.02).
+- **Root cause:** `query.getDemographicNo() != null ? Integer.parseInt(query.getDemographicNo()) : null` — the null check doesn't catch empty strings. Z01 patient queries with no patient selected emit `""`, not null.
+- **Fix applied on this branch:** added `!demoNoStr.trim().isEmpty()` check + trim before parse — `Driver.java:151-152`.
+- **Labels:** `type: bug`, `priority: medium`, `area: olis`, `compliance`
+
+### A5: OLISStub bytecode incompatible with axis2 1.8.2 (production OLIS path broken)
+- **Status:** ❌ **Open — production-blocker.** Sidestepped for local testing via the simulator (A6); real production OLIS path remains broken until the SOAP stub is regenerated. Estimated ~half-day to a day of focused work.
+- **Source:** local audit (Track G smoke test, 2026-05-08)
+- **Repro:** with `olis_simulate=no`, fire any query → `java.lang.NoSuchMethodError: 'org.apache.axis2.transport.TransportSender org.apache.axis2.description.TransportOutDescription.getSender()'` at `OLISStub.oLISRequest:244`.
+- **Root cause:** the pre-compiled OLIS SOAP stub at `local_repo/ca/ssha/www/olis-service/20111111/olis-service-20111111.jar` was generated by `axis2-wsdl2code-maven-plugin:1.5.4` against axis2 1.5.4. The runtime axis2 is now 1.8.2 (commit `b6f8d3de1a`), and `TransportOutDescription.getSender()` was removed/renamed in the API. The stub's compiled bytecode references a method that no longer exists.
+- **Fix options:**
+  1. **Regenerate the stub against axis2 1.8.2** — proper fix. Need to either re-add `axis2-wsdl2code-maven-plugin:1.8.2` and run it against `archive/olis.wsdl`, or use the standalone `wsdl2java` tool. Replace the local_repo jar OR add the generated source to `src/main/java`.
+  2. **Hand-write a minimal OLIS SOAP client** that doesn't go through the generated stub — significant work.
+  3. **Pin axis2 back to 1.5.4** — undoes the security/Jakarta-prep upgrades, not recommended.
+- **Sidestepped for local testing** by simulator (set `olis_simulate=yes` — see A6 below). Real production OLIS path remains broken until stub is regenerated.
+- **Labels:** `type: bug`, `priority: high`, `area: olis`, `compliance`
+
+### A6: `olis_simulate=yes` not picked up at runtime when set in `over_ride_config.properties`
+- **Status:** ⚠️ Local-only workaround applied (`olis_simulate=yes` set directly in `oscar_mcmaster.properties` — DO NOT commit). Proper fix (devcontainer `setenv.sh` or `server` script tweak to set `-Doscar_override_properties=...`) still open.
+- **Source:** local audit (Track G smoke test, 2026-05-08)
+- **Repro:** set `olis_simulate=yes` in `src/test/resources/over_ride_config.properties`, rebuild, fire query → still goes down the non-simulate (SOAP) branch.
+- **Root cause:** `OscarProperties.java:181-194` constructor only loads `/oscar_mcmaster.properties` from the classpath at runtime. `over_ride_config.properties` is loaded **only** when JVM system property `oscar_override_properties` points at it — which it doesn't in the dev container. The `over_ride_config.properties` file is for JUnit tests (Spring/test infrastructure), not the running app.
+- **Local-dev fix on this branch:** flipped `olis_simulate=no` → `olis_simulate=yes` directly in `src/main/resources/oscar_mcmaster.properties`. **Do not commit this line.** Revert before opening any PR; or use the override mechanism (see follow-up).
+- **Follow-up improvement:** add a `setenv.sh` or devcontainer `server` script tweak that sets `-Doscar_override_properties=/workspace/.../olis-dev.properties` so simulator mode can be enabled without editing checked-in files. Sized as a small dev-experience ticket — file under Track G.
+- **Labels:** `type: documentation` / `dev-environment`, `priority: low`
+
+### A3: OLIS query paths broken by missing `axis2-transport-local` dependency
+- **Status:** ✅ Fixed in commit `dcd2b54b20` — restored `axis2-transport-local:1.8.2` in `pom.xml` with a DO-NOT-REMOVE comment, plus reordered `Driver.submitOLISQuery` to defer `OLISStub` construction so simulator mode never instantiates the SOAP client. Follow-up: regenerate the dependency lock file (`make lock`) before opening the PR.
+- **Source:** local audit (Track G smoke test, 2026-05-08)
+- **Repro:** set `olis_simulate=yes`, upload sample via `/olis/Simulate.jsp`, run any query → `org.apache.axis2.deployment.DeploymentException: org.apache.axis2.transport.local.LocalTransportSender` thrown from `Driver.submitOLISQuery`
+- **Root cause:** Axis2's bundled `axis2_default.xml` (inside `axis2-kernel-1.8.2.jar`) registers `org.apache.axis2.transport.local.LocalTransportSender` as a transport sender. Without the `axis2-transport-local` artifact on the classpath, every `OLISStub` construction fails during `AxisConfigBuilder.processTransportSenders`. **Both the simulator path and the production OLIS query path were affected** — production hadn't surfaced the bug because dev environments don't have the certs / outbound network to reach `olis.ssha.ca`.
+- **Regression source:** `axis2-transport-local` was removed in commit `c9bdd03e06` (Kate Yang, Jan 7, 2025) titled *"removed unused dependencies and upgraded some dependencies in the pom.xml"*. The artifact has no direct Java imports (it's referenced at runtime via Axis2's deployment XML) so static "is this dep used?" analysis missed it. Silent regression for ~16 months.
+- **Fix applied on this branch:**
+  1. Restored `axis2-transport-local:1.8.2` in `pom.xml` next to `axis2-adb` with a DO-NOT-REMOVE comment block explaining why static analysis flags it as unused.
+  2. Reordered `Driver.submitOLISQuery` to defer `OLISStub` construction to the non-simulate `else` branch, so simulator mode never instantiates the SOAP client at all.
+- **Follow-up:** regenerate the dependency lock file (`make lock`) before the PR is opened.
+- **Labels:** `type: bug`, `priority: high`, `area: olis`
+
+---
+
+## Track B — Spec gaps, JSP-only quick wins
+
+### B1: Results.jsp preview enhancements
+- **Closes:** OLIS01.02, OLIS01.03, OLIS03.02, OLIS03.03, OLIS04.10
+- **Scope:**
+  - Add Lab Name column to preview table (`Results.jsp:767-778`)
+  - Add per-row matched/unmatched indicator (currently only `here.gif` icon at `Results.jsp:827-840`)
+  - Add per-row blocked indicator (page-level `hasBlockedContent` exists at `OLISResults2Action.java:476-490` but no per-row marker)
+  - Add Practitioner filter dropdown + wire into `filterResults()` (`Results.jsp:230-283`, `:599-727`)
+- **Files:** `Results.jsp`, possibly `OLISResults2Action.java` for new aggregator
+- **Labels:** `type: feature`, `priority: medium`, `area: olis`, `compliance`
+
+---
+
+## Track C — Backend / schema (one ticket per fix area)
+
+### C1: Server-side OLIS Remove + manual-removal audit log (regression — see A9)
+- **Closes:** OLIS01.04, OLIS03.04, OLIS06.03
+- **Reframed as regression:** the Struts 1 OLIS action originally had `remove`, `bulkRemove`, `bulkProcess`, and the `logOLISRemoval` helper that together implement everything in this ticket's scope. They were dropped in commit `f90870dc15` (Dec 2024, Struts 1 cleanup). See A9 for full inventory of lost methods.
+- **Scope (revised):**
+  - **Port `bulkProcess` from `7aefabc840:src/main/java/org/oscarehr/olis/OLISAddToInboxAction.java`** — this is the exact server-side handler that the existing `bulkProcess()` JS in `Results.jsp:356-400` is calling. Reads the JSON `data` payload, iterates `remove_<uuid>` / `addToInbox_<uuid>` / `acknowledge_<uuid>` items.
+  - **Port `remove` and `bulkRemove`** as supporting endpoints
+  - **Port `logOLISRemoval`** for the manual-removal audit row (already includes Rejection Type=Manual + Rejecting User=<providerNo>, addressing OLIS06.03's hardcoded "System" gap)
+  - Adapt from Struts 1 (`ActionForward xxx(mapping, form, request, response)`) to Struts 2 method signatures returning `String` result name; register methods in `struts.xml` if needed
+- **Files:** `OLISAddToInbox2Action.java`, `struts.xml`
+- **Effort:** materially smaller than original "design and implement" estimate — the code already exists in git, the work is mechanical port + smoke test.
+- **Labels:** `type: bug`, `priority: high`, `compliance`, `regression`
+
+### C2: OLIS Transaction ID logging
+- **Closes:** OLIS03.06, OLIS06.02
+- **Scope:**
+  - DB migration: add `olisTransactionId` column to `OLISQueryLog` (`database/mysql/updates/update-YYYY-MM-DD-olis-query-log-transaction-id.sql`)
+  - Extract OLIS Transaction ID from response in `Driver.java`
+  - Move audit write to post-response, OR split into SENT row (pre-submit) + RECEIVED row (post-submit) keyed by `uuid`
+  - Update `OLISSearch2Action.java:186-224` (consent override path) to write the post-response log
+- **Files:** `OLISQueryLog.java`, `Driver.java`, `OLISSearch2Action.java`, new migration SQL
+- **Labels:** `type: feature`, `priority: high`, `compliance`
+
+### C3: Per-provider unmatched-routing config
+- **Closes:** OLIS02.03
+- **Scope:**
+  - New `filterPatients` field on `OLISProviderPreferences` (DB migration + entity)
+  - UI on `Preferences.jsp` for per-provider override
+  - `MessageUploader.java:276-283` routing change: prefer per-provider setting, fall back to system-level
+- **Files:** `OLISProviderPreferences.java`, `Preferences.jsp`, `MessageUploader.java`, new migration SQL
+- **Labels:** `type: feature`, `priority: medium`, `compliance`
+
+### C4: Participating-labs source
+- **Closes:** OLIS04.03
+- **Scope:** Replace hard-coded 3-lab list in `Search.jsp:377-447` (Gamma-Dynacare 5552, CML 5407, LifeLabs 5687) with a maintainable seed table or lookup
+- **Files:** `Search.jsp`, possibly new DAO/seed
+- **Labels:** `type: feature`, `priority: medium`, `compliance`
+
+---
+
+## Track D — Needs product/UX decision before sizing
+
+### D1: OLIS-specific manual-match UI
+- **Closes:** OLIS04.06
+- **Partial regression context (see A9):** the original Struts 1 OLISAddToInboxAction had a `saveMatch` action method that handled the OLIS-specific match-to-demographic flow. It was dropped in commit `f90870dc15` (Dec 2024, Struts 1 cleanup). Whether or not that flow is exactly the OLIS-specific UI the spec wants, restoring `saveMatch` is a prerequisite — without it, even the existing MDS `PatientMatch.do` flow can't update OLIS-specific routing/audit state from the Results.jsp side.
+- **Decision still required:** build OLIS-specific match flow that shows original OLIS demographics next to EMR demographics, OR formally accept the (restored `saveMatch` + existing MDS `PatientMatch.do`) flow as sufficient. The decision determines whether D1 is just "port saveMatch" (small) or "port saveMatch + design new UI" (medium).
+- **Existing MDS flow:** `OpenEChart.jsp` → `oscarMDS/PatientSearch.jsp:183` → `PatientMatch2Action`
+- **Labels:** `type: discussion`, `needs-design`, `priority: low`, `regression`
+
+### D2: Nomenclature programmatic refresh
+- **Closes:** OLIS04.08
+- **Decision:** keep CSV reseed model, build a one-shot batch importer, or build a sync framework
+- **Affects scope significantly.** Current state: manual CSV updates of `OLISTestRequestNomenclature.csv` / `OLISTestResultNomenclature.csv`
+- **Labels:** `type: discussion`, `needs-design`, `priority: low`
+
+---
+
+## Track E — Verification / decision (no code, sign-off only)
+
+### E1: Verify OLIS04.05 returns "Alternate Name 1"
+- Confirm whether `OLISResultNomenclature.getName()` (`OLISHL7Handler.java:1725`) corresponds to OLIS "Alternate Name 1" vs. the standard nomenclature name
+- If not, scope a physician-preferred override
+- **Labels:** `type: documentation`, `priority: low`
+
+### E2: Document OLIS04.09 first-name strictness
+- `MessageUploader.willOLISLabReportMatch()` (line 462) requires first name to match in addition to the spec's HCN + Sex + DOB + Last name
+- Decision: relax to spec-strict, OR document as accepted deviation for OntarioMD review
+- **Labels:** `type: documentation`, `priority: low`
+
+---
+
+## Track F — External / coordination
+
+### F1: OntarioMD Conformance Testing
+- **Closes:** OLIS06.01
+- **Scope:** schedule, prep test transcripts, run conformance suite, manage feedback loop
+- **Long pole** — open this immediately; the slow loop dwarfs the code work
+- **Include in ticket body:** checklist of claimed-Meets vs claimed-Partial after fixes land (this is what OntarioMD will challenge first)
+- **Labels:** `type: maintenance`, `priority: high` (because of lead time, not difficulty)
+
+---
+
+## Track G — Local audit (this work item)
+
+### G1: Local OLIS smoke test against current branch
+- Stand up OLIS locally and exercise the major flows (Z01 patient query, Z04 preload/practitioner query, Results preview, Save / Sign-off, Forward, PDF render)
+- Triage anything new into Track A bug tickets
+- The previous working version was on Struts 1; expect drift bugs from the Struts 2 migration
+
+---
+
+## Sequencing recommendation
+
+1. **Day 0**: open A1, A2, F1, D1, D2, E1, E2, G1 — get the slow-loop and decision items moving
+2. **Sprint 1**: land B1 (JSP quick-win bundle); A1/A2 in parallel; G1 ongoing
+3. **Sprint 2**: C1 + C2 — compliance-critical audit/logging fixes with shared review themes
+4. **Sprint 3+**: C3, C4, then whatever D1/D2 resolve to
+
+## Cross-cutting notes
+
+- **Parent epic:** "OLIS OntarioMD Conformance Readiness" linking all tickets, body referencing `docs/olis/requirements-analysis.md` at a pinned commit SHA
+- **Parallelization:** A1, A2, B1, C1, G1 are file-disjoint and can be assigned to different devs immediately. C2 should sequence after C1's PR lands (shared audit-log path).
+- **Compliance-critical cluster:** C1 + C2 + C3 should all land before F1 conformance testing kicks off, otherwise the test cycle will surface them and add round-trip time.
