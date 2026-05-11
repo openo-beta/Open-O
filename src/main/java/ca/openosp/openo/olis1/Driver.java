@@ -237,8 +237,12 @@ public class Driver {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
-            Source schemaFile = new StreamSource(new File(OscarProperties.getInstance().getProperty("olis_response_schema")));
-            factory.newSchema(schemaFile);
+            // Skip schema loading when olis_response_schema is unset — without this guard,
+            // new File(null) NPEs and tanks the entire response-parse path.
+            if (OscarProperties.getInstance().getProperty("olis_response_schema") != null) {
+                Source schemaFile = new StreamSource(new File(OscarProperties.getInstance().getProperty("olis_response_schema")));
+                factory.newSchema(schemaFile);
+            }
 
             JAXBContext jc = JAXBContext.newInstance("ca.ssha._2005.hial");
             Unmarshaller u = jc.createUnmarshaller();
