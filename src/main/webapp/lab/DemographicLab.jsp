@@ -176,7 +176,7 @@
                 }
             }
             if (aBoxIsChecked) {
-                document.reassignForm.action = '<%=request.getContextPath()%>/oscarLab/FileLabs.do';
+                document.reassignForm.action = '<%=request.getContextPath()%>/oscarMDS/FileLabs.do';
                 document.reassignForm.submit();
             }
         }
