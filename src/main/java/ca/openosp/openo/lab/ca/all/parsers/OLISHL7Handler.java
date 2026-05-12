@@ -92,10 +92,12 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     public String getObrStatus(int index) {
+        if (obrStatus == null || index < 0 || index >= obrStatus.size()) return "";
         return obrStatus.get(index);
     }
 
     public String getObrSpecimenSource(int index) {
+        if (obrSpecimenSource == null || index < 0 || index >= obrSpecimenSource.size()) return "";
         return obrSpecimenSource.get(index);
     }
 
@@ -785,7 +787,9 @@ public class OLISHL7Handler implements MessageHandler {
 
     public String getOrderDate() {
         try {
-            return (formatDate(getString(terser.get("/.OBR-27-4")).substring(0, 8)));
+            String value = getString(terser.get("/.OBR-27-4"));
+            if (value == null || value.length() < 8) return "";
+            return (formatDate(value.substring(0, 8)));
         } catch (HL7Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
             return "";
@@ -903,6 +907,10 @@ public class OLISHL7Handler implements MessageHandler {
 
         obrParentMap = new HashMap<String, String>();
 
+        patientIdentifiers = new HashMap<String, String[]>();
+        patientAddresses = new ArrayList<HashMap<String, String>>();
+        patientHomeTelecom = new ArrayList<HashMap<String, String>>();
+        patientWorkTelecom = new ArrayList<HashMap<String, String>>();
         patientIdentifierNames = new HashMap<String, String>();
         initPatientIdentifierNames();
 
@@ -943,6 +951,9 @@ public class OLISHL7Handler implements MessageHandler {
                 }
                 if (segmentName.equals("ERR")) {
                     parseERRSegment();
+                }
+                if (segmentName.equals("PID")) {
+                    parsePIDSegment();
                 }
             }
             return;
