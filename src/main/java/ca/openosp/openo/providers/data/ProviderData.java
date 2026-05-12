@@ -646,10 +646,11 @@ public class ProviderData {
         String firstname = null;
         String lastname = null;
         if (searchStr.indexOf(",") != -1) {
-            String[] array = new String[2];
-            array = searchStr.split(",");
+            String[] array = searchStr.split(",");
             lastname = array[0].trim();
-            firstname = array[1].trim();
+            if (array.length > 1) {
+                firstname = array[1].trim();
+            }
         } else {
             lastname = searchStr.trim();
         }
