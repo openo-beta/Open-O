@@ -546,9 +546,20 @@
 
         -->
     </style>
-    <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui-1.12.1.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.structure-1.12.1.min.css"/>
+    <script type="text/javascript"
+            src="${pageContext.servletContext.contextPath}/library/jquery/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui-1.12.1.min.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
+        var contextpath = "${pageContext.servletContext.contextPath}";
+        const ctx = contextpath;
     </script>
 
     <script type="text/javascript" src="<%= request.getContextPath() %>/share/jquery/jquery.form.js"></script>
@@ -573,7 +584,7 @@
         }
 
         function printPDF() {
-            document.acknowledgeForm.action = "PrintOLISLab.do";
+            document.acknowledgeForm.action = "<%=request.getContextPath()%>/lab/CA/ALL/PrintOLISLab.do";
             document.acknowledgeForm.submit();
         }
 
@@ -581,32 +592,14 @@
             var link = "<%= request.getContextPath() %>/lab/LinkReq.jsp?table=hl7TextMessage&rptid=" + rptId + "&reqid=" + reqId + "<%=Encode.forJavaScript(String.valueOf(demographicID != null ? "&demographicNo=" + demographicID : ""))%>";
             window.open(link, "linkwin", "width=500, height=200");
         }
-
-        window.ForwardSelectedRows = function () {
-            var query = jQuery(document.reassignForm).formSerialize();
-            jQuery.ajax({
-                type: "POST",
-                url: "<%=request.getContextPath()%>/oscarMDS/ReportReassign.do",
-                data: query,
-                success: function (data) {
-                    self.close();
-                }
-            });
-        }
-
     </script>
+
+    <script type="text/javascript"
+            src="${pageContext.servletContext.contextPath}/share/javascript/oscarMDSIndex.js"></script>
 
 </head>
 
 <body style="width:800px">
-<!-- form forwarding of the lab -->
-<form name="reassignForm" method="post" action="<%= request.getContextPath() %>/lab/CA/ALL/Forward.do">
-    <input type="hidden" name="flaggedLabs" value="<%=Encode.forHtmlAttribute(String.valueOf(segmentID))%>"/>
-    <input type="hidden" name="selectedProviders" value=""/>
-    <input type="hidden" name="labType" value="HL7"/>
-    <input type="hidden" name="labType<%=Encode.forHtmlAttribute(String.valueOf(segmentID))%>HL7" value="imNotNull"/>
-    <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"/>
-</form>
 <form name="acknowledgeForm" method="post" action="<%=request.getContextPath()%>/oscarMDS/UpdateStatus.do">
     <input type="hidden" name="originalSegmentID" value="<%=Encode.forHtmlAttribute(String.valueOf(originalSegmentID))%>"/>
     <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
@@ -628,7 +621,7 @@
                             <% } %>
                             <input type="button" class="smallButton"
                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                                   onClick="popupStart(300, 400, '<%= request.getContextPath() %>/oscarMDS/SelectProvider.jsp', 'providerselect')">
+                                   onClick="ForwardSelectedRows('<%=Encode.forJavaScript(String.valueOf(segmentID))%>:HL7', '', '')">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                    onClick="window.close()">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> " onClick="printPDF()">
@@ -2134,7 +2127,7 @@
                             <% } %>
                             <input type="button" class="smallButton"
                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                                   onClick="popupStart(300, 400, '<%= request.getContextPath() %>/oscarMDS/SelectProvider.jsp', 'providerselect')">
+                                   onClick="ForwardSelectedRows('<%=Encode.forJavaScript(String.valueOf(segmentID))%>:HL7', '', '')">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                    onClick="window.close()">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> " onClick="printPDF()">
