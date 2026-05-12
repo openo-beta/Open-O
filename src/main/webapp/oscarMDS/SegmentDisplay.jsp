@@ -75,22 +75,8 @@ if ( request.getParameter("searchProviderNo") == null || request.getParameter("s
     <title><%=Encode.forHtml(String.valueOf(pd.getPatientName()))%> - <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.title"/></title>
     <script language="javascript" type="text/javascript"
             src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
-    <link rel="stylesheet" type="text/css" media="all"
-          href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css"/>
-    <link rel="stylesheet" type="text/css" media="all"
-          href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui-1.12.1.min.css"/>
-    <link rel="stylesheet" type="text/css" media="all"
-          href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.structure-1.12.1.min.css"/>
     <script type="text/javascript"
-            src="${pageContext.servletContext.contextPath}/library/jquery/jquery-1.12.0.min.js"></script>
-    <script type="text/javascript"
-            src="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui-1.12.1.min.js"></script>
-    <script type="text/javascript">
-        var contextpath = "${pageContext.servletContext.contextPath}";
-        const ctx = contextpath;
-    </script>
-    <script type="text/javascript"
-            src="${pageContext.servletContext.contextPath}/share/javascript/oscarMDSIndex.js"></script>
+            src="<%= request.getContextPath() %>/share/javascript/jquery/jquery-1.4.2.js"></script>
     <link rel="stylesheet" type="text/css" href="encounterStyles.css">
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 </head>
@@ -143,6 +129,17 @@ if ( request.getParameter("searchProviderNo") == null || request.getParameter("s
 </script>
 
 <body>
+<!-- form forwarding of the lab -->
+<form name="reassignForm" method="post" action="<%= request.getContextPath() %>/oscarMDS/Forward.do"><input
+        type="hidden" name="flaggedLabs"
+        value="<%= Encode.forHtmlAttribute(request.getParameter("segmentID")) %>"/> <input
+        type="hidden" name="selectedProviders" value=""/>
+    <input type="hidden" name="favorites" value=""/>
+    <input type="hidden" name="labType" value="MDS"/> <input type="hidden"
+                                                             name="labType<%=Encode.forHtmlAttribute(request.getParameter("segmentID"))%>MDS"
+                                                             value="imNotNull"/> <input type="hidden" name="providerNo"
+                                                                                        value="<%= Encode.forHtmlAttribute(request.getParameter("providerNo")) %>"/>
+</form>
 <form name="acknowledgeForm" method="post" action="UpdateStatus.do">
 
     <table width="100%" height="100%" border="0" cellspacing="0"
@@ -167,7 +164,7 @@ if ( request.getParameter("searchProviderNo") == null || request.getParameter("s
                                    onclick="return getComment();"> <% } %> <input type="button"
                                                                                   class="smallButton"
                                                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                                                                                  onClick="ForwardSelectedRows('<%=Encode.forJavaScript(request.getParameter("segmentID"))%>:MDS', '', '')">
+                                                                                  onClick="popupStart(397, 700, 'SelectProvider.jsp', 'providerselect')">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                    onClick="window.close()"> <input type="button"
                                                                     value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
@@ -816,7 +813,7 @@ if ( request.getParameter("searchProviderNo") == null || request.getParameter("s
                                    onclick="getComment()"> <% } %> <input type="button"
                                                                           class="smallButton"
                                                                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                                                                          onClick="ForwardSelectedRows('<%=Encode.forJavaScript(request.getParameter("segmentID"))%>:MDS', '', '')">
+                                                                          onClick="popupStart(397, 700, 'SelectProvider.jsp', 'providerselect')">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                    onClick="window.close()"> <input type="button"
                                                                     value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
