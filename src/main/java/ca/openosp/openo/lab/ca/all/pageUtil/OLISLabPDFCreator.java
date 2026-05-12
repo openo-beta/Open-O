@@ -1116,6 +1116,9 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
     }
 
     public String getAddressFieldIfNotNullOrEmpty(HashMap<String, String> address, String key, boolean newLine) {
+        if (address == null) {
+            return "";
+        }
         String value = address.get(key);
         if (stringIsNullOrEmpty(value)) {
             return "";
