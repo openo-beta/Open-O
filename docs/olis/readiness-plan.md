@@ -17,8 +17,8 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 
 | ID  | Summary | Status | Commit(s) |
 |-----|---------|--------|-----------|
-| A1  | OLIS lab PDF rendering in consults | ❌ Open — needs Keith's dev env (patient 31359) | — |
-| A2  | Forward-OLIS-result submit button missing | ❌ Open — needs production screenshot context | — |
+| A1  | OLIS source HTML/entities rendered as literal text in consult PDFs | ✅ Fixed — `HtmlTextCleaner` (Jsoup-based) applied to both OLIS + generic lab PDF render paths | `1647213359` |
+| A2  | Forward-OLIS-result submit button missing | ✅ Fixed — Forward + Print + jQuery-UI imports | `d7c1ee228b` |
 | A3  | `axis2-transport-local` dependency removed by mistake | ✅ Fixed | `dcd2b54b20` |
 | A4  | NumberFormatException in audit log on empty `demographicNo` | ✅ Fixed | `9ac31fca2b` |
 | A5  | `OLISStub` bytecode incompatible with axis2 1.8.2 | ❌ **Open — production-blocker.** SOAP stub regen, ~half-day to a day. | — |
@@ -30,23 +30,108 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 | A11 | Simulator multipart consumption (CVE-2024-53677 followup) | ✅ Fixed | `09f62661c9` |
 | A12 | `Driver.readResponseFromXML` NPE on unset schema property | ✅ Fixed | `dd13c8ac75` |
 | A13 | OLIS manual-match popup never fires saveMatch ajax | ✅ Fixed | `5bd9193bf2` |
+| A14 | OLISHL7Handler crashes on minimal HL7 fixtures | ✅ Fixed — defensive guards | `a94e66496d` |
+| A15 | OLISLabPDFCreator NPE on null address (empty PDF download) | ✅ Fixed — null guard | `8944948848` |
+| A16 | ProviderData.searchProvider ArrayIndex on no-comma query | ✅ Fixed — bounds check | `0614c4cf9a` |
+| A17 | BC/ON/MDS lab Forward buttons broken (same root cause as A2) | ⏸️ Deferred — broken since 2021, no user reports; revisit if reported | `579968aa08` (reverted in `b93db70a35`) |
+| A18 | Pre-inbox OLIS Print returns 500 (broken `&&` in PrintOLISLab2Action makes uuid preview path dead code) | ✅ Fixed — corrected condition + added null guard | TBD |
+| A20 | InboxHub NPE on OLIS labs (`LabResultData.getDateObj()` returns null because `dateTime` isn't populated) | ✅ Fixed — defensive null guard at deref site; deeper fix (populate `dateTime` for OLIS) deferred | `224f4422b6` |
+| A21 | Consult-print path doesn't route OLIS labs through `OLISLabPDFCreator` | ✅ Fixed — added request-less constructor + static `getPdfBytes` to `OLISLabPDFCreator`; instanceof-branched all 5 sites (incl. `LabManagerImpl.renderLab` which is the actual user-visible path) | TBD |
+| A22 | InboxHub web list leaks OpenO-synthesized `<span>` markup in the "Requesting Client" column | ✅ Fixed — `HtmlTextCleaner.toPlainText` applied at 3 Hl7textResultsData population sites | TBD |
+| A23 | Lab display JSPs (`labDisplay.jsp` + `labDisplayOLIS.jsp`) leak `<span>` markup in provider/CC/attending/admitting fields | ✅ Fixed — `HtmlTextCleaner.toPlainText` wrapped before `Encode.forHtml` at 6 render sites | TBD |
 
-**Net status (this dev environment):** all session-surfaced bugs (A3, A4, A7, A8, A9, A10, A11, A12, A13) closed.
-**Still open in Track A:** A1, A2 (need original reproduction environments — customer-reported), A5 (production-blocker, needs dedicated session for SOAP stub regen), A6 (dev-environment improvement, low priority).
+**Net status (this dev environment):** all session-surfaced bugs (A1, A2, A3, A4, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A18, A20, A21, A22, A23) closed; A17 intentionally deferred.
+**Still open in Track A:** A5 (production-blocker, needs dedicated session for SOAP stub regen), A6 (dev-environment improvement, low priority).
 
-### A1: Fix OLIS lab PDF rendering in consults
-- **Status:** ❌ Open — needs Keith's dev environment (patient 31359) to reproduce.
-- **Source:** Trello mvJ6Ef1N (#177), `bugs.md`
-- **Repro:** consult generated for patient 31359 from Keith's dev environment
-- **Likely scope:** consult-PDF generation path (not OLIS code itself); confirm where rendering breaks
-- **Labels:** `type: bug`, `priority: high`, `area: olis`
+### A1: OLIS source HTML/entities rendered as literal text in consult PDFs
+- **Status:** ✅ Fixed in commit `1647213359` — centralised `HtmlTextCleaner.toPlainText` helper (Jsoup-based) applied across both PDF render paths.
+- **Source:** Trello mvJ6Ef1N (#177), `bugs.md`; reporter's screenshots `bug_olis_picture_1.png` + `olis_bug_1_picture_2.png` (consult PDF page 15 of 22, FIT colorectal-screening result with Specimen Comment block).
+- **Repro:**
+  1. Consult that includes an OLIS lab result with a Specimen Comment that uses `&nbsp;` for whitespace and/or `<span style="...">` for inline styling
+  2. Generate the consult PDF (combined PDF export path)
+  3. Before fix: Specimen Comment block rendered as a wall of `&nbsp;` entities and visible `<span>` tags instead of readable text
+- **Visible failure modes in the screenshots:**
+  1. **Provider name fields** show `DR. BRENT RYAN CRAWFORD <span style="margin-left:15px; font-size:8px; color:#333333;">MD 109753</span>` — the registration-number suffix is meant to render as small grey text but appears as literal markup. Cosmetic, doctor name still readable.
+  2. **Specimen Comment block** shows multi-paragraph clinical text where every word-boundary is `&nbsp;` instead of a space. Looks like: `Action&nbsp;required&nbsp;for&nbsp;you:&nbsp;Complete&nbsp;a&nbsp;new&nbsp;FIT&nbsp;for&nbsp;your&nbsp;patient.` Doctor-facing clinical guidance, previously unreadable. **This was the clinical-safety concern** — a missed FIT recall in a colorectal cancer screening context.
+- **Root cause (not a regression):** OLIS source data legitimately contains HTML markup (the upstream lab system uses `<span>` tags for styling and `&nbsp;` for layout). Specifically, `OLISHL7Handler.getFullDocName` (line 2689) synthesises `<span style="margin-left:15px; font-size:8px; color:#333333;">` markup itself so the web display can style the registration number small/grey — so this isn't even pure upstream data, it's OpenO-emitted markup that the PDF generators couldn't parse back out. Combined with `<br>`-only stripping (no entity decoding, no general tag stripping) in 27+ render call sites across both PDF generators, any unanticipated markup or entity leaked through as literal text. Git history shows OpenO has been emitting and partially-stripping these fields since the OLIS handler's inception; this is the upstream-data + self-emitted-markup shape colliding with rudimentary `replaceAll` cleanup, not behavioural drift from a recent security tightening (cf. open-osp/Open-O PR #225 which dealt with a different class of regression).
+- **Fix shape (shipped):**
+  - New utility `ca.openosp.openo.utility.HtmlTextCleaner.toPlainText(String)` — Jsoup-based, single entry point. Strips all HTML tags, decodes entities (`&nbsp;`, `&lt;`, `&amp;`, etc.), preserves `<br>` as newlines, normalises whitespace.
+  - Applied across **`OLISLabPDFCreator`** (12 call sites) — Collectors/OBR/OBX/Report Comments, OBX results (NM/SN/TX/FT/TM/DT/TS), observation header, OBX name, plus a Jsoup-based rewrite of `getDoctorNamePhrase` replacing the brittle `indexOf("<")` parser while preserving subscript MD-number styling.
+  - Applied across **`LabPDFCreator`** (15 call sites) — covers the consult-print path (`ConsultationAttachDocs2Action`, `EctConsultationFormRequestPrintAction22Action`, `EctConsultationFormRequestPrintPdf`, `EctConsultationFormRequest2Action`), all 14 `<br>` strip sites plus the four `getDocName()`/`getCCDocs()` raw doctor-name dumps.
+  - Unit tests `src/test-modern/java/ca/openosp/openo/utility/HtmlTextCleanerUnitTest.java` pin 9 input shapes (span markup, `&nbsp;`, `<br>` → newline, null/empty safety, plain-text passthrough, mixed markup, common entities, arbitrary unknown tags).
+- **Verification (live):**
+  - Standalone OLIS Print (`PrintOLISLab.do`): `DR. BRENT RYAN CRAWFORD MD 109753` renders cleanly, MD number subscript-styled. No `<span>` or `&nbsp;` in 1943-byte PDF.
+  - Consult Print Preview (`RequestConsultation.do` with `submission=And Print Preview`): same doctor name renders cleanly inline (no subscript, since `LabPDFCreator` doesn't have the OLIS-specific splitter — see A21 for follow-up). 3622-byte PDF, no markup leakage.
+  - `mvn test -Dtest=HtmlTextCleanerUnitTest` → 9 passing in 0.115s.
+- **`&nbsp;` repro caveat:** the rich fixture `docs/olis/sample-response-a1-rich.hl7` populated NTE segments to reproduce the Specimen Comment leakage symptom, but those NTEs never reached the render path because of a separate HAPI structure-walker issue (see A19). The fix's `&nbsp;` cleanup is verified via unit test rather than end-to-end PDF inspection; trust the Jsoup contract — when real OLIS data reaches the render path, the same code that strips `<span>` will strip `&nbsp;`.
+- **Why upstream push-back alone wasn't sufficient:** OLIS data shape is set by individual labs (LifeLabs, Dynacare, etc.) and their HL7 export tooling. Even if we filed with OntarioMD, the upstream change cycle is long. Local sanitization is the only short-term fix that actually delivers readable clinical text. Plus the `<span>` markup is OpenO's own emission anyway — purely a local problem.
+- **Labels:** `type: bug`, `priority: critical`, `area: olis`, `clinical-safety`
 
 ### A2: Restore Forward-OLIS-result submit button
-- **Status:** ❌ Open — needs production screenshot context for the working HL7 forwarding flow.
+- **Status:** ✅ Fixed in commit `d7c1ee228b` — migrated `labDisplayOLIS.jsp` Forward to the modern jQuery-UI dialog flow + fixed `printPDF()` path resolution as a bonus.
 - **Source:** Trello 5YEZvWp1 (#190), `bugs.md`
-- **Repro:** click Forward on an OLIS lab → forwarding screen renders → no submit/forward button visible
-- **Likely scope:** compare OLIS-lab forwarding JSP/action vs. the working HL7 forwarding flow shown in production screenshot
+- **Repro:** click Forward on an OLIS lab → forwarding popup window renders → no submit button visible. Reporter assumed it was an OLIS-only forwarding flow; turned out the same dead end affected BC, ON CML, MDS, and 3 multi-lab views (see A17).
+- **Root cause:** the March 2021 commit `ecfcffd9e6` ("fix-buld-inbox-forwarding") commented out the `<input id="submitButton">` in `oscarMDS/SelectProvider.jsp:161` and simultaneously rewrote `ReportReassign2Action.java` to require JSON instead of form-encoded data. The new modal-dialog flow (`ForwardSelectedRows()` in `share/javascript/oscarMDSIndex.js`) was wired into `lab/CA/ALL/labDisplay.jsp` and the bulk-inbox path, but NOT into the OLIS-specific `labDisplayOLIS.jsp`. So OLIS labs still opened the legacy `popupStart('SelectProvider.jsp', 'providerselect')` popup window which had no working submit button + a backend that rejected its payload. Three independent failure modes stacked, each masking the next.
+- **Fix:** make `labDisplayOLIS.jsp` use the same modern flow as `labDisplay.jsp`:
+  1. Replace jQuery 1.3.2 import with jQuery 1.12.0 + jQuery-UI 1.12.1 + matching CSS theme files.
+  2. Add `ctx` global + load `oscarMDSIndex.js`.
+  3. Both Forward buttons now call `ForwardSelectedRows('<segmentID>:HL7', '', '')`.
+  4. Delete the dead local `window.ForwardSelectedRows` shadow + the unused `<form name="reassignForm">` declaration.
+  5. **Bonus fix:** `printPDF()` was setting form action to relative `"PrintOLISLab.do"` which resolved (via `<base href="/oscar/">`) to `/oscar/PrintOLISLab.do` → 404. Now uses absolute `<%=request.getContextPath()%>/lab/CA/ALL/PrintOLISLab.do`.
+- **Verified:** Forward button click opens modern modal dialog with provider autocomplete, Forward List, Favorites, and working "Forward"/"Cancel" buttons. Print button downloads valid `%PDF-1.4` document instead of HTML error fallback.
+- **Files:** `src/main/webapp/lab/CA/ALL/labDisplayOLIS.jsp`
+- **Note:** sibling JSPs with the same root cause (BC, ON CML, MDS, plus 3 multi-lab list views) were intentionally NOT touched — see A17 for the rationale.
 - **Labels:** `type: bug`, `priority: high`, `area: olis`
+
+### A14: OLISHL7Handler crashes on minimal HL7 fixtures
+- **Status:** ✅ Fixed in commit `a94e66496d` — defensive initialization + bounds checks across multiple getters.
+- **Source:** local audit, surfaced while testing the A2 Forward fix — `labDisplayOLIS.jsp` 500'd repeatedly on the simulator-uploaded sample HL7 even though the file parsed fine on upload.
+- **Repro:** upload `docs/olis/sample-response.hl7` via the OLIS simulator → add to inbox → open the lab → 500 page. The minimal sample doesn't populate every optional OBR/PID/specimen field that the production-tuned handler assumes is present.
+- **Root cause:** `OLISHL7Handler` has several internal `HashMap`/`ArrayList` fields that are only initialized inside specific parse methods (eg. `parsePIDSegment()`). When parsing skips a path (eg. `obrCount == 0` short-circuits in `init()`), those fields stay null and downstream getters NPE. Plus several getters do `list.get(0)` without bounds-checking, and `getOrderDate()` does `substring(0, 8)` without length-checking.
+- **Fix:**
+  1. `init()` pre-initializes `patientIdentifiers`, `patientAddresses`, `patientHomeTelecom`, `patientWorkTelecom` at the top — so getters never NPE even if `parsePIDSegment()` doesn't run.
+  2. `init()` now also calls `parsePIDSegment()` inside the `obrCount == 0` early-return branch — patient data was previously being silently dropped on observation-less messages.
+  3. `getObrStatus(int)` and `getObrSpecimenSource(int)` bounds-check against null + size before `list.get(index)`.
+  4. `getOrderDate()` length-checks OBR-27-4 before `substring(0, 8)` (OBR-27 is optional per HL7 v2.4).
+- **Files:** `src/main/java/ca/openosp/openo/lab/ca/all/parsers/OLISHL7Handler.java`
+- **Note:** these are all defensive guards; behaviour on well-formed production messages is unchanged. Affects only the OLIS lab display + PDF generator code paths.
+- **Labels:** `type: bug`, `priority: medium`, `area: olis`
+
+### A15: OLISLabPDFCreator NPE on null address (empty PDF download)
+- **Status:** ✅ Fixed in commit `8944948848` — null-guard in `getAddressFieldIfNotNullOrEmpty()`.
+- **Source:** local audit, surfaced while testing Print after A2 — Print button "succeeded" (browser saved a file) but the file was 24KB of HTML error page disguised as PDF.
+- **Repro:** open an OLIS lab → click Print → check downloaded "PDF" with `head -c 8 file.pdf` → not `%PDF-1.4`, it's HTML whitespace + the error page JSP.
+- **Root cause:** `OLISLabPDFCreator.getFullAddress(HashMap address)` calls `getAddressFieldIfNotNullOrEmpty(address, key)` which immediately does `address.get(key)` without checking whether `address` is null. When the PDF iterates patient/provider/specimen addresses and one is null, NPE → `PrintOLISLab2Action` returns "error" → Struts redirects to the lab display JSP → browser receives HTML where it expected a PDF stream.
+- **Fix:** added `if (address == null) return "";` at the top of `getAddressFieldIfNotNullOrEmpty()`.
+- **Verified:** Print now downloads valid `%PDF-1.4` document (1.9KB for our minimal fixture, would be richer for real OLIS messages).
+- **Files:** `src/main/java/ca/openosp/openo/lab/ca/all/pageUtil/OLISLabPDFCreator.java`
+- **Labels:** `type: bug`, `priority: medium`, `area: olis`
+
+### A16: ProviderData.searchProvider ArrayIndex on no-comma query
+- **Status:** ✅ Fixed in commit `0614c4cf9a` — defensive bounds check.
+- **Source:** local audit, surfaced while testing the modern Forward dialog's provider autocomplete after A2.
+- **Repro:** open OLIS lab → click Forward → type a single word with no comma in the provider autocomplete (eg. "smith") → 500 error response from `/oscar/provider/SearchProvider.do`.
+- **Root cause:** `ProviderData.searchProvider(String)` splits the query by `","` and unconditionally reads `array[1]` for firstname. A query without a comma produces a 1-element array → `ArrayIndexOutOfBoundsException`. This is a pre-existing bug affecting all callers of provider autocomplete, not just OLIS — but only surfaced in this session because the OLIS Forward dialog was newly functional.
+- **Fix:** guard the firstname assignment with `if (array.length > 1)`.
+- **Verified:** access log shows `POST /oscar/provider/SearchProvider.do HTTP/1.1 200` for partial queries that previously returned 500.
+- **Files:** `src/main/java/ca/openosp/openo/providers/data/ProviderData.java`
+- **Note:** shared utility; affects every provider autocomplete in the EMR. Strictly defensive — failed search now returns empty results instead of throwing. No path that previously worked stops working.
+- **Labels:** `type: bug`, `priority: medium`, `area: providers`, `defensive`
+
+### A17: Sibling lab Forward buttons broken (same root cause as A2)
+- **Status:** ⏸️ Deferred — sweep was implemented in `579968aa08` then reverted in `b93db70a35` per maintainer feedback. Revisit if/when reported.
+- **Source:** local audit, surfaced while diagnosing A2.
+- **Affected files** (all broken since `ecfcffd9e6`, Mar 22 2021):
+  - `src/main/webapp/lab/CA/ON/CMLDisplay.jsp` (2 Forward buttons)
+  - `src/main/webapp/lab/CA/BC/labDisplay.jsp` (2 Forward buttons)
+  - `src/main/webapp/oscarMDS/SegmentDisplay.jsp` (2 Forward buttons)
+  - `src/main/webapp/lab/DemographicLab.jsp` (1 Forward button — additionally lost its `flaggedLabs` checkbox infrastructure in commit `9962308fd1`, Feb 2023)
+  - `src/main/webapp/documentManager/previewDocHL7Inbox.jsp` (1 Forward button — `flaggedLabs` checkbox infrastructure appears to have been vestigial since inception)
+  - `src/main/webapp/oscarMDS/documentsInQueues.jsp` (1 Forward button — never had a `<form name="reassignForm">` declaration in git history at all)
+- **Diagnosis:** same as A2 — `popupStart('SelectProvider.jsp')` opens a popup window with no submit button (since 2021 commenting-out), AND the backend `ReportReassign2Action` requires JSON (rejects the legacy form payload).
+- **Why deferred:** the affected paths have been silently broken for ~5 years without user reports. Maintainer assessment: clinicians have adapted (probably routing via the inbox bulk-forward, the canonical HL7 `labDisplay.jsp`, or eChart-based workflows). "Fixing" the dark UI affordances risks surprising users who adapted. Conservative healthcare-EMR philosophy: don't touch unreported broken areas. Also: we don't have BC PathNet / ON CML / MDS test fixtures locally so we can't actually verify behavioural equivalence for those deployments.
+- **Reactivation criteria:** any user-reported ticket against one of these flows. Fix pattern is mechanical and well-tested via A2 (same 4-step JSP migration). DemographicLab/preview/documentsInQueues additionally need their checkbox infrastructure restored before the popup→dialog swap helps.
+- **Labels:** `type: bug`, `area: lab`, `status: deferred`, `breaks-since-2021`
 
 ### A13: OLIS manual-match popup never fires saveMatch ajax (Results.jsp ↔ PatientSearch.jsp param mismatch)
 - **Status:** ✅ Fixed in commit `5bd9193bf2` — Results.jsp's `showMatch()` now passes the uuid as both `segmentID` (for the form's hidden fields) and `labNo` (for PatientSearch.jsp's onclick handler).
@@ -166,13 +251,16 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Sidestepped for local testing** by simulator (set `olis_simulate=yes` — see A6 below). Real production OLIS path remains broken until stub is regenerated.
 - **Labels:** `type: bug`, `priority: high`, `area: olis`, `compliance`
 
-### A6: `olis_simulate=yes` not picked up at runtime when set in `over_ride_config.properties`
-- **Status:** ⚠️ Local-only workaround applied (`olis_simulate=yes` set directly in `oscar_mcmaster.properties` — DO NOT commit). Proper fix (devcontainer `setenv.sh` or `server` script tweak to set `-Doscar_override_properties=...`) still open.
+### A6: `olis_simulate=yes` override flag not loaded from `over_ride_config.properties` at runtime
+- **Status:** ⚠️ Dev-ergonomics gap — runtime works (the property loads fine from `oscar_mcmaster.properties`), but the cleaner override-file mechanism doesn't reach the running app, so devs have to edit the checked-in primary file. Workaround is the property in `oscar_mcmaster.properties` (current dev state); proper fix is a devcontainer `server`/`setenv.sh` tweak.
 - **Source:** local audit (Track G smoke test, 2026-05-08)
-- **Repro:** set `olis_simulate=yes` in `src/test/resources/over_ride_config.properties`, rebuild, fire query → still goes down the non-simulate (SOAP) branch.
-- **Root cause:** `OscarProperties.java:181-194` constructor only loads `/oscar_mcmaster.properties` from the classpath at runtime. `over_ride_config.properties` is loaded **only** when JVM system property `oscar_override_properties` points at it — which it doesn't in the dev container. The `over_ride_config.properties` file is for JUnit tests (Spring/test infrastructure), not the running app.
-- **Local-dev fix on this branch:** flipped `olis_simulate=no` → `olis_simulate=yes` directly in `src/main/resources/oscar_mcmaster.properties`. **Do not commit this line.** Revert before opening any PR; or use the override mechanism (see follow-up).
-- **Follow-up improvement:** add a `setenv.sh` or devcontainer `server` script tweak that sets `-Doscar_override_properties=/workspace/.../olis-dev.properties` so simulator mode can be enabled without editing checked-in files. Sized as a small dev-experience ticket — file under Track G.
+- **What works:** `olis_simulate=yes` in `src/main/resources/oscar_mcmaster.properties` is picked up by the running app exactly as expected — this is how simulator mode is enabled for local OLIS testing.
+- **What doesn't work:** setting `olis_simulate=yes` in `src/test/resources/over_ride_config.properties` instead (so the flag stays out of the checked-in primary file) is silently ignored at runtime — the override file is only loaded by the JUnit test infrastructure, not the running webapp.
+- **Repro of the gap:** revert `olis_simulate=no` in `oscar_mcmaster.properties`, set `olis_simulate=yes` in `src/test/resources/over_ride_config.properties`, rebuild, fire query → still goes down the non-simulate (SOAP) branch and fails on `OLISStub` (A5).
+- **Root cause:** `OscarProperties.java:181-194` constructor only loads `/oscar_mcmaster.properties` from the classpath at app startup. `over_ride_config.properties` is loaded only when the JVM is started with system property `-Doscar_override_properties=<path>` — which the dev container's `server` startup script doesn't set. So the override file ends up being test-only infrastructure, despite the name suggesting it's a general dev override.
+- **Why this matters:** without the override, enabling simulator mode requires editing `src/main/resources/oscar_mcmaster.properties` (a checked-in file), then remembering to revert before opening a PR. Easy to forget — leaks a `olis_simulate=yes` flag into review.
+- **Proper fix:** devcontainer `server`/`setenv.sh` tweak that exports `-Doscar_override_properties=/workspace/.../olis-dev.properties` (or similar) at JVM startup. Sized as a small dev-experience ticket. File under Track G.
+- **Current state on this branch:** `olis_simulate=yes` is set directly in `oscar_mcmaster.properties` (dev-only edit, NOT committed). Revert before opening any PR. The change shows in `git status` as a 1-line modification to remind you.
 - **Labels:** `type: documentation` / `dev-environment`, `priority: low`
 
 ### A3: OLIS query paths broken by missing `axis2-transport-local` dependency
@@ -186,6 +274,81 @@ These are previously reported user-blocking bugs, separate from spec compliance 
   2. Reordered `Driver.submitOLISQuery` to defer `OLISStub` construction to the non-simulate `else` branch, so simulator mode never instantiates the SOAP client at all.
 - **Follow-up:** regenerate the dependency lock file (`make lock`) before the PR is opened.
 - **Labels:** `type: bug`, `priority: high`, `area: olis`
+
+### A18: Pre-inbox OLIS Print returns 500 (broken `&&` in PrintOLISLab2Action makes uuid preview path dead code)
+- **Status:** ✅ Fixed — corrected condition + added null guard in `PrintOLISLab2Action`.
+- **Source:** local audit, surfaced during A1 testing.
+- **Repro:** open an OLIS lab via Results.jsp **before** adding to inbox → click Print → 500 (null pointer on `labDisplay.jsp` at line 218). The user had to click "Add to Inbox" first, then Print worked.
+- **Root cause (corrected):** initial guess was "no `hl7TextMessage` row exists before add-to-inbox" — but `PrintOLISLab2Action` was actually designed to handle that case via an in-memory `OLISResults2Action.searchResultsMap` keyed by uuid for the preview path. **However that branch was dead code** because line 51 had `if (segmentId == null && segmentId.equals("0"))` — the `&&` short-circuits on `segmentId == null`, so `.equals("0")` is never called. The condition is logically impossible to satisfy. Every print fell through to the else branch (`Factory.getHandler(segmentId)`) which returned null for not-yet-saved labs → line 58's `handler.getPatientName()` NPE'd → caught → returned "error" → forwarded to `/lab/CA/ALL/labDisplay.jsp` (per `struts.xml:440`) which is the **wrong** JSP for OLIS, so it NPE'd at its own line 218 trying to read request data that wasn't there.
+- **Fix shape (shipped):** in `PrintOLISLab2Action.java:51`:
+  - Replaced broken `if (segmentId == null && segmentId.equals("0"))` with `if ("0".equals(segmentId))`. The uuid preview path is no longer dead code.
+  - Added explicit null-guard on `handler` after lookup — if both the in-memory cache miss AND the Factory lookup return null, log + return "error" cleanly instead of NPE'ing on line 58.
+  - Added a comment block explaining the historical bug so a future reader doesn't undo the `==` → `equals` swap.
+- **Verification:** Playwright test — click Print on an OLIS lab before adding to inbox. Should now either: (a) get a clean PDF if the search cache still has the entry by uuid, OR (b) get the error result (forwarded to labDisplay.jsp, which still NPEs but that's a separate bug — see follow-up note below).
+- **Follow-up (could file as A24 if pursued):** the error-result mapping in `struts.xml:440` forwards to `labDisplay.jsp` which is the **non-OLIS** lab display JSP. Even with the null guard, hitting this error path renders the wrong JSP. Should be either `/lab/CA/ALL/labDisplayOLIS.jsp` or a dedicated error JSP. Out of scope for A18's main fix.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`, `defensive`
+
+### A20: InboxHub NPE on OLIS labs (`LabResultData.getDateObj()` returns null because `dateTime` isn't populated)
+- **Status:** ✅ Fixed — defensive null guard at the deref site. Root-cause fix (populate `dateTime` for OLIS labs in `CommonLabResultData`) deferred as separate work.
+- **Source:** local audit, surfaced during A1 testing — added OLIS lab to inbox via standard flow, navigated to InboxHub, 500 page.
+- **Repro:** any OLIS lab in inbox → open InboxHub for that provider → `NullPointerException: Cannot invoke "java.util.Date.toInstant()" because the return value of "ca.openosp.openo.lab.ca.on.LabResultData.getDateObj()" is null` thrown at `LabDataController.filterOldLabVersions:576`.
+- **Root cause (corrected):** initial analysis suspected the labType branch in `LabResultData.getDateObj()` didn't match — but **`LabResultData.HL7TEXT` is literally the string `"HL7"`** (line 67: `public static String HL7TEXT = "HL7";`), so the branch does match for OLIS labs (which set labType `"HL7"`). The actual issue: inside the matched branch, `getDateTime()` returns `this.dateTime`, and that field isn't populated when `LabResultData` is built for OLIS labs via `CommonLabResultData.populateLabResultsData`. `time` is null → method returns null at line 355 → `LabDataController:576` deref-NPEs. Worse: line 580 already has a `(dateA == null || dateB == null) ? 5 : ...` guard that was dead code because the NPE happened upstream.
+- **Fix shape (shipped):** defensive null guard at `LabDataController.java:576-577`. Lifts the existing `dateA == null` check up to where the deref happens, making the previously-dead line-580 guard actually work. ~10 lines including a comment explaining why getDateObj can be null. Zero behavioural change for non-null cases.
+- **Deeper fix (deferred — file as A22 if pursued):** trace why `dateTime` isn't populated for OLIS labs in `CommonLabResultData` query paths. Likely either the SQL doesn't select an OLIS-specific date column, or there's a missing setter call after constructing `LabResultData`. The pragmatic guard above prevents the NPE; the deeper fix would make accession-version filtering work correctly for OLIS labs (currently they all fall into the "5 months apart" default → no versions get filtered out as duplicates).
+- **Labels:** `type: bug`, `priority: medium`, `area: lab`, `defensive`
+
+### A21: Consult-print path doesn't route OLIS labs through `OLISLabPDFCreator`
+- **Status:** ✅ Fixed across all 5 lab-PDF render sites in the consult flow, plus the `LabManagerImpl.renderLab` central path that powers the consult Print Preview.
+- **Source:** discovered during A1 fix verification — the original reporter's screenshot is from the consult-print path, which we initially assumed went through `OLISLabPDFCreator`. It doesn't.
+- **Repro:** attach OLIS lab to consult → Print Preview → PDF shows the OLIS lab via `LabPDFCreator` styling (doctor name inline, single Comments section, no version info) instead of OLIS-specific styling (subscript MD, separate Report/OBR/OBX comment blocks, version display).
+- **Root cause:** `CaseManagementPrint.java:381` correctly branches on `handler instanceof OLISHL7Handler` and routes to `OLISLabPDFCreator` for the eChart/CPP print path. But the consult-request path uses `LabPDFCreator` unconditionally in **four** sites without the instanceof check:
+  - `ConsultationAttachDocs2Action.java:236` (attach-popup preview)
+  - `EctConsultationFormRequestPrintAction22Action.java:163` (main consult print)
+  - `EctConsultationFormRequestPrintPdf.java:293` (PDF generator helper)
+  - `EctConsultationFormRequest2Action.java:574` (fax send)
+- **Fix shape (shipped):**
+  - Added `OLISLabPDFCreator(OutputStream, String segmentId)` constructor for non-request rendering paths (saved-lab only; segmentID=0 search preview still requires the request-based constructor).
+  - Added static `OLISLabPDFCreator.getPdfBytes(String segmentId)` mirroring `LabPDFCreator.getPdfBytes`.
+  - Instanceof-branched `OLISHL7Handler` at all 5 sites:
+    - `ConsultationAttachDocs2Action:236` (attach preview)
+    - `EctConsultationFormRequestPrintAction22Action:163` (consult print)
+    - `EctConsultationFormRequestPrintPdf:293` (PDF helper)
+    - `EctConsultationFormRequest2Action:574` (fax/HL7 send via static helper)
+    - `LabManagerImpl.renderLab:100` (the central path used by `DocumentAttachmentManagerImpl.renderConsultationFormWithAttachments`, which is the actual user-visible consult Print Preview entry point — was initially missed)
+  - The OLIS branch skips `addEmbeddedDocuments` (a LabPDFCreator/PathL7-specific feature) and reads raw PDF bytes from the temp file.
+- **Why low priority despite affecting the path the original reporter screenshotted:** the A1 fix already removes the literal `<span>`/`&nbsp;` markup leakage on this path — clinical text is now readable. The remaining gap is purely aesthetic (subscript MD styling, comment layout, version header). Worth doing but not urgent.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`, `cosmetic`
+
+### A22: InboxHub web list leaks OpenO-synthesized `<span>` markup in "Requesting Client" column
+- **Status:** ✅ Fixed — `HtmlTextCleaner.toPlainText` applied at 3 `Hl7textResultsData` population sites (lines 597, 726, 843).
+- **Source:** discovered during A20 verification — the OLIS lab in inbox rendered correctly (no NPE) but its "Requesting Client" cell contained `DR JOHN SMITH <span style="margin-left:15px; font-size:8px; color:#333333;">DRLIC DR1234</span>` as literal text in the table.
+- **Repro:**
+  1. Any OLIS lab in any provider's inbox
+  2. Navigate to InboxHub (`/web/inboxhub/Inboxhub.do`) → ensure type filter includes Labs
+  3. Observe the "Requesting Client" column for the OLIS lab shows literal `<span style="...">DRLIC NNNN</span>` markup
+- **Root cause:** the `<span>` markup is emitted by `OLISHL7Handler.getFullDocName` (`OLISHL7Handler.java:2689`) for the registration-number subscript-styling intent on the PDF render path. That string is stored on `LabResultData.requestingClient` via `Hl7textResultsData` (lines 597, 726, 843) and `InboxResponse.java:130`. The InboxHub JSP renders it at `InboxhubListMode.jsp:74` via `<c:out value="${labResult.requestingClient}" />` — `<c:out>` HTML-escapes by default, so the angle brackets get rendered as `&lt;span&gt;` and appear as literal text in the cell.
+- **Why A1 fix didn't cover this:** A1 targeted the **PDF rendering paths** (`OLISLabPDFCreator` + `LabPDFCreator`) which call `HtmlTextCleaner.toPlainText` before writing to iText. InboxHub renders directly from `LabResultData` getters into HTML via JSP — completely separate code path that the A1 fix never touched.
+- **Fix shape (three candidates, in order of preference):**
+  1. **Sanitize at the population site** in `Hl7textResultsData` (3 lines: 597, 726, 843) — wrap `hl7.getRequestingProvider()` / `info.getRequestingProvider()` with `HtmlTextCleaner.toPlainText(...)`. Scoped to HL7-text / OLIS labs which is exactly where the markup originates. **Recommended** — narrow blast radius, predictable.
+  2. **Sanitize at `InboxResponse.java:130`** — wrap `inboxItem.getRequestingClient()` with `HtmlTextCleaner.toPlainText`. Covers the InboxHub path specifically but doesn't help if other (non-inbox) consumers read the same field.
+  3. **Sanitize at the JSP** — would need a custom EL function or scriptlet, more invasive for one cell. Avoid.
+- **Why the `<span>` styling intent doesn't transfer to the inbox table:** the subscript styling only makes sense in a PDF where the OLIS handler's web-display assumption is intentionally rendered via iText subscriptFont. In an HTML table cell, the styling would either need to be hand-translated to actual `<span>` elements (with CSS allowed), OR stripped — and stripping is the consistent choice here since `<c:out>` already escapes the markup.
+- **Companion concern:** the same getter feeds other UI surfaces (eg. `oscar/oscarMDS/SegmentDisplay.jsp` via different controllers). A spot-check of those surfaces after this fix would be worthwhile to confirm we don't break a place that intentionally relied on the raw markup (unlikely but worth one grep pass). **Update:** spot-check did surface a real leak in the lab-display JSPs — see A23.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`, `area: inbox`, `cosmetic`
+
+### A23: Lab display JSPs leak `<span>` markup in provider/CC/attending/admitting fields
+- **Status:** ✅ Fixed — `HtmlTextCleaner.toPlainText` wrapped before `Encode.forHtml` at 6 render sites.
+- **Source:** discovered during A22 verification — InboxHub list rendered cleanly after A22, but clicking into a lab opened `labDisplayOLIS.jsp` which still showed `<span style="...">MD #####</span>` markup in the Ordering Provider and CC Client cells.
+- **Repro:**
+  1. Open any OLIS lab via `labDisplayOLIS.jsp` (or any HL7 lab via `labDisplay.jsp`)
+  2. Observe Ordering Provider field shows literal `<span style="margin-left:15px; font-size:8px; color:#333333;">MD #####</span>` text
+  3. Same for "cc: Client" field (and Attending/Admitting Provider on `labDisplayOLIS.jsp`)
+- **Root cause:** same OpenO-synthesized markup from `OLISHL7Handler.getFullDocName:2689` — separate render path from A22 (InboxHub) and A1 (PDF). The JSPs call `Encode.forHtml(String.valueOf(handler.getDocName()))` etc. which HTML-escapes the markup so it renders as literal `&lt;span&gt;` text instead of being interpreted as HTML.
+- **Fix shape (shipped):** wrap with `HtmlTextCleaner.toPlainText` before `Encode.forHtml` at 6 sites. Strip first, then escape — order matters so any remaining special chars in the cleaned text are still HTML-safe.
+  - `labDisplayOLIS.jsp`: lines 1177 (`getDocName`), 1256 (`getAttendingProviderName`), 1273 (`getAdmittingProviderName`), 1366 (`getCCDocs`)
+  - `labDisplay.jsp`: lines 1696 (`getDocName`), 1708 (`getCCDocs`)
+- **Companion concern:** `labDisplay.jsp:1627` renders `handler.getClientRef()` — different getter, not the `<span>`-emitting one based on a quick grep. Left unchanged. If real CML/MDS data shows similar leakage in that cell, expand the fix there too.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`, `area: lab`, `cosmetic`
 
 ---
 
@@ -259,6 +422,24 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Affects scope significantly.** Current state: manual CSV updates of `OLISTestRequestNomenclature.csv` / `OLISTestResultNomenclature.csv`
 - **Labels:** `type: discussion`, `needs-design`, `priority: low`
 
+### D3: Structured doctor-name data from OLIS handler (replace synthesized `<span>` markup)
+- **Decision:** refactor `OLISHL7Handler.getFullDocName` (and related getters) to return structured doctor-name data — eg. a record `DoctorName(name, prefix, licenseType, licenseNumber)` — and let each renderer decide how to display, instead of having the handler emit `<span style="...">` markup that consumers have to parse back out.
+- **Current state (post A1/A21/A22/A23):** `OLISHL7Handler.getFullDocName:2689` synthesizes `<span style="margin-left:15px; font-size:8px; color:#333333;">{type} {licenseNum}</span>` markup. Every consumer that wants plain text has to strip it via Jsoup (`HtmlTextCleaner.toPlainText`). The PDF path also has bespoke logic in `OLISLabPDFCreator.getDoctorNamePhrase` that parses the markup back out to render the license number in subscript font.
+- **Why this is worth doing:**
+  - The data layer is encoding a *styling intent* as inline HTML, which is a category error — display concerns belong in renderers, not models.
+  - Web display (`labDisplay.jsp`, `labDisplayOLIS.jsp`) currently can't honour the small-grey styling intent because `<c:out>` HTML-escapes the markup; we strip the markup instead. With structured data, the JSPs could render real CSS-styled `<span class="md-license">{type} {licenseNum}</span>` and clinicians would see the actual visual intent.
+  - InboxHub (`Hl7textResultsData`) currently strips the markup at the population layer; with clean source data, the strip becomes a no-op.
+  - Roughly 14 of the ~36 Jsoup call sites we added become removable (the doctor-name ones; comment-field sanitization stays — those handle genuine upstream HTML from the lab system, not OpenO synthesis).
+- **A21's preparatory contribution:** consolidates OLIS PDF rendering paths into a single creator (`OLISLabPDFCreator`), so the structured-data migration is a single-renderer change rather than two. The 5 consult-flow sites A21 fixed now all route through `OLISLabPDFCreator.getDoctorNamePhrase` — that's the **one** PDF method that needs updating when the refactor lands.
+- **Scope estimate:** 2-3 days of focused work.
+  - **Day 1**: design structured shape (`DoctorName` record or similar), update `OLISHL7Handler.getFullDocName` + add `getDoctorNameStructured()`, ensure backward-compat via the existing flat-string getter.
+  - **Day 2**: update `OLISLabPDFCreator.getDoctorNamePhrase` to consume structured data; verify subscript styling preserved in PDFs.
+  - **Day 3**: optional cleanup of A22/A23 Jsoup wrappers + JSP upgrade to real CSS styling.
+- **Migration flexibility (A22/A23 wrappers can stay):** the Jsoup wrappers we added in `Hl7textResultsData` (A22) and `labDisplay.jsp` / `labDisplayOLIS.jsp` (A23) become **defensive no-ops** once the source returns clean text. They don't need to be removed in the refactor — they just stop doing anything useful. Choose between:
+  - **Lazy migration**: just refactor the handler + PDF renderer. Leave the JSP/InboxHub wrappers alone. Cheapest path. ~3 files.
+  - **Thorough migration**: also drop the now-redundant wrappers, optionally upgrade JSP rendering to use structured data + CSS for proper subscript styling on the web. ~6 files.
+- **Labels:** `type: refactor`, `needs-design`, `priority: low`, `tech-debt`
+
 ---
 
 ## Track E — Verification / decision (no code, sign-off only)
@@ -292,6 +473,11 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - Stand up OLIS locally and exercise the major flows (Z01 patient query, Z04 preload/practitioner query, Results preview, Save / Sign-off, Forward, PDF render)
 - Triage anything new into Track A bug tickets
 - The previous working version was on Struts 1; expect drift bugs from the Struts 2 migration
+
+### G2: Synthetic-fixture quirk — NTE rendering vs. Z-segment placement
+- **Not a bug in OpenO.** During A1 development we built `docs/olis/sample-response-a1-rich.hl7` with NTE comment segments interleaved between OBR and ZBR (`OBR → ZBR → NTE → ...`). Those NTEs didn't render because `OLISHL7Handler.getNTELocation` walks `terser.getFinder().getRoot().getNames()` which doesn't expose nested NTEs when custom Z-segments sit between the OBR and the NTE in the wire order.
+- **Real OLIS data is unaffected.** The original A1 reporter's screenshot showed `&nbsp;` Specimen Comment content rendering correctly. The user's recent lab upload also rendered comments correctly during A21 verification. Production OLIS messages put NTEs in HAPI-expected positions.
+- **If a future dev hand-crafts an HL7 fixture and finds comments not rendering**, the fix is to put the NTE segments in standard ORU_R01 positions (immediately after OBR before any OBX, between OBX, or at top-of-message before any OBR) — NOT to defensively rewrite `getNTELocation`. Malformed upstream HL7 would be an OLIS escalation, not an OpenO defensive-coding task.
 
 ---
 
