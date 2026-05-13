@@ -61,6 +61,7 @@ import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
 import ca.openosp.openo.commn.model.Hl7TextMessage;
 import ca.openosp.openo.commn.printing.FontSettings;
 import ca.openosp.openo.commn.printing.PdfWriterFactory;
+import ca.openosp.openo.utility.HtmlTextCleaner;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
@@ -371,7 +372,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
 				cell.setBorder(15);
 				cell.setPadding(3);
 				cell.setColspan(2);
-				cell.setPhrase(new Phrase(header.replaceAll("<br\\s*/*>", "\n"),
+				cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(header),
 						new Font(bf, 12, Font.BOLD)));
 				table.addCell(cell);
 				
@@ -476,8 +477,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
 			cell.setPaddingLeft(100);
 			cell.setColspan(7);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-			cell.setPhrase(new Phrase(handler.getOBXComment(1, 1, 1)
-					.replaceAll("<br\\s*/*>", "\n"), font));
+			cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXComment(1, 1, 1)), font));
 			table.addCell(cell);
 		} else {
 			for (int j = 0; j < obrCount; j++) {
@@ -581,9 +581,9 @@ public class LabPDFCreator extends PdfPageEventHelper {
                                         "".equals(((PATHL7Handler) handler).getOBXSubId(j, k))) {
                                     PdfPTable infoTable = new PdfPTable(2);
                                     infoTable.setWidthPercentage(100);
-                                    cell.setPhrase(new Phrase(handler.getOBXName(j, k).replaceAll("<br\\s*/*>", " "), lineFont));
+                                    cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXName(j, k)).replace("\n", " "), lineFont));
                                     infoTable.addCell(cell);
-                                    cell.setPhrase(new Phrase(handler.getOBXResult(j, k).replaceAll("<br\\s*/*>", " "), lineFont));
+                                    cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXResult(j, k)).replace("\n", " "), lineFont));
                                     infoTable.addCell(cell);
                                     table.addCell(infoTable);
                                 } else {
@@ -596,7 +596,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                                     if (j == 0 && k == 0) {
                                         cell.setColspan(colspan - 1);
                                         cell.setNoWrap(true);
-                                        cell.setPhrase(new Phrase(data.replaceAll("<br\\s*/*>", "\n"), lineFont));
+                                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(data), lineFont));
                                         table.addCell(cell);
 
                                         cell.setColspan(1);
@@ -607,7 +607,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                                         cell.setHorizontalAlignment(ha);
                                     } else {
                                         cell.setNoWrap(false);
-                                        cell.setPhrase(new Phrase(data.replaceAll("<br\\s*/*>", "\n"), lineFont));
+                                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(data), lineFont));
                                         table.addCell(cell);
                                     }
 
@@ -640,7 +640,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                                     }
                                 }
 
-                                cell.setPhrase(new Phrase(handler.getOBXResult(j, k).replaceAll("<br\\s*/*>", "\n").replace("\t", "\u00a0\u00a0\u00a0\u00a0"), lineFont));
+                                cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXResult(j, k)).replace("\t", "\u00a0\u00a0\u00a0\u00a0"), lineFont));
                                 table.addCell(cell);
 
                                 //if there are duplicate Times, display only the first
@@ -709,7 +709,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                                         cell.setPhrase(new Phrase("PDF Report (Appended to end of Laboratory Report)", lineFont));
                                         table.addCell(cell);
                                     } else {
-                                        cell.setPhrase(new Phrase(handler.getOBXResult(j, k).replaceAll("<br\\s*/*>", "\n").replace("\t", "\u00a0\u00a0\u00a0\u00a0"), lineFont));
+                                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXResult(j, k)).replace("\t", "\u00a0\u00a0\u00a0\u00a0"), lineFont));
                                         //if this PATHL7 result is from CDC/SG and is greater than 100 characters
                                         if ((handler.getOBXResult(j, k).length() > 100) && (handler.getPatientLocation().equals("SG") || handler.getPatientLocation().equals("CDC"))) {
 
@@ -751,10 +751,10 @@ public class LabPDFCreator extends PdfPageEventHelper {
 										cell.setPhrase(new Phrase("PDF Report (Appended to end of Laboratory Report)", lineFont));
 										table.addCell(cell);
 									} else if (handler instanceof ExcellerisOntarioHandler && !((ExcellerisOntarioHandler) handler).getOBXSubId(j, k).isEmpty()) {
-										cell.setPhrase(new Phrase(((ExcellerisOntarioHandler) handler).getOBXSubIdWithObservationValue(j, k).replaceAll("<br\\s*/*>", "\n"), lineFont));
+										cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(((ExcellerisOntarioHandler) handler).getOBXSubIdWithObservationValue(j, k)), lineFont));
 										table.addCell(cell);
 									} else {
-										cell.setPhrase(new Phrase(handler.getOBXResult(j, k).replaceAll("<br\\s*/*>", "\n"), lineFont));
+										cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXResult(j, k)), lineFont));
 										table.addCell(cell);
 									}
 									cell.setColspan(1);
@@ -826,7 +826,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                                         } else {
                                             cell.setColspan(7);
                                         }
-                                        cell.setPhrase(new Phrase(handler.getOBXComment(j, k, l).replaceAll("<br\\s*/*>", "\n"), font));
+                                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXComment(j, k, l)), font));
                                         table.addCell(cell);
 
                                     }
@@ -850,7 +850,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                             cell.setColspan(7);
 
                             table.setWidthPercentage(100);
-                            cell.setPhrase(new Phrase(handler.getOBXResult(j, k).replaceAll("<br\\s*/*>", "\n"), font));
+                            cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXResult(j, k)), font));
                             table.addCell(cell);
 
                             cell.setColspan(1);
@@ -863,7 +863,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                             cell.setPaddingLeft(100);
                             cell.setColspan(7);
 
-                            cell.setPhrase(new Phrase(handler.getNteForOBX(j, k).replaceAll("<br\\s*/*>", "\n"), font));
+                            cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getNteForOBX(j, k)), font));
                             table.addCell(cell);
                             cell.setPaddingLeft(5);
                             cell.setColspan(1);
@@ -875,9 +875,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                                 for (int l = 0; l < handler.getOBXCommentCount(
                                         j, k); l++) {
 
-                                    cell.setPhrase(new Phrase(handler
-                                            .getOBXComment(j, k, l).replaceAll(
-                                                    "<br\\s*/*>", "\n"), font));
+                                    cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXComment(j, k, l)), font));
                                     table.addCell(cell);
 
                                 }
@@ -898,9 +896,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                             for (int l = 0; l < handler
                                     .getOBXCommentCount(j, k); l++) {
 
-                                cell.setPhrase(new Phrase(handler
-                                        .getOBXComment(j, k, l).replaceAll(
-                                                "<br\\s*/*>", "\n"), font));
+                                cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBXComment(j, k, l)), font));
                                 table.addCell(cell);
 
                             }
@@ -953,8 +949,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                                 cell.setPhrase(new Phrase("", font));
                                 table.addCell(cell);
                                 cell.setColspan(colSpan - 1);
-                                cell.setPhrase(new Phrase(handler.getOBRComment(j, k)
-                                        .replaceAll("<br\\s*/*>", "\n"), font));
+                                cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.getOBRComment(j, k)), font));
                             }
                             table.addCell(cell);
                             cell.setPadding(3);
@@ -1077,13 +1072,13 @@ public class LabPDFCreator extends PdfPageEventHelper {
         Phrase clientPhrase = new Phrase();
         PdfPTable clientTable = new PdfPTable(clientWidths);
         clientPhrase.add(new Chunk("Requesting Client:  ", boldFont));
-        clientPhrase.add(new Chunk(handler.getDocName(), font));
+        clientPhrase.add(new Chunk(HtmlTextCleaner.toPlainText(handler.getDocName()), font));
         cell.setPhrase(clientPhrase);
         clientTable.addCell(cell);
 
         clientPhrase = new Phrase();
         clientPhrase.add(new Chunk("cc: Client:  ", boldFont));
-        clientPhrase.add(new Chunk(handler.getCCDocs(), font));
+        clientPhrase.add(new Chunk(HtmlTextCleaner.toPlainText(handler.getCCDocs()), font));
         cell.setPhrase(clientPhrase);
         clientTable.addCell(cell);
 
@@ -1188,12 +1183,12 @@ public class LabPDFCreator extends PdfPageEventHelper {
 
         clientPhrase = new Phrase();
         clientPhrase.add(new Chunk("Requesting Client:  ", boldFont));
-        clientPhrase.add(new Chunk(handler.getDocName() + "\n", font));
+        clientPhrase.add(new Chunk(HtmlTextCleaner.toPlainText(handler.getDocName()) + "\n", font));
         patientInfo.add(clientPhrase);
 
         clientPhrase = new Phrase();
         clientPhrase.add(new Chunk("cc: Client:  ", boldFont));
-        clientPhrase.add(new Chunk(handler.getCCDocs() + "\n\n", font));
+        clientPhrase.add(new Chunk(HtmlTextCleaner.toPlainText(handler.getCCDocs()) + "\n\n", font));
         patientInfo.add(clientPhrase);
 
         document.add(patientInfo);

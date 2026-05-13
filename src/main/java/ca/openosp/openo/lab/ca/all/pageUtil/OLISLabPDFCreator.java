@@ -33,7 +33,16 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.itextpdf.text.*;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.ExceptionConverter;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
 import ca.openosp.openo.commn.model.Hl7TextMessage;
@@ -53,7 +62,9 @@ import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
+import ca.openosp.openo.utility.HtmlTextCleaner;
 import ca.openosp.openo.utility.PathValidationUtils;
+import org.jsoup.Jsoup;
 
 import java.io.File;
 
@@ -266,7 +277,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         Phrase categoryPhrase = new Phrase();
         categoryPhrase.setFont(boldFont);
         //Replaces
-        categoryPhrase.add(header.replaceAll("<br\\s*/*>", "\n"));
+        categoryPhrase.add(HtmlTextCleaner.toPlainText(header));
         //Gets the point of care and outputs message if it exists
         String poc = handler.getPointOfCare(obr);
         if (!stringIsNullOrEmpty(poc)) {
@@ -376,7 +387,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             cell.setColspan(7);
             Phrase collectorsCommentPhrase = new Phrase();
             collectorsCommentPhrase.setFont(font);
-            collectorsCommentPhrase.add("Comments: " + handler.formatString(collectorsComment));
+            collectorsCommentPhrase.add("Comments: " + HtmlTextCleaner.toPlainText(handler.formatString(collectorsComment)));
 
             collectorsCommentPhrase.setFont(subscriptFont);
             collectorsCommentPhrase.add("\t\t" + handler.getCollectorsCommentSourceOrganization(obr));
@@ -401,7 +412,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                     obrFlag = true;
                 }
 
-                String obrComment = handler.formatString(handler.getOBRComment(obr, comment)).replaceAll("<br\\s*/*>", "\n");
+                String obrComment = HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBRComment(obr, comment)));
                 String sourceOrg = handler.getOBRSourceOrganization(obr, comment);
 
                 cell.setColspan(6);
@@ -477,7 +488,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                 Phrase obxDisplayName = new Phrase();
                 //Sets the font and replaces all breaks with a new line
                 obxDisplayName.setFont(lineFont);
-                obxDisplayName.add(obxName.replaceAll("<br\\s*/*>", "\n"));
+                obxDisplayName.add(HtmlTextCleaner.toPlainText(obxName));
 
                 //Checks the abnormal nature of the test and adds the necessary portion to the displayName
                 String abnormalNature = handler.getNatureOfAbnormalTest(obr, obx);
@@ -520,9 +531,9 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
                     //If the type does not equal SN, then outputs normal OBX result, if it is SN then outputs SNResult
                     if (!obxValueType.equals("SN"))
-                        cell.setPhrase(new Phrase(handler.formatString(handler.getOBXResult(obr, obx)).replaceAll("<br\\s*/*>", "\n"), lineFont));
+                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXResult(obr, obx))), lineFont));
                     else
-                        cell.setPhrase(new Phrase(handler.formatString(handler.getOBXSNResult(obr, obx)).replaceAll("<br\\s*/*>", "\n"), lineFont));
+                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXSNResult(obr, obx))), lineFont));
 
                     table.addCell(cell);
 
@@ -551,7 +562,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
                     cell.setColspan(5);
                     cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                    cell.setPhrase(new Phrase(handler.formatString(handler.getOBXResult(obr, obx)).replaceAll("<br\\s*/*>", "\n"), lineFont));
+                    cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXResult(obr, obx))), lineFont));
                     table.addCell(cell);
 
                     cell.setColspan(1);
@@ -573,11 +584,11 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
                     //Gets the OBX result based on the value type
                     if (obxValueType.equals("TM")) {
-                        cell.setPhrase(new Phrase(handler.formatString(handler.getOBXTMResult(obr, obx)).replaceAll("<br\\s*/*>", "\n"), lineFont));
+                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXTMResult(obr, obx))), lineFont));
                     } else if (obxValueType.equals("DT")) {
-                        cell.setPhrase(new Phrase(handler.formatString(handler.getOBXDTResult(obr, obx)).replaceAll("<br\\s*/*>", "\n"), lineFont));
+                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXDTResult(obr, obx))), lineFont));
                     } else {
-                        cell.setPhrase(new Phrase(handler.formatString(handler.getOBXTSResult(obr, obx)).replaceAll("<br\\s*/*>", "\n"), lineFont));
+                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXTSResult(obr, obx))), lineFont));
                     }
 
                     table.addCell(cell);
@@ -760,7 +771,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                 for (int commentCount = 0; commentCount < handler.getOBXCommentCount(obr, obx); commentCount++) {
                     Phrase comment = new Phrase();
                     comment.setFont(commentFont);
-                    comment.add(handler.getOBXComment(obr, obx, commentCount).replaceAll("<br\\s*/*>", "\n").replaceAll("&nbsp;", "\u00A0"));
+                    comment.add(HtmlTextCleaner.toPlainText(handler.getOBXComment(obr, obx, commentCount)));
                     comment.setFont(subscriptFont);
                     comment.add("\t\t" + handler.getOBXSourceOrganization(obr, obx, commentCount));
                     cell.setPhrase(comment);
@@ -1019,7 +1030,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
             cell.setPaddingLeft(10);
             commentPhrase.setFont(font);
-            commentPhrase.add(handler.formatString(handler.getReportComment(comment)).replaceAll("<br\\s*/*>", "\n"));
+            commentPhrase.add(HtmlTextCleaner.toPlainText(handler.formatString(handler.getReportComment(comment))));
             commentPhrase.setFont(subscriptFont);
             commentPhrase.add("\t\t" + handler.getReportSourceOrganization(comment));
             cell.setPhrase(commentPhrase);
@@ -1302,23 +1313,23 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
      * @return doctorPhrase
      */
     private Phrase getDoctorNamePhrase(String doctorName) {
+        if (doctorName == null) doctorName = "";
 
-        Integer openSpanStart = doctorName.indexOf("<");
         String mdNumber = "";
+        String namePart = doctorName;
 
-        if (openSpanStart != -1) {
-            Integer openSpanEnd = doctorName.indexOf(">");
-            Integer closeSpanStart = doctorName.indexOf("<", openSpanEnd);
-            Integer closeSpanEnd = doctorName.indexOf(">", closeSpanStart);
-
-            mdNumber = doctorName.substring(openSpanEnd + 1, closeSpanStart);
-            doctorName = doctorName.substring(0, openSpanStart);
+        if (doctorName.contains("<")) {
+            org.jsoup.nodes.Document doc = Jsoup.parseBodyFragment(doctorName);
+            org.jsoup.nodes.Element spanEl = doc.body().selectFirst("span");
+            if (spanEl != null) {
+                mdNumber = spanEl.text();
+                spanEl.remove();
+            }
+            namePart = doc.body().text();
         }
 
         Phrase doctorPhrase = new Phrase();
-        //doctorPhrase.setFont(font);
-        doctorPhrase.add(new Chunk(doctorName, font));
-        //doctorPhrase.setFont(subscriptFont);
+        doctorPhrase.add(new Chunk(namePart + " ", font));
         doctorPhrase.add(new Chunk("\t" + mdNumber, subscriptFont));
 
         return doctorPhrase;
