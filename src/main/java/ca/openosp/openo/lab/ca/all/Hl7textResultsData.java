@@ -58,6 +58,7 @@ import ca.openosp.openo.commn.model.MeasurementType;
 import ca.openosp.openo.commn.model.MeasurementsDeleted;
 import ca.openosp.openo.commn.model.MeasurementsExt;
 import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.HtmlTextCleaner;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
@@ -594,7 +595,7 @@ public class Hl7textResultsData {
             lbData.priority = "----";
         }
 
-        lbData.requestingClient = info.getRequestingProvider();
+        lbData.requestingClient = HtmlTextCleaner.toPlainText(info.getRequestingProvider());
         lbData.reportStatus = info.getReportStatus();
 
         // the "C" is for corrected excelleris labs
@@ -723,7 +724,7 @@ public class Hl7textResultsData {
                 lbData.priority = "----";
             }
 
-            lbData.requestingClient = hl7.getRequestingProvider();
+            lbData.requestingClient = HtmlTextCleaner.toPlainText(hl7.getRequestingProvider());
             lbData.reportStatus = hl7.getReportStatus();
 
             // the "C" is for corrected excelleris labs
@@ -840,7 +841,7 @@ public class Hl7textResultsData {
                 lbData.priority = "----";
             }
 
-            lbData.requestingClient = requesting_client;
+            lbData.requestingClient = HtmlTextCleaner.toPlainText(requesting_client);
             lbData.reportStatus = report_status;
 
             // the "C" is for corrected excelleris labs
