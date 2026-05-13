@@ -35,6 +35,7 @@
 <%@ page import="ca.openosp.openo.commn.model.PatientLabRouting" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.apache.commons.lang3.builder.ReflectionToStringBuilder" %>
+<%@ page import="ca.openosp.openo.utility.HtmlTextCleaner" %>
 <%@ page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="org.w3c.dom.Document" %>
 <%@ page import="ca.openosp.openo.caisi_integrator.ws.CachedDemographicLabResult" %>
@@ -1693,7 +1694,7 @@ request.setAttribute("missingTests", missingTests);
                                         <td bgcolor="white">
                                             <div class="FieldData">
                                                 <strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formRequestingClient"/>: </strong>
-                                                <%=Encode.forHtml(String.valueOf(handler.getDocName()))%>
+                                                <%=Encode.forHtml(HtmlTextCleaner.toPlainText(handler.getDocName()))%>
                                             </div>
                                         </td>
                                         <%-- <td bgcolor="white">
@@ -1705,7 +1706,7 @@ request.setAttribute("missingTests", missingTests);
                                         <td bgcolor="white" align="right">
                                             <div class="FieldData">
                                                 <strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formCCClient"/>: </strong>
-                                                <%=Encode.forHtml(String.valueOf(handler.getCCDocs()))%>
+                                                <%=Encode.forHtml(HtmlTextCleaner.toPlainText(handler.getCCDocs()))%>
 
                                             </div>
                                         </td>
