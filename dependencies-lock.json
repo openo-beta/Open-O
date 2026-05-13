@@ -16,14 +16,6 @@
     "optional" : false,
     "integrity" : "sha512:Fk96WeLnoxM1/LPhcKF4BMqudKGSv1yNdr+QgZ628YPpzeFbSeHYtXE7FfxmOHGAi/XjojvhYo+2B09trwZQrA=="
   }, {
-    "groupId" : "ca.ssha.www",
-    "artifactId" : "olis-service",
-    "version" : "20111111",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:wESlz+a7J/+0sK6n/skG+7nuVObWMVMI+o7wdRkepc9yEJL2JtZPUSf8yGLGnQV18I6wqUfCE85+dZyGLZfeNg=="
-  }, {
     "groupId" : "ca.uhn.hapi.fhir",
     "artifactId" : "hapi-fhir-base",
     "version" : "6.10.5",
