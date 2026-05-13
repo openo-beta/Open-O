@@ -26,6 +26,10 @@ import com.itextpdf.text.DocumentException;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.util.StringUtils;
 
 
@@ -97,9 +101,15 @@ public class LabManagerImpl implements LabManager {
             File tempPDF = File.createTempFile(fileName, "pdf");
             try (FileOutputStream fileOutputStream = new FileOutputStream(tempPDF);
                  ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();) {
-                LabPDFCreator labPDFCreator = new LabPDFCreator(fileOutputStream, String.valueOf(segmentId), null);
-                labPDFCreator.printPdf();
-                labPDFCreator.addEmbeddedDocuments(tempPDF, byteOutputStream);
+                MessageHandler handler = Factory.getHandler(String.valueOf(segmentId));
+                if (handler instanceof OLISHL7Handler) {
+                    new OLISLabPDFCreator(fileOutputStream, String.valueOf(segmentId)).printPdf();
+                    byteOutputStream.write(java.nio.file.Files.readAllBytes(tempPDF.toPath()));
+                } else {
+                    LabPDFCreator labPDFCreator = new LabPDFCreator(fileOutputStream, String.valueOf(segmentId), null);
+                    labPDFCreator.printPdf();
+                    labPDFCreator.addEmbeddedDocuments(tempPDF, byteOutputStream);
+                }
                 path = nioFileManager.saveTempFile("temporaryPDF" + new Date().getTime(), byteOutputStream);
             }
             tempPDF.delete();

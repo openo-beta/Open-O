@@ -56,6 +56,10 @@ import ca.openosp.openo.managers.FaxManager.TransactionType;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 
@@ -571,7 +575,10 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
         ArrayList<LabResultData> labs = labData.populateLabResultsData(loggedInInfo, demographic.getDemographicNo().toString(), consultationRequest.getId().toString(), CommonLabResultData.ATTACHED);
         for (LabResultData attachment : labs) {
             try {
-                byte[] dataBytes = LabPDFCreator.getPdfBytes(attachment.getSegmentID(), sendingProvider.getProviderNo());
+                MessageHandler labHandler = Factory.getHandler(attachment.getSegmentID());
+                byte[] dataBytes = (labHandler instanceof OLISHL7Handler)
+                        ? OLISLabPDFCreator.getPdfBytes(attachment.getSegmentID())
+                        : LabPDFCreator.getPdfBytes(attachment.getSegmentID(), sendingProvider.getProviderNo());
                 Hl7TextInfo hl7TextInfo = hl7TextInfoDao.findLabId(Integer.parseInt(attachment.getSegmentID()));
 
                 ObservationData observationData = new ObservationData();

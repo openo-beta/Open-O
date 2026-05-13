@@ -60,6 +60,10 @@ import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 
@@ -233,10 +237,16 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
                     FileOutputStream fileOutputStream = new FileOutputStream(tempLabPDF);
                     ByteOutputStream byteOutputStream = new ByteOutputStream();
             ) {
-                LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);
-                labPDFCreator.printPdf();
-                labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
-                generateResponse(response, getBase64(byteOutputStream.getBytes()));
+                MessageHandler handler = Factory.getHandler(segmentID);
+                if (handler instanceof OLISHL7Handler) {
+                    new OLISLabPDFCreator(fileOutputStream, request, segmentID).printPdf();
+                    generateResponse(response, getBase64(java.nio.file.Files.readAllBytes(tempLabPDF.toPath())));
+                } else {
+                    LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);
+                    labPDFCreator.printPdf();
+                    labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
+                    generateResponse(response, getBase64(byteOutputStream.getBytes()));
+                }
             }
             tempLabPDF.delete();
         } catch (DocumentException | IOException e) {

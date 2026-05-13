@@ -49,6 +49,10 @@ import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.util.ConcatPDF;
@@ -160,14 +164,20 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
                         ByteOutputStream byteOutputStream = new ByteOutputStream();
                 ) {
                     request.setAttribute("segmentID", labs.get(i).segmentID);
-                    LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);
-                    labPDFCreator.printPdf();
-                    labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
+                    MessageHandler handler = Factory.getHandler(labs.get(i).segmentID);
+                    if (handler instanceof OLISHL7Handler) {
+                        new OLISLabPDFCreator(fileOutputStream, request, labs.get(i).segmentID).printPdf();
+                        buffer = java.nio.file.Files.readAllBytes(tempLabPDF.toPath());
+                    } else {
+                        LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);
+                        labPDFCreator.printPdf();
+                        labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
+                        buffer = byteOutputStream.getBytes();
+                    }
 
                     // Transferring PDF to an input stream to be concatenated with
                     // the rest of the documents.
-                    buffer = byteOutputStream.getBytes();
-                    bis = new ByteInputStream(buffer, byteOutputStream.getCount());
+                    bis = new ByteInputStream(buffer, buffer.length);
                     streams.add(bis);
                     alist.add(bis);
                 }

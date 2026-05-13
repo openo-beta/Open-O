@@ -105,6 +105,26 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         this(os, request, request.getParameter("segmentID") != null ? request.getParameter("segmentID") : (String) request.getAttribute("segmentID"));
     }
 
+    /**
+     * Constructor for saved-lab rendering paths that don't have an HttpServletRequest
+     * (eg. LabManagerImpl.renderLab called from the consult attachment manager).
+     * Only valid when segmentId is a real hl7TextMessage id ("0" preview path requires
+     * the request-based constructor to pull uuid + LoggedInInfo from the session).
+     */
+    public OLISLabPDFCreator(OutputStream os, String segmentId) {
+        this(os, null, segmentId);
+    }
+
+    /**
+     * Mirrors {@link LabPDFCreator#getPdfBytes(String, String)} for OLIS labs. Only
+     * works for saved labs (not the segmentID=0 search-preview path).
+     */
+    public static byte[] getPdfBytes(String segmentId) throws IOException, DocumentException {
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        new OLISLabPDFCreator(baos, segmentId).printPdf();
+        return baos.toByteArray();
+    }
+
     public OLISLabPDFCreator(OutputStream os, HttpServletRequest request, String segmentId) {
         this.os = os;
         this.id = segmentId;
