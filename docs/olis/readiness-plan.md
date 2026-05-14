@@ -405,9 +405,16 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Labels:** `type: feature`, `priority: medium`, `compliance`
 
 ### C4: Participating-labs source
-- **Closes:** OLIS04.03
-- **Scope:** Replace hard-coded 3-lab list in `Search.jsp:377-447` (Gamma-Dynacare 5552, CML 5407, LifeLabs 5687) with a maintainable seed table or lookup
-- **Files:** `Search.jsp`, possibly new DAO/seed
+- **Status:** ✅ Maintainability refactor done (Java compiles clean; JSP scriptlet changes pending a deploy-time verify). **OLIS04.03 stays *Partially Done*** — see "Not addressed" below.
+- **Addresses:** OLIS04.03 *maintainability* gap only — does **not** close OLIS04.03.
+- **Approach chosen:** Java single source of truth (enum) rather than a DB seed table — the list (Gamma-Dynacare 5552, CML 5407, LifeLabs 5687) is small and rarely changes; an enum keeps it self-contained with no schema churn. Trade-off: changing the list needs a code deploy.
+- **Scope — shipped:**
+  - **New `ca.openosp.openo.olis.model.OLISParticipatingLab` enum** — single source of truth, holding `labNo` (dropdown option value) + `displayName`, plus `getOid()` deriving the fully-qualified OLIS object identifier.
+  - **`Search.jsp`** — all **8** hard-coded lab dropdowns now iterate the enum (Specimen Collector, Performing / Exclude Performing, Reporting / Exclude Reporting, Test Request Placer, Destination Laboratory, Ordering Facility — the readiness-plan's original "377-447" estimate missed the Z05/Z06 query sections further down).
+  - **`provider/olis_preferences.jsp`** — both lab dropdowns (Default Reporting / Default Exclude Reporting) iterate the enum.
+- **Not addressed — OLIS04.03 completeness gap remains open:** this is a *maintainability* fix, not a *completeness* fix. It single-sources the **same 3 labs** that were already there — it does **not** add the full roster of participating laboratories, and it does **not** make the list updateable from OLIS (the Lab/SCC Extract sync the requirement hints at — D2-nomenclature-refresh-sized work). The enum makes adding labs a one-line edit, but closing OLIS04.03 still needs either the full participating-lab roster seeded, or a sync from the OLIS extract. Track as a follow-up / F1 decision.
+- **Deliberately left out of scope:** `OLISUtils` keeps its own lab-OID constants (`CMLIndentifier`, etc.) for source-facility dedup matching — that set also includes Alpha Labs (5254), which is *not* a query-parameter dropdown option, so the two lists aren't the same membership and shouldn't be force-unified. Adding Alpha Labs (or more participating labs) to the dropdowns is now a one-line enum edit if/when confirmed as queryable.
+- **Files:** `OLISParticipatingLab.java` (new), `Search.jsp`, `provider/olis_preferences.jsp`
 - **Labels:** `type: feature`, `priority: medium`, `compliance`
 
 ---
