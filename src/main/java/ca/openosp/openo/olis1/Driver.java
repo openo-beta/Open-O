@@ -68,6 +68,8 @@ import ca.openosp.openo.commn.model.OscarLog;
 import ca.openosp.openo.commn.model.OscarMsgType;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.olis.OLISProtocolSocketFactory;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -133,6 +135,10 @@ public class Driver {
 
             olisRequest.getHIALRequest().getSignedRequest().setSignedData(signedRequest);
 
+            // Hoisted out of the audit-log try block so the response handler below can
+            // enrich this same SENT row with the OLIS Transaction ID once it arrives.
+            OLISQueryLog olisQueryLog = null;
+
             try {
                 OscarLog logItem = new OscarLog();
                 logItem.setAction("OLIS");
@@ -143,7 +149,7 @@ public class Driver {
 
                 logDao.persist(logItem);
 
-                OLISQueryLog olisQueryLog = new OLISQueryLog();
+                olisQueryLog = new OLISQueryLog();
                 olisQueryLog.setInitiatingProviderNo(loggedInInfo.getLoggedInProviderNo());
                 olisQueryLog.setQueryExecutionDate(new Date());
                 olisQueryLog.setQueryType(query.getQueryType().toString());
@@ -164,6 +170,13 @@ public class Driver {
                     request.setAttribute("olisResponseContent", response);
                     request.getSession().setAttribute("olisResponseContent", response);
                     request.getSession().setAttribute("olisResponseQuery", query);
+
+                    String olisTransactionId = extractOlisTransactionId(response);
+                    recordOlisTransactionId(olisQueryLog, olisTransactionId);
+                    if (olisTransactionId != null) {
+                        request.setAttribute("olisTransactionId", olisTransactionId);
+                    }
+
                     return response;
                 }
                 //this only happens for auto-polling when simulate is enabled
@@ -187,6 +200,14 @@ public class Driver {
 
                 writeToFile(unsignedData);    //not sure the point of this, other than debugging maybe
                 readResponseFromXML(loggedInInfo, request, unsignedData);
+
+                // OLIS06.02 / OLIS03.06: capture the OLIS-assigned Transaction ID from the
+                // response and write it back onto the SENT audit row (keyed by query uuid).
+                String olisTransactionId = extractOlisTransactionId(unsignedData);
+                recordOlisTransactionId(olisQueryLog, olisTransactionId);
+                if (request != null && olisTransactionId != null) {
+                    request.setAttribute("olisTransactionId", olisTransactionId);
+                }
 
                 return unsignedData;
 
@@ -285,6 +306,78 @@ public class Driver {
         } catch (Exception e) {
             MiscUtils.getLogger().error("Couldn't read XML from OLIS response.", e);
             notifyOlisError(loggedInInfo.getLoggedInProvider(), "Couldn't read XML from OLIS response." + "\n" + e);
+        }
+    }
+
+    /**
+     * Extracts the OLIS Transaction ID from an OLIS query response. Per the OLIS
+     * Interface Specification (§10.2.5.12.2.3) OLIS does not mint a distinct transaction
+     * identifier — the response (ERP) echoes the initiating request's Message Control ID
+     * in the MSA-2 field, which is the correlation value logged for the OLIS06.02 /
+     * OLIS03.06 audit trail. The value is read via the standard {@link OLISHL7Handler}
+     * parser. The {@code response} argument may be either the unsigned XML envelope
+     * ({@code <Response><Content>...HL7...</Content></Response>}) or a raw HL7 string
+     * (the simulator path); the HL7 payload is unwrapped from the envelope before it is
+     * handed to the parser.
+     * <p>
+     * Returns {@code null} on any parse failure, or when the response carries no MSA
+     * segment (e.g. a bare {@code ORU} rather than an {@code ERP}) — OLIS06.02 /
+     * OLIS03.06 audit enrichment must never break the query path.
+     *
+     * @param response String the unsigned OLIS response (XML envelope or raw HL7)
+     * @return String the OLIS Transaction ID (MSA-2), or {@code null} if it cannot be extracted
+     */
+    static String extractOlisTransactionId(String response) {
+        if (response == null || response.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            // Unwrap the HL7 payload from the <Content>...</Content> envelope element if present.
+            String hl7 = response;
+            int contentStart = response.indexOf("<Content");
+            int contentEnd = response.indexOf("</Content>");
+            if (contentStart >= 0 && contentEnd > contentStart) {
+                int payloadStart = response.indexOf('>', contentStart) + 1;
+                hl7 = response.substring(payloadStart, contentEnd);
+            }
+            hl7 = hl7.replace("<![CDATA[", "").replace("]]>", "").trim();
+            if (hl7.isEmpty()) {
+                return null;
+            }
+
+            // Parse the HL7 with the standard OLIS handler and read MSA-2, the Message
+            // Control ID of the request that OLIS is acknowledging in this response.
+            OLISHL7Handler handler = (OLISHL7Handler) Factory.getHandler("OLIS_HL7", hl7);
+            if (handler != null) {
+                String olisTransactionId = handler.getMsaControlId();
+                if (olisTransactionId != null && !olisTransactionId.trim().isEmpty()) {
+                    return olisTransactionId.trim();
+                }
+            }
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Couldn't extract OLIS Transaction ID from response", e);
+        }
+        return null;
+    }
+
+    /**
+     * Writes the OLIS Transaction ID back onto the previously-persisted {@link OLISQueryLog}
+     * SENT row. No-op when the row was never persisted (audit-log write failed earlier) or
+     * when no Transaction ID could be extracted. Failures are logged and swallowed so that
+     * audit enrichment never breaks the query path.
+     *
+     * @param olisQueryLog       OLISQueryLog the SENT audit row persisted before submission
+     * @param olisTransactionId  String the OLIS Transaction ID extracted from the response
+     */
+    private static void recordOlisTransactionId(OLISQueryLog olisQueryLog, String olisTransactionId) {
+        if (olisQueryLog == null || olisQueryLog.getId() == null || olisTransactionId == null) {
+            return;
+        }
+        try {
+            olisQueryLog.setOlisTransactionId(olisTransactionId);
+            olisQueryLogDao.merge(olisQueryLog);
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Couldn't record OLIS Transaction ID on query log", e);
         }
     }
 

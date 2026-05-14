@@ -1438,6 +1438,25 @@ public class OLISHL7Handler implements MessageHandler {
         return ("OLIS");
     }
 
+    /**
+     * Returns the acknowledged Message Control ID (MSA-2) of the parsed message.
+     * In an OLIS query response (ERP), OLIS populates MSA-2 with the Message Control
+     * ID (MSH-10) of the initiating request — i.e. the transaction the response is
+     * acknowledging. Per the OLIS Interface Specification (§10.2.5.12.2.3) OLIS does
+     * not issue a distinct transaction identifier; MSA-2 is the correlation value
+     * captured for the OLIS06.02 / OLIS03.06 audit trail. Returns an empty string
+     * for messages without an MSA segment (e.g. a bare ORU).
+     *
+     * @return String the MSA-2 Message Control ID, or an empty string if absent/unparseable
+     */
+    public String getMsaControlId() {
+        try {
+            return getString(terser.get("/.MSA-2"));
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     @Override
     public String getMsgDate() {
         //return

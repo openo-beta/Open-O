@@ -73,5 +73,6 @@ CREATE TABLE OLISQueryLog (
   uuid varchar(255),
   requestingHIC varchar(30),
   demographicNo integer,
+  olisTransactionId varchar(255),
   PRIMARY KEY(id)
 );

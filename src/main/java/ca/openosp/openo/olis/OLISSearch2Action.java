@@ -192,6 +192,12 @@ public class OLISSearch2Action extends ActionSupport {
                 q.setConsentToViewBlockedInformation(new ZPD1("Z"));
 
                 String blockedInfoIndividual = request.getParameter("blockedInformationIndividual");
+
+                // Submit first so the OLIS Transaction ID from the response (stashed on the
+                // request by Driver.submitOLISQuery) is available for the consent-override
+                // audit row (OLIS03.06).
+                Driver.submitOLISQuery(loggedInInfo, request, q);
+
                 // Log the consent override
                 OscarLogDao logDao = (OscarLogDao) SpringUtils.getBean(OscarLogDao.class);
                 OscarLog logItem = new OscarLog();
@@ -205,6 +211,11 @@ public class OLISSearch2Action extends ActionSupport {
                 data.append("Initiating Provider: " + providerDao.getProvider(loggedInInfo.getLoggedInProviderNo()).getFormattedName() + "\n");
                 data.append("Requesting HIC: " + providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo()) + "\n");
                 data.append("Authorized by:" + blockedInfoIndividual + "\n");
+
+                Object olisTransactionId = request.getAttribute("olisTransactionId");
+                if (olisTransactionId != null) {
+                    data.append("OLIS Transaction ID: " + olisTransactionId + "\n");
+                }
 
                 logItem.setData(data.toString());
 
@@ -220,8 +231,9 @@ public class OLISSearch2Action extends ActionSupport {
 
                 logDao.persist(logItem);
 
+            } else {
+                Driver.submitOLISQuery(loggedInInfo, request, q);
             }
-            Driver.submitOLISQuery(loggedInInfo, request, q);
 
         } else if (queryType != null) {
             UserPropertyDAO userPropertyDAO = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
