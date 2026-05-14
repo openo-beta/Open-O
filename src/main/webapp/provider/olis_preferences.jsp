@@ -9,6 +9,7 @@
 
 --%>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.olis.model.OLISParticipatingLab" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 
 <%
@@ -60,15 +61,13 @@
                                 %>
                                 <select id="reportingLaboratory" name="reportingLaboratory">
                                     <option value="" <%=(val1.equals("") ? "selected=\"selected\"" : "") %>></option>
-                                    <option value="5552" <%=(val1.equals("5552") ? "selected=\"selected\"" : "") %>>
-                                        Gamma-Dynacare
-                                    </option>
-                                    <option value="5407" <%=(val1.equals("5407") ? "selected=\"selected\"" : "") %>>
-                                        CML
-                                    </option>
-                                    <option value="5687" <%=(val1.equals("5687") ? "selected=\"selected\"" : "") %>>
-                                        LifeLabs
-                                    </option>
+                                    <%
+                                        for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                                    %>
+                                    <option value="<%=olisLab.getLabNo()%>" <%=(val1.equals(olisLab.getLabNo()) ? "selected=\"selected\"" : "") %>><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                                    <%
+                                        }
+                                    %>
                                 </select>
                             </td>
                         </tr>
@@ -81,15 +80,13 @@
                                 %>
                                 <select id="excludeReportingLaboratory" name="excludeReportingLaboratory">
                                     <option value="" <%=(val1.equals("") ? "selected=\"selected\"" : "") %>></option>
-                                    <option value="5552" <%=(val1.equals("5552") ? "selected=\"selected\"" : "") %>>
-                                        Gamma-Dynacare
-                                    </option>
-                                    <option value="5407" <%=(val1.equals("5407") ? "selected=\"selected\"" : "") %>>
-                                        CML
-                                    </option>
-                                    <option value="5687" <%=(val1.equals("5687") ? "selected=\"selected\"" : "") %>>
-                                        LifeLabs
-                                    </option>
+                                    <%
+                                        for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                                    %>
+                                    <option value="<%=olisLab.getLabNo()%>" <%=(val1.equals(olisLab.getLabNo()) ? "selected=\"selected\"" : "") %>><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                                    <%
+                                        }
+                                    %>
                                 </select>
                             </td>
                         </tr>

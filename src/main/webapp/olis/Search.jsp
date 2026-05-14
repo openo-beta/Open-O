@@ -19,6 +19,7 @@
                 ca.openosp.openo.olis.dao.OLISResultNomenclatureDao,
                 ca.openosp.openo.olis.model.OLISRequestNomenclature,
                 ca.openosp.openo.olis.model.OLISResultNomenclature,
+                ca.openosp.openo.olis.model.OLISParticipatingLab,
                 ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
@@ -377,9 +378,13 @@ opener.refreshView();</script>
                         <th width="20%">Specimen Collector</th>
                         <td width="30%"><select id="specimenCollector" name="specimenCollector">
                             <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
+                            <%
+                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                            %>
+                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                            <%
+                                }
+                            %>
                         </select>
                         </td>
                     </tr>
@@ -387,9 +392,13 @@ opener.refreshView();</script>
                         <th width="20%">Performing Laboratory</th>
                         <td width="30%"><select id="performingLaboratory" name="performingLaboratory">
                             <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
+                            <%
+                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                            %>
+                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                            <%
+                                }
+                            %>
                         </select>
                         </td>
                     </tr>
@@ -397,9 +406,13 @@ opener.refreshView();</script>
                         <th width="20%">Exclude Performing Laboratory</th>
                         <td width="30%"><select id="excludePerformingLaboratory" name="excludePerformingLaboratory">
                             <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
+                            <%
+                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                            %>
+                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                            <%
+                                }
+                            %>
                         </select>
                         </td>
                     </tr>
@@ -417,15 +430,13 @@ opener.refreshView();</script>
                         <th width="20%">Reporting Laboratory</th>
                         <td colspan="3"><select id="reportingLaboratory" name="reportingLaboratory">
                             <option value="" <%=(reportingLabVal.equals("") ? "selected=\"selected\"" : "") %>></option>
-                            <option value="5552" <%=(reportingLabVal.equals("5552") ? "selected=\"selected\"" : "") %>>
-                                Gamma-Dynacare
-                            </option>
-                            <option value="5407" <%=(reportingLabVal.equals("5407") ? "selected=\"selected\"" : "") %>>
-                                CML
-                            </option>
-                            <option value="5687" <%=(reportingLabVal.equals("5687") ? "selected=\"selected\"" : "") %>>
-                                LifeLabs
-                            </option>
+                            <%
+                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                            %>
+                            <option value="<%=olisLab.getLabNo()%>" <%=(reportingLabVal.equals(olisLab.getLabNo()) ? "selected=\"selected\"" : "") %>><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                            <%
+                                }
+                            %>
                         </select>
                         </td>
                     </tr>
@@ -433,15 +444,13 @@ opener.refreshView();</script>
                         <th width="20%">Exclude Reporting Laboratory</th>
                         <td width="30%"><select id="excludeReportingLaboratory" name="excludeReportingLaboratory">
                             <option value="" <%=(exReportingLabVal.equals("") ? "selected=\"selected\"" : "") %>></option>
-                            <option value="5552" <%=(exReportingLabVal.equals("5552") ? "selected=\"selected\"" : "") %>>
-                                Gamma-Dynacare
-                            </option>
-                            <option value="5407" <%=(exReportingLabVal.equals("5407") ? "selected=\"selected\"" : "") %>>
-                                CML
-                            </option>
-                            <option value="5687" <%=(exReportingLabVal.equals("5687") ? "selected=\"selected\"" : "") %>>
-                                LifeLabs
-                            </option>
+                            <%
+                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                            %>
+                            <option value="<%=olisLab.getLabNo()%>" <%=(exReportingLabVal.equals(olisLab.getLabNo()) ? "selected=\"selected\"" : "") %>><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                            <%
+                                }
+                            %>
                         </select>
                         </td>
                     </tr>
@@ -602,9 +611,13 @@ opener.refreshView();</script>
                         <th width="20%">Test Request Placer</th>
                         <td><select>
                             <option></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
+                            <%
+                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                            %>
+                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                            <%
+                                }
+                            %>
                         </select></td>
                     </tr>
                     <tr>
@@ -855,9 +868,13 @@ opener.refreshView();</script>
                         <th width="20%">Destination Laboratory</th>
                         <td width="30%"><select id="destinationLaboratory" name="destinationLaboratory">
                             <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
+                            <%
+                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                            %>
+                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                            <%
+                                }
+                            %>
                         </select>
                         </td>
                     </tr>
@@ -891,9 +908,13 @@ opener.refreshView();</script>
                         <th width="20%">Ordering Facility</th>
                         <td width="30%"><select id="orderingFacility" name="orderingFacility">
                             <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
+                            <%
+                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
+                            %>
+                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
+                            <%
+                                }
+                            %>
                         </select>
                         </td>
                     </tr>
