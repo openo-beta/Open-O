@@ -46,11 +46,14 @@ import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.GenericComposite;
+import ca.uhn.hl7v2.model.GenericMessage;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.model.Segment;
 import ca.uhn.hl7v2.model.Structure;
 import ca.uhn.hl7v2.model.Type;
 import ca.uhn.hl7v2.model.Varies;
+import ca.uhn.hl7v2.parser.DefaultModelClassFactory;
+import ca.uhn.hl7v2.parser.ModelClassFactory;
 import ca.uhn.hl7v2.parser.Parser;
 import ca.uhn.hl7v2.parser.PipeParser;
 import ca.uhn.hl7v2.util.Terser;
@@ -60,6 +63,25 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  * @author Adam Balanga
  */
 public class OLISHL7Handler implements MessageHandler {
+
+    /**
+     * Forces every parsed message to resolve as {@link GenericMessage} regardless of MSH-9-3.
+     *
+     * <p>HAPI's typed structures (e.g. {@code ORU_R01}) nest non-standard Z-segments like
+     * {@code ZPD}/{@code ZBR} inside group children, which this handler's
+     * {@code terser.getFinder().getRoot().getNames()} segment iteration never sees.
+     * Real OLIS query responses are {@code ERP^Znn^ERP_R09} — no HAPI structure class exists,
+     * so they already fall back to {@code GenericMessage} (flat layout at root). This factory
+     * removes the dependency on that accident so synthetic ORU fixtures, and any future typed
+     * OLIS response, also parse flat.</p>
+     */
+    private static final ModelClassFactory FLAT_MODEL_FACTORY = new DefaultModelClassFactory() {
+        @Override
+        public Class<? extends Message> getMessageClass(String name, String version, boolean isExplicit)
+                throws HL7Exception {
+            return GenericMessage.getGenericMessageClass(version);
+        }
+    };
 
     Logger logger = MiscUtils.getLogger();
     protected boolean isFinal = true;
@@ -926,7 +948,7 @@ public class OLISHL7Handler implements MessageHandler {
         sourceOrganizations = new HashMap<String, String>();
         obrSpecimenSource = new ArrayList<String>();
         obrStatus = new ArrayList<String>();
-        Parser p = new PipeParser();
+        Parser p = new PipeParser(FLAT_MODEL_FACTORY);
 
         p.setValidationContext(new NoValidation());
 
