@@ -240,6 +240,7 @@
         var testRequestCodeFilter = "";
         var testRequestStatusFilter = "";
         var resultStatusFilter = "";
+        var practitionerFilter = "";
 
         function filterResults(select) {
             if (select.name == "labFilter") {
@@ -260,6 +261,8 @@
                 testRequestStatusFilter = select.value;
             } else if (select.name == "resultStatusFilter") {
                 resultStatusFilter = select.value;
+            } else if (select.name == "practitionerFilter") {
+                practitionerFilter = select.value;
             }
 
             var performFilter = function () {
@@ -271,7 +274,8 @@
                     && (abnormalFilter == "" || jQuery(this).attr("abnormal") == abnormalFilter)
                     && (testRequestCodeFilter == "" || jQuery(this).attr("testRequestCode") == testRequestCodeFilter)
                     && (testRequestStatusFilter == "" || jQuery(this).attr("testRequestStatus") == testRequestStatusFilter)
-                    && (resultStatusFilter == "" || jQuery(this).attr("resultStatus").indexOf(resultStatusFilter) != -1);
+                    && (resultStatusFilter == "" || jQuery(this).attr("resultStatus").indexOf(resultStatusFilter) != -1)
+                    && (practitionerFilter == "" || jQuery(this).attr("practitioner").indexOf(practitionerFilter) != -1);
 
 
                 if (visible) {
@@ -531,6 +535,7 @@
                     List<String> abnormals = new ArrayList<String>();
                     List<String> testRequestCodes = new ArrayList<String>();
                     List<String> testRequestStatuses = new ArrayList<String>();
+                    List<String> practitioners = new ArrayList<String>();
 
                     OLISHL7Handler result;
 
@@ -578,6 +583,13 @@
                         String abnormal = Misc.getStr(result.hasAbnormalResult() ? "true" : "false", "").trim();
                         if (!abnormal.equals("")) {
                             abnormals.add(abnormal);
+                        }
+
+                        for (String practitioner : result.getAllPractitioners()) {
+                            String prac = Misc.getStr(practitioner, "").trim();
+                            if (!prac.equals("")) {
+                                practitioners.add(prac);
+                            }
                         }
 
                         String resultStatus = Misc.getStr(result.getTestResultStatuses(), "").trim();
@@ -730,6 +742,20 @@
                     </td>
                 </tr>
                 <tr>
+                    <td style="text-align:right"><b>Practitioner:</b></td>
+                    <td>
+                        <select name="practitionerFilter" onChange="filterResults(this)">
+                            <option value="">All Practitioners</option>
+                            <%
+                                for (String tmp : new HashSet<String>(practitioners)) {
+                            %>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(tmp))%>
+                            </option>
+                            <% } %>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="3">
                         <div id="action_result" style="font-size:12px;color:blue"/>
                     </td>
@@ -769,15 +795,19 @@
                                     <th class="unsortable" style="white-space: nowrap;"></th>
                                 -->
                                 <th style="white-space: nowrap;">Patient Name</th>
+                                <th style="white-space: nowrap;">Match</th>
                                 <th style="white-space: nowrap;">Health Number</th>
                                 <th style="white-space: nowrap;">DOB</th>
                                 <th style="white-space: nowrap;">Sex</th>
                                 <th style="white-space: nowrap;">Date of Test</th>
                                 <th style="white-space: nowrap;">Discipline</th>
+                                <th style="white-space: nowrap;">Reporting Lab</th>
+                                <th style="white-space: nowrap;">Performing Lab</th>
                                 <th style="white-space: nowrap;">Tests</th> <!-- test request name -->
                                 <th style="white-space: nowrap;">Status</th><!-- test request status -->
                                 <th style="white-space: nowrap;width:30%">Results</th>
                                 <th style="white-space: nowrap;">Abnormal</th>
+                                <th style="white-space: nowrap;">Blocked</th>
                                 <th style="white-space: nowrap;">Practitioners</th>
 
                             </tr>
@@ -798,7 +828,9 @@
                                 abnormal="<%=Encode.forHtmlAttribute(String.valueOf(result.hasAbnormalResult()))%>"
                                 testRequestCode="<%=Encode.forHtmlAttribute(String.valueOf(result.getTestRequestCode()))%>"
                                 testRequestStatus="<%=Encode.forHtmlAttribute(String.valueOf(result.getOrderStatus()))%>"
-                                resultStatus="<%=Encode.forHtmlAttribute(String.valueOf(result.getTestResultStatuses()))%>" uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>">
+                                resultStatus="<%=Encode.forHtmlAttribute(String.valueOf(result.getTestResultStatuses()))%>"
+                                practitioner="<%=Encode.forHtmlAttribute(String.join("|", result.getAllPractitioners()))%>"
+                                uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>">
 
                                 <td><input title="Add to my inbox" type="checkbox" name="addToInbox_<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"
                                            uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"/></td>
@@ -842,6 +874,9 @@
                                         src="<%= request.getContextPath() %>/images/here.gif" border="0"/></a>
                                     <% } %>
                                 </td>
+                                <td style="white-space: nowrap;">
+                                    <%=demId != null ? "Matched" : "<span style='color:red'>Unmatched</span>" %>
+                                </td>
                                 <td><%=Encode.forHtml(String.valueOf(result.getHealthNum()))%>
                                 </td>
 
@@ -865,6 +900,10 @@
                                         <% }
                                         } %>
                                     </ul>
+                                </td>
+                                <td style="white-space: nowrap;"><%=Encode.forHtml(String.valueOf(result.getReportingFacilityName()))%>
+                                </td>
+                                <td style="white-space: nowrap;"><%=Encode.forHtml(String.valueOf(result.getPerformingFacilityNameOnly()))%>
                                 </td>
                                 <td style="white-space: nowrap;">
                                     <ul>
@@ -930,6 +969,8 @@
                                 </td>
                                 <td><%=result.hasAbnormalResult() ? "<span style='color:red'>Abnormal</span>" : "" %>
                                 </td>
+                                <td style="white-space: nowrap;"><%=Boolean.TRUE.equals(result.isReportBlocked()) ? "<span style='color:red'>Blocked</span>" : "" %>
+                                </td>
                                 <td>
 
                                     <%
@@ -953,7 +994,7 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td colspan="18">
+                                <td colspan="20">
 
                                     <input type="button" value="Process Changes" onClick="bulkProcess()"/>
                                 </td>
