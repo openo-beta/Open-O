@@ -396,12 +396,16 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Labels:** `type: feature`, `priority: high`, `compliance`
 
 ### C3: Per-provider unmatched-routing config
+- **Status:** ✅ Code done (Java compiles clean; JSP + simulate-flow verify pending a deploy).
 - **Closes:** OLIS02.03
-- **Scope:**
-  - New `filterPatients` field on `OLISProviderPreferences` (DB migration + entity)
-  - UI on `Preferences.jsp` for per-provider override
-  - `MessageUploader.java:276-283` routing change: prefer per-provider setting, fall back to system-level
-- **Files:** `OLISProviderPreferences.java`, `Preferences.jsp`, `MessageUploader.java`, new migration SQL
+- **Approach chosen — "polling provider":** an unmatched OLIS result is governed by the preference of the provider whose Z04 poll fetched it (semantically the Requesting HIC — the poll builds the Requesting-HIC segment from that provider). Rejected the alternative of using the `docNums` practitioners (ordering/copied-to from `OBR-16`/`OBR-28`): those aren't the Requesting HIC, can be multiple, and would force "split" routing that scatters one unmatched result across the unclaimed bucket *and* inboxes simultaneously.
+- **Scope — shipped:**
+  - **`OLISProviderPreferences`** — new **nullable `Boolean filterPatients`** field (3-state: `null` inherits system default, `TRUE` → unclaimed worklist, `FALSE` → provider's inbox).
+  - **Context threading** — the polling `providerNo` is now carried from `OLISPollingUtil.pollZ04Query` → `parseAndImportResponse` → the OLIS upload-handler `parse()` overload → a new `MessageUploader.routeReport` overload → the core method. `MessageHandler.parse` (a 28-implementer interface) was **not** touched — threading goes through the *concrete* OLIS upload handler. Every non-OLIS / non-polling caller passes `null` and keeps today's system-level behaviour. The Z06 facility poll passes `null` (no single-provider context).
+  - **`MessageUploader`** routing (the `"OLIS_HL7" && demProviderNo=="0"` branch) — looks up the polling provider's `OLISProviderPreferences.filterPatients`; a non-null value wins, `null` falls back to `OLISSystemPreferences.isFilterPatients()`.
+  - **`provider/olis_preferences.jsp`** — new 3-state "Unmatched Patient Results" dropdown (Use system default / Filter to unclaimed worklist / Send to my inbox); `OlisPreferences2Action.view()`+`save()` wired. `save()` was restructured so the `OLISProviderPreferences` row is loaded-or-created once and persists `filterPatients` even when no poll start-time was submitted (previously the row was only touched inside the `providerStartTime != null` branch).
+- **Note:** `OLISPoller` is dead code (`startAutoFetch` never called; live path is `OLISSchedulerJob` → `OLISPollingUtil`) — intentionally left untouched.
+- **Files:** `OLISProviderPreferences.java`, `OLISPollingUtil.java`, `OLISHL7Handler.java` (upload handler), `MessageUploader.java`, `OlisPreferences2Action.java`, `provider/olis_preferences.jsp`, new migration SQL, `olisinit.sql`
 - **Labels:** `type: feature`, `priority: medium`, `compliance`
 
 ### C4: Participating-labs source
