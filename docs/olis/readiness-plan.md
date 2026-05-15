@@ -36,10 +36,18 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 | A18 | Pre-inbox OLIS Print returns 500 (broken `&&` in PrintOLISLab2Action makes uuid preview path dead code) | ✅ Fixed — corrected condition + added null guard | TBD |
 | A20 | InboxHub NPE on OLIS labs (`LabResultData.getDateObj()` returns null because `dateTime` isn't populated) | ✅ Fixed — defensive null guard at deref site; deeper fix (populate `dateTime` for OLIS) deferred | `224f4422b6` |
 | A21 | Consult-print path doesn't route OLIS labs through `OLISLabPDFCreator` | ✅ Fixed — added request-less constructor + static `getPdfBytes` to `OLISLabPDFCreator`; instanceof-branched all 5 sites (incl. `LabManagerImpl.renderLab` which is the actual user-visible path) | TBD |
-| A22 | InboxHub web list leaks OpenO-synthesized `<span>` markup in the "Requesting Client" column | ✅ Fixed — `HtmlTextCleaner.toPlainText` applied at 3 Hl7textResultsData population sites | TBD |
-| A23 | Lab display JSPs (`labDisplay.jsp` + `labDisplayOLIS.jsp`) leak `<span>` markup in provider/CC/attending/admitting fields | ✅ Fixed — `HtmlTextCleaner.toPlainText` wrapped before `Encode.forHtml` at 6 render sites | TBD |
+| A22 | InboxHub web list leaks OpenO-synthesized `<span>` markup in the "Requesting Client" column | ✅ Fixed — initial `HtmlTextCleaner.toPlainText` strips at 3 Hl7textResultsData sites; **D3 then dropped 1 (parser-fresh) and root-caused the markup synthesis**, so the 2 DB-fed strips are now defensive no-ops for legacy data | TBD |
+| A23 | Lab display JSPs (`labDisplay.jsp` + `labDisplayOLIS.jsp`) leak `<span>` markup in provider/CC/attending/admitting fields | ✅ Fixed — initial `HtmlTextCleaner.toPlainText` strips at 6 render sites; **D3 then dropped all 6 and the `HtmlTextCleaner` imports** since `OLISHL7Handler` now emits clean text | TBD |
+| A24 | OLIS Add-to-Inbox: MD5-detected duplicates classified as `errorIds` (bulk) and skip audit row (single) | ✅ Fixed — both branches now mirror the `OLISUtils.isDuplicate` reference path (audit row + `status="duplicate"` + success classification) | TBD |
+| A25 | `labDisplay.jsp` 500s with `handler.getMsgType()` NPE when `hl7TextInfo` references a missing `hl7TextMessage` row (orphaned `lab_no`) | ✅ Fixed — null-handler guard renders a friendly "Lab data not available" page with HTTP 404, instead of crashing the JSP | TBD |
+| A26 | `labDisplayOLIS.jsp` Home Address renders `<br />` as literal text in the patient demographics block | ✅ Fixed — JSP-local root-cause fix: `displayAddressFieldIfNotNullOrEmpty` replaced with `getAddressField` (returns plain value, no `<br />` synthesis); template now emits `<br/>` as literal HTML after each conditionally non-empty `Encode.forHtml` line. Applied at all 5 address-rendering call sites in `labDisplayOLIS.jsp` | TBD |
+| A27 | `OLISHL7Handler.renderAsFT` / `.renderAsNM` ArrayIndexOutOfBounds on OBX-3 with fewer than 5 colon-separated parts → 500 mid-page | ✅ Fixed — both methods now length-check the `split(":")` array before indexing `[4]`; returns `false` (correct default) on malformed OBX-3 | TBD |
+| A28 | `labDisplayOLIS.jsp` OBX test names render literal `<u>...</u>` (and `<s>...</s>` on strikeout) instead of underlined/struck-out | ✅ Fixed — JSP-local root-cause fix: new `buildObxDisplayHtml` JSP helper returns pre-encoded safe HTML with `<u>`/`<s>` as template-literal tags and `obxName`/`abnormalNature` properly HTML-encoded inside; 7 render sites now emit it raw with no `Encode.forHtml*` wrap. Drops the `pre`/`post` scriptlet variables entirely | TBD |
+| A29 | `labDisplayOLIS.jsp` Report Comments render literal `&nbsp;` / `<span>` text instead of decoded clinical text | ✅ Fixed for OLIS path — `HtmlTextCleaner.toPlainText(...)` wrap applied at 6 comment-render sites in `labDisplayOLIS.jsp`; matches A1's existing PDF-side defensive pattern. Non-OLIS `labDisplay.jsp` deferred (no observation of the pattern there + active security-PR work in flight) | TBD |
+| A30 | Noisy ERROR-level stack traces on every OLIS lab view from `getFullDoctorName` (PV1 absent → HL7Exception) and `getMappedOBX` (empty OBR in `obxSortMap` → AIOOBE). All caught; visible behavior correct; logs cluttered, hides real signal | ✅ Fixed — segment-existence pre-check in `getFullDoctorName` short-circuits PV1-absent case; `getMappedOBX` bounds-checks the inner map size before indexing | TBD |
+| A31 | `OLISHL7Handler.formatDate` / `.formatTime` / `.formatDateTime` would NPE on null and throw `StringIndexOutOfBoundsException` on over-length input. Preemptive — found during the defensive-sweep extension of A27's investigation, no observed crash trace | ✅ Fixed — null/empty check at entry, length-clamp to format-string length, try/catch returning `""` on any internal failure. Mirrors `formatDateTime`'s existing null-guard pattern, extended to its two siblings | TBD |
 
-**Net status (this dev environment):** all session-surfaced bugs (A1, A2, A3, A4, A5, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A18, A20, A21, A22, A23) closed; A17 intentionally deferred.
+**Net status (this dev environment):** all session-surfaced bugs (A1, A2, A3, A4, A5, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A18, A20, A21, A22, A23, A24, A25, A26, A27, A28, A29, A30, A31) closed; A17 intentionally deferred; A29's `labDisplay.jsp` non-OLIS sites filed as a follow-up to be coordinated with the in-flight security PR.
 **Track A open:** none at the moment.
 
 ### A1: OLIS source HTML/entities rendered as literal text in consult PDFs
@@ -343,6 +351,160 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Companion concern:** `labDisplay.jsp:1627` renders `handler.getClientRef()` — different getter, not the `<span>`-emitting one based on a quick grep. Left unchanged. If real CML/MDS data shows similar leakage in that cell, expand the fix there too.
 - **Labels:** `type: bug`, `priority: low`, `area: olis`, `area: lab`, `cosmetic`
 
+### A27: `OLISHL7Handler.renderAsFT` / `.renderAsNM` 500 on OBX-3 with <5 colon-separated parts
+- **Status:** ✅ Fixed — both `renderAsFT` and `renderAsNM` now length-check the `split(":")` array before indexing `[4]`; return `false` (the existing "not FT/NM" default) when the OBX-3 component-2 field has fewer than 5 colon-separated parts.
+- **Source:** observed by the user when clicking an unforwarded OLIS lab from InboxHub for patient TESTPATIENT/FITCASE (`segmentID=176`). The page rendered up through the demographics and the OBR comment ("...is not suitable for analysis"), then the response was committed mid-stream and the `errorPage` directive at `labDisplayOLIS.jsp:17` forwarded to `errorpage.jsp` — which got **inlined into the response** because of the partial commit. Symptom: the page appeared to render normally but the body ended with an "OSCAR Error: 500" page. **No JasperException in the Tomcat log** — the `errorPage` directive swallows it. Required removing the directive to surface the real stack.
+- **Repro:**
+  1. InboxHub → click any unforwarded OLIS lab whose OBX-3 component-2 doesn't follow the OLIS-expected `code:LOINC:name:discipline:NAR|ORD|QN|...` 5-part shape (e.g. simpler fixture data, or any real lab missing the trailing nomenclature category)
+  2. Browser opens `lab/CA/ALL/labDisplay.jsp?...&segmentID=<id>` → page renders patient demographics, then a 500 error page gets inlined where the test result rows should be
+- **Root cause:**
+  ```java
+  public boolean renderAsFT(int i, int j) {
+      String obxIdent = getOBXField(i, j, 3, 0, 2).split(":")[4];  // ← unguarded [4]
+      return obxIdent != null && obxIdent.toUpperCase().startsWith("NAR");
+  }
+  ```
+  `.split(":")[4]` assumes ≥5 parts. For our fixture's OBX-3-2 with only 1 part, `[4]` throws `ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 1`. The exception propagates through the JSP and is swallowed silently by `errorPage` — no log, no useful diagnostic surface. `renderAsNM` (line 1809) has the identical pattern.
+- **Fix shape (shipped):**
+  ```java
+  public boolean renderAsFT(int i, int j) {
+      String[] parts = getOBXField(i, j, 3, 0, 2).split(":");
+      if (parts.length < 5) return false;
+      String obxIdent = parts[4];
+      return obxIdent != null && obxIdent.toUpperCase().startsWith("NAR");
+  }
+  ```
+  Same pattern in `renderAsNM`. `false` is a correct default — both methods are "is this OBX a Formatted Text / Numeric special case" predicates; absent the trailing category, treat as not-FT/not-NM.
+- **Verification:** Playwright — segmentID=176 (TESTPATIENT/FITCASE, OBX-3-2 with single-part code) now renders fully: page size grew from 24271 bytes (truncated mid-render with inlined errorpage) to 29999 bytes (complete render), test result rows visible ("Fecal Immunochemical Test Result / Not detected / N / Final"), "END OF REPORT" footer present, no `Looks like something went wrong` text.
+- **Build note:** initial deploys via plain `make install` left **stale `.class` files** in `target/classes/` so the fix wasn't actually reaching the JVM — required `make clean && make install` to recompile fresh. Per the standing memory rule. (Verified by `javap -c` showing the exception table on `getOBXField` only after the clean rebuild.)
+- **Diagnostic technique noted for future:** the `errorPage` directive at `labDisplayOLIS.jsp:17` and at `labDisplay.jsp` swallows the actual exception silently — no JasperException reaches catalina.out. When investigating "500 with empty Tomcat log" on these JSPs, temporarily comment out the `errorPage` directive to surface the real stack via the global error handler. Restore after diagnosis.
+- **Defensive-guard family:** A14 (minimal HL7 crashes), A15 (PDF null address), A18 (PrintOLISLab dead-code), A25 (orphaned hl7TextInfo), A27. Each is a "real data hits unguarded assumption" case — the OLIS handler historically assumes well-formed OntarioMD-conformant input, which our test fixtures don't always provide.
+- **Bundled adjacent fix (same commit `9c2eef8455`):** `getOBXField` and `getOBXEDField` had `obrGroups.get(i)` **outside** their existing try/catch. If `i` is out of bounds for `obrGroups`, the IndexOutOfBoundsException escaped to the caller. Surfaced during A27 investigation — symptomatically masked by A27's own error path but a real fragility on its own. Both methods now wrap the `obrGroups.get(i)` lookup inside the existing try (exception range covers offsets 0-42 in the compiled bytecode), so any OBR-index out-of-bounds returns `""` cleanly instead of propagating.
+- **Labels:** `type: bug`, `priority: medium` (user-blocking — labs unviewable), `area: olis`, `area: lab`, `defensive-guard`
+
+### A26: `labDisplayOLIS.jsp` Home Address renders `<br />` markup as literal text
+- **Status:** ✅ Fixed — JSP-local root-cause fix mirroring D3's principle. Helper now stays in the data layer; template owns presentation.
+- **Source:** discovered while verifying A25's working-lab regression check (Playwright scan of segmentID=177's rendered page). Home Address cell text read literally: `123 MAIN ST<br /> M5H 2N2<br /> TORONTO, ON CAN<br />`.
+- **Repro (pre-fix):**
+  1. Open any OLIS lab via `labDisplayOLIS.jsp` whose patient has a populated Home Address
+  2. Observe the "Home Address" cell in the demographics table — line breaks show as the literal text `<br />` instead of actual line breaks
+- **Root cause:** `labDisplayOLIS.jsp:823-840` declared a `displayAddressFieldIfNotNullOrEmpty` helper that appended `<br />` to the field value (line 838). Call sites wrapped the helper return with `Encode.forHtml(String.valueOf(...))` — which HTML-escaped the trailing `<br />` to `&lt;br /&gt;`, defeating the intended line-break styling. `OLISHL7Handler.getPatientAddresses()` itself always returned clean per-field strings; the markup synthesis was purely the JSP-local helper.
+- **Fix shape (shipped):** replaced the helper with `getAddressField(HashMap, String)` returning the raw value (or `""`). Each call site now captures the 5-6 address parts into locals and emits them as `<%=Encode.forHtml(value)%><%=value.isEmpty() ? "" : "<br/>"%>` — value is HTML-encoded data, `<br/>` is template-literal HTML the browser interprets. Same `Encode.forHtml(city)`/`Encode.forHtml(province)` conditional-comma logic preserved.
+- **Updated 5 address-rendering blocks in `labDisplayOLIS.jsp`** — patient Home Address (around line 840-865), Ordering Facility address (around 1145-1165), Ordering Provider address (around 1180-1200), Performing Facility address (around 1300-1320), Reporting Facility address (around 1340-1360), and per-OBR Performing Facility address (around 1690-1715).
+- **Verification (Playwright, 2026-05-15):** lab 176 Home Address now renders `45 SAMPLE RD / M5H 2N2 / TORONTO, ON / CAN` with real line breaks; visible text contains no `<br>` markup. HTML inspection confirms `<br/>` is present as a real tag, not as escaped text.
+- **Same root-cause family as A28** (JSP-local markup synthesis). Both fixed in the same cleanup pass after D3.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`, `area: lab`, `cosmetic`
+
+### A31: Preemptive defensive guards on `formatDate` / `formatTime` / `formatDateTime` (no observed crash)
+- **Status:** ✅ Fixed — null/empty checks + length-clamping + try/catch returning `""`, applied uniformly to all three date-formatting helpers.
+- **Source:** discovered during the defensive-sweep extension of A27's investigation. After fixing the OBX-3 `split(":")[4]` crash, did a broader grep of `OLISHL7Handler` for similar unguarded assumptions: `.charAt(0)`, `.substring(0, N)` with fixed N, `.split(...)[N]`, etc. Most call sites turned out to be already-guarded (either inside `try/catch` or behind explicit pre-checks like `key.indexOf(":") > 0`), but the three date-formatting helpers were genuinely unprotected.
+- **Repro (preemptive — no observed live crash):**
+  - `formatDate(null)` → NPE on `plain.length()`
+  - `formatDate("")` → throws `StringIndexOutOfBoundsException` on `dateFormat.charAt(dateFormat.length() - 1)` because `dateFormat` becomes empty
+  - `formatDate("20240115083000")` (14 chars — caller passes a TS instead of DT) → throws on `dateFormat.substring(0, plain.length())` because `plain.length()` > 8
+  - Same shapes for `formatTime` (6-char format string)
+  - `formatDateTime` was already partly guarded (had a null/empty check at top) but `plain.substring(14, 19)` could throw if `plain.length()` is 15-18 (partial timezone)
+- **Reachability:** `getOBXDTResult` → `formatDate`, `getOBXTMResult` → `formatTime`, `getOBXTSResult` and timestamp accessors → `formatDateTime`. If any OBX returns an empty or odd-length date/time string, the prior code would 500. Not observed live with current fixtures, but real OLIS data has variation we don't control.
+- **Fix shape (shipped):** for each of the three helpers:
+  - Null/empty check at entry (already present on `formatDateTime`; added to siblings)
+  - Length-clamp: if `plain.length() > <format-string-length>`, truncate to the format-string length
+  - For `formatDateTime`'s offset-handling, treat length 15-18 (partial timezone) as "drop offset, keep 14-char body"
+  - Wrap entire body in `try/catch` returning `""` for any other parse failure
+- **Why preemptive matters here:** the surrounding A14/A15/A18/A25/A27/A30 family is the same pattern — real OLIS data has formatting variation we can't control, and the OLIS handler historically assumed well-formed input. A pre-conformance hardening pass on the obvious gaps cheapens later F1 surprise debugging.
+- **Bundled adjacent insight (recorded for future sweeps):** the broader sweep audited 8+ candidate sites in `OLISHL7Handler`. The other patterns either were already guarded or operate on data the handler controls (HAPI segment names are always ≥3 chars, etc.) — only the three date helpers were genuinely under-guarded. Full audit details in the A31 commit body.
+- **Labels:** `type: refactor`, `priority: low`, `area: olis`, `defensive-guard`, `preemptive`
+
+### A30: Noisy ERROR-level stack traces on every OLIS lab view (no functional impact)
+- **Status:** ✅ Fixed — segment-existence pre-check in `getFullDoctorName` + bounds-check in `getMappedOBX`. Same defensive-guard family as A14/A15/A18/A25/A27.
+- **Source:** observed by the user when opening lab 177 — Tomcat catalina.out logged 3-5 ERROR-level stack traces per lab view, all caught silently and not visible to the user, but burying real diagnostic signal.
+- **Two distinct triggers:**
+  1. **`getFullDoctorName` HL7Exception** — `getAttendingProviderName` and `getAdmittingProviderName` always call `getFullDocName("/.PV1-7-")` and `getFullDocName("/.PV1-17-")` respectively. Most OLIS labs **don't carry PV1 segments** (PV1 is the optional Patient Visit segment, typically only present on inpatient labs). HAPI's terser tries to navigate to `/.PV1-7-...` and throws `HL7Exception: End of message reached while iterating without loop`. Caught at the public-getter level + logged as ERROR. Stack trace contains the full Tomcat/Struts filter chain (~100 lines) per occurrence.
+  2. **`getMappedOBX` ArrayIndexOutOfBoundsException** — `obxSortMap.get(obr).keySet().toArray(...)` returns a 0-length array when the inner map for an OBR is empty (no OBXs collected). Indexing `keys[obx]` throws AIOOBE. Caught + logged as ERROR. Fires once per empty-OBR per render.
+- **Repro:** open any OLIS lab without PV1 segments (most of them) — catalina.out gets ~3-5 ERROR-level stack traces per view. Lab 177 was the user's observation. Real-world OLIS data hits this consistently.
+- **Why it matters despite "no visible bug":** when tailing logs during conformance testing, the noise hides real errors. Hard to spot a new issue when every page view emits 100+ lines of caught-and-logged stack trace.
+- **Fix shape (shipped):**
+  - **Issue 1 — `getFullDoctorName`:** new private `segmentExists(String docSeg)` helper that extracts the 3-character segment name from the terser path (e.g. `/.PV1-7-` → `PV1`) and checks `terser.getFinder().getRoot().getAll(name).length > 0`. `getFullDoctorName` short-circuits to an empty `DoctorName` when the segment doesn't exist — no HL7Exception thrown, no log entry.
+  - **Issue 2 — `getMappedOBX`:** bounds-check the inner map before indexing. If `obxSortMap.get(obr)` is null or `obx` is out of bounds, return the original `obr` (same defensive return as the existing exception fallback) without provoking the AIOOBE.
+- **Behavior preservation:** both return values match the pre-fix exception-fallback outputs (empty `DoctorName` / original `obr`). Real corruption that goes beyond "segment doesn't exist" / "empty inner map" still gets caught + logged as ERROR — only the **expected absence** noise is suppressed.
+- **Verification (Playwright + log diff, 2026-05-15):** captured catalina.out line count before navigating to lab 177, then re-tailed after — **0 ERROR-level entries** from `OLISHL7Handler` for the render (previously 3-5). Visible rendering identical: Ordering Provider, OBX result rows, "END OF REPORT" footer all present. No error-page inline.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`, `area: logs`, `defensive-guard`
+
+### A29: `labDisplayOLIS.jsp` Report Comments render literal `&nbsp;` / `<span>` text instead of decoded clinical text — incomplete A1
+- **Status:** ✅ Fixed for the OLIS path — `HtmlTextCleaner.toPlainText(...)` wrap applied at 6 comment-render sites in `labDisplayOLIS.jsp`. Non-OLIS `labDisplay.jsp` deferred (see scope discussion below).
+- **Source:** observed by the user during A26/A28 verification — lab 176's Report Comments cell rendered as `Action&nbsp;required&nbsp;for&nbsp;you:&nbsp;Complete&nbsp;a&nbsp;new&nbsp;FIT&nbsp;for&nbsp;your&nbsp;patient.&nbsp;The&nbsp;previous&nbsp;sample&nbsp;was&nbsp;received&nbsp;more&nbsp;than&nbsp;14&nbsp;days&nbsp;after&nbsp;collection&nbsp;and&nbsp;is&nbsp;not&nbsp;suitable&nbsp;for&nbsp;analysis.` That is the **exact text** the original A1 reporter screenshot showed in the FIT colorectal-cancer-screening clinical-safety case (per A1 entry line 59). Lab 176 is the A1-rich fixture — confirmed via MSH-10 = `OLISMSGA1RICH001`.
+- **Wire-data investigation (DB inspection, 2026-05-15):** the raw HL7 stored in `hl7TextMessage.message` for lab 176 contains an NTE segment with HL7-conformant escape encoding:
+  ```
+  NTE|1||Action\T\nbsp;required\T\nbsp;for\T\nbsp;you:\T\nbsp;Complete\T\nbsp;a\T\nbsp;new\T\nbsp;FIT...
+  ```
+  `\T\` is the HL7 escape sequence for the `&` character (per HL7 v2 escape rules — `&` is the sub-component separator declared in MSH-2, so any literal `&` in data must be escape-encoded). HAPI's parser decodes `\T\` → `&` per spec, yielding `&nbsp;` in `getOBRComment()`. **The DB is not muddied; the upstream encoding is conformant.**
+- **Render-path leak:** JSP comment-render sites call `Encode.forHtml(handler.getOBRComment(...))` etc. `Encode.forHtml` escapes the `&` to `&amp;`, turning `&nbsp;` into `&amp;nbsp;` which the browser displays as literal text. The PDF path doesn't have this problem — A1 wrapped its render calls with `HtmlTextCleaner.toPlainText` (Jsoup decodes `&nbsp;` to U+00A0 non-breaking space). The JSP path was out of A1's scope.
+- **Render sites needing the wrap (6 in `labDisplayOLIS.jsp`):**
+  - Line 1463 — `report.getComment()` (audit/admin context)
+  - Line 1524 — `handler.getReportComment(i)` (repeated report comments)
+  - Line 1784 — `handler.formatString(collectorsComment)` (Specimen Comment block — the A1 reporter's primary symptom site)
+  - Line 1785 — `handler.getCollectorsCommentSourceOrganization(obr)` (source organization styled span)
+  - Line 1817 — `obrComment` (OBR-level NTE comments)
+  - Line 2137 — `handler.getOBXComment(obr, obx, l)` (per-OBX comments)
+- **Why we can't easily do a D3-style root-cause fix at the handler:** the `&nbsp;`/`<span>` markup is in the genuine upstream wire data, not synthesized by OpenO. A1 chose render-layer translation deliberately because the PDF and HTML render contexts want different output shapes for the same source (PDF wants plain text; HTML wants the entities decoded to actual non-breaking spaces). Handler-level entity decode would help one path and hurt the other.
+- **Fix shape (matches A1's existing PDF pattern):** wrap each of the 6 OLIS sites with `HtmlTextCleaner.toPlainText(...)` before `Encode.forHtml(...)`. Restore the `HtmlTextCleaner` import to `labDisplayOLIS.jsp` (it was dropped during D3's thorough cleanup). ~6 small edits.
+- **Why this is clinically important** (not cosmetic — per the A1 entry framing): the original A1 reporter's complaint was a missed FIT recall for colorectal cancer screening. Doctor-facing clinical guidance like "Action required for you: Complete a new FIT for your patient" became unreadable when rendered with literal `&nbsp;` between every word. A1's PDF fix made the PDF readable; the web JSP path remained broken for the same reason — until A29.
+- **Verification (Playwright, 2026-05-15):** lab 176 Report Comments cell now renders the FIT guidance as readable clinical text — `"Action required for you: Complete a new FIT for your patient. The previous sample was received more than 14 days after collection and is not suitable for analysis."` — with U+00A0 non-breaking spaces between words (Jsoup decoded `&nbsp;`; `Encode.forHtml` left U+00A0 alone). No `&nbsp;` in visible body text.
+- **Empirical-evidence caveat (recorded for honesty):** the only known-real instance of this pattern is the **original A1 reporter's case** (one OLIS lab, one screenshot). The HL7 fixture used in the local dev environment (`lab 176`, MSH-10 `OLISMSGA1RICH001`) is our own replication of that reporter's data — not OntarioMD-official test data. We don't have empirical evidence that the pattern is widespread among other OLIS labs. The fix is therefore **defensive**, matching A1's same defensive choice for the PDF path. If the pattern turns out to be lab-specific, the wrap is harmless on labs that send plain text.
+- **Scope choice: `labDisplayOLIS.jsp` only this session.** The non-OLIS render path (`labDisplay.jsp` — handles CML, BC PathNet, MDS, Excelleris, etc.) likely has the same `Encode.forHtml(...)` pattern around comment-render sites and would theoretically be affected if those upstream lab systems also encode formatted text with HTML entities. A1's PDF fix wrapped both OLIS + non-OLIS PDF paths defensively. Mirroring that on the web JSPs would be defensible, **but**: (a) we have no empirical observation of the pattern in non-OLIS wire data, (b) there's active in-flight security-PR work on `labDisplay.jsp` and overlapping changes risks merge conflicts and unwanted security-review surface. Deferred as a follow-up — directed scan of actual non-OLIS wire data + coordinated with the security-PR cycle.
+- **Labels:** `type: bug`, `priority: medium` (clinical-safety inheritance from A1), `area: olis`, `area: lab`, `clinical-safety`
+
+### A28: `labDisplayOLIS.jsp` OBX test names show literal `<u>...</u>` markup instead of underline
+- **Status:** ✅ Fixed — JSP-local root-cause fix mirroring D3's principle. Pre-encoded safe HTML returned by a new helper; render sites emit raw.
+- **Source:** observed by the user during D3 verification — test names in lab 176's results table rendered as `<u>Fecal Immunochemical Test Result</u>` instead of underlined. Confirmed via Playwright `innerText` inspection (tags appeared in visible text, meaning they were HTML-escaped at render rather than interpreted as HTML).
+- **Repro (pre-fix):**
+  1. Open any OLIS lab via `labDisplayOLIS.jsp` that has at least one OBX result
+  2. Observe the test-name column — names appeared with literal `<u>...</u>` wrapping. On strikeout/deleted results, `<s>` was also added literally.
+- **Root cause:** `labDisplayOLIS.jsp:1830-1841` built `obxDisplayName = pre + obxName + post + abnormalNature` where `pre = "<u>"` / `post = "</u>"` (plus `<s>` / `</s>` if strikeout) and `abnormalNature` got a `<span style="...">` wrap synthesized at line 1858. The composed string was then rendered via `Encode.forHtmlAttribute(obxDisplayName)` at 7 sites — HTML-escaping the styling tags so they became `&lt;u&gt;...&lt;/u&gt;` literal text. Same family as A22/A23/A26: JSP synthesizes presentation markup, then runs the result through an HTML encoder which escapes its own creation. Distinct from D3 only in that the markup source was the JSP itself, not a parser-layer Java method consumed by multiple renderers.
+- **Fix shape (shipped):**
+  - New JSP scriptlet helper `buildObxDisplayHtml(boolean strikeout, String obxName, String abnormalNatureRaw)` returns a pre-encoded safe HTML fragment. The `<u>`/`<s>` styling tags are **template literals** built directly into the string; the `obxName` and `abnormalNatureRaw` values are HTML-encoded inside the helper via `org.owasp.encoder.Encode.forHtml(...)`. Browser receives correct HTML with real tags + encoded data.
+  - The scriptlet block at lines 1850-1861 now collapses to:
+    ```jsp
+    String abnormalNatureRaw = handler.getNatureOfAbnormalTest(obr, obx);
+    String obxDisplayHtml = buildObxDisplayHtml(strikeout, obxName, abnormalNatureRaw);
+    ```
+  - The 6 attribute-context render sites (`Encode.forHtmlAttribute(String.valueOf(obxDisplayName))`) and the 1 HTML-context site (`Encode.forHtml(String.valueOf(obxDisplayName))`) all reduce to `<%=obxDisplayHtml%>` — no Encode wrap, because the helper already returns safe HTML.
+  - Side benefit: the original code used `Encode.forHtmlAttribute` in HTML body context — wrong encoder for the position. The fix sidesteps that bug too.
+- **Verification (Playwright, 2026-05-15):** lab 176 test name now renders with real `<u>Fecal Immunochemical Test Result</u>` HTML; `innerText` shows just `Fecal Immunochemical Test Result` (underlined visually); no `<u>` leak in visible body text.
+- **Build gotcha encountered + recorded:** a Java `//` comment in the new scriptlet block originally contained `<%= obxDisplayHtml %>` as illustrative prose — the JSP parser tokenizes `<%=` regardless of comment context, so the comment got compiled as a scriptlet expression and broke the generated `_jspService` method. **Lesson:** never write `<%`, `<%=`, `<%!`, `<%@` inside JSP scriptlet Java comments; describe with prose instead.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`, `area: lab`, `cosmetic`
+
+### A25: `labDisplay.jsp` 500s on orphaned `hl7TextInfo` row (missing `hl7TextMessage`)
+- **Status:** ✅ Fixed — null-handler guard at `labDisplay.jsp:215-238` renders a friendly "Lab data not available" page (HTTP 404) instead of NPE'ing on the next deref of a null `MessageHandler`.
+- **Source:** observed by the user when clicking an unforwarded OLIS lab from InboxHub — the inbox link constructed `?segmentID=173`, the JSP 500'd. Reproduced via Playwright (2026-05-15); root-caused via direct DB inspection.
+- **Repro:**
+  1. InboxHub → click any unforwarded OLIS lab whose `hl7TextInfo.lab_no` lacks a matching `hl7TextMessage.lab_id`
+  2. Browser opens `lab/CA/ALL/labDisplay.jsp?...&segmentID=<orphan>` → `OSCAR Error: 500`
+  3. Stack: `Factory.getHandler(segmentID)` NPEs at `Factory.java:74` because `hl7TextMessageDao.find()` returns null → fall-through to `getHandler("", "")` returns null → JSP line 219 (`handler.getMsgType()`) NPE → 500
+- **Root cause (data + code):**
+  - **Data:** no FK enforced between `hl7TextInfo.lab_no` and `hl7TextMessage.lab_id`. Partial deletes / data-cleanup operations that hit one table but not the other leave dangling references. Confirmed via DB inspection: `hl7TextInfo` rows 173/174/175 existed but matching `hl7TextMessage` rows did not.
+  - **Code:** `Factory.getHandler(String segmentID)` returns null silently (it's caught, logged, falls through to `getHandler("","")` which is also null-valued because `DefaultGenericHandler` can't parse empty input). `labDisplay.jsp` never checks for null before deref at line 219 — so any caller hitting an orphan crashes the entire JSP.
+- **Fix shape (shipped):** in `labDisplay.jsp` immediately after `handler = Factory.getHandler(segmentID);`, added a null guard that renders a friendly HTML notice with HTTP 404 and returns. Minimal scope — single JSP, single guard, no Factory contract change. Working labs (e.g. segmentID=177 here) still render normally; the OLIS `<jsp:forward>` at line 231-233 is unaffected because handler is non-null in the happy path.
+- **Verification:** Playwright — segmentID=173 (orphan) now returns 404 with `<title>Lab data not available</title>`; segmentID=177 (intact) still returns 200 with `<title>JANE Q DOE Lab Results</title>`. Console: no JS errors, no `<jsp:forward>` chain breakage.
+- **Why this is worth fixing despite being "dev-data corruption":**
+  - In production, partial deletes happen — DBAs clean up storage, migrations time out partway, retention policies hit one table but not its sibling. Any of these produces the same orphan state.
+  - The pre-fix failure mode crashes the *entire lab display flow* — an admin trying to triage a stale row brings down their session for that lab. Friendly fallback lets the user see *which* lab is broken and continue working.
+- **Adjacent risk (not fixed):** `labDisplay.jsp:198-205` (the `showAll`/`multiID` branch) iterates `Factory.getHandler(segmentIDs[i])` and adds each result to the `handlers` list; if any element is null, `handlers.get(0)` could later NPE at line 287 `handler.getPatientName()`. Same root cause, lower-frequency path (multi-lab view). Worth a follow-up sweep if encountered.
+- **Out of scope (data-layer):** the underlying `hl7TextInfo` / `hl7TextMessage` orphan rows should be cleaned up at the DB level, or a sweeper job added — but that's a data-integrity task separate from the user-facing crash fix.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`, `area: lab`, `defensive-guard`
+
+### A24: OLIS Add-to-Inbox classifies MD5-detected duplicates inconsistently (`errorIds` vs `successIds`, missing audit row)
+- **Status:** ✅ Fixed — both code paths in `OLISAddToInbox2Action` now mirror the `OLISUtils.isDuplicate` reference path at lines 565-571 (write `logOLISDuplicate` audit row, `result.setStatus("duplicate")`, merge, classify as success).
+- **Source:** observed by the user when adding the first row of an OLIS search whose body content had already been uploaded into OpenO earlier. Add-to-Inbox returned `{"successIds":[],"errorIds":["<uuid>"]}` and **no relevant Tomcat log** appeared — consistent with the silent `FileUploadCheck.UNSUCCESSFUL_SAVE` branch rather than a thrown exception. Reproduced via Playwright (2026-05-15) — fresh-content rows succeeded (`successIds`), only the previously-uploaded row produced `errorIds`.
+- **Root cause:** `OLISAddToInbox2Action.addToInbox()` has **two** duplicate-detection paths that classified the same conceptual outcome differently:
+  - Line 565 — `OLISUtils.isDuplicate(file)` (accession/content match against `OLISResults`) → writes audit row, marks `status="duplicate"`, **adds to `successful`** ✅
+  - Line 584 — `FileUploadCheck.addFile()` returning `UNSUCCESSFUL_SAVE` (MD5 match against `file_upload_check`) → writes audit row, **adds to `errors`** ❌
+  - The MD5 path silently returns `-1` (only a DEBUG log) so the user sees a generic error JSON with nothing in the Tomcat log to explain it.
+- **Companion bug in `executeAddSingle`** (single-uuid path, not exercised by `bulkProcess`): the `UNSUCCESSFUL_SAVE` branch returned `"Already Added"` (correct UX) but **skipped the `logOLISDuplicate` audit row and the `status="duplicate"` mark** — so the OLIS Audit Log missed any re-add attempt through that path.
+- **When this fires in production (not just synthetic test data):** any time the same lab content is re-encountered via OLIS after having been ingested elsewhere — e.g. cleanup deleted the `OLISResults` row but `file_upload_check` (permanent) still has the MD5; or the same lab was uploaded via HL7 batch / fax / different OLIS query first. Low frequency but real.
+- **Fix shape (shipped):** both branches now do `logOLISDuplicate` → `result.setStatus("duplicate")` → `olisResultsDao.merge(result)` → classify as success (`successful.add(...)` for bulk; `request.setAttribute("result", "Already Added")` for single). Two ~3-line edits in `OLISAddToInbox2Action.java`.
+- **Not caused by the C2/B1/init() work** — pre-existing logic; surfaced because the user's test environment has prior fixture uploads in `file_upload_check`.
+- **Labels:** `type: bug`, `priority: low`, `area: olis`, `cosmetic` (UX-confusing; no data loss — the duplicate was correctly detected, just mis-classified in the response payload)
+
 ---
 
 ## Track B — Spec gaps, JSP-only quick wins
@@ -442,22 +604,31 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Labels:** `type: discussion`, `needs-design`, `priority: low`
 
 ### D3: Structured doctor-name data from OLIS handler (replace synthesized `<span>` markup)
-- **Decision:** refactor `OLISHL7Handler.getFullDocName` (and related getters) to return structured doctor-name data — eg. a record `DoctorName(name, prefix, licenseType, licenseNumber)` — and let each renderer decide how to display, instead of having the handler emit `<span style="...">` markup that consumers have to parse back out.
-- **Current state (post A1/A21/A22/A23):** `OLISHL7Handler.getFullDocName:2689` synthesizes `<span style="margin-left:15px; font-size:8px; color:#333333;">{type} {licenseNum}</span>` markup. Every consumer that wants plain text has to strip it via Jsoup (`HtmlTextCleaner.toPlainText`). The PDF path also has bespoke logic in `OLISLabPDFCreator.getDoctorNamePhrase` that parses the markup back out to render the license number in subscript font.
-- **Why this is worth doing:**
-  - The data layer is encoding a *styling intent* as inline HTML, which is a category error — display concerns belong in renderers, not models.
-  - Web display (`labDisplay.jsp`, `labDisplayOLIS.jsp`) currently can't honour the small-grey styling intent because `<c:out>` HTML-escapes the markup; we strip the markup instead. With structured data, the JSPs could render real CSS-styled `<span class="md-license">{type} {licenseNum}</span>` and clinicians would see the actual visual intent.
-  - InboxHub (`Hl7textResultsData`) currently strips the markup at the population layer; with clean source data, the strip becomes a no-op.
-  - Roughly 14 of the ~36 Jsoup call sites we added become removable (the doctor-name ones; comment-field sanitization stays — those handle genuine upstream HTML from the lab system, not OpenO synthesis).
-- **A21's preparatory contribution:** consolidates OLIS PDF rendering paths into a single creator (`OLISLabPDFCreator`), so the structured-data migration is a single-renderer change rather than two. The 5 consult-flow sites A21 fixed now all route through `OLISLabPDFCreator.getDoctorNamePhrase` — that's the **one** PDF method that needs updating when the refactor lands.
-- **Scope estimate:** 2-3 days of focused work.
-  - **Day 1**: design structured shape (`DoctorName` record or similar), update `OLISHL7Handler.getFullDocName` + add `getDoctorNameStructured()`, ensure backward-compat via the existing flat-string getter.
-  - **Day 2**: update `OLISLabPDFCreator.getDoctorNamePhrase` to consume structured data; verify subscript styling preserved in PDFs.
-  - **Day 3**: optional cleanup of A22/A23 Jsoup wrappers + JSP upgrade to real CSS styling.
-- **Migration flexibility (A22/A23 wrappers can stay):** the Jsoup wrappers we added in `Hl7textResultsData` (A22) and `labDisplay.jsp` / `labDisplayOLIS.jsp` (A23) become **defensive no-ops** once the source returns clean text. They don't need to be removed in the refactor — they just stop doing anything useful. Choose between:
-  - **Lazy migration**: just refactor the handler + PDF renderer. Leave the JSP/InboxHub wrappers alone. Cheapest path. ~3 files.
-  - **Thorough migration**: also drop the now-redundant wrappers, optionally upgrade JSP rendering to use structured data + CSS for proper subscript styling on the web. ~6 files.
-- **Labels:** `type: refactor`, `needs-design`, `priority: low`, `tech-debt`
+- **Status:** ✅ Done (thorough migration, 2026-05-15) — `OLISHL7Handler.DoctorName` nested class introduced; `getFullDocName` re-routed through structured parse + `toPlainText`; PDF renderer + 6 of 8 strip sites switched to clean source.
+- **What shipped:**
+  - **New `OLISHL7Handler.DoctorName` nested class** holding prefix / givenName / middleName / familyName / suffix / degree / licenseType / licenseNumber, with `getNamePart()` / `getLicensePart()` / `toPlainText()` / `isEmpty()` accessors.
+  - **`getFullDoctorName(String docSeg)`** is now the canonical parser — returns `DoctorName`. The legacy `getFullDocName` shim delegates to `getFullDoctorName(...).toPlainText()` so it returns clean text (no `<span>`).
+  - **Four new public structured methods** on `OLISHL7Handler`: `getDocNameStructured()`, `getAttendingProviderStructured()`, `getAdmittingProviderStructured()`, `getCCDocsStructured()` (the last returns `List<DoctorName>`).
+  - **`OLISLabPDFCreator.getDoctorNamePhrase`** now takes `DoctorName` and renders `getNamePart()` in main font + `getLicensePart()` in `subscriptFont` from structured fields. No more Jsoup round-trip — the import was dropped.
+  - **`getCCDocNamesPhrase`** now takes `List<DoctorName>` and iterates structured entries instead of splitting on commas.
+  - **6 strip sites dropped (parser-fresh, never get markup):**
+    - `labDisplayOLIS.jsp:1178` (`getDocName`), `:1257` (`getAttendingProviderName`), `:1274` (`getAdmittingProviderName`), `:1367` (`getCCDocs`)
+    - `labDisplay.jsp:1716` (`getDocName`), `:1728` (`getCCDocs`)
+    - `Hl7textResultsData.java:727` (`hl7.getRequestingProvider()`)
+    - `HtmlTextCleaner` import dropped from both JSPs.
+  - **2 strip sites intentionally retained (DB-fed, legacy data possible):**
+    - `Hl7textResultsData.java:598` (`info.getRequestingProvider()` — `hl7TextInfo` DB column)
+    - `Hl7textResultsData.java:847` (`requesting_client` from the same DB column)
+    - These rows were written before D3 with `<span>` markup; until a backfill or natural re-save runs, the defensive strip stays. Adding a code comment at line ~727 explains the asymmetry.
+- **Why we did the thorough variant:** the user signal was "remove some of the other areas that try to strip html markup that are no longer needed" — so we extended past the Lazy migration. The 2 DB-fed wrappers stay defensive; everything else is parser-fresh and confirmed-clean.
+- **Verification (Playwright, 2026-05-15):** lab 176 + 177 + InboxHub list all rendered clean — no `<span>` text, no `&lt;span` HTML-escape leak, "Ordering Provider: DR. BRENT RYAN CRAWFORD MD 109753" (and similar for JANE/DR JOHN SMITH) rendering as plain text in the right places. PDF subscript styling preserved via structured `getNamePart` / `getLicensePart` split. `END OF REPORT` footer still present.
+- **What this closes:**
+  - A22 / A23 entries — wrappers either removed or now defensive no-ops. Listed as "✅ Fixed (resolved + wrappers removed by D3)" below.
+  - **Does NOT address A26** (Home Address `<br />` leak in `labDisplayOLIS.jsp:843` helper). That's a separate JSP-local helper for the address block, not a parser output — same family but separate fix.
+- **Future cleanup follow-ups (optional):**
+  - JSP CSS upgrade: emit a real `<span class="md-license">` from the structured data + add corresponding CSS — would visually restore the small-grey subscript intent on the web (PDF already does this).
+  - DB backfill: re-save existing `hl7TextInfo.requestingProvider` rows through the new clean code path so the 2 defensive strips at Hl7textResultsData:598/847 can also drop. Optional — no functional impact.
+- **Labels:** `type: refactor`, `tech-debt`, `done`
 
 ---
 
@@ -500,6 +671,8 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Real OLIS data is unaffected.** The original A1 reporter's screenshot showed `&nbsp;` Specimen Comment content rendering correctly. The user's recent lab upload also rendered comments correctly during A21 verification. Production OLIS messages put NTEs in HAPI-expected positions.
 - **If a future dev hand-crafts an HL7 fixture and finds comments not rendering**, the fix is to put the NTE segments in standard ORU_R01 positions (immediately after OBR before any OBX, between OBX, or at top-of-message before any OBR) — NOT to defensively rewrite `getNTELocation`. Malformed upstream HL7 would be an OLIS escalation, not an OpenO defensive-coding task.
 - **Same root cause affects `isReportBlocked()` — found in the B1 deep-dive (2026-05-14).** `OLISHL7Handler.init()` detects blocked status by walking the *same* `terser.getFinder().getRoot().getNames()` root-level segment list. For a bare `ORU^R01^ORU_R01` fixture, HAPI resolves the typed `v24.message.ORU_R01` structure and nests the non-standard `ZPD` segment inside the patient group — so the root-level walk misses it and `parseZPDSegment()` never runs (`sample-response-blocked.hl7` reproduced this: the B1 Blocked column stayed empty). An `ERP^Znn^ERP_R09` message has no HAPI structure class → parses flat as `GenericMessage` → `ZPD` sits at root → detected (`sample-response-erp-blocked.hl7` worked). **Real OLIS query responses are `ERP`, so real-world blocked-status detection works** — but `init()`'s root-only segment traversal is the shared brittleness behind both this and the NTE case. Same guidance: don't defensively rewrite the walker for a hand-crafted fixture; if a real `ERP` response ever nests `ZPD`, that's an F1 finding. A future hardening pass on `init()`'s segment traversal (recurse into groups instead of walking root names) would address both. See `deep-dive-findings.md` §4a.
+- **Permanent-save propagation trace (2026-05-15) — same fragility, four sites.** Walked Results.jsp → `OLISAddToInbox2Action` → upload-handler `OLISHL7Handler.parse()` → `MessageUploader.routeReport()`. `MessageUploader` has **zero** references to `isReportBlocked()` / `isOBRBlocked()`, `Hl7TextInfo` has **no `blocked` column**, and no `measurementsExt reportBlocked=Y` row is written by the OLIS save path (that key is only set by the CDS XML import). Blocked status survives implicitly: the raw HL7 (ZPD included) is base64-stored to `hl7_text_message` and re-parsed on every view (`labDisplayOLIS.jsp`, `OLISLabPDFCreator`, plus B1 preview Results.jsp). All four call sites therefore share one fragility — they win or lose together with `init()`'s root-only walk. For real OLIS (ERP envelopes preserved as-is) all four work; for synthetic bare-ORU fixtures all four fail. A single `init()` hardening pass (recurse into typed groups) closes all four. **Side note (not a conformance gap):** there's no fast-query path for "show me all blocked labs" — would require a base64-decode + re-parse scan. See `deep-dive-findings.md` §4a.
+- **✅ Closed (2026-05-15, commit `3161c1fd50`):** the proposed hardening landed in a slightly different form — instead of teaching `init()` to recurse into typed groups, the parser is now configured with a custom `ModelClassFactory` that forces every message to resolve as `GenericMessage` regardless of MSH-9-3. All segments therefore land flat at the message root, making the existing root-only walk correct by construction. **All four call sites now work for both bare `ORU^R01` and `ERP^Z01` fixtures.** This closes G2 (NTE rendering) and §4a (OLIS04.10 / `isReportBlocked()`) together.
 
 ### G3: Devcontainer doesn't load `over_ride_config.properties` at runtime (general dev-experience gap, not OLIS-specific)
 - **Reclassified from A6.** Surfaced during the OLIS audit but not OLIS-scoped — affects any property override anyone wants to keep out of the checked-in primary file. File as a general dev-experience issue.

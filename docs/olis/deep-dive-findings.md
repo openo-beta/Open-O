@@ -120,9 +120,45 @@ confirmation at F1, and a candidate for a future hardening pass on `OLISHL7Handl
 > structure-resolution switch; `PipeParser` still resolves to a typed structure class when one
 > exists. The empirical B1 test (ORU fails, ERP works) is the authority here.
 
-**Also still open (carried from `requirements-analysis.md`):** propagation of blocked status
-through *permanent save* (Results.jsp → `OLISAddToInbox2Action` → `MessageUploader`) was not
-verified in this audit.
+**Permanent-save propagation (traced 2026-05-15):** verified by walking
+Results.jsp → `OLISAddToInbox2Action` → upload-handler `OLISHL7Handler.parse()` →
+`MessageUploader.routeReport()`. **Three findings:**
+
+- `MessageUploader` has **zero references** to `reportBlocked`/`isReportBlocked()`/`isOBRBlocked()`;
+  it never reads the parser's blocked state.
+- `Hl7TextInfo` (the lab-metadata table) has **no `blocked` column**; the OLIS save path also
+  does not write a `measurementsExt` `reportBlocked=Y` row (that key is only written by the CDS
+  XML import path in `ImportDemographicDataAction42Action`, not by OLIS HL7 ingestion).
+- **What does survive:** the full raw HL7 body — including the ZPD segment — is base64-stored
+  to `hl7_text_message`. At view time, `labDisplayOLIS.jsp` (and `OLISLabPDFCreator`) call
+  `Factory.getHandler(segmentID)` → re-decodes → re-instantiates `OLISHL7Handler` → re-runs
+  `init()` → checks `isReportBlocked()` / `isOBRBlocked(obr)` to render the
+  "Do Not Disclose Without Explicit Patient Consent" banner.
+
+**Net:** blocked status **does propagate** through permanent save, but **implicitly** — via the
+preserved raw HL7 + re-parse-on-view. For real OLIS data (ERP envelopes saved as-is), the same
+`GenericMessage`-flat-ZPD path that worked at preview time also works at display time. For bare
+ORU fixtures it would fail at display time the same way it fails at preview — same root cause.
+
+**Two consequences worth flagging:**
+
+1. **No fast-query path for blocked labs.** Can't SQL-filter "show me all blocked labs received
+   this month" — every row would need to be base64-decoded and re-parsed. Not a conformance gap,
+   but a usability/audit concern if blocked-lab reporting is ever wanted.
+2. **The preview Blocked column, the display banner, the PDF render, and `isOBRBlocked()` all
+   share one fragility.** They route through the same `init()` segment-walk. The B1 work, the
+   `labDisplayOLIS` banner, and `OLISLabPDFCreator` all win or lose together. A single hardening
+   pass on `init()` (recurse into typed-message structure groups) would fix all four sites at
+   once.
+
+**Closure (2026-05-15, commit `3161c1fd50`):** the proposed hardening landed in a slightly
+different form — instead of teaching `init()` to recurse into typed groups, the parser is now
+configured with a custom `ModelClassFactory` that forces every message to resolve as
+`GenericMessage` regardless of MSH-9-3. All segments therefore land flat at the message root,
+making the existing root-only segment-walk correct by construction. **All four call sites now
+work for both bare `ORU^R01` and `ERP^Z01` fixtures.** Verified via Playwright on
+`sample-response-blocked.hl7` (bare ORU) — Blocked column lights up in preview AND display banner.
+Same fix also closes the related NTE-rendering fragility flagged in G2.
 
 ### 4b. OLIS06.02 — "received messages" half is a deliberate design choice
 
