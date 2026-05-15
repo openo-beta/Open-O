@@ -1825,13 +1825,14 @@
 //console.log('foundQ='+foundQ);
             //descrease the queue's doc number by 1
             if (foundQ.length > 0) {
-                var n = $('docNo_' + foundQ).innerHTML;
-                //console.log('not found11');
-                n = parseInt(n);
-                //console.log('not found22');
+                const el = document.getElementById('docNo_' + foundQ);
+                if (!el) { return; }
+
+                const n = parseInt(el.textContent, 10);
+                if (isNaN(n)) { return; }
+
                 if (n > 0) {
-                    //console.log('not found33');
-                    $('docNo_' + foundQ).innerHTML = n - 1;
+                    el.textContent = n - 1;
                 }
             }
             //console.log('not found44');

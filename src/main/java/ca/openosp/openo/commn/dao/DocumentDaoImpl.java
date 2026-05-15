@@ -245,6 +245,19 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
      *
      * @param demoNo
      */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Integer> findDocumentNosForDemographic(Integer demographicNo, List<Integer> docNos) {
+        if (docNos == null || docNos.isEmpty()) return Collections.emptyList();
+        Query query = entityManager.createQuery(
+                "SELECT c.id.documentNo FROM CtlDocument c " +
+                "WHERE c.id.module = 'demographic' AND c.id.moduleId = :demographicNo " +
+                "AND c.status != 'D' AND c.id.documentNo IN :docNos");
+        query.setParameter("demographicNo", demographicNo);
+        query.setParameter("docNos", docNos);
+        return query.getResultList();
+    }
+
     @Override
     public List<Document> findByDemographicId(String demoNo) {
         Integer id = null;
