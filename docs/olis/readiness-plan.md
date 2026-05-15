@@ -598,10 +598,96 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 
 ### D2: Nomenclature programmatic refresh
 - **Closes:** OLIS04.08
-- **Decision:** keep CSV reseed model, build a one-shot batch importer, or build a sync framework
-- **Affects scope significantly.** Current state: manual CSV updates of `OLISTestRequestNomenclature.csv` / `OLISTestResultNomenclature.csv`
-- **Related — nomenclature *consumption* is a real performance problem (strengthens the restructuring case):** `olis/Search.jsp` calls `OLISResultNomenclatureDao.findAll()` and `OLISRequestNomenclatureDao.findAll()` on **every page load** — that's ~48,200 `OLISResultNomenclature` rows + ~3,000 `OLISRequestNomenclature` rows hydrated as Hibernate entities, then rendered as ~51,000 `<option>` elements into two `<select multiple>` controls (`Search.jsp:308-312, 645-665`). This is the cause of the long-observed slow OLIS Search page load (pre-existing, not a regression). The query itself only accepts "max 200" result codes / "max 100" request codes, so rendering the entire nomenclature into the DOM is the wrong UI pattern for a list this size — it should be a server-side autocomplete/typeahead (the patient field on the same page already uses one). Whatever D2 resolves to for the *refresh* model, the *consumption* side wants the same restructuring pass: stop bulk-loading nomenclature into the page.
-- **Labels:** `type: discussion`, `needs-design`, `priority: low`
+- **Splits cleanly into two sub-items** (both shipped 2026-05-15):
+  - **D2a — refresh mechanism** ✅ **Done** — admin XLSX importer + 5-column schema extension + richer CSV bootstrap. See below.
+  - **D2b — consumption-side performance** ✅ **Done** — see below.
+- **D2a — current state.** Manual CSV updates of `OLISTestRequestNomenclature.csv` / `OLISTestResultNomenclature.csv`. Seed sourced from `https://ehealthontario.on.ca/en/olis-nomenclature/download/olis-nomenclatures/prod/v2.69` dated **March 10, 2023** — meaning OpenO is currently **>3 years behind** the live nomenclature (latest is V3.03_PROD, April 23, 2026).
+
+#### D2a — research findings (2026-05-15, from `/tmp/OLIS` materials)
+
+**Distribution model — what eHealth Ontario actually publishes:**
+- **Single XLSX file** with 9 sheets covering Test Request (3,464 rows), Test Result (49,326 rows), Microorganism, Specimen Source, plus per-area change-log sheets.
+- **Versioned downloads at predictable URLs:** `https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v{X.YY}` (the Stage 4 Vendor Guide references `v3.00`; we have `V3.03_PROD`).
+- **Cadence:** roughly quarterly releases; V3.03_PROD = April 23, 2026 contained 19 Request adds + 42 Request changes + 57 Result adds + 126 Result changes + 68 Microorganism changes (≈310 row deltas per release).
+- **Hard operational deadline:** each release notice says **"Review and remap by `<deadline ~7 days later>` to prevent message failure."** This is not advisory — non-conforming senders start having OLIS messages rejected after the deadline. OpenO has missed every deadline since v2.69 (March 2023).
+- **Change semantics are mature.** Each change has a `Type of Change` column: `Add` (new code, valid from Effective Date), `Change` (attributes updated — e.g. LOINC realignment, preferred-name change), `Deprecate` (code retired at End Date; suggested replacement in Change Note).
+- The Microsoft Access mapping tool (`OLIS_MAP_d.mdb` + `OLIS_MAP_s.mdb` + vendor-local `OLIS_MAP_Local_d.mdb`) is for vendors that have **their own internal codes and need to maintain old→new translations to OLIS**. OpenO doesn't need this layer — OpenO stores OLIS codes directly. The official-reference table `ApendA` does include an `OLD_OLIS_Test_Request_Code` column, confirming that OLIS occasionally re-numbers codes; this is what enables deprecation-with-successor flows.
+
+**Schema gap — OpenO local tables vs official distribution:**
+
+| Concept | OpenO `OLISResultNomenclature` | Distribution: Test Result Nomenclatures |
+|---|---|---|
+| OLIS code | `nameId` | `LOINC Code` |
+| Display name | `name` (= "Alternate Name 1") | `LOINC Short Name` + `LOINC Fully Specified Name` + 3 Alternate Names |
+| Validity window | ✗ | `Effective Date`, `End Date` |
+| Status | ✗ | `Workflow Status` (RELEASED/etc.), `Validation Status` (ACTIVE/INACTIVE), `Registration Status` |
+| Reportability | ✗ | `Reportable`, `Reportable Context` |
+| Category / Sub-cat | ✗ | `Result Category`, `Result Sub-Cat` |
+| Change provenance | ✗ | `Change Note`, `External Code Version` |
+
+The local schema captures **3 of ~31 columns** — it has just enough for a wire-format identifier and a display string. It cannot today distinguish ACTIVE from deprecated codes, enforce effective-date windows, or surface a successor for a retired code.
+
+#### D2a — options considered
+
+Three options ordered by lift:
+
+1. **A — Stay with CSV reseed.** Periodically transcribe the XLSX → CSV by hand and rerun `olisinit.sql`. Cheapest, but: the manual transcription is the same step that put us 3 years behind already, doesn't capture effective/end dates so we can't enforce deprecation, and risks transcription errors going unnoticed since 49K rows isn't humanly reviewable.
+
+2. **B — Admin XLSX importer + schema extension (chosen, shipped).** Detailed below.
+
+3. **C — Automated periodic sync from the eHealth Ontario URL.** A scheduled job hits the publish URL on a cadence (weekly), pulls the latest XLSX, computes the delta, applies. Best long-term but: depends on the URL being stable, programmatically accessible (the portal may gate downloads behind login), and free of per-vendor download-tracking terms. Material risk we can't resolve without OntarioMD/eHealth Ontario consultation. **Not done as the first step** — but Option B is a clean precursor; the same parser + upserter is reused when the URL question gets answered.
+
+#### D2a — what shipped (Option B)
+
+**Schema extension** (`database/mysql/olis/olisinit.sql` for fresh installs + `database/mysql/updates/update-2026-05-15-olis-nomenclature-extension.sql` for existing DBs):
+- `effectiveDate` (DATE, nullable) — autocomplete and audit
+- `endDate` (DATE, nullable) — codes past this date filtered from autocomplete
+- `status` (VARCHAR(16) NOT NULL DEFAULT 'ACTIVE') — filter autocomplete to `ACTIVE` only
+- `externalCodeVersion` (VARCHAR(8), nullable) — audit trail
+- `successorCode` (VARCHAR(10), nullable) — placeholder for Deprecate-with-replacement flows (not yet populated; would derive from `OLD_OLIS_Test_Request_Code` in the Access mapping files)
+- Indexes on `(status, endDate)` and `(nameId)` to keep `findByNameLike` cheap.
+
+**Admin XLSX importer** (`OLISNomenclatureImport2Action`, `_admin/w` gated):
+- Parses the XLSX with **stdlib zip + SAX** — not Apache POI. Reason: POI isn't in `pom.xml` (only the legacy HSSF `poi` artifact for `.xls` is; `poi-ooxml` would be a new transitive 5MB+ dependency). Stdlib gets us streaming parse of 49K rows for an admin-only path in ~100 lines without adding a dependency.
+- Upserts row-by-row using `nameId` as the lookup key.
+- Status derivation: `INACTIVE` if `Validation Status Indicator` is INACTIVE OR if `Workflow Status Indicator` is anything other than `RELEASED`. Otherwise `ACTIVE`. (Mirrored byte-for-byte in the CSV regen script.)
+- Date parsing: Excel numeric serial → `yyyy-MM-dd` string → `M/d/yyyy` string, all **non-lenient** (so the V3.03 string `3/9/2023` doesn't get normalized into year 9 by `SimpleDateFormat` lenient mode — a bug we hit and fixed during smoke test).
+- Returns an Added / Updated / Deprecated count per table for the admin to review against the release notes inside the 7-day deadline window.
+
+**Richer fresh-install CSV** (the key D2a-vs-D2a-Option-B difference): the regenerated seed CSVs now carry the full filter-relevant column set — `(nameId, name, status, effectiveDate, endDate, externalCodeVersion)` for results and `(nameId, name, category, status, effectiveDate, endDate, externalCodeVersion)` for requests. Decision rationale: without status/dates at fresh-install time, every code defaults to ACTIVE and the autocomplete shows deprecated codes until an admin runs the importer. That "admin forgets on day 1" state would silently persist forever on small-clinic installs. Carrying the full set in the CSV makes a fresh install conformant out of the box. The cost is logic duplication between the Python regen script and the Java importer (`deriveStatus`, `parseDateCell`); the script's docstring flags the requirement to keep them in lock-step.
+
+**Regen tooling** (`database/mysql/olis/regenerate-csvs-from-xlsx.py`): stdlib-only Python script that reads the official XLSX and writes the two TSVs in the directory it lives in. Reusable for future releases — ~10 minutes per refresh. Prints Added/Updated/Deprecated-equivalent counts + verification SQL.
+
+**Verification:**
+- Imported V3.03_PROD on dev: 49,325 result codes + 3,463 request codes processed; counts matched the change-log sheet exactly.
+- Fresh-install LOAD-DATA-INFILE on a temp clone of the new schema: 48,521 ACTIVE / 804 INACTIVE results, 3,411 ACTIVE / 52 INACTIVE requests — same row state as the importer produces.
+- Deprecated codes (`Differential; Blood`, `Blasts; Blood`) no longer appear in the autocomplete after the schema change.
+
+**Out-of-scope nice-to-haves identified along the way (not blocking F1 conformance):**
+- OpenO has no `OLISMicroorganism` / `OLISSpecimenSource` tables despite both being part of the distribution. Inbound HL7 messages reference these in OBX-5 (specimen) and microbiology results; treating them as opaque strings today probably means some downstream display fidelity loss. Worth a separate readiness-plan entry; not blocking F1 conformance for the SPQ/ERP scenarios per the Stage 4 Vendor Guide.
+- OpenO's `OLISResultNomenclature.name` stores the **Alternate Name 1** (per E1). The distribution also publishes **Fully Specified Name** (e.g. `Glucose:MCnc:Pt:Ser/Plas:Qn`) which is the LOINC-canonical machine-readable name. Storing FSN alongside Alt Name 1 would let result rendering fall back to FSN when Alt Name 1 is blank (which it is for ~15K rows in the current distribution).
+- The richer-autocomplete-search question: today `findByNameLike` matches only against `name` (= Alt Name 1). Extending the LIKE to also match Alt Name 2 / Alt Name 3 / LOINC Short Name would let users find "Vitamin B12" against a row whose Alt Name 1 is "Cobalamins". Needs schema extension (3 more columns) and a LIKE-with-OR clause.
+- **Codes deleted-not-deprecated.** The importer's upsert means codes that existed in OpenO's previous baseline but are no longer in the published XLSX *stay in the DB marked ACTIVE forever*. V3.03 vs V2.69 has ~6,000 such removed-code rows. A future enhancement could mark "codes not seen in this import as INACTIVE" — but that's a destructive operation worth thinking about carefully (old archived labs referencing those codes would render with stale-data flags).
+- **D2b — Search.jsp consumption-side performance** ✅ **Done (2026-05-15):**
+  - **Was:** `olis/Search.jsp` called `OLISResultNomenclatureDao.findAll()` + `OLISRequestNomenclatureDao.findAll()` on every page load (~48,200 + ~3,000 rows = ~51,000 `<option>` elements rendered into two `<select multiple>` controls). Long-observed slow Search.jsp page load was pre-existing, not a regression.
+  - **Now:** server-side autocomplete/typeahead. New AJAX endpoint `OLISNomenclatureSearch2Action` (`/olis/NomenclatureSearch.do`) returns top-25 matches via `OLISResultNomenclatureDao.findByNameLike(term, limit)` / `OLISRequestNomenclatureDao.findByNameLike(term, limit)`. Search.jsp UI replaced with `<input>`-driven jQuery UI autocomplete plus a chip strip holding hidden `testResultCode` / `testRequestCode` inputs so the existing `OLISSearch2Action.getParameterValues(...)` flow is unchanged.
+  - **Library choice — jQuery UI 1.12.1 over YUI:** initial implementation mirrored the legacy YUI XHRDataSource pattern used by the patient field on the same page, but YUI has been end-of-life since 2014 and the first build hit a YUI quirk (URL `?` collision — see below). Swapped to jQuery UI autocomplete, which is the pattern used elsewhere in OpenO (`appointment/addappointment.jsp` etc.). Required also loading `jquery-3.6.4.min.js` because Search.jsp's existing `js/jquery.js` is jQuery 1.3.2 (from 2009) and jQuery UI 1.12.1 needs jQuery ≥1.7. The patient autocomplete next to our new fields still uses YUI — leaving that as pre-existing scope.
+  - **Verified end-to-end (Playwright, devcontainer):**
+    - Page render: 71 KB / ~94 ms / 208 `<option>` elements (down from ~51,200).
+    - AJAX endpoint: 200 OK / <120 ms for both `type=result` and `type=request`.
+    - Type → suggest → click → chip + hidden input + AC input cleared.
+    - × on chip removes both the chip and its hidden input.
+    - `FormData(Z01_form)` picks up multi-value `testResultCode[]` / `testRequestCode[]` as the action expects.
+    - YUI patient autocomplete on the same page still functional after jQuery 3.6.4 was loaded (YUI doesn't touch the `$` global).
+  - **YUI quirk caught during pre-swap smoke test (since obsolete):** YUI's XHRDataSource appended `?query=...` to a URL that already ended in `?type=result`, producing two `?` and `getParameter("query") == null`. The jQuery UI swap incidentally removed this whole class of issue (`$.getJSON(url, {query, type})` builds the query string correctly).
+  - **Files:**
+    - `src/main/java/ca/openosp/openo/olis/OLISNomenclatureSearch2Action.java` (new)
+    - `src/main/java/ca/openosp/openo/olis/dao/OLISResultNomenclatureDao.java` (+`findByNameLike`)
+    - `src/main/java/ca/openosp/openo/olis/dao/OLISRequestNomenclatureDao.java` (+`findByNameLike`)
+    - `src/main/webapp/WEB-INF/classes/struts.xml` (+`olis/NomenclatureSearch` route)
+    - `src/main/webapp/olis/Search.jsp` (drop `findAll()` calls, replace two `<select multiple>` blocks with jQuery UI autocomplete + chips, add jquery-3.6.4 + jquery-ui-1.12.1 script/link tags, drop unused imports including `Misc` / both nomenclature DAOs/models, add chip CSS)
+  - **Follow-up — OBX-3 / OBR-4 wire-code fix** ✅ **Done (2026-05-15, follow-up commit):** the legacy `<select>` rendered `option value="<%=nomenclature.getId()%>"` (Hibernate auto-increment PK), and `OLISSearch2Action` passed that PK straight into `new OBX3(code, "HL79902")` / `new OBR4(code, "HL79901")`. OLIS spec §10.2.5.14/§10.2.5.15 examples make clear that component 1 must be the wire-format code (LOINC for results e.g. `14683-7`, TR-prefixed OLIS code for requests e.g. `TR10481-0`), not the local PK. Fixed by changing the AJAX endpoint to return `{code: nameId, name: ...}` and threading `code` through `addChip` → hidden input → form submit. `OLISSearch2Action` itself needed no changes — it trusts the value it receives. Verified end-to-end in Playwright: result-code chip now carries `62468-4` (LOINC) and request-code chip carries `TR13070-8` — matches spec exactly. This bug had no in-passing exception risk because the field was effectively unusable anyway (51K-option ctrl-click UI), so no real OLIS searches were ever submitted with the wrong code.
+- **Labels:** `type: discussion`, `needs-design` (D2a only), `priority: low`
 
 ### D3: Structured doctor-name data from OLIS handler (replace synthesized `<span>` markup)
 - **Status:** ✅ Done (thorough migration, 2026-05-15) — `OLISHL7Handler.DoctorName` nested class introduced; `getFullDocName` re-routed through structured parse + `toPlainText`; PDF renderer + 6 of 8 strip sites switched to clean source.
@@ -634,10 +720,16 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 
 ## Track E — Verification / decision (no code, sign-off only)
 
-### E1: Verify OLIS04.05 returns "Alternate Name 1"
-- Confirm whether `OLISResultNomenclature.getName()` (`OLISHL7Handler.java:1725`) corresponds to OLIS "Alternate Name 1" vs. the standard nomenclature name
-- If not, scope a physician-preferred override
-- **Labels:** `type: documentation`, `priority: low`
+### E1: OLIS04.05 nomenclature name field — verified as "Alternate Name 1"
+- **Status:** ✅ Verified (2026-05-15). No code change needed; conformance posture positive.
+- **Question (original):** does `OLISResultNomenclature.getName()` (`OLISHL7Handler.java:1725`) correspond to OLIS "Alternate Name 1" or to the LOINC Fully Specified Name? If FSN, we'd need to scope a physician-preferred display override.
+- **Evidence chain:**
+  - **OLIS Interface Specification §6.7.1.2** (`OLIS_Interface_Specifications_EN.pdf` line 1937): "The OLIS Test Result Nomenclature includes a field named **Alternate Name 1** that contains a suggested display name for each test result code. This data may be used as a starting point for selecting preferred test result names."
+  - **Same spec §10.2.5.14.3.1.4** (line 11042): the wire-format test result code is paired with the LOINC Fully Specified Name on OBR/OBX (example: `6301-6^COAGULATION TISSUE FACTOR INDUCED.INR:RLTM:PT:PPP:QN:COAG^HL79902`). So the FSN is what travels on the wire.
+  - **Our seed file** (`database/mysql/olis/OLISTestResultNomenclature.csv`, sourced from `https://ehealthontario.on.ca/en/olis-nomenclature/download/olis-nomenclatures/prod/v2.69` dated March 10, 2023) has exactly 2 columns: `(nameId, name)`. Sample rows: `14749-6 → Glucose`, `2160-0 → Creatinine`. The LOINC FSN for these codes would be `Glucose:MCnc:Pt:Ser/Plas:Qn` and `Creatinine:MCnc:Pt:Ser/Plas:Qn` respectively — our `name` is the short, display-friendly form, not the FSN. **Confirms our `name` column is "Alternate Name 1".**
+  - Whoever originally imported the OLIS distribution pre-filtered it down to `(LOINC code, Alternate Name 1)`. The full OLIS-published file likely has more columns (FSN, deprecation flag, active dates, etc.) but our seed already extracted the display name OLIS recommends viewers use.
+- **Conformance implication:** positive. The OLIS spec recommends Alternate Name 1 as the starting point for display; our handler returns that directly via `OLISResultNomenclature.getName()`. No physician-preferred override needed. The Fully Specified Name does still travel on the wire (in the OBX/OBR coded-element second component) and is available to consumers that want it.
+- **Labels:** `type: documentation`, `priority: low`, `verified`
 
 ### E2: OLIS04.09 patient-matching criteria — verified spec-exact
 - **Status:** ✅ Closed — verified during the deep-dive audit (`deep-dive-findings.md` §3a). `MessageUploader.willOLISLabReportMatch()` (`MessageUploader.java:494`) keys its SQL on `hin` + `last_name` + `year/month/date_of_birth` + `sex` — exactly the spec's HCN + Gender + DOB + Last name. `firstName` is passed in but never used in the query.
