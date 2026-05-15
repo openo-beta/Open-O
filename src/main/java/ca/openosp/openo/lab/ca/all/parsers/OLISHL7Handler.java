@@ -2770,31 +2770,43 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     protected String formatTime(String plain) {
+        if (plain == null || plain.trim().equals("")) return "";
+        try {
+            String dateFormat = "HHmmss";
+            if (plain.length() > dateFormat.length()) plain = plain.substring(0, dateFormat.length());
+            dateFormat = dateFormat.substring(0, plain.length());
+            String stringFormat = "HH:mm:ss";
+            stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
 
-        String dateFormat = "HHmmss";
-        dateFormat = dateFormat.substring(0, plain.length());
-        String stringFormat = "HH:mm:ss";
-        stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
-
-        Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
-        return UtilDateUtilities.DateToString(date, stringFormat);
+            Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
+            return UtilDateUtilities.DateToString(date, stringFormat);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     protected String formatDateTime(String plain) {
         if (plain == null || plain.trim().equals("")) return "";
+        try {
+            String timezoneOffset = "";
+            if (plain.length() >= 19) {
+                timezoneOffset = plain.substring(14, 19);
+                plain = plain.substring(0, 14);
+            } else if (plain.length() > 14) {
+                // Length 15-18: partial timezone like "+05" would have thrown on
+                // substring(14, 19). Drop the partial offset and keep the 14-char body.
+                plain = plain.substring(0, 14);
+            }
+            String dateFormat = "yyyyMMddHHmmss";
+            dateFormat = dateFormat.substring(0, plain.length());
+            String stringFormat = "yyyy-MM-dd HH:mm:ss";
+            stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
 
-        String offset = "";
-        if (plain.length() > 14) {
-            offset = plain.substring(14, 19);
-            plain = plain.substring(0, 14);
+            Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
+            return UtilDateUtilities.DateToString(date, stringFormat) + " " + getOffsetName(timezoneOffset);
+        } catch (Exception e) {
+            return "";
         }
-        String dateFormat = "yyyyMMddHHmmss";
-        dateFormat = dateFormat.substring(0, plain.length());
-        String stringFormat = "yyyy-MM-dd HH:mm:ss";
-        stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
-
-        Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
-        return UtilDateUtilities.DateToString(date, stringFormat) + " " + getOffsetName(offset);
     }
 
     private String getOffsetName(String offset) {
@@ -2823,14 +2835,19 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     protected String formatDate(String plain) {
+        if (plain == null || plain.trim().equals("")) return "";
+        try {
+            String dateFormat = "yyyyMMdd";
+            if (plain.length() > dateFormat.length()) plain = plain.substring(0, dateFormat.length());
+            dateFormat = dateFormat.substring(0, plain.length());
+            String stringFormat = "yyyy-MM-dd";
+            stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
 
-        String dateFormat = "yyyyMMdd";
-        dateFormat = dateFormat.substring(0, plain.length());
-        String stringFormat = "yyyy-MM-dd";
-        stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
-
-        Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
-        return UtilDateUtilities.DateToString(date, stringFormat);
+            Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
+            return UtilDateUtilities.DateToString(date, stringFormat);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     protected String getString(String retrieve) {
