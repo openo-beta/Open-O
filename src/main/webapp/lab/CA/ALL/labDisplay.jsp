@@ -214,6 +214,25 @@ Map<String, ExcellerisOntarioHandler.OrderStatus> missingTests = new HashMap<>()
 
             List<String> segmentIdList = new ArrayList<String>();
             handler = Factory.getHandler(segmentID);
+            if (handler == null) {
+                // hl7TextInfo has a row for this lab_no but hl7TextMessage doesn't
+                // (no FK enforced). Partial deletes / data cleanup leave dangling
+                // refs that the rest of this JSP would NPE on. Render a friendly
+                // notice instead of crashing the inbox link. See A25.
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+%>
+<!DOCTYPE html>
+<html>
+<head><title>Lab data not available</title></head>
+<body style="font-family: sans-serif; padding: 20px;">
+    <h3 style="color: #c33;">Lab data not available</h3>
+    <p>The lab listing for this entry exists but the underlying HL7 message has been removed from storage.</p>
+    <p>Lab ID: <%=Encode.forHtml(segmentID)%></p>
+</body>
+</html>
+<%
+                return;
+            }
             handlers.add(handler);
 
         if ("ExcellerisON".equals(handler.getMsgType()) && segmentIDs.length > 1) {
