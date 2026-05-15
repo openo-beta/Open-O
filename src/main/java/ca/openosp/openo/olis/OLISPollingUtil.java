@@ -35,7 +35,7 @@ import java.util.UUID;
 
 import ca.openosp.Misc;
 import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
-import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.upload.handlers.OLISHL7Handler;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.cookie.DateUtils;
 import org.apache.logging.log4j.Logger;
@@ -175,7 +175,7 @@ public class OLISPollingUtil {
                 logger.error("response does not match, aborting " + response);
                 return;
             }
-            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response);
+            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response, providerNo);
             logger.info("timeSlot " + timeStampForNextStartDate);
 
             if (timeStampForNextStartDate != null) {
@@ -242,7 +242,7 @@ public class OLISPollingUtil {
                     logger.error("response does not match, aborting " + response);
                     continue;
                 }
-                String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response);
+                String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response, provider.getProviderNo());
                 logger.info("timeSlot " + timeStampForNextStartDate);
 
                 if (timeStampForNextStartDate != null) {
@@ -297,7 +297,9 @@ public class OLISPollingUtil {
                 return;
             }
 
-            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response);
+            // Z06 facility poll — no single provider context, so no per-provider
+            // unmatched-routing override applies (falls back to the system-level setting).
+            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response, null);
 
             if (timeStampForNextStartDate != null) {
                 olisProviderPreferences.setStartTime(timeStampForNextStartDate);
@@ -313,7 +315,14 @@ public class OLISPollingUtil {
         }
     }
 
-    public static String parseAndImportResponse(LoggedInInfo loggedInInfo, String response) throws Exception {
+    /**
+     * @param olisPollingProviderNo the provider a Z04 poll ran on behalf of, threaded through
+     *                              to {@code MessageUploader} so unmatched-result routing can
+     *                              honour that provider's {@code OLISProviderPreferences}
+     *                              override (OLIS02.03); {@code null} for facility (Z06) polls
+     *                              or any caller without a single provider context
+     */
+    public static String parseAndImportResponse(LoggedInInfo loggedInInfo, String response, String olisPollingProviderNo) throws Exception {
         String timeStampForNextStartDate = null;
         UUID uuid = UUID.randomUUID();
         String originalFile = "olis_" + uuid.toString() + ".response";
@@ -328,12 +337,12 @@ public class OLISPollingUtil {
         String fileLocation = Utilities.saveFile(new ByteArrayInputStream(responseContent.getBytes("UTF-8")), hl7Filename);
         logger.debug(fileLocation);
         File file = new File(fileLocation);
-        MessageHandler msgHandler = HandlerClassFactory.getHandler("OLIS_HL7");
+        OLISHL7Handler msgHandler = (OLISHL7Handler) HandlerClassFactory.getHandler("OLIS_HL7");
         try {
             InputStream is = new FileInputStream(fileLocation);
             int check = FileUploadCheck.addFile(file.getName(), is, "0");
             if (check != FileUploadCheck.UNSUCCESSFUL_SAVE) {
-                timeStampForNextStartDate = msgHandler.parse(loggedInInfo, "OLIS_HL7", fileLocation, check, null);
+                timeStampForNextStartDate = msgHandler.parse(loggedInInfo, "OLIS_HL7", fileLocation, check, false, olisPollingProviderNo);
 
                 if (timeStampForNextStartDate != null) {
                     logger.info("Lab successfully added.");

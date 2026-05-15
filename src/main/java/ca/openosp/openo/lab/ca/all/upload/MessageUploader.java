@@ -45,7 +45,9 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.OtherIdManager;
 import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.olis.dao.OLISProviderPreferencesDao;
 import ca.openosp.openo.olis.dao.OLISSystemPreferencesDao;
+import ca.openosp.openo.olis.model.OLISProviderPreferences;
 import ca.openosp.openo.olis.model.OLISSystemPreferences;
 import ca.openosp.openo.utility.DbConnectionFilter;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -89,10 +91,26 @@ public final class MessageUploader {
      * Insert the lab into the proper tables of the database
      */
     public static String routeReport(LoggedInInfo loggedInInfo, String serviceName, String type, String hl7Body, int fileId, RouteReportResults results) throws Exception {
-        return routeReport(loggedInInfo, serviceName, Factory.getHandler(type, hl7Body), hl7Body, fileId, results, type);
+        return routeReport(loggedInInfo, serviceName, Factory.getHandler(type, hl7Body), hl7Body, fileId, results, type, null);
+    }
+
+    /**
+     * OLIS polling entry point — carries the provider the Z04 poll ran on behalf of so that
+     * unmatched-result routing can honour that provider's {@code OLISProviderPreferences}
+     * override before falling back to the system-level setting (OLIS02.03).
+     *
+     * @param olisPollingProviderNo String the provider_no the OLIS poll ran for, or {@code null}
+     *                              for non-polling callers (manual upload, other lab types)
+     */
+    public static String routeReport(LoggedInInfo loggedInInfo, String serviceName, String type, String hl7Body, int fileId, RouteReportResults results, String olisPollingProviderNo) throws Exception {
+        return routeReport(loggedInInfo, serviceName, Factory.getHandler(type, hl7Body), hl7Body, fileId, results, type, olisPollingProviderNo);
     }
 
     public static String routeReport(LoggedInInfo loggedInInfo, String serviceName, MessageHandler h, String hl7Body, int fileId, RouteReportResults results, String type) throws Exception {
+        return routeReport(loggedInInfo, serviceName, h, hl7Body, fileId, results, type, null);
+    }
+
+    public static String routeReport(LoggedInInfo loggedInInfo, String serviceName, MessageHandler h, String hl7Body, int fileId, RouteReportResults results, String type, String olisPollingProviderNo) throws Exception {
 
         String retVal = "";
 
@@ -273,8 +291,23 @@ public final class MessageUploader {
 			OLISSystemPreferencesDao olisPrefDao = (OLISSystemPreferencesDao)SpringUtils.getBean("OLISSystemPreferencesDao");
             OLISSystemPreferences olisPreferences = olisPrefDao.getPreferences();
 
+            // OLIS02.03: honour the polling provider's per-provider override first; a null
+            // override (or no polling provider, e.g. manual upload) falls back to the
+            // system-level filterPatients setting.
+            Boolean providerFilterOverride = null;
+            if (olisPollingProviderNo != null) {
+                OLISProviderPreferencesDao olisProviderPrefDao = SpringUtils.getBean(OLISProviderPreferencesDao.class);
+                OLISProviderPreferences providerPreferences = olisProviderPrefDao.findById(olisPollingProviderNo);
+                if (providerPreferences != null) {
+                    providerFilterOverride = providerPreferences.getFilterPatients();
+                }
+            }
+            boolean filterPatients = (providerFilterOverride != null)
+                    ? providerFilterOverride
+                    : olisPreferences.isFilterPatients();
+
             try (Connection connection = DbConnectionFilter.getThreadLocalDbConnection()) {
-                if (olisPreferences.isFilterPatients()) {
+                if (filterPatients) {
                     //set as unclaimed
                     providerRouteReport(String.valueOf(insertID), null, connection, String.valueOf(0), type);
                 } else {

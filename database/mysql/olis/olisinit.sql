@@ -35,6 +35,7 @@ CREATE TABLE OLISProviderPreferences (
   providerId  VARCHAR(10),
   startTime VARCHAR(20),
   lastRun datetime,
+  filterPatients tinyint(1),
   PRIMARY KEY(providerId)
 );
 

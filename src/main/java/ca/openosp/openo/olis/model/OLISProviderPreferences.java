@@ -28,6 +28,14 @@ public class OLISProviderPreferences extends AbstractModel<String> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastRun;
 
+    /**
+     * Per-provider override for routing unmatched OLIS results (OLIS02.03). Three-state:
+     * {@code null} inherits the system-level {@code OLISSystemPreferences.filterPatients}
+     * default; {@code TRUE} forces unmatched results for this provider into the unclaimed
+     * worklist; {@code FALSE} forces them into this provider's inbox.
+     */
+    private Boolean filterPatients;
+
     @Override
     public String getId() {
         return providerId;
@@ -55,6 +63,14 @@ public class OLISProviderPreferences extends AbstractModel<String> {
 
     public void setLastRun(Date lastRun) {
         this.lastRun = lastRun;
+    }
+
+    public Boolean getFilterPatients() {
+        return filterPatients;
+    }
+
+    public void setFilterPatients(Boolean filterPatients) {
+        this.filterPatients = filterPatients;
     }
 
     public OLISProviderPreferences() {

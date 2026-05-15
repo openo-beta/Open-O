@@ -76,6 +76,7 @@ public class OlisPreferences2Action extends ActionSupport {
         OLISProviderPreferences olisPref = olisProviderPreferencesDao.findById(providerNo);
         if (olisPref != null) {
             request.setAttribute("olis_provider_start_time", olisPref.getStartTime());
+            request.setAttribute("filterPatients", olisPref.getFilterPatients());
         }
 
         return "form";
@@ -122,28 +123,41 @@ public class OlisPreferences2Action extends ActionSupport {
             dao.saveProp(prop);
         }
 
+        // The OLISProviderPreferences row carries both the per-provider poll start time and
+        // the per-provider unmatched-routing override (OLIS02.03). Load-or-create it once and
+        // set both, so the routing override is saved even when no start time was submitted.
+        String filterPatientsParam = request.getParameter("filterPatients");
+        Boolean filterPatients = null;
+        if ("true".equals(filterPatientsParam)) {
+            filterPatients = Boolean.TRUE;
+        } else if ("false".equals(filterPatientsParam)) {
+            filterPatients = Boolean.FALSE;
+        }
+
+        OLISProviderPreferences pref = olisProviderPreferencesDao.findById(providerNo);
+        boolean isNewPref = (pref == null);
+        if (pref == null) {
+            pref = new OLISProviderPreferences();
+            pref.setProviderId(providerNo);
+        }
+        pref.setFilterPatients(filterPatients);
+
         if (providerStartTime != null) {
             //validate the time
             DateTimeFormatter input = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss Z");
             DateTimeFormatter output = DateTimeFormat.forPattern("YYYYMMddHHmmssZ");
             try {
                 DateTime date = input.parseDateTime(providerStartTime);
-                providerStartTime = date.toString(output);
-                OLISProviderPreferences pref = olisProviderPreferencesDao.findById(providerNo);
-                if (pref == null) {
-                    pref = new OLISProviderPreferences();
-                    pref.setProviderId(providerNo);
-                    pref.setStartTime(providerStartTime);
-                    olisProviderPreferencesDao.persist(pref);
-                } else {
-                    pref.setStartTime(providerStartTime);
-                    olisProviderPreferencesDao.merge(pref);
-                }
-
+                pref.setStartTime(date.toString(output));
             } catch (RuntimeException e) {
-
+                // invalid time format submitted — leave the existing start time unchanged
             }
+        }
 
+        if (isNewPref) {
+            olisProviderPreferencesDao.persist(pref);
+        } else {
+            olisProviderPreferencesDao.merge(pref);
         }
 
 

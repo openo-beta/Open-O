@@ -117,6 +117,23 @@
                             </td>
                         </tr>
 
+                        <tr>
+                            <th width="20%">Unmatched Patient Results</th>
+                            <td width="30%">
+                                <%
+                                    Boolean filterPatientsPref = (Boolean) request.getAttribute("filterPatients");
+                                    String filterPatientsVal = (filterPatientsPref == null) ? "" : filterPatientsPref.toString();
+                                %>
+                                <select id="filterPatients" name="filterPatients">
+                                    <option value="" <%=("".equals(filterPatientsVal) ? "selected=\"selected\"" : "")%>>Use system default</option>
+                                    <option value="true" <%=("true".equals(filterPatientsVal) ? "selected=\"selected\"" : "")%>>Filter &mdash; send to unclaimed worklist</option>
+                                    <option value="false" <%=("false".equals(filterPatientsVal) ? "selected=\"selected\"" : "")%>>Send to my inbox</option>
+                                </select>
+                                <br>
+                                <h6>where OLIS results that don't match a patient in this system are routed; overrides the system-level setting</h6>
+                            </td>
+                        </tr>
+
 
                     </table>
                     <input type="submit" value="Save Changes"/>
