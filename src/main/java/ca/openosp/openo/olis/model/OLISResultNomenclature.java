@@ -9,10 +9,15 @@
  */
 package ca.openosp.openo.olis.model;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import ca.openosp.openo.commn.model.AbstractModel;
 
@@ -23,6 +28,18 @@ public class OLISResultNomenclature extends AbstractModel<String> {
     private String id;
     private String name;
     private String nameId;
+
+    @Temporal(TemporalType.DATE)
+    private Date effectiveDate;
+
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
+
+    @Column(nullable = false)
+    private String status = "ACTIVE";
+
+    private String externalCodeVersion;
+    private String successorCode;
 
     public String getNameId() {
         return nameId;
@@ -43,6 +60,46 @@ public class OLISResultNomenclature extends AbstractModel<String> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getExternalCodeVersion() {
+        return externalCodeVersion;
+    }
+
+    public void setExternalCodeVersion(String externalCodeVersion) {
+        this.externalCodeVersion = externalCodeVersion;
+    }
+
+    public String getSuccessorCode() {
+        return successorCode;
+    }
+
+    public void setSuccessorCode(String successorCode) {
+        this.successorCode = successorCode;
     }
 
     public OLISResultNomenclature() {

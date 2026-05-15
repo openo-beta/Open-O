@@ -2,34 +2,49 @@ CREATE TABLE OLISResultNomenclature (
   id INT NOT NULL AUTO_INCREMENT,
   nameId  VARCHAR(10),
   name TEXT,
-  PRIMARY KEY(id)
+  effectiveDate DATE NULL,
+  endDate DATE NULL,
+  status VARCHAR(16) NOT NULL DEFAULT 'ACTIVE',
+  externalCodeVersion VARCHAR(8) NULL,
+  successorCode VARCHAR(10) NULL,
+  PRIMARY KEY(id),  
+  INDEX idx_OLISResultNomenclature_status_endDate (status, endDate),
+  INDEX idx_OLISResultNomenclature_nameId (nameId)
 );
 
--- Data file last updated March 10, 2023
--- https://ehealthontario.on.ca/en/olis-nomenclature/download/olis-nomenclatures/prod/v2.69
+-- Data file generated from OLIS Nomenclatures V3.03_PROD, released April 23, 2026
+-- Source: https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v3.03
+-- When a new version is released, admins should run Admin → "OLIS — Import Nomenclature"
 LOAD DATA LOCAL INFILE 'OLISTestResultNomenclature.csv'
 INTO TABLE OLISResultNomenclature
 FIELDS TERMINATED BY '\t'
 OPTIONALLY ENCLOSED BY '\"' 
 LINES TERMINATED BY '\n'
-(nameId, name);
+(nameId, name, status, effectiveDate, endDate, externalCodeVersion);
 
 CREATE TABLE OLISRequestNomenclature (
   id INT NOT NULL AUTO_INCREMENT,
   nameId  VARCHAR(10),
   name TEXT,
   category VARCHAR(20),
-  PRIMARY KEY(id)
+  effectiveDate DATE NULL,
+  endDate DATE NULL,
+  status VARCHAR(16) NOT NULL DEFAULT 'ACTIVE',
+  externalCodeVersion VARCHAR(8) NULL,
+  successorCode VARCHAR(10) NULL,
+  PRIMARY KEY(id),  
+  INDEX idx_OLISRequestNomenclature_status_endDate (status, endDate),
+  INDEX idx_OLISRequestNomenclature_nameId (nameId)
 );
 
--- Data file last updated March 10, 2023
--- https://ehealthontario.on.ca/en/olis-nomenclature/download/olis-nomenclatures/prod/v2.69
+-- Data file generated from OLIS Nomenclatures V3.03_PROD, released April 23, 2026
+-- Source: https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v3.03
 LOAD DATA LOCAL INFILE 'OLISTestRequestNomenclature.csv'
 INTO TABLE OLISRequestNomenclature
 FIELDS TERMINATED BY '\t'
 OPTIONALLY ENCLOSED BY '\"' 
 LINES TERMINATED BY '\n'
-(nameId, name, category);
+(nameId, name, category, status, effectiveDate, endDate, externalCodeVersion);
 
 CREATE TABLE OLISProviderPreferences (
   providerId  VARCHAR(10),
