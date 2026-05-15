@@ -438,6 +438,7 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Closes:** OLIS04.08
 - **Decision:** keep CSV reseed model, build a one-shot batch importer, or build a sync framework
 - **Affects scope significantly.** Current state: manual CSV updates of `OLISTestRequestNomenclature.csv` / `OLISTestResultNomenclature.csv`
+- **Related — nomenclature *consumption* is a real performance problem (strengthens the restructuring case):** `olis/Search.jsp` calls `OLISResultNomenclatureDao.findAll()` and `OLISRequestNomenclatureDao.findAll()` on **every page load** — that's ~48,200 `OLISResultNomenclature` rows + ~3,000 `OLISRequestNomenclature` rows hydrated as Hibernate entities, then rendered as ~51,000 `<option>` elements into two `<select multiple>` controls (`Search.jsp:308-312, 645-665`). This is the cause of the long-observed slow OLIS Search page load (pre-existing, not a regression). The query itself only accepts "max 200" result codes / "max 100" request codes, so rendering the entire nomenclature into the DOM is the wrong UI pattern for a list this size — it should be a server-side autocomplete/typeahead (the patient field on the same page already uses one). Whatever D2 resolves to for the *refresh* model, the *consumption* side wants the same restructuring pass: stop bulk-loading nomenclature into the page.
 - **Labels:** `type: discussion`, `needs-design`, `priority: low`
 
 ### D3: Structured doctor-name data from OLIS handler (replace synthesized `<span>` markup)
@@ -467,9 +468,9 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - If not, scope a physician-preferred override
 - **Labels:** `type: documentation`, `priority: low`
 
-### E2: Document OLIS04.09 first-name strictness
-- `MessageUploader.willOLISLabReportMatch()` (line 462) requires first name to match in addition to the spec's HCN + Sex + DOB + Last name
-- Decision: relax to spec-strict, OR document as accepted deviation for OntarioMD review
+### E2: OLIS04.09 patient-matching criteria — verified spec-exact
+- **Status:** ✅ Closed — verified during the deep-dive audit (`deep-dive-findings.md` §3a). `MessageUploader.willOLISLabReportMatch()` (`MessageUploader.java:494`) keys its SQL on `hin` + `last_name` + `year/month/date_of_birth` + `sex` — exactly the spec's HCN + Gender + DOB + Last name. `firstName` is passed in but never used in the query.
+- **Original premise was wrong:** this item was opened on the belief that the matcher was "stricter than spec" by also requiring first name. It isn't — there is no deviation to document or relax. The stale claim has been corrected in `requirements-analysis.md`.
 - **Labels:** `type: documentation`, `priority: low`
 
 ---
@@ -494,10 +495,11 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - Triage anything new into Track A bug tickets
 - The previous working version was on Struts 1; expect drift bugs from the Struts 2 migration
 
-### G2: Synthetic-fixture quirk — NTE rendering vs. Z-segment placement
+### G2: HAPI structure-walker misses nested segments — synthetic-fixture quirk (NTE rendering, `isReportBlocked()`)
 - **Not a bug in OpenO.** During A1 development we built `docs/olis/sample-response-a1-rich.hl7` with NTE comment segments interleaved between OBR and ZBR (`OBR → ZBR → NTE → ...`). Those NTEs didn't render because `OLISHL7Handler.getNTELocation` walks `terser.getFinder().getRoot().getNames()` which doesn't expose nested NTEs when custom Z-segments sit between the OBR and the NTE in the wire order.
 - **Real OLIS data is unaffected.** The original A1 reporter's screenshot showed `&nbsp;` Specimen Comment content rendering correctly. The user's recent lab upload also rendered comments correctly during A21 verification. Production OLIS messages put NTEs in HAPI-expected positions.
 - **If a future dev hand-crafts an HL7 fixture and finds comments not rendering**, the fix is to put the NTE segments in standard ORU_R01 positions (immediately after OBR before any OBX, between OBX, or at top-of-message before any OBR) — NOT to defensively rewrite `getNTELocation`. Malformed upstream HL7 would be an OLIS escalation, not an OpenO defensive-coding task.
+- **Same root cause affects `isReportBlocked()` — found in the B1 deep-dive (2026-05-14).** `OLISHL7Handler.init()` detects blocked status by walking the *same* `terser.getFinder().getRoot().getNames()` root-level segment list. For a bare `ORU^R01^ORU_R01` fixture, HAPI resolves the typed `v24.message.ORU_R01` structure and nests the non-standard `ZPD` segment inside the patient group — so the root-level walk misses it and `parseZPDSegment()` never runs (`sample-response-blocked.hl7` reproduced this: the B1 Blocked column stayed empty). An `ERP^Znn^ERP_R09` message has no HAPI structure class → parses flat as `GenericMessage` → `ZPD` sits at root → detected (`sample-response-erp-blocked.hl7` worked). **Real OLIS query responses are `ERP`, so real-world blocked-status detection works** — but `init()`'s root-only segment traversal is the shared brittleness behind both this and the NTE case. Same guidance: don't defensively rewrite the walker for a hand-crafted fixture; if a real `ERP` response ever nests `ZPD`, that's an F1 finding. A future hardening pass on `init()`'s segment traversal (recurse into groups instead of walking root names) would address both. See `deep-dive-findings.md` §4a.
 
 ### G3: Devcontainer doesn't load `over_ride_config.properties` at runtime (general dev-experience gap, not OLIS-specific)
 - **Reclassified from A6.** Surfaced during the OLIS audit but not OLIS-scoped — affects any property override anyone wants to keep out of the checked-in primary file. File as a general dev-experience issue.

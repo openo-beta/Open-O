@@ -344,7 +344,7 @@ Section 2.4: EMR Lab Management
 
 **Status: Meets Requirements**
 
-**Reasoning:** Implemented via \`MessageUploader.willOLISLabReportMatch()\` (signature at MessageUploader.java:462) called in OLISResults2Action.java:140-143. Matches on last name, first name, sex, DOB, and health number (HIN). Note: the spec defines a match as "HCN + Gender + DOB + Last name all match" — the implementation is **stricter** than the spec by additionally requiring first name to match. A record satisfying the spec's four fields but with a different first name would be flagged unmatched here. This is conservative (favours fewer false matches) and still satisfies the "must match" clause, but worth flagging during certification review since it's a deviation from the literal spec criteria.
+**Reasoning:** Implemented via \`MessageUploader.willOLISLabReportMatch()\` (signature at MessageUploader.java:494) called in OLISResults2Action.java:140-143. The matching SQL keys on \`hin\` + \`last_name\` + \`year/month/date_of_birth\` + \`sex\` — exactly the spec's four criteria (HCN + Gender + DOB + Last name). \`firstName\` is passed into the method but is **not** referenced in the query, so a record matching the spec's four fields is matched regardless of first name. The implementation is spec-exact, not a deviation. *(Correction, 2026-05-14 deep-dive audit: an earlier draft of this analysis claimed the matcher was "stricter than spec" by additionally requiring first name — that was wrong; first name plays no part in the match. See \`deep-dive-findings.md\` §3a.)*
 
 **Key Implementation Files:**
 
