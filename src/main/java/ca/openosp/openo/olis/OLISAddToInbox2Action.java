@@ -193,6 +193,10 @@ public class OLISAddToInbox2Action extends ActionSupport {
                     request.setAttribute("result", "Error");
                 }
             } else {
+                OLISQueryLog query = olisQueryLogDao.findByUUID(result.getQueryUuid());
+                logOLISDuplicate(loggedInInfo, query, result.getResults(), uuidToAdd);
+                result.setStatus("duplicate");
+                olisResultsDao.merge(result);
                 request.setAttribute("result", "Already Added");
             }
 
@@ -615,7 +619,9 @@ public class OLISAddToInbox2Action extends ActionSupport {
             } else {
                 OLISQueryLog query = olisQueryLogDao.findByUUID(result.getQueryUuid());
                 logOLISDuplicate(loggedInInfo, query, result.getResults(), uuidToAdd);
-                errors.add(result.getUuid());
+                result.setStatus("duplicate");
+                olisResultsDao.merge(result);
+                successful.add(result.getUuid());
             }
 
         } catch (Exception e) {
