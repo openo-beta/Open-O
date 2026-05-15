@@ -837,14 +837,14 @@
 
             </c:if>
             <c:if test="${not empty param.demoview}">
-            <div class="pull-left" style="margin-bottom:10px;">
-                <label for="ticklerview">Filter</label>
-                <select id="ticklerview" class="form-control" name="ticklerview">
-                    <option value="A" <%=ticklerview.equals("A") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formActive"/></option>
-                    <option value="C" <%=ticklerview.equals("C") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formCompleted"/></option>
-                    <option value="D" <%=ticklerview.equals("D") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formDeleted"/></option>
-                </select>
-            </div>
+                <div class="pull-left" style="margin-bottom:10px;">
+                    <label for="ticklerview">Filter</label>
+                    <select id="ticklerview" class="form-control" name="ticklerview">
+                        <option value="A" <%=ticklerview.equals("A") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formActive"/></option>
+                        <option value="C" <%=ticklerview.equals("C") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formCompleted"/></option>
+                        <option value="D" <%=ticklerview.equals("D") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.formDeleted"/></option>
+                    </select>
+                </div>
             </c:if>
         </form>
 
@@ -905,9 +905,9 @@
                         <%
                             if (ticklerview.compareTo("D") == 0) {
                         %>
-                        <input type="button" class="btn"
-                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnEraseCompletely"/>" class="sbttn"
-                               onclick="document.forms['ticklerform'].submit_form.value='Erase Completely'; document.forms['ticklerform'].submit();">
+                        <input type="button" class="btn sbttn"
+                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.btnRestoreSelected"/>"
+                               onclick="document.forms['ticklerform'].submit_form.value='Activate'; document.forms['ticklerform'].submit();">
                         <%
                         } else {
                         %>
