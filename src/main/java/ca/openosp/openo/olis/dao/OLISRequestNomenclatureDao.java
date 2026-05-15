@@ -39,4 +39,13 @@ public class OLISRequestNomenclatureDao extends AbstractDaoImpl<OLISRequestNomen
         return query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
+    public List<OLISRequestNomenclature> findByNameLike(String term, int limit) {
+        String sql = "select x from " + this.modelClass.getName() + " x where lower(x.name) like :term order by x.name";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("term", "%" + term.toLowerCase() + "%");
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
 }

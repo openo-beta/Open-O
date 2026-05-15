@@ -15,16 +15,11 @@
                 ca.openosp.openo.commn.model.Demographic,
                 ca.openosp.openo.PMmodule.dao.ProviderDao,
                 ca.openosp.openo.commn.model.Provider,
-                ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao,
-                ca.openosp.openo.olis.dao.OLISResultNomenclatureDao,
-                ca.openosp.openo.olis.model.OLISRequestNomenclature,
-                ca.openosp.openo.olis.model.OLISResultNomenclature,
                 ca.openosp.openo.olis.model.OLISParticipatingLab,
                 ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
-<%@ page import="ca.openosp.Misc" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -94,6 +89,10 @@ opener.refreshView();</script>
 
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/fonts-min.css"/>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/autocomplete.css"/>
+
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.css"/>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.js"></script>
 
 
     <script type="text/javascript">
@@ -254,6 +253,31 @@ opener.refreshView();</script>
             color: #FFF;
         }
 
+        .nomenclature-chips {
+            margin-top: 6px;
+            max-width: 300px;
+        }
+
+        .nomenclature-chip {
+            display: inline-block;
+            padding: 2px 6px;
+            margin: 2px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .nomenclature-chip-remove {
+            color: #666;
+            text-decoration: none;
+            margin-left: 4px;
+            font-weight: bold;
+        }
+
+        .nomenclature-chip-remove:hover {
+            color: #000;
+        }
     </style>
 
 </head>
@@ -301,16 +325,6 @@ opener.refreshView();</script>
             <%
                 ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
                 List<Provider> allProvidersList = providerDao.getActiveProviders(true);
-
-//DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-//List allDemographics = demographicDao.getDemographics();
-
-                OLISResultNomenclatureDao resultDao = (OLISResultNomenclatureDao) SpringUtils.getBean(OLISResultNomenclatureDao.class);
-                List<OLISResultNomenclature> resultNomenclatureList = resultDao.findAll();
-
-                OLISRequestNomenclatureDao requestDao = (OLISRequestNomenclatureDao) SpringUtils.getBean(OLISRequestNomenclatureDao.class);
-                List<OLISRequestNomenclature> requestNomenclatureList = requestDao.findAll();
-
             %>
 
 
@@ -638,31 +652,77 @@ opener.refreshView();</script>
                                         <option value="E"> Expired</option>
                                     </select></td>
                                     <th width="20%">Test Result Code (max. 200)</th>
-                                    <td><select multiple="multiple" style="width:300px;" name="testResultCode"
-                                                id="testResultCode">
-                                        <%
-
-                                            for (OLISResultNomenclature nomenclature : resultNomenclatureList) {
-                                        %>
-                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(nomenclature.getId()))%>"><%=Encode.forHtml(String.valueOf(Misc.getStr(nomenclature.getName(), "").trim()))%>
-                                        </option>
-                                        <%
-                                            }
-                                        %>
-                                    </select></td>
+                                    <td>
+                                        <input type="text" id="testResultCodeAC" autocomplete="off"
+                                               placeholder="Type 2+ characters to search..."
+                                               style="width: 290px;"/>
+                                        <div id="testResultCodeChips" class="nomenclature-chips"></div>
+                                    </td>
                                     <th width="20%">Test Request Code (max. 100)</th>
-                                    <td><select multiple="multiple" style="width:300px;" name="testRequestCode"
-                                                id="testRequestCode">
-                                        <%
+                                    <td>
+                                        <input type="text" id="testRequestCodeAC" autocomplete="off"
+                                               placeholder="Type 2+ characters to search..."
+                                               style="width: 290px;"/>
+                                        <div id="testRequestCodeChips" class="nomenclature-chips"></div>
+                                        <script type="text/javascript">
+                                            (function ($) {
+                                                var ctxPath = '<%=Encode.forJavaScript(request.getContextPath())%>';
+                                                var endpoint = ctxPath + '/olis/NomenclatureSearch.do';
 
-                                            for (OLISRequestNomenclature nomenclature : requestNomenclatureList) {
-                                        %>
-                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(nomenclature.getId()))%>"><%=Encode.forHtml(String.valueOf(Misc.getStr(nomenclature.getName(), "").trim()))%>
-                                        </option>
-                                        <%
-                                            }
-                                        %>
-                                    </select></td>
+                                                function addChip(chipsId, fieldName, id, label) {
+                                                    var container = document.getElementById(chipsId);
+                                                    if (!container) return;
+                                                    var existing = container.querySelectorAll('input[name="' + fieldName + '"]');
+                                                    for (var i = 0; i < existing.length; i++) {
+                                                        if (existing[i].value === id) return;
+                                                    }
+                                                    var chip = document.createElement('span');
+                                                    chip.className = 'nomenclature-chip';
+                                                    chip.appendChild(document.createTextNode(label + ' '));
+                                                    var remove = document.createElement('a');
+                                                    remove.href = '#';
+                                                    remove.className = 'nomenclature-chip-remove';
+                                                    remove.appendChild(document.createTextNode('×'));
+                                                    remove.onclick = function (e) {
+                                                        e.preventDefault();
+                                                        container.removeChild(chip);
+                                                        return false;
+                                                    };
+                                                    chip.appendChild(remove);
+                                                    var hidden = document.createElement('input');
+                                                    hidden.type = 'hidden';
+                                                    hidden.name = fieldName;
+                                                    hidden.value = id;
+                                                    chip.appendChild(hidden);
+                                                    container.appendChild(chip);
+                                                }
+
+                                                function makeAC(inputSelector, chipsId, fieldName, type) {
+                                                    $(inputSelector).autocomplete({
+                                                        minLength: 2,
+                                                        source: function (request, response) {
+                                                            $.getJSON(endpoint, {query: request.term, type: type}, function (data) {
+                                                                response($.map(data.results || [], function (item) {
+                                                                    return {label: item.name, value: item.name, id: item.id};
+                                                                }));
+                                                            });
+                                                        },
+                                                        select: function (event, ui) {
+                                                            addChip(chipsId, fieldName, ui.item.id, ui.item.label);
+                                                            $(this).val('');
+                                                            return false;
+                                                        },
+                                                        focus: function () {
+                                                            return false;
+                                                        }
+                                                    });
+                                                }
+
+                                                makeAC('#testResultCodeAC', 'testResultCodeChips', 'testResultCode', 'result');
+                                                makeAC('#testRequestCodeAC', 'testRequestCodeChips', 'testRequestCode', 'request');
+                                            })(jQuery);
+                                        </script>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

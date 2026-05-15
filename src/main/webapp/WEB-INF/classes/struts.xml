@@ -442,6 +442,7 @@
         <action name="olis/Search" class="ca.openosp.openo.olis.OLISSearch2Action">
             <result name="results">/olis/Results.do</result>
         </action>
+        <action name="olis/NomenclatureSearch" class="ca.openosp.openo.olis.OLISNomenclatureSearch2Action"/>
         <action name="olis/Results" class="ca.openosp.openo.olis.OLISResults2Action">
             <result name="results">/olis/Results.jsp</result>
         </action>
