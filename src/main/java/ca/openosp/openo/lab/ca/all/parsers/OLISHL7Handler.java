@@ -1801,12 +1801,16 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     public boolean renderAsFT(int i, int j) {
-        String obxIdent = getOBXField(i, j, 3, 0, 2).split(":")[4];
+        String[] parts = getOBXField(i, j, 3, 0, 2).split(":");
+        if (parts.length < 5) return false;
+        String obxIdent = parts[4];
         return obxIdent != null && obxIdent.toUpperCase().startsWith("NAR");
     }
 
     public boolean renderAsNM(int i, int j) {
-        String obxIdent = getOBXField(i, j, 3, 0, 2).split(":")[4];
+        String[] parts = getOBXField(i, j, 3, 0, 2).split(":");
+        if (parts.length < 5) return false;
+        String obxIdent = parts[4];
         return obxIdent != null && (obxIdent.toUpperCase().startsWith("ORD") || obxIdent.toUpperCase().startsWith("QN"));
     }
 
@@ -2626,9 +2630,8 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     protected String getOBXField(int i, int j, int field, int rep, int comp) {
-        ArrayList<Segment> obxSegs = obrGroups.get(i);
-
         try {
+            ArrayList<Segment> obxSegs = obrGroups.get(i);
             Segment obxSeg = obxSegs.get(j);
             return (getString(Terser.get(obxSeg, field, rep, comp, 1))).trim();
         } catch (Exception e) {
@@ -2637,9 +2640,8 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     protected String getOBXEDField(int i, int j, int field, int rep, int comp) {
-        ArrayList<Segment> obxSegs = obrGroups.get(i);
-
         try {
+            ArrayList<Segment> obxSegs = obrGroups.get(i);
             Segment obxSeg = obxSegs.get(j);
             return Terser.get(obxSeg, field, rep, comp, 1);
         } catch (Exception e) {
