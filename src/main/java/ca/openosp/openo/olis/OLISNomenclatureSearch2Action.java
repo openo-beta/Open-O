@@ -38,7 +38,10 @@ import org.apache.struts2.ServletActionContext;
  * <li>{@code type} - "result" (default) or "request" - which nomenclature table to search</li>
  * <li>{@code query} - String partial name to match (case-insensitive contains)</li>
  * </ul>
- * Response: JSON shape {@code {"results": [{"id": "...", "name": "..."}, ...]}}.
+ * Response: JSON shape {@code {"results": [{"code": "...", "name": "..."}, ...]}}
+ * where {@code code} is the OLIS nomenclature wire-format code (LOINC for results,
+ * the TR-prefixed OLIS code for requests) — that is, the value OLIS expects in
+ * OBX-3 / OBR-4 component 1, not the local Hibernate primary key.
  *
  * @since 2026-05-15
  */
@@ -68,12 +71,12 @@ public class OLISNomenclatureSearch2Action extends ActionSupport {
             if ("request".equalsIgnoreCase(type)) {
                 OLISRequestNomenclatureDao dao = SpringUtils.getBean(OLISRequestNomenclatureDao.class);
                 for (OLISRequestNomenclature n : dao.findByNameLike(query, MAX_RESULTS)) {
-                    results.add(toEntry(String.valueOf(n.getId()), n.getName()));
+                    results.add(toEntry(n.getNameId(), n.getName()));
                 }
             } else {
                 OLISResultNomenclatureDao dao = SpringUtils.getBean(OLISResultNomenclatureDao.class);
                 for (OLISResultNomenclature n : dao.findByNameLike(query, MAX_RESULTS)) {
-                    results.add(toEntry(n.getId(), n.getName()));
+                    results.add(toEntry(n.getNameId(), n.getName()));
                 }
             }
         }
@@ -88,9 +91,9 @@ public class OLISNomenclatureSearch2Action extends ActionSupport {
         return null;
     }
 
-    private static Map<String, String> toEntry(String id, String name) {
+    private static Map<String, String> toEntry(String code, String name) {
         Map<String, String> m = new LinkedHashMap<String, String>();
-        m.put("id", id == null ? "" : id);
+        m.put("code", code == null ? "" : code);
         m.put("name", name == null ? "" : name.trim());
         return m;
     }

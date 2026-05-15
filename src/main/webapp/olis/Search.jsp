@@ -669,12 +669,12 @@ opener.refreshView();</script>
                                                 var ctxPath = '<%=Encode.forJavaScript(request.getContextPath())%>';
                                                 var endpoint = ctxPath + '/olis/NomenclatureSearch.do';
 
-                                                function addChip(chipsId, fieldName, id, label) {
+                                                function addChip(chipsId, fieldName, code, label) {
                                                     var container = document.getElementById(chipsId);
                                                     if (!container) return;
                                                     var existing = container.querySelectorAll('input[name="' + fieldName + '"]');
                                                     for (var i = 0; i < existing.length; i++) {
-                                                        if (existing[i].value === id) return;
+                                                        if (existing[i].value === code) return;
                                                     }
                                                     var chip = document.createElement('span');
                                                     chip.className = 'nomenclature-chip';
@@ -692,7 +692,7 @@ opener.refreshView();</script>
                                                     var hidden = document.createElement('input');
                                                     hidden.type = 'hidden';
                                                     hidden.name = fieldName;
-                                                    hidden.value = id;
+                                                    hidden.value = code;
                                                     chip.appendChild(hidden);
                                                     container.appendChild(chip);
                                                 }
@@ -703,12 +703,12 @@ opener.refreshView();</script>
                                                         source: function (request, response) {
                                                             $.getJSON(endpoint, {query: request.term, type: type}, function (data) {
                                                                 response($.map(data.results || [], function (item) {
-                                                                    return {label: item.name, value: item.name, id: item.id};
+                                                                    return {label: item.name, value: item.name, code: item.code};
                                                                 }));
                                                             });
                                                         },
                                                         select: function (event, ui) {
-                                                            addChip(chipsId, fieldName, ui.item.id, ui.item.label);
+                                                            addChip(chipsId, fieldName, ui.item.code, ui.item.label);
                                                             $(this).val('');
                                                             return false;
                                                         },
