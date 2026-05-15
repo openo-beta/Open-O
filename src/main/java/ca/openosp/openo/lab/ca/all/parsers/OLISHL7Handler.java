@@ -999,9 +999,17 @@ public class OLISHL7Handler implements MessageHandler {
 
     public int getMappedOBX(int obr, int obx) {
         try {
-            String[] keys = obxSortMap.get(obr).keySet().toArray(new String[0]);
+            HashMap<String, Integer> innerMap = obxSortMap.get(obr);
+            // An OBR with no OBXs in the sort map
+            // (innerMap empty) provoked ArrayIndexOutOfBoundsException on keys[obx]; caught +
+            // logged as ERROR on every render. Now silently returns the original obr fallback
+            // for the expected empty case; real errors still log.
+            if (innerMap == null || obx < 0 || obx >= innerMap.size()) {
+                return obr;
+            }
+            String[] keys = innerMap.keySet().toArray(new String[0]);
             Arrays.sort(keys);
-            return obxSortMap.get(obr).get(keys[obx]);
+            return innerMap.get(keys[obx]);
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
         }
@@ -2843,6 +2851,14 @@ public class OLISHL7Handler implements MessageHandler {
      * </ul>
      */
     private DoctorName getFullDoctorName(String docSeg) throws HL7Exception {
+        // When the segment doesn't exist (typical for PV1 on most OLIS labs).
+        // Without this guard, each terser.get(...) below throws HL7Exception "End of message
+        // reached while iterating without loop" and the catch in the public getter logs a full
+        // stack trace on every render — caught + harmless, but buried real diagnostic signal.
+        if (!segmentExists(docSeg)) {
+            return new DoctorName("", "", "", "", "", "", "", "");
+        }
+
         String prefix = terser.get(docSeg + "6");
         String givenName = terser.get(docSeg + "3");
         String middleName = terser.get(docSeg + "4");
@@ -2862,6 +2878,22 @@ public class OLISHL7Handler implements MessageHandler {
 
         return new DoctorName(prefix, givenName, middleName, familyName,
                 suffix, degree, licenseType, licenseNumber);
+    }
+
+    /**
+     * Checks whether a HAPI segment exists in the parsed message. Extracts the 3-character
+     * segment name from a terser path like {@code "/.PV1-7-"} → {@code "PV1"} and asks HAPI for
+     * matching root-level structures. Returns {@code false} on any parse error so the caller can
+     * safely short-circuit without provoking an HL7Exception.
+     */
+    private boolean segmentExists(String docSeg) {
+        if (docSeg == null || docSeg.length() < 5) return false;
+        String segmentName = docSeg.substring(2, 5);
+        try {
+            return terser.getFinder().getRoot().getAll(segmentName).length > 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
