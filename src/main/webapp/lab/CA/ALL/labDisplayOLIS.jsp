@@ -11,7 +11,6 @@
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
-<%@page import="ca.openosp.openo.utility.HtmlTextCleaner" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.lab.ca.all.upload.MessageUploader" %>
 <%@ page language="java" errorPage="/errorpage.jsp" %>
@@ -1175,7 +1174,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <%=Encode.forHtml(HtmlTextCleaner.toPlainText(handler.getDocName()))%>
+                                            <%=Encode.forHtml(handler.getDocName())%>
                                             <%
                                                 HashMap<String, String> address = handler.getOrderingProviderAddress();
                                                 if (address != null && address.size() > 0) {
@@ -1254,7 +1253,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <%=Encode.forHtml(HtmlTextCleaner.toPlainText(handler.getAttendingProviderName()))%>
+                                            <%=Encode.forHtml(handler.getAttendingProviderName())%>
                                         </div>
                                     </td>
                                 </tr>
@@ -1271,7 +1270,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <%=Encode.forHtml(HtmlTextCleaner.toPlainText(handler.getAdmittingProviderName()))%>
+                                            <%=Encode.forHtml(handler.getAdmittingProviderName())%>
                                         </div>
                                     </td>
                                 </tr>
@@ -1364,7 +1363,7 @@
                                     <td bgcolor="white" align="right" colspan="2">
                                         <div class="FieldData">
                                             <strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formCCClient"/>: </strong>
-                                            <%=Encode.forHtml(HtmlTextCleaner.toPlainText(handler.getCCDocs()))%>
+                                            <%=Encode.forHtml(handler.getCCDocs())%>
 
                                         </div>
                                     </td>

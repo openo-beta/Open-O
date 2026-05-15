@@ -65,6 +65,98 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 public class OLISHL7Handler implements MessageHandler {
 
     /**
+     * Structured doctor-name data parsed from an HL7 CN/XCN composite field
+     * (OBR-16 ordering, PV1-7 attending, PV1-17 admitting, OBR-28 cc-doctors).
+     *
+     * <p>Replaces the older {@code getFullDocName} return shape, which synthesized
+     * inline {@code <span style="...">{licenseType} {licenseNumber}</span>} markup
+     * that every downstream renderer (PDF, JSPs, InboxHub) then had to parse back
+     * out via Jsoup to get plain text. The structured form lets each renderer
+     * decide its own presentation: PDF subscript fonts, JSP CSS classes, plain
+     * text for inbox lists, etc.</p>
+     */
+    public static class DoctorName {
+        public final String prefix;        // XCN-6: "DR."
+        public final String givenName;     // XCN-3: "JOHN"
+        public final String middleName;    // XCN-4: middle initial
+        public final String familyName;    // XCN-2: "SMITH"
+        public final String suffix;        // XCN-5: suffix
+        public final String degree;        // XCN-7: "M.D." degree credential text
+        public final String licenseType;   // XCN-13 normalized: "MD" / "RM" / "RN(EC)" / "DDS"
+        public final String licenseNumber; // XCN-1: "109753"
+
+        public DoctorName(String prefix, String givenName, String middleName,
+                          String familyName, String suffix, String degree,
+                          String licenseType, String licenseNumber) {
+            this.prefix = nullToEmpty(prefix);
+            this.givenName = nullToEmpty(givenName);
+            this.middleName = nullToEmpty(middleName);
+            this.familyName = nullToEmpty(familyName);
+            this.suffix = nullToEmpty(suffix);
+            this.degree = nullToEmpty(degree);
+            this.licenseType = nullToEmpty(licenseType);
+            this.licenseNumber = nullToEmpty(licenseNumber);
+        }
+
+        /** True when every parsed field is empty — caller can short-circuit rendering. */
+        public boolean isEmpty() {
+            return prefix.isEmpty() && givenName.isEmpty() && middleName.isEmpty()
+                    && familyName.isEmpty() && suffix.isEmpty() && degree.isEmpty()
+                    && licenseType.isEmpty() && licenseNumber.isEmpty();
+        }
+
+        /**
+         * Name part without the license — what a renderer puts in the main font
+         * (e.g. {@code "DR. JOHN SMITH M.D."}).
+         */
+        public String getNamePart() {
+            StringBuilder sb = new StringBuilder();
+            appendWithSpace(sb, prefix);
+            appendWithSpace(sb, givenName);
+            appendWithSpace(sb, middleName);
+            appendWithSpace(sb, familyName);
+            appendWithSpace(sb, suffix);
+            appendWithSpace(sb, degree);
+            return sb.toString();
+        }
+
+        /**
+         * License credential part — {@code "MD 109753"} or {@code ""} if both
+         * licenseType and licenseNumber are empty. Renderers put this in the
+         * subscript / small-grey font.
+         */
+        public String getLicensePart() {
+            if (licenseType.isEmpty() && licenseNumber.isEmpty()) return "";
+            StringBuilder sb = new StringBuilder();
+            appendWithSpace(sb, licenseType);
+            appendWithSpace(sb, licenseNumber);
+            return sb.toString();
+        }
+
+        /**
+         * Full plain-text rendering — name + license joined by a single space.
+         * Replaces the historical span-laden output of {@code getFullDocName}.
+         */
+        public String toPlainText() {
+            String name = getNamePart();
+            String license = getLicensePart();
+            if (name.isEmpty()) return license;
+            if (license.isEmpty()) return name;
+            return name + " " + license;
+        }
+
+        private static String nullToEmpty(String s) {
+            return s == null ? "" : s;
+        }
+
+        private static void appendWithSpace(StringBuilder sb, String s) {
+            if (s == null || s.isEmpty()) return;
+            if (sb.length() > 0) sb.append(' ');
+            sb.append(s);
+        }
+    }
+
+    /**
      * Forces every parsed message to resolve as {@link GenericMessage} regardless of MSH-9-3.
      *
      * <p>HAPI's typed structures (e.g. {@code ORU_R01}) nest non-standard Z-segments like
@@ -258,6 +350,15 @@ public class OLISHL7Handler implements MessageHandler {
         }
     }
 
+    /** Structured form of {@link #getAdmittingProviderName()} — see {@link #getDocNameStructured()}. */
+    public DoctorName getAdmittingProviderStructured() {
+        try {
+            return getFullDoctorName("/.PV1-17-");
+        } catch (Exception e) {
+            return new DoctorName("", "", "", "", "", "", "", "");
+        }
+    }
+
     public String getAdmittingProviderNameShort() {
         try {
             return getShortName("/.PV1-17-");
@@ -273,6 +374,15 @@ public class OLISHL7Handler implements MessageHandler {
         } catch (HL7Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
             return "";
+        }
+    }
+
+    /** Structured form of {@link #getAttendingProviderName()} — see {@link #getDocNameStructured()}. */
+    public DoctorName getAttendingProviderStructured() {
+        try {
+            return getFullDoctorName("/.PV1-7-");
+        } catch (Exception e) {
+            return new DoctorName("", "", "", "", "", "", "", "");
         }
     }
 
@@ -2548,6 +2658,19 @@ public class OLISHL7Handler implements MessageHandler {
         }
     }
 
+    /**
+     * Structured form of {@link #getDocName()} for renderers that need to style the
+     * license credential differently from the name (PDF subscript font, JSP CSS class).
+     * Returns an empty {@link DoctorName} (every field empty) when OBR-16 is absent.
+     */
+    public DoctorName getDocNameStructured() {
+        try {
+            return getFullDoctorName("/.OBR-16-");
+        } catch (Exception e) {
+            return new DoctorName("", "", "", "", "", "", "", "");
+        }
+    }
+
     public String getShortDocName() {
         try {
             return (getShortName("/.OBR-16-"));
@@ -2575,6 +2698,28 @@ public class OLISHL7Handler implements MessageHandler {
         } catch (Exception e) {
             return ("");
         }
+    }
+
+    /**
+     * Structured form of {@link #getCCDocs()} — iterates OBR-28 repeats and returns one
+     * {@link DoctorName} per cc doctor. Renderers that want a comma-joined string can call
+     * {@link #getCCDocs()} as before; the structured list lets the PDF/JSP path subscript-style
+     * each doctor's license credential individually.
+     */
+    public List<DoctorName> getCCDocsStructured() {
+        List<DoctorName> ccDocs = new ArrayList<DoctorName>();
+        try {
+            int i = 0;
+            DoctorName next = getFullDoctorName("/.OBR-28(" + i + ")-");
+            while (!next.isEmpty()) {
+                ccDocs.add(next);
+                i++;
+                next = getFullDoctorName("/.OBR-28(" + i + ")-");
+            }
+        } catch (Exception e) {
+            // fall through — return whatever we collected so far
+        }
+        return ccDocs;
     }
 
     public String getTestRequestCode() {
@@ -2681,58 +2826,53 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
 
+    /**
+     * Parse a CN/XCN composite at {@code docSeg} into a {@link DoctorName}. The path argument is
+     * the terser prefix up to the component separator (e.g. {@code "/.OBR-16-"} for ordering,
+     * {@code "/.PV1-7-"} for attending). Component mapping:
+     *
+     * <ul>
+     *   <li>XCN-1 → licenseNumber</li>
+     *   <li>XCN-2 → familyName</li>
+     *   <li>XCN-3 → givenName</li>
+     *   <li>XCN-4 → middleName</li>
+     *   <li>XCN-5 → suffix</li>
+     *   <li>XCN-6 → prefix (e.g. "DR.")</li>
+     *   <li>XCN-7 → degree (e.g. "M.D.")</li>
+     *   <li>XCN-13 → licenseType (normalized: MDL→MD, ML→RM, NPL→RN(EC), DDSL→DDS)</li>
+     * </ul>
+     */
+    private DoctorName getFullDoctorName(String docSeg) throws HL7Exception {
+        String prefix = terser.get(docSeg + "6");
+        String givenName = terser.get(docSeg + "3");
+        String middleName = terser.get(docSeg + "4");
+        String familyName = terser.get(docSeg + "2");
+        String suffix = terser.get(docSeg + "5");
+        String degree = terser.get(docSeg + "7");
+        String licenseNumber = terser.get(docSeg + "1");
+
+        String licenseType = terser.get(docSeg + "13");
+        if (licenseType != null) {
+            licenseType = licenseType.toUpperCase();
+            if (licenseType.equals("MDL")) licenseType = "MD";
+            else if (licenseType.equals("ML")) licenseType = "RM";
+            else if (licenseType.equals("NPL")) licenseType = "RN(EC)";
+            else if (licenseType.equals("DDSL")) licenseType = "DDS";
+        }
+
+        return new DoctorName(prefix, givenName, middleName, familyName,
+                suffix, degree, licenseType, licenseNumber);
+    }
+
+    /**
+     * Plain-text rendering of {@link #getFullDoctorName(String)} — name + license credential
+     * joined by a single space (e.g. {@code "DR. JOHN SMITH MD 109753"}). Previously synthesized
+     * inline {@code <span style="...">} markup around the license; that intent now lives in
+     * {@link DoctorName#getLicensePart()} so each renderer can style it appropriately. Returns
+     * {@code ""} when every parsed field is empty (preserving caller-empty-check semantics).
+     */
     private String getFullDocName(String docSeg) throws HL7Exception {
-        String docName = "";
-        String temp;
-
-        // get name prefix ie/ DR.
-        temp = terser.get(docSeg + "6");
-        if (temp != null) docName = temp;
-
-        // get the name
-        temp = terser.get(docSeg + "3");
-        if (temp != null) {
-            if (docName.equals("")) {
-                docName = temp;
-            } else {
-                docName = docName + " " + temp;
-            }
-        }
-
-        if (terser.get(docSeg + "4") != null) {
-            docName = docName + " " + terser.get(docSeg + "4");
-        }
-        if (terser.get(docSeg + "2") != null) {
-            docName = docName + " " + terser.get(docSeg + "2");
-        }
-        if (terser.get(docSeg + "5") != null) {
-            docName = docName + " " + terser.get(docSeg + "5");
-        }
-        if (terser.get(docSeg + "7") != null) {
-            docName = docName + " " + terser.get(docSeg + "7");
-        }
-        String modifier = "";
-        if (terser.get(docSeg + "13") != null) {
-            modifier = terser.get(docSeg + "13").toUpperCase();
-            if (modifier.equals("MDL")) {
-                modifier = "MD";
-            }
-            if (modifier.equals("ML")) {
-                modifier = "RM";
-            }
-            if (modifier.equals("NPL")) {
-                modifier = "RN(EC)";
-            }
-            if (modifier.equals("DDSL")) {
-                modifier = "DDS";
-            }
-
-        }
-        if (terser.get(docSeg + "1") != null) {
-            docName = docName + " " + "<span style=\"margin-left:15px; font-size:8px; color:#333333;\">" + modifier + " " + terser.get(docSeg + "1") + "</span>";
-        }
-
-        return (docName);
+        return getFullDoctorName(docSeg).toPlainText();
     }
 
     private String getShortName(String docSeg) throws HL7Exception {

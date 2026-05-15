@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,7 +65,6 @@ import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 import ca.openosp.openo.utility.HtmlTextCleaner;
 import ca.openosp.openo.utility.PathValidationUtils;
-import org.jsoup.Jsoup;
 
 import java.io.File;
 
@@ -951,7 +951,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
         cell.setPhrase(new Phrase("Ordering Provider: ", boldFont));
         rInfoTable.addCell(cell);
-        cell.setPhrase(getDoctorNamePhrase(handler.getDocName()));
+        cell.setPhrase(getDoctorNamePhrase(handler.getDocNameStructured()));
         rInfoTable.addCell(cell);
 
         address = handler.getOrderingProviderAddress();
@@ -973,17 +973,19 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             rInfoTable.addCell(cell);
         }
 
-        if (!stringIsNullOrEmpty(handler.getAttendingProviderName())) {
+        OLISHL7Handler.DoctorName attending = handler.getAttendingProviderStructured();
+        if (!attending.isEmpty()) {
             cell.setPhrase(new Phrase("Attending Provider: ", boldFont));
             rInfoTable.addCell(cell);
-            cell.setPhrase(getDoctorNamePhrase(handler.getAttendingProviderName()));
+            cell.setPhrase(getDoctorNamePhrase(attending));
             rInfoTable.addCell(cell);
         }
 
-        if (!stringIsNullOrEmpty(handler.getAdmittingProviderName())) {
+        OLISHL7Handler.DoctorName admitting = handler.getAdmittingProviderStructured();
+        if (!admitting.isEmpty()) {
             cell.setPhrase(new Phrase("Admitting Provider: ", boldFont));
             rInfoTable.addCell(cell);
-            cell.setPhrase(getDoctorNamePhrase(handler.getAdmittingProviderName()));
+            cell.setPhrase(getDoctorNamePhrase(admitting));
             rInfoTable.addCell(cell);
         }
 
@@ -1033,7 +1035,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         //Create client table
         PdfPTable clientTable = new PdfPTable(1);
 
-        cell.setPhrase(getCCDocNamesPhrase(handler.getCCDocs()));
+        cell.setPhrase(getCCDocNamesPhrase(handler.getCCDocsStructured()));
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         clientTable.addCell(cell);
 
@@ -1299,59 +1301,53 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
     }
 
     /**
-     * Takes a string of docNames, specifically the one returned from handler.getCCDocNames()
-     * Converts the string into a phrase containing all doc names
+     * Builds the "cc: Client:" phrase from the structured cc-doctor list. Each doctor is
+     * rendered via {@link #getDoctorNamePhrase(OLISHL7Handler.DoctorName)} so name and license
+     * credential pick up the correct fonts; entries are comma-separated.
      *
-     * @param docNames
-     * @return ccDocNames
+     * <p>Replaces the older variant that took a single comma-joined String + re-parsed the
+     * embedded {@code <span>} markup back out via Jsoup. With the structured handler API
+     * the markup never gets synthesized in the first place.</p>
      */
-    private Phrase getCCDocNamesPhrase(String docNames) {
+    private Phrase getCCDocNamesPhrase(List<OLISHL7Handler.DoctorName> ccDocs) {
         Phrase ccDocNames = new Phrase();
-        String[] splitNames;
 
         ccDocNames.setFont(boldFont);
         ccDocNames.add("cc: Client:  ");
         ccDocNames.setFont(font);
 
-        splitNames = docNames.split(", ");
-
-        for (String docName : splitNames) {
-
-            ccDocNames.addAll(getDoctorNamePhrase(docName).getChunks());
+        for (OLISHL7Handler.DoctorName doc : ccDocs) {
+            ccDocNames.addAll(getDoctorNamePhrase(doc).getChunks());
             ccDocNames.add(new Chunk(", ", font));
         }
-        ccDocNames.remove(ccDocNames.size() - 1);
+        if (!ccDocs.isEmpty()) {
+            ccDocNames.remove(ccDocNames.size() - 1);
+        }
 
         return ccDocNames;
     }
 
     /**
-     * Takes a doctor name string and turns it into a phrase that contains the doctor
-     * name in normal font, and then their MD number in the smaller font
+     * Builds a {@link Phrase} for a single doctor — name part in the main font, license
+     * credential ({@code "MD 109753"} etc.) in {@link #subscriptFont}.
      *
-     * @param doctorName
-     * @return doctorPhrase
+     * <p>Replaces the older variant that took a String + parsed the embedded
+     * {@code <span style="margin-left:15px; font-size:8px; color:#333333;">...</span>}
+     * back out via Jsoup. The structured form removes that round-trip.</p>
      */
-    private Phrase getDoctorNamePhrase(String doctorName) {
-        if (doctorName == null) doctorName = "";
-
-        String mdNumber = "";
-        String namePart = doctorName;
-
-        if (doctorName.contains("<")) {
-            org.jsoup.nodes.Document doc = Jsoup.parseBodyFragment(doctorName);
-            org.jsoup.nodes.Element spanEl = doc.body().selectFirst("span");
-            if (spanEl != null) {
-                mdNumber = spanEl.text();
-                spanEl.remove();
-            }
-            namePart = doc.body().text();
-        }
-
+    private Phrase getDoctorNamePhrase(OLISHL7Handler.DoctorName doctor) {
         Phrase doctorPhrase = new Phrase();
-        doctorPhrase.add(new Chunk(namePart + " ", font));
-        doctorPhrase.add(new Chunk("\t" + mdNumber, subscriptFont));
+        if (doctor == null) return doctorPhrase;
 
+        String namePart = doctor.getNamePart();
+        String licensePart = doctor.getLicensePart();
+
+        if (!namePart.isEmpty()) {
+            doctorPhrase.add(new Chunk(namePart + " ", font));
+        }
+        if (!licensePart.isEmpty()) {
+            doctorPhrase.add(new Chunk("\t" + licensePart, subscriptFont));
+        }
         return doctorPhrase;
     }
 }
