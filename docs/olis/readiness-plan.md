@@ -348,13 +348,15 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 ## Track B — Spec gaps, JSP-only quick wins
 
 ### B1: Results.jsp preview enhancements
+- **Status:** ✅ Code done (`Results.jsp` only — no `OLISResults2Action` aggregator needed; JSP compile/render pending a deploy-time verify).
 - **Closes:** OLIS01.02, OLIS01.03, OLIS03.02, OLIS03.03, OLIS04.10
-- **Scope:**
-  - Add Lab Name column to preview table (`Results.jsp:767-778`)
-  - Add per-row matched/unmatched indicator (currently only `here.gif` icon at `Results.jsp:827-840`)
-  - Add per-row blocked indicator (page-level `hasBlockedContent` exists at `OLISResults2Action.java:476-490` but no per-row marker)
-  - Add Practitioner filter dropdown + wire into `filterResults()` (`Results.jsp:230-283`, `:599-727`)
-- **Files:** `Results.jsp`, possibly `OLISResults2Action.java` for new aggregator
+- **Scope — shipped (all in `Results.jsp`):**
+  - **Lab Name columns** — added visible **Reporting Lab** and **Performing Lab** columns to the preview table (the values were previously only attached as row attributes for the filter dropdowns). Both shown since the spec treats them as distinct query parameters.
+  - **Match column** — explicit "Matched" / "Unmatched" text column (reuses the `demId` already derived in the patient-name cell); previously match status was implicit via the `here.gif` icon only.
+  - **Blocked column** — per-row indicator driven by `result.isReportBlocked()` (`Boolean.TRUE.equals(...)`, null-safe). This is the per-row marker OLIS04.10 wants; the existing page-level `hasBlockedContent` override prompt stays. No `OLISResults2Action` aggregator was needed — the per-result `OLISHL7Handler` already exposes `isReportBlocked()`.
+  - **Practitioner filter** — new `practitionerFilter` dropdown populated from `result.getAllPractitioners()`, a `practitioner="a|b|c"` row attribute, and a substring match wired into `filterResults()` (mirrors the existing multi-value `category` filter pattern). Closes the one filter gap flagged in OLIS01.03 / OLIS03.03.
+  - Preview table went from 16 → 20 columns; `tfoot` colspan bumped accordingly.
+- **Files:** `Results.jsp`
 - **Labels:** `type: feature`, `priority: medium`, `area: olis`, `compliance`
 
 ---
