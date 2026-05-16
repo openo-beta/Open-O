@@ -66,7 +66,7 @@ public class GeneratePatientSpreadSheetList2Action extends ActionSupport {
         MiscUtils.getLogger().debug("Generating Spread Sheet file ..");
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=\"patientlist_spreadsheet-"
-                + UtilDateUtilities.getToday("yyyy-mm-dd.hh.mm.ss") + ".xls\"");
+                + UtilDateUtilities.getToday("yyyy-MM-dd.HH.mm.ss") + ".xls\"");
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet("patient list");
