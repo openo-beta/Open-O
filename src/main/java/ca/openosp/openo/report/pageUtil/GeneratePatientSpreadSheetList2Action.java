@@ -23,7 +23,6 @@
  * Ontario, Canada
  */
 
-
 package ca.openosp.openo.report.pageUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +53,6 @@ public class GeneratePatientSpreadSheetList2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() {
@@ -67,8 +65,8 @@ public class GeneratePatientSpreadSheetList2Action extends ActionSupport {
 
         MiscUtils.getLogger().debug("Generating Spread Sheet file ..");
         response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=\"patientlist_spreadsheet-" + UtilDateUtilities.getToday("yyyy-mm-dd.hh.mm.ss") + ".xls\"");
-
+        response.setHeader("Content-Disposition", "attachment; filename=\"patientlist_spreadsheet-"
+                + UtilDateUtilities.getToday("yyyy-MM-dd.HH.mm.ss") + ".xls\"");
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet("patient list");
@@ -77,7 +75,6 @@ public class GeneratePatientSpreadSheetList2Action extends ActionSupport {
             DemographicData demoData = new DemographicData();
             Demographic d = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demos[i]);
 
-
             // Create a row and put some cells in it. Rows are 0 based.
             HSSFRow row = sheet.createRow((short) i);
 
@@ -85,8 +82,8 @@ public class GeneratePatientSpreadSheetList2Action extends ActionSupport {
             row.createCell((short) 1).setCellValue(d.getLastName());
             row.createCell((short) 2).setCellValue(d.getAddress());
             row.createCell((short) 3).setCellValue(d.getCity());
-            row.createCell((short) 3).setCellValue(d.getProvince());
-            row.createCell((short) 3).setCellValue(d.getPostal());
+            row.createCell((short) 4).setCellValue(d.getProvince());
+            row.createCell((short) 5).setCellValue(d.getPostal());
 
         }
         try {
