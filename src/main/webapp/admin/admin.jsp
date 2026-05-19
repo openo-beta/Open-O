@@ -838,10 +838,11 @@
 
                     <%
                         String olisKeystore = OscarProperties.getInstance().getProperty("olis_keystore", "");
-                        if (olisKeystore.length() > 0) {
+                        boolean olisSimulate = "yes".equals(OscarProperties.getInstance().getProperty("olis_simulate"));
+                        if (olisKeystore.length() > 0 || olisSimulate) {
                     %>
                     <li><a href="#" onclick='popupPage(400, 400, "${pageContext.request.contextPath}/olis/Preferences.jsp");return false;'>OLIS Preferences</a></li>
-                    <li><a href="#" onclick='popupPage(600, 900, "${pageContext.request.contextPath}/olis/NomenclatureImport.do");return false;'>OLIS — Import Nomenclature</a></li>
+                    <li><a href="#" onclick='popupPage(600, 900, "${pageContext.request.contextPath}/olis/NomenclatureImport.do");return false;'>OLIS Import Nomenclature</a></li>
                     <% } %>
 
                     <li><a href="javascript:void(0);" onclick="popupPage(550,800, '${pageContext.request.contextPath}/admin/updateDrugref.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.UpdateDrugref"/></a></li>

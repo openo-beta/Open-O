@@ -837,10 +837,12 @@ String curProvider_no = (String)session.getAttribute("user");
 					
 					<%
 						String olisKeystore = OscarProperties.getInstance().getProperty("olis_keystore", "");
-						if(olisKeystore.length()>0) {
+						boolean olisSimulate = "yes".equals(OscarProperties.getInstance().getProperty("olis_simulate"));
+						if(olisKeystore.length()>0 || olisSimulate) {
 					%>
 					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/olis/Preferences.jsp">OLIS Preferences</a></li>
-					<% } %>	
+					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/olis/NomenclatureImport.do">OLIS Import Nomenclature</a></li>
+					<% } %>
 					
 		
 					<%

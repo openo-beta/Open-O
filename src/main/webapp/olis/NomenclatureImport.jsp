@@ -22,7 +22,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>OLIS — Import Nomenclature</title>
+    <title>OLIS Import Nomenclature</title>
     <link rel="stylesheet" type="text/css"
           href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
     <style>
@@ -41,7 +41,9 @@
 </head>
 <body>
 
-<h2>OLIS — Import Nomenclature</h2>
+<jsp:include page="/images/spinner.jsp" flush="true"/>
+
+<h2>OLIS Import Nomenclature</h2>
 <p class="subtitle">Refresh the local OLIS result + request nomenclature tables from an official eHealth Ontario XLSX distribution.</p>
 
 <% if (errorMessage != null) { %>
@@ -55,7 +57,7 @@
 <div class="panel success">
     <strong>Import complete.</strong>
     <% if (xlsxFileName != null) { %>
-        <span style="color: #666;">— from <code><%= Encode.forHtml(xlsxFileName) %></code></span>
+        <span style="color: #666;">from <code><%= Encode.forHtml(xlsxFileName) %></code></span>
     <% } %>
     <table class="summary">
         <thead>
@@ -83,7 +85,7 @@
 
 <div class="panel">
     <form action="<%= request.getContextPath() %>/olis/NomenclatureImport.do" method="POST"
-          enctype="multipart/form-data">
+          enctype="multipart/form-data" onsubmit="ShowSpin(true);">
         <p>
             <label for="nomenclatureFile"><strong>Official OLIS Nomenclatures distribution (.xlsx):</strong></label><br/>
             <input id="nomenclatureFile" type="file" name="nomenclatureFile" accept=".xlsx" required/>
@@ -93,9 +95,11 @@
             <a href="https://ehealthontario.on.ca/en/OLIS-nomenclature/" target="_blank" rel="noopener noreferrer">eHealth Ontario OLIS Nomenclature</a>.
             The file looks like <code>OLIS Nomenclatures V{X.YY}_PROD.xlsx</code>.
             <br/><br/>
-            <strong>Each release has a ~7-day "review and remap by" deadline</strong> before non-conforming senders begin to have OLIS messages rejected. Run this import once per release.
+            Each quarterly release brings row deltas across adds, changes, and deprecations. Run this import once per release to keep OpenO close to the live catalog and avoid encountering codes that no longer match.
             <br/><br/>
             The import upserts both Test Result and Test Request nomenclature tables. Codes whose <em>Validation Status Indicator</em> or <em>Workflow Status Indicator</em> is no longer ACTIVE / RELEASED are marked deprecated; the autocomplete on OLIS Search hides deprecated codes automatically.
+            <br/><br/>
+            Large imports may take 30 seconds or more (a typical release contains ~49,000 result codes and ~3,500 request codes). Don't navigate away while the import is running.
         </p>
         <p>
             <input type="submit" value="Import"/>
