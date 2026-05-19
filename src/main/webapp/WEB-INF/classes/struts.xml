@@ -64,7 +64,7 @@
                 <interceptor-ref name="coop">
                     <param name="disabled">false</param>
                     <param name="exemptedPaths"/>
-                    <param name="mode">same-origin</param>
+                    <param name="mode">same-origin-allow-popups</param>
                 </interceptor-ref>
                 <interceptor-ref name="fetchMetadata">
                     <param name="disabled">false</param>
