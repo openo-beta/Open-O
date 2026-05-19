@@ -1,5 +1,10 @@
 package ca.openosp.openo.webserv.rest;
 
+//import ca.openosp.openo.PMmodule.model.SecUserRole;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.service.NoteSelectionCriteria;
+import ca.openosp.openo.casemgmt.service.NoteSelectionResult;
+import ca.openosp.openo.casemgmt.service.NoteService;
 import ca.openosp.openo.commn.model.Allergy;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.Document;
@@ -16,6 +21,13 @@ import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.service.NoteSelectionCriteria;
+import ca.openosp.openo.casemgmt.service.NoteSelectionResult;
+import ca.openosp.openo.casemgmt.service.NoteService;
+import ca.openosp.openo.PMmodule.dao.SecUserRoleDao;
+import ca.openosp.openo.PMmodule.model.SecUserRole;
+import java.util.stream.Collectors;
 
 import java.util.Collections;
 import java.util.Date;
@@ -45,6 +57,12 @@ public class LLMExtractorService {
 
     @Autowired
     private MeasurementManager measurementManager;
+
+    @Autowired
+    private NoteService noteService;
+
+    @Autowired
+    private SecUserRoleDao secUserRoleDao;
 
     /**
      * Main export method.
@@ -90,6 +108,11 @@ public class LLMExtractorService {
 
         List<Measurement> measurements = getMeasurements(loggedInInfo, demographicId);
         appendMeasurementsSection(out, measurements);
+
+        // notes are handled a bit differently since they come from the case management module and have rich text
+        // that may contain newlines, so we will append them in a more free-form way
+        List<CaseManagementNote> notes = getNotes(loggedInInfo, demographicId);
+        appendNotesSection(out, notes);
 
         return out.toString();
     }
@@ -223,6 +246,33 @@ public class LLMExtractorService {
                     .append('\n');
         }
     }
+    
+    private void appendNotesSection(StringBuilder out, List<CaseManagementNote> notes) {
+        out.append('\n').append("ENCOUNTER NOTES").append('\n');
+        out.append("---------------").append('\n');
+
+        if (notes.isEmpty()) {
+            out.append("- None found.").append('\n');
+            return;
+        }
+
+        for (CaseManagementNote n : notes) {
+            out.append("- Date: ").append(fmt(n.getObservation_date()))
+            .append(" | Provider: ").append(nvl(n.getProviderNo()))
+            .append(" | Type: ").append(nvl(n.getEncounter_type()))
+            .append(" | Signed: ").append(n.isSigned())
+            .append('\n');
+
+            // Append the actual note text indented
+            if (n.getNote() != null && !n.getNote().trim().isEmpty()) {
+                String[] lines = n.getNote().split("\n");
+                for (String line : lines) {
+                    out.append("  ").append(line.trim()).append('\n');
+                }
+            }
+            out.append('\n');
+        }
+    }
 
     private List<Allergy> getAllergies(LoggedInInfo loggedInInfo, Integer demographicId) {
         try {
@@ -270,6 +320,47 @@ public class LLMExtractorService {
             return list != null ? list : Collections.emptyList();
         } catch (Exception e) {
             logger.error("Failed to load measurements for demographic {}", demographicId, e);
+            return Collections.emptyList();
+        }
+    }
+
+    private List<CaseManagementNote> getNotes(LoggedInInfo loggedInInfo, Integer demographicId) {
+    try {
+        NoteSelectionCriteria criteria = new NoteSelectionCriteria();
+        criteria.setDemographicId(demographicId);
+        criteria.setMaxResults(200);       // fetch up to 200 notes
+        criteria.setFirstResult(0);
+        criteria.setNoteSort("observation_date_desc");
+        criteria.setSliceFromEndOfList(false);
+
+        // Get user role for note access control
+        List<SecUserRole> userRoles = secUserRoleDao.getUserRoles(
+            loggedInInfo.getLoggedInProviderNo()
+        );
+        if (userRoles != null && !userRoles.isEmpty()) {
+            criteria.setUserRole(SecUserRole.getRoleNameAsCsv(userRoles));
+        }
+        criteria.setUserName(loggedInInfo.getLoggedInProviderNo());
+
+        NoteSelectionResult result = noteService.findNotes(loggedInInfo, criteria);
+        if (result == null) return Collections.emptyList();
+
+        // Convert NoteDisplay to CaseManagementNote-like text
+        return result.getNotes().stream()
+            .map(nd -> {
+                CaseManagementNote n = new CaseManagementNote();
+                n.setNote(nd.getNote());
+                n.setObservation_date(nd.getObservationDate());
+                n.setUpdate_date(nd.getUpdateDate());
+                n.setProviderNo(nd.getProviderNo());
+                n.setEncounter_type(nd.getEncounterType());
+                n.setSigned(nd.isSigned());
+                return n;
+            })
+            .collect(java.util.stream.Collectors.toList());
+
+        } catch (Exception e) {
+            logger.error("Failed to load notes for demographic {}", demographicId, e);
             return Collections.emptyList();
         }
     }
