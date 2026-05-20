@@ -27,6 +27,7 @@ package ca.openosp.openo.commn.dao;
 import ca.openosp.openo.commn.model.DemographicMerge;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -72,4 +73,17 @@ public interface DemographicMergeDao extends AbstractDao<DemographicMerge> {
      * @return DemographicMerge the active MERGE event where this record is a source, or null
      */
     DemographicMerge findActiveMergeEventForSource(Integer demographicNo);
+
+    /**
+     * Returns the demographic_nos of all currently active merged records (C) for which the
+     * given demographic was the primary source — i.e., MERGE events that have not been
+     * followed by an UNMERGE for the same merged record.
+     * <p>
+     * Used by the lab chart view to include labs copied onto C in the primary patient's
+     * chart while the merge is active, without leaking data after an unmerge.
+     *
+     * @param primaryDemographicNo Integer the demographic_no of the primary source (A)
+     * @return List&lt;Integer&gt; the demographic_nos of active merged records, or empty list
+     */
+    List<Integer> findActiveMergedDemographicNosForPrimary(Integer primaryDemographicNo);
 }

@@ -88,32 +88,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         super.setSessionFactory(sessionFactory);
     }
 
-    /**
-     * Finds merged demographic IDs for the specified demographic.
-     *
-     * @param demographicNo Demographic ID to find merged records for
-     * @return Returns the list of merged (child ids) or empty list if the record is
-     * not merged to any other record
-     */
-    @SuppressWarnings("unchecked")
-    @NativeSql("demographic_merged_event")
-    @Override
-    public List<Integer> getMergedDemographics(Integer demographicNo) {
-        // Please don't tell me anything about session handling - this hibernate stuff
-        // must be refactored into JPA, then we will talk, ok?
-        // Session session = getSession();
-        Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(
-                "SELECT merged_demographic_no FROM demographic_merged_event WHERE primary_demographic_no = :parentId AND event_type = 'MERGE'");
-            sqlQuery.setInteger("parentId", demographicNo);
-            return sqlQuery.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
-    }
-
     @Override
     public Demographic getDemographic(String demographic_no) {
         if (demographic_no == null || demographic_no.length() == 0) {

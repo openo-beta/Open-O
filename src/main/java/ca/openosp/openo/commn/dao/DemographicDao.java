@@ -34,8 +34,6 @@ import org.springframework.context.ApplicationEventPublisher;
  */
 public interface DemographicDao {
 
-    public List<Integer> getMergedDemographics(Integer demographicNo);
-
     public Demographic getDemographic(String demographic_no);
 
     public List getDemographics();
