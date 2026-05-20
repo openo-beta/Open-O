@@ -1102,7 +1102,7 @@ opener.refreshView();</script>
                     $.getJSON(endpoint, {query: req.term, 'class': facilityClass}, function (data) {
                         response($.map(data.results || [], function (item) {
                             var label = item.name;
-                            if (item.city) label = label + ' — ' + item.city;
+                            if (item.city) label = label + ', ' + item.city;
                             label = label + ' [' + item.licence + ']';
                             return {label: label, value: label, item: item};
                         }));

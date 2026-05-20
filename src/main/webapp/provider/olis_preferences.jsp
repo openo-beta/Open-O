@@ -144,7 +144,7 @@
                                 %>
                                 <select id="filterPatients" name="filterPatients">
                                     <option value="" <%=("".equals(filterPatientsVal) ? "selected=\"selected\"" : "")%>>Use system default</option>
-                                    <option value="true" <%=("true".equals(filterPatientsVal) ? "selected=\"selected\"" : "")%>>Filter &mdash; send to unclaimed worklist</option>
+                                    <option value="true" <%=("true".equals(filterPatientsVal) ? "selected=\"selected\"" : "")%>>Filter to unclaimed worklist</option>
                                     <option value="false" <%=("false".equals(filterPatientsVal) ? "selected=\"selected\"" : "")%>>Send to my inbox</option>
                                 </select>
                                 <br>
@@ -208,7 +208,7 @@
                         $.getJSON(endpoint, {query: req.term, 'class': facilityClass}, function (data) {
                             response($.map(data.results || [], function (item) {
                                 var label = item.name;
-                                if (item.city) label = label + ' — ' + item.city;
+                                if (item.city) label = label + ', ' + item.city;
                                 label = label + ' [' + item.licence + ']';
                                 return {label: label, value: label, item: item};
                             }));
