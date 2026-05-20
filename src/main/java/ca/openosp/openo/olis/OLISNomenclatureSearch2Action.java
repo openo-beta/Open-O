@@ -50,7 +50,18 @@ public class OLISNomenclatureSearch2Action extends ActionSupport {
     private HttpServletResponse response = ServletActionContext.getResponse();
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final int MAX_RESULTS = 25;
+    /**
+     * Defensive ceiling on returned rows. The result + request nomenclature
+     * tables together hold ~52,800 rows; common search terms like "glucose"
+     * can match ~80 LOINC variants. The previous 25-cap silently clipped
+     * legitimate matches and could mislead a user into picking the wrong
+     * code thinking those were all that existed. 500 covers realistic
+     * queries while keeping payload sensible for the broader nomenclature
+     * table (40x larger than facility). The scrollable autocomplete
+     * dropdown shipped alongside the facility-picker work renders the
+     * larger result lists usably.
+     */
+    private static final int MAX_RESULTS = 500;
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
