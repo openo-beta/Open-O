@@ -57,9 +57,9 @@ public class PathNetInfo {
     }
 
     public int getNotSignedLabCount(String providerNo) throws SQLException {
-        String select_not_signed = "SELECT count(hl7_link.pid_id) as `count` " + "FROM hl7_link, demographic  " + "WHERE demographic.provider_no= '" + providerNo + "' " + "AND demographic.demographic_no=hl7_link.demographic_no " + "AND (hl7_link.status='N' OR hl7_link.status='A')";
+        String select_not_signed = "SELECT count(hl7_link.pid_id) as `count` FROM hl7_link, demographic WHERE demographic.provider_no = ? AND demographic.demographic_no=hl7_link.demographic_no AND (hl7_link.status='N' OR hl7_link.status='A')";
         int notSigned = 0;
-        ResultSet rsLab = DBHandler.GetSQL(select_not_signed);
+        ResultSet rsLab = DBHandler.GetPreSQL(select_not_signed, providerNo);
         if (rsLab.next()) {
             notSigned = rsLab.getInt("count");
         }

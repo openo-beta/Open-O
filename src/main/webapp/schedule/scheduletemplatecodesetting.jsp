@@ -135,7 +135,7 @@
 
                     for (ScheduleTemplateCode stc : stcs) {
                 %>
-                <option value="<%=stc.getCode()%>"><%=stc.getCode() + " |" + Encode.forHtmlContent(stc.getDescription())%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(stc.getCode()))%>"><%=stc.getCode() + " |" + Encode.forHtmlContent(stc.getDescription())%>
                 </option>
                 <%
                     }

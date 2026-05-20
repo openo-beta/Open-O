@@ -8,7 +8,6 @@
     and "gnu.org/licenses/gpl-2.0.html".
 
 --%>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.olis.model.OLISResultNomenclature" %>
 <%@page import="ca.openosp.openo.olis.dao.OLISResultNomenclatureDao" %>
 <%@page import="ca.openosp.openo.commn.model.OLISResults" %>
@@ -27,6 +26,7 @@
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.olis.OLISResults2Action" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     OLISResultsDao olisResultsDao = SpringUtils.getBean(OLISResultsDao.class);
@@ -451,7 +451,7 @@
                 if (request.getAttribute("searchException") != null) {
             %>
             <div class="error">Could not perform the OLIS query due to the following
-                exception:<br/><%=((Exception) request.getAttribute("searchException")).getLocalizedMessage() %>
+                exception:<br/><%=Encode.forHtml(String.valueOf(((Exception) request.getAttribute("searchException")).getLocalizedMessage()))%>
             </div>
             <%
                 } %>
@@ -460,7 +460,7 @@
                 if (request.getAttribute("errors") != null) {
                     // Show the errors to the user
                     for (String error : (List<String>) request.getAttribute("errors")) { %>
-            <div class="error"><%=error.replaceAll("\\n", "<br />") %>
+            <div class="error"><%=error.replaceAll("\\n", "<br />")%>
             </div>
             <% }
             }
@@ -470,7 +470,7 @@
                 }
             %>
             <!--  RAW HL7
-				<%=resp%>
+				<%=Encode.forHtml(String.valueOf(resp))%>
 			-->
             <%
                 boolean hasBlockedContent = false;
@@ -482,7 +482,7 @@
                             if (errors.size() > 0) {
                                 for (OLISError error : errors) {
             %>
-            <div class="error"><%=error.getIndentifer()%>:<%=error.getText().replaceAll("\\n", "<br />")%>
+            <div class="error"><%=Encode.forHtml(String.valueOf(error.getIndentifer()))%>:<%=error.getText().replaceAll("\\n", "<br />")%>
             </div>
             <%
                                 }
@@ -498,7 +498,7 @@
             <form action="<%=request.getContextPath()%>/olis/Search.do"
                   onsubmit="return confirm('Are you sure you want to resubmit this query with a patient consent override?')">
                 <input type="hidden" name="redo" value="true"/>
-                <input type="hidden" name="uuid" value="<%=(String)request.getAttribute("searchUuid")%>"/>
+                <input type="hidden" name="uuid" value="<%=Encode.forHtmlAttribute(String.valueOf((String)request.getAttribute("searchUuid")))%>"/>
                 <input type="hidden" name="force" value="true"/>
                 <input type="submit" value="Submit Override Consent"/>
                 Authorized by:
@@ -603,7 +603,7 @@
                             <%
                                 for (String tmp : new HashSet<String>(names)) {
                             %>
-                            <option value="<%=tmp%>"><%=tmp%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(tmp))%>
                             </option>
                             <% } %>
                         </select>
@@ -615,7 +615,7 @@
                             <%
                                 for (String tmp : new HashSet<String>(hcns)) {
                             %>
-                            <option value="<%=tmp%>"><%=tmp%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(tmp))%>
                             </option>
                             <% } %>
                         </select>
@@ -627,7 +627,7 @@
                             <%
                                 for (String tmp : new HashSet<String>(categories)) {
                             %>
-                            <option value="<%=tmp%>"><%=tmp%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(tmp))%>
                             </option>
                             <% } %>
                         </select>
@@ -642,7 +642,7 @@
                             <%
                                 for (String tmp : new HashSet<String>(labs)) {
                             %>
-                            <option value="<%=tmp%>"><%=tmp%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(tmp))%>
                             </option>
                             <% } %>
                         </select>
@@ -654,7 +654,7 @@
                             <%
                                 for (String tmp : new HashSet<String>(performingLabs)) {
                             %>
-                            <option value="<%=tmp%>"><%=tmp%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(tmp))%>
                             </option>
                             <% } %>
                         </select>
@@ -666,8 +666,8 @@
                             <%
                                 for (String tmp : new HashSet<String>(resultStatuses)) {
                             %>
-                            <option value="<%=tmp%>">
-                                <%=    OLISHL7Handler.getTestResultStatusMessage(tmp.charAt(0))%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>">
+                                <%=Encode.forHtml(String.valueOf(OLISHL7Handler.getTestResultStatusMessage(tmp.charAt(0))))%>
                             </option>
                             <% } %>
                         </select>
@@ -682,7 +682,7 @@
                             <%
                                 for (String tmp : new HashSet<String>(abnormals)) {
                             %>
-                            <option value="<%=tmp%>">
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>">
                                 <%
                                     if ("true".equals(tmp)) {
                                         out.print("Abnormal");
@@ -706,7 +706,7 @@
 
 
                             %>
-                            <option value="<%=tmp%>"><%=item != null ? item.getName() : tmp%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(item != null ? item.getName() : tmp))%>
                             </option>
                             <% } %>
                         </select>
@@ -719,7 +719,7 @@
                             <%
                                 for (String tmp : new HashSet<String>(testRequestStatuses)) {
                             %>
-                            <option value="<%=tmp%>"><%=OLISHL7Handler.getTestRequestStatusMessageShort(tmp.charAt(0))%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(OLISHL7Handler.getTestRequestStatusMessageShort(tmp.charAt(0))))%>
                             </option>
                             <% } %>
                         </select>
@@ -787,76 +787,76 @@
                                         continue;
                                     }
                             %>
-                            <tr class="oddLine" patientName="<%=result.getPatientName()%>"
-                                reportingLaboratory="<%=result.getReportingFacilityName()%>"
-                                hcn="<%=result.getHealthNum()%>" category="<%=result.getCategoryList()%>"
-                                performingLaboratory="<%=result.getPerformingFacilityNameOnly()%>"
-                                abnormal="<%=result.hasAbnormalResult()%>"
-                                testRequestCode="<%=result.getTestRequestCode()%>"
-                                testRequestStatus="<%=result.getOrderStatus()%>"
-                                resultStatus="<%=result.getTestResultStatuses()%>" uuid="<%=resultUuid%>">
+                            <tr class="oddLine" patientName="<%=Encode.forHtmlAttribute(String.valueOf(result.getPatientName()))%>"
+                                reportingLaboratory="<%=Encode.forHtmlAttribute(String.valueOf(result.getReportingFacilityName()))%>"
+                                hcn="<%=Encode.forHtmlAttribute(String.valueOf(result.getHealthNum()))%>" category="<%=Encode.forHtmlAttribute(String.valueOf(result.getCategoryList()))%>"
+                                performingLaboratory="<%=Encode.forHtmlAttribute(String.valueOf(result.getPerformingFacilityNameOnly()))%>"
+                                abnormal="<%=Encode.forHtmlAttribute(String.valueOf(result.hasAbnormalResult()))%>"
+                                testRequestCode="<%=Encode.forHtmlAttribute(String.valueOf(result.getTestRequestCode()))%>"
+                                testRequestStatus="<%=Encode.forHtmlAttribute(String.valueOf(result.getOrderStatus()))%>"
+                                resultStatus="<%=Encode.forHtmlAttribute(String.valueOf(result.getTestResultStatuses()))%>" uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>">
 
-                                <td><input title="Add to my inbox" type="checkbox" name="addToInbox_<%=resultUuid%>"
-                                           uuid="<%=resultUuid%>"/></td>
-                                <td><input title="Sign-off" type="checkbox" name="acknowledge_<%=resultUuid%>"
-                                           uuid="<%=resultUuid%>"/></td>
-                                <td><input title="Remove/Reject" type="checkbox" name="remove_<%=resultUuid%>"
-                                           uuid="<%=resultUuid%>"/
+                                <td><input title="Add to my inbox" type="checkbox" name="addToInbox_<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"
+                                           uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"/></td>
+                                <td><input title="Sign-off" type="checkbox" name="acknowledge_<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"
+                                           uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"/></td>
+                                <td><input title="Remove/Reject" type="checkbox" name="remove_<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"
+                                           uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"/
                                 </td>
 
                                 <td>&nbsp;</td>
 
                                 <td>
-                                    <div id="<%=resultUuid %>_result"></div>
-                                    <a href="javascript:void(0)" onClick="preview('<%=resultUuid %>'); return false;"
+                                    <div id="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>_result"></div>
+                                    <a href="javascript:void(0)" onClick="preview('<%=Encode.forJavaScript(String.valueOf(resultUuid))%>'); return false;"
                                        title="Preview full report"><img src="<%= request.getContextPath() %>/images/icons/172.png" border="0"/></a>
                                 </td>
 
                                 <!--
 						<td>	
-							<a href="javascript:void(0)" onClick="remove('<%=resultUuid %>');return false;" title="Remove from results"><img src="<%= request.getContextPath() %>/images/icons/101.png" border="0"/></a>	
+							<a href="javascript:void(0)" onClick="remove('<%=Encode.forJavaScript(String.valueOf(resultUuid))%>');return false;" title="Remove from results"><img src="<%= request.getContextPath() %>/images/icons/101.png" border="0"/></a>	
 						</td>
 						
 						<td>
-							<a href="javascript:void(0)" onClick="save('<%=resultUuid %>'); return false;" title="Save"><img src="<%= request.getContextPath() %>/images/Save16.png" border="0"/></a>
+							<a href="javascript:void(0)" onClick="save('<%=Encode.forJavaScript(String.valueOf(resultUuid))%>'); return false;" title="Save"><img src="<%= request.getContextPath() %>/images/Save16.png" border="0"/></a>
 						</td>
 						
 						-->
 
 
-                                <td id="name_<%=resultUuid%>">
+                                <td id="name_<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>">
                                     <%
                                         OLISResults r = olisResultsDao.findByUUID(resultUuid);
                                         Integer demId = r.getDemographicNo();
                                         if (demId != null) {%>
                                     <a href="javascript:void(0)"
-                                       onClick="openPatient('<%=demId%>')"><%=result.getPatientName() %>
+                                       onClick="openPatient('<%=Encode.forJavaScript(String.valueOf(demId))%>')"><%=Encode.forHtml(String.valueOf(result.getPatientName()))%>
                                     </a>
                                     <%} else {%>
-                                    <%=result.getPatientName() %><a href="javascript:void(0)"
-                                                                    onClick="showMatch('<%=result.getLastName() + "," + result.getFirstName() %>','<%=resultUuid%>')"><img
+                                    <%=Encode.forHtml(String.valueOf(result.getPatientName()))%><a href="javascript:void(0)"
+                                                                    onClick="showMatch('<%=Encode.forJavaScript(String.valueOf(result.getLastName() + "," + result.getFirstName()))%>','<%=Encode.forJavaScript(String.valueOf(resultUuid))%>')"><img
                                         src="<%= request.getContextPath() %>/images/here.gif" border="0"/></a>
                                     <% } %>
                                 </td>
-                                <td><%=result.getHealthNum() %>
+                                <td><%=Encode.forHtml(String.valueOf(result.getHealthNum()))%>
                                 </td>
 
-                                <td align="center" style="white-space: nowrap;"><%=result.getDOB() %>
+                                <td align="center" style="white-space: nowrap;"><%=Encode.forHtml(String.valueOf(result.getDOB()))%>
                                 </td>
-                                <td align="center"><%=result.getSex() %>
+                                <td align="center"><%=Encode.forHtml(String.valueOf(result.getSex()))%>
                                 </td>
-                                <td style="white-space: nowrap;"><%=result.getSpecimenReceivedDateTime() %>
+                                <td style="white-space: nowrap;"><%=Encode.forHtml(String.valueOf(result.getSpecimenReceivedDateTime()))%>
                                 </td>
                                 <td style="white-space: nowrap;">
                                     <ul>
                                         <%
                                             String[] categories1 = result.getCategoryList(",").split(",");
                                             if (categories1.length == 1) {
-                                        %><%=categories1[0]%><%
+                                        %><%=Encode.forHtml(String.valueOf(categories1[0]))%><%
                                     } else {
                                         for (String category : categories1) {
                                     %>
-                                        <li><%=category %>
+                                        <li><%=Encode.forHtml(String.valueOf(category))%>
                                         </li>
                                         <% }
                                         } %>
@@ -867,7 +867,7 @@
                                         <%
                                             String[] tests = result.getTestList(",").split(",");
                                             if (tests.length == 1) {%>
-                                        <%=tests[0]%>
+                                        <%=Encode.forHtml(String.valueOf(tests[0]))%>
 
                                         <%
                                         } else {
@@ -883,12 +883,12 @@
                                     <%
                                         String[] testRequestStatuses1 = result.getTestRequestStatuses().split(",");
                                         if (testRequestStatuses1.length == 1) {
-                                    %><%=!testRequestStatuses1[0].isEmpty() ? OLISHL7Handler.getTestRequestStatusMessageShort(testRequestStatuses1[0].charAt(0)) : ""%><%
+                                    %><%=Encode.forHtml(String.valueOf(!testRequestStatuses1[0].isEmpty() ? OLISHL7Handler.getTestRequestStatusMessageShort(testRequestStatuses1[0].charAt(0)) : ""))%><%
                                 } else if (testRequestStatuses1.length > 1) {
                                 %>
                                     <ul>
                                         <%for (String testRequestStatus : testRequestStatuses1) { %>
-                                        <li><%=!testRequestStatus.isEmpty() ? OLISHL7Handler.getTestRequestStatusMessageShort(testRequestStatus.charAt(0)) : ""%>
+                                        <li><%=Encode.forHtml(String.valueOf(!testRequestStatus.isEmpty() ? OLISHL7Handler.getTestRequestStatusMessageShort(testRequestStatus.charAt(0)) : ""))%>
                                         </li>
                                         <% }
                                         } %>
@@ -905,20 +905,20 @@
                                                 OLISResultNomenclature orn = olisResultNomenclatureDao.findByNameId(item[0]);
                                         %>
                                         <tr>
-                                            <td><%=orn != null ? orn.getName() : item[0] %>
+                                            <td><%=Encode.forHtml(String.valueOf(orn != null ? orn.getName() : item[0]))%>
                                             </td>
                                             <%if (!item[3].equals("N") && !item[3].isEmpty()) { %>
-                                            <td style="color:red"><%=StringEscapeUtils.escapeHtml4(item[1]) %>
-                                                (<%=item[3] %>)
+                                            <td style="color:red"><%=Encode.forHtml(item[1]) %>
+                                                (<%=Encode.forHtml(String.valueOf(item[3]))%>)
                                             </td>
                                             <% } else { %>
-                                            <td><%=StringEscapeUtils.escapeHtml4(item[1]) %>
+                                            <td><%=Encode.forHtml(item[1]) %>
                                             </td>
                                             <% } %>
 
-                                            <td><%=StringEscapeUtils.escapeHtml4(item[2]) %>
+                                            <td><%=Encode.forHtml(item[2]) %>
                                             </td>
-                                            <td><%=item[4] != null && !item[4].isEmpty() ? OLISHL7Handler.getTestResultStatusMessage(item[4].charAt(0)) : item[4] %>
+                                            <td><%=Encode.forHtml(String.valueOf(item[4] != null && !item[4].isEmpty() ? OLISHL7Handler.getTestResultStatusMessage(item[4].charAt(0)) : item[4]))%>
                                             </td>
                                         </tr>
                                         <% } %>
@@ -931,12 +931,12 @@
                                     <%
                                         List<String> docs = result.getAllPractitioners();
                                         if (docs.size() == 1) {
-                                    %><%=docs.get(0) %><%
+                                    %><%=Encode.forHtml(String.valueOf(docs.get(0)))%><%
                                 } else {
                                 %><%
                                     for (String doc : docs) {
                                 %>
-                                    <%=doc %><br/>
+                                    <%=Encode.forHtml(String.valueOf(doc))%><br/>
                                     <% } %>
 
                                     <% }%>
@@ -972,7 +972,7 @@
     </tbody>
 </table>
 <!-- RAW HL7 ERP
-<%=request.getAttribute("unsignedResponse") %>
+<%=Encode.forHtml(String.valueOf(request.getAttribute("unsignedResponse")))%>
 -->
 
 

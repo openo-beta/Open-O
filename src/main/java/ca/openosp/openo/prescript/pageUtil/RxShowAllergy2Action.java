@@ -43,6 +43,7 @@ import ca.openosp.openo.utility.SpringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.owasp.encoder.Encode;
 import org.apache.struts2.ActionSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
@@ -53,6 +54,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Struts 2 action for displaying and managing patient allergies.
@@ -98,7 +100,7 @@ public final class RxShowAllergy2Action extends ActionSupport {
     public String reorder() {
         reorder(request);
         try {
-            response.sendRedirect(request.getContextPath() + "/oscarRx/ShowAllergies.jsp?demographicNo=" + request.getParameter("demographicNo"));
+            response.sendRedirect(request.getContextPath() + "/oscarRx/ShowAllergies.jsp?demographicNo=" + Encode.forUriComponent(request.getParameter("demographicNo")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -172,27 +174,30 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (demo_no == null) {
             return "failure";
         }
-        // Setup bean
+        int demographicNoInt;
+        try {
+            demographicNoInt = Integer.parseInt(demo_no);
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().error("Invalid demographicNo in RxShowAllergy");
+            return "failure";
+        }
         RxSessionBean bean;
-
         if (request.getSession().getAttribute("RxSessionBean") != null) {
             bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
-            if ((bean.getProviderNo() != user_no) || (bean.getDemographicNo() != Integer.parseInt(demo_no))) {
+            if (!Objects.equals(bean.getProviderNo(), user_no) || (bean.getDemographicNo() != demographicNoInt)) {
                 bean = new RxSessionBean();
             }
-
         } else {
             bean = new RxSessionBean();
         }
 
-
         bean.setProviderNo(user_no);
-        bean.setDemographicNo(Integer.parseInt(demo_no));
+        bean.setDemographicNo(demographicNoInt);
         if (view != null) {
             bean.setView(view);
         }
 
-        request.getSession().setAttribute("RxSessionBean", bean);
+        RxSessionBean.saveToSession(request.getSession(), bean);
 
         if (request.getParameter("method") != null && request.getParameter("method").equals("reorder")) {
             reorder(request);
@@ -200,9 +205,10 @@ public final class RxShowAllergy2Action extends ActionSupport {
 
         RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, bean.getDemographicNo());
 
-        String forward = request.getContextPath() + "/oscarRx/ShowAllergies.jsp?demographicNo=" + demo_no;
+        String encodedDemoNo = Encode.forUriComponent(demo_no);
+        String forward = request.getContextPath() + "/oscarRx/ShowAllergies.jsp?demographicNo=" + encodedDemoNo;
         if (useRx3) {
-            forward = request.getContextPath() + "/oscarRx/ShowAllergies2.jsp?demographicNo=" + demo_no;
+            forward = request.getContextPath() + "/oscarRx/ShowAllergies2.jsp?demographicNo=" + encodedDemoNo;
         }
         if (patient != null) {
             request.getSession().setAttribute("Patient", patient);

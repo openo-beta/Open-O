@@ -191,6 +191,9 @@
     <bean id="customFilterDao" class="ca.openosp.openo.commn.dao.CustomFilterDaoImpl" autowire="byName" />
     <bean id="oscarLogDao" class="ca.openosp.openo.commn.dao.OscarLogDaoImpl" autowire="byName" />
 
+    <!-- Specialist DAOs -->
+    <bean id="professionalSpecialistDao" class="ca.openosp.openo.commn.dao.ProfessionalSpecialistDaoImpl" autowire="byName" />
+
     <!-- Additional DAOs required by TicklerManager -->
     <bean id="programAccessDAO" class="ca.openosp.openo.PMmodule.dao.ProgramAccessDAOImpl" autowire="byName" />
     <bean id="ProgramAccessDAO" class="ca.openosp.openo.PMmodule.dao.ProgramAccessDAOImpl" autowire="byName" />

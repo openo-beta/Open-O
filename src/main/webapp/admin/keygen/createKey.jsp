@@ -84,9 +84,10 @@
                     String keyPairOut = "-------- Service Name --------\n" + name + "\n------------------------------\n" +
                             "----- Client Private Key -----\n" + clientKey + "\n------------------------------\n" +
                             "------ Oscar Public Key ------\n" + oscarKey + "\n------------------------------";
-                    response.setContentType("text");
+                    response.setContentType("text/plain");
                     response.setContentLength(keyPairOut.length());
                     response.setHeader("Content-Disposition", "attachment; filename=keyPair.key");
+                    response.setHeader("X-Content-Type-Options", "nosniff");
                     ServletOutputStream output = null;
 
                     try {
@@ -117,6 +118,7 @@
 %>
 
 <%@page import="ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OscarToOscarUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -159,13 +161,13 @@
                             <div id="success" style="display: none;">Key pair created
                                 successfully
                             </div>
-                            <div id="fail" style="display:<%= failDisplay %>;">
+                            <div id="fail" style="display:<%=Encode.forHtmlAttribute(String.valueOf(failDisplay))%>;">
                                 <%
                                     if (message != null) {
                                         if (error.equals("false")) {
-                                            out.print(message);
+                                            out.print(Encode.forHtml(message));
                                         } else {
-                                %><font color="red"><%= message %>
+                                %><font color="red"><%=Encode.forHtml(String.valueOf(message))%>
                             </font>
                                 <%
                                         }

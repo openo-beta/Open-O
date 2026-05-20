@@ -50,7 +50,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
 <%@page import="ca.openosp.OscarProperties,ca.openosp.openo.log.*" %>
@@ -68,6 +67,7 @@
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -118,7 +118,7 @@
 
 %>
 <security:oscarSec roleName="<%=roleName2$%>"
-                   objectName='<%="_rx$"+demoNo%>' rights="o"
+                   objectName='<%=Encode.forHtmlAttribute(String.valueOf("_rx$"+demoNo))%>' rights="o"
                    reverse="<%=false%>">
   <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.accessDenied"/>
   <% response.sendRedirect(request.getContextPath() + "/acctLocked.html"); %>
@@ -239,7 +239,93 @@
   <link rel="stylesheet" type="text/css" href="${ctx}/library/jquery/jquery-ui-1.12.1.min.css"/>
   <link href="${pageContext.request.contextPath}/library/DataTables/DataTables-1.13.4/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
 
+  <style>
+    /* Drug maintenance (LT) toggle switch — moved here from ListDrugs.jsp so these
+       styles survive rebuildDrugProfile(), which clears #drugProfile on every
+       legend-button click and would otherwise discard ListDrugs.jsp's inline <style>. */
+
+    /* Container */
+    .drug-maintenance-switch {
+        top: -2px;
+        position: relative;
+        width: 34px;
+        height: 16px;
+    }
+
+    /* Hide the native checkbox */
+    .drug-maintenance-switch-input {
+        display: none;
+    }
+
+    /* Switch track */
+    .drug-maintenance-switch-label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #dfdfdf;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border-radius: 5%;
+    }
+
+    /* Knob (unchecked) */
+    .drug-maintenance-switch-label::after {
+        text-align: center;
+        content: '';
+        font-size: xx-small;
+        font-stretch: extra-expanded;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 12px;
+        height: 12px;
+        background-color: #FFFFFFAF;
+        border-radius: 50%;
+        transition: transform 0.3s, content 0.3s, width 0.3s, height 0.3s, border-radius 0.3s;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Knob (checked → shows "LT") */
+    .drug-maintenance-switch-input:checked + .drug-maintenance-switch-label::after {
+        content: 'LT';
+        transform: translateX(14px);
+        border-radius: 5%;
+        width: 16px;
+        height: 12px;
+        color: white;
+        background-color: #1e7e34AF;
+    }
+
+    /* Disabled track */
+    .drug-maintenance-switch-input:disabled + .drug-maintenance-switch-label {
+        background-color: #e0e0e0;
+        cursor: not-allowed;
+    }
+
+    /* Disabled knob (checked) */
+    .drug-maintenance-switch-input:disabled:checked + .drug-maintenance-switch-label::after {
+        background-color: #1e7e349F;
+        transform: translateX(14px);
+        content: 'LT';
+        width: 16px;
+        height: 12px;
+        border-radius: 5%;
+    }
+
+    /* Prescription name column — allow wrapping */
+    .list-drugs td:nth-child(5) {
+        word-break: break-word;
+        white-space: normal;
+    }
+  </style>
+
   <script type="text/javascript" src="${ctx}/js/global.js"></script>
+  <script src="${ctx}/csrfguard"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/prototype.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/screen.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/rx.js"/>"></script>
@@ -257,6 +343,12 @@
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/datasource-min.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/autocomplete-min.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/js/checkDate.js"/>"></script>
+
+  <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls --%>
+  <script type="text/javascript">
+    var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(rxSessionBean.getDemographicNo())) %>';
+  </script>
+  <script type="text/javascript" src="${ctx}/oscarRx/js/rxSessionInterceptor.js"></script>
 
   <script type="text/javascript">
     let selectedReRxIDs = [];
@@ -328,7 +420,7 @@
       let top = winY + 70;
       let left = winX + 110;
       let url = ctx + "/oscarRx/searchDrug.do?rx2=true&searchString=" + encodeURIComponent($('searchString').value);
-      popup2(600, 800, top, left, url, 'windowNameRxSearch<%=demoNo%>');
+      popup2(600, 800, top, left, url, 'windowNameRxSearch<%=Encode.forJavaScript(String.valueOf(demoNo))%>');
 
     }
 
@@ -340,7 +432,7 @@
       let top = winY + 70;
       let left = winX + 110;
       let url = ctx + "/oscarRx/SelectReason.jsp?demographicNo=" + demographic + "&drugId=" + encodeURIComponent(id);
-      popup2(575, 650, top, left, url, 'windowNameRxReason<%=demoNo%>');
+      popup2(575, 650, top, left, url, 'windowNameRxReason<%=Encode.forJavaScript(String.valueOf(demoNo))%>');
 
     }
 
@@ -673,7 +765,8 @@
     let Lst;
 
     function CngClass(obj) {
-      document.getElementById("selected_default").removeAttribute("style");
+      const defaultEl = document.getElementById("selected_default");
+      if (defaultEl) defaultEl.className = '';
       if (Lst) Lst.className = '';
       obj.className = 'selected';
       Lst = obj;
@@ -688,7 +781,7 @@
     			String today = formatter.format(new java.util.Date());
     		%>
         txt.disabled = true;
-        txt.value = '<%=today%>';
+        txt.value = '<%=Encode.forJavaScript(String.valueOf(today))%>';
       } else {
         txt.disabled = false;
       }
@@ -699,7 +792,7 @@
     function completeMedRec() {
       let ok = confirm("Are you sure you would like to mark the Med Rec as complete?");
       if (ok) {
-        let url = ctx + "/oscarRx/completeMedRec.jsp?demographicNo=<%=rxSessionBean.getDemographicNo()%>";
+        let url = ctx + "/oscarRx/completeMedRec.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(rxSessionBean.getDemographicNo()))%>";
         let data;
         new Ajax.Request(url, {
           method: 'get', parameters: data, onSuccess: function (transport) {
@@ -891,7 +984,6 @@
       height: 150px;
       overflow: auto;
       border: thin solid #DCDCDC;
-      display: none;
     }
 
     .text-indent-5 {
@@ -911,6 +1003,13 @@
     .link-default-selected {
       color: #000000;
       text-decoration: none;
+      font-weight: bold;
+    }
+
+    .selected {
+      color: #000000;
+      text-decoration: none;
+      font-weight: bold;
     }
 
     .link-no-decoration {
@@ -992,7 +1091,7 @@
 <body class="yui-skin-sam">
 
 <div id="searchDrug3Wrapper">
-  <%=WebUtils.popErrorAndInfoMessagesAsHtml(session)%>
+  <%=Encode.forHtml(String.valueOf(WebUtils.popErrorAndInfoMessagesAsHtml(session)))%>
   <table id="AutoNumber1">
     <%@ include file="TopLinks2.jspf" %><!-- Row On included here-->
     <tr>
@@ -1023,8 +1122,8 @@
                     name="drugForm" method="post">
                 <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 
-                <input type="hidden" property="demographicNo"
-                       value="<%=Integer.toString(patient.getDemographicNo())%>"/>
+                <input type="hidden" name="demographicNo"
+                       value="<%=Encode.forHtmlAttribute(Integer.toString(demoNo))%>"/>
                 <table>
                   <tr id="prescriptionStageRow">
                     <td>
@@ -1036,7 +1135,8 @@
                         <div id="rxText"></div>
                         <%-- Prescriptions are staged here via the prescribe.jsp widget --%>
 
-                        <input type="hidden" property="demographicNo" value="<%=patient.getDemographicNo()%>"/>
+                        <input type="hidden" id="deleteOnCloseRxBox" value="false"/>
+                        <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(demoNo))%>"/>
 
                       </div>
                       <input type="hidden" id="rxPharmacyId" name="rxPharmacyId" value=""/>
@@ -1141,7 +1241,7 @@
                         basename="oscarResources"/><fmt:message key="SearchDrug.Print"/></a>
 
                       <%if (securityManager.hasWriteAccess("_rx", roleName2$, true)) {%>
-                      <a href="javascript:void(0);"  class="btn btn-link"  onclick="$('reprint').toggle();return false;"><fmt:setBundle
+                      <a href="javascript:void(0);"  class="btn btn-link"  onclick="document.getElementById('reprint').toggleAttribute('hidden');return false;"><fmt:setBundle
                         basename="oscarResources"/><fmt:message key="SearchDrug.Reprint"/></a>
 
                       <a href="javascript:void(0);"  class="btn btn-link"  id="cmdRePrescribe" onclick="RePrescribeLongTerm();"><fmt:setBundle basename="oscarResources"/><fmt:message
@@ -1149,7 +1249,7 @@
 
                       <% } %>
                       <a  class="btn btn-link"
-                          href="javascript:popupWindow(720,920, ctx + '/oscarRx/chartDrugProfile.jsp?demographic_no=<%=demoNo%>','PrintDrugProfile2')">Timeline
+                          href="javascript:popupWindow(720,920, ctx + '/oscarRx/chartDrugProfile.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>','PrintDrugProfile2')">Timeline
                         Drug Profile</a>
 
                     </div>
@@ -1157,7 +1257,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="reprint">
+                  <%-- hidden attribute is toggled by JS via toggleAttribute('hidden') — do not move to CSS or the reprint section will not open --%>
+                  <td id="reprint" hidden>
 
 
                       <% for (int i = 0; prescribedDrugs.length > i; i++) {
@@ -1169,9 +1270,9 @@
                                                     %>
 
 
-                    <div class="btn btn-link text-indent-5">
-                      <a href="javascript:void(0);" onclick="reprint2('<%=drug.getScript_no()%>')">
-                        <%=drug.getRxDisplay()%>
+                    <div class="text-indent-5">
+                      <a href="javascript:void(0);" onclick="reprint2('<%=Encode.forJavaScript(String.valueOf(drug.getScript_no()))%>')">
+                        <%=Encode.forHtml(String.valueOf(drug.getRxDisplay()))%>
                       </a>
                     </div>
 
@@ -1184,17 +1285,17 @@
 <div class="reprintRxItem">
   <div class="reprintRxItemHeading">
     <div>
-      <strong>Rx: <%=drug.getRxDate()%>
+      <strong>Rx: <%=Encode.forHtml(String.valueOf(drug.getRxDate()))%>
       </strong>
     </div>
     <div>
-      <a href="javascript:void(0)" onclick="showPreviousPrints(<%=drug.getScript_no() %>);return false;">
-        <%=drug.getNumPrints()%>Print(s)
+      <a href="javascript:void(0)" onclick="showPreviousPrints(<%=Encode.forJavaScript(String.valueOf(drug.getScript_no()))%>);return false;">
+        <%=Encode.forHtml(String.valueOf(drug.getNumPrints()))%> Print(s)
       </a>
     </div>
   </div>
   <div class="text-indent-5">
-    <a href="javascript:void(0);" onclick="reprint2('<%=drug.getScript_no()%>')"><%=drug.getRxDisplay()%>
+    <a href="javascript:void(0);" onclick="reprint2('<%=Encode.forJavaScript(String.valueOf(drug.getScript_no()))%>')"><%=Encode.forHtml(String.valueOf(drug.getRxDisplay()))%>
     </a>
   </div>
 
@@ -1217,6 +1318,99 @@
     <table>
       <tr>
         <td>
+          <table class="legend">
+            <tr>
+              <td class="legend-change-view">
+                <a href="#"
+                   title="<fmt:setBundle basename="oscarResources"/><fmt:message key='provider.rxChangeProfileViewMessage'/>"
+                   onclick="popupPage(230,860,'../setProviderStaleDate.do?method=viewRxProfileView');"
+                   class="link-red-no-decoration">
+                  <fmt:message key="provider.rxChangeProfileView"/>
+                </a>
+              </td>
+
+              <td>
+
+                <table class="legend_items" align="left">
+                  <tr>
+                    <%if (show_current) {%>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="filterDrugView('current');CngClass(this);"
+                         id="selected_default" class="link-default-selected"
+                         TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgShowCurrentDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgShowCurrent"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (show_all) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="filterDrugView('all');CngClass(this);"
+                         Title="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgShowAllDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgShowAll"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (active) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="filterDrugView('active');CngClass(this);"
+                         TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgActiveDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgActive"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (inactive) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="filterDrugView('inactive');CngClass(this);"
+                         TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key='SearchDrug.msgInactiveDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgInactive"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (!OscarProperties.getInstance().getProperty("rx.profile_legend.hide", "false").equals("true")) {
+
+                        if (longterm_acute) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="showLongTermAcuteView();CngClass(this);"
+                         TITLE="<fmt:setBundle basename='oscarResources'/><fmt:message key='SearchDrug.msgLongTermAcuteDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgLongTermAcute"/>
+                      </a>
+                    </td>
+                    <%
+                      }
+                      if (longterm_acute_inactive_external) {
+                    %>
+                    <td>
+                      <a href="javascript:void(0);"
+                         onclick="showFullProfileView();CngClass(this);"
+                         TITLE="<fmt:setBundle basename='oscarResources'/><fmt:message key='SearchDrug.msgLongTermAcuteInactiveExternalDesc'/>">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message
+                        key="SearchDrug.msgLongTermAcuteInactiveExternal"/>
+                      </a>
+                    </td>
+                    <%
+                        }
+                      }
+                    %>
+                  </tr>
+                </table>
+
+              </td>
+
+            </tr>
+          </table>
           <div id="drugProfile"></div>
 
           <div id="themeLegend">
@@ -1270,9 +1464,9 @@
               String str = note.getNote();
         %>
         <tr>
-          <td><%=formatter.format(note.getCreate_date()) %>
+          <td><%=Encode.forHtml(String.valueOf(formatter.format(note.getCreate_date())))%>
           </td>
-          <td><%=StringEscapeUtils.escapeHtml4(str)%>
+          <td><%=Encode.forHtml(str)%>
           </td>
         </tr>
         <%
@@ -1572,6 +1766,7 @@
     };
   }
   let mb = new modalBox();
+  window.mb = mb; // exposed for iframe close buttons (parent.mb.hide())
 
   function displayMedHistory(randomId) {
     let data = "randomId=" + randomId;
@@ -1923,7 +2118,7 @@
 
   function Discontinue2(id, reason, comment, drugSpecial) {
     let url = ctx + "/oscarRx/deleteRx.do?parameterValue=Discontinue";
-    let demoNo = '<%=patient.getDemographicNo()%>';
+    let demoNo = '<%=Encode.forJavaScript(String.valueOf(demoNo))%>';
     let data = "drugId=" + encodeURIComponent(id) + "&reason=" + encodeURIComponent(reason) + "&comment=" + encodeURIComponent(comment) + "&demoNo=" + demoNo + "&drugSpecial=" + encodeURIComponent(drugSpecial) + "&rand=" + generateSecureRandomId();
     new Ajax.Request(url, {
       method: 'post', postBody: data,
@@ -1967,8 +2162,8 @@
 
   //represcribe long term meds
   function RePrescribeLongTerm() {
-    let demoNo = '<%=patient.getDemographicNo()%>';
-    let data = "demoNo=" + demoNo + "&showall=<%=showall%>&rand=" + Math.floor(Math.random() * 10001);
+    let demoNo = '<%=Encode.forJavaScript(String.valueOf(demoNo))%>';
+    let data = "demoNo=" + demoNo + "&showall=<%=Encode.forJavaScript(String.valueOf(showall))%>&rand=" + Math.floor(Math.random() * 10001);
     let url = ctx + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
     new Ajax.Updater('rxText', url, {
       method: 'get',
@@ -2117,7 +2312,7 @@
       let ele = $(textId);
       let url = ctx + "/oscarRx/TreatmentMyD.jsp"
       let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&cond=" + encodeURIComponent(ele.value) + "&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&cond=" + encodeURIComponent(ele.value) + "&rand=" + ran_number;
       new Ajax.Updater(id, url, {
         method: 'get',
         parameters: params,
@@ -2129,38 +2324,220 @@
       $('treatmentsMyD').toggle();
   }
 
+  //  Drug profile legend view-switching
+  //
+  // Clicking a legend button (Current, All, Active, Long Term / Acute, etc.)
+  // loads ListDrugs.jsp into #drugProfile. Some views consist of a single table
+  // (callReplacementWebService), while multi-section views like "Long Term / Acute"
+  // fire one replacement call followed by one or more addition calls that each
+  // append a labelled section below the first.
+  //
+  // Problem: both calls are fired at the same time. The addition call is a GET and
+  // often resolves first, appending its section to #drugProfile. The replacement
+  // call then arrives and calls .html(), which wipes #drugProfile — removing the
+  // already-appended section. To prevent this, addition calls are queued until the
+  // replacement response has been written to the DOM.
+  //
+  // drugProfileAdditionQueue is keyed by target element id (e.g. 'drugProfile').
+  // It holds an array of pending addition functions while a replacement is in
+  // flight, and is set back to null once the replacement is complete.
+  let drugProfileAdditionQueue = {};
+
+  // Public entry point for addition calls (appends a section to an existing view).
+  // If a replacement is still in flight for the same target, the call is queued
+  // and will be executed automatically once the replacement finishes.
   function callAdditionWebService(url, id) {
-      let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&rand=" + ran_number;
-      let updater = new Ajax.Updater(id, url, {
-        method: 'get',
-        parameters: params,
-        insertion: Insertion.Bottom,
-        evalScripts: true,
-        onFailure: function (transport) {
-          console.error('Addition web service call failed with status: ' + (transport.status || 'unknown'));
-        }
-      });
+      let contextPath = ctx;
+      if (url.indexOf(contextPath) !== 0) {
+        url = contextPath + "/oscarRx/" + url;
+      }
+      if (drugProfileAdditionQueue[id]) {
+        let capturedUrl = url;
+        drugProfileAdditionQueue[id].push(function () { doAdditionWebService(capturedUrl, id); });
+        return;
+      }
+      doAdditionWebService(url, id);
   }
 
+  // Fetches a ListDrugs.jsp section and appends it to the target container.
+  // Each response contains an <h4> heading and a <table> with its own DataTable
+  // init script. jQuery.append() evaluates those inline scripts automatically,
+  // so each appended section initialises its own independent DataTable instance.
+  function doAdditionWebService(url, id) {
+      let ran_number = generateSecureRandomId();
+      jQuery.get(url, { demographicNo: '<%=Encode.forJavaScript(String.valueOf(demoNo))%>', rand: ran_number })
+        .done(function (responseText) {
+          jQuery('#' + id).append(responseText);
+        })
+        .fail(function (xhr) {
+          console.error('Addition web service call failed with status: ' + (xhr.status || 'unknown'));
+        });
+  }
+
+  // Replaces the entire content of the target container with a fresh ListDrugs.jsp
+  // response. Opens drugProfileAdditionQueue before firing so that any concurrent
+  // addition calls wait for this response to land before appending their sections.
   function callReplacementWebService(url, id) {
       let contextPath = ctx;
       if (url.indexOf(contextPath) !== 0) {
         url = contextPath + "/oscarRx/" + url;
       }
+      drugProfileAdditionQueue[id] = [];
       let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&rand=" + ran_number;
-      let updater = new Ajax.Updater(id, url, {
-        method: 'POST',
-        parameters: params,
-        evalScripts: true,
-        onFailure: function (transport) {
-          console.error('Replacement web service call failed with status: ' + (transport.status || 'unknown'));
-        }
+      jQuery.post(url, { demographicNo: '<%=Encode.forJavaScript(String.valueOf(demoNo))%>', rand: ran_number })
+        .done(function (responseText) {
+          
+          // .html() replaces the container content and evaluates inline scripts,
+          // which triggers the DataTable init for the first section's table.
+          jQuery('#' + id).html(responseText);
+
+          // Re-cache whenever the drug list is refreshed (initial load, re-rx, changeLt).
+          // After caching, re-apply the active legend view so the display is consistent:
+          //   - Initial load: activeViewMode='current' → shows only non-archived rows even
+          //     though the server now always returns all drugs including archived.
+          //   - changeLt / save-Rx: re-applies whatever view the user had selected.
+          if (id === 'drugProfile') {
+              // DataTables pagination removes off-page rows from the live DOM.
+              // jQuery('#Drug_table tbody tr') would therefore only return the
+              // current page's rows (default: 10), silently truncating the cache.
+              // fnGetNodes() returns ALL row nodes from DataTables' internal store,
+              // including detached off-page ones, giving us the full dataset.
+              const dtInstance = jQuery('#Drug_table').dataTable();
+              allDrugRows = jQuery(dtInstance.fnGetNodes()).clone(true, true);
+              drugTableHeadHtml = jQuery('#Drug_table thead').html();
+              drugTableClasses = jQuery('#Drug_table').attr('class');
+              if (activeSectionDefs) {
+                  showSections(activeSectionDefs);
+              } else {
+                  filterDrugView(activeViewMode);
+              }
+          }
+
+          // Drain the queue — any addition calls that arrived while the replacement
+          // was in flight now execute in order.
+          let queue = drugProfileAdditionQueue[id] || [];
+          drugProfileAdditionQueue[id] = null;
+          queue.forEach(function (fn) { fn(); });
+        })
+        .fail(function (xhr) {
+          drugProfileAdditionQueue[id] = null;
+          console.error('Replacement web service call failed with status: ' + (xhr.status || 'unknown'));
+        });
+  }
+
+  // ---------------------------------------------------------------------------
+  //  Client-side drug profile filtering
+  //
+  //  On every drug-list load (page open, re-rx, changeLt), all rows are fetched
+  //  once and stored in allDrugRows. Legend buttons then filter that cache
+  //  client-side — no extra server round-trips required.
+  //
+  //  activeViewMode / activeSectionDefs track which legend view is currently
+  //  active so that non-legend refreshes (changeLt, save-Rx) can re-apply the
+  //  same view automatically after the new data is cached.
+  // ---------------------------------------------------------------------------
+
+  // Row cache — populated after every drug-list load via callReplacementWebService.
+  let allDrugRows = null;       // cloned jQuery set of all <tr> from the full server response
+  let drugTableHeadHtml = null; // cached <thead> innerHTML, reused when building each section table
+  let drugTableClasses = null;  // class string copied from #Drug_table to each rebuilt table
+
+  // Exactly one of these is non-null at any time, depending on which legend button is active.
+  let activeViewMode = 'current'; // argument for filterDrugView  (single-table views)
+  let activeSectionDefs = null;   // argument for showSections     (multi-section views)
+
+  // Row predicate helpers — centralise the data-* attribute checks so filter
+  // functions below don't repeat the same string comparisons everywhere.
+  const rowIsArchived = r => r.dataset.isArchived === 'true';
+  const rowIsLongTerm = r => r.dataset.isLongterm === 'true';
+  const rowIsCurrent = r => r.dataset.isCurrent === 'true';
+  const rowIsExternal = r => r.dataset.isExternal === 'true';
+
+  // Tear down every DataTable inside #drugProfile, wipe the container, then
+  // render each section: an optional heading, a cloned table, and a new DataTable.
+  function rebuildDrugProfile(sections) {
+      jQuery('#drugProfile table').each(function () {
+          if (jQuery.fn.dataTable && jQuery.fn.dataTable.isDataTable(this)) {
+              jQuery(this).dataTable().fnDestroy();
+          }
+      });
+      jQuery('#drugProfile').empty();
+
+      sections.forEach(section => {
+          if (section.label && section.rows.length === 0) { return; }
+
+          const tableId = section.label
+              ? 'Drug_table' + section.label.replace(/\s+/g, '')
+              : 'Drug_table';
+
+          if (section.label) {
+              jQuery('#drugProfile').append(
+                  jQuery('<h4 style="margin-bottom:1px;margin-top:10px;font-size:16px;"></h4>').text(section.label)
+              );
+          }
+
+          const $tbody = jQuery('<tbody></tbody>');
+          section.rows.each(function () {
+              $tbody.append(jQuery(this).clone(true, true));
+          });
+
+          jQuery('<table></table>')
+              .attr({ id: tableId, class: drugTableClasses })
+              .append(jQuery('<thead></thead>').html(drugTableHeadHtml), $tbody)
+              .appendTo('#drugProfile')
+              .dataTable(window.drugListTableConfig);
       });
   }
 
-  callReplacementWebService("ListDrugs.jsp", 'drugProfile');
+  // Show a single table containing only the rows that match the given mode.
+  function filterDrugView(mode) {
+      if (!allDrugRows) { return; }
+      activeViewMode = mode;
+      activeSectionDefs = null;
+      const filtered = allDrugRows.filter(function () {
+          switch (mode) {
+              case 'current':  return !rowIsArchived(this);
+              case 'all':      return true;
+              case 'active':   return !rowIsArchived(this) && (rowIsLongTerm(this) || rowIsCurrent(this));
+              case 'inactive': return !rowIsArchived(this) && !rowIsCurrent(this);
+              default:         return true;
+          }
+      });
+      rebuildDrugProfile([{ label: null, rows: filtered }]);
+  }
+
+  // Show multiple labelled sections, each filtered by its own predicate.
+  // Called by showLongTermAcuteView() and showFullProfileView() below.
+  function showSections(sectionDefs) {
+      if (!allDrugRows) { return; }
+      activeSectionDefs = sectionDefs;
+      activeViewMode = null;
+      const sections = sectionDefs.map(def => ({
+          label: def.label,
+          rows: allDrugRows.filter(function () { return def.filterFn(this); })
+      }));
+      rebuildDrugProfile(sections);
+  }
+
+  // Named entry points for the two multi-section legend buttons — keeps onclick
+  // attributes readable and avoids repeating filter logic inline in the HTML.
+  function showLongTermAcuteView() {
+      showSections([
+          { label: 'Long Term Meds', filterFn: r => !rowIsArchived(r) && rowIsLongTerm(r) },
+          { label: 'Acute', filterFn: r => !rowIsArchived(r) && !rowIsLongTerm(r) }
+      ]);
+  }
+
+  function showFullProfileView() {
+      showSections([
+          { label: 'Long Term Meds', filterFn: r => !rowIsArchived(r) && rowIsLongTerm(r) },
+          { label: 'Acute', filterFn: r => !rowIsArchived(r) && !rowIsLongTerm(r) && rowIsCurrent(r) },
+          { label: 'Inactive', filterFn: r => !rowIsArchived(r) && !rowIsLongTerm(r) && !rowIsCurrent(r) },
+          { label: 'External', filterFn: r => !rowIsArchived(r) && rowIsExternal(r) }
+      ]);
+  }
+
+  callReplacementWebService("ListDrugs.jsp?show=all", 'drugProfile');
 
   function searchResultsHandler(type, args) {
     let url = ctx + "/oscarRx/WriteScript.do";
@@ -2442,7 +2819,7 @@
       let url = ctx + "/oscarRx/WriteScript.do";
       let ran_number = Math.round(Math.random() * 1000000);
       let params = "parameterValue=createNewRx"
-        + "&demographicNo=" + <%=demoNo%>
+        + "&demographicNo=" + <%=Encode.forJavaScript(String.valueOf(demoNo))%>
         +"&drugId=" + encodeURIComponent(drugId)
         + "&text=" + encodeURIComponent(name)
         + "&randomId="
@@ -2869,7 +3246,7 @@
         function getRenalDosingInformation(divId, atcCode) {
       let url = "<%= request.getContextPath() %>/oscarRx/RenalDosing.jsp";
             let ran_number = Math.round(Math.random() * 1000000);
-      let params = "demographicNo=<%=demoNo%>&atcCode=" + encodeURIComponent(atcCode) + "&divId=" + divId + "&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&atcCode=" + encodeURIComponent(atcCode) + "&divId=" + divId + "&rand=" + ran_number;
             new Ajax.Updater(divId, url, {
                 method: 'get',
                 parameters: params,

@@ -73,12 +73,14 @@
     DBPreparedHandler dbObj = new DBPreparedHandler();
     Properties propName = new Properties();
     // select providers list
+    ResultSet rs;
     if (isSiteAccessPrivacy) {
-        sql = "select p.* from provider p INNER JOIN providersite s ON p.provider_no = s.provider_no WHERE s.site_id IN (SELECT site_id from providersite where provider_no=" + curUser_no + ") order by p.first_name, p.last_name";
+        sql = "select p.* from provider p INNER JOIN providersite s ON p.provider_no = s.provider_no WHERE s.site_id IN (SELECT site_id from providersite where provider_no=?) order by p.first_name, p.last_name";
+        rs = dbObj.queryResults(sql, curUser_no);
     } else {
         sql = "select * from provider p order by p.first_name, p.last_name ";
+        rs = dbObj.queryResults(sql);
     }
-    ResultSet rs = dbObj.queryResults(sql);
 
     while (rs.next()) {
         propName.setProperty(Misc.getString(rs, "provider_no"), Misc.getString(rs, "first_name") + " " + Misc.getString(rs, "last_name"));
@@ -156,7 +158,7 @@
                             String prov = ((Properties) vecProvider.get(i)).getProperty("providerNo", "");
                             String selected = request.getParameter("providerNo");
                     %>
-                    <option value="<%=prov %>"
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(prov))%>"
                             <% if ((selected != null) && (selected.equals(prov))) { %> selected
                             <% } %>><%= Encode.forHtmlContent(((Properties) vecProvider.get(i)).getProperty("name", "")) %>
                     </option>
@@ -177,7 +179,7 @@
             <div class="span4">
                 <label>Start Date: </label>
                 <div class="input-append">
-                    <input type="text" name="startDate" id="startDate1" value="<%=startDate!=null?startDate:""%>"
+                    <input type="text" name="startDate" id="startDate1" value="<%=Encode.forHtmlAttribute(String.valueOf(startDate!=null?startDate:""))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -186,7 +188,7 @@
             <div class="span4">
                 <label>End Date: </label>
                 <div class="input-append">
-                    <input type="text" name="endDate" id="endDate1" value="<%=endDate!=null?endDate:""%>"
+                    <input type="text" name="endDate" id="endDate1" value="<%=Encode.forHtmlAttribute(String.valueOf(endDate!=null?endDate:""))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -219,26 +221,38 @@
             if ("".equals(sDate) || sDate == null) sDate = "1900-01-01";
             if ("".equals(eDate) || eDate == null) eDate = "2999-01-01";
 
-            DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[2];
-            params[0] = new DBPreparedHandlerParam(MyDateFormat.getSysDateEX(eDate, 1));
-            params[1] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(sDate));
-
-            sql = "select * from log force index (datetime) where provider_no='" + providerNo + "' and dateTime <= ?";
-            sql += " and dateTime >= ? and content like '" + content + "' order by dateTime desc ";
-
             if ("*".equals(providerNo)) {
                 bAll = true;
                 if (isSiteAccessPrivacy) {
                     sql = "select * from log force index (datetime) where dateTime <= ?";
-                    sql += " and dateTime >= ? and content like '" + content + "' ";
-                    sql += "and provider_no IN (SELECT provider_no FROM providersite WHERE site_id IN (SELECT site_id from providersite where provider_no= " + curUser_no + ") )";
+                    sql += " and dateTime >= ? and content like ? ";
+                    sql += "and provider_no IN (SELECT provider_no FROM providersite WHERE site_id IN (SELECT site_id from providersite where provider_no=?) )";
                     sql += " order by dateTime desc ";
+                    DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[4];
+                    params[0] = new DBPreparedHandlerParam(MyDateFormat.getSysDateEX(eDate, 1));
+                    params[1] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(sDate));
+                    params[2] = new DBPreparedHandlerParam(content);
+                    params[3] = new DBPreparedHandlerParam(curUser_no);
+                    rs = dbObj.queryResults(sql, params);
                 } else {
                     sql = "select * from log force index (datetime) where dateTime <= ?";
-                    sql += " and dateTime >= ? and content like '" + content + "' order by dateTime desc ";
+                    sql += " and dateTime >= ? and content like ? order by dateTime desc ";
+                    DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[3];
+                    params[0] = new DBPreparedHandlerParam(MyDateFormat.getSysDateEX(eDate, 1));
+                    params[1] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(sDate));
+                    params[2] = new DBPreparedHandlerParam(content);
+                    rs = dbObj.queryResults(sql, params);
                 }
+            } else {
+                sql = "select * from log force index (datetime) where provider_no=? and dateTime <= ?";
+                sql += " and dateTime >= ? and content like ? order by dateTime desc ";
+                DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[4];
+                params[0] = new DBPreparedHandlerParam(providerNo);
+                params[1] = new DBPreparedHandlerParam(MyDateFormat.getSysDateEX(eDate, 1));
+                params[2] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(sDate));
+                params[3] = new DBPreparedHandlerParam(content);
+                rs = dbObj.queryResults(sql, params);
             }
-            rs = dbObj.queryResults(sql, params);
             while (rs.next()) {
                 prop = new Properties();
                 prop.setProperty("dateTime", "" + rs.getTimestamp("dateTime"));
@@ -260,7 +274,7 @@
         if (propName.getProperty(providerNo, "").equals("")) {
             out.print("All");
         } else {
-            out.print(propName.getProperty(providerNo, ""));
+            out.print(Encode.forHtml(propName.getProperty(providerNo, "")));
         }
     %> - Log Report</h4>
 
@@ -269,9 +283,9 @@
     </button>
 
 
-    <p>Period: ( <%= startDate == null ? "" : startDate %> ~ <%= endDate == null ? "" : endDate %>)</p>
+    <p>Period: ( <%=Encode.forHtml(String.valueOf(startDate == null ? "" : startDate))%> ~ <%=Encode.forHtml(String.valueOf(endDate == null ? "" : endDate))%>)</p>
     <table class="table table-bordered table-striped table-hover table-condensed">
-        <tr bgcolor="<%=tdTitleColor%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(tdTitleColor))%>">
             <TH>Time</TH>
             <TH>Action</TH>
             <TH>Content</TH>
@@ -292,7 +306,7 @@ for (int i = 0; i < vec.size(); i++) {
 	prop = (Properties) vec.get(i);
     color = i%2==0?tdInterlColor:"white";
 %>
-        <tr bgcolor="<%=color %>" align="center">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>" align="center">
             <td><c:out value='<%=prop.getProperty("dateTime")%>'/></td>
             <td><c:out value='<%=prop.getProperty("action")%>'/></td>
             <td><c:out value='<%=prop.getProperty("content")%>'/></td>
@@ -302,7 +316,7 @@ for (int i = 0; i < vec.size(); i++) {
             <td><c:out value='<%=propName.getProperty(prop.getProperty("provider_no"), "")%>'/></td>
             <% } %>
             <td><c:out value='<%=prop.getProperty("demographic_no")%>'/></td>
-            <td><c:out value='<%=prop.getProperty("data") %>'/></td>
+            <td><c:out value='<%=prop.getProperty("data")%>'/></td>
         </tr>
 
                 <% } %>

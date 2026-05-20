@@ -346,8 +346,8 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
 
     private ObjectOutputStream out = null;
 
-    private static String outputDirectory = (OscarProperties.getInstance().getProperty("DOCUMENT_DIR") != null)
-            ? OscarProperties.getInstance().getProperty("DOCUMENT_DIR").trim()
+    private static String outputDirectory = (OscarProperties.getInstance().getDocumentDirectory() != null)
+            ? OscarProperties.getInstance().getDocumentDirectory()
             : System.getProperty("java.io.tmpdir");
 
     private PrintWriter documentMetaWriter;
@@ -1524,10 +1524,10 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
 
         // ensure the document is actually in the file system
         Path documentPath = Paths
-                .get(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + File.separator + eDoc.getFileName());
+                .get(OscarProperties.getInstance().getDocumentDirectory() + File.separator + eDoc.getFileName());
         if (!Files.exists(documentPath)) {
             logger.warn("Unable to send document - the file does not exist or can't be read!! "
-                    + OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + '/' + eDoc.getFileName());
+                    + OscarProperties.getInstance().getDocumentDirectory() + '/' + eDoc.getFileName());
             return null;
         }
 
@@ -1560,11 +1560,11 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         cachedDemographicDocument.setDescription(eDoc.getDescription());
 
         // byte[] contents =
-        // EDocUtil.getFile(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") +
+        // EDocUtil.getFile(OscarProperties.getInstance().getDocumentDirectory() +
         // '/' + eDoc.getFileName());
         // if(contents == null) {
         // logger.warn("Unable to send document - the file does not exist or can't be
-        // read!! " + OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + '/' +
+        // read!! " + OscarProperties.getInstance().getDocumentDirectory() + '/' +
         // eDoc.getFileName());
         // return;
         // }

@@ -35,6 +35,7 @@
 <%@page import="ca.openosp.openo.commn.model.Form" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicAccessoryDao demographicAccessoryDao = (DemographicAccessoryDao) SpringUtils.getBean(DemographicAccessoryDao.class);
     FormDao formDao = SpringUtils.getBean(FormDao.class);
@@ -77,7 +78,7 @@
                 content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=content%>
+        <encounter><%=Encode.forHtml(String.valueOf(content))%>
         </encounter>
     </xml>
     <%
@@ -90,7 +91,7 @@
             content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=content%>
+        <encounter><%=Encode.forHtml(String.valueOf(content))%>
         </encounter>
     </xml>
     <%
@@ -540,13 +541,13 @@
                 %> <input type="hidden" name="xml_subject"
                           value="Form:Rourke Baby Record"> <input type="hidden"
                                                                   name="demographic_no"
-                                                                  value="<%=request.getParameter("demographic_no")%>">
+                                                                  value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>">
                 <input
                         type="hidden" name="form_date"
-                        value='<%=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)%>'>
+                        value='<%=Encode.forHtmlAttribute(String.valueOf(now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)))%>'>
                 <input type="hidden" name="form_time"
-                       value='<%=now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE)+":"+now.get(Calendar.SECOND)%>'>
-                <input type="hidden" name="user_no" value='<%=user_no%>'> <input
+                       value='<%=Encode.forHtmlAttribute(String.valueOf(now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE)+":"+now.get(Calendar.SECOND)))%>'>
+                <input type="hidden" name="user_no" value='<%=Encode.forHtmlAttribute(String.valueOf(user_no))%>'> <input
                     type="hidden" name="form_name" value='rourkebabyrecord1'> <input
                     type="hidden" name="dboperation" value="save_form"> <input
                     type="hidden" name="displaymode" value="saveform"> <%

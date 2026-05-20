@@ -46,6 +46,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <% response.setHeader("Cache-Control", "no-cache");%>
@@ -125,13 +126,13 @@
     <body style="page: doublepage; page-break-after: right">
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="ID"
-               value="<%= props.getProperty("ID", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table class="Head" class="hidePrint">
@@ -169,43 +170,43 @@
                 <td style="width:350px;padding:10px">
                     <label for="staffName">Name:</label>
                     <input type="text" style="width:300px; font-family:courier;" name="staffName"
-                           value="<%=props.getProperty("staffName", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("staffName", "")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td style="width:350px;padding:10px">
                     <label for="staffPosition">Position:</label>
                     <input type="text" style="width:300px; font-family:courier" name="staffPosition"
-                           value="<%=props.getProperty("staffPosition", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("staffPosition", "")))%>"/>
                 </td>
                 <td style="width:350px;padding:10px">
                     <label for="staffDept">Department:</label>
                     <input type="text" style="width:300px; font-family:courier" name="staffDept"
-                           value="<%=props.getProperty("staffDept", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("staffDept", "")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td style="width:350px;padding:10px">
                     <label for="staffFaculty">Faculty/School:</label>
                     <input type="text" style="width:300px;font-family:courier" name="staffFaculty"
-                           value="<%=props.getProperty("staffFaculty", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("staffFaculty", "")))%>"/>
                 </td>
                 <td style="width:350px;padding:10px">
                     <label for="staffJobSite">Job site/Location:</label>
                     <input type="text" style="width:300px;font-family:courier" name="staffJobSite"
-                           value="<%=props.getProperty("staffJobSite", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("staffJobSite", "")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td style="width:350px;padding:10px">
                     <label for="staffPhone">Phone:</label>
                     <input type="text" style="width:300px; font-family:courier" name="staffPhone"
-                           value="<%=props.getProperty("staffPhone", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("staffPhone", "")))%>"/>
                 </td>
                 <td style="width:350px;padding:10px">
                     <label for="staffEmail">Email:</label>
                     <input type="text" style="width:300px; font-family:courier" name="staffEmail"
-                           value="<%=props.getProperty("staffEmail", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("staffEmail", "")))%>"/>
                 </td>
             </tr>
         </table>
@@ -240,26 +241,26 @@
                 <td style="width:350px;padding:10px">
                     <label for="supervisorName">Chair/Supervisor:</label><br/>
                     <input type="text" style="width:300px;font-family:courier" name="supervisorName"
-                           value="<%=props.getProperty("supervisorName", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("supervisorName", "")))%>"/>
                 </td>
 
                 <td style="width:350px;padding:10px">
                     <label for="supervisorCampusAddress">Campus Address:</label><br/>
                     <input type="text" style="width:300px;font-family:courier" name="supervisorCampusAddress"
-                           value="<%=props.getProperty("supervisorCampusAddress", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("supervisorCampusAddress", "")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td style="width:350px;padding:10px">
                     <label for="supervisorEmail">Email Address:</label><br/>
                     <input type="text" style="width:300px;font-family:courier" name="supervisorEmail"
-                           value="<%=props.getProperty("supervisorEmail", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("supervisorEmail", "")))%>"/>
                 </td>
 
                 <td style="width:350px;padding:10px">
                     <label for="supervisorPhone">Phone:</label><br/>
                     <input type="text" style="width:300px;font-family:courier" name="supervisorPhone"
-                           value="<%=props.getProperty("supervisorPhone", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("supervisorPhone", "")))%>"/>
                 </td>
             </tr>
         </table>
@@ -282,7 +283,7 @@
                 <td colspan="3"><b>H</b>=Hourly <b>D</b>=Daily <b>W</b>=Weekly <b>O</b>=Other(<input type="text"
                                                                                                      style="width: 200px; font-family:courier; font-size:12px"
                                                                                                      name="OtherCode"
-                                                                                                     value="<%=props.getProperty("OtherCode", "")%>"/>)
+                                                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("OtherCode", "")))%>"/>)
                     <b>X</b>=Not Selected
                 </td>
             </tr>
@@ -309,31 +310,31 @@
                             <label for="Acrylonitrile">Acrylonitrile:</label>
                             <input type="text" maxlength="1" name="Acrylonitrile"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("Acrylonitrile", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Acrylonitrile", "")))%>"/>
                         </td>
                         <td style="width:140px;padding:5px">
                             <label for="Asbestos">Asbestos:</label>
                             <input type="text" maxlength="1" name="Asbestos"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("Asbestos", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Asbestos", "")))%>"/>
                         </td>
                         <td style="width:140px;padding:5px">
                             <label for="EthyleneOxide">Ethylene Oxide:</label>
                             <input type="text" maxlength="1" name="EthyleneOxide"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("EthyleneOxide", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("EthyleneOxide", "")))%>"/>
                         </td>
                         <td style="width:140px;padding:5px">
                             <label for="Lead">Lead:</label>
                             <input type="text" maxlength="1" name="Lead"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("Lead", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Lead", "")))%>"/>
                         </td>
                         <td style="width:140px;padding:5px">
                             <label for="Silica">Silica:</label>
                             <input type="text" maxlength="1" name="Silica"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("Silica", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Silica", "")))%>"/>
                         </td>
                     </tr>
                     <tr>
@@ -341,31 +342,31 @@
                             <label for="">Arsenic:</label>
                             <input type="text" maxlength="1" name="Arsenic"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("Arsenic", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Arsenic", "")))%>"/>
                         </td>
                         <td style="width:140px;padding:5px">
                             <label for="Benzene">Benzene:</label>
                             <input type="text" maxlength="1" name="Benzene"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("Benzene", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Benzene", "")))%>"/>
                         </td>
                         <td style="width:140px;padding:5px">
                             <label for="Isocyanates">Isocyanates:</label>
                             <input type="text" maxlength="1" name="Isocyanates"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("Isocyanates", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Isocyanates", "")))%>"/>
                         </td>
                         <td style="width:140px;padding:5px">
                             <label for="Mercury">Mercury:</label>
                             <input type="text" maxlength="1" name="Mercury"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("Mercury", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Mercury", "")))%>"/>
                         </td>
                         <td style="width:140px;padding:5px">
                             <label for="VinylChloride">Vinyl Chloride:</label>
                             <input type="text" maxlength="1" name="VinylChloride"
                                    style="width:16px;font-family:courier;font-size:12px;"
-                                   value="<%=props.getProperty("VinylChloride", "")%>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("VinylChloride", "")))%>"/>
                         </td>
                     </tr>
                 </table>
@@ -383,14 +384,14 @@
                 <td style="width:600px;padding:10px">
                     <label for="ProcedureName">Procedure Name:</label>
                     <input type="text" name="ProcedureName" style="font-family:courier;font-size:12px;width:600px"
-                           value="<%=props.getProperty("ProcedureName", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ProcedureName", "")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td style="width:600px;padding:10px">
                     <label for="SubstanceForm">Designated Form of Substance:</label>
                     <input type="text" name="SubstanceForm" style="font-family:courier;font-size:12px;width:600px"
-                           value="<%=props.getProperty("SubstanceForm","")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("SubstanceForm","")))%>"/>
                 </td>
             </tr>
         </table>
@@ -403,13 +404,13 @@
                     <label for="CompressedGases">Compressed Gases:</label>
                     <input type="text" maxlength="1" name="CompressedGases"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("CompressedGases", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("CompressedGases", "")))%>"/>
                 </td>
                 <td style="width:400px;padding:5px">
                     <label for="MaterialsSeriousEffects">Materials Causing Immediate and Serious Toxic Effects:</label>
                     <input type="text" maxlength="1" name="MaterialsSeriousEffects"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("MaterialsSeriousEffects", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("MaterialsSeriousEffects", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -417,13 +418,13 @@
                     <label for="ReactiveMaterials">Reactive Materials:</label>
                     <input type="text" maxlength="1" name="ReactiveMaterials"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("ReactiveMaterials", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ReactiveMaterials", "")))%>"/>
                 </td>
                 <td style="width:400px;padding:5px">
                     <label for="FlammableCombustible">Flammable and Combustible Materials:</label>
                     <input type="text" maxlength="1" name="FlammableCombustible"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("FlammableCombustible", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("FlammableCombustible", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -431,13 +432,13 @@
                     <label for="CorrosiveMaterials">Corrosive Material:</label>
                     <input type="text" maxlength="1" name="CorrosiveMaterials"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("CorrosiveMaterials", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("CorrosiveMaterials", "")))%>"/>
                 </td>
                 <td style="width:400px;padding:5px">
                     <label for="MaterialsOtherToxicEffects">Other Toxic Effects:</label>
                     <input type="text" maxlength="1" name="MaterialsOtherToxicEffects"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("MaterialsOtherToxicEffects", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("MaterialsOtherToxicEffects", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -445,13 +446,13 @@
                     <label for="OxidizingMaterials">Oxidizing Material:</label>
                     <input type="text" maxlength="1" name="OxidizingMaterials"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("OxidizingMaterials", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("OxidizingMaterials", "")))%>"/>
                 </td>
                 <td style="width:400px;padding:5px">
                     <label for="AgricultureChemicals">Agricultural Chemicals:</label>
                     <input type="text" maxlength="1" name="AgricultureChemicals"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("AgricultureChemicals", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("AgricultureChemicals", "")))%>"/>
                 </td>
             </tr>
         </table>
@@ -462,14 +463,14 @@
                 <td style="width:600px;padding:10px">
                     <label for="ChemicalNames">Name of chemicals:</label>
                     <input type="text" name="ChemicalNames" style="font-family:courier;font-size:12px;width:600px"
-                           value="<%=props.getProperty("ChemicalNames", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ChemicalNames", "")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td style="width:600px;padding:10px">
                     <label for="ChemicalHowItsUsed">How chemical is used:</label>
                     <input type="text" name="ChemicalHowItsUsed" style="font-family:courier;font-size:12px;width:600px"
-                           value="<%=props.getProperty("ChemicalHowItsUsed", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ChemicalHowItsUsed", "")))%>"/>
                 </td>
             </tr>
         </table>
@@ -493,19 +494,19 @@
                     <label for="ContainmentLevel1">Containment Level 1:</label>
                     <input type="text" maxlength="1" name="ContainmentLevel1"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("ContainmentLevel1", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ContainmentLevel1", "")))%>"/>
                 </td>
                 <td style="padding:10px;width:225px">
                     <label for="ContainmentLevel2">Containment Level 2:</label>
                     <input type="text" maxlength="1" name="ContainmentLevel2"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("ContainmentLevel2", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ContainmentLevel2", "")))%>"/>
                 </td>
                 <td style="padding:10px;width:225px">
                     <label for="ContainmentLevel3">Containment Level 3:</label>
                     <input type="text" maxlength="1" name="ContainmentLevel3"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("ContainmentLevel3", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ContainmentLevel3", "")))%>"/>
                 </td>
             </tr>
         </table>
@@ -522,26 +523,26 @@
                     <label for="AnimalCareFacility">Animal Care Facility:</label>
                     <input type="text" maxlength="1" name="AnimalCareFacility"
                            style="width:16px;font-family:courier;font-size:14px; "
-                           value="<%=props.getProperty("AnimalCareFacility", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("AnimalCareFacility", "")))%>"/>
                 </td>
                 <td style="width:220px">
                     <label for="SheepContainmentUnit">Sheep Containment Unit:</label>
                     <input type="text" maxlength="1" name="SheepContainmentUnit"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("SheepContainmentUnit", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("SheepContainmentUnit", "")))%>"/>
                 </td>
 
                 <td style="width:230px">
                     <label for="NonHumanPrimate">Non-human Primate Unit:</label>
                     <input type="text" maxlength="1" name="NonHumanPrimate"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("NonHumanPrimate", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("NonHumanPrimate", "")))%>"/>
                 </td>
                 <td style="width:190px">
                     <label for="ContainmentLevel3Area">Containment Area 3:</label>
                     <input type="text" maxlength="1" name="ContainmentLevel3Area"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("ContainmentLevel3Area", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ContainmentLevel3Area", "")))%>"/>
                 </td>
             </tr>
         </table>
@@ -557,13 +558,13 @@
                     <label for="PrimaryCulture">Primary Culture:</label>
                     <input type="text" maxlength="1" name="PrimaryCulture"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("PrimaryCulture", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("PrimaryCulture", "")))%>"/>
                 </td>
                 <td style="padding:10px;width:300px">
                     <label for="Primates">Primates:</label>
                     <input type="text" maxlength="1" name="Primates"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("Primates", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Primates", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -571,13 +572,13 @@
                     <label for="Cadavers">Cadavers (unfixed):</label>
                     <input type="text" maxlength="1" name="Cadavers"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("Cadavers", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Cadavers", "")))%>"/>
                 </td>
                 <td style="padding:10px;width:300px">
                     <label for="DogsCats">Dogs or Cats:</label>
                     <input type="text" maxlength="1" name="DogsCats"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("DogsCats", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("DogsCats", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -585,12 +586,12 @@
                     <label for="BloodProducts">Blood or Blood Products:</label>
                     <input type="text" maxlength="1" name="BloodProducts"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("BloodProducts", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("BloodProducts", "")))%>"/>
                 </td>
                 <td style="padding:10px;width:300px">
                     <label for="Sheep">Sheep:</label>
                     <input type="text" maxlength="1" name="Sheep" style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("Sheep", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Sheep", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -598,13 +599,13 @@
                     <label for="PrimaryPatientCare">Primary Patient Care:</label>
                     <input type="text" maxlength="1" name="PrimaryPatientCare"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("PrimaryPatientCare", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("PrimaryPatientCare", "")))%>"/>
                 </td>
                 <td style="padding:10px;width:300px">
                     <label for="WildMammals">Wild Mammals:</label>
                     <input type="text" maxlength="1" name="WildMammals"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("WildMammals", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("WildMammals", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -612,13 +613,13 @@
                     <label for="OtherHumanBiohazard">Other Human Biohazard:</label><br/>
                     <input type="text" name="OtherHumanBiohazard"
                            style="width:300px;font-family:courier;font-size:12px;"
-                           value="<%=props.getProperty("OtherHumanBiohazard", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("OtherHumanBiohazard", "")))%>"/>
                 </td>
                 <td style="padding:10px;width:300px">
                     <label for="Rodents">Rodents:</label>
                     <input type="text" maxlength="1" name="Rodents"
                            style="width:16px;font-family:courier;font-size:14px;"
-                           value="<%=props.getProperty("Rodents", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Rodents", "")))%>"/>
                 </td>
             </tr>
 
@@ -628,7 +629,7 @@
                     <label for="OtherAnimalBiohazard">Other Animal Biohazard:</label><br/>
                     <input type="text" name="OtherAnimalBiohazard"
                            style="width:300px;font-family:courier;font-size:12px;"
-                           value="<%=props.getProperty("OtherAnimalBiohazard", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("OtherAnimalBiohazard", "")))%>"/>
                 </td>
             </tr>
 
@@ -639,14 +640,14 @@
                 <td style="width:600px;padding:10px">
                     <label for="OtherBiohazard">Other Biohazard:</label>
                     <input type="text" name="OtherBiohazard" style="width:600px;font-family:courier;font-size:12px"
-                           value="<%=props.getProperty("OtherBiohazard", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("OtherBiohazard", "")))%>"/>
                 </td>
             </tr>
             <tr>
                 <td style="width:600px;padding:10px">
                     <label for="PathogenicParisites">Name of pathogenic parasites, bacteria or viruses:</label>
                     <input type="text" name="PathogenicParasites" style="width:600px;font-family:courier;font-size:12px"
-                           value="<%=props.getProperty("PathogenicParasites", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("PathogenicParasites", "")))%>"/>
                 </td>
             </tr>
         </table>
@@ -661,19 +662,19 @@
                     <label for="UltravioletEmitter">Ultraviolet Emitter:</label>
                     <input type="text" maxlength="1" name="UltravioletEmitter"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("UltravioletEmitter", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("UltravioletEmitter", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="RadioactiveSubstance">Radioactive Substance:</label>
                     <input type="text" maxlength="1" name="RadioactiveSubstance"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("RadioactiveSubstance", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("RadioactiveSubstance", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="Ultrasound">Ultrasound:</label>
                     <input type="text" maxlength="1" name="Ultrasound"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("Ultrasound", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Ultrasound", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -681,19 +682,19 @@
                     <label for="InfraredEmitter">Infrared Emitter:</label>
                     <input type="text" maxlength="1" name="InfraredEmitter"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("InfraredEmitter", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("InfraredEmitter", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="MicrowaveEmittingDevice">Microwave Emitting Devices:</label>
                     <input type="text" maxlength="1" name="MicrowaveEmittingDevice"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("MicrowaveEmittingDevice", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("MicrowaveEmittingDevice", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="Infrasound">Infrasound:</label>
                     <input type="text" maxlength="1" name="Infrasound"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("Infrasound", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Infrasound", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -701,18 +702,18 @@
                     <label for="Irradiators">Irradiators:</label>
                     <input type="text" maxlength="1" name="Irradiators"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("Irradiators", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Irradiators", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="XrayEmittingDevice">X-ray Emitting Devices:</label>
                     <input type="text" maxlength="1" name="XrayEmittingDevice"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("XrayEmittingDevice", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("XrayEmittingDevice", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="Gamma">Gamma:</label>
                     <input type="text" maxlength="1" name="Gamma" style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("Gamma", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Gamma", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -720,18 +721,18 @@
                     <label for="Laser3B">Laser 3B:</label>
                     <input type="text" maxlength="1" name="Laser3B"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("Laser3B", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Laser3B", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="Laser4">Laser 4:</label>
                     <input type="text" maxlength="1" name="Laser4" style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("Laser4", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Laser4", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="MagneticField">Magnetic Field:</label>
                     <input type="text" maxlength="1" name="MagneticField"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("MagneticField", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("MagneticField", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -739,19 +740,19 @@
                     <label for="Vibration">Vibration:</label>
                     <input type="text" maxlength="1" name="Vibration"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("Vibration", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Vibration", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="RadioFrequency">Radiofrequency:</label>
                     <input type="text" maxlength="1" name="RadioFrequency"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("RadioFrequency", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("RadioFrequency", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="HighNoiseLevels">High Noise Levels (>85dB):</label>
                     <input type="text" maxlength="1" name="HighNoiseLevels"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("HighNoiseLevels", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HighNoiseLevels", "")))%>"/>
                 </td>
             </tr>
             <tr>
@@ -759,13 +760,13 @@
                     <label for="ExtremeHeat">Extreme Heat:</label>
                     <input type="text" maxlength="1" name="ExtremeHeat"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("ExtremeHeat", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ExtremeHeat", "")))%>"/>
                 </td>
                 <td style="width:225px;padding:5px">
                     <label for="ExtremeCold">Extreme Cold:</label>
                     <input type="text" maxlength="1" name="ExtremeCold"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("ExtremeCold", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ExtremeCold", "")))%>"/>
                 </td>
             </tr>
 
@@ -781,7 +782,7 @@
                 <td style="width:600px; padding:10px">
                     <label for="Nanotechnology">Type/materials used:</label><br/>
                     <textarea style="width:600px;font-size:12px" name="Nanotechnology" cols="85"
-                              rows="3"><%=props.getProperty("Nanotechnology", "")%></textarea>
+                              rows="3"><%=Encode.forHtml(String.valueOf(props.getProperty("Nanotechnology", "")))%></textarea>
                 </td>
             </tr>
         </table>
@@ -796,25 +797,25 @@
                     <label for="Driving">Driving:</label>
                     <input type="text" maxlength="1" name="Driving"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("Driving", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Driving", "")))%>"/>
                 </td>
                 <td style="padding:5px; width:210px">
                     <label for="HighVoltage">High Voltage Equipment:</label>
                     <input type="text" maxlength="1" name="HighVoltage"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("HighVoltage", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HighVoltage", "")))%>"/>
                 </td>
                 <td style="padding:5px; width:210px">
                     <label for="ConfinedSpaceEntry">Confined Space Entry:</label>
                     <input type="text" maxlength="1" name="ConfinedSpaceEntry"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("ConfinedSpaceEntry", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ConfinedSpaceEntry", "")))%>"/>
                 </td>
                 <td style="padding:5px; width:190px">
                     <label for="Heights">Heights:</label>
                     <input type="text" maxlength="1" name="Heights"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("Heights", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("Heights", "")))%>"/>
                 </td>
             </tr>
         </table>
@@ -829,19 +830,19 @@
                     <label for="ComputerWork">Computer Work:</label>
                     <input type="text" maxlength="1" name="ComputerWork"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("ComputerWork", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ComputerWork", "")))%>"/>
                 </td>
                 <td style="width:100px; padding:10px">
                     <label for="RepetitiveWork">Repetitive Work:</label>
                     <input type="text" maxlength="1" name="RepetitiveWork"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("RepetitiveWork", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("RepetitiveWork", "")))%>"/>
                 </td>
                 <td style="width:100px; padding:10px">
                     <label for="AwkwardPositions">Awkward Positions:</label>
                     <input type="text" maxlength="1" name="AwkwardPositions"
                            style="width:16px;font-family:courier;font-size:14px"
-                           value="<%=props.getProperty("AwkwardPositions", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("AwkwardPositions", "")))%>"/>
                 </td>
             </tr>
         </table>
@@ -853,7 +854,7 @@
                     <label style="font-weight:bold" for="AdditionalNotes">Additional Notes or other hazards not
                         included:</label><br/>
                     <textarea name="AdditionalNotes" style="font-family:courier; font-size:12px;width:600px" cols="85"
-                              rows="3"><%=props.getProperty("AdditionalNotes", "")%></textarea>
+                              rows="3"><%=Encode.forHtml(String.valueOf(props.getProperty("AdditionalNotes", "")))%></textarea>
                 </td>
             </tr>
         </table>
@@ -907,7 +908,7 @@
                 <td style="width:600px;padding:10px">
                     <label style="font-weight:bold" for="FormCompleted">Form Completed By:</label>
                     <input type="text" name="FormCompletedBy" style="width:600px;font-family:courier;font-size:12px"
-                           value="<%=props.getProperty("FormCompletedBy", "")%>"/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("FormCompletedBy", "")))%>"/>
                 </td>
             </tr>
         </table>

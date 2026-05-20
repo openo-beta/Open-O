@@ -42,6 +42,7 @@
         import="ca.openosp.openo.util.*, ca.openosp.openo.form.*, ca.openosp.openo.form.data.*, ca.openosp.openo.utility.*" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
@@ -102,7 +103,7 @@
 
         function reset() {
             document.forms[0].target = "apptProviderSearch";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function onPrint() {
@@ -123,7 +124,7 @@
             document.forms[0].submit.value = "save";
             var ret = checkAllDates();
             if (ret) {
-                document.forms[0].action = "/<%=project_home%>/form/formname.do";
+                document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
                 ret = confirm("Are you sure you want to save this form and see the print preview?");
             }
             return ret;
@@ -314,21 +315,21 @@
            scope="request"/>
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
     <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
 
         <% if (formId > 0) { %>
         <input type="hidden" name="form_link"
-               value="<%=formLink_printPreview%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(formLink_printPreview))%>"/>
         <%} else { %>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <%} %>
 
-        <input type="hidden" name="formId" value="<%=formId%>"/>
-        <!--input type="hidden" name="provider_no" value=<%=request.getParameter("provNo")%> />
-        <input type="hidden" name="provNo" value="<%= request.getParameter("provNo") %>" /-->
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
+        <!--input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%> />
+        <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
 
         <!--
@@ -350,9 +351,9 @@
                 %> <% if (formId > 0) { %> <input type="submit"
                                                   value="Print Preview" onclick="javascript:return onPrintPreview();"/>
                     <!--
-            <input type="button" value="Print Preview" onclick="location.href='<%= appPath %>/form/formDischargeSummaryPrint.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&user=<%=provNo%>' " />
+            <input type="button" value="Print Preview" onclick="location.href='<%=Encode.forJavaScript(String.valueOf(appPath))%>/form/formDischargeSummaryPrint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&user=<%=Encode.forJavaScript(String.valueOf(provNo))%>' " />
             
-            <a href='<%=appPath %>/form/formDischargeSummaryPrint.jsp' onClick="window.open(this.href,'Discharge Summary Form Print Preview','width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=yes,scrollbars=yes,copyhistory=no,resizable=yes');return false;">Print Preview</a> 
+            <a href='<%=Encode.forHtmlAttribute(String.valueOf(appPath))%>/form/formDischargeSummaryPrint.jsp' onClick="window.open(this.href,'Discharge Summary Form Print Preview','width=800,height=600,toolbar=no,location=no,directories=no,status=no,menubar=yes,scrollbars=yes,copyhistory=no,resizable=yes');return false;">Print Preview</a> 
             --> <% } %>
                 </td>
             </tr>
@@ -385,40 +386,40 @@
                 <td width="10%" align="left">Client Name:</td>
                 <td width="25%"><input type="text" name="clientName"
                                        readonly="true" style="width: 100%" size="30" maxlength="30"
-                                       value="<%= props.getProperty("clientName", "") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("clientName", "")))%>"/></td>
                 <td width="15%" align="right">DOB<small>(yyyy/mm/dd)</small>:</td>
                 <td width="15%"><input type="text" name="birthDate"
                                        readonly="true" style="width: 100%" size="20" maxlength="12"
-                                       value="<%= props.getProperty("birthDate", "") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("birthDate", "")))%>"/></td>
                 <td width="5%" align="right">OHIP#:</td>
                 <td width="30%"><input type="text" name="ohip" readonly="true"
                                        style="width: 100%" size="20" maxlength="20"
-                                       value="<%= props.getProperty("ohip", "") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ohip", "")))%>"/></td>
             </tr>
 
             <tr width="100%">
                 <td width="5%" align="left">Admit Date:</td>
                 <td width="10%"><input type="text" name="admitDate"
                                        readonly="true" style="width: 100%" size="10" maxlength="10"
-                                       value="<%= props.getProperty("admitDate", "") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("admitDate", "")))%>"/></td>
                 <td width="10%" align="right">Discharge Date<small>(yyyy/mm/dd):<small></td>
                 <td width="5%"><input type="text" name="dischargeDate"
                                       style="width: 100%" size="10" maxlength="12"
-                                      value="<%= props.getProperty("dischargeDate", "") %>"/></td>
+                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dischargeDate", "")))%>"/></td>
                 <!--
 	 <td width="5%" align="right">Program Name: </td>
-	 <td width="25%"><input type="text" name="programName" readonly style="width:100%" value="<%= props.getProperty("programName", "") %>"/></td>
+	 <td width="25%"><input type="text" name="programName" readonly style="width:100%" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("programName", "")))%>"/></td>
 	-->
                 <td width="5%" align="right">Allergies:</td>
                 <td width="25%"><input type="text" name="allergies" readonly
                                        style="width: 100%"
-                                       value="<%= props.getProperty("allergies", "") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("allergies", "")))%>"/></td>
             </tr>
             <!--
 	 <tr width="100%">
 	 <td align="left">Allergies: </td>
      <td colspan="5">
-      <input type="text" name="allergies" readonly="true" style="width:100%" value="<%= props.getProperty("allergies", "") %>"/>
+      <input type="text" name="allergies" readonly="true" style="width:100%" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("allergies", "")))%>"/>
 	 </td>
     </tr>
      -->
@@ -428,27 +429,27 @@
             <tr>
                 <td colspan="3">Admitting Diagnosis/Primary Diagnosis: <textarea
                         name="admissionNotes" style="width: 100%" cols="20" rows="3"
-                        @oscar.formDB dbType="text"/><%= props.getProperty("admissionNotes", "") %></textarea>
+                        @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("admissionNotes", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">Problem List: <textarea name="currentIssues"
                                                         readonly style="width: 100%" cols="20" rows="3" @oscar.formDB
-                                                        dbType="text"/><%= props.getProperty("currentIssues", "") %></textarea>
+                                                        dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("currentIssues", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">Brief Summary of stay (special
                     procedures/treatment/complications): <textarea name="briefSummary"
                                                                    style="width: 100%" cols="20" rows="3" @oscar.formDB
-                                                                   dbType="text"/><%= props.getProperty("briefSummary", "") %></textarea>
+                                                                   dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("briefSummary", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">Discharge Plan of
                     Care/Recommendations/Outstanding Issues: <textarea
                             name="dischargePlan" style="width: 100%" cols="20" rows="3"
-                            @oscar.formDB dbType="text"/><%= props.getProperty("dischargePlan", "") %></textarea>
+                            @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("dischargePlan", "")))%></textarea>
                 </td>
             </tr>
         </table>
@@ -497,65 +498,65 @@
             <tr>
                 <td align="left"><input type="text" name="doctor1"
                                         style="width: 100%" size="30" maxlength="30"
-                                        value="<%= props.getProperty("doctor1", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doctor1", "")))%>"/></td>
                 <td align="left"><input type="text" name="phoneNumber1"
                                         style="width: 100%" size="25" maxlength="25"
-                                        value="<%= props.getProperty("phoneNumber1", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("phoneNumber1", "")))%>"/></td>
                 <td align="left"><input type="text" name="date1"
                                         style="width: 100%" size="20" maxlength="20"
-                                        value="<%= props.getProperty("date1", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date1", "")))%>"/></td>
                 <td align="left"><input type="text" name="location1"
                                         style="width: 100%" size="45" maxlength="45"
-                                        value="<%= props.getProperty("location1", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("location1", "")))%>"/></td>
             </tr>
             <tr>
                 <td align="left"><input type="text" name="doctor2"
                                         style="width: 100%" size="30" maxlength="30"
-                                        value="<%= props.getProperty("doctor2", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doctor2", "")))%>"/></td>
                 <td align="left"><input type="text" name="phoneNumber2"
                                         style="width: 100%" size="25" maxlength="25"
-                                        value="<%= props.getProperty("phoneNumber2", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("phoneNumber2", "")))%>"/></td>
                 <td align="left"><input type="text" name="date2"
                                         style="width: 100%" size="20" maxlength="20"
-                                        value="<%= props.getProperty("date2", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date2", "")))%>"/></td>
                 <td align="left"><input type="text" name="location2"
                                         style="width: 100%" size="45" maxlength="45"
-                                        value="<%= props.getProperty("location2", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("location2", "")))%>"/></td>
             </tr>
             <tr>
                 <td align="left"><input type="text" name="doctor3"
                                         style="width: 100%" size="30" maxlength="30"
-                                        value="<%= props.getProperty("doctor3", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doctor3", "")))%>"/></td>
                 <td align="left"><input type="text" name="phoneNumber3"
                                         style="width: 100%" size="25" maxlength="25"
-                                        value="<%= props.getProperty("phoneNumber3", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("phoneNumber3", "")))%>"/></td>
                 <td align="left"><input type="text" name="date3"
                                         style="width: 100%" size="20" maxlength="20"
-                                        value="<%= props.getProperty("date3", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date3", "")))%>"/></td>
                 <td align="left"><input type="text" name="location3"
                                         style="width: 100%" size="35" maxlength="35"
-                                        value="<%= props.getProperty("location3", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("location3", "")))%>"/></td>
             </tr>
             <tr>
                 <td align="left"><input type="text" name="doctor4"
                                         style="width: 100%" size="30" maxlength="30"
-                                        value="<%= props.getProperty("doctor4", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doctor4", "")))%>"/></td>
                 <td align="left"><input type="text" name="phoneNumber4"
                                         style="width: 100%" size="25" maxlength="25"
-                                        value="<%= props.getProperty("phoneNumber4", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("phoneNumber4", "")))%>"/></td>
                 <td align="left"><input type="text" name="date4"
                                         style="width: 100%" size="20" maxlength="20"
-                                        value="<%= props.getProperty("date4", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date4", "")))%>"/></td>
                 <td align="left"><input type="text" name="location4"
                                         style="width: 100%" size="35" maxlength="35"
-                                        value="<%= props.getProperty("location4", "") %>"/></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("location4", "")))%>"/></td>
             </tr>
         </table>
         <br>
         <table width="100%" border="1" cellspacing="0" cellpadding="0">
             <tr>
                 <td width="50%">Current Medications: <!--
-		<textarea name="prescriptionSummary" readonly="true" style="width:100%" cols="30" rows="7" @oscar.formDB dbType="text"/><%= props.getProperty("prescriptionSummary", "") %></textarea>
+		<textarea name="prescriptionSummary" readonly="true" style="width:100%" cols="30" rows="7" @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("prescriptionSummary", "")))%></textarea>
 	 --> <textarea name="prescriptionSummary" readonly="true"
                    style="width: 100%" cols="30" rows="4" @oscar.formDB dbType="text"/>Please see Attached
                     Summary</textarea>
@@ -603,7 +604,7 @@
                                     <tr>
                                         <td><textarea name="changeMedications" style="width: 100%"
                                                       cols="30" rows="3" @oscar.formDB
-                                                      dbType="text"/><%= props.getProperty("changeMedications", "") %></textarea>
+                                                      dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("changeMedications", "")))%></textarea>
                                         </td>
                                     </tr>
                                 </table>
@@ -641,7 +642,7 @@
                         <!--
 		<tr>
 			<td>Counselling Provided by:</td>
-			<td><input type="text" name="counsellorName" style="width:100%" size="26" maxlength="26" value="<%= props.getProperty("counsellorName", "") %>"/><td>
+			<td><input type="text" name="counsellorName" style="width:100%" size="26" maxlength="26" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("counsellorName", "")))%>"/><td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -672,7 +673,7 @@
 		</tr>
 		<tr>
 			<td>If yes, please specify:</td>
-			<td colspan="6"><input type="text" name="followUpRequiredDetail" style="width:100%" size="60" maxlength="60" value="<%= props.getProperty("followUpRequiredDetail", "") %>"/><td>						
+			<td colspan="6"><input type="text" name="followUpRequiredDetail" style="width:100%" size="60" maxlength="60" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("followUpRequiredDetail", "")))%>"/><td>						
 		</tr>
 	-->
 
@@ -693,57 +694,57 @@
             <tr>
                 <td><input type="text" name="referralProgram1"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralProgram1", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralProgram1", "")))%>"/></td>
                 <td><input type="text" name="referralMade1" style="width: 100%"
                            size="255" maxlength="255"
-                           value="<%= props.getProperty("referralMade1","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralMade1","")))%>"/></td>
                 <td><input type="text" name="referralOutcome1"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralOutcome1","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralOutcome1","")))%>"/></td>
             </tr>
             <tr>
                 <td><input type="text" name="referralProgram2"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralProgram2", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralProgram2", "")))%>"/></td>
                 <td><input type="text" name="referralMade2" style="width: 100%"
                            size="255" maxlength="255"
-                           value="<%= props.getProperty("referralMade2","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralMade2","")))%>"/></td>
                 <td><input type="text" name="referralOutcome2"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralOutcome2","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralOutcome2","")))%>"/></td>
             </tr>
             <tr>
                 <td><input type="text" name="referralProgram3"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralProgram3", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralProgram3", "")))%>"/></td>
                 <td><input type="text" name="referralMade3" style="width: 100%"
                            size="255" maxlength="255"
-                           value="<%= props.getProperty("referralMade3","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralMade3","")))%>"/></td>
                 <td><input type="text" name="referralOutcome3"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralOutcome3","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralOutcome3","")))%>"/></td>
             </tr>
             <tr>
                 <td><input type="text" name="referralProgram4"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralProgram4", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralProgram4", "")))%>"/></td>
                 <td><input type="text" name="referralMade4" style="width: 100%"
                            size="255" maxlength="255"
-                           value="<%= props.getProperty("referralMade4","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralMade4","")))%>"/></td>
                 <td><input type="text" name="referralOutcome4"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralOutcome4","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralOutcome4","")))%>"/></td>
             </tr>
             <tr>
                 <td><input type="text" name="referralProgram5"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralProgram5", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralProgram5", "")))%>"/></td>
                 <td><input type="text" name="referralMade5" style="width: 100%"
                            size="255" maxlength="255"
-                           value="<%= props.getProperty("referralMade5","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralMade5","")))%>"/></td>
                 <td><input type="text" name="referralOutcome5"
                            style="width: 100%" size="255" maxlength="255"
-                           value="<%= props.getProperty("referralOutcome5","") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("referralOutcome5","")))%>"/></td>
             </tr>
         </table>
         <br>
@@ -751,7 +752,7 @@
             <tr>
                 <td colspan="6">Notes: <textarea name="notes"
                                                  style="width: 100%" cols="20" rows="3" @oscar.formDB
-                                                 dbType="text"/><%= props.getProperty("notes", "") %></textarea>
+                                                 dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("notes", "")))%></textarea>
                 </td>
             </tr>
 
@@ -759,14 +760,14 @@
                 <td align="left">Infirmary Health Care Provider:</td>
                 <td><input type="text" name="providerName" readonly="true"
                            style="width: 100%" size="30" maxlength="30"
-                           value="<%= props.getProperty("providerName", "") %>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("providerName", "")))%>"/></td>
                 <td>Provider's Signature:</td>
                 <td><input type="text" name="signature" size="25" maxlength="25"
-                           value="<%= props.getProperty("signature", "") %>" @oscar.formDB/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("signature", "")))%>" @oscar.formDB/>
                 </td>
                 <td>Date(yyyy/mm/dd):</td>
                 <td><input type="text" name="signatureDate" size="10"
-                           maxlength="10" value="<%= props.getProperty("signatureDate", "") %>"/>
+                           maxlength="10" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("signatureDate", "")))%>"/>
                 </td>
             </tr>
 

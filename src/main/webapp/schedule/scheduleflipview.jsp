@@ -58,7 +58,7 @@
     private String getSiteHTML(String scDate, String provider_no, List<Site> sites) {
         if (!bMultisites) return "";
         String _loc = jdbc.getLocationFromSchedule(scDate, provider_no);
-        return "<span style='background-color:" + ApptUtil.getColorFromLocation(sites, _loc) + "'>" + ApptUtil.getShortNameFromLocation(sites, _loc) + "</span>";
+        return "<span style='background-color:" + Encode.forCssString(ApptUtil.getColorFromLocation(sites, _loc)) + "'>" + Encode.forHtml(ApptUtil.getShortNameFromLocation(sites, _loc)) + "</span>";
     }
 %>
 <% if (bMultisites) {
@@ -76,7 +76,7 @@
     int nStep = providerPreference.getEveryMin();
     String mygroupno = providerPreference.getMyGroupNo();
 
-    String curProvider_no = request.getParameter("provider_no") != null ? request.getParameter("provider_no") : "174";
+    String curProvider_no = request.getParameter("provider_no") != null ? request.getParameter("provider_no").replaceAll("[^a-zA-Z0-9]", "") : "174";
     String curDemoNo = request.getParameter("demographic_no") != null ? request.getParameter("demographic_no") : "";
     String curDemoName = request.getParameter("demographic_name") != null ? request.getParameter("demographic_name") : "";
     String[] param = new String[3];
@@ -113,12 +113,12 @@
         <script language="JavaScript">
             <!--
             function changePro(providerno) {
-                a = "scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=" + providerno +<%=request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\""%>;
+                a = "scheduleflipview.jsp?originalpage=<%=Encode.forJavaScript(String.valueOf(originalPage))%>&provider_no=" + providerno +<%=Encode.forJavaScript(request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\"")%>;
                 self.location.href = a;
             }
 
             function selectprovider(s) {
-                a = "scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=" + s.options[s.selectedIndex].value +<%=request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\""%>;
+                a = "scheduleflipview.jsp?originalpage=<%=Encode.forJavaScript(String.valueOf(originalPage))%>&provider_no=" + s.options[s.selectedIndex].value +<%=Encode.forJavaScript(request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\"")%>;
                 self.location.href = a;
             }//-->
 
@@ -126,30 +126,30 @@
             function t(s1, s2, s3, s4, s5, s6, doConfirm, allowDay, allowWeek) {
                 if (doConfirm == "Yes") {
                     if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.confirmBooking"/>")) {
-                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=curDemoNo%>&name=<%=curDemoName%>&provider_no=<%=curProvider_no%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                     }
                 } else if (doConfirm == "Day") {
                     if (allowDay == "No") {
                         alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.sameDay"/>");
                     } else {
-                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=curDemoNo%>&name=<%=curDemoName%>&provider_no=<%=curProvider_no%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                     }
                 } else if (doConfirm == "Wk") {
                     if (allowWeek == "No") {
                         alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.sameWeek"/>");
                     } else {
-                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=curDemoNo%>&name=<%=curDemoName%>&provider_no=<%=curProvider_no%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                     }
                 } else if (doConfirm == "Onc") {
                     if (allowDay == "No") {
                         if (confirm("This is an On Call Urgent appointment.  Are you sure you want to book?")) {
-                            popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=curDemoNo%>&name=<%=curDemoName%>&provider_no=<%=curProvider_no%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                            popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                         }
                     } else {
-                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=curDemoNo%>&name=<%=curDemoName%>&provider_no=<%=curProvider_no%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                     }
                 } else {
-                    popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=curDemoNo%>&name=<%=curDemoName%>&provider_no=<%=curProvider_no%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                    popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                 }
 
             }
@@ -189,7 +189,7 @@
         <tr align="center" bgcolor="#CCCCFF">
             <% if (bMultisites) out.print("<td>Site</td>"); %>
             <td width="15%" nowrap><a
-                    href="scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=<%=curProvider_no%>&startDate=<%=lastMonth.get(Calendar.YEAR)+"-"+(lastMonth.get(Calendar.MONTH)+1)+"-"+lastMonth.get(Calendar.DATE)%>"
+                    href="scheduleflipview.jsp?originalpage=<%=Encode.forUriComponent(String.valueOf(originalPage))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&startDate=<%=Encode.forUriComponent(String.valueOf(lastMonth.get(Calendar.YEAR)+"-"+(lastMonth.get(Calendar.MONTH)+1)+"-"+lastMonth.get(Calendar.DATE)))%>"
                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.msgLastMonth"/>"
                     border='0'><img src="<%= request.getContextPath() %>/images/previous.gif"></a> <select
                     name="provider_no" onChange="selectprovider(this)">
@@ -200,7 +200,7 @@
                         Provider p = providerDao.getProvider(curProvider_no);
                         if (p != null) {
                 %>
-                <option value="<%=p.getProviderNo()%>" <%=p.getProviderNo().equals(curProvider_no) ? "selected" : ""%>><%=Encode.forHtmlContent(Misc.getShortStr(p.getFormattedName(), "", 12))%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=p.getProviderNo().equals(curProvider_no) ? "selected" : ""%>><%=Encode.forHtmlContent(Misc.getShortStr(p.getFormattedName(), "", 12))%>
                 </option>
                 <%
                     }
@@ -208,20 +208,20 @@
                     List<MyGroup> mgs = myGroupDao.getGroupByGroupNo(mygroupno);
                     for (MyGroup mg : mgs) {
                 %>
-                <option value="<%=mg.getId().getProviderNo()%>" <%=mg.getId().getProviderNo().equals(curProvider_no) ? "selected" : ""%>><%=Encode.forHtmlContent(Misc.getShortStr(mg.getLastName() + "," + mg.getFirstName(), "", 12))%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(mg.getId().getProviderNo()))%>" <%=mg.getId().getProviderNo().equals(curProvider_no) ? "selected" : ""%>><%=Encode.forHtmlContent(Misc.getShortStr(mg.getLastName() + "," + mg.getFirstName(), "", 12))%>
                 </option>
                 <%
                         }
                     }
                 %>
             </select><a
-                    href="scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=<%=curProvider_no%>&startDate=<%=nextMonth.get(Calendar.YEAR)+"-"+(nextMonth.get(Calendar.MONTH)+1)+"-"+nextMonth.get(Calendar.DATE)%>"
+                    href="scheduleflipview.jsp?originalpage=<%=Encode.forUriComponent(String.valueOf(originalPage))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&startDate=<%=Encode.forUriComponent(String.valueOf(nextMonth.get(Calendar.YEAR)+"-"+(nextMonth.get(Calendar.MONTH)+1)+"-"+nextMonth.get(Calendar.DATE)))%>"
                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.msgNextmonth"/>"
                     border='0'><img src="<%= request.getContextPath() %>/images/next.gif"></a></td>
             <% for (int j = 0; j < colscode; j++) { %>
             <td>
-                <% if (nStep < 60) { %> <%=j % (60 / nStep) == 0 ? "" + (j / (60 / nStep) + nStartTime) : ""%>
-                <% } else { //show everyhour %> <%=j + nStartTime%> <% } %>
+                <% if (nStep < 60) { %> <%=Encode.forHtml(String.valueOf(j % (60 / nStep) == 0 ? "" + (j / (60 / nStep) + nStartTime) : ""))%>
+                <% } else { //show everyhour %> <%=Encode.forHtml(String.valueOf(j + nStartTime))%> <% } %>
             </td>
             <% } %>
         </tr>
@@ -307,13 +307,13 @@
                 /* this -1 is explained below */
                 appointmentTime.add(Calendar.MINUTE, -1);
         %>
-        <tr align="center" bgcolor="<%=bgcolor%>">
+        <tr align="center" bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>">
             <%
                 if (bMultisites)
                     out.print("<td align='right'>" + getSiteHTML(strTempDate, curProvider_no, sites) + "</td>");
             %>
             <td align="right" nowrap><a
-                    href="<%=originalPagePath%>?year=<%=cal.get(Calendar.YEAR)%>&month=<%=cal.get(Calendar.MONTH)+1%>&day=<%=cal.get(Calendar.DATE)%>&view=0&displaymode=day&dboperation=searchappointmentday"><%=outform.format(inform.parse(strTempDate))%>&nbsp;</a>
+                    href="<%=Encode.forHtmlAttribute(String.valueOf(originalPagePath))%>?year=<%=Encode.forUriComponent(String.valueOf(cal.get(Calendar.YEAR)))%>&month=<%=Encode.forUriComponent(String.valueOf(cal.get(Calendar.MONTH)+1))%>&day=<%=Encode.forUriComponent(String.valueOf(cal.get(Calendar.DATE)))%>&view=0&displaymode=day&dboperation=searchappointmentday"><%=Encode.forHtml(String.valueOf(outform.format(inform.parse(strTempDate))))%>&nbsp;</a>
             </td>
             <%
                 String bookinglimit;
@@ -381,21 +381,21 @@
 
             %>
             <td
-                    <%=DateTimeCodeBean.get("color" + temp.toString()) != null ? ("bgcolor=" + DateTimeCodeBean.get("color" + temp.toString())) : ""%>
-                    title="<%=hour+":"+(min<10?"0":"")+min%>">
+                    <%=Encode.forHtml(String.valueOf(DateTimeCodeBean.get("color" + temp.toString()) != null ? ("bgcolor=" + DateTimeCodeBean.get("color" + temp.toString())) : ""))%>
+                    title="<%=Encode.forHtmlAttribute(String.valueOf(hour+":"+(min<10?"0":"")+min))%>">
                 <table style="display:inline; font-size:x-small;">
                     <tr>
                         <td rowspan="2" style="vertical-align:middle;"><a href=#
-                                                                          onClick="t(<%=cal.get(Calendar.YEAR)%>,<%=cal.get(Calendar.MONTH)+1%>,<%=cal.get(Calendar.DATE)%>,'<%=(hour<10?"0":"")+hour+":"+(min<10?"0":"")+min %>','<%=appointmentTime.get(Calendar.HOUR_OF_DAY)%>:<%=appointmentTime.get(Calendar.MINUTE)%>','<%=DateTimeCodeBean.get("duration"+temp.toString())%>','<%=DateTimeCodeBean.get("confirm"+scheduleCode)%>','<%=allowDay%>','<%=allowWeek%>');return false;">
-                            <%=temp.toString()%>
+                                                                          onClick="t(<%=Encode.forJavaScript(String.valueOf(cal.get(Calendar.YEAR)))%>,<%=Encode.forJavaScript(String.valueOf(cal.get(Calendar.MONTH)+1))%>,<%=Encode.forJavaScript(String.valueOf(cal.get(Calendar.DATE)))%>,'<%=Encode.forJavaScript(String.valueOf((hour<10?"0":"")+hour+":"+(min<10?"0":"")+min))%>','<%=Encode.forJavaScript(String.valueOf(appointmentTime.get(Calendar.HOUR_OF_DAY)))%>:<%=Encode.forJavaScript(String.valueOf(appointmentTime.get(Calendar.MINUTE)))%>','<%=Encode.forJavaScript(String.valueOf(DateTimeCodeBean.get("duration"+temp.toString())))%>','<%=Encode.forJavaScript(String.valueOf(DateTimeCodeBean.get("confirm"+scheduleCode)))%>','<%=Encode.forJavaScript(String.valueOf(allowDay))%>','<%=Encode.forJavaScript(String.valueOf(allowWeek))%>');return false;">
+                            <%=Encode.forHtml(String.valueOf(temp.toString()))%>
                         </a></td>
                         <td title="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.msgbookings"/>"
-                            style="vertical-align:top; font-size: x-small;"><%=strNumOfAppts%>
+                            style="vertical-align:top; font-size: x-small;"><%=Encode.forHtml(String.valueOf(strNumOfAppts))%>
                         </td>
                     </tr>
                     <tr>
                         <td style="vertical-align:bottom; font-size: x-small;"
-                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.msgbookinglimit"/>"><%=bookinglimit%>
+                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.msgbookinglimit"/>"><%=Encode.forHtmlAttribute(String.valueOf(bookinglimit))%>
                         </td>
                     </tr>
                 </table>
@@ -411,9 +411,9 @@
 
     </table>
     <a
-            href="scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=<%=curProvider_no%>&startDate=<%=lastMonth.get(Calendar.YEAR)+"-"+(lastMonth.get(Calendar.MONTH)+1)+"-"+lastMonth.get(Calendar.DATE)%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.btnLastMonth"/> </a>
+            href="scheduleflipview.jsp?originalpage=<%=Encode.forUriComponent(String.valueOf(originalPage))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&startDate=<%=Encode.forUriComponent(String.valueOf(lastMonth.get(Calendar.YEAR)+"-"+(lastMonth.get(Calendar.MONTH)+1)+"-"+lastMonth.get(Calendar.DATE)))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.btnLastMonth"/> </a>
     |
     <a
-            href="scheduleflipview.jsp?originalpage=<%=originalPage%>&provider_no=<%=curProvider_no%>&startDate=<%=nextMonth.get(Calendar.YEAR)+"-"+(nextMonth.get(Calendar.MONTH)+1)+"-"+nextMonth.get(Calendar.DATE)%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.btnNextMonth"/></a>
+            href="scheduleflipview.jsp?originalpage=<%=Encode.forUriComponent(String.valueOf(originalPage))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&startDate=<%=Encode.forUriComponent(String.valueOf(nextMonth.get(Calendar.YEAR)+"-"+(nextMonth.get(Calendar.MONTH)+1)+"-"+nextMonth.get(Calendar.DATE)))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.btnNextMonth"/></a>
     </body>
 </html>

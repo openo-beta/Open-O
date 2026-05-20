@@ -27,6 +27,7 @@
 package ca.openosp.openo.encounter.pageUtil;
 
 import ca.openosp.openo.util.plugin.IsPropertiesOn;
+import ca.openosp.OscarProperties;
 import org.apache.commons.text.StringEscapeUtils;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
@@ -131,7 +132,7 @@ public class EctDisplayPhotosAction extends EctDisplayAction {
                 hash = Math.abs(winName.hashCode());
                 url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=display&doc_no=" + dispDocNo + "&providerNo=" + user + "');";
                 if (inboxflag) {
-                    String path = IsPropertiesOn.getProperty("DOCUMENT_DIR");
+                    String path = OscarProperties.getInstance().getDocumentDirectory();
                     url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() +
                             "/mod/docmgmtComp/FillARForm.do?method=showInboxDocDetails&path=" + path + "&demoNo=" + bean.demographicNo + "&name=" + StringEscapeUtils.escapeEcmaScript(dispFilename) + "');";
                 }

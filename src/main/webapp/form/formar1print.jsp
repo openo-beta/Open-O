@@ -46,6 +46,7 @@
 <%@ page import="ca.openosp.openo.form.*" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -54,8 +55,8 @@
     <script language="JavaScript">
         <!--
 
-        var ox = <%=oox%>;
-        var oy = <%=ooy%>;
+        var ox = <%=Encode.forJavaScript(String.valueOf(oox))%>;
+        var oy = <%=Encode.forJavaScript(String.valueOf(ooy))%>;
 
         //x: left margin, y:top margin, w: width, h:height
         function ff(x, y, w, h, name) { //need escape to name for ' and "
@@ -100,14 +101,14 @@
     ff(194, 123, 50, 20, '<span class="tdname">CL</span>');
     ff(224, 123, 50, 20, '<span class="tdname">S</span>');
 
-    ff(50, 75, 500, 20, "<%= UtilMisc.JSEscape(props.getProperty("c_pName", "")) %>");
-    ff(50, 98, 500, 20, "<%=UtilMisc.JSEscape(props.getProperty("c_address", "")) %>");
-    ff(25, 126, 100, 20, "<%= props.getProperty("pg1_dateOfBirth", "") %>");
-    ff(120, 126, 50, 20, "<%= props.getProperty("pg1_age", "") %>");
+    ff(50, 75, 500, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("c_pName", ""))))%>");
+    ff(50, 98, 500, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("c_address", ""))))%>");
+    ff(25, 126, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_dateOfBirth", "")))%>");
+    ff(120, 126, 50, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_age", "")))%>");
     ff(153, 123, 20, 20, "<%= props.getProperty("pg1_msMarried", "").equals("")?"":"X"%>");
     ff(181, 123, 20, 20, "<%= props.getProperty("pg1_msCommonLaw", "").equals("")?"":"X"%>");
     ff(212, 123, 20, 20, "<%= props.getProperty("pg1_msSingle", "").equals("")?"":"X"%>");
-    ff(240, 126, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_eduLevel", "")) %>");
+    ff(240, 126, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_eduLevel", ""))))%>");
 
     ff(8, 137, 200, 20, '<span class="tdname">Occupation</span>');
     ff(113, 137, 200, 20, '<span class="tdname">Language</span>');
@@ -117,13 +118,13 @@
     ff(550, 137, 200, 20, '<span class="tdname">Age</span>');
     ff(580, 137, 200, 20, '<span class="tdname">Occupation</span>');
 
-    ff(8, 148, 140, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_occupation", "")) %>");
-    ff(113, 148, 140, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_language", "")) %>");
-    ff(213, 148, 140, 20, "<%= props.getProperty("pg1_homePhone", "") %>");
-    ff(310, 148, 140, 20, "<%= props.getProperty("pg1_workPhone", "") %>");
-    ff(400, 148, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_partnerName", "")) %>");
-    ff(555, 148, 50, 20, "<%= props.getProperty("pg1_partnerAge", "") %>");
-    ff(580, 148, 140, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_partnerOccupation", "")) %>");
+    ff(8, 148, 140, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_occupation", ""))))%>");
+    ff(113, 148, 140, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_language", ""))))%>");
+    ff(213, 148, 140, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_homePhone", "")))%>");
+    ff(310, 148, 140, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_workPhone", "")))%>");
+    ff(400, 148, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_partnerName", ""))))%>");
+    ff(555, 148, 50, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_partnerAge", "")))%>");
+    ff(580, 148, 140, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_partnerOccupation", ""))))%>");
 
     ff(8, 160, 200, 20, '<span class="tdname">Birth attendants</span>');
     ff(150, 160, 200, 20, '<span class="tdname">Family physician</span>');
@@ -139,12 +140,12 @@
     ff(13, 175, 20, 20, "<%= props.getProperty("pg1_baObs", "").equals("")?"":"X"  %>");
     ff(55, 175, 20, 20, "<%= props.getProperty("pg1_baFP", "").equals("")?"":"X" %>");
     ff(90, 175, 20, 20, "<%= props.getProperty("pg1_baMidwife", "").equals("")?"":"X" %>");
-    ff(10, 195, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("c_ba", "")) %>");
-    ff(150, 175, 200, 100, "<%= UtilMisc.JSEscape(props.getProperty("pg1_famPhys", "")).replace("\\r", " ") %>");
+    ff(10, 195, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("c_ba", ""))))%>");
+    ff(150, 175, 200, 100, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_famPhys", "")).replace("\\r", " ")))%>");
     ff(324, 175, 20, 20, "<%= props.getProperty("pg1_ncPed", "").equals("")?"":"X" %>");
     ff(365, 175, 20, 20, "<%= props.getProperty("pg1_ncFP", "").equals("")?"":"X" %>");
     ff(400, 175, 20, 20, "<%= props.getProperty("pg1_ncMidwife", "").equals("")?"":"X" %>");
-    ff(320, 195, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("c_nc", "")) %>");
+    ff(320, 195, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("c_nc", ""))))%>");
 
     ff(23, 216, 200, 20, '<span class="tdname">VBAC</span>');
     ff(23, 236, 200, 20, '<span class="tdname">Repeat CS</span>');
@@ -159,11 +160,11 @@
     ff(354, 278, 200, 20, '<span class="tdname">Regular</span>');
     ff(420, 278, 200, 20, '<span class="tdname">EDB</span>');
 
-    ff(121, 271, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_menLMP", "")) %>");
-    ff(270, 273, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_menCycle", "")) %>");
+    ff(121, 271, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_menLMP", ""))))%>");
+    ff(270, 273, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_menCycle", ""))))%>");
     ff(342, 277, 20, 20, "<%= props.getProperty("pg1_menReg", "").equals("")?"":"X" %>");
-    ff(453, 273, 100, 20, "<%= props.getProperty("pg1_menEDB", "") %>");
-    ff(550, 298, 100, 20, "<%= props.getProperty("c_finalEDB", "") %>");
+    ff(453, 273, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_menEDB", "")))%>");
+    ff(550, 298, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("c_finalEDB", "")))%>");
 
     ff(6, 292, 200, 20, '<span class="tdname">Contraception:</span>');
     ff(24, 306, 200, 20, '<span class="tdname">IUD</span>');
@@ -173,10 +174,10 @@
 
     ff(12, 306, 20, 20, "<%= props.getProperty("pg1_iud", "").equals("")?"":"X" %>");
     ff(53, 306, 20, 20, "<%= props.getProperty("pg1_hormone", "").equals("")?"":"X" %>");
-    ff(140, 306, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_hormoneType", "")) %>");
+    ff(140, 306, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_hormoneType", ""))))%>");
     ff(244, 306, 20, 20, "<%= props.getProperty("pg1_otherAR1", "").equals("")?"":"X" %>");
-    ff(286, 303, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_otherAR1Name", "")) %>");
-    ff(440, 298, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_lastUsed", "")) %>");
+    ff(286, 303, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_otherAR1Name", ""))))%>");
+    ff(440, 298, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_lastUsed", ""))))%>");
 
     ff(6, 334, 200, 20, '<span class="tdname">Gravida</span>');
     ff(66, 334, 200, 20, '<span class="tdname">Term</span>');
@@ -190,19 +191,19 @@
     ff(638, 334, 200, 20, '<span class="tdname">Multipregnancy</span>');
     ff(639, 349, 50, 20, '<span class="tdname">No.</span>');
 
-    ff(12, 348, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("c_gravida", "")) %>");
-    ff(70, 348, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("c_term", "")) %>");
-    ff(93, 348, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("c_prem", "")) %>");
+    ff(12, 348, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("c_gravida", ""))))%>");
+    ff(70, 348, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("c_term", ""))))%>");
+    ff(93, 348, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("c_prem", ""))))%>");
     ff(131, 347, 20, 20, "<%= props.getProperty("pg1_ectopic", "").equals("")?"":"X" %>");
-    ff(189, 344, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_ectopicBox", "")) %>");
+    ff(189, 344, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_ectopicBox", ""))))%>");
     ff(244, 347, 20, 20, "<%= props.getProperty("pg1_termination", "").equals("")?"":"X" %>");
-    ff(312, 344, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_terminationBox", "")) %>");
+    ff(312, 344, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_terminationBox", ""))))%>");
     ff(367, 347, 20, 20, "<%= props.getProperty("pg1_spontaneous", "").equals("")?"":"X" %>");
-    ff(442, 344, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_spontaneousBox", "")) %>");
+    ff(442, 344, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_spontaneousBox", ""))))%>");
     ff(504, 347, 20, 20, "<%= props.getProperty("pg1_stillborn", "").equals("")?"":"X" %>");
-    ff(555, 344, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_stillbornBox", "")) %>");
-    ff(605, 348, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("c_living", "")) %>");
-    ff(653, 350, 200, 20, "<%= props.getProperty("pg1_multi", "") %>");
+    ff(555, 344, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_stillbornBox", ""))))%>");
+    ff(605, 348, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("c_living", ""))))%>");
+    ff(653, 350, 200, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_multi", "")))%>");
 
     ff(12, 395, 50, 20, '<span class="tdname">No.</span>');
     ff(38, 395, 50, 20, '<span class="tdname">Year</span>');
@@ -221,67 +222,67 @@
     ff(455, 395, 250, 20, '<span class="tdname">Comments regarding pregnancy and birth</span>');
 
     ff(12, 421, 20, 20, "1");
-    ff(36, 421, 100, 20, "<%= props.getProperty("pg1_year1", "") %>");
-    ff(78, 421, 20, 20, "<%= props.getProperty("pg1_sex1", "") %>");
-    ff(100, 421, 100, 20, "<%= props.getProperty("pg1_oh_gest1", "") %>");
-    ff(148, 421, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_weight1", "")) %>");
-    ff(200, 421, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_length1", "")) %>");
-    ff(245, 421, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_place1", "")) %>");
+    ff(36, 421, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_year1", "")))%>");
+    ff(78, 421, 20, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_sex1", "")))%>");
+    ff(100, 421, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_oh_gest1", "")))%>");
+    ff(148, 421, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_weight1", ""))))%>");
+    ff(200, 421, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_length1", ""))))%>");
+    ff(245, 421, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_place1", ""))))%>");
     ff(338, 421, 20, 20, "<%= props.getProperty("pg1_svb1", "").equals("")?"":"X" %>");
     ff(353, 421, 20, 20, "<%= props.getProperty("pg1_cs1", "").equals("")?"":"X" %>");
     ff(369, 421, 20, 20, "<%= props.getProperty("pg1_ass1", "").equals("")?"":"X" %>");
 
     ff(12, 439, 20, 20, "2");
-    ff(36, 439, 100, 20, "<%= props.getProperty("pg1_year2", "") %>");
-    ff(78, 439, 20, 20, "<%= props.getProperty("pg1_sex2", "") %>");
-    ff(100, 439, 100, 20, "<%= props.getProperty("pg1_oh_gest2", "") %>");
-    ff(148, 439, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_weight2", "")) %>");
-    ff(200, 439, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_length2", "")) %>");
-    ff(245, 439, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_place2", "")) %>");
+    ff(36, 439, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_year2", "")))%>");
+    ff(78, 439, 20, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_sex2", "")))%>");
+    ff(100, 439, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_oh_gest2", "")))%>");
+    ff(148, 439, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_weight2", ""))))%>");
+    ff(200, 439, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_length2", ""))))%>");
+    ff(245, 439, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_place2", ""))))%>");
     ff(338, 439, 20, 20, "<%= props.getProperty("pg1_svb2", "").equals("")?"":"X" %>");
     ff(353, 439, 20, 20, "<%= props.getProperty("pg1_cs2", "").equals("")?"":"X" %>");
     ff(369, 439, 20, 20, "<%= props.getProperty("pg1_ass2", "").equals("")?"":"X" %>");
 
     ff(12, 457, 20, 20, "3");
-    ff(36, 457, 100, 20, "<%= props.getProperty("pg1_year3", "") %>");
-    ff(78, 457, 20, 20, "<%= props.getProperty("pg1_sex3", "") %>");
-    ff(100, 457, 100, 20, "<%= props.getProperty("pg1_oh_gest3", "") %>");
-    ff(148, 457, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_weight3", "")) %>");
-    ff(200, 457, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_length3", "")) %>");
-    ff(245, 457, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_place3", "")) %>");
+    ff(36, 457, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_year3", "")))%>");
+    ff(78, 457, 20, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_sex3", "")))%>");
+    ff(100, 457, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_oh_gest3", "")))%>");
+    ff(148, 457, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_weight3", ""))))%>");
+    ff(200, 457, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_length3", ""))))%>");
+    ff(245, 457, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_place3", ""))))%>");
     ff(338, 457, 20, 20, "<%= props.getProperty("pg1_svb3", "").equals("")?"":"X" %>");
     ff(353, 457, 20, 20, "<%= props.getProperty("pg1_cs3", "").equals("")?"":"X" %>");
     ff(369, 457, 20, 20, "<%= props.getProperty("pg1_ass3", "").equals("")?"":"X" %>");
 
     ff(12, 476, 20, 20, "4");
-    ff(36, 476, 100, 20, "<%= props.getProperty("pg1_year4", "") %>");
-    ff(78, 476, 20, 20, "<%= props.getProperty("pg1_sex4", "") %>");
-    ff(100, 476, 100, 20, "<%= props.getProperty("pg1_oh_gest4", "") %>");
-    ff(148, 476, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_weight4", "")) %>");
-    ff(200, 476, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_length4", "")) %>");
-    ff(245, 476, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_place4", "")) %>");
+    ff(36, 476, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_year4", "")))%>");
+    ff(78, 476, 20, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_sex4", "")))%>");
+    ff(100, 476, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_oh_gest4", "")))%>");
+    ff(148, 476, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_weight4", ""))))%>");
+    ff(200, 476, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_length4", ""))))%>");
+    ff(245, 476, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_place4", ""))))%>");
     ff(338, 476, 20, 20, "<%= props.getProperty("pg1_svb4", "").equals("")?"":"X" %>");
     ff(353, 476, 20, 20, "<%= props.getProperty("pg1_cs4", "").equals("")?"":"X" %>");
     ff(369, 476, 20, 20, "<%= props.getProperty("pg1_ass4", "").equals("")?"":"X" %>");
 
     ff(12, 494, 20, 20, "5");
-    ff(36, 494, 100, 20, "<%= props.getProperty("pg1_year5", "") %>");
-    ff(78, 494, 20, 20, "<%= props.getProperty("pg1_sex5", "") %>");
-    ff(100, 494, 100, 20, "<%= props.getProperty("pg1_oh_gest5", "") %>");
-    ff(148, 494, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_weight5", "")) %>");
-    ff(200, 494, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_length5", "")) %>");
-    ff(245, 494, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_place5", "")) %>");
+    ff(36, 494, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_year5", "")))%>");
+    ff(78, 494, 20, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_sex5", "")))%>");
+    ff(100, 494, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_oh_gest5", "")))%>");
+    ff(148, 494, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_weight5", ""))))%>");
+    ff(200, 494, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_length5", ""))))%>");
+    ff(245, 494, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_place5", ""))))%>");
     ff(338, 494, 20, 20, "<%= props.getProperty("pg1_svb5", "").equals("")?"":"X" %>");
     ff(353, 494, 20, 20, "<%= props.getProperty("pg1_cs5", "").equals("")?"":"X" %>");
     ff(369, 494, 20, 20, "<%= props.getProperty("pg1_ass5", "").equals("")?"":"X" %>");
 
     ff(12, 512, 20, 20, "6");
-    ff(36, 512, 100, 20, "<%= props.getProperty("pg1_year6", "") %>");
-    ff(78, 512, 20, 20, "<%= props.getProperty("pg1_sex6", "") %>");
-    ff(100, 512, 100, 20, "<%= props.getProperty("pg1_oh_gest6", "") %>");
-    ff(148, 512, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_weight6", "")) %>");
-    ff(200, 512, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_length6", "")) %>");
-    ff(245, 512, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_place6", "")) %>");
+    ff(36, 512, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_year6", "")))%>");
+    ff(78, 512, 20, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_sex6", "")))%>");
+    ff(100, 512, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_oh_gest6", "")))%>");
+    ff(148, 512, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_weight6", ""))))%>");
+    ff(200, 512, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_length6", ""))))%>");
+    ff(245, 512, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_place6", ""))))%>");
     ff(338, 512, 20, 20, "<%= props.getProperty("pg1_svb6", "").equals("")?"":"X" %>");
     ff(353, 512, 20, 20, "<%= props.getProperty("pg1_cs6", "").equals("")?"":"X" %>");
     ff(369, 512, 20, 20, "<%= props.getProperty("pg1_ass6", "").equals("")?"":"X" %>");
@@ -319,10 +320,10 @@
 
     ff(102, 572, 20, 20, "<%= props.getProperty("pg1_cp1", "").equals("")?"":"X" %>");
     ff(102, 584, 20, 20, "<%= props.getProperty("pg1_cp2", "").equals("")?"":"X" %>");
-    ff(66, 605, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_box3", "")) %>");
+    ff(66, 605, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_box3", ""))))%>");
     ff(102, 608, 20, 20, "<%= props.getProperty("pg1_cp3", "").equals("")?"":"X" %>");
     ff(102, 620, 20, 20, "<%= props.getProperty("pg1_cp4", "").equals("")?"":"X" %>");
-    ff(69, 641, 100, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_box5", "")) %>");
+    ff(69, 641, 100, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_box5", ""))))%>");
     ff(102, 644, 20, 20, "<%= props.getProperty("pg1_cp5", "").equals("")?"":"X" %>");
     ff(102, 656, 20, 20, "<%= props.getProperty("pg1_cp6", "").equals("")?"":"X" %>");
     ff(102, 668, 20, 20, "<%= props.getProperty("pg1_cp7", "").equals("")?"":"X" %>");
@@ -412,7 +413,7 @@
     ff(246, 753, 20, 20, "<%= props.getProperty("pg1_no24", "").equals("")?"":"X" %>");
     ff(228, 765, 20, 20, "<%= props.getProperty("pg1_yes25", "").equals("")?"":"X" %>");
     ff(246, 765, 20, 20, "<%= props.getProperty("pg1_no25", "").equals("")?"":"X" %>");
-    ff(136, 780, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_box25", "")) %>");
+    ff(136, 780, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_box25", ""))))%>");
 
     ff(267, 571, 200, 20, '<span class="smalltdname">26.</span>');
     ff(283, 571, 200, 20, '<span class="smalltdname">Age&gt;=35 at EDB</span>');
@@ -495,7 +496,7 @@
     ff(572, 585, 20, 20, "<%= props.getProperty("pg1_idt39", "").equals("")?"":"X" %>");
     ff(572, 597, 20, 20, "<%= props.getProperty("pg1_idt40", "").equals("")?"":"X" %>");
     ff(572, 609, 20, 20, "<%= props.getProperty("pg1_idt41", "").equals("")?"":"X" %>");
-    ff(500, 617, 200, 20, '<span class="smalltdname"><%= UtilMisc.JSEscape(props.getProperty("pg1_box42", "")) %></span>');
+    ff(500, 617, 200, 20, '<span class="smalltdname"><%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_box42", ""))))%></span>');
     ff(572, 621, 20, 20, "<%= props.getProperty("pg1_idt42", "").equals("")?"":"X" %>");
 
     ff(442, 640, 200, 20, '<span class="smalltdname"><b>Psychosocial discussion topics</b></span>');
@@ -526,10 +527,10 @@
     ff(590, 587, 200, 20, '<span class="smalltdname">Pre-preg. wt.</span>');
     ff(590, 608, 100, 20, '<span class="smalltdname">BP</span>');
 
-    ff(602, 565, 20, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_ht", "")) %>");
-    ff(672, 565, 20, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_wt", "")) %>");
-    ff(642, 585, 20, 20, "<%= UtilMisc.JSEscape(props.getProperty("c_ppWt", "")) %>");
-    ff(610, 608, 20, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_BP", "")) %>");
+    ff(602, 565, 20, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_ht", ""))))%>");
+    ff(672, 565, 20, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_wt", ""))))%>");
+    ff(642, 585, 20, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("c_ppWt", ""))))%>");
+    ff(610, 608, 20, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_BP", ""))))%>");
 
     ff(591, 630, 200, 20, '<span class="smalltdname"><b>Checkmark if normal:</b></span>');
     ff(591, 643, 200, 20, '<span class="smalltdname">Head, teeth, ENT</span>');
@@ -558,12 +559,12 @@
     ff(693, 739, 20, 20, "<%= props.getProperty("pg1_pelvic", "").equals("")?"":"X" %>");
     ff(693, 751, 20, 20, "<%= props.getProperty("pg1_extGen", "").equals("")?"":"X" %>");
     ff(693, 763, 20, 20, "<%= props.getProperty("pg1_cervix", "").equals("")?"":"X" %>");
-    ff(622, 771, 20, 20, '<span class="smalltdname"><%= UtilMisc.JSEscape(props.getProperty("pg1_uterusBox", "")) %></span>');
+    ff(622, 771, 20, 20, '<span class="smalltdname"><%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_uterusBox", ""))))%></span>');
     ff(693, 775, 20, 20, "<%= props.getProperty("pg1_uterus", "").equals("")?"":"X" %>");
     ff(693, 787, 20, 20, "<%= props.getProperty("pg1_adnexa", "").equals("")?"":"X" %>");
 
-    ff(20, 935, 200, 20, "<%= UtilMisc.JSEscape(props.getProperty("pg1_signature", "")) %>");
-    ff(500, 935, 100, 20, "<%= props.getProperty("pg1_formDate", "") %>");
+    ff(20, 935, 200, 20, "<%=Encode.forJavaScript(String.valueOf(UtilMisc.JSEscape(props.getProperty("pg1_signature", ""))))%>");
+    ff(500, 935, 100, 20, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pg1_formDate", "")))%>");
 
     ff(6, 919, 300, 20, '<span class="tdname">Signature of attendant</span>');
     ff(430, 919, 300, 20, '<span class="tdname">Date (yyyy/mm/dd)</span>');
@@ -574,51 +575,51 @@
 </script>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=480+oox%>px; top:<%=ooy+175%>px; width:230px; height:30px;">
-    <pre><%= props.getProperty("pg1_ethnicBg")%></pre>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(480+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+175))%>px; width:230px; height:30px;">
+    <pre><%=Encode.forHtml(String.valueOf(props.getProperty("pg1_ethnicBg")))%></pre>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=80+oox%>px; top:<%=ooy+228%>px; width:280px; height:50px;">
-    <span class="smalltdname"><%= props.getProperty("c_allergies", "")%></span>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(80+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+228))%>px; width:280px; height:50px;">
+    <span class="smalltdname"><%=Encode.forHtml(String.valueOf(props.getProperty("c_allergies", "")))%></span>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=395+oox%>px; top:<%=ooy+228%>px; width:280px; height:50px;">
-    <span class="smalltdname"><%= props.getProperty("c_meds", "")%></span></div>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(395+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+228))%>px; width:280px; height:50px;">
+    <span class="smalltdname"><%=Encode.forHtml(String.valueOf(props.getProperty("c_meds", "")))%></span></div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=440+oox%>px; top:<%=ooy+748%>px; width:150px; height:60px;">
-    <span class="smalltdname"><%= props.getProperty("c_riskFactors", "")%></span>
-</div>
-
-<div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=12+oox%>px; top:<%=ooy+830%>px; width:300px; height:60px;">
-    <pre><%= props.getProperty("pg1_commentsAR1", "")%></pre>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(440+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+748))%>px; width:150px; height:60px;">
+    <span class="smalltdname"><%=Encode.forHtml(String.valueOf(props.getProperty("c_riskFactors", "")))%></span>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+421%>px; width:340px; height:20px;">
-    <%= props.getProperty("pg1_oh_comments1", "")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(12+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+830))%>px; width:300px; height:60px;">
+    <pre><%=Encode.forHtml(String.valueOf(props.getProperty("pg1_commentsAR1", "")))%></pre>
+</div>
+
+<div ID="bdiv1"
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+421))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_oh_comments1", "")))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+439%>px; width:340px; height:20px;">
-    <%= props.getProperty("pg1_oh_comments2", "")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+439))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_oh_comments2", "")))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+457%>px; width:340px; height:20px;">
-    <%= props.getProperty("pg1_oh_comments3", "")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+457))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_oh_comments3", "")))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+476%>px; width:340px; height:20px;">
-    <%= props.getProperty("pg1_oh_comments4", "")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+476))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_oh_comments4", "")))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+494%>px; width:340px; height:20px;">
-    <%= props.getProperty("pg1_oh_comments5", "")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+494))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_oh_comments5", "")))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+512%>px; width:340px; height:20px;">
-    <%= props.getProperty("pg1_oh_comments6", "")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+512))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_oh_comments6", "")))%>
 </div>
 </body>
 </html>

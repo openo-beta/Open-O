@@ -27,6 +27,7 @@
 <%@ page errorPage="/errorpage.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -151,15 +152,15 @@
         %>
         <tr>
             <td width="7%"><input type="checkbox" class="fileNames" name="choice" id="<%=i %>"
-                                  value="<%=file.getName() %>"> </input></td>
-            <td><%=file.getName() %>
+                                  value="<%=Encode.forHtmlAttribute(String.valueOf(file.getName()))%>"> </input></td>
+            <td><%=Encode.forHtml(String.valueOf(file.getName()))%>
             </td>
             <td><select class="fileTypes">
                 <option value="CL" <%= (file.getName().startsWith("H") ? "selected" : "") %> >Claims</option>
                 <option value="OB" <%= (file.getName().startsWith("OBEC") ? "selected" : "") %> >OBEC</option>
                 <option value="SDC">Stale Dated Claim</option>
             </select></td>
-            <td><%=new java.util.Date(file.lastModified()) %>
+            <td><%=Encode.forHtml(String.valueOf(new java.util.Date(file.lastModified())))%>
             </td>
         </tr>
         <% }

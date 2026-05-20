@@ -38,6 +38,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.ActionSupport;
 
 import ca.openosp.openo.commn.dao.ProviderDataDao;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.commn.dao.forms.FormsDao;
 import ca.openosp.openo.commn.model.ProviderData;
 import ca.openosp.openo.managers.SecurityInfoManager;
@@ -128,16 +129,19 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
         }
 
         // Extract parameters for position-based navigation
-        String orderBy = request.getParameter("orderBy") == null ? "date" : request.getParameter("orderBy");
+        String orderByParam = request.getParameter("orderBy") == null ? "date" : request.getParameter("orderBy");
         this.messagePosition = request.getParameter("messagePosition");
         this.demographic_no = request.getParameter("demographic_no");
         this.from = "encounter"; // Set 'from' parameter as in the original action
 
-        MsgDisplayMessagesBean displayMsgBean = new MsgDisplayMessagesBean();
+        // Validate messagePosition is a non-negative integer
+        if (!SqlUtils.isNumericId(this.messagePosition)) {
+            addActionError("Invalid message position.");
+            return ERROR;
+        }
 
-        String sql = "select m.messageid "
-                + "from messagetbl m, msgDemoMap mapp where mapp.demographic_no = :demographic_no "
-                + "and m.messageid = mapp.messageID order by " + displayMsgBean.getOrderBy(orderBy);
+        // Resolve to a safe SQL using only validated, whitelisted ORDER BY clauses
+        String sql = resolveMessageQueryWithSafeOrderBy(orderByParam);
 
         FormsDao dao = SpringUtils.getBean(FormsDao.class);
         EntityManager em = dao.getEntityManager();
@@ -147,7 +151,7 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
             query.setParameter("demographic_no", this.demographic_no);
             query.setFirstResult(Integer.parseInt(this.messagePosition));
             query.setMaxResults(1);
-            Integer messageIdResult = (Integer) query.getSingleResult();
+            Integer messageIdResult = ((Number) query.getSingleResult()).intValue();
 
             if (messageIdResult != null) {
                 this.messageID = messageIdResult.toString();
@@ -192,5 +196,40 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
 
     public void setMessagePosition(String messagePosition) {
         this.messagePosition = messagePosition;
+    }
+
+    /**
+     * Returns a safe, pre-built SQL query string with whitelisted ORDER BY clause.
+     * The orderBy parameter is validated against known safe values; unrecognized values default to "date".
+     * All returned queries are static string literals to prevent SQL injection.
+     */
+    private static String resolveMessageQueryWithSafeOrderBy(String orderByParam) {
+        // Static base query - never concatenated with user input
+        final String BASE_QUERY = "select m.messageid from messagetbl m, msgDemoMap mapp where mapp.demographic_no = :demographic_no and m.messageid = mapp.messageID order by ";
+
+        // Determine direction and stripped key
+        boolean descending = orderByParam != null && orderByParam.startsWith("!");
+        String key = (orderByParam != null && orderByParam.startsWith("!")) ? orderByParam.substring(1) : orderByParam;
+        String desc = descending ? " desc " : "";
+
+        // Whitelist lookup: only known safe column names allowed
+        String column;
+        if ("status".equals(key)) {
+            column = "status";
+        } else if ("from".equals(key)) {
+            column = "sentby";
+        } else if ("subject".equals(key)) {
+            column = "thesubject";
+        } else if ("sentto".equals(key)) {
+            column = "sentto";
+        } else if ("linked".equals(key)) {
+            column = "m.messageid is null";
+        } else {
+            // Default: date -> thedate
+            column = "thedate";
+        }
+
+        // All components are safe literals; no user input is concatenated
+        return BASE_QUERY + column + desc + ", m.messageid desc";
     }
 }

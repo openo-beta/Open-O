@@ -35,6 +35,7 @@
 <%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -83,7 +84,7 @@
                 </li>
                 <li>
                     <a href="javascript:void(0)" style="display: flex; align-items: flex-end;"
-                       onClick="window.open('${ctx}/provider/providerpreference.jsp?provider_no=<%=loggedInInfo.getLoggedInProviderNo()%>', 'height=680px,width=715px')"
+                       onClick="window.open('${ctx}/provider/providerpreference.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>', 'height=680px,width=715px')"
                        title='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>'>
                         <div class="glyphicon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -92,7 +93,7 @@
                             </svg>
                         </div>
                         <div>
-                            <c:out value='<%= loggedInInfo.getLoggedInProvider().getFirstName() + " " + loggedInInfo.getLoggedInProvider().getLastName() %>'/>
+                            <%=Encode.forHtml(String.valueOf(loggedInInfo.getLoggedInProvider().getFirstName() + " " + loggedInInfo.getLoggedInProvider().getLastName()))%>
                         </div>
                     </a>
                 </li>
@@ -105,12 +106,12 @@
     <% if (OscarProperties.getInstance().hasProperty("ONTARIO_MD_INCOMINGREQUESTOR")) {%>
     <div>
         <a href="javascript:void(0);" onClick="popupPage(600,175,'Calculators','<c:out
-                value="${ctx}"/>/commons/omdDiseaseList.jsp?sex=<%=bean.patientSex%>&age=<%=demographic.getAge()%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.OntMD"/></a>
+                value="${ctx}"/>/commons/omdDiseaseList.jsp?sex=<%=Encode.forHtml(String.valueOf(bean.patientSex))%>&age=<%=Encode.forHtml(String.valueOf(demographic.getAge()))%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.OntMD"/></a>
     </div>
     <%}%>
 
     <div>
-        <%=getEChartLinks() %>
+        <%=Encode.forHtml(String.valueOf(getEChartLinks()))%>
     </div>
 
     <%

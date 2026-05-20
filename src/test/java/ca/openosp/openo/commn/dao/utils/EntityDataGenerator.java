@@ -23,9 +23,16 @@
  */
 package ca.openosp.openo.commn.dao.utils;
 
+import ca.openosp.openo.commn.model.DemographicExt;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.MiscUtils;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Id;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -34,15 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javassist.Modifier;
-
-import javax.persistence.EmbeddedId;
-import javax.persistence.Id;
-
-import ca.openosp.openo.commn.model.DemographicExt;
-import ca.openosp.openo.commn.model.Provider;
-import ca.openosp.openo.utility.MiscUtils;
 
 public class EntityDataGenerator {
 

@@ -154,15 +154,15 @@
     <div id="maincontent">
         <div id="content_bar" class="innertube">
             <form action="${pageContext.request.contextPath}/form/BCAR2020.do" method="post">
-                <input type="hidden" id="demographicNo" name="demographicNo" value="<%=demoNo%>"/>
-                <input type="hidden" id="formId" name="formId" value="<%=formId%>"/>
+                <input type="hidden" id="demographicNo" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>"/>
+                <input type="hidden" id="formId" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
                 <input type="hidden" name="provider_no" value=<%=Encode.forHtmlAttribute(providerNo)%>/>
                 <input type="hidden" id="user" name="provNo" value=<%=provNo%>/>
                 <input type="hidden" name="method" value="exit"/>
 
-                <input type="hidden" name="forwardTo" value="<%=pageNo%>"/>
-                <input type="hidden" name="pageNo" value="<%=pageNo%>"/>
-                <input type="hidden" name="formCreated" value="<%= props.getProperty("formCreated", "") %>"/>
+                <input type="hidden" name="forwardTo" value="<%=Encode.forHtmlAttribute(String.valueOf(pageNo))%>"/>
+                <input type="hidden" name="pageNo" value="<%=Encode.forHtmlAttribute(String.valueOf(pageNo))%>"/>
+                <input type="hidden" name="formCreated" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
 
                 <input type="hidden" id="printPg1" name="printPg1" value=""/>
                 <input type="hidden" id="printPg2" name="printPg2" value=""/>
@@ -483,34 +483,34 @@
                             Initials
                         </th>
                     </tr>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "15")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "16")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "17")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "18")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "19")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "20")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "21")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "22")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "23")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "24")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "25")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "26")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "27")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "28")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "29")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "30")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "31")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "32")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "33")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "34")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "35")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "36")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "37")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "38")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "39")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "40")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "41")%>
-                    <%=((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "42")%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "15")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "16")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "17")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "18")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "19")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "20")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "21")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "22")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "23")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "24")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "25")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "26")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "27")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "28")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "29")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "30")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "31")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "32")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "33")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "34")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "35")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "36")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "37")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "38")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "39")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "40")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "41")))%>
+                    <%=Encode.forHtml(String.valueOf(((FrmBCAR2020Record) rec).createPrenatalVisitRow(props, "42")))%>
 
                 </table>
                 <table width="100%" class="outside-border">

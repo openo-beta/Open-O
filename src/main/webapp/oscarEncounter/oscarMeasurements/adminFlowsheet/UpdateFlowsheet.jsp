@@ -54,6 +54,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.util.TargetCondition" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.util.TargetColour" %>
 <%@ page import="ca.openosp.openo.commn.dao.FlowSheetCustomizationDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -116,7 +117,7 @@ if(scope != null && "clinic".equals(scope)) {
 <html>
 
     <head>
-        <title>Update Flowsheet <%=flowsheet%> <oscar:nameage demographicNo="<%=demographic%>"/></title><!--I18n-->
+        <title>Update Flowsheet <%=Encode.forHtml(String.valueOf(flowsheet))%> <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographic))%>"/></title><!--I18n-->
 
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet">
 
@@ -152,7 +153,7 @@ display:inline-block;
         if (request.getParameter("demographic") == null) { %>
 <div class="navbar" id="demoHeader"><div class="navbar-inner">
     <a class="brand" href="javascript:void(0)">Update Flowsheet Measurement</a>
-    <em>for <strong><%=flowsheet%></strong> flowsheet </em>
+    <em>for <strong><%=Encode.forHtml(String.valueOf(flowsheet))%></strong> flowsheet </em>
 </div></div>
     <%} else { %>
     <%@ include file="/share/templates/patient.jspf" %>
@@ -166,31 +167,31 @@ display:inline-block;
         <div class="span8">
 <form action="FlowSheetCustomAction.do" onsubmit="return validateRuleValue();">
                 <input type="hidden" name="method" value="update"/>
-                <input type="hidden" name="flowsheet" value="<%=flowsheet%>"/>
-                <input type="hidden" name="measurement" value="<%=measurement%>"/>
+                <input type="hidden" name="flowsheet" value="<%=Encode.forHtmlAttribute(String.valueOf(flowsheet))%>"/>
+                <input type="hidden" name="measurement" value="<%=Encode.forHtmlAttribute(String.valueOf(measurement))%>"/>
 
                 <%if (request.getParameter("demographic") != null) { %>
-                <input type="hidden" name="demographic" value="<%=demographic%>"/>
+                <input type="hidden" name="demographic" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic))%>"/>
                 <%} %>
                 <%if (request.getParameter("scope") != null) { %>
-                <input type="hidden" name="scope" value="<%=request.getParameter("scope")%>"/>
+                <input type="hidden" name="scope" value="<%=Encode.forHtmlAttribute(request.getParameter("scope"))%>"/>
                 <%} %>
                 <fieldset width="300px">
                     <input type="hidden" name="updater" value="yes"/>
-                    <input type="hidden" name="prevention_type" value="<%=h2.get("prevention_type")%>"/>
-                    <input type="hidden" name="measurement_type" value="<%=h2.get("measurement_type")%>"/>
+                    <input type="hidden" name="prevention_type" value="<%=Encode.forHtmlAttribute(String.valueOf(h2.get("prevention_type")))%>"/>
+                    <input type="hidden" name="measurement_type" value="<%=Encode.forHtmlAttribute(String.valueOf(h2.get("measurement_type")))%>"/>
 
                     <div class="well">
                         <h4>Measurement Details</h4>
 
                         <div class="mtype-details">
                             Display Name: <br/>
-                            <input type="text" name="display_name" value="<%= h2.get("display_name")%>"/>
+                            <input type="text" name="display_name" value="<%=Encode.forHtmlAttribute(String.valueOf(h2.get("display_name")))%>"/>
                         </div>
 
                         <div class="mtype-details">
                             Guideline: <br/>
-                            <input type="text" name="guideline" value="<%=h2.get("guideline")%>"/>
+                            <input type="text" name="guideline" value="<%=Encode.forHtmlAttribute(String.valueOf(h2.get("guideline")))%>"/>
                         </div>
 
                         <div class="mtype-details">
@@ -203,7 +204,7 @@ display:inline-block;
 
                         <div class="mtype-details">
                             Value Name:<br/>
-                            <input type="text" name="value_name" value="<%=h2.get("value_name")%>"/>
+                            <input type="text" name="value_name" value="<%=Encode.forHtmlAttribute(String.valueOf(h2.get("value_name")))%>"/>
                         </div>
                     </div>
 
@@ -231,7 +232,7 @@ display:inline-block;
 
                                     <div class="mtype-details">
                                         Text: <br/><input type="text" name="text<%=count%>" length="100"
-                                                          value="<%=e.getText()%>"/>
+                                                          value="<%=Encode.forHtmlAttribute(String.valueOf(e.getText()))%>"/>
                                     </div>
 
                                <%
@@ -241,18 +242,18 @@ display:inline-block;
 							<br />
 							<div class="mtype-details">
 							<br />
-                               <select name="type<%=count%>c<%=condCount%>" >
+                               <select name="type<%=count%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>" >
                                         <option value="monthrange"        <%=sel("monthrange", cond.getType())%>     >Month Range</option>
                                         <option value="lastValueAsInt"    <%=sel("lastValueAsInt",cond.getType())%>  >Last Int Value </option>
                                    </select>
 							</div>
 
 							<div class="mtype-details">
-                                   Param: <br /><input type="text" name="param<%=count%>c<%=condCount%>" value="<%=s(cond.getParam())%>" />
+                                   Param: <br /><input type="text" name="param<%=count%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(s(cond.getParam())))%>" />
                             </div>
 
                             <div class="mtype-details">
-                                   Value: <br /><input type="text" class="ruleValue" name="value<%=count%>c<%=condCount%>" value="<%=cond.getValue()%>" placeholder="e.g. 5-10, >5, <10, 7"/>
+                                   Value: <br /><input type="text" class="ruleValue" name="value<%=count%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(cond.getValue()))%>" placeholder="e.g. 5-10, >5, <10, 7"/>
                                    <br><div class="errorRuleValue"></div>
                              </div>
 
@@ -264,18 +265,18 @@ display:inline-block;
 
                                     <div class="mtype-details">
                                         <br/>
-                                        <select name="type<%=count%>c<%=condCount%>">
+                                        <select name="type<%=count%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>">
                                             <option value="monthrange">Month Range</option>
                                             <option value="lastValueAsInt">Last Int Value</option>
                                         </select>
                                     </div>
 
                                     <div class="mtype-details">
-                                        Param: <br/> <input type="text" name="param<%=count%>c<%=condCount%>"/>
+                                        Param: <br/> <input type="text" name="param<%=count%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>"/>
                                     </div>
 
                                     <div class="mtype-details">
-                                        Value: <br /><input type="text" class="ruleValue" name="value<%=count%>c<%=condCount%>" placeholder="e.g. 5-10, >5, <10, 7" />
+                                        Value: <br /><input type="text" class="ruleValue" name="value<%=count%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>" placeholder="e.g. 5-10, >5, <10, 7" />
                                         <br><div class="errorRuleValue"></div>
                                		</div>
 
@@ -336,7 +337,7 @@ display:inline-block;
 
                             <tr>
                                 <td>
-                                    <h4>Target <%=targetCount%>
+                                    <h4>Target <%=Encode.forHtml(String.valueOf(targetCount))%>
                                     </h4>
 
 
@@ -348,7 +349,7 @@ display:inline-block;
 
                                     <div class="mtype-details">
                                         <br/>
-                                        <select name="targettype<%=targetCount%>c<%=condCount%>">
+                                        <select name="targettype<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>">
                                             <option value="getDataAsDouble"     <%=sel("getDataAsDouble", cond.getType())%>  >
                                                 Number Value
                                             </option>
@@ -368,13 +369,13 @@ display:inline-block;
                                     </div>
 
                                     <div class="mtype-details">
-                                        Param:<br/> <input type="text" name="targetparam<%=targetCount%>c<%=condCount%>"
-                                                           value="<%=s(cond.getParam())%>"/>
+                                        Param:<br/> <input type="text" name="targetparam<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>"
+                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(s(cond.getParam())))%>"/>
                                     </div>
 
                                     <div class="mtype-details">
-                                        Value: <br/><input type="text" name="targetvalue<%=targetCount%>c<%=condCount%>"
-                                                           value="<%=cond.getValue()%>"/>
+                                        Value: <br/><input type="text" name="targetvalue<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>"
+                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(cond.getValue()))%>"/>
                                     </div>
                                     <br/>
 
@@ -385,7 +386,7 @@ display:inline-block;
 
                                     <div class="mtype-details">
                                         <br/>
-                                        <select name="targettype<%=targetCount%>c<%=condCount%>">
+                                        <select name="targettype<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>">
                                             <option value="-1">Not Set</option>
                                             <option value="getDataAsDouble">Number Value</option>
                                             <option value="isMale"> Is Male</option>
@@ -396,12 +397,12 @@ display:inline-block;
                                     </div>
 
                                     <div class="mtype-details">
-                                        Param: <br/><input type="text" name="targetparam<%=targetCount%>c<%=condCount%>"
+                                        Param: <br/><input type="text" name="targetparam<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>"
                                                            value=""/>
                                     </div>
 
                                     <div class="mtype-details">
-                                        Value: <br/><input type="text" name="targetvalue<%=targetCount%>c<%=condCount%>"
+                                        Value: <br/><input type="text" name="targetvalue<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>c<%=Encode.forHtmlAttribute(String.valueOf(condCount))%>"
                                                            value=""/>
                                     </div>
 
@@ -416,9 +417,9 @@ display:inline-block;
                                                 String colour = (String) en.nextElement();
                                         %>
 
-                                        <li style="display:inline;background-color:<%=colourHash.get(colour)%>;">
-                                            <input type="radio" name="col<%=targetCount%>"
-                                                   value="<%=colour%>" <%=s(colour, tc.getIndicationColor())%> ><%=colour%>
+                                        <li style="display:inline;background-color:<%=Encode.forHtmlAttribute(String.valueOf(colourHash.get(colour)))%>;">
+                                            <input type="radio" name="col<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>"
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(colour))%>" <%=Encode.forHtml(String.valueOf(s(colour, tc.getIndicationColor())))%> ><%=Encode.forHtml(String.valueOf(colour))%>
                                             </input>
                                         </li>
                                         <%}%>
@@ -434,13 +435,13 @@ display:inline-block;
 
                             <tr>
                                 <td>
-                                    <h4>Target <%=targetCount%>
+                                    <h4>Target <%=Encode.forHtml(String.valueOf(targetCount))%>
                                     </h4>
 
 
                                     <div class="mtype-details">
                                         <br/>
-                                        <select name="targettype<%=targetCount%>c1">
+                                        <select name="targettype<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>c1">
                                             <option value="-1">Not Set</option>
                                             <option value="getDataAsDouble">Number Value</option>
                                             <option value="isMale"> Is Male</option>
@@ -451,11 +452,11 @@ display:inline-block;
                                     </div>
 
                                     <div class="mtype-details">
-                                        Param: <br/><input type="text" name="targetparam<%=targetCount%>c1" value=""/>
+                                        Param: <br/><input type="text" name="targetparam<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>c1" value=""/>
                                     </div>
 
                                     <div class="mtype-details">
-                                        Value: <br/><input type="text" name="targetvalue<%=targetCount%>c1" value=""/>
+                                        Value: <br/><input type="text" name="targetvalue<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>c1" value=""/>
                                     </div>
                                     <br/>
 
@@ -466,9 +467,9 @@ display:inline-block;
                                             while (en.hasMoreElements()) {
                                                 String colour = (String) en.nextElement();
                                         %>
-                                        <li style="display:inline;background-color:<%=colourHash.get(colour)%>;">
-                                            <input type="radio" name="col<%=targetCount%>"
-                                                   value="<%=colour%>"><%=colour%>
+                                        <li style="display:inline;background-color:<%=Encode.forHtmlAttribute(String.valueOf(colourHash.get(colour)))%>;">
+                                            <input type="radio" name="col<%=Encode.forHtmlAttribute(String.valueOf(targetCount))%>"
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(colour))%>"><%=Encode.forHtml(String.valueOf(colour))%>
                                             </input>
                                         </li>
                                         <%}%>
@@ -481,9 +482,9 @@ display:inline-block;
 
                     <div style="width:100%;text-align:right">
                         <%if (request.getParameter("demographic") == null) { %>
-                        <a href="EditFlowsheet.jsp?flowsheet=<%=flowsheet%><%=htQueryString%><%=scope != null ? "&scope=" + scope : ""%>" class="btn">Cancel</a>
+                        <a href="EditFlowsheet.jsp?flowsheet=<%=Encode.forUriComponent(String.valueOf(flowsheet))%><%=Encode.forUriComponent(String.valueOf(htQueryString))%><%=Encode.forUriComponent(String.valueOf(scope != null ? "&scope=" + scope : ""))%>" class="btn">Cancel</a>
                         <%} else { %>
-                        <a href="EditFlowsheet.jsp?flowsheet=<%=flowsheet%>&demographic=<%=demographic%><%=htQueryString%><%=scope != null ? "&scope=" + scope : ""%>"
+                        <a href="EditFlowsheet.jsp?flowsheet=<%=Encode.forUriComponent(String.valueOf(flowsheet))%>&demographic=<%=Encode.forUriComponent(String.valueOf(demographic))%><%=Encode.forUriComponent(String.valueOf(htQueryString))%><%=Encode.forUriComponent(String.valueOf(scope != null ? "&scope=" + scope : ""))%>"
                            class="btn">Cancel</a>
                         <%} %>
                         <input type="submit" class="btn btn-primary" value="Update"/>
