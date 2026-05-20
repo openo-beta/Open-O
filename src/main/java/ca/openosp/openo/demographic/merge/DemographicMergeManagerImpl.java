@@ -289,10 +289,10 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", privilege, null)) {
-            throw new RuntimeException("missing required sec object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", privilege, null)) {
-            throw new RuntimeException("missing required sec object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
     }
 
