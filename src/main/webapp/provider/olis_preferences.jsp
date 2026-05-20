@@ -208,6 +208,7 @@
                         $.getJSON(endpoint, {query: req.term, 'class': facilityClass}, function (data) {
                             response($.map(data.results || [], function (item) {
                                 var label = item.name;
+                                if (item.addressLine1) label = label + ', ' + item.addressLine1;
                                 if (item.city) label = label + ', ' + item.city;
                                 label = label + ' [' + item.licence + ']';
                                 return {label: label, value: label, item: item};

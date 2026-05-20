@@ -35,32 +35,53 @@ public class OLISFacilityDao extends AbstractDaoImpl<OLISFacility> {
     }
 
     /**
-     * Active rows for one class, used by the AJAX picker to provide name+licence
-     * suggestions. Case-insensitive substring match against the facility name; ties
-     * broken alphabetically.
+     * Active rows for one class, used by the AJAX picker to provide name+address
+     * +city+licence suggestions. Splits the user query on whitespace and requires
+     * EVERY token to appear (in any order) within the haystack
+     * {@code lower(name + ' ' + addressLine1 + ' ' + city)}. So a single-token
+     * query like {@code "lifelabs"} matches anywhere; a multi-token query like
+     * {@code "lifelabs toronto"} narrows to rows containing both tokens
+     * regardless of adjacency (the address text between name and city would
+     * otherwise break a naive contiguous-substring LIKE). Capped at 4 tokens
+     * (extras ignored) so the SQL stays one literal with fixed parameter slots.
+     * Unused slots are bound to {@code "%"} which matches every row.
+     * <p>
+     * The address span is what disambiguates the ~23 LifeLabs SCCs all in
+     * city=Toronto — each has a distinct addressLine1.
      *
      * @param facilityClass String "LAB", "SCC", or null/"ANY" for both
-     * @param term          String substring to match
+     * @param term          String whitespace-separated tokens; all must match
      * @param limit         int max rows to return
      * @return List of matching active facilities, at most {@code limit} entries
      */
     @SuppressWarnings("unchecked")
     public List<OLISFacility> findByClassAndNameLike(String facilityClass, String term, int limit) {
-        StringBuilder sql = new StringBuilder("select x from ")
-                .append(this.modelClass.getName())
-                .append(" x where x.status = 'ACTIVE' and lower(x.name) like :term");
-        boolean filterClass = (facilityClass != null
-                && !facilityClass.isEmpty()
-                && !"ANY".equalsIgnoreCase(facilityClass));
-        if (filterClass) {
-            sql.append(" and x.facilityClass = :facilityClass");
+        String[] split = term.toLowerCase().trim().split("\\s+");
+        java.util.List<String> tokens = new java.util.ArrayList<String>();
+        for (String t : split) {
+            if (!t.isEmpty()) {
+                tokens.add("%" + t + "%");
+            }
         }
-        sql.append(" order by x.name, x.licenceNumber");
-        Query query = entityManager.createQuery(sql.toString());
-        query.setParameter("term", "%" + term.toLowerCase() + "%");
+        if (tokens.isEmpty()) {
+            return java.util.Collections.emptyList();
+        }
+        // Pad to exactly 4 token slots so the SQL stays a fixed literal; cap extras.
+        while (tokens.size() < 4) tokens.add("%");
+        if (tokens.size() > 4) tokens = tokens.subList(0, 4);
+
+        boolean filterClass = (facilityClass != null && !facilityClass.isEmpty() && !"ANY".equalsIgnoreCase(facilityClass));
+        Query query;
         if (filterClass) {
+            query = entityManager.createQuery("select x from ca.openosp.openo.olis.model.OLISFacility x where x.status = 'ACTIVE' and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term0 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term1 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term2 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term3 and x.facilityClass = :facilityClass order by x.name, x.city, x.licenceNumber");
             query.setParameter("facilityClass", facilityClass);
+        } else {
+            query = entityManager.createQuery("select x from ca.openosp.openo.olis.model.OLISFacility x where x.status = 'ACTIVE' and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term0 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term1 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term2 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term3 order by x.name, x.city, x.licenceNumber");
         }
+        query.setParameter("term0", tokens.get(0));
+        query.setParameter("term1", tokens.get(1));
+        query.setParameter("term2", tokens.get(2));
+        query.setParameter("term3", tokens.get(3));
         query.setMaxResults(limit);
         return query.getResultList();
     }

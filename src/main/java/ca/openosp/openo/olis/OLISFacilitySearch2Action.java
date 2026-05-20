@@ -87,6 +87,7 @@ public class OLISFacilitySearch2Action extends ActionSupport {
         Map<String, String> m = new LinkedHashMap<String, String>();
         m.put("licence", f.getLicenceNumber() == null ? "" : f.getLicenceNumber());
         m.put("name", f.getName() == null ? "" : f.getName().trim());
+        m.put("addressLine1", f.getAddressLine1() == null ? "" : f.getAddressLine1().trim());
         m.put("city", f.getCity() == null ? "" : f.getCity().trim());
         m.put("facilityClass", f.getFacilityClass() == null ? "" : f.getFacilityClass());
         return m;
