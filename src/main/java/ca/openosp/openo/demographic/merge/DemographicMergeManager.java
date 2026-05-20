@@ -66,23 +66,6 @@ public interface DemographicMergeManager {
     Integer merge(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos);
 
     /**
-     * Marks the primary and all secondary demographics as inactive ({@code IN}) in a separate,
-     * short-lived transaction.
-     * <p>
-     * This method must be called immediately after {@link #merge} returns successfully.
-     * Separating the status update into its own transaction prevents the legacy Hibernate
-     * {@code SessionFactory} connection (used by {@code DemographicDaoImpl}) from timing
-     * out during the long-running data-copy transaction: the copy transaction commits with
-     * no dirty entities in the legacy session, then this short transaction applies the
-     * status changes without risk of a connection timeout.
-     *
-     * @param loggedInInfo            LoggedInInfo the authenticated provider performing the operation
-     * @param primaryDemographicNo    Integer the demographic_no of the primary patient (A)
-     * @param secondaryDemographicNos List&lt;Integer&gt; demographic_nos of all secondary patients
-     */
-    void applyMergeStatuses(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos);
-
-    /**
      * Loads the latest MERGE event for each given merged demographic number.
      * Used by the unmerge tab to populate the accordion showing merge history.
      * Demographics with no matching event are silently omitted from the result.
