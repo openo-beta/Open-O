@@ -474,19 +474,20 @@ public final class MessageUploader {
      * @return PatientLabRoutingResult the single matched patient, or null
      * @throws SQLException if a database error occurs
      */
-    private static PatientLabRoutingResult executeHinMatchQuery(String sql, Connection conn) throws SQLException {
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        ResultSet rs = pstmt.executeQuery();
+    private static PatientLabRoutingResult executeHinMatchQuery(String sql, Object[] params, Connection conn) throws SQLException {
         PatientLabRoutingResult result = null;
         int count = 0;
-        while (rs.next()) {
-            result = new PatientLabRoutingResult();
-            result.setDemographicNo(Integer.parseInt(Misc.getString(rs, "demographic_no")));
-            result.setProviderNo(Misc.getString(rs, "provider_no"));
-            count++;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) pstmt.setObject(i + 1, params[i]);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    result = new PatientLabRoutingResult();
+                    result.setDemographicNo(Integer.parseInt(Misc.getString(rs, "demographic_no")));
+                    result.setProviderNo(Misc.getString(rs, "provider_no"));
+                    count++;
+                }
+            }
         }
-        rs.close();
-        pstmt.close();
 
         if (count <= 1) {
             return result;
@@ -494,17 +495,18 @@ public final class MessageUploader {
 
         // Multiple matches — retry with active-only filter to resolve merged patients.
         result = null;
-        pstmt = conn.prepareStatement(sql + " and patient_status = 'AC' ");
-        rs = pstmt.executeQuery();
         int countAc = 0;
-        while (rs.next()) {
-            result = new PatientLabRoutingResult();
-            result.setDemographicNo(Integer.parseInt(Misc.getString(rs, "demographic_no")));
-            result.setProviderNo(Misc.getString(rs, "provider_no"));
-            countAc++;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql + " and patient_status = 'AC' ")) {
+            for (int i = 0; i < params.length; i++) pstmt.setObject(i + 1, params[i]);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    result = new PatientLabRoutingResult();
+                    result.setDemographicNo(Integer.parseInt(Misc.getString(rs, "demographic_no")));
+                    result.setProviderNo(Misc.getString(rs, "provider_no"));
+                    countAc++;
+                }
+            }
         }
-        rs.close();
-        pstmt.close();
         return countAc == 1 ? result : null;
     }
 
@@ -537,10 +539,10 @@ public final class MessageUploader {
                 return null;
             }
 
-            sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name = '" + lastName + "' and " + " year_of_birth = '" + dobYear + "' and " + " month_of_birth = '" + dobMonth + "' and " + " date_of_birth = '" + dobDay + "' and " + " sex = '" + sex + "' ";
+            sql = "select demographic_no, provider_no from demographic where hin=? and last_name=? and year_of_birth=? and month_of_birth=? and date_of_birth=? and sex=?";
 
             logger.debug(sql);
-            result = executeHinMatchQuery(sql, conn);
+            result = executeHinMatchQuery(sql, new Object[]{hinMod, lastName, dobYear, dobMonth, dobDay, sex}, conn);
 
         } catch (SQLException sqlE) {
             return null;
@@ -579,10 +581,10 @@ public final class MessageUploader {
                 return null;
             }
 
-            sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name = '" + lastName + "' and " + " year_of_birth = '" + dobYear + "' and " + " month_of_birth = '" + dobMonth + "' and " + " date_of_birth = '" + dobDay + "' and " + " sex = '" + sex + "' ";
+            sql = "select demographic_no, provider_no from demographic where hin=? and last_name=? and year_of_birth=? and month_of_birth=? and date_of_birth=? and sex=?";
 
             logger.debug(sql);
-            result = executeHinMatchQuery(sql, conn);
+            result = executeHinMatchQuery(sql, new Object[]{hinMod, lastName, dobYear, dobMonth, dobDay, sex}, conn);
 
         } catch (SQLException sqlE) {
             throw sqlE;
@@ -662,17 +664,20 @@ public final class MessageUploader {
 
 
 				// HIN is ALWAYS required for lab matching. Please do not revert this code. Previous iterations have caused fatal patient miss-matches.
+				Object[] params = null;
 				if(hinMod != null && !hinMod.trim().isEmpty()) {
 					if (OscarProperties.getInstance().getBooleanProperty("LAB_NOMATCH_NAMES", "yes")) {
-						sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " year_of_birth like '" + dobYear + "' and " + " month_of_birth like '" + dobMonth + "' and " + " date_of_birth like '" + dobDay + "' and " + " sex like '" + sex + "%' ";
+						sql = "select demographic_no, provider_no from demographic where hin=? and year_of_birth like ? and month_of_birth like ? and date_of_birth like ? and sex like ?";
+						params = new Object[]{hinMod, dobYear, dobMonth, dobDay, sex + "%"};
 					} else {
-						sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name like '" + lastName + "%' and " + " first_name like '" + firstName + "%' and " + " year_of_birth like '" + dobYear + "' and " + " month_of_birth like '" + dobMonth + "' and " + " date_of_birth like '" + dobDay + "' and " + " sex like '" + sex + "%' ";
+						sql = "select demographic_no, provider_no from demographic where hin=? and last_name like ? and first_name like ? and year_of_birth like ? and month_of_birth like ? and date_of_birth like ? and sex like ?";
+						params = new Object[]{hinMod, lastName + "%", firstName + "%", dobYear, dobMonth, dobDay, sex + "%"};
 					}
 				}
 
 				if (sql != null) {
 					logger.debug(sql);
-					result = executeHinMatchQuery(sql, conn);
+					result = executeHinMatchQuery(sql, params, conn);
 				}
 			} catch (SQLException sqlE) {
 				throw sqlE;

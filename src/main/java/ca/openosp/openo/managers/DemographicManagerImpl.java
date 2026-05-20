@@ -1386,7 +1386,6 @@ public class DemographicManagerImpl implements DemographicManager {
     public List<Demographic> searchMergedDemographicsForUnmerge(LoggedInInfo loggedInInfo, String keyword,
                                                                 String searchMode, int limit, int offset) {
         checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
         List<Demographic> results;
         switch (searchMode == null ? "search_name" : searchMode) {
             case "search_dob":     results = demographicDao.findActiveMergedDemographicByDOB(keyword, limit, offset);     break;
