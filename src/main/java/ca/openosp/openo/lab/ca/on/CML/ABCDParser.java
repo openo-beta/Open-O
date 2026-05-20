@@ -128,6 +128,50 @@ public class ABCDParser {
     /////
 
 
+    /**
+     * Executes a HIN-based demographic match query and returns the matching demographic_no,
+     * or "0" if no match or the match is ambiguous.
+     * <p>
+     * If exactly one row matches it is returned as-is — covering active and genuinely inactive
+     * patients. If multiple rows match, the query is retried with {@code AND patient_status = 'AC'}
+     * to resolve a merged patient scenario (A=IN, C=AC share the same HIN). Only if that narrowed
+     * query returns exactly one row is it used; otherwise "0" is returned.
+     *
+     * @param sql  String the base SELECT query (must return a demographic_no column)
+     * @param conn Connection the database connection to use
+     * @return String the matched demographic_no, or "0"
+     * @throws SQLException if a database error occurs
+     */
+    private String executeHinMatchQuery(String sql, Connection conn) throws SQLException {
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery();
+        String demo = "0";
+        int count = 0;
+        while (rs.next()) {
+            count++;
+            demo = Misc.getString(rs, "demographic_no");
+        }
+        rs.close();
+        pstmt.close();
+
+        if (count <= 1) {
+            return demo;
+        }
+
+        // Multiple matches — retry with active-only filter to resolve merged patients.
+        demo = "0";
+        count = 0;
+        pstmt = conn.prepareStatement(sql + " and patient_status = 'AC' ");
+        rs = pstmt.executeQuery();
+        while (rs.next()) {
+            count++;
+            demo = Misc.getString(rs, "demographic_no");
+        }
+        rs.close();
+        pstmt.close();
+        return count == 1 ? demo : "0";
+    }
+
     public void patientRouteReport(String labId, String lastName, String firstName, String sex, String dob, String hin, Connection conn) {
 
         String sql;
@@ -148,7 +192,6 @@ public class ABCDParser {
             dobDay = dob.substring(6, 8);
         }
 
-        int count = 0;
         try {
 
             if (OscarProperties.getInstance().getBooleanProperty("LAB_NOMATCH_NAMES", "yes")) {
@@ -167,24 +210,14 @@ public class ABCDParser {
                         " sex like '" + sex + "%' ";
             }
 
-
             MiscUtils.getLogger().debug(sql);
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                count++;
-                demo = Misc.getString(rs, "demographic_no");
-            }
-            rs.close();
-            pstmt.close();
+            demo = executeHinMatchQuery(sql, conn);
         } catch (SQLException sqlE) {
             MiscUtils.getLogger().error("Error", sqlE);
         }
 
-
-        if (count != 1) {
-            demo = "0";
-            logger.info("Could not find patient for lab: " + labId + "# of possible matches :" + count);
+        if ("0".equals(demo)) {
+            logger.info("Could not find patient for lab: " + labId);
         }
 
         PatientLabRouting p = new PatientLabRouting();
