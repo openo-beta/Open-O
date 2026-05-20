@@ -1337,8 +1337,11 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
             }
         }
 
+        // form_boolean_value — copyFormJdbcWithMap intentionally skips this; call explicitly here.
+        copyFormBooleanValues(onarPkMap, "formONAREnhancedRecord");
+
         logger.debug("copyFormONAREnhancedGroup: source={}, target={}, record rows={}", sourceDemoNo, targetDemoNo, onarPkMap.size());
-        System.out.println("=== COPY FORM ONAR ENHANCED GROUP DONE: " + onarPkMap.size() + " record(s) + Ext1/Ext2 rows copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
+        System.out.println("=== COPY FORM ONAR ENHANCED GROUP DONE: " + onarPkMap.size() + " record(s) + Ext1/Ext2 + boolean values rows copied  [" + (System.currentTimeMillis() - t0) + "ms] ===");
     }
 
     @Override
