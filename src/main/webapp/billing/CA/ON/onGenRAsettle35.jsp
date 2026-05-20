@@ -117,6 +117,5 @@
 %>
 
 <script LANGUAGE="JavaScript">
-    self.close();
-    self.opener.refresh();
+    window.location.href = '<%= request.getContextPath() %>/billing/CA/ON/genRA.jsp';
 </script>
