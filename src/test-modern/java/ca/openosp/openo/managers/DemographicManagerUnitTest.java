@@ -73,8 +73,9 @@ import static org.mockito.Mockito.*;
 @Tag("demographic")
 public class DemographicManagerUnitTest extends DemographicUnitTestBase {
 
-    // 17 Mock dependencies
+    // 18 Mock dependencies
     @Mock private DemographicDao mockDemographicDao;
+    @Mock private DemographicMergeDao mockMergeDao;
     @Mock private DemographicExtDao mockDemographicExtDao;
     @Mock private DemographicCustDao mockDemographicCustDao;
     @Mock private DemographicContactDao mockDemographicContactDao;
@@ -150,8 +151,9 @@ public class DemographicManagerUnitTest extends DemographicUnitTestBase {
         // Create manager instance
         manager = new DemographicManagerImpl();
 
-        // Inject all 17 dependencies using reflection
+        // Inject all 18 dependencies using reflection
         injectDependency(manager, "demographicDao", mockDemographicDao);
+        injectDependency(manager, "mergeDao", mockMergeDao);
         injectDependency(manager, "demographicExtDao", mockDemographicExtDao);
         injectDependency(manager, "demographicCustDao", mockDemographicCustDao);
         injectDependency(manager, "demographicContactDao", mockDemographicContactDao);
@@ -1336,7 +1338,7 @@ public class DemographicManagerUnitTest extends DemographicUnitTestBase {
         @DisplayName("should return merged demographic IDs")
         void shouldReturnMergedDemographicIds() {
             List<Integer> expected = List.of(1001, 1002);
-            when(mockDemographicDao.getMergedDemographics(TEST_DEMO_NO)).thenReturn(expected);
+            when(mockMergeDao.findActiveMergedDemographicNosForPrimary(TEST_DEMO_NO)).thenReturn(expected);
 
             List<Integer> result = manager.getMergedDemographicIds(mockLoggedInInfo, TEST_DEMO_NO);
 

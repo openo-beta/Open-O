@@ -103,6 +103,18 @@ public class DemographicMergeDaoImpl extends AbstractDaoImpl<DemographicMerge> i
     }
 
     @Override
+    public List<Integer> findActiveMergedDemographicNosForPrimary(Integer primaryDemographicNo) {
+        Query q = entityManager.createQuery("select e.mergedDemographicNo from DemographicMerge e where e.primaryDemographicNo = :demoNo and e.eventType = :mergeType and e.mergedDemographicNo not in (select u.mergedDemographicNo from DemographicMerge u where u.eventType = :unmergeType)");
+        q.setParameter("demoNo", primaryDemographicNo);
+        q.setParameter("mergeType", DemographicMerge.EventType.MERGE);
+        q.setParameter("unmergeType", DemographicMerge.EventType.UNMERGE);
+
+        @SuppressWarnings("unchecked")
+        List<Integer> results = q.getResultList();
+        return results != null ? results : Collections.emptyList();
+    }
+
+    @Override
     public DemographicMerge findActiveMergeEventForSource(Integer demographicNo) {
         // Primary check — indexed on primary_demographic_no
         Query primaryQ = entityManager.createQuery(

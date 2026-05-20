@@ -85,6 +85,9 @@ public class DemographicManagerImpl implements DemographicManager {
     @Autowired
     AppointmentManager appointmentManager;
 
+    @Autowired
+    private DemographicMergeDao mergeDao;
+
     /**
 	 *  Get the patient demographic profile.
 	 *  This particular method also sets the Demographic.MRP and Demographic.nextAppointment
@@ -756,7 +759,7 @@ public class DemographicManagerImpl implements DemographicManager {
         if (loggedInInfo == null)
             throw (new SecurityException("user not logged in?"));
 
-        List<Integer> ids = demographicDao.getMergedDemographics(demographicNo);
+        List<Integer> ids = mergeDao.findActiveMergedDemographicNosForPrimary(demographicNo);
 
         LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.getMergedDemographics",
                 "demographicNo=" + demographicNo);
