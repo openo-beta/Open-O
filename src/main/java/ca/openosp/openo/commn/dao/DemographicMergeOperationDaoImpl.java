@@ -194,7 +194,7 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         return tableExistsCache.computeIfAbsent(tableName, t ->
             Boolean.TRUE.equals(jdbcTemplate.execute((ConnectionCallback<Boolean>) con -> {
                 DatabaseMetaData meta = con.getMetaData();
-                try (ResultSet rs = meta.getTables(null, null, t, new String[]{"TABLE"})) {
+                try (ResultSet rs = meta.getTables(con.getCatalog(), null, t, new String[]{"TABLE"})) {
                     return rs.next();
                 }
             }))
