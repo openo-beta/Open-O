@@ -772,15 +772,25 @@ ALTER TABLE `demographicArchive`
 MODIFY COLUMN `myOscarUserName` VARCHAR(255);
 
 --
--- Alter table structure for table `demographic_merged`, added constraints
+-- Create demographic_merged_event for the new merge/unmerge audit event model.
+-- The legacy demographic_merged table is left untouched so that a rollback to the
+-- old merge code continues to work without any schema remediation.
 --
 
-ALTER TABLE `demographic_merged`
-ADD CONSTRAINT `FKqev6qw9c8jc2f3w40p524h5xd` 
-FOREIGN KEY (`merged_to`) REFERENCES `demographic` (`demographic_no`);
+CREATE TABLE IF NOT EXISTS `demographic_merged_event` (
+  `id` INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `primary_demographic_no` INT(10) NULL DEFAULT NULL,
+  `secondary_demographic_no` VARCHAR(500) NULL DEFAULT NULL,
+  `merged_demographic_no` INT(10) NULL DEFAULT NULL,
+  `event_type` VARCHAR(20) NULL DEFAULT NULL,
+  `provider_no` VARCHAR(6) NULL DEFAULT NULL,
+  `event_date` DATETIME NULL DEFAULT NULL,
+  INDEX `idx_dme_merged_demo_no` (`merged_demographic_no`),
+  INDEX `idx_dme_event_type` (`event_type`)
+);
 
 --
--- Alter table structure for table `demographic_merged`, modified column sequence
+-- Alter table structure for table `fax_config`
 --
 
 ALTER TABLE `fax_config`

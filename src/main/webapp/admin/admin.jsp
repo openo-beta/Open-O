@@ -878,7 +878,7 @@
                     <li><a href="#"
                            onclick='popupPage(550,800, "${pageContext.request.contextPath}/demographic/demographicImport.jsp");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DemoImport"/></a></li>
                     <li><a href="#"
-                           onclick='popupPage(550,800, "${pageContext.request.contextPath}/admin/demographicmergerecord.jsp");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.mergeRec"/></a></li>
+                           onclick='popupPage(550,800, "${pageContext.request.contextPath}/admin/DemographicMerge.do");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.mergeDemographic"/></a></li>
                     <li><a href="#"
                            onclick='popupPage(550,800, "${pageContext.request.contextPath}/admin/updatedemographicprovider.jsp");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnUpdatePatientProvider"/></a></li>
 

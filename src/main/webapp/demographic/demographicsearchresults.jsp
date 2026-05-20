@@ -78,10 +78,11 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
-<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
+
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.commn.dao.DemographicExtDao" %>
 <%@ page import="ca.openosp.openo.commn.model.DemographicExt" %>
+<%@ page import="ca.openosp.openo.demographic.merge.DemographicMergeManager" %>
 <%@ page import="ca.openosp.Misc" %>
 <%@ page import="ca.openosp.OscarProperties" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
@@ -331,6 +332,15 @@
                     } else {
                         demoList = doSearch(demographicDao, searchMode, ptStatus, keyword, limit, offset, orderBy, providerNo, outOfDomain);
                     }
+                    // Exclude merge source records (A, B) from all search results — they are
+                    // inactive after a merge and should not appear regardless of search mode or status filter.
+                    if (demoList != null && !demoList.isEmpty()) {
+                        List<Integer> candidateIds = new ArrayList<>();
+                        for (Demographic d : demoList) { if (d != null) candidateIds.add(d.getDemographicNo()); }
+                        DemographicMergeManager demographicMergeManager = SpringUtils.getBean(DemographicMergeManager.class);
+                        Set<Integer> mergedSourceIds = demographicMergeManager.findMergedSourcesAmong(loggedInInfo, candidateIds);
+                        demoList.removeIf(d -> d != null && mergedSourceIds.contains(d.getDemographicNo()));
+                    }
 
                     boolean toggleLine = false;
                     boolean firstPageShowIntegratedResults = request.getParameter("firstPageShowIntegratedResults") != null && "true".equals(request.getParameter("firstPageShowIntegratedResults"));
@@ -418,19 +428,9 @@
                     }
 
 
-                    DemographicMerged dmDAO = new DemographicMerged();
-
                     for (Demographic demo : demoList) {
 
-
                         String dem_no = demo.getDemographicNo().toString();
-                        String head = dmDAO.getHead(dem_no);
-
-                        if (head != null && !head.equals(dem_no)) {
-                            //skip non head records
-                            nItems++;
-                            continue;
-                        }
 
                 %>
                 <tr class="<%=toggleLine?"even":"odd"%>">
@@ -446,7 +446,7 @@
                     } else {
                     %>
                     <a title="Master Demographic File" href="javascript:void(0)"
-                       onclick="popup(700,1027,'demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(head))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(dem_no))%>
+                       onclick="popup(700,1027,'demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(dem_no))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(dem_no))%>
                     </a></td>
 
                     <!-- Rights -->

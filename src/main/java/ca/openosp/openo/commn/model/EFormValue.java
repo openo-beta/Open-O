@@ -61,6 +61,10 @@ public class EFormValue extends AbstractModel<Integer> implements Serializable {
         return (id);
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getFormDataId() {
         return formDataId;
     }

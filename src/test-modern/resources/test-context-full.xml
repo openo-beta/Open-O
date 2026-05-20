@@ -52,7 +52,7 @@
             <props>
                 <prop key="db_driver">org.h2.Driver</prop>
                 <prop key="db_uri">jdbc:h2:mem:testdb</prop>
-                <prop key="db_name">;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE</prop>
+                <prop key="db_name">;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE;NON_KEYWORDS=VALUE,USER</prop>
                 <prop key="db_username">sa</prop>
                 <prop key="db_password"></prop>
                 <prop key="db_max_active">10</prop>
@@ -282,5 +282,9 @@
 
     <!-- OscarSuperManager -->
     <bean id="oscarSuperManager" class="ca.openosp.openo.service.OscarSuperManagerImpl" autowire="byName"/>
+
+    <!-- Demographic merge DAOs for DemographicMergeOperationDaoIntegrationTest -->
+    <bean id="demographicMergeOperationDao" class="ca.openosp.openo.commn.dao.DemographicMergeOperationDaoImpl" autowire="byName" />
+    <bean id="demographicMergeDao" class="ca.openosp.openo.commn.dao.DemographicMergeDaoImpl" autowire="byName" />
 
 </beans>

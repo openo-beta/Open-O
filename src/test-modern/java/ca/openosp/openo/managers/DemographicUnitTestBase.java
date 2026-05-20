@@ -26,7 +26,7 @@ import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.DemographicContact;
 import ca.openosp.openo.commn.model.DemographicCust;
 import ca.openosp.openo.commn.model.DemographicExt;
-import ca.openosp.openo.commn.model.DemographicMerged;
+import ca.openosp.openo.commn.model.DemographicMerge;
 import ca.openosp.openo.commn.model.Facility;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
@@ -248,34 +248,34 @@ public abstract class DemographicUnitTestBase extends OpenOUnitTestBase {
     }
 
     /**
-     * Creates a test DemographicMerged with specified values.
+     * Creates a test DemographicMerge event with specified values.
      *
-     * @param childId The child demographic number (the one being merged)
-     * @param parentId The parent demographic number (the one receiving the merge)
-     * @return A DemographicMerged instance
+     * @param secondaryId The secondary (source) demographic number
+     * @param primaryId The primary demographic number
+     * @return A DemographicMerge instance representing a MERGE event
      */
-    protected DemographicMerged createTestDemographicMerged(Integer childId, Integer parentId) {
-        DemographicMerged merged = new DemographicMerged();
-        merged.setDemographicNo(childId);
-        merged.setMergedTo(parentId);
-        merged.setDeleted(0);
-        merged.setLastUpdateUser(TEST_PROVIDER);
-        merged.setLastUpdateDate(new Date());
-        return merged;
+    protected DemographicMerge createTestDemographicMerged(Integer secondaryId, Integer primaryId) {
+        DemographicMerge merge = new DemographicMerge();
+        merge.setPrimaryDemographicNo(primaryId);
+        merge.setSecondaryDemographicNo(String.valueOf(secondaryId));
+        merge.setEventType(DemographicMerge.EventType.MERGE);
+        merge.setProviderNo(TEST_PROVIDER);
+        merge.setEventDate(new Date());
+        return merge;
     }
 
     /**
-     * Creates a test DemographicMerged with an ID.
+     * Creates a test DemographicMerge event with an ID.
      *
      * @param id The merge record ID
-     * @param childId The child demographic number
-     * @param parentId The parent demographic number
-     * @return A DemographicMerged instance with the specified ID
+     * @param secondaryId The secondary (source) demographic number
+     * @param primaryId The primary demographic number
+     * @return A DemographicMerge instance with the specified ID
      */
-    protected DemographicMerged createTestDemographicMergedWithId(Integer id, Integer childId, Integer parentId) {
-        DemographicMerged merged = createTestDemographicMerged(childId, parentId);
-        merged.setId(id);
-        return merged;
+    protected DemographicMerge createTestDemographicMergedWithId(Integer id, Integer secondaryId, Integer primaryId) {
+        DemographicMerge merge = createTestDemographicMerged(secondaryId, primaryId);
+        merge.setId(id);
+        return merge;
     }
 
     /**

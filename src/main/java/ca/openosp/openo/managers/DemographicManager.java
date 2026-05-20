@@ -83,16 +83,9 @@ public interface DemographicManager {
 
     public void deleteExtension(LoggedInInfo loggedInInfo, DemographicExt ext);
 
-    public void mergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children);
-
-    public void unmergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children);
-
     public Long getActiveDemographicCount(LoggedInInfo loggedInInfo);
 
     public List<Demographic> getActiveDemographics(LoggedInInfo loggedInInfo, int offset, int limit);
-
-    public List<DemographicMerged> getMergedDemographics(LoggedInInfo loggedInInfo, Integer parentId);
-
 
     public String getDemographicWorkPhoneAndExtension(LoggedInInfo loggedInInfo, Integer demographicNo);
 
@@ -208,4 +201,32 @@ public interface DemographicManager {
     public String getNextAppointmentDate(LoggedInInfo loggedInInfo, Integer demographicNo);
 
     public String getNextAppointmentDate(LoggedInInfo loggedInInfo, Demographic demographic);
+
+    /**
+     * Searches active (non-merged) patients for the merge workflow.
+     * Dispatches to the appropriate DAO method based on {@code searchMode}.
+     *
+     * @param loggedInInfo LoggedInInfo the authenticated provider
+     * @param keyword      String the search term
+     * @param searchMode   String one of: search_name, search_dob, search_phone, search_hin, search_address
+     * @param limit        int maximum number of results to return
+     * @param offset       int pagination offset
+     * @return List&lt;Demographic&gt; matching active patients
+     */
+    public List<Demographic> searchDemographicsForMerge(LoggedInInfo loggedInInfo, String keyword,
+                                                        String searchMode, int limit, int offset);
+
+    /**
+     * Searches merged result demographics (AC status, present in merge event table) for the unmerge workflow.
+     * Dispatches to the appropriate DAO method based on {@code searchMode}.
+     *
+     * @param loggedInInfo LoggedInInfo the authenticated provider
+     * @param keyword      String the search term
+     * @param searchMode   String one of: search_name, search_dob, search_phone, search_hin, search_address
+     * @param limit        int maximum number of results to return
+     * @param offset       int pagination offset
+     * @return List&lt;Demographic&gt; merged result (C) patients eligible for unmerge
+     */
+    public List<Demographic> searchMergedDemographicsForUnmerge(LoggedInInfo loggedInInfo, String keyword,
+                                                                String searchMode, int limit, int offset);
 }

@@ -230,11 +230,11 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
-<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicRelationship" %>
 <%@ page import="ca.openosp.openo.utility.*" %>
 <%@ page import="ca.openosp.openo.commn.model.*" %>
 <%@ page import="ca.openosp.openo.commn.dao.*" %>
+<%@ page import="ca.openosp.openo.demographic.merge.DemographicMergeManager" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 <!DOCTYPE html>
@@ -1332,33 +1332,29 @@
                                         <tr>
                                             <td>
                                                 <%
-                                                    DemographicMerged dmDAO = new DemographicMerged();
                                                     String dboperation = "search_detail";
-                                                    String head = dmDAO.getHead(demographic_no);
-                                                    ArrayList records = dmDAO.getTail(head);
-
+                                                    DemographicMergeManager demographicMergeManager = SpringUtils.getBean(DemographicMergeManager.class);
+                                                    int demoNoInt = Integer.parseInt(demographic_no);
+                                                    DemographicMerge mergeEventAsMergedRecord = demographicMergeManager.findActiveMergeEventForMergedRecord(loggedInInfo, demoNoInt);
+                                                    DemographicMerge mergeEventAsSource = (mergeEventAsMergedRecord == null) ? demographicMergeManager.findActiveMergeEventForSource(loggedInInfo, demoNoInt) : null;
                                                 %><a
-                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(head))%>&displaymode=edit&dboperation=<%=Encode.forUriComponent(String.valueOf(dboperation))%>"><%=Encode.forHtml(String.valueOf(head))%>
-                                            </a>
-                                                <%
-
-                                                    for (int i = 0; i < records.size(); i++) {
-                                                        if (((String) records.get(i)).equals(demographic_no)) {
-                                                %><%=Encode.forHtml(String.valueOf(", " + demographic_no))%>
-                                                <%
-                                                } else {
-                                                %>, <a
-                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(records.get(i)))%>&displaymode=edit&dboperation=<%=Encode.forUriComponent(String.valueOf(dboperation))%>"><%=Encode.forHtml(String.valueOf(records.get(i)))%>
-                                            </a>
-                                                <%
+                                                    href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(demographic_no) %>&displaymode=edit&dboperation=<%= Encode.forUriComponent(String.valueOf(dboperation)) %>"><%= Encode.forHtml(demographic_no) %></a><%
+                                                    if (mergeEventAsMergedRecord != null) {
+                                                        int primaryId = mergeEventAsMergedRecord.getPrimaryDemographicNo();
+                                                %>, merged from <a href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(String.valueOf(primaryId)) %>&displaymode=edit&dboperation=<%= Encode.forUriComponent(String.valueOf(dboperation)) %>"><%= Encode.forHtml(String.valueOf(primaryId)) %></a><%
+                                                        for (Integer secId : mergeEventAsMergedRecord.getSecondaryDemographicNos()) {
+                                                %>, <a href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(String.valueOf(secId)) %>&displaymode=edit&dboperation=<%= Encode.forUriComponent(String.valueOf(dboperation)) %>"><%= Encode.forHtml(String.valueOf(secId)) %></a><%
                                                         }
+                                                    } else if (mergeEventAsSource != null) {
+                                                        int mergedId = mergeEventAsSource.getMergedDemographicNo();
+                                                %>, merged to <a href="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= Encode.forUriComponent(String.valueOf(mergedId)) %>&displaymode=edit&dboperation=<%= Encode.forUriComponent(String.valueOf(dboperation)) %>"><%= Encode.forHtml(String.valueOf(mergedId)) %></a><%
                                                     }
-                                                %> )
+                                                %>)
 
                                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_demographic"
                                                                    rights="w">
                                                     <%
-                                                        if (head.equals(demographic_no)) {
+                                                        if (!"IN".equals(demographic.getPatientStatus())) {
                                                     %>
                                                     <a id="editBtn" href="javascript: showHideDetail();"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgEdit"/></a>
                                                     <a id="closeBtn" href="javascript: showHideDetail();"

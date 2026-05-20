@@ -66,7 +66,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
-<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
+
 <%@page import="ca.openosp.openo.commn.dao.OscarLogDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.Misc" %>
@@ -480,17 +480,9 @@
                     } else {
                         Collections.sort(demoList, Demographic.LastNameComparator);
 
-                        DemographicMerged dmDAO = new DemographicMerged();
-
                         for (Demographic demo : demoList) {
 
                             String dem_no = demo.getDemographicNo().toString();
-                            String head = dmDAO.getHead(dem_no);
-
-                            if (head != null && !head.equals(dem_no)) {
-                                //skip non head records
-                                continue;
-                            }
 
                             rowCounter++;
                             bgColor = rowCounter % 2 == 0 ? "#EEEEFF" : "white";

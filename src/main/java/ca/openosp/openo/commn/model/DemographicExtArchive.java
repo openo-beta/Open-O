@@ -80,6 +80,10 @@ public class DemographicExtArchive extends AbstractModel<Integer> implements Ser
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     /**
      * Return the value associated with the column: demographic_no
      */

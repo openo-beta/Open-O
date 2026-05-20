@@ -29,6 +29,11 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Transfer object representing a demographic merge event record.
+ *
+ * @since 2026-04-13
+ */
 @XmlRootElement
 public class DemographicMergedTo1 implements Serializable {
 
@@ -36,15 +41,17 @@ public class DemographicMergedTo1 implements Serializable {
 
     private Integer id;
 
-    private int demographicNo;
+    private int primaryDemographicNo;
 
-    private int mergedTo;
+    private String secondaryDemographicNo;
 
-    private int deleted;
+    private int mergedDemographicNo;
 
-    private String lastUpdateUser;
+    private String eventType;
 
-    private Date lastUpdateDate;
+    private String providerNo;
+
+    private Date eventDate;
 
     public Integer getId() {
         return id;
@@ -54,43 +61,51 @@ public class DemographicMergedTo1 implements Serializable {
         this.id = id;
     }
 
-    public int getDemographicNo() {
-        return demographicNo;
+    public int getPrimaryDemographicNo() {
+        return primaryDemographicNo;
     }
 
-    public void setDemographicNo(int demographicNo) {
-        this.demographicNo = demographicNo;
+    public void setPrimaryDemographicNo(int primaryDemographicNo) {
+        this.primaryDemographicNo = primaryDemographicNo;
     }
 
-    public int getMergedTo() {
-        return mergedTo;
+    public String getSecondaryDemographicNo() {
+        return secondaryDemographicNo;
     }
 
-    public void setMergedTo(int mergedTo) {
-        this.mergedTo = mergedTo;
+    public void setSecondaryDemographicNo(String secondaryDemographicNo) {
+        this.secondaryDemographicNo = secondaryDemographicNo;
     }
 
-    public int getDeleted() {
-        return deleted;
+    public int getMergedDemographicNo() {
+        return mergedDemographicNo;
     }
 
-    public void setDeleted(int deleted) {
-        this.deleted = deleted;
+    public void setMergedDemographicNo(int mergedDemographicNo) {
+        this.mergedDemographicNo = mergedDemographicNo;
     }
 
-    public String getLastUpdateUser() {
-        return lastUpdateUser;
+    public String getEventType() {
+        return eventType;
     }
 
-    public void setLastUpdateUser(String lastUpdateUser) {
-        this.lastUpdateUser = lastUpdateUser;
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 
-    public Date getLastUpdateDate() {
-        return lastUpdateDate;
+    public String getProviderNo() {
+        return providerNo;
     }
 
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
+    public void setProviderNo(String providerNo) {
+        this.providerNo = providerNo;
+    }
+
+    public Date getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
     }
 }

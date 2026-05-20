@@ -52,7 +52,6 @@
         <context:exclude-filter type="regex" expression=".*\.SiteDaoImpl$"/>
         <context:exclude-filter type="regex" expression=".*\.BillingreferralDaoImpl$"/>
         <context:exclude-filter type="regex" expression=".*\.Icd9DaoImpl$"/>
-        <context:exclude-filter type="regex" expression=".*\.DocumentMergeDemographicDAOImpl$"/>
         <context:exclude-filter type="regex" expression=".*\.QueueDocumentLinkDaoImpl$"/>
         <context:exclude-filter type="regex" expression=".*\.InboxResultsRepositoryImpl$"/>
         <context:exclude-filter type="regex" expression=".*\.ProviderInboxRoutingDaoImpl$"/>

@@ -24,35 +24,50 @@
  */
 package ca.openosp.openo.webserv.rest.conversion;
 
-import ca.openosp.openo.commn.model.DemographicMerged;
+import ca.openosp.openo.commn.model.DemographicMerge;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.webserv.rest.to.model.DemographicMergedTo1;
 
-public class DemographicMergedConverter extends AbstractConverter<DemographicMerged, DemographicMergedTo1> {
+/**
+ * Converts between {@link DemographicMerge} domain objects and {@link DemographicMergedTo1} transfer objects.
+ *
+ * @since 2026-04-13
+ */
+public class DemographicMergedConverter extends AbstractConverter<DemographicMerge, DemographicMergedTo1> {
 
     @Override
-    public DemographicMerged getAsDomainObject(LoggedInInfo loggedInInfo, DemographicMergedTo1 t) throws ConversionException {
-        DemographicMerged d = new DemographicMerged();
+    public DemographicMerge getAsDomainObject(LoggedInInfo loggedInInfo, DemographicMergedTo1 t) throws ConversionException {
+        DemographicMerge d = new DemographicMerge();
 
         d.setId(t.getId());
-        d.setDemographicNo(t.getDemographicNo());
-        d.setMergedTo(t.getMergedTo());
-        d.setDeleted(t.getDeleted());
-        d.setLastUpdateUser(t.getLastUpdateUser());
-        d.setLastUpdateDate(t.getLastUpdateDate());
+        d.setPrimaryDemographicNo(t.getPrimaryDemographicNo());
+        d.setSecondaryDemographicNo(t.getSecondaryDemographicNo());
+        d.setMergedDemographicNo(t.getMergedDemographicNo());
+        d.setProviderNo(t.getProviderNo());
+        d.setEventDate(t.getEventDate());
+        if (t.getEventType() != null) {
+            try {
+                d.setEventType(DemographicMerge.EventType.valueOf(t.getEventType()));
+            } catch (IllegalArgumentException e) {
+                throw new ConversionException("Unknown eventType value: " + t.getEventType());
+            }
+        }
         return d;
     }
 
     @Override
-    public DemographicMergedTo1 getAsTransferObject(LoggedInInfo loggedInInfo, DemographicMerged d) throws ConversionException {
+    public DemographicMergedTo1 getAsTransferObject(LoggedInInfo loggedInInfo, DemographicMerge d) throws ConversionException {
         DemographicMergedTo1 t = new DemographicMergedTo1();
 
         t.setId(d.getId());
-        t.setDemographicNo(d.getDemographicNo());
-        t.setMergedTo(d.getMergedTo());
-        t.setDeleted(d.getDeleted());
-        t.setLastUpdateUser(d.getLastUpdateUser());
-        t.setLastUpdateDate(d.getLastUpdateDate());
+        t.setPrimaryDemographicNo(d.getPrimaryDemographicNo());
+        t.setSecondaryDemographicNo(d.getSecondaryDemographicNo());
+        t.setMergedDemographicNo(d.getMergedDemographicNo());
+        t.setProviderNo(d.getProviderNo());
+        t.setEventDate(d.getEventDate());
+        if (d.getEventType() != null) {
+            t.setEventType(d.getEventType().name());
+        }
         return t;
     }
 

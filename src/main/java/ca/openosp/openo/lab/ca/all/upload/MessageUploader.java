@@ -52,7 +52,6 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.OscarProperties;
-import ca.openosp.openo.demographic.data.DemographicMerged;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -459,12 +458,62 @@ public final class MessageUploader {
     }
 
 
+    /**
+     * Executes a HIN-based demographic match query and returns the single matching patient,
+     * or null if no match or the match is ambiguous.
+     * <p>
+     * If exactly one row matches, it is returned as-is — this covers both active patients
+     * and genuinely inactive ones (e.g. deceased) that still receive labs.
+     * If multiple rows match, the query is retried with {@code AND patient_status = 'AC'} to
+     * resolve the case where a merge has produced an inactive source (A=IN) and an active
+     * merged record (C=AC) with identical identifying fields. Only if that narrowed query
+     * returns exactly one row is it used; otherwise null is returned.
+     *
+     * @param sql  String the base SELECT query (must return demographic_no and provider_no columns)
+     * @param conn Connection the database connection to use
+     * @return PatientLabRoutingResult the single matched patient, or null
+     * @throws SQLException if a database error occurs
+     */
+    private static PatientLabRoutingResult executeHinMatchQuery(String sql, Object[] params, Connection conn) throws SQLException {
+        PatientLabRoutingResult result = null;
+        int count = 0;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) pstmt.setObject(i + 1, params[i]);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    result = new PatientLabRoutingResult();
+                    result.setDemographicNo(Integer.parseInt(Misc.getString(rs, "demographic_no")));
+                    result.setProviderNo(Misc.getString(rs, "provider_no"));
+                    count++;
+                }
+            }
+        }
+
+        if (count <= 1) {
+            return result;
+        }
+
+        // Multiple matches — retry with active-only filter to resolve merged patients.
+        result = null;
+        int countAc = 0;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql + " and patient_status = 'AC' ")) {
+            for (int i = 0; i < params.length; i++) pstmt.setObject(i + 1, params[i]);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    result = new PatientLabRoutingResult();
+                    result.setDemographicNo(Integer.parseInt(Misc.getString(rs, "demographic_no")));
+                    result.setProviderNo(Misc.getString(rs, "provider_no"));
+                    countAc++;
+                }
+            }
+        }
+        return countAc == 1 ? result : null;
+    }
+
     public static Integer willOLISLabReportMatch(LoggedInInfo loggedInInfo, String lastName, String firstName, String sex, String dob, String hin) {
         Connection conn = null;
         PatientLabRoutingResult result = null;
         String sql = null;
-        String demo = "0";
-        String provider_no = "0";
         String dobYear = null;
         String dobMonth = null;
         String dobDay = null;
@@ -490,48 +539,16 @@ public final class MessageUploader {
                 return null;
             }
 
-            sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name = '" + lastName + "' and " + " year_of_birth = '" + dobYear + "' and " + " month_of_birth = '" + dobMonth + "' and " + " date_of_birth = '" + dobDay + "' and " + " sex = '" + sex + "' ";
+            sql = "select demographic_no, provider_no from demographic where hin=? and last_name=? and year_of_birth=? and month_of_birth=? and date_of_birth=? and sex=?";
 
             logger.debug(sql);
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            int count = 0;
-
-            while (rs.next()) {
-                result = new PatientLabRoutingResult();
-                demo = Misc.getString(rs, "demographic_no");
-                provider_no = Misc.getString(rs, "provider_no");
-                result.setDemographicNo(Integer.parseInt(demo));
-                result.setProviderNo(provider_no);
-                count++;
-            }
-            rs.close();
-            pstmt.close();
-            if (count > 1) {
-                result = null;
-            }
+            result = executeHinMatchQuery(sql, new Object[]{hinMod, lastName, dobYear, dobMonth, dobDay, sex}, conn);
 
         } catch (SQLException sqlE) {
             return null;
         } finally {
             DbConnectionFilter.releaseThreadLocalDbConnection();
         }
-
-        if (result != null) {
-            DemographicMerged dm = new DemographicMerged();
-            Integer headDemo = dm.getHead(result.getDemographicNo());
-            if (headDemo != null && headDemo.intValue() != result.getDemographicNo()) {
-                Demographic demoTmp = demographicManager.getDemographic(loggedInInfo, headDemo);
-                if (demoTmp != null) {
-                    result.setDemographicNo(demoTmp.getDemographicNo());
-                    result.setProviderNo(demoTmp.getProviderNo());
-                } else {
-                    logger.info("Unable to load the head record of this patient record. (" + result.getDemographicNo() + ")");
-                    result = null;
-                }
-            }
-        }
-
 
         return result != null ? result.getDemographicNo() : null;
     }
@@ -541,8 +558,6 @@ public final class MessageUploader {
         PatientLabRoutingResult result = null;
 
         String sql = null;
-        String demo = "0";
-        String provider_no = "0";
         String dobYear = null;
         String dobMonth = null;
         String dobDay = null;
@@ -566,26 +581,10 @@ public final class MessageUploader {
                 return null;
             }
 
-            sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name = '" + lastName + "' and " + " year_of_birth = '" + dobYear + "' and " + " month_of_birth = '" + dobMonth + "' and " + " date_of_birth = '" + dobDay + "' and " + " sex = '" + sex + "' ";
+            sql = "select demographic_no, provider_no from demographic where hin=? and last_name=? and year_of_birth=? and month_of_birth=? and date_of_birth=? and sex=?";
 
             logger.debug(sql);
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            int count = 0;
-
-            while (rs.next()) {
-                result = new PatientLabRoutingResult();
-                demo = Misc.getString(rs, "demographic_no");
-                provider_no = Misc.getString(rs, "provider_no");
-                result.setDemographicNo(Integer.parseInt(demo));
-                result.setProviderNo(provider_no);
-                count++;
-            }
-            rs.close();
-            pstmt.close();
-            if (count > 1) {
-                result = null;
-            }
+            result = executeHinMatchQuery(sql, new Object[]{hinMod, lastName, dobYear, dobMonth, dobDay, sex}, conn);
 
         } catch (SQLException sqlE) {
             throw sqlE;
@@ -593,24 +592,6 @@ public final class MessageUploader {
 
 
         try {
-            //did this link a merged patient? if so, we need to make sure we are the head record, or update
-            //result to be the head record.
-            if (result != null) {
-                DemographicMerged dm = new DemographicMerged();
-                Integer headDemo = dm.getHead(result.getDemographicNo());
-                if (headDemo != null && headDemo.intValue() != result.getDemographicNo()) {
-                    Demographic demoTmp = demographicManager.getDemographic(loggedInInfo, headDemo);
-                    if (demoTmp != null) {
-                        result.setDemographicNo(demoTmp.getDemographicNo());
-                        result.setProviderNo(demoTmp.getProviderNo());
-                    } else {
-                        logger.info("Unable to load the head record of this patient record. (" + result.getDemographicNo() + ")");
-                        result = null;
-                    }
-                }
-            }
-
-
             if (result == null) {
                 logger.info("Could not find patient for lab: " + labId);
             } else {
@@ -655,8 +636,6 @@ public final class MessageUploader {
         PatientLabRoutingResult result = null;
 
         String sql = null;
-        String demo = "0";
-        String provider_no = "0";
         String dobYear = "%";
         String dobMonth = "%";
         String dobDay = "%";
@@ -685,53 +664,24 @@ public final class MessageUploader {
 
 
 				// HIN is ALWAYS required for lab matching. Please do not revert this code. Previous iterations have caused fatal patient miss-matches.
+				Object[] params = null;
 				if(hinMod != null && !hinMod.trim().isEmpty()) {
 					if (OscarProperties.getInstance().getBooleanProperty("LAB_NOMATCH_NAMES", "yes")) {
-						sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " year_of_birth like '" + dobYear + "' and " + " month_of_birth like '" + dobMonth + "' and " + " date_of_birth like '" + dobDay + "' and " + " sex like '" + sex + "%' ";
+						sql = "select demographic_no, provider_no from demographic where hin=? and year_of_birth like ? and month_of_birth like ? and date_of_birth like ? and sex like ?";
+						params = new Object[]{hinMod, dobYear, dobMonth, dobDay, sex + "%"};
 					} else {
-						sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name like '" + lastName + "%' and " + " first_name like '" + firstName + "%' and " + " year_of_birth like '" + dobYear + "' and " + " month_of_birth like '" + dobMonth + "' and " + " date_of_birth like '" + dobDay + "' and " + " sex like '" + sex + "%' ";
+						sql = "select demographic_no, provider_no from demographic where hin=? and last_name like ? and first_name like ? and year_of_birth like ? and month_of_birth like ? and date_of_birth like ? and sex like ?";
+						params = new Object[]{hinMod, lastName + "%", firstName + "%", dobYear, dobMonth, dobDay, sex + "%"};
 					}
 				}
 
-				if( sql != null ) {
+				if (sql != null) {
 					logger.debug(sql);
-					PreparedStatement pstmt = conn.prepareStatement(sql);
-					ResultSet rs = pstmt.executeQuery();
-					int count = 0;
-
-					while (rs.next()) {
-						result = new PatientLabRoutingResult();
-						demo = Misc.getString(rs, "demographic_no");
-						provider_no = Misc.getString(rs, "provider_no");
-						result.setDemographicNo(Integer.parseInt(demo));
-						result.setProviderNo(provider_no);
-						count++;
-					}
-					rs.close();
-					pstmt.close();
-					if(count > 1) {
-						result = null;
-					}
+					result = executeHinMatchQuery(sql, params, conn);
 				}
 			} catch (SQLException sqlE) {
 				throw sqlE;
 			}
-
-
-        if (result != null) {
-            DemographicMerged dm = new DemographicMerged();
-            Integer headDemo = dm.getHead(result.getDemographicNo());
-            if (headDemo != null && headDemo.intValue() != result.getDemographicNo()) {
-                Demographic demoTmp = demographicManager.getDemographic(loggedInInfo, headDemo);
-                if (demoTmp != null) {
-                    result.setDemographicNo(demoTmp.getDemographicNo());
-                    result.setProviderNo(demoTmp.getProviderNo());
-                } else {
-                    logger.info("Unable to load the head record of this patient record. (" + result.getDemographicNo() + ")");
-                    result = null;
-                }
-            }
-        }
 
 
         if (result == null) {

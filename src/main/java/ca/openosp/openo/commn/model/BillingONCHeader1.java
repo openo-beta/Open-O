@@ -225,6 +225,10 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getHeaderId() {
         return headerId;
     }

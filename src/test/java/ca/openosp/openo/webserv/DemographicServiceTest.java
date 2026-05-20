@@ -77,25 +77,24 @@ public class DemographicServiceTest extends BaseRestServiceTest {
         child = demographicService.createDemographicData(child);
         assertNotNull(child.getDemographicNo());
 
-        Integer parentId = parent.getDemographicNo();
         DemographicMergeService mergeService = getResource(DemographicMergeService.class);
-        OscarSearchResponse<DemographicMergedTo1> mergedResponse = mergeService.getMergedDemographicIds(parentId);
-        List<Integer> mergedIds = getMergedIds(mergedResponse);
-        assertTrue(mergedIds.isEmpty());
 
-        mergeService.mergeDemographic(parent.getDemographicNo(), child.getDemographicNo());
-        mergedResponse = mergeService.getMergedDemographicIds(parent.getDemographicNo());
-        assertTrue(getMergedIds(mergedResponse).contains(child.getDemographicNo()));
+        // Merge A+B → creates new merged record C; service returns C's demographic_no
+        Integer mergedDemoId = mergeService.mergeDemographic(parent.getDemographicNo(), child.getDemographicNo());
+        assertNotNull(mergedDemoId);
 
-        mergeService.unmergeDemographic(parentId, child.getDemographicNo());
-        mergedResponse = mergeService.getMergedDemographicIds(parent.getDemographicNo());
-        assertTrue(getMergedIds(mergedResponse).isEmpty());
+        // Verify the merge event for C shows parent (A) as primary
+        OscarSearchResponse<DemographicMergedTo1> mergedResponse = mergeService.getMergeEvent(mergedDemoId);
+        assertTrue(getPrimaryIds(mergedResponse).contains(parent.getDemographicNo()));
+
+        // Unmerge C — restores A and B to active, deactivates C
+        mergeService.unmergeDemographic(mergedDemoId);
     }
 
-    private List<Integer> getMergedIds(OscarSearchResponse<DemographicMergedTo1> mergedResponse) {
+    private List<Integer> getPrimaryIds(OscarSearchResponse<DemographicMergedTo1> mergedResponse) {
         List<Integer> result = new ArrayList<Integer>();
         for (DemographicMergedTo1 to : mergedResponse.getContent()) {
-            result.add(to.getDemographicNo());
+            result.add(to.getPrimaryDemographicNo());
         }
         return result;
     }

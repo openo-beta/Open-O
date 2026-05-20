@@ -59,10 +59,6 @@ public class DemographicManagerImpl implements DemographicManager {
     private DemographicCustArchiveDao demographicCustArchiveDao;
 
     @Autowired
-    private DemographicMergedDao demographicMergedDao;
-
-
-    @Autowired
     private AdmissionDao admissionDao;
 
     @Autowired
@@ -88,6 +84,9 @@ public class DemographicManagerImpl implements DemographicManager {
 
     @Autowired
     AppointmentManager appointmentManager;
+
+    @Autowired
+    private DemographicMergeDao mergeDao;
 
     /**
 	 *  Get the patient demographic profile.
@@ -423,9 +422,6 @@ public class DemographicManagerImpl implements DemographicManager {
         Demographic prevDemo = demographicDao.getDemographicById(demographic.getDemographicNo());
         demographicArchiveDao.archiveRecord(prevDemo);
 
-        // retain merge info
-        demographic.setSubRecord(prevDemo.getSubRecord());
-
         // save current demo
         demographic.setLastUpdateUser(loggedInInfo.getLoggedInProviderNo());
         demographicDao.save(demographic);
@@ -592,38 +588,6 @@ public class DemographicManagerImpl implements DemographicManager {
     }
 
     @Override
-    public void mergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children) {
-        for (Integer child : children) {
-            DemographicMerged dm = new DemographicMerged();
-            dm.setDemographicNo(child);
-            dm.setMergedTo(parentId);
-            demographicMergedDao.persist(dm);
-
-            // --- log action ---
-            LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.mergeDemographics", "id=" + dm.getId());
-        }
-
-    }
-
-    @Override
-    public void unmergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children) {
-        for (Integer childId : children) {
-            List<DemographicMerged> dms = demographicMergedDao.findByParentAndChildIds(parentId, childId);
-            if (dms.isEmpty()) {
-                throw new IllegalArgumentException(
-                        "Unable to find merge record for parent " + parentId + " and child " + childId);
-            }
-            for (DemographicMerged dm : demographicMergedDao.findByParentAndChildIds(parentId, childId)) {
-                dm.setDeleted(1);
-                demographicMergedDao.merge(dm);
-
-                // --- log action ---
-                LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.unmergeDemographics", "id=" + dm.getId());
-            }
-        }
-    }
-
-    @Override
     public Long getActiveDemographicCount(LoggedInInfo loggedInInfo) {
         Long count = demographicDao.getActiveDemographicCount();
 
@@ -649,27 +613,6 @@ public class DemographicManagerImpl implements DemographicManager {
         return result;
     }
 
-    /**
-     * Gets all merged demographic for the specified parent record ID
-     *
-     * @param parentId ID of the parent demographic record
-     * @return Returns all merged demographic records for the specified parent id.
-     */
-    @Override
-    public List<DemographicMerged> getMergedDemographics(LoggedInInfo loggedInInfo, Integer parentId) {
-        List<DemographicMerged> result = demographicMergedDao.findCurrentByMergedTo(parentId);
-
-        if (result != null) {
-            for (DemographicMerged d : result) {
-                // --- log action ---
-                LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.getMergedDemogrpaphics result",
-                        "demographicNo=" + d.getDemographicNo());
-            }
-
-        }
-
-        return result;
-    }
 
 
 
@@ -816,7 +759,7 @@ public class DemographicManagerImpl implements DemographicManager {
         if (loggedInInfo == null)
             throw (new SecurityException("user not logged in?"));
 
-        List<Integer> ids = demographicDao.getMergedDemographics(demographicNo);
+        List<Integer> ids = mergeDao.findActiveMergedDemographicNosForPrimary(demographicNo);
 
         LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.getMergedDemographics",
                 "demographicNo=" + demographicNo);
@@ -1417,6 +1360,45 @@ public class DemographicManagerImpl implements DemographicManager {
         String appointmentString = getNextAppointmentDate(loggedInInfo, demographic.getDemographicNo());
         demographic.setNextAppointment(appointmentString);
         return appointmentString;
+    }
+
+    @Override
+    public List<Demographic> searchDemographicsForMerge(LoggedInInfo loggedInInfo, String keyword,
+                                                        String searchMode, int limit, int offset) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        List<Demographic> results;
+        switch (searchMode == null ? "search_name" : searchMode) {
+            case "search_dob":     results = demographicDao.searchDemographicByDOB(keyword, limit, offset, providerNo, true);     break;
+            case "search_phone":   results = demographicDao.searchDemographicByPhone(keyword, limit, offset, providerNo, true);   break;
+            case "search_hin":     results = demographicDao.searchDemographicByHIN(keyword, limit, offset, providerNo, true);     break;
+            case "search_address": results = demographicDao.searchDemographicByAddress(keyword, limit, offset, providerNo, true); break;
+            default:               results = demographicDao.searchDemographicByName(keyword, limit, offset, providerNo, true);    break;
+        }
+        for (Demographic d : results) {
+            LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.searchDemographicsForMerge result",
+                    "demographicId=" + d.getDemographicNo());
+        }
+        return results;
+    }
+
+    @Override
+    public List<Demographic> searchMergedDemographicsForUnmerge(LoggedInInfo loggedInInfo, String keyword,
+                                                                String searchMode, int limit, int offset) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
+        List<Demographic> results;
+        switch (searchMode == null ? "search_name" : searchMode) {
+            case "search_dob":     results = demographicDao.findActiveMergedDemographicByDOB(keyword, limit, offset);     break;
+            case "search_phone":   results = demographicDao.findActiveMergedDemographicByPhone(keyword, limit, offset);   break;
+            case "search_hin":     results = demographicDao.findActiveMergedDemographicByHIN(keyword, limit, offset);     break;
+            case "search_address": results = demographicDao.findActiveMergedDemographicByAddress(keyword, limit, offset); break;
+            default:               results = demographicDao.findActiveMergedDemographicByName(keyword, limit, offset);    break;
+        }
+        for (Demographic d : results) {
+            LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.searchMergedDemographicsForUnmerge result",
+                    "demographicId=" + d.getDemographicNo());
+        }
+        return results;
     }
 
 }

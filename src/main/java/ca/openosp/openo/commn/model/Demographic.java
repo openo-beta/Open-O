@@ -103,8 +103,6 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
     private String sourceOfIncome;
     private String citizenship;
     private String sin;
-    private Integer headRecord = null;
-    private Set<Integer> subRecord = null;
     private String anonymous = null;
     private String spokenLanguage;
 
@@ -145,7 +143,7 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
     private String nextAppointment;
 
     public enum PatientStatus {
-        AC, IN, DE, IC, ID, MO, FI
+        AC, IN, DE, IC, ID, MO, FI, MERGED
     }
 
     /**
@@ -1244,27 +1242,6 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
 
     public void setLinks(String links) {
         this.links = links;
-    }
-
-    public Integer getHeadRecord() {
-        return headRecord;
-    }
-
-    public void setHeadRecord(Integer headRecord) {
-        this.headRecord = headRecord;
-    }
-
-    public Integer getCurrentRecord() {
-        if (headRecord != null) return headRecord;
-        return demographicNo;
-    }
-
-    public Set<Integer> getSubRecord() {
-        return subRecord;
-    }
-
-    public void setSubRecord(Set<Integer> subRecord) {
-        this.subRecord = subRecord;
     }
 
     public String getSexDesc() {
