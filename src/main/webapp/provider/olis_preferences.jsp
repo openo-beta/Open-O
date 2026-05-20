@@ -49,6 +49,9 @@
             }
             .facility-chip-remove { color: #666; text-decoration: none; margin-left: 4px; font-weight: bold; }
             .facility-chip-remove:hover { color: #000; }
+            /* Scrollable autocomplete dropdown — without max-height jQuery UI
+               just keeps growing the suggestion list off-screen. */
+            .ui-autocomplete { max-height: 400px; overflow-y: auto; overflow-x: hidden; }
         </style>
 
 

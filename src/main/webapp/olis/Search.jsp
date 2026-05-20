@@ -279,6 +279,15 @@ opener.refreshView();</script>
         .nomenclature-chip-remove:hover {
             color: #000;
         }
+
+        /* Scrollable autocomplete dropdown — without max-height jQuery UI just
+           keeps growing the suggestion list off-screen. 400px is ~16 rows tall;
+           browse-by-scroll for large result sets, type-to-narrow for precision. */
+        .ui-autocomplete {
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
     </style>
 
 </head>

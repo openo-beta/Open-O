@@ -46,7 +46,15 @@ public class OLISFacilitySearch2Action extends ActionSupport {
     private HttpServletResponse response = ServletActionContext.getResponse();
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final int MAX_RESULTS = 25;
+    /**
+     * Defensive ceiling on returned rows. The full {@code OLISFacility} table is
+     * ~1,267 rows today (273 LAB + 994 SCC); a query like "li" can match ~600 of
+     * them. The picker's scrollable dropdown is happy to hold the whole table,
+     * so this cap exists only to prevent pathological payloads if the table
+     * grows 10x in some future release. Set well above the table size on
+     * purpose so users see all real matches.
+     */
+    private static final int MAX_RESULTS = 2000;
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
