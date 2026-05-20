@@ -505,6 +505,30 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Not caused by the C2/B1/init() work** — pre-existing logic; surfaced because the user's test environment has prior fixture uploads in `file_upload_check`.
 - **Labels:** `type: bug`, `priority: low`, `area: olis`, `cosmetic` (UX-confusing; no data loss — the duplicate was correctly detected, just mis-classified in the response payload)
 
+### A32: OLIS Results.jsp manual-match silently no-ops — `saveMatch` never fires (two-part regression from Struts 2.5.33 → 6.8.0 + Struts2 migration drift)
+- **Status:** ✅ Fixed (2026-05-19) — `SearchPatient2Action` now propagates `from=olis1`; `struts.xml` coop interceptor mode changed from `same-origin` to `same-origin-allow-popups`. Closes the last loose end in D1 / OLIS04.06.
+- **Source:** discovered while doing UI verification of D1 against the OLIS04.06 requirement text ("Match unmatched results to existing EMR patients ... Must preserve original OLIS demographics accessible from the UI"). The Z01/Z02 Preview match icon and `saveMatch` endpoint were both architecturally in place and looked working, but end-to-end Playwright test showed `OLISResults.demographicNo` staying `NULL` after a successful-looking match (user navigated to the matched patient's chart, no error visible).
+- **Two-part root cause** — both must be fixed for the chain to work:
+  1. **`SearchPatient2Action` drops `from=olis1` during the redirect.** `Results.jsp:163` builds the popup URL as `/oscarMDS/SearchPatient.do?labType=HL7&from=olis1&segmentID=<uuid>&labNo=<uuid>&name=...`. `SearchPatient2Action.execute()` reads `segmentID`, `name`, `labType` — but never reads `from` (lines 110-112) and never appends it to the rebuilt redirect URL (lines 145-147). `PatientSearch.jsp:171` branches on `request.getParameter("from")` to decide which callback to use (`updateLabDemoStatus2(t1, t2)` for OLIS-aware → triggers `saveMatch` ajax, vs `updateLabDemoStatus(t1)` legacy → routing-table-only). With `from` dropped, the OLIS-aware callback is never installed and `saveMatch` is never called.
+  2. **`Cross-Origin-Opener-Policy: same-origin` severs `window.opener` for popups.** Even after fixing #1, the popup's `updateOpener` callback dispatches through `window.opener.updateLabDemoStatus2(...)` — meaning the saveMatch ajax has to fire from the *opener*'s context. Struts2 6.8.0's `defaultStack` enables the `coop` interceptor with `mode=same-origin` by default. The opener (`/olis/Search.do`, a Struts2 action) sends `Cross-Origin-Opener-Policy: same-origin`; the popup target (`PatientSearch.jsp`, a raw JSP that doesn't go through Struts2) sends no COOP header. Per the COOP spec, when the opener and popup don't have matching `same-origin` COOP, the browser puts them in separate browsing context groups and **`window.opener` becomes `null` in the popup**. The popup's `updateOpener` then throws `Cannot read properties of null` in the onclick handler — the throw is swallowed by the event loop and the form still submits, so the user sees the chart open and assumes the match succeeded. No DB update ever happens.
+- **Why this only just surfaced (history):**
+  - **Pre-2026-03-15:** Struts 2.5.33 in use. Verified by extracting `struts-default.xml` from `struts2-core-2.5.33.jar` — the `coop` interceptor does not exist in 2.5.33 (neither in defaultStack nor as a class). No COOP header sent → opener preserved → OLIS match flow worked.
+  - **2026-03-15** (commit `f457ce02ee`, "chore: migrate javax.* to Jakarta EE namespace (big bang)"): Struts upgraded to **6.8.0**. The new defaultStack bundles `coop` with `mode=same-origin` enabled. Every Struts2 action started sending COOP same-origin → opener silently severed → **OLIS match flow silently broken from this date onward.**
+  - **2026-03-27** (commit `3d8341dcb4`, "force the fileUpload and defaultStack struts interceptors..."): explicit interceptor stack added to exclude the CVE'd `fileUpload` interceptor. Copied the rest of defaultStack verbatim — including coop at `same-origin`. **Did not cause this bug; preserved it.**
+  - The `from=olis1` drop in `SearchPatient2Action` is presumed older still (Struts 1 → Struts 2 migration era); it was latent because COOP severance also broke the flow at the same time.
+- **Fix shape (shipped):**
+  - **`SearchPatient2Action.java`** — read `from` parameter at the top of `execute()`; if non-empty, append `&from=<encoded>` to the rebuilt redirect URL alongside `labNo`/`labType`/`keyword`. Two-line change, OWASP-encoded via `Encode.forUriComponent`.
+  - **`src/main/webapp/WEB-INF/classes/struts.xml:67`** — coop interceptor `mode` value changed from `same-origin` to `same-origin-allow-popups`. The middle COOP value is the documented escape hatch for apps with intentional popup flows; verified valid in `CoopInterceptor.class` strings (`same-origin`, `same-origin-allow-popups`, `unsafe-none`). Restores pre-2026-03-15 popup behavior while keeping the cross-origin isolation benefit (cross-origin pages still can't reference OpenO windows).
+- **Verified end-to-end** (Playwright, 2026-05-19, post-fix):
+  - Click `here.gif` on unmatched row → popup URL ends in `&from=olis1` ✓
+  - Popup's `window.opener` is preserved (was `null` before COOP fix) ✓
+  - Popup's `updateOpener('uuid', '1274')` → `window.opener.updateLabDemoStatus2(uuid, demo)` → captured XHR: `GET /olis/AddToInbox.do?method=saveMatch&uuid=<uuid>&demographicNo=1274` → 200 ✓
+  - DB assertion: `OLISResults.demographicNo` went `NULL → 1274` ✓
+  - Re-running the same Z01 query shows the row as "Matched" with the patient-name now a chart hyperlink ✓
+- **Cross-cutting impact — likely a wider regression than just OLIS:** the COOP severance affects *every* popup-callback flow in OpenO since 2026-03-15, not just OLIS match. Any UI pattern that does "click → popup → select → `window.opener.someCallback()`" would behave the same way: UI looks successful, opener-side update silently no-ops. Worth a smoke-pass on the MDS lab match flow, document inbox match, and any other module that uses popups with parent callbacks. The COOP fix heals them all in one stroke; no per-flow fixup needed.
+- **Files:** `src/main/java/ca/openosp/openo/mds/pageUtil/SearchPatient2Action.java`, `src/main/webapp/WEB-INF/classes/struts.xml`
+- **Labels:** `type: bug`, `priority: high`, `area: olis`, `regression`, `compliance` (blocks OLIS04.06 / D1 verification; cross-cuts into all popup-driven OpenO flows since the Jakarta EE big-bang migration)
+
 ---
 
 ## Track B — Spec gaps, JSP-only quick wins
@@ -573,16 +597,32 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Labels:** `type: feature`, `priority: medium`, `compliance`
 
 ### C4: Participating-labs source
-- **Status:** ✅ Maintainability refactor done (Java compiles clean; JSP scriptlet changes pending a deploy-time verify). **OLIS04.03 stays *Partially Done*** — see "Not addressed" below.
-- **Addresses:** OLIS04.03 *maintainability* gap only — does **not** close OLIS04.03.
-- **Approach chosen:** Java single source of truth (enum) rather than a DB seed table — the list (Gamma-Dynacare 5552, CML 5407, LifeLabs 5687) is small and rarely changes; an enum keeps it self-contained with no schema churn. Trade-off: changing the list needs a code deploy.
-- **Scope — shipped:**
-  - **New `ca.openosp.openo.olis.model.OLISParticipatingLab` enum** — single source of truth, holding `labNo` (dropdown option value) + `displayName`, plus `getOid()` deriving the fully-qualified OLIS object identifier.
-  - **`Search.jsp`** — all **8** hard-coded lab dropdowns now iterate the enum (Specimen Collector, Performing / Exclude Performing, Reporting / Exclude Reporting, Test Request Placer, Destination Laboratory, Ordering Facility — the readiness-plan's original "377-447" estimate missed the Z05/Z06 query sections further down).
-  - **`provider/olis_preferences.jsp`** — both lab dropdowns (Default Reporting / Default Exclude Reporting) iterate the enum.
-- **Not addressed — OLIS04.03 completeness gap remains open:** this is a *maintainability* fix, not a *completeness* fix. It single-sources the **same 3 labs** that were already there — it does **not** add the full roster of participating laboratories, and it does **not** make the list updateable from OLIS (the Lab/SCC Extract sync the requirement hints at — D2-nomenclature-refresh-sized work). The enum makes adding labs a one-line edit, but closing OLIS04.03 still needs either the full participating-lab roster seeded, or a sync from the OLIS extract. Track as a follow-up / F1 decision.
-- **Deliberately left out of scope:** `OLISUtils` keeps its own lab-OID constants (`CMLIndentifier`, etc.) for source-facility dedup matching — that set also includes Alpha Labs (5254), which is *not* a query-parameter dropdown option, so the two lists aren't the same membership and shouldn't be force-unified. Adding Alpha Labs (or more participating labs) to the dropdowns is now a one-line enum edit if/when confirmed as queryable.
-- **Files:** `OLISParticipatingLab.java` (new), `Search.jsp`, `provider/olis_preferences.jsp`
+- **Status:** ✅ Closed (2026-05-20) — the maintainability refactor (enum, 2026-05-19) plus the completeness fix (full DB-backed roster + admin XLSX importer, 2026-05-20) together close **OLIS04.03**. See the dedicated **D2c** track entry below for the completeness fix's design + scope.
+- **Addresses:** OLIS04.03 (maintainability + completeness) — both gaps now closed.
+- **Initial approach (2026-05-19):** Java single source of truth (`OLISParticipatingLab` enum) holding the 3 labs (Gamma-Dynacare 5552, "CML" 5407, LifeLabs 5687) — fixed the maintainability gap but kept the completeness gap open. Approach superseded 2026-05-20 by D2c when the full Lab/SCC Extract was downloaded.
+- **Bug surfaced + fixed:** the enum's `CML("5407", "CML")` was wrong — licence 5407 in the canonical extract is LifeLabs Mississauga; real CML is licence 3855 (SCC class). Self-resolved by D2c's enum deletion + DB-roster import.
+- **Files (final state — all enum-era code superseded):** `OLISFacility.java` (new), `OLISFacilityDao.java` (new), `OLISFacilityImport2Action.java` (new), `OLISFacilitySearch2Action.java` (new), `FacilityImport.jsp` (new), `Search.jsp`, `provider/olis_preferences.jsp`, struts.xml, admin.jsp, leftNav.jspf, `OLISParticipatingLab.java` (deleted)
+- **Labels:** `type: feature`, `priority: medium`, `compliance`
+
+### D2c: Lab/SCC roster importer + DB-backed pickers
+- **Status:** ✅ Closed (2026-05-20). Closes the OLIS04.03 completeness gap that C4's enum refactor explicitly left open.
+- **Pattern:** carbon copy of D2a (nomenclature importer + DB-backed autocomplete), scoped to lab/SCC instead of test codes. Stdlib zip + SAX parse, upsert on natural key, deprecate-on-absence, `_admin/w` gate.
+- **Source:** eHealth Ontario Lab/SCC Extract XLSX, downloaded from <https://ehealthontario.on.ca/en/support/lab-results/olis-whats-new/olis-client-support>. Workbook contains a single sheet "Extract - LAB and SCC" with 8 columns (Licence Number / Facility Name / Address Line 1-2 / City / Postal Code / OID / Full ID). 1,267 rows in the May 2026 snapshot — **273 Laboratories** (OID `2.16.840.1.113883.3.59.1`) + **994 Specimen Collection Centres** (OID `2.16.840.1.113883.3.59.2`); no Hospitals.
+- **Schema choice — single table with class column.** `OLISFacility` (`facilityClass` 'LAB' / 'SCC'), natural key `(facilityClass, licenceNumber)`, plain Hibernate `@Entity` — no JPA `@Inheritance`, no two-tables-identical duplication. Source extract is one sheet with one row shape; mirroring that in the DB avoids physical duplication. If Lab and SCC ever diverge in column needs, JPA `@Inheritance(SINGLE_TABLE)` swap is non-breaking.
+- **Picker semantics by field** (8 in `Search.jsp` + 2 in `olis_preferences.jsp`): Specimen Collector → SCC; Reporting / Exclude Reporting / Performing / Exclude Performing / Destination / Test Request Placer → LAB; Ordering Facility → ANY; OLIS Preferences defaults → LAB. The OLIS query message itself only carries the licence number — class is implicit in which `@ZBR.*` / `@ZBE.*` / `@ORC.21` field consumes it — so wrong-class picks aren't catastrophic; the spec field semantics drive the picker's filter.
+- **Deprecation strategy:** unlike the nomenclature distribution, the Lab/SCC Extract has no Validation/Workflow Status columns. The importer pre-marks every existing row INACTIVE, then upserts present rows back to ACTIVE — so rows absent from the new extract end INACTIVE and stop surfacing in the typeahead pickers. Same end-state as nomenclature's "deprecated on Workflow != RELEASED", just with absence as the signal.
+- **Scope shipped:**
+  - **New `OLISFacility` entity + `OLISFacilityDao`** (`findByClassAndLicence` for upsert; `findByClassAndNameLike` for typeahead — ACTIVE-only, class-filtered or ANY; `markAllInactive` for the pre-deprecation pass).
+  - **New `OLISFacilityImport2Action`** — XLSX upload at *Admin → OLIS — Import Lab/SCC Roster*, `_admin/w` gate, reports added/updated counts per class.
+  - **New `OLISFacilitySearch2Action`** — AJAX endpoint at `/olis/FacilitySearch.do`, takes `?class=LAB|SCC|ANY&query=…`, returns top-25 active matches as `{licence, name, city, facilityClass}` JSON. `_lab/r` gate.
+  - **`Search.jsp`** — all 8 OLISParticipatingLab dropdowns converted to jQuery UI typeahead (input + hidden + chip strip). Pre-existing user preferences for Reporting/Exclude Reporting now load as a pre-selected chip via a server-side `findByClassAndLicence` lookup.
+  - **`provider/olis_preferences.jsp`** — both LAB dropdowns converted to typeahead with the same chip + preload pattern. jQuery UI and chip styles added locally.
+  - **`admin.jsp` + `administration/leftNav.jspf`** — new "OLIS — Import Lab/SCC Roster" link under the same `olis_keystore || olis_simulate` gate as the nomenclature importer.
+  - **`OLISParticipatingLab.java` deleted** — no remaining consumers.
+  - **Schema migration** `database/mysql/updates/update-2026-05-20-olis-facility.sql` + fresh-install seed in `olisinit.sql` (CREATE TABLE only — the table starts empty on fresh deploy; admin runs the importer once to populate).
+- **Silent bug fixed in passing:** the deleted enum's `CML("5407", …)` entry was misattributed; canonical extract has 5407 as LifeLabs Mississauga and real CML at licence 3855 (SCC class). Self-resolves with the enum deletion.
+- **Verification posture (deploy-time):** Build green (`mvn compile` passes). End-to-end XLSX import + picker dropdown smoke test pending a deploy-time run against the May 2026 extract. Repeat-import idempotency expected — same shape as D2a's nomenclature reimport (every row treated as update, INACTIVE→ACTIVE flips back).
+- **Files:** see C4 final-state list.
 - **Labels:** `type: feature`, `priority: medium`, `compliance`
 
 ---
@@ -590,11 +630,30 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 ## Track D — Needs product/UX decision before sizing
 
 ### D1: OLIS-specific manual-match UI
+- **Status:** ✅ Verified Done (2026-05-19, against verbatim spec text from original OntarioMD requirements PDF). The full chain from Results.jsp `here.gif` click → popup → patient select → `saveMatch` ajax → `OLISResults.demographicNo` persist works end-to-end. See **A32** for the two-part regression (`from=olis1` drop in `SearchPatient2Action`, COOP severance from Struts 2.5.33→6.8.0 upgrade) that surfaced during this verification and was fixed in the same pass.
 - **Closes:** OLIS04.06
-- **Partial regression context (see A9):** the original Struts 1 OLISAddToInboxAction had a `saveMatch` action method that handled the OLIS-specific match-to-demographic flow. It was dropped in commit `f90870dc15` (Dec 2024, Struts 1 cleanup). Whether or not that flow is exactly the OLIS-specific UI the spec wants, restoring `saveMatch` is a prerequisite — without it, even the existing MDS `PatientMatch.do` flow can't update OLIS-specific routing/audit state from the Results.jsp side.
-- **Decision still required:** build OLIS-specific match flow that shows original OLIS demographics next to EMR demographics, OR formally accept the (restored `saveMatch` + existing MDS `PatientMatch.do`) flow as sufficient. The decision determines whether D1 is just "port saveMatch" (small) or "port saveMatch + design new UI" (medium).
-- **Existing MDS flow:** `OpenEChart.jsp` → `oscarMDS/PatientSearch.jsp:183` → `PatientMatch2Action`
-- **Labels:** `type: discussion`, `needs-design`, `priority: low`, `regression`
+- **Verbatim spec text (from `EMR Ontario Laboratories Information System (OLIS) - Requirements.pdf`, dated June 15, 2021, lines 1271-1296):**
+  > **OLIS04.06** — The EMR Offering MUST have the functionality to allow the EMR user to act upon unmatched patient lab reports/results received via OLIS.
+  >
+  > At a minimum, the EMR Offering MUST allow the EMR user to:
+  > a) Match the unmatched patient lab reports/results to an existing EMR patient
+  > b) Manage the remaining unmatched patient lab reports/results
+  >
+  > The matching patient functionality MUST be available for:
+  > a) Unmatched patients in the Preload Preview / Patient Query Preview
+  > b) Unmatched patients returned by the OLIS Practitioner Query (see OLIS02.03)
+  >
+  > The matching to patient functionality MUST preserve the original patient demographics (all) returned within the OLIS HL7 message which must be accessible from the EMR Offering user interface.
+- **Earlier "Partial Done" reasoning revisited.** A previous internal assessment closed this issue at Partial Done with the gap "no dedicated UI that shows the original OLIS demographics from the HL7 message side-by-side with EMR demographics during manual matching." After parsing the verbatim spec text above, that reasoning is an **extrapolation** — the requirement says *preserve* the OLIS demographics and make them *accessible from the EMR UI*. It does **not** require side-by-side display during the matching action. Linguistic check: "the matching to patient functionality MUST preserve the original patient demographics" + "which must be accessible from the EMR Offering user interface" follows the same pattern as "the compile process must preserve source comments accessible from the output" — the predicate is *don't destroy + remain readable*, not *display during the operation*. The strictest constraint in the sentence is the **"(all)"** qualifier — every field returned in the OLIS PID, not just the obvious ones.
+- **Verified clause-by-clause against verbatim text:**
+  1. **Match unmatched lab reports/results to an existing EMR patient** — ✅ `saveMatch` endpoint (`OLISAddToInbox2Action.java:300`, re-ported in A9) + `from=olis1` aware callback chain. Verified: `OLISResults.demographicNo` updates via Playwright (Z01) and `patientLabRouting.demographic_no` updates via `PatientMatch.do` (inbox).
+  2. **Manage remaining unmatched patient lab reports/results** — ✅ unclaimed worklist + C3's per-provider `OLISProviderPreferences.filterPatients` routing controls whether unmatched lands in unclaimed worklist vs provider inbox.
+  3. **Matching available for unmatched patients in Preload Preview / Patient Query Preview** — ✅ `Results.jsp:872-874` shows `here.gif` icon on every Unmatched row → `showMatch()` → `oscarMDS/SearchPatient.do?from=olis1`. Verified post-A32 fix.
+  4. **Matching available for unmatched patients returned by the OLIS Practitioner Query** — ✅ Z04 polling imports labs directly to `hl7TextInfo` + `patientLabRouting`; match via standard inbox flow (`labDisplay.jsp` → `oscarMDS/SearchPatient.do` without `from=olis1`) → `PatientMatch.do` → `CommonLabResultData.updatePatientLabRouting()`. No OLIS-side `OLISResults` row exists for Z04 imports (the inbox storage *is* the Practitioner Query result UI), so no parallel state needs syncing — the generic match path is structurally complete. Verified end-to-end with lab 176 going `demographic_no=0 → 1274`.
+  5. **Matching preserves original patient demographics (all) ... accessible from UI** — ✅ raw HL7 is base64-stored in `hl7_text_message` and re-parsed on every render. Every PID field (name, HIN, DOB, sex, address, phone, marital, religion, account number, citizenship, etc. — i.e., **all** of them per the "(all)" qualifier) surfaces through `labDisplayOLIS.jsp`, the `Results.jsp` preview pane (eye icon), and the `OLISLabPDFCreator` output. Matching never substitutes matched-EMR demographics for OLIS-side values. Verified: lab 176 matched to demographic 1274 (Aleshia Jones in EMR) still renders title "FITCASE A TESTPATIENT" + HIN `9999999998` from the original PID; the matched-EMR identity is used only for routing/access control, never overwrites the displayed demographics.
+- **Existing MDS flow (reused, OLIS-aware via `from=olis1` branch):** `Results.jsp` → `oscarMDS/SearchPatient.do?from=olis1` → `SearchPatient2Action` (now propagates `from` — see A32) → `oscarMDS/PatientSearch.jsp:171` (`from=olis1` branch installs `updateLabDemoStatus2`) → popup click → `window.opener.updateLabDemoStatus2()` → `saveMatch` ajax (OLIS-side persist) → form submit to `PatientMatch.do` → `PatientMatch2Action` → routing update + `OpenEChart` redirect.
+- **When to revisit:** if OntarioMD F1 conformance review *explicitly* asks for OLIS-side demographics to appear in the match popup itself (the assessor's earlier interpretation, not the spec text), then build a `from=olis1`-gated info panel at the top of `PatientSearch.jsp` — re-fetch `OLISResults.findByUUID(labNo)` → re-parse via `OLISHL7Handler` → render an OLIS-side PID block above the EMR candidate list. ~80 lines of JSP + a thread-through. Until then: the implementation literally satisfies the spec as written; no F1 risk identified.
+- **Labels:** `type: discussion`, `priority: low`, `regression`, `done`
 
 ### D2: Nomenclature programmatic refresh
 - **Closes:** OLIS04.08
@@ -609,7 +668,7 @@ These are previously reported user-blocking bugs, separate from spec compliance 
 - **Single XLSX file** with 9 sheets covering Test Request (3,464 rows), Test Result (49,326 rows), Microorganism, Specimen Source, plus per-area change-log sheets.
 - **Versioned downloads at predictable URLs:** `https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v{X.YY}` (the Stage 4 Vendor Guide references `v3.00`; we have `V3.03_PROD`).
 - **Cadence:** roughly quarterly releases; V3.03_PROD = April 23, 2026 contained 19 Request adds + 42 Request changes + 57 Result adds + 126 Result changes + 68 Microorganism changes (≈310 row deltas per release).
-- **Hard operational deadline:** each release notice says **"Review and remap by `<deadline ~7 days later>` to prevent message failure."** This is not advisory — non-conforming senders start having OLIS messages rejected after the deadline. OpenO has missed every deadline since v2.69 (March 2023).
+- **Operational pressure to stay current:** the nomenclature is mutable — codes deprecate, get renamed, and have their LOINC alignment changed in successive releases. Clinics running with stale nomenclature risk message rejection or display mismatch when they encounter codes that no longer match the live catalog. OpenO is currently >3 years behind (V2.69 March 2023 → V3.03 April 2026 = 12 quarterly releases missed). *(No specific deadline period in the eHealth Ontario release materials I reviewed; treat the cadence pressure as "stay close to current quarterly release" rather than a hard ~N-day window.)*
 - **Change semantics are mature.** Each change has a `Type of Change` column: `Add` (new code, valid from Effective Date), `Change` (attributes updated — e.g. LOINC realignment, preferred-name change), `Deprecate` (code retired at End Date; suggested replacement in Change Note).
 - The Microsoft Access mapping tool (`OLIS_MAP_d.mdb` + `OLIS_MAP_s.mdb` + vendor-local `OLIS_MAP_Local_d.mdb`) is for vendors that have **their own internal codes and need to maintain old→new translations to OLIS**. OpenO doesn't need this layer — OpenO stores OLIS codes directly. The official-reference table `ApendA` does include an `OLD_OLIS_Test_Request_Code` column, confirming that OLIS occasionally re-numbers codes; this is what enables deprecation-with-successor flows.
 
@@ -652,7 +711,7 @@ Three options ordered by lift:
 - Upserts row-by-row using `nameId` as the lookup key.
 - Status derivation: `INACTIVE` if `Validation Status Indicator` is INACTIVE OR if `Workflow Status Indicator` is anything other than `RELEASED`. Otherwise `ACTIVE`. (Mirrored byte-for-byte in the CSV regen script.)
 - Date parsing: Excel numeric serial → `yyyy-MM-dd` string → `M/d/yyyy` string, all **non-lenient** (so the V3.03 string `3/9/2023` doesn't get normalized into year 9 by `SimpleDateFormat` lenient mode — a bug we hit and fixed during smoke test).
-- Returns an Added / Updated / Deprecated count per table for the admin to review against the release notes inside the 7-day deadline window.
+- Returns an Added / Updated / Deprecated count per table for the admin to review against the release notes.
 
 **Richer fresh-install CSV** (the key D2a-vs-D2a-Option-B difference): the regenerated seed CSVs now carry the full filter-relevant column set — `(nameId, name, status, effectiveDate, endDate, externalCodeVersion)` for results and `(nameId, name, category, status, effectiveDate, endDate, externalCodeVersion)` for requests. Decision rationale: without status/dates at fresh-install time, every code defaults to ACTIVE and the autocomplete shows deprecated codes until an admin runs the importer. That "admin forgets on day 1" state would silently persist forever on small-clinic installs. Carrying the full set in the CSV makes a fresh install conformant out of the box. The cost is logic duplication between the Python regen script and the Java importer (`deriveStatus`, `parseDateCell`); the script's docstring flags the requirement to keep them in lock-step.
 
@@ -754,9 +813,12 @@ Three options ordered by lift:
 ## Track G — Local audit (this work item)
 
 ### G1: Local OLIS smoke test against current branch
+- **Status:** Pending — last item before F1 prep is technically complete.
 - Stand up OLIS locally and exercise the major flows (Z01 patient query, Z04 preload/practitioner query, Results preview, Save / Sign-off, Forward, PDF render)
 - Triage anything new into Track A bug tickets
 - The previous working version was on Struts 1; expect drift bugs from the Struts 2 migration
+- **Extra value post-A32 (added 2026-05-19):** the COOP fix in A32 (`mode: same-origin → same-origin-allow-popups`) is global — affects every Struts2 action in OpenO, not just OLIS. Any popup-callback flow that was silently broken since the 2026-03-15 Jakarta EE migration (Struts 2.5.33 → 6.8.0) should be healed by this single change. G1 should explicitly include non-OLIS popup flows too — MDS lab match popup (`oscarMDS/SearchPatient`), document inbox match, demographic search popups, the `popupPage()` callers in `share/javascript/`, and anything else under `oscarMDS/` or `oscarEncounter/` that uses `window.opener.someCallback()` after a popup selection. If any of those are confirmed healed, log them in the smoke-test write-up — they're not OLIS-specific but they are direct consequences of A32 landing.
+- **Full smoke-test plan:** see `docs/olis/g1-smoke-test-plan.md`
 
 ### G2: HAPI structure-walker misses nested segments — synthetic-fixture quirk (NTE rendering, `isReportBlocked()`)
 - **Not a bug in OpenO.** During A1 development we built `docs/olis/sample-response-a1-rich.hl7` with NTE comment segments interleaved between OBR and ZBR (`OBR → ZBR → NTE → ...`). Those NTEs didn't render because `OLISHL7Handler.getNTELocation` walks `terser.getFinder().getRoot().getNames()` which doesn't expose nested NTEs when custom Z-segments sit between the OBR and the NTE in the wire order.
@@ -767,6 +829,7 @@ Three options ordered by lift:
 - **✅ Closed (2026-05-15, commit `3161c1fd50`):** the proposed hardening landed in a slightly different form — instead of teaching `init()` to recurse into typed groups, the parser is now configured with a custom `ModelClassFactory` that forces every message to resolve as `GenericMessage` regardless of MSH-9-3. All segments therefore land flat at the message root, making the existing root-only walk correct by construction. **All four call sites now work for both bare `ORU^R01` and `ERP^Z01` fixtures.** This closes G2 (NTE rendering) and §4a (OLIS04.10 / `isReportBlocked()`) together.
 
 ### G3: Devcontainer doesn't load `over_ride_config.properties` at runtime (general dev-experience gap, not OLIS-specific)
+- **Status:** ⏸️ Carved out of OLIS track (2026-05-19) — file as a standalone dev-environment ticket. Not blocking F1 conformance and not OLIS-specific; surfaced under OLIS only because `olis_simulate=yes` is the place the gap first bit. Closing out of this readiness plan; the next dev who hits a "why isn't my override property loading" should land on the standalone ticket instead.
 - **Reclassified from A6.** Surfaced during the OLIS audit but not OLIS-scoped — affects any property override anyone wants to keep out of the checked-in primary file. File as a general dev-experience issue.
 - **What works:** properties set in `src/main/resources/oscar_mcmaster.properties` are picked up at app startup exactly as expected.
 - **What doesn't work:** setting the same property in `src/test/resources/over_ride_config.properties` instead (so it stays out of the checked-in primary file) is silently ignored at runtime — the override file is only loaded by the JUnit test infrastructure, not the running webapp.
@@ -779,13 +842,17 @@ Three options ordered by lift:
 
 ## Sequencing recommendation
 
+**Historical (initial plan):**
 1. **Day 0**: open A1, A2, F1, D1, D2, E1, E2, G1 — get the slow-loop and decision items moving
 2. **Sprint 1**: land B1 (JSP quick-win bundle); A1/A2 in parallel; G1 ongoing
 3. **Sprint 2**: C1 + C2 — compliance-critical audit/logging fixes with shared review themes
 4. **Sprint 3+**: C3, C4, then whatever D1/D2 resolve to
+
+**Current state (2026-05-19):** all of Tracks A, B, C, D (D1 verified done against verbatim spec, D2a/b/D3 shipped), E (E1/E2 verified), and G2 are closed. The only open item in this branch is G1 (local OLIS smoke test). G3 carved out to standalone dev-environment ticket. F1 is the next external-coordination step, intentionally deferred. The D2a out-of-scope follow-ups (Microorganism/SpecimenSource tables, LOINC FSN fallback, richer autocomplete, deleted-not-deprecated cleanup) are all post-F1 polish — none are spec-required and one (deleted-not-deprecated) has a real risk profile that needs design before any implementation.
 
 ## Cross-cutting notes
 
 - **Parent epic:** "OLIS OntarioMD Conformance Readiness" linking all tickets, body referencing `docs/olis/requirements-analysis.md` at a pinned commit SHA
 - **Parallelization:** A1, A2, B1, C1, G1 are file-disjoint and can be assigned to different devs immediately. C2 should sequence after C1's PR lands (shared audit-log path).
 - **Compliance-critical cluster:** C1 + C2 + C3 should all land before F1 conformance testing kicks off, otherwise the test cycle will surface them and add round-trip time.
+- **Branch closure (2026-05-19):** OLIS work in this branch is effectively complete pending F1 conformance review. G1 is the last local validation step before that external review.
