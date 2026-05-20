@@ -143,16 +143,15 @@ public class ABCDParser {
      * @throws SQLException if a database error occurs
      */
     private String executeHinMatchQuery(String sql, Connection conn) throws SQLException {
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        ResultSet rs = pstmt.executeQuery();
         String demo = "0";
         int count = 0;
-        while (rs.next()) {
-            count++;
-            demo = Misc.getString(rs, "demographic_no");
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                count++;
+                demo = Misc.getString(rs, "demographic_no");
+            }
         }
-        rs.close();
-        pstmt.close();
 
         if (count <= 1) {
             return demo;
@@ -161,14 +160,13 @@ public class ABCDParser {
         // Multiple matches — retry with active-only filter to resolve merged patients.
         demo = "0";
         count = 0;
-        pstmt = conn.prepareStatement(sql + " and patient_status = 'AC' ");
-        rs = pstmt.executeQuery();
-        while (rs.next()) {
-            count++;
-            demo = Misc.getString(rs, "demographic_no");
+        try (PreparedStatement pstmt = conn.prepareStatement(sql + " and patient_status = 'AC' ");
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                count++;
+                demo = Misc.getString(rs, "demographic_no");
+            }
         }
-        rs.close();
-        pstmt.close();
         return count == 1 ? demo : "0";
     }
 
