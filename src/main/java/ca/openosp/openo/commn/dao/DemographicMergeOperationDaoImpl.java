@@ -1274,8 +1274,8 @@ public class DemographicMergeOperationDaoImpl implements DemographicMergeOperati
         // formBCAR2020Text — composite IdClass (formId + pageNo + field); JDBC INSERT...SELECT
         for (Map.Entry<Long, Long> entry : formPkMap.entrySet()) {
             jdbcTemplate.update(
-                "INSERT INTO formBCAR2020Text (form_id, page_no, field, value, last_modified) " +
-                "SELECT ?, page_no, field, value, last_modified " +
+                "INSERT INTO formBCAR2020Text (form_id, provider_no, page_no, field, val) " +
+                "SELECT ?, provider_no, page_no, field, val " +
                 "FROM formBCAR2020Text WHERE form_id = ?",
                 entry.getValue().intValue(), entry.getKey().intValue());
         }
