@@ -842,6 +842,7 @@ String curProvider_no = (String)session.getAttribute("user");
 					%>
 					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/olis/Preferences.jsp">OLIS Preferences</a></li>
 					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/olis/NomenclatureImport.do">OLIS Import Nomenclature</a></li>
+					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/olis/FacilityImport.do">OLIS Import Lab/SCC Roster</a></li>
 					<% } %>
 					
 		

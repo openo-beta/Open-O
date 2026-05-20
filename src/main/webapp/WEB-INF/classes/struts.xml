@@ -448,6 +448,12 @@
             <result name="form">/olis/NomenclatureImport.jsp</result>
             <result name="report">/olis/NomenclatureImport.jsp</result>
         </action>
+        <action name="olis/FacilitySearch" class="ca.openosp.openo.olis.OLISFacilitySearch2Action"/>
+        <action name="olis/FacilityImport" class="ca.openosp.openo.olis.OLISFacilityImport2Action">
+            <interceptor-ref name="defaultStack"/>
+            <result name="form">/olis/FacilityImport.jsp</result>
+            <result name="report">/olis/FacilityImport.jsp</result>
+        </action>
         <action name="olis/Results" class="ca.openosp.openo.olis.OLISResults2Action">
             <result name="results">/olis/Results.jsp</result>
         </action>

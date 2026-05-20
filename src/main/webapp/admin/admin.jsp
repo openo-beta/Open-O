@@ -843,6 +843,7 @@
                     %>
                     <li><a href="#" onclick='popupPage(400, 400, "${pageContext.request.contextPath}/olis/Preferences.jsp");return false;'>OLIS Preferences</a></li>
                     <li><a href="#" onclick='popupPage(600, 900, "${pageContext.request.contextPath}/olis/NomenclatureImport.do");return false;'>OLIS Import Nomenclature</a></li>
+                    <li><a href="#" onclick='popupPage(600, 900, "${pageContext.request.contextPath}/olis/FacilityImport.do");return false;'>OLIS Import Lab/SCC Roster</a></li>
                     <% } %>
 
                     <li><a href="javascript:void(0);" onclick="popupPage(550,800, '${pageContext.request.contextPath}/admin/updateDrugref.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.UpdateDrugref"/></a></li>

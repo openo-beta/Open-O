@@ -15,7 +15,8 @@
                 ca.openosp.openo.commn.model.Demographic,
                 ca.openosp.openo.PMmodule.dao.ProviderDao,
                 ca.openosp.openo.commn.model.Provider,
-                ca.openosp.openo.olis.model.OLISParticipatingLab,
+                ca.openosp.openo.olis.dao.OLISFacilityDao,
+                ca.openosp.openo.olis.model.OLISFacility,
                 ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
@@ -390,44 +391,29 @@ opener.refreshView();</script>
                     -->
                     <tr>
                         <th width="20%">Specimen Collector</th>
-                        <td width="30%"><select id="specimenCollector" name="specimenCollector">
-                            <option value=""></option>
-                            <%
-                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
-                            %>
-                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
-                            <%
-                                }
-                            %>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="specimenCollectorAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="specimenCollectorAC_hidden" name="specimenCollector"/>
+                            <div id="specimenCollectorAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Performing Laboratory</th>
-                        <td width="30%"><select id="performingLaboratory" name="performingLaboratory">
-                            <option value=""></option>
-                            <%
-                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
-                            %>
-                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
-                            <%
-                                }
-                            %>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="performingLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="performingLaboratoryAC_hidden" name="performingLaboratory"/>
+                            <div id="performingLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Exclude Performing Laboratory</th>
-                        <td width="30%"><select id="excludePerformingLaboratory" name="excludePerformingLaboratory">
-                            <option value=""></option>
-                            <%
-                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
-                            %>
-                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
-                            <%
-                                }
-                            %>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="excludePerformingLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="excludePerformingLaboratoryAC_hidden" name="excludePerformingLaboratory"/>
+                            <div id="excludePerformingLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <%
@@ -439,33 +425,38 @@ opener.refreshView();</script>
                         String reportingLabVal = (repLabProp != null) ? repLabProp.getValue() : "";
                         String exReportingLabVal = (exRepLabProp != null) ? exRepLabProp.getValue() : "";
 
+                        OLISFacilityDao facilityDao = SpringUtils.getBean(OLISFacilityDao.class);
+                        String reportingLabLabel = "";
+                        if (!reportingLabVal.isEmpty()) {
+                            OLISFacility f = facilityDao.findByClassAndLicence(OLISFacility.CLASS_LAB, reportingLabVal);
+                            if (f != null) reportingLabLabel = f.getName() + " [" + f.getLicenceNumber() + "]";
+                        }
+                        String exReportingLabLabel = "";
+                        if (!exReportingLabVal.isEmpty()) {
+                            OLISFacility f = facilityDao.findByClassAndLicence(OLISFacility.CLASS_LAB, exReportingLabVal);
+                            if (f != null) exReportingLabLabel = f.getName() + " [" + f.getLicenceNumber() + "]";
+                        }
                     %>
                     <tr>
                         <th width="20%">Reporting Laboratory</th>
-                        <td colspan="3"><select id="reportingLaboratory" name="reportingLaboratory">
-                            <option value="" <%=(reportingLabVal.equals("") ? "selected=\"selected\"" : "") %>></option>
-                            <%
-                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
-                            %>
-                            <option value="<%=olisLab.getLabNo()%>" <%=(reportingLabVal.equals(olisLab.getLabNo()) ? "selected=\"selected\"" : "") %>><%=Encode.forHtml(olisLab.getDisplayName())%></option>
-                            <%
-                                }
-                            %>
-                        </select>
+                        <td colspan="3">
+                            <input type="text" id="reportingLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"
+                                   data-preload-label="<%=Encode.forHtmlAttribute(reportingLabLabel)%>"/>
+                            <input type="hidden" id="reportingLaboratoryAC_hidden" name="reportingLaboratory"
+                                   value="<%=Encode.forHtmlAttribute(reportingLabVal)%>"/>
+                            <div id="reportingLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Exclude Reporting Laboratory</th>
-                        <td width="30%"><select id="excludeReportingLaboratory" name="excludeReportingLaboratory">
-                            <option value="" <%=(exReportingLabVal.equals("") ? "selected=\"selected\"" : "") %>></option>
-                            <%
-                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
-                            %>
-                            <option value="<%=olisLab.getLabNo()%>" <%=(exReportingLabVal.equals(olisLab.getLabNo()) ? "selected=\"selected\"" : "") %>><%=Encode.forHtml(olisLab.getDisplayName())%></option>
-                            <%
-                                }
-                            %>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="excludeReportingLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"
+                                   data-preload-label="<%=Encode.forHtmlAttribute(exReportingLabLabel)%>"/>
+                            <input type="hidden" id="excludeReportingLaboratoryAC_hidden" name="excludeReportingLaboratory"
+                                   value="<%=Encode.forHtmlAttribute(exReportingLabVal)%>"/>
+                            <div id="excludeReportingLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
@@ -623,16 +614,12 @@ opener.refreshView();</script>
                     </tr>
                     <tr>
                         <th width="20%">Test Request Placer</th>
-                        <td><select>
-                            <option></option>
-                            <%
-                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
-                            %>
-                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
-                            <%
-                                }
-                            %>
-                        </select></td>
+                        <td>
+                            <input type="text" id="testRequestPlacerAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="testRequestPlacerAC_hidden" name="testRequestPlacer"/>
+                            <div id="testRequestPlacerAC_chip" class="nomenclature-chips"></div>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="4">
@@ -926,16 +913,11 @@ opener.refreshView();</script>
                     </tr>
                     <tr>
                         <th width="20%">Destination Laboratory</th>
-                        <td width="30%"><select id="destinationLaboratory" name="destinationLaboratory">
-                            <option value=""></option>
-                            <%
-                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
-                            %>
-                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
-                            <%
-                                }
-                            %>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="destinationLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="destinationLaboratoryAC_hidden" name="destinationLaboratory"/>
+                            <div id="destinationLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
@@ -966,16 +948,11 @@ opener.refreshView();</script>
                     </tr>
                     <tr>
                         <th width="20%">Ordering Facility</th>
-                        <td width="30%"><select id="orderingFacility" name="orderingFacility">
-                            <option value=""></option>
-                            <%
-                                for (OLISParticipatingLab olisLab : OLISParticipatingLab.values()) {
-                            %>
-                            <option value="<%=olisLab.getLabNo()%>"><%=Encode.forHtml(olisLab.getDisplayName())%></option>
-                            <%
-                                }
-                            %>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="orderingFacilityAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="orderingFacilityAC_hidden" name="orderingFacility"/>
+                            <div id="orderingFacilityAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
@@ -1078,5 +1055,84 @@ opener.refreshView();</script>
     </tr>
     </tbody>
 </table>
+
+<script type="text/javascript">
+    (function ($) {
+        var ctxPath = '<%=Encode.forJavaScript(request.getContextPath())%>';
+        var endpoint = ctxPath + '/olis/FacilitySearch.do';
+
+        function clearChildren(node) {
+            while (node.firstChild) node.removeChild(node.firstChild);
+        }
+
+        function makeFacilityPicker(inputId, facilityClass) {
+            var $input = $('#' + inputId);
+            var hiddenInput = document.getElementById(inputId + '_hidden');
+            var chipDiv = document.getElementById(inputId + '_chip');
+            if (!hiddenInput || !chipDiv) return;
+
+            function showChip(licence, label) {
+                clearChildren(chipDiv);
+                hiddenInput.value = licence || '';
+                if (!licence) {
+                    $input.show();
+                    return;
+                }
+                var chip = document.createElement('span');
+                chip.className = 'nomenclature-chip';
+                chip.appendChild(document.createTextNode(label + ' '));
+                var remove = document.createElement('a');
+                remove.href = '#';
+                remove.className = 'nomenclature-chip-remove';
+                remove.appendChild(document.createTextNode('×'));
+                remove.onclick = function (e) {
+                    e.preventDefault();
+                    showChip('', '');
+                    $input.val('').focus();
+                    return false;
+                };
+                chip.appendChild(remove);
+                chipDiv.appendChild(chip);
+                $input.hide();
+            }
+
+            $input.autocomplete({
+                minLength: 2,
+                source: function (req, response) {
+                    $.getJSON(endpoint, {query: req.term, 'class': facilityClass}, function (data) {
+                        response($.map(data.results || [], function (item) {
+                            var label = item.name;
+                            if (item.city) label = label + ' — ' + item.city;
+                            label = label + ' [' + item.licence + ']';
+                            return {label: label, value: label, item: item};
+                        }));
+                    });
+                },
+                select: function (event, ui) {
+                    showChip(ui.item.item.licence, ui.item.label);
+                    $(this).val('');
+                    return false;
+                },
+                focus: function () { return false; }
+            });
+
+            var preloadLicence = hiddenInput.value;
+            var preloadAttr = $input.attr('data-preload-label');
+            if (preloadLicence) {
+                showChip(preloadLicence, preloadAttr || preloadLicence);
+            }
+        }
+
+        makeFacilityPicker('specimenCollectorAC', 'SCC');
+        makeFacilityPicker('performingLaboratoryAC', 'LAB');
+        makeFacilityPicker('excludePerformingLaboratoryAC', 'LAB');
+        makeFacilityPicker('reportingLaboratoryAC', 'LAB');
+        makeFacilityPicker('excludeReportingLaboratoryAC', 'LAB');
+        makeFacilityPicker('testRequestPlacerAC', 'LAB');
+        makeFacilityPicker('destinationLaboratoryAC', 'LAB');
+        makeFacilityPicker('orderingFacilityAC', 'ANY');
+    })(jQuery);
+</script>
+
 </body>
 </html>
