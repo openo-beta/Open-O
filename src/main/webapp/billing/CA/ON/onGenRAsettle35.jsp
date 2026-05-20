@@ -114,8 +114,6 @@
         dao.merge(raHeader);
         recordAffected1++;
     }
-%>
 
-<script LANGUAGE="JavaScript">
-    window.location.href = '<%= request.getContextPath() %>/billing/CA/ON/genRA.jsp';
-</script>
+    response.sendRedirect(request.getContextPath() + "/billing/CA/ON/genRA.jsp");
+%>
