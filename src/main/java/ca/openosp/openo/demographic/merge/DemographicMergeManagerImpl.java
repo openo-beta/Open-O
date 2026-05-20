@@ -39,6 +39,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -78,6 +80,9 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     @Autowired
     private DemographicMergeOperationDao operationDao;
 
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
+
     /**
      * {@inheritDoc}
      * <p>
@@ -111,7 +116,8 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
 
         // Clone A → C and obtain C's auto-generated demographic_no
         Demographic demographicC = cloneDemographic(demographicA, loggedInInfo.getLoggedInProviderNo());
-        demographicDao.save(demographicC);
+        entityManager.persist(demographicC);
+        entityManager.flush();
         Integer targetDemographicNo = demographicC.getDemographicNo();
 
         System.out.println("  [OK] Created merged demographic C=" + targetDemographicNo + " (cloned from A=" + primaryDemographicNo + ")");
@@ -123,7 +129,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         saveMergeEvent(DemographicMerge.EventType.MERGE, primaryDemographicNo, secondaryDemographicNos, targetDemographicNo, loggedInInfo.getLoggedInProviderNo());
         System.out.println("  [OK] Merge event recorded in audit table");
 
-        // Primary (A → C): full copy — status update deferred to applyMergeStatuses()
+        // Primary (A → C): full copy
         System.out.println("\n--- COPYING PRIMARY: A=" + primaryDemographicNo + " -> C=" + targetDemographicNo + " ---");
         copyAllDataForSource(primaryDemographicNo, targetDemographicNo, false);
         System.out.println("--- PRIMARY A=" + primaryDemographicNo + " data copied ---");
@@ -137,41 +143,23 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
             secIdx++;
         }
 
+        // Deactivate primary A and all secondaries — runs inside the same transaction
+        // as the data copy and C creation so any failure rolls everything back atomically.
+        markInactive(demographicA);
+        System.out.println("  [OK] Primary A=" + primaryDemographicNo + " marked as IN");
+        for (Demographic secondary : secondaries) {
+            markInactive(secondary);
+            System.out.println("  [OK] Secondary S=" + secondary.getDemographicNo() + " marked as IN");
+        }
+
         // Audit
         writeAuditEntriesForMerge(loggedInInfo, primaryDemographicNo, secondaries, targetDemographicNo);
         System.out.println("\n  [OK] Audit log entries written");
         System.out.println("╔══════════════════════════════════════════════════════════════╗");
-        System.out.println("║  DEMOGRAPHIC MERGE DATA COPY COMPLETE                       ║");
+        System.out.println("║  DEMOGRAPHIC MERGE COMPLETE                                 ║");
         System.out.println("╚══════════════════════════════════════════════════════════════╝");
         System.out.println("  Result: A=" + primaryDemographicNo + " + " + secondaries.size() + " secondary(s) -> C=" + targetDemographicNo);
-        System.out.println("  (Status updates will be applied in a separate transaction)");
         return targetDemographicNo;
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * This runs in its own short transaction so it does not participate in the
-     * long-running data-copy transaction. The legacy Hibernate session connection
-     * used by {@code DemographicDaoImpl} is acquired fresh here, used for milliseconds,
-     * and released — no risk of MySQL {@code wait_timeout} expiry.
-     */
-    @Override
-    @Transactional
-    public void applyMergeStatuses(LoggedInInfo loggedInInfo, Integer primaryDemographicNo, List<Integer> secondaryDemographicNos) {
-        checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
-        System.out.println("\n--- APPLYING MERGE STATUSES ---");
-        Demographic demographicA = loadAndValidateExists(primaryDemographicNo, "Primary");
-        markInactive(demographicA);
-        System.out.println("--- PRIMARY A=" + primaryDemographicNo + " marked as IN ---");
-
-        for (Integer secNo : secondaryDemographicNos) {
-            Demographic secondary = loadAndValidateExists(secNo, "Secondary");
-            markInactive(secondary);
-            System.out.println("--- SECONDARY S=" + secNo + " marked as IN ---");
-        }
-        System.out.println("--- MERGE STATUSES APPLIED ---");
-        logger.debug("applyMergeStatuses: primary={}, secondaries={}", primaryDemographicNo, secondaryDemographicNos);
     }
 
     /**
@@ -221,7 +209,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
         // Deactivate the merged record C
         demographicC.setPatientStatus(STATUS_INACTIVE);
         demographicC.setPatientStatusDate(new Date());
-        demographicDao.save(demographicC);
+        entityManager.merge(demographicC);
         System.out.println("  [OK] Deactivated merged demographic C=" + mergedDemographicNo + " -> IN");
 
         // Record the unmerge event
@@ -567,7 +555,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     private void markInactive(Demographic demographic) {
         demographic.setPatientStatus(STATUS_INACTIVE);
         demographic.setPatientStatusDate(new Date());
-        demographicDao.save(demographic);
+        entityManager.merge(demographic);
     }
 
     /**
@@ -578,7 +566,7 @@ public class DemographicMergeManagerImpl implements DemographicMergeManager {
     private void markActive(Demographic demographic) {
         demographic.setPatientStatus(STATUS_ACTIVE);
         demographic.setPatientStatusDate(new Date());
-        demographicDao.save(demographic);
+        entityManager.merge(demographic);
     }
 
     // -------------------------------------------------------------------------

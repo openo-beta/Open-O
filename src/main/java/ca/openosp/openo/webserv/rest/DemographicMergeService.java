@@ -108,7 +108,6 @@ public class DemographicMergeService extends AbstractServiceImpl {
         List<Integer> children = new ArrayList<Integer>();
         children.add(childId);
         Integer mergedDemographicNo = demographicMergeManager.merge(getLoggedInInfo(), parentId, children);
-        demographicMergeManager.applyMergeStatuses(getLoggedInInfo(), parentId, children);
         return mergedDemographicNo;
     }
 
