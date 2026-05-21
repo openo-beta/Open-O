@@ -388,26 +388,8 @@ public class HRMReportParser {
                         break;
                     }
                 }
-                // UC69/UC70: HCN located a candidate but the strict match failed.
-                // Surface a warning for whichever field(s) disagree (DateOfBirth, LastName)
-                // so the uploader can reconcile the mismatch.
-                if (demProviderNo == null && warnings != null) {
-                    for (Demographic d : matchingDemographicListByHin) {
-                        boolean dobDiffers = !report.getDateOfBirthAsString().equalsIgnoreCase(d.getBirthDayAsString());
-                        boolean lastNameDiffers = report.getLegalLastName() == null
-                                || !report.getLegalLastName().equalsIgnoreCase(d.getLastName());
-                        if (dobDiffers) {
-                            warnings.add("Patient unmatched: DateOfBirth in the report ("
-                                    + report.getDateOfBirthAsString()
-                                    + ") does not match the patient's DateOfBirth.");
-                        }
-                        if (lastNameDiffers) {
-                            warnings.add("Patient unmatched: LastName in the report ("
-                                    + report.getLegalLastName()
-                                    + ") does not match the patient's LastName.");
-                        }
-                        if (dobDiffers || lastNameDiffers) break;
-                    }
+                if (demProviderNo == null) {
+                    addStrictMatchMismatchWarnings(report, matchingDemographicListByHin, warnings);
                 }
             } else {
                 // if there is a matching record assign to variable
@@ -421,6 +403,35 @@ public class HRMReportParser {
         }
 
         return demProviderNo;
+    }
+
+    /**
+     * UC69/UC70: HCN found a candidate patient but the strict match failed.
+     * Emit one warning per field (DateOfBirth, LastName) that disagrees with the
+     * report so the uploader can reconcile the mismatch.
+     */
+    private static void addStrictMatchMismatchWarnings(HRMReport report,
+                                                       List<Demographic> candidates,
+                                                       List<String> warnings) {
+        if (warnings == null || candidates == null || candidates.isEmpty()) return;
+
+        for (Demographic d : candidates) {
+            String reportDob = report.getDateOfBirthAsString();
+            String reportLastName = report.getLegalLastName();
+
+            boolean dobMatches = reportDob != null && reportDob.equalsIgnoreCase(d.getBirthDayAsString());
+            boolean lastNameMatches = reportLastName != null && reportLastName.equalsIgnoreCase(d.getLastName());
+
+            if (!dobMatches) {
+                warnings.add("Patient unmatched: DateOfBirth in the report (" + reportDob
+                        + ") does not match the patient's DateOfBirth.");
+            }
+            if (!lastNameMatches) {
+                warnings.add("Patient unmatched: LastName in the report (" + reportLastName
+                        + ") does not match the patient's LastName.");
+            }
+            if (!dobMatches || !lastNameMatches) return;
+        }
     }
 
 
