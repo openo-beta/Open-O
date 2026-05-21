@@ -622,6 +622,18 @@ public class HRMReportParser {
             }
         }
 
+        // UC45: CPSO and CNO numbers conventionally start with "0"; billing IDs do not.
+        // If the DeliverToUserID has a D/N prefix but the remaining ID does not start with "0"
+        if (practitionerNo != null && practitionerNo.length() > 1 && warnings != null) {
+            char prefix = practitionerNo.charAt(0);
+            String idPart = practitionerNo.substring(1);
+            if ((prefix == 'D' || prefix == 'N') && !idPart.startsWith("0")) {
+                String expected = (prefix == 'D') ? "CPSO" : "CNO";
+                warnings.add("DeliverToUserID '" + practitionerNo + "': '" + idPart
+                        + "' does not look like a " + expected + " number (expected to start with '0').");
+            }
+        }
+
         List<Provider> sendToProviderList = new LinkedList<Provider>();
         if (sendToProvider != null) {
             sendToProviderList.add(sendToProvider);
