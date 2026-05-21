@@ -323,7 +323,7 @@ public class HRMReportParser {
                 logger.debug("MERGED DOCUMENTS ID" + document.getId());
 
 
-                String demProviderNo = HRMReportParser.routeReportToDemographic(report, document);
+                String demProviderNo = HRMReportParser.routeReportToDemographic(report, document, warnings);
                 HRMReportParser.doSimilarReportCheck(loggedInInfo, report, document);
 
                 PropertyDao propertyDao = SpringUtils.getBean(PropertyDao.class);
@@ -361,7 +361,7 @@ public class HRMReportParser {
         }
     }
 
-    private static String routeReportToDemographic(HRMReport report, HRMDocument mergedDocument) {
+    private static String routeReportToDemographic(HRMReport report, HRMDocument mergedDocument, List<String> warnings) {
 
         if (report == null) {
             logger.info("routeReportToDemographic cannot continue, report parameter is null");
@@ -386,6 +386,19 @@ public class HRMReportParser {
                         HRMReportParser.routeReportToDemographic(mergedDocument.getId(), d.getDemographicNo());
                         demProviderNo = d.getProviderNo();
                         break;
+                    }
+                }
+                // UC69: HCN located a candidate but the strict match failed; if at least
+                // one candidate had a DateOfBirth that differs from the report, surface a
+                // warning so the uploader can reconcile the mismatch.
+                if (demProviderNo == null && warnings != null) {
+                    for (Demographic d : matchingDemographicListByHin) {
+                        if (!report.getDateOfBirthAsString().equalsIgnoreCase(d.getBirthDayAsString())) {
+                            warnings.add("Patient unmatched: DateOfBirth in the report ("
+                                    + report.getDateOfBirthAsString()
+                                    + ") does not match the patient's DateOfBirth.");
+                            break;
+                        }
                     }
                 }
             } else {
