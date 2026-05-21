@@ -249,6 +249,10 @@ public class HRMReportParser {
 
 
     public static void addReportToInbox(LoggedInInfo loggedInInfo, HRMReport report) {
+        addReportToInbox(loggedInInfo, report, new ArrayList<String>());
+    }
+
+    public static void addReportToInbox(LoggedInInfo loggedInInfo, HRMReport report, List<String> warnings) {
 
         if (report == null) {
             logger.info("addReportToInbox cannot continue, report parameter is null");
@@ -331,7 +335,7 @@ public class HRMReportParser {
                 }
 
 				// Attempt a route to the provider listed in the report -- if they don't exist, note that in the record
-				Boolean routeSuccess = HRMReportParser.routeReportToProvider(report, document.getId());
+				Boolean routeSuccess = HRMReportParser.routeReportToProvider(report, document.getId(), warnings);
 				if (!routeSuccess) {
 					
 					logger.info("Adding the provider name to the list of unidentified providers, for file:"+report.getFileLocation());
@@ -572,6 +576,10 @@ public class HRMReportParser {
     }
 
     public static boolean routeReportToProvider(HRMReport report, Integer reportId) {
+        return routeReportToProvider(report, reportId, new ArrayList<String>());
+    }
+
+    public static boolean routeReportToProvider(HRMReport report, Integer reportId, List<String> warnings) {
         if (report == null) {
             logger.info("routeReportToProvider cannot continue, report parameter is null");
             return false;
@@ -594,6 +602,24 @@ public class HRMReportParser {
             }
         } else {
             sendToProvider = providerDao.getProviderByPractitionerNo(practitionerNo.substring(1));
+        }
+
+        // UC44: DeliverToUserID prefix (D = physician/CPSO, N = nurse/CNO) must match the
+        // matched provider's role. A "D" prefix on a nurse's CNO — or vice versa — is the
+        // "switched CPSO with CNO" case: still link the report, but surface a warning.
+        if (sendToProvider != null && practitionerNo != null && !practitionerNo.isEmpty() && warnings != null) {
+            char prefix = practitionerNo.charAt(0);
+            @SuppressWarnings("deprecation")
+            String providerType = sendToProvider.getProviderType();
+            if (prefix == 'D' && "nurse".equalsIgnoreCase(providerType)) {
+                warnings.add("DeliverToUserID '" + practitionerNo + "': practitioner '"
+                        + practitionerNo.substring(1) + "' is registered as a nurse (CNO); "
+                        + "expected prefix 'N' but got 'D'.");
+            } else if (prefix == 'N' && "doctor".equalsIgnoreCase(providerType)) {
+                warnings.add("DeliverToUserID '" + practitionerNo + "': practitioner '"
+                        + practitionerNo.substring(1) + "' is registered as a physician (CPSO); "
+                        + "expected prefix 'D' but got 'N'.");
+            }
         }
 
         List<Provider> sendToProviderList = new LinkedList<Provider>();

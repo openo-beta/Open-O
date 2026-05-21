@@ -113,8 +113,9 @@ public class HRMUploadLab2Action extends ActionSupport {
                     resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, errMsg));
                 } else {
                     try {
-                        HRMReportParser.addReportToInbox(loggedInInfo, report);
-                        resultsMap.put(fileName, new UploadResult(FileStatus.COMPLETED, null));
+                        List<String> warnings = new ArrayList<>();
+                        HRMReportParser.addReportToInbox(loggedInInfo, report, warnings);
+                        resultsMap.put(fileName, new UploadResult(FileStatus.COMPLETED, null, warnings));
                     } catch (Exception e) {
                         MiscUtils.getLogger().error("Couldn't handle uploaded HRM report", e);
                         resultsMap.put(fileName, new UploadResult(FileStatus.FAILED, e.getMessage()));
