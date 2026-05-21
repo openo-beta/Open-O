@@ -388,17 +388,25 @@ public class HRMReportParser {
                         break;
                     }
                 }
-                // UC69: HCN located a candidate but the strict match failed; if at least
-                // one candidate had a DateOfBirth that differs from the report, surface a
-                // warning so the uploader can reconcile the mismatch.
+                // UC69/UC70: HCN located a candidate but the strict match failed.
+                // Surface a warning for whichever field(s) disagree (DateOfBirth, LastName)
+                // so the uploader can reconcile the mismatch.
                 if (demProviderNo == null && warnings != null) {
                     for (Demographic d : matchingDemographicListByHin) {
-                        if (!report.getDateOfBirthAsString().equalsIgnoreCase(d.getBirthDayAsString())) {
+                        boolean dobDiffers = !report.getDateOfBirthAsString().equalsIgnoreCase(d.getBirthDayAsString());
+                        boolean lastNameDiffers = report.getLegalLastName() == null
+                                || !report.getLegalLastName().equalsIgnoreCase(d.getLastName());
+                        if (dobDiffers) {
                             warnings.add("Patient unmatched: DateOfBirth in the report ("
                                     + report.getDateOfBirthAsString()
                                     + ") does not match the patient's DateOfBirth.");
-                            break;
                         }
+                        if (lastNameDiffers) {
+                            warnings.add("Patient unmatched: LastName in the report ("
+                                    + report.getLegalLastName()
+                                    + ") does not match the patient's LastName.");
+                        }
+                        if (dobDiffers || lastNameDiffers) break;
                     }
                 }
             } else {
