@@ -51,15 +51,20 @@ EOF
 err()  { printf 'Error: %s\n' "$*" >&2; }
 info() { printf '==> %s\n' "$*"; }
 
+# Guard $2 access: under `set -u`, a missing flag value would crash the script.
+need_val() {
+  [[ -n "${2-}" ]] || { err "flag '$1' requires a value"; usage >&2; exit 2; }
+}
+
 # --------------------------------------------------------------- arg parsing
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --pr)            PR_LIST="$2"; shift 2 ;;
-    --source-repo)   SOURCE_REPO="$2"; shift 2 ;;
-    --source-branch) SOURCE_BRANCH="$2"; shift 2 ;;
-    --source-remote) SOURCE_REMOTE="$2"; shift 2 ;;
-    --target-base)   TARGET_BASE="$2"; shift 2 ;;
-    --branch)        BRANCH="$2"; shift 2 ;;
+    --pr)            need_val "$1" "${2-}"; PR_LIST="$2"; shift 2 ;;
+    --source-repo)   need_val "$1" "${2-}"; SOURCE_REPO="$2"; shift 2 ;;
+    --source-branch) need_val "$1" "${2-}"; SOURCE_BRANCH="$2"; shift 2 ;;
+    --source-remote) need_val "$1" "${2-}"; SOURCE_REMOTE="$2"; shift 2 ;;
+    --target-base)   need_val "$1" "${2-}"; TARGET_BASE="$2"; shift 2 ;;
+    --branch)        need_val "$1" "${2-}"; BRANCH="$2"; shift 2 ;;
     --dry-run)       DRY_RUN=1; shift ;;
     --force)         FORCE=1; shift ;;
     -h|--help)       usage; exit 0 ;;
@@ -79,8 +84,7 @@ for i in "${!required_vars[@]}"; do
 done
 
 # Tool availability
-command -v gh  >/dev/null || { err "gh (GitHub CLI) is required";  exit 1; }
-command -v git >/dev/null || { err "git is required";               exit 1; }
+command -v git >/dev/null || { err "git is required"; exit 1; }
 
 # Working tree must be clean (we'll be checking out a new branch)
 if ! git diff-index --quiet HEAD -- 2>/dev/null; then
@@ -102,8 +106,23 @@ if ! git fetch "$SOURCE_REMOTE" "$SOURCE_BRANCH" >/dev/null 2>&1; then
   exit 1
 fi
 
-# Resolve one PR -> merge SHA, with subject sanity check
-# Echoes a single line: "<sha>|<subject>|<stats>"
+# If TARGET_BASE looks like <remote>/<branch> and the remote is configured,
+# fetch it so the new branch isn't created off a stale local ref.
+if [[ "$TARGET_BASE" == */* ]]; then
+  target_remote="${TARGET_BASE%%/*}"
+  target_branch="${TARGET_BASE#*/}"
+  if git remote get-url "$target_remote" >/dev/null 2>&1; then
+    info "Fetching ${TARGET_BASE}"
+    git fetch "$target_remote" "$target_branch" >/dev/null 2>&1 \
+      || info "warning: failed to fetch ${TARGET_BASE}; using local state"
+  else
+    info "note: --target-base='${TARGET_BASE}' is not a known remote; using local state"
+  fi
+fi
+
+# Resolve one PR -> merge SHA, with subject sanity check.
+# Echoes a single tab-separated line: "<sha>\t<subject>\t<stats>".
+# Tab is used because subjects can theoretically contain '|'.
 resolve_one() {
   local pr="$1"
   local subject sha stat
@@ -129,11 +148,11 @@ resolve_one() {
     return 1
   fi
 
-  # Optional: verify owner matches (catches wrong source repo)
+  # Note (don't fail) if owner doesn't match — fork PRs legitimately carry a
+  # contributor's username instead of the source repo owner in the subject.
   if [[ "$subject" != *"from ${SOURCE_OWNER}/"* ]]; then
-    err "PR #${pr}: SHA ${sha:0:10} not from owner '${SOURCE_OWNER}'"
-    err "  got: $subject"
-    return 1
+    info "PR #${pr}: merge subject not 'from ${SOURCE_OWNER}/...' (likely a fork PR)"
+    info "  got: $subject"
   fi
 
   # Stats: parse `git diff --shortstat`
@@ -141,23 +160,26 @@ resolve_one() {
          | sed 's/^[[:space:]]*//')
   : "${stat:=(no diff)}"
 
-  printf '%s|%s|%s\n' "$sha" "$subject" "$stat"
+  printf '%s\t%s\t%s\n' "$sha" "$subject" "$stat"
 }
 
 info "Resolving merge SHAs for PRs: ${PR_LIST}"
 
-IFS=',' read -ra PRS <<< "$PR_LIST"
-declare -a SHAS=() SUBJECTS=() STATS=()
+IFS=',' read -ra RAW_PRS <<< "$PR_LIST"
+declare -a PRS=() SHAS=() SUBJECTS=() STATS=()
 
-for pr in "${PRS[@]}"; do
+for pr in "${RAW_PRS[@]}"; do
+  # Skip empty elements from a stray comma in --pr (e.g., "1,,2" or ",1").
+  [[ -z "$pr" ]] && continue
   if ! line=$(resolve_one "$pr"); then
     err "aborting; resolution failed for PR #${pr}"
     exit 1
   fi
-  SHAS+=("${line%%|*}")
-  rest="${line#*|}"
-  SUBJECTS+=("${rest%%|*}")
-  STATS+=("${rest#*|}")
+  IFS=$'\t' read -r sha subject stat <<< "$line"
+  PRS+=("$pr")
+  SHAS+=("$sha")
+  SUBJECTS+=("$subject")
+  STATS+=("$stat")
 done
 
 # --------------------------------------------------------------- print plan
@@ -224,4 +246,8 @@ echo
 echo "Suggested next steps:"
 echo "  git log --oneline ${TARGET_BASE}..HEAD"
 echo "  git push -u <remote> HEAD:<remote-branch>"
-echo "  gh pr create --base <base> --head <remote-branch> --repo <target-repo>"
+if command -v gh >/dev/null 2>&1; then
+  echo "  gh pr create --base <base> --head <remote-branch> --repo <target-repo>"
+else
+  echo "  open a PR on GitHub via the web UI"
+fi

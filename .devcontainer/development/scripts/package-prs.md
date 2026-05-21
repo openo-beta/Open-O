@@ -60,7 +60,7 @@ package-prs --pr 2343,2344,2261 \
 
 You'll get a table like:
 
-```
+```text
 PR      SHA         SUBJECT                                                  STATS
 ------------------------------------------------------------------------------------------------------------------------
 2343    92c6707963  Merge pull request #2343 from openo-beta/...             2 files changed, 47 insertions(+), 106 deletions(-)
