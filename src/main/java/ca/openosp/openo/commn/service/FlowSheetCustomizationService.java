@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 /**
  * Service layer for FlowSheetCustomization cascading rules.
  *
- * <p>Enforces scope hierarchy where higher levels (clinic > provider > patient)
- * block customizations at lower levels. When a higher level creates a customization,
- * lower levels cannot override it.</p>
+ * <p>
+ * Enforces scope hierarchy where higher levels (clinic > provider > patient)
+ * block customizations at lower levels. When a higher level creates a
+ * customization,
+ * lower levels cannot override it.
+ * </p>
  *
  * @since 2025-12-23
  */
@@ -28,7 +31,7 @@ public class FlowSheetCustomizationService {
      * Constructs the service with required dependencies.
      *
      * @param flowSheetCustomizationDao DAO for flowsheet customization operations
-     * @param securityInfoManager manager for security privilege checks
+     * @param securityInfoManager       manager for security privilege checks
      */
     @Autowired
     public FlowSheetCustomizationService(
@@ -41,9 +44,11 @@ public class FlowSheetCustomizationService {
     /**
      * Represents the scope hierarchy levels for flowsheet customizations.
      *
-     * <p>Higher rank values indicate higher authority levels. Clinic-level
+     * <p>
+     * Higher rank values indicate higher authority levels. Clinic-level
      * customizations take precedence over provider-level, which take
-     * precedence over patient-level.</p>
+     * precedence over patient-level.
+     * </p>
      */
     public enum ScopeLevel {
         /** Patient-specific customization (lowest priority). */
@@ -87,7 +92,8 @@ public class FlowSheetCustomizationService {
         private final ScopeLevel blockingLevel;
         private final FlowSheetCustomization blockingCustomization;
 
-        private CascadeCheckResult(boolean blocked, ScopeLevel blockingLevel, FlowSheetCustomization blockingCustomization) {
+        private CascadeCheckResult(boolean blocked, ScopeLevel blockingLevel,
+                FlowSheetCustomization blockingCustomization) {
             this.blocked = blocked;
             this.blockingLevel = blockingLevel;
             this.blockingCustomization = blockingCustomization;
@@ -105,11 +111,12 @@ public class FlowSheetCustomizationService {
         /**
          * Creates a result indicating the operation is blocked.
          *
-         * @param blockingLevel the scope level that is blocking
+         * @param blockingLevel         the scope level that is blocking
          * @param blockingCustomization the customization that is blocking
          * @return CascadeCheckResult with blocked=true
          */
-        public static CascadeCheckResult blocked(ScopeLevel blockingLevel, FlowSheetCustomization blockingCustomization) {
+        public static CascadeCheckResult blocked(ScopeLevel blockingLevel,
+                FlowSheetCustomization blockingCustomization) {
             return new CascadeCheckResult(true, blockingLevel, blockingCustomization);
         }
 
@@ -153,11 +160,12 @@ public class FlowSheetCustomizationService {
     /**
      * Checks if an action is blocked by a higher-level customization.
      *
-     * @param flowsheet the flowsheet name
-     * @param measurement the measurement name
-     * @param action the action type (ADD, UPDATE, DELETE)
-     * @param providerNo current provider number (empty string for clinic scope)
-     * @param demographicNo current demographic number ("0" for clinic/provider scope)
+     * @param flowsheet     String the flowsheet name
+     * @param measurement   String the measurement name
+     * @param action        String the action type (ADD, UPDATE, DELETE)
+     * @param providerNo    String current provider number (empty string for clinic scope)
+     * @param demographicNo String current demographic number ("0" for clinic/provider
+     *                      scope)
      * @return CascadeCheckResult indicating whether the action is blocked
      */
     public CascadeCheckResult checkCascadingBlocked(
@@ -165,7 +173,7 @@ public class FlowSheetCustomizationService {
             String providerNo, String demographicNo) {
 
         FlowSheetCustomization blocking = flowSheetCustomizationDao.findHigherLevelCustomization(
-            flowsheet, measurement, action, providerNo, demographicNo);
+                flowsheet, measurement, action, providerNo, demographicNo);
 
         if (blocking == null) {
             return CascadeCheckResult.allowed();
@@ -178,13 +186,19 @@ public class FlowSheetCustomizationService {
     /**
      * Determines the scope level for a customization.
      *
-     * @param cust the FlowSheetCustomization to check
-     * @return the ScopeLevel (CLINIC, PROVIDER, or PATIENT)
+     * @param custom FlowSheetCustomization the customization to check
+     * @return the ScopeLevel (CLINIC, PROVIDER, or PATIENT), or null if custom is null
      */
-    public ScopeLevel getScopeLevel(FlowSheetCustomization cust) {
-        if ("".equals(cust.getProviderNo()) && "0".equals(cust.getDemographicNo())) {
+    public ScopeLevel getScopeLevel(FlowSheetCustomization custom) {
+        if (custom == null) {
+            return null;
+        }
+
+        if (custom.getProviderNo() != null
+                && "".equals(custom.getProviderNo())
+                && "0".equals(custom.getDemographicNo())) {
             return ScopeLevel.CLINIC;
-        } else if (!"0".equals(cust.getDemographicNo())) {
+        } else if (custom.getDemographicNo() != null && !"0".equals(custom.getDemographicNo())) {
             return ScopeLevel.PATIENT;
         } else {
             return ScopeLevel.PROVIDER;
@@ -194,20 +208,24 @@ public class FlowSheetCustomizationService {
     /**
      * Determines the scope level name for a customization.
      *
-     * @param cust the FlowSheetCustomization to check
-     * @return "clinic", "provider", or "patient"
+     * @param custom FlowSheetCustomization the customization to check
+     * @return "clinic", "provider", or "patient", or null if custom is null
      */
-    public String getScopeLevelName(FlowSheetCustomization cust) {
-        return getScopeLevel(cust).getName();
+    public String getScopeLevelName(FlowSheetCustomization custom) {
+        ScopeLevel level = getScopeLevel(custom);
+        return level != null ? level.getName() : null;
     }
 
     /**
      * Validates that the user has permission for the requested scope.
      *
-     * <p>Clinic-level operations require admin privileges.</p>
+     * <p>
+     * Clinic-level operations require admin privileges.
+     * </p>
      *
-     * @param loggedInInfo the logged-in user information
-     * @param scope the requested scope ("clinic", "provider", or patient demographic)
+     * @param loggedInInfo LoggedInInfo the logged-in user information
+     * @param scope        String the requested scope ("clinic", "provider", or patient
+     *                     demographic)
      * @throws SecurityException if clinic scope requested without admin role
      */
     public void validateScopePermission(LoggedInInfo loggedInInfo, String scope) {
@@ -221,8 +239,8 @@ public class FlowSheetCustomizationService {
     /**
      * Resolves the current scope level from the parameters.
      *
-     * @param currentScope the scope string ("clinic" or other)
-     * @param currentDemographicNo the demographic number ("0" or patient ID)
+     * @param currentScope         String the scope string ("clinic" or other)
+     * @param currentDemographicNo String the demographic number ("0" or patient ID)
      * @return the resolved ScopeLevel
      */
     private ScopeLevel resolveCurrentScopeLevel(String currentScope, String currentDemographicNo) {
@@ -239,23 +257,30 @@ public class FlowSheetCustomizationService {
     /**
      * Checks if a customization can be archived at the current scope level.
      *
-     * <p>Users cannot archive customizations created at a higher scope level.</p>
+     * <p>
+     * Users cannot archive customizations created at a higher scope level.
+     * </p>
      *
-     * @param cust the customization to check
-     * @param currentScope the current scope ("clinic", "provider", or patient demographic)
-     * @param currentProviderNo the current provider number
-     * @param currentDemographicNo the current demographic number
+     * @param custom               FlowSheetCustomization the customization to check
+     * @param currentScope         String the current scope ("clinic", "provider", or
+     *                             patient demographic)
+     * @param currentProviderNo    String the current provider number
+     * @param currentDemographicNo String the current demographic number
      * @return CascadeCheckResult indicating whether archiving is blocked
      */
     public CascadeCheckResult checkCanArchive(
-            FlowSheetCustomization cust,
+            FlowSheetCustomization custom,
             String currentScope, String currentProviderNo, String currentDemographicNo) {
 
-        ScopeLevel custLevel = getScopeLevel(cust);
+        ScopeLevel custLevel = getScopeLevel(custom);
+        if (custLevel == null) {
+            return CascadeCheckResult.allowed();
+        }
+
         ScopeLevel currentLevel = resolveCurrentScopeLevel(currentScope, currentDemographicNo);
 
         if (custLevel.isHigherThan(currentLevel)) {
-            return CascadeCheckResult.blocked(custLevel, cust);
+            return CascadeCheckResult.blocked(custLevel, custom);
         }
 
         return CascadeCheckResult.allowed();
