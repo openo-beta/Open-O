@@ -34,6 +34,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ page import="java.math.BigInteger,java.util.*,ca.openosp.openo.integration.mcedt.mailbox.DetailDataCustom" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     BigInteger resourceIDBig = (BigInteger) session.getAttribute("resourceID");
@@ -79,7 +80,7 @@
 
             function download() {
 
-                var resourceID = '<%= session.getAttribute("resourceID") %>';
+                var resourceID = '<%=Encode.forJavaScript(String.valueOf(session.getAttribute("resourceID")))%>';
                 //alert(resourceID);
 
                 if (resourceID != 0) {

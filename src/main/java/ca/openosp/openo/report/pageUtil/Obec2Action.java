@@ -27,7 +27,6 @@
 package ca.openosp.openo.report.pageUtil;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +59,7 @@ public class Obec2Action extends ActionSupport {
 	  		  throw new SecurityException("missing required sec object (_report)");
 	  	  	}
 	   
-      Properties proppies = OscarProperties.getInstance();
+      OscarProperties proppies = OscarProperties.getInstance();
       
       ObecData obecData1 = new ObecData();
       DateUtils dateUtils = new DateUtils();

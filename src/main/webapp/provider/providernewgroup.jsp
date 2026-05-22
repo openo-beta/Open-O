@@ -34,6 +34,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     MyGroupDao myGroupDao = SpringUtils.getBean(MyGroupDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -113,17 +114,17 @@
                                     i++;
                             %>
                             <tr BGCOLOR="#C4D9E7">
-                                <td><font face="arial"> &nbsp;<%=p.getLastName()%>,
-                                    <%=p.getFirstName()%>
+                                <td><font face="arial"> &nbsp;<%=Encode.forHtml(String.valueOf(p.getLastName()))%>,
+                                    <%=Encode.forHtml(String.valueOf(p.getFirstName()))%>
                                 </font></td>
                                 <td ALIGN="center"><font face="arial"> </font> <input
                                         type="checkbox" name="data<%=i%>" value="<%=i%>"> <input
                                         type="hidden" name="provider_no<%=i%>"
-                                        value="<%=p.getProviderNo()%>"> <INPUT
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"> <INPUT
                                         TYPE="hidden" NAME="last_name<%=i%>"
-                                        VALUE='<%=p.getLastName()%>'> <INPUT
+                                        VALUE='<%=Encode.forHtmlAttribute(String.valueOf(p.getLastName()))%>'> <INPUT
                                         TYPE="hidden" NAME="first_name<%=i%>"
-                                        VALUE='<%=p.getFirstName()%>'></td>
+                                        VALUE='<%=Encode.forHtmlAttribute(String.valueOf(p.getFirstName()))%>'></td>
                             </tr>
                             <%
                                 }

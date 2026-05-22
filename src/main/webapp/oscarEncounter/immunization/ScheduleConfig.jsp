@@ -47,6 +47,7 @@
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.encounter.immunization.data.EctImmConfigData" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -96,7 +97,7 @@
                     <td class="Header"
                         style="padding-left:2px;padding-right:2px;border-right:2px solid #003399;text-align:left;font-size:80%;font-weight:bold;width:100%;"
                         NOWRAP>
-                        <%=last_name %>, <%=first_name%> <%=sex%> <%=age%>
+                        <%=Encode.forHtml(String.valueOf(last_name))%>, <%=Encode.forHtml(String.valueOf(first_name))%> <%=Encode.forHtml(String.valueOf(sex))%> <%=Encode.forHtml(String.valueOf(age))%>
                     </td>
                     <td>
                     </td>
@@ -122,7 +123,7 @@
             Vector cfgId = new EctImmConfigData().getImmunizationConfigId();
         %>
             <form action="${pageContext.request.contextPath}/oscarEncounter/immunization/saveConfig.do" method="post">
-                <input type="hidden" name="demographic_no" value="<%=demoNo%>">
+                <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>">
                 <input type="hidden" name="xmlDoc" value="<%--= UtilMisc.encode64(UtilXML.toXML(cfgDoc)) --%>"/>
 
                 <%
@@ -132,7 +133,7 @@
                 %>
                 <div style="font-weight: bold"><input type="checkbox"
                                                       name="chkSet<%--=i--%>"
-                                                      value="<%=cfgId.get(i)%>"/> <%=(String) cfgSet.get(i)%>;
+                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(cfgId.get(i)))%>"/> <%=Encode.forHtml(String.valueOf((String) cfgSet.get(i)))%>;
                 </div>
                 <%
                     }
@@ -144,7 +145,7 @@
                             <input type="submit" name="submit"
                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.ScheduleConfig.addTemplate"/>" />
                             <input type="button" value='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>'
-                                   onclick="javascript:location.href='loadSchedule.do?demographic_no=<%=demoNo%>';"/>
+                                   onclick="javascript:location.href='loadSchedule.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>';"/>
                         </td>
                         <td align="right">
                             <input type="button"

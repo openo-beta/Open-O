@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingONPaymentDao billingOnPaymentDao = SpringUtils.getBean(BillingONPaymentDao.class);
     BillingONCHeader1Dao bCh1Dao = SpringUtils.getBean(BillingONCHeader1Dao.class);
@@ -92,9 +93,9 @@
 
 <table width="95%" border="0">
     <tr>
-        <td align="left"><i>Results for Demographic</i> :<%=request.getParameter("last_name")%>
-            ,<%=request.getParameter("first_name")%>
-            (<%=request.getParameter("demographic_no")%>)
+        <td align="left"><i>Results for Demographic</i> :<%=Encode.forHtml(request.getParameter("last_name"))%>
+            ,<%=Encode.forHtml(request.getParameter("first_name"))%>
+            (<%=Encode.forHtml(request.getParameter("demographic_no"))%>)
         </td>
     </tr>
 </table>
@@ -161,34 +162,34 @@
         <tr bgcolor="<%=i%2==0?"#CCFF99":"white"%>">
             <td width="5%" align="center" height="25">
                 <a href="javascript:void(0)"
-                   onClick="popupPage(600,800, 'billingONDisplay.jsp?billing_no=<%=obj.getId()%>')"
-                   title="Billing Display"><%=obj.getId()%>
+                   onClick="popupPage(600,800, 'billingONDisplay.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(obj.getId()))%>')"
+                   title="Billing Display"><%=Encode.forHtml(String.valueOf(obj.getId()))%>
                 </a>
 
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="w">
                     <a href="javascript:void(0)"
-                       onClick="popupPage(600,800, 'billingONCorrection.jsp?billing_no=<%=obj.getId()%>')"
+                       onClick="popupPage(600,800, 'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(obj.getId()))%>')"
                        title="Billing Correction">Edit</a>
                 </security:oscarSec>
 
                 <a href="javascript:void(0)"
-                   onClick="popupPage(600,800, 'billingON3rdInv.jsp?billingNo=<%=obj.getId()%>')">Print</a>
+                   onClick="popupPage(600,800, 'billingON3rdInv.jsp?billingNo=<%=Encode.forJavaScript(String.valueOf(obj.getId()))%>')">Print</a>
             </td>
-            <td align="center"><%=obj.getLast_name() + ", " + obj.getFirst_name()%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(obj.getLast_name() + ", " + obj.getFirst_name()))%>
             </td>
-            <td align="center"><%=obj.getBilling_date()%> <%--=obj.getBilling_time()--%></td>
-            <td align="center"><%=strBillType%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(obj.getBilling_date()))%> <%--=obj.getBilling_time()--%></td>
+            <td align="center"><%=Encode.forHtml(String.valueOf(strBillType))%>
             </td>
-            <td align="center"><%=itObj.getService_code()%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(itObj.getService_code()))%>
             </td>
-            <td align="center"><%=itObj.getDx()%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(itObj.getDx()))%>
             </td>
             <td align="center"><%if ("PAT".equals(strBillType) || "PAT Settled".equals(strBillType)) { %>
-                <%=balance %>
+                <%=Encode.forHtml(String.valueOf(balance))%>
                 <%} else { %>
                 <%="" %>
                 <%} %></td>
-            <td align="center"><%=obj.getTotal()%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(obj.getTotal()))%>
             </td>
 
             <% if (obj.getStatus().compareTo("B") == 0 || obj.getStatus().compareTo("S") == 0) { %>
@@ -196,11 +197,11 @@
             <% } else if (OscarProperties.getInstance().getBooleanProperty("warnOnDeleteBill", "true")) { %>
             <td align="center"><a
                     href="#"
-                    onClick="onUnbilled('billingDeleteNoAppt.jsp?billing_no=<%=obj.getId()%>&billCode=<%=obj.getStatus()%>&hotclick=0');return false;">Unbill</a>
+                    onClick="onUnbilled('billingDeleteNoAppt.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(obj.getId()))%>&billCode=<%=Encode.forJavaScript(String.valueOf(obj.getStatus()))%>&hotclick=0');return false;">Unbill</a>
             </td>
             <% } else { %>
             <td align="center">
-                <a href="billingDeleteNoAppt.jsp?billing_no=<%=obj.getId()%>&billCode=<%=obj.getStatus()%>&dboperation=delete_bill&hotclick=0">Unbill</a>
+                <a href="billingDeleteNoAppt.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(obj.getId()))%>&billCode=<%=Encode.forUriComponent(String.valueOf(obj.getStatus()))%>&dboperation=delete_bill&hotclick=0">Unbill</a>
             </td>
 
             <% }%>
@@ -217,12 +218,12 @@
         nLastPage = Integer.parseInt(strLimit1) - Integer.parseInt(strLimit2);
         if (nLastPage >= 0) {
     %> <a
-        href="billinghistory.jsp?last_name=<%=URLEncoder.encode(request.getParameter("last_name"), StandardCharsets.UTF_8) %>&first_name=<%=URLEncoder.encode(request.getParameter("first_name"), StandardCharsets.UTF_8) %>&demographic_no=<%=request.getParameter("demographic_no")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>">Last
+        href="billinghistory.jsp?last_name=<%=Encode.forUriComponent(request.getParameter("last_name"))%>&first_name=<%=Encode.forUriComponent(request.getParameter("first_name"))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">Last
     Page</a> | <%
     }
     if (nItems == Integer.parseInt(strLimit2)) {
 %> <a
-        href="billinghistory.jsp?last_name=<%=URLEncoder.encode(request.getParameter("last_name"), StandardCharsets.UTF_8) %>&first_name=<%=URLEncoder.encode(request.getParameter("first_name"), StandardCharsets.UTF_8) %>&demographic_no=<%=request.getParameter("demographic_no")%>&displaymode=<%=request.getParameter("displaymode")%>&dboperation=<%=request.getParameter("dboperation")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
+        href="billinghistory.jsp?last_name=<%=Encode.forUriComponent(request.getParameter("last_name"))%>&first_name=<%=Encode.forUriComponent(request.getParameter("first_name"))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">
     Next Page</a> <%
     }
 

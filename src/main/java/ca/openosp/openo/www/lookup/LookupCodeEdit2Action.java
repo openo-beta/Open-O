@@ -54,14 +54,25 @@ public class LookupCodeEdit2Action extends ActionSupport {
         return loadCode();
     }
 
+    private static final java.util.regex.Pattern VALID_TABLE_ID_PATTERN = java.util.regex.Pattern.compile("^[A-Za-z0-9]{1,10}$");
+
     private String loadCode() {
 
         String[] codeIds = request.getParameter("id").split(":");
         String tableId = codeIds[0];
+        // Validate tableId to prevent SQL injection in downstream lookup queries
+        if (tableId == null || !VALID_TABLE_ID_PATTERN.matcher(tableId).matches()) {
+            throw new SecurityException("Invalid lookup table identifier");
+        }
         String code = "0";
         boolean isNew = true;
         if (codeIds.length > 1) {
             code = codeIds[1];
+            // Lookup codes can be alphanumeric (e.g., LKT, ISS, P1, AC).
+            // The value is parameterized downstream via GetCodeFieldValues, so no SQLi risk.
+            if (!VALID_TABLE_ID_PATTERN.matcher(code).matches()) {
+                throw new SecurityException("Invalid lookup code identifier");
+            }
             isNew = false;
         }
 

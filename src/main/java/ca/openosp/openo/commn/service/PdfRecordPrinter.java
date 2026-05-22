@@ -764,7 +764,7 @@ public class PdfRecordPrinter {
         for (ca.openosp.openo.commn.model.Document doc : photos) {
             Image img = null;
             try {
-                String location = OscarProperties.getInstance().getProperty("DOCUMENT_DIR").trim() + doc.getDocfilename();
+                String location = OscarProperties.getInstance().getDocumentDirectory() + doc.getDocfilename();
                 logger.info("adding image " + location);
                 img = Image.getInstance(location);
             } catch (IOException e) {

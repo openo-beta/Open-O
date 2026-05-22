@@ -97,6 +97,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     List<Demographic> demoList = null;  //demographicDao.getDemographicByProvider( "55");
@@ -209,7 +210,7 @@
                value="search_address" <%=searchMode.equals("search_address")?"checked":""%>> Address
         <input type="radio" name="search_mode" value="search_hin" <%=searchMode.equals("search_hin")?"checked":""%>> HIN
 
-        <input type="text" NAME="keyword" class="span6" MAXLENGTH="100" value="<%=(keyword != null)?keyword:""%>">
+        <input type="text" NAME="keyword" class="span6" MAXLENGTH="100" value="<%=Encode.forHtmlAttribute(String.valueOf((keyword != null)?keyword:""))%>">
         <INPUT TYPE="hidden" NAME="orderby" VALUE="last_name">
         <INPUT TYPE="hidden" NAME="limit1" VALUE="0">
         <INPUT TYPE="hidden" NAME="limit2" VALUE="10">
@@ -221,12 +222,12 @@
 
 <% if (request.getParameter("keyword") != null) {%>
 
-<i>Results based on keyword(s)</i> : <%=request.getParameter("keyword")%>
+<i>Results based on keyword(s)</i> : <%=Encode.forHtml(request.getParameter("keyword"))%>
 
 <CENTER>
     <form method="post" name="mergeform" action="MergeRecords.do" onSubmit="return confirmMerge()">
         <input type="hidden" name="mergeAction" value="merge"/>
-        <input type="hidden" name="provider_no" value="<%= session.getAttribute("user") %>"/>
+        <input type="hidden" name="provider_no" value="<%=Encode.forHtmlAttribute(String.valueOf(session.getAttribute("user")))%>"/>
 
         <table class="table table-striped  table-condensed">
             <tr>
@@ -235,25 +236,25 @@
                 <th align="center" width="5%">Main Record</th>
                 <%}%>
                 <TH align="center" width="10%"><b><a
-                        href="demographicmergerecord.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=demographic_no&limit1=0&limit2=<%=strLimit%>">Demographic</a></b></font>
+                        href="demographicmergerecord.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=demographic_no&limit1=0&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>">Demographic</a></b></font>
                 </TH>
                 <TH align="center" width="20%"><b><a
-                        href="demographicmergerecord.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=last_name&limit1=0&limit2=<%=strLimit%>">Last
+                        href="demographicmergerecord.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=last_name&limit1=0&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>">Last
                     Name</a> </b></font></TH>
                 <TH align="center" width="20%"><b><a
-                        href="demographicmergerecord.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=first_name&limit1=0&limit2=<%=strLimit%>">First
+                        href="demographicmergerecord.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=first_name&limit1=0&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>">First
                     Name</a> </b></font></TH>
                 <TH align="center" width="10%"><b><a
-                        href="demographicmergerecord.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=age&limit1=0&limit2=<%=strLimit%>">Age</a></b></font>
+                        href="demographicmergerecord.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=age&limit1=0&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>">Age</a></b></font>
                 </TH>
                 <TH align="center" width="10%"><b><a
-                        href="demographicmergerecord.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=roster_status&limit1=0&limit2=<%=strLimit%>">Roster
+                        href="demographicmergerecord.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=roster_status&limit1=0&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>">Roster
                     Status</a></b></font></TH>
                 <TH align="center" width="10%"><b><a
-                        href="demographicmergerecord.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=sex&limit1=0&limit2=<%=strLimit%>">Sex</a></B></font>
+                        href="demographicmergerecord.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=sex&limit1=0&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>">Sex</a></B></font>
                 </TH>
                 <TH align="center" width="10%"><b><a
-                        href="demographicmergerecord.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=date_of_birth&limit1=0&limit2=<%=strLimit%>">DOB(yy/mm/dd)</a></B></Font>
+                        href="demographicmergerecord.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=date_of_birth&limit1=0&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>">DOB(yy/mm/dd)</a></B></Font>
                 </TH>
             </tr>
             <%
@@ -329,7 +330,7 @@
 
                     if (mergedSearch || isHeadRecord) {%>
                 <td align="center" width="5%" height="25"><input type="checkbox" name="records"
-                                                                 value="<%= demographicNo%>"></td>
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>"></td>
                 <%} else {%>
                 <td align="center" width="5%" height="25">&nbsp;</td>
                 <%
@@ -337,7 +338,7 @@
                     if (!mergedSearch) {
                         if (isHeadRecord) {
                 %>
-                <td align="center" width="5%" height="25"><input type="radio" name="head" value="<%= demographicNo %>">
+                <td align="center" width="5%" height="25"><input type="radio" name="head" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>">
                 </td>
                 <%} else {%>
                 <td align="center" width="5%" height="25">&nbsp;</td>
@@ -347,20 +348,20 @@
                 %>
                 <td width="15%" align="center" height="25">
                     <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
-                        <a href="javascript:popupWindow('<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%= head %>&displaymode=edit&dboperation=search_detail')"><%=demographicNo%>
+                        <a href="javascript:popupWindow('<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(head))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(demographicNo))%>
                         </a>
                     </caisi:isModuleLoad></td>
-                <td align="center" width="20%" height="25"><%=demo.getLastName()%>
+                <td align="center" width="20%" height="25"><%=Encode.forHtml(String.valueOf(demo.getLastName()))%>
                 </td>
-                <td align="center" width="20%" height="25"><%=demo.getFirstName()%>
+                <td align="center" width="20%" height="25"><%=Encode.forHtml(String.valueOf(demo.getFirstName()))%>
                 </td>
-                <td align="center" width="10%" height="25"><%=demo.getAge()%>
+                <td align="center" width="10%" height="25"><%=Encode.forHtml(String.valueOf(demo.getAge()))%>
                 </td>
-                <td align="center" width="10%" height="25"><%=demo.getRosterStatus()%>
+                <td align="center" width="10%" height="25"><%=Encode.forHtml(String.valueOf(demo.getRosterStatus()))%>
                 </td>
-                <td align="center" width="10%" height="25"><%=demo.getSex()%>
+                <td align="center" width="10%" height="25"><%=Encode.forHtml(String.valueOf(demo.getSex()))%>
                 </td>
-                <td align="center" width="10%" height="25"><%=demo.getFormattedDob()%>
+                <td align="center" width="10%" height="25"><%=Encode.forHtml(String.valueOf(demo.getFormattedDob()))%>
                 </td>
             </tr>
             <%
@@ -388,12 +389,12 @@
         nLastPage = Integer.parseInt(strOffset) - Integer.parseInt(strLimit);
         if (nLastPage >= 0) {
     %> <a
-        href="demographicmergerecord.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit%>">Last
+        href="demographicmergerecord.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>">Last
     Page</a> | <%
     }
     if (nItems == Integer.parseInt(strLimit)) {
 %> <a
-        href="demographicmergerecord.jsp?keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit%>">
+        href="demographicmergerecord.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit))%>">
     Next Page</a> <%
     }
 

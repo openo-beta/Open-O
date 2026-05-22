@@ -26,6 +26,7 @@
 
 <%@page import="ca.openosp.openo.commn.model.TicklerTextSuggest, ca.openosp.openo.commn.dao.TicklerTextSuggestDao" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -173,7 +174,7 @@
                             for (TicklerTextSuggest tTextSuggestActive : activeTexts) {
                         %>
                         <option
-                                value="<%=tTextSuggestActive.getId().toString()%>"><%=tTextSuggestActive.getSuggestedText()%>
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(tTextSuggestActive.getId().toString()))%>"><%=Encode.forHtml(String.valueOf(tTextSuggestActive.getSuggestedText()))%>
                         </option>
                         <% }
                         }
@@ -200,7 +201,7 @@
                             for (TicklerTextSuggest tTextSuggestInactive : inactiveTexts) {
                         %>
                         <option
-                                value="<%=tTextSuggestInactive.getId().toString()%>"><%=tTextSuggestInactive.getSuggestedText()%>
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(tTextSuggestInactive.getId().toString()))%>"><%=Encode.forHtml(String.valueOf(tTextSuggestInactive.getSuggestedText()))%>
                         </option>
                         <% }
                         }

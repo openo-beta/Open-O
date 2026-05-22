@@ -31,6 +31,7 @@
 %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page
         import="ca.openosp.openo.hospitalReportManager.SFTPConnector, ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -319,7 +320,7 @@
             <div class="control-group">
                 <label class="control-label">Provider Confidentiality Statement</label>
                 <div class="controls">
-                    <textarea name="statement"><%=statement %></textarea>
+                    <textarea name="statement"><%=Encode.forHtml(String.valueOf(statement))%></textarea>
                 </div>
             </div>
             <div>

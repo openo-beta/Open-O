@@ -44,6 +44,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.Hl7LinkDao" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.Hl7Link" %>
+<%@page import="org.owasp.encoder.Encode" %>
 <%
     Hl7LinkDao linkDao = SpringUtils.getBean(Hl7LinkDao.class);
 
@@ -107,14 +108,14 @@
                     diagnostic += ", " + obrDiagnosticServiceSectId;
                 } else {
                     if (!dpid.equals("")) {
-                        out.println("<tr bgcolor='" + (other ? "F6F6F6" : "WHITE") + "'><td class=\"Text\"><a href=\"#\" onclick=\"return PopupLab('" + dpid + "');\">" + format.format(date) + " (" + diagnostic + ")</a></td><td class=\"Text\"><a onclick=\"return confirm('Are you sure you want to unlink this lab report?');\" href=\"viewreports.jsp?unlink=true&demo_no=" + demo_no + "&pid=" + dpid + "\">unlink</a></td></tr>");
+                        out.println("<tr bgcolor='" + (other ? "F6F6F6" : "WHITE") + "'><td class=\"Text\"><a href=\"#\" onclick=\"return PopupLab('" + Encode.forJavaScript(dpid) + "');\">" + Encode.forHtml(format.format(date)) + " (" + Encode.forHtml(diagnostic) + ")</a></td><td class=\"Text\"><a onclick=\"return confirm('Are you sure you want to unlink this lab report?');\" href=\"viewreports.jsp?unlink=true&amp;demo_no=" + Encode.forHtmlAttribute(demo_no) + "&amp;pid=" + Encode.forHtmlAttribute(dpid) + "\">unlink</a></td></tr>");
                     }
                     dpid = "" + linkId;
                     diagnostic = "" + obrDiagnosticServiceSectId;
                     other = !other;
                 }
             }
-            out.println("<tr bgcolor='" + (other ? "F6F6F6" : "WHITE") + "'><td class=\"Text\"><a href=\"#\" onclick=\"return PopupLab('" + dpid + "');\">" + format.format(date) + " (" + diagnostic + ")</a></td><td class=\"Text\"><a onclick=\"return confirm('Are you sure you want to unlink this lab report?');\" href=\"viewreports.jsp?unlink=true&demo_no=" + demo_no + "&pid=" + dpid + "\">unlink</a></td></tr>");
+            out.println("<tr bgcolor='" + (other ? "F6F6F6" : "WHITE") + "'><td class=\"Text\"><a href=\"#\" onclick=\"return PopupLab('" + Encode.forJavaScript(dpid) + "');\">" + Encode.forHtml(format.format(date)) + " (" + Encode.forHtml(diagnostic) + ")</a></td><td class=\"Text\"><a onclick=\"return confirm('Are you sure you want to unlink this lab report?');\" href=\"viewreports.jsp?unlink=true&amp;demo_no=" + Encode.forHtmlAttribute(demo_no) + "&amp;pid=" + Encode.forHtmlAttribute(dpid) + "\">unlink</a></td></tr>");
         %>
     </table>
 </form>

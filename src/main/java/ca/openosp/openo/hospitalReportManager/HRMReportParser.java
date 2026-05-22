@@ -114,7 +114,7 @@ public class HRMReportParser {
 
                 // check DOCUMENT_DIR if not found
                 if (!tmpXMLholder.exists()) {
-                    String place = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+                    String place = OscarProperties.getInstance().getDocumentDirectory();
                     tmpXMLholder = new File(place + File.separator + hrmReportFileLocation);
                 }
 

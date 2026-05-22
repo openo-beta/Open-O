@@ -27,6 +27,8 @@
 package ca.openosp.openo.report.pageUtil;
 
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
@@ -46,8 +48,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
-public class ManagePatientLetters2Action extends ActionSupport {
+public class ManagePatientLetters2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -80,26 +83,26 @@ public class ManagePatientLetters2Action extends ActionSupport {
         byte[] fileData = null;
 
         try {
-            // Validate the uploaded file to prevent path traversal attacks
+            // Extract File from UploadedFile
             if (reportFile == null) {
                 log.error("No report file uploaded");
                 return SUCCESS;
             }
 
             // Use PathValidationUtils to validate the uploaded file is in temp directory
-            if (!PathValidationUtils.isInAllowedTempDirectory(reportFile)) {
-                log.error("Attempted path traversal attack detected for file: " + reportFile.getPath());
+            if (!PathValidationUtils.isInAllowedTempDirectory(reportFileOnDisk)) {
+                log.error("Attempted path traversal attack detected for file: " + reportFileOnDisk.getPath());
                 throw new SecurityException("Invalid file upload - path traversal detected");
             }
 
             // Additional validation: ensure the file exists and is a regular file
-            if (!reportFile.exists() || !reportFile.isFile()) {
+            if (!reportFileOnDisk.exists() || !reportFileOnDisk.isFile()) {
                 log.error("Invalid file upload: File does not exist or is not a regular file");
                 return SUCCESS;
             }
 
             // Re-validate at point of use for static analysis visibility
-            File validatedReportFile = PathValidationUtils.validateUpload(reportFile);
+            File validatedReportFile = PathValidationUtils.validateUpload(reportFileOnDisk);
             fileData = Files.readAllBytes(validatedReportFile.toPath());
             String reportName = request.getParameter("reportName");
 
@@ -110,7 +113,7 @@ public class ManagePatientLetters2Action extends ActionSupport {
             JasperReport jasperReport = JasperCompileManager.compileReport(new ByteArrayInputStream(fileData));
 
             ManageLetters manageLetters = new ManageLetters();
-            manageLetters.saveReport((String) request.getSession().getAttribute("user"), reportName, reportFile.getName(), fileData);
+            manageLetters.saveReport((String) request.getSession().getAttribute("user"), reportName, reportFileOnDisk.getName(), fileData);
         } catch (FileNotFoundException ex) {
             MiscUtils.getLogger().error("Error", ex);
         } catch (IOException ex) {
@@ -129,13 +132,14 @@ public class ManagePatientLetters2Action extends ActionSupport {
         return SUCCESS;
     }
 
-    private File reportFile;
+    private UploadedFile reportFile;
+    private File reportFileOnDisk;
 
-    public File getReportFile() {
-        return reportFile;
-    }
-
-    public void setReportFile(File reportFile) {
-        this.reportFile = reportFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.reportFile = uploadedFiles.get(0);
+            this.reportFileOnDisk = PathValidationUtils.toFile(reportFile);
+        }
     }
 }

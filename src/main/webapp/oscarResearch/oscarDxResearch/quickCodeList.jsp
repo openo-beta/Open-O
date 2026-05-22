@@ -47,6 +47,7 @@
 <%@ page
         import="java.math.*, java.util.*, java.sql.*, java.net.*, ca.openosp.openo.dxresearch.bean.*" %>
 <%@ page import="ca.openosp.openo.dxresearch.bean.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String demoNO = request.getParameter("demographicNo");
 
@@ -85,7 +86,7 @@
         <td>
             <table>
                 <tr>
-                    <td colspan="2"><b><%=qlBean.getQuickListName()%>
+                    <td colspan="2"><b><%=Encode.forHtml(String.valueOf(qlBean.getQuickListName()))%>
                     </b> <%=list.isEmpty() ? "<p><i>All items already in patient's Dx</i></p>" : ""%>
                     </td>
                 </tr>
@@ -109,8 +110,8 @@
                 %>
                 <tr>
                     <td><input type="checkbox" name="xml_research"
-                               value="<%=code.getType()%>,<%=code.getDxSearchCode()%>"/></td>
-                    <td><%=code.getDescription()%>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(code.getType()))%>,<%=Encode.forHtmlAttribute(String.valueOf(code.getDxSearchCode()))%>"/></td>
+                    <td><%=Encode.forHtml(String.valueOf(code.getDescription()))%>
                     </td>
                 </tr>
                 <%

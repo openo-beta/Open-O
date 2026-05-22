@@ -147,17 +147,17 @@
 
 						<tr>
 							<td><%=Encode.forHtmlContent(flowSheet.getDisplayName())%></td>
-							<td><%=flowSheet.isUniversal() %></td>
+							<td><%=Encode.forHtml(String.valueOf(flowSheet.isUniversal()))%></td>
 							<td><%=Encode.forHtmlContent(flowSheet.getDxTriggersString()) %></td>
 							<td><%=Encode.forHtmlContent(flowSheet.getProgramTriggersString()) %></td>
 							<td><%=Encode.forHtmlContent(type) %></td>
-							<td><%=enabled%></td>
+							<td><%=Encode.forHtml(String.valueOf(enabled))%></td>
 							<td>
-								<a href="<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/EditFlowsheet.jsp?flowsheet=<%=flowSheet.getName()%>&displayName=<%=flowSheet.getDisplayName()%>">Edit</a>&nbsp;
+								<a href="<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/EditFlowsheet.jsp?flowsheet=<%=Encode.forUriComponent(String.valueOf(flowSheet.getName()))%>&displayName=<%=Encode.forUriComponent(String.valueOf(flowSheet.getDisplayName()))%>">Edit</a>&nbsp;
 								<%if(enabled) { %>
-									<a href="manageFlowsheets.jsp?method=disable&name=<%=flowSheet.getName()%>">Disable</a>
+									<a href="manageFlowsheets.jsp?method=disable&name=<%=Encode.forUriComponent(String.valueOf(flowSheet.getName()))%>">Disable</a>
 								<% } else { %>
-									<a href="manageFlowsheets.jsp?method=enable&name=<%=flowSheet.getName()%>">Enable</a>
+									<a href="manageFlowsheets.jsp?method=enable&name=<%=Encode.forUriComponent(String.valueOf(flowSheet.getName()))%>">Enable</a>
 								<% } %>
 							</td>
 						</tr>

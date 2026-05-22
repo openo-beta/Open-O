@@ -77,11 +77,12 @@
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>
     <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-    <title><%=""/*lab.pLastName*/%>, <%=""/*lab.pFirstName*/%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.title"/></title>
+    <title><%=Encode.forHtml(String.valueOf(""/*lab.pLastName*/))%>, <%=Encode.forHtml(String.valueOf(""/*lab.pFirstName*/))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.title"/></title>
     <link rel="stylesheet" type="text/css"
           href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
@@ -126,24 +127,24 @@
                                                        width="50%">
                                                     <tr>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formPatientName"/>: </strong> <%=demographic.getLastName()%>
+                                                            <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formPatientName"/>: </strong> <%=Encode.forHtml(String.valueOf(demographic.getLastName()))%>
                                                                 ,
-                                                                <%=demographic.getFirstName()%>
+                                                                <%=Encode.forHtml(String.valueOf(demographic.getFirstName()))%>
                                                             </div>
 
                                                         </td>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=demographic.getSex()%>
+                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formSex"/>: </strong><%=Encode.forHtml(String.valueOf(demographic.getSex()))%>
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDateBirth"/>: </strong> <%=DemographicData.getDob(demographic, "-")%>
+                                                            <div class="FieldData"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDateBirth"/>: </strong> <%=Encode.forHtml(String.valueOf(DemographicData.getDob(demographic, "-")))%>
                                                             </div>
                                                         </td>
                                                         <td colspan="2" nowrap>
-                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=demographic.getAge()%>
+                                                            <div class="FieldData" nowrap="nowrap"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formAge"/>: </strong><%=Encode.forHtml(String.valueOf(demographic.getAge()))%>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -189,7 +190,7 @@
                 <!--tr>
                                 <td bgcolor="#FFCC00" width="200" height="22" valign="bottom">
                                     <div class="Title2">
-                                        <%=""/*gResults.groupName*/%>
+                                        <%=Encode.forHtml(String.valueOf(""/*gResults.groupName*/))%>
 
                                     </div>
                                 </td>
@@ -199,7 +200,7 @@
                             </tr-->
             </table>
 
-            <img src="<%= request.getContextPath() %>/oscarEncounter/GraphMeasurements.do?method=actualLab&demographic_no=<%=demographicNo%>&labType=<%=labType%>&identifier=<%=identifier%>&testName=<%=testName%><%=drugForGraph%>"/>
+            <img src="<%= request.getContextPath() %>/oscarEncounter/GraphMeasurements.do?method=actualLab&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&labType=<%=Encode.forUriComponent(String.valueOf(labType))%>&identifier=<%=Encode.forUriComponent(String.valueOf(identifier))%>&testName=<%=Encode.forUriComponent(String.valueOf(testName))%><%=Encode.forUriComponent(String.valueOf(drugForGraph))%>"/>
 
 
             <table width="100%" border="0" cellspacing="0" cellpadding="3"
@@ -215,10 +216,10 @@
                 </tr>
             </table>
             <form action="<%= request.getContextPath() %>/lab/CA/ON/labValuesGraph.jsp">
-                <input type="hidden" name="labType" value="<%=labType%>"/>
-                <input type="hidden" name="demographic_no" value="<%=demographicNo%>"/>
-                <input type="hidden" name="testName" value="<%=testName%>"/>
-                <input type="hidden" name="identifier" value="<%=identifier%>"/>
+                <input type="hidden" name="labType" value="<%=Encode.forHtmlAttribute(String.valueOf(labType))%>"/>
+                <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>"/>
+                <input type="hidden" name="testName" value="<%=Encode.forHtmlAttribute(String.valueOf(testName))%>"/>
+                <input type="hidden" name="identifier" value="<%=Encode.forHtmlAttribute(String.valueOf(identifier))%>"/>
                 <ul>
                     <%
                         RxPrescriptionData prescriptData = new RxPrescriptionData();
@@ -245,7 +246,7 @@
                             }
                     %>
                     <li><input type="checkbox"  <%=getChecked(h, drug.getRegionalIdentifier())%> name="drug"
-                               value="<%=drug.getRegionalIdentifier()%>"/> <%=drug.getFullOutLine().replaceAll(";", " ")%>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(drug.getRegionalIdentifier()))%>"/> <%=Encode.forHtml(String.valueOf(drug.getFullOutLine().replaceAll(";", " ")))%>
                     </li>
                     <%
                         }

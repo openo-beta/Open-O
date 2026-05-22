@@ -48,6 +48,7 @@
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.commn.jobs.OscarJobExecutingManager" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -181,7 +182,7 @@
                 $('#jobType').val('');
                 $('#jobDescription').val('');
                 $('#jobEnabled').prop('checked', true);
-                $('#jobProvider').val('<%=provider.getProviderNo()%>');
+                $('#jobProvider').val('<%=Encode.forJavaScript(String.valueOf(provider.getProviderNo()))%>');
                 $('#jobId').val('0');
                 $('#new-job').dialog('open');
             }

@@ -40,6 +40,7 @@
 <%@page import="ca.openosp.openo.billings.ca.on.pageUtil.Billing3rdPartPrep" %>
 <%@page import="ca.openosp.openo.billings.ca.on.administration.GstControl2Action" %>
 <%@ page import="ca.openosp.openo.billing.CA.ON.util.DisplayInvoiceLogo2Action" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -241,7 +242,7 @@
 <body>
 <form action="<%=request.getContextPath()%>/BillingInvoice.do">
     <input type="hidden" name="method" value=""/>
-    <input type="hidden" name="invoiceNo" id="invoiceNo" value="<%=invoiceNoStr%>"/>
+    <input type="hidden" name="invoiceNo" id="invoiceNo" value="<%=Encode.forHtmlAttribute(String.valueOf(invoiceNoStr))%>"/>
     <div class="doNotPrint">
         <div class="titleBar">
             <input type="button" name="printInvoice" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billing3rdInv.printPDF"/>"
@@ -263,42 +264,42 @@
                     if (site != null) {
                         if (site.getSiteLogoId() != null && site.getSiteLogoId() > 0) {
             %>
-            <img src="<%=request.getContextPath() %>/documentManager/ManageDocument.do?method=display&doc_no=<%=site.getSiteLogoId() %>"/>
+            <img src="<%=request.getContextPath() %>/documentManager/ManageDocument.do?method=display&doc_no=<%=Encode.forUriComponent(String.valueOf(site.getSiteLogoId()))%>"/>
             <%
             } else {
             %>
-            <b><%=site.getName() %>
+            <b><%=Encode.forHtml(String.valueOf(site.getName()))%>
             </b><br/>
-            <%=site.getAddress() %><br/>
-            <%=site.getCity() %>, <%=site.getProvince() %><br/>
-            <%=site.getPostal() %><br/>
-            Tel.: <%=site.getPhone() %><br/>
+            <%=Encode.forHtml(String.valueOf(site.getAddress()))%><br/>
+            <%=Encode.forHtml(String.valueOf(site.getCity()))%>, <%=Encode.forHtml(String.valueOf(site.getProvince()))%><br/>
+            <%=Encode.forHtml(String.valueOf(site.getPostal()))%><br/>
+            Tel.: <%=Encode.forHtml(String.valueOf(site.getPhone()))%><br/>
             <%} %>
             <%} else { %>
-            <b><%=propClinic.getProperty("clinic_name", "") %>
+            <b><%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_name", "")))%>
             </b><br/>
-            <%=propClinic.getProperty("clinic_address", "") %><br/>
-            <%=propClinic.getProperty("clinic_city", "") %>, <%=propClinic.getProperty("clinic_province", "") %><br/>
-            <%=propClinic.getProperty("clinic_postal", "") %><br/>
-            Tel.: <%=propClinic.getProperty("clinic_phone", "") %><br/>
+            <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_address", "")))%><br/>
+            <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_city", "")))%>, <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_province", "")))%><br/>
+            <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_postal", "")))%><br/>
+            Tel.: <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_phone", "")))%><br/>
             <%} %>
             <%} else if (isLogoImgExisted) {%>
             <img src="<%=request.getContextPath() %>/billing/ca/on/DisplayInvoiceLogo.do"/>
             <%} else { %>
-            <b><%=propClinic.getProperty("clinic_name", "") %>
+            <b><%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_name", "")))%>
             </b><br/>
-            <%=propClinic.getProperty("clinic_address", "") %><br/>
-            <%=propClinic.getProperty("clinic_city", "") %>, <%=propClinic.getProperty("clinic_province", "") %><br/>
-            <%=propClinic.getProperty("clinic_postal", "") %><br/>
-            Tel.: <%=propClinic.getProperty("clinic_phone", "") %><br/>
+            <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_address", "")))%><br/>
+            <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_city", "")))%>, <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_province", "")))%><br/>
+            <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_postal", "")))%><br/>
+            Tel.: <%=Encode.forHtml(String.valueOf(propClinic.getProperty("clinic_phone", "")))%><br/>
             <%}%>
         </td>
         <td align="right" valign="top"><font size="+2"><b>Invoice
-            - <%=invoiceNoStr %>
+            - <%=Encode.forHtml(String.valueOf(invoiceNoStr))%>
         </b></font><br/>
-            Print Date:<%=DateUtils.sumDate("yyyy-MM-dd HH:mm", "0") %><br/>
+            Print Date:<%=Encode.forHtml(String.valueOf(DateUtils.sumDate("yyyy-MM-dd HH:mm", "0")))%><br/>
             <% if (props.hasProperty("invoice_due_date")) { %>
-            <b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.3rdpartyinvoice.dueDate"/>:</b><%=dueDateStr%>
+            <b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.3rdpartyinvoice.dueDate"/>:</b><%=Encode.forHtml(String.valueOf(dueDateStr))%>
             <% }%>
         </td>
     </tr>
@@ -308,11 +309,11 @@
 <table width="100%" border="0">
     <tr>
         <td width="50%" valign="top">Bill To<br/>
-            <pre><%=billTo%>
+            <pre><%=Encode.forHtml(String.valueOf(billTo))%>
 </pre>
         </td>
         <td valign="top">Remit To<br/>
-            <pre><%=remitTo%>
+            <pre><%=Encode.forHtml(String.valueOf(remitTo))%>
 </pre>
         </td>
     </tr>
@@ -321,17 +322,17 @@
 <oscar:customInterface section="billingInvoice"/>
 <table width="100%" border="0">
     <tr>
-        <td id="ptName">Patient: <%=(bCh1 != null) ? bCh1.getDemographicName() : "N/A" %>
+        <td id="ptName">Patient: <%=Encode.forHtml(String.valueOf((bCh1 != null) ? bCh1.getDemographicName() : "N/A"))%>
         </td>
-        <td id="ptDemoNo"> (<%=(bCh1 != null) ? bCh1.getDemographicNo() : "N/A" %>)</td>
-        <td id="ptGender"><%=(bCh1 != null) ? (bCh1.getSex().equals("1") ? "Male" : "Female") : "N/A" %>
+        <td id="ptDemoNo"> (<%=Encode.forHtml(String.valueOf((bCh1 != null) ? bCh1.getDemographicNo() : "N/A"))%>)</td>
+        <td id="ptGender"><%=Encode.forHtml(String.valueOf((bCh1 != null) ? (bCh1.getSex().equals("1") ? "Male" : "Female") : "N/A"))%>
         </td>
-        <td id="ptDOB"> DOB: <%=(bCh1 != null) ? bCh1.getDob() : "N/A" %>
+        <td id="ptDOB"> DOB: <%=Encode.forHtml(String.valueOf((bCh1 != null) ? bCh1.getDob() : "N/A"))%>
         </td>
     </tr>
     <tr>
         <td id="ptHin">
-            Insurance No: <%=(demo != null) ? demo.getHin() : "N/A"%>
+            Insurance No: <%=Encode.forHtml(String.valueOf((demo != null) ? demo.getHin() : "N/A"))%>
         </td>
     </tr>
 </table>
@@ -340,7 +341,7 @@
 
 <table width="100%" border="0">
     <tr>
-        <td><%=invoiceComment%>
+        <td><%=Encode.forHtml(String.valueOf(invoiceComment))%>
         </td>
     </tr>
 </table>
@@ -353,9 +354,9 @@
         <th>Ref. Doctor</th>
     </tr>
     <tr align="center">
-        <td><%=billingDateStr%>
+        <td><%=Encode.forHtml(String.valueOf(billingDateStr))%>
         </td>
-        <td><%=providerFormattedName%>
+        <td><%=Encode.forHtml(String.valueOf(providerFormattedName))%>
         </td>
 
         <% Properties prop = OscarProperties.getInstance();
@@ -363,13 +364,13 @@
             payee = payee.trim();
             if (payee.length() > 0) {
         %>
-        <td><%=payee%>
+        <td><%=Encode.forHtml(String.valueOf(payee))%>
         </td>
         <% } else { %>
-        <td><%=providerFormattedName%>
+        <td><%=Encode.forHtml(String.valueOf(providerFormattedName))%>
         </td>
         <% } %>
-        <td><%=invoiceRefNum%>
+        <td><%=Encode.forHtml(String.valueOf(invoiceRefNum))%>
         </td>
     </tr>
 </table>
@@ -401,17 +402,17 @@
             }
     %>
     <tr align="center">
-        <td><%=billItem.getId() %>
+        <td><%=Encode.forHtml(String.valueOf(billItem.getId()))%>
         </td>
-        <td><%=serviceDesc%>
+        <td><%=Encode.forHtml(String.valueOf(serviceDesc))%>
         </td>
-        <td><%=billItem.getServiceCode()%>
+        <td><%=Encode.forHtml(String.valueOf(billItem.getServiceCode()))%>
         </td>
-        <td><%=billItem.getServiceCount()%>
+        <td><%=Encode.forHtml(String.valueOf(billItem.getServiceCount()))%>
         </td>
-        <td><%=billItem.getDx()%>
+        <td><%=Encode.forHtml(String.valueOf(billItem.getDx()))%>
         </td>
-        <td align="right"><%=billItem.getFee()%>
+        <td align="right"><%=Encode.forHtml(String.valueOf(billItem.getFee()))%>
         </td>
     </tr>
     <% } %>
@@ -432,37 +433,37 @@
 
     <tr align="right">
         <td width="86%">Total:</td>
-        <td><%=bCh1.getTotal()%>
+        <td><%=Encode.forHtml(String.valueOf(bCh1.getTotal()))%>
         </td>
     </tr>
     <tr align="right">
         <td>Payments:</td>
-        <td><%=prop3rdPart.getProperty("payment", "0.00") %>
+        <td><%=Encode.forHtml(String.valueOf(prop3rdPart.getProperty("payment", "0.00")))%>
         </td>
     </tr>
     <tr align="right">
         <td>Discounts:</td>
-        <td><%=prop3rdPart.getProperty("discount", "0.00") %>
+        <td><%=Encode.forHtml(String.valueOf(prop3rdPart.getProperty("discount", "0.00")))%>
         </td>
     </tr>
     <tr align="right">
         <td>Refund Credit / Overpayment:</td>
-        <td><%=prop3rdPart.getProperty("credit", "0.00") %>
+        <td><%=Encode.forHtml(String.valueOf(prop3rdPart.getProperty("credit", "0.00")))%>
         </td>
     </tr>
     <tr align="right">
         <td>Refund / Write off:</td>
-        <td><%=prop3rdPart.getProperty("refund", "0.00") %>
+        <td><%=Encode.forHtml(String.valueOf(prop3rdPart.getProperty("refund", "0.00")))%>
         </td>
     </tr>
 
     <tr align="right">
         <td><b>Balance:</b></td>
-        <td><%=bdBal %>
+        <td><%=Encode.forHtml(String.valueOf(bdBal))%>
         </td>
     </tr>
     <tr align="right">
-        <td>(<%=prop3rdPayMethod.getProperty(prop3rdPart.getProperty("payMethod", ""), "") %>)</td>
+        <td>(<%=Encode.forHtml(String.valueOf(prop3rdPayMethod.getProperty(prop3rdPart.getProperty("payMethod", ""), "")))%>)</td>
         <td></td>
     </tr>
 </table>

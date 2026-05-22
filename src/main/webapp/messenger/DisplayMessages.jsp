@@ -63,6 +63,7 @@
 <%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
 <%@ page import="ca.openosp.openo.messenger.data.MsgDisplayMessage" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     // Build security role string from session attributes
@@ -295,7 +296,7 @@
                                 <% delStyle = "messengerButtonsD";
                                     break;
                                     case 3: %>
-                                <div class="DivContentTitle">Messages related to <%=demographic_name%>
+                                <div class="DivContentTitle">Messages related to <%=Encode.forHtml(String.valueOf(demographic_name))%>
                                 </div>
                                 <% delStyle = "messengerButtonsD";
                                     break;
@@ -305,7 +306,7 @@
                         <td>
                             <!-- edit 2006-0811-01 by wreby -->
                             <form action="${pageContext.request.contextPath}/messenger/DisplayMessages.do" method="post">
-                                <input name="boxType" type="hidden" value="<%=pageType%>">
+                                <input name="boxType" type="hidden" value="<%=Encode.forHtmlAttribute(String.valueOf(pageType))%>">
                                 <input name="searchString" type="text" size="20"
                                        value="<jsp:getProperty name="DisplayMessagesBeanId" property="filter"/>">
                                 <input name="btnSearch" type="submit"
@@ -404,7 +405,7 @@
                         }
                     %>
 
-                    <form action="<%=strutsAction%>" method="post" id="msgList">
+                    <form action="<%=Encode.forHtmlAttribute(String.valueOf(strutsAction))%>" method="post" id="msgList">
                     <%
                         java.util.Vector theMessages2 = new java.util.Vector();
                         switch (pageType) {
@@ -538,7 +539,7 @@
                                     <td class='<%= dm.getType() == 3 ? "integratedMessage" : "normalMessage" %>'
                                         width="75">
                                         <%if (pageType != 1) {%>
-                                        <input type="checkbox" name="messageNo" value="<%=dm.getMessageId() %>"/>
+                                        <input type="checkbox" name="messageNo" value="<%=Encode.forHtmlAttribute(String.valueOf(dm.getMessageId()))%>"/>
                                         <% } %>
                                         &nbsp;
                                         <%
@@ -551,7 +552,7 @@
 
                                     </td>
                                     <td class='<%= dm.getType() == 3 ? "integratedMessage" : "normalMessage" %>'>
-                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="<%= key %>"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="<%=Encode.forHtmlAttribute(String.valueOf(key))%>"/>
                                     </td>
                                     <td class='<%= dm.getType() == 3 ? "integratedMessage" : "normalMessage" %>'>
                                         <span class="recipientList">
@@ -565,20 +566,20 @@
                                     	</span>
                                     </td>
                                     <td class='<%= dm.getType() == 3 ? "integratedMessage" : "normalMessage" %>'>
-                                        <a href="<%=request.getContextPath()%>/messenger/ViewMessage.do?messageID=<%=dm.getMessageId()%>&boxType=<%=pageType%>">
-                                            <%=dm.getThesubject()%>
+                                        <a href="<%=request.getContextPath()%>/messenger/ViewMessage.do?messageID=<%=Encode.forUriComponent(String.valueOf(dm.getMessageId()))%>&boxType=<%=Encode.forUriComponent(String.valueOf(pageType))%>">
+                                            <%=Encode.forHtml(String.valueOf(dm.getThesubject()))%>
                                         </a>
 
                                     </td>
                                     <td class='<%= dm.getType() == 3 ? "integratedMessage" : "normalMessage" %>'>
-                                        <%= dm.getThedate() %>
+                                        <%=Encode.forHtml(String.valueOf(dm.getThedate()))%>
                                         &nbsp;&nbsp;
-                                        <%= dm.getThetime() %>
+                                        <%=Encode.forHtml(String.valueOf(dm.getThetime()))%>
                                     </td>
                                     <td class='<%= dm.getType() == 3 ? "integratedMessage" : "normalMessage" %>'>
 
                                         <%if (dm.getDemographic_no() != null && !dm.getDemographic_no().equalsIgnoreCase("null")) {%>
-                                        <oscar:nameage demographicNo="<%=dm.getDemographic_no()%>"></oscar:nameage>
+                                        <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(dm.getDemographic_no()))%>"></oscar:nameage>
                                         <%} %>
 
                                     </td>

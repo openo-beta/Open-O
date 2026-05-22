@@ -170,8 +170,8 @@
                                         serviceType = String.valueOf(billingService[0]);
                                         serviceTypeName = String.valueOf(billingService[1]);
                                 %>
-                                <option value="<%=serviceType%>"
-                                        <%=clinicview.equals(serviceType) ? "selected" : ""%>><%=serviceTypeName%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(serviceType))%>"
+                                        <%=clinicview.equals(serviceType) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(serviceTypeName))%>
                                 </option>
                                 <%
                                     }

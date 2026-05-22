@@ -50,6 +50,7 @@
 <%@page import="ca.openosp.openo.renal.CkdScreenerReportHandler" %>
 <%@page import="ca.openosp.openo.renal.CKDReportContainer" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -102,7 +103,7 @@
             // }
 
             function generateLabReq(demographicNo) {
-                var url = '<%=request.getContextPath()%>/form/formlabreq<%=labReqVer%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=session.getAttribute("user")%>&fromSession=true';
+                var url = '<%=request.getContextPath()%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>&fromSession=true';
                 jQuery.ajax({
                     url: '<%=request.getContextPath()%>/renal/Renal.do?method=createLabReq&demographicNo=' + demographicNo,
                     async: false,
@@ -228,28 +229,28 @@
                     <%=ckd.getDemographic().getStandardIdentificationHTML(request.getContextPath()) %>
                 </td>
                 <td style="text-align:left">
-                    Home: <%=ckd.getDemographic().getPhone() %><br/>
-                    Work: <%=ckd.getDemographic().getPhone2() %>
+                    Home: <%=Encode.forHtml(String.valueOf(ckd.getDemographic().getPhone()))%><br/>
+                    Work: <%=Encode.forHtml(String.valueOf(ckd.getDemographic().getPhone2()))%>
                 </td>
-                <td style="text-align:center"><%=ckd.getDemographic().getSex() %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(ckd.getDemographic().getSex()))%>
                 </td>
-                <td style="text-align:right"><%=ckd.getDemographic().getAge() %>
+                <td style="text-align:right"><%=Encode.forHtml(String.valueOf(ckd.getDemographic().getAge()))%>
                 </td>
-                <td style="text-align:center"><%=printStandardAboriginal(ckd.getAboriginalStr()) %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardAboriginal(ckd.getAboriginalStr())))%>
                 </td>
-                <td style="text-align:center"><%=printStandardBoolean(ckd.isDiabetic()) %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isDiabetic())))%>
                 </td>
-                <td style="text-align:center"><%=printStandardBoolean(ckd.isHypertensive()) %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isHypertensive())))%>
                 </td>
-                <td style="text-align:center"><%=printStandardBoolean(ckd.isMedication()) %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isMedication())))%>
                 </td>
-                <td style="text-align:center"><%=printStandardBoolean(ckd.isBp()) %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isBp())))%>
                 </td>
-                <td style="text-align:center"><%=printStandardBoolean(ckd.isHx())%>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isHx())))%>
                 </td>
-                <td style="text-align:center"><%=printStandardBoolean(ckd.isLabs())%>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isLabs())))%>
                 </td>
-                <td><%=ckd.getLastVisit() %>
+                <td><%=Encode.forHtml(String.valueOf(ckd.getLastVisit()))%>
                 </td>
                 <td style="text-align:left">
                     <%
@@ -262,22 +263,22 @@
                             }
                         }
                     %>
-                    <%=providerName %>
+                    <%=Encode.forHtml(String.valueOf(providerName))%>
                 </td>
 
                 <td nowrap="nowrap">
-                    <a title="Generate Patient Letter <%=ckd.getLastPatientLetter()==null?"":" | " + ckd.getLastPatientLetter() %>"
+                    <a title="Generate Patient Letter <%=Encode.forHtmlAttribute(String.valueOf(ckd.getLastPatientLetter()==null?"":" | " + ckd.getLastPatientLetter()))%>"
                        href="javascript:void(0);"
-                       onclick="generateLetter(<%=ckd.getDemographic().getDemographicNo()%>);return false;"><img
+                       onclick="generateLetter(<%=Encode.forJavaScript(String.valueOf(ckd.getDemographic().getDemographicNo()))%>);return false;"><img
                             src="<%= request.getContextPath() %>/images/notepad_blank.gif" border="0"/></a>
-                        <%-- <a title="Email Patient Letter <%=ckd.getLastPatientLetter()==null?"":" | " + ckd.getLastPatientLetter() %>" href="javascript:void(0);" onclick="generateLetterAndEmail(<%=ckd.getDemographic().getDemographicNo()%>);return false;"><img src="<%= request.getContextPath() %>/images/email.jpg" border="0"/></a>						 --%>
-                    <a title="Create Lab Requisition  <%=ckd.getLastLabReq()==null?"":" | " + ckd.getLastLabReq() %>"
+                        <%-- <a title="Email Patient Letter <%=Encode.forHtmlAttribute(String.valueOf(ckd.getLastPatientLetter()==null?"":" | " + ckd.getLastPatientLetter()))%>" href="javascript:void(0);" onclick="generateLetterAndEmail(<%=Encode.forJavaScript(String.valueOf(ckd.getDemographic().getDemographicNo()))%>);return false;"><img src="<%= request.getContextPath() %>/images/email.jpg" border="0"/></a>						 --%>
+                    <a title="Create Lab Requisition  <%=Encode.forHtmlAttribute(String.valueOf(ckd.getLastLabReq()==null?"":" | " + ckd.getLastLabReq()))%>"
                        href="javascript:void(0);"
-                       onclick="generateLabReq(<%=ckd.getDemographic().getDemographicNo()%>);return false;"><img
+                       onclick="generateLabReq(<%=Encode.forJavaScript(String.valueOf(ckd.getDemographic().getDemographicNo()))%>);return false;"><img
                             src="<%= request.getContextPath() %>/images/lab_icon.png" height="16" border="0"/></a>
                     <a title="Add Chronic Renal Failure to Disease Registry, and disable further notifications"
                        href="javascript.void(0);"
-                       onclick="popupPage(580,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/dxResearch.do?selectedCodingSystem=icd9&xml_research1=585&xml_research2=&xml_research3=&xml_research4=&xml_research5=&demographicNo=<%=ckd.getDemographic().getDemographicNo()%>&quickList=default&forward=');return false;"><img
+                       onclick="popupPage(580,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/dxResearch.do?selectedCodingSystem=icd9&xml_research1=585&xml_research2=&xml_research3=&xml_research4=&xml_research5=&demographicNo=<%=Encode.forJavaScript(String.valueOf(ckd.getDemographic().getDemographicNo()))%>&quickList=default&forward=');return false;"><img
                             src="<%= request.getContextPath() %>/images/kidney.jpg" height="16" border="0"/></a>
                 </td>
             </tr>

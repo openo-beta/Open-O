@@ -14,6 +14,70 @@
     <constant name="struts.multipart.maxSize" value="524288000" />
     <!-- Default package extending struts-default -->
 	<package name="default" namespace="/" extends="struts-default">
+        <interceptors>
+            <!--
+                CVE-2024-53677: Replace the vulnerable FileUploadInterceptor with ActionFileUploadInterceptor.
+
+                The old FileUploadInterceptor pushes attacker-controlled multipart field names into the
+                OGNL parameter pipeline regardless of whether the action has matching setters. Simply
+                remapping the interceptor name is insufficient because inherited stacks resolve names
+                against the defining package (struts-default), not the extending package.
+
+                Fix: Redefine defaultStack locally, removing the "fileUpload" ref entirely and keeping
+                only "actionFileUpload". The interceptor name remap above is retained as a safety net
+                in case any action config explicitly references "fileUpload" by name.
+                This stack mirrors struts-default.xml from Struts 6.8.0 — must be reviewed on upgrade.
+
+                Additional mitigation: all 30 upload actions implement UploadedFilesAware, old File
+                setters are removed, and PathValidationUtils.toFile() centralizes extraction.
+
+                Remove this block when upgrading to Struts 7+ (which drops FileUploadInterceptor).
+            -->
+            <interceptor name="fileUpload" class="org.apache.struts2.interceptor.ActionFileUploadInterceptor"/>
+            <interceptor-stack name="defaultStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="httpMethod"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="csp">
+                    <param name="disabled">false</param>
+                    <param name="enforcingMode">false</param>
+                </interceptor-ref>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="scopedModelDriven"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="actionFileUpload"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="datetime"/>
+                <interceptor-ref name="multiselect"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params"/>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="coep">
+                    <param name="disabled">false</param>
+                    <param name="enforcingMode">false</param>
+                    <param name="exemptedPaths"/>
+                </interceptor-ref>
+                <interceptor-ref name="coop">
+                    <param name="disabled">false</param>
+                    <param name="exemptedPaths"/>
+                    <param name="mode">same-origin</param>
+                </interceptor-ref>
+                <interceptor-ref name="fetchMetadata">
+                    <param name="disabled">false</param>
+                </interceptor-ref>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="debugging"/>
+            </interceptor-stack>
+        </interceptors>
         <action name="logout" class="ca.openosp.openo.login.Logout2Action">
             <result name="success">/index.jsp</result>
             <result name="logoutsso">/ssoLogin.do?method=ssoLogout</result>
@@ -978,6 +1042,7 @@
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/EnableRequestResponse.jsp</result>
         </action>
         <action name="oscarEncounter/ConsultationLookup2Action" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.ConsultationLookup2Action"/>
+        <action name="oscarEncounter/SpecialistList" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.SpecialistList2Action"/>
         <action name="oscarEncounter/AddService" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConAddService2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/AddService.jsp</result>
         </action>
@@ -1179,7 +1244,6 @@
             <result name="continue">/oscarEncounter/oscarMeasurements/DisplayMeasurementStyleSheet.jsp</result>
         </action>
         <action name="oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddMeasurementStyleSheet2Action">
-            <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet.jsp</result>
         </action>
@@ -1384,7 +1448,6 @@
         </action>
         <action name="dxCodeSearchJSON" class="ca.openosp.openo.dxresearch.pageUtil.dxCodeSearchJSON2Action"/>
         <action name="oscarResearch/oscarDxResearch/dxResearchLoadAssociations" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchLoadAssociations2Action">
-            <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchSelectAssociations.jsp</result>
         </action>
@@ -1499,7 +1562,6 @@
             <result name="success">/demographic/AddAlternateContact.jsp</result>
         </action>
         <action name="form/importUpload" class="ca.openosp.openo.demographic.pageUtil.ImportDemographicDataAction42Action">
-            <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
             <result name="success">/demographic/demographicImport.jsp</result>
         </action>
@@ -1531,6 +1593,8 @@
         </action>
         <action name="tickler/AddTickler" class="ca.openosp.openo.tickler.pageUtil.AddTickler2Action">
             <result name="close">/close.html</result>
+        </action>
+        <action name="tickler/ListTicklers" class="ca.openosp.openo.tickler.pageUtil.TicklerList2Action">
         </action>
         <action name="eform/uploadHtml" class="ca.openosp.openo.eform.upload.HtmlUpload2Action">
             <result name="success">/eform/partials/upload.jsp</result>
@@ -1624,7 +1688,6 @@
             <result name="success">/lab/CA/ALL/uploadComplete.jsp</result>
         </action>
         <action name="lab/CA/ALL/insideLabUpload" class="ca.openosp.openo.lab.ca.all.pageUtil.InsideLabUpload2Action">
-            <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
             <result name="success">/lab/CA/ALL/testUploader.jsp</result>
             <result name="input">/lab/CA/ALL/testUploader.jsp</result>
@@ -1864,11 +1927,11 @@
         </action>
         <action name="OscarChartPrint" class="ca.openosp.openo.casemgmt.web.EChartPrint2Action"/>
         <action name="ClientImage" class="ca.openosp.openo.casemgmt.web.ClientImage2Action" method="execute">
-            <interceptor-ref name="defaultStack"/>
-            <interceptor-ref name="fileUpload">
-                <param name="allowedTypes">image/jpeg,image/gif</param>
+            <interceptor-ref name="defaultStack">
+                <param name="actionFileUpload.allowedTypes">image/jpeg,image/gif</param>
             </interceptor-ref>
             <result name="success">/casemgmt/uploadimage.jsp</result>
+            <result name="input">/casemgmt/uploadimage.jsp</result>
         </action>
         <action name="OnCallQuestionnaire" class="ca.openosp.openo.casemgmt.web.OnCallQuestionnaire2Action">
             <result name="form">/casemgmt/OnCallQuestionnaireForm.jsp</result>
@@ -2177,7 +2240,6 @@
         <action name="renal/Renal" class="ca.openosp.openo.renal.web.Renal2Action"/>
         <action name="admin/GenerateTraceAction" class="ca.openosp.openo.admin.traceability.GenerateTrace2Action"/>
         <action name="admin/GenerateTraceabilityReportAction" class="ca.openosp.openo.admin.traceability.GenerateTraceabilityReport2Action">
-            <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
         </action>
         <action name="mcedt/mcedt" class="ca.openosp.openo.integration.mcedt.Resource2Action">

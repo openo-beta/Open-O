@@ -39,6 +39,7 @@
 <%@page import="java.sql.*" %>
 <%@page import="java.util.*" %>
 <%@page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -99,7 +100,7 @@
 		<select name="physician">
 		<option value="ALL">ALL</option>
 		<%for(Provider p:providerDao.getActiveProviders()) { %>
-			<option value="<%=p.getProviderNo()%>"><%=p.getFormattedName() %></option>
+			<option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%></option>
 		<% } %>
 	</select>
 	-->

@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabTestValues" %>
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -115,7 +116,7 @@
                 alert("calling addLabToProfile");
                 var url = "<%= request.getContextPath() %>/lab/DisplayLabValue.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
-                var params = "demographicNo=<%=demographic_no%>&rand=" + ran_number + "&labType=" + labType + "&testName=" + testName;  //hack to get around ie caching the page
+                var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&rand=" + ran_number + "&labType=" + labType + "&testName=" + testName;  //hack to get around ie caching the page
                 alert(params);
                 new Ajax.Updater('dd', url, {
                     method: 'get',
@@ -146,7 +147,7 @@
 
                 var url = "<%= request.getContextPath() %>/lab/DisplayLabValue.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
-                var params = "demographicNo=<%=demographic_no%>&rand=" + ran_number + "&labType=" + labType + "&testName=" + testName;  //hack to get around ie caching the page
+                var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&rand=" + ran_number + "&labType=" + labType + "&testName=" + testName;  //hack to get around ie caching the page
                 ///alert(params);  //'d'+ran_number
                 new Ajax.Updater(newNode, url, {
                     method: 'get',
@@ -188,7 +189,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><oscar:nameage demographicNo="<%=demographic_no%>"/></td>
+                        <td><oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/></td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
                                 href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
@@ -229,8 +230,8 @@
                       
                       if (prevName == null){prevName ="";} %>
                      <li style="margin-top:2px;">
-                        <a title="fade=[on] header=[<%=prevName%>] body=[]"      href="javascript: function myFunction() {return false; }"  onclick="javascript:addLabToProfile2('<%=h.get("labType")%>','<%= java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8) %>');">                        
-                           <%=StringUtils.maxLenString(prevName, 13, 8, "...")%>
+                        <a title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(prevName))%>] body=[]"      href="javascript: function myFunction() {return false; }"  onclick="javascript:addLabToProfile2('<%=Encode.forJavaScript(String.valueOf(h.get("labType")))%>','<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8)))%>');">                        
+                           <%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(prevName, 13, 8, "...")))%>
                         </a>
                      </li>          
                   <%}%>
@@ -248,7 +249,7 @@
                             for (int h = 0; h < labTestDates.size(); h++) {
                                 //String labDate= (String) labTestDates.get(h);
                                 Date labDate = (Date) labTestDates.get(h); %>
-                        <th><%=UtilDateUtilities.DateToString(labDate, "dd-MMM yy")%>
+                        <th><%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(labDate, "dd-MMM yy")))%>
                         </th>
                         <%}%>
                     </tr>
@@ -277,11 +278,11 @@
 
                     %>
                     <tr>
-                        <td><%=StringUtils.maxLenString(prevName, 30, 27, "...")%>
+                        <td><%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(prevName, 30, 27, "...")))%>
                         </td>
-                        <td <%=abn%>><%=latestVal%>
+                        <td <%=abn%>><%=Encode.forHtml(String.valueOf(latestVal))%>
                         </td>
-                        <td <%=abn%>><%=latestDate%>
+                        <td <%=abn%>><%=Encode.forHtml(String.valueOf(latestDate))%>
                         </td>
                         <% Hashtable dater = (Hashtable) labsBasedOnName.get(labType + "|" + prevName);
                             for (int h2 = 0; h2 < labTestDates.size(); h2++) {
@@ -295,7 +296,7 @@
                                     ab2 = r(hdata.get("abn"));
                                 }
                         %>
-                        <td <%=ab2%>><%=val%>
+                        <td <%=ab2%>><%=Encode.forHtml(String.valueOf(val))%>
                         </td>
                         <%}%>
                     </tr>

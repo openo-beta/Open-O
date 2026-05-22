@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.persistence.Query;
 
@@ -38,8 +39,16 @@ public class Billing3rdPartyAddressDaoImpl extends AbstractDaoImpl<Billing3rdPar
 
     @NativeSql("billing_on_3rdPartyAddress")
     public List<Billing3rdPartyAddress> findAddresses(String searchModeParam, String orderByParam, String keyword, String limit1, String limit2) {
+        // Whitelist valid column names for search_mode and orderBy to prevent SQL injection
+        Set<String> validColumns = Set.of(
+            "company_name", "attention", "address", "city", "province", "postcode", "telephone", "fax"
+        );
+        Set<String> validOrderBy = Set.of(
+            "company_name", "attention", "address", "city", "province", "postcode", "telephone", "fax", "id"
+        );
+
         String search_mode = searchModeParam == null ? "search_name" : searchModeParam;
-        String orderBy = orderByParam == null ? "company_name" : orderByParam;
+        String orderBy = (orderByParam != null && validOrderBy.contains(orderByParam)) ? orderByParam : "company_name";
         String where = "";
         Map<String, Object> params = new HashMap<String, Object>();
         if ("search_name".equals(search_mode)) {
@@ -57,24 +66,27 @@ public class Billing3rdPartyAddressDaoImpl extends AbstractDaoImpl<Billing3rdPar
                 params.put("compName0", temp[0] + "%");
             }
         } else {
-            where = search_mode + " like :searchMode";
+            // Validate search_mode as a column name
+            String safeSearchColumn = validColumns.contains(search_mode) ? search_mode : "company_name";
+            where = safeSearchColumn.concat(" like :searchMode");
             params.put("searchMode", keyword + "%");
         }
 
-        String strLimit1 = "0";
-        String strLimit2 = "20";
-        if (limit1 != null)
-            strLimit1 = limit1;
-        if (limit2 != null)
-            strLimit2 = limit2;
-        String sql = "select * from billing_on_3rdPartyAddress where " + where + " order by " + orderBy + " limit "
-                + strLimit1 + "," + strLimit2;
+        int parsedLimit1 = 0;
+        int parsedLimit2 = 20;
+        try { parsedLimit1 = Integer.parseInt(limit1); } catch (Exception ignored) {}
+        try { parsedLimit2 = Integer.parseInt(limit2); } catch (Exception ignored) {}
+
+        // Build query with validated column names and parameterized limit/offset via JPA
+        String sql = "select * from billing_on_3rdPartyAddress where ".concat(where).concat(" order by ").concat(orderBy);
 
         try {
             Query q = entityManager.createNativeQuery(sql, modelClass);
             for (Entry<String, Object> o : params.entrySet()) {
                 q.setParameter(o.getKey(), o.getValue());
             }
+            q.setFirstResult(parsedLimit1);
+            q.setMaxResults(parsedLimit2);
             return q.getResultList();
         } catch (Exception e) {
             MiscUtils.getLogger().error("error", e);
