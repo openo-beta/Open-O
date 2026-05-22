@@ -337,9 +337,9 @@ public class HRMReportParser {
 				// Attempt a route to the provider listed in the report -- if they don't exist, note that in the record
 				Boolean routeSuccess = HRMReportParser.routeReportToProvider(report, document.getId(), warnings);
 				if (!routeSuccess) {
-					
+
 					logger.info("Adding the provider name to the list of unidentified providers, for file:"+report.getFileLocation());
-					
+
 					// Add the provider name to the list of unidentified providers for this report
 					document.setUnmatchedProviders((document.getUnmatchedProviders() != null ? document.getUnmatchedProviders() : "") + "|" + ((report.getDeliverToUserIdLastName()!=null)?report.getDeliverToUserIdLastName() + ", " + report.getDeliverToUserIdFirstName():report.getDeliverToUserId()) + " (" + report.getDeliverToUserId() + ")");
 					hrmDocumentDao.merge(document);
@@ -358,6 +358,10 @@ public class HRMReportParser {
             existingDocument.setNumDuplicatesReceived((existingDocument.getNumDuplicatesReceived() != null ? existingDocument.getNumDuplicatesReceived() : 0) + 1);
 
             hrmDocumentDao.merge(existingDocument);
+
+            if (warnings != null) {
+                warnings.add("This report has already been received and has been flagged as a duplicate.");
+            }
         }
     }
 
@@ -634,6 +638,22 @@ public class HRMReportParser {
             }
         } else {
             sendToProvider = providerDao.getProviderByPractitionerNo(practitionerNo.substring(1));
+        }
+
+        // UC73: the practitioner number matched a provider, but the report's <Provider>
+        // LastName disagrees with that provider's LastName. The CPSO/CNO likely points
+        // at the wrong person — refuse the link and surface a warning instead.
+        if (sendToProvider != null) {
+            String reportLastName = report.getDeliverToUserIdLastName();
+            if (reportLastName != null && !reportLastName.isEmpty()
+                    && !reportLastName.equalsIgnoreCase(sendToProvider.getLastName())) {
+                if (warnings != null) {
+                    warnings.add("Provider unmatched: DeliverToUserID '" + practitionerNo
+                            + "' matches a provider whose LastName does not match the report's "
+                            + "Provider LastName ('" + reportLastName + "') — verify the DeliverToUserID.");
+                }
+                sendToProvider = null;
+            }
         }
 
         // UC44: DeliverToUserID prefix (D = physician/CPSO, N = nurse/CNO) must match the
