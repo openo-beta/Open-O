@@ -2050,6 +2050,9 @@
         <action name="hospitalReportManager/HRMPreferences" class="ca.openosp.openo.hospitalReportManager.HRMPreferences2Action">
             <result name="success">/hospitalReportManager/hrmPreferences.jsp</result>
         </action>
+        <action name="hospitalReportManager/HRMSendingFacility" class="ca.openosp.openo.hospitalReportManager.HRMSendingFacility2Action">
+            <result name="success">/hospitalReportManager/hrmSendingFacilities.jsp</result>
+        </action>
         <action name="hospitalReportManager/HRMDownloadFile" class="ca.openosp.openo.hospitalReportManager.HRMDownloadFile2Action"/>
         <action name="hospitalReportManager/hrm" class="ca.openosp.openo.hospitalReportManager.v2018.HRM2Action"/>
         <action name="hospitalReportManager/PrintHRMReport" class="ca.openosp.openo.hospitalReportManager.PrintHRMReport2Action">

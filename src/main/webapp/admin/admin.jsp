@@ -834,6 +834,8 @@
                         Manager (HRM) Class Mappings</a></li>
                     <li><a href="#" onclick='popupPage(400, 400, "${pageContext.request.contextPath}/hospitalReportManager/hrmCategories.jsp");return false;'>Hospital Report
                         Manager (HRM) Categories</a></li>
+                    <li><a href="#" onclick='popupPage(400, 400, "${pageContext.request.contextPath}/hospitalReportManager/HRMSendingFacility.do");return false;'>Hospital Report
+                        Manager (HRM) Sending Facilities</a></li>
 
                     <%
                         String olisKeystore = OscarProperties.getInstance().getProperty("olis_keystore", "");

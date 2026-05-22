@@ -37,6 +37,7 @@
     HRMCategoryDao hrmCategoryDao = (HRMCategoryDao) SpringUtils.getBean(HRMCategoryDao.class);
     HRMDocumentCommentDao hrmDocumentCommentDao = (HRMDocumentCommentDao) SpringUtils.getBean(HRMDocumentCommentDao.class);
     HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = (HRMProviderConfidentialityStatementDao) SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
+    HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
 %>
 
 <%@page import="ca.openosp.openo.hospitalReportManager.*, ca.openosp.openo.hospitalReportManager.model.*, ca.openosp.openo.utility.SpringUtils, ca.openosp.openo.PMmodule.dao.ProviderDao" %>
@@ -880,9 +881,20 @@
                 </td>
             </tr>
             <tr>
-                <th>Sending Facility ID</th>
+                <th>Sending Facility</th>
 
-                <td><%=hrmReport.getSendingFacilityId() %>
+                <td>
+                    <%
+                        String sfId = hrmReport.getSendingFacilityId();
+                        HRMSendingFacility sf = (sfId != null && !sfId.isEmpty())
+                                ? hrmSendingFacilityDao.findBySendingFacilityId(sfId) : null;
+                        if (sf != null) {
+                    %>
+                        <%=Encode.forHtml(sf.getFacilityName())%>
+                        (<%=Encode.forHtml(sf.getSendingFacilityId())%>)
+                    <% } else { %>
+                        <%=Encode.forHtml(sfId != null ? sfId : "")%>
+                    <% } %>
                 </td>
             </tr>
             <tr>
