@@ -182,6 +182,7 @@
                             <th>Report Date</th>
                             <th>Received Date</th>
                             <th>Sending Facility</th>
+                            <th>Report Number</th>
                             <th>Class/Sub-class</th>
                             <th>Category</th>
                             <th>Description</th>

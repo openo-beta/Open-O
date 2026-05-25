@@ -99,6 +99,7 @@ $(document).ready(function () {
             {"data": "report_date"},
             {"data": "received_date"},
             {"data": "sending_facility"},
+            {"data": "report_number"},
             {"data": "class_subclass"},
             {"data": "category", "visible": false},
             {"data": "description"}
@@ -134,7 +135,7 @@ $(document).ready(function () {
     });
 
     $("#showCategoryInfo").on('change', function () {
-        $("#libraryTable").DataTable().column(10).visible($(this).is(":checked"));
+        $("#libraryTable").DataTable().column(11).visible($(this).is(":checked"));
     });
 
     $('#hrm_file').fileupload({

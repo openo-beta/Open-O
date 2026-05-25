@@ -916,6 +916,7 @@ public class HRM2Action extends ActionSupport {
 
 
                 data1.put("sending_facility", hrmSendingFacilityDao.getDisplayName(d.getSourceFacility()));
+                data1.put("report_number", d.getSourceFacilityReportNo() != null ? d.getSourceFacilityReportNo() : "");
                 if (!StringUtils.isEmpty(d.getClassName()) && !StringUtils.isEmpty(d.getSubClassName())) {
                     String className = d.getClassName();
                     String subClassName = d.getSubClassName();
