@@ -26,6 +26,7 @@
 
 <%@page import="java.util.*, ca.openosp.openo.hospitalReportManager.*, ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
 <%@ page import="ca.openosp.openo.hospitalReportManager.HRMUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -89,7 +90,7 @@
             <table id="tblMap" class="table table-striped table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th>Sending Facility Id</th>
+                    <th>Sending Facility</th>
                     <th>Class Name</th>
                     <th>SubClass Name Mnemonic</th>
                     <th>Mnemonic</th>
@@ -105,7 +106,7 @@
                         HashMap<String, ? extends Object> curmapping = hrmmappings.get(i);
                 %>
                 <tr>
-                    <td><%=curmapping.get("id")%>&nbsp;</td>
+                    <td><%=Encode.forHtml(String.valueOf(curmapping.get("facility_display")))%>&nbsp;</td>
                     <td><%=curmapping.get("class")%>&nbsp;</td>
                     <td><%=curmapping.get("sub_class")%>&nbsp;</td>
                     <td><%=curmapping.get("mnemonic") %>&nbsp;</td>

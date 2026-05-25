@@ -51,6 +51,7 @@ public class HRMUtil {
     private static HRMSubClassDao hrmSubClassDao = (HRMSubClassDao) SpringUtils.getBean(HRMSubClassDao.class);
     private static HRMDocumentSubClassDao hrmDocumentSubClassDao = (HRMDocumentSubClassDao) SpringUtils.getBean(HRMDocumentSubClassDao.class);
     private static HRMCategoryDao hrmCategoryDao = SpringUtils.getBean(HRMCategoryDao.class);
+    private static HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
     private static IncomingLabRulesDao incomingLabRulesDao = SpringUtils.getBean(IncomingLabRulesDao.class);
     private static final NioFileManager nioFileManager = SpringUtils.getBean(NioFileManager.class);
     private static final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
@@ -280,6 +281,7 @@ public class HRMUtil {
 
             HashMap<String, Object> curht = new HashMap<String, Object>();
             curht.put("id", hrmSubClass.getSendingFacilityId());
+            curht.put("facility_display", hrmSendingFacilityDao.getDisplayName(hrmSubClass.getSendingFacilityId()));
             curht.put("sub_class", hrmSubClass.getSubClassName());
             curht.put("class", hrmSubClass.getClassName());
             curht.put("category", hrmSubClass.getHrmCategory());

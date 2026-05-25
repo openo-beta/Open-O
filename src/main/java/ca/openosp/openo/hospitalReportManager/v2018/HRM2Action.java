@@ -66,6 +66,7 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMCategoryDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
+import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMCategory;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
@@ -127,6 +128,7 @@ public class HRM2Action extends ActionSupport {
     private ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private HRMDocumentToDemographicDao hrmDocumentToDemographicDao = SpringUtils.getBean(HRMDocumentToDemographicDao.class);
+    private HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
 
     // Struts 2 file upload properties for HRM report upload
     private List<File> hrm_file;
@@ -913,7 +915,7 @@ public class HRM2Action extends ActionSupport {
                 data1.put("report_date", reportDate != null ? reportDate : "");
 
 
-                data1.put("sending_facility", d.getSourceFacility() != null ? d.getSourceFacility() : "");
+                data1.put("sending_facility", hrmSendingFacilityDao.getDisplayName(d.getSourceFacility()));
                 if (!StringUtils.isEmpty(d.getClassName()) && !StringUtils.isEmpty(d.getSubClassName())) {
                     String className = d.getClassName();
                     String subClassName = d.getSubClassName();

@@ -30,6 +30,16 @@ public class HRMSendingFacilityDao extends AbstractDaoImpl<HRMSendingFacility> {
         return getSingleResultOrNull(query);
     }
 
+    public String getDisplayName(String sendingFacilityId) {
+        if (sendingFacilityId == null || sendingFacilityId.trim().isEmpty()) {
+            return "";
+        }
+        HRMSendingFacility sf = findBySendingFacilityId(sendingFacilityId);
+        return sf != null
+                ? sf.getFacilityName() + " (" + sendingFacilityId + ")"
+                : sendingFacilityId;
+    }
+
     /**
      * Returns SF IDs present on HRMDocument.sourceFacility but not in this registry,
      * paired with the count of documents from each. Result rows are Object[]{String, Long}
