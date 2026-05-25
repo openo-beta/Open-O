@@ -57,7 +57,7 @@ $(document).ready(function () {
     $('#libraryTable').DataTable({
         serverSide: true,
         ajax: {
-            "url": "../hospitalReportManager/hrm.do",
+            "url": "hospitalReportManager/hrm.do",
             "data": function (d) {
                 d.providerNo = $("#providerNo").val();
                 d.providerUnmatched = $("#providerUnmatched").is(":checked");
@@ -106,7 +106,7 @@ $(document).ready(function () {
         ],
         "order": [[6, "desc"]],
         "language": {
-            "url": "../library/DataTables/i18n/" + lang + ".json"
+            "url": "library/DataTables/i18n/" + lang + ".json"
         }
 
     });
@@ -175,7 +175,7 @@ function reloadTable() {
 function fetchNewData() {
     $.ajax({
         type: "GET",
-        url: '../hospitalReportManager/hrm.do?method=fetch',
+        url: 'hospitalReportManager/hrm.do?method=fetch',
         dataType: 'json',
         async: true,
         success: function (data) {
@@ -191,7 +191,7 @@ function fetchNewData() {
 function getHrmStatus() {
     $.ajax({
         type: "GET",
-        url: '../hospitalReportManager/hrm.do?method=getHrmStatus',
+        url: 'hospitalReportManager/hrm.do?method=getHrmStatus',
         dataType: 'json',
         async: true,
         success: function (data) {

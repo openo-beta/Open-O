@@ -889,8 +889,8 @@ public class HRM2Action extends ActionSupport {
                     category = hrmCategoryDao.find(d.getHrmCategoryId());
                 }
 
-                List<HRMDocumentToDemographic> ptList = hrmDocumentToDemographicDao.findByHrmDocumentId(d.getId().toString());
-                Integer demographicNo = ptList.get(0).getDemographicNo();
+                List<HRMDocumentToDemographic> ptList = hrmDocumentToDemographicDao.findByHrmDocumentId(d.getId());
+                Integer demographicNo = ptList.isEmpty() ? null : ptList.get(0).getDemographicNo();
                 JSONObject data1 = new JSONObject();
                 data1.put("id", d.getId() + "");
                 data1.put("provider_no", d.getRecipientProviderNo() != null ? d.getRecipientProviderNo() : "");
