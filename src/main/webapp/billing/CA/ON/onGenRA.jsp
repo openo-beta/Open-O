@@ -41,6 +41,7 @@
 <%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingRAImpl" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="documentBean" class="ca.openosp.DocumentBean" scope="request"/>
 
 <%
