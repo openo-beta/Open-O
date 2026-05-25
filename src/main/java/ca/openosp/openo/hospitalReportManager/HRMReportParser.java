@@ -269,7 +269,7 @@ public class HRMReportParser {
         document.setSourceFacility(report.getSendingFacilityId());
         document.setSourceFacilityReportNo(report.getSendingFacilityReportNo());
 
-        warnIfSendingFacilityNotRegistered(report.getSendingFacilityId());
+        warnIfSendingFacilityNotRegistered(loggedInInfo, report.getSendingFacilityId());
 
         String reportFileData = report.getFileData();
 
@@ -733,7 +733,7 @@ public class HRMReportParser {
 
     }
 
-    private static void warnIfSendingFacilityNotRegistered(String sendingFacilityId) {
+    private static void warnIfSendingFacilityNotRegistered(LoggedInInfo loggedInInfo, String sendingFacilityId) {
         if (sendingFacilityId == null || sendingFacilityId.trim().isEmpty()) {
             return;
         }
@@ -743,6 +743,9 @@ public class HRMReportParser {
                 logger.warn("HRM report received from unregistered Sending Facility '"
                         + sendingFacilityId + "'. Add it via Admin → Integration → Hospital Report Manager (HRM) Sending Facilities"
                         + " to enable facility-name display on reports.");
+                SFTPConnector.notifyHrmAdmin(loggedInInfo, "Unregistered HRM Sending Facility",
+                        "OSCAR received an HRM report from an unregistered Sending Facility: " + sendingFacilityId
+                                + ".\n\nThe report was processed normally. Register this facility via Admin → Integration → Hospital Report Manager (HRM) Sending Facilities to enable name resolution on display.");
             }
         } catch (Exception e) {
             logger.warn("Could not check HRMSendingFacility registry for '" + sendingFacilityId + "'", e);
