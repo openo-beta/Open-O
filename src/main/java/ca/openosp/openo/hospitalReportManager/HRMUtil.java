@@ -148,6 +148,7 @@ public class HRMUtil {
             curht.put("description", hrmDocument.getDescription());
             curht.put("class_subclass", dispSubClass);
             curht.put("name", displayHRMDocumentName);
+            curht.put("sending_facility", hrmSendingFacilityDao.getDisplayName(hrmReport.getSendingFacilityId()));
 
             if (filterDuplicates) {
                 StringBuilder duplicateLabIdQueryString = new StringBuilder();

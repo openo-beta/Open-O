@@ -12,6 +12,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="java.util.*, ca.openosp.openo.hospitalReportManager.*,ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
 <%@ page import="ca.openosp.openo.hospitalReportManager.HRMUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -120,6 +121,7 @@
                         <th><fmt:setBundle basename="oscarResources"/><fmt:message key="hrm.displayHRMDocList.timeReceived"/></th>
                         <th>Category</th>
                         <th>Class/Subclass/Accompanying Subclass</th>
+                        <th>Sending Facility</th>
                     </tr>
                     </thead>
                     <%
@@ -144,6 +146,7 @@
                         </td>
                         <td><%=curhrmdoc.get("category") != null ? curhrmdoc.get("category")  : "" %>
                         <td><%=curhrmdoc.get("class_subclass") != null ? curhrmdoc.get("class_subclass")  : "" %>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("sending_facility") != null ? curhrmdoc.get("sending_facility") : ""))%>
                     </tr>
                     <%
                         }
@@ -151,6 +154,8 @@
                     %>
                     <tr>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgNoData"/></td>
+                        <td></td>
+                        <!-- this empty td is here so that the number of columns matches the <th>, an important requirement when using jquery datatables-->
                         <td></td>
                         <!-- this empty td is here so that the number of columns matches the <th>, an important requirement when using jquery datatables-->
                         <td></td>
