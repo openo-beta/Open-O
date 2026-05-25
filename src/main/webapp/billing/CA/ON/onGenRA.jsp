@@ -179,7 +179,7 @@
                     target="_blank">Summary</a>| <a
                     href="<%= request.getContextPath() %>/billing/CA/ON/genRADesc.jsp?rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>" target="_blank">Report
             </a></td>
-            <td><%=status.compareTo("N") == 0 ? "<a href=# onClick=\"checkReconcile('../billing/CA/ON/onGenRAsettle.jsp?rano=" + Encode.forUriComponent(String.valueOf(raNo)) + "')\">Settle</a> <a href=# onClick=\"checkReconcile('../billing/CA/ON/onGenRAsettle35.jsp?rano=" + Encode.forUriComponent(String.valueOf(raNo)) + "')\">S35</a>" : status.compareTo("S") == 0 ? " <a href=# onClick=\"checkReconcile('../billing/CA/ON/onGenRAsettle35.jsp?rano=" + Encode.forUriComponent(String.valueOf(raNo)) + "')\">S35</a>" : "Processed"%>
+            <td><%=status.compareTo("N") == 0 ? "<a href=# onClick=\"checkReconcile('" + request.getContextPath() + "/billing/CA/ON/onGenRAsettle.jsp?rano=" + Encode.forUriComponent(String.valueOf(raNo)) + "')\">Settle</a> <a href=# onClick=\"checkReconcile('" + request.getContextPath() + "/billing/CA/ON/onGenRAsettle35.jsp?rano=" + Encode.forUriComponent(String.valueOf(raNo)) + "')\">S35</a>" : status.compareTo("S") == 0 ? " <a href=# onClick=\"checkReconcile('" + request.getContextPath() + "/billing/CA/ON/onGenRAsettle35.jsp?rano=" + Encode.forUriComponent(String.valueOf(raNo)) + "')\">S35</a>" : "Processed"%>
             </td>
         </tr>
         <%
