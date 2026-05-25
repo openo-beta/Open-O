@@ -29,4 +29,19 @@ public class HRMSendingFacilityDao extends AbstractDaoImpl<HRMSendingFacility> {
         query.setParameter(1, sendingFacilityId);
         return getSingleResultOrNull(query);
     }
+
+    /**
+     * Returns SF IDs present on HRMDocument.sourceFacility but not in this registry,
+     * paired with the count of documents from each. Result rows are Object[]{String, Long}
+     * ordered by count desc.
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object[]> findUnregisteredFacilityCounts() {
+        String jpql = "select d.sourceFacility, count(d) from HRMDocument d "
+                + "where d.sourceFacility is not null and d.sourceFacility <> '' "
+                + "and d.sourceFacility not in (select s.sendingFacilityId from HRMSendingFacility s) "
+                + "group by d.sourceFacility "
+                + "order by count(d) desc";
+        return entityManager.createQuery(jpql).getResultList();
+    }
 }

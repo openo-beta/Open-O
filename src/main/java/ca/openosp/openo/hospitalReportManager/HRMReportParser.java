@@ -54,6 +54,7 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentSubClassDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToProviderDao;
+import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
@@ -267,6 +268,8 @@ public class HRMReportParser {
         document.setTimeReceived(new Date());
         document.setSourceFacility(report.getSendingFacilityId());
         document.setSourceFacilityReportNo(report.getSendingFacilityReportNo());
+
+        warnIfSendingFacilityNotRegistered(report.getSendingFacilityId());
 
         String reportFileData = report.getFileData();
 
@@ -728,5 +731,21 @@ public class HRMReportParser {
 
         hrmDocumentToDemographicDao.merge(demographicRouting);
 
+    }
+
+    private static void warnIfSendingFacilityNotRegistered(String sendingFacilityId) {
+        if (sendingFacilityId == null || sendingFacilityId.trim().isEmpty()) {
+            return;
+        }
+        try {
+            HRMSendingFacilityDao dao = SpringUtils.getBean(HRMSendingFacilityDao.class);
+            if (dao.findBySendingFacilityId(sendingFacilityId) == null) {
+                logger.warn("HRM report received from unregistered Sending Facility '"
+                        + sendingFacilityId + "'. Add it via Admin → Integration → Hospital Report Manager (HRM) Sending Facilities"
+                        + " to enable facility-name display on reports.");
+            }
+        } catch (Exception e) {
+            logger.warn("Could not check HRMSendingFacility registry for '" + sendingFacilityId + "'", e);
+        }
     }
 }

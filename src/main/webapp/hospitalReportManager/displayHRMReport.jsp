@@ -892,8 +892,14 @@
                     %>
                         <%=Encode.forHtml(sf.getFacilityName())%>
                         (<%=Encode.forHtml(sf.getSendingFacilityId())%>)
-                    <% } else { %>
-                        <%=Encode.forHtml(sfId != null ? sfId : "")%>
+                    <% } else if (sfId != null && !sfId.isEmpty()) { %>
+                        <%=Encode.forHtml(sfId)%>
+                        <span style="background-color: #f0ad4e; color: #fff; padding: 2px 6px;
+                                     border-radius: 3px; font-size: 0.85em; margin-left: 6px;
+                                     font-weight: bold;"
+                              title="This Sending Facility is not in the HRM Sending Facilities registry. Add it via Admin → Integration → Hospital Report Manager (HRM) Sending Facilities to display a facility name.">
+                            Unregistered
+                        </span>
                     <% } %>
                 </td>
             </tr>

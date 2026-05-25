@@ -22,8 +22,15 @@
     HRMSendingFacility editing = (HRMSendingFacility) request.getAttribute("editing");
     @SuppressWarnings("unchecked")
     List<HRMSendingFacility> facilities = (List<HRMSendingFacility>) request.getAttribute("facilities");
+    @SuppressWarnings("unchecked")
+    List<Object[]> unregisteredFacilities = (List<Object[]>) request.getAttribute("unregisteredFacilities");
     String errorMessage = (String) request.getAttribute("errorMessage");
     String actionUrl = request.getContextPath() + "/hospitalReportManager/HRMSendingFacility.do";
+
+    String prefillSfId = request.getParameter("prefillSfId");
+    String formSfIdValue = editing != null
+            ? editing.getSendingFacilityId()
+            : (prefillSfId != null ? prefillSfId : "");
 %>
 <!DOCTYPE html>
 <html>
@@ -59,6 +66,44 @@
             <div class="alert alert-danger"><%=Encode.forHtml(errorMessage)%></div>
         <% } %>
 
+        <% if (unregisteredFacilities != null && !unregisteredFacilities.isEmpty()) { %>
+            <div class="alert alert-warning">
+                <strong><%=unregisteredFacilities.size()%>
+                    facilit<%=unregisteredFacilities.size() == 1 ? "y has" : "ies have"%>
+                    sent reports but <%=unregisteredFacilities.size() == 1 ? "isn't" : "aren't"%>
+                    registered yet.</strong>
+                <p>Click "Add" to pre-fill the form below, then enter the facility name and save.</p>
+                <div style="max-height: 240px; overflow-y: auto;">
+                    <table class="table table-condensed" style="margin-bottom: 0;">
+                        <thead>
+                            <tr>
+                                <th>Sending Facility ID</th>
+                                <th>Reports received</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <% for (Object[] row : unregisteredFacilities) {
+                            String unregSfId = (String) row[0];
+                            Long unregCount = (Long) row[1];
+                        %>
+                            <tr>
+                                <td><%=Encode.forHtml(unregSfId)%></td>
+                                <td><%=unregCount%></td>
+                                <td>
+                                    <a class="btn btn-xs btn-primary"
+                                       href="<%=actionUrl%>?prefillSfId=<%=Encode.forUriComponent(unregSfId)%>">
+                                        Add
+                                    </a>
+                                </td>
+                            </tr>
+                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+
         <form method="post" action="<%=actionUrl%>">
             <input type="hidden" name="method" value="save"/>
             <input type="hidden" name="id"
@@ -69,7 +114,7 @@
                     <div class="controls">
                         <input type="text" name="sendingFacilityId" class="form-control input-normal"
                                maxlength="50" required
-                               value="<%=editing != null ? Encode.forHtmlAttribute(editing.getSendingFacilityId()) : ""%>"/>
+                               value="<%=Encode.forHtmlAttribute(formSfIdValue)%>"/>
                         <span class="help-block">
                             The exact string used in the HRM XML <code>&lt;SendingFacility&gt;</code> element
                             (e.g. <code>MIS1</code>, <code>0911</code>).

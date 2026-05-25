@@ -37,6 +37,7 @@ public class HRMSendingFacility2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_admin)");
         }
         request.setAttribute("facilities", hrmSendingFacilityDao.findAll());
+        request.setAttribute("unregisteredFacilities", hrmSendingFacilityDao.findUnregisteredFacilityCounts());
 
         String editId = request.getParameter("id");
         if (editId != null && !editId.trim().isEmpty()) {
