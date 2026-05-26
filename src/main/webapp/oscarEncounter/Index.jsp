@@ -632,7 +632,7 @@
             function popUpMsg(vheight, vwidth, msgPosition) {
 
 
-                var page = "<%=request.getContextPath()%>/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&messagePosition=" + msgPosition;
+                var page = "<%=request.getContextPath()%>/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&messagePosition=" + msgPosition;
                 windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
                 var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>", windowprops);
                 if (popup != null) {
@@ -921,20 +921,20 @@
                         <td>
                             <a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popup(700,1000,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&displaymode=edit&dboperation=search_detail','master')"
+                                    onClick="popup(700,1000,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&displaymode=edit&dboperation=search_detail','master')"
                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.master"/></a>
                             <br>
                             <%
                                 if (bean.status.indexOf('B') == -1) { %>
                             <a href=#
-                               onClick='popupPage(700,1000, "<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forJavaScript(String.valueOf(province))%>&billForm=<%=Encode.forJavaScript(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(""))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerview=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&user_no=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(bean.appointmentDate))%>&start_time=<%=Encode.forJavaScript(String.valueOf(bean.startTime))%>&bNewForm=1&status=t");return false;'
+                               onClick='popupPage(700,1000, "<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forUriComponent(String.valueOf(province))%>&billForm=<%=Encode.forUriComponent(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(String.valueOf(bean.appointmentNo))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(bean.patientLastName+","+bean.patientFirstName))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerview=<%=Encode.forUriComponent(String.valueOf(bean.curProviderNo))%>&user_no=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&apptProvider_no=<%=Encode.forUriComponent(String.valueOf(bean.curProviderNo))%>&appointment_date=<%=Encode.forUriComponent(String.valueOf(bean.appointmentDate))%>&start_time=<%=Encode.forUriComponent(String.valueOf(bean.startTime))%>&bNewForm=1&status=t");return false;'
                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a> <% } else {%>
-                            <!--a href=# onClick='onUnbilled("<%= request.getContextPath() %>/billing/billingDeleteWithoutNo.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>");return false;' title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.unbil"/>">-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a-->
+                            <!--a href=# onClick='onUnbilled("<%= request.getContextPath() %>/billing/billingDeleteWithoutNo.jsp?appointment_no=<%=Encode.forUriComponent(String.valueOf(bean.appointmentNo))%>");return false;' title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.unbil"/>">-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a-->
                             <a href=#
-                               onClick='onUnbilled("<%= request.getContextPath() %>/billing/CA/<%=Encode.forJavaScript(String.valueOf(province))%>/billingDeleteWithoutNo.jsp?status=<%=Encode.forJavaScript(String.valueOf(bean.status))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>");return false;'
+                               onClick='onUnbilled("<%= request.getContextPath() %>/billing/CA/<%=Encode.forUriComponent(String.valueOf(province))%>/billingDeleteWithoutNo.jsp?status=<%=Encode.forUriComponent(String.valueOf(bean.status))%>&appointment_no=<%=Encode.forUriComponent(String.valueOf(bean.appointmentNo))%>");return false;'
                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.unbil"/>">-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a> <% } %> <br>
                             <a href=#
-                               onClick="popupOscarRx(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a><br>
+                               onClick="popupOscarRx(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a><br>
                             <a href=#
                                onClick="popupOscarCon(700,960,'<rewrite:reWrite
                                        jspPage="oscarConsultationRequest/DisplayDemographicConsultationRequests.jsp"/>?de=<%=Encode.forHtml(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.consultations"/></a><br>
@@ -959,9 +959,9 @@
                         </oscar:oscarPropertiesCheck> <% if (OscarProperties.getInstance().getProperty("oscarcomm", "").equals("on")) { %>
                             <a href="javascript:popupOscarComm(700,960,'RemoteAttachments.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarComm"/></a><br>
                             <% } %> <a href=#
-                                       onClick="popupOscarComm(580,900,'<%=request.getContextPath()%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&quickList=');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.disease"/></a><br>
+                                       onClick="popupOscarComm(580,900,'<%=request.getContextPath()%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&quickList=');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.disease"/></a><br>
                             <a href=#
-                               onClick="popupOscarCon(580,800,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?keyword=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&displaymode=<%=Encode.forJavaScript(String.valueOf("Search "))%>&search_mode=search_name&originalpage=<%=request.getContextPath() + "/tickler/ticklerAdd.jsp"%>&orderby=last_name&appointment_date=2000-01-01&limit1=0&limit2=5&status=t&start_time=10:45&end_time=10:59&duration=15&dboperation=search_demorecord&type=&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.addTickler"/></a><br>
+                               onClick="popupOscarCon(580,800,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?keyword=<%=Encode.forUriComponent(String.valueOf(bean.patientLastName+","+bean.patientFirstName))%>&displaymode=<%=Encode.forUriComponent(String.valueOf("Search "))%>&search_mode=search_name&originalpage=<%=request.getContextPath() + "/tickler/ticklerAdd.jsp"%>&orderby=last_name&appointment_date=2000-01-01&limit1=0&limit2=5&status=t&start_time=10:45&end_time=10:59&duration=15&dboperation=search_demorecord&type=&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.addTickler"/></a><br>
                         </td>
                     </tr>
                     <!-- <tr><td>&nbsp;</td></tr> -->
@@ -1038,7 +1038,7 @@
                         <tr class="Header">
                             <td style="font-weight: bold">messenger <a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popup(700,960,'${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>','msg')">Send
+                                    onClick="popup(700,960,'${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>','msg')">Send
                                 Msg</a></td>
                         </tr>
                         <tr>
@@ -1121,7 +1121,7 @@
                         String flowsheetName = (String) flowsheets.get(f);
                 %> <a
                     href="javascript: function myFunction() {return false; }"
-                    onClick="popup(700,1000,'oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&template=<%=Encode.forJavaScript(String.valueOf(flowsheetName))%>','flowsheet')"><%=Encode.forHtml(String.valueOf(MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheetName)))%>
+                    onClick="popup(700,1000,'oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&template=<%=Encode.forUriComponent(String.valueOf(flowsheetName))%>','flowsheet')"><%=Encode.forHtml(String.valueOf(MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheetName)))%>
             </a>
                 <%}%>
 
@@ -1158,14 +1158,14 @@
                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.resource"/>"
                    onmouseover="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.viewResource"/>';return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.resource"/></a><br>
                 <a href="#"
-                   onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&curUser=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgDocuments"/></a><br>
+                   onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&curUser=<%=Encode.forUriComponent(String.valueOf(bean.curProviderNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgDocuments"/></a><br>
                 <a href="#"
-                   onClick="popupPage(500,950, '<%= request.getContextPath() %>/eform/efmpatientformlist.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.eForms"/></a><br>
+                   onClick="popupPage(500,950, '<%= request.getContextPath() %>/eform/efmpatientformlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.eForms"/></a><br>
                 <a href="#"
-                   onClick="popupPage(700,1000, '<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.viewTickler"/></a><br>
+                   onClick="popupPage(700,1000, '<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.viewTickler"/></a><br>
                 <a href="javascript: function myFunction() {return false; }"
-                   onClick="popupPage(150,200,'calculators.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/></a><br>
-                <!--a href="#" onClick="popupPage(700,1000, '<%= request.getContextPath() %>/lab/CumulativeLabValues.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">Cumulative Labs</a><br-->
+                   onClick="popupPage(150,200,'calculators.jsp?sex=<%=Encode.forUriComponent(String.valueOf(bean.patientSex))%>&age=<%=Encode.forUriComponent(String.valueOf(pAge))%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/></a><br>
+                <!--a href="#" onClick="popupPage(700,1000, '<%= request.getContextPath() %>/lab/CumulativeLabValues.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">Cumulative Labs</a><br-->
 
                 <select name="selectCurrentForms"
                         onChange="javascript:selectBox(this)" class="ControlSelect"
@@ -1389,7 +1389,7 @@
                                 <!--hr style="border-bottom: 0pt solid #888888; background-color: #888888;"-->
                                 <td valign="top">
                                     <div class="RowTop"><a href=#
-                                                           onClick="popupOscarRx(700,960,'<%=request.getContextPath()%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.allergies"/></a>:&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;
+                                                           onClick="popupOscarRx(700,960,'<%=request.getContextPath()%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.allergies"/></a>:&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;
                                     </div>
                                     <div class="presBox" id="allergyBox">
                                         <ul>
@@ -1415,7 +1415,7 @@
                                             <td>
                                                 <div class="RowTop">
                                                     <div class="RowTop"><a href=#
-                                                                           onClick="popupOscarRx(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a></div>
+                                                                           onClick="popupOscarRx(700,1027,'<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a></div>
                                                 </div>
                                             </td>
                                             <td align=right>
@@ -1498,7 +1498,7 @@
                                         <tr>
                                             <td width='75%'>
                                                 <div class="RowTop"><a href=#
-                                                                       onClick="popupPage2('<%= request.getContextPath() %>/report/reportecharthistory.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">
+                                                                       onClick="popupPage2('<%= request.getContextPath() %>/report/reportecharthistory.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">
                                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>: <%=Encode.forHtml(String.valueOf(bean.patientLastName))%>,
                                                     <%=Encode.forHtml(String.valueOf(bean.patientFirstName))%>
                                                 </a> <%if (sChart) {%> &nbsp; &nbsp; &nbsp;
@@ -1713,7 +1713,7 @@
                 String[] s = (String[]) splitChart.get(i);%>
             <tr class="background-color : #ccccff;">
                 <td class="wcblayerTitle"><a href=#
-                                             onClick="hidepic('splitChartLayer');popupPage2('echarthistoryprint.jsp?echartid=<%=Encode.forJavaScript(String.valueOf(s[0]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">
+                                             onClick="hidepic('splitChartLayer');popupPage2('echarthistoryprint.jsp?echartid=<%=Encode.forUriComponent(String.valueOf(s[0]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">
                     <%=Encode.forHtml(String.valueOf(s[1]))%>
                 </a></td>
                 <td class="wcblayerItem">&nbsp;</td>

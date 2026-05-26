@@ -739,9 +739,9 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
 
                         %>
                         <div class="preventionProcedure" <%=hider%>
-                             onclick="javascript:popup(465,635,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;id=<%=Encode.forJavaScript(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(temp,"UTF-8")))%>','addMeasurementData')">
+                             onclick="javascript:popup(465,635,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;id=<%=Encode.forUriComponent(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forUriComponent(String.valueOf(temp))%>','addMeasurementData')">
 
-                            <p <%=Encode.forHtml(String.valueOf(indColour))%>
+                            <p <%=indColour%>
                                     title="Entered By: <%=Encode.forHtmlAttribute(String.valueOf(mdb.getProviderFirstName()))%> <%=Encode.forHtmlAttribute(String.valueOf(mdb.getProviderLastName()))%>">
                                 <%=Encode.forHtml(String.valueOf(h2.get("value_name")))%>: <%=Encode.forHtml(String.valueOf(hdata.get("age")))%> <br/>
                                 <%=Encode.forHtml(String.valueOf(hdata.get("prevention_date")))%>&nbsp;<%=Encode.forHtml(String.valueOf(mdb.getNumMonthSinceObserved()))%>M
@@ -831,8 +831,8 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
                             //////PREV END
                     %>
                     <div class="preventionProcedure" <%=hider%>
-                         onclick="javascript:popup(465,635,'<%= request.getContextPath() %>/oscarPrevention/AddPreventionData.jsp?id=<%=Encode.forJavaScript(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>','addPreventionData')">
-                        <p <%=Encode.forHtml(String.valueOf(r(hdata.get("refused"))))%>
+                         onclick="javascript:popup(465,635,'<%= request.getContextPath() %>/oscarPrevention/AddPreventionData.jsp?id=<%=Encode.forUriComponent(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>','addPreventionData')">
+                        <p <%=r(hdata.get("refused"))%>
                                 title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("age")))%> -- Date:<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("prevention_date")))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(com))%>]">
                             Age: <%=Encode.forHtml(String.valueOf(hdata.get("age")))%> <br/>
                             <!--<%=Encode.forHtml(String.valueOf(refused(hdata.get("refused"))))%>-->Date: <%=Encode.forHtml(String.valueOf(hdata.get("prevention_date")))%>
@@ -923,7 +923,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
                     %>
                     <div class="preventionProcedure" <%=hider%>
                          onclick="javascript:popup(465,635,'','addPreventionData')">
-                        <p <%=Encode.forHtml(String.valueOf(""/*r(hdata.get("refused"))*/))%>
+                        <p <%=""/*r(hdata.get("refused"))*/%>
                                 title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(""/*hdata.get("age")*/))%> -- Date:<%=Encode.forHtmlAttribute(String.valueOf(""/*hdata.get("prevention_date")*/))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(""/*com*/))%>]"><%=Encode.forHtml(String.valueOf(pres.getBrandName()))%>
                             <br/>
                             Date: <%=Encode.forHtml(String.valueOf(pres.getRxDate()))%>

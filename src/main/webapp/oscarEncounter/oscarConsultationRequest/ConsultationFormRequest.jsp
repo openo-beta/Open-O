@@ -908,7 +908,7 @@
                 var data = new Object();
                 var target = "#" + this.id.split("_")[1];
                 data.method = this.id.split("_")[0];
-                data.demographicNo = <%=Encode.forJavaScript(String.valueOf(demo))%>;
+                data.demographicNo = "<%=Encode.forJavaScript(String.valueOf(demo))%>";
                 getClinicalData(data, target)
             });
 
@@ -917,7 +917,7 @@
                 var target = "#" + this.id.split("_")[1];
                 data.method = "fetchIssueNote";
                 data.issueType = this.id.split("_")[0];
-                data.demographicNo = <%=Encode.forJavaScript(String.valueOf(demo))%>;
+                data.demographicNo = "<%=Encode.forJavaScript(String.valueOf(demo))%>";
                 getClinicalData(data, target)
             });
         })
@@ -1182,7 +1182,7 @@
 
         function updateEFormLink(eformID) {
             if (eformID > 0) {
-                let eFormURL = '<%=request.getContextPath()%>/eform/efmformadd_data.jsp?fid=' + eformID + '&demographic_no=<%=Encode.forJavaScript(String.valueOf(demo))%>&appointment=null';
+                let eFormURL = '<%=request.getContextPath()%>/eform/efmformadd_data.jsp?fid=' + eformID + '&demographic_no=<%=Encode.forUriComponent(String.valueOf(demo))%>&appointment=null';
                 document.getElementById("eFormButton").style.display = "inline";
                 document.getElementById("eFormButton").onclick = function () {
                     popup(eFormURL);
@@ -1706,7 +1706,7 @@ if (userAgent != null) {
         }
     </script>
 
-    <%=Encode.forHtml(String.valueOf(WebUtils.popErrorMessagesAsAlert(session)))%>
+    <%=WebUtils.popErrorMessagesAsAlert(session)%>
 
     <body topmargin="0" leftmargin="0" vlink="#0000FF"
           onload="window.focus();disableDateFields();disableEditing();showSignatureImage();">
@@ -2240,7 +2240,7 @@ if (userAgent != null) {
                                             </td>
                                             <td class="tite4" style="font-size:11px;">
                                                 <a href="javascript:void(0);"
-                                                   onclick="popupPage(500,700,'${ctx}/demographic/Contact.do?method=manageContactList&contactList=HCT&view=detached&demographic_no=<%=Encode.forJavaScript(String.valueOf(demo))%>' ); return false;">
+                                                   onclick="popupPage(500,700,'${ctx}/demographic/Contact.do?method=manageContactList&contactList=HCT&view=detached&demographic_no=<%=Encode.forUriComponent(String.valueOf(demo))%>' ); return false;">
                                                     edit Health Care Team
                                                 </a>
                                             </td>
@@ -2421,7 +2421,7 @@ if (userAgent != null) {
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgPatient"/>
                                         </td>
                                         <td class="tite1"><a href="javascript:void(0);"
-                                                             onClick="popupAttach(600,900,'<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demo))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(thisForm.getPatientName()))%>
+                                                             onClick="popupAttach(600,900,'<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demo))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(thisForm.getPatientName()))%>
                                         </a></td>
                                     </tr>
                                     <tr>

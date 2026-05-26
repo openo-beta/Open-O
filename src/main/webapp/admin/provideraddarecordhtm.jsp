@@ -271,7 +271,7 @@
                         <td><select name="sex" id="sex">
                             <option value=""></option>
                             <% for (Gender gn : Gender.values()) { %>
-                            <option value=<%=gn.name()%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
+                            <option value="<%=gn.name()%>"><%=Encode.forHtml(String.valueOf(gn.getText()))%>
                             </option>
                             <% } %>
                         </select>

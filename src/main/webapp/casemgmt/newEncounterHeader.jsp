@@ -84,7 +84,7 @@
                 </li>
                 <li>
                     <a href="javascript:void(0)" style="display: flex; align-items: flex-end;"
-                       onClick="window.open('${ctx}/provider/providerpreference.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>', 'height=680px,width=715px')"
+                       onClick="window.open('${ctx}/provider/providerpreference.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>', 'height=680px,width=715px')"
                        title='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>'>
                         <div class="glyphicon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -111,7 +111,7 @@
     <%}%>
 
     <div>
-        <%=Encode.forHtml(String.valueOf(getEChartLinks()))%>
+        <%=getEChartLinks()%>
     </div>
 
     <%

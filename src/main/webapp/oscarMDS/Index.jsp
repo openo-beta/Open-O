@@ -135,9 +135,15 @@
                             <td align="left" valign="top">
                                 <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"/>
                                 <input type="hidden" name="searchProviderNo" value="<%=Encode.forHtmlAttribute(String.valueOf(searchProviderNo))%>"/>
-                                <%=Encode.forHtml((request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">"))%>
-                                <%=Encode.forHtml((request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">"))%>
-                                <%=Encode.forHtml((request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">"))%>
+                                <% if (request.getParameter("lname") != null) { %>
+                                    <input type="hidden" name="lname" value="<%=Encode.forHtmlAttribute(request.getParameter("lname"))%>"/>
+                                <% } %>
+                                <% if (request.getParameter("fname") != null) { %>
+                                    <input type="hidden" name="fname" value="<%=Encode.forHtmlAttribute(request.getParameter("fname"))%>"/>
+                                <% } %>
+                                <% if (request.getParameter("hnum") != null) { %>
+                                    <input type="hidden" name="hnum" value="<%=Encode.forHtmlAttribute(request.getParameter("hnum"))%>"/>
+                                <% } %>
                                 <input type="hidden" name="status" value="<%=Encode.forHtmlAttribute(String.valueOf(ackStatus))%>"/>
                                 <input type="hidden" name="selectedProviders"/>
                                 <input type="hidden" name="favorites" value=""/>
@@ -151,7 +157,7 @@
                                 <% if (demographicNo == null) { %>
                                 <input type="button" class="smallButton"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnSearch"/>"
-                                       onClick="window.location='${pageContext.servletContext.contextPath}/oscarMDS/Search.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'"/>
+                                       onClick="window.location='${pageContext.servletContext.contextPath}/oscarMDS/Search.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>'"/>
                                 <% } %>
                                 <input type="button" class="smallButton"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnLoadAll"/>"
@@ -437,9 +443,9 @@
 
         var page = 1;
         var pageSize = 20;
-        var selected_category = <%=Encode.forJavaScript(String.valueOf((selectedCategory == null ? "1" : selectedCategory)))%>;
+        var selected_category = <%=(selectedCategory != null && selectedCategory.matches("\\d+")) ? selectedCategory : "1"%>;
         let selected_category_patient = "${requestScope.selectedCategoryPatient}";
-        var selected_category_type = <%=Encode.forJavaScript(String.valueOf((selectedCategoryType == null ? "\"\"" : selectedCategoryType)))%>;
+        var selected_category_type = "<%=Encode.forJavaScript(String.valueOf(selectedCategoryType == null ? "" : selectedCategoryType))%>";
         var searchProviderNo = "<%=Encode.forJavaScript(String.valueOf((searchProviderNo == null ? "" : searchProviderNo)))%>";
         var firstName = "<%=Encode.forJavaScript(String.valueOf((patientFirstName == null ? "" : patientFirstName)))%>";
         var lastName = "<%=Encode.forJavaScript(String.valueOf((patientLastName == null ? "" : patientLastName)))%>";
@@ -453,7 +459,7 @@
         var abortController = null;
         var canLoad = true;
         console.log("<%=Encode.forJavaScript(String.valueOf(isListView == null))%>");
-        var isListView = <%=Encode.forJavaScript(String.valueOf(isListView))%>;
+        var isListView = <%="true".equals(isListView)%>;
         var loadingDocs = false;
         var currentBold = false;
         var oldestDate = null;

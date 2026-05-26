@@ -161,10 +161,10 @@
             <td></td>
             <td align="right"><B>Date</B> &nbsp; <font size="1"
                                                        face="Arial, Helvetica, sans-serif"> <a href="#"
-                                                                                               onClick="openBrWindow('billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')">From:</a></font>
+                                                                                               onClick="openBrWindow('billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')">From:</a></font>
                 <input type="text" name="xml_vdate" size="10" value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>">
                 <font size="1" face="Arial, Helvetica, sans-serif"> <a href="#"
-                                                                       onClick="openBrWindow('billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')">
+                                                                       onClick="openBrWindow('billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')">
                     To:</a></font> <input type="text" name="xml_appointment_date" size="10"
                                           value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>"></td>
             <td></td>

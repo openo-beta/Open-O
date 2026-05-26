@@ -753,7 +753,7 @@
                         </tr>
                         <tr>
                             <td style="width:54%"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgPatientName"/>: <a href=#
-                                                                                         onclick="popupPage(720,860,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(DemoNo))%>&displaymode=edit&dboperation=search_detail');return false;">
+                                                                                         onclick="popupPage(720,860,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(DemoNo))%>&displaymode=edit&dboperation=search_detail');return false;">
                                 <%=Encode.forHtml(String.valueOf(DemoName))%>
                             </a> <input type="hidden" name="demo_name"
                                         value="<%=Encode.forHtmlAttribute(String.valueOf(DemoName))%>"></td>
@@ -1250,7 +1250,7 @@
 
                     <%if (billNo != null) {%>
 
-                    <a id="reprintLink" onclick="return sanityCheck('<%=Encode.forJavaScript(String.valueOf(nullToEmpty(billNo)))%>', <%=Encode.forJavaScript(String.valueOf(billNoErr))%>)" href="billingON3rdInv.jsp?billingNo=<%=Encode.forJavaScript(String.valueOf(billNo))%>" class="btn"><i
+                    <a id="reprintLink" onclick="return sanityCheck('<%=Encode.forJavaScript(String.valueOf(nullToEmpty(billNo)))%>', <%=Encode.forJavaScript(String.valueOf(billNoErr))%>)" href="billingON3rdInv.jsp?billingNo=<%=Encode.forUriComponent(String.valueOf(billNo))%>" class="btn"><i
                             class="icon icon-print"></i> Reprint</a>
                     <a id="rebillLink"
                        onclick="document.querySelector(&quot;select[name='status']&quot;).value = 'O'; document.getElementsByName(&quot;submit&quot;)[1].click();"
@@ -1321,7 +1321,7 @@
 
 
             <div id="thirdPartyPymnt" style="<%=thirdParty ? "" : "display:none"%>">
-                <%=Encode.forHtml(String.valueOf(htmlPaid))%>
+                <%=htmlPaid%>
             </div>
 
         </form>
@@ -1360,7 +1360,7 @@
         }, 5000);
 
         function display3rdPartyPayments() {
-            popupPage('800', '860', 'billingON3rdPayments.do?method=listPayments&billingNo=<%=Encode.forJavaScript(String.valueOf(billNo))%>');
+            popupPage('800', '860', 'billingON3rdPayments.do?method=listPayments&billingNo=<%=Encode.forUriComponent(String.valueOf(billNo))%>');
         }
 
         $(document).ready(function () {

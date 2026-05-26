@@ -481,7 +481,7 @@
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+               value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
         <input type="hidden" name="provNo"
                value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="printPageSize" value="PageSize.HALFLETTER"/>

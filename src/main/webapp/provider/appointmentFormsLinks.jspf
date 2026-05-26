@@ -15,41 +15,39 @@
 		Collection<String> formNames=providerPreference.getAppointmentScreenForms();
 		List<String>formNamesList = new ArrayList<String>(formNames);
 		Collections.sort(formNamesList);
-		
+
 		for (String formNameTemp : formNamesList)
 		{
-			String trimmedEscapedLinkName=Encode.forHtml(AppointmentProviderAdminDayUIBean.getLengthLimitedLinkName(loggedInInfo3, formNameTemp));
-			String escapedLinkName=Encode.forHtml(formNameTemp);
+			String trimmedLinkName=AppointmentProviderAdminDayUIBean.getLengthLimitedLinkName(loggedInInfo3, formNameTemp);
 			%>
-				|<a href=# onClick='popupPage2("<%= request.getContextPath() %>/form/forwardshortcutname.do?formname=<%=Encode.forJavaScript(String.valueOf(escapedLinkName))%>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;appointmentNo=<%=Encode.forJavaScript(String.valueOf(appointment_no))%>")' title='<%=Encode.forJavaScript(String.valueOf(escapedLinkName))%>'><%=Encode.forHtml(String.valueOf(trimmedEscapedLinkName))%></a>
+				|<a href=# onClick='popupPage2("<%= request.getContextPath() %>/form/forwardshortcutname.do?formname=<%=Encode.forUriComponent(formNameTemp)%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;appointmentNo=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>")' title='<%=Encode.forHtmlAttribute(formNameTemp)%>'><%=Encode.forHtml(trimmedLinkName)%></a>
 			<%
 		}
-		
+
 		Collection<ProviderPreference.EformLink> eFormLinks = providerPreference.getAppointmentScreenEForms();
 		for (ProviderPreference.EformLink eFormLink : eFormLinks)
 		{
 			Integer eFormIdTemp = eFormLink.getAppointmentScreenEForm();
 			EForm eForm=AppointmentProviderAdminDayUIBean.getEForms(eFormIdTemp);
-			String trimmedEscapedLinkName=Encode.forHtml(AppointmentProviderAdminDayUIBean.getLengthLimitedLinkName(loggedInInfo3, eForm.getFormName()));
-			String escapedLinkName=Encode.forHtml(eForm.getFormName());
+			String trimmedLinkName=AppointmentProviderAdminDayUIBean.getLengthLimitedLinkName(loggedInInfo3, eForm.getFormName());
+			String formName=eForm.getFormName();
 			%>
-				|<a href=# onClick='popupPage2("<%=request.getContextPath()%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(eFormIdTemp))%>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;appointment=<%=Encode.forJavaScript(String.valueOf(appointment_no))%>")' title='<%=Encode.forJavaScript(String.valueOf(escapedLinkName))%>'><%=Encode.forHtml(String.valueOf(trimmedEscapedLinkName))%></a>
+				|<a href=# onClick='popupPage2("<%=request.getContextPath()%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(eFormIdTemp))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;appointment=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>")' title='<%=Encode.forHtmlAttribute(formName)%>'><%=Encode.forHtml(trimmedLinkName)%></a>
 			<%
 		}
 
 		Collection<ProviderPreference.QuickLink> quickLinks=providerPreference.getAppointmentScreenQuickLinks();
 		for (ProviderPreference.QuickLink quickLink : quickLinks)
 		{
-			String trimmedEscapedLinkName=Encode.forHtml(AppointmentProviderAdminDayUIBean.getLengthLimitedLinkName(loggedInInfo3, quickLink.getName()));
-			
-			String escapedLinkUrl=quickLink.getUrl();
-			escapedLinkUrl=escapedLinkUrl.replaceAll("\\$\\{contextPath\\}", request.getContextPath());
-			escapedLinkUrl=escapedLinkUrl.replaceAll("\\$\\{demographicId\\}", String.valueOf(demographic_no));
-			escapedLinkUrl=Encode.forHtml(escapedLinkUrl);
-			
-			String escapedLinkName=Encode.forHtml(quickLink.getName());
+			String trimmedLinkName=AppointmentProviderAdminDayUIBean.getLengthLimitedLinkName(loggedInInfo3, quickLink.getName());
+
+			String linkUrl=quickLink.getUrl();
+			linkUrl=linkUrl.replaceAll("\\$\\{contextPath\\}", request.getContextPath());
+			linkUrl=linkUrl.replaceAll("\\$\\{demographicId\\}", String.valueOf(demographic_no));
+
+			String linkName=quickLink.getName();
 			%>
-				|<a href=# onClick='popupPage2("<%=Encode.forJavaScript(String.valueOf(escapedLinkUrl))%>")' title='<%=Encode.forJavaScript(String.valueOf(escapedLinkName))%>'><%=Encode.forHtml(String.valueOf(trimmedEscapedLinkName))%></a>
+				|<a href=# onClick='popupPage2("<%=Encode.forJavaScript(linkUrl)%>")' title='<%=Encode.forHtmlAttribute(linkName)%>'><%=Encode.forHtml(trimmedLinkName)%></a>
 			<%
 		}
 	}

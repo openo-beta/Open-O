@@ -394,7 +394,7 @@
     <table width="100%">
         <tr>
             <th><% if (msg.length() > 1) {%>
-                <div class="alert" style="width:100%; text-align:center"><%=Encode.forHtml(String.valueOf(msg))%>
+                <div class="alert" style="width:100%; text-align:center"><%=msg%>
                 </div>
                 <% } %></th>
             <th style="width: 600px">Object Name/Role Name: <input type="text" name="keyword"

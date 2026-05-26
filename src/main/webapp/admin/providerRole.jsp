@@ -487,7 +487,7 @@
 
     <% if (msg.length() > 1) {%>
     <div class="alert alert-info">
-        <%=Encode.forHtml(String.valueOf(msg))%>
+        <%=msg%>
     </div>
     <% } %>
     <div class="well">

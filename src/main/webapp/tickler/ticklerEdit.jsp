@@ -262,7 +262,7 @@
             function validate(form, writeToEncounter) {
                 if (validateDate(form) <%=caisiEnabled?"&& validateSelectedProgram()":""%>) {
                     if (writeToEncounter) {
-                        window.open('<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(d.getDemographicNo()))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&curDate=<%=Encode.forJavaScript(String.valueOf(curYear))%>-<%=Encode.forJavaScript(String.valueOf(curMonth))%>-<%=Encode.forJavaScript(String.valueOf(curDay))%>&encType=&status=', '', 'height=700,width=960');
+                        window.open('<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(d.getDemographicNo()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&curDate=<%=Encode.forUriComponent(String.valueOf(curYear))%>-<%=Encode.forUriComponent(String.valueOf(curMonth))%>-<%=Encode.forUriComponent(String.valueOf(curDay))%>&encType=&status=', '', 'height=700,width=960');
                     }
                     form.submit();
                     return true;
@@ -316,7 +316,7 @@
                 <tr>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.demographicName"/></th>
                     <td><a href="javascript:void(0)"
-                           onClick="popupPage(600,800,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(d.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')">
+                           onClick="popupPage(600,800,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(d.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')">
                         <%=Encode.forHtmlContent(d.getLastName())%>,<%=Encode.forHtmlContent(d.getFirstName())%>
                     </a></td>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.phoneNumbers"/></th>

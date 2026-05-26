@@ -60,11 +60,11 @@
 <%
  if (request.getParameter("ID") != null && type != null && type.equals("Edit")){ %>
 	$(function() {
-		var data = "pharmacyId=<%=Encode.forJavaScript(request.getParameter("ID"))%>";
+		var data = "pharmacyId=<%=Encode.forUriComponent(request.getParameter("ID"))%>";
 		$.post("<%=request.getContextPath()%>/oscarRx/managePharmacy.do?method=getPharmacyInfo",
 				  data, function( data ) {
 			if(data.name) {
-			  $('#pharmacyId').val(<%=Encode.forJavaScript(request.getParameter("ID"))%>);
+			  $('#pharmacyId').val("<%=Encode.forJavaScript(request.getParameter("ID"))%>");
 			  $('#pharmacyName').val(data.name);
 			  $('#pharmacyAddress').val(data.address);
 			  $('#pharmacyCity').val(data.city);

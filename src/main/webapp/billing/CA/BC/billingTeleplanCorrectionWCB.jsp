@@ -189,7 +189,7 @@
         <table width="100%">
             <tr>
                 <td colspan="2" class="SectionHead"><a href=#
-                                                       onClick="popup(700,900,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(form.getDemographicNumber()))%>&displaymode=edit&dboperation=search_detail','
+                                                       onClick="popup(700,900,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(form.getDemographicNumber()))%>&displaymode=edit&dboperation=search_detail','
                                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>');return false;"
                                                        title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">Patient
                     Information</a> <input type="hidden" name="id" id="id" value="<%=Encode.forHtmlAttribute(String.valueOf(form.getId()))%>"/>

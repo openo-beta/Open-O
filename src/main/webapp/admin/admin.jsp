@@ -731,7 +731,7 @@
                     <security:oscarSec roleName="<%=roleName$%>"
                                        objectName="_admin,_admin.messenger" rights="r" reverse="<%=false%>">
                         <li><a href="#"
-                               onclick='popupOscarRx(600,900, "${pageContext.request.contextPath}/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&amp;userName=<%=Encode.forJavaScript(String.valueOf(userfirstname))%>%20<%=Encode.forJavaScript(String.valueOf(userlastname))%>");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.messages"/></a></li>
+                               onclick='popupOscarRx(600,900, "${pageContext.request.contextPath}/messenger/DisplayMessages.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&amp;userName=<%=Encode.forUriComponent(String.valueOf(userfirstname))%>%20<%=Encode.forUriComponent(String.valueOf(userlastname))%>");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.messages"/></a></li>
                         <li><a href="#"
                                onclick='popupOscarRx(600,900, "${pageContext.request.contextPath}/messenger/config/MessengerAdmin.jsp");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnMessengerAdmin"/></a></li>
 

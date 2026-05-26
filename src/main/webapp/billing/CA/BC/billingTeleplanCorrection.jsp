@@ -421,7 +421,7 @@
 
             <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2"><a href="#"
-                                                 onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&type=&returnForm=serviceform&returnItem=xml_appointment_date","380","300","0")'>Billing
+                                                 onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&type=&returnForm=serviceform&returnItem=xml_appointment_date","380","300","0")'>Billing
 
                 Date: </a><input type="text" style="font-size: 80%;"
                                  name="xml_appointment_date" value="<%=Encode.forHtmlAttribute(String.valueOf(BillDate))%>"> </font></b></td>
@@ -546,7 +546,7 @@ String proFirst="", proLast="", proOHIP="", proNo="";
             <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2"><input type="hidden" name="xml_visitdate"
                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(visitdate))%>"><a href="#"
-                                                                               onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&type=&returnForm=serviceform&returnItem=xml_vdate","380","300","0")'>
+                                                                               onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&type=&returnForm=serviceform&returnItem=xml_vdate","380","300","0")'>
                 Admission Date:</a> <input type="text" style="font-size: 80%;"
                                            name="xml_vdate" value="<%=Encode.forHtmlAttribute(String.valueOf(visitdate))%>"></font></b></td>
 

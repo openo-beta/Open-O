@@ -82,8 +82,8 @@
 
             function validatePassword(pwd) {
 
-                var password_min_length = <%=Encode.forJavaScript(String.valueOf(op.getProperty("password_min_length")))%>;
-                var password_min_groups = <%=Encode.forJavaScript(String.valueOf(op.getProperty("password_min_groups")))%>;
+                var password_min_length = <%=op.getProperty("password_min_length")%>;
+                var password_min_groups = <%=op.getProperty("password_min_groups")%>;
                 var password_group_lower_chars = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_lower_chars"))))%>";
                 var password_group_upper_chars = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_upper_chars"))))%>";
                 var password_group_digits = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))))%>";
@@ -139,8 +139,8 @@
 
             function validatePassword(pwd) {
 
-                var password_min_length = <%=Encode.forJavaScript(String.valueOf(op.getProperty("password_min_length")))%>;
-                var password_min_groups = <%=Encode.forJavaScript(String.valueOf(op.getProperty("password_min_groups")))%>;
+                var password_min_length = <%=op.getProperty("password_min_length")%>;
+                var password_min_groups = <%=op.getProperty("password_min_groups")%>;
                 var password_group_lower_chars = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_lower_chars"))))%>";
                 var password_group_upper_chars = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_upper_chars"))))%>";
                 var password_group_digits = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))))%>";
@@ -196,7 +196,7 @@
 
             function validatePin(pin) {
 
-                var password_pin_min_length = <%=Encode.forJavaScript(String.valueOf(op.getProperty("password_pin_min_length")))%>;
+                var password_pin_min_length = <%=op.getProperty("password_pin_min_length")%>;
                 var password_group_digits = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))))%>";
 
                 if (pin.length < password_pin_min_length) {

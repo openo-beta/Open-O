@@ -199,7 +199,7 @@
                                                                                            onclick="javascript:return onExit();"/>
                 <input type="button"
                        name="submit" value="Print"
-                       onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
+                       onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&formId=<%=Encode.forUriComponent(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right"><a href=#
                                  onClick="popupPage(600,930,'riskedit.jsp');return false;"> Edit
@@ -231,7 +231,7 @@
                                                                                            onclick="javascript:return onExit();"/>
                 <input type="button"
                        name="submit" value="Print"
-                       onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&formId=<%=Encode.forJavaScript(String.valueOf(form_no))%>');return false;"/>
+                       onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&formId=<%=Encode.forUriComponent(String.valueOf(form_no))%>');return false;"/>
             </td>
             <td align="right"><a href=#
                                  onClick="popupPage(600,930,'riskedit.jsp');return false;"> Edit

@@ -187,7 +187,7 @@
                 content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=Encode.forHtml(String.valueOf(content))%>
+        <encounter><%=content%>
         </encounter>
     </xml>
     <%
@@ -203,7 +203,7 @@
             content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=Encode.forHtml(String.valueOf(content))%>
+        <encounter><%=content%>
         </encounter>
     </xml>
     <%
@@ -264,7 +264,7 @@
                 nowrap><%--=bNewList?"<a href=# onClick='onSave()'><img src="<%= request.getContextPath() %>/images/buttonsave.gif" align='top' width='75' height='25' ></a> ":""--%>
                 <%=bNewList ? "<input type='button' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
                 <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
-                <%=Encode.forHtml(bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : "")%>
+                <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
             </th>
             <th align='CENTER'><font face="Arial, Helvetica, sans-serif"
                                      color="#FFFFFF">Antenatal Record 1 </font></th>
@@ -1428,8 +1428,8 @@
                 <table width='100%' border=0>
                     <tr>
                         <td width='90%'
-                            align='center'><%=Encode.forHtml(bNewList && (request.getParameter("patientmaster") != null) ? "<input type='submit' name='savetemp' value=' Save ' onClick='onSave()'> " : "")%>
-                            <%=Encode.forHtml(bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : "")%>
+                            align='center'><%=bNewList && (request.getParameter("patientmaster") != null) ? "<input type='submit' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
+                            <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
                             <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
                         </td>
                         <td align='right'><%=bNewList ? "<input type='button' name='Button' value=' Exit ' onClick='onExit();'>" : "<input type='button' name='Button' value=' Exit ' onClick='window.close();'>" %>

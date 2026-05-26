@@ -55,8 +55,8 @@
     <script language="JavaScript">
         <!--
 
-        var ox = <%=Encode.forJavaScript(String.valueOf(oox))%>;
-        var oy = <%=Encode.forJavaScript(String.valueOf(ooy))%>;
+        var ox = <%=oox%>;
+        var oy = <%=ooy%>;
 
         //x: left margin, y:top margin, w: width, h:height
         function ff(x, y, w, h, name) { //need escape to name for ' and "

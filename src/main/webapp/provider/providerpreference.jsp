@@ -367,7 +367,7 @@
                             for (ProviderPreference.QuickLink quickLink : quickLinks) {
                         %>
                         <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/>"
-                               onclick="document.location='providerPreferenceQuickLinksAction.jsp?action=remove&name='+escape('<%=Encode.forHtml(quickLink.getName())%>')"/>
+                               onclick="document.location='providerPreferenceQuickLinksAction.jsp?action=remove&name='+escape('<%=Encode.forJavaScript(quickLink.getName())%>')"/>
                         <%=Encode.forHtml(quickLink.getName())%>
                         : <%=Encode.forHtml(quickLink.getUrl())%>
                         <br/>
@@ -491,7 +491,7 @@
                 Event.observe('reviewMsg', 'change', function (event) {
                     var value = $('reviewMsg').getValue();
 
-                    new Ajax.Request('<c:out value="${ctx}"/>/setProviderStaleDate.do?method=OscarMsgRecvd&value=' + value + '&provider_no=<%=Encode.forJavaScript(String.valueOf(providerNo))%>', {
+                    new Ajax.Request('<c:out value="${ctx}"/>/setProviderStaleDate.do?method=OscarMsgRecvd&value=' + value + '&provider_no=<%=Encode.forUriComponent(String.valueOf(providerNo))%>', {
                         method: 'get',
                         onSuccess: function (transport) {
                         }
@@ -523,7 +523,7 @@
 
             <tr>
                 <td align="center"><a href=#
-                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=Encode.forJavaScript(request.getParameter("provider_no"))%>');return false;">Edit
+                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=Encode.forUriComponent(request.getParameter("provider_no"))%>');return false;">Edit
                     Default Billing Diagnostic Code</a>&nbsp;&nbsp;&nbsp;
                 </td>
             </tr>
@@ -549,7 +549,7 @@
                             <% String br = OscarProperties.getInstance().getProperty("billregion");
                                 if (br.equals("BC")) { %>
                             <a href=#
-                               onClick="popupPage(900,500,'<%=request.getContextPath()%>/billing/CA/BC/viewBillingPreferencesAction.do?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnBillPreference"/></a>
+                               onClick="popupPage(900,500,'<%=request.getContextPath()%>/billing/CA/BC/viewBillingPreferencesAction.do?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnBillPreference"/></a>
                             <% } else { %>
                             <a href=# onClick="showHideBillPref();return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnBillPreference"/></a>
                             <% } %>
@@ -629,7 +629,7 @@
                 </tr>
                 <tr>
                     <td align="center"><a href=#
-                                          onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=view&provider_no=<%=Encode.forJavaScript(String.valueOf(providerNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditStaleDate"/></a></td>
+                                          onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=view&provider_no=<%=Encode.forUriComponent(String.valueOf(providerNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditStaleDate"/></a></td>
                 </tr>
 
 

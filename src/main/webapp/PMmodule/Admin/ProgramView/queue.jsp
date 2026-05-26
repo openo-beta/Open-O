@@ -306,7 +306,7 @@
            onClick="popupPage(710, 1024,'<%=Encode.forJavaScript(String.valueOf(eURL))%>');return false;"
            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnEncounter"/></a>&nbsp;&nbsp;
         <a href=#
-           onClick="popupPage(710,1024,'<%=request.getContextPath()%>/eform/efmshowform_data.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&fdid=<%=Encode.forJavaScript(String.valueOf(curform.get("fdid")))%>','0'); return false;"
+           onClick="popupPage(710,1024,'<%=request.getContextPath()%>/eform/efmshowform_data.jsp?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&fdid=<%=Encode.forUriComponent(String.valueOf(curform.get("fdid")))%>','0'); return false;"
            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.remoteReferral"/>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnIntake"/></a>
 
 
