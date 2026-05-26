@@ -36,6 +36,7 @@ import java.util.Arrays;
 
 import ca.openosp.SxmlMisc;
 import org.apache.logging.log4j.Logger;
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.billing.CA.dao.BillingDetailDao;
 import ca.openosp.openo.billing.CA.model.BillingDetail;
 import ca.openosp.openo.commn.dao.BillingDao;
@@ -209,8 +210,8 @@ public class ExtractBean implements Serializable {
     private String buildHTMLContentHeader() {
         String ret = null;
         ret = "\n<table width='100%' border='0' cellspacing='0' cellpadding='0'>\n"
-                + "<tr><td colspan='4' class='bodytext'>OHIP Invoice for OHIP No." + providerNo
-                + "</td><td colspan='4' class='bodytext'>Payment date of " + output + "\n</td></tr>";
+                + "<tr><td colspan='4' class='bodytext'>OHIP Invoice for OHIP No." + Encode.forHtmlContent(String.valueOf(providerNo))
+                + "</td><td colspan='4' class='bodytext'>Payment date of " + Encode.forHtmlContent(String.valueOf(output)) + "\n</td></tr>";
         ret += "\n<tr><td class='bodytext'>ACCT NO</td>"
                 + "<td class='bodytext'>NAME</td><td class='bodytext'>HEALTH #</td>"
                 + "<td class='bodytext'>BILLDATE</td><td class='bodytext'>CODE</td>"
@@ -222,16 +223,16 @@ public class ExtractBean implements Serializable {
     private String buildHTMLContentRecord(int invCount) {
         String ret = null;
         if (invCount == 0) {
-            ret = "\n<tr><td class='bodytext'>" + invNo + "</td><td class='bodytext'>" + demoName
-                    + "</td><td class='bodytext'>" + hcHin + "</td><td class='bodytext'>" + apptDate
-                    + "</td><td class='bodytext'>" + serviceCode + "</td><td align='right' class='bodytext'>" + fee
-                    + "</td><td align='right' class='bodytext'>" + diagcode
+            ret = "\n<tr><td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(invNo)) + "</td><td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(demoName))
+                    + "</td><td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(hcHin)) + "</td><td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(apptDate))
+                    + "</td><td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(serviceCode)) + "</td><td align='right' class='bodytext'>" + Encode.forHtmlContent(String.valueOf(fee))
+                    + "</td><td align='right' class='bodytext'>" + Encode.forHtmlContent(String.valueOf(diagcode))
                     + "</td><td class='bodytext'> &nbsp; &nbsp;" + referral + hcFlag + m_Flag + " </td></tr>";
         } else {
             ret = "\n<tr><td class='bodytext'>&nbsp;</td> <td class='bodytext'>&nbsp;</td>"
                     + "<td class='bodytext'>&nbsp;</td> <td class='bodytext'>&nbsp;</td>" + "<td class='bodytext'>"
-                    + serviceCode + "</td><td align='right' class='bodytext'>" + fee
-                    + "</td><td align='right' class='bodytext'>" + diagcode
+                    + Encode.forHtmlContent(String.valueOf(serviceCode)) + "</td><td align='right' class='bodytext'>" + Encode.forHtmlContent(String.valueOf(fee))
+                    + "</td><td align='right' class='bodytext'>" + Encode.forHtmlContent(String.valueOf(diagcode))
                     + "</td><td class='bodytext'>&nbsp;</td></tr>";
         }
         return ret;
@@ -239,11 +240,11 @@ public class ExtractBean implements Serializable {
 
     private String buildHTMLContentTrailer() {
         htmlContent += "\n<tr><td colspan='8' class='bodytext'>&nbsp;</td></tr><tr><td colspan='4' class='bodytext'>OHIP No: "
-                + providerNo
+                + Encode.forHtmlContent(String.valueOf(providerNo))
                 + ": "
-                + pCount
+                + Encode.forHtmlContent(String.valueOf(pCount))
                 + " RECORDS PROCESSED</td><td colspan='4' class='bodytext'>TOTAL: "
-                + BigTotal.toString().substring(0, BigTotal.toString().length() - 2) + "\n</td></tr>" + "\n</table>";
+                + Encode.forHtmlContent(BigTotal.toString().substring(0, BigTotal.toString().length() - 2)) + "\n</td></tr>" + "\n</table>";
         //  writeFile(value);
         String checkSummary = errorMsg.equals("") ? "\n<table border='0' width='100%' bgcolor='green'><tr><td>Pass</td></tr></table>"
                 : "\n<table border='0' width='100%' bgcolor='orange'><tr><td>Please correct the errors and run this simulation again!</td></tr></table>";
