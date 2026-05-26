@@ -93,7 +93,7 @@
             }
 
             function loadFlowsheet() {
-                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getFlowsheet&id=<%=Encode.forJavaScript(String.valueOf(id))%>", {},
+                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getFlowsheet&id=<%=Encode.forUriComponent(String.valueOf(id))%>", {},
                     function (xml) {
                         $("#itemTable tbody").empty();
                         $("#name").html(xml.name);

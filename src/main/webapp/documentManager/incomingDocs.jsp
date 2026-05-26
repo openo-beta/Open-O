@@ -258,8 +258,8 @@
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/autocomplete.css"/>
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/demographicProviderAutocomplete.css"/>
     <script type="text/javascript">
-        var curPage =<%=Encode.forJavaScript(String.valueOf(pdfPageNumber))%>;
-        var totalPage =<%=Encode.forJavaScript(String.valueOf(numOfPage))%>;
+        var curPage = <%=pdfPageNumber%>;
+        var totalPage = <%=numOfPage%>;
 
         function popupPage(vheight, vwidth, varpage) {
             var page = "" + varpage;
@@ -735,7 +735,7 @@
                 }
 
                 var url = "<%=request.getContextPath()%>/DocumentDescriptionTemplate.do";
-                var data = 'method=getDocumentDescriptionFromDocType&doctype=' + docType + "&providerNo=<%=Encode.forJavaScript(String.valueOf(user_no))%>&useDocumentDescriptionTemplateType=<%=Encode.forJavaScript(String.valueOf(useDocumentDescriptionTemplateType))%>";
+                var data = 'method=getDocumentDescriptionFromDocType&doctype=' + docType + "&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&useDocumentDescriptionTemplateType=<%=Encode.forUriComponent(String.valueOf(useDocumentDescriptionTemplateType))%>";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, onSuccess: function (transport) {
                         var json = transport.responseText.evalJSON();

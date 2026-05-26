@@ -1542,7 +1542,7 @@ Ontario, Canada
                                 <th colspan="2">
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgDemgraphics"/>
                                     <a title="Master File"
-                                       onclick="popup(700,1000,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&amp;displaymode=edit&amp;dboperation=search_detail','master')"
+                                       onclick="popup(700,1000,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&amp;displaymode=edit&amp;dboperation=search_detail','master')"
                                        href="javascript: function myFunction() {return false; }"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnEdit"/></a>
 
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgSex"/>: <%=Encode.forHtml(String.valueOf(sex))%> &nbsp;

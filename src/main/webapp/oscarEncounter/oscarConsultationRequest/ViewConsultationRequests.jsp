@@ -287,8 +287,8 @@ background-color:rgb(212, 212, 254);
             var frm = document.forms[0];
 
             frm.limit.value = <%=limit%>;
-            if (next) frm.offset.value = <%=Encode.forJavaScript(String.valueOf(offset+limit))%>;
-            else frm.offset.value = <%=Encode.forJavaScript(String.valueOf(offset-limit))%>;
+            if (next) frm.offset.value = "<%=Encode.forJavaScript(String.valueOf(offset+limit))%>";
+            else frm.offset.value = "<%=Encode.forJavaScript(String.valueOf(offset-limit))%>";
 
             frm.submit();
         }

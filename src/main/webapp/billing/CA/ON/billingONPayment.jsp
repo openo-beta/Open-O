@@ -379,7 +379,7 @@
             <tr class="<%=Encode.forHtmlAttribute(String.valueOf(rowColor))%>">
                 <% if (!isSameBill) {%>
                 <td style="text-align:center"><a href="#"
-                                                 onclick="popupPage(700,700,'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(curBillingNoStr))%>');return false;"><%=Encode.forHtml(String.valueOf(curBillingNoStr))%>
+                                                 onclick="popupPage(700,700,'billingONCorrection.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(curBillingNoStr))%>');return false;"><%=Encode.forHtml(String.valueOf(curBillingNoStr))%>
                 </a></td>
                 <%} else {%>
                 <td></td>
@@ -390,7 +390,7 @@
                 </td>
                 <% if (!isSameBill) {%>
                 <td style="text-align:center"><a href="#"
-                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&displaymode=edit&dboperation=search_detail');return false;"><%=Encode.forHtml(String.valueOf(demographicName))%>
+                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&displaymode=edit&dboperation=search_detail');return false;"><%=Encode.forHtml(String.valueOf(demographicName))%>
                 </a></td>
                 <%} else {%>
                 <td></td>
@@ -567,7 +567,7 @@
                     String billingNo = String.valueOf(bCh1.getId());
                     if (!isThisProviderOnly) { %>
                 <td style="text-align:center"><a href="#"
-                                                 onclick="popupPage(700,700,'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(billingNo))%>');return false;"><%=Encode.forHtml(String.valueOf(bCh1.getId()))%>
+                                                 onclick="popupPage(700,700,'billingONCorrection.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(billingNo))%>');return false;"><%=Encode.forHtml(String.valueOf(bCh1.getId()))%>
                 </a></td>
                 <% } else { %>
                 <td style="text-align:center"><%=Encode.forHtml(String.valueOf(billingNo))%>
@@ -576,7 +576,7 @@
                 <td style="text-align:center"><%=Encode.forHtml(String.valueOf(billingDateStr))%>
                 </td>
                 <td style="text-align:center"><a href="#"
-                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&displaymode=edit&dboperation=search_detail');return false;"><%=Encode.forHtml(String.valueOf(demographicName))%>
+                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&displaymode=edit&dboperation=search_detail');return false;"><%=Encode.forHtml(String.valueOf(demographicName))%>
                 </a></td>
                 <%
                     String dxCode = "";

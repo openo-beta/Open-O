@@ -113,12 +113,12 @@
         <script language="JavaScript">
             <!--
             function changePro(providerno) {
-                a = "scheduleflipview.jsp?originalpage=<%=Encode.forJavaScript(String.valueOf(originalPage))%>&provider_no=" + providerno +<%=Encode.forJavaScript(request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\"")%>;
+                a = "scheduleflipview.jsp?originalpage=<%=Encode.forUriComponent(String.valueOf(originalPage))%>&provider_no=" + providerno +<%=Encode.forJavaScript(request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\"")%>;
                 self.location.href = a;
             }
 
             function selectprovider(s) {
-                a = "scheduleflipview.jsp?originalpage=<%=Encode.forJavaScript(String.valueOf(originalPage))%>&provider_no=" + s.options[s.selectedIndex].value +<%=Encode.forJavaScript(request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\"")%>;
+                a = "scheduleflipview.jsp?originalpage=<%=Encode.forUriComponent(String.valueOf(originalPage))%>&provider_no=" + s.options[s.selectedIndex].value +<%=Encode.forJavaScript(request.getParameter("startDate")!=null?("\"&startDate="+request.getParameter("startDate")+"\""):"\"")%>;
                 self.location.href = a;
             }//-->
 
@@ -126,30 +126,30 @@
             function t(s1, s2, s3, s4, s5, s6, doConfirm, allowDay, allowWeek) {
                 if (doConfirm == "Yes") {
                     if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.confirmBooking"/>")) {
-                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(curDemoNo))%>&name=<%=Encode.forUriComponent(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                     }
                 } else if (doConfirm == "Day") {
                     if (allowDay == "No") {
                         alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.sameDay"/>");
                     } else {
-                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(curDemoNo))%>&name=<%=Encode.forUriComponent(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                     }
                 } else if (doConfirm == "Wk") {
                     if (allowWeek == "No") {
                         alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.sameWeek"/>");
                     } else {
-                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(curDemoNo))%>&name=<%=Encode.forUriComponent(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                     }
                 } else if (doConfirm == "Onc") {
                     if (allowDay == "No") {
                         if (confirm("This is an On Call Urgent appointment.  Are you sure you want to book?")) {
-                            popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                            popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(curDemoNo))%>&name=<%=Encode.forUriComponent(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                         }
                     } else {
-                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                        popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(curDemoNo))%>&name=<%=Encode.forUriComponent(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                     }
                 } else {
-                    popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(curDemoNo))%>&name=<%=Encode.forJavaScript(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
+                    popupPage(360, 680, ('<%= request.getContextPath() %>/appointment/addappointment.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(curDemoNo))%>&name=<%=Encode.forUriComponent(String.valueOf(curDemoName))%>&provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&bFirstDisp=<%=true%>&year=' + s1 + '&month=' + s2 + '&day=' + s3 + '&start_time=' + s4 + '&end_time=' + s5 + '&duration=' + s6));
                 }
 
             }

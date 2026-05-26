@@ -88,7 +88,7 @@
         <input type="button" class="btn" value="Back" onclick="javascript: window.history.back();return false;"/>
         <input type="button" class="btn" value="Print" onclick="javascript: window.print();"/>
         <input type="button" class="btn btn-primary" value="Edit"
-               onclick="document.location='addEditTemplate.jsp?templateid=<%=Encode.forJavaScript(String.valueOf(templateid))%>&opentext=1'"/>
+               onclick="document.location='addEditTemplate.jsp?templateid=<%=Encode.forUriComponent(String.valueOf(templateid))%>&opentext=1'"/>
     </div>
 
 </html>

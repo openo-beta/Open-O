@@ -51,8 +51,8 @@
 
         window.onload = function () {
 
-            var isSucess = <%=Encode.forJavaScript(String.valueOf((String)session.getAttribute("isPassChange")))%>;
-            if (isSucess != null && isSucess == true) {
+            var isSucess = <%="true".equals(session.getAttribute("isPassChange"))%>;
+            if (isSucess === true) {
                 alert('EDT Password has been changed successfully.');
                 return gobacktoedthome();
                 //return true;

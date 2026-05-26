@@ -392,7 +392,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                     found = true;
             %>
             <script>
-                savedNoteId =<%=Encode.forJavaScript(String.valueOf(note.getNoteId()))%>;
+                savedNoteId = "<%=Encode.forJavaScript(String.valueOf(note.getNoteId()))%>";
             </script>
             <%
                 if (OscarProperties.getInstance().getBooleanProperty("note_program_ui_enabled", "true")) {
@@ -465,7 +465,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
             %>
             <div style="background-color:#33FFCC; text-align:right">
                 Group Note - Editable note in this <a href="javascript:void(0)"
-                                                      onClick="popupPage(700,1000,'Master1','<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(note.getLocation()))%>&displaymode=edit&dboperation=search_detail');return false;">client</a>
+                                                      onClick="popupPage(700,1000,'Master1','<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(note.getLocation()))%>&displaymode=edit&dboperation=search_detail');return false;">client</a>
             </div>
             <%
                 }
@@ -608,7 +608,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
             } else if (note.isInvoice()) {
                 String winName = "invoice" + demographicNo;
                 int hash = Math.abs(winName.hashCode());
-                String url = "popupPage(700,800,'" + hash + "','" + request.getContextPath() + Encode.forHtml(((NoteDisplayNonNote) note).getLinkInfo()) + "'); return false;";
+                String url = "popupPage(700,800,'" + hash + "','" + request.getContextPath() + ((NoteDisplayNonNote) note).getLinkInfo() + "'); return false;";
             %>
             <div class="view-links"
                  style="<%=Encode.forHtmlAttribute(String.valueOf((note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""))%>">
@@ -675,7 +675,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                     <%-- render the note contents here --%>
 			  				<div id="txt<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>" name="<%=(note.isCpp()||note.isEmailNote())?"expandableReadonlyNoteText":""%>">
 
-                    <%=Encode.forHtml(String.valueOf(noteStr))%>
+                    <%=noteStr%>
                 </div> <!-- end of txt<%=Encode.forHtml(String.valueOf(globalNoteId))%> -->
                 <%
 		  							if (note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())
@@ -917,7 +917,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
 %>
 
 <script type="text/javascript">
-    maxNcId = <%=Encode.forJavaScript(String.valueOf(maxId))%>;
+    maxNcId = "<%=Encode.forJavaScript(String.valueOf(maxId))%>";
 </script>
 
 
@@ -1007,7 +1007,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
 
              if (found != true)
              {%>
-    document.forms["caseManagementEntryForm"].newNoteIdx.value = <%=Encode.forJavaScript(String.valueOf(savedId))%>;
+    document.forms["caseManagementEntryForm"].newNoteIdx.value = "<%=Encode.forJavaScript(String.valueOf(savedId))%>";
     <%}
              else
              {%>

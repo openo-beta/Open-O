@@ -58,7 +58,7 @@
 <div>
     <div>
         <label> WCB Forms available to attach.</label> <a
-            onclick="popup(700,960,'viewformwcb.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=0&provNo=999998&parentAjaxId=forms&hideToBill=true','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>NEWWCB'); return false;"
+            onclick="popup(700,960,'viewformwcb.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&formId=0&provNo=999998&parentAjaxId=forms&hideToBill=true','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>NEWWCB'); return false;"
             href="javascript:void(0);">New WCB Form</a> <br>
     </div>
     <table class="table table-striped table-condensed">
@@ -83,7 +83,7 @@
                    onclick="checkifSet('<%=Encode.forJavaScript(String.valueOf(wcb.getW_icd9()))%>','<%=Encode.forJavaScript(String.valueOf(wcb.getW_feeitem()))%>','<%=Encode.forJavaScript(String.valueOf(wcb.getW_extrafeeitem()))%>');">Populate</a>
             </td>
             <td align="middle">
-                <a onclick="popup(700,960,'viewformwcb.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(wcb.getId()))%>&provNo=<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>&parentAjaxId=forms&billingcode=<%=Encode.forJavaScript(String.valueOf(billingcode))%>&hideToBill=true','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>NEWWCB'); return false;"
+                <a onclick="popup(700,960,'viewformwcb.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(wcb.getId()))%>&provNo=<%=Encode.forUriComponent(String.valueOf(session.getAttribute("user")))%>&parentAjaxId=forms&billingcode=<%=Encode.forUriComponent(String.valueOf(billingcode))%>&hideToBill=true','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>NEWWCB'); return false;"
                    href="javascript:void(0);"><fmt:formatDate pattern="yyyy-MM-dd" value="${wcb.w_doi}"/></a>
 
             </td>

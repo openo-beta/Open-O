@@ -15,16 +15,16 @@ int demographicNo = Integer.parseInt(demographicNoStr);
 int enhancedFormId = PregnancyFormsDao.getLatestFormIdByDemographicNo(demographicNo);
 
 if(enhancedFormId>0) {
-	%>|<a href="#" onClick="popupPage2('<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=ON AR Enhanced&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')">AR1</a>
-   	  |<a href="#" onClick="popupPage2('<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=ON AR Enhanced&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&pg=2')">AR2</a>
+	%>|<a href="#" onClick="popupPage2('<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=ON AR Enhanced&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>')">AR1</a>
+   	  |<a href="#" onClick="popupPage2('<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=ON AR Enhanced&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&pg=2')">AR2</a>
 	<%
 	return;
 }
 
 int nonEnhancedFormId = PregnancyFormsDao.getLatestAR2005FormIdByDemographicNo(demographicNo);
 if(nonEnhancedFormId > 0) {
-	%>|<a href="#" onClick="popupPage2('<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=AR2005&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')">AR1</a>
-	|<a href="#" onClick="popupPage2('<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=AR2005&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&pg=2')">AR2</a>
+	%>|<a href="#" onClick="popupPage2('<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=AR2005&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>')">AR1</a>
+	|<a href="#" onClick="popupPage2('<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=AR2005&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&pg=2')">AR2</a>
 	
 	<%
 	return;

@@ -65,8 +65,8 @@
 
     <form action="<%= request.getContextPath() %>/report/DxresearchReport.do?method=editDesc">
 
-        <input type="hidden" name="editingCodeType" value=<%=editingCodeType%>/>
-        <input type="hidden" name="editingCodeCode" value=<%=editingCodeCode%>/>
+        <input type="hidden" name="editingCodeType" value="<%=editingCodeType%>"/>
+        <input type="hidden" name="editingCodeCode" value="<%=editingCodeCode%>"/>
 
         <table class="table">
             <tr>
@@ -80,7 +80,7 @@
                 </td>
                 <td><%=Encode.forHtml(String.valueOf(editingCodeCode))%>
                 </td>
-                <td><input name="editingCodeDesc" value=<%=Encode.forHtml(String.valueOf(editingCodeDesc))%> class="span4"></td>
+                <td><input name="editingCodeDesc" value="<%=Encode.forHtml(String.valueOf(editingCodeDesc))%>" class="span4"></td>
                 <td><input type="submit" name="submit" class="btn btn-primary" value="Modify"></td>
             </tr>
         </table>

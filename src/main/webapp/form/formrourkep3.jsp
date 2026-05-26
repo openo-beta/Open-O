@@ -429,7 +429,7 @@
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
 
         <input type="hidden" name="provider_no"
-               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+               value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
 
         <input type="hidden" name="formCreated"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
@@ -441,7 +441,7 @@
         <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
 
         <input type="hidden" name="c_lastVisited"
-               value=<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "p3")))%>/>
+               value="<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "p3")))%>"/>
 
         <input type="hidden" name="submit" value="exit"/>
 

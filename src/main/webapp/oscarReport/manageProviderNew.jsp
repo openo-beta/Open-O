@@ -116,7 +116,7 @@
             for(String myGroup: myGroupDao.getGroups()) {
                 xcount = ycount;
         %>
-        Tree[<%=Encode.forJavaScript(String.valueOf(ycount-1))%>] = "<%=Encode.forJavaScript(String.valueOf(ycount))%>|0|<%=Encode.forJavaScript(String.valueOf(myGroup))%>  |#";
+        Tree[<%=ycount-1%>] = "<%=Encode.forJavaScript(String.valueOf(ycount))%>|0|<%=Encode.forJavaScript(String.valueOf(myGroup))%>  |#";
         <%
                 ycount = ycount + 1;
 
@@ -128,7 +128,7 @@
                     }
         %>
 
-        Tree[<%=Encode.forJavaScript(String.valueOf(ycount-1))%>] = "<%=Encode.forJavaScript(String.valueOf(ycount))%>|<%=Encode.forJavaScript(String.valueOf(xcount))%>|<%=Encode.forJavaScript(String.valueOf(p.getLastName()))%>, <%=Encode.forJavaScript(String.valueOf(p.getFirstName()))%>|#";
+        Tree[<%=ycount-1%>] = "<%=Encode.forJavaScript(String.valueOf(ycount))%>|<%=Encode.forJavaScript(String.valueOf(xcount))%>|<%=Encode.forJavaScript(String.valueOf(p.getLastName()))%>, <%=Encode.forJavaScript(String.valueOf(p.getFirstName()))%>|#";
         <%
                     count1 = count1 + 1;
                     ycount = ycount + 1;

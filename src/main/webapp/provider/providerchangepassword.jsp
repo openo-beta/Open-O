@@ -118,7 +118,7 @@
                         return false;
                     }
 
-                    var pin_min_length = <%=Encode.forJavaScript(String.valueOf(op.getProperty("password_pin_min_length")))%>;
+                    var pin_min_length = <%=op.getProperty("password_pin_min_length")%>;
 
                     if (pin1.length < pin_min_length) {
                         alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPinLengthError"/> ' +

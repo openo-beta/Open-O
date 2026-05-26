@@ -102,7 +102,7 @@
                 content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=Encode.forHtml(String.valueOf(content))%>
+        <encounter><%=content%>
         </encounter>
     </xml>
     <%
@@ -115,7 +115,7 @@
             content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=Encode.forHtml(String.valueOf(content))%>
+        <encounter><%=content%>
         </encounter>
     </xml>
     <%
@@ -1183,7 +1183,7 @@
             <td>Signature of attendant<br>
                 <input type="text" name="xml_soa" size="30" maxlength="50"
                        style="width: 80%"
-                    <%=Encode.forHtml(bNewList?"value='"+request.getParameter("username")+"'":"datafld='xml_soa'")%>>
+                    <%=bNewList?"value='"+Encode.forHtmlAttribute(request.getParameter("username"))+"'":"datafld='xml_soa'"%>>
             </td>
             <td>Date (yyyy/mm/dd)<br>
                 <input type="text" name="xml_date" size="30" maxlength="50"

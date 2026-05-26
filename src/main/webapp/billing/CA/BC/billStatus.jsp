@@ -327,9 +327,9 @@
                 <div class="col-sm-3">
                     <div class="form-group">
     <label style="white-space: nowrap;" for="xml_appointment_date">Service End Date:
-        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-30")))%>')" >30</a>
-        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-60")))%>')" >60</a>
-        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=Encode.forJavaScript(String.valueOf(DateUtils.sumDate("yyyy-MM-dd","-90")))%>')" >90</a>
+        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-30")%>')" >30</a>
+        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-60")%>')" >60</a>
+        <a href="javascript: function myFunction() {return false; }" onClick="fillEndDate('<%=DateUtils.sumDate("yyyy-MM-dd","-90")%>')" >90</a>
     </label>
                         <div class="input-group">
                             <input type="text" class="form-control" name="xml_appointment_date" placeholder="yyyy-mm-dd"
@@ -565,7 +565,7 @@
 
 
                 <td><a href="javascript: function myFunction() {return false; }"
-                       onClick="popupPage2(500,1020,'genTAS00ByOfficeNo.jsp?officeNo=<%=Encode.forJavaScript(String.valueOf(b.billMasterNo))%>','RecValues');"><%=Encode.forHtml(String.valueOf(b.seqNum))%>
+                       onClick="popupPage2(500,1020,'genTAS00ByOfficeNo.jsp?officeNo=<%=Encode.forUriComponent(String.valueOf(b.billMasterNo))%>','RecValues');"><%=Encode.forHtml(String.valueOf(b.seqNum))%>
                 </a></td>
                 <td><%=Encode.forHtml(String.valueOf(b.apptDate))%>
                 </td>

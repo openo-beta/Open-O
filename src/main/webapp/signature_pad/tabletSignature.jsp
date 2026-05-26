@@ -50,7 +50,7 @@ is hosted in an IFrame and that the IFrame's parent window implements signatureH
     boolean saveToDB = "true".equals(request.getParameter("saveToDB"));
 %>
 <script type="text/javascript">
-    var _in_window = <%=Encode.forJavaScript(String.valueOf("true".equals(request.getParameter("inWindow"))))%>;
+    var _in_window = <%="true".equals(request.getParameter("inWindow"))%>;
 
     var requestIdKey = "<%=Encode.forJavaScript(String.valueOf(requestIdKey))%>";
 

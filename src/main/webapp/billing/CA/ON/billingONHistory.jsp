@@ -162,18 +162,18 @@
         <tr bgcolor="<%=i%2==0?"#CCFF99":"white"%>">
             <td width="5%" align="center" height="25">
                 <a href="javascript:void(0)"
-                   onClick="popupPage(600,800, 'billingONDisplay.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(obj.getId()))%>')"
+                   onClick="popupPage(600,800, 'billingONDisplay.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(obj.getId()))%>')"
                    title="Billing Display"><%=Encode.forHtml(String.valueOf(obj.getId()))%>
                 </a>
 
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="w">
                     <a href="javascript:void(0)"
-                       onClick="popupPage(600,800, 'billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(obj.getId()))%>')"
+                       onClick="popupPage(600,800, 'billingONCorrection.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(obj.getId()))%>')"
                        title="Billing Correction">Edit</a>
                 </security:oscarSec>
 
                 <a href="javascript:void(0)"
-                   onClick="popupPage(600,800, 'billingON3rdInv.jsp?billingNo=<%=Encode.forJavaScript(String.valueOf(obj.getId()))%>')">Print</a>
+                   onClick="popupPage(600,800, 'billingON3rdInv.jsp?billingNo=<%=Encode.forUriComponent(String.valueOf(obj.getId()))%>')">Print</a>
             </td>
             <td align="center"><%=Encode.forHtml(String.valueOf(obj.getLast_name() + ", " + obj.getFirst_name()))%>
             </td>
@@ -197,7 +197,7 @@
             <% } else if (OscarProperties.getInstance().getBooleanProperty("warnOnDeleteBill", "true")) { %>
             <td align="center"><a
                     href="#"
-                    onClick="onUnbilled('billingDeleteNoAppt.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(obj.getId()))%>&billCode=<%=Encode.forJavaScript(String.valueOf(obj.getStatus()))%>&hotclick=0');return false;">Unbill</a>
+                    onClick="onUnbilled('billingDeleteNoAppt.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(obj.getId()))%>&billCode=<%=Encode.forUriComponent(String.valueOf(obj.getStatus()))%>&hotclick=0');return false;">Unbill</a>
             </td>
             <% } else { %>
             <td align="center">

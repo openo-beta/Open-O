@@ -837,7 +837,7 @@
                 });
                 window.open(urlToOpen);
             }
-            <%-- <%=Encode.forJavaScript(String.valueOf(queryStr))%>&amp;message=Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"),"UTF-8")%>&amp;followupType=<%=Encode.forJavaScript(String.valueOf(followUpType))%>&amp;followupValue=L1">Generate First Letter</a>*/ --%>
+            <%-- <%=Encode.forJavaScript(String.valueOf(queryStr))%>&amp;message=Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"),"UTF-8")%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L1">Generate First Letter</a>*/ --%>
         }
 
         $scope.openBill = function (demographicNo, billingCode) {

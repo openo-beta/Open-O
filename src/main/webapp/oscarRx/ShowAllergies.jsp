@@ -283,7 +283,7 @@
                             <table border="0">
                                 <tr>
                                     <td width="100%">
-                                        <%=Encode.forHtml(String.valueOf(allergy_colour_codes))%>
+                                        <%=allergy_colour_codes%>
                                         <div class="Step1Text" style="width: 830px;">
                                             <!-- frame="below" and rules="all"
                                             are here so the browser displays
@@ -397,7 +397,7 @@
                                                             if (displayAllergy.getRemoteFacilityId() == null) {
                                                         %>
                                                         <a href="#" title="Annotation"
-                                                           onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(displayAllergy.getId()))%>&demo=${patient.demographicNo}','anwin','width=400,height=500');"><img
+                                                           onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&table_id=<%=Encode.forUriComponent(String.valueOf(displayAllergy.getId()))%>&demo=${patient.demographicNo}','anwin','width=400,height=500');"><img
                                                                 src="<%= request.getContextPath() %>/images/notes.gif" border="0"></a>
                                                         <%
                                                             }
@@ -473,7 +473,7 @@
                                 <tr>
                                     <td colspan="3">Search the following categories: <i>(Listed
                                         general to specific)</i></td>
-                                    <td align="right"><%=Encode.forHtml(String.valueOf(showClose))%>
+                                    <td align="right"><%=showClose%>
                                     </td>
                                 </tr>
 

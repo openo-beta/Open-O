@@ -245,7 +245,7 @@
         }
 
         function showEncounter(encList) {
-            const url2 = '<%=request.getContextPath()%>' + '/CaseManagementEntry.do?method=displayNotes&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>' + encList + '&printCPP=false&printRx=false';
+            const url2 = '<%=request.getContextPath()%>' + '/CaseManagementEntry.do?method=displayNotes&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>' + encList + '&printCPP=false&printRx=false';
 
             // Use an iframe instead of an <object> tag to display encounter notes.
             // An <object type="text/html"> steals focus from the select list when it
@@ -416,16 +416,16 @@
                     }
                 }
 
-                popup(700, 960, '<%=request.getContextPath()%>' + '/CaseManagementEntry.do?method=print&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>' + encList + '&printCPP=false&printRx=false', 'PrintEncounter');
+                popup(700, 960, '<%=request.getContextPath()%>' + '/CaseManagementEntry.do?method=print&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>' + encList + '&printCPP=false&printRx=false', 'PrintEncounter');
             }
         }
 
         function AddTickler() {
-            popup(450, 600, '<%=request.getContextPath()%>/tickler/ForwardDemographicTickler.do?docType=DOC&docId=' + docid + '&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', 'tickler');
+            popup(450, 600, '<%=request.getContextPath()%>/tickler/ForwardDemographicTickler.do?docType=DOC&docId=' + docid + '&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'tickler');
         }
 
         function DocAnnotation() {
-            popup(350, 500, '<%= request.getContextPath() %>/annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', 'anwin');
+            popup(350, 500, '<%= request.getContextPath() %>/annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'anwin');
         }
 
         function DocEdit() {
@@ -437,10 +437,10 @@
             var doctype = selected[0].value.substring(docidindexend + 1, selected[0].value.length);
 
             if (doctype == 'text/html') {
-                popup(450, 600, '<%= request.getContextPath() %>/documentManager/addedithtmldocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forJavaScript(String.valueOf(module))%>&functionid=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', 'EditDoc');
+                popup(450, 600, '<%= request.getContextPath() %>/documentManager/addedithtmldocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'EditDoc');
             } else {
 
-                popup(350, 500, '<%= request.getContextPath() %>/documentManager/editDocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forJavaScript(String.valueOf(module))%>&functionid=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', 'EditDoc');
+                popup(350, 500, '<%= request.getContextPath() %>/documentManager/editDocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'EditDoc');
             }
         }
 

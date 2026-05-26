@@ -2504,7 +2504,7 @@ and other liscences (MIT, LGPL etc) as indicated
                 <input name="DefaultCheckmark" id="DefaultCheckmark" type="checkbox" style="display:none"><span
                         style="display:none"><fmt:setBundle basename="oscarResources"/><fmt:message key="eFormGenerator.miscCheckmarksDraw"/></span>
             </p>
-            <p <%=Encode.forHtml(String.valueOf(eformGeneratorIndivicaFaxEnabled ? "" : "style=\"display: none;\""))%>>
+            <p <%=eformGeneratorIndivicaFaxEnabled ? "" : "style=\"display: none;\""%>>
                 <span class='h2'><fmt:setBundle basename="oscarResources"/><fmt:message key="eFormGenerator.fax"/></span><br>
                 <input name="includeFaxControl" id="includeFaxControl" type="checkBox"><fmt:setBundle basename="oscarResources"/><fmt:message key="eFormGenerator.faxDescription"/><br>
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="eFormGenerator.faxnumber"/>: <input type="text" name="faxno" id="faxno"

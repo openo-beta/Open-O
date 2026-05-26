@@ -166,12 +166,12 @@
                 if (strForm.toLowerCase().compareTo("form") == 0 && st.hasMoreTokens()) {
                     strTemplateURL = "template" + (new String(st.nextToken())).trim().toLowerCase() + ".jsp";
             %> <a href=#
-                  onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=Encode.forJavaScript(String.valueOf(e.getId()))%>&dboperation=search_encountersingle&displaymodevariable=<%=Encode.forJavaScript(String.valueOf(strTemplateURL))%>&displaymode=vary&bNewForm=0')"><%=Encode.forHtml(String.valueOf(e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()))%>
+                  onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=Encode.forUriComponent(String.valueOf(e.getId()))%>&dboperation=search_encountersingle&displaymodevariable=<%=Encode.forUriComponent(String.valueOf(strTemplateURL))%>&displaymode=vary&bNewForm=0')"><%=Encode.forHtml(String.valueOf(e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()))%>
             </a></font><br>
                 <%
                 } else if (strForm.compareTo("") != 0) {
                 %> <a href=#
-                      onClick="popupPage(400,600,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=Encode.forJavaScript(String.valueOf(e.getId()))%>&template=<%=Encode.forJavaScript(String.valueOf(strForm))%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=Encode.forHtml(String.valueOf(e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()))%>
+                      onClick="popupPage(400,600,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=Encode.forUriComponent(String.valueOf(e.getId()))%>&template=<%=Encode.forUriComponent(String.valueOf(strForm))%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=Encode.forHtml(String.valueOf(e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()))%>
             </a></font><br>
                 <%
                         }

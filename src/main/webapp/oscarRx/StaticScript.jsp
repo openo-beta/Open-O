@@ -104,7 +104,7 @@
                     brandName);
 
                 if (favoriteName !== null && favoriteName.length > 0) {
-                    var s = encodeURIComponent('?regionalIdentifier=<%=Encode.forJavaScript(regionalIdentifier != null ? regionalIdentifier : "")%>&cn=<%=Encode.forJavaScript(cn != null ? cn : "")%>');
+                    var s = encodeURIComponent('?regionalIdentifier=<%=Encode.forUriComponent(regionalIdentifier != null ? regionalIdentifier : "")%>&cn=<%=Encode.forUriComponent(cn != null ? cn : "")%>');
 
                     window.location.href = '<%=request.getContextPath() %>/oscarRx/addFavoriteStaticScript.do?drugId='
                         + encodeURIComponent(drugId) + '&favoriteName=' + encodeURIComponent(favoriteName)
@@ -181,7 +181,7 @@
                                         %>
                                         <input type="button" value="Annotation" title="Annotation" style="width: 55px"
                                                class="ControlPushButton"
-                                               onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(drug.localDrugId))%>&demo=<%=Encode.forJavaScript(String.valueOf(currentDemographicNo))%>','anwin','width=400,height=500');">
+                                               onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&table_id=<%=Encode.forUriComponent(String.valueOf(drug.localDrugId))%>&demo=<%=Encode.forUriComponent(String.valueOf(currentDemographicNo))%>','anwin','width=400,height=500');">
                                         <%
                                             }
                                         %>
