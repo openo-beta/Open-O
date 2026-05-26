@@ -179,6 +179,14 @@
 
     notesIncrement = parseInt("<%=OscarProperties.getInstance().getProperty("num_loaded_notes", "20") %>");
 
+    function openTemplate(value) {
+        if (value === "-1") return;
+        var url = (value === "__new__")
+            ? ctx + "/admin/providertemplate.jsp"
+            : ctx + "/admin/providertemplate.jsp?dboperation=Edit&name=" + encodeURIComponent(value);
+        popupPage(700, 700, "Templates", url);
+    }
+
     jQuery(document).ready(function () {
         notesLoader(0, notesIncrement, demographicNo);
         notesScrollCheckInterval = setInterval('notesIncrementAndLoadMore()', 1000);
@@ -478,11 +486,11 @@
                 </security:oscarSec>
 
                 <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="r">
-                <select onchange="javascript:popupPage(700,700,'Templates',this.value);">
+                <select onchange="openTemplate(this.value);">
                     <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.Templates"/></option>
                     <option value="-1">------------------</option>
                     <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="w">
-                        <option value="<%=request.getContextPath()%>/admin/providertemplate.jsp">New / Edit Template
+                        <option value="__new__">New / Edit Template
                         </option>
                         <option value="-1">------------------</option>
                     </security:oscarSec>
@@ -493,7 +501,7 @@
                         for (EncounterTemplate encounterTemplate : allTemplates) {
                             String templateName = encounterTemplate.getEncounterTemplateName();
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(request.getContextPath()+"/admin/providertemplate.jsp?dboperation=Edit&name="+Encode.forUriComponent(templateName))%>"><%=Encode.forHtml(templateName)%>
+                    <option value="<%=Encode.forHtmlAttribute(templateName)%>"><%=Encode.forHtmlContent(templateName)%>
                     </option>
                     <%
                         }
