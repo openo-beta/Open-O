@@ -424,7 +424,7 @@ public class Document extends AbstractModel<Integer> implements Serializable {
      * @returns a string representing the path of the file on disk, i.e. document_dir+'/'+filename
      */
     public String getDocumentFileFullPath() {
-        File docDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+        File docDir = new File(OscarProperties.getInstance().getDocumentDirectory());
         File validatedFile = PathValidationUtils.validatePath(this.docfilename, docDir);
         return validatedFile.getPath();
     }

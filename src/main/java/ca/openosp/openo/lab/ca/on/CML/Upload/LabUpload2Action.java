@@ -109,7 +109,7 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
                     // Validate the localFileName path using PathValidationUtils
                     File localFile = new File(localFileName);
                     OscarProperties props = OscarProperties.getInstance();
-                    String documentDir = props.getProperty("DOCUMENT_DIR");
+                    String documentDir = props.getDocumentDirectory();
                     if (documentDir != null) {
                         try {
                             File docDirFile = new File(documentDir);
@@ -179,7 +179,7 @@ public class LabUpload2Action extends ActionSupport implements UploadedFilesAwar
         try {
             OscarProperties props = OscarProperties.getInstance();
             //properties must exist
-            String place = props.getProperty("DOCUMENT_DIR");
+            String place = props.getDocumentDirectory();
 
             if (!place.endsWith("/"))
                 place = new StringBuilder(place).insert(place.length(), "/").toString();

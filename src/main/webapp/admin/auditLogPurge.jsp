@@ -133,7 +133,7 @@
 
                 String outputDirectory = OscarProperties.getInstance().getProperty("log.purge.outputdir");
                 if (outputDirectory == null) {
-                    outputDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+                    outputDirectory = OscarProperties.getInstance().getDocumentDirectory();
                 }
 
             %>

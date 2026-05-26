@@ -252,7 +252,7 @@ Clcr = {(140 - <%=Encode.forHtml(String.valueOf(age))%> ) X <%=Encode.forHtml(St
             <tr>
                 <td align="center" style="border-top: 2px black solid;"><%=Encode.forHtml(String.valueOf(setNA(sCrb, sCr)))%> sCr
                     <a href="javascript: function myFunction() {return false; }"
-                       onclick="popup(500,1000,'<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Renal Dosing&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>','dddsfds'); return false;">
+                       onclick="popup(500,1000,'<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Renal Dosing&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>','dddsfds'); return false;">
                         [umol/L <%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(sCrDate, "yyyy-MMM-dd")))%>]
                     </a>
                 </td>

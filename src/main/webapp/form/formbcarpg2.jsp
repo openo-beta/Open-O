@@ -931,7 +931,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="ID" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
-        <input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+        <input type="hidden" name="provider_no" value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
         <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
 

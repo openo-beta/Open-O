@@ -73,7 +73,7 @@
 <br>
 <xml id="xml_list">
     <encounter>
-        <%=Encode.forHtml(String.valueOf(content))%>
+        <%=content%>
     </encounter>
 </xml>
 <%
@@ -112,7 +112,7 @@
 %>
 
 <center><input type="button" value="Print Preview"
-               onClick="popupPage(600,800, 'providerencounterprint.jsp?encounter_no=<%=Encode.forJavaScript(request.getParameter("encounter_no"))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&username=<%=Encode.forJavaScript(request.getParameter("username"))%>')">
+               onClick="popupPage(600,800, 'providerencounterprint.jsp?encounter_no=<%=Encode.forUriComponent(request.getParameter("encounter_no"))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&username=<%=Encode.forUriComponent(request.getParameter("username"))%>')">
     <input type="button" value="Close this window" onClick="self.close()">
 </center>
 </body>

@@ -316,7 +316,7 @@
                         <td><select name="sex" id="sex">
                             <option value=""></option>
                             <% for (Gender gn : Gender.values()) { %>
-                            <option value=<%=gn.name()%> <%=Encode.forHtml(String.valueOf(((provider.getSex() != null && provider.getSex().toUpperCase().equals(gn.name())) ? "selected" : "")))%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
+                            <option value="<%=gn.name()%>" <%=Encode.forHtml(String.valueOf(((provider.getSex() != null && provider.getSex().toUpperCase().equals(gn.name())) ? "selected" : "")))%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
                             </option>
                             <% } %>
                         </select>
@@ -555,7 +555,7 @@
                                     billCode = (String) keys.nextElement();
                                     codeDesc = billCenter.getAllBillCenter().getProperty(billCode);
                             %>
-                            <option value=<%= billCode %>
+                            <option value="<%= billCode %>"
                                     <%=currentBillCode.compareTo(billCode) == 0 ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(codeDesc))%>
                             </option>
                             <%

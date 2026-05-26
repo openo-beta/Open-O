@@ -413,4 +413,15 @@ public class HRMUtil {
             hrmDocumentToProviderDao.remove(existingUnmatched.getId());
         }
     }
+
+    /**
+     * Returns the subset of the given HRM document IDs that are linked to the specified patient.
+     *
+     * @param demographicNo the patient's demographic number
+     * @param hrmIds        the list of HRM document IDs to check
+     * @return List of HRM document IDs that belong to the patient
+     */
+    public static List<Integer> findHRMDocumentIdsForPatient(Integer demographicNo, List<Integer> hrmIds) {
+        return hrmDocumentToDemographicDao.findHrmIdsForDemographic(demographicNo, hrmIds);
+    }
 }

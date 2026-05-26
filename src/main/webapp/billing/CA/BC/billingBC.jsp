@@ -1012,7 +1012,7 @@
             });
 
             jQuery(document).on('change', '#xml_provider', function () {
-                let url = '${pageContext.servletContext.contextPath}/billing.do?demographic_no=' + '<%=Encode.forUriComponent(bean.getPatientNo())%>' + '&appointment_no=' + '<%=Encode.forUriComponent(bean.getApptNo())%>' + '&apptProvider_no=' + '<%=Encode.forUriComponent(bean.getApptProviderNo())%>' + '&demographic_name=' + '<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.getPatientName(), StandardCharsets.UTF_8)))%>' + '&billRegion=BC&xml_provider=' + this.value;
+                let url = '${pageContext.servletContext.contextPath}/billing.do?demographic_no=' + '<%=Encode.forUriComponent(bean.getPatientNo())%>' + '&appointment_no=' + '<%=Encode.forUriComponent(bean.getApptNo())%>' + '&apptProvider_no=' + '<%=Encode.forUriComponent(bean.getApptProviderNo())%>' + '&demographic_name=' + '<%=Encode.forUriComponent(bean.getPatientName())%>' + '&billRegion=BC&xml_provider=' + this.value;
 
                 jQuery("#billingPatientInfoWrapper").load(url + " #billingPatientInfo", function () {
                     // re-bind all the javascript
@@ -1032,7 +1032,7 @@
             /* New billing form selection method*/
             jQuery(document).on('change', "#selectBillingForm", function () {
                 let selectedValue = this.value;
-                let url = ctx + '/billing.do?demographic_no=' + '<%=Encode.forUriComponent(bean.getPatientNo())%>' + '&appointment_no=' + '<%=Encode.forUriComponent(bean.getApptNo())%>' + '&apptProvider_no=' + '<%=Encode.forUriComponent(bean.getApptProviderNo())%>' + '&demographic_name=' + '<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(bean.getPatientName(), StandardCharsets.UTF_8)))%>' + '&xml_provider=none&billRegion=BC&billForm=' + selectedValue;
+                let url = ctx + '/billing.do?demographic_no=' + '<%=Encode.forUriComponent(bean.getPatientNo())%>' + '&appointment_no=' + '<%=Encode.forUriComponent(bean.getApptNo())%>' + '&apptProvider_no=' + '<%=Encode.forUriComponent(bean.getApptProviderNo())%>' + '&demographic_name=' + '<%=Encode.forUriComponent(bean.getPatientName())%>' + '&xml_provider=none&billRegion=BC&billForm=' + selectedValue;
                 jQuery("#billingFormTableWrapper").load(url + " #billingFormTable", function () {
                     // if the selected billing type is private, then change the billing type to private
                     if (selectedValue === 'PRI') {
@@ -1295,13 +1295,13 @@
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="x">
         <button type="button" class="btn btn-link" title="View this patient's Electronic Chart"
-                onclick="popup(710, 1024,'${pageContext.servletContext.contextPath}/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&appointmentNo=&demographicNo=<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>&curProviderNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&reason=&encType=face+to+face+encounter+with+client&userName=&curDate=<%=Encode.forJavaScript(String.valueOf(new Date().toString()))%>&appointmentDate=&startTime=&status=&apptProvider_no=&providerview=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>','encounter', 12556);return false;">
+                onclick="popup(710, 1024,'${pageContext.servletContext.contextPath}/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forUriComponent(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&appointmentNo=&demographicNo=<%=Encode.forUriComponent(String.valueOf(demo.getDemographicNo()))%>&curProviderNo=<%=Encode.forUriComponent(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&reason=&encType=face+to+face+encounter+with+client&userName=&curDate=<%=Encode.forUriComponent(String.valueOf(new Date().toString()))%>&appointmentDate=&startTime=&status=&apptProvider_no=&providerview=<%=Encode.forUriComponent(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>','encounter', 12556);return false;">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.patient.encounter"/>
         </button>
     </security:oscarSec>
 
     <button type="button" class="btn btn-link" title="View previous invoices for this patient"
-            onclick="popup(800, 1000, 'billStatus.jsp?lastName=<%=Encode.forJavaScript(String.valueOf(demo.getLastName()))%>&firstName=<%=Encode.forJavaScript(String.valueOf(demo.getFirstName()))%>&filterPatient=true&demographicNo=<%=Encode.forJavaScript(String.valueOf(demo.getDemographicNo()))%>','InvoiceList');return false;">
+            onclick="popup(800, 1000, 'billStatus.jsp?lastName=<%=Encode.forUriComponent(String.valueOf(demo.getLastName()))%>&firstName=<%=Encode.forUriComponent(String.valueOf(demo.getFirstName()))%>&filterPatient=true&demographicNo=<%=Encode.forUriComponent(String.valueOf(demo.getDemographicNo()))%>','InvoiceList');return false;">
         <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgInvoiceList"/>
     </button>
 

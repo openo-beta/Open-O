@@ -156,10 +156,10 @@
             <tr>
 
                 <td><a href="javascript:void()"
-                       onClick="popupPage(800,1000,'<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(demographic.getFormattedName()))%>
+                       onClick="popupPage(800,1000,'<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(demographic.getFormattedName()))%>
                     <br/><%=Encode.forHtml(String.valueOf(demographic.getFormattedDob()))%><br/></a></td>
                 <td><a href="javascript:void()"
-                       onClick="popupPage(600,1000,'<%=request.getContextPath()%>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>')"><%=Encode.forHtml(String.valueOf(a.getDescription()))%>
+                       onClick="popupPage(600,1000,'<%=request.getContextPath()%>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>')"><%=Encode.forHtml(String.valueOf(a.getDescription()))%>
                 </a></td>
                 <td>
                     <input type="radio" name="nonDrug_<%=Encode.forHtmlAttribute(String.valueOf(a.getId()))%>" value="false">Drug &nbsp;&nbsp;

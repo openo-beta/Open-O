@@ -843,10 +843,10 @@
                     <input type="hidden" name="uuid" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getId()))%>"/>
 
                     <input type="submit"
-                           value="Submit" <%=Encode.forHtml(String.valueOf((!validationErrors.isEmpty()) ? " disabled=\"disabled\" " : ""))%>/>
+                           value="Submit" <%=(!validationErrors.isEmpty()) ? " disabled=\"disabled\" " : ""%>/>
                     &nbsp;&nbsp;
                     <input type="button" value="Edit Prevention"
-                           onClick="window.location.href='<%=request.getContextPath()%>/oscarPrevention/AddPreventionData.jsp?id=<%=Encode.forJavaScript(String.valueOf(preventionId))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>'"/>
+                           onClick="window.location.href='<%=request.getContextPath()%>/oscarPrevention/AddPreventionData.jsp?id=<%=Encode.forUriComponent(String.valueOf(preventionId))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>'"/>
                     &nbsp;&nbsp;
                     <input type="button" value="Cancel" onClick="window.close()"/>
                 </form>

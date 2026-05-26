@@ -97,7 +97,7 @@ int rCount = 0;
     for (CtlBillingService cbs:cbss1) {
 %><tr>
 				<td width="23%" valign="top" class="black"><a href=#
-					onClick='onUnbilled("dbManageBillingform_delete.jsp?servicetype=<%=Encode.forJavaScript(String.valueOf(cbs.getServiceType()))%>");return false;'
+					onClick='onUnbilled("dbManageBillingform_delete.jsp?servicetype=<%=Encode.forUriComponent(String.valueOf(cbs.getServiceType()))%>");return false;'
 					title="Delete Billing Form"><%=Encode.forHtml(String.valueOf(cbs.getServiceType()))%></a></td>
 				<td width="77%" class="black"><%=Encode.forHtml(String.valueOf(cbs.getServiceTypeName()))%></td>
 			</tr>

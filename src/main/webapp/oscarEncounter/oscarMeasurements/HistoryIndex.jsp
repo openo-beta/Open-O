@@ -80,7 +80,7 @@
         </ul>
     </div>
 <% } %>
-    <%=Encode.forHtml(String.valueOf(WebUtils.popErrorAndInfoMessagesAsHtml(session)))%>
+    <%=WebUtils.popErrorAndInfoMessagesAsHtml(session)%>
 
     <div style="display:inline-block; text-align:center">
         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.oldmesurementindex"/>

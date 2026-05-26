@@ -56,7 +56,7 @@ if(bs==null) {
 			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(reason))%></font></b></TD>
 		<TD width="10%"><b> <font size="2"
 			face="Arial, Helvetica, sans-serif"><a href=#
-			onClick='popupPage(700,1000, "billingOB.jsp?billForm=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(oscarVariables.getProperty("default_view"))))%>&hotclick=&appointment_no=<%=Encode.forJavaScript(String.valueOf(apptNo))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demoName)))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&user_no=<%=Encode.forJavaScript(String.valueOf(userno))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(providerview))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(apptDate))%>&start_time=<%=Encode.forJavaScript(String.valueOf(apptTime))%>&bNewForm=1")'
+			onClick='popupPage(700,1000, "billingOB.jsp?billForm=<%=Encode.forUriComponent(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=&appointment_no=<%=Encode.forUriComponent(String.valueOf(apptNo))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoName))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&user_no=<%=Encode.forUriComponent(String.valueOf(userno))%>&apptProvider_no=<%=Encode.forUriComponent(String.valueOf(providerview))%>&appointment_date=<%=Encode.forUriComponent(String.valueOf(apptDate))%>&start_time=<%=Encode.forUriComponent(String.valueOf(apptTime))%>&bNewForm=1")'
 			title="<%=Encode.forHtmlAttribute(String.valueOf(reason))%>">Bill |$|</a></font></b></TD>
 	</tr>
 	<%

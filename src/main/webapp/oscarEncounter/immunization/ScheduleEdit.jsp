@@ -68,7 +68,7 @@
                     chgRefused(false);
                     setCurrent(frm.givenYear, frm.givenMonth, frm.givenDay);
                     if (frm.provider.value < 1) {
-                        frm.provider.value = <%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>;
+                        frm.provider.value = "<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>";
                     }
 
                     frm.lot.focus();

@@ -164,7 +164,7 @@
                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="r">
                                     <li>
                                         <a HREF="#"
-                                           ONCLICK="popupPage2('<%= request.getContextPath() %>/billing/CA/<%=Encode.forJavaScript(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>');return false;"
+                                           ONCLICK="popupPage2('<%= request.getContextPath() %>/billing/CA/<%=Encode.forUriComponent(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>');return false;"
                                            TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>'
                                            onMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>';return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a>
                                     </li>
@@ -189,7 +189,7 @@
                             <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r">
                                 <li>
                                     <a HREF="#"
-                                       ONCLICK="popupOscarRx(600,1024,'<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(loggedInInfo.getLoggedInProvider().getFirstName()+" "+loggedInInfo.getLoggedInProvider().getLastName(), StandardCharsets.UTF_8)))%>')"
+                                       ONCLICK="popupOscarRx(600,1024,'<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&userName=<%=Encode.forUriComponent(loggedInInfo.getLoggedInProvider().getFirstName()+" "+loggedInInfo.getLoggedInProvider().getLastName())%>')"
                                        title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.messenger"/>">
                                         <span id="oscar_new_msg"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.msg"/></span></a>
                                 </li>
@@ -199,7 +199,7 @@
                             <security:oscarSec roleName="<%=roleName$%>" objectName="_con" rights="r">
                                 <li id="con">
                                     <a HREF="#"
-                                       ONCLICK="popupOscarRx(625,1024,'<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(loggedInInfo.getLoggedInProvider().getFirstName()+" "+loggedInInfo.getLoggedInProvider().getLastName(), StandardCharsets.UTF_8)))%>')"
+                                       ONCLICK="popupOscarRx(625,1024,'<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&userName=<%=Encode.forUriComponent(loggedInInfo.getLoggedInProvider().getFirstName()+" "+loggedInInfo.getLoggedInProvider().getLastName())%>')"
                                        title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewConReq"/>">
                                         <span id="oscar_aged_consults"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.con"/></span></a>
                                 </li>
@@ -219,7 +219,7 @@
                             <security:oscarSec roleName="<%=roleName$%>" objectName="_edoc" rights="r">
                                 <li>
                                     <a HREF="#"
-                                       onclick="popup('700', '1024', '<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&curUser=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>', 'edocView');"
+                                       onclick="popup('700', '1024', '<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&curUser=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>', 'edocView');"
                                        TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="global.edoc"/></a>
                                 </li>
                             </security:oscarSec>
@@ -312,7 +312,7 @@
 
                                     <div class="help-body">
 
-                                        <%=Encode.forHtml(String.valueOf(resourcehelpHtml))%>
+                                        <%=resourcehelpHtml%>
                                     </div>
                                     <a href="javascript:void(0)" class="help-close"
                                        onclick="document.getElementById('helpHtml').style.right='-280px';document.getElementById('helpHtml').style.display='none'">(X)</a>
@@ -341,7 +341,7 @@
                 <li>
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_pref" rights="r">
                     <a href="javascript:void(0)"
-                       onClick="popupPage(715,680,'providerpreference.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>')"
+                       onClick="popupPage(715,680,'providerpreference.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>')"
                        title='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>'>
 
                         </security:oscarSec>
@@ -371,7 +371,7 @@
         src="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui-1.12.1.min.js"></script>
 <script>
     const contextPath = document.getElementById("contextPath").value;
-    const originalInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>');return false;";
+    const originalInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>');return false;";
     const newInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/www/inboxhub/Inboxhub.do?method=displayInboxForm', 800);return false;";
 
     const originalUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=0&searchProviderNo=0&status=N&lname=&fname=&hnum=&pageNum=1&startIndex=0');return false;";

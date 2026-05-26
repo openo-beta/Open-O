@@ -341,7 +341,7 @@
 
         <SCRIPT LANGUAGE="JavaScript">
 
-            var isCvc = <%=Encode.forJavaScript(String.valueOf(isCvc))%>;
+            var isCvc = <%=isCvc%>;
 
             function showHideItem(id) {
                 if (document.getElementById(id).style.display == 'none')
@@ -811,7 +811,7 @@
                             <textarea name="summary" readonly><%=Encode.forHtml(String.valueOf(summary))%></textarea>
                             <%if (hasImportExtra) { %>
                             <a href="javascript:void(0);" title="Extra data from Import"
-                               onclick="window.open('<%= request.getContextPath() %>/annotation/importExtra.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(String.valueOf(id))%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>','anwin','width=400,height=250');">
+                               onclick="window.open('<%= request.getContextPath() %>/annotation/importExtra.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(String.valueOf(id))%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>','anwin','width=400,height=250');">
                                 <img src="<%= request.getContextPath() %>/images/notes.gif" align="right" alt="Extra data from Import" height="16"
                                      width="13" border="0"> </a>
                             <%} %>

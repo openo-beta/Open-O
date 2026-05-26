@@ -179,13 +179,13 @@
                                                                     value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                                                                     onClick="window.print()"> <% if (lab.getDemographicNo() != null && !lab.getDemographicNo().equals("") && !lab.getDemographicNo().equalsIgnoreCase("null")) { %>
                             <input type="button" value="Msg"
-                                   onclick="popup(700,960,'${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>','msg')"/>
+                                   onclick="popup(700,960,'${pageContext.request.contextPath}/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(lab.getDemographicNo()))%>','msg')"/>
                             <input type="button" value="Tickler"
-                                   onclick="popup(450,600,'${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>','tickler')"/>
+                                   onclick="popup(450,600,'${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(lab.getDemographicNo()))%>','tickler')"/>
                             <% } %> <% if (request.getParameter("searchProviderNo") != null) { // we were called from e-chart %>
                             <input type="button"
                                    value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&name=<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(lab.pLastName+", "+lab.pFirstName )))%>', 'searchPatientWindow')">
+                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&name=<%=Encode.forUriComponent(String.valueOf(lab.pLastName+", "+lab.pFirstName ))%>', 'searchPatientWindow')">
                             <% } %>
                             <input type="button" value="Req# <%=Encode.forHtmlAttribute(String.valueOf(reqTableID))%>" title="Link to Requisition"
                                    onclick="linkreq('<%=Encode.forJavaScript(String.valueOf(segmentID))%>','<%=Encode.forJavaScript(String.valueOf(reqID))%>');"/>
@@ -582,7 +582,7 @@
                         </td>
                         <td align="center" valign="top">
                             <a href="javascript:void(0);" title="Annotation"
-                               onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>&amp;other_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(i) + "-" + String.valueOf(l)))%>','anwin','width=400,height=500');">
+                               onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(lab.getDemographicNo()))%>&amp;other_id=<%=Encode.forUriComponent(String.valueOf(String.valueOf(i) + "-" + String.valueOf(l)))%>','anwin','width=400,height=500');">
                                 <%if (!isPrevAnnotation) { %><img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation"
                                                                   height="16" width="13" border="0"/><%} else { %><img
                                     src="<%= request.getContextPath() %>/images/filledNotes.gif" alt="rxAnnotation" height="16" width="13"
@@ -632,13 +632,13 @@
                                                                     value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                                                                     onClick="window.print()"> <% if (lab.getDemographicNo() != null && !lab.getDemographicNo().equals("") && !lab.getDemographicNo().equalsIgnoreCase("null")) { %>
                             <input type="button" value="Msg"
-                                   onclick="popup(700,960,'<%=request.getContextPath()%>/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>','msg')"/>
+                                   onclick="popup(700,960,'<%=request.getContextPath()%>/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(lab.getDemographicNo()))%>','msg')"/>
                             <input type="button" value="Tickler"
-                                   onclick="popup(450,600,'${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(lab.getDemographicNo()))%>','tickler')"/>
+                                   onclick="popup(450,600,'${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(lab.getDemographicNo()))%>','tickler')"/>
                             <% } %> <% if (request.getParameter("searchProviderNo") != null) { // we were called from e-chart %>
                             <input type="button"
                                    value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%=Encode.forJavaScript(String.valueOf(segmentID))%>&name=<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(lab.pLastName+", "+lab.pFirstName )))%>', 'searchPatientWindow')">
+                                   onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=CML&segmentID=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&name=<%=Encode.forUriComponent(String.valueOf(lab.pLastName+", "+lab.pFirstName ))%>', 'searchPatientWindow')">
                             <% } %>
                         </td>
                         <td width="50%" valign="center" align="left"><span

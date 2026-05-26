@@ -104,7 +104,7 @@
     function popUpMsg(vheight, vwidth, msgPosition) {
 
 
-        var page = "<%=Encode.forJavaScript(String.valueOf(session.getAttribute("casemgmt_oscar_baseurl")))%>" + "/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&messagePosition=" + msgPosition;
+        var page = "<%=Encode.forJavaScript(String.valueOf(session.getAttribute("casemgmt_oscar_baseurl")))%>" + "/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&messagePosition=" + msgPosition;
         windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
         var popup = window.open(page, "", windowprops);
         if (popup != null) {
@@ -204,7 +204,7 @@
 
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&displaymode=edit&dboperation=search_detail');return false;">Master</a>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&displaymode=edit&dboperation=search_detail');return false;">Master</a>
                         </td>
                     </tr>
 
@@ -217,13 +217,13 @@
                     <% if (bean.status.indexOf('B') == -1) { %>
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/billing.do?billRegion=<%=Encode.forJavaScript(String.valueOf(province))%>&billForm=<%=Encode.forJavaScript(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(""))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>&appointment_date=<%=Encode.forJavaScript(String.valueOf(bean.appointmentDate))%>&start_time=<%=Encode.forJavaScript(String.valueOf(Hour+":"+Min))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(java.net.URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerview=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&user_no=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&apptProvider_no=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>&bNewForm=1&status=t');return false;">Billing</a>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/billing.do?billRegion=<%=Encode.forUriComponent(String.valueOf(province))%>&billForm=<%=Encode.forUriComponent(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(String.valueOf(bean.appointmentNo))%>&appointment_date=<%=Encode.forUriComponent(String.valueOf(bean.appointmentDate))%>&start_time=<%=Encode.forUriComponent(String.valueOf(Hour+":"+Min))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(bean.patientLastName+","+bean.patientFirstName))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerview=<%=Encode.forUriComponent(String.valueOf(bean.curProviderNo))%>&user_no=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&apptProvider_no=<%=Encode.forUriComponent(String.valueOf(bean.curProviderNo))%>&bNewForm=1&status=t');return false;">Billing</a>
                         </td>
                     </tr>
                     <%} else { %>
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="onUnbilled('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/billing/CA/<%=Encode.forJavaScript(String.valueOf(province))%>/billingDeleteWithoutNo.jsp?appointment_no=<%=Encode.forJavaScript(String.valueOf(bean.appointmentNo))%>');return false;">Billing</a>
+                               onClick="onUnbilled('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/billing/CA/<%=Encode.forUriComponent(String.valueOf(province))%>/billingDeleteWithoutNo.jsp?appointment_no=<%=Encode.forUriComponent(String.valueOf(bean.appointmentNo))%>');return false;">Billing</a>
                         </td>
                     </tr>
                     <%} %>
@@ -238,20 +238,20 @@
 
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">Prescriptions</a>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">Prescriptions</a>
                         </td>
                     </tr>
 
                 </caisirole:SecurityAccess>
 
                 <!-- allergies -->
-                <!-- tr><td><a href="javascript:void(0)" onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarRx/ShowAllergies.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">Allergies</a></td></tr -->
+                <!-- tr><td><a href="javascript:void(0)" onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarRx/ShowAllergies.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">Allergies</a></td></tr -->
 
 
                 <!-- Consultations -->
                 <tr>
                     <td><a href="javascript:void(0)"
-                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarConsultationRequest/DisplayDemographicConsultationRequests.jsp?de=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">Consultations</a>
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarConsultationRequest/DisplayDemographicConsultationRequests.jsp?de=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">Consultations</a>
                     </td>
                 </tr>
 
@@ -282,7 +282,7 @@
                     <oscar:oscarPropertiesCheck property="PREVENTION" value="yes">
                         <tr>
                             <td><a href="javascript:void(0)"
-                                   onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarPrevention/index.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">
+                                   onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarPrevention/index.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">
                                 <oscar:preventionWarnings
                                         demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>">prevention</oscar:preventionWarnings></a>
                             </td>
@@ -310,7 +310,7 @@
 
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&quickList=');return false;">Disease
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&quickList=');return false;">Disease
                             Registry</a></td>
                     </tr>
                 </caisirole:SecurityAccess>
@@ -322,7 +322,7 @@
                                       demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                 <tr>
                     <td><a href="javascript:void(0)"
-                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/tickler/ticklerAdd.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&name=<%=Encode.forJavaScript(bean.getPatientLastName() +"," + bean.getPatientFirstName())%>');return false;">Add
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/tickler/ticklerAdd.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&name=<%=Encode.forUriComponent(bean.getPatientLastName() +"," + bean.getPatientFirstName())%>');return false;">Add
                         Tickler</a></td>
                 </tr>
             </caisirole:SecurityAccess>
@@ -377,7 +377,7 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/formlist.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>'); return false;">-old
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/formlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>'); return false;">-old
                             forms-</a>
                     </td>
                 </tr>
@@ -404,7 +404,7 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/messenger/SendDemoMessage.do?orderby=date&boxType=3&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&userName=<%=Encode.forJavaScript(String.valueOf(bean.userName))%>'); return false;">New
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/messenger/SendDemoMessage.do?orderby=date&boxType=3&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&userName=<%=Encode.forUriComponent(String.valueOf(bean.userName))%>'); return false;">New
                             Messages</a>
                     </td>
                 </tr>
@@ -413,7 +413,7 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/messenger/DisplayDemographicMessages.do?orderby=date&boxType=3&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&userName=<%=Encode.forJavaScript(String.valueOf(bean.userName))%>'); return false;">-All
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/messenger/DisplayDemographicMessages.do?orderby=date&boxType=3&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&userName=<%=Encode.forUriComponent(String.valueOf(bean.userName))%>'); return false;">-All
                             Messages-</a>
                     </td>
                 </tr>
@@ -444,7 +444,7 @@
                             %>* <% }
                         %>
                             <a href="javascript:void(0)"
-                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&template=<%=Encode.forJavaScript(String.valueOf(flowsheet))%>','flowsheet')"><%=Encode.forHtml(String.valueOf(MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheet)))%>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&template=<%=Encode.forUriComponent(String.valueOf(flowsheet))%>','flowsheet')"><%=Encode.forHtml(String.valueOf(MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheet)))%>
                             </a><br/>
                             <%}%>
                         </td>
@@ -467,7 +467,7 @@
                                 for (String flowsheet : flowsheets) {
                             %>
                             <a href="javascript:void(0)"
-                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&template=<%=Encode.forJavaScript(String.valueOf(flowsheet))%>','flowsheet')"><%=Encode.forHtml(String.valueOf(MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheet)))%>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&template=<%=Encode.forUriComponent(String.valueOf(flowsheet))%>','flowsheet')"><%=Encode.forHtml(String.valueOf(MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheet)))%>
                             </a>
                             <%}%>
 
@@ -518,7 +518,7 @@
             <tr>
                 <td>
                     <a href="javascript:void(0)"
-                       onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&curUser=<%=Encode.forJavaScript(String.valueOf(bean.curProviderNo))%>');return false;">documents</a><br>
+                       onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&curUser=<%=Encode.forUriComponent(String.valueOf(bean.curProviderNo))%>');return false;">documents</a><br>
                 </td>
             </tr>
 
@@ -529,7 +529,7 @@
                     <tr>
                         <td>
                             <a href="javascript:void(0)"
-                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/eform/efmpatientformlist.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">E-Forms</a><br>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/eform/efmpatientformlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">E-Forms</a><br>
                         </td>
                     </tr>
                 </caisirole:SecurityAccess>
@@ -540,7 +540,7 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/tickler/ticklerMain.jsp?demoview=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">View
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/tickler/ticklerMain.jsp?demoview=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">View
                             Tickler</a><br>
                     </td>
                 </tr>
@@ -550,7 +550,7 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/calculators.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>'); return false;">calculators</a><br>
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/calculators.jsp?sex=<%=Encode.forUriComponent(String.valueOf(bean.patientSex))%>&age=<%=Encode.forUriComponent(String.valueOf(pAge))%>'); return false;">calculators</a><br>
                     </td>
                 </tr>
 

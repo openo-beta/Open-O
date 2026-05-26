@@ -63,7 +63,7 @@
         co_total = SxmlMisc.getXmlContent(rh.getContent(), "<xml_co_total>", "</xml_co_total>");
     }
 
-    filepath = oscarVariables.getProperty("DOCUMENT_DIR").trim();
+    filepath = oscarVariables.getDocumentDirectory();
     FileInputStream file = new FileInputStream(filepath + filename);
     InputStreamReader reader = new InputStreamReader(file);
     BufferedReader input = new BufferedReader(reader);

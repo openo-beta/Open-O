@@ -111,7 +111,7 @@ for pre-populating data.
                     <%
                         for (ProfessionalSpecialist professionalSpecialist : SendOruR01UIBean.getRemoteCapableProfessionalSpecialists()) {
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(professionalSpecialist.getId()))%>" <%=Encode.forHtml(String.valueOf(sendOruR01UIBean.renderSelectedProfessionalSpecialistOption(professionalSpecialist.getId())))%> ><%=Encode.forHtml(String.valueOf(SendOruR01UIBean.getProfessionalSpecialistDisplayString(professionalSpecialist)))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(professionalSpecialist.getId()))%>" <%=sendOruR01UIBean.renderSelectedProfessionalSpecialistOption(professionalSpecialist.getId())%> ><%=Encode.forHtml(String.valueOf(SendOruR01UIBean.getProfessionalSpecialistDisplayString(professionalSpecialist)))%>
                     </option>
                     <%
                         }
@@ -164,7 +164,7 @@ for pre-populating data.
                     <%
                         for (Gender gender : Gender.values()) {
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(gender.name()))%>" <%=Encode.forHtml(String.valueOf(sendOruR01UIBean.renderSelectedGenderOption(gender)))%> ><%=Encode.forHtml(String.valueOf(gender.getText()))%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(gender.name()))%>" <%=sendOruR01UIBean.renderSelectedGenderOption(gender)%> ><%=Encode.forHtml(String.valueOf(gender.getText()))%>
                     </option>
                     <%
                         }

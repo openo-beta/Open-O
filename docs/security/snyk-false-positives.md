@@ -40,7 +40,7 @@ The verdict and "why it's safe" text below is authored for human readability wit
 
 **Scan date:** 2026-04-09
 **Branch:** `security/phase-2-pt-remediation`
-**Total findings:** 19 (6 HIGH, 12 MEDIUM, 1 LOW)
+**Total findings:** 17 (6 HIGH, 10 MEDIUM, 1 LOW)
 **Genuine vulnerabilities:** 0 (all resolved in prior commits on this branch)
 
 ### Root cause of false positives
@@ -197,20 +197,7 @@ All are CXF-generated standalone clients with `public static void main(String[] 
 
 ---
 
-#### 13-14. Database import CLI utilities (2 findings)
-
-| File | Line | Fingerprint |
-|------|------|-------------|
-| `importCPP.java` | 18 | `88617fb6...` |
-| `importCasemgmt.java` | 55 | `ea63215b...` |
-
-**Verdict:** **Not applicable — CLI tools in `database/mysql/`, not web-exposed**
-
-Same pattern as above. Both are standalone `main()` programs that accept a properties file path from the command line. Operator-controlled input.
-
----
-
-#### 15-16. EFormExportZip.java (2 findings)
+#### 13-14. EFormExportZip.java (2 findings)
 
 | File | Line | Fingerprint |
 |------|------|-------------|
@@ -223,7 +210,7 @@ These lines are downstream of `PathValidationUtils.validatePath()` calls at line
 
 ---
 
-#### 17-18. PathNetController.java (2 findings)
+#### 15-16. PathNetController.java (2 findings)
 
 | File | Line | Fingerprint |
 |------|------|-------------|
@@ -238,7 +225,7 @@ Standalone `main()` program for BC PathNet lab integration. Reads a properties f
 
 ### LOW findings
 
-#### 19. LabPDFCreatorTest.java:150
+#### 17. LabPDFCreatorTest.java:150
 
 | Field | Value |
 |-------|-------|

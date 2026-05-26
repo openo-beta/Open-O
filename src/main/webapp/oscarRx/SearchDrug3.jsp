@@ -792,7 +792,7 @@
     function completeMedRec() {
       let ok = confirm("Are you sure you would like to mark the Med Rec as complete?");
       if (ok) {
-        let url = ctx + "/oscarRx/completeMedRec.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(rxSessionBean.getDemographicNo()))%>";
+        let url = ctx + "/oscarRx/completeMedRec.jsp?demographicNo=<%=Encode.forUriComponent(String.valueOf(rxSessionBean.getDemographicNo()))%>";
         let data;
         new Ajax.Request(url, {
           method: 'get', parameters: data, onSuccess: function (transport) {
@@ -1091,7 +1091,7 @@
 <body class="yui-skin-sam">
 
 <div id="searchDrug3Wrapper">
-  <%=Encode.forHtml(String.valueOf(WebUtils.popErrorAndInfoMessagesAsHtml(session)))%>
+  <%=WebUtils.popErrorAndInfoMessagesAsHtml(session)%>
   <table id="AutoNumber1">
     <%@ include file="TopLinks2.jspf" %><!-- Row On included here-->
     <tr>
@@ -2162,8 +2162,8 @@
 
   //represcribe long term meds
   function RePrescribeLongTerm() {
-    let demoNo = '<%=Encode.forJavaScript(String.valueOf(demoNo))%>';
-    let data = "demoNo=" + demoNo + "&showall=<%=Encode.forJavaScript(String.valueOf(showall))%>&rand=" + Math.floor(Math.random() * 10001);
+    let demoNo = '<%=Encode.forJavaScript(String.valueOf(patient.getDemographicNo()))%>';
+    let data = "demoNo=" + demoNo + "&showall=<%=Encode.forUriComponent(String.valueOf(showall))%>&rand=" + Math.floor(Math.random() * 10001);
     let url = ctx + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
     new Ajax.Updater('rxText', url, {
       method: 'get',
@@ -2312,7 +2312,7 @@
       let ele = $(textId);
       let url = ctx + "/oscarRx/TreatmentMyD.jsp"
       let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&cond=" + encodeURIComponent(ele.value) + "&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&cond=" + encodeURIComponent(ele.value) + "&rand=" + ran_number;
       new Ajax.Updater(id, url, {
         method: 'get',
         parameters: params,
@@ -3246,7 +3246,7 @@
         function getRenalDosingInformation(divId, atcCode) {
       let url = "<%= request.getContextPath() %>/oscarRx/RenalDosing.jsp";
             let ran_number = Math.round(Math.random() * 1000000);
-      let params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&atcCode=" + encodeURIComponent(atcCode) + "&divId=" + divId + "&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&atcCode=" + encodeURIComponent(atcCode) + "&divId=" + divId + "&rand=" + ran_number;
             new Ajax.Updater(divId, url, {
                 method: 'get',
                 parameters: params,

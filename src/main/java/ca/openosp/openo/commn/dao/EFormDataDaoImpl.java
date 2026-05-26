@@ -6,6 +6,7 @@ package ca.openosp.openo.commn.dao;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -573,5 +574,17 @@ public class EFormDataDaoImpl extends AbstractDaoImpl<EFormData> implements EFor
             return d;
         }
         return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Integer> findFdidsForDemographic(Integer demographicNo, List<Integer> fdids) {
+        if (fdids == null || fdids.isEmpty()) return Collections.emptyList();
+        Query query = entityManager.createQuery(
+                "SELECT x.id FROM EFormData x " +
+                "WHERE x.demographicId = :demographicNo AND x.id IN :fdids");
+        query.setParameter("demographicNo", demographicNo);
+        query.setParameter("fdids", fdids);
+        return query.getResultList();
     }
 }

@@ -101,7 +101,7 @@
 
     String forwardPage = "viewReconcileReports.jsp";
 
-    filepath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+    filepath = OscarProperties.getInstance().getDocumentDirectory();
 
     FileInputStream file = new FileInputStream(filepath + filename);
     InputStreamReader reader = new InputStreamReader(file);

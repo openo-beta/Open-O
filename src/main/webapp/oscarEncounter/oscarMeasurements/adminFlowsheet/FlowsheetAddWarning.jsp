@@ -78,7 +78,7 @@
                 jQuery.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=saveFlowsheetItemWarning',
                     jQuery('#theForm').serialize(),
                     function (data) {
-                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forJavaScript(String.valueOf(measurementType))%>';
+                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forUriComponent(String.valueOf(measurementType))%>';
                     });
             }
         </script>

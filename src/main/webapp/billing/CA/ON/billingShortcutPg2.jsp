@@ -528,7 +528,7 @@
                                 <tr>
                                     <td nowrap width="30%" align="center" valign="top"><b>Service
                                         Date</b><br>
-                                        <%=Encode.forHtml(request.getParameter("billDate").replaceAll("\\n", "<br>"))%>
+                                        <%=Encode.forHtml(request.getParameter("billDate")).replaceAll("\\n", "<br>")%>
                                     </td>
                                     <td align="center" width="33%"><b>Diagnostic Code</b><br>
                                         <%=Encode.forHtml(request.getParameter("dxCode"))%>
@@ -607,7 +607,7 @@
                 <table border="1" width="50%" bordercolorlight="#99A005"
                        bordercolordark="#FFFFFF">
 
-                    <%=Encode.forHtml(String.valueOf(msg))%>
+                    <%=msg%>
 
                     <tr>
 

@@ -408,7 +408,7 @@
         <tr>
             <td colspan="2">
                 <input type="button" value="Annotation"
-                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?atbname=<%=Encode.forJavaScript(String.valueOf(annotation_attrib))%>&display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(annotation_tableid))%>&demo=<%=Encode.forJavaScript(String.valueOf(moduleid))%>','anwin','width=400,height=500');"/>
+                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?atbname=<%=Encode.forUriComponent(String.valueOf(annotation_attrib))%>&display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&table_id=<%=Encode.forUriComponent(String.valueOf(annotation_tableid))%>&demo=<%=Encode.forUriComponent(String.valueOf(moduleid))%>','anwin','width=400,height=500');"/>
             </td>
         </tr>
         <tr>

@@ -83,7 +83,7 @@ public class HRMFixMissingReportHelper {
                 if (tmpXMLholder.exists()) {
                     continue;
                 }
-                String place = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+                String place = OscarProperties.getInstance().getDocumentDirectory();
                 tmpXMLholder = new File(place + File.separator + hrmReportFileLocation);
 
                 if (tmpXMLholder.exists()) {
