@@ -350,13 +350,17 @@ public class HRM2Action extends ActionSupport {
                 privateKeyDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + ".." + File.separator + "hrm" + File.separator + "OMD" + File.separator;
             }
 
+            int portNum = SFTPConnector.parsePort(port);
+            String privateKeyPath = SFTPConnector.requirePrivateKeyPath(privateKeyDirectory, privateKeyFile);
 
-            connector = new SFTPConnector(LoggedInInfo.getLoggedInInfoFromSession(request), hostname, Integer.parseInt(port), username, privateKeyDirectory + privateKeyFile, "Manual");
+            connector = new SFTPConnector(LoggedInInfo.getLoggedInInfoFromSession(request), hostname, portNum, username, privateKeyPath, "Manual");
             SFTPConnector.setDecryptionKey(decryptionKey);
             connector.startAutoFetch(LoggedInInfo.getLoggedInInfoFromSession(request), remoteDir);
             connector.close();
         } catch (Exception e) {
             error = e.getMessage();
+            logger.error("HRM manual fetch failed", e);
+            SFTPConnector.notifyHrmError(LoggedInInfo.getLoggedInInfoFromSession(request), error);
         }
 
         JSONObject obj = new JSONObject();

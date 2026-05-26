@@ -709,12 +709,30 @@ public class SFTPConnector {
         return results.toArray(new String[results.size()]);
     }
 
-    protected static void notifyHrmError(LoggedInInfo loggedInInfo, String errorMsg) {
+    public static int parsePort(String port) {
+        if (port == null || port.trim().isEmpty()) {
+            throw new IllegalStateException("HRM port is not configured. Set it on the HRM Configuration page.");
+        }
+        try {
+            return Integer.parseInt(port.trim());
+        } catch (NumberFormatException nfe) {
+            throw new IllegalStateException("HRM port '" + port + "' is not a valid number.");
+        }
+    }
+
+    public static String requirePrivateKeyPath(String privateKeyDirectory, String privateKeyFile) {
+        if (privateKeyFile == null || privateKeyFile.trim().isEmpty()) {
+            throw new IllegalStateException("HRM private key file is not configured. Upload one on the HRM Configuration page.");
+        }
+        return privateKeyDirectory + privateKeyFile;
+    }
+
+    public static void notifyHrmError(LoggedInInfo loggedInInfo, String errorMsg) {
         String message = "OSCAR attempted to perform a fetch of HRM data at " + new Date() + " but there was an error during the task.\n\nSee below and HRM log for further details:\n" + errorMsg;
         notifyHrmAdmin(loggedInInfo, "HRM Retrieval Error", message);
     }
 
-    protected static void notifyHrmAdmin(LoggedInInfo loggedInInfo, String subject, String message) {
+    public static void notifyHrmAdmin(LoggedInInfo loggedInInfo, String subject, String message) {
         HashSet<String> sendToProviderList = new HashSet<String>();
 
         if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() != null) {
