@@ -239,12 +239,13 @@ public class ExtractBean implements Serializable {
     }
 
     private String buildHTMLContentTrailer() {
+        String bigTotalStr = String.valueOf(BigTotal);
         htmlContent += "\n<tr><td colspan='8' class='bodytext'>&nbsp;</td></tr><tr><td colspan='4' class='bodytext'>OHIP No: "
                 + Encode.forHtmlContent(String.valueOf(providerNo))
                 + ": "
                 + Encode.forHtmlContent(String.valueOf(pCount))
                 + " RECORDS PROCESSED</td><td colspan='4' class='bodytext'>TOTAL: "
-                + Encode.forHtmlContent(BigTotal.toString().substring(0, BigTotal.toString().length() - 2)) + "\n</td></tr>" + "\n</table>";
+                + Encode.forHtmlContent(bigTotalStr.substring(0, bigTotalStr.length() - 2)) + "\n</td></tr>" + "\n</table>";
         //  writeFile(value);
         String checkSummary = errorMsg.equals("") ? "\n<table border='0' width='100%' bgcolor='green'><tr><td>Pass</td></tr></table>"
                 : "\n<table border='0' width='100%' bgcolor='orange'><tr><td>Please correct the errors and run this simulation again!</td></tr></table>";

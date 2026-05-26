@@ -260,7 +260,7 @@ public class ExtractBean extends Object implements Serializable {
             pCount = pCount + patientCount;
             rCount = rCount + recordCount;
 
-            htmlFooter = "<tr>    <td colspan='11' class='bodytext'>&nbsp;</td>  </tr>  <tr>    <td colspan='5' class='bodytext'>Billing No: " + Encode.forHtmlContent(String.valueOf(providerNo)) + ": " + Encode.forHtmlContent(String.valueOf(pCount)) + " RECORDS PROCESSED</td>    <td colspan='6' class='bodytext'>TOTAL: " + Encode.forHtmlContent(BigTotal.toString()) + "</td>  </tr></table></body></html>";
+            htmlFooter = "<tr>    <td colspan='11' class='bodytext'>&nbsp;</td>  </tr>  <tr>    <td colspan='5' class='bodytext'>Billing No: " + Encode.forHtmlContent(String.valueOf(providerNo)) + ": " + Encode.forHtmlContent(String.valueOf(pCount)) + " RECORDS PROCESSED</td>    <td colspan='6' class='bodytext'>TOTAL: " + Encode.forHtmlContent(String.valueOf(BigTotal)) + "</td>  </tr></table></body></html>";
             htmlCode = htmlContentHeader + htmlContent + htmlFooter;
 
             writeHtml(htmlCode);

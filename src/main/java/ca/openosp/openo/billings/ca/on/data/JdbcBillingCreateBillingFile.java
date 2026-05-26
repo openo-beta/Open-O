@@ -289,7 +289,7 @@ public class JdbcBillingCreateBillingFile {
 
     private String buildHTMLContentTrailer(boolean simulation) {
         if (!simulation) {
-            htmlContent += "\n<tr><td colspan='11' class='myIvory'>&nbsp;</td></tr><tr><td colspan='7' class='myIvory'>OHIP No: " + Encode.forHtmlContent(String.valueOf(bhObj.getProvider_reg_num())) + ": " + Encode.forHtmlContent(String.valueOf(pCount)) + " RECORDS PROCESSED</td><td colspan='4' class='myIvory'>TOTAL: " + Encode.forHtmlContent(BigTotal.toString()) + "\n</td></tr>" + "\n</table>";
+            htmlContent += "\n<tr><td colspan='11' class='myIvory'>&nbsp;</td></tr><tr><td colspan='7' class='myIvory'>OHIP No: " + Encode.forHtmlContent(String.valueOf(bhObj.getProvider_reg_num())) + ": " + Encode.forHtmlContent(String.valueOf(pCount)) + " RECORDS PROCESSED</td><td colspan='4' class='myIvory'>TOTAL: " + Encode.forHtmlContent(String.valueOf(BigTotal)) + "\n</td></tr>" + "\n</table>";
         }
 
         String checkSummary = "";
@@ -327,7 +327,7 @@ public class JdbcBillingCreateBillingFile {
     }
 
     private String buildSiteHTMLContentTrailer() {
-        htmlContent += "\n<tr><td colspan='9' class='myIvory'>&nbsp;</td></tr><tr><td colspan='4' class='myIvory'>OHIP No: " + Encode.forHtmlContent(String.valueOf(bhObj.getProvider_reg_num())) + ": " + Encode.forHtmlContent(String.valueOf(pCount)) + " RECORDS PROCESSED</td><td colspan='5' class='myIvory'>TOTAL: " + Encode.forHtmlContent(BigTotal.toString()) + "\n</td></tr>" + "\n</table>";
+        htmlContent += "\n<tr><td colspan='9' class='myIvory'>&nbsp;</td></tr><tr><td colspan='4' class='myIvory'>OHIP No: " + Encode.forHtmlContent(String.valueOf(bhObj.getProvider_reg_num())) + ": " + Encode.forHtmlContent(String.valueOf(pCount)) + " RECORDS PROCESSED</td><td colspan='5' class='myIvory'>TOTAL: " + Encode.forHtmlContent(String.valueOf(BigTotal)) + "\n</td></tr>" + "\n</table>";
         // writeFile(value);
         String checkSummary = errorMsg.equals("") ? "\n<table border='0' width='100%' bgcolor='green'><tr><td>Pass</td></tr></table>" : "\n<table border='0' width='100%' bgcolor='orange'><tr><td>Please correct the errors and run this simulation again!</td></tr></table>";
         htmlValue += htmlContent + checkSummary;
@@ -575,7 +575,7 @@ public class JdbcBillingCreateBillingFile {
                 String items = htmlContent;
                 String providerNoForAttr = Encode.forHtmlAttribute(String.valueOf(providerNo));
                 String providerNoForJsInAttr = Encode.forHtmlAttribute(Encode.forJavaScript(String.valueOf(providerNo)));
-                htmlContent = "<tr><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(ohipNo)) + "</td><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(proItem)) + "</td><td class='myIvory'>" + Encode.forHtmlContent(proTotal.toString()) + "</td><td class='myIvory' colspan='6'><button id='recordShowButton" + providerNoForAttr + "' onclick='jQuery(\".record" + providerNoForJsInAttr + "\").show();jQuery(this).hide();jQuery(\"#recordHideButton" + providerNoForJsInAttr + "\").show();return false;'>Show record details.</button><button id='recordHideButton" + providerNoForAttr
+                htmlContent = "<tr><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(ohipNo)) + "</td><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(proItem)) + "</td><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(proTotal)) + "</td><td class='myIvory' colspan='6'><button id='recordShowButton" + providerNoForAttr + "' onclick='jQuery(\".record" + providerNoForJsInAttr + "\").show();jQuery(this).hide();jQuery(\"#recordHideButton" + providerNoForJsInAttr + "\").show();return false;'>Show record details.</button><button id='recordHideButton" + providerNoForAttr
                         + "' style='display:none;' onclick='jQuery(\".record" + providerNoForJsInAttr + "\").hide();jQuery(this).hide();jQuery(\"#recordShowButton" + providerNoForJsInAttr + "\").show();return false;'>Hide record details.</button></td></tr>";
                 htmlContent += "\n<tr style='display:none;' class='record" + providerNoForAttr + "'><td class='myGreen'>OHIP NO</td><td class='myGreen'>ACCT NO</td>" + "<td width='25%' class='myGreen'>NAME</td><td class='myGreen'>RO</td><td class='myGreen'>DOB</td><td class='myGreen'>Sex</td><td class='myGreen'>HEALTH #</td>" + "<td class='myGreen'>BILLDATE</td><td class='myGreen'>CODE</td>" + "<td align='right' class='myGreen'>BILLED</td>"
                         + "<td align='right' class='myGreen'>DX</td><td align='right' class='myGreen'>Comment</td></tr>";
