@@ -36,6 +36,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.logging.log4j.Logger;
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.billing.CA.ON.dao.BillingONDiskNameDao;
 import ca.openosp.openo.billing.CA.ON.dao.BillingONFilenameDao;
 import ca.openosp.openo.billing.CA.ON.dao.BillingONHeaderDao;
@@ -222,7 +223,7 @@ public class JdbcBillingCreateBillingFile {
         ret += "    popup.focus();\n";
         ret += "  }\n";
         ret += "}\n//-->\n</script>\n";
-        ret += "\n<table width='100%' border='0' cellspacing='0' cellpadding='2' class='myDarkGreen'>\n" + "<tr><td colspan='4' class='myGreen'>OHIP Invoice for OHIP No." + bhObj.getProvider_reg_num() + "</td><td colspan='4' class='myGreen'>Payment date of " + output + "\n</td></tr>";
+        ret += "\n<table width='100%' border='0' cellspacing='0' cellpadding='2' class='myDarkGreen'>\n" + "<tr><td colspan='4' class='myGreen'>OHIP Invoice for OHIP No." + Encode.forHtmlContent(String.valueOf(bhObj.getProvider_reg_num())) + "</td><td colspan='4' class='myGreen'>Payment date of " + Encode.forHtmlContent(String.valueOf(output)) + "\n</td></tr>";
         ret += "\n<tr><td class='myGreen'>ACCT NO</td>" + "<td width='25%' class='myGreen'>NAME</td><td class='myGreen'>RO</td><td class='myGreen'>DOB</td><td class='myGreen'>Sex</td><td class='myGreen'>HEALTH #</td>" + "<td class='myGreen'>BILLDATE</td><td class='myGreen'>CODE</td>" + "<td align='right' class='myGreen'>BILLED</td>" + "<td align='right' class='myGreen'>DX</td><td align='right' class='myGreen'>Comment</td></tr>";
         return ret;
     }
@@ -239,7 +240,7 @@ public class JdbcBillingCreateBillingFile {
         ret += "    popup.focus();\n";
         ret += "  }\n";
         ret += "}\n//-->\n</script>\n";
-        ret += "\n<table width='100%' border='0' cellspacing='0' cellpadding='2' class='myIvory'>\n" + "<tr><td colspan='4' class='myGreen'>OHIP Invoice for OHIP No." + bhObj.getProvider_reg_num() + "</td><td colspan='5' class='myGreen'>Payment date of " + output + "\n</td></tr>";
+        ret += "\n<table width='100%' border='0' cellspacing='0' cellpadding='2' class='myIvory'>\n" + "<tr><td colspan='4' class='myGreen'>OHIP Invoice for OHIP No." + Encode.forHtmlContent(String.valueOf(bhObj.getProvider_reg_num())) + "</td><td colspan='5' class='myGreen'>Payment date of " + Encode.forHtmlContent(String.valueOf(output)) + "\n</td></tr>";
         ret += "\n<tr><td class='myGreen'>ACCT NO</td>" + "<td width='25%' class='myGreen'>NAME</td><td class='myGreen'>HEALTH #</td>" + "<td class='myGreen'>BILLDATE</td><td class='myGreen'>CODE</td>" + "<td align='right' class='myGreen'>BILLED</td>" + "<td align='right' class='myGreen'>DX</td><td align='right' class='myGreen'>Comment</td>" + "<td align='centre' class='myGreen'>SITE</td></tr>";
         return ret;
     }
@@ -250,27 +251,27 @@ public class JdbcBillingCreateBillingFile {
         String styleClass = patientCount % 2 == 0 ? "myLightBlue" : "myIvory";
         if (invCount == 0) {
             Demographic demo = demographicManager.getDemographic(loggedInInfo, ch1Obj.getDemographic_no());
-            ret += "\n<tr " + (summaryView ? "style='display:none;' class='record" + providerNo + "'" : "") + ">";
+            ret += "\n<tr " + (summaryView ? "style='display:none;' class='record" + Encode.forHtmlAttribute(String.valueOf(providerNo)) + "'" : "") + ">";
             if (simulation) {
-                ret += "<td class='" + styleClass + "'>" + ch1Obj.getProvider_ohip_no() + "</td>"
-                        + "<td class='" + styleClass + "'><a href='javascript:void(0);'  onclick=\"popupPage(1000,800,'../billing/CA/ON/billingONCorrection.jsp?billing_no=" + ch1Obj.getId() + "');return false;\">" + ch1Obj.getId() + "</a></td>"
-                        + "<td class='" + styleClass + "'><a href='javascript:void(0);' onclick=\"popupPage(720,740,'../demographic/demographiccontrol.jsp?demographic_no=" + ch1Obj.getDemographic_no() + "&displaymode=edit&dboperation=search_detail');return false;\">" + ch1Obj.getDemographic_name() + "</a></td>";
+                ret += "<td class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(ch1Obj.getProvider_ohip_no())) + "</td>"
+                        + "<td class='" + styleClass + "'><a href='javascript:void(0);'  onclick=\"popupPage(1000,800,'../billing/CA/ON/billingONCorrection.jsp?billing_no=" + Encode.forUriComponent(String.valueOf(ch1Obj.getId())) + "');return false;\">" + Encode.forHtmlContent(String.valueOf(ch1Obj.getId())) + "</a></td>"
+                        + "<td class='" + styleClass + "'><a href='javascript:void(0);' onclick=\"popupPage(720,740,'../demographic/demographiccontrol.jsp?demographic_no=" + Encode.forUriComponent(String.valueOf(ch1Obj.getDemographic_no())) + "&displaymode=edit&dboperation=search_detail');return false;\">" + Encode.forHtmlContent(String.valueOf(ch1Obj.getDemographic_name())) + "</a></td>";
             } else {
-                ret += "<td class='" + styleClass + "'>" + ch1Obj.getId() + "</td>"
-                        + "<td class='" + styleClass + "'>" + ch1Obj.getDemographic_name() + "</td>";
+                ret += "<td class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(ch1Obj.getId())) + "</td>"
+                        + "<td class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(ch1Obj.getDemographic_name())) + "</td>";
             }
-            ret += "<td class='" + styleClass + "'>" + (demo.getRosterStatus() == null ? "" : demo.getRosterStatus()) + "</td>"
-                    + "<td class='" + styleClass + "'>" + demo.getBirthDayAsString() + "</td>"
-                    + "<td class='" + styleClass + "'>" + demo.getSex() + "</td>"
-                    + "<td class='" + styleClass + "'>" + (ch1Obj.getHin() == null ? "" : ch1Obj.getHin()) + (ch1Obj.getVer() == null ? "" : ch1Obj.getVer()) + "</td>"
-                    + "<td class='" + styleClass + "'>" + ch1Obj.getBilling_date() + "</td>"
-                    + "<td class='" + styleClass + "'>" + itemObj.getService_code() + "</td>"
-                    + "<td align='right' class='" + styleClass + "'>" + itemObj.getFee() + "</td>"
-                    + "<td align='right' class='" + styleClass + "'>" + itemObj.getDx() + "</td>"
+            ret += "<td class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(demo.getRosterStatus() == null ? "" : demo.getRosterStatus())) + "</td>"
+                    + "<td class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(demo.getBirthDayAsString())) + "</td>"
+                    + "<td class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(demo.getSex())) + "</td>"
+                    + "<td class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(ch1Obj.getHin() == null ? "" : ch1Obj.getHin())) + Encode.forHtmlContent(String.valueOf(ch1Obj.getVer() == null ? "" : ch1Obj.getVer())) + "</td>"
+                    + "<td class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(ch1Obj.getBilling_date())) + "</td>"
+                    + "<td class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(itemObj.getService_code())) + "</td>"
+                    + "<td align='right' class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(itemObj.getFee())) + "</td>"
+                    + "<td align='right' class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(itemObj.getDx())) + "</td>"
                     + "<td class='" + styleClass + "'> &nbsp; &nbsp;" + referral + hcFlag + m_Flag + " </td></tr>";
         } else {
-            ret = "\n<tr " + (summaryView ? "style='display:none;' class='record" + providerNo + "'" : "") + ">" + "<td class='" + styleClass + "'>&nbsp;</td>" + "<td class='" + styleClass + "'>&nbsp;</td> <td class='" + styleClass + "'>&nbsp;</td><td class='" + styleClass + "'>&nbsp;</td><td class='" + styleClass + "'>&nbsp;</td><td class='" + styleClass + "'>&nbsp;</td>" + "<td class='" + styleClass + "'>&nbsp;</td> <td class='" + styleClass + "'>&nbsp;</td>" + "<td class='" + styleClass + "'>"
-                    + itemObj.getService_code() + "</td><td align='right' class='" + styleClass + "'>" + itemObj.getFee() + "</td><td align='right' class='" + styleClass + "'>" + itemObj.getDx() + "</td><td class='" + styleClass + "'>&nbsp;</td></tr>";
+            ret = "\n<tr " + (summaryView ? "style='display:none;' class='record" + Encode.forHtmlAttribute(String.valueOf(providerNo)) + "'" : "") + ">" + "<td class='" + styleClass + "'>&nbsp;</td>" + "<td class='" + styleClass + "'>&nbsp;</td> <td class='" + styleClass + "'>&nbsp;</td><td class='" + styleClass + "'>&nbsp;</td><td class='" + styleClass + "'>&nbsp;</td><td class='" + styleClass + "'>&nbsp;</td>" + "<td class='" + styleClass + "'>&nbsp;</td> <td class='" + styleClass + "'>&nbsp;</td>" + "<td class='" + styleClass + "'>"
+                    + Encode.forHtmlContent(String.valueOf(itemObj.getService_code())) + "</td><td align='right' class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(itemObj.getFee())) + "</td><td align='right' class='" + styleClass + "'>" + Encode.forHtmlContent(String.valueOf(itemObj.getDx())) + "</td><td class='" + styleClass + "'>&nbsp;</td></tr>";
         }
         return ret;
     }
@@ -278,17 +279,17 @@ public class JdbcBillingCreateBillingFile {
     private String buildSiteHTMLContentRecord(int invCount) {
         String ret = null;
         if (invCount == 0) {
-            ret = "\n<tr><td class='myIvory'><a href=# onclick=\"popupPage(720,740,'billingONCorrection.jsp?billing_no=" + ch1Obj.getId() + "');return false;\">" + ch1Obj.getId() + "</a></td>" + "<td class='myIvory'><a href=# onclick=\"popupPage(720,740,'../../../demographic/demographiccontrol.jsp?demographic_no=" + ch1Obj.getDemographic_no() + "&displaymode=edit&dboperation=search_detail');return false;\">" + ch1Obj.getDemographic_name() + "</a></td><td class='myIvory'>" + ch1Obj.getHin()
-                    + ch1Obj.getVer() + "</td><td class='myIvory'>" + ch1Obj.getBilling_date() + "</td><td class='myIvory'>" + itemObj.getService_code() + "</td><td align='right' class='myIvory'>" + itemObj.getFee() + "</td><td align='right' class='myIvory'>" + itemObj.getDx() + "</td><td class='myIvory'> &nbsp; &nbsp;" + referral + hcFlag + m_Flag + " </td>" + "<td bgcolor='" + clinicBgColor + "'> " + clinicShortName.get(ch1Obj.getClinic()) + "</td></tr>";
+            ret = "\n<tr><td class='myIvory'><a href=# onclick=\"popupPage(720,740,'billingONCorrection.jsp?billing_no=" + Encode.forUriComponent(String.valueOf(ch1Obj.getId())) + "');return false;\">" + Encode.forHtmlContent(String.valueOf(ch1Obj.getId())) + "</a></td>" + "<td class='myIvory'><a href=# onclick=\"popupPage(720,740,'../../../demographic/demographiccontrol.jsp?demographic_no=" + Encode.forUriComponent(String.valueOf(ch1Obj.getDemographic_no())) + "&displaymode=edit&dboperation=search_detail');return false;\">" + Encode.forHtmlContent(String.valueOf(ch1Obj.getDemographic_name())) + "</a></td><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(ch1Obj.getHin()))
+                    + Encode.forHtmlContent(String.valueOf(ch1Obj.getVer())) + "</td><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(ch1Obj.getBilling_date())) + "</td><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(itemObj.getService_code())) + "</td><td align='right' class='myIvory'>" + Encode.forHtmlContent(String.valueOf(itemObj.getFee())) + "</td><td align='right' class='myIvory'>" + Encode.forHtmlContent(String.valueOf(itemObj.getDx())) + "</td><td class='myIvory'> &nbsp; &nbsp;" + referral + hcFlag + m_Flag + " </td>" + "<td bgcolor='" + Encode.forHtmlAttribute(String.valueOf(clinicBgColor)) + "'> " + Encode.forHtmlContent(String.valueOf(clinicShortName.get(ch1Obj.getClinic()))) + "</td></tr>";
         } else {
-            ret = "\n<tr><td class='myIvory'>&nbsp;</td> <td class='myIvory'>&nbsp;</td>" + "<td class='myIvory'>&nbsp;</td> <td class='myIvory'>&nbsp;</td>" + "<td class='myIvory'>" + itemObj.getService_code() + "</td><td align='right' class='myIvory'>" + itemObj.getFee() + "</td><td align='right' class='myIvory'>" + itemObj.getDx() + "</td><td class='myIvory'>&nbsp;</td>" + "<td bgcolor='" + clinicBgColor + "'> " + clinicShortName.get(ch1Obj.getClinic()) + "</td></tr>";
+            ret = "\n<tr><td class='myIvory'>&nbsp;</td> <td class='myIvory'>&nbsp;</td>" + "<td class='myIvory'>&nbsp;</td> <td class='myIvory'>&nbsp;</td>" + "<td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(itemObj.getService_code())) + "</td><td align='right' class='myIvory'>" + Encode.forHtmlContent(String.valueOf(itemObj.getFee())) + "</td><td align='right' class='myIvory'>" + Encode.forHtmlContent(String.valueOf(itemObj.getDx())) + "</td><td class='myIvory'>&nbsp;</td>" + "<td bgcolor='" + Encode.forHtmlAttribute(String.valueOf(clinicBgColor)) + "'> " + Encode.forHtmlContent(String.valueOf(clinicShortName.get(ch1Obj.getClinic()))) + "</td></tr>";
         }
         return ret;
     }
 
     private String buildHTMLContentTrailer(boolean simulation) {
         if (!simulation) {
-            htmlContent += "\n<tr><td colspan='11' class='myIvory'>&nbsp;</td></tr><tr><td colspan='7' class='myIvory'>OHIP No: " + bhObj.getProvider_reg_num() + ": " + pCount + " RECORDS PROCESSED</td><td colspan='4' class='myIvory'>TOTAL: " + BigTotal.toString() + "\n</td></tr>" + "\n</table>";
+            htmlContent += "\n<tr><td colspan='11' class='myIvory'>&nbsp;</td></tr><tr><td colspan='7' class='myIvory'>OHIP No: " + Encode.forHtmlContent(String.valueOf(bhObj.getProvider_reg_num())) + ": " + Encode.forHtmlContent(String.valueOf(pCount)) + " RECORDS PROCESSED</td><td colspan='4' class='myIvory'>TOTAL: " + Encode.forHtmlContent(BigTotal.toString()) + "\n</td></tr>" + "\n</table>";
         }
 
         String checkSummary = "";
@@ -326,7 +327,7 @@ public class JdbcBillingCreateBillingFile {
     }
 
     private String buildSiteHTMLContentTrailer() {
-        htmlContent += "\n<tr><td colspan='9' class='myIvory'>&nbsp;</td></tr><tr><td colspan='4' class='myIvory'>OHIP No: " + bhObj.getProvider_reg_num() + ": " + pCount + " RECORDS PROCESSED</td><td colspan='5' class='myIvory'>TOTAL: " + BigTotal.toString() + "\n</td></tr>" + "\n</table>";
+        htmlContent += "\n<tr><td colspan='9' class='myIvory'>&nbsp;</td></tr><tr><td colspan='4' class='myIvory'>OHIP No: " + Encode.forHtmlContent(String.valueOf(bhObj.getProvider_reg_num())) + ": " + Encode.forHtmlContent(String.valueOf(pCount)) + " RECORDS PROCESSED</td><td colspan='5' class='myIvory'>TOTAL: " + Encode.forHtmlContent(BigTotal.toString()) + "\n</td></tr>" + "\n</table>";
         // writeFile(value);
         String checkSummary = errorMsg.equals("") ? "\n<table border='0' width='100%' bgcolor='green'><tr><td>Pass</td></tr></table>" : "\n<table border='0' width='100%' bgcolor='orange'><tr><td>Please correct the errors and run this simulation again!</td></tr></table>";
         htmlValue += htmlContent + checkSummary;
@@ -572,9 +573,11 @@ public class JdbcBillingCreateBillingFile {
 
             if (summaryView) {
                 String items = htmlContent;
-                htmlContent = "<tr><td class='myIvory'>" + ohipNo + "</td><td class='myIvory'>" + proItem + "</td><td class='myIvory'>" + proTotal.toString() + "</td><td class='myIvory' colspan='6'><button id='recordShowButton" + providerNo + "' onclick='jQuery(\".record" + providerNo + "\").show();jQuery(this).hide();jQuery(\"#recordHideButton" + providerNo + "\").show();return false;'>Show record details.</button><button id='recordHideButton" + providerNo
-                        + "' style='display:none;' onclick='jQuery(\".record" + providerNo + "\").hide();jQuery(this).hide();jQuery(\"#recordShowButton" + providerNo + "\").show();return false;'>Hide record details.</button></td></tr>";
-                htmlContent += "\n<tr style='display:none;' class='record" + providerNo + "'><td class='myGreen'>OHIP NO</td><td class='myGreen'>ACCT NO</td>" + "<td width='25%' class='myGreen'>NAME</td><td class='myGreen'>RO</td><td class='myGreen'>DOB</td><td class='myGreen'>Sex</td><td class='myGreen'>HEALTH #</td>" + "<td class='myGreen'>BILLDATE</td><td class='myGreen'>CODE</td>" + "<td align='right' class='myGreen'>BILLED</td>"
+                String providerNoForAttr = Encode.forHtmlAttribute(String.valueOf(providerNo));
+                String providerNoForJsInAttr = Encode.forHtmlAttribute(Encode.forJavaScript(String.valueOf(providerNo)));
+                htmlContent = "<tr><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(ohipNo)) + "</td><td class='myIvory'>" + Encode.forHtmlContent(String.valueOf(proItem)) + "</td><td class='myIvory'>" + Encode.forHtmlContent(proTotal.toString()) + "</td><td class='myIvory' colspan='6'><button id='recordShowButton" + providerNoForAttr + "' onclick='jQuery(\".record" + providerNoForJsInAttr + "\").show();jQuery(this).hide();jQuery(\"#recordHideButton" + providerNoForJsInAttr + "\").show();return false;'>Show record details.</button><button id='recordHideButton" + providerNoForAttr
+                        + "' style='display:none;' onclick='jQuery(\".record" + providerNoForJsInAttr + "\").hide();jQuery(this).hide();jQuery(\"#recordShowButton" + providerNoForJsInAttr + "\").show();return false;'>Hide record details.</button></td></tr>";
+                htmlContent += "\n<tr style='display:none;' class='record" + providerNoForAttr + "'><td class='myGreen'>OHIP NO</td><td class='myGreen'>ACCT NO</td>" + "<td width='25%' class='myGreen'>NAME</td><td class='myGreen'>RO</td><td class='myGreen'>DOB</td><td class='myGreen'>Sex</td><td class='myGreen'>HEALTH #</td>" + "<td class='myGreen'>BILLDATE</td><td class='myGreen'>CODE</td>" + "<td align='right' class='myGreen'>BILLED</td>"
                         + "<td align='right' class='myGreen'>DX</td><td align='right' class='myGreen'>Comment</td></tr>";
                 htmlContent += items;
             }
