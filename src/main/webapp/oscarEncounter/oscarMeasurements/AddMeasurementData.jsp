@@ -207,7 +207,7 @@
             }
 
             function masterDateFill(v) {
-                var x =<%=Encode.forJavaScript(String.valueOf(measurements.length))%>;
+                var x = <%=measurements.length%>;
 
 
                 for (i = 0; i <= x; i++) {

@@ -58,8 +58,8 @@
     <script language="JavaScript">
         <!--
 
-        var ox = <%=Encode.forJavaScript(String.valueOf(oox))%>;
-        var oy = <%=Encode.forJavaScript(String.valueOf(ooy))%>;
+        var ox = <%=oox%>;
+        var oy = <%=ooy%>;
 
         function ff(x, y, w, h, name) { //need escape to name for ' and "
             x = eval(ox + x);

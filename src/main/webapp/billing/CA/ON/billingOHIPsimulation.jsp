@@ -413,7 +413,7 @@
 
 </div><!--container-->
 
-<%=Encode.forHtml(String.valueOf(request.getAttribute("html") == null ? "" : request.getAttribute("html")))%>
+<%=request.getAttribute("html") == null ? "" : request.getAttribute("html")%>
 
 <script type="text/javascript">
 

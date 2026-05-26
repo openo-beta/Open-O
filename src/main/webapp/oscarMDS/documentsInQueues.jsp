@@ -2422,9 +2422,15 @@
                     <td align="left" valign="center">
                         <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>">
                         <input type="hidden" name="searchProviderNo" value="<%=Encode.forHtmlAttribute(String.valueOf(searchProviderNo))%>">
-                        <%=Encode.forHtml((request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">"))%>
-                        <%=Encode.forHtml((request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">"))%>
-                        <%=Encode.forHtml((request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">"))%>
+                        <% if (request.getParameter("lname") != null) { %>
+                            <input type="hidden" name="lname" value="<%=Encode.forHtmlAttribute(request.getParameter("lname"))%>"/>
+                        <% } %>
+                        <% if (request.getParameter("fname") != null) { %>
+                            <input type="hidden" name="fname" value="<%=Encode.forHtmlAttribute(request.getParameter("fname"))%>"/>
+                        <% } %>
+                        <% if (request.getParameter("hnum") != null) { %>
+                            <input type="hidden" name="hnum" value="<%=Encode.forHtmlAttribute(request.getParameter("hnum"))%>"/>
+                        <% } %>
 
                         <input type="hidden" name="selectedProviders">
 

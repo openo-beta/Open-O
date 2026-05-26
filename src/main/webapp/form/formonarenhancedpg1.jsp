@@ -137,7 +137,7 @@
                 <%
 		} else if(cytologyForms.size() == 1) {
 			%>
-                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(cytologyForms.get(0).getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0', 'cytology');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(cytologyForms.get(0).getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0', 'cytology');
                 <%
 		} else {
 			%>$("#cytology-eform-form").dialog("open");
@@ -156,7 +156,7 @@
                 <%
 			} else if(ultrasoundForms.size() == 1) {
 				%>
-                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(ultrasoundForms.get(0).getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0', 'ultrasound');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(ultrasoundForms.get(0).getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0', 'ultrasound');
                 <%
 			} else {
 				%>$("#ultrasound-eform-form").dialog("open");
@@ -176,7 +176,7 @@
                 <%
 			} else if(customForms.size() == 1) {
 				%>
-                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(customForms.get(0).getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0', '<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(customForms.get(0).getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0', '<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');
                 <%
 			} else {
 				%>$("#custom-eform-form").dialog("open");
@@ -1562,7 +1562,7 @@
 
             function updateAllergies() {
                 jQuery.ajax({
-                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getAllergies&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getAllergies&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>',
                     async: true,
                     dataType: 'json',
                     success: function (data) {
@@ -1573,7 +1573,7 @@
 
             function updateMeds() {
                 jQuery.ajax({
-                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeds&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeds&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>',
                     async: true,
                     dataType: 'json',
                     success: function (data) {
@@ -1590,7 +1590,7 @@
             function pullVitals() {
                 //get values from chart
                 jQuery.ajax({
-                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&type=BP',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=BP',
                     async: false,
                     dataType: 'json',
                     success: function (data) {
@@ -1609,7 +1609,7 @@
                 $('#bp_form').val($('input[name="pg1_BP"]').val());
 
                 jQuery.ajax({
-                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&type=HT',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=HT',
                     async: false,
                     dataType: 'json',
                     success: function (data) {
@@ -1628,7 +1628,7 @@
                 $('#height_form').val($('input[name="pg1_ht"]').val());
 
                 jQuery.ajax({
-                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&type=WT',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=WT',
                     async: false,
                     dataType: 'json',
                     success: function (data) {
@@ -1667,7 +1667,7 @@
                 if ($('#' + type + '_form').val().length > 0) {
                     $('#' + type + '_chart').val($('#' + type + '_form').val());
                     jQuery.ajax({
-                        url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=saveMeasurementAjax&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&type=' + mtype + '&value=' + $('#' + type + '_form').val(),
+                        url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=saveMeasurementAjax&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=' + mtype + '&value=' + $('#' + type + '_form').val(),
                         async: false,
                         dataType: 'json',
                         success: function (data) {
@@ -2001,12 +2001,12 @@
 
                 $("#credit_valley_genetic_btn").bind('click', function (e) {
                     e.preventDefault();
-                    popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=loadEformByName&name=Prenatal Screening (IPS) Credit Valley&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>', 'credit_valley_lab_req');
+                    popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=loadEformByName&name=Prenatal Screening (IPS) Credit Valley&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>', 'credit_valley_lab_req');
                 });
 
                 $("#north_york_genetic_btn").bind('click', function (e) {
                     e.preventDefault();
-                    popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=loadEformByName&name=1Prenatal Screening - North York&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>', 'north_york_lab_req');
+                    popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=loadEformByName&name=1Prenatal Screening - North York&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>', 'north_york_lab_req');
                 });
 
                 $("#1st_visit_menu").bind('click', function () {
@@ -2212,7 +2212,7 @@
         <div id="content_bar" class="innertube">
             <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
                 <input type="hidden" name="c_lastVisited"
-                       value=<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "pg1")))%>/>
+                       value="<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "pg1")))%>"/>
                 <input type="hidden" name="demographic_no"
                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
                 <input type="hidden" name="formCreated"
@@ -2225,7 +2225,7 @@
                 <input type="hidden" name="sent_to_born" value="0"/>
                 <!--input type="hidden" name="ID" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>" /-->
                 <input type="hidden" name="provider_no"
-                       value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+                       value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
                 <input type="hidden" name="provNo"
                        value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
                 <input type="hidden" name="submit" value="exit"/>
@@ -2250,10 +2250,10 @@
                             %>
                             &nbsp;&nbsp;&nbsp;
                             <b>View:</b> <a href="javascript:void(0)"
-                                            onclick="popupPage(960,700,'form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&view=1');">AR2</a>
+                                            onclick="popupPage(960,700,'form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&view=1');">AR2</a>
                             &nbsp;&nbsp;&nbsp;
                             <b>Edit:</b> <a href="javascript:void(0)"
-                                            onclick="onPageChange('form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');">AR2</a>
+                                            onclick="onPageChange('form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">AR2</a>
                             &nbsp;&nbsp;&nbsp;
                             <b>Download:</b> <a
                                 href="form/formonarenhancedxml.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&episodeId=<%=Encode.forUriComponent(String.valueOf(props.getProperty("episodeId","0")))%>">XML</a>
@@ -3851,10 +3851,10 @@
                             %>
                             &nbsp;&nbsp;&nbsp;
                             <b>View:</b> <a href="javascript:void(0)"
-                                            onclick="popupPage(960,700,'form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&view=1');">AR2</a>
+                                            onclick="popupPage(960,700,'form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&view=1');">AR2</a>
                             &nbsp;&nbsp;&nbsp;
                             <b>Edit:</b> <a href="javascript:void(0)"
-                                            onclick="onPageChange('form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');">AR2</a>
+                                            onclick="onPageChange('form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">AR2</a>
                             &nbsp;&nbsp;&nbsp;
                             <b>Download:</b> <a
                                 href="form/formonarenhancedxml.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&episodeId=<%=Encode.forUriComponent(String.valueOf(props.getProperty("episodeId","0")))%>">XML</a>
@@ -4018,10 +4018,10 @@
     <div id="lab_menu_div" class="hidden">
         <ul>
             <li><a href="javascript:void(0)"
-                   onclick="popPage('form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&labType=eFTS','LabReq')">MOH&amp;LTC
+                   onclick="popPage('form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&labType=eFTS','LabReq')">MOH&amp;LTC
                 eFTS</a></li>
             <li><a href="javascript:void(0)"
-                   onclick="popPage('form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&labType=AnteNatal','LabReq')">Routine
+                   onclick="popPage('form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&labType=AnteNatal','LabReq')">Routine
                 Prenatal</a></li>
             <li><a href="javascript:void(0)" onclick="loadCytologyForms();">Cytology</a></li>
         </ul>
@@ -4094,7 +4094,7 @@
                         <td><input readonly="readonly" type="text" size="5" id="height_chart" name="height_chart"
                                    class="text ui-widget-content ui-corner-all"/></td>
                         <td><a href="javascript:void(0);"
-                               onClick="popupPage(300,800,'<%=Encode.forJavaScript(String.valueOf(context))%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&type=HT');return false;"><img
+                               onClick="popupPage(300,800,'<%=Encode.forJavaScript(String.valueOf(context))%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=HT');return false;"><img
                                 border="0"
                                 src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/oscarEncounter/oscarMeasurements/img/chart.gif"/></a>
                         </td>
@@ -4113,7 +4113,7 @@
                         <td><input readonly="readonly" type="text" size="5" id="weight_chart" name="weight_chart"
                                    class="text ui-widget-content ui-corner-all"/></td>
                         <td><a href="javascript:void(0);"
-                               onClick="popupPage(300,800,'<%=Encode.forJavaScript(String.valueOf(context))%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&type=WT');return false;"><img
+                               onClick="popupPage(300,800,'<%=Encode.forJavaScript(String.valueOf(context))%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=WT');return false;"><img
                                 border="0"
                                 src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/oscarEncounter/oscarMeasurements/img/chart.gif"/></a>
                         </td>
@@ -4132,7 +4132,7 @@
                         <td><input readonly="readonly" type="text" size="5" id="bp_chart" name="bp_chart"
                                    class="text ui-widget-content ui-corner-all"/></td>
                         <td><a href="javascript:void(0);"
-                               onClick="popupPage(300,800,'<%=Encode.forJavaScript(String.valueOf(context))%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&type=BP');return false;"><img
+                               onClick="popupPage(300,800,'<%=Encode.forJavaScript(String.valueOf(context))%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=BP');return false;"><img
                                 border="0"
                                 src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/oscarEncounter/oscarMeasurements/img/chart.gif"/></a>
                         </td>
@@ -4249,7 +4249,7 @@
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','cytology');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','cytology');return false;">
                                 Open
                             </button>
                         </td>
@@ -4278,7 +4278,7 @@
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','ultrasound');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','ultrasound');return false;">
                                 Open
                             </button>
                         </td>
@@ -4307,7 +4307,7 @@
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');return false;">
                                 Open
                             </button>
                         </td>
@@ -4337,7 +4337,7 @@
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','ultrasound');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','ultrasound');return false;">
                                 Open
                             </button>
                         </td>

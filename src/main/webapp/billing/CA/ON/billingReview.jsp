@@ -990,11 +990,11 @@
 
     </table>
 
-    <p bgcolor="orange"><%=Encode.forHtml(String.valueOf(errorMsg))%>
+    <p bgcolor="orange"><%=errorMsg%>
     </p>
     <% session.setAttribute("content", content); %>
     <form><input type=button name=back value='Go Back and Change'
-                 onClick='javascript:location.href="billingOB.jsp?billForm=<%=Encode.forJavaScript(request.getParameter("billForm"))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("", StandardCharsets.UTF_8)))%>&appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demoname, StandardCharsets.UTF_8)))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&user_no=<%=Encode.forJavaScript(request.getParameter("user_no"))%>&providerview=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&apptProvider_no=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("xml_appointment_date"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&start_time=<%=Encode.forJavaScript(request.getParameter("start_time"))%>&bNewForm=0"'>
+                 onClick='javascript:location.href="billingOB.jsp?billForm=<%=Encode.forUriComponent(request.getParameter("billForm"))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&user_no=<%=Encode.forUriComponent(request.getParameter("user_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("xml_appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=0"'>
     </form>
 
     <%
@@ -1104,7 +1104,7 @@
 	if (warningMsg.length() > 0) {
 %>
 
-    <p bgcolor="yellow"><%=Encode.forHtml(String.valueOf(warningMsg))%>
+    <p bgcolor="yellow"><%=warningMsg%>
     </p>
     <%
             }

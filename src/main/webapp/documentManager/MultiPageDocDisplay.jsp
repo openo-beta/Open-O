@@ -353,7 +353,7 @@
 
 
                                         var curPage = 1;
-                                        var totalPage =<%=Encode.forJavaScript(String.valueOf(numOfPage))%>;
+                                        var totalPage = <%=numOfPage%>;
                                         showPageImg = function (docid, pn) {
                                             if (docid && pn) {
                                                 var e = $('docImg_' + docid);
@@ -912,16 +912,16 @@
                                                     String eURL = request.getContextPath() + "/oscarEncounter/IncomingEncounter.do?providerNo=" + providerNo + "&appointmentNo=&demographicNo=" + demographicID + "&curProviderNo=&reason=" + java.net.URLEncoder.encode("Document Notes", "UTF-8") + "&encType=" + java.net.URLEncoder.encode("encounter without client", "UTF-8") + "&userName=" + java.net.URLEncoder.encode(provider.getFullName(), StandardCharsets.UTF_8) + "&curDate=" + UtilDateUtilities.getToday("yyyy-MM-dd") + "&appointmentDate=&startTime=&status=";
                                                 %>
                                                 <input type="button" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" value="Msg"
-                                                       onclick="popup(700,960,'<%=request.getContextPath()%>/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicID))%>','msg')"/>
+                                                       onclick="popup(700,960,'<%=request.getContextPath()%>/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicID))%>','msg')"/>
                                                 <input type="button" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" value="Tickler"
-                                                       onclick="popup(450,600,'<%=request.getContextPath()%>/tickler/ForwardDemographicTickler.do?docType=DOC&docId=<%=Encode.forJavaScript(String.valueOf(docId))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicID))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>','tickler')"/>
+                                                       onclick="popup(450,600,'<%=request.getContextPath()%>/tickler/ForwardDemographicTickler.do?docType=DOC&docId=<%=Encode.forUriComponent(String.valueOf(docId))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>','tickler')"/>
                                                 <input type="button" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" value="eChart"
                                                        onclick="popup(710,1024,'<%=Encode.forJavaScript(String.valueOf(eURL))%>','encounter')"/>
                                                 <%
                                                     if (curdoc.getCreatorId().equals(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo())) {
                                                 %>
                                                 <input type="button" tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" value="Delete"
-                                                       onClick="javascript: checkDelete('MultiPageDocDisplay.jsp?delDocumentNo=<%=Encode.forJavaScript(String.valueOf(curdoc.getDocId()))%>','<%=Encode.forJavaScript(String.valueOf(curdoc.getDescription()))%>')"/>
+                                                       onClick="javascript: checkDelete('MultiPageDocDisplay.jsp?delDocumentNo=<%=Encode.forUriComponent(String.valueOf(curdoc.getDocId()))%>','<%=Encode.forJavaScript(String.valueOf(curdoc.getDescription()))%>')"/>
 
                                                 <%
                                                 } else {

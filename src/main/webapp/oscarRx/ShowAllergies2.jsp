@@ -403,7 +403,7 @@
 
     </head>
     <body>
-    <%=Encode.forHtml(String.valueOf(WebUtils.popErrorAndInfoMessagesAsHtml(session)))%>
+    <%=WebUtils.popErrorAndInfoMessagesAsHtml(session)%>
 
     <table id="AutoNumber1">
         <tr id="allergiesRowOne">
@@ -509,7 +509,7 @@
 				<table border="0">
 				<tr>
 					<td class="Step1Text">
-						<%=Encode.forHtml(String.valueOf(allergy_colour_codes))%>
+						<%=allergy_colour_codes%>
 			
                                         <table class="allergy_table">
 						<tr>
@@ -632,7 +632,7 @@
                                                     <%
                                                         if (!allergy.isIntegratorResult()) {
                                                     %>
-                                                    <a href="#" title="Annotation" onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(String.valueOf(allergy.getAllergyId())))%>&demo=${patient.getDemographicNo()}','anwin','width=400,height=500');">
+                                                    <a href="#" title="Annotation" onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&table_id=<%=Encode.forUriComponent(String.valueOf(String.valueOf(allergy.getAllergyId())))%>&demo=${patient.getDemographicNo()}','anwin','width=400,height=500');">
                                                         <% if (existingAnnots.size() > 0) {%>
                                                         <img src="<%= request.getContextPath() %>/images/filledNotes.gif" border="0"/>
                                                         <% } else { %>
@@ -664,7 +664,7 @@
                                             %>
 					</table>
 
-                                        <%=Encode.forHtml(String.valueOf(allergy_colour_codes))%>
+                                        <%=allergy_colour_codes%>
 				</td>
 			</tr>
                             </table>

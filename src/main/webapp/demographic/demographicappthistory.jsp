@@ -182,10 +182,10 @@
                 if (value) {
                     //show deleted
                     //appt_history_w_deleted
-                    location.href = '<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&last_name=<%=Encode.forUriComponent(demolastname)%>&first_name=<%=Encode.forUriComponent(demofirstname)%>&orderby=<%=Encode.forJavaScript(String.valueOf(orderby))%>&displaymode=appt_history&dboperation=appt_history_w_deleted&limit1=<%=Encode.forJavaScript(String.valueOf(strLimit1))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>&deleted=true';
+                    location.href = '<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&last_name=<%=Encode.forUriComponent(demolastname)%>&first_name=<%=Encode.forUriComponent(demofirstname)%>&orderby=<%=Encode.forUriComponent(String.valueOf(orderby))%>&displaymode=appt_history&dboperation=appt_history_w_deleted&limit1=<%=Encode.forUriComponent(String.valueOf(strLimit1))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>&deleted=true';
                 } else {
                     //don't show deleted
-                    location.href = '<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&last_name=<%=Encode.forUriComponent(demolastname)%>&first_name=<%=Encode.forUriComponent(demofirstname)%>&orderby=<%=Encode.forJavaScript(String.valueOf(orderby))%>&displaymode=appt_history&dboperation=appt_history&limit1=<%=Encode.forJavaScript(String.valueOf(strLimit1))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>';
+                    location.href = '<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&last_name=<%=Encode.forUriComponent(demolastname)%>&first_name=<%=Encode.forUriComponent(demofirstname)%>&orderby=<%=Encode.forUriComponent(String.valueOf(orderby))%>&displaymode=appt_history&dboperation=appt_history&limit1=<%=Encode.forUriComponent(String.valueOf(strLimit1))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>';
                 }
             }
 
@@ -349,7 +349,7 @@
                             bgcolor="<%=bodd?weakColor:"white"%>" appt_no="<%=Encode.forHtmlAttribute(String.valueOf(appointment.getId().toString()))%>"
                             demographic_no="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>" provider_no="<%=Encode.forHtmlAttribute(String.valueOf(provider!=null?provider.getId():""))%>">
                         <td align="center"><a href=#
-                                              onClick="popupPageNew(360,680, '<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment.getId().toString()))%>&displaymode=edit&dboperation=search');return false;"><%=Encode.forHtml(String.valueOf(appointment.getAppointmentDate()))%>
+                                              onClick="popupPageNew(360,680, '<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment_no=<%=Encode.forUriComponent(String.valueOf(appointment.getId().toString()))%>&displaymode=edit&dboperation=search');return false;"><%=Encode.forHtml(String.valueOf(appointment.getAppointmentDate()))%>
                         </a></td>
                         <td align="center"><%=Encode.forHtml(String.valueOf(appointment.getStartTime()))%>
                         </td>

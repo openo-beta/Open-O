@@ -367,7 +367,7 @@
                         <input type="submit" name="subbutton"
                                value='<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityupdatesecurity.btnSubmit"/>'>
                         <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.securityupdatesecurity.btnDelete"/>"
-                               onclick="window.location='securitydelete.jsp?keyword=<%=Encode.forJavaScript(String.valueOf(security.getSecurityNo()))%>'">
+                               onclick="window.location='securitydelete.jsp?keyword=<%=Encode.forUriComponent(String.valueOf(security.getSecurityNo()))%>'">
                     </td>
                 </tr>
                 <%

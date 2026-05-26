@@ -279,7 +279,7 @@
                                 <td>
                                     <input type="button" name="Button" class="btn DoNotPrint"
                                         value="<fmt:message key="oscarEncounter.oscarMeasurements.displayHistory.plot"/>"
-                                        onclick="javascript: popupPage(600,1000,'<%=request.getContextPath()%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demo))%>&type=${type}')">
+                                        onclick="javascript: popupPage(600,1000,'<%=request.getContextPath()%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demo))%>&type=${type}')">
                                 </td>
                             </c:if>
                         </tr>

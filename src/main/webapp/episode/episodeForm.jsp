@@ -93,8 +93,8 @@
                 $('select[name="episode.codingSystem"]').val('<%=Encode.forJavaScript(String.valueOf(episode.getCodingSystem()))%>');
                 $('#search_coding_system').val('<%=Encode.forJavaScript(String.valueOf(episode.getCodingSystem()))%>');
                 $('input[name="episode.demographicNo"]').val('<%=Encode.forJavaScript(String.valueOf(episode.getDemographicNo()))%>');
-                $("#startDate").val('<%=Encode.forJavaScript(String.valueOf(episode.getStartDateStr()))%>');
-                $("#endDate").val('<%=Encode.forJavaScript(String.valueOf(episode.getEndDateStr()))%>');
+                $("#startDate").val('<%=episode.getStartDateStr()%>');
+                $("#endDate").val('<%=episode.getEndDateStr()%>');
                 <% } %>
 
             });

@@ -60,7 +60,7 @@
         <dt class="PropSheetLevel1CurrentItem<%=Encode.forHtmlAttribute(String.valueOf(alle))%>">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/>
             <a href="javascript:void(0);"
-               onclick="window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>';"
+               onclick="window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forUriComponent(request.getParameter("demographicNo"))%>';"
                style="width: 200px">+</a>
         </dt>
 

@@ -144,7 +144,7 @@
                 <input type="checkbox" name="<%=Encode.forHtmlAttribute(String.valueOf("form_no"+i))%>"
                        value="<%=Encode.forHtmlAttribute(String.valueOf(f.getId()))%>"> <font color="blue">
                 <a href=#
-                   onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?form_no=<%=Encode.forJavaScript(String.valueOf(f.getId()))%>&dboperation=search_form&displaymodevariable=form<%=Encode.forJavaScript(String.valueOf(f.getFormName()))%>.jsp&displaymode=vary&bNewForm=0')">
+                   onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?form_no=<%=Encode.forUriComponent(String.valueOf(f.getId()))%>&dboperation=search_form&displaymodevariable=form<%=Encode.forJavaScript(String.valueOf(f.getFormName()))%>.jsp&displaymode=vary&bNewForm=0')">
                     <%=Encode.forHtml(String.valueOf(f.getFormName()))%>
                 </a></font> by <%=Encode.forHtml(String.valueOf(f.getProviderNo()))%><br>
                 <%

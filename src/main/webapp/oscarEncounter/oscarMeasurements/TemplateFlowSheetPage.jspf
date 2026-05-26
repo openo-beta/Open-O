@@ -318,7 +318,7 @@ div.headPrevention p {
         	selectedItemsStr = "&selectedItems=" + encodeURIComponent(selectedItems.join(','));
         }
 
-        var url = 'TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&template=<%=Encode.forJavaScript(String.valueOf(temp))%>';
+        var url = 'TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&template=<%=Encode.forUriComponent(String.valueOf(temp))%>';
         if(numEle.length > 0){
         	url = url + '&numEle='+numEle;
         }
@@ -333,13 +333,13 @@ div.headPrevention p {
         window.location = url;
         /*
         if( numEle.length > 0){
-            window.location = 'TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&template=<%=Encode.forJavaScript(String.valueOf(temp))%>&numEle='+numEle + selectedItemsStr;
+            window.location = 'TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&template=<%=Encode.forUriComponent(String.valueOf(temp))%>&numEle='+numEle + selectedItemsStr;
             //console.log("one");
         }else if (sdate.length > 0 && edate.length > 0){
-            window.location = 'TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&template=<%=Encode.forJavaScript(String.valueOf(temp))%>&sdate='+sdate+'&edate='+edate + selectedItemsStr;
+            window.location = 'TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&template=<%=Encode.forUriComponent(String.valueOf(temp))%>&sdate='+sdate+'&edate='+edate + selectedItemsStr;
             //console.log("two");
         }else{
-            window.location = 'TemplateFlowSheet.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&template=<%=Encode.forJavaScript(String.valueOf(temp))%>' + selectedItemsStr;
+            window.location = 'TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&template=<%=Encode.forUriComponent(String.valueOf(temp))%>' + selectedItemsStr;
         }
 		*/
     }
@@ -539,10 +539,10 @@ div.recommendations ul{
     <p><a class="DoNotPrint" href="javascript: function myFunction() {return false; }"  onclick="javascript:createAddAll(<%=Encode.forJavaScript(String.valueOf(demographic_no))%>, '<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(temp,"UTF-8")))%>', <%=Encode.forJavaScript(String.valueOf(Math.abs( "ADDTHEMALL".hashCode() )))%>)" TITLE="Add all measurements.">
 	    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.templateflowsheet.addall"/>
 	</a> </p>
-    <p id="add_overdue"><a class="DoNotPrint" href="javascript: function myFunction() {return false; }"  onclick="javascript:fsPopup(760,670,'AddMeasurementData.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%><%=Encode.forJavaScript(String.valueOf(recListBuffer.toString()))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(temp))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs( "ADDTHEMALL".hashCode() )))%>')" TITLE="Add all overdue measurements.">
+    <p id="add_overdue"><a class="DoNotPrint" href="javascript: function myFunction() {return false; }"  onclick="javascript:fsPopup(760,670,'AddMeasurementData.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%><%=Encode.forJavaScript(String.valueOf(recListBuffer.toString()))%>&amp;template=<%=Encode.forUriComponent(String.valueOf(temp))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs( "ADDTHEMALL".hashCode() )))%>')" TITLE="Add all overdue measurements.">
         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarencounter.templateflowsheet.addoverdue"/>
     </a></p>
-    <p id="add_custom" style="display:none"><a class="DoNotPrint" href="javascript: function myFunction() {return false; }"  onclick="javascript:fsPopup(760,670,'AddMeasurementData.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;measurement=WT&amp;measurement=HT&amp;measurement=BMI&amp;template=<%=Encode.forJavaScript(String.valueOf(temp))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs( "ADDTHEMALL".hashCode() )))%>')" TITLE="Add HT & WT to calculate BMI.">
+    <p id="add_custom" style="display:none"><a class="DoNotPrint" href="javascript: function myFunction() {return false; }"  onclick="javascript:fsPopup(760,670,'AddMeasurementData.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;measurement=WT&amp;measurement=HT&amp;measurement=BMI&amp;template=<%=Encode.forUriComponent(String.valueOf(temp))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs( "ADDTHEMALL".hashCode() )))%>')" TITLE="Add HT & WT to calculate BMI.">
         Add BMI
     </a></p>
     <%}%>
@@ -744,18 +744,18 @@ div.recommendations ul{
 <div class="preventionSection" id="<%=Encode.forHtmlAttribute(String.valueOf(measure))%>"  style="overflow: auto;<%=Encode.forHtmlAttribute(String.valueOf(hidden))%>" >
     <div class="headPrevention">
 
-        <p class="noborder" <%=Encode.forHtml(String.valueOf(extraColour))%> title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(h2.get("display_name")))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(wrapWithSpanIfNotNull(mi.getWarning(measure),"red")))%><%=Encode.forHtmlAttribute(String.valueOf(wrapWithSpanIfNotNull(mi.getRecommendation(measure),"red")))%><%=Encode.forHtmlAttribute(String.valueOf(h2.get("guideline")))%>]"   >
+        <p class="noborder" <%=extraColour%> title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(h2.get("display_name")))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(wrapWithSpanIfNotNull(mi.getWarning(measure),"red")))%><%=Encode.forHtmlAttribute(String.valueOf(wrapWithSpanIfNotNull(mi.getRecommendation(measure),"red")))%><%=Encode.forHtmlAttribute(String.valueOf(h2.get("guideline")))%>]"   >
         <input type="checkbox" name="selected_item" value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("name")))%>"/>
             <%if(h2.get("graphable") != null && ((String) h2.get("graphable")).equals("yes")){%>
             <%if (alist != null && alist.size() > 1) { %>
-               <img class="DoNotPrint" src="img/chart.gif" alt="Plot"  onclick="window.open('${ pageContext.request.contextPath }/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&type=<%=Encode.forJavaScript(String.valueOf(measure))%>');"/>
+               <img class="DoNotPrint" src="img/chart.gif" alt="Plot"  onclick="window.open('${ pageContext.request.contextPath }/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&type=<%=Encode.forUriComponent(String.valueOf(measure))%>');"/>
             <%}else{%>
                <img class="DoNotPrint" src="img/chart.gif" alt="Plot"/>
             <%}%>
            <%}%>
 
 		   <security:oscarSec roleName="<%=roleName$%>" objectName="_flowsheet" rights="w">
-            <a class="noborder" href="javascript: function myFunction() {return false; }"  onclick="javascript:fsPopup(760,670,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(temp,"UTF-8")))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs( ((String) h.get("name")).hashCode() )))%>')">
+            <a class="noborder" href="javascript: function myFunction() {return false; }"  onclick="javascript:fsPopup(760,670,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forUriComponent(String.valueOf(temp))%>','addMeasurementData<%=Encode.forJavaScript(String.valueOf(Math.abs( ((String) h.get("name")).hashCode() )))%>')">
            </security:oscarSec>
                 <span  class="noborder" style="font-weight:bold;"><%=Encode.forHtml(String.valueOf(h2.get("display_name")))%></span>
 
@@ -818,15 +818,15 @@ div.recommendations ul{
     %>
     <div class="preventionProcedure" <%=hider%>
     <%if(mdb.getRemoteFacility() == null){ %>
-    onclick="javascript:fsPopup(760,670,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;id=<%=Encode.forJavaScript(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(temp,"UTF-8")))%>','addMeasurementData')"
+    onclick="javascript:fsPopup(760,670,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;id=<%=Encode.forUriComponent(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;template=<%=Encode.forUriComponent(String.valueOf(temp))%>','addMeasurementData')"
     <%}%>
     >
-        <p <%=Encode.forHtml(String.valueOf(indColour))%> title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("age")))%> -- Date:<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("prevention_date")))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(com))%>&lt;br/&gt;Entered By:<%=Encode.forHtmlAttribute(String.valueOf(mdb.getProviderFirstName()))%> <%=Encode.forHtmlAttribute(String.valueOf(mdb.getProviderLastName()))%>]"><%=Encode.forHtml(String.valueOf(h2.get("value_name")))%>: <%=Encode.forHtml(String.valueOf(hdata.get("age")))%> <br/>
+        <p <%=indColour%> title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("age")))%> -- Date:<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("prevention_date")))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(com))%>&lt;br/&gt;Entered By:<%=Encode.forHtmlAttribute(String.valueOf(mdb.getProviderFirstName()))%> <%=Encode.forHtmlAttribute(String.valueOf(mdb.getProviderLastName()))%>]"><%=Encode.forHtml(String.valueOf(h2.get("value_name")))%>: <%=Encode.forHtml(String.valueOf(hdata.get("age")))%> <br/>
             <%=Encode.forHtml(String.valueOf(hdata.get("prevention_date")))%>&nbsp;<%=Encode.forHtml(String.valueOf(mdb.getNumMonthSinceObserved()))%>M
             <%if (comb) {%>
             <span class="footnote"><%=comments.size()%></span>
             <%}%>
-           <%=Encode.forHtml(String.valueOf(getFromFacilityMsg(mdb)))%>
+           <%=getFromFacilityMsg(mdb)%>
         </p>
     </div>
     <%}%>
@@ -850,7 +850,7 @@ div.recommendations ul{
 <div class="preventionSection" style="<%=Encode.forHtmlAttribute(String.valueOf(hidden))%>" >
     <div class="headPrevention">
         <p title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(h2.get("display_name")))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(wrapWithSpanIfNotNull(mi.getWarning(measure),"red")))%><%=Encode.forHtmlAttribute(String.valueOf(wrapWithSpanIfNotNull(mi.getRecommendation(measure),"red")))%><%=Encode.forHtmlAttribute(String.valueOf(h2.get("guideline")))%>]">
-            <a href="javascript: function myFunction() {return false; }"  onclick="javascript:fsPopup(465,635,'${ pageContext.request.contextPath }/oscarPrevention/AddPreventionData.jsp?prevention=<%= response.encodeURL( prevType) %>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs( prevType.hashCode() )))%>')">
+            <a href="javascript: function myFunction() {return false; }"  onclick="javascript:fsPopup(465,635,'${ pageContext.request.contextPath }/oscarPrevention/AddPreventionData.jsp?prevention=<%= response.encodeURL( prevType) %>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs( prevType.hashCode() )))%>')">
                 <span title="<%=Encode.forHtmlAttribute(String.valueOf(h2.get("guideline")))%>" style="font-weight:bold;"><%=Encode.forHtml(String.valueOf(h2.get("display_name")))%></span>
             </a>
             &nbsp;
@@ -897,8 +897,8 @@ div.recommendations ul{
                 }
             }
     %>
-    <div class="preventionProcedure" <%=hider%> onclick="javascript:fsPopup(465,635,'${ pageContext.request.contextPath }/oscarPrevention/AddPreventionData.jsp?id=<%=Encode.forJavaScript(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>','addPreventionData')" >
-        <p <%=Encode.forHtml(String.valueOf(r(hdata.get("refused"))))%> title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("age")))%> -- Date:<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("prevention_date")))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(com))%>]" >Age: <%=Encode.forHtml(String.valueOf(hdata.get("age")))%> <br/>
+    <div class="preventionProcedure" <%=hider%> onclick="javascript:fsPopup(465,635,'${ pageContext.request.contextPath }/oscarPrevention/AddPreventionData.jsp?id=<%=Encode.forUriComponent(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>','addPreventionData')" >
+        <p <%=r(hdata.get("refused"))%> title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("age")))%> -- Date:<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("prevention_date")))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(com))%>]" >Age: <%=Encode.forHtml(String.valueOf(hdata.get("age")))%> <br/>
             <!--<%=Encode.forHtml(String.valueOf(refused(hdata.get("refused"))))%>-->Date: <%=Encode.forHtml(String.valueOf(hdata.get("prevention_date")))%>
             <%if (comb) {%>
             <span class="footnote"><%=comments.size()%></span>
@@ -960,7 +960,7 @@ function createAddAll(d,t,h){
         for (RxPrescriptionData.Prescription pres : arr){
     %>
     <div class="preventionProcedure"  onclick="javascript:fsPopup(465,635,'','addPreventionData')" >
-        <p <%=Encode.forHtml(String.valueOf(""/*r(hdata.get("refused"))*/))%> title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(""/*hdata.get("age")*/))%> -- Date:<%=Encode.forHtmlAttribute(String.valueOf(""/*hdata.get("prevention_date")*/))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(""/*com*/))%>]" ><%=Encode.forHtml(String.valueOf(pres.getBrandName()))%> <br/>
+        <p <%=""/*r(hdata.get("refused"))*/%> title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(""/*hdata.get("age")*/))%> -- Date:<%=Encode.forHtmlAttribute(String.valueOf(""/*hdata.get("prevention_date")*/))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(""/*com*/))%>]" ><%=Encode.forHtml(String.valueOf(pres.getBrandName()))%> <br/>
             Date: <%=Encode.forHtml(String.valueOf(pres.getRxDate()))%>
             <%-- if (comb) {%>
             <span class="footnote"><%=comments.size()%></span>

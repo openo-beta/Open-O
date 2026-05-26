@@ -304,7 +304,7 @@
 
             <%if(max_numerator != null) {%>
             $(document).ready(function () {
-                var maxNumerator = <%=Encode.forJavaScript(String.valueOf(max_numerator))%>;
+                var maxNumerator = <%=max_numerator%>;
                 if (maxNumerator != -1) {
                     for (var x = 0; x <= maxNumerator; x++) {
                         showNextNumerator();

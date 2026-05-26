@@ -57,7 +57,7 @@ public class NextApptTag extends TagSupport {
     }
 
     public int doStartTag() throws JspException {
-        if (demoNo != null && !demoNo.isEmpty()) {
+        if (demoNo != null && !demoNo.isEmpty() && !"null".equals(demoNo)) {
             try {
                 AppointmentManager appointmentManager = SpringUtils.getBean(AppointmentManager.class);
                 String nextAppointment = appointmentManager.getNextAppointmentDate(Integer.parseInt(demoNo));

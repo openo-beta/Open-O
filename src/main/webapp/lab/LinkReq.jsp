@@ -213,7 +213,7 @@
         }
     </script>
 </head>
-<body <%=Encode.forHtml(String.valueOf((close) ? "onLoad=\"closeItUp()\" " : ""))%>>
+<body <%=(close) ? "onLoad=\"closeItUp()\" " : ""%>>
 
 <form action="LinkReq.jsp" method="post">
     <input type="hidden" name="table" value="<%=Encode.forHtmlAttribute(String.valueOf(table))%>"/>
