@@ -28,6 +28,7 @@
  */
 package ca.openosp.openo.billings.ca.bc.MSP;
 
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.util.SqlUtils;
 
@@ -73,7 +74,7 @@ public class CheckBillingData {
     }
 
     public String printWarningMsg(String m) {
-        String ret = "<tr bgcolor='orange'><td colspan='11'>" + m
+        String ret = "<tr bgcolor='orange'><td colspan='11'>" + Encode.forHtmlContent(String.valueOf(m))
                 + "</td></tr>";
         return ret;
     }
@@ -81,9 +82,9 @@ public class CheckBillingData {
     public String printErrorMsg(String billingNo, String m) {
         String ret = "<tr bgcolor='red'><td colspan='11'>"
                 + "<a href='#' onClick=\"openBrWindow('adjustBill.jsp?billingmaster_no="
-                + billingNo
+                + Encode.forUriComponent(String.valueOf(billingNo))
                 + "','','resizable=yes,scrollbars=yes,top=0,left=0,width=900,height=600'); return false;\">"
-                + m + "</a>" + "</td></tr>";
+                + Encode.forHtmlContent(String.valueOf(m)) + "</a>" + "</td></tr>";
         return ret;
     }
 
