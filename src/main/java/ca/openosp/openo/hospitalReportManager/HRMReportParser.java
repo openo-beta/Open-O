@@ -52,6 +52,7 @@ import ca.openosp.openo.commn.model.Property;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentSubClassDao;
+import ca.openosp.openo.hospitalReportManager.dao.HRMSubClassDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToProviderDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
@@ -261,6 +262,9 @@ public class HRMReportParser {
 
         logger.info("Adding Report to Inbox, for file:" + report.getFileLocation());
 
+        addUnknownSendingFacilityWarning(report, warnings);
+        addUnknownSubClassWarning(report, warnings);
+
         HRMDocument document = new HRMDocument();
 
         File fileLocation = new File(report.getFileLocation());
@@ -435,6 +439,62 @@ public class HRMReportParser {
                         + ") does not match the patient's LastName.");
             }
             if (!dobMatches || !lastNameMatches) return;
+        }
+    }
+
+
+    /**
+     * UC65: warn when an HRM report arrives from a Sending Facility that has not
+     * been configured on this clinic. "Configured" means at least one HRMSubClass
+     * mapping row references the SF ID. Wildcard rows (SF = "*") are ignored.
+     */
+    private static void addUnknownSendingFacilityWarning(HRMReport report, List<String> warnings) {
+        if (warnings == null) return;
+        String sf = report.getSendingFacilityId();
+        if (sf == null || sf.isEmpty() || "*".equals(sf)) return;
+
+        HRMSubClassDao hrmSubClassDao = SpringUtils.getBean(HRMSubClassDao.class);
+        if (!hrmSubClassDao.findBySendingFacilityId(sf).isEmpty()) return;
+
+        warnings.add("Invalid Sending Facility: '" + sf + "' is not configured for this clinic.");
+    }
+
+    /**
+     * UC66: warn when an HRM report's Class/SubClass combination has no
+     * matching HRMSubClass mapping configured on this clinic. For Medical
+     * Records reports the SubClass element is stored verbatim as
+     * subClassName; for Diagnostic Imaging / Cardio Respiratory reports the
+     * accompanying subclasses carry both a name and mnemonic.
+     */
+    private static void addUnknownSubClassWarning(HRMReport report, List<String> warnings) {
+        if (warnings == null) return;
+        String className = report.getFirstReportClass();
+        if (className == null || className.isEmpty()) return;
+
+        HRMSubClassDao hrmSubClassDao = SpringUtils.getBean(HRMSubClassDao.class);
+        String sf = report.getSendingFacilityId();
+
+        boolean isAccompanying = className.equalsIgnoreCase("Diagnostic Imaging Report")
+                || className.equalsIgnoreCase("Cardio Respiratory Report");
+
+        if (isAccompanying) {
+            List<List<Object>> accompanying = report.getAccompanyingSubclassList();
+            if (accompanying == null || accompanying.isEmpty()) return;
+            List<Object> first = accompanying.get(0);
+            String subClassName = first.size() > 0 ? (String) first.get(0) : null;
+            String subClassMnemonic = first.size() > 1 ? (String) first.get(1) : null;
+            if (subClassName == null || subClassName.isEmpty()) return;
+            if (hrmSubClassDao.findApplicableSubClassMapping(className, subClassName, subClassMnemonic, sf) == null) {
+                warnings.add("Unmatched Report SubClass: '" + subClassName
+                        + (subClassMnemonic != null && !subClassMnemonic.isEmpty() ? "^" + subClassMnemonic : "")
+                        + "' is not configured for this clinic.");
+            }
+        } else {
+            String subClass = report.getFirstReportSubClass();
+            if (subClass == null || subClass.isEmpty()) return;
+            if (hrmSubClassDao.findApplicableSubClassMapping(className, subClass, null, sf) == null) {
+                warnings.add("Unmatched Report SubClass: '" + subClass + "' is not configured for this clinic.");
+            }
         }
     }
 
