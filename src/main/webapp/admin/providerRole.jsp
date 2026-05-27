@@ -487,8 +487,10 @@
 
 <form name="myform" action="providerRole.jsp" method="POST">
 
-    <% if (msg.length() > 1) {%>
-    <div class="alert <%=msgIsError ? "alert-danger" : "alert-info"%>">
+    <% if (msg.length() > 1) {
+        String alertClass = msgIsError ? "alert-danger" : "alert-info";
+    %>
+    <div class="alert <%=alertClass%>">
         <%=Encode.forHtml(msg)%>
     </div>
     <% } %>

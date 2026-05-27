@@ -389,8 +389,10 @@
 <form name="myform" action="providerPrivilege.jsp" method="POST">
     <table width="100%">
         <tr>
-            <th><% if (msg.length() > 1) {%>
-                <div class="alert <%=msgIsError ? "alert-danger" : "alert-info"%>" style="width:100%; text-align:center"><%=Encode.forHtml(msg)%>
+            <th><% if (msg.length() > 1) {
+                String alertClass = msgIsError ? "alert-danger" : "alert-info";
+            %>
+                <div class="alert <%=alertClass%>" style="width:100%; text-align:center"><%=Encode.forHtml(msg)%>
                 </div>
                 <% } %></th>
             <th style="width: 600px">Object Name/Role Name: <input type="text" name="keyword"
