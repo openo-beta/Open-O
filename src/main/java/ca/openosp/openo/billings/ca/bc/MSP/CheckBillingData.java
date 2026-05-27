@@ -73,12 +73,32 @@ public class CheckBillingData {
         return ret;
     }
 
+    /**
+     * Wraps a plain-text warning message in an orange warning row of the billing
+     * validation report. The message is HTML-encoded at output, so callers must
+     * pass plain text - HTML fragments (e.g. {@code <br>}, {@code <span>}) will
+     * be escaped and shown as literal text rather than rendered as markup.
+     *
+     * @param m String the plain-text warning message
+     * @return String the rendered {@code <tr>} HTML fragment
+     */
     public String printWarningMsg(String m) {
         String ret = "<tr bgcolor='orange'><td colspan='11'>" + Encode.forHtmlContent(String.valueOf(m))
                 + "</td></tr>";
         return ret;
     }
 
+    /**
+     * Wraps a plain-text error message in a red error row of the billing
+     * validation report, linked to the {@code adjustBill.jsp} popup for the
+     * given billing number. The message is HTML-encoded at output, so callers
+     * must pass plain text - HTML fragments will be escaped and shown as
+     * literal text rather than rendered as markup.
+     *
+     * @param billingNo String the billing master number used in the adjust-bill link
+     * @param m String the plain-text error message
+     * @return String the rendered {@code <tr>} HTML fragment
+     */
     public String printErrorMsg(String billingNo, String m) {
         String ret = "<tr bgcolor='red'><td colspan='11'>"
                 + "<a href='#' onClick=\"openBrWindow('adjustBill.jsp?billingmaster_no="
