@@ -12,6 +12,7 @@
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
+<%@page import="ca.openosp.openo.utility.HtmlTextCleaner" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.lab.ca.all.upload.MessageUploader" %>
 <%@ page language="java" errorPage="/errorpage.jsp" %>
