@@ -355,6 +355,8 @@ public class RxSessionBean implements java.io.Serializable {
      * Called from {@link RxChoosePatient2Action} on each Rx open so a reused
      * per-patient bean shows a clean staging area after a completed save, while
      * preserving in-progress drafts staged in another tab (PR #2261 invariant).
+     *
+     * @since 2026-05-27
      */
     public void removePersistedStashItems() {
         stash.removeIf(rx -> rx.getDrugId() > 0);
