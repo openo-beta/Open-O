@@ -1324,17 +1324,17 @@
                         Properties propD = (Properties) vecHistD.get(i);
                 %>
                 <tr bgcolor="<%=i%2==0?"ivory":"#EEEEFF"%>" align="center">
-                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_no", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_no", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_date", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_date", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("visitdate", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("visitdate", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("service_code", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("service_code", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("diagnostic_code", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("diagnostic_code", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("update_date", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("update_date", "\u00A0")))%>
                     </td>
                 </tr>
                 <%
