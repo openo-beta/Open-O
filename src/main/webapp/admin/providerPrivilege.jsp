@@ -171,9 +171,10 @@
             } catch (DataIntegrityViolationException divEx) {
                 secExceptionMsg = divEx.getMostSpecificCause().getLocalizedMessage();
             }
-            if (secExceptionMsg.length() > 0)
+            if (secExceptionMsg.length() > 0) {
                 msg += secExceptionMsg;
-            else {
+                msgIsError = true;
+            } else {
                 msg += "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is added. ";
                 LogAction.addLog(curUser_no, LogConst.ADD, LogConst.CON_PRIVILEGE, roleUserGroup + "|" + objectName + "|" + privilege, ip);
             }
