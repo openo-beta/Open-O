@@ -609,7 +609,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
             } else if (note.isInvoice()) {
                 String winName = "invoice" + demographicNo;
                 int hash = Math.abs(winName.hashCode());
-                String url = "popupPage(700,800,'" + hash + "','" + request.getContextPath() + Encode.forHtml(((NoteDisplayNonNote) note).getLinkInfo()) + "'); return false;";
+                String url = "popupPage(700,800,'" + hash + "','" + request.getContextPath() + Encode.forJavaScript(((NoteDisplayNonNote) note).getLinkInfo()) + "'); return false;";
             %>
             <div class="view-links"
                  style="<%=Encode.forHtmlAttribute(String.valueOf((note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""))%>">
