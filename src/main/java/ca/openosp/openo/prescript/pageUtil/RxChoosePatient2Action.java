@@ -96,16 +96,7 @@ public final class RxChoosePatient2Action extends ActionSupport {
             bean.setProviderNo(user_no);
             bean.setDemographicNo(demographicNoInt);
         } else {
-            // Drop stash items already persisted in a prior save. A reused bean
-            // (re-open/refresh) should show a clean staging area when the only
-            // items left are leftovers from a completed save & print or save-only;
-            // unsaved drafts (script_no null) are preserved so multi-tab work
-            // staged elsewhere is not lost.
-            bean.getStashList().removeIf(rx ->
-                    rx.getScript_no() != null && !rx.getScript_no().isEmpty());
-            if (bean.getStashIndex() >= bean.getStashSize()) {
-                bean.setStashIndex(bean.getStashSize() - 1);
-            }
+            bean.removePersistedStashItems();
         }
         RxSessionBean.saveToSession(request, bean);
 
