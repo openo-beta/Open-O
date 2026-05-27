@@ -579,7 +579,7 @@
                 <%}%>
                 <td><%=Encode.forHtml(String.valueOf(b.providerLastName))%>,<%=Encode.forHtml(String.valueOf(b.providerFirstName))%>
                 </td>
-                <td title="<%=Encode.forHtmlAttribute(String.valueOf(msp.getStatusDesc(b.reason)))%>"><%=Encode.forHtml(String.valueOf(msp.getStatusDesc(b.reason) == null ? "\u00A0" : msp.getStatusDesc(b.reason)))%>
+                <td title="<%=msp.getStatusDesc(b.reason) == null ? "" : Encode.forHtmlAttribute(msp.getStatusDesc(b.reason))%>"><%=Encode.forHtml(String.valueOf(msp.getStatusDesc(b.reason) == null ? "\u00A0" : msp.getStatusDesc(b.reason)))%>
                 </td>
 
 
