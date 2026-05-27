@@ -65,7 +65,7 @@
 <br>
 Client name:
 <I> <c:if test="${not empty requestScope.demoName}">
-    <%=Encode.forHtml(String.valueOf(request.getAttribute("demoName")))%>
+    <%=request.getAttribute("demoName") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoName")))%>
 </c:if>
 <c:if test="${empty requestScope.demoName}">
     <%=request.getParameter("demoName") == null ? "" : Encode.forHtml(request.getParameter("demoName"))%>
@@ -73,7 +73,7 @@ Client name:
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Age:
 <I> <c:if test="${not empty requestScope.demoName}">
-    <%=Encode.forHtml(String.valueOf(request.getAttribute("demoAge")))%>
+    <%=request.getAttribute("demoAge") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoAge")))%>
 </c:if>
 <c:if test="${empty requestScope.demoName}">
     <%=request.getParameter("demoAge") == null ? "" : Encode.forHtml(request.getParameter("demoAge"))%>
@@ -81,7 +81,7 @@ Client name:
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DOB:
 <I> <c:if test="${not empty requestScope.demoName}">
-    <%=Encode.forHtml(String.valueOf(request.getAttribute("demoDOB")))%>
+    <%=request.getAttribute("demoDOB") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoDOB")))%>
 </c:if>
 <c:if test="${empty requestScope.demoName}">
     <%=request.getParameter("demoDOB") == null ? "" : Encode.forHtml(request.getParameter("demoDOB"))%>
