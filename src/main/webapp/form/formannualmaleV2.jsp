@@ -251,7 +251,7 @@
     <input type="hidden" name="ID"
            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
     <input type="hidden" name="provider_no"
-           value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+           value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
     <input type="hidden" name="formCreated"
            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
     <input type="hidden" name="form_class" value="<%=formClass%>"/>
@@ -272,7 +272,7 @@
                 <input type="button" value="Print"
                        onclick="javascript:return onPrint();"/> <input type="button"
                                                                        value="Consult"
-                                                                       onclick="javascript:popupOscarCon(700,960,'<%= request.getContextPath() %>/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de=<%=Encode.forJavaScript(String.valueOf(demoNo))%>');"/>
+                                                                       onclick="javascript:popupOscarCon(700,960,'<%= request.getContextPath() %>/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de=<%=Encode.forUriComponent(String.valueOf(demoNo))%>');"/>
 
             </td>
             <td align='right'><a

@@ -228,7 +228,7 @@
                 <td width="12%" height="16"><input type="checkbox"
                                                    name="inrbilling<%=Encode.forHtmlAttribute(String.valueOf(billinginr_no))%>"></td>
                 <td width="22%" height="16"><a href="#"
-                                               onClick='rs("billinginrupdate","updateINRbilling.jsp?demono=<%=Encode.forJavaScript(String.valueOf(demono))%>&billinginr_no=<%=Encode.forJavaScript(String.valueOf(billinginr_no))%>&servicecode=<%=Encode.forJavaScript(String.valueOf(service_code))%>&billingamount=<%=Encode.forJavaScript(String.valueOf(billing_amount))%>&dxcode=<%=Encode.forJavaScript(String.valueOf(diagnostic_code))%>&demo_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo_name, StandardCharsets.UTF_8)))%>&provider_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(proName1, StandardCharsets.UTF_8)))%>","380","300","0")'><%=Encode.forHtml(String.valueOf(demo_name))%>
+                                               onClick='rs("billinginrupdate","updateINRbilling.jsp?demono=<%=Encode.forUriComponent(String.valueOf(demono))%>&billinginr_no=<%=Encode.forUriComponent(String.valueOf(billinginr_no))%>&servicecode=<%=Encode.forUriComponent(String.valueOf(service_code))%>&billingamount=<%=Encode.forUriComponent(String.valueOf(billing_amount))%>&dxcode=<%=Encode.forUriComponent(String.valueOf(diagnostic_code))%>&demo_name=<%=Encode.forUriComponent(String.valueOf(demo_name))%>&provider_name=<%=Encode.forUriComponent(String.valueOf(proName1))%>","380","300","0")'><%=Encode.forHtml(String.valueOf(demo_name))%>
                 </a></td>
                 <td width="22%" height="16"><%=Encode.forHtml(String.valueOf(proName1))%>
                 </td>
@@ -287,7 +287,7 @@
                 <td width="12%" height="16"><input type="checkbox"
                                                    name="inrbilling<%=Encode.forHtmlAttribute(String.valueOf(billinginr_no))%>"></td>
                 <td width="22%" height="16"><a href="#"
-                                               onClick='rs("billinginrupdate","updateINRbilling.jsp?demono=<%=Encode.forJavaScript(String.valueOf(demono))%>&billinginr_no=<%=Encode.forJavaScript(String.valueOf(billinginr_no))%>&servicecode=<%=Encode.forJavaScript(String.valueOf(service_code))%>&billingamount=<%=Encode.forJavaScript(String.valueOf(billing_amount))%>&dxcode=<%=Encode.forJavaScript(String.valueOf(diagnostic_code))%>&demo_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demo_name, StandardCharsets.UTF_8)))%>&provider_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(proName1, StandardCharsets.UTF_8)))%>","380","300","0")'><%=Encode.forHtml(String.valueOf(demo_name))%>
+                                               onClick='rs("billinginrupdate","updateINRbilling.jsp?demono=<%=Encode.forUriComponent(String.valueOf(demono))%>&billinginr_no=<%=Encode.forUriComponent(String.valueOf(billinginr_no))%>&servicecode=<%=Encode.forUriComponent(String.valueOf(service_code))%>&billingamount=<%=Encode.forUriComponent(String.valueOf(billing_amount))%>&dxcode=<%=Encode.forUriComponent(String.valueOf(diagnostic_code))%>&demo_name=<%=Encode.forUriComponent(String.valueOf(demo_name))%>&provider_name=<%=Encode.forUriComponent(String.valueOf(proName1))%>","380","300","0")'><%=Encode.forHtml(String.valueOf(demo_name))%>
                 </a></td>
                 <td width="22%" height="16"><%=Encode.forHtml(String.valueOf(proName1))%>
                 </td>
@@ -314,7 +314,7 @@
             <tr>
                 <td>
                     <a href="#"
-                       onClick='rs("billingcalendar","<%= request.getContextPath() %>/billing/CA/ON/billingCalendarPopup.jsp?year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&type=service","380","300","0")'>Service
+                       onClick='rs("billingcalendar","<%= request.getContextPath() %>/billing/CA/ON/billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&type=service","380","300","0")'>Service
                         Date:</a>
                     <input type="text" name="xml_appointment_date"
                            value="<%=Encode.forHtmlAttribute(String.valueOf(now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)))%>"

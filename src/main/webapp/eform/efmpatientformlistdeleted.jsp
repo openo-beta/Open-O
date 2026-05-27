@@ -211,7 +211,7 @@
 					%>
 					<tr>
 						<td><a href="#"
-						       ONCLICK="popupPage('efmshowform_data.jsp?fdid=<%=Encode.forJavaScript(String.valueOf(curform.get("fdid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormPD" + i))%>'); return false;"
+						       ONCLICK="popupPage('efmshowform_data.jsp?fdid=<%=Encode.forUriComponent(String.valueOf(curform.get("fdid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormPD" + i))%>'); return false;"
 						       TITLE="View Form"
 						       onmouseover="window.status='View This Form'; return true"><%=Encode.forHtmlContent((String)curform.get("formName"))%></a></td>
 						<td><%=Encode.forHtmlContent((String)curform.get("formSubject"))%></td>

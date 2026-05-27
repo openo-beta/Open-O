@@ -817,7 +817,7 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
             checkAllergy('<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(rx.getAtcCode()))%>');
             checkIfInactive('<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(rx.getRegionalIdentifier()))%>');
 
-            var isDiscontinuedLatest=<%=Encode.forJavaScript(String.valueOf(isDiscontinuedLatest))%>;
+            var isDiscontinuedLatest = <%=isDiscontinuedLatest%>;
             //oscarLog("isDiscon "+isDiscontinuedLatest);
             //pause(1000);
             var archR='<%=Encode.forJavaScript(String.valueOf(archivedReason))%>';

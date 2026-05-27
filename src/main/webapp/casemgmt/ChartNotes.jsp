@@ -491,9 +491,9 @@
                         List<EncounterTemplate> allTemplates = encounterTemplateDao.findAll();
 
                         for (EncounterTemplate encounterTemplate : allTemplates) {
-                            String templateName = Encode.forHtml(encounterTemplate.getEncounterTemplateName());
+                            String templateName = encounterTemplate.getEncounterTemplateName();
                     %>
-                    <option value="<%=request.getContextPath()+"/admin/providertemplate.jsp?dboperation=Edit&name="+templateName%>"><%=Encode.forHtml(String.valueOf(templateName))%>
+                    <option value="<%=Encode.forHtmlAttribute(request.getContextPath()+"/admin/providertemplate.jsp?dboperation=Edit&name="+Encode.forUriComponent(templateName))%>"><%=Encode.forHtml(templateName)%>
                     </option>
                     <%
                         }
@@ -705,7 +705,7 @@
                 <button type="button" onclick="toggleFullViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btneExpandLoadedNotes"/></button>
                 <button type="button" onclick="toggleCollapseViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnCollapseLoadedNotes"/></button>
                 <button type="button"
-                        onclick="popupPage(500,200,'noteBrowser<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>','casemgmt/noteBrowser.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&FirstTime=1');">
+                        onclick="popupPage(500,200,'noteBrowser<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>','casemgmt/noteBrowser.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&FirstTime=1');">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.BrowseNotes"/></button>
             </div>
         </div>

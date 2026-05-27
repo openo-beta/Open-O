@@ -634,7 +634,7 @@
 
             <security:oscarSec roleName="<%= roleName$ %>" objectName="_eChart" rights="r" reverse="<%= false %>" >
             var numMenus = 1;
-            var encURL = "<c:out value="${ctx}"/>/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&appointmentNo=&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&curProviderNo=&reason=<%=Encode.forJavaScript(String.valueOf(noteReason))%>&encType=<%=Encode.forJavaScript(String.valueOf("telephone encounter with client"))%>&userName=<%=Encode.forJavaScript(String.valueOf(userfirstname+" "+userlastname))%>&curDate=<%=Encode.forJavaScript(String.valueOf(dateString))%>&appointmentDate=&startTime=&status=";
+            var encURL = "<c:out value="${ctx}"/>/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&appointmentNo=&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&curProviderNo=&reason=<%=Encode.forUriComponent(String.valueOf(noteReason))%>&encType=<%=Encode.forUriComponent(String.valueOf("telephone encounter with client"))%>&userName=<%=Encode.forUriComponent(String.valueOf(userfirstname+" "+userlastname))%>&curDate=<%=Encode.forUriComponent(String.valueOf(dateString))%>&appointmentDate=&startTime=&status=";
 
             function showMenu(menuNumber, eventObj) {
                 var menuId = 'menu' + menuNumber;
@@ -1061,7 +1061,7 @@
                                     } else if ("ON".equals(prov)) {
                                     %>
                                     <a href="javascript: function myFunction() {return false; }"
-                                       onClick="popupPage(500,800,'<%= request.getContextPath() %>/billing/CA/ON/billinghistory.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&last_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getLastName(), StandardCharsets.UTF_8)))%>&first_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getFirstName(), StandardCharsets.UTF_8)))%>&orderby=appointment_date&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=10')">
+                                       onClick="popupPage(500,800,'<%= request.getContextPath() %>/billing/CA/ON/billinghistory.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&last_name=<%=Encode.forUriComponent(String.valueOf(demographic.getLastName()))%>&first_name=<%=Encode.forUriComponent(String.valueOf(demographic.getFirstName()))%>&orderby=appointment_date&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=10')">
                                         <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgBillHistory"/></a>
                                     <%if ("online".equals(oscarProps.getProperty("hcv.type", "simple"))) { %>
                                     <br/>
@@ -1073,7 +1073,7 @@
                                     } else {
                                     %>
                                     <a href="#"
-                                       onclick="popupPage(800,1000,'<%= request.getContextPath() %>/billing/CA/BC/billStatus.jsp?lastName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getLastName(), StandardCharsets.UTF_8)))%>&firstName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getFirstName(), StandardCharsets.UTF_8)))%>&filterPatient=true&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>');return false;">
+                                       onclick="popupPage(800,1000,'<%= request.getContextPath() %>/billing/CA/BC/billStatus.jsp?lastName=<%=Encode.forUriComponent(String.valueOf(demographic.getLastName()))%>&firstName=<%=Encode.forUriComponent(String.valueOf(demographic.getFirstName()))%>&filterPatient=true&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>');return false;">
                                         <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgInvoiceList"/></a>
 
 
@@ -1091,7 +1091,7 @@
                             <tr>
                                 <td><a
                                         href="javascript: function myFunction() {return false; }"
-                                        onClick="popupPage(700, 1000, '<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(prov, StandardCharsets.UTF_8)))%>&billForm=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(oscarProps.getProperty("default_view"), StandardCharsets.UTF_8)))%>&hotclick=&appointment_no=0&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getLastName(), StandardCharsets.UTF_8)))%>%2C<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getFirstName(), StandardCharsets.UTF_8)))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&providerview=<%=Encode.forJavaScript(String.valueOf(demographic.getProviderNo()))%>&user_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&apptProvider_no=none&appointment_date=<%=Encode.forJavaScript(String.valueOf(dateString))%>&start_time=00:00:00&bNewForm=1&status=t');return false;"
+                                        onClick="popupPage(700, 1000, '<%=request.getContextPath()%>/billing.do?billRegion=<%=Encode.forUriComponent(String.valueOf(prov))%>&billForm=<%=Encode.forUriComponent(String.valueOf(oscarProps.getProperty("default_view")))%>&hotclick=&appointment_no=0&demographic_name=<%=Encode.forUriComponent(String.valueOf(demographic.getLastName()))%>%2C<%=Encode.forUriComponent(String.valueOf(demographic.getFirstName()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&providerview=<%=Encode.forUriComponent(String.valueOf(demographic.getProviderNo()))%>&user_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&apptProvider_no=none&appointment_date=<%=Encode.forUriComponent(String.valueOf(dateString))%>&start_time=00:00:00&bNewForm=1&status=t');return false;"
                                         title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgBillPatient"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgCreateInvoice"/></a></td>
                             </tr>
                             <%
@@ -1103,34 +1103,34 @@
                             <tr>
                                 <td><a
                                         href="javascript: function myFunction() {return false; }"
-                                        onClick="window.open('<%= request.getContextPath() %>/billing/CA/ON/specialtyBilling/fluBilling/addFluBilling.jsp?function=demographic&functionid=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&creator=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getLastName(), StandardCharsets.UTF_8)))%>%2C<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getFirstName(), StandardCharsets.UTF_8)))%>&hin=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getHin()!=null?demographic.getHin():"", StandardCharsets.UTF_8)))%><%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getVer()!=null?demographic.getVer():"", StandardCharsets.UTF_8)))%>&demo_sex=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getSex(), StandardCharsets.UTF_8)))%>&demo_hctype=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getHcType()==null?"null":demographic.getHcType(), StandardCharsets.UTF_8)))%>&rd=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(rd==null?"null":rd, StandardCharsets.UTF_8)))%>&rdohip=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(rdohip==null?"null":rdohip, StandardCharsets.UTF_8)))%>&dob=<%=Encode.forJavaScript(String.valueOf(MyDateFormat.getStandardDate(Integer.parseInt(birthYear),Integer.parseInt(birthMonth),Integer.parseInt(birthDate))))%>&mrp=<%=Encode.forJavaScript(String.valueOf(demographic.getProviderNo() != null ? demographic.getProviderNo() : ""))%>','', 'scrollbars=yes,resizable=yes,width=720,height=500');return false;"
+                                        onClick="window.open('<%= request.getContextPath() %>/billing/CA/ON/specialtyBilling/fluBilling/addFluBilling.jsp?function=demographic&functionid=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&creator=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demographic.getLastName()))%>%2C<%=Encode.forUriComponent(String.valueOf(demographic.getFirstName()))%>&hin=<%=Encode.forUriComponent(demographic.getHin()!=null?demographic.getHin():"")%><%=Encode.forUriComponent(demographic.getVer()!=null?demographic.getVer():"")%>&demo_sex=<%=Encode.forUriComponent(String.valueOf(demographic.getSex()))%>&demo_hctype=<%=Encode.forUriComponent(demographic.getHcType()==null?"null":demographic.getHcType())%>&rd=<%=Encode.forUriComponent(String.valueOf(rd==null?"null":rd))%>&rdohip=<%=Encode.forUriComponent(String.valueOf(rdohip==null?"null":rdohip))%>&dob=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getStandardDate(Integer.parseInt(birthYear),Integer.parseInt(birthMonth),Integer.parseInt(birthDate))))%>&mrp=<%=Encode.forUriComponent(String.valueOf(demographic.getProviderNo() != null ? demographic.getProviderNo() : ""))%>','', 'scrollbars=yes,resizable=yes,width=720,height=500');return false;"
                                         title='<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddFluBill"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgFluBilling"/></a></td>
                             </tr>
                             <% } %>
                             <tr>
                                 <td><a
                                         href="javascript: function myFunction() {return false; }"
-                                        onClick="popupS('<%= request.getContextPath() %>/billing/CA/ON/billingShortcutPg1.jsp?billRegion=<%=Encode.forJavaScript(String.valueOf(prov))%>&billForm=<%=Encode.forJavaScript(String.valueOf(oscarProps.getProperty("hospital_view", default_view)))%>&hotclick=&appointment_no=0&demographic_name=<%=Encode.forJavaScript(String.valueOf(demographic.getLastName()))%>%2C<%=Encode.forJavaScript(String.valueOf(demographic.getFirstName()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&providerview=<%=Encode.forJavaScript(String.valueOf(demographic.getProviderNo()))%>&user_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&apptProvider_no=none&appointment_date=<%=Encode.forJavaScript(String.valueOf(dateString))%>&start_time=00:00:00&bNewForm=1&status=t');return false;"
+                                        onClick="popupS('<%= request.getContextPath() %>/billing/CA/ON/billingShortcutPg1.jsp?billRegion=<%=Encode.forUriComponent(String.valueOf(prov))%>&billForm=<%=Encode.forUriComponent(String.valueOf(oscarProps.getProperty("hospital_view", default_view)))%>&hotclick=&appointment_no=0&demographic_name=<%=Encode.forUriComponent(String.valueOf(demographic.getLastName()))%>%2C<%=Encode.forUriComponent(String.valueOf(demographic.getFirstName()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&providerview=<%=Encode.forUriComponent(String.valueOf(demographic.getProviderNo()))%>&user_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&apptProvider_no=none&appointment_date=<%=Encode.forUriComponent(String.valueOf(dateString))%>&start_time=00:00:00&bNewForm=1&status=t');return false;"
                                         title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgBillPatient"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgHospitalBilling"/></a></td>
                             </tr>
                             <tr>
                                 <td><a
                                         href="javascript: function myFunction() {return false; }"
-                                        onClick="window.open('<%= request.getContextPath() %>/billing/CA/ON/addBatchBilling.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo().toString()))%>&creator=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getLastName(), StandardCharsets.UTF_8)))%>%2C<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getFirstName(), StandardCharsets.UTF_8)))%>&hin=<%=Encode.forJavaScript(String.valueOf(demographic.getHin()!=null?URLEncoder.encode(demographic.getHin(), StandardCharsets.UTF_8):""))%> <%=Encode.forJavaScript(String.valueOf(demographic.getVer()!=null?URLEncoder.encode(demographic.getVer(), StandardCharsets.UTF_8):""))%>&dob=<%=Encode.forJavaScript(String.valueOf(MyDateFormat.getStandardDate(Integer.parseInt(birthYear),Integer.parseInt(birthMonth),Integer.parseInt(birthDate))))%>','', 'scrollbars=yes,resizable=yes,width=600,height=400');return false;"
+                                        onClick="window.open('<%= request.getContextPath() %>/billing/CA/ON/addBatchBilling.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo().toString()))%>&creator=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demographic.getLastName()))%>%2C<%=Encode.forUriComponent(String.valueOf(demographic.getFirstName()))%>&hin=<%=Encode.forUriComponent(demographic.getHin()!=null?demographic.getHin():"")%> <%=Encode.forUriComponent(demographic.getVer()!=null?demographic.getVer():"")%>&dob=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getStandardDate(Integer.parseInt(birthYear),Integer.parseInt(birthMonth),Integer.parseInt(birthDate))))%>','', 'scrollbars=yes,resizable=yes,width=600,height=400');return false;"
                                         title='<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddBatchBilling"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddBatchBilling"/></a>
                                 </td>
                             </tr>
                             <tr>
                                 <td><a
                                         href="javascript: function myFunction() {return false; }"
-                                        onClick="window.open('<%= request.getContextPath() %>/billing/CA/ON/inr/addINRbilling.jsp?function=demographic&functionid=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&creator=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getLastName(), StandardCharsets.UTF_8)))%>%2C<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demographic.getFirstName(), StandardCharsets.UTF_8)))%>&hin=<%=Encode.forJavaScript(String.valueOf(demographic.getHin()!=null?URLEncoder.encode(demographic.getHin(), StandardCharsets.UTF_8):""))%> <%=Encode.forJavaScript(String.valueOf(demographic.getVer()!=null?URLEncoder.encode(demographic.getVer(), StandardCharsets.UTF_8):""))%>&dob=<%=Encode.forJavaScript(String.valueOf(MyDateFormat.getStandardDate(Integer.parseInt(birthYear),Integer.parseInt(birthMonth),Integer.parseInt(birthDate))))%>','', 'scrollbars=yes,resizable=yes,width=600,height=400');return false;"
+                                        onClick="window.open('<%= request.getContextPath() %>/billing/CA/ON/inr/addINRbilling.jsp?function=demographic&functionid=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&creator=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demographic.getLastName()))%>%2C<%=Encode.forUriComponent(String.valueOf(demographic.getFirstName()))%>&hin=<%=Encode.forUriComponent(demographic.getHin()!=null?demographic.getHin():"")%> <%=Encode.forUriComponent(demographic.getVer()!=null?demographic.getVer():"")%>&dob=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getStandardDate(Integer.parseInt(birthYear),Integer.parseInt(birthMonth),Integer.parseInt(birthDate))))%>','', 'scrollbars=yes,resizable=yes,width=600,height=400');return false;"
                                         title='<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddINRBilling"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddINR"/></a>
                                 </td>
                             </tr>
                             <tr>
                                 <td><a
                                         href="javascript: function myFunction() {return false; }"
-                                        onClick="window.open('<%= request.getContextPath() %>/billing/CA/ON/inr/reportINR.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>','', 'scrollbars=yes,resizable=yes,width=600,height=600');return false;"
+                                        onClick="window.open('<%= request.getContextPath() %>/billing/CA/ON/inr/reportINR.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>','', 'scrollbars=yes,resizable=yes,width=600,height=600');return false;"
                                         title='<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgINRBilling"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgINRBill"/></a>
                                 </td>
                             </tr>
@@ -1145,13 +1145,13 @@
                         <tr>
                             <td><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popupPage(700,960,'<%= request.getContextPath() %>/oscarEncounter/oscarConsultationRequest/DisplayDemographicConsultationRequests.jsp?de=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&proNo=<%=Encode.forJavaScript(String.valueOf(demographic.getProviderNo()))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnConsultation"/></a></td>
+                                    onClick="popupPage(700,960,'<%= request.getContextPath() %>/oscarEncounter/oscarConsultationRequest/DisplayDemographicConsultationRequests.jsp?de=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&proNo=<%=Encode.forUriComponent(String.valueOf(demographic.getProviderNo()))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnConsultation"/></a></td>
                         </tr>
 
                         <tr>
                             <td><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popupOscarRx(700,1027,'<%= request.getContextPath() %>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a>
+                                    onClick="popupOscarRx(700,1027,'<%= request.getContextPath() %>/oscarRx/choosePatient.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a>
                             </td>
                         </tr>
 
@@ -1210,19 +1210,19 @@
                             <td>
                                 <a
                                         href="javascript: function myFunction() {return false; }"
-                                        onClick="popupPage(700,1000,'<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>');return false;">
+                                        onClick="popupPage(700,1000,'<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>');return false;">
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/></a>
                             </td>
                         </tr>
                         <tr>
                             <td><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popup(700,960,'<%= request.getContextPath() %>/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>','msg')">
+                                    onClick="popup(700,960,'<%= request.getContextPath() %>/messenger/SendDemoMessage.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>','msg')">
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgSendMsg"/></a></td>
                         </tr>
                         <tr>
                             <td><a href="#"
-                                   onclick="popup(300,300,'<%=request.getContextPath()%>/demographic/demographicCohort.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>', 'cohort'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddPatientSet"/></a>
+                                   onclick="popup(300,300,'<%=request.getContextPath()%>/demographic/demographicCohort.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>', 'cohort'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddPatientSet"/></a>
                             </td>
                         </tr>
 
@@ -1231,7 +1231,7 @@
                         %>
                         <tr>
                             <td><a href="#"
-                                   onclick="popup(500,500,'<%= request.getContextPath() %>/integrator/manage_linked_clients.jsp?demographicId=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>', 'manage_linked_clients'); return false;">Integrator
+                                   onclick="popup(500,500,'<%= request.getContextPath() %>/integrator/manage_linked_clients.jsp?demographicId=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>', 'manage_linked_clients'); return false;">Integrator
                                 Linking</a>
                             </td>
                         </tr>
@@ -1242,13 +1242,13 @@
                         <tr>
                             <td><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popupPage(700,1000,'<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=AR1&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>');">AR1</a>
+                                    onClick="popupPage(700,1000,'<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=AR1&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>');">AR1</a>
                             </td>
                         </tr>
                         <tr>
                             <td><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popupPage(700,1000,'<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=AR2&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>');">AR2</a>
+                                    onClick="popupPage(700,1000,'<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=AR2&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>');">AR2</a>
                             </td>
                         </tr>
                         <% } %>
@@ -1260,7 +1260,7 @@
                                 <td>
 
                                     <a href="#"
-                                       onClick="window.open('<%=request.getContextPath()%>/mod/docmgmtComp/DocList.do?method=list&&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>','_blank','resizable=yes,status=yes,scrollbars=yes');return false;">Inbox
+                                       onClick="window.open('<%=request.getContextPath()%>/mod/docmgmtComp/DocList.do?method=list&&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>','_blank','resizable=yes,status=yes,scrollbars=yes');return false;">Inbox
                                         Manager</a><br>
                                 </td>
                             </tr>
@@ -1269,7 +1269,7 @@
                             <tr>
                                 <td>
                                     <a href="javascript: function myFunction() {return false; }"
-                                       onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&curUser=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgDocuments"/></a></td>
+                                       onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&curUser=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgDocuments"/></a></td>
                             </tr>
                             <%
                                 UserProperty upDocumentBrowserLink = pref.getProp(curProvider_no, UserProperty.EDOC_BROWSER_IN_MASTER_FILE);
@@ -1277,13 +1277,13 @@
                             <tr>
                                 <td>
                                     <a href="javascript: function myFunction() {return false; }"
-                                       onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentBrowser.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&categorykey=Private Documents')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgDocumentBrowser"/></a></td>
+                                       onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentBrowser.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&categorykey=Private Documents')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgDocumentBrowser"/></a></td>
                             </tr>
                             <%}%>
                             <tr>
                                 <td><a
                                         href="javascript: function myFunction() {return false; }"
-                                        onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&curUser=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&mode=add')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnAddDocument"/></a></td>
+                                        onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>&curUser=<%=Encode.forUriComponent(String.valueOf(curProvider_no))%>&mode=add')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnAddDocument"/></a></td>
                             </tr>
                         </special:SpecialPlugin>
                         <tr>
@@ -1412,7 +1412,7 @@
                                                                                rights="r" reverse="<%=false%>">
                                                                 <input type="button"
                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgExport"/>"
-                                                                       onclick="window.open('<%= request.getContextPath() %>/demographic/demographicExport.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>');">
+                                                                       onclick="window.open('<%= request.getContextPath() %>/demographic/demographicExport.jsp?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>');">
                                                             </security:oscarSec>
                                                         </td>
                                                         <td width="30%" align='center' valign="top">
@@ -1589,7 +1589,7 @@
                                                                 <h3>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgOtherContacts"/>:
                                                                     <b><a
                                                                             href="javascript: function myFunction() {return false; }"
-                                                                            onClick="popup(700,960,'<%= request.getContextPath() %>/demographic/AddAlternateContact.jsp?demo=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>','AddRelation')">
+                                                                            onClick="popup(700,960,'<%= request.getContextPath() %>/demographic/AddAlternateContact.jsp?demo=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>','AddRelation')">
                                                                         <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgAddRelation"/><!--i18n--></a></b>
                                                                 </h3>
                                                                 <ul>
@@ -1610,8 +1610,8 @@
                                                                             String encounterLink = "<a target=\"encounter" + dNo + "\" href=\"javascript: function myFunction() {return false; }\" onClick=\"popupEChart(710,1024,'" + request.getContextPath() + "/oscarEncounter/IncomingEncounter.do?demographicNo=" + dNo + "&providerNo=" + loggedInInfo.getLoggedInProviderNo() + "&appointmentNo=&curProviderNo=&reason=&appointmentDate=&startTime=&status=&userName=" + URLEncoder.encode(userfirstname + " " + userlastname, StandardCharsets.UTF_8) + "&curDate=" + dateString + "');return false;\">E</a>";
                                                                     %>
                                                                     <li><span
-                                                                            class="label"><%=Encode.forHtml(String.valueOf(relHash.get("relation")))%><%=Encode.forHtml(String.valueOf(sdb))%><%=Encode.forHtml(String.valueOf(ec))%>:</span>
-                                                                        <span class="info"><%=Encode.forHtml(String.valueOf(relHash.get("lastName")))%>, <%=Encode.forHtml(String.valueOf(relHash.get("firstName")))%>, H:<%=Encode.forHtml(String.valueOf(relHash.get("phone") == null ? "" : relHash.get("phone")))%><%=Encode.forHtml(String.valueOf(formattedWorkPhone))%><%=Encode.forHtml(String.valueOf(formattedCellPhone))%> <%=Encode.forHtml(String.valueOf(masterLink))%> <%=Encode.forHtml(String.valueOf(encounterLink))%></span>
+                                                                            class="label"><%=Encode.forHtml(String.valueOf(relHash.get("relation")))%><%=sdb%><%=ec%>:</span>
+                                                                        <span class="info"><%=Encode.forHtml(String.valueOf(relHash.get("lastName")))%>, <%=Encode.forHtml(String.valueOf(relHash.get("firstName")))%>, H:<%=Encode.forHtml(String.valueOf(relHash.get("phone") == null ? "" : relHash.get("phone")))%><%=Encode.forHtml(String.valueOf(formattedWorkPhone))%><%=Encode.forHtml(String.valueOf(formattedCellPhone))%> <%=masterLink%> <%=encounterLink%></span>
                                                                     </li>
                                                                     <%}%>
 
@@ -1624,7 +1624,7 @@
                                                                 <h3>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgOtherContacts"/>:
                                                                     <b><a
                                                                             href="javascript: function myFunction() {return false; }"
-                                                                            onClick="popup(700,960,'Contact.do?method=manage&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>','ManageContacts')">
+                                                                            onClick="popup(700,960,'Contact.do?method=manage&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>','ManageContacts')">
                                                                         <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgManageContacts"/><!--i18n--></a></b>
                                                                 </h3>
                                                                 <ul>
@@ -1659,7 +1659,7 @@
                                                             <div class="demographicSection" id="clinicStatus">
                                                                 <h3>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgClinicStatus"/>
                                                                     (<a href="#"
-                                                                        onclick="popup(1000, 650, '<%= request.getContextPath() %>/demographic/EnrollmentHistory.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>', 'enrollmentHistory'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgEnrollmentHistory"/></a>)
+                                                                        onclick="popup(1000, 650, '<%= request.getContextPath() %>/demographic/EnrollmentHistory.jsp?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>', 'enrollmentHistory'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgEnrollmentHistory"/></a>)
                                                                 </h3>
                                                                 <ul>
                                                                     <li><span class="label"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formRosterStatus"/>:</span>
@@ -2518,7 +2518,7 @@
                                                                 <%if (hasImportExtra) { %>
                                                                 <a href="javascript:void(0);"
                                                                    title="Extra data from Import"
-                                                                   onclick="window.open('<%= request.getContextPath() %>/annotation/importExtra.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>','anwin','width=400,height=250');">
+                                                                   onclick="window.open('<%= request.getContextPath() %>/annotation/importExtra.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>','anwin','width=400,height=250');">
                                                                     <img src="<%= request.getContextPath() %>/images/notes.gif" align="right"
                                                                          alt="Extra data from Import" height="16"
                                                                          width="13" border="0"> </a>
@@ -2564,14 +2564,14 @@
                                                             <b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formLastName"/>: </b>
                                                         </td>
                                                         <td align="left"><input type="text"
-                                                                                name="last_name" <%=Encode.forHtml(String.valueOf(getDisabled("last_name")))%>
+                                                                                name="last_name" <%=getDisabled("last_name")%>
                                                                                 size="30"
                                                                                 value="<%=Encode.forHtml(demographic.getLastName())%>"
                                                                                 onBlur="upCaseCtrl(this)"></td>
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formFirstName"/>:
                                                         </b></td>
                                                         <td align="left"><input type="text"
-                                                                                name="first_name" <%=Encode.forHtml(String.valueOf(getDisabled("first_name")))%>
+                                                                                name="first_name" <%=getDisabled("first_name")%>
                                                                                 size="30"
                                                                                 value="<%=Encode.forHtml(demographic.getFirstName())%>"
                                                                                 onBlur="upCaseCtrl(this)"></td>
@@ -2580,7 +2580,7 @@
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formMiddleNames"/>:
                                                         </b></td>
                                                         <td align="left"><input type="text"
-                                                                                name="middleNames" <%=Encode.forHtml(String.valueOf(getDisabled("middleNames")))%>
+                                                                                name="middleNames" <%=getDisabled("middleNames")%>
                                                                                 size="30"
                                                                                 value="<%=Encode.forHtml(demographic.getMiddleNames())%>"
                                                                                 onBlur="upCaseCtrl(this)"></td>
@@ -2658,7 +2658,7 @@
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formNameUsed"/>:
                                                         </b></td>
                                                         <td align="left"><input type="text"
-                                                                                name="nameUsed" <%=Encode.forHtml(String.valueOf(getDisabled("nameUsed")))%>
+                                                                                name="nameUsed" <%=getDisabled("nameUsed")%>
                                                                                 size="30"
                                                                                 value="<%=Encode.forHtmlAttribute(StringUtils.trimToEmpty(demographic.getAlias()))%>"
                                                                                 onBlur="upCaseCtrl(this)"></td>
@@ -2692,7 +2692,7 @@
                                                             <%
                                                                 String spokenLang = ca.openosp.openo.util.StringUtils.noNull(demographic.getSpokenLanguage()); %>
                                                             <select name="spoken_lang"
-                                                                    style="width: 200px;" <%=Encode.forHtml(String.valueOf(getDisabled("spoken_lang")))%>>
+                                                                    style="width: 200px;" <%=getDisabled("spoken_lang")%>>
                                                                 <%for (String splang : Util.spokenLangProperties.getLangSorted()) { %>
                                                                 <option value="<%=Encode.forHtmlAttribute(String.valueOf(splang))%>" <%=spokenLang.equals(splang) ? "selected" : "" %>><%=Encode.forHtml(String.valueOf(splang))%>
                                                                 </option>
@@ -2706,14 +2706,14 @@
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formAddr"/>: </b>
                                                         </td>
                                                         <td align="left"><input type="text"
-                                                                                name="address" <%=Encode.forHtml(String.valueOf(getDisabled("address")))%>
+                                                                                name="address" <%=getDisabled("address")%>
                                                                                 size="30"
                                                                                 value="<%=Encode.forHtml(StringUtils.trimToEmpty(demographic.getAddress()))%>">
                                                         </td>
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formCity"/>: </b>
                                                         </td>
                                                         <td align="left"><input type="text" name="city"
-                                                                                size="30" <%=Encode.forHtml(String.valueOf(getDisabled("city")))%>
+                                                                                size="30" <%=getDisabled("city")%>
                                                                                 value="<%=Encode.forHtml(StringUtils.trimToEmpty(demographic.getCity()))%>">
                                                         </td>
                                                     </tr>
@@ -2736,7 +2736,7 @@
 
                                                             <% } else { %>
                                                             <select name="province"
-                                                                    style="width: 200px" <%=Encode.forHtml(String.valueOf(getDisabled("province")))%>>
+                                                                    style="width: 200px" <%=getDisabled("province")%>>
                                                                 <option value="OT"
                                                                         <%=(province == null || province.equals("OT") || province.equals("") || province.length() > 2) ? " selected" : ""%>>
                                                                     Other
@@ -2970,7 +2970,7 @@
                                                                     out.print(oscarProps.getProperty("demographicLabelPostal"));
                                                                 } %> : </b></td>
                                                         <td align="left"><input type="text" name="postal"
-                                                                                size="30" <%=Encode.forHtml(String.valueOf(getDisabled("postal")))%>
+                                                                                size="30" <%=getDisabled("postal")%>
                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demographic.getPostal())))%>"
                                                                                 onBlur="upCaseCtrl(this)"
                                                                                 onChange="isPostalCode()"></td>
@@ -2981,14 +2981,14 @@
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formResidentialAddr"/>: </b>
                                                         </td>
                                                         <td align="left"><input type="text"
-                                                                                name="residentialAddress" <%=Encode.forHtml(String.valueOf(getDisabled("residentialAddress")))%>
+                                                                                name="residentialAddress" <%=getDisabled("residentialAddress")%>
                                                                                 size="30"
                                                                                 value="<%=Encode.forHtml(StringUtils.trimToEmpty(demographic.getResidentialAddress()))%>">
                                                         </td>
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formResidentialCity"/>: </b>
                                                         </td>
                                                         <td align="left"><input type="text" name="residentialCity"
-                                                                                size="30" <%=Encode.forHtml(String.valueOf(getDisabled("residentialCity")))%>
+                                                                                size="30" <%=getDisabled("residentialCity")%>
                                                                                 value="<%=Encode.forHtml(StringUtils.trimToEmpty(demographic.getResidentialCity()))%>">
                                                         </td>
                                                     </tr>
@@ -3013,7 +3013,7 @@
                                                             <% } else { %>
 
                                                             <select name="residentialProvince"
-                                                                    style="width: 200px" <%=Encode.forHtml(String.valueOf(getDisabled("residentialProvince")))%>>
+                                                                    style="width: 200px" <%=getDisabled("residentialProvince")%>>
                                                                 <option value="OT"
                                                                         <%=(residentialProvince == null || residentialProvince.equals("OT") || residentialProvince.equals("") || residentialProvince.length() > 2) ? " selected" : ""%>>
                                                                     Other
@@ -3244,7 +3244,7 @@
                                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formResidentialPostal"/>
                                                             : </b></td>
                                                         <td align="left"><input type="text" name="residentialPostal"
-                                                                                size="30" <%=Encode.forHtml(String.valueOf(getDisabled("residentialPostal")))%>
+                                                                                size="30" <%=getDisabled("residentialPostal")%>
                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demographic.getResidentialPostal())))%>"
                                                                                 onBlur="upCaseCtrl(this)"
                                                                                 onChange="isPostalCode2()"></td>
@@ -3256,13 +3256,13 @@
                                                         </td>
                                                         <td align="left">
                                                             <input type="text" name="phone"
-                                                                   onblur="formatPhoneNum();" <%=Encode.forHtml(String.valueOf(getDisabled("phone")))%>
+                                                                   onblur="formatPhoneNum();" <%=getDisabled("phone")%>
                                                                    style="display: inline; width: auto;"
                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(StringUtils.trimToEmpty(demographic.getPhone()))))%>">
                                                             <label for="hPhoneExt"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgExt"/>:</label>
                                                             <input type="text" style="width:50% !important;"
                                                                    name="hPhoneExt"
-                                                                   id="hPhoneExt" <%=Encode.forHtml(String.valueOf(getDisabled("hPhoneExt")))%>
+                                                                   id="hPhoneExt" <%=getDisabled("hPhoneExt")%>
                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(StringUtils.trimToEmpty(demoExt.get("hPhoneExt")))))%>"
                                                                    size="4"/>
                                                             <input type="hidden" name="hPhoneExtOrig"
@@ -3271,14 +3271,14 @@
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formPhoneW"/>:</b>
                                                         </td>
                                                         <td align="left"><input type="text"
-                                                                                name="phone2" <%=Encode.forHtml(String.valueOf(getDisabled("phone2")))%>
+                                                                                name="phone2" <%=getDisabled("phone2")%>
                                                                                 onblur="formatPhoneNum();"
                                                                                 style="display: inline; width: auto;"
                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demographic.getPhone2())))%>">
                                                             <label for="wPhoneExt"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgExt"/>:</label>
                                                             <input type="text" style="width:50% !important;"
                                                                    name="wPhoneExt"
-                                                                   id="wPhoneExt" <%=Encode.forHtml(String.valueOf(getDisabled("wPhoneExt")))%>
+                                                                   id="wPhoneExt" <%=getDisabled("wPhoneExt")%>
                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(StringUtils.trimToEmpty(demoExt.get("wPhoneExt")))))%>"
                                                                    size="4"/> <input type="hidden"
                                                                                      name="wPhoneExtOrig"
@@ -3291,7 +3291,7 @@
                                                         <td align="left">
                                                             <input type="text" name="demo_cell"
                                                                    onblur="formatPhoneNum();"
-                                                                   style="display: inline; width: auto;" <%=Encode.forHtml(String.valueOf(getDisabled("demo_cell")))%>
+                                                                   style="display: inline; width: auto;" <%=getDisabled("demo_cell")%>
                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demoExt.get("demo_cell"))))%>">
                                                             <input type="hidden" name="demo_cellOrig"
                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demoExt.get("demo_cell"))))%>"/>
@@ -3353,7 +3353,7 @@
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formEmail"/>: </b>
                                                         </td>
                                                         <td align="left"><input type="text" name="email"
-                                                                                size="30" <%=Encode.forHtml(String.valueOf(getDisabled("email")))%>
+                                                                                size="30" <%=getDisabled("email")%>
                                                                                 value="<%=demographic.getEmail() !=null ? Encode.forHtmlContent(demographic.getEmail()) : ""%>">
                                                         </td>
                                                         <td style="text-align: right;">
@@ -3380,7 +3380,7 @@
                                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formDOBDetais"/>:</b>
                                                         </td>
                                                         <td align="left" nowrap><input type="text" placeholder="yyyy"
-                                                                                       name="year_of_birth" <%=Encode.forHtml(String.valueOf(getDisabled("year_of_birth")))%>
+                                                                                       name="year_of_birth" <%=getDisabled("year_of_birth")%>
                                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(birthYear))%>"
                                                                                        size="3" maxlength="4">
 
@@ -3416,7 +3416,7 @@
                                                         <td><select name="sex" id="sex">
                                                             <option value=""></option>
                                                             <% for (Gender gn : Gender.values()) { %>
-                                                            <option value=<%=gn.name()%> <%=Encode.forHtml(String.valueOf(((demographic.getSex().toUpperCase().equals(gn.name())) ? " selected=\"selected\" " : "")))%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
+                                                            <option value="<%=gn.name()%>" <%=Encode.forHtml(String.valueOf(((demographic.getSex().toUpperCase().equals(gn.name())) ? " selected=\"selected\" " : "")))%>><%=Encode.forHtml(String.valueOf(gn.getText()))%>
                                                             </option>
                                                             <% } %>
                                                         </select>
@@ -3427,12 +3427,12 @@
                                                         <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formHin"/>: </b>
                                                         </td>
                                                         <td align="left" nowrap><input type="text" name="hin"
-                                                                                       id="hinBox" <%=Encode.forHtml(String.valueOf(getDisabled("hin")))%>
+                                                                                       id="hinBox" <%=getDisabled("hin")%>
                                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demographic.getHin())))%>"
                                                                                        size="17">
                                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formVer"/><input
                                                                     type="text" name="ver"
-                                                                    style="width:20% !important;" <%=Encode.forHtml(String.valueOf(getDisabled("ver")))%>
+                                                                    style="width:20% !important;" <%=getDisabled("ver")%>
                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demographic.getVer())))%>"
                                                                     onBlur="upCaseCtrl(this)" id="verBox">
                                                             <%if ("online".equals(oscarProps.getProperty("hcv.type", "simple"))) { %>
@@ -3465,17 +3465,17 @@
                                                                     effDateDay = decF.format(MyDateFormat.getDayFromStandardDate(effDate));
                                                                 }
                                                             %> <input type="text" placeholder="yyyy"
-                                                                      name="eff_date_year" <%=Encode.forHtml(String.valueOf(getDisabled("eff_date_year")))%>
+                                                                      name="eff_date_year" <%=getDisabled("eff_date_year")%>
                                                                       size="4" maxlength="4" value="<%=Encode.forHtmlAttribute(String.valueOf(effDateYear))%>">
                                                             <input
                                                                     type="text" placeholder="mm" name="eff_date_month"
                                                                     size="2"
-                                                                    maxlength="2" <%=Encode.forHtml(String.valueOf(getDisabled("eff_date_month")))%>
+                                                                    maxlength="2" <%=getDisabled("eff_date_month")%>
                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(effDateMonth))%>"> <input type="text"
                                                                                                        placeholder="dd"
                                                                                                        name="eff_date_date"
                                                                                                        size="2"
-                                                                                                       maxlength="2" <%=Encode.forHtml(String.valueOf(getDisabled("eff_date_date")))%>
+                                                                                                       maxlength="2" <%=getDisabled("eff_date_date")%>
                                                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(effDateDay))%>">
                                                         </td>
                                                     </tr>
@@ -3487,7 +3487,7 @@
                                                             <%
                                                                 String hctype = demographic.getHcType() == null ? "" : demographic.getHcType(); %>
                                                             <select name="hc_type"
-                                                                    style="width: 200px" <%=Encode.forHtml(String.valueOf(getDisabled("hc_type")))%>>
+                                                                    style="width: 200px" <%=getDisabled("hc_type")%>>
                                                                 <option value="OT"
                                                                         <%=(hctype.equals("OT") || hctype.equals("") || hctype.length() > 2) ? " selected" : ""%>>
                                                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.optOther"/></option>
@@ -3737,13 +3737,13 @@
                                                             %>
                                                             <input type="text" placeholder="yyyy"
                                                                    name="hc_renew_date_year" size="4" maxlength="4"
-                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(renewDateYear))%>" <%=Encode.forHtml(String.valueOf(getDisabled("hc_renew_date_year")))%>>
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(renewDateYear))%>" <%=getDisabled("hc_renew_date_year")%>>
                                                             <input type="text" placeholder="mm"
                                                                    name="hc_renew_date_month" size="2" maxlength="2"
-                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(renewDateMonth))%>" <%=Encode.forHtml(String.valueOf(getDisabled("hc_renew_date_month")))%>>
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(renewDateMonth))%>" <%=getDisabled("hc_renew_date_month")%>>
                                                             <input type="text" placeholder="dd"
                                                                    name="hc_renew_date_date" size="2" maxlength="2"
-                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(renewDateDay))%>" <%=Encode.forHtml(String.valueOf(getDisabled("hc_renew_date_date")))%>>
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(renewDateDay))%>" <%=getDisabled("hc_renew_date_date")%>>
                                                         </td>
                                                     </tr>
                                                     <tr valign="top">
@@ -3751,7 +3751,7 @@
                                                         </td>
                                                         <td align="left"><select id="countryOfOrigin"
                                                                                  name="countryOfOrigin"
-                                                                                 style="width: 200px;" <%=Encode.forHtml(String.valueOf(getDisabled("countryOfOrigin")))%>>
+                                                                                 style="width: 200px;" <%=getDisabled("countryOfOrigin")%>>
                                                             <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgNotSet"/></option>
                                                             <%for (CountryCode cc : countryList) { %>
                                                             <option value="<%=Encode.forHtmlAttribute(String.valueOf(cc.getCountryId()))%>"
@@ -3767,13 +3767,13 @@
                                                     <tr valign="top">
                                                         <td align="right"><b>SIN:</b></td>
                                                         <td align="left"><input type="text" name="sin"
-                                                                                size="30" <%=Encode.forHtml(String.valueOf(getDisabled("sin")))%>
+                                                                                size="30" <%=getDisabled("sin")%>
                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf((demographic.getSin()==null||demographic.getSin().equals("null"))?"":demographic.getSin()))%>">
                                                         </td>
                                                         <td align="right" nowrap><b> <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.cytolNum"/>:</b>
                                                         </td>
                                                         <td><input type="text"
-                                                                   name="cytolNum" <%=Encode.forHtml(String.valueOf(getDisabled("cytolNum")))%>
+                                                                   name="cytolNum" <%=getDisabled("cytolNum")%>
                                                                    style="display: inline; width: auto;"
                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demoExt.get("cytolNum"))))%>">
                                                             <input type="hidden" name="cytolNumOrig"
@@ -3805,7 +3805,7 @@
                                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formMRP"/>
                                                                 <% } %>: </b></td>
                                                             <td align="left"><select id="mrp"
-                                                                                     name="provider_no" <%=Encode.forHtml(String.valueOf(getDisabled("provider_no")))%>
+                                                                                     name="provider_no" <%=getDisabled("provider_no")%>
                                                                                      style="width: 200px">
                                                                 <option value=""></option>
                                                                 <%
@@ -3821,7 +3821,7 @@
                                                             <td align="right" nowrap><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formNurse"/>: </b>
                                                             </td>
                                                             <td align="left"><select
-                                                                    name="nurse" <%=Encode.forHtml(String.valueOf(getDisabled("nurse")))%>
+                                                                    name="nurse" <%=getDisabled("nurse")%>
                                                                     style="width: 200px">
                                                                 <option value=""></option>
                                                                 <%
@@ -3840,7 +3840,7 @@
                                                             <td align="right" nowrap><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formMidwife"/>: </b>
                                                             </td>
                                                             <td align="left"><select
-                                                                    name="midwife" <%=Encode.forHtml(String.valueOf(getDisabled("midwife")))%>
+                                                                    name="midwife" <%=getDisabled("midwife")%>
                                                                     style="width: 200px">
                                                                 <option value=""></option>
                                                                 <%
@@ -3855,7 +3855,7 @@
                                                             <td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formResident"/>:</b>
                                                             </td>
                                                             <td align="left"><select name="resident"
-                                                                                     style="width: 200px" <%=Encode.forHtml(String.valueOf(getDisabled("resident")))%>>
+                                                                                     style="width: 200px" <%=getDisabled("resident")%>>
                                                                 <option value=""></option>
                                                                 <%
                                                                     for (Provider p : doctors) {
@@ -3923,13 +3923,13 @@
                                                                 </script>
                                                                 <% } else {%> <input type="text" name="r_doctor"
                                                                                      size="30"
-                                                                                     maxlength="40" <%=Encode.forHtml(String.valueOf(getDisabled("r_doctor")))%>
+                                                                                     maxlength="40" <%=getDisabled("r_doctor")%>
                                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(rd))%>"> <% } %>
                                                             </td>
                                                             <td align="right" nowrap><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formRefDocNo"/>: </b>
                                                             </td>
                                                             <td align="left"><input type="text"
-                                                                                    name="r_doctor_ohip" <%=Encode.forHtml(String.valueOf(getDisabled("r_doctor_ohip")))%>
+                                                                                    name="r_doctor_ohip" <%=getDisabled("r_doctor_ohip")%>
                                                                                     size="20" maxlength="6"
                                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(rdohip))%>"> <% if ("ON".equals(prov)) { %>
                                                                 <a
@@ -3958,7 +3958,7 @@
                                                                 <input type="hidden" name="initial_rosterstatus"
                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(rosterStatus))%>"/>
                                                                 <select id="roster_status" name="roster_status"
-                                                                        style="width: 120px;" <%=Encode.forHtml(String.valueOf(getDisabled("roster_status")))%>
+                                                                        style="width: 120px;" <%=getDisabled("roster_status")%>
                                                                         onchange="checkRosterStatus2(); updateEnrolledTo();">
                                                                     <option value=""></option>
                                                                     <option value="RO"
@@ -4045,7 +4045,7 @@
                                                             <td align="left">
                                                                 <!-- select box here -->
                                                                 <select id="enrolledTo"
-                                                                        name="roster_enrolled_to" <%=Encode.forHtml(String.valueOf(getDisabled("roster_enrolled_to")))%>
+                                                                        name="roster_enrolled_to" <%=getDisabled("roster_enrolled_to")%>
                                                                         style="width: 200px">
                                                                     <option value=""></option>
                                                                     <%
@@ -4117,7 +4117,7 @@
                                                             <input type="hidden" name="initial_patientstatus"
                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(patientStatus))%>">
                                                             <select name="patient_status"
-                                                                    style="width: 120px" <%=Encode.forHtml(String.valueOf(getDisabled("patient_status")))%>
+                                                                    style="width: 120px" <%=getDisabled("patient_status")%>
                                                                     onChange="updatePatientStatusDate()">
                                                                 <option value="AC"
                                                                         <%="AC".equals(patientStatus) ? " selected" : ""%>>
@@ -4216,7 +4216,7 @@
                                                         </td>
                                                         <td align="left"><input type="text" name="chart_no"
                                                                                 size="30"
-                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demographic.getChartNo())))%>" <%=Encode.forHtml(String.valueOf(getDisabled("chart_no")))%>>
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(StringUtils.trimToEmpty(demographic.getChartNo())))%>" <%=getDisabled("chart_no")%>>
                                                         </td>
                                                     </tr>
 
@@ -4229,7 +4229,7 @@
                                                                 String paperChartIndicatorProgram = StringUtils.trimToEmpty(demoExt.get("paper_chart_archived_program"));
                                                             %>
                                                             <select name="paper_chart_archived"
-                                                                    id="paper_chart_archived" <%=Encode.forHtml(String.valueOf(getDisabled("paper_chart_archived")))%>
+                                                                    id="paper_chart_archived" <%=getDisabled("paper_chart_archived")%>
                                                                     onChange="updatePaperArchive()">
                                                                 <option value="" <%="".equals(paperChartIndicator) ? " selected" : ""%>>
                                                                 </option>
@@ -4948,7 +4948,7 @@
                                                                 </security:oscarSec>
                                                             </oscar:oscarPropertiesCheck>
                                                             <input type="button" class="oscar-dialog-link"
-                                                                   onClick="window.open('<%= request.getContextPath() %>/demographic/demographicAudit.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>')"
+                                                                   onClick="window.open('<%= request.getContextPath() %>/demographic/demographicAudit.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>')"
                                                                    value="Audit Information"/>
 
                                                             <input type="hidden" name="dboperation"
@@ -4959,7 +4959,7 @@
                                                                                rights="r" reverse="<%=false%>">
                                                                 <input type="button"
                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgExport"/>"
-                                                                       onclick="window.open('<%= request.getContextPath() %>/demographic/demographicExport.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>');"/>
+                                                                       onclick="window.open('<%= request.getContextPath() %>/demographic/demographicExport.jsp?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographic.getDemographicNo()))%>');"/>
                                                             </security:oscarSec>
                                                             <br>
 
@@ -4994,7 +4994,7 @@
                                                                    onclick="popupPage(400,700,'<%=Encode.forJavaScript(String.valueOf(printEnvelope))%><%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFLabel"/>"
-                                                                   onclick="popupPage(400,700,'<%=Encode.forJavaScript(String.valueOf(printLbl))%><%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment))%>');return false;">
+                                                                   onclick="popupPage(400,700,'<%=Encode.forJavaScript(String.valueOf(printLbl))%><%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>&appointment_no=<%=Encode.forUriComponent(String.valueOf(appointment))%>');return false;">
                                                             <input type="button" size="110" name="Button"
                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnCreatePDFAddressLabel"/>"
                                                                    onclick="popupPage(400,700,'<%=Encode.forJavaScript(String.valueOf(printAddressLbl))%><%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>');return false;">
@@ -5026,12 +5026,12 @@
                                                             styleBut = "style=\"background-color:yellow\"";
                                                         }%>
                                                 <input type="button" value="Compare with Integrator" <%=styleBut%>
-                                                       onclick="popup(425, 600, 'DiffRemoteDemographics.jsp?demographicId=<%=Encode.forJavaScript(String.valueOf(demographic$))%>', 'RemoteDemoWindow')"/>
+                                                       onclick="popup(425, 600, 'DiffRemoteDemographics.jsp?demographicId=<%=Encode.forUriComponent(String.valueOf(demographic$))%>', 'RemoteDemoWindow')"/>
                                                 <input type="button"
                                                        value="Update latest integrated demographics information"
-                                                       onclick="document.location='<%=request.getContextPath()%>/demographic/copyLinkedDemographicInfoAction.jsp?demographicId=<%=Encode.forJavaScript(String.valueOf(demographic$))%>&<%=Encode.forJavaScript(String.valueOf(request.getQueryString()))%>'"/>
+                                                       onclick="document.location='<%=request.getContextPath()%>/demographic/copyLinkedDemographicInfoAction.jsp?demographicId=<%=Encode.forUriComponent(String.valueOf(demographic$))%>&<%=Encode.forJavaScript(String.valueOf(request.getQueryString()))%>'"/>
                                                 <input type="button" value="Send note to integrated provider"
-                                                       onclick="document.location='<%=request.getContextPath()%>/demographic/followUpSelection.jsp?demographicId=<%=Encode.forJavaScript(String.valueOf(demographic$))%>'"/>
+                                                       onclick="document.location='<%=request.getContextPath()%>/demographic/followUpSelection.jsp?demographicId=<%=Encode.forUriComponent(String.valueOf(demographic$))%>'"/>
                                                 <%
                                                     }
                                                 %>
@@ -5081,7 +5081,7 @@
 
         function callEligibilityWebService(url, id) {
             var ran_number = Math.round(Math.random() * 1000000);
-            var params = "demographic=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&method=checkElig&rand=" + ran_number;  //hack to get around ie caching the page
+            var params = "demographic=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&method=checkElig&rand=" + ran_number;  //hack to get around ie caching the page
             var response;
             new Ajax.Request(url + '?' + params, {
                 onSuccess: function (response) {
@@ -5093,7 +5093,7 @@
         
         function checkInsuranceEligibility() {
             let params = {};
-            params.demographic =<%=Encode.forJavaScript(String.valueOf(demographic_no))%>;
+            params.demographic = "<%=Encode.forJavaScript(String.valueOf(demographic_no))%>";
             params.method = 'checkElig';
             params.rand = Math.round(Math.random()*1000000);  //hack to get around ie caching the page
             let url = '${ctx}/billing/CA/BC/ManageTeleplan.do';

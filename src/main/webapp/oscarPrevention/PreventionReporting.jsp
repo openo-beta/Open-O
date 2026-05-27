@@ -629,7 +629,7 @@
                        <tr>
                           <td><%=Encode.forHtml(String.valueOf(i+1))%></td>
                           <td>
-                              <a href="javascript: return false;" onClick="popup(724,964,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(dis.demographicNo))%>&amp;displaymode=edit&amp;dboperation=search_detail','MasterDemographic')"><%=Encode.forHtml(String.valueOf(dis.demographicNo))%></a>
+                              <a href="javascript: return false;" onClick="popup(724,964,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(dis.demographicNo))%>&amp;displaymode=edit&amp;dboperation=search_detail','MasterDemographic')"><%=Encode.forHtml(String.valueOf(dis.demographicNo))%></a>
                           </td>
                           <td><%=Encode.forHtml(String.valueOf(DemographicData.getDob(demo,"-")))%></td>
 

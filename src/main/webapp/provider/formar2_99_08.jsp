@@ -146,7 +146,7 @@
                 content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=Encode.forHtml(String.valueOf(content))%>
+        <encounter><%=content%>
         </encounter>
     </xml>
     <%
@@ -193,7 +193,7 @@
             content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=Encode.forHtml(String.valueOf(content))%>
+        <encounter><%=content%>
         </encounter>
     </xml>
     <%
@@ -233,7 +233,7 @@
                 <%--=bNewList?"<a href=# onClick='onSave()'><img src="<%= request.getContextPath() %>/images/buttonsave.gif" align='top' width='75' height='25' ></a> ":""--%>
                 <%=bNewList ? "<input type='button' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
                 <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
-                <%=Encode.forHtml(bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : "")%>
+                <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
             </th>
             <th align=CENTER><font face="Helvetica" color="#FFFFFF">ANTENATAL
                 RECORD 2</font> <font color="orange">page <input type="text"
@@ -245,10 +245,10 @@
                         //if(bNewList&&!(request.getParameter("patientmaster")!=null) ) {
                         if (bNewList || (request.getParameter("patientmaster") != null)) {
                     %> <a href=#
-                          onClick="popupPage(600,900,'<%= request.getContextPath() %>/provider/providercontrol.jsp?appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&curProvider_no=&bNewForm=1&username=&reason=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("reason")==null?"":request.getParameter("reason"), StandardCharsets.UTF_8))%>&displaymode=ar1&dboperation=search_demograph');return false;"
+                          onClick="popupPage(600,900,'<%= request.getContextPath() %>/provider/providercontrol.jsp?appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&curProvider_no=&bNewForm=1&username=&reason=<%=Encode.forUriComponent(request.getParameter("reason")==null?"":request.getParameter("reason"))%>&displaymode=ar1&dboperation=search_demograph');return false;"
                           title="Antenatal Record 1"> <font color='yellow'>View AR1</font></a>
                     | <a href=#
-                         onClick="popupPage(500,600,'<%=request.getContextPath()%>/demographic/formhistory.jsp?demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>')"
+                         onClick="popupPage(500,600,'<%=request.getContextPath()%>/demographic/formhistory.jsp?demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>')"
                          title="Previous Antenatal Record 2"> <font color='yellow'>Prev.
                     AR2</font></a> | <a
                         href="<%= request.getContextPath() %>/provider/providercontrol.jsp?appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&curProvider_no=<%=Encode.forUriComponent(request.getParameter("curProvider_no"))%>&username=<%=Encode.forUriComponent(request.getParameter("username"))%>&reason=<%=Encode.forUriComponent(request.getParameter("reason"))%>&displaymode=ar2&dboperation=search_demograph&template=&bNext=1"
@@ -1354,8 +1354,8 @@
                 <table width='100%' border=0>
                     <tr>
                         <td width='90%'
-                            align='center'><%=Encode.forHtml(bNewList && (request.getParameter("patientmaster") != null) ? "<input type='submit' name='savetemp' value=' Save ' onClick='onSave()'> " : "")%>
-                            <%=Encode.forHtml(bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : "")%>
+                            align='center'><%=bNewList && (request.getParameter("patientmaster") != null) ? "<input type='submit' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
+                            <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
                             <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
                         </td>
                         <td align='right'><%=bNewList ? "<input type='button' name='Button' value=' Exit ' onClick='onExit();'>" : "<input type='button' name='Button' value=' Exit ' onClick='window.close();'>" %>

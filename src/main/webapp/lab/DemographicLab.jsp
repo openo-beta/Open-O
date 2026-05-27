@@ -221,14 +221,21 @@
                         <td align="left" valign="center" width="30%"><input
                                 type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>">
                             <input type="hidden" name="searchProviderNo"
-                                   value="<%=Encode.forHtmlAttribute(String.valueOf(searchProviderNo))%>"> <%=Encode.forHtml((request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">"))%>
-                            <%=Encode.forHtml((request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">"))%>
-                            <%=Encode.forHtml((request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">"))%>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(searchProviderNo))%>">
+                            <% if (request.getParameter("lname") != null) { %>
+                                <input type="hidden" name="lname" value="<%=Encode.forHtmlAttribute(request.getParameter("lname"))%>"/>
+                            <% } %>
+                            <% if (request.getParameter("fname") != null) { %>
+                                <input type="hidden" name="fname" value="<%=Encode.forHtmlAttribute(request.getParameter("fname"))%>"/>
+                            <% } %>
+                            <% if (request.getParameter("hnum") != null) { %>
+                                <input type="hidden" name="hnum" value="<%=Encode.forHtmlAttribute(request.getParameter("hnum"))%>"/>
+                            <% } %>
                             <input type="hidden" name="status" value="<%=Encode.forHtmlAttribute(String.valueOf(ackStatus))%>">
                             <input type="hidden" name="selectedProviders"> <% if (demographicNo == null) { %>
                             <input type="button" class="smallButton"
                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnSearch"/>"
-                                   onClick="window.location='Search.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'">
+                                   onClick="window.location='Search.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>'">
                             <% } %> <input type="button" class="smallButton"
                                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnClose"/>"
                                            onClick="window.close()">
@@ -236,13 +243,13 @@
                             <% if (demographicNo != null) { %>
                             <input type="button" class="smallButton"
                                    value="Search OLIS"
-                                   onClick="popupStart('1000','1200','<%=request.getContextPath() %>/olis/Search.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>','OLIS_SEARCH')">
+                                   onClick="popupStart('1000','1200','<%=request.getContextPath() %>/olis/Search.jsp?demographicNo=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>','OLIS_SEARCH')">
                             <% } %>
 
                             <% if (demographicNo == null && request.getParameter("fname") != null) { %>
                             <input type="button" class="smallButton"
                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnDefaultView"/>"
-                                   onClick="window.location='lab/DemographicLab.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'">
+                                   onClick="window.location='lab/DemographicLab.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>'">
                             <% } %> <% if (demographicNo == null && labs.size() > 0) { %>
                             <!-- <input type="button" class="smallButton" value="Reassign" onClick="popupStart(300, 400, 'SelectProvider.jsp', 'providerselect')"> -->
                             <input type="button" class="smallButton"
@@ -381,13 +388,13 @@
                             <% if (demographicNo == null) { %> <input type="button"
                                                                       class="smallButton"
                                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnSearch"/>"
-                                                                      onClick="window.location='Search.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'">
+                                                                      onClick="window.location='Search.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>'">
                             <% } %> <input type="button" class="smallButton"
                                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnClose"/>"
                                            onClick="window.close()"> <% if (request.getParameter("fname") != null) { %>
                             <input type="button" class="smallButton"
                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnDefaultView"/>"
-                                   onClick="window.location='lab/DemographicLab.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'">
+                                   onClick="window.location='lab/DemographicLab.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>'">
                             <% } %> <% if (demographicNo == null && labs.size() > 0) { %>
                             <!-- <input type="button" class="smallButton" value="Reassign" onClick="popupStart(300, 400, 'SelectProvider.jsp', 'providerselect')"> -->
                             <input type="button" class="smallButton"

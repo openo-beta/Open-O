@@ -321,7 +321,7 @@
                                             String s = "tdSet" + i + "_Row" + j + "_name";
                                 %>
                                 <tr>
-                                    <td class="head" id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genText(s, "")))%>
+                                    <td class="head" id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=genText(s, "")%>
                                     </td>
                                             <%   }else{%>
 
@@ -339,7 +339,7 @@
                                                     if (String.valueOf(k).equals(cell.getAttribute("index"))) {
                                                         String s = "tdSet" + i + "_Row" + j + "_Col" + k; %>
                                     <td class="normal"
-                                        id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genCell(s, cell, sName + " - " + ((Element) columns.item(k - 1)).getAttribute("name"))))%>
+                                        id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=genCell(s, cell, sName + " - " + ((Element) columns.item(k - 1)).getAttribute("name"))%>
                                     </td>
                                     <% n++;
                                     } else { %>
@@ -359,7 +359,7 @@
                                             if (cell.getAttribute("index").equals(String.valueOf(k + 1))) {
                                                 String s = "tdSet" + i + "_Row" + j + "_Col" + (k + 1);
                                     %>
-                                    <td id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genCell(s, cell, "")))%>
+                                    <td id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=genCell(s, cell, "")%>
                                     </td>
                                     <%} else {%>
                                     <td class="grey">&nbsp;</td>
@@ -376,7 +376,7 @@
                                             sValue = UtilXML.getText(comments.item(0));
                                         }
                                     %>
-                                    <td id="<%=Encode.forHtmlAttribute(String.valueOf(sID))%>"><%=Encode.forHtml(String.valueOf(genText(sID, sValue)))%>
+                                    <td id="<%=Encode.forHtmlAttribute(String.valueOf(sID))%>"><%=genText(sID, sValue)%>
                                     </td>
                                 </tr>
                                 <%

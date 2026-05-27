@@ -606,7 +606,7 @@
                                 <tr>
                                     <!--<input type="text" name="checkFlag" id="checkFlag" value="<%=Encode.forHtmlAttribute(request.getParameter("checkFlag")) %>" />  -->
                                     <td style="white-space:nowrap; width:30%; text-align:center"><b>Service Date</b><br>
-                                        <%=Encode.forHtml(request.getParameter("service_date").replaceAll("\\n", "<br>"))%>
+                                        <%=Encode.forHtml(request.getParameter("service_date")).replaceAll("\\n", "<br>")%>
                                     </td>
                                     <td style="text-align:center; width:33%"><b>Diagnostic Code</b><br>
                                         <%=Encode.forHtml(String.valueOf(dxCode))%><br>
@@ -945,8 +945,8 @@
                                         String iCheckNo = (String)vecPercNo.get(i);
                                 %>
                                 var nSubtotal = 0.00;
-                                var nMin = <%=Encode.forJavaScript(String.valueOf(vecPercMin.get(i)))%>;
-                                var nMax = <%=Encode.forJavaScript(String.valueOf(vecPercMax.get(i)))%>;
+                                var nMin = <%=vecPercMin.get(i)%>;
+                                var nMax = <%=vecPercMax.get(i)%>;
                                 //alert(":" + document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.type);
                                 if (document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.length == undefined) {
                                     if (document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.checked) {

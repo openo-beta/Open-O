@@ -241,7 +241,7 @@
                 <%
 			} else if(cytologyForms.size() == 1) {
 				%>
-                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(cytologyForms.get(0).getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0', 'cytology');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(cytologyForms.get(0).getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0', 'cytology');
                 <%
 			} else {
 				%>$("#cytology-eform-form").dialog("open");
@@ -260,7 +260,7 @@
                 <%
 				} else if(ultrasoundForms.size() == 1) {
 					%>
-                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(ultrasoundForms.get(0).getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0', 'ultrasound');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(ultrasoundForms.get(0).getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0', 'ultrasound');
                 <%
 				} else {
 					%>$("#ultrasound-eform-form").dialog("open");
@@ -280,7 +280,7 @@
                 <%
 			} else if(customForms.size() == 1) {
 				%>
-                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(customForms.get(0).getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0', '<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(customForms.get(0).getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0', '<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');
                 <%
 			} else {
 				%>$("#custom-eform-form").dialog("open");
@@ -612,7 +612,7 @@
                         for(int x=0; x<rfNum; x++) {
                             int y=x+1;
                     %>
-                    const rfResponse<%=Encode.forJavaScript(String.valueOf(y))%> = await fetch('form/onarenhanced_rf.jsp?n=<%=Encode.forJavaScript(String.valueOf(y))%>');
+                    const rfResponse<%=Encode.forJavaScript(String.valueOf(y))%> = await fetch('form/onarenhanced_rf.jsp?n=<%=Encode.forUriComponent(String.valueOf(y))%>');
                     if (!rfResponse<%=Encode.forJavaScript(String.valueOf(y))%>.ok) {
                         throw new Error('HTTP error ' + rfResponse<%=Encode.forJavaScript(String.valueOf(y))%>.status + ': ' + rfResponse<%=Encode.forJavaScript(String.valueOf(y))%>.statusText);
                     }
@@ -640,7 +640,7 @@
                         for(int x=0; x<svNum; x++) {
                             int y=x+1;
                     %>
-                    const svResponse<%=Encode.forJavaScript(String.valueOf(y))%> = await fetch('form/onarenhanced_sv.jsp?n=<%=Encode.forJavaScript(String.valueOf(y))%>');
+                    const svResponse<%=Encode.forJavaScript(String.valueOf(y))%> = await fetch('form/onarenhanced_sv.jsp?n=<%=Encode.forUriComponent(String.valueOf(y))%>');
                     if (!svResponse<%=Encode.forJavaScript(String.valueOf(y))%>.ok) {
                         throw new Error('HTTP error ' + svResponse<%=Encode.forJavaScript(String.valueOf(y))%>.status + ': ' + svResponse<%=Encode.forJavaScript(String.valueOf(y))%>.statusText);
                     }
@@ -1589,7 +1589,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
 
 
                             var obxNum = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("obxhx_num", "0")))%>';
-                            var hasExtraComments = <%=Encode.forJavaScript(String.valueOf((props.getProperty("pg1_comments2AR1", "").length() > 0)))%>;
+                            var hasExtraComments = <%=props.getProperty("pg1_comments2AR1", "").length() > 0%>;
 
                             if ((typeof printAr1 == "undefined") && (typeof printAr2 == "undefined")) {
                                 return;
@@ -1859,8 +1859,8 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             var gct_ab = $("#gct_ab").attr('checked');
                             var gct_glu = $("#gct_glu").attr('checked');
                             var user = '<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>';
-                            url = '<%=Encode.forJavaScript(String.valueOf(context))%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=0&provNo=' + user + '&fromSession=true';
-                            var pregUrl = '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=createGCTLabReq&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&hb=' + gct_hb + '&urine=' + gct_urine + '&antibody=' + gct_ab + '&glucose=' + gct_glu;
+                            url = '<%=Encode.forJavaScript(String.valueOf(context))%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=0&provNo=' + user + '&fromSession=true';
+                            var pregUrl = '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=createGCTLabReq&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&hb=' + gct_hb + '&urine=' + gct_urine + '&antibody=' + gct_ab + '&glucose=' + gct_glu;
 
                             try {
                                 const response = await fetch(pregUrl);
@@ -1893,8 +1893,8 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             $(this).dialog("close");
                             var gtt_glu = $("#gtt_glu").attr('checked');
                             var user = '<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>';
-                            url = '<%=Encode.forJavaScript(String.valueOf(context))%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=0&provNo=' + user + '&fromSession=true';
-                            var pregUrl = '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=createGTTLabReq&demographicNo=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&glucose=' + gtt_glu;
+                            url = '<%=Encode.forJavaScript(String.valueOf(context))%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=0&provNo=' + user + '&fromSession=true';
+                            var pregUrl = '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=createGTTLabReq&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&glucose=' + gtt_glu;
 
                             try {
                                 const response = await fetch(pregUrl);
@@ -2398,7 +2398,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
 
                 <input type="hidden" name="commonField" value="ar2_"/>
                 <input type="hidden" name="c_lastVisited"
-                       value=<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "pg2")))%>/>
+                       value="<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "pg2")))%>"/>
                 <input type="hidden" name="demographic_no"
                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
                 <input type="hidden" name="formCreated"
@@ -2412,7 +2412,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                 <input type="hidden" name="ID"
                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
                 <input type="hidden" name="provider_no"
-                       value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+                       value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
                 <input type="hidden" name="provNo"
                        value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
                 <input type="hidden" name="submit" value="exit"/>
@@ -2445,11 +2445,11 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             &nbsp;&nbsp;&nbsp;
                             <b>View:</b> <a
                                 href="javascript:void(0);"
-                                onclick="popupPage(960,700,'form/formonarenhancedpg1.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo+historyet))%>&view=1');">
+                                onclick="popupPage(960,700,'form/formonarenhancedpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo+historyet))%>&view=1');">
                             AR1</a> &nbsp;&nbsp;&nbsp;
                             <b>Edit:</b> <a
                                 href="javascript:void(0);"
-                                onclick="return onPageChange('form/formonarenhancedpg1.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');">AR1</a>
+                                onclick="return onPageChange('form/formonarenhancedpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">AR1</a>
 
                         </td>
                         <%
@@ -2970,12 +2970,12 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             &nbsp;&nbsp;&nbsp;
                             <font><b>View:</b> <a
                                     href="javascript:void(0);"
-                                    onclick="popupPage(960,700,'formonarenhancedpg1.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&view=1');">
+                                    onclick="popupPage(960,700,'formonarenhancedpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&view=1');">
                                 AR1</a> </font>
                             &nbsp;&nbsp;&nbsp;
                             <b>Edit:</b> <a
                                 href="javascript:void(0);"
-                                onclick="return onPageChange('formonarenhancedpg1.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>');">AR1</a>
+                                onclick="return onPageChange('formonarenhancedpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">AR1</a>
                         </td>
                         <%
                             }
@@ -3096,7 +3096,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
     <div id="lab_menu_div" class="hidden">
         <ul>
             <li><a href="javascript:void(0)"
-                   onclick="popPage('form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>&labType=AnteNatal','LabReq')">Routine
+                   onclick="popPage('form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&labType=AnteNatal','LabReq')">Routine
                 Prenatal</a></li>
             <li><a href="javascript:void(0)" onclick="gbsReq();return false;">GBS</a></li>
             <li><a href="javascript:void(0)" onclick="gctReq();return false;">1 Hour GCT</a></li>
@@ -3147,7 +3147,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','cytology');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','cytology');return false;">
                                 Open
                             </button>
                         </td>
@@ -3176,7 +3176,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','ultrasound');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','ultrasound');return false;">
                                 Open
                             </button>
                         </td>
@@ -3205,7 +3205,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&appointment=0','<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');return false;">
                                 Open
                             </button>
                         </td>

@@ -200,7 +200,7 @@
                         <font color="#333333"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.msgServiceDate"/></font></b></font></font> &nbsp;
                         &nbsp; <font
                                 size="1" face="Arial, Helvetica, sans-serif"><a href="#"
-                                                                                onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnBegin"/>:</a></font> <input type="text"
+                                                                                onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnBegin"/>:</a></font> <input type="text"
                                                                                                   name="xml_vdate"
                                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>">
                     </div>
@@ -208,7 +208,7 @@
                 <td colspan='2'>
                     <div align="left"><font size="1"
                                             face="Arial, Helvetica, sans-serif"><a href="#"
-                                                                                   onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnEnd"/>:</a></font> <input type="text"
+                                                                                   onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportAgeSex.btnEnd"/>:</a></font> <input type="text"
                                                                                             name="xml_appointment_date"
                                                                                             value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>">
                     </div>
@@ -459,11 +459,11 @@
                 <div align="right"><%=Encode.forHtml(String.valueOf(fPerc))%>
                 </div>
             </td>
-            <%=Encode.forHtml(String.valueOf(WriteFemaleBar(Integer.parseInt(fPercId.toString()))))%>
+            <%=WriteFemaleBar(Integer.parseInt(fPercId.toString()))%>
             <td bgcolor="#000000">
                 <div align="center"><font color="#CCCCCC">|</font></div>
             </td>
-            <%=Encode.forHtml(String.valueOf(WriteMaleBar(Integer.parseInt(mPercId.toString()))))%>
+            <%=WriteMaleBar(Integer.parseInt(mPercId.toString()))%>
 
             <td>
                 <div align="right"><%=Encode.forHtml(String.valueOf(mPerc))%>

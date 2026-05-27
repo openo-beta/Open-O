@@ -103,7 +103,7 @@
             // }
 
             function generateLabReq(demographicNo) {
-                var url = '<%=request.getContextPath()%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>&fromSession=true';
+                var url = '<%=request.getContextPath()%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(session.getAttribute("user")))%>&fromSession=true';
                 jQuery.ajax({
                     url: '<%=request.getContextPath()%>/renal/Renal.do?method=createLabReq&demographicNo=' + demographicNo,
                     async: false,
@@ -236,19 +236,19 @@
                 </td>
                 <td style="text-align:right"><%=Encode.forHtml(String.valueOf(ckd.getDemographic().getAge()))%>
                 </td>
-                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardAboriginal(ckd.getAboriginalStr())))%>
+                <td style="text-align:center"><%=printStandardAboriginal(ckd.getAboriginalStr())%>
                 </td>
-                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isDiabetic())))%>
+                <td style="text-align:center"><%=printStandardBoolean(ckd.isDiabetic())%>
                 </td>
-                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isHypertensive())))%>
+                <td style="text-align:center"><%=printStandardBoolean(ckd.isHypertensive())%>
                 </td>
-                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isMedication())))%>
+                <td style="text-align:center"><%=printStandardBoolean(ckd.isMedication())%>
                 </td>
-                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isBp())))%>
+                <td style="text-align:center"><%=printStandardBoolean(ckd.isBp())%>
                 </td>
-                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isHx())))%>
+                <td style="text-align:center"><%=printStandardBoolean(ckd.isHx())%>
                 </td>
-                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(printStandardBoolean(ckd.isLabs())))%>
+                <td style="text-align:center"><%=printStandardBoolean(ckd.isLabs())%>
                 </td>
                 <td><%=Encode.forHtml(String.valueOf(ckd.getLastVisit()))%>
                 </td>
@@ -278,7 +278,7 @@
                             src="<%= request.getContextPath() %>/images/lab_icon.png" height="16" border="0"/></a>
                     <a title="Add Chronic Renal Failure to Disease Registry, and disable further notifications"
                        href="javascript.void(0);"
-                       onclick="popupPage(580,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/dxResearch.do?selectedCodingSystem=icd9&xml_research1=585&xml_research2=&xml_research3=&xml_research4=&xml_research5=&demographicNo=<%=Encode.forJavaScript(String.valueOf(ckd.getDemographic().getDemographicNo()))%>&quickList=default&forward=');return false;"><img
+                       onclick="popupPage(580,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/dxResearch.do?selectedCodingSystem=icd9&xml_research1=585&xml_research2=&xml_research3=&xml_research4=&xml_research5=&demographicNo=<%=Encode.forUriComponent(String.valueOf(ckd.getDemographic().getDemographicNo()))%>&quickList=default&forward=');return false;"><img
                             src="<%= request.getContextPath() %>/images/kidney.jpg" height="16" border="0"/></a>
                 </td>
             </tr>

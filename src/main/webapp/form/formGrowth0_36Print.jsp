@@ -76,16 +76,16 @@
         function go() {
             if (document.all) {
                 <% if(cfgGraphic.length>1) {%>
-                document.all.growth.action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forJavaScript(String.valueOf(cfgGraphic[0]))%>&__cfgGraphicFile=<%=Encode.forJavaScript(String.valueOf(cfgGraphic[1]))%>";
+                document.all.growth.action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forUriComponent(String.valueOf(cfgGraphic[0]))%>&__cfgGraphicFile=<%=Encode.forUriComponent(String.valueOf(cfgGraphic[1]))%>";
                 <% }else{%>
-                document.all.growth.action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forJavaScript(request.getParameter("__cfgGraphicFile"))%>";
+                document.all.growth.action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forUriComponent(request.getParameter("__cfgGraphicFile"))%>";
                 <% }%>
                 document.all.growth.submit();
             } else {
                 <% if(cfgGraphic.length>1) {%>
-                document.getElementById('growth').action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forJavaScript(String.valueOf(cfgGraphic[0]))%>&__cfgGraphicFile=<%=Encode.forJavaScript(String.valueOf(cfgGraphic[1]))%>";
+                document.getElementById('growth').action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forUriComponent(String.valueOf(cfgGraphic[0]))%>&__cfgGraphicFile=<%=Encode.forUriComponent(String.valueOf(cfgGraphic[1]))%>";
                 <% }else{%>
-                document.getElementById('growth').action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forJavaScript(request.getParameter("__cfgGraphicFile"))%>";
+                document.getElementById('growth').action = "<%= request.getContextPath() %>/form/createpdf?__cfgGraphicFile=<%=Encode.forUriComponent(request.getParameter("__cfgGraphicFile"))%>";
                 <% }%>
                 document.getElementById('growth').submit();
             }

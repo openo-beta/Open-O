@@ -98,7 +98,7 @@
 %>
     <script type="text/javascript">
         <%if(action.equals("visitreport")){%>
-        window.opener.location.href = "<%=request.getContextPath() %>/administration/?show=<%=Encode.forJavaScript(String.valueOf(action))%>";
+        window.opener.location.href = "<%=request.getContextPath() %>/administration/?show=<%=Encode.forUriComponent(String.valueOf(action))%>";
         <%}%>
 
         window.close();

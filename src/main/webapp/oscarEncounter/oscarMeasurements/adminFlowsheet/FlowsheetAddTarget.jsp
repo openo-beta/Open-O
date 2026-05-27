@@ -74,7 +74,7 @@
             });
 
             function loadIndicators() {
-                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getIndicators&flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>", {},
+                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getIndicators&flowsheetId=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>", {},
                     function (xml) {
                         var arr = new Array();
                         if (xml.indicators instanceof Array) {
@@ -98,7 +98,7 @@
                 jQuery.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=saveFlowsheetItemTarget',
                     jQuery('#theForm').serialize(),
                     function (data) {
-                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forJavaScript(String.valueOf(measurementType))%>';
+                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forUriComponent(String.valueOf(measurementType))%>';
                     });
             }
 

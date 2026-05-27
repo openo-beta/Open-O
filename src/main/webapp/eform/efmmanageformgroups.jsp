@@ -198,7 +198,7 @@
                     </td>
 
                     <td><a href="#"
-                           onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(curForm.get("fid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormG" + i))%>'); return false;"><%=Encode.forHtml(String.valueOf(curForm.get("formName")))%>
+                           onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(curForm.get("fid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormG" + i))%>'); return false;"><%=Encode.forHtml(String.valueOf(curForm.get("formName")))%>
                     </a></td>
 
                     <td align='center'><%=Encode.forHtml(String.valueOf(curForm.get("formDate")))%>

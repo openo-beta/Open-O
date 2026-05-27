@@ -180,7 +180,7 @@
             <!--
 
             async function displayTemplate(s) {
-                var url = "scheduleDisplayTemplate.jsp?name=" + s[s.selectedIndex].value + "&providerid=<%=Encode.forJavaScript(request.getParameter("provider_no"))%>";
+                var url = "scheduleDisplayTemplate.jsp?name=" + s[s.selectedIndex].value + "&providerid=<%=Encode.forUriComponent(request.getParameter("provider_no"))%>";
                 var div = "template";
                 fetch(url)
                     .then(response => response.text())
@@ -192,7 +192,7 @@
 
             function selectrschedule(s) {
                 var ref = "<rewrite:reWrite jspPage="scheduletemplateapplying.jsp"/>";
-                ref += "?provider_no=<%=Encode.forJavaScript(request.getParameter("provider_no"))%>&provider_name=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("provider_name"), StandardCharsets.UTF_8))%>";
+                ref += "?provider_no=<%=Encode.forUriComponent(request.getParameter("provider_no"))%>&provider_name=<%=Encode.forUriComponent(request.getParameter("provider_name"))%>";
                 ref += "&sdate=" + s.options[s.selectedIndex].value;
                 self.location.href = ref;
             }
@@ -200,7 +200,7 @@
             function onBtnDelete(s) {
                 if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplateapplying.msgDeleteConfirmation"/>")) {
                     var ref = "<rewrite:reWrite jspPage="scheduletemplateapplying.jsp"/>";
-                ref += "?provider_no=<%=Encode.forJavaScript(request.getParameter("provider_no"))%>&provider_name=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("provider_name"), StandardCharsets.UTF_8))%>";
+                ref += "?provider_no=<%=Encode.forUriComponent(request.getParameter("provider_no"))%>&provider_name=<%=Encode.forUriComponent(request.getParameter("provider_name"))%>";
                     ref += "&sdate=" + s.options[s.selectedIndex].value;
                     ref += "&delete=1&deldate=all";
                     self.location.href = ref;

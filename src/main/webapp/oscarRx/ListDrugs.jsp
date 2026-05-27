@@ -333,7 +333,7 @@
                     if (prescriptDrug.getRemoteFacilityId() == null) {
                 %>
                 <a href="javascript:void(0);" title="Annotation"
-                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>&amp;demo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>&amp;drugSpecial=<%=Encode.forJavaScript(specialText)%>','anwin','width=400,height=500');">
+                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(String.valueOf(prescriptIdInt))%>&amp;demo=<%=Encode.forUriComponent(String.valueOf(bean.getDemographicNo()))%>&amp;drugSpecial=<%=Encode.forUriComponent(specialText)%>','anwin','width=400,height=500');">
                     <%if (!isPrevAnnotation) {%> <img src="<%= request.getContextPath() %>/images/notes.gif" alt="rxAnnotation" height="16"
                                                       width="13" border="0"><%} else {%><img
                         src="<%= request.getContextPath() %>/images/filledNotes.gif" height="16" width="13" alt="rxFilledNotes" border="0"> <%}%></a>
@@ -375,7 +375,7 @@
 							String dispensingStatus = drugDispensingManager.getStatus(prescriptDrug.getId());
 				               
 				%>
-					<a href="javascript:void(0)" onclick="popupWindow(720,700,'<%=request.getContextPath()%>/oscarRx/Dispense.do?method=view&id=<%=Encode.forJavaScript(String.valueOf(prescriptDrug.getId()))%>','Dispense<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>'); return false;">Dispense (<%=Encode.forHtml(String.valueOf(dispensingStatus))%>)</a>
+					<a href="javascript:void(0)" onclick="popupWindow(720,700,'<%=request.getContextPath()%>/oscarRx/Dispense.do?method=view&id=<%=Encode.forUriComponent(String.valueOf(prescriptDrug.getId()))%>','Dispense<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>'); return false;">Dispense (<%=Encode.forHtml(String.valueOf(dispensingStatus))%>)</a>
 				<% 
 					} }
 				%>
@@ -400,7 +400,7 @@
                 if (element) {
                     Event.observe(element, 'change', function (event) {
                         var val = $('hidecpp_<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>').checked;
-                        new Ajax.Request('<c:out value="${ctx}"/>/oscarRx/hideCpp.do?method=update&prescriptId=<%=Encode.forJavaScript(String.valueOf(prescriptIdInt))%>&value=' + val, {
+                        new Ajax.Request('<c:out value="${ctx}"/>/oscarRx/hideCpp.do?method=update&prescriptId=<%=Encode.forUriComponent(String.valueOf(prescriptIdInt))%>&value=' + val, {
                             method: 'get',
                             onSuccess: function (transport) {
                             }

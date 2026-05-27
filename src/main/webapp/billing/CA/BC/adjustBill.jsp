@@ -539,7 +539,7 @@
 
                 <%if (BillType.equals("A") || BillType.equals("P")) {%>
                 <a href="#"
-                   onClick="popupPage(800,800, '<%=request.getContextPath()%>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forJavaScript(String.valueOf(request.getAttribute("invoiceNo")))%>&receipt=yes')">View
+                   onClick="popupPage(800,800, '<%=request.getContextPath()%>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("invoiceNo")))%>&receipt=yes')">View
                     Invoice</a>
                 <%}%>
             </td>
@@ -549,7 +549,7 @@
             <td width="54%" class="bCellData">
                 Patient Name:
                 <a href=#
-                   onClick="popupPage2('<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(DemoNo))%>&displaymode=edit&dboperation=search_detail');return false;"
+                   onClick="popupPage2('<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(DemoNo))%>&displaymode=edit&dboperation=search_detail');return false;"
                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>">
                     <%=Encode.forHtmlContent(DemoName)%>
                 </a>
@@ -620,7 +620,7 @@
                 <table>
                     <tr>
                         <td>
-                            <!--<a href="#" onClick='rs("billingcalendar","<rewrite:reWrite jspPage="billingCalendarPopup.jsp"/>?year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&type=&returnForm=ReProcessBilling&returnItem=serviceDate","380","300","0")'>-->
+                            <!--<a href="#" onClick='rs("billingcalendar","<rewrite:reWrite jspPage="billingCalendarPopup.jsp"/>?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&type=&returnForm=ReProcessBilling&returnItem=serviceDate","380","300","0")'>-->
                             <a href="javascript: function myFunction() {return false; }" id="hlSDate">
                                 Billing Date:
                             </a>
@@ -693,7 +693,7 @@
             <td width="46%" class="bCellData">
                 <input type="hidden" name="xml_visitdate" value="<%=Encode.forHtmlAttribute(String.valueOf(visitdate))%>">
                 <a href="#"
-                   onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&type=&returnForm=serviceform&returnItem=xml_vdate","380","300","0")'>
+                   onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&type=&returnForm=serviceform&returnItem=xml_vdate","380","300","0")'>
                     Admission Date:
                 </a>
                 <input type="text" style="font-size:80%;" name="xml_vdate" value="<%=Encode.forHtmlAttribute(String.valueOf(visitdate))%>">
@@ -1092,7 +1092,7 @@
     <script type="text/javascript">
         function callReplacementWebService(url, id) {
             var ran_number = Math.round(Math.random() * 1000000);
-            var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(bill.getDemographicNo()))%>&wcb=&billingcode=<%=Encode.forJavaScript(String.valueOf(allFields.getProperty("billingCode")))%>&rand=" + ran_number;  //hack to get around ie caching the page
+            var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(bill.getDemographicNo()))%>&wcb=&billingcode=<%=Encode.forUriComponent(String.valueOf(allFields.getProperty("billingCode")))%>&rand=" + ran_number;  //hack to get around ie caching the page
             new Ajax.Updater(id, url, {method: 'get', parameters: params, asynchronous: true});
         }
 

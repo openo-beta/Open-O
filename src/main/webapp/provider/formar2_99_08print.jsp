@@ -45,8 +45,8 @@
     <script language="JavaScript">
         <!--
 
-        var ox = <%=Encode.forJavaScript(String.valueOf(oox))%>;
-        var oy = <%=Encode.forJavaScript(String.valueOf(ooy))%>;
+        var ox = <%=oox%>;
+        var oy = <%=ooy%>;
 
         function ff(x, y, w, h, name) { //need escape to name for ' and "
             x = eval(ox + x);
@@ -64,7 +64,7 @@
 <img src="<%= request.getContextPath() %>/images/formar2_99_08.gif">
 <div ID="bdiv1"
      STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(50+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(76+ooy))%>px; width:400px; height:20px;">
-    <%=Encode.forHtml(Misc.JSEscape(request.getParameter("xml_name")))%>
+    <%=Misc.JSEscape(request.getParameter("xml_name"))%>
 </div>
 
 <script language="JavaScript">
@@ -463,7 +463,7 @@
      STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(10+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+172))%>px; width:330px; height:60px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <td><%=Encode.forHtml(UtilMisc.htmlJsEscape(request.getParameter("xml_rfi")))%>
+            <td><%=UtilMisc.htmlJsEscape(request.getParameter("xml_rfi"))%>
             </td>
         </tr>
     </table>

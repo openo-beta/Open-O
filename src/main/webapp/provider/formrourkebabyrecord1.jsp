@@ -78,7 +78,7 @@
                 content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=Encode.forHtml(String.valueOf(content))%>
+        <encounter><%=content%>
         </encounter>
     </xml>
     <%
@@ -91,7 +91,7 @@
             content = f.getContent();
     %>
     <xml id="xml_list">
-        <encounter><%=Encode.forHtml(String.valueOf(content))%>
+        <encounter><%=content%>
         </encounter>
     </xml>
     <%
