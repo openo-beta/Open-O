@@ -341,6 +341,28 @@ public class RxSessionBean implements java.io.Serializable {
         stash = new ArrayList();
     }
 
+    /**
+     * Drops stash items that have already been persisted in this session's
+     * save flow, leaving unsaved drafts in place. {@code drugId} is 0 until
+     * {@code rx.Save()} writes a Drug row and assigns the generated id, so
+     * {@code drugId > 0} reliably means "this stash item was persisted."
+     * <p>
+     * Note: {@code script_no} is not a safe signal here because
+     * {@link RxPrescriptionData#newPrescription(String, int, RxPrescriptionData.Prescription)}
+     * copies the original prescription's {@code script_no} into a freshly-staged
+     * re-prescription, which would cause unsaved ReRx drafts to be dropped.
+     * <p>
+     * Called from {@link RxChoosePatient2Action} on each Rx open so a reused
+     * per-patient bean shows a clean staging area after a completed save, while
+     * preserving in-progress drafts staged in another tab (PR #2261 invariant).
+     */
+    public void removePersistedStashItems() {
+        stash.removeIf(rx -> rx.getDrugId() > 0);
+        if (stashIndex >= stash.size()) {
+            stashIndex = stash.size() - 1;
+        }
+    }
+
     public HashMap<Integer, Long> getFavIdRandomIdMaps() {
         return favIdRandomIdMap;
     }
