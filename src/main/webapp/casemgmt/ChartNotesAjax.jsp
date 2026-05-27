@@ -811,7 +811,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
 									<%if (!note.isEmailNote()) {%>
                     <div style="clear: right; margin-right: 3px; float: right;">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encType.title"/>:&nbsp;
-                        <span id="encType<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"><%=Encode.forHtml(String.valueOf(note.getEncounterType().equals("") ? "" : "&quot;" + note.getEncounterType() + "&quot;"))%></span>
+                        <span id="encType<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"><%=Encode.forHtml(String.valueOf(note.getEncounterType().equals("") ? "" : "\"" + note.getEncounterType() + "\""))%></span>
                     </div>
 
                     <div>
