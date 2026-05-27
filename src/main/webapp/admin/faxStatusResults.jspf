@@ -104,10 +104,10 @@ if(!authed) {
 			<td id="faxType_<%=Encode.forHtmlAttribute(String.valueOf(faxJob.getId()))%>" class="small"><%=Encode.forHtml(String.valueOf(type))%></td>
 			<td class="small"><%=Encode.forHtmlContent(providerName)%>(<%=Encode.forHtml(String.valueOf(faxJob.getUser()))%>)</td>
 			<td id="patientName_<%=Encode.forHtmlAttribute(String.valueOf(faxJob.getId()))%>" class="small"><%=Encode.forHtmlContent(demographicName)%></td>
-			<td class="small"><%=Encode.forHtml(String.valueOf(faxJob.getRecipient()))%></td>
-			<td id="status<%=count%>" class="small" ><%=Encode.forHtml(String.valueOf(faxJob.getStatus()))%></td>
-			<td class="small" title="<%=Encode.forHtmlAttribute(faxJob.getStatusString())%>" style="max-width: 150px; width: 100px; text-overflow: ellipsis; overflow: hidden;">
-			<%=Encode.forHtml(String.valueOf(faxJob.getStatusString()))%></td>
+			<td class="small"><%=faxJob.getRecipient() == null ? "" : Encode.forHtml(faxJob.getRecipient())%></td>
+			<td id="status<%=count%>" class="small" ><%=faxJob.getStatus() == null ? "" : Encode.forHtml(String.valueOf(faxJob.getStatus()))%></td>
+			<td class="small" title="<%=faxJob.getStatusString() == null ? "" : Encode.forHtmlAttribute(faxJob.getStatusString())%>" style="max-width: 150px; width: 100px; text-overflow: ellipsis; overflow: hidden;">
+			<%=faxJob.getStatusString() == null ? "" : Encode.forHtml(faxJob.getStatusString())%></td>
 			<td class="small"><%=Encode.forHtml(String.valueOf(DateFormatUtils.format(faxJob.getStamp(), "yyyy-MM-dd HH:mm:ss")))%></td>
 			<td class="small">
 <div class="btn-group">
