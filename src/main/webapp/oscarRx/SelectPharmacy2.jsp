@@ -201,8 +201,8 @@
                     var pharmacyNameKey = new RegExp($("#pharmacySearch").val(), "i");
                     var pharmacyCityKey = new RegExp($("#pharmacyCitySearch").val(), "i");
                     var pharmacyPostalCodeKey = new RegExp($("#pharmacyPostalCodeSearch").val(), "i");
-                    var pharmacyFaxKey = new RegExp($("#pharmacyFaxSearch").val(), "i");
-                    var pharmacyPhoneKey = new RegExp($("#pharmacyPhoneSearch").val(), "i");
+					var pharmacyFaxKey = new RegExp($("#pharmacyFaxSearch").val().replace(/\D/g, ""), "i");
+					var pharmacyPhoneKey = new RegExp($("#pharmacyPhoneSearch").val().replace(/\D/g, ""), "i");
                     var pharmacyAddressKey = new RegExp($("#pharmacyAddressSearch").val(), "i");
 
                     $("#pharmacySearch").keyup(function () {
@@ -212,7 +212,7 @@
                             if ($(value).html().toLowerCase().search(pharmacyNameKey) >= 0) {
                                 if ($(value).siblings(".city").html().search(pharmacyCityKey) >= 0) {
                                     if ($(value).siblings(".postalCode").html().search(pharmacyPostalCodeKey) >= 0) {
-                                        if ($(value).siblings(".fax").html().search(pharmacyFaxKey) >= 0) {
+                                        if ($(value).siblings(".fax").html().replace(/\D/g, "").search(pharmacyFaxKey) >= 0) {
                                             if ($(value).siblings(".fax").html().search(pharmacyAddressKey) >= 0) {
                                                 $(value).parent().show();
                                             }
@@ -230,7 +230,7 @@
                             if ($(value).html().toLowerCase().search(pharmacyCityKey) >= 0) {
                                 if ($(value).siblings(".pharmacyName").html().search(pharmacyNameKey) >= 0) {
                                     if ($(value).siblings(".postalCode").html().search(pharmacyPostalCodeKey) >= 0) {
-                                        if ($(value).siblings(".fax").html().search(pharmacyFaxKey) >= 0) {
+                                        if ($(value).siblings(".fax").html().replace(/\D/g, "").search(pharmacyFaxKey) >= 0) {
                                             if ($(value).siblings(".fax").html().search(pharmacyAddressKey) >= 0) {
                                                 $(value).parent().show();
                                             }
@@ -248,7 +248,7 @@
                             if ($(value).html().toLowerCase().search(pharmacyPostalCodeKey) >= 0) {
                                 if ($(value).siblings(".pharmacyName").html().search(pharmacyNameKey) >= 0) {
                                     if ($(value).siblings(".city").html().search(pharmacyCityKey) >= 0) {
-                                        if ($(value).siblings(".fax").html().search(pharmacyFaxKey) >= 0) {
+                                        if ($(value).siblings(".fax").html().replace(/\D/g, "").search(pharmacyFaxKey) >= 0) {
                                             $(value).parent().show();
                                         }
                                     }
@@ -261,7 +261,7 @@
                         updateSearchKeys();
                         $(".pharmacyItem").hide();
                         $.each($(".fax"), function (key, value) {
-                            if ($(value).html().search(pharmacyFaxKey) >= 0 || $(value).html().split("-").join("").search(pharmacyFaxKey) >= 0) {
+							if ($(value).html().replace(/\D/g, "").search(pharmacyFaxKey) >= 0) {
                                 if ($(value).siblings(".pharmacyName").html().search(pharmacyNameKey) >= 0) {
                                     if ($(value).siblings(".city").html().search(pharmacyCityKey) >= 0) {
                                         if ($(value).siblings(".postalCode").html().search(pharmacyPostalCodeKey) >= 0) {
@@ -277,7 +277,7 @@
                         updateSearchKeys();
                         $(".pharmacyItem").hide();
                         $.each($(".phone"), function (key, value) {
-                            if ($(value).html().search(pharmacyPhoneKey) >= 0 || $(value).html().split("-").join("").search(pharmacyPhoneKey) >= 0) {
+							if ($(value).html().replace(/\D/g, "").search(pharmacyPhoneKey) >= 0) {
                                 if ($(value).siblings(".pharmacyName").html().search(pharmacyNameKey) >= 0) {
                                     if ($(value).siblings(".city").html().search(pharmacyCityKey) >= 0) {
                                         if ($(value).siblings(".postalCode").html().search(pharmacyPostalCodeKey) >= 0) {
@@ -362,8 +362,8 @@
                         pharmacyNameKey = new RegExp($("#pharmacySearch").val(), "i");
                         pharmacyCityKey = new RegExp($("#pharmacyCitySearch").val(), "i");
                         pharmacyPostalCodeKey = new RegExp($("#pharmacyPostalCodeSearch").val(), "i");
-                        pharmacyFaxKey = new RegExp($("#pharmacyFaxSearch").val(), "i");
-                        pharmacyPhoneKey = new RegExp($("#pharmacyPhoneSearch").val(), "i");
+                        pharmacyFaxKey = new RegExp($("#pharmacyFaxSearch").val().replace(/\D/g, ""), "i");
+                        pharmacyPhoneKey = new RegExp($("#pharmacyPhoneSearch").val().replace(/\D/g, ""), "i");
                         pharmacyAddressKey = new RegExp($("#pharmacyAddressSearch").val(), "i");
                     }
                 })
