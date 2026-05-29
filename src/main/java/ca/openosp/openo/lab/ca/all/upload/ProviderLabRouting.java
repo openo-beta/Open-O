@@ -110,17 +110,33 @@ public class ProviderLabRouting {
                 routeMagic(labId, ((forwardProviders.get(j)).get(0)), labType);
             }
 
+            // A routing already exists for this provider. If it was previously
+            // removed (status "X"), forwarding to the same provider must re-link
+            // the document by restoring the routing's status; otherwise the
+            // document stays hidden and the forward appears to do nothing.
+        } else {
+            boolean reactivated = false;
+            for (ProviderLabRoutingModel routing : routings) {
+                if (ProviderLabRoutingModel.Status.REMOVED.getCode().equals(routing.getStatus())) {
+                    routing.setStatus(fr.getStatus(provider_no));
+                    routing.setTimestamp(new Date());
+                    providerLabRoutingDao.merge(routing);
+                    reactivated = true;
+                }
+            }
+
             // If the lab has already been sent to this providers check to make sure that
             // it is set as a new lab for at least one providers if AUTO_FILE_LABS=yes is not
             // set in the oscar.properties file
-        } else if (autoFileLabs == null || !autoFileLabs.equalsIgnoreCase("yes")) {
-            List<ProviderLabRoutingModel> moreRoutings = dao.findByLabNoTypeAndStatus(labId, labType, "N");
-            if (!moreRoutings.isEmpty()) {
-                ProviderLabRoutingModel plr = providerLabRoutingDao.findByLabNoAndLabType(labId, labType);
-                if (plr != null) {
-                    plr.setStatus("N");
-                    plr.setTimestamp(new Date());
-                    providerLabRoutingDao.merge(plr);
+            if (!reactivated && (autoFileLabs == null || !autoFileLabs.equalsIgnoreCase("yes"))) {
+                List<ProviderLabRoutingModel> moreRoutings = dao.findByLabNoTypeAndStatus(labId, labType, ProviderLabRoutingModel.Status.NEW.getCode());
+                if (!moreRoutings.isEmpty()) {
+                    ProviderLabRoutingModel plr = providerLabRoutingDao.findByLabNoAndLabType(labId, labType);
+                    if (plr != null) {
+                        plr.setStatus(ProviderLabRoutingModel.Status.NEW.getCode());
+                        plr.setTimestamp(new Date());
+                        providerLabRoutingDao.merge(plr);
+                    }
                 }
             }
         }
