@@ -724,10 +724,9 @@ public class Hl7textResultsData {
                 lbData.priority = "----";
             }
 
-            // Parser-fresh source: OLISHL7Handler.getDocName() returns clean text,
-            // so no Jsoup strip needed here. Legacy DB-stored rows are still defensively
-            // stripped at lines ~598 and ~844 where the source is the hl7TextInfo column.
-            lbData.requestingClient = hl7.getRequestingProvider();
+            // hl7 is a persisted Hl7TextInfo row, so requestingProvider can carry
+            // legacy markup; strip it like the sibling result-list methods do (~598, ~847).
+            lbData.requestingClient = HtmlTextCleaner.toPlainText(hl7.getRequestingProvider());
             lbData.reportStatus = hl7.getReportStatus();
 
             // the "C" is for corrected excelleris labs
