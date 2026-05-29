@@ -74,7 +74,13 @@
                         {"data": "contentId"},
                         {
                             "data": "data", render: function (data, type, full, meta) {
-                                return data.replace(/[\r\n]+/g, "<br/>");
+                                // Only escape for display; return raw for sort/filter/type.
+                                if (type !== 'display') { return data; }
+                                // HTML-escape user-controlled audit data (DOM XSS guard),
+                                // then convert newlines to <br/> for readable rendering.
+                                var div = document.createElement('div');
+                                div.textContent = data == null ? '' : data;
+                                return div.innerHTML.replace(/[\r\n]+/g, "<br/>");
                             }
                         },
                         {"data": "demographic"}
