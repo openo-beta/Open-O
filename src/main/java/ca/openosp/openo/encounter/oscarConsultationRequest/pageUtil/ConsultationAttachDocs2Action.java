@@ -49,6 +49,7 @@ import ca.openosp.openo.hospitalReportManager.HRMPDFCreator;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.FormsManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
@@ -77,6 +78,7 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
 
     private final Logger logger = MiscUtils.getLogger();
     FaxManager faxManager = SpringUtils.getBean(FaxManager.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -221,6 +223,10 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
     }
 
     public void getLabPDF() {
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         //TODO: refactor this function, and similar code in EctConsultationFormRequestPrincAction2.java
         //      and EctConsultationFormFax2Action.java as part of extending this attach item functionality
         //      to eforms and ticklers
