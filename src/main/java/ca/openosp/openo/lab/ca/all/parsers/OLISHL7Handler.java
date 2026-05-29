@@ -1002,10 +1002,10 @@ public class OLISHL7Handler implements MessageHandler {
             HashMap<String, Integer> innerMap = obxSortMap.get(obr);
             // An OBR with no OBXs in the sort map
             // (innerMap empty) provoked ArrayIndexOutOfBoundsException on keys[obx]; caught +
-            // logged as ERROR on every render. Now silently returns the original obr fallback
+            // logged as ERROR on every render. Now silently returns the original obx position
             // for the expected empty case; real errors still log.
             if (innerMap == null || obx < 0 || obx >= innerMap.size()) {
-                return obr;
+                return obx;
             }
             String[] keys = innerMap.keySet().toArray(new String[0]);
             Arrays.sort(keys);
@@ -1013,7 +1013,7 @@ public class OLISHL7Handler implements MessageHandler {
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
         }
-        return obr;
+        return obx;
     }
 
     HashMap<Integer, Segment> obrDiagnosis;
