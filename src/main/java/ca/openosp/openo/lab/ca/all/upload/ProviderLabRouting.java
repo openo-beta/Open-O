@@ -110,11 +110,11 @@ public class ProviderLabRouting {
                 routeMagic(labId, ((forwardProviders.get(j)).get(0)), labType);
             }
 
+        } else {
             // A routing already exists for this provider. If it was previously
             // removed (status "X"), forwarding to the same provider must re-link
             // the document by restoring the routing's status; otherwise the
             // document stays hidden and the forward appears to do nothing.
-        } else {
             boolean reactivated = false;
             for (ProviderLabRoutingModel routing : routings) {
                 if (ProviderLabRoutingModel.Status.REMOVED.getCode().equals(routing.getStatus())) {
