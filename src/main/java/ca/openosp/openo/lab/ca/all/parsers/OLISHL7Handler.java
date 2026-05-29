@@ -2942,7 +2942,7 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     protected String formatTime(String plain) {
-        if (plain == null || plain.trim().equals("")) return "";
+        if (plain == null || plain.isBlank()) return "";
         try {
             String dateFormat = "HHmmss";
             if (plain.length() > dateFormat.length()) plain = plain.substring(0, dateFormat.length());
@@ -2958,7 +2958,7 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     protected String formatDateTime(String plain) {
-        if (plain == null || plain.trim().equals("")) return "";
+        if (plain == null || plain.isBlank()) return "";
         try {
             String timezoneOffset = "";
             if (plain.length() >= 19) {
@@ -3007,7 +3007,7 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     protected String formatDate(String plain) {
-        if (plain == null || plain.trim().equals("")) return "";
+        if (plain == null || plain.isBlank()) return "";
         try {
             String dateFormat = "yyyyMMdd";
             if (plain.length() > dateFormat.length()) plain = plain.substring(0, dateFormat.length());

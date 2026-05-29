@@ -71,12 +71,17 @@ public class OLISFacilityDao extends AbstractDaoImpl<OLISFacility> {
         if (tokens.size() > 4) tokens = tokens.subList(0, 4);
 
         boolean filterClass = (facilityClass != null && !facilityClass.isEmpty() && !"ANY".equalsIgnoreCase(facilityClass));
+        String baseSql = "select x from " + this.modelClass.getName() + " x where x.status = 'ACTIVE' "
+                + "and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term0 "
+                + "and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term1 "
+                + "and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term2 "
+                + "and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term3 ";
         Query query;
         if (filterClass) {
-            query = entityManager.createQuery("select x from ca.openosp.openo.olis.model.OLISFacility x where x.status = 'ACTIVE' and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term0 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term1 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term2 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term3 and x.facilityClass = :facilityClass order by x.name, x.city, x.licenceNumber");
+            query = entityManager.createQuery(baseSql + "and x.facilityClass = :facilityClass order by x.name, x.city, x.licenceNumber");
             query.setParameter("facilityClass", facilityClass);
         } else {
-            query = entityManager.createQuery("select x from ca.openosp.openo.olis.model.OLISFacility x where x.status = 'ACTIVE' and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term0 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term1 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term2 and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term3 order by x.name, x.city, x.licenceNumber");
+            query = entityManager.createQuery(baseSql + "order by x.name, x.city, x.licenceNumber");
         }
         query.setParameter("term0", tokens.get(0));
         query.setParameter("term1", tokens.get(1));
