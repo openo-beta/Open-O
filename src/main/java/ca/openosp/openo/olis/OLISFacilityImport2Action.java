@@ -12,7 +12,6 @@ import java.util.zip.ZipFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -25,6 +24,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.olis.dao.OLISFacilityDao;
 import ca.openosp.openo.olis.model.OLISFacility;
+import ca.openosp.openo.util.UtilXML;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
@@ -178,7 +178,7 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
             return new ArrayList<String>();
         }
         final List<String> strings = new ArrayList<String>();
-        SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+        SAXParser parser = UtilXML.newSecureSAXParser();
         try (InputStream in = zip.getInputStream(entry)) {
             parser.parse(new InputSource(in), new DefaultHandler() {
                 private StringBuilder buf = new StringBuilder();
@@ -220,7 +220,7 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
             return null;
         }
         final Map<String, String> rIdToTarget = new HashMap<String, String>();
-        SAXParser p1 = SAXParserFactory.newInstance().newSAXParser();
+        SAXParser p1 = UtilXML.newSecureSAXParser();
         try (InputStream in = zip.getInputStream(relsEntry)) {
             p1.parse(new InputSource(in), new DefaultHandler() {
                 @Override
@@ -236,7 +236,7 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
             });
         }
         final String[] firstTarget = new String[1];
-        SAXParser p2 = SAXParserFactory.newInstance().newSAXParser();
+        SAXParser p2 = UtilXML.newSecureSAXParser();
         try (InputStream in = zip.getInputStream(wbEntry)) {
             p2.parse(new InputSource(in), new DefaultHandler() {
                 @Override
@@ -261,7 +261,7 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
         if (entry == null) {
             throw new IOException("Worksheet entry not found: " + sheetPath);
         }
-        SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+        SAXParser parser = UtilXML.newSecureSAXParser();
         try (InputStream in = zip.getInputStream(entry)) {
             parser.parse(new InputSource(in), new DefaultHandler() {
                 private final Map<String, String> currentRow = new HashMap<String, String>();

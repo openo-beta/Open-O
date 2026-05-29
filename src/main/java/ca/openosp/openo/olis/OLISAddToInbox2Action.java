@@ -11,9 +11,11 @@ package ca.openosp.openo.olis;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -154,16 +156,12 @@ public class OLISAddToInbox2Action extends ActionSupport {
             request.setAttribute("result", "Error");
             return "ajax";
         }
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(file);
-            IOUtils.write(result.getResults(), fw);
+        try (OutputStream os = new FileOutputStream(file)) {
+            IOUtils.write(result.getResults(), os, StandardCharsets.UTF_8);
         } catch (IOException e) {
             logger.error("Error writing OLIS response to tmp file " + fileLocation, e);
             request.setAttribute("result", "Error");
             return "ajax";
-        } finally {
-            IOUtils.closeQuietly(fw);
         }
 
         OLISHL7Handler msgHandler = (OLISHL7Handler) HandlerClassFactory.getHandler("OLIS_HL7");
@@ -553,16 +551,12 @@ public class OLISAddToInbox2Action extends ActionSupport {
             return;
         }
 
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(file);
-            IOUtils.write(result.getResults(), fw);
+        try (OutputStream os = new FileOutputStream(file)) {
+            IOUtils.write(result.getResults(), os, StandardCharsets.UTF_8);
         } catch (IOException e) {
             logger.error("Error writing OLIS response to tmp file " + fileLocation, e);
             errors.add(uuidToAdd);
             return;
-        } finally {
-            IOUtils.closeQuietly(fw);
         }
 
         try {

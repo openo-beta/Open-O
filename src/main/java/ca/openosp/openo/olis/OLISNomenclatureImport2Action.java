@@ -17,7 +17,6 @@ import java.util.zip.ZipFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ActionSupport;
@@ -33,6 +32,7 @@ import ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISResultNomenclatureDao;
 import ca.openosp.openo.olis.model.OLISRequestNomenclature;
 import ca.openosp.openo.olis.model.OLISResultNomenclature;
+import ca.openosp.openo.util.UtilXML;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
@@ -289,7 +289,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
             return new ArrayList<String>();
         }
         final List<String> strings = new ArrayList<String>();
-        SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+        SAXParser parser = UtilXML.newSecureSAXParser();
         try (InputStream in = zip.getInputStream(entry)) {
             parser.parse(new InputSource(in), new DefaultHandler() {
                 private StringBuilder buf = new StringBuilder();
@@ -332,7 +332,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
             return new HashMap<String, String>();
         }
         final Map<String, String> rIdToTarget = new HashMap<String, String>();
-        SAXParser p1 = SAXParserFactory.newInstance().newSAXParser();
+        SAXParser p1 = UtilXML.newSecureSAXParser();
         try (InputStream in = zip.getInputStream(relsEntry)) {
             p1.parse(new InputSource(in), new DefaultHandler() {
                 @Override
@@ -348,7 +348,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
             });
         }
         final Map<String, String> sheetNameToPath = new HashMap<String, String>();
-        SAXParser p2 = SAXParserFactory.newInstance().newSAXParser();
+        SAXParser p2 = UtilXML.newSecureSAXParser();
         try (InputStream in = zip.getInputStream(wbEntry)) {
             p2.parse(new InputSource(in), new DefaultHandler() {
                 @Override
@@ -380,7 +380,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
         if (entry == null) {
             throw new IOException("Worksheet entry not found: " + sheetPath);
         }
-        SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+        SAXParser parser = UtilXML.newSecureSAXParser();
         try (InputStream in = zip.getInputStream(entry)) {
             parser.parse(new InputSource(in), new DefaultHandler() {
                 private final Map<String, String> currentRow = new HashMap<String, String>();
