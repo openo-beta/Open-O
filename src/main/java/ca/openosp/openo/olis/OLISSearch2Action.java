@@ -193,12 +193,9 @@ public class OLISSearch2Action extends ActionSupport {
 
                 String blockedInfoIndividual = request.getParameter("blockedInformationIndividual");
 
-                // Submit first so the OLIS Transaction ID from the response (stashed on the
-                // request by Driver.submitOLISQuery) is available for the consent-override
-                // audit row (OLIS03.06).
-                Driver.submitOLISQuery(loggedInInfo, request, q);
-
-                // Log the consent override
+                // Build the consent-override audit row up front and persist it in a
+                // finally block so the override is always audited (OLIS03.06: a
+                // security-sensitive event), even if Driver.submitOLISQuery throws.
                 OscarLogDao logDao = (OscarLogDao) SpringUtils.getBean(OscarLogDao.class);
                 OscarLog logItem = new OscarLog();
                 logItem.setAction("OLIS");
@@ -206,21 +203,7 @@ public class OLISSearch2Action extends ActionSupport {
                 //logItem.setContentId("demographicNo=" + q.getDemographicNo() + ",givenby=" + blockedInfoIndividual);
                 logItem.setContentId(uuid);
                 logItem.setProviderNo(loggedInInfo.getLoggedInProviderNo());
-
-                StringBuilder data = new StringBuilder();
-                data.append("Initiating Provider: " + providerDao.getProvider(loggedInInfo.getLoggedInProviderNo()).getFormattedName() + "\n");
-                data.append("Requesting HIC: " + providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo()) + "\n");
-                data.append("Authorized by:" + blockedInfoIndividual + "\n");
-
-                Object olisTransactionId = request.getAttribute("olisTransactionId");
-                if (olisTransactionId != null) {
-                    data.append("OLIS Transaction ID: " + olisTransactionId + "\n");
-                }
-
-                logItem.setData(data.toString());
-
                 logItem.setIp(request.getRemoteAddr());
-
 
                 if (q.getQueryType() == QueryType.Z01) {
                     String demographicNo = ((Z01Query) q).getDemographicNo();
@@ -229,7 +212,24 @@ public class OLISSearch2Action extends ActionSupport {
                     }
                 }
 
-                logDao.persist(logItem);
+                try {
+                    // Submit so the OLIS Transaction ID from the response (stashed on the
+                    // request by Driver.submitOLISQuery) is available for the audit row.
+                    Driver.submitOLISQuery(loggedInInfo, request, q);
+                } finally {
+                    StringBuilder data = new StringBuilder();
+                    data.append("Initiating Provider: " + providerDao.getProvider(loggedInInfo.getLoggedInProviderNo()).getFormattedName() + "\n");
+                    data.append("Requesting HIC: " + providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo()) + "\n");
+                    data.append("Authorized by:" + blockedInfoIndividual + "\n");
+
+                    Object olisTransactionId = request.getAttribute("olisTransactionId");
+                    if (olisTransactionId != null) {
+                        data.append("OLIS Transaction ID: " + olisTransactionId + "\n");
+                    }
+
+                    logItem.setData(data.toString());
+                    logDao.persist(logItem);
+                }
 
             } else {
                 Driver.submitOLISQuery(loggedInInfo, request, q);
