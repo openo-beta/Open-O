@@ -176,8 +176,13 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
                     }
 
                     // Transferring PDF to an input stream to be concatenated with
-                    // the rest of the documents.
-                    bis = new ByteInputStream(buffer, buffer.length);
+                    // the rest of the documents. The OLIS path reads an exactly-sized
+                    // array via Files.readAllBytes, but ByteOutputStream.getBytes()
+                    // returns the oversized backing buffer, so use getCount() there.
+                    int byteCount = (handler instanceof OLISHL7Handler)
+                            ? buffer.length
+                            : byteOutputStream.getCount();
+                    bis = new ByteInputStream(buffer, byteCount);
                     streams.add(bis);
                     alist.add(bis);
                 }
