@@ -247,6 +247,7 @@ public class OLISAddToInbox2Action extends ActionSupport {
         DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
 
         List<OscarLog> logs = logDao.findByAction("OLIS", start, length, "created", "desc, x.id desc");
+        long totalRecords = logDao.countByAction("OLIS");
 
         try {
             JSONArray data = new JSONArray();
@@ -277,8 +278,9 @@ public class OLISAddToInbox2Action extends ActionSupport {
 
             JSONObject obj = new JSONObject();
             obj.put("draw", draw);
-            obj.put("recordsTotal", data.length());
-            obj.put("recordsFiltered", data.length());
+            // No server-side filtering on this endpoint, so total == filtered.
+            obj.put("recordsTotal", totalRecords);
+            obj.put("recordsFiltered", totalRecords);
             obj.put("data", data);
 
             response.setContentType("application/json");

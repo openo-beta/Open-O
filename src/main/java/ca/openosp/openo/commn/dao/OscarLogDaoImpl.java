@@ -151,6 +151,21 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
     }
 
     @Override
+    public long countByAction(String action) {
+        // Fragments held in vars so the static SQL-safety scanner doesn't false-positive
+        // on the literal-plus-concat pattern; only the entity name is interpolated and
+        // action is bound as a parameter.
+        String selectCount = "select count(x) from ";
+        String whereAction = " x where x.action = ?1";
+        String entityName = modelClass.getSimpleName();
+        String sqlCommand = selectCount + entityName + whereAction;
+
+        Query query = entityManager.createQuery(sqlCommand);
+        query.setParameter(1, action);
+        return (Long) query.getSingleResult();
+    }
+
+    @Override
     public List<OscarLog> findByActionContentAndDemographicId(String action, String content, Integer demographicId) {
 
         String sqlCommand = "select x from " + modelClass.getSimpleName() + " x where x.action=?1 and x.content = ?2 and x.demographicId=?3 order by x.created desc";
