@@ -1,4 +1,4 @@
-/*
+/**
  * JAXB types for the OLIS response payload (the inner XML content of
  * HIALResponse.SignedResponse.SignedData, distinct from the SOAP envelope
  * which is defined by archive/olis.wsdl and stubbed by OLISStub).
