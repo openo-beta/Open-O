@@ -110,6 +110,9 @@ public class OLISAddToInbox2Action extends ActionSupport {
     private String executeAddSingle() {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "r", null)) {
+            throw new SecurityException("missing required sec object (_lab)");
+        }
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         String uuidToAdd = request.getParameter("uuid");

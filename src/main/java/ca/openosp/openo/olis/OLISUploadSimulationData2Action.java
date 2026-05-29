@@ -20,9 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.olis1.Driver;
 
@@ -35,8 +37,13 @@ public class OLISUploadSimulationData2Action extends ActionSupport implements Up
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
     @Override
     public String execute() {
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
+            throw new SecurityException("missing required sec object");
+        }
 
         Logger logger = MiscUtils.getLogger();
 
