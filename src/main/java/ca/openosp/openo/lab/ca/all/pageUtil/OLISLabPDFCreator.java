@@ -99,25 +99,47 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
     private Logger logger = MiscUtils.getLogger();
 
     /**
-     * Creates a new instance of LabPDFCreator
+     * Convenience constructor for request-driven rendering. Resolves the segment id
+     * from the {@code segmentID} request parameter, falling back to the request
+     * attribute of the same name, then delegates to
+     * {@link #OLISLabPDFCreator(OutputStream, HttpServletRequest, String)}.
+     *
+     * @param request HttpServletRequest the current request; supplies the segment id
+     *                and, for the search-preview path, the {@code uuid} parameter and
+     *                logged-in session
+     * @param os      OutputStream the stream the generated PDF is written to
+     * @since 2026-05-13
      */
     public OLISLabPDFCreator(HttpServletRequest request, OutputStream os) {
         this(os, request, request.getParameter("segmentID") != null ? request.getParameter("segmentID") : (String) request.getAttribute("segmentID"));
     }
 
     /**
-     * Constructor for saved-lab rendering paths that don't have an HttpServletRequest
-     * (eg. LabManagerImpl.renderLab called from the consult attachment manager).
-     * Only valid when segmentId is a real hl7TextMessage id ("0" preview path requires
-     * the request-based constructor to pull uuid + LoggedInInfo from the session).
+     * Constructor for saved-lab rendering paths that have no {@link HttpServletRequest}
+     * (e.g. {@code LabManagerImpl.renderLab} called from the consult attachment
+     * manager). Only valid when {@code segmentId} is a real {@code hl7TextMessage} id;
+     * the "0" search-preview path requires
+     * {@link #OLISLabPDFCreator(OutputStream, HttpServletRequest, String)} to pull the
+     * uuid and {@code LoggedInInfo} from the session.
+     *
+     * @param os        OutputStream the stream the generated PDF is written to
+     * @param segmentId String the {@code hl7TextMessage} id of a saved OLIS lab
+     * @since 2026-05-13
      */
     public OLISLabPDFCreator(OutputStream os, String segmentId) {
         this(os, null, segmentId);
     }
 
     /**
-     * Mirrors {@link LabPDFCreator#getPdfBytes(String, String)} for OLIS labs. Only
-     * works for saved labs (not the segmentID=0 search-preview path).
+     * Renders a saved OLIS lab to a PDF byte array. Mirrors
+     * {@link LabPDFCreator#getPdfBytes(String, String)} for OLIS labs; only works for
+     * saved labs, not the {@code segmentID=0} search-preview path.
+     *
+     * @param segmentId String the {@code hl7TextMessage} id of a saved OLIS lab
+     * @return byte[] the rendered PDF document
+     * @throws IOException       if writing the PDF to the buffer fails
+     * @throws DocumentException if PDF generation fails
+     * @since 2026-05-13
      */
     public static byte[] getPdfBytes(String segmentId) throws IOException, DocumentException {
         java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
@@ -125,6 +147,21 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         return baos.toByteArray();
     }
 
+    /**
+     * Primary constructor. Determines the lab version among any matching siblings,
+     * then builds the OLIS handler: for a saved lab ({@code segmentId != "0"}) the
+     * handler is loaded from the stored {@code hl7TextMessage}; for the search-preview
+     * path ({@code segmentId == "0"}) the cached OLIS response is read from the temp
+     * file keyed by the request's {@code uuid} parameter and parsed in-place.
+     *
+     * @param os        OutputStream the stream the generated PDF is written to
+     * @param request   HttpServletRequest the current request; required for the
+     *                  {@code segmentId == "0"} preview path (supplies {@code uuid} and
+     *                  the logged-in session) and may be {@code null} for saved labs
+     * @param segmentId String the {@code hl7TextMessage} id, or {@code "0"} for the
+     *                  unsaved search-preview path
+     * @since 2026-05-13
+     */
     public OLISLabPDFCreator(OutputStream os, HttpServletRequest request, String segmentId) {
         this.os = os;
         this.id = segmentId;

@@ -62,42 +62,82 @@ public class OLISResultNomenclature extends AbstractModel<String> {
         this.name = name;
     }
 
+    /**
+     * @return Date the date this result code becomes effective in OLIS, or {@code null} if unspecified
+     * @since 2026-05-15
+     */
     public Date getEffectiveDate() {
         return effectiveDate;
     }
 
+    /**
+     * @param effectiveDate Date the date this result code becomes effective in OLIS
+     * @since 2026-05-15
+     */
     public void setEffectiveDate(Date effectiveDate) {
         this.effectiveDate = effectiveDate;
     }
 
+    /**
+     * @return Date the date this result code is retired, or {@code null} if it has no end date
+     * @since 2026-05-15
+     */
     public Date getEndDate() {
         return endDate;
     }
 
+    /**
+     * @param endDate Date the date this result code is retired ({@code null} for no end date)
+     * @since 2026-05-15
+     */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * @return String the lifecycle status, e.g. {@code "ACTIVE"} or {@code "INACTIVE"}
+     * @since 2026-05-15
+     */
     public String getStatus() {
         return status;
     }
 
+    /**
+     * @param status String the lifecycle status, e.g. {@code "ACTIVE"} or {@code "INACTIVE"}
+     * @since 2026-05-15
+     */
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * @return String the version identifier of the external code set this entry belongs to
+     * @since 2026-05-15
+     */
     public String getExternalCodeVersion() {
         return externalCodeVersion;
     }
 
+    /**
+     * @param externalCodeVersion String the version identifier of the external code set
+     * @since 2026-05-15
+     */
     public void setExternalCodeVersion(String externalCodeVersion) {
         this.externalCodeVersion = externalCodeVersion;
     }
 
+    /**
+     * @return String the code that supersedes this one when it is deprecated, or {@code null} if none
+     * @since 2026-05-15
+     */
     public String getSuccessorCode() {
         return successorCode;
     }
 
+    /**
+     * @param successorCode String the code that supersedes this one when it is deprecated
+     * @since 2026-05-15
+     */
     public void setSuccessorCode(String successorCode) {
         this.successorCode = successorCode;
     }
