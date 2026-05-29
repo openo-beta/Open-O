@@ -11,7 +11,6 @@
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
-<%@page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
 <%@page import="ca.openosp.openo.utility.HtmlTextCleaner" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.lab.ca.all.upload.MessageUploader" %>
@@ -2136,7 +2135,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7" style="font-family:courier;">
                             <div style="width:700px">
-                                <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(obr, obx, l))%><span
+                                <%=Encode.forHtml(HtmlTextCleaner.toPlainText(handler.getOBXComment(obr, obx, l)))%><span
                                     style="margin-left:15px;font-size:8px; color:#333333;word-break:normal;"><%=Encode.forHtml(String.valueOf(handler.getOBXSourceOrganization(obr, obx, l)))%></span>
                             </div>
                         </td>
