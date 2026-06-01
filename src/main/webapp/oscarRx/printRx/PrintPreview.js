@@ -106,7 +106,7 @@ function addNotes(scriptId) {
     document.getElementsByName('additNotes')[0].value = document.getElementById('additionalNotes').value.replace(/\n/g, "\r\n");
 }
 
-function printIframe(providerNo, demographicNo, userName) {
+function printIframe(providerNo, demographicNo, userName, ctx) {
     const browserName = navigator.appName;
     if (browserName === "Microsoft Internet Explorer") {
         alert("Use of Microsoft Internet Explorer is not permitted")
@@ -120,7 +120,7 @@ function printIframe(providerNo, demographicNo, userName) {
         self.onfocus = function () {
             self.setTimeout(function () {
                 if (demographicNo) {
-                    openEncounter(providerNo, demographicNo, providerNo, userName);
+                    openEncounter(providerNo, demographicNo, providerNo, userName, ctx);
                 }
                 self.parent.close();
             }, 1000);
@@ -204,13 +204,13 @@ function writeToEncounter(ctx, print, text, prefPharmacy, providerNo, demographi
         })
             .then(() => {
                 if (print) {
-                    printIframe(providerNo, demographicNo, userName);
+                    printIframe(providerNo, demographicNo, userName, ctx);
                 }
             })
             .catch((e) => {
                 alert("ERROR: could not paste to EMR" + e);
                 if (print) {
-                    printIframe(providerNo, demographicNo, userName);
+                    printIframe(providerNo, demographicNo, userName, ctx);
                 }
             });
     } catch (e) {
@@ -218,10 +218,14 @@ function writeToEncounter(ctx, print, text, prefPharmacy, providerNo, demographi
     }
 }
 
-function openEncounter(providerNo, demographicNo, curProviderNo, userName) {
+function openEncounter(providerNo, demographicNo, curProviderNo, userName, ctx) {
+    if (!ctx) {
+        const contextPath = window.location.pathname.split('/')[1];
+        ctx = window.location.origin + '/' + contextPath;
+    }
     const windowProps = "height=710,width=1024,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=20,left=20";
     const currentDate = new Date().toISOString().substring(0, 10);
-    const url = "../oscarEncounter/IncomingEncounter.do?providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&curProviderNo=" + curProviderNo + "&userName=" + userName + "&curDate=" + currentDate;
+    const url = ctx + "/oscarEncounter/IncomingEncounter.do?providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&curProviderNo=" + curProviderNo + "&userName=" + userName + "&curDate=" + currentDate;
 
     if (window.parent.opener && window.parent.opener.document.forms["caseManagementEntryForm"] !== undefined) {
         // redirect if encounter window open
