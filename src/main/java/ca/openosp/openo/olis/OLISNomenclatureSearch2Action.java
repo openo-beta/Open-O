@@ -17,6 +17,7 @@ import ca.openosp.openo.olis.dao.OLISResultNomenclatureDao;
 import ca.openosp.openo.olis.model.OLISRequestNomenclature;
 import ca.openosp.openo.olis.model.OLISResultNomenclature;
 import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import org.apache.struts2.ActionSupport;
@@ -66,7 +67,11 @@ public class OLISNomenclatureSearch2Action extends ActionSupport {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() throws Exception {
-        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "r", null)) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "r", null)) {
+            MiscUtils.getLogger().warn("Security violation: provider "
+                    + (loggedInInfo != null ? loggedInInfo.getLoggedInProviderNo() : "unknown")
+                    + " denied access to OLIS nomenclature search (_lab)");
             throw new SecurityException("missing required sec object");
         }
 

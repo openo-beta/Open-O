@@ -18,6 +18,7 @@ import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.olis.dao.OLISFacilityDao;
 import ca.openosp.openo.olis.model.OLISFacility;
 import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 /**
@@ -59,7 +60,11 @@ public class OLISFacilitySearch2Action extends ActionSupport {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() throws Exception {
-        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "r", null)) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "r", null)) {
+            MiscUtils.getLogger().warn("Security violation: provider "
+                    + (loggedInInfo != null ? loggedInInfo.getLoggedInProviderNo() : "unknown")
+                    + " denied access to OLIS facility search (_lab)");
             throw new SecurityException("missing required sec object");
         }
 
