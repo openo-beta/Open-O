@@ -63,8 +63,6 @@ import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
 import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
-import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
-import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 
@@ -247,8 +245,9 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
                     FileOutputStream fileOutputStream = new FileOutputStream(tempLabPDF);
                     ByteOutputStream byteOutputStream = new ByteOutputStream();
             ) {
-                MessageHandler handler = Factory.getHandler(segmentID);
-                if (handler instanceof OLISHL7Handler) {
+                // Probe the lab type cheaply (no HL7 parse); the chosen PDF creator
+                // does its own single parse below.
+                if (Factory.isOlisLab(segmentID)) {
                     new OLISLabPDFCreator(fileOutputStream, request, segmentID).printPdf();
                     generateResponse(response, getBase64(java.nio.file.Files.readAllBytes(tempLabPDF.toPath())));
                 } else {

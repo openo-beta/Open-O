@@ -42,7 +42,10 @@ import org.jsoup.nodes.Document;
  */
 public final class HtmlTextCleaner {
 
-    private static final String BR_PLACEHOLDER = "\\n";
+    // Marks each <br> position so it survives Jsoup's tag-strip and is turned back
+    // into a newline in toPlainText. U+E000 (Unicode Private Use Area) never occurs
+    // in clinical/HL7 text, so the marker can't collide with real content.
+    private static final String BR_PLACEHOLDER = "\uE000";
 
     private HtmlTextCleaner() {
         // utility class — no instances

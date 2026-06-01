@@ -35,6 +35,7 @@ import java.util.UUID;
 
 import ca.openosp.Misc;
 import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
+import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.upload.handlers.OLISHL7Handler;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.cookie.DateUtils;
@@ -337,7 +338,18 @@ public class OLISPollingUtil {
         String fileLocation = Utilities.saveFile(new ByteArrayInputStream(responseContent.getBytes("UTF-8")), hl7Filename);
         logger.debug(fileLocation);
         File file = new File(fileLocation);
-        OLISHL7Handler msgHandler = (OLISHL7Handler) HandlerClassFactory.getHandler("OLIS_HL7");
+        // HandlerClassFactory falls back to a DefaultHandler when "OLIS_HL7" is
+        // unconfigured or its class cannot be instantiated. Guard the downcast so a
+        // broken deployment fails with a clear, actionable log line instead of an
+        // opaque ClassCastException.
+        MessageHandler rawHandler = HandlerClassFactory.getHandler("OLIS_HL7");
+        if (!(rawHandler instanceof OLISHL7Handler)) {
+            logger.error("OLIS poll: expected an OLISHL7Handler for type \"OLIS_HL7\" but got "
+                    + (rawHandler == null ? "null" : rawHandler.getClass().getName())
+                    + " — check the lab upload message_config.xml mapping; skipping import of this response.");
+            return null;
+        }
+        OLISHL7Handler msgHandler = (OLISHL7Handler) rawHandler;
         try {
             InputStream is = new FileInputStream(fileLocation);
             int check = FileUploadCheck.addFile(file.getName(), is, "0");

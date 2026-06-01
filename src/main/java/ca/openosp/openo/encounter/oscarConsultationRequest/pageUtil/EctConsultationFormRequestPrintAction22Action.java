@@ -51,8 +51,6 @@ import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
 import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
-import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
-import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.util.ConcatPDF;
@@ -164,8 +162,10 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
                         ByteOutputStream byteOutputStream = new ByteOutputStream();
                 ) {
                     request.setAttribute("segmentID", labs.get(i).segmentID);
-                    MessageHandler handler = Factory.getHandler(labs.get(i).segmentID);
-                    if (handler instanceof OLISHL7Handler) {
+                    // Probe the lab type cheaply (no HL7 parse); the chosen PDF creator
+                    // does its own single parse below.
+                    boolean isOlis = Factory.isOlisLab(labs.get(i).segmentID);
+                    if (isOlis) {
                         new OLISLabPDFCreator(fileOutputStream, request, labs.get(i).segmentID).printPdf();
                         buffer = java.nio.file.Files.readAllBytes(tempLabPDF.toPath());
                     } else {
@@ -179,7 +179,7 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
                     // the rest of the documents. The OLIS path reads an exactly-sized
                     // array via Files.readAllBytes, but ByteOutputStream.getBytes()
                     // returns the oversized backing buffer, so use getCount() there.
-                    int byteCount = (handler instanceof OLISHL7Handler)
+                    int byteCount = isOlis
                             ? buffer.length
                             : byteOutputStream.getCount();
                     bis = new ByteInputStream(buffer, byteCount);

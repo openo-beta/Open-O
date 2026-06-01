@@ -183,8 +183,11 @@ class Hl7FormattedTextTest {
         assertThat(Hl7FormattedText.toPlainText("a\\.sk999999999\\b"))
                 .hasSize(1 + cap + 1);
 
-        // Operand wider than Integer.MAX_VALUE: clamped, not thrown.
+        // Operand wider than Integer.MAX_VALUE: clamped, not thrown. Cover both
+        // operand-bearing operators (\.sp\ and \.sk\) since they share the path.
         assertThat(Hl7FormattedText.toPlainText("\\.sp99999999999999999999\\"))
+                .hasSize(cap);
+        assertThat(Hl7FormattedText.toPlainText("\\.sk99999999999999999999\\"))
                 .hasSize(cap);
     }
 }

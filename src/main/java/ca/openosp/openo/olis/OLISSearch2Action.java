@@ -223,7 +223,13 @@ public class OLISSearch2Action extends ActionSupport {
                     Driver.submitOLISQuery(loggedInInfo, request, q);
                 } finally {
                     StringBuilder data = new StringBuilder();
-                    data.append("Initiating Provider: ").append(providerDao.getProvider(loggedInInfo.getLoggedInProviderNo()).getFormattedName()).append("\n");
+                    // Guard the provider lookup: this runs in a finally, so an NPE here
+                    // would mask any exception thrown by submitOLISQuery — the very
+                    // failure case this audit row exists to record.
+                    Provider initiatingProvider = providerDao.getProvider(loggedInInfo.getLoggedInProviderNo());
+                    data.append("Initiating Provider: ")
+                            .append(initiatingProvider != null ? initiatingProvider.getFormattedName() : loggedInInfo.getLoggedInProviderNo())
+                            .append("\n");
                     data.append("Requesting HIC: ").append(providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo())).append("\n");
                     data.append("Authorized by:").append(blockedInfoIndividual).append("\n");
 

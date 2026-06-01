@@ -127,6 +127,21 @@ public class HtmlTextCleanerUnitTest extends OpenOUnitTestBase {
     }
 
     @Test
+    @DisplayName("should not convert a literal backslash-n in the input into a newline")
+    void shouldNotCorruptLiteralBackslashN() {
+        // Regression: the internal <br> placeholder must not collide with real
+        // content. A literal "\n" (the two characters backslash + n, e.g. in an
+        // escaped Windows path) must survive intact and never become a line break.
+        String input = "Path C:\\new\\file is not a line break";
+
+        String result = HtmlTextCleaner.toPlainText(input);
+
+        assertThat(result)
+                .isEqualTo("Path C:\\new\\file is not a line break")
+                .doesNotContain("\n");
+    }
+
+    @Test
     @DisplayName("should decode common HTML entities (&lt; &gt; &amp;)")
     void shouldDecodeCommonHtmlEntities() {
         String input = "Result &lt; 10 &amp; &gt; 5";
