@@ -11,7 +11,7 @@
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
-<%@page import="ca.openosp.openo.utility.HtmlTextCleaner" %>
+<%@page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.lab.ca.all.upload.MessageUploader" %>
 <%@ page language="java" errorPage="/errorpage.jsp" %>
@@ -1461,7 +1461,7 @@
                                                 if (report.getComment().equals("")) {
                                                     out.print("no comment");
                                                 } else {
-                                                    out.print("comment : " + Encode.forHtml(HtmlTextCleaner.toPlainText(report.getComment())));
+                                                    out.print("comment : " + HtmlEncodingUtils.encodeCleanTextWithBreaks(report.getComment()));
                                                 }
                                             } else {
                                                 out.print("no comment");
@@ -1522,7 +1522,7 @@
 
                                             <% for (int i = 0, j = handler.getReportCommentCount(); i < j; i++) { %>
                                             <span style="margin-left:15px; width: 700px; word-wrap: break-word;">
-                                                    <%=i > 0 ? "<br/>" : ""%><%=Encode.forHtml(HtmlTextCleaner.toPlainText(handler.getReportComment(i)))%>
+                                                    <%=i > 0 ? "<br/>" : ""%><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(handler.getReportComment(i))%>
                                                     </span>
                                             <span style="margin-left:15px; font-size:8px; color:#333333;">
                                                     <%=Encode.forHtml(String.valueOf(handler.getReportSourceOrganization(i)))%>
@@ -1782,8 +1782,8 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7">
                             <div style="margin-left:15px; width:700px">
-                                <strong>Comments:</strong> <%=Encode.forHtml(HtmlTextCleaner.toPlainText(String.valueOf(handler.formatString(collectorsComment))))%>
-                                <span style="margin-left:15px;font-size:8px; color:#333333;"><%=Encode.forHtml(HtmlTextCleaner.toPlainText(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr))))%></span>
+                                <strong>Comments:</strong> <%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.formatString(collectorsComment)))%>
+                                <span style="margin-left:15px;font-size:8px; color:#333333;"><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr)))%></span>
                             </div>
                         </td>
                     </tr>
@@ -1815,7 +1815,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7">
                             <div style="margin-left:15px;width: 700px;">
-                                <%=Encode.forHtml(HtmlTextCleaner.toPlainText(String.valueOf(obrComment)))%>
+                                <%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(obrComment))%>
                                 <span style="margin-left:15px;font-size:8px; color:#333333;"><%=Encode.forHtml(String.valueOf(sourceOrg))%></span>
                             </div>
                         </td>
@@ -2135,7 +2135,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7" style="font-family:courier;">
                             <div style="width:700px">
-                                <%=Encode.forHtml(HtmlTextCleaner.toPlainText(handler.getOBXComment(obr, obx, l)))%><span
+                                <%=HtmlEncodingUtils.encodeCleanTextWithBreaks(handler.getOBXComment(obr, obx, l))%><span
                                     style="margin-left:15px;font-size:8px; color:#333333;word-break:normal;"><%=Encode.forHtml(String.valueOf(handler.getOBXSourceOrganization(obr, obx, l)))%></span>
                             </div>
                         </td>

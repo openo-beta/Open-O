@@ -92,4 +92,30 @@ public final class HtmlEncodingUtils {
         }
         return sb.toString();
     }
+
+    /**
+     * Strip any upstream HTML markup/entities from {@code value}, HTML-encode
+     * the resulting plain text, then re-inject {@code <br />} for the line
+     * breaks the markup carried.
+     *
+     * <p>Use this for OLIS lab comment fields, where
+     * {@link ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler} pre-bakes
+     * markup ({@code <br/>}, {@code <span style=...>}, {@code &nbsp;}) into the
+     * text. Routing through {@link HtmlTextCleaner#toPlainText(String)} first
+     * removes that markup (so it does not render as a literal {@code &nbsp;}
+     * wall or visible {@code <span>} tags), {@link Encode#forHtml(String)} then
+     * escapes the clean text, and finally each newline becomes a <i>trusted</i>
+     * {@code <br />} so multi-line comments still render across lines.
+     *
+     * <p>Only the literal {@code <br />} we insert is unescaped — it carries no
+     * user data and cannot host script — so this is XSS-safe.
+     *
+     * @param value the raw (possibly markup-laced) comment text; {@code null}
+     *              produces an empty string
+     * @return the cleaned, encoded string with line breaks rendered as
+     *         {@code <br />}
+     */
+    public static String encodeCleanTextWithBreaks(String value) {
+        return Encode.forHtml(HtmlTextCleaner.toPlainText(value)).replace("\n", "<br />");
+    }
 }
