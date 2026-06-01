@@ -575,10 +575,12 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
         ArrayList<LabResultData> labs = labData.populateLabResultsData(loggedInInfo, demographic.getDemographicNo().toString(), consultationRequest.getId().toString(), CommonLabResultData.ATTACHED);
         for (LabResultData attachment : labs) {
             try {
+                // Parse the lab once and reuse the handler in the chosen creator.
                 MessageHandler labHandler = Factory.getHandler(attachment.getSegmentID());
-                byte[] dataBytes = (labHandler instanceof OLISHL7Handler)
-                        ? OLISLabPDFCreator.getPdfBytes(attachment.getSegmentID())
-                        : LabPDFCreator.getPdfBytes(attachment.getSegmentID(), sendingProvider.getProviderNo());
+                boolean isOlis = labHandler instanceof OLISHL7Handler;
+                byte[] dataBytes = isOlis
+                        ? OLISLabPDFCreator.getPdfBytes(attachment.getSegmentID(), (OLISHL7Handler) labHandler)
+                        : LabPDFCreator.getPdfBytes(attachment.getSegmentID(), sendingProvider.getProviderNo(), labHandler);
                 Hl7TextInfo hl7TextInfo = hl7TextInfoDao.findLabId(Integer.parseInt(attachment.getSegmentID()));
 
                 ObservationData observationData = new ObservationData();

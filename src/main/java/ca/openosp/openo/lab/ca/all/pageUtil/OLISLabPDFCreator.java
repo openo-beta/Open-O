@@ -143,8 +143,24 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
      * @since 2026-05-13
      */
     public static byte[] getPdfBytes(String segmentId) throws IOException, DocumentException {
+        // Delegate, parsing the handler here to preserve the existing self-fetching behavior.
+        return getPdfBytes(segmentId, null);
+    }
+
+    /**
+     * Variant of {@link #getPdfBytes(String)} that reuses an already-parsed
+     * {@code handler} for a saved lab instead of re-parsing it.
+     *
+     * @param segmentId String the {@code hl7TextMessage} id of a saved OLIS lab
+     * @param handler   OLISHL7Handler a pre-parsed handler, or {@code null} to fetch it
+     * @return byte[] the rendered PDF document
+     * @throws IOException       if writing the PDF to the buffer fails
+     * @throws DocumentException if PDF generation fails
+     * @since 2026-06-01
+     */
+    public static byte[] getPdfBytes(String segmentId, OLISHL7Handler handler) throws IOException, DocumentException {
         java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-        new OLISLabPDFCreator(baos, segmentId).printPdf();
+        new OLISLabPDFCreator(baos, null, segmentId, handler).printPdf();
         return baos.toByteArray();
     }
 
@@ -164,6 +180,25 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
      * @since 2026-05-13
      */
     public OLISLabPDFCreator(OutputStream os, HttpServletRequest request, String segmentId) {
+        this(os, request, segmentId, null);
+    }
+
+    /**
+     * Variant of {@link #OLISLabPDFCreator(OutputStream, HttpServletRequest, String)}
+     * that reuses an already-parsed {@code injected} handler for a saved lab instead
+     * of re-parsing it; callers that built the handler to discriminate OLIS vs. generic
+     * labs pass it here to avoid a second HL7 parse. {@code null} restores the
+     * self-fetching behavior. Applies only to saved labs ({@code segmentId != "0"});
+     * the {@code "0"} search-preview path always parses the cached response in-place.
+     *
+     * @param os        OutputStream the stream the generated PDF is written to
+     * @param request   HttpServletRequest required for the {@code segmentId == "0"} path
+     * @param segmentId String the {@code hl7TextMessage} id, or {@code "0"} for preview
+     * @param injected  OLISHL7Handler a pre-parsed handler for the saved lab, or
+     *                  {@code null} to fetch it internally
+     * @since 2026-06-01
+     */
+    public OLISLabPDFCreator(OutputStream os, HttpServletRequest request, String segmentId, OLISHL7Handler injected) {
         this.os = os;
         this.id = segmentId;
 
@@ -184,8 +219,8 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             java.util.Date date = hl7TextMessage.getCreated();
             String stringFormat = "yyyy-MM-dd HH:mm";
 
-            // create handler
-            this.handler = (OLISHL7Handler) Factory.getHandler(id);
+            // reuse the supplied handler when present, else parse the saved lab
+            this.handler = (injected != null) ? injected : (OLISHL7Handler) Factory.getHandler(id);
         } else { // OLIS lab not saved to chart has a segmentId of 0
             LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 

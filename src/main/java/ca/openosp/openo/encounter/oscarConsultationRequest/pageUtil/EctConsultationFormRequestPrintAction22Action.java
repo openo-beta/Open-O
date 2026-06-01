@@ -51,6 +51,8 @@ import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
 import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.util.ConcatPDF;
@@ -162,14 +164,14 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
                         ByteOutputStream byteOutputStream = new ByteOutputStream();
                 ) {
                     request.setAttribute("segmentID", labs.get(i).segmentID);
-                    // Probe the lab type cheaply (no HL7 parse); the chosen PDF creator
-                    // does its own single parse below.
-                    boolean isOlis = Factory.isOlisLab(labs.get(i).segmentID);
+                    // Parse each lab once and reuse the handler in the chosen creator.
+                    MessageHandler handler = Factory.getHandler(labs.get(i).segmentID);
+                    boolean isOlis = handler instanceof OLISHL7Handler;
                     if (isOlis) {
-                        new OLISLabPDFCreator(fileOutputStream, request, labs.get(i).segmentID).printPdf();
+                        new OLISLabPDFCreator(fileOutputStream, request, labs.get(i).segmentID, (OLISHL7Handler) handler).printPdf();
                         buffer = java.nio.file.Files.readAllBytes(tempLabPDF.toPath());
                     } else {
-                        LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);
+                        LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream, handler);
                         labPDFCreator.printPdf();
                         labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
                         buffer = byteOutputStream.getBytes();

@@ -373,19 +373,21 @@ public class CaseManagementPrint {
                     //Date d = result.getDateObj();
                     // TODO:filter out the ones which aren't in our date range if there's a date range????
                     String segmentId = result.segmentID;
+                    // Parse the lab once and reuse the handler in the chosen creator.
                     MessageHandler handler = Factory.getHandler(segmentId);
+                    boolean isOlis = handler instanceof OLISHL7Handler;
                     String fileName2 = OscarProperties.getInstance().getDocumentDirectory() + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.pdf";
                     file2 = new File(fileName2);
                     os2 = new FileOutputStream(file2);
 
-                    if (handler instanceof OLISHL7Handler) {
-                        OLISLabPDFCreator olisLabPdfCreator = new OLISLabPDFCreator(os2, request, segmentId);
+                    if (isOlis) {
+                        OLISLabPDFCreator olisLabPdfCreator = new OLISLabPDFCreator(os2, request, segmentId, (OLISHL7Handler) handler);
                         olisLabPdfCreator.printPdf();
                         os2.close();
                         pdfDocs.add(fileName2);
                     } else {
 
-                        LabPDFCreator pdfCreator = new LabPDFCreator(os2, segmentId, loggedInInfo.getLoggedInProviderNo());
+                        LabPDFCreator pdfCreator = new LabPDFCreator(os2, segmentId, loggedInInfo.getLoggedInProviderNo(), handler);
                         try {
                             pdfCreator.printPdf();
                         } catch (DocumentException documentException) {

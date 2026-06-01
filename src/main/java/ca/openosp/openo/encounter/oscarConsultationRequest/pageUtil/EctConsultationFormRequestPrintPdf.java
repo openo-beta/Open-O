@@ -292,10 +292,11 @@ public class EctConsultationFormRequestPrintPdf {
             String fileName = OscarProperties.getInstance().getDocumentDirectory() + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.pdf";
 
             try (OutputStream os = new FileOutputStream(fileName)) {
-                if (handler instanceof OLISHL7Handler) {
-                    new OLISLabPDFCreator(os, request, segmentId).printPdf();
+                boolean isOlis = handler instanceof OLISHL7Handler;
+                if (isOlis) {
+                    new OLISLabPDFCreator(os, request, segmentId, (OLISHL7Handler) handler).printPdf();
                 } else {
-                    new LabPDFCreator(request, os).printPdf();
+                    new LabPDFCreator(request, os, handler).printPdf();
                 }
                 pdfDocs.add(fileName);
             } catch (Exception e) {

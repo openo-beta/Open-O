@@ -101,12 +101,14 @@ public class LabManagerImpl implements LabManager {
             File tempPDF = File.createTempFile(fileName, "pdf");
             try (FileOutputStream fileOutputStream = new FileOutputStream(tempPDF);
                  ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();) {
+                // Parse the lab once and reuse the handler in the chosen creator.
                 MessageHandler handler = Factory.getHandler(String.valueOf(segmentId));
-                if (handler instanceof OLISHL7Handler) {
-                    new OLISLabPDFCreator(fileOutputStream, String.valueOf(segmentId)).printPdf();
+                boolean isOlis = handler instanceof OLISHL7Handler;
+                if (isOlis) {
+                    new OLISLabPDFCreator(fileOutputStream, null, String.valueOf(segmentId), (OLISHL7Handler) handler).printPdf();
                     byteOutputStream.write(java.nio.file.Files.readAllBytes(tempPDF.toPath()));
                 } else {
-                    LabPDFCreator labPDFCreator = new LabPDFCreator(fileOutputStream, String.valueOf(segmentId), null);
+                    LabPDFCreator labPDFCreator = new LabPDFCreator(fileOutputStream, String.valueOf(segmentId), null, handler);
                     labPDFCreator.printPdf();
                     labPDFCreator.addEmbeddedDocuments(tempPDF, byteOutputStream);
                 }

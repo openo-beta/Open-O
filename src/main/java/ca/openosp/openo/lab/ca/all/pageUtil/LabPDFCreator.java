@@ -100,9 +100,23 @@ public class LabPDFCreator extends PdfPageEventHelper {
     List<String> allLicenseNames = new ArrayList<String>();
 
     public static byte[] getPdfBytes(String segmentId, String providerNo) throws IOException, DocumentException {
+        // Delegate, parsing the handler here to preserve the existing self-fetching behavior.
+        return getPdfBytes(segmentId, providerNo, Factory.getHandler(segmentId));
+    }
+
+    /**
+     * Variant of {@link #getPdfBytes(String, String)} that reuses an already-parsed
+     * {@code handler} instead of re-parsing the lab.
+     *
+     * @param segmentId  String the {@code hl7TextMessage} id of the lab
+     * @param providerNo String the provider context (retained for API compatibility)
+     * @param handler    MessageHandler the pre-parsed handler for this lab
+     * @return byte[] the rendered PDF document
+     */
+    public static byte[] getPdfBytes(String segmentId, String providerNo, MessageHandler handler) throws IOException, DocumentException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        LabPDFCreator labPDFCreator = new LabPDFCreator(baos, segmentId, providerNo);
+        LabPDFCreator labPDFCreator = new LabPDFCreator(baos, segmentId, providerNo, handler);
         labPDFCreator.printPdf();
 
         return (baos.toByteArray());
@@ -119,7 +133,39 @@ public class LabPDFCreator extends PdfPageEventHelper {
         this(os, (request.getParameter("segmentID") != null ? request.getParameter("segmentID") : (String) request.getAttribute("segmentID")), (request.getParameter("providerNo") != null ? request.getParameter("providerNo") : (String) request.getAttribute("providerNo")));
     }
 
+    /**
+     * Variant of {@link #LabPDFCreator(HttpServletRequest, OutputStream)} that reuses
+     * an already-parsed {@code handler} instead of re-parsing the lab. Callers that
+     * built the handler to discriminate OLIS vs. generic labs pass it here to avoid a
+     * second HL7 parse.
+     *
+     * @param request HttpServletRequest supplies the {@code segmentID}/{@code providerNo}
+     * @param os      OutputStream the stream the generated PDF is written to
+     * @param handler MessageHandler the pre-parsed handler for this lab
+     */
+    public LabPDFCreator(HttpServletRequest request, OutputStream os, MessageHandler handler) {
+        this(os,
+                (request.getParameter("segmentID") != null ? request.getParameter("segmentID") : (String) request.getAttribute("segmentID")),
+                (request.getParameter("providerNo") != null ? request.getParameter("providerNo") : (String) request.getAttribute("providerNo")),
+                handler);
+    }
+
     public LabPDFCreator(OutputStream os, String segmentId, String providerNo) {
+        // Delegate, parsing the handler here to preserve the existing self-fetching behavior.
+        this(os, segmentId, providerNo, Factory.getHandler(segmentId));
+    }
+
+    /**
+     * Primary constructor. Accepts an already-parsed {@code handler} so callers that
+     * built one to discriminate OLIS vs. generic labs can reuse it instead of forcing
+     * a second HL7 parse.
+     *
+     * @param os         OutputStream the stream the generated PDF is written to
+     * @param segmentId  String the {@code hl7TextMessage} id of the lab
+     * @param providerNo String the provider context (retained for API compatibility)
+     * @param handler    MessageHandler the pre-parsed handler for this lab
+     */
+    public LabPDFCreator(OutputStream os, String segmentId, String providerNo, MessageHandler handler) {
         this.os = os;
         this.id = segmentId;
 
@@ -130,8 +176,8 @@ public class LabPDFCreator extends PdfPageEventHelper {
         String stringFormat = "yyyy-MM-dd HH:mm";
         dateLabReceived = UtilDateUtilities.DateToString(date, stringFormat);
 
-        // create handler
-        this.handler = Factory.getHandler(id);
+        // reuse the supplied handler (already parsed by the caller)
+        this.handler = handler;
 
         // determine lab version
         String multiLabId = Hl7textResultsData.getMatchingLabs(id);

@@ -63,6 +63,8 @@ import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
 import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 
@@ -211,7 +213,8 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
             try (ByteOutputStream byteOutputStream = new ByteOutputStream()) {
                 ImagePDFCreator imagePDFCreator = new ImagePDFCreator(request, byteOutputStream);
                 imagePDFCreator.printPdf();
-                generateResponse(response, getBase64(byteOutputStream.getBytes()));
+                // getBytes() returns the oversized backing buffer; trim to getCount().
+                generateResponse(response, getBase64(java.util.Arrays.copyOf(byteOutputStream.getBytes(), byteOutputStream.getCount())));
             } catch (DocumentException | IOException e) {
                 logger.error("An error occurred while creating the pdf of the image: " + e.getMessage(), e);
             }
@@ -245,16 +248,18 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
                     FileOutputStream fileOutputStream = new FileOutputStream(tempLabPDF);
                     ByteOutputStream byteOutputStream = new ByteOutputStream();
             ) {
-                // Probe the lab type cheaply (no HL7 parse); the chosen PDF creator
-                // does its own single parse below.
-                if (Factory.isOlisLab(segmentID)) {
-                    new OLISLabPDFCreator(fileOutputStream, request, segmentID).printPdf();
+                // Parse the lab once and reuse the handler in the chosen creator.
+                MessageHandler handler = Factory.getHandler(segmentID);
+                boolean isOlis = handler instanceof OLISHL7Handler;
+                if (isOlis) {
+                    new OLISLabPDFCreator(fileOutputStream, request, segmentID, (OLISHL7Handler) handler).printPdf();
                     generateResponse(response, getBase64(java.nio.file.Files.readAllBytes(tempLabPDF.toPath())));
                 } else {
-                    LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);
+                    LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream, handler);
                     labPDFCreator.printPdf();
                     labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
-                    generateResponse(response, getBase64(byteOutputStream.getBytes()));
+                    // getBytes() returns the oversized backing buffer; trim to getCount().
+                    generateResponse(response, getBase64(java.util.Arrays.copyOf(byteOutputStream.getBytes(), byteOutputStream.getCount())));
                 }
             }
             tempLabPDF.delete();
@@ -325,7 +330,8 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         try (ByteOutputStream byteOutputStream = new ByteOutputStream()) {
             HRMPDFCreator hrmPdf = new HRMPDFCreator(byteOutputStream, Integer.parseInt(hrmId), loggedInInfo);
             hrmPdf.printPdf();
-            generateResponse(response, getBase64(byteOutputStream.getBytes()));
+            // getBytes() returns the oversized backing buffer; trim to getCount().
+            generateResponse(response, getBase64(java.util.Arrays.copyOf(byteOutputStream.getBytes(), byteOutputStream.getCount())));
         }
     }
 

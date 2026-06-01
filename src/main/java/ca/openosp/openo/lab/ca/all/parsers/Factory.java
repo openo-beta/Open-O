@@ -94,33 +94,6 @@ public final class Factory {
 		return getHandler("", "");
 	}
 
-    /**
-     * Lightweight probe for whether the lab behind {@code segmentID} is an OLIS
-     * lab, without parsing its HL7 body. Equivalent to
-     * {@code getHandler(segmentID) instanceof OLISHL7Handler} — the lab type
-     * {@code "OLIS_HL7"} maps uniquely to {@link OLISHL7Handler} in
-     * message_config.xml — but it reads only the stored message type, avoiding the
-     * full base64-decode and HL7 parse that {@link #getHandler(String)} performs.
-     * Use it to pick an OLIS-specific vs. generic rendering path before
-     * constructing a PDF creator (which does its own single parse), instead of
-     * parsing the lab twice.
-     *
-     * @param segmentID String the Hl7TextMessage primary key
-     * @return boolean {@code true} if the stored lab type is {@code "OLIS_HL7"}
-     *         (case-insensitive); {@code false} for any other type, an unknown
-     *         segment, or a lookup error
-     */
-    public static boolean isOlisLab(String segmentID) {
-        try {
-            Hl7TextMessageDao hl7TextMessageDao = (Hl7TextMessageDao) SpringUtils.getBean(Hl7TextMessageDao.class);
-            Hl7TextMessage hl7TextMessage = hl7TextMessageDao.find(Integer.parseInt(segmentID));
-            return hl7TextMessage != null && "OLIS_HL7".equalsIgnoreCase(hl7TextMessage.getType());
-        } catch (Exception e) {
-            logger.error("Could not determine lab type for segmentID(" + segmentID + ")", e);
-            return false;
-        }
-    }
-
     public static String getHL7Body(String segmentID) {
         String ret = null;
         try {
