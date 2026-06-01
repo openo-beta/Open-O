@@ -11,7 +11,6 @@
 package ca.openosp.openo.hospitalReportManager;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -65,6 +64,7 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import org.springframework.core.io.ClassPathResource;
 
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import ca.openosp.openo.commn.model.enumerator.BinaryFileExtension;
@@ -107,6 +107,9 @@ public class HRMReportParser {
         logger.info("Parsing the Report in the location:" + hrmReportFileLocation);
 
         String fileData = null;
+        // Non-fatal warnings raised during parsing (e.g. an invalid placeholder date substituted
+        // with today's date) — carried on the returned HRMReport and surfaced in the upload UI.
+        List<String> parseWarnings = new ArrayList<>();
         if (hrmReportFileLocation != null) {
             try {
                 // a lot of the parsers need to refer to a file and even when they provide
@@ -139,14 +142,15 @@ public class HRMReportParser {
                 URL schemaUrl = new ClassPathResource("/xsd/hrm/1.1.2/ontariomd_hrm.xsd").getURL();
                 Schema schema = factory.newSchema(schemaUrl);
 
-                // Unmarshal into JAXB model
+                // Replace invalid placeholder dates (e.g. 0-00-00T00:00:00) with today's date so the
+                // report parses instead of being rejected; each substitution records a warning.
+                Document normalizedDoc = HRMXmlValidator.normalizeInvalidDates(tmpXMLholder, parseWarnings);
+
+                // Unmarshal into JAXB model from the normalized DOM
                 JAXBContext jc = JAXBContext.newInstance("omd.hrm");
                 Unmarshaller u = jc.createUnmarshaller();
                 u.setSchema(schema);
-                OmdCds parsed;
-                try (FileInputStream fileInputStream = new FileInputStream(tmpXMLholder)) {
-                    parsed = (OmdCds) u.unmarshal(fileInputStream);
-                }
+                OmdCds parsed = (OmdCds) u.unmarshal(normalizedDoc);
 
                 validateReportContent(parsed);
                 validateDateOfBirth(parsed);
@@ -171,7 +175,9 @@ public class HRMReportParser {
             }
 
             if (root != null && hrmReportFileLocation != null && fileData != null) {
-                return new HRMReport(root, hrmReportFileLocation, fileData);
+                HRMReport hrmReport = new HRMReport(root, hrmReportFileLocation, fileData);
+                hrmReport.addUploadWarnings(parseWarnings);
+                return hrmReport;
             }
         }
 
@@ -261,6 +267,11 @@ public class HRMReportParser {
         }
 
         logger.info("Adding Report to Inbox, for file:" + report.getFileLocation());
+
+        // Surface warnings raised during parsing (e.g. invalid placeholder dates substituted earlier)
+        if (warnings != null) {
+            warnings.addAll(report.getUploadWarnings());
+        }
 
         addUnknownSendingFacilityWarning(report, warnings);
         addUnknownSubClassWarning(report, warnings);

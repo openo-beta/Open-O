@@ -3,14 +3,22 @@ package ca.openosp.openo.hospitalReportManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -116,6 +124,108 @@ public class HRMXmlValidator {
             });
         } catch (ParserConfigurationException e) {
             throw new SAXException("XML parser configuration error", e);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Invalid placeholder-date normalization
+    // -------------------------------------------------------------------------
+
+    /** Namespace (cds_dt) the date leaf elements of {@code dateFullOrPartial} live in. */
+    private static final String DT_NS = "cds_dt";
+
+    /** The date-carrying leaf elements of the {@code dateFullOrPartial} type, by local name. */
+    private static final String[] DATE_LEAVES = {"DateTime", "FullDate", "YearMonth", "YearOnly"};
+
+    /**
+     * Parent element whose placeholder date must NOT be silently substituted. A birthdate is a
+     * clinically significant patient identifier, so a placeholder value is left in place and instead
+     * rejected by the dedicated DateOfBirth validation rather than having a fabricated date assigned.
+     */
+    private static final String DOB_PARENT = "DateOfBirth";
+
+    /**
+     * Parses the HRM XML file and replaces any invalid placeholder date value (such as the
+     * {@code 0-00-00T00:00:00} some sending facilities emit to mean "no date") with today's date in
+     * the format expected by the element's type, so the report passes XSD validation instead of being
+     * rejected outright. A warning naming the affected element is recorded for each substitution.
+     *
+     * <p>{@code DateOfBirth} is intentionally excluded so a placeholder birthdate is still rejected by
+     * the stricter DateOfBirth validation rather than silently replaced.
+     *
+     * @param xmlFile  the HRM XML report file to normalize; must exist
+     * @param warnings collector that receives one human-readable warning per substituted date
+     * @return the parsed (and possibly modified) DOM, ready to be unmarshalled
+     * @throws SAXException if the file cannot be parsed
+     * @throws IOException  if the file cannot be read
+     */
+    public static Document normalizeInvalidDates(File xmlFile, List<String> warnings)
+            throws SAXException, IOException {
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            Document doc = dbf.newDocumentBuilder().parse(xmlFile);
+
+            DatatypeFactory dtf = DatatypeFactory.newInstance();
+            for (String leafName : DATE_LEAVES) {
+                normalizeDateLeaves(doc, leafName, dtf, warnings);
+            }
+            return doc;
+        } catch (ParserConfigurationException | DatatypeConfigurationException e) {
+            throw new SAXException("XML parser configuration error", e);
+        }
+    }
+
+    private static void normalizeDateLeaves(Document doc, String leafLocalName,
+                                            DatatypeFactory dtf, List<String> warnings) {
+        NodeList nodes = doc.getElementsByTagNameNS(DT_NS, leafLocalName);
+        for (int i = 0; i < nodes.getLength(); i++) {
+            org.w3c.dom.Element leaf = (org.w3c.dom.Element) nodes.item(i);
+
+            Node parentNode = leaf.getParentNode();
+            String parentName = parentNode != null ? parentNode.getLocalName() : leafLocalName;
+            if (DOB_PARENT.equals(parentName)) continue;
+
+            String value = leaf.getTextContent() == null ? "" : leaf.getTextContent().trim();
+            if (value.isEmpty() || isValidDateValue(value, dtf)) continue;
+
+            String replacement = todaysValueFor(leafLocalName);
+            leaf.setTextContent(replacement);
+            warnings.add("<" + parentName + "> contained an invalid date '" + value
+                + "'; using today's date (" + replacement + ") instead.");
+            logger.warn("HRM report <{}> had invalid date '{}'; substituted today's date '{}'",
+                parentName, value, replacement);
+        }
+    }
+
+    /**
+     * Returns {@code true} when {@code value} is a lexically valid date/dateTime with in-range month
+     * and day. Placeholder values such as {@code 0-00-00T00:00:00} fail because the lexical form is
+     * rejected (or the month/day are zero).
+     */
+    private static boolean isValidDateValue(String value, DatatypeFactory dtf) {
+        try {
+            XMLGregorianCalendar cal = dtf.newXMLGregorianCalendar(value);
+            int year = cal.getYear();
+            if (year != DatatypeConstants.FIELD_UNDEFINED && year <= 0) return false;
+            int month = cal.getMonth();
+            if (month != DatatypeConstants.FIELD_UNDEFINED && (month < 1 || month > 12)) return false;
+            int day = cal.getDay();
+            if (day != DatatypeConstants.FIELD_UNDEFINED && (day < 1 || day > 31)) return false;
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private static String todaysValueFor(String leafLocalName) {
+        Date now = Calendar.getInstance().getTime();
+        switch (leafLocalName) {
+            case "FullDate":  return new SimpleDateFormat("yyyy-MM-dd").format(now);
+            case "YearMonth": return new SimpleDateFormat("yyyy-MM").format(now);
+            case "YearOnly":  return new SimpleDateFormat("yyyy").format(now);
+            case "DateTime":
+            default:          return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(now);
         }
     }
 
