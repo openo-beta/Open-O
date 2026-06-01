@@ -165,4 +165,26 @@ class Hl7FormattedTextTest {
                 .doesNotContain("&nbsp;")
                 .doesNotContain("</");
     }
+
+    @Test
+    @DisplayName("clamps an oversized repeat operand instead of exhausting memory")
+    void shouldClampOversizedRepeatOperand() {
+        // A huge \.sp\ operand must not allocate an enormous string. It is clamped
+        // to MAX_REPEAT, and an operand beyond int range is clamped too rather than
+        // throwing NumberFormatException. Reference the constant so this test stays
+        // correct if the cap is retuned.
+        int cap = Hl7FormattedText.MAX_REPEAT;
+
+        assertThat(Hl7FormattedText.toPlainText("a\\.sp999999999\\b"))
+                .hasSize(1 + cap + 1)
+                .startsWith("a\n")
+                .endsWith("\nb");
+
+        assertThat(Hl7FormattedText.toPlainText("a\\.sk999999999\\b"))
+                .hasSize(1 + cap + 1);
+
+        // Operand wider than Integer.MAX_VALUE: clamped, not thrown.
+        assertThat(Hl7FormattedText.toPlainText("\\.sp99999999999999999999\\"))
+                .hasSize(cap);
+    }
 }

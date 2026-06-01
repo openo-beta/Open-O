@@ -203,20 +203,17 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
         return rep;
     }
 
+    // findByNameId returns null when the code is not yet stored (the DAO's
+    // getSingleResultOrNull handles the no-result case). Real persistence errors
+    // are intentionally NOT swallowed here — they propagate to execute()'s handler
+    // so the import aborts with a message rather than silently treating a failed
+    // lookup as "not found" and inserting a row.
     private static OLISResultNomenclature findByNameId(OLISResultNomenclatureDao dao, String nameId) {
-        try {
-            return dao.findByNameId(nameId);
-        } catch (Exception e) {
-            return null;
-        }
+        return dao.findByNameId(nameId);
     }
 
     private static OLISRequestNomenclature findByNameId(OLISRequestNomenclatureDao dao, String nameId) {
-        try {
-            return dao.findByNameId(nameId);
-        } catch (Exception e) {
-            return null;
-        }
+        return dao.findByNameId(nameId);
     }
 
     private static String deriveStatus(Map<String, String> row) {

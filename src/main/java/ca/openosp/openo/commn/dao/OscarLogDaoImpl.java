@@ -150,6 +150,13 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
         return results;
     }
 
+    /**
+     * Counts the {@code oscar_log} rows recorded for a given action.
+     *
+     * @param action String the log action value to match (e.g. {@code "OLIS"})
+     * @return long the number of matching log rows
+     * @since 2026-05-29
+     */
     @Override
     public long countByAction(String action) {
         // Fragments held in vars so the static SQL-safety scanner doesn't false-positive

@@ -223,7 +223,11 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
     }
 
     public void getLabPDF() {
-        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
+            logger.warn("Security violation: provider "
+                    + (loggedInInfo != null ? loggedInInfo.getLoggedInProviderNo() : "unknown")
+                    + " denied lab-PDF access (_con)");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

@@ -47,6 +47,19 @@ public final class Hl7FormattedText {
     private static final Pattern PARAM_OP =
             Pattern.compile("\\.(SP|SK|IN|TI)\\s*(\\d*)\\s*");
 
+    /**
+     * Upper bound on a single {@code \.sp\}/{@code \.sk\} repeat operand. The
+     * operand is in-band data from the HL7 message; a malformed or hostile token
+     * like {@code \.sp999999999\} would otherwise allocate an enormous string (or
+     * overflow {@code int}) and break rendering of the whole message. 1000 is far
+     * above any real formatting — the widest classic reports are ~132 columns and
+     * vertical skips are only ever a handful of lines — so real OLIS comments are
+     * never clamped; the cap exists purely to bound the pathological case.
+     * <p>Package-private so the unit test can assert against it rather than a
+     * hard-coded copy of the value.
+     */
+    static final int MAX_REPEAT = 1000;
+
     private Hl7FormattedText() {
         // utility class — no instances
     }
@@ -126,7 +139,16 @@ public final class Hl7FormattedText {
             return "";
         }
         String cmd = m.group(1);
-        int count = m.group(2).isEmpty() ? 1 : Integer.parseInt(m.group(2));
+        int count = 1;
+        if (!m.group(2).isEmpty()) {
+            try {
+                count = Math.min(Integer.parseInt(m.group(2)), MAX_REPEAT);
+            } catch (NumberFormatException e) {
+                // Operand exceeds int range — treat as the (clamped) maximum
+                // rather than letting parsing fail on a single bad message.
+                count = MAX_REPEAT;
+            }
+        }
         if ("SP".equals(cmd)) {
             return "\n".repeat(count);   // vertical skip
         }

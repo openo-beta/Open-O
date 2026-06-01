@@ -14,6 +14,7 @@ import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.olis.dao.OLISFacilityDao;
+import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.olis.model.OLISFacility;
 import ca.openosp.openo.olis.util.OlisXlsxSheetReader;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -92,7 +93,8 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
      * @since 2026-05-20
      */
     public String execute() {
-        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", "w", null)) {
             throw new SecurityException("missing required sec object");
         }
 
@@ -116,6 +118,8 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
             sccReport = new ImportReport();
             OlisXlsxSheetReader.streamRows(zip, sheetPath, sharedStrings, row -> importRow(dao, row));
             LOG.info("OLIS Lab/SCC import — labs: " + labReport + "; sccs: " + sccReport);
+            LogAction.addLogSynchronous(loggedInInfo, "OLISFacilityImport",
+                    "labs: " + labReport + "; sccs: " + sccReport);
             request.setAttribute("labReport", labReport);
             request.setAttribute("sccReport", sccReport);
             request.setAttribute("xlsxFileName", xlsxFileName);

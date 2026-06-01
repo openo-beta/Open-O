@@ -29,6 +29,7 @@ import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.OscarLog;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -118,6 +119,7 @@ public class OLISSearch2Action extends ActionSupport {
 
     private DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
     private ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public static HashMap<String, Query> searchQueryMap = new HashMap<String, Query>();
 
@@ -180,6 +182,9 @@ public class OLISSearch2Action extends ActionSupport {
     public String execute() {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "r", null)) {
+            throw new SecurityException("missing required sec object");
+        }
 
         String queryType = request.getParameter("queryType");
         boolean redo = "true".equals(request.getParameter("redo"));
@@ -218,13 +223,13 @@ public class OLISSearch2Action extends ActionSupport {
                     Driver.submitOLISQuery(loggedInInfo, request, q);
                 } finally {
                     StringBuilder data = new StringBuilder();
-                    data.append("Initiating Provider: " + providerDao.getProvider(loggedInInfo.getLoggedInProviderNo()).getFormattedName() + "\n");
-                    data.append("Requesting HIC: " + providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo()) + "\n");
-                    data.append("Authorized by:" + blockedInfoIndividual + "\n");
+                    data.append("Initiating Provider: ").append(providerDao.getProvider(loggedInInfo.getLoggedInProviderNo()).getFormattedName()).append("\n");
+                    data.append("Requesting HIC: ").append(providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo())).append("\n");
+                    data.append("Authorized by:").append(blockedInfoIndividual).append("\n");
 
                     Object olisTransactionId = request.getAttribute("olisTransactionId");
                     if (olisTransactionId != null) {
-                        data.append("OLIS Transaction ID: " + olisTransactionId + "\n");
+                        data.append("OLIS Transaction ID: ").append(olisTransactionId).append("\n");
                     }
 
                     logItem.setData(data.toString());
