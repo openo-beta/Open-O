@@ -17,6 +17,7 @@
  */
 package ca.openosp.openo.utility;
 
+import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("HtmlTextCleaner unit tests")
 @Tag("unit")
 @Tag("fast")
-public class HtmlTextCleanerUnitTest {
+public class HtmlTextCleanerUnitTest extends OpenOUnitTestBase {
 
     @Test
     @DisplayName("should strip <span> markup synthesized by OLISHL7Handler.getFullDocName")
