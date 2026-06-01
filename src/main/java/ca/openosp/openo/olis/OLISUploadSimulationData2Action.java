@@ -77,7 +77,6 @@ public class OLISUploadSimulationData2Action extends ActionSupport implements Up
         return SUCCESS;
     }
 
-    private UploadedFile simulateFile;
     private File simulateFileOnDisk;
     private boolean simulateError;
 
@@ -85,7 +84,7 @@ public class OLISUploadSimulationData2Action extends ActionSupport implements Up
     @Override
     public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
         if (!uploadedFiles.isEmpty()) {
-            this.simulateFile = uploadedFiles.get(0);
+            UploadedFile simulateFile = uploadedFiles.get(0);
             this.simulateFileOnDisk = PathValidationUtils.toFile(simulateFile);
         }
     }

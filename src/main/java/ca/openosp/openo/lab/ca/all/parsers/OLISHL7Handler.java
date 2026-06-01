@@ -74,14 +74,22 @@ public class OLISHL7Handler implements MessageHandler {
      * text for inbox lists, etc.</p>
      */
     public static class DoctorName {
-        public final String prefix;        // XCN-6: "DR."
-        public final String givenName;     // XCN-3: "JOHN"
-        public final String middleName;    // XCN-4: middle initial
-        public final String familyName;    // XCN-2: "SMITH"
-        public final String suffix;        // XCN-5: suffix
-        public final String degree;        // XCN-7: "M.D." degree credential text
-        public final String licenseType;   // XCN-13 normalized: "MD" / "RM" / "RN(EC)" / "DDS"
-        public final String licenseNumber; // XCN-1: "109753"
+        // XCN-6: "DR."
+        public final String prefix;
+        // XCN-3: "JOHN"
+        public final String givenName;
+        // XCN-4: middle initial
+        public final String middleName;
+        // XCN-2: "SMITH"
+        public final String familyName;
+        // XCN-5: suffix
+        public final String suffix;
+        // XCN-7: "M.D." degree credential text
+        public final String degree;
+        // XCN-13 normalized: "MD" / "RM" / "RN(EC)" / "DDS"
+        public final String licenseType;
+        // XCN-1: "109753"
+        public final String licenseNumber;
 
         public DoctorName(String prefix, String givenName, String middleName,
                           String familyName, String suffix, String degree,

@@ -1,38 +1,29 @@
 package ca.openosp.openo.olis;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.SAXParser;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.action.UploadedFilesAware;
 import org.apache.struts2.dispatcher.multipart.UploadedFile;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.helpers.DefaultHandler;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISResultNomenclatureDao;
 import ca.openosp.openo.olis.model.OLISRequestNomenclature;
 import ca.openosp.openo.olis.model.OLISResultNomenclature;
-import ca.openosp.openo.util.UtilXML;
+import ca.openosp.openo.olis.util.OlisXlsxSheetReader;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
@@ -102,8 +93,8 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
         }
 
         try (ZipFile zip = new ZipFile(xlsxOnDisk)) {
-            List<String> sharedStrings = readSharedStrings(zip);
-            Map<String, String> sheetNameToPath = readWorkbookSheetMap(zip);
+            List<String> sharedStrings = OlisXlsxSheetReader.readSharedStrings(zip);
+            Map<String, String> sheetNameToPath = OlisXlsxSheetReader.workbookSheetMap(zip);
 
             String resultSheetPath = sheetNameToPath.get("Test Result Nomenclatures");
             String requestSheetPath = sheetNameToPath.get("Test Request Nomenclature");
@@ -136,7 +127,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
     private ImportReport importResults(ZipFile zip, String sheetPath, List<String> sharedStrings,
                                        final OLISResultNomenclatureDao dao) throws Exception {
         final ImportReport rep = new ImportReport();
-        streamRows(zip, sheetPath, sharedStrings, new RowConsumer() {
+        OlisXlsxSheetReader.streamRows(zip, sheetPath, sharedStrings, new OlisXlsxSheetReader.RowConsumer() {
             @Override
             public void accept(Map<String, String> row) {
                 String nameId = trimToNull(row.get("LOINC Code"));
@@ -175,7 +166,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
     private ImportReport importRequests(ZipFile zip, String sheetPath, List<String> sharedStrings,
                                         final OLISRequestNomenclatureDao dao) throws Exception {
         final ImportReport rep = new ImportReport();
-        streamRows(zip, sheetPath, sharedStrings, new RowConsumer() {
+        OlisXlsxSheetReader.streamRows(zip, sheetPath, sharedStrings, new OlisXlsxSheetReader.RowConsumer() {
             @Override
             public void accept(Map<String, String> row) {
                 String nameId = trimToNull(row.get("OLIS Test Request Code"));
@@ -279,190 +270,6 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
         }
         String t = s.trim();
         return t.isEmpty() ? null : t;
-    }
-
-    // ---------- XLSX (zip + SAX) ----------
-
-    private static List<String> readSharedStrings(ZipFile zip) throws Exception {
-        ZipEntry entry = zip.getEntry("xl/sharedStrings.xml");
-        if (entry == null) {
-            return new ArrayList<String>();
-        }
-        final List<String> strings = new ArrayList<String>();
-        SAXParser parser = UtilXML.newSecureSAXParser();
-        try (InputStream in = zip.getInputStream(entry)) {
-            parser.parse(new InputSource(in), new DefaultHandler() {
-                private StringBuilder buf = new StringBuilder();
-                private boolean inT = false;
-                private boolean inSi = false;
-                @Override
-                public void startElement(String uri, String localName, String qName, Attributes attrs) {
-                    if ("si".equals(localName) || qName.endsWith(":si") || "si".equals(qName)) {
-                        buf.setLength(0);
-                        inSi = true;
-                    } else if ("t".equals(localName) || qName.endsWith(":t") || "t".equals(qName)) {
-                        inT = inSi;
-                    }
-                }
-                @Override
-                public void characters(char[] ch, int start, int length) {
-                    if (inT) {
-                        buf.append(ch, start, length);
-                    }
-                }
-                @Override
-                public void endElement(String uri, String localName, String qName) {
-                    if ("si".equals(localName) || qName.endsWith(":si") || "si".equals(qName)) {
-                        strings.add(buf.toString());
-                        inSi = false;
-                    } else if ("t".equals(localName) || qName.endsWith(":t") || "t".equals(qName)) {
-                        inT = false;
-                    }
-                }
-            });
-        }
-        return strings;
-    }
-
-    private static Map<String, String> readWorkbookSheetMap(ZipFile zip) throws Exception {
-        // workbook.xml lists each sheet with name + r:id; workbook.xml.rels maps r:id → target path.
-        ZipEntry wbEntry = zip.getEntry("xl/workbook.xml");
-        ZipEntry relsEntry = zip.getEntry("xl/_rels/workbook.xml.rels");
-        if (wbEntry == null || relsEntry == null) {
-            return new HashMap<String, String>();
-        }
-        final Map<String, String> rIdToTarget = new HashMap<String, String>();
-        SAXParser p1 = UtilXML.newSecureSAXParser();
-        try (InputStream in = zip.getInputStream(relsEntry)) {
-            p1.parse(new InputSource(in), new DefaultHandler() {
-                @Override
-                public void startElement(String uri, String localName, String qName, Attributes attrs) {
-                    if ("Relationship".equals(localName) || "Relationship".equals(qName)) {
-                        String id = attrs.getValue("Id");
-                        String target = attrs.getValue("Target");
-                        if (id != null && target != null) {
-                            rIdToTarget.put(id, target.startsWith("/") ? target.substring(1) : "xl/" + target);
-                        }
-                    }
-                }
-            });
-        }
-        final Map<String, String> sheetNameToPath = new HashMap<String, String>();
-        SAXParser p2 = UtilXML.newSecureSAXParser();
-        try (InputStream in = zip.getInputStream(wbEntry)) {
-            p2.parse(new InputSource(in), new DefaultHandler() {
-                @Override
-                public void startElement(String uri, String localName, String qName, Attributes attrs) {
-                    if ("sheet".equals(localName) || "sheet".equals(qName)) {
-                        String name = attrs.getValue("name");
-                        String rid = attrs.getValue("r:id");
-                        if (rid == null) rid = attrs.getValue("id");
-                        if (name != null && rid != null) {
-                            String target = rIdToTarget.get(rid);
-                            if (target != null) {
-                                sheetNameToPath.put(name, target);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        return sheetNameToPath;
-    }
-
-    private interface RowConsumer {
-        void accept(Map<String, String> row);
-    }
-
-    private static void streamRows(ZipFile zip, String sheetPath, final List<String> sharedStrings,
-                                   final RowConsumer consumer) throws Exception {
-        ZipEntry entry = zip.getEntry(sheetPath);
-        if (entry == null) {
-            throw new IOException("Worksheet entry not found: " + sheetPath);
-        }
-        SAXParser parser = UtilXML.newSecureSAXParser();
-        try (InputStream in = zip.getInputStream(entry)) {
-            parser.parse(new InputSource(in), new DefaultHandler() {
-                private final Map<String, String> currentRow = new HashMap<String, String>();
-                private final Map<String, String> columnLetterToHeader = new HashMap<String, String>();
-                private String currentCellRef;
-                private String currentCellType;
-                private StringBuilder cellBuf = new StringBuilder();
-                private boolean inValue = false;
-                private boolean inInlineStr = false;
-                private int rowIndex = 0;
-
-                @Override
-                public void startElement(String uri, String localName, String qName, Attributes attrs) {
-                    String name = localName.isEmpty() ? qName : localName;
-                    if ("row".equals(name)) {
-                        currentRow.clear();
-                        rowIndex++;
-                    } else if ("c".equals(name)) {
-                        currentCellRef = attrs.getValue("r");
-                        currentCellType = attrs.getValue("t");
-                        cellBuf.setLength(0);
-                    } else if ("v".equals(name)) {
-                        inValue = true;
-                    } else if ("is".equals(name)) {
-                        inInlineStr = true;
-                    } else if ("t".equals(name) && inInlineStr) {
-                        inValue = true;
-                    }
-                }
-
-                @Override
-                public void characters(char[] ch, int start, int length) {
-                    if (inValue) {
-                        cellBuf.append(ch, start, length);
-                    }
-                }
-
-                @Override
-                public void endElement(String uri, String localName, String qName) {
-                    String name = localName.isEmpty() ? qName : localName;
-                    if ("v".equals(name)) {
-                        inValue = false;
-                    } else if ("t".equals(name) && inInlineStr) {
-                        inValue = false;
-                    } else if ("is".equals(name)) {
-                        inInlineStr = false;
-                    } else if ("c".equals(name)) {
-                        String raw = cellBuf.toString();
-                        String value;
-                        if ("s".equals(currentCellType)) {
-                            try {
-                                value = sharedStrings.get(Integer.parseInt(raw.trim()));
-                            } catch (Exception e) {
-                                value = raw;
-                            }
-                        } else {
-                            value = raw;
-                        }
-                        String column = columnLetterOnly(currentCellRef);
-                        if (rowIndex == 1) {
-                            columnLetterToHeader.put(column, value);
-                        } else {
-                            String header = columnLetterToHeader.get(column);
-                            if (header != null) {
-                                currentRow.put(header, value);
-                            }
-                        }
-                    } else if ("row".equals(name)) {
-                        if (rowIndex > 1 && !currentRow.isEmpty()) {
-                            consumer.accept(currentRow);
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    private static String columnLetterOnly(String cellRef) {
-        if (cellRef == null) return "";
-        int i = 0;
-        while (i < cellRef.length() && Character.isLetter(cellRef.charAt(i))) i++;
-        return cellRef.substring(0, i);
     }
 
     // ---------- Getters for the JSP ----------
