@@ -12,6 +12,7 @@
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
+<%@page import="ca.openosp.openo.lab.ca.all.parsers.Hl7FormattedText" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.lab.ca.all.upload.MessageUploader" %>
 <%@ page language="java" errorPage="/errorpage.jsp" %>
@@ -1522,7 +1523,7 @@
 
                                             <% for (int i = 0, j = handler.getReportCommentCount(); i < j; i++) { %>
                                             <span style="margin-left:15px; width: 700px; word-wrap: break-word;">
-                                                    <%=i > 0 ? "<br/>" : ""%><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(handler.getReportComment(i))%>
+                                                    <%=i > 0 ? "<br/>" : ""%><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(handler.getReportComment(i))%>
                                                     </span>
                                             <span style="margin-left:15px; font-size:8px; color:#333333;">
                                                     <%=Encode.forHtml(String.valueOf(handler.getReportSourceOrganization(i)))%>
@@ -1782,7 +1783,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7">
                             <div style="margin-left:15px; width:700px">
-                                <strong>Comments:</strong> <%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.formatString(collectorsComment)))%>
+                                <strong>Comments:</strong> <%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(Hl7FormattedText.toPlainText(collectorsComment))%>
                                 <span style="margin-left:15px;font-size:8px; color:#333333;"><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr)))%></span>
                             </div>
                         </td>
@@ -1815,7 +1816,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7">
                             <div style="margin-left:15px;width: 700px;">
-                                <%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(obrComment))%>
+                                <%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(String.valueOf(obrComment))%>
                                 <span style="margin-left:15px;font-size:8px; color:#333333;"><%=Encode.forHtml(String.valueOf(sourceOrg))%></span>
                             </div>
                         </td>
@@ -1915,7 +1916,7 @@
                         </td>
                         <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)))%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.formatString(handler.getOBXUnits(obr, obx)), status)))%>
+                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)), status)))%>
                         </td>
                         <td align="center">
                             <%--<%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --))%>
@@ -1953,7 +1954,7 @@
                     </tr>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td align="left" colspan="6">
-                            <b><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.formatString(handler.getOBXResult(obr, obx)), status)))%>
+                            <b><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXResult(obr, obx)), status)))%>
                             </b></td>
                         <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
                         </td>
@@ -2135,7 +2136,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7" style="font-family:courier;">
                             <div style="width:700px">
-                                <%=HtmlEncodingUtils.encodeCleanTextWithBreaks(handler.getOBXComment(obr, obx, l))%><span
+                                <%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(handler.getOBXComment(obr, obx, l))%><span
                                     style="margin-left:15px;font-size:8px; color:#333333;word-break:normal;"><%=Encode.forHtml(String.valueOf(handler.getOBXSourceOrganization(obr, obx, l)))%></span>
                             </div>
                         </td>

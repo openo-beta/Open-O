@@ -61,16 +61,15 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%!
     /*
-     * Lab comment fields from OLISHL7Handler arrive pre-laced with &nbsp; and inline
-     * markup (<br/>, <span style=...>) baked in by getOBXComment/getOBRComment. The
-     * default encode-then-restore-<br> path would render that markup as literal text
-     * (a wall of "&nbsp;"), so for OLIS we strip to plain text then encode, matching
-     * labDisplayOLIS.jsp. Every other handler emits clean text plus real <br> tags,
-     * where encodeForHtmlAllowingBreaks is the correct choice.
+     * OLIS comment getters return plain text (the HL7 Formatted-Text escapes are
+     * decoded by Hl7FormattedText), so a straight HTML-encode is correct: these
+     * comments render inside <pre>, where the real \n line breaks display as-is.
+     * Every other handler emits clean text plus real <br> tags, where
+     * encodeForHtmlAllowingBreaks is the correct choice.
      */
     private static String encodeLabComment(MessageHandler labHandler, Object value) {
         if (labHandler instanceof ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler) {
-            return Encode.forHtml(ca.openosp.openo.utility.HtmlTextCleaner.toPlainText(value == null ? "" : value.toString()));
+            return Encode.forHtml(value == null ? "" : value.toString());
         }
         return HtmlEncodingUtils.encodeForHtmlAllowingBreaks(value);
     }

@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.all.parsers.PATHL7Handler;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
@@ -246,16 +245,12 @@ public class Hl7textResultsData {
                     m.setAppointmentNo(0);
 
                     /*
-                     * Remove HTML before persisting the comment. OLIS labs carry
-                     * full markup (&nbsp;, <span>, <br/>) baked in by
-                     * OLISHL7Handler.formatString, so strip it completely; every
-                     * other handler only ever emits <br>, handled as before.
+                     * Remove HTML before persisting the comment: handlers emit
+                     * <br> for line breaks in NTE text, so strip it. OLIS now
+                     * returns plain text (decoded via Hl7FormattedText), so this
+                     * is a no-op for OLIS and leaves its \n line breaks intact.
                      */
-                    if (h instanceof OLISHL7Handler) {
-                        comments = HtmlTextCleaner.toPlainText(comments);
-                    } else {
-                        comments = comments.replaceAll("\\<br\\s?/?\\>", "");
-                    }
+                    comments = comments.replaceAll("\\<br\\s?/?\\>", "");
                     m.setComments(comments);
                     measurementDao.persist(m);
 

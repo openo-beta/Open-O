@@ -61,6 +61,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.Hl7FormattedText;
 import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 import ca.openosp.openo.utility.HtmlTextCleaner;
@@ -444,7 +445,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             cell.setColspan(7);
             Phrase collectorsCommentPhrase = new Phrase();
             collectorsCommentPhrase.setFont(font);
-            collectorsCommentPhrase.add("Comments: " + HtmlTextCleaner.toPlainText(handler.formatString(collectorsComment)));
+            collectorsCommentPhrase.add("Comments: " + Hl7FormattedText.toPlainText(collectorsComment));
 
             collectorsCommentPhrase.setFont(subscriptFont);
             collectorsCommentPhrase.add("\t\t" + handler.getCollectorsCommentSourceOrganization(obr));
@@ -469,7 +470,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                     obrFlag = true;
                 }
 
-                String obrComment = HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBRComment(obr, comment)));
+                String obrComment = handler.getOBRComment(obr, comment);
                 String sourceOrg = handler.getOBRSourceOrganization(obr, comment);
 
                 cell.setColspan(6);
@@ -588,9 +589,9 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
                     //If the type does not equal SN, then outputs normal OBX result, if it is SN then outputs SNResult
                     if (!obxValueType.equals("SN"))
-                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXResult(obr, obx))), lineFont));
+                        cell.setPhrase(new Phrase(Hl7FormattedText.toPlainText(handler.getOBXResult(obr, obx)), lineFont));
                     else
-                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXSNResult(obr, obx))), lineFont));
+                        cell.setPhrase(new Phrase(Hl7FormattedText.toPlainText(handler.getOBXSNResult(obr, obx)), lineFont));
 
                     table.addCell(cell);
 
@@ -603,7 +604,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                     table.addCell(cell);
 
                     cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    cell.setPhrase(new Phrase(handler.formatString(handler.getOBXUnits(obr, obx)), lineFont));
+                    cell.setPhrase(new Phrase(Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)), lineFont));
                     table.addCell(cell);
 
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -619,7 +620,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
                     cell.setColspan(5);
                     cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                    cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXResult(obr, obx))), lineFont));
+                    cell.setPhrase(new Phrase(Hl7FormattedText.toPlainText(handler.getOBXResult(obr, obx)), lineFont));
                     table.addCell(cell);
 
                     cell.setColspan(1);
@@ -641,11 +642,11 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
                     //Gets the OBX result based on the value type
                     if (obxValueType.equals("TM")) {
-                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXTMResult(obr, obx))), lineFont));
+                        cell.setPhrase(new Phrase(Hl7FormattedText.toPlainText(handler.getOBXTMResult(obr, obx)), lineFont));
                     } else if (obxValueType.equals("DT")) {
-                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXDTResult(obr, obx))), lineFont));
+                        cell.setPhrase(new Phrase(Hl7FormattedText.toPlainText(handler.getOBXDTResult(obr, obx)), lineFont));
                     } else {
-                        cell.setPhrase(new Phrase(HtmlTextCleaner.toPlainText(handler.formatString(handler.getOBXTSResult(obr, obx))), lineFont));
+                        cell.setPhrase(new Phrase(Hl7FormattedText.toPlainText(handler.getOBXTSResult(obr, obx)), lineFont));
                     }
 
                     table.addCell(cell);
@@ -828,7 +829,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                 for (int commentCount = 0; commentCount < handler.getOBXCommentCount(obr, obx); commentCount++) {
                     Phrase comment = new Phrase();
                     comment.setFont(commentFont);
-                    comment.add(HtmlTextCleaner.toPlainText(handler.getOBXComment(obr, obx, commentCount)));
+                    comment.add(handler.getOBXComment(obr, obx, commentCount));
                     comment.setFont(subscriptFont);
                     comment.add("\t\t" + handler.getOBXSourceOrganization(obr, obx, commentCount));
                     cell.setPhrase(comment);
@@ -1089,7 +1090,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
             cell.setPaddingLeft(10);
             commentPhrase.setFont(font);
-            commentPhrase.add(HtmlTextCleaner.toPlainText(handler.formatString(handler.getReportComment(comment))));
+            commentPhrase.add(handler.getReportComment(comment));
             commentPhrase.setFont(subscriptFont);
             commentPhrase.add("\t\t" + handler.getReportSourceOrganization(comment));
             cell.setPhrase(commentPhrase);

@@ -26,8 +26,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -2045,7 +2043,7 @@ public class OLISHL7Handler implements MessageHandler {
             }
             Structure[] nteSegs = terser.getFinder().getRoot().getAll(segments[k]);
             Segment nteSeg = (Segment) nteSegs[0];
-            return formatString(getString(Terser.get(nteSeg, 3, 0, 1, 1)));
+            return Hl7FormattedText.toPlainText(getString(Terser.get(nteSeg, 3, 0, 1, 1)));
 
         } catch (Exception e) {
             logger.error("Could not retrieve OBR comments", e);
@@ -2223,7 +2221,7 @@ public class OLISHL7Handler implements MessageHandler {
             }
             Structure[] nteSegs = terser.getFinder().getRoot().getAll(segments[k]);
             Segment nteSeg = (Segment) nteSegs[0];
-            return formatString(getString(Terser.get(nteSeg, 3, 0, 1, 1)));
+            return Hl7FormattedText.toPlainText(getString(Terser.get(nteSeg, 3, 0, 1, 1)));
 
         } catch (Exception e) {
             logger.error("Could not retrieve OBR comments", e);
@@ -2324,7 +2322,7 @@ public class OLISHL7Handler implements MessageHandler {
             }
             Structure[] nteSegs = terser.getFinder().getRoot().getAll(segments[k]);
             Segment nteSeg = (Segment) nteSegs[0];
-            return formatString(getString(Terser.get(nteSeg, 3, 0, 1, 1))).replace(" ", "&nbsp;");
+            return Hl7FormattedText.toPlainText(getString(Terser.get(nteSeg, 3, 0, 1, 1)));
 
         } catch (Exception e) {
             logger.error("Could not retrieve OBX comments", e);
@@ -3030,137 +3028,6 @@ public class OLISHL7Handler implements MessageHandler {
         }
     }
 
-    boolean centered = false;
-
-    public String formatString(String s) {
-        int pos = 0;
-        StringBuilder sb = new StringBuilder();
-        centered = false;
-        if (s == null || s.equals("")) {
-            return "";
-        }
-        int pieceStart = 0;
-        int pieceEnd = 0;
-        String op = "";
-        String result = "";
-        while (pos < s.length()) {
-            pieceStart = s.indexOf('\\', pos);
-            pieceEnd = s.indexOf('\\', pieceStart + 1);
-
-            // If there are no delimiters take the whole string from this position.
-            if (pieceStart == -1 || pieceEnd == -1) {
-                sb.append(s.substring(pos, s.length()));
-                pos = s.length();
-            } else {
-                if (pos < pieceStart) {
-                    sb.append(s.substring(pos, pieceStart));
-                    pos = pieceStart;
-                }
-                // If two delimiters are adjacent ignore the first one
-                if (pieceStart + 1 == pieceEnd) {
-                    sb.append("\\");
-                    pos = pieceEnd;
-                } else {
-                    op = s.substring(pieceStart + 1, pieceEnd);
-                    result = parseOperator(op);
-                    if (result.equals("")) {
-                        sb.append(op);
-                    } else {
-                        sb.append(result);
-                    }
-                    pos = pieceEnd + 1;
-                }
-            }
-        }
-
-        return sb.toString();
-    }
-
-    public String parseOperator(String op) {
-        if (op == null || op.equals("")) {
-            return "";
-        }
-
-        String piece = op.toUpperCase();
-        boolean matchFound = true;
-
-        if (piece.equals(".BR")) {
-            boolean old = centered;
-            centered = false;
-            return old ? "</center>" : "<br/>";
-
-        } else if (piece.equals(".H")) {
-            return "<span style=\"color:#767676\">";
-        } else if (piece.equals(".N")) {
-            return "</span>";
-        } else if (piece.equals(".CE")) {
-            centered = true;
-            return (centered ? "</center>" : "") + "<br/><center>";
-
-        } else if (piece.equals(".FE")) {
-            // TODO: Implement
-        } else if (piece.equals(".NF")) {
-            // TODO: Implement
-        } else if (piece.equals("F")) {
-            return "|";
-        } else if (piece.equals("S")) {
-            return "^";
-        } else if (piece.equals("T")) {
-            return "&";
-        } else if (piece.equals("R")) {
-            return "~";
-        } else if (piece.equals("SLASHHACK")) {
-            return "\\";
-        } else if (piece.equals("MUHACK")) {
-            return "&#181;";
-        } else {
-            matchFound = false;
-        }
-
-        if (!matchFound) {
-            // If we haven't already matched a command, look for a command with a parameter.
-            String patternStr = "\\.(SP|IN|TI|SK)\\s*(\\d*)\\s*";
-            Pattern pattern = Pattern.compile(patternStr);
-            Matcher matcher = pattern.matcher(piece.toUpperCase());
-            matchFound = matcher.find();
-            if (matchFound) {
-                // Get all groups for this match
-                String result = parseParamsAndFormat(matcher.group(1), matcher.group(2), centered);
-                if (result.contains("</center>")) {
-                    centered = false;
-                }
-                return result == null ? "" : result;
-            }
-        }
-        return "";
-    }
-
-    public static String parseParamsAndFormat(String operator, String operand, boolean centered) {
-        Integer opInt = operand.equals("") ? 1 : Integer.valueOf(operand);
-        String result = "";
-        if (operator.equals("SP")) {
-            while (opInt > 0) {
-                if (centered) {
-                    result += "</center>";
-                    centered = false;
-                }
-                result += "<br/>";
-                opInt--;
-            }
-        } else if (operator.equals("IN")) {
-            // TODO: Implement
-        } else if (operator.equals("TI")) {
-            // TODO: Implement
-        } else if (operator.equals("SK")) {
-            while (opInt > 0) {
-                result += "&nbsp;";
-                opInt--;
-            }
-        } else {
-            result = null;
-        }
-        return result;
-    }
 
     public class OLISError {
         public OLISError(String segment, String sequence, String field, String indentifer, String text) {

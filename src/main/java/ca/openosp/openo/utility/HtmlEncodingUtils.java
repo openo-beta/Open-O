@@ -118,4 +118,28 @@ public final class HtmlEncodingUtils {
     public static String encodeCleanTextWithBreaks(String value) {
         return Encode.forHtml(HtmlTextCleaner.toPlainText(value)).replace("\n", "<br />");
     }
+
+    /**
+     * HTML-encode already-plain {@code value} and render its {@code \n}
+     * newlines as {@code <br />}.
+     *
+     * <p>Use this for text that is <em>already plain</em> — no HTML markup or
+     * entities to strip — such as OLIS comment fields once they have been
+     * decoded by {@link ca.openosp.openo.lab.ca.all.parsers.Hl7FormattedText}.
+     * Unlike {@link #encodeCleanTextWithBreaks(String)} it does not run the
+     * jsoup {@link HtmlTextCleaner} pass, so genuine {@code \n} line breaks
+     * survive (jsoup would otherwise collapse them as whitespace).
+     *
+     * <p>Only the literal {@code <br />} we insert is unescaped — it carries no
+     * user data and cannot host script — so this is XSS-safe.
+     *
+     * @param value the plain text; {@code null} produces an empty string
+     * @return the encoded string with {@code \n} rendered as {@code <br />}
+     */
+    public static String encodeTextWithNewlineBreaks(String value) {
+        if (value == null) {
+            return "";
+        }
+        return Encode.forHtml(value).replace("\n", "<br />");
+    }
 }
