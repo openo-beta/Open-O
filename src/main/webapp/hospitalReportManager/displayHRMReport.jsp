@@ -771,7 +771,7 @@
                             } else {
                             %>
                             <input type="button" id="signoff<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" value="Sign-Off"
-                                   onClick="signOffHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(isListView))%>)"/>
+                                   onClick="signOffHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(isListView))%>)" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>/>
                             <%
                                 }
                             %>
