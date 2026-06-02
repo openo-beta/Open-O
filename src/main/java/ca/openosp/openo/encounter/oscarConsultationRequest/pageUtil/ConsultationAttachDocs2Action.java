@@ -174,6 +174,14 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
     }
 
     public void getDocumentPDF() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
+            logger.warn("Security violation: provider "
+                    + (loggedInInfo != null ? loggedInInfo.getLoggedInProviderNo() : "unknown")
+                    + " denied document-PDF access (_con)");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         //TODO: refactor this function, and similar code in EctConsultationFormRequestPrincAction2.java
         //      and EctConsultationFormFax2Action.java as part of extending this attach item functionality
         //      to eforms and ticklers
@@ -242,8 +250,9 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
             return;
         }
         request.setAttribute("segmentID", segmentID);
+        File tempLabPDF = null;
         try {
-            File tempLabPDF = File.createTempFile("lab" + segmentID, "pdf");
+            tempLabPDF = File.createTempFile("lab" + segmentID, "pdf");
             try (
                     FileOutputStream fileOutputStream = new FileOutputStream(tempLabPDF);
                     ByteOutputStream byteOutputStream = new ByteOutputStream();
@@ -262,9 +271,17 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
                     generateResponse(response, getBase64(java.util.Arrays.copyOf(byteOutputStream.getBytes(), byteOutputStream.getCount())));
                 }
             }
-            tempLabPDF.delete();
         } catch (DocumentException | IOException e) {
             logger.error("An error occurred: " + e.getMessage(), e);
+        } finally {
+            // Always remove the temp PDF, even if rendering threw, to avoid leaking files.
+            if (tempLabPDF != null) {
+                try {
+                    Files.deleteIfExists(tempLabPDF.toPath());
+                } catch (IOException e) {
+                    logger.warn("Failed to delete temp lab PDF {}", tempLabPDF, e);
+                }
+            }
         }
     }
 
@@ -321,12 +338,19 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
     }
 
     public void getHRMPDF() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
+            logger.warn("Security violation: provider "
+                    + (loggedInInfo != null ? loggedInInfo.getLoggedInProviderNo() : "unknown")
+                    + " denied HRM-PDF access (_con)");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         //TODO: refactor this function, and similar code in EctConsultationFormRequestPrincAction2.java
         //      and EctConsultationFormFax2Action.java as part of extending this attach item functionality
         //      to eforms and ticklers
 
         String hrmId = request.getParameter("hrmId");
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         try (ByteOutputStream byteOutputStream = new ByteOutputStream()) {
             HRMPDFCreator hrmPdf = new HRMPDFCreator(byteOutputStream, Integer.parseInt(hrmId), loggedInInfo);
             hrmPdf.printPdf();

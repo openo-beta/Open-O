@@ -112,6 +112,9 @@ public class LabPDFCreator extends PdfPageEventHelper {
      * @param providerNo String the provider context (retained for API compatibility)
      * @param handler    MessageHandler the pre-parsed handler for this lab
      * @return byte[] the rendered PDF document
+     * @throws IOException       if the PDF bytes cannot be written to the buffer
+     * @throws DocumentException if iText fails to assemble the PDF document
+     * @since 2026-06-01
      */
     public static byte[] getPdfBytes(String segmentId, String providerNo, MessageHandler handler) throws IOException, DocumentException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -142,6 +145,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
      * @param request HttpServletRequest supplies the {@code segmentID}/{@code providerNo}
      * @param os      OutputStream the stream the generated PDF is written to
      * @param handler MessageHandler the pre-parsed handler for this lab
+     * @since 2026-06-01
      */
     public LabPDFCreator(HttpServletRequest request, OutputStream os, MessageHandler handler) {
         this(os,
@@ -164,6 +168,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
      * @param segmentId  String the {@code hl7TextMessage} id of the lab
      * @param providerNo String the provider context (retained for API compatibility)
      * @param handler    MessageHandler the pre-parsed handler for this lab
+     * @since 2026-06-01
      */
     public LabPDFCreator(OutputStream os, String segmentId, String providerNo, MessageHandler handler) {
         this.os = os;
