@@ -252,7 +252,10 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         request.setAttribute("segmentID", segmentID);
         File tempLabPDF = null;
         try {
-            tempLabPDF = File.createTempFile("lab" + segmentID, "pdf");
+            // Fixed prefix only — createTempFile already guarantees a unique randomized name, so
+            // the validated numeric segmentID is not needed here and is kept out of the path to
+            // avoid any user-derived data flowing into a file-path expression.
+            tempLabPDF = File.createTempFile("olisLab", ".pdf");
             try (
                     FileOutputStream fileOutputStream = new FileOutputStream(tempLabPDF);
                     ByteOutputStream byteOutputStream = new ByteOutputStream();

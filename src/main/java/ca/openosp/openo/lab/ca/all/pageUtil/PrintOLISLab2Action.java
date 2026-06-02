@@ -74,8 +74,11 @@ public class PrintOLISLab2Action extends ActionSupport {
             return "error";
         }
 
-
-        return SUCCESS;
+        // The PDF is streamed straight to the response; there is no success result to
+        // forward to. Returning null (not SUCCESS) avoids Struts' "No result defined
+        // for action ... success" error, which for a small PDF (response not yet
+        // committed) would otherwise replace the PDF with a 500 error page.
+        return null;
     }
 
 

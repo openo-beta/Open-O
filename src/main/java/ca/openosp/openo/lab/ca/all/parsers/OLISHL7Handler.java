@@ -1898,7 +1898,12 @@ public class OLISHL7Handler implements MessageHandler {
         try {
             OLISResultNomenclatureDao resultDao = (OLISResultNomenclatureDao) SpringUtils.getBean(OLISResultNomenclatureDao.class);
             OLISResultNomenclature resultNomenclature = resultDao.findByNameId(obxName);
-            return StringUtils.trimToEmpty(resultNomenclature.getName());
+            // A missing nomenclature row (e.g. the nomenclature has not been imported yet) is an
+            // expected absence, not an error — fall through to the OBX-3-2 parse below instead of
+            // NPE-ing on resultNomenclature.getName() and logging a stack trace per OBX.
+            if (resultNomenclature != null) {
+                return StringUtils.trimToEmpty(resultNomenclature.getName());
+            }
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
         }

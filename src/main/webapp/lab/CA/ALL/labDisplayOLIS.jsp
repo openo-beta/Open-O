@@ -79,6 +79,8 @@
     Factory f;
     MessageHandler handlerMain;
     String hl7 = "";
+    // OLIS preview uuid (only set on the segmentID=0 preview path); forwarded to the print form below.
+    String resultUuid = Misc.getStr(request.getParameter("uuid"), "");
 
     if (!preview) {
 
@@ -95,7 +97,6 @@
         hl7 = Factory.getHL7Body(segmentID);
 
     } else {
-        String resultUuid = Misc.getStr(request.getParameter("uuid"), "");
         handlerMain = OLISResults2Action.searchResultsMap.get(resultUuid);
     }
 
@@ -612,6 +613,8 @@
                         <td align="left" class="MainTableTopRowRightColumn" width="100%">
                             <input type="hidden" name="labName" value="<%=Encode.forHtmlAttribute(String.valueOf(handler.getAccessionNum()))%>"/>
                             <input type="hidden" name="segmentID" value="<%=Encode.forHtmlAttribute(String.valueOf(segmentID))%>"/>
+                            <%-- Forward the OLIS uuid so PrintOLISLab can resolve the cached handler when printing a not-yet-saved preview (segmentID=0). --%>
+                            <input type="hidden" name="uuid" value="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"/>
                             <input type="hidden" name="multiID" value="<%=Encode.forHtmlAttribute(String.valueOf(multiLabId))%>"/>
                             <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"/>
                             <input type="hidden" name="status" value="A"/>
