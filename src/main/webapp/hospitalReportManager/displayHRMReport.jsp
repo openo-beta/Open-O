@@ -193,7 +193,7 @@
             }
         }
     }
-    String csrfTokenJs = "{'" + CsrfGuard.getInstance().getTokenName() + "': '" + CsrfGuard.getInstance().getTokenValue(request) + "'}";
+    String csrfTokenJs = "{'" + Encode.forJavaScript(CsrfGuard.getInstance().getTokenName()) + "': '" + Encode.forJavaScript(CsrfGuard.getInstance().getTokenValue(request)) + "'}";
 
 %>
 
@@ -624,7 +624,7 @@
                         <div id="demostatus<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>">
                             <% if (demographicLink != null) { %>
                             <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographicLink.getDemographicNo().toString()))%>"/> <br/>
-                            <a href="#" onclick="removeDemoFromHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(csrfTokenJs))%>)">(remove)</a>
+                            <a href="#" onclick="removeDemoFromHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=csrfTokenJs%>)">(remove)</a>
                             <% } else { %>
                             <i>Not currently linked</i>
                             <% } %>
@@ -633,7 +633,7 @@
                         <input type="hidden" id="demofind<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" value=""/>
                         <input type="hidden" id="routetodemo<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" value=""/>
                         <input type="checkbox" id="activeOnly<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" name="activeOnly" checked="checked"
-                               value="true" onclick="setupHrmDemoAutoCompletion('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(csrfTokenJs))%>)">Active
+                               value="true" onclick="setupHrmDemoAutoCompletion('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=csrfTokenJs%>)">Active
                         Only<br>
                         <input type="text" id="autocompletedemo<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm"
                                onchange="checkSave('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>hrm')" name="demographicKeyword"
@@ -907,7 +907,7 @@
 
 
     <script type="text/javascript">
-        jQuery(setupHrmDemoAutoCompletion(<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>, <%=Encode.forJavaScript(String.valueOf(csrfTokenJs))%>));
+        jQuery(setupHrmDemoAutoCompletion(<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>, <%=csrfTokenJs%>));
 
         YAHOO.example.BasicRemote = function () {
             var url = "<%= request.getContextPath() %>/provider/SearchProvider.do";
