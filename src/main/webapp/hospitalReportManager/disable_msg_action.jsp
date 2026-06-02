@@ -13,5 +13,5 @@
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     SFTPConnector.addMeToDoNotSendList(loggedInInfo);
-    response.sendRedirect("hospitalReportManager.jsp");
+    response.sendRedirect("hospitalReportManager.jsp?outageDismissed=true");
 %>

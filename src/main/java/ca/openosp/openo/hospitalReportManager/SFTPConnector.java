@@ -728,7 +728,8 @@ public class SFTPConnector {
     }
 
     public static void notifyHrmError(LoggedInInfo loggedInInfo, String errorMsg) {
-        String message = "OSCAR attempted to perform a fetch of HRM data at " + new Date() + " but there was an error during the task.\n\nSee below and HRM log for further details:\n" + errorMsg;
+        String message = "OSCAR attempted to perform a fetch of HRM data at " + new Date() + " but there was an error during the task.\n\nSee below and HRM log for further details:\n" + errorMsg
+                + "\n\nTo stop receiving these notifications for the current outage, open the \"Hospital Report Manager (HRM) Status\" page under Administration and click \"I don't want to receive any more HRM outage messages for this outage instance\". Notifications resume automatically after the next successful fetch.";
         notifyHrmAdmin(loggedInInfo, "HRM Retrieval Error", message);
     }
 
@@ -791,7 +792,12 @@ public class SFTPConnector {
      */
     public static void addMeToDoNotSendList(LoggedInInfo loggedInInfo) {
         if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() != null) {
-            doNotSentMsgForOuttage.add(loggedInInfo.getLoggedInProviderNo());
+            String providerNo = loggedInInfo.getLoggedInProviderNo();
+            boolean alreadyPresent = doNotSentMsgForOuttage.contains(providerNo);
+            doNotSentMsgForOuttage.add(providerNo);
+            logger.info("HRM do-not-send list: provider " + providerNo + (alreadyPresent ? " was already suppressed" : " added") + " (current size: " + doNotSentMsgForOuttage.size() + ")");
+        } else {
+            logger.warn("HRM do-not-send list: dismiss requested but no logged-in provider in session; nothing suppressed");
         }
     }
 

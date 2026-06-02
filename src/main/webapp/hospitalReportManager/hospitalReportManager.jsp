@@ -229,6 +229,11 @@
     <body>
     <div class="container">
         <h4>Hospital Report Manager</h4>
+        <% if ("true".equals(request.getParameter("outageDismissed"))) { %>
+        <div class="alert alert-success" style="margin-top:10px;">
+            You will no longer receive HRM outage notifications for the current outage. Notifications resume automatically after the next successful fetch.
+        </div>
+        <% } %>
         <div class="loading-screen">
             <div class="loading-bar progress progress-striped active">
                 <div class="bar" style="width: 100%;"></div>
