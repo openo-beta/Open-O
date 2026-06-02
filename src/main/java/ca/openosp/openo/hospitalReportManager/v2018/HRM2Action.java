@@ -32,6 +32,7 @@ import java.net.URLDecoder;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,7 @@ import ca.openosp.openo.commn.model.OscarJob;
 import ca.openosp.openo.commn.model.OscarJobType;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.hospitalReportManager.HRMReport;
 import ca.openosp.openo.hospitalReportManager.HRMReportParser;
 import ca.openosp.openo.hospitalReportManager.SFTPConnector;
@@ -301,6 +303,10 @@ public class HRM2Action extends ActionSupport {
                     // Update user property with the private key filename
                     saveUserProperty("hrm_private_key_file", safeFileName);
 
+                    // Audit the SSH private key change (field name only - never the filename or key contents)
+                    LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), "hrm.config.update", "HRM configuration",
+                            null, loggedInInfo.getIp(), null, "Changed fields: hrm_private_key_file");
+
                     obj.put("message", safeFileName + " successfully saved");
                 }
             } else {
@@ -388,11 +394,27 @@ public class HRM2Action extends ActionSupport {
         String pollingEnabled = request.getParameter("polling_enabled");
         String pollingInterval = request.getParameter("polling_interval");
 
+        // Detect which sFTP connection fields actually changed, for the audit trail.
+        // Only the field NAMES are recorded - never the values, since these are
+        // credentials (username, decryption key, etc.).
+        List<String> changedFields = new ArrayList<String>();
+        if (isConfigValueChanged("hrm_hostname", hostname)) changedFields.add("hrm_hostname");
+        if (isConfigValueChanged("hrm_port", port)) changedFields.add("hrm_port");
+        if (isConfigValueChanged("hrm_username", username)) changedFields.add("hrm_username");
+        if (isConfigValueChanged("hrm_location", location)) changedFields.add("hrm_location");
+        if (isConfigValueChanged("hrm_decryption_key", key)) changedFields.add("hrm_decryption_key");
+
         saveUserProperty("hrm_hostname", hostname);
         saveUserProperty("hrm_port", port);
         saveUserProperty("hrm_username", username);
         saveUserProperty("hrm_location", location);
         saveUserProperty("hrm_decryption_key", key);
+
+        if (!changedFields.isEmpty()) {
+            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+            LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), "hrm.config.update", "HRM configuration",
+                    null, loggedInInfo.getIp(), null, "Changed fields: " + String.join(", ", changedFields));
+        }
 
         int pInterval = 30;
 
@@ -534,6 +556,19 @@ public class HRM2Action extends ActionSupport {
             return up.getValue();
         }
         return "";
+    }
+
+    /**
+     * Compares the currently stored value of an HRM configuration property against an incoming
+     * value to determine whether it is being changed. Used to drive the configuration audit log
+     * without ever exposing the values themselves.
+     *
+     * @param propName String the UserProperty name (e.g. "hrm_port")
+     * @param newValue String the incoming value from the request (may be null)
+     * @return boolean true if the stored value differs from the incoming value
+     */
+    private boolean isConfigValueChanged(String propName, String newValue) {
+        return !getUserPropertyValueOrEmpty(propName).equals(newValue == null ? "" : newValue);
     }
 
     private Integer saveUserProperty(String name, String value) {
