@@ -1,6 +1,8 @@
 package ca.openosp.openo.olis;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipFile;
@@ -13,9 +15,7 @@ import org.apache.struts2.action.UploadedFilesAware;
 import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import ca.openosp.openo.olis.dao.OLISFacilityDao;
 import ca.openosp.openo.log.LogAction;
-import ca.openosp.openo.olis.model.OLISFacility;
 import ca.openosp.openo.olis.util.OlisXlsxSheetReader;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -102,6 +102,7 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
             return "form";
         }
 
+        List<Map<String, String>> rows = new ArrayList<>();
         try (ZipFile zip = new ZipFile(xlsxOnDisk)) {
             List<String> sharedStrings = OlisXlsxSheetReader.readSharedStrings(zip);
             String sheetPath = OlisXlsxSheetReader.firstSheetPath(zip);
@@ -110,13 +111,24 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
                 return "form";
             }
 
-            OLISFacilityDao dao = SpringUtils.getBean(OLISFacilityDao.class);
-            dao.markAllInactive(OLISFacility.CLASS_LAB);
-            dao.markAllInactive(OLISFacility.CLASS_SCC);
+            // Parse the whole sheet into memory first so a malformed file fails before any
+            // DB mutation. streamRows reuses a single mutable Map per row, so each row must
+            // be copied to be retained.
+            OlisXlsxSheetReader.streamRows(zip, sheetPath, sharedStrings, row -> rows.add(new HashMap<>(row)));
+        } catch (Exception e) {
+            LOG.error("OLIS Lab/SCC import failed", e);
+            errorMessage = "Import failed: " + e.getClass().getSimpleName() + " — " + e.getMessage();
+            request.setAttribute("errorMessage", errorMessage);
+            return "form";
+        }
 
+        try {
             labReport = new ImportReport();
             sccReport = new ImportReport();
-            OlisXlsxSheetReader.streamRows(zip, sheetPath, sharedStrings, row -> importRow(dao, row));
+            // The destroy-then-rebuild refresh must be atomic; delegate to the transactional
+            // service so a mid-import failure rolls back and the previously ACTIVE roster survives.
+            OLISFacilityImportService importService = SpringUtils.getBean(OLISFacilityImportService.class);
+            importService.importFacilities(rows, labReport, sccReport);
             LOG.info("OLIS Lab/SCC import — labs: " + labReport + "; sccs: " + sccReport);
             LogAction.addLogSynchronous(loggedInInfo, "OLISFacilityImport",
                     "labs: " + labReport + "; sccs: " + sccReport);
@@ -130,60 +142,6 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
             request.setAttribute("errorMessage", errorMessage);
             return "form";
         }
-    }
-
-    private void importRow(OLISFacilityDao dao, Map<String, String> row) {
-        String licence = trimToNull(row.get("Licence Number"));
-        String oid = trimToNull(row.get("OID"));
-        String name = trimToNull(row.get("Facility Name"));
-        if (licence == null || oid == null || name == null) {
-            return;
-        }
-        String facilityClass = classFromOid(oid);
-        if (facilityClass == null) {
-            return;
-        }
-        ImportReport rep = OLISFacility.CLASS_LAB.equals(facilityClass) ? labReport : sccReport;
-
-        OLISFacility existing = dao.findByClassAndLicence(facilityClass, licence);
-        boolean isNew = (existing == null);
-        OLISFacility entity = isNew ? new OLISFacility() : existing;
-        if (isNew) {
-            entity.setLicenceNumber(licence);
-            entity.setFacilityClass(facilityClass);
-        }
-        entity.setOid(oid);
-        entity.setName(name);
-        entity.setAddressLine1(trimToNull(row.get("Facility Address Line One")));
-        entity.setAddressLine2(trimToNull(row.get("Facility Address Line Two")));
-        entity.setCity(trimToNull(row.get("Facility Address City")));
-        entity.setPostalCode(trimToNull(row.get("Facility Address Postal_Code")));
-        entity.setStatus("ACTIVE");
-        if (isNew) {
-            dao.persist(entity);
-            rep.added++;
-        } else {
-            dao.merge(entity);
-            rep.updated++;
-        }
-    }
-
-    private static String classFromOid(String oid) {
-        if (OLISFacility.OID_LAB.equals(oid)) {
-            return OLISFacility.CLASS_LAB;
-        }
-        if (OLISFacility.OID_SCC.equals(oid)) {
-            return OLISFacility.CLASS_SCC;
-        }
-        return null;
-    }
-
-    private static String trimToNull(String s) {
-        if (s == null) {
-            return null;
-        }
-        String t = s.trim();
-        return t.isEmpty() ? null : t;
     }
 
     // ---------- Getters for the JSP ----------
