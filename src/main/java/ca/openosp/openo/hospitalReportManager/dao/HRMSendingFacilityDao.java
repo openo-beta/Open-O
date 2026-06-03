@@ -24,9 +24,13 @@ public class HRMSendingFacilityDao extends AbstractDaoImpl<HRMSendingFacility> {
     }
 
     public HRMSendingFacility findBySendingFacilityId(String sendingFacilityId) {
+        if (sendingFacilityId == null) {
+            return null;
+        }
+        // Trim to match the registration action, which trims the ID before saving.
         String sql = "select x from " + modelClass.getSimpleName() + " x where x.sendingFacilityId = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1, sendingFacilityId);
+        query.setParameter(1, sendingFacilityId.trim());
         return getSingleResultOrNull(query);
     }
 

@@ -145,10 +145,10 @@
                         </td>
                         <td style="text-align: center;"><%=Encode.forHtml(String.valueOf(curhrmdoc.get("time_received")))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("sending_facility") != null ? curhrmdoc.get("sending_facility") : ""))%>
-                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("report_number") != null ? curhrmdoc.get("report_number") : ""))%>
-                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("category") != null ? curhrmdoc.get("category")  : ""))%>
-                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("class_subclass") != null ? curhrmdoc.get("class_subclass")  : ""))%>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("sending_facility") != null ? curhrmdoc.get("sending_facility") : ""))%></td>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("report_number") != null ? curhrmdoc.get("report_number") : ""))%></td>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("category") != null ? curhrmdoc.get("category")  : ""))%></td>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("class_subclass") != null ? curhrmdoc.get("class_subclass")  : ""))%></td>
                     </tr>
                     <%
                         }

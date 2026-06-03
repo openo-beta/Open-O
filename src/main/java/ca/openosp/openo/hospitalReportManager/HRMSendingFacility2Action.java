@@ -23,6 +23,12 @@ public class HRMSendingFacility2Action extends ActionSupport {
 
     public String execute() {
         String method = request.getParameter("method");
+        // State-changing operations must be POST so they cannot be triggered by a GET
+        // (link prefetch, cross-site request, etc.). CSRF tokens are injected on POST forms.
+        if (("save".equals(method) || "delete".equals(method))
+                && !"POST".equalsIgnoreCase(request.getMethod())) {
+            throw new SecurityException("HRM sending facility " + method + " must use POST");
+        }
         if ("save".equals(method)) {
             return save();
         }

@@ -724,11 +724,17 @@ public class SFTPConnector {
         if (privateKeyFile == null || privateKeyFile.trim().isEmpty()) {
             throw new IllegalStateException("HRM private key file is not configured. Upload one on the HRM Configuration page.");
         }
+        if (privateKeyDirectory == null) {
+            throw new IllegalStateException("HRM private key directory is not configured.");
+        }
         return privateKeyDirectory + privateKeyFile;
     }
 
     public static void notifyHrmError(LoggedInInfo loggedInInfo, String errorMsg) {
-        String message = "OSCAR attempted to perform a fetch of HRM data at " + new Date() + " but there was an error during the task.\n\nSee below and HRM log for further details:\n" + errorMsg
+        String errorDetails = (errorMsg == null || errorMsg.trim().isEmpty())
+                ? "No additional error details were provided. See the HRM log for more information."
+                : errorMsg;
+        String message = "OpenO attempted to perform a fetch of HRM data at " + new Date() + " but there was an error during the task.\n\nSee below and HRM log for further details:\n" + errorDetails
                 + "\n\nTo stop receiving these notifications for the current outage, open the \"Hospital Report Manager (HRM) Status\" page under Administration and click \"I don't want to receive any more HRM outage messages for this outage instance\". Notifications resume automatically after the next successful fetch.";
         notifyHrmAdmin(loggedInInfo, "HRM Retrieval Error", message);
     }

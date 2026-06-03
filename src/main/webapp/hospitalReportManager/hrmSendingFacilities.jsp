@@ -159,10 +159,14 @@
                 for (HRMSendingFacility f : facilities) { %>
                 <tr>
                     <td>
-                        <a href="<%=actionUrl%>?method=delete&id=<%=Encode.forHtmlAttribute(String.valueOf(f.getId()))%>"
-                           onclick="return confirm('Delete sending facility <%=Encode.forJavaScript(f.getSendingFacilityId())%>?');">
-                            <img src="<%=request.getContextPath()%>/images/icons/101.png" alt="delete">
-                        </a>
+                        <form method="post" action="<%=actionUrl%>" style="display:inline;margin:0;"
+                              onsubmit="return confirm('Delete sending facility <%=Encode.forJavaScript(f.getSendingFacilityId())%>?');">
+                            <input type="hidden" name="method" value="delete"/>
+                            <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(f.getId()))%>"/>
+                            <button type="submit" style="background:none;border:none;padding:0;cursor:pointer;" title="Delete">
+                                <img src="<%=request.getContextPath()%>/images/icons/101.png" alt="delete">
+                            </button>
+                        </form>
                     </td>
                     <td>
                         <a href="<%=actionUrl%>?id=<%=Encode.forHtmlAttribute(String.valueOf(f.getId()))%>">
