@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,8 +43,21 @@ import ca.openosp.openo.olis.model.OLISResultNomenclature;
 @Service
 public class OLISNomenclatureImportService {
 
+    /**
+     * Number of rows to process before flushing and clearing the persistence
+     * context. The Result sheet alone is ~49k rows; without periodic clearing the
+     * context grows for the whole transaction and Hibernate's pre-query auto-flush
+     * dirty-checks every managed entity on each {@code findByNameId}, turning the
+     * import into O(n²). Flushing keeps the pending SQL in the same transaction
+     * (rollback still undoes everything); clearing keeps the context bounded.
+     */
+    private static final int BATCH_SIZE = 500;
+
     private final OLISResultNomenclatureDao resultDao;
     private final OLISRequestNomenclatureDao requestDao;
+
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
 
     @Autowired
     public OLISNomenclatureImportService(OLISResultNomenclatureDao resultDao,
@@ -65,12 +81,30 @@ public class OLISNomenclatureImportService {
     public void importNomenclatures(List<Map<String, String>> resultRows,
                                     List<Map<String, String>> requestRows,
                                     ImportReport resultReport, ImportReport requestReport) {
+        int processed = 0;
         for (Map<String, String> row : resultRows) {
             importResultRow(row, resultReport);
+            if (++processed % BATCH_SIZE == 0) {
+                flushAndClear();
+            }
         }
         for (Map<String, String> row : requestRows) {
             importRequestRow(row, requestReport);
+            if (++processed % BATCH_SIZE == 0) {
+                flushAndClear();
+            }
         }
+    }
+
+    /**
+     * Flushes pending changes to the database and detaches all managed entities.
+     * The flush stays within the surrounding transaction (it does not commit), so a
+     * later failure still rolls back the entire refresh; the clear bounds the
+     * persistence context so the per-row auto-flush cost stays roughly constant.
+     */
+    private void flushAndClear() {
+        entityManager.flush();
+        entityManager.clear();
     }
 
     private void importResultRow(Map<String, String> row, ImportReport rep) {

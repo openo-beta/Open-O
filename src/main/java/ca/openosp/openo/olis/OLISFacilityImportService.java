@@ -3,6 +3,9 @@ package ca.openosp.openo.olis;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +39,19 @@ import ca.openosp.openo.olis.model.OLISFacility;
 @Service
 public class OLISFacilityImportService {
 
+    /**
+     * Number of rows to process before flushing and clearing the persistence
+     * context, keeping the per-row auto-flush cost bounded (see
+     * {@link OLISNomenclatureImportService} for the O(n²) rationale). The Lab/SCC
+     * roster is only a few thousand rows, so this rarely triggers here — it is kept
+     * for parity with the nomenclature importer and to stay safe if the roster grows.
+     */
+    private static final int BATCH_SIZE = 500;
+
     private final OLISFacilityDao dao;
+
+    @PersistenceContext(unitName = "entityManagerFactory")
+    private EntityManager entityManager;
 
     @Autowired
     public OLISFacilityImportService(OLISFacilityDao dao) {
@@ -61,9 +76,24 @@ public class OLISFacilityImportService {
     public void importFacilities(List<Map<String, String>> rows, ImportReport labReport, ImportReport sccReport) {
         dao.markAllInactive(OLISFacility.CLASS_LAB);
         dao.markAllInactive(OLISFacility.CLASS_SCC);
+        int processed = 0;
         for (Map<String, String> row : rows) {
             importRow(row, labReport, sccReport);
+            if (++processed % BATCH_SIZE == 0) {
+                flushAndClear();
+            }
         }
+    }
+
+    /**
+     * Flushes pending changes to the database and detaches all managed entities.
+     * The flush stays within the surrounding transaction (it does not commit), so a
+     * later failure still rolls back the entire refresh; the clear bounds the
+     * persistence context so the per-row auto-flush cost stays roughly constant.
+     */
+    private void flushAndClear() {
+        entityManager.flush();
+        entityManager.clear();
     }
 
     private void importRow(Map<String, String> row, ImportReport labReport, ImportReport sccReport) {
