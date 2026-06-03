@@ -546,7 +546,7 @@ public class SFTPConnector {
     }
 
     /*
-     * This gets called by "SchedulerJob"
+     * Called by HRMDownloadJob (the scheduled auto-poll) and by the manual fetch on hospitalReportManager.jsp.
      */
     public synchronized boolean startAutoFetch(LoggedInInfo loggedInInfo, String remoteDir) {
         String[] localFilePaths = null;
