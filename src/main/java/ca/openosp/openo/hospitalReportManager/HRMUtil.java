@@ -27,6 +27,7 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
 import ca.openosp.openo.hospitalReportManager.model.HRMSubClass;
+import ca.openosp.openo.hospitalReportManager.model.HRMSendingFacility;
 import ca.openosp.openo.managers.NioFileManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -91,6 +92,10 @@ public class HRMUtil {
             docsToDisplay = noFilterDuplicates(loggedInInfo, hrmDocResultsDemographic);
         }
 
+        // Prefetch the (small) sending-facility registry once so the per-row display-name
+        // resolution below is a map lookup rather than a query (avoids N+1).
+        Map<String, HRMSendingFacility> sfRegistry = hrmSendingFacilityDao.getRegistryById();
+
         //iterate over this set to generate a hashmap of summary information for each HRM document
         //(e.g. id, time received, type, status, etc...)
         //the set of HRM documents should not be changed, this is simply generating the most appropriate summary in the circumstances
@@ -148,7 +153,7 @@ public class HRMUtil {
             curht.put("description", hrmDocument.getDescription());
             curht.put("class_subclass", dispSubClass);
             curht.put("name", displayHRMDocumentName);
-            curht.put("sending_facility", hrmSendingFacilityDao.getDisplayName(hrmReport.getSendingFacilityId()));
+            curht.put("sending_facility", hrmSendingFacilityDao.getDisplayName(hrmReport.getSendingFacilityId(), sfRegistry));
             curht.put("report_number", hrmReport.getSendingFacilityReportNo() != null ? hrmReport.getSendingFacilityReportNo() : "");
 
             if (filterDuplicates) {

@@ -1,6 +1,8 @@
 package ca.openosp.openo.hospitalReportManager.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Query;
 
@@ -39,6 +41,41 @@ public class HRMSendingFacilityDao extends AbstractDaoImpl<HRMSendingFacility> {
             return "";
         }
         HRMSendingFacility sf = findBySendingFacilityId(sendingFacilityId);
+        return sf != null
+                ? sf.getFacilityName() + " (" + sendingFacilityId + ")"
+                : sendingFacilityId;
+    }
+
+    /**
+     * Loads the whole (small) registry once as a map keyed by trimmed sendingFacilityId.
+     * Use with {@link #getDisplayName(String, Map)} to resolve many display names without
+     * a per-row query (avoids N+1 in list views).
+     *
+     * @return Map&lt;String, HRMSendingFacility&gt; registry keyed by sendingFacilityId
+     */
+    public Map<String, HRMSendingFacility> getRegistryById() {
+        Map<String, HRMSendingFacility> registry = new HashMap<String, HRMSendingFacility>();
+        for (HRMSendingFacility sf : findAll()) {
+            if (sf.getSendingFacilityId() != null) {
+                registry.put(sf.getSendingFacilityId().trim(), sf);
+            }
+        }
+        return registry;
+    }
+
+    /**
+     * Map-backed variant of {@link #getDisplayName(String)} that resolves against a prefetched
+     * registry instead of querying. Produces an identical result to the single-argument version.
+     *
+     * @param sendingFacilityId String the facility ID from the report
+     * @param registry Map&lt;String, HRMSendingFacility&gt; prefetched via {@link #getRegistryById()}
+     * @return String the display name, the raw ID if unregistered, or "" if blank
+     */
+    public String getDisplayName(String sendingFacilityId, Map<String, HRMSendingFacility> registry) {
+        if (sendingFacilityId == null || sendingFacilityId.trim().isEmpty()) {
+            return "";
+        }
+        HRMSendingFacility sf = registry.get(sendingFacilityId.trim());
         return sf != null
                 ? sf.getFacilityName() + " (" + sendingFacilityId + ")"
                 : sendingFacilityId;
