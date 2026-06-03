@@ -878,6 +878,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
         String noSignOff = StringUtils.trimToEmpty(request.getParameter("noSignOff"));
         String demographicUnmatched = StringUtils.trimToEmpty(request.getParameter("demographicUnmatched"));
+        String categoryUnmatched = StringUtils.trimToEmpty(request.getParameter("categoryUnmatched"));
 
         if (isHrmAdmin && "ALL".equals(providerNo)) {
             providerNo = null;
@@ -920,9 +921,9 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
 
         if (isHrm) {
-            List<HRMDocument> docs = hrmDocumentDao.query(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
+            List<HRMDocument> docs = hrmDocumentDao.query(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
 
-            total = hrmDocumentDao.queryForCount(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
+            total = hrmDocumentDao.queryForCount(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
 
 
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");

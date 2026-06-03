@@ -63,6 +63,7 @@ $(document).ready(function () {
                 d.providerUnmatched = $("#providerUnmatched").is(":checked");
                 d.noSignOff = $("#noSignOff").is(":checked");
                 d.demographicUnmatched = $("#demographicUnmatched").is(":checked");
+                d.categoryUnmatched = $("#categoryUnmatched").is(":checked");
             }
         },
         searching: false,
@@ -125,6 +126,9 @@ $(document).ready(function () {
         reloadTable();
     });
     $("#demographicUnmatched").on('change', function () {
+        reloadTable();
+    });
+    $("#categoryUnmatched").on('change', function () {
         reloadTable();
     });
 

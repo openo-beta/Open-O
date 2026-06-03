@@ -154,6 +154,8 @@
                                 &nbsp;&nbsp;
                                 <input type="checkbox" id="demographicUnmatched" name="demographicUnmatched"/>Unmatched
                                 Patient &nbsp;&nbsp;
+                                <input type="checkbox" id="categoryUnmatched" name="categoryUnmatched"/>Unmatched
+                                Category &nbsp;&nbsp;
                             </td>
                         </tr>
                         <tr>
