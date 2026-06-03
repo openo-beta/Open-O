@@ -611,7 +611,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         Map<String, String> jsonMap = new HashMap<String, String>();
         jsonMap.put("isNoteEdited", ret);
         ObjectNode json = objectMapper.valueToTree(jsonMap);
-        response.getOutputStream().write(json.toString().getBytes());
+        response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 
@@ -797,7 +797,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("id", note.getId());
         ObjectNode json = objectMapper.valueToTree(hashMap);
-        response.getOutputStream().write(json.toString().getBytes());
+        response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
 
         return null;
     }
@@ -3186,7 +3186,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                 json = objectMapper.valueToTree(hashMap);
             }
         }
-        response.getOutputStream().write(json.toString().getBytes());
+        response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 

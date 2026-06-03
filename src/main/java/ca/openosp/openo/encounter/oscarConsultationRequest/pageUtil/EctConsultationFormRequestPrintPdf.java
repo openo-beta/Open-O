@@ -122,7 +122,7 @@ public class EctConsultationFormRequestPrintPdf {
         }
 
         //Create new file to save form to
-        String path = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String path = OscarProperties.getInstance().getDocumentDirectory();
         String fileName = path + "ConsultationRequestForm-" + UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss") + ".pdf";
         FileOutputStream out = new FileOutputStream(fileName);
 
@@ -287,7 +287,7 @@ public class EctConsultationFormRequestPrintPdf {
             String segmentId = "" + p.getLabNo();
             request.setAttribute("segmentID", segmentId);
             MessageHandler handler = Factory.getHandler(segmentId);
-            String fileName = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.pdf";
+            String fileName = OscarProperties.getInstance().getDocumentDirectory() + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.pdf";
 
             try (OutputStream os = new FileOutputStream(fileName)) {
                 LabPDFCreator pdf = new LabPDFCreator(request, os);

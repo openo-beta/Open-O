@@ -32,6 +32,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.struts2.ServletActionContext;
 
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.OscarProperties;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -81,8 +82,8 @@ public class DisplayImage2Action extends ActionSupport {
     public StreamData process() throws Exception {
 
         String fileName = request.getParameter("imagefile");
-        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
-            throw new IllegalArgumentException("Invalid filename");
+        if (fileName == null) {
+            throw new IllegalArgumentException("Missing imagefile parameter");
         }
         String home_dir = OscarProperties.getInstance().getEformImageDirectory();
 
@@ -92,12 +93,13 @@ public class DisplayImage2Action extends ActionSupport {
             if (!directory.exists()) {
                 throw new Exception("Directory:  " + home_dir + " does not exist");
             }
-            file = new File(directory, fileName);
-
-            if (!directory.equals(file.getParentFile())) {
-                MiscUtils.getLogger().debug("SECURITY WARNING: Illegal file path detected, client attempted to navigate away from the file directory");
-                throw new Exception("Could not open file " + fileName + ".  Check the file path");
+            file = PathValidationUtils.validatePath(fileName, directory);
+            if (!file.isFile()) {
+                throw new Exception("Path is not a file: " + fileName);
             }
+        } catch (SecurityException e) {
+            MiscUtils.getLogger().error("Error", e);
+            throw new Exception("Could not open file " + fileName + ".  Check the file path", e);
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
             throw new Exception("Could not open file " + home_dir + fileName + " does " + home_dir + " exist ?", e);
@@ -215,20 +217,15 @@ public class DisplayImage2Action extends ActionSupport {
     public static File getImageFile(String imageFileName) throws Exception {
         String home_dir = OscarProperties.getInstance().getEformImageDirectory();
 
-        File file = null;
         try {
             File directory = new File(home_dir);
             if (!directory.exists()) {
                 throw new Exception("Directory:  " + home_dir + " does not exist");
             }
-            file = new File(directory, imageFileName);
-            //String canonicalPath = file.getParentFile().getCanonicalPath(); //absolute path of the retrieved file
-
-            if (!directory.equals(file.getParentFile())) {
-                MiscUtils.getLogger().debug("SECURITY WARNING: Illegal file path detected, client attempted to navigate away from the file directory");
-                throw new Exception("Could not open file " + imageFileName + ".  Check the file path");
-            }
-            return file;
+            return PathValidationUtils.validatePath(imageFileName, directory);
+        } catch (SecurityException e) {
+            MiscUtils.getLogger().error("Error", e);
+            throw new Exception("Could not open file " + imageFileName + ".  Check the file path", e);
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
             throw new Exception("Could not open file " + home_dir + imageFileName + " does " + home_dir + " exist ?", e);

@@ -26,6 +26,7 @@
 
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -67,7 +68,7 @@ Client name:
     <c:out value="${requestScope.demoName}"/>
 </c:if>
 <c:if test="${empty requestScope.demoName}">
-    <c:out value="${param.demoName}"/>
+    <c:out value="${e:forHtmlAttribute(param.demoName)}"/>
 </c:if> </I>
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Age:
@@ -75,7 +76,7 @@ Client name:
     <c:out value="${requestScope.demoAge}"/>
 </c:if>
 <c:if test="${empty requestScope.demoName}">
-    <c:out value="${param.demoAge}"/>
+    <c:out value="${e:forHtmlAttribute(param.demoAge)}"/>
 </c:if> </I>
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DOB:
@@ -83,7 +84,7 @@ Client name:
     <c:out value="${requestScope.demoDOB}"/>
 </c:if>
 <c:if test="${empty requestScope.demoName}">
-    <c:out value="${param.demoDOB}"/>
+    <c:out value="${e:forHtmlAttribute(param.demoDOB)}"/>
 </c:if> </I>
 <br>
 <br>

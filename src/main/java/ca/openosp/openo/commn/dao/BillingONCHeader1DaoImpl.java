@@ -71,13 +71,11 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     @Override
     public int getNumberOfDemographicsWithInvoicesForProvider(String providerNo, Date startDate, Date endDate,
                                                               boolean distinct) {
-        String distinctStr = "distinct";
-        if (distinct == false) {
-            distinctStr = StringUtils.EMPTY;
-        }
+        String sql = distinct
+                ? "select count(distinct demographic_no) from billing_on_cheader1 ch where ch.provider_no = ?1 and billing_date >= ?2 and billing_date <= ?3"
+                : "select count(demographic_no) from billing_on_cheader1 ch where ch.provider_no = ?1 and billing_date >= ?2 and billing_date <= ?3";
 
-        Query query = entityManager.createNativeQuery("select count(" + distinctStr
-                + " demographic_no) from billing_on_cheader1 ch where ch.provider_no = ?1 and billing_date >= ?2 and billing_date <= ?3");
+        Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, providerNo);
         query.setParameter(2, startDate);
         query.setParameter(3, endDate);
@@ -860,24 +858,9 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
         return query.getResultList();
     }
 
-    @Override
-    public List<String[]> findBillingData(String conditions) {
-        if (conditions == null)
-            return null;
-
-        String sql = "SELECT ch1.id,ch1.pay_program,ch1.demographic_no,ch1.demographic_name,ch1.billing_date,ch1.billing_time,"
-                + "ch1.status,ch1.provider_no,ch1.provider_ohip_no,ch1.apptProvider_no,ch1.timestamp1,ch1.total,ch1.paid,ch1.clinic,"
-                + "bi.fee, bi.service_code, bi.ser_num, bi.dx, bi.id as billing_on_item_id "
-                + "FROM billing_on_item bi LEFT JOIN billing_on_cheader1 ch1 ON ch1.id=bi.ch1_id "
-                + "WHERE "
-                + conditions
-                + " ORDER BY ch1.billing_date, ch1.billing_time";
-        Query query = entityManager.createQuery(sql);
-
-        List<String[]> results = query.getResultList();
-
-        return results;
-    }
+    // findBillingData(String conditions) removed - it concatenated raw SQL conditions
+    // and was only called by the now-removed JdbcBillingReviewImpl.getBill(String, ...) overloads.
+    // All billing queries now use parameterized findByMagic/findByMagic2.
 
     @Override
     public List<BillingONCHeader1> findAllByPayProgram(String payProgram, int startIndex, int limit) {

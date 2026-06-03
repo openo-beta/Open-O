@@ -26,6 +26,7 @@
 <%@ page import="ca.openosp.openo.PMmodule.web.formbean.*" %>
 <%@page import="ca.openosp.openo.PMmodule.model.Program" %>
 <%@ page import="ca.openosp.openo.PMmodule.web.formbean.ProgramManagerViewFormBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <form action="${pageContext.request.contextPath}/PMmodule/ProgramManagerView.do" method="post">
 
@@ -83,7 +84,7 @@
                         if (ProgramManagerViewFormBean.tabs[i].equalsIgnoreCase(selectedTab)) {
                 %>
                 <td style="background-color: #555;"><a href="javascript:void(0)"
-                                                       onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i]%>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                                       onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                 </a>
                 </td>
                 <%
@@ -93,7 +94,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.general" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -102,7 +103,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.staff" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -111,7 +112,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.functionUser" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -120,7 +121,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.teams" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -129,7 +130,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.clients" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -138,7 +139,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.queue" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -147,7 +148,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.access" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -156,7 +157,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.clientStatus" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -165,7 +166,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.serviceRestrictions" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -174,7 +175,7 @@
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.vacancies" rights="r">
                     <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                           onclick="javascript:clickTab('<%=Encode.forJavaScript(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>');return false;"><%=Encode.forHtml(String.valueOf(ProgramManagerViewFormBean.tabs[i]))%>
                     </a></td>
                 </security:oscarSec>
                 <%
@@ -191,9 +192,9 @@
     <jsp:include page="/common/messages.jsp"/>
     <% if (selectedSubtab != null && !selectedSubtab.trim().equals("") && !selectedTab.equals(selectedSubtab)) { %>
     <jsp:include
-            page='<%="/PMmodule/Admin/ProgramView/" + selectedSubtab.toLowerCase().replaceAll(" ","_") + ".jsp"%>'/>
+            page='<%=Encode.forHtmlAttribute(String.valueOf("/PMmodule/Admin/ProgramView/" + selectedSubtab.toLowerCase().replaceAll(" ","_") + ".jsp"))%>'/>
     <% } else { %>
     <jsp:include
-            page='<%="/PMmodule/Admin/ProgramView/" + selectedTab.toLowerCase().replaceAll(" ","_") + ".jsp"%>'/>
+            page='<%=Encode.forHtmlAttribute(String.valueOf("/PMmodule/Admin/ProgramView/" + selectedTab.toLowerCase().replaceAll(" ","_") + ".jsp"))%>'/>
     <%}%>
 </form>

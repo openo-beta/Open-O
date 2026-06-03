@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -79,7 +80,7 @@
 
             function removeItem(id) {
                 jQuery.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=removeItem', {
-                        flowsheetId: <%=id%>,
+                        flowsheetId: <%=Encode.forJavaScript(String.valueOf(id))%>,
                         id: id
                     },
                     function (data) {
@@ -92,7 +93,7 @@
             }
 
             function loadFlowsheet() {
-                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getFlowsheet&id=<%=id%>", {},
+                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getFlowsheet&id=<%=Encode.forJavaScript(String.valueOf(id))%>", {},
                     function (xml) {
                         $("#itemTable tbody").empty();
                         $("#name").html(xml.name);
@@ -118,7 +119,7 @@
                             if (i.validation === undefined) {
                                 validation = "";
                             }
-                            $("#itemTable tbody").append("<tr><td><a href=\"javascript:void(0)\" onClick=\"removeItem('" + type + "')\"><img src=\"<%=request.getContextPath()%>/images/icons/101.png\" border=\"0\"/></a>&nbsp;<a href=\"javascript:void(0)\" onClick=\"editItem(<%=id%>,'" + type + "')\"><img src=\"<%=request.getContextPath()%>/images/edit.png\" border=\"0\"/></a>&nbsp;<a href=\"javascript:void(0)\" onClick=\"sortItem('" + type + "','up')\"><img src=\"<%=request.getContextPath()%>/images/icon_up_sort_arrow.png\" border=\"0\"/></a>&nbsp;<a href=\"javascript:void(0)\" onClick=\"sortItem('" + type + "','down')\"><img src=\"<%=request.getContextPath()%>/images/icon_down_sort_arrow.png\" border=\"0\"/></a></td><td>" + type + "</td><td>" + i.displayName + "</td><td>" + i.guideline + "</td><td>" + i.graphable + "</td><td>" + measuringInst + "</td><td>" + validation + "</td></tr>");
+                            $("#itemTable tbody").append("<tr><td><a href=\"javascript:void(0)\" onClick=\"removeItem('" + type + "')\"><img src=\"<%=request.getContextPath()%>/images/icons/101.png\" border=\"0\"/></a>&nbsp;<a href=\"javascript:void(0)\" onClick=\"editItem(<%=Encode.forJavaScript(String.valueOf(id))%>,'" + type + "')\"><img src=\"<%=request.getContextPath()%>/images/edit.png\" border=\"0\"/></a>&nbsp;<a href=\"javascript:void(0)\" onClick=\"sortItem('" + type + "','up')\"><img src=\"<%=request.getContextPath()%>/images/icon_up_sort_arrow.png\" border=\"0\"/></a>&nbsp;<a href=\"javascript:void(0)\" onClick=\"sortItem('" + type + "','down')\"><img src=\"<%=request.getContextPath()%>/images/icon_down_sort_arrow.png\" border=\"0\"/></a></td><td>" + type + "</td><td>" + i.displayName + "</td><td>" + i.guideline + "</td><td>" + i.graphable + "</td><td>" + measuringInst + "</td><td>" + validation + "</td></tr>");
                         }
                     });
             }
@@ -161,7 +162,7 @@
                 var typeId = $("#types").val();
 
                 $.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=addMeasurement', {
-                    flowsheetId:<%=id%>,
+                    flowsheetId:<%=Encode.forJavaScript(String.valueOf(id))%>,
                     measurementTypeId: typeId
                 }, function (data) {
                     loadFlowsheet();
@@ -172,7 +173,7 @@
                 var typeId = $("#preventionTypes").val();
 
                 $.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=addPrevention', {
-                    flowsheetId:<%=id%>,
+                    flowsheetId:<%=Encode.forJavaScript(String.valueOf(id))%>,
                     preventionType: typeId
                 }, function (data) {
                     loadFlowsheet();

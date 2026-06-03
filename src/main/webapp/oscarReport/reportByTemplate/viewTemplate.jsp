@@ -32,6 +32,7 @@
 <%@ page import="ca.openosp.openo.report.reportByTemplate.*, org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportManager" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportObject" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -80,14 +81,14 @@
     <%}%>
 
     <div class="xmlBorderDiv">
-        <pre style="font-size: 11px;"><%=StringEscapeUtils.escapeHtml4(xml)%></pre>
+        <pre style="font-size: 11px;"><%=Encode.forHtml(xml)%></pre>
     </div>
 
     <div id="viewTemplateActions" class="form-actions noprint">
         <input type="button" class="btn" value="Back" onclick="javascript: window.history.back();return false;"/>
         <input type="button" class="btn" value="Print" onclick="javascript: window.print();"/>
         <input type="button" class="btn btn-primary" value="Edit"
-               onclick="document.location='addEditTemplate.jsp?templateid=<%=templateid%>&opentext=1'"/>
+               onclick="document.location='addEditTemplate.jsp?templateid=<%=Encode.forJavaScript(String.valueOf(templateid))%>&opentext=1'"/>
     </div>
 
 </html>

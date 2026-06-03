@@ -2,6 +2,7 @@
 package ca.openosp.openo.email.action;
 
 import java.io.IOException;
+import org.owasp.encoder.Encode;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -159,7 +160,7 @@ public class EmailSend2Action extends ActionSupport {
         String emailRedirect = emailData.getTransactionType().name();
         if (emailData.getTransactionType().equals(EmailLog.TransactionType.EFORM)) {
             try {
-                response.sendRedirect(request.getContextPath() + "/eform/efmshowform_data.jsp?fdid="  + request.getParameter("fdid") + "&parentAjaxId=eforms");
+                response.sendRedirect(request.getContextPath() + "/eform/efmshowform_data.jsp?fdid="  + Encode.forUriComponent(request.getParameter("fdid")) + "&parentAjaxId=eforms");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

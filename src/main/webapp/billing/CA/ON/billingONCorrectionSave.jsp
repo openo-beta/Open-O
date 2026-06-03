@@ -29,6 +29,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingCorrectionPrep" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -62,7 +63,7 @@
         <%if(error == null) { %>
 <h1>Successful Update of a billing Record.</h1>
 <%} else { %>
-<h1 style="color:red"><%=error %>
+<h1 style="color:red"><%=Encode.forHtml(String.valueOf(error))%>
 </h1>
 <%} %>
 </p>

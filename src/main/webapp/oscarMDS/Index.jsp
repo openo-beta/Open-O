@@ -10,6 +10,7 @@
 --%>
 
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -132,12 +133,12 @@
                     <table>
                         <tr>
                             <td align="left" valign="top">
-                                <input type="hidden" name="providerNo" value="<%= providerNo %>"/>
-                                <input type="hidden" name="searchProviderNo" value="<%= searchProviderNo %>"/>
-                                <%= (request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">") %>
-                                <%= (request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">") %>
-                                <%= (request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">") %>
-                                <input type="hidden" name="status" value="<%= ackStatus %>"/>
+                                <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"/>
+                                <input type="hidden" name="searchProviderNo" value="<%=Encode.forHtmlAttribute(String.valueOf(searchProviderNo))%>"/>
+                                <%=Encode.forHtml((request.getParameter("lname") == null ? "" : "<input type=\"hidden\" name=\"lname\" value=\"" + request.getParameter("lname") + "\">"))%>
+                                <%=Encode.forHtml((request.getParameter("fname") == null ? "" : "<input type=\"hidden\" name=\"fname\" value=\"" + request.getParameter("fname") + "\">"))%>
+                                <%=Encode.forHtml((request.getParameter("hnum") == null ? "" : "<input type=\"hidden\" name=\"hnum\" value=\"" + request.getParameter("hnum") + "\">"))%>
+                                <input type="hidden" name="status" value="<%=Encode.forHtmlAttribute(String.valueOf(ackStatus))%>"/>
                                 <input type="hidden" name="selectedProviders"/>
                                 <input type="hidden" name="favorites" value=""/>
                                 <input type="hidden" name="isListView" value=""/>
@@ -150,7 +151,7 @@
                                 <% if (demographicNo == null) { %>
                                 <input type="button" class="smallButton"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnSearch"/>"
-                                       onClick="window.location='${pageContext.servletContext.contextPath}/oscarMDS/Search.jsp?providerNo=<%= providerNo %>'"/>
+                                       onClick="window.location='${pageContext.servletContext.contextPath}/oscarMDS/Search.jsp?providerNo=<%=Encode.forJavaScript(String.valueOf(providerNo))%>'"/>
                                 <% } %>
                                 <input type="button" class="smallButton"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnLoadAll"/>"
@@ -160,7 +161,7 @@
                             </td>
 
                             <td align="right" valign="top">
-                                <a href="javascript:parent.reportWindow('${pageContext.servletContext.contextPath}/oscarMDS/ForwardingRules.jsp?providerNo=<%= providerNo %>');"
+                                <a href="javascript:parent.reportWindow('${pageContext.servletContext.contextPath}/oscarMDS/ForwardingRules.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(providerNo))%>');"
                                    style="color: #FFFFFF;">Forwarding Rules</a>
                                 <a href="javascript:popupStart(800,1000,'${pageContext.servletContext.contextPath}/lab/CA/ALL/testUploader.jsp')"
                                    style="color: #FFFFFF; "><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.hl7LabUpload"/></a>
@@ -351,7 +352,7 @@
                                         </details>
                                         <c:if test="${requestScope.selectedCategoryPatient eq patientId}">
                                             <script>
-                                                un_bold($("patient" +${patientId}<%=(selectedCategoryType.equals("CATEGORY_TYPE_HL7"))?"hl7s":(selectedCategoryType.equals("CATEGORY_TYPE_DOC")?"docs":"all")%>));
+                                                un_bold($("patient" +${patientId}<%=Encode.forJavaScript(String.valueOf((selectedCategoryType.equals("CATEGORY_TYPE_HL7"))?"hl7s":(selectedCategoryType.equals("CATEGORY_TYPE_DOC")?"docs":"all")))%>));
                                             </script>
                                         </c:if>
                                     </c:forEach>
@@ -436,23 +437,23 @@
 
         var page = 1;
         var pageSize = 20;
-        var selected_category = <%=(selectedCategory == null ? "1" : selectedCategory)%>;
+        var selected_category = <%=Encode.forJavaScript(String.valueOf((selectedCategory == null ? "1" : selectedCategory)))%>;
         let selected_category_patient = "${requestScope.selectedCategoryPatient}";
-        var selected_category_type = <%=(selectedCategoryType == null ? "\"\"" : selectedCategoryType)%>;
-        var searchProviderNo = "<%=(searchProviderNo == null ? "" : searchProviderNo)%>";
-        var firstName = "<%=(patientFirstName == null ? "" : patientFirstName)%>";
-        var lastName = "<%=(patientLastName == null ? "" : patientLastName)%>";
-        var hin = "<%=(patientHealthNumber == null ? "" : patientHealthNumber)%>";
-        var providerNo = "<%=(providerNo == null ? "" : providerNo)%>";
-        var searchStatus = "<%=(ackStatus == null ? "": ackStatus)%>";
-        var abnormalStatus = "<%=abnormalStatus == null || "all".equals(abnormalStatus) ? "L" : (abnormalStatus.equals("normalOnly") ? "N" : "A")%>"
+        var selected_category_type = <%=Encode.forJavaScript(String.valueOf((selectedCategoryType == null ? "\"\"" : selectedCategoryType)))%>;
+        var searchProviderNo = "<%=Encode.forJavaScript(String.valueOf((searchProviderNo == null ? "" : searchProviderNo)))%>";
+        var firstName = "<%=Encode.forJavaScript(String.valueOf((patientFirstName == null ? "" : patientFirstName)))%>";
+        var lastName = "<%=Encode.forJavaScript(String.valueOf((patientLastName == null ? "" : patientLastName)))%>";
+        var hin = "<%=Encode.forJavaScript(String.valueOf((patientHealthNumber == null ? "" : patientHealthNumber)))%>";
+        var providerNo = "<%=Encode.forJavaScript(String.valueOf((providerNo == null ? "" : providerNo)))%>";
+        var searchStatus = "<%=Encode.forJavaScript(String.valueOf((ackStatus == null ? "": ackStatus)))%>";
+        var abnormalStatus = "<%=Encode.forJavaScript(String.valueOf(abnormalStatus == null || "all".equals(abnormalStatus) ? "L" : (abnormalStatus.equals("normalOnly") ? "N" : "A")))%>"
         var url = ctx + "/documentManager/inboxManage.do?";
         const startDate = "${requestScope.startDate}";
         const endDate = "${requestScope.endDate}";
         var abortController = null;
         var canLoad = true;
-        console.log("<%= isListView == null %>");
-        var isListView = <%= isListView %>;
+        console.log("<%=Encode.forJavaScript(String.valueOf(isListView == null))%>");
+        var isListView = <%=Encode.forJavaScript(String.valueOf(isListView))%>;
         var loadingDocs = false;
         var currentBold = false;
         var oldestDate = null;

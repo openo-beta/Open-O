@@ -104,13 +104,13 @@
 
     %>
     <tr bgcolor="<%=(index%2==0)?"ivory":"white"%>">
-        <td><%=fmt.format(log.getCreated()) %>
+        <td><%=Encode.forHtml(String.valueOf(fmt.format(log.getCreated())))%>
         </td>
-        <td><%=providerDao.getProviderName(log.getProviderNo()) %>
+        <td><%=Encode.forHtml(String.valueOf(providerDao.getProviderName(log.getProviderNo())))%>
         </td>
-        <td><%=log.getAction() %>
+        <td><%=Encode.forHtml(String.valueOf(log.getAction()))%>
         </td>
-        <td><%=log.getContent() %>
+        <td><%=Encode.forHtml(String.valueOf(log.getContent()))%>
         </td>
         <td><%=log.getContentId() != null && !"null".equals(log.getContentId()) ? Encode.forHtml(log.getContentId()) : "" %>
         </td>

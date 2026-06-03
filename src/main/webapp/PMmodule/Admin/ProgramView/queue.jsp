@@ -34,6 +34,7 @@
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProgramProviderDAO" %>
 <%@page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ include file="/taglibs.jsp" %>
@@ -45,7 +46,7 @@
         <%
             String referralDateString=(String)request.getAttribute("referralDate");
         %>
-        var reDate = "<%=referralDateString%>";
+        var reDate = "<%=Encode.forJavaScript(String.valueOf(referralDateString))%>";
 
         if (!admissionDate || typeof admissionDate == 'undefined') {
             alert("Please choose admission date");
@@ -237,14 +238,14 @@
         <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
             <input type="button" value="Admit"
                    <c:if test="${queue_entry.headClientId != null || requestScope.userIsProgramProvider != 'true'}">disabled</c:if>
-                   onclick="select_client('<c:out value="${queue_entry.clientId}"/>','<%=action %>','<c:out
+                   onclick="select_client('<c:out value="${queue_entry.clientId}"/>','<%=Encode.forJavaScript(String.valueOf(action))%>','<c:out
                            value="${queue_entry.id}"/>')"/>
         </caisi:isModuleLoad>
 
         <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="false">
             <input type="button" value="Admit"
                    <c:if test="${queue_entry.headClientId != null || sessionScope.performAdmissions !='true' || requestScope.userIsProgramProvider != 'true'}">disabled</c:if>
-                   onclick="select_client('<c:out value="${queue_entry.clientId}"/>','<%=action %>','<c:out
+                   onclick="select_client('<c:out value="${queue_entry.clientId}"/>','<%=Encode.forJavaScript(String.valueOf(action))%>','<c:out
                            value="${queue_entry.id}"/>')"/>
         </caisi:isModuleLoad>
 
@@ -302,10 +303,10 @@
                         String eURL = request.getContextPath() + "/oscarEncounter/IncomingEncounter.do?programId=" + programId + "&providerNo=" + curUser_no + "&appointmentNo=" + rsAppointNO + "&demographicNo=" + demographic_no + "&curProviderNo=" + curUser_no + "&reason=" + java.net.URLEncoder.encode(reason, StandardCharsets.UTF_8) + "&encType=" + java.net.URLEncoder.encode("face to face encounter with client", "UTF-8") + "&userName=" + java.net.URLEncoder.encode(userfirstname + " " + userlastname, StandardCharsets.UTF_8) + "&curDate=null&appointmentDate=null&startTime=0:0" + "&status=" + status + "&source=cm";
         %>
         <a href=#
-           onClick="popupPage(710, 1024,'<%=eURL%>');return false;"
+           onClick="popupPage(710, 1024,'<%=Encode.forJavaScript(String.valueOf(eURL))%>');return false;"
            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnEncounter"/></a>&nbsp;&nbsp;
         <a href=#
-           onClick="popupPage(710,1024,'<%=request.getContextPath()%>/eform/efmshowform_data.jsp?demographicNo=<%=demographic_no%>&fdid=<%=curform.get("fdid")%>','0'); return false;"
+           onClick="popupPage(710,1024,'<%=request.getContextPath()%>/eform/efmshowform_data.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&fdid=<%=Encode.forJavaScript(String.valueOf(curform.get("fdid")))%>','0'); return false;"
            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.remoteReferral"/>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnIntake"/></a>
 
 
@@ -460,7 +461,7 @@
                 java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
                 String referralDateStr = formatter.format(referralDate);
             %>
-            <%=referralDateStr %>
+            <%=Encode.forHtml(String.valueOf(referralDateStr))%>
         </display:column>
         <display:column property="providerName" sortable="true"
                         title="Referring Provider"/>

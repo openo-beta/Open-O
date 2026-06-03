@@ -27,6 +27,7 @@
 <%@ page
         import="java.math.*,java.util.*, java.sql.*, ca.openosp.*, java.net.*,ca.openosp.openo.billing.ca.bc.MSP.*,ca.openosp.openo.util.*,ca.openosp.openo.providers.data.*,ca.openosp.openo.billing.ca.on.data.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.RAData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String billingNo = request.getParameter("billing_no");
@@ -63,24 +64,24 @@
        Hashtable h = (Hashtable) aList.get(i);           
        %>
         <tr>
-            <td><%=h.get("raheader_no")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("raheader_no")))%>
             </td>
-            <td><%=h.get("providerohip_no")%></a></td>
-            <td><%=h.get("service_code")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("providerohip_no")))%></a></td>
+            <td><%=Encode.forHtml(String.valueOf(h.get("service_code")))%>
             </td>
-            <td><%=h.get("service_count")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("service_count")))%>
             </td>
-            <td><%=h.get("hin")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("hin")))%>
             </td>
-            <td><%=h.get("amountclaim")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("amountclaim")))%>
             </td>
-            <td><%=h.get("amountpay")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("amountpay")))%>
             </td>
-            <td><%=h.get("service_date")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("service_date")))%>
             </td>
-            <td><%=h.get("error_code")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("error_code")))%>
             </td>
-            <td><%=h.get("billtype")%>
+            <td><%=Encode.forHtml(String.valueOf(h.get("billtype")))%>
             </td>
         </tr>
             <% } %>

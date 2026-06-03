@@ -37,7 +37,8 @@ import ca.openosp.openo.commn.dao.ReportFilterDao;
 import ca.openosp.openo.commn.model.ReportFilter;
 import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.login.DBHelp;
+import ca.openosp.Misc;
+import ca.openosp.openo.db.DBHandler;
 
 /**
  * @author yilee18
@@ -54,7 +55,6 @@ public class RptReportFilter {
     int order_no = 1;
     String javascript;
     String date_format;
-    DBHelp dbObj = new DBHelp();
 
     public boolean insertRecord() {
         ReportFilter r = new ReportFilter();
@@ -93,16 +93,16 @@ public class RptReportFilter {
     public Vector getNameList(int n) throws SQLException {
         Vector ret = new Vector();
         String[] str = null;
-        String sql = "select * from reportFilter where status = " + n + " order by order_no";
-        ResultSet rs = DBHelp.searchDBRecord(sql);
+        String sql = "select * from reportFilter where status = ? order by order_no";
+        ResultSet rs = DBHandler.GetPreSQL(sql, n);
         while (rs.next()) {
             str = new String[6];
-            str[0] = DBHelp.getString(rs, "description");
-            str[1] = DBHelp.getString(rs, "value");
-            str[2] = DBHelp.getString(rs, "position");
+            str[0] = Misc.getString(rs, "description");
+            str[1] = Misc.getString(rs, "value");
+            str[2] = Misc.getString(rs, "position");
             str[3] = "" + rs.getInt("order_no");
-            str[4] = DBHelp.getString(rs, "javascript");
-            str[5] = DBHelp.getString(rs, "date_format");
+            str[4] = Misc.getString(rs, "javascript");
+            str[5] = Misc.getString(rs, "date_format");
             ret.add(str);
         }
         rs.close();
@@ -112,17 +112,16 @@ public class RptReportFilter {
     public Vector getNameList(String recordId, int n) throws SQLException {
         Vector ret = new Vector();
         String[] str = null;
-        String sql = "select * from reportFilter where report_id=" + recordId + " and status = " + n
-                + " order by order_no";
-        ResultSet rs = DBHelp.searchDBRecord(sql);
+        String sql = "select * from reportFilter where report_id=? and status = ? order by order_no";
+        ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(recordId), n);
         while (rs.next()) {
             str = new String[6];
-            str[0] = DBHelp.getString(rs, "description");
-            str[1] = DBHelp.getString(rs, "value");
-            str[2] = DBHelp.getString(rs, "position");
+            str[0] = Misc.getString(rs, "description");
+            str[1] = Misc.getString(rs, "value");
+            str[2] = Misc.getString(rs, "position");
             str[3] = "" + rs.getInt("order_no");
-            str[4] = DBHelp.getString(rs, "javascript");
-            str[5] = DBHelp.getString(rs, "date_format");
+            str[4] = Misc.getString(rs, "javascript");
+            str[5] = Misc.getString(rs, "date_format");
             ret.add(str);
         }
         rs.close();

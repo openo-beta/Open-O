@@ -163,7 +163,7 @@ public class ManageTeleplan2Action extends ActionSupport {
         File file = tr.getFile();
 
         // Use PathValidationUtils to validate file is in allowed directory or temp
-        File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+        File allowedDir = new File(OscarProperties.getInstance().getDocumentDirectory());
         try {
             PathValidationUtils.validateExistingPath(file, allowedDir);
         } catch (SecurityException e) {
@@ -236,7 +236,7 @@ public class ManageTeleplan2Action extends ActionSupport {
         File file = tr.getFile();
 
         // Use PathValidationUtils to validate file is in allowed directory or temp
-        File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+        File allowedDir = new File(OscarProperties.getInstance().getDocumentDirectory());
         try {
             PathValidationUtils.validateExistingPath(file, allowedDir);
         } catch (SecurityException e) {
@@ -538,7 +538,7 @@ public class ManageTeleplan2Action extends ActionSupport {
             File file = tr.getFile();
 
             // Use PathValidationUtils to validate file is in allowed directory or temp
-            File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+            File allowedDir = new File(OscarProperties.getInstance().getDocumentDirectory());
             try {
                 PathValidationUtils.validateExistingPath(file, allowedDir);
             } catch (SecurityException e) {

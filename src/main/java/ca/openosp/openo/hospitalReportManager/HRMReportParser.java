@@ -11,7 +11,6 @@
 package ca.openosp.openo.hospitalReportManager;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -52,6 +51,7 @@ import ca.openosp.openo.commn.model.Property;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentSubClassDao;
+import ca.openosp.openo.hospitalReportManager.dao.HRMSubClassDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToProviderDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
@@ -65,6 +65,7 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import org.springframework.core.io.ClassPathResource;
 
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import ca.openosp.openo.commn.model.enumerator.BinaryFileExtension;
@@ -107,6 +108,9 @@ public class HRMReportParser {
         logger.info("Parsing the Report in the location:" + hrmReportFileLocation);
 
         String fileData = null;
+        // Non-fatal warnings raised during parsing (e.g. an invalid placeholder date substituted
+        // with today's date) — carried on the returned HRMReport and surfaced in the upload UI.
+        List<String> parseWarnings = new ArrayList<>();
         if (hrmReportFileLocation != null) {
             try {
                 // a lot of the parsers need to refer to a file and even when they provide
@@ -115,7 +119,7 @@ public class HRMReportParser {
 
                 // check DOCUMENT_DIR if not found
                 if (!tmpXMLholder.exists()) {
-                    String place = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+                    String place = OscarProperties.getInstance().getDocumentDirectory();
                     tmpXMLholder = new File(place + File.separator + hrmReportFileLocation);
                 }
 
@@ -139,14 +143,15 @@ public class HRMReportParser {
                 URL schemaUrl = new ClassPathResource("/xsd/hrm/1.1.2/ontariomd_hrm.xsd").getURL();
                 Schema schema = factory.newSchema(schemaUrl);
 
-                // Unmarshal into JAXB model
+                // Replace invalid placeholder dates (e.g. 0-00-00T00:00:00) with today's date so the
+                // report parses instead of being rejected; each substitution records a warning.
+                Document normalizedDoc = HRMXmlValidator.normalizeInvalidDates(tmpXMLholder, parseWarnings);
+
+                // Unmarshal into JAXB model from the normalized DOM
                 JAXBContext jc = JAXBContext.newInstance("omd.hrm");
                 Unmarshaller u = jc.createUnmarshaller();
                 u.setSchema(schema);
-                OmdCds parsed;
-                try (FileInputStream fileInputStream = new FileInputStream(tmpXMLholder)) {
-                    parsed = (OmdCds) u.unmarshal(fileInputStream);
-                }
+                OmdCds parsed = (OmdCds) u.unmarshal(normalizedDoc);
 
                 validateReportContent(parsed);
                 validateDateOfBirth(parsed);
@@ -171,7 +176,9 @@ public class HRMReportParser {
             }
 
             if (root != null && hrmReportFileLocation != null && fileData != null) {
-                return new HRMReport(root, hrmReportFileLocation, fileData);
+                HRMReport hrmReport = new HRMReport(root, hrmReportFileLocation, fileData);
+                hrmReport.addUploadWarnings(parseWarnings);
+                return hrmReport;
             }
         }
 
@@ -250,6 +257,10 @@ public class HRMReportParser {
 
 
     public static void addReportToInbox(LoggedInInfo loggedInInfo, HRMReport report) {
+        addReportToInbox(loggedInInfo, report, new ArrayList<String>());
+    }
+
+    public static void addReportToInbox(LoggedInInfo loggedInInfo, HRMReport report, List<String> warnings) {
 
         if (report == null) {
             logger.info("addReportToInbox cannot continue, report parameter is null");
@@ -257,6 +268,14 @@ public class HRMReportParser {
         }
 
         logger.info("Adding Report to Inbox, for file:" + report.getFileLocation());
+
+        // Surface warnings raised during parsing (e.g. invalid placeholder dates substituted earlier)
+        if (warnings != null) {
+            warnings.addAll(report.getUploadWarnings());
+        }
+
+        addUnknownSendingFacilityWarning(report, warnings);
+        addUnknownSubClassWarning(report, warnings);
 
         HRMDocument document = new HRMDocument();
 
@@ -322,7 +341,7 @@ public class HRMReportParser {
                 logger.debug("MERGED DOCUMENTS ID" + document.getId());
 
 
-                String demProviderNo = HRMReportParser.routeReportToDemographic(report, document);
+                String demProviderNo = HRMReportParser.routeReportToDemographic(report, document, warnings);
                 HRMReportParser.doSimilarReportCheck(loggedInInfo, report, document);
 
                 PropertyDao propertyDao = SpringUtils.getBean(PropertyDao.class);
@@ -334,11 +353,11 @@ public class HRMReportParser {
                 }
 
 				// Attempt a route to the provider listed in the report -- if they don't exist, note that in the record
-				Boolean routeSuccess = HRMReportParser.routeReportToProvider(report, document.getId());
+				Boolean routeSuccess = HRMReportParser.routeReportToProvider(report, document.getId(), warnings);
 				if (!routeSuccess) {
-					
+
 					logger.info("Adding the provider name to the list of unidentified providers, for file:"+report.getFileLocation());
-					
+
 					// Add the provider name to the list of unidentified providers for this report
 					document.setUnmatchedProviders((document.getUnmatchedProviders() != null ? document.getUnmatchedProviders() : "") + "|" + ((report.getDeliverToUserIdLastName()!=null)?report.getDeliverToUserIdLastName() + ", " + report.getDeliverToUserIdFirstName():report.getDeliverToUserId()) + " (" + report.getDeliverToUserId() + ")");
 					hrmDocumentDao.merge(document);
@@ -357,10 +376,14 @@ public class HRMReportParser {
             existingDocument.setNumDuplicatesReceived((existingDocument.getNumDuplicatesReceived() != null ? existingDocument.getNumDuplicatesReceived() : 0) + 1);
 
             hrmDocumentDao.merge(existingDocument);
+
+            if (warnings != null) {
+                warnings.add("This report has already been received and has been flagged as a duplicate.");
+            }
         }
     }
 
-    private static String routeReportToDemographic(HRMReport report, HRMDocument mergedDocument) {
+    private static String routeReportToDemographic(HRMReport report, HRMDocument mergedDocument, List<String> warnings) {
 
         if (report == null) {
             logger.info("routeReportToDemographic cannot continue, report parameter is null");
@@ -387,6 +410,9 @@ public class HRMReportParser {
                         break;
                     }
                 }
+                if (demProviderNo == null) {
+                    addStrictMatchMismatchWarnings(report, matchingDemographicListByHin, warnings);
+                }
             } else {
                 // if there is a matching record assign to variable
                 Demographic demographic = matchingDemographicListByHin.get(0); // searchDemographicByHIN typically returns only one result where there is a match
@@ -399,6 +425,91 @@ public class HRMReportParser {
         }
 
         return demProviderNo;
+    }
+
+    /**
+     * UC69/UC70: HCN found a candidate patient but the strict match failed.
+     * Emit one warning per field (DateOfBirth, LastName) that disagrees with the
+     * report so the uploader can reconcile the mismatch.
+     */
+    private static void addStrictMatchMismatchWarnings(HRMReport report,
+                                                       List<Demographic> candidates,
+                                                       List<String> warnings) {
+        if (warnings == null || candidates == null || candidates.isEmpty()) return;
+
+        for (Demographic d : candidates) {
+            String reportDob = report.getDateOfBirthAsString();
+            String reportLastName = report.getLegalLastName();
+
+            boolean dobMatches = reportDob != null && reportDob.equalsIgnoreCase(d.getBirthDayAsString());
+            boolean lastNameMatches = reportLastName != null && reportLastName.equalsIgnoreCase(d.getLastName());
+
+            if (!dobMatches) {
+                warnings.add("Patient unmatched: DateOfBirth in the report (" + reportDob
+                        + ") does not match the patient's DateOfBirth.");
+            }
+            if (!lastNameMatches) {
+                warnings.add("Patient unmatched: LastName in the report (" + reportLastName
+                        + ") does not match the patient's LastName.");
+            }
+            if (!dobMatches || !lastNameMatches) return;
+        }
+    }
+
+
+    /**
+     * UC65: warn when an HRM report arrives from a Sending Facility that has not
+     * been configured on this clinic. "Configured" means at least one HRMSubClass
+     * mapping row references the SF ID. Wildcard rows (SF = "*") are ignored.
+     */
+    private static void addUnknownSendingFacilityWarning(HRMReport report, List<String> warnings) {
+        if (warnings == null) return;
+        String sf = report.getSendingFacilityId();
+        if (sf == null || sf.isEmpty() || "*".equals(sf)) return;
+
+        HRMSubClassDao hrmSubClassDao = SpringUtils.getBean(HRMSubClassDao.class);
+        if (!hrmSubClassDao.findBySendingFacilityId(sf).isEmpty()) return;
+
+        warnings.add("Invalid Sending Facility: '" + sf + "' is not configured for this clinic.");
+    }
+
+    /**
+     * UC66: warn when an HRM report's Class/SubClass combination has no
+     * matching HRMSubClass mapping configured on this clinic. For Medical
+     * Records reports the SubClass element is stored verbatim as
+     * subClassName; for Diagnostic Imaging / Cardio Respiratory reports the
+     * accompanying subclasses carry both a name and mnemonic.
+     */
+    private static void addUnknownSubClassWarning(HRMReport report, List<String> warnings) {
+        if (warnings == null) return;
+        String className = report.getFirstReportClass();
+        if (className == null || className.isEmpty()) return;
+
+        HRMSubClassDao hrmSubClassDao = SpringUtils.getBean(HRMSubClassDao.class);
+        String sf = report.getSendingFacilityId();
+
+        boolean isAccompanying = className.equalsIgnoreCase("Diagnostic Imaging Report")
+                || className.equalsIgnoreCase("Cardio Respiratory Report");
+
+        if (isAccompanying) {
+            List<List<Object>> accompanying = report.getAccompanyingSubclassList();
+            if (accompanying == null || accompanying.isEmpty()) return;
+            List<Object> first = accompanying.get(0);
+            String subClassName = first.size() > 0 ? (String) first.get(0) : null;
+            String subClassMnemonic = first.size() > 1 ? (String) first.get(1) : null;
+            if (subClassName == null || subClassName.isEmpty()) return;
+            if (hrmSubClassDao.findApplicableSubClassMapping(className, subClassName, subClassMnemonic, sf) == null) {
+                warnings.add("Unmatched Report SubClass: '" + subClassName
+                        + (subClassMnemonic != null && !subClassMnemonic.isEmpty() ? "^" + subClassMnemonic : "")
+                        + "' is not configured for this clinic.");
+            }
+        } else {
+            String subClass = report.getFirstReportSubClass();
+            if (subClass == null || subClass.isEmpty()) return;
+            if (hrmSubClassDao.findApplicableSubClassMapping(className, subClass, null, sf) == null) {
+                warnings.add("Unmatched Report SubClass: '" + subClass + "' is not configured for this clinic.");
+            }
+        }
     }
 
 
@@ -575,6 +686,10 @@ public class HRMReportParser {
     }
 
     public static boolean routeReportToProvider(HRMReport report, Integer reportId) {
+        return routeReportToProvider(report, reportId, new ArrayList<String>());
+    }
+
+    public static boolean routeReportToProvider(HRMReport report, Integer reportId, List<String> warnings) {
         if (report == null) {
             logger.info("routeReportToProvider cannot continue, report parameter is null");
             return false;
@@ -597,6 +712,52 @@ public class HRMReportParser {
             }
         } else {
             sendToProvider = providerDao.getProviderByPractitionerNo(practitionerNo.substring(1));
+        }
+
+        // UC73: the practitioner number matched a provider, but the report's <Provider>
+        // LastName disagrees with that provider's LastName. The CPSO/CNO likely points
+        // at the wrong person — refuse the link and surface a warning instead.
+        if (sendToProvider != null) {
+            String reportLastName = report.getDeliverToUserIdLastName();
+            if (reportLastName != null && !reportLastName.isEmpty()
+                    && !reportLastName.equalsIgnoreCase(sendToProvider.getLastName())) {
+                if (warnings != null) {
+                    warnings.add("Provider unmatched: DeliverToUserID '" + practitionerNo
+                            + "' matches a provider whose LastName does not match the report's "
+                            + "Provider LastName ('" + reportLastName + "') — verify the DeliverToUserID.");
+                }
+                sendToProvider = null;
+            }
+        }
+
+        // UC44: DeliverToUserID prefix (D = physician/CPSO, N = nurse/CNO) must match the
+        // matched provider's role. A "D" prefix on a nurse's CNO — or vice versa — is the
+        // "switched CPSO with CNO" case: still link the report, but surface a warning.
+        if (sendToProvider != null && practitionerNo != null && !practitionerNo.isEmpty() && warnings != null) {
+            char prefix = practitionerNo.charAt(0);
+            @SuppressWarnings("deprecation")
+            String providerType = sendToProvider.getProviderType();
+            if (prefix == 'D' && "nurse".equalsIgnoreCase(providerType)) {
+                warnings.add("DeliverToUserID '" + practitionerNo + "': practitioner '"
+                        + practitionerNo.substring(1) + "' is registered as a nurse (CNO); "
+                        + "expected prefix 'N' but got 'D'.");
+            } else if (prefix == 'N' && "doctor".equalsIgnoreCase(providerType)) {
+                warnings.add("DeliverToUserID '" + practitionerNo + "': practitioner '"
+                        + practitionerNo.substring(1) + "' is registered as a physician (CPSO); "
+                        + "expected prefix 'D' but got 'N'.");
+            }
+        }
+
+        // UC45: CPSO and CNO numbers conventionally start with "0"; billing IDs do not.
+        // If the DeliverToUserID has a D/N prefix but the remaining ID does not start with "0"
+        if (practitionerNo != null && practitionerNo.length() > 1 && warnings != null) {
+            char prefix = practitionerNo.charAt(0);
+            String idPart = practitionerNo.substring(1);
+            if ((prefix == 'D' || prefix == 'N') && !idPart.startsWith("0")) {
+                String expected = (prefix == 'D') ? "CPSO" : "CNO";
+                warnings.add("DeliverToUserID '" + practitionerNo + "': '" + idPart
+                        + "' does not look like a " + expected + " number (expected to start with '0').");
+            }
         }
 
         List<Provider> sendToProviderList = new LinkedList<Provider>();

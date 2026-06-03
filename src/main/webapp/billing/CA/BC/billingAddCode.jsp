@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ page
@@ -109,7 +110,7 @@
                 %>
                 <table>
                     <tr>
-                        <td style="font-color: red;"><%=request.getAttribute("returnMessage")%>
+                        <td style="font-color: red;"><%=Encode.forHtml(String.valueOf(request.getAttribute("returnMessage")))%>
                         </td>
                     </tr>
                 </table>

@@ -24,6 +24,7 @@
 
 --%>
 <%@page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head></head>
 <body>
@@ -34,7 +35,7 @@ There were errors launching the viewer
         List<String> errors = (List<String>) request.getAttribute("errors");
         for (String error : errors) {
     %>
-    <li><%=error %>
+    <li><%=Encode.forHtml(String.valueOf(error))%>
     </li>
     <%
         }

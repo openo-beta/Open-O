@@ -35,6 +35,7 @@
 <%@ page import="java.util.*, java.sql.*, java.io.*, ca.openosp.*"
          errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
 <head>
@@ -79,7 +80,7 @@
             <th width="25%" nowrap>
                 <div align="right"><input type='submit' name='submit'
                                           value=' Save '> <input type="button" name="Button"
-                                                                 value="&nbsp;<%=request.getParameter("submit")!=null?" Exit ":"Cancel"%>&nbsp;"
+                                                                 value="&nbsp;<%=Encode.forHtmlAttribute(request.getParameter("submit")!=null?" Exit ":"Cancel")%>&nbsp;"
                                                                  onClick="onExit();">&nbsp;
                 </div>
             </th>

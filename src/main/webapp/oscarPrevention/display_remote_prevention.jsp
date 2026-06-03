@@ -58,6 +58,7 @@
 <%@page import="ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk" %>
 <%@page import="org.apache.commons.lang3.time.DateFormatUtils" %>
 <%@page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Remote Prevention</title>
@@ -114,27 +115,27 @@
 <table style="border-collapse:collapse">
     <tr>
         <td class="tableLabel">Prevention Type</td>
-        <td class="tableData"><%=remotePrevention.getPreventionType()%>
+        <td class="tableData"><%=Encode.forHtml(String.valueOf(remotePrevention.getPreventionType()))%>
         </td>
     </tr>
     <tr>
         <td class="tableLabel">At Facility</td>
-        <td class="tableData"><%=cachedFacility != null ? cachedFacility.getName() : "N/A"%>
+        <td class="tableData"><%=Encode.forHtml(String.valueOf(cachedFacility != null ? cachedFacility.getName() : "N/A"))%>
         </td>
     </tr>
     <tr>
         <td class="tableLabel">By Provider</td>
-        <td class="tableData"><%=cachedProvider != null ? cachedProvider.getLastName() + ", " + cachedProvider.getFirstName() : "N/A"%>
+        <td class="tableData"><%=Encode.forHtml(String.valueOf(cachedProvider != null ? cachedProvider.getLastName() + ", " + cachedProvider.getFirstName() : "N/A"))%>
         </td>
     </tr>
     <tr>
         <td class="tableLabel">Prevention Date</td>
-        <td class="tableData"><%=DateFormatUtils.ISO_DATE_FORMAT.format(remotePrevention.getPreventionDate())%>
+        <td class="tableData"><%=Encode.forHtml(String.valueOf(DateFormatUtils.ISO_DATE_FORMAT.format(remotePrevention.getPreventionDate())))%>
         </td>
     </tr>
     <tr>
         <td class="tableLabel">Next Prevention Date</td>
-        <td class="tableData"><%=remotePrevention.getNextDate() != null ? DateFormatUtils.ISO_DATE_FORMAT.format(remotePrevention.getNextDate()) : ""%>
+        <td class="tableData"><%=Encode.forHtml(String.valueOf(remotePrevention.getNextDate() != null ? DateFormatUtils.ISO_DATE_FORMAT.format(remotePrevention.getNextDate()) : ""))%>
         </td>
     </tr>
     <%
@@ -142,9 +143,9 @@
         for (Map.Entry<String, String> entry : attributes.entrySet()) {
     %>
     <tr>
-        <td class="tableLabel"><%=entry.getKey()%>
+        <td class="tableLabel"><%=Encode.forHtml(String.valueOf(entry.getKey()))%>
         </td>
-        <td class="tableData"><%=entry.getValue()%>
+        <td class="tableData"><%=Encode.forHtml(String.valueOf(entry.getValue()))%>
         </td>
     </tr>
     <%

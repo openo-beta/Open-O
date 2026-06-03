@@ -27,6 +27,7 @@
 <%@ page import="java.util.*, org.w3c.dom.*, ca.openosp.openo.util.*" %>
 <%@ page import="ca.openosp.openo.encounter.immunization.config.data.EctImmImmunizationSetData" %>
 <%@ page import="ca.openosp.openo.util.UtilXML" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -118,7 +119,7 @@
             int i = 0;
         %>
         <h1><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.immunizationSetDisplay.msgSet"/>:
-            <%=setNamed%>
+            <%=Encode.forHtml(String.valueOf(setNamed))%>
         </h1>
         <table cellpadding=2 cellspacing=0 border="2px" rules="all"
                id="tblSet<%=i%>" style="margin-bottom: 10px">
@@ -138,7 +139,7 @@
                         Element column = (Element) columns.item(j);
 
                 %>
-                <td class="head"><%= column.getAttribute("name") %>&nbsp;</td>
+                <td class="head"><%=Encode.forHtml(String.valueOf(column.getAttribute("name")))%>&nbsp;</td>
                 <%
 
                         colCount = j + 2;
@@ -160,14 +161,14 @@
                         String s = "tdSet" + i + "_Row" + j + "_name";
             %>
             <tr>
-                <td class="head" id="<%=s%>"><%=genText(s)%>
+                <td class="head" id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genText(s)))%>
                 </td>
                         <%
         }else{
             %>
 
             <tr>
-                <td class="head"><%= sName %>
+                <td class="head"><%=Encode.forHtml(String.valueOf(sName))%>
                 </td>
                 <%
                     }
@@ -181,7 +182,7 @@
                                 if (String.valueOf(k).equals(cell.getAttribute("index"))) {
                                     String s = "tdSet" + i + "_Row" + j + "_Col" + k;
                 %>
-                <td id="<%=s%>"><%= genCell(s, cell)%>
+                <td id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genCell(s, cell)))%>
                 </td>
                 <%
                     n++;
@@ -203,7 +204,7 @@
                         if (cell.getAttribute("index").equals(String.valueOf(k + 1))) {
                             String s = "tdSet" + i + "_Row" + j + "_Col" + (k + 1);
                 %>
-                <td id="<%=s%>"><%= genCell(s, cell)%>
+                <td id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genCell(s, cell)))%>
                 </td>
                 <%
                 } else {
@@ -217,7 +218,7 @@
                     String s = "tdSet" + i + "_Row" + j + "_comments";
 
                 %>
-                <td id="<%=s%>"><%= genText(s)%>
+                <td id="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(genText(s)))%>
                 </td>
                 <%
 

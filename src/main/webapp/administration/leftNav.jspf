@@ -26,6 +26,7 @@
 
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -206,7 +207,7 @@ String curProvider_no = (String)session.getAttribute("user");
 					</li>
 					</oscar:oscarPropertiesCheck>
 					<li><a href='javascript:void(0);'
-						class="xlink" rel="${ctx}<%= oscarVariables.getProperty("RA_FORWORD", "/billing/CA/ON/genRA.jsp") %>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnBillingReconciliation"/></a></li>
+						class="xlink" rel="${ctx}<%=Encode.forHtmlAttribute(String.valueOf(oscarVariables.getProperty("RA_FORWORD", "/billing/CA/ON/genRA.jsp")))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnBillingReconciliation"/></a></li>
 					<!--  li><a href='javascript:void(0);' onclick ='popupPage(600,1000,"${ctx}/billing/CA/ON/billingOBECEA.jsp");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnEDTBillingReportGenerator"/></a></li-->
 					<li><a href='javascript:void(0);'
 						class="xlink" rel="${ctx}/billing/CA/ON/billStatus.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.invoiceRpts"/></a></li>
@@ -654,7 +655,7 @@ String curProvider_no = (String)session.getAttribute("user");
 				
 					<security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.messenger" rights="r" reverse="<%=false%>">
 							<li><a href='javascript:void(0);'
-								class="xlink" rel="${ctx}/messenger/DisplayMessages.do?providerNo=<%=curProvider_no%>&amp;userName=<%=userfirstname%>%20<%=userlastname%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.messages"/></a></li>
+								class="xlink" rel="${ctx}/messenger/DisplayMessages.do?providerNo=<%=Encode.forHtmlAttribute(String.valueOf(curProvider_no))%>&amp;userName=<%=Encode.forHtmlAttribute(String.valueOf(userfirstname))%>%20<%=Encode.forHtmlAttribute(String.valueOf(userlastname))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.messages"/></a></li>
 								
 							<li>
 								<a href="${ctx}/messenger.do?method=fetch" class="contentLink">

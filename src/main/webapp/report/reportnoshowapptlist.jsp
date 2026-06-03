@@ -49,6 +49,7 @@
 
 <%@ page import="ca.openosp.openo.commn.model.ProviderData" %>
 <%@ page import="ca.openosp.openo.commn.dao.ProviderDataDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -183,7 +184,7 @@
 
     <table width="480" border="0" cellspacing="1" cellpadding="0">
         <tr>
-            <td><%=providerBean.getProperty(rsdemo.getString("provider_no")) %>
+            <td><%=Encode.forHtml(String.valueOf(providerBean.getProperty(rsdemo.getString("provider_no"))))%>
             </td>
             <td align="right"></td>
         </tr>
@@ -191,13 +192,13 @@
     <table width="100%" border="1" bgcolor="#ffffff" cellspacing="1" cellpadding="0">
         <tr bgcolor=<%=deepcolor%> align="center">
             <TH width="20%"><b><a
-                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=appointment_date"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgApptDate"/></a></b></TH>
+                    href="reportnoshowapptlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&sdate=<%=Encode.forUriComponent(String.valueOf(sdate))%>&orderby=appointment_date"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgApptDate"/></a></b></TH>
             <TH width="20%"><b><a
-                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=start_time"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgStartTime"/></a> </b></TH>
+                    href="reportnoshowapptlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&sdate=<%=Encode.forUriComponent(String.valueOf(sdate))%>&orderby=start_time"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgStartTime"/></a> </b></TH>
             <TH width="20%"><b><a
-                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=end_time"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgEndTime"/></a> </b></TH>
+                    href="reportnoshowapptlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&sdate=<%=Encode.forUriComponent(String.valueOf(sdate))%>&orderby=end_time"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgEndTime"/></a> </b></TH>
             <TH width="10%"><b><a
-                    href="reportnoshowapptlist.jsp?provider_no=<%=provider_no%>&sdate=<%=sdate%>&orderby=name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgName"/></a></b></TH>
+                    href="reportnoshowapptlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&sdate=<%=Encode.forUriComponent(String.valueOf(sdate))%>&orderby=name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgName"/></a></b></TH>
             <TH width="30%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportapptsheet.msgComments"/></b></TH>
         </tr>
         <%
@@ -205,14 +206,14 @@
         %>
         <tr bgcolor="<%=bodd?weakcolor:"white"%>">
             <td align="center"><a href=#
-                                  onClick="popupPage(300,700,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?displaymode=edit&dboperation=search&appointment_no=<%=rsdemo.getString("appointment_no")%>&provider_no=<%=curProvider_no%>&year=<%=MyDateFormat.getYearFromStandardDate(rsdemo.getString("appointment_date"))%>&month=<%=MyDateFormat.getMonthFromStandardDate(rsdemo.getString("appointment_date"))%>&day=<%=MyDateFormat.getDayFromStandardDate(rsdemo.getString("appointment_date"))%>&start_time=<%=rsdemo.getString("start_time")%>&demographic_no=');return false;">
-                <%=rsdemo.getString("appointment_date")%>
+                                  onClick="popupPage(300,700,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?displaymode=edit&dboperation=search&appointment_no=<%=Encode.forJavaScript(String.valueOf(rsdemo.getString("appointment_no")))%>&provider_no=<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>&year=<%=Encode.forJavaScript(String.valueOf(MyDateFormat.getYearFromStandardDate(rsdemo.getString("appointment_date"))))%>&month=<%=Encode.forJavaScript(String.valueOf(MyDateFormat.getMonthFromStandardDate(rsdemo.getString("appointment_date"))))%>&day=<%=Encode.forJavaScript(String.valueOf(MyDateFormat.getDayFromStandardDate(rsdemo.getString("appointment_date"))))%>&start_time=<%=Encode.forJavaScript(String.valueOf(rsdemo.getString("start_time")))%>&demographic_no=');return false;">
+                <%=Encode.forHtml(String.valueOf(rsdemo.getString("appointment_date")))%>
             </a></td>
-            <td align="center"><%=rsdemo.getString("start_time")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("start_time")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("end_time")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("end_time")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("name")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("name")))%>
             </td>
             <td>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportnoshowapptlist.msgNoShow"/></td>
         </tr>

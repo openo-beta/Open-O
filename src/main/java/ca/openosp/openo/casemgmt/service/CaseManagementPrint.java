@@ -299,7 +299,7 @@ public class CaseManagementPrint {
         String headerDate = headerFormat.format(now);
 
         // Create new file to save form to
-        String path = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String path = OscarProperties.getInstance().getDocumentDirectory();
         String fileName = path + "EncounterForm-" + headerDate + ".pdf";
         File file = null;
         FileOutputStream out = null;
@@ -374,7 +374,7 @@ public class CaseManagementPrint {
                     // TODO:filter out the ones which aren't in our date range if there's a date range????
                     String segmentId = result.segmentID;
                     MessageHandler handler = Factory.getHandler(segmentId);
-                    String fileName2 = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.pdf";
+                    String fileName2 = OscarProperties.getInstance().getDocumentDirectory() + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.pdf";
                     file2 = new File(fileName2);
                     os2 = new FileOutputStream(file2);
 
@@ -393,7 +393,7 @@ public class CaseManagementPrint {
                         }
                         os2.close();
 
-                        String fileName3 = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.1.pdf";
+                        String fileName3 = OscarProperties.getInstance().getDocumentDirectory() + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.1.pdf";
                         File file3 = new File(fileName3);
                         fos = new FileOutputStream(file3);
                         pdfCreator.addEmbeddedDocuments(file2, fos);

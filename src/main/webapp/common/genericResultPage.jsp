@@ -26,12 +26,13 @@
 
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@include file="/layouts/html_top.jspf" %>
 
 <div style="border:solid gray 1px; text-align:center">
-    <%=WebUtils.popInfoMessagesAsHtml(session)%>
-    <%=WebUtils.popErrorMessagesAsHtml(session)%>
+    <%=Encode.forHtml(String.valueOf(WebUtils.popInfoMessagesAsHtml(session)))%>
+    <%=Encode.forHtml(String.valueOf(WebUtils.popErrorMessagesAsHtml(session)))%>
 
     <br/>
     <input type="button" value="close" onclick='window.close()'/>

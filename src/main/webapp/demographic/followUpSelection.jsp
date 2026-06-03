@@ -28,6 +28,7 @@
 <%@page import="ca.openosp.openo.caisi_integrator.ws.CachedProvider" %>
 <%@page import="java.util.List" %>
 <%@page import="ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@include file="/layouts/html_top.jspf" %>
 
 <h3>Select a provider</h3>
@@ -40,8 +41,8 @@
 
     for (CachedProvider cachedProvider : providers) {
 %>
-<a href="followUp.jsp?demographicId=<%=demographicId%>&remoteFacilityId=<%=cachedProvider.getFacilityIdStringCompositePk().getIntegratorFacilityId()%>&remoteProviderId=<%=cachedProvider.getFacilityIdStringCompositePk().getCaisiItemId()%>"><%=CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), cachedProvider.getFacilityIdStringCompositePk().getIntegratorFacilityId()).getName()%>
-    : <%=cachedProvider.getLastName() + ", " + cachedProvider.getFirstName()%>
+<a href="followUp.jsp?demographicId=<%=Encode.forUriComponent(String.valueOf(demographicId))%>&remoteFacilityId=<%=Encode.forUriComponent(String.valueOf(cachedProvider.getFacilityIdStringCompositePk().getIntegratorFacilityId()))%>&remoteProviderId=<%=Encode.forUriComponent(String.valueOf(cachedProvider.getFacilityIdStringCompositePk().getCaisiItemId()))%>"><%=Encode.forHtml(String.valueOf(CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), cachedProvider.getFacilityIdStringCompositePk().getIntegratorFacilityId()).getName()))%>
+    : <%=Encode.forHtml(String.valueOf(cachedProvider.getLastName() + ", " + cachedProvider.getFirstName()))%>
 </a>
 <br/>
 <%

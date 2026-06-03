@@ -31,6 +31,7 @@
 %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page
         import="ca.openosp.openo.hospitalReportManager.SFTPConnector, ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -114,6 +115,17 @@
 
             .failed {
                 color: #FFD700;
+            }
+
+            .warning {
+                color: #b8860b;
+            }
+
+            .warning-line {
+                margin-top: 4px;
+            }
+            .warning-line:first-child {
+                margin-top: 0;
             }
 
             .error-detail {
@@ -285,14 +297,21 @@
                         <span class="file-name"><c:out value="${entry.key}"/></span>
                         <span class="upload-text ${entry.value.cssClass}">
                             <c:out value="${entry.value.statusText}"/>
-                            <c:if test="${not empty entry.value.errorMessage}">
+                            <c:if test="${not empty entry.value.errorMessage or entry.value.hasWarnings}">
                                 <button class="error-toggle"
                                         onclick="toggleError('err-${loop.index}', this)"
-                                        title="Show error details">&#x276F;</button>
+                                        title="Show details">&#x276F;</button>
                             </c:if>
                         </span>
-                        <c:if test="${not empty entry.value.errorMessage}">
-                            <div id="err-${loop.index}" class="error-detail" style="display:none"><c:out value="${entry.value.errorMessage}"/></div>
+                        <c:if test="${not empty entry.value.errorMessage or entry.value.hasWarnings}">
+                            <div id="err-${loop.index}" class="error-detail" style="display:none">
+                                <c:if test="${not empty entry.value.errorMessage}">
+                                    <c:out value="${entry.value.errorMessage}"/>
+                                </c:if>
+                                <c:forEach var="w" items="${entry.value.warnings}">
+                                    <div class="warning-line"><c:out value="${w}"/></div>
+                                </c:forEach>
+                            </div>
                         </c:if>
                     </div>
                 </c:forEach>
@@ -306,7 +325,7 @@
             <div class="control-group">
                 <label class="control-label">Provider Confidentiality Statement</label>
                 <div class="controls">
-                    <textarea name="statement"><%=statement %></textarea>
+                    <textarea name="statement"><%=Encode.forHtml(String.valueOf(statement))%></textarea>
                 </div>
             </div>
             <div>

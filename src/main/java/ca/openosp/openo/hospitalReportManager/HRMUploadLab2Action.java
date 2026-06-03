@@ -14,9 +14,12 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,10 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HRMUploadLab2Action extends ActionSupport {
-    private List<File> uploads;
-    private List<String> uploadsContentType;
-    private List<String> uploadsFileName;
+public class HRMUploadLab2Action extends ActionSupport implements UploadedFilesAware {
+    private List<UploadedFile> uploads;
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
@@ -50,16 +51,9 @@ public class HRMUploadLab2Action extends ActionSupport {
         "image/gif"
     );
 
-    public void setUploads(List<File> uploads) {
-        this.uploads = uploads;
-    }
-
-    public void setUploadsContentType(List<String> uploadsContentType) {
-        this.uploadsContentType = uploadsContentType;
-    }
-
-    public void setUploadsFileName(List<String> uploadsFileName) {
-        this.uploadsFileName = uploadsFileName;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        this.uploads = new ArrayList<>(uploadedFiles);
     }
 
     @Override
@@ -85,10 +79,10 @@ public class HRMUploadLab2Action extends ActionSupport {
         Map<String, UploadResult> resultsMap = new HashMap<>();
 
         for (int i = 0; i < uploads.size(); i++) {
-            File file = uploads.get(i);
-            String fileName = uploadsFileName.get(i);
-            String contentType = (uploadsContentType != null && i < uploadsContentType.size())
-                ? uploadsContentType.get(i) : null;
+            UploadedFile uf = uploads.get(i);
+            File file = PathValidationUtils.toFile(uf);
+            String fileName = uf.getOriginalName();
+            String contentType = uf.getContentType();
 
             if (!isValidContentType(contentType)) {
                 MiscUtils.getLogger().warn("Invalid content type '{}' for file '{}'", contentType, fileName);
@@ -113,8 +107,9 @@ public class HRMUploadLab2Action extends ActionSupport {
                     resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, errMsg));
                 } else {
                     try {
-                        HRMReportParser.addReportToInbox(loggedInInfo, report);
-                        resultsMap.put(fileName, new UploadResult(FileStatus.COMPLETED, null));
+                        List<String> warnings = new ArrayList<>();
+                        HRMReportParser.addReportToInbox(loggedInInfo, report, warnings);
+                        resultsMap.put(fileName, new UploadResult(FileStatus.COMPLETED, null, warnings));
                     } catch (Exception e) {
                         MiscUtils.getLogger().error("Couldn't handle uploaded HRM report", e);
                         resultsMap.put(fileName, new UploadResult(FileStatus.FAILED, e.getMessage()));

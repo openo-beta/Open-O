@@ -36,6 +36,7 @@
 <%@ page import="ca.openosp.openo.commn.model.ReportProvider" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.commn.dao.ReportProviderDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -135,9 +136,9 @@
                         proOHIP = p.getProviderNo();
 
                 %>
-                <option value="<%=proOHIP%>"
-                        <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=proLast%>,
-                    <%=proFirst%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"
+                        <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(proLast))%>,
+                    <%=Encode.forHtml(String.valueOf(proFirst))%>
                 </option>
                 <%
                     }
@@ -152,12 +153,12 @@
             <td></td>
             <td align="right"><B>Date</B> &nbsp; <font size="1"
                                                        face="Arial, Helvetica, sans-serif"> <a href="#"
-                                                                                               onClick="openBrWindow('billingCalendarPopup.jsp?type=admission&amp;year=<%=curYear%>&amp;month=<%=curMonth%>','','width=300,height=300')">From:</a></font>
-                <input type="text" name="xml_vdate" size="10" value="<%=xml_vdate%>">
+                                                                                               onClick="openBrWindow('billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')">From:</a></font>
+                <input type="text" name="xml_vdate" size="10" value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>">
                 <font size="1" face="Arial, Helvetica, sans-serif"> <a href="#"
-                                                                       onClick="openBrWindow('billingCalendarPopup.jsp?type=end&amp;year=<%=curYear%>&amp;month=<%=curMonth%>','','width=300,height=300')">
+                                                                       onClick="openBrWindow('billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')">
                     To:</a></font> <input type="text" name="xml_appointment_date" size="10"
-                                          value="<%=xml_appointment_date%>"></td>
+                                          value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>"></td>
             <td></td>
         </tr>
     </form>

@@ -86,7 +86,7 @@ public class HRMDownloadJob implements OscarRunnable {
 
             String privateKeyDirectory = OscarProperties.getInstance().getProperty("OMD_DIRECTORY");
             if (privateKeyDirectory == null) {
-                privateKeyDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + ".." + File.separator + "hrm" + File.separator + "OMD" + File.separator;
+                privateKeyDirectory = OscarProperties.getInstance().getDocumentDirectory() + ".." + File.separator + "hrm" + File.separator + "OMD" + File.separator;
             }
 
             int portNum = SFTPConnector.parsePort(port);

@@ -678,7 +678,7 @@ public class SFTPConnector {
     }
 
     protected String copyFileToDocumentDir(LoggedInInfo loggedInInfo, String f) throws IOException {
-        String destDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String destDir = OscarProperties.getInstance().getDocumentDirectory();
         String result = null;
 
         if (f != null) {
@@ -690,7 +690,7 @@ public class SFTPConnector {
     }
 
     protected static String[] copyFilesToDocumentDir(LoggedInInfo loggedInInfo, String[] paths) {
-        String destDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String destDir = OscarProperties.getInstance().getDocumentDirectory();
         List<String> results = new ArrayList<String>();
 
         for (int x = 0; x < paths.length; x++) {

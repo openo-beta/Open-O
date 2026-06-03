@@ -107,13 +107,13 @@
                 %>
                 <tr>
                     <td><%=Encode.forHtml(String.valueOf(curmapping.get("facility_display")))%>&nbsp;</td>
-                    <td><%=curmapping.get("class")%>&nbsp;</td>
-                    <td><%=curmapping.get("sub_class")%>&nbsp;</td>
-                    <td><%=curmapping.get("mnemonic") %>&nbsp;</td>
-                    <td><%=curmapping.get("description") %>&nbsp;</td>
-                    <td><%=((HRMCategory) curmapping.get("category")).getCategoryName() %>&nbsp;</td>
+                    <td><%=Encode.forHtml(String.valueOf(curmapping.get("class")))%>&nbsp;</td>
+                    <td><%=Encode.forHtml(String.valueOf(curmapping.get("sub_class")))%>&nbsp;</td>
+                    <td><%=Encode.forHtml(String.valueOf(curmapping.get("mnemonic")))%>&nbsp;</td>
+                    <td><%=Encode.forHtml(String.valueOf(curmapping.get("description")))%>&nbsp;</td>
+                    <td><%=Encode.forHtml(String.valueOf(((HRMCategory) curmapping.get("category")).getCategoryName()))%>&nbsp;</td>
                     <td>
-                        <a href="<%=request.getContextPath() %>/hospitalReportManager/Mapping.do?deleteMappingId=<%=curmapping.get("mappingId") %>">Delete</a>
+                        <a href="<%=request.getContextPath() %>/hospitalReportManager/Mapping.do?deleteMappingId=<%=Encode.forUriComponent(String.valueOf(curmapping.get("mappingId")))%>">Delete</a>
                     </td>
                 </tr>
                 <%

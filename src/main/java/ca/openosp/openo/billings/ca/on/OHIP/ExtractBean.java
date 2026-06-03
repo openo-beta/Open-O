@@ -25,6 +25,7 @@
 
 package ca.openosp.openo.billings.ca.on.OHIP;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
@@ -41,6 +42,7 @@ import ca.openosp.openo.commn.dao.BillingDao;
 import ca.openosp.openo.commn.model.Billing;
 import ca.openosp.openo.utility.DateRange;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.OscarProperties;
@@ -518,9 +520,10 @@ public class ExtractBean implements Serializable {
     // write OHIP file to it
     public void writeFile(String value1) {
         try {
-            String home_dir;
-            home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
-            FileOutputStream out = new FileOutputStream(home_dir + ohipFilename);
+            String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(ohipFilename, homeDir);
+            FileOutputStream out = new FileOutputStream(validatedFile);
             PrintStream p = new PrintStream(out);
             p.println(value1);
 
@@ -535,15 +538,15 @@ public class ExtractBean implements Serializable {
     // OscarDocument/.../billing/download/, and then write to it
     public void writeHtml(String htmlvalue1) {
         try {
-            String home_dir1;
-            home_dir1 = OscarProperties.getInstance().getProperty("HOME_DIR");
+            String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(htmlFilename, homeDir);
+            FileOutputStream out = new FileOutputStream(validatedFile);
+            PrintStream p = new PrintStream(out);
+            p.println(htmlvalue1);
 
-            FileOutputStream out1 = new FileOutputStream(home_dir1 + htmlFilename);
-            PrintStream p1 = new PrintStream(out1);
-            p1.println(htmlvalue1);
-
-            p1.close();
-            out1.close();
+            p.close();
+            out.close();
         } catch (Exception e) {
             logger.error("Write HTML File Error!!!", e);
         }
