@@ -117,7 +117,9 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
             OlisXlsxSheetReader.streamRows(zip, sheetPath, sharedStrings, row -> rows.add(new HashMap<>(row)));
         } catch (Exception e) {
             LOG.error("OLIS Lab/SCC import failed", e);
-            errorMessage = "Import failed: " + e.getClass().getSimpleName() + " — " + e.getMessage();
+            // Detail is logged above; the user gets a generic message so internal
+            // exception text (e.g. DB/schema fragments) is not surfaced to the screen.
+            errorMessage = "Import failed. Please verify the file is a valid eHealth Lab/SCC Extract XLSX and try again.";
             request.setAttribute("errorMessage", errorMessage);
             return "form";
         }
@@ -138,7 +140,9 @@ public class OLISFacilityImport2Action extends ActionSupport implements Uploaded
             return "report";
         } catch (Exception e) {
             LOG.error("OLIS Lab/SCC import failed", e);
-            errorMessage = "Import failed: " + e.getClass().getSimpleName() + " — " + e.getMessage();
+            // Detail is logged above; the user gets a generic message so internal
+            // exception text (e.g. DB/schema fragments) is not surfaced to the screen.
+            errorMessage = "Import failed. Please verify the file is a valid eHealth Lab/SCC Extract XLSX and try again.";
             request.setAttribute("errorMessage", errorMessage);
             return "form";
         }
