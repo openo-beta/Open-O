@@ -84,7 +84,7 @@
 <body>
     <div topmargin="0" leftmargin="0" vlink="#0000FF" id="printableContent">
 
-    <form action="/form/formname" styleId="preview2Form">
+    <form action="/form/formname" id="preview2Form">
         <input type="hidden" name="demographic_no" value="${sessionScope.RxSessionBean.demographicNo}"/>
         <table>
             <tr>
