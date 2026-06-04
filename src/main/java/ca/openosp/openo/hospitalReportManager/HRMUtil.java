@@ -284,11 +284,15 @@ public class HRMUtil {
 
         List<HRMSubClass> hrmSubClasses = hrmSubClassDao.listAll();
 
+        // Prefetch the (small) sending-facility registry once to resolve display names
+        // without a per-row query (avoids N+1 across the mapping list).
+        Map<String, HRMSendingFacility> sfRegistry = hrmSendingFacilityDao.getRegistryById();
+
         for (HRMSubClass hrmSubClass : hrmSubClasses) {
 
             HashMap<String, Object> curht = new HashMap<String, Object>();
             curht.put("id", hrmSubClass.getSendingFacilityId());
-            curht.put("facility_display", hrmSendingFacilityDao.getDisplayName(hrmSubClass.getSendingFacilityId()));
+            curht.put("facility_display", hrmSendingFacilityDao.getDisplayName(hrmSubClass.getSendingFacilityId(), sfRegistry));
             curht.put("sub_class", hrmSubClass.getSubClassName());
             curht.put("class", hrmSubClass.getClassName());
             curht.put("category", hrmSubClass.getHrmCategory());

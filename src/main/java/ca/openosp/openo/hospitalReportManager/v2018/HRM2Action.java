@@ -69,6 +69,7 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
+import ca.openosp.openo.hospitalReportManager.model.HRMSendingFacility;
 import ca.openosp.openo.hospitalReportManager.model.HRMCategory;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
@@ -927,6 +928,10 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+            // Prefetch the (small) sending-facility registry once to resolve display names
+            // without a per-row query (avoids N+1 across the inbox page).
+            Map<String, HRMSendingFacility> sfRegistry = hrmSendingFacilityDao.getRegistryById();
+
             for (HRMDocument d : docs) {
                 HRMCategory category = null;
                 if (d.getHrmCategoryId() != null) {
@@ -959,7 +964,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                 data1.put("report_date", reportDate != null ? reportDate : "");
 
 
-                data1.put("sending_facility", hrmSendingFacilityDao.getDisplayName(d.getSourceFacility()));
+                data1.put("sending_facility", hrmSendingFacilityDao.getDisplayName(d.getSourceFacility(), sfRegistry));
                 data1.put("report_number", d.getSourceFacilityReportNo() != null ? d.getSourceFacilityReportNo() : "");
                 if (!StringUtils.isEmpty(d.getClassName()) && !StringUtils.isEmpty(d.getSubClassName())) {
                     String className = d.getClassName();
