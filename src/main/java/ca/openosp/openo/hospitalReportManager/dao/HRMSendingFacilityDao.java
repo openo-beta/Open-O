@@ -10,6 +10,14 @@ import ca.openosp.openo.commn.dao.AbstractDaoImpl;
 import ca.openosp.openo.hospitalReportManager.model.HRMSendingFacility;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Data-access object for the {@link HRMSendingFacility} registry. Provides lookups by
+ * sending-facility identifier, display-name resolution (single and prefetched-map variants),
+ * and an aggregation of sending facilities that appear on HRM documents but are not yet
+ * registered.
+ *
+ * @since 2026-05-22
+ */
 @Repository
 public class HRMSendingFacilityDao extends AbstractDaoImpl<HRMSendingFacility> {
 
@@ -17,6 +25,11 @@ public class HRMSendingFacilityDao extends AbstractDaoImpl<HRMSendingFacility> {
         super(HRMSendingFacility.class);
     }
 
+    /**
+     * Returns every registered sending facility, ordered by sending-facility identifier.
+     *
+     * @return List<HRMSendingFacility> all registry entries
+     */
     public List<HRMSendingFacility> findAll() {
         String sql = "select x from " + modelClass.getName() + " x order by x.sendingFacilityId";
         Query query = entityManager.createQuery(sql);
@@ -25,17 +38,31 @@ public class HRMSendingFacilityDao extends AbstractDaoImpl<HRMSendingFacility> {
         return facilities;
     }
 
+    /**
+     * Finds the registry entry for the given sending-facility identifier.
+     *
+     * @param sendingFacilityId String the sending-facility identifier (trimmed before matching)
+     * @return HRMSendingFacility the matching entry, or null if none is registered or the ID is null
+     */
     public HRMSendingFacility findBySendingFacilityId(String sendingFacilityId) {
         if (sendingFacilityId == null) {
             return null;
         }
         // Trim to match the registration action, which trims the ID before saving.
-        String sql = "select x from " + modelClass.getSimpleName() + " x where x.sendingFacilityId = ?1";
+        String sql = "select x from " + modelClass.getName() + " x where x.sendingFacilityId = ?1";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, sendingFacilityId.trim());
         return getSingleResultOrNull(query);
     }
 
+    /**
+     * Resolves a sending-facility identifier to a display string of the form
+     * "Facility Name (ID)". Falls back to the raw identifier when the facility is not
+     * registered, and to an empty string when the identifier is null or blank.
+     *
+     * @param sendingFacilityId String the sending-facility identifier from the report
+     * @return String the display name, the raw ID if unregistered, or "" if blank
+     */
     public String getDisplayName(String sendingFacilityId) {
         if (sendingFacilityId == null || sendingFacilityId.trim().isEmpty()) {
             return "";

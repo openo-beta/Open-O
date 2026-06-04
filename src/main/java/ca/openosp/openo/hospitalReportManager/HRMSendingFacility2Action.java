@@ -14,6 +14,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Struts2 action for managing the HRM Sending Facility registry (list, create/update, delete).
+ * All operations require the {@code _admin} security object; the state-changing operations
+ * (save and delete) are additionally restricted to POST so they cannot be triggered by a GET.
+ *
+ * @since 2026-05-22
+ */
 public class HRMSendingFacility2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -21,6 +28,12 @@ public class HRMSendingFacility2Action extends ActionSupport {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
 
+    /**
+     * Routes the request to {@link #save()}, {@link #delete()}, or {@link #list()} based on the
+     * {@code method} request parameter. Save and delete are rejected unless the request is a POST.
+     *
+     * @return String the Struts result name
+     */
     public String execute() {
         String method = request.getParameter("method");
         // State-changing operations must be POST so they cannot be triggered by a GET
@@ -38,6 +51,13 @@ public class HRMSendingFacility2Action extends ActionSupport {
         return list();
     }
 
+    /**
+     * Lists all registered sending facilities plus the unregistered facilities seen on HRM
+     * documents. When a valid numeric {@code id} parameter is supplied, loads that facility into
+     * the {@code editing} request attribute so the form is pre-filled for editing.
+     *
+     * @return String the Struts result name
+     */
     public String list() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "r", null)) {
             throw new SecurityException("missing required sec object (_admin)");
@@ -50,12 +70,21 @@ public class HRMSendingFacility2Action extends ActionSupport {
             try {
                 HRMSendingFacility editing = hrmSendingFacilityDao.find(Integer.parseInt(editId));
                 request.setAttribute("editing", editing);
-            } catch (NumberFormatException ignore) {
+            } catch (NumberFormatException e) {
+                MiscUtils.getLogger().warn("Ignoring non-numeric HRM sending facility edit id: " + editId);
             }
         }
         return SUCCESS;
     }
 
+    /**
+     * Creates a new sending facility or updates an existing one from the posted
+     * {@code sendingFacilityId} and {@code facilityName}. Validates that both fields are present
+     * and that the sending-facility ID is not already used by a different entry; on any validation
+     * error an {@code errorMessage} is set and the list view is re-rendered.
+     *
+     * @return String the Struts result name
+     */
     public String save() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
             throw new SecurityException("missing required sec object (_admin)");
@@ -106,6 +135,12 @@ public class HRMSendingFacility2Action extends ActionSupport {
         return list();
     }
 
+    /**
+     * Deletes the sending facility identified by the posted {@code id}. A missing or invalid id is
+     * a no-op; failures are logged and surfaced via an {@code errorMessage} on the list view.
+     *
+     * @return String the Struts result name
+     */
     public String delete() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
             throw new SecurityException("missing required sec object (_admin)");
