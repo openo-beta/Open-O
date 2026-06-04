@@ -185,9 +185,10 @@
                                                 class="btn btn-secondary mb-2 w-100"
                                                 id="faxButton"
                                                 onClick="sendFax(${e:forJavaScript(param.scriptId)},
-                                                    ${requestScope.signatureRequestId},
+                                                    '${requestScope.signatureRequestId}',
                                                     ${requestScope.useSC != null ? requestScope.useSC : false},
-                                                    ${requestScope.selectedAddress != null ? requestScope.selectedAddress : ''}
+                                                    '${e:forJavaScript(requestScope.selectedAddress != null ? requestScope.selectedAddress : '')}',
+                                                    '${ctx}'
                                                         );"
                                                 <c:if test="${requestScope.isFaxDisabled}">
                                                     disabled="disabled"
@@ -208,9 +209,10 @@
                                                     '${requestScope.pharmacyFax}',
                                                     '${requestScope.prescribedBy}');
                                                         sendFax(${e:forHtml(param.scriptId)},
-                                                    ${requestScope.signatureRequestId},
+                                                    '${requestScope.signatureRequestId}',
                                                     ${requestScope.useSC != null ? requestScope.useSC : false},
-                                                    ${requestScope.selectedAddress != null ? requestScope.selectedAddress : ''}
+                                                    '${e:forJavaScript(requestScope.selectedAddress != null ? requestScope.selectedAddress : '')}',
+                                                    '${ctx}'
                                                         );"
                                                 <c:if test="${requestScope.isFaxDisabled}">
                                                     disabled="disabled"
