@@ -1273,7 +1273,15 @@ public final class RxWriteScript2Action extends ActionSupport {
             }
         }
         response.setContentType("application/json");
-		String savedScriptId = saveDrug(request);
+
+        // Nothing staged: do not persist an empty prescription. The UI already
+        // blocks this (see SearchDrug3.jsp), but guard server-side too so a
+        // crafted request can't create an empty script or archive a ReRx'd med
+        // without a replacement (#2453).
+        String savedScriptId = null;
+        if (bean.getStashSize() > 0) {
+            savedScriptId = saveDrug(request);
+        }
         Map<String, String> hm = new HashMap<>();
         hm.put("savedScriptId", savedScriptId);
         ObjectNode jo = objectMapper.valueToTree(hm);
