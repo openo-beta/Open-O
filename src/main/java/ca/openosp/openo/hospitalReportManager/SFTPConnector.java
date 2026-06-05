@@ -40,6 +40,7 @@ import ca.openosp.openo.commn.model.OscarMsgType;
 import ca.openosp.openo.commn.model.SecObjPrivilege;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import com.jcraft.jsch.Channel;
@@ -724,10 +725,13 @@ public class SFTPConnector {
         if (privateKeyFile == null || privateKeyFile.trim().isEmpty()) {
             throw new IllegalStateException("HRM private key file is not configured. Upload one on the HRM Configuration page.");
         }
-        if (privateKeyDirectory == null) {
+        if (privateKeyDirectory == null || privateKeyDirectory.trim().isEmpty()) {
             throw new IllegalStateException("HRM private key directory is not configured.");
         }
-        return privateKeyDirectory + privateKeyFile;
+        File dir = new File(privateKeyDirectory);
+        File keyFile = new File(dir, privateKeyFile);
+        PathValidationUtils.validateExistingPath(keyFile, dir);
+        return keyFile.getAbsolutePath();
     }
 
     public static void notifyHrmError(LoggedInInfo loggedInInfo, String errorMsg) {
