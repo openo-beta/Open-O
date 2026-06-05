@@ -1,5 +1,6 @@
 package ca.openosp.openo.hospitalReportManager;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class UploadResult {
     public UploadResult(FileStatus status, String errorMessage, List<String> warnings) {
         this.status = status;
         this.errorMessage = errorMessage;
-        this.warnings = warnings == null ? Collections.emptyList() : warnings;
+        this.warnings = warnings == null ? Collections.emptyList() : Collections.unmodifiableList(new ArrayList<>(warnings));
     }
 
     public FileStatus getStatus() { return status; }
