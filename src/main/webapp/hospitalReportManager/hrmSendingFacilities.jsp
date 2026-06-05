@@ -43,6 +43,7 @@
     <link rel="stylesheet"
           href="<%=request.getContextPath()%>/library/DataTables-1.10.12/media/css/jquery.dataTables.min.css">
     <script src="<%=request.getContextPath()%>/library/jquery/jquery-3.6.4.min.js"></script>
+    <script src="<%=request.getContextPath()%>/csrfguard" type="text/javascript"></script>
     <script src="<%=request.getContextPath()%>/library/DataTables/datatables.min.js"></script>
     <script>
         jQuery(document).ready(function () {
