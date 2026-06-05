@@ -84,7 +84,7 @@
 <body>
     <div topmargin="0" leftmargin="0" vlink="#0000FF" id="printableContent">
 
-    <form action="/form/formname" id="preview2Form">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post" id="preview2Form">
         <input type="hidden" name="demographic_no" value="${sessionScope.RxSessionBean.demographicNo}"/>
         <table>
             <tr>
@@ -219,7 +219,8 @@
                                        value="${requestScope.signatureRequestId}"/>
                                 <img id="signature" style="width:260px; height:130px; object-fit: contain;"
                                      src="${requestScope.startimageUrl}" alt="digital_signature"/>
-                                <input type="hidden" name="imgFile" id="imgFile" value=""/>
+                                <input type="hidden" name="imgFile" id="imgFile" value=""
+                                       data-temp-path="<%= Encode.forHtmlAttribute(String.valueOf(request.getAttribute("tempPath"))) %>"/>
 
                                 <script type="text/javascript">
                                     var POLL_TIME = 2500;
