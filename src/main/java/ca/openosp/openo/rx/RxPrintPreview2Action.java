@@ -652,7 +652,9 @@ public class RxPrintPreview2Action extends ActionSupport {
         String timeStamp = new SimpleDateFormat("dd-MMM-yyyy hh:mm a").format(Calendar.getInstance().getTime());
         request.setAttribute("timeStamp", timeStamp);
 
-        request.setAttribute("pharmacyName", Encode.forJavaScript(pharmacy != null ? pharmacy.getName() : ""));
+        // Guard getName() null as well as pharmacy null: Encode.forJavaScript(null) emits the literal "null".
+        String pharmacyName = (pharmacy != null && pharmacy.getName() != null) ? pharmacy.getName() : "";
+        request.setAttribute("pharmacyName", Encode.forJavaScript(pharmacyName));
         // Free-text pharmacy field edited on the same form as the name; encode for the JS-string onClick
         // context so a quote can't break the handler (same class of issue as #2451). Guard the null fax
         // case explicitly: Encode.forJavaScript(null) would emit the literal string "null".
