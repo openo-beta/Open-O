@@ -283,7 +283,7 @@ public class HRMReportParser {
                 }
 
 				// Attempt a route to the provider listed in the report -- if they don't exist, note that in the record
-				Boolean routeSuccess = routeReportToProvider(report, document.getId(), ctx.getWarnings());
+				boolean routeSuccess = routeReportToProvider(report, document.getId(), ctx.getWarnings());
 				if (!routeSuccess) {
 
 					logger.info("Adding the provider name to the list of unidentified providers, for file:"+report.getFileLocation());
