@@ -37,7 +37,7 @@ public enum BinaryFileExtension {
         }
     },
     TIFF(".tiff") {
-        @Override protected boolean detect(byte[] b) { return isImageOfFormat(b, "tif"); }
+        @Override protected boolean detect(byte[] b) { return isImageOfFormat(b, "tif") || isImageOfFormat(b, "tiff"); }
     },
     RTF(".rtf") {
         // {\rtf is the RTF signature per spec; the version digit that follows is not hardcoded to '1'
