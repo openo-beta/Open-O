@@ -52,11 +52,26 @@ function updateCurrentInteractions(myDrugRefEnabled) {
     }
 }
 
-function resetReRxDrugList(ctx) {
+/**
+ * Resolves the application context path used to build absolute request URLs.
+ * When a context path is supplied (typically threaded from the JSP via
+ * ${pageContext.request.contextPath}) it is returned unchanged; otherwise it is
+ * derived from the current location so callers that cannot inject it still produce
+ * absolute, deployment-correct URLs.
+ *
+ * @param {string} ctx the context path to use, if already known
+ * @returns {string} an absolute context path (origin + first path segment when derived)
+ */
+function resolveContextPath(ctx) {
     if (!ctx) {
         const contextPath = window.location.pathname.split('/')[1];
         ctx = window.location.origin + '/' + contextPath;
     }
+    return ctx;
+}
+
+function resetReRxDrugList(ctx) {
+    ctx = resolveContextPath(ctx);
     const url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
     const data = "";
     fetch(url, {
@@ -219,10 +234,7 @@ function writeToEncounter(ctx, print, text, prefPharmacy, providerNo, demographi
 }
 
 function openEncounter(providerNo, demographicNo, curProviderNo, userName, ctx) {
-    if (!ctx) {
-        const contextPath = window.location.pathname.split('/')[1];
-        ctx = window.location.origin + '/' + contextPath;
-    }
+    ctx = resolveContextPath(ctx);
     const windowProps = "height=710,width=1024,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=20,left=20";
     const currentDate = new Date().toISOString().substring(0, 10);
     const url = ctx + "/oscarEncounter/IncomingEncounter.do?providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&curProviderNo=" + curProviderNo + "&userName=" + userName + "&curDate=" + currentDate;
@@ -259,7 +271,14 @@ function refreshImage(imgURL, signatureImg) {
     if (document.getElementById("signature") != null) {
         document.getElementById("signature").src = imgURL;
     }
-    document.getElementById('imgFile').value = signatureImg;
+    // The PDF servlet loads the signature via Image.getInstance(imgFile), which expects a
+    // local file path (or absolute URL) - not the context-relative preview servlet URL.
+    // Submit the signature's temp file path (rendered server-side as data-temp-path),
+    // mirroring the working ViewScript2.jsp flow; fall back to the preview URL if absent.
+    const imgFileElement = document.getElementById('imgFile');
+    if (imgFileElement) {
+        imgFileElement.value = imgFileElement.dataset.tempPath || signatureImg;
+    }
 }
 
 function unloadMess() {
@@ -326,11 +345,18 @@ function closeRxPreviewBootstrapModal() {
     }
 }
 
-function onPrint2(method, scriptId, useSC, scAddress) {
+function onPrint2(method, scriptId, useSC, scAddress, ctx) {
+    ctx = resolveContextPath(ctx);
     const rxPageSize = $('printPageSize').value;
     console.log("rxPagesize  " + rxPageSize);
 
-    let action = "../form/createcustomedpdf?__title=Rx&__method=" + method + "&useSC=" + useSC + "&scAddress=" + scAddress + "&rxPageSize=" + rxPageSize + "&scriptId=" + scriptId;
+    let action = ctx
+        + "/form/createcustomedpdf?__title=Rx"
+        + "&__method=" + encodeURIComponent(method)
+        + "&useSC=" + encodeURIComponent(useSC)
+        + "&scAddress=" + encodeURIComponent(scAddress)
+        + "&rxPageSize=" + encodeURIComponent(rxPageSize)
+        + "&scriptId=" + encodeURIComponent(scriptId);
     document.getElementById("preview2Form").action = action;
     if (method !== "oscarRxFax") {
         document.getElementById("preview2Form").target = "_blank";
@@ -340,7 +366,7 @@ function onPrint2(method, scriptId, useSC, scAddress) {
     return true;
 }
 
-function sendFax(scriptId, signatureRequestId, useSC, scAddress) {
+function sendFax(scriptId, signatureRequestId, useSC, scAddress, ctx) {
     if ('function' === typeof window.onbeforeunload) {
         window.onbeforeunload = null;
     }
@@ -348,7 +374,7 @@ function sendFax(scriptId, signatureRequestId, useSC, scAddress) {
     document.getElementById('finalFax').value = faxNumber.options[faxNumber.selectedIndex].value;
     document.getElementById('pdfId').value = signatureRequestId;
 
-    onPrint2('oscarRxFax', scriptId, useSC, scAddress);
+    onPrint2('oscarRxFax', scriptId, useSC, scAddress, ctx);
 }
 
 function printPasteToParent(ctx, rxPasteAsterisk, prefPharmacy, demographicNo, providerName, providerNo, pharmacyName,
