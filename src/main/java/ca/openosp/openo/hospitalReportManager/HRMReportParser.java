@@ -502,6 +502,7 @@ public class HRMReportParser {
             List<List<Object>> accompanying = report.getAccompanyingSubclassList();
             if (accompanying == null || accompanying.isEmpty()) return;
             List<Object> first = accompanying.get(0);
+            if (first == null) return;
             String subClassName = first.size() > 0 ? (String) first.get(0) : null;
             String subClassMnemonic = first.size() > 1 ? (String) first.get(1) : null;
             if (subClassName == null || subClassName.isEmpty()) return;
