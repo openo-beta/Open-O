@@ -107,9 +107,8 @@ public class HRMUploadLab2Action extends ActionSupport implements UploadedFilesA
                     resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, errMsg));
                 } else {
                     try {
-                        List<String> warnings = new ArrayList<>();
-                        HRMReportParser.addReportToInbox(loggedInInfo, report, warnings);
-                        resultsMap.put(fileName, new UploadResult(FileStatus.COMPLETED, null, warnings));
+                        HRMProcessingContext ctx = HRMReportParser.addReportToInbox(loggedInInfo, report);
+                        resultsMap.put(fileName, new UploadResult(FileStatus.COMPLETED, null, ctx.getWarnings()));
                     } catch (Exception e) {
                         MiscUtils.getLogger().error("Couldn't handle uploaded HRM report", e);
                         resultsMap.put(fileName, new UploadResult(FileStatus.FAILED, "Failed to process the uploaded report. Please verify the file and try again."));
