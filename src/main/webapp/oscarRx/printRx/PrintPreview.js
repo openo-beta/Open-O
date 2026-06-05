@@ -350,7 +350,13 @@ function onPrint2(method, scriptId, useSC, scAddress, ctx) {
     const rxPageSize = $('printPageSize').value;
     console.log("rxPagesize  " + rxPageSize);
 
-    let action = ctx + "/form/createcustomedpdf?__title=Rx&__method=" + method + "&useSC=" + useSC + "&scAddress=" + scAddress + "&rxPageSize=" + rxPageSize + "&scriptId=" + scriptId;
+    let action = ctx
+        + "/form/createcustomedpdf?__title=Rx"
+        + "&__method=" + encodeURIComponent(method)
+        + "&useSC=" + encodeURIComponent(useSC)
+        + "&scAddress=" + encodeURIComponent(scAddress)
+        + "&rxPageSize=" + encodeURIComponent(rxPageSize)
+        + "&scriptId=" + encodeURIComponent(scriptId);
     document.getElementById("preview2Form").action = action;
     if (method !== "oscarRxFax") {
         document.getElementById("preview2Form").target = "_blank";
