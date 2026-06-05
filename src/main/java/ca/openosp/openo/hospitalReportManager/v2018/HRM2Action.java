@@ -923,7 +923,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         if (isHrm) {
             List<HRMDocument> docs = hrmDocumentDao.query(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
 
-            total = hrmDocumentDao.queryForCount(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), Integer.parseInt(length), orderBy, orderingColumnDirection);
+            total = hrmDocumentDao.queryForCount(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), orderBy, orderingColumnDirection);
 
 
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
