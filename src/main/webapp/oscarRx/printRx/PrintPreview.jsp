@@ -26,6 +26,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="oscar" uri="/oscarPropertiestag" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ page import="ca.openosp.openo.commn.model.enumerator.ModuleType" %>
 <%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
 <fmt:setBundle basename="oscarResources"/>
