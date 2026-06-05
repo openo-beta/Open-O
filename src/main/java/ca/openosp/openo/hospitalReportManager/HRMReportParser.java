@@ -196,7 +196,7 @@ public class HRMReportParser {
         HRMProcessingContext ctx = new HRMProcessingContext(report);
 
         // Surface warnings raised during parsing (e.g. invalid placeholder dates substituted earlier)
-        ctx.getWarnings().addAll(report.getUploadWarnings());
+        ctx.addWarnings(report.getUploadWarnings());
 
         addUnknownSendingFacilityWarning(ctx);
         addUnknownSubClassWarning(ctx);
@@ -284,7 +284,9 @@ public class HRMReportParser {
                 }
 
 				// Attempt a route to the provider listed in the report -- if they don't exist, note that in the record
-				boolean routeSuccess = routeReportToProvider(report, document.getId(), ctx.getWarnings());
+				List<String> routeWarnings = new ArrayList<>();
+				boolean routeSuccess = routeReportToProvider(report, document.getId(), routeWarnings);
+				ctx.addWarnings(routeWarnings);
 				if (!routeSuccess) {
 
 					logger.info("Adding the provider name to the list of unidentified providers, for file:"+report.getFileLocation());
@@ -308,7 +310,7 @@ public class HRMReportParser {
 
             hrmDocumentDao.merge(existingDocument);
 
-            ctx.getWarnings().add("This report has already been received and has been flagged as a duplicate.");
+            ctx.addWarning("This report has already been received and has been flagged as a duplicate.");
         }
 
         return ctx;
@@ -377,11 +379,11 @@ public class HRMReportParser {
         boolean lastNameMatches = reportLastName != null && reportLastName.equalsIgnoreCase(d.getLastName());
 
         if (!dobMatches) {
-            ctx.getWarnings().add("Patient unmatched: DateOfBirth in the report (" + reportDob
+            ctx.addWarning("Patient unmatched: DateOfBirth in the report (" + reportDob
                     + ") does not match the patient's DateOfBirth.");
         }
         if (!lastNameMatches) {
-            ctx.getWarnings().add("Patient unmatched: LastName in the report (" + reportLastName
+            ctx.addWarning("Patient unmatched: LastName in the report (" + reportLastName
                     + ") does not match the patient's LastName.");
         }
     }
@@ -399,7 +401,7 @@ public class HRMReportParser {
         HRMSubClassDao hrmSubClassDao = SpringUtils.getBean(HRMSubClassDao.class);
         if (!hrmSubClassDao.findBySendingFacilityId(sf).isEmpty()) return;
 
-        ctx.getWarnings().add("Invalid Sending Facility: '" + sf + "' is not configured for this clinic.");
+        ctx.addWarning("Invalid Sending Facility: '" + sf + "' is not configured for this clinic.");
     }
 
     /**
@@ -429,7 +431,7 @@ public class HRMReportParser {
             String subClassMnemonic = first.size() > 1 ? (String) first.get(1) : null;
             if (subClassName == null || subClassName.isEmpty()) return;
             if (hrmSubClassDao.findApplicableSubClassMapping(className, subClassName, subClassMnemonic, sf) == null) {
-                ctx.getWarnings().add("Unmatched Report SubClass: '" + subClassName
+                ctx.addWarning("Unmatched Report SubClass: '" + subClassName
                         + (subClassMnemonic != null && !subClassMnemonic.isEmpty() ? "^" + subClassMnemonic : "")
                         + "' is not configured for this clinic.");
             }
@@ -437,7 +439,7 @@ public class HRMReportParser {
             String subClass = report.getFirstReportSubClass();
             if (subClass == null || subClass.isEmpty()) return;
             if (hrmSubClassDao.findApplicableSubClassMapping(className, subClass, null, sf) == null) {
-                ctx.getWarnings().add("Unmatched Report SubClass: '" + subClass + "' is not configured for this clinic.");
+                ctx.addWarning("Unmatched Report SubClass: '" + subClass + "' is not configured for this clinic.");
             }
         }
     }

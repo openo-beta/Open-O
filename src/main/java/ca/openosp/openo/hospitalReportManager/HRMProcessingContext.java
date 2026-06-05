@@ -1,6 +1,8 @@
 package ca.openosp.openo.hospitalReportManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
@@ -34,10 +36,18 @@ public final class HRMProcessingContext {
         this.document = document;
     }
 
+    public void addWarning(String warning) {
+        warnings.add(warning);
+    }
+
+    public void addWarnings(Collection<String> additional) {
+        warnings.addAll(additional);
+    }
+
     /**
-     * @return List&lt;String&gt; the mutable warnings list; never null
+     * @return List&lt;String&gt; an unmodifiable view of warnings; never null
      */
     public List<String> getWarnings() {
-        return warnings;
+        return Collections.unmodifiableList(warnings);
     }
 }
