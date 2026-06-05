@@ -348,116 +348,14 @@ function onPrint2(method, scriptId, useSC, scAddress, ctx) {
     const rxPageSize = $('printPageSize').value;
     console.log("rxPagesize  " + rxPageSize);
 
-    const action = ctx + "/form/createcustomedpdf?__title=Rx&__method=" + method + "&useSC=" + useSC + "&scAddress=" + scAddress + "&rxPageSize=" + rxPageSize + "&scriptId=" + scriptId;
-    const form = document.getElementById("preview2Form");
-
-    if (method === "oscarRxFax") {
-        // The preview is now inlined into the host page (it used to be its own iframe). Rather than
-        // navigate the window with a form POST, submit the fax via AJAX and handle the result in-page.
-        // URLSearchParams keeps the body application/x-www-form-urlencoded so the servlet's getParameter
-        // still reads the fields. The servlet returns JSON when asked with __format=json; the legacy
-        // ViewScript2.jsp flow omits the flag and still receives its original HTML response, so this
-        // change does not affect that path.
-        const modalBody = document.getElementById("rxPreviewBootstrapModalBody");
-        // Disable the fax buttons while the request is in flight so a second click cannot queue a
-        // duplicate fax. They are re-enabled in showFaxResult only if the fax fails.
-        toggleFaxButtons(true);
-        fetch(action + "&__format=json", {method: "POST", body: new URLSearchParams(new FormData(form))})
-            .then(response => response.json())
-            .then(result => showFaxResult(result, form, modalBody))
-            .catch(() => showFaxResult({status: "error"}, form, modalBody));
-        return true;
+    let action = ctx + "/form/createcustomedpdf?__title=Rx&__method=" + method + "&useSC=" + useSC + "&scAddress=" + scAddress + "&rxPageSize=" + rxPageSize + "&scriptId=" + scriptId;
+    document.getElementById("preview2Form").action = action;
+    if (method !== "oscarRxFax") {
+        document.getElementById("preview2Form").target = "_blank";
     }
-
-    form.action = action;
-    form.target = "_blank";
-    form.submit();
+    document.getElementById("preview2Form").submit();
 
     return true;
-}
-
-/**
- * Renders the fax result inside the Rx preview modal.
- *
- * On success it replaces the preview with the confirmation (filling the same area) and closes the window
- * after a short delay, matching the previous behaviour. On failure it leaves the preview - and its fax
- * controls - visible, re-enables the fax buttons, and shows the reason inline so the user can correct it
- * and retry without reopening the preview.
- *
- * @param result    {{status: string}} the JSON response from the fax servlet
- * @param form      the preview form, used as the source of the pharmacy name/fax for the message
- * @param modalBody the modal body element the preview was rendered into
- */
-function showFaxResult(result, form, modalBody) {
-    const status = result && result.status;
-
-    if (status === "success") {
-        // Replace the preview with the confirmation, filling the area the preview occupied so the modal
-        // does not shrink, and leave the message in normal top-left document flow. Capture the height
-        // before hiding the preview (the result is plain DOM now, not the old fixed-height iframe).
-        const previewHeight = modalBody.clientHeight;
-        Array.from(modalBody.children).forEach(el => el.style.display = "none");
-
-        const confirmation = document.createElement("div");
-        confirmation.id = "rxFaxResult";
-        confirmation.style.minHeight = previewHeight + "px";
-        confirmation.style.color = "green";
-        modalBody.appendChild(confirmation);
-
-        const heading = document.createElement("h3");
-        heading.textContent = "Fax successfully generated";
-        // Pharmacy name/fax are read from the submitted form and rendered via textContent (never innerHTML).
-        const pharmaName = (form.querySelector("[name='pharmaName']") || {}).value || "";
-        const pharmaFax = (form.querySelector("[name='pharmaFax']") || {}).value || "";
-        const recipient = document.createElement("p");
-        recipient.textContent = pharmaName + " (" + pharmaFax + ")";
-        const closing = document.createElement("p");
-        const countdown = document.createElement("b");
-        countdown.textContent = "3";
-        closing.append("This window will close in ", countdown, " seconds...");
-        confirmation.append(heading, recipient, document.createElement("br"), closing);
-
-        // Match the legacy behaviour: close the window once the fax is confirmed.
-        setTimeout(() => window.top.close(), 3000);
-        return;
-    }
-
-    // Failure: keep the preview and its controls visible, re-enable the fax buttons (disabled on submit),
-    // and surface the reason inline so the user can correct it and retry.
-    toggleFaxButtons(false);
-
-    let message;
-    if (status === "invalid_number") {
-        message = "Error: Valid fax number not found!";
-    } else if (status === "no_fax_config") {
-        message = "Error: No matching fax line is configured.";
-    } else {
-        message = "Error: The fax could not be sent. Please try again.";
-    }
-    showFaxError(message);
-}
-
-/**
- * Shows (or updates) an inline fax error next to the fax button without disturbing the preview. Reuses a
- * single error element so repeated failures replace the message rather than stacking.
- *
- * @param message the error text to display
- */
-function showFaxError(message) {
-    const faxButton = document.getElementById("faxButton");
-    if (!faxButton) {
-        return;
-    }
-    let errorNote = document.getElementById("rxFaxError");
-    if (!errorNote) {
-        errorNote = document.createElement("div");
-        errorNote.id = "rxFaxError";
-        errorNote.style.color = "red";
-        errorNote.style.fontWeight = "bold";
-        errorNote.style.margin = "6px 0";
-        faxButton.parentNode.insertBefore(errorNote, faxButton);
-    }
-    errorNote.textContent = message;
 }
 
 function sendFax(scriptId, signatureRequestId, useSC, scAddress, ctx) {

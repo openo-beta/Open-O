@@ -84,11 +84,7 @@ public class FrmCustomedPDFServlet extends HttpServlet {
 
             if (isFax) {
                 // this fax method shouldn't be here and will be removed in future edits.
-                // The modal Rx flow (PrintPreview.js) opts into a JSON response via __format=json so it
-                // can handle the fax result in-page; the legacy ViewScript2.jsp flow omits the flag and
-                // still receives the original HTML response unchanged.
-                boolean wantsJson = "json".equals(req.getParameter("__format"));
-                res.setContentType(wantsJson ? "application/json" : "text/html");
+                res.setContentType("text/html");
                 String faxNo = req.getParameter("pharmaFax");
                 if (faxNo != null) {
                     faxNo = faxNo.trim().replaceAll("\\D", "");
@@ -101,11 +97,7 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                 String demo = req.getParameter("demographic_no");
 
                 if (faxNo != null && faxNo.length() < 7) {
-                    if (wantsJson) {
-                        writer.print("{\"status\":\"invalid_number\"}");
-                    } else {
-                        writer.println("<div id='fax-failure'><h3>Error: Valid fax number not found!</h3></div>");
-                    }
+                    writer.println("<div id='fax-failure'><h3>Error: Valid fax number not found!</h3></div>");
                 } else {
                     // write to file
                     String pdfid = req.getParameter("pdfId");
@@ -181,13 +173,7 @@ public class FrmCustomedPDFServlet extends HttpServlet {
 
                     if (validFaxNumber) {
                         LogAction.addLog(provider_no, LogConst.SENT, LogConst.CON_FAX, "PRESCRIPTION " + pdfFile);
-                        if (wantsJson) {
-                            writer.print("{\"status\":\"success\"}");
-                        } else {
 						writer.println("<div id='fax-success' style='color:green;'><h3>Fax successfully generated</h3><p>" + Encode.forHtml(pharmaName) + " (" + Encode.forHtml(faxNo) + ")</p><br><p>This window will close in <b>3</b> seconds...</p></div><script>setTimeout(() => window.top.close(), 3000);</script>");
-                        }
-                    } else if (wantsJson) {
-                        writer.print("{\"status\":\"no_fax_config\"}");
                     }
                 }
             } else {
