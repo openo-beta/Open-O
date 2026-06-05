@@ -3371,8 +3371,13 @@
     
         /**
          * Counts the medications currently staged for this prescription.
+         *
          * Each staged drug renders a drugName_<rand> input inside the drug form;
          * a ReRx box that was only checked (not staged) produces no such input.
+         * This deliberately keys on the same drugName_ marker that the server
+         * uses to detect staged drugs in RxWriteScript2Action.updateSaveAllDrugs()
+         * ("ele.startsWith(\"drugName_\")"), so this gate matches exactly what the
+         * server would persist. Keep the two in sync if that marker ever changes.
          *
          * @returns {number} the number of staged medications
          */

@@ -278,7 +278,14 @@ public final class RxWriteScript2Action extends ActionSupport {
         String action = request.getParameter("action");
         String drugId = request.getParameter("reRxDrugId");
         if (action.equals("addToReRxDrugIdList") && !reRxDrugIdList.contains(drugId)) {
-            reRxDrugIdList.add(drugId);
+            // Only store valid numeric drug ids so the archival loop in saveDrug()
+            // can never choke on a malformed entry from a crafted request (#2453).
+            try {
+                Integer.parseInt(drugId);
+                reRxDrugIdList.add(drugId);
+            } catch (NumberFormatException e) {
+                logger.warn("Ignored non-numeric reRxDrugId");
+            }
         } else if (action.equals("removeFromReRxDrugIdList") && reRxDrugIdList.contains(drugId)) {
             reRxDrugIdList.remove(drugId);
             try {
@@ -1431,7 +1438,15 @@ public final class RxWriteScript2Action extends ActionSupport {
         while (i.hasNext()) {
 
             String item = i.next();
-            int originalDrugId = Integer.parseInt(item);
+            int originalDrugId;
+            try {
+                originalDrugId = Integer.parseInt(item);
+            } catch (NumberFormatException e) {
+                // Defensive: skip any malformed entry from a polluted session
+                // rather than failing the whole save (#2453).
+                logger.warn("Skipping non-numeric reRxDrugId");
+                continue;
+            }
 
             // Skip ReRx entries that were checked but never staged/saved: with no
             // matching staged drug, archiving would silently delete the active med (#2453).
