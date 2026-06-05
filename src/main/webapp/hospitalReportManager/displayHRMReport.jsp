@@ -925,7 +925,7 @@
 
 
     <script type="text/javascript">
-        jQuery(setupHrmDemoAutoCompletion(<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>, <%=csrfTokenJs%>));
+        jQuery(function () { setupHrmDemoAutoCompletion(<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>, <%=csrfTokenJs%>); });
 
         YAHOO.example.BasicRemote = function () {
             var url = "<%= request.getContextPath() %>/provider/SearchProvider.do";
