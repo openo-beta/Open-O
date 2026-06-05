@@ -444,22 +444,20 @@ public class HRMReportParser {
                                                        List<String> warnings) {
         if (warnings == null || candidates == null || candidates.isEmpty()) return;
 
-        for (Demographic d : candidates) {
-            String reportDob = report.getDateOfBirthAsString();
-            String reportLastName = report.getLegalLastName();
+        Demographic d = candidates.get(0);
+        String reportDob = report.getDateOfBirthAsString();
+        String reportLastName = report.getLegalLastName();
 
-            boolean dobMatches = reportDob != null && reportDob.equalsIgnoreCase(d.getBirthDayAsString());
-            boolean lastNameMatches = reportLastName != null && reportLastName.equalsIgnoreCase(d.getLastName());
+        boolean dobMatches = reportDob != null && reportDob.equalsIgnoreCase(d.getBirthDayAsString());
+        boolean lastNameMatches = reportLastName != null && reportLastName.equalsIgnoreCase(d.getLastName());
 
-            if (!dobMatches) {
-                warnings.add("Patient unmatched: DateOfBirth in the report (" + reportDob
-                        + ") does not match the patient's DateOfBirth.");
-            }
-            if (!lastNameMatches) {
-                warnings.add("Patient unmatched: LastName in the report (" + reportLastName
-                        + ") does not match the patient's LastName.");
-            }
-            if (!dobMatches || !lastNameMatches) return;
+        if (!dobMatches) {
+            warnings.add("Patient unmatched: DateOfBirth in the report (" + reportDob
+                    + ") does not match the patient's DateOfBirth.");
+        }
+        if (!lastNameMatches) {
+            warnings.add("Patient unmatched: LastName in the report (" + reportLastName
+                    + ") does not match the patient's LastName.");
         }
     }
 
