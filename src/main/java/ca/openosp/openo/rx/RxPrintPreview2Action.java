@@ -532,7 +532,10 @@ public class RxPrintPreview2Action extends ActionSupport {
                 // onClick handlers). forJavaScript escapes both ' and " (and \, /, <, >, &), which also
                 // prevents a double quote in the pharmacy name from terminating the surrounding
                 // double-quoted onClick HTML attribute (issue #2451).
-                prefPharmacy = Encode.forJavaScript(pharmacy.getName().trim());
+                // Guard against a null name: getName() may be null, and Encode.forJavaScript(null)
+                // would render the literal string "null" rather than an empty value.
+                String name = pharmacy.getName();
+                prefPharmacy = Encode.forJavaScript(name != null ? name.trim() : "");
                 prefPharmacyId = String.valueOf(pharmacy.getId()).trim();
 
                 request.setAttribute("prefPharmacy", prefPharmacy);
@@ -649,8 +652,10 @@ public class RxPrintPreview2Action extends ActionSupport {
 
         request.setAttribute("pharmacyName", Encode.forJavaScript(pharmacy != null ? pharmacy.getName() : ""));
         // Free-text pharmacy field edited on the same form as the name; encode for the JS-string onClick
-        // context so a quote can't break the handler (same class of issue as #2451).
-        request.setAttribute("pharmacyFax", Encode.forJavaScript(pharmacy != null ? pharmacy.getFax() : ""));
+        // context so a quote can't break the handler (same class of issue as #2451). Guard the null fax
+        // case explicitly: Encode.forJavaScript(null) would emit the literal string "null".
+        String pharmacyFax = (pharmacy != null && pharmacy.getFax() != null) ? pharmacy.getFax() : "";
+        request.setAttribute("pharmacyFax", Encode.forJavaScript(pharmacyFax));
     }
 
     /**
