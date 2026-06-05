@@ -158,12 +158,12 @@
                                         <c:if test="${requestScope.reprint eq 'true'}">disabled</c:if>
                                         onClick="printPasteToParent('${ctx}',
                                                 ${requestScope.rxPasteAsterisk},
-                                                '${requestScope.prefPharmacy}',
+                                                '${e:forJavaScript(requestScope.prefPharmacy)}',
                                                 '${requestScope.demographicNo}',
-                                                '${requestScope.providerName}',
+                                                '${e:forJavaScript(requestScope.providerName)}',
                                                 '${requestScope.providerNo}',
-                                                '${requestScope.pharmacyName}',
-                                                '${requestScope.pharmacyFax}',
+                                                '${e:forJavaScript(requestScope.pharmacyName)}',
+                                                '${e:forJavaScript(requestScope.pharmacyFax)}',
                                                 '${requestScope.prescribedBy}');">
                                     Print &amp; Add to encounter note
                                 </button>
@@ -201,12 +201,12 @@
                                                 id="faxPasteButton"
                                                 onClick="faxPasteToParent('${ctx}',
                                                     ${requestScope.rxPasteAsterisk},
-                                                    '${requestScope.prefPharmacy}',
+                                                    '${e:forJavaScript(requestScope.prefPharmacy)}',
                                                     '${requestScope.demographicNo}',
-                                                    '${requestScope.providerName}',
+                                                    '${e:forJavaScript(requestScope.providerName)}',
                                                     '${requestScope.providerNo}',
-                                                    '${requestScope.pharmacyName}',
-                                                    '${requestScope.pharmacyFax}',
+                                                    '${e:forJavaScript(requestScope.pharmacyName)}',
+                                                    '${e:forJavaScript(requestScope.pharmacyFax)}',
                                                     '${requestScope.prescribedBy}');
                                                         sendFax('${e:forJavaScript(param.scriptId)}',
                                                     '${requestScope.signatureRequestId}',

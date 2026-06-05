@@ -119,8 +119,8 @@
                                        value="<%= Encode.forHtml(((RxPatientData.Patient)request.getAttribute("patient")).getFirstName())+ " " +Encode.forHtml(((RxPatientData.Patient)request.getAttribute("patient")).getSurname()) %>"/>
                                 <input type="hidden" name="patientDOB"
                                        value="<%= Encode.forHtml((String)request.getAttribute("patientDOBStr")) %>"/>
-                                <input type="hidden" name="pharmaFax" value="${requestScope.pharmacyFax}"/>
-                                <input type="hidden" name="pharmaName" value="${requestScope.pharmacyName}"/>
+                                <input type="hidden" name="pharmaFax" value="<%= Encode.forHtmlAttribute(request.getAttribute("pharmacyFax") != null ? request.getAttribute("pharmacyFax").toString() : "") %>"/>
+                                <input type="hidden" name="pharmaName" value="<%= Encode.forHtmlAttribute(request.getAttribute("pharmacyName") != null ? request.getAttribute("pharmacyName").toString() : "") %>"/>
                                 <input type="hidden" name="pharmacyInfo" value="<%= Encode.forHtmlAttribute(request.getAttribute("prefPharmacyId") != null ? request.getAttribute("prefPharmacyId").toString() : "") %>"/>
                                 <input type="hidden" name="pracNo"
                                        value="<%= Encode.forHtml((String)request.getAttribute("pracNo")) %>"/>
