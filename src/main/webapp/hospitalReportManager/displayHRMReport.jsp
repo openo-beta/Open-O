@@ -414,7 +414,7 @@
         <input type="button" id="msgBtn_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" value="Msg"
                onclick="popupPatient(700,960,'<%= request.getContextPath() %>/messenger/SendDemoMessage.do?demographic_no=','msg', '<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>/>
         <input type="button" id="mainTickler_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" value="Tickler"
-               onClick="popupPatient(710, 1024,'<%= request.getContextPath() %>/tickler/ForwardDemographicTickler.do?docType=HRM&docId=<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>&demographic_no=', 'Tickler','<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
+               onClick="popupPatient(710, 1024,'<%= request.getContextPath() %>/tickler/ForwardDemographicTickler.do?docType=HRM&docId=<%=Encode.forUriComponent(String.valueOf(hrmReportId))%>&demographic_no=', 'Tickler','<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
         <input type="button" id="mainEchart_<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>"
                value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
                onClick="popupPatient(710, 1024,'<%= request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?updateParent=false&reason=
@@ -427,15 +427,15 @@
                onClick="popupPatient(710,1024,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?orderby=appttime&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25&demographic_no=','ApptHist','<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>','<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
         <% if (obgynShortcuts && demographicLink != null) {%>
         <input type="button" value="AR1-ILI"
-               onClick="popupONAREnhanced(290, 625, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&section='+this.value)"/>
+               onClick="popupONAREnhanced(290, 625, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&section='+this.value)"/>
         <input type="button" value="AR1-PGI"
-               onClick="popupONAREnhanced(225, 590,'<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&section='+this.value)"/>
+               onClick="popupONAREnhanced(225, 590,'<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&section='+this.value)"/>
         <input type="button" value="AR2-US"
-               onClick="popupONAREnhanced(395, 655, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&section='+this.value)"/>
+               onClick="popupONAREnhanced(395, 655, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&section='+this.value)"/>
         <input type="button" value="AR2-ALI"
-               onClick="popupONAREnhanced(375, 430, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&section='+this.value)"/>
+               onClick="popupONAREnhanced(375, 430, '<%=request.getContextPath()%>/form/formonarenhancedForm.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&section='+this.value)"/>
         <input type="button" value="AR2"
-               onClick="popupPage(700, 1024, '<%=request.getContextPath()%>/form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&update=true')"/>
+               onClick="popupPage(700, 1024, '<%=request.getContextPath()%>/form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&update=true')"/>
         <% } %>
     </div>
 
@@ -777,7 +777,7 @@
                                 }
                             %>
                             <input type="button" value="Annotations"
-                                   onClick="popupPage(500, 400, '<%=request.getContextPath() %>/annotation/annotation.jsp?display=HRM&table_id=<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>&demo=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>')"/>
+                                   onClick="popupPage(500, 400, '<%=request.getContextPath() %>/annotation/annotation.jsp?display=HRM&table_id=<%=Encode.forUriComponent(String.valueOf(hrmReportId))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>')"/>
                         </form>
                     </td>
                 </tr>
@@ -1004,7 +1004,7 @@
                 <td><%=Encode.forHtml(String.valueOf(formatter.format(dupTimeReceived.get(Integer.parseInt(tempId)))))%>
                 </td>
                 <td><input type="button" value="Open Report"
-                           onclick="window.open('?id=<%=Encode.forJavaScript(String.valueOf(tempId))%>&segmentId=<%=Encode.forJavaScript(String.valueOf(tempId))%>&providerNo=<%=Encode.forJavaScript(request.getParameter("providerNo"))%>&searchProviderNo=<%=Encode.forJavaScript(request.getParameter("searchProviderNo"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&demoName=<%=Encode.forHtml(request.getParameter("demoName"))%>', null)"/>
+                           onclick="window.open('?id=<%=Encode.forUriComponent(String.valueOf(tempId))%>&segmentId=<%=Encode.forUriComponent(String.valueOf(tempId))%>&providerNo=<%=Encode.forUriComponent(request.getParameter("providerNo"))%>&searchProviderNo=<%=Encode.forUriComponent(request.getParameter("searchProviderNo"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&demoName=<%=Encode.forUriComponent(request.getParameter("demoName"))%>', null)"/>
                 </td>
             </tr>
 

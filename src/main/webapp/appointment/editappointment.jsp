@@ -402,10 +402,10 @@
                 if (aptStat.indexOf('B') === 0) {
                     var agree = confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.msgCanceledBilledConfirmation"/>");
                     if (agree) {
-                        window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment_no))%>';
+                        window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>';
                     }
                 } else {
-                    window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment_no))%>';
+                    window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>';
                 }
             }
 
@@ -1320,10 +1320,10 @@
                     <input type="button"
                            name="buttoncancel" id="noShowButton" class="btn"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.btnNoShow"/>"
-                           onClick="window.location='appointmentcontrol.jsp?buttoncancel=No Show&displaymode=Update Appt&appointment_no=<%=Encode.forJavaScript(String.valueOf(appointment_no))%>'">
+                           onClick="window.location='appointmentcontrol.jsp?buttoncancel=No Show&displaymode=Update Appt&appointment_no=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>'">
                     <br>
                     <a href="javascript:void(0);" title="Annotation"
-                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forJavaScript(String.valueOf(appointment_no))%>&amp;demo='+document.EDITAPPT.demographic_no.value,'anwin','width=400,height=500');">
+                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>&amp;demo='+document.EDITAPPT.demographic_no.value,'anwin','width=400,height=500');">
                         <img src="<%=request.getContextPath() %>/images/notes.gif" alt="Annotation" height="16"
                              width="13">
                     </a>
@@ -1409,7 +1409,7 @@
                         if (balance.compareTo(BigDecimal.ZERO) != 0) { %>
             <tr>
                 <td style="text-align: center; color:red;"><a href="javascript:void(0)"
-                                                              onclick="popupPage(600,800, '<%=request.getContextPath() %>/billing/CA/ON/billingONCorrection.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(cheader1s.get(i).getId()))%>')">Inv
+                                                              onclick="popupPage(600,800, '<%=request.getContextPath() %>/billing/CA/ON/billingONCorrection.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(cheader1s.get(i).getId()))%>')">Inv
                     #<%=Encode.forHtml(String.valueOf(cheader1s.get(i).getId()))%>
                 </a></td>
                 <td style="text-align: center; color:red;"><%=Encode.forHtml(String.valueOf(fm.format(cheader1s.get(i).getTimestamp())))%>

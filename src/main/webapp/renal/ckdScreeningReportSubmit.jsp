@@ -111,7 +111,7 @@
             <td><%=Encode.forHtml(String.valueOf((p != null) ? p.getFormattedName() : "N/A"))%>
             </td>
             <td><input class="btn" type="button"
-                       onClick="window.open('<%=request.getContextPath()%>/renal/ckdScreeningReportView.jsp?id=<%=Encode.forJavaScript(String.valueOf(report.getId()))%>')"
+                       onClick="window.open('<%=request.getContextPath()%>/renal/ckdScreeningReportView.jsp?id=<%=Encode.forUriComponent(String.valueOf(report.getId()))%>')"
                        value="View"/></td>
 
         </tr>

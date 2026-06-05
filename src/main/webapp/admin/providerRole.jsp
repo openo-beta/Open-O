@@ -108,6 +108,8 @@
 
     String ip = request.getRemoteAddr();
     String msg = "";
+    boolean msgIsError = false;
+    List<String> missingPrimaryRoleProviders = new ArrayList<String>();
     String caisiProgram = null;
 
 //get caisi programid for oscar
@@ -158,18 +160,17 @@
 
 // update the role
     if (request.getParameter("buttonUpdate") != null && request.getParameter("buttonUpdate").length() > 0) {
-    String number = Encode.forHtmlAttribute(request.getParameter("providerId"));
+        String number = request.getParameter("providerId");
         String roleId = request.getParameter("roleId");
         String roleOld = request.getParameter("roleOld");
         String roleNew = request.getParameter("roleNew");
-        String encodedRoleNew = Encode.forHtmlContent(roleNew);
 
         if (!"-".equals(roleNew)) {
             Secuserrole secUserRole = secUserRoleDao.findById(Integer.parseInt(roleId));
             if (secUserRole != null) {
                 secUserRole.setRoleName(roleNew);
                 secUserRoleDao.updateRoleName(Integer.parseInt(roleId), roleNew);
-                msg = "Role " + encodedRoleNew + " is updated. (" + number + ")";
+                msg = "Role " + roleNew + " is updated. (" + number + ")";
 
                 RecycleBin recycleBin = new RecycleBin();
                 recycleBin.setProviderNo(curUser_no);
@@ -194,7 +195,8 @@
                 }
 
             } else {
-                msg = "Role " + encodedRoleNew + " is <span style='text-color: red;'>NOT</span> updated!!! (" + number + ")";
+                msg = "Role " + roleNew + " is NOT updated!!! (" + number + ")";
+                msgIsError = true;
             }
         }
 
@@ -205,14 +207,13 @@
     if (request.getParameter("submit") != null && request.getParameter("submit").equals(add)) {
         String number = request.getParameter("providerId");
         String roleNew = request.getParameter("roleNew");
-        String encodedRoleNew = Encode.forHtmlContent(roleNew);
         if (!"-".equals(roleNew)) {
             Secuserrole secUserRole = new Secuserrole();
             secUserRole.setProviderNo(number);
             secUserRole.setRoleName(roleNew);
             secUserRole.setActiveyn(1);
             secUserRoleDao.save(secUserRole);
-            msg = "Role " + encodedRoleNew + " is added. (" + number + ")";
+            msg = "Role " + roleNew + " is added. (" + number + ")";
             LogAction.addLog(curUser_no, LogConst.ADD, LogConst.CON_ROLE, number + "|" + roleNew, ip);
 	    if( newCaseManagement && caisiProgram != null) {
                 ProgramProvider programProvider = programProviderDao.getProgramProvider(number, Long.valueOf(caisiProgram));
@@ -225,7 +226,8 @@
                 programProviderDao.saveProgramProvider(programProvider);
             }
         } else {
-            msg = "Role " + encodedRoleNew + " is <span style='text-color: red;'>NOT</span> added!!! (" + number + ")";
+            msg = "Role " + roleNew + " is NOT added!!! (" + number + ")";
+            msgIsError = true;
         }
 
     }
@@ -233,11 +235,10 @@
 // delete the role
     String delete = oscarRec.getString("global.btnDelete");
     if (request.getParameter("submit") != null && request.getParameter("submit").equals(delete)) {
-    String number = Encode.forHtmlAttribute(request.getParameter("providerId"));
+        String number = request.getParameter("providerId");
         String roleId = request.getParameter("roleId");
         String roleOld = request.getParameter("roleOld");
         String roleNew = request.getParameter("roleNew");
-        String encodedRoleOld = Encode.forHtmlContent(roleOld);
 
 	List secUserRoles = secUserRoleDao.findByProviderNo(number);
 
@@ -248,7 +249,7 @@
             if(secUserRole.getId() == Integer.parseInt(roleId)) {
 
             secUserRoleDao.deleteById(secUserRole.getId());
-            msg = "Role " + encodedRoleOld + " is deleted. (" + number + ")";
+            msg = "Role " + roleOld + " is deleted. (" + number + ")";
                 listIterator.remove();
 
             RecycleBin recycleBin = new RecycleBin();
@@ -297,7 +298,8 @@
         }
 
         } else {
-            msg = "Role " + encodedRoleOld + " is <span style='text-color: red;'>NOT</span> deleted!!! (" + number + ")";
+            msg = "Role " + roleOld + " is NOT deleted!!! (" + number + ")";
+            msgIsError = true;
         }
 
     }
@@ -363,7 +365,7 @@
 				if(programProvider == null || programProvider.isEmpty()) {
                     ProviderData provider = providerDao.findByProviderNo(user);
                     if (provider != null) {
-                        msg += String.format("</br><span style='color:red;'>WARNING: Provider %s requires a primary role assignment.</span>", provider.getFirstName() + " " + provider.getLastName());
+                        missingPrimaryRoleProviders.add(provider.getFirstName() + " " + provider.getLastName());
                     }
                 }
             }
@@ -485,9 +487,20 @@
 
 <form name="myform" action="providerRole.jsp" method="POST">
 
-    <% if (msg.length() > 1) {%>
-    <div class="alert alert-info">
-        <%=Encode.forHtml(String.valueOf(msg))%>
+    <% if (msg.length() > 1) {
+        String alertClass = msgIsError ? "alert-danger" : "alert-info";
+    %>
+    <div class="alert <%=alertClass%>">
+        <%=Encode.forHtml(msg)%>
+    </div>
+    <% } %>
+    <% if (!missingPrimaryRoleProviders.isEmpty()) {%>
+    <div class="alert alert-warning">
+        <ul>
+            <% for (String providerName : missingPrimaryRoleProviders) { %>
+            <li>WARNING: Provider <%=Encode.forHtml(providerName)%> requires a primary role assignment.</li>
+            <% } %>
+        </ul>
     </div>
     <% } %>
     <div class="well">

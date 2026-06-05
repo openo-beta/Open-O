@@ -99,7 +99,7 @@
         if (request.getParameter("limit2") != null)
             strLimit = request.getParameter("limit2");
 
-        String keyword = Encode.forHtmlContent(request.getParameter("keyword"));
+        String keyword = request.getParameter("keyword");
         String orderBy = request.getParameter("orderby");
         String searchMode = request.getParameter("search_mode");
         if (searchMode == null)
@@ -168,7 +168,7 @@
     <table>
         <tr>
             <td style="text-align:left"><i><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.search.keywords"/></i>
-                : <%=Encode.forHtml(keyword)%>
+                : <%=Encode.forHtmlContent(keyword)%>
             </td>
         </tr>
     </table>

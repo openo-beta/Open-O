@@ -85,7 +85,7 @@
             });
 
             function loadItem() {
-                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getFlowsheetItem&flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forJavaScript(String.valueOf(measurementType))%>", {},
+                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getFlowsheetItem&flowsheetId=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forUriComponent(String.valueOf(measurementType))%>", {},
                     function (xml) {
                         $("#displayName").val(xml.displayName);
                         $("#guideline").val(xml.guideline);
@@ -114,7 +114,7 @@
             }
 
             function loadWarnings() {
-                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getWarnings&flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forJavaScript(String.valueOf(measurementType))%>", {},
+                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getWarnings&flowsheetId=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forUriComponent(String.valueOf(measurementType))%>", {},
                     function (xml) {
                         var arr = new Array();
                         if (xml.results instanceof Array) {
@@ -133,7 +133,7 @@
             }
 
             function loadTargets() {
-                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getTargets&flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forJavaScript(String.valueOf(measurementType))%>", {},
+                jQuery.getJSON("<%=request.getContextPath()%>/admin/Flowsheet.do?method=getTargets&flowsheetId=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forUriComponent(String.valueOf(measurementType))%>", {},
                     function (xml) {
                         var arr = new Array();
                         if (xml.results instanceof Array) {
@@ -155,16 +155,16 @@
                 jQuery.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=saveFlowsheetItem',
                     jQuery('#theForm').serialize(),
                     function (data) {
-                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetEditor.jsp?id=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>';
+                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetEditor.jsp?id=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>';
                     });
             }
 
             function addNewWarning() {
-                location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetAddWarning.jsp?flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forJavaScript(String.valueOf(measurementType))%>';
+                location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetAddWarning.jsp?flowsheetId=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forUriComponent(String.valueOf(measurementType))%>';
             }
 
             function addNewTarget() {
-                location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetAddTarget.jsp?flowsheetId=<%=Encode.forJavaScript(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forJavaScript(String.valueOf(measurementType))%>';
+                location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetAddTarget.jsp?flowsheetId=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forUriComponent(String.valueOf(measurementType))%>';
             }
 
             function updateDetails() {

@@ -329,7 +329,7 @@
             </tr>
             <tr>
                 <td width="54%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgPatientName"/>: <a href=#
-                                                                             onclick="popupPage(720,860,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(DemoNo))%>&displaymode=edit&dboperation=search_detail');return false;">
+                                                                             onclick="popupPage(720,860,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(DemoNo))%>&displaymode=edit&dboperation=search_detail');return false;">
                     <%=Encode.forHtml(String.valueOf(DemoName))%>
                 </a> <input type="hidden" name="demo_name"
                             value="<%=Encode.forHtmlAttribute(String.valueOf(DemoName))%>"> </b></td>

@@ -104,7 +104,7 @@
                         }
                     }
                     //step 2 uploads
-                    if (<%=Encode.forJavaScript(String.valueOf(resourceId))%> == -1
+                    if (<%=resourceId%> == -1
                 )
                     { //if resource id==-1 (Upload phase)
                         if ((i > 0 && files[i - 1].value == responseUploadFileNames[responseUploadFileNames.length - 1]) || responseUploadFileNames.length == 0) {
@@ -125,7 +125,7 @@
                     { //if resourceid is not -1 submission phase
                         if (files[i].value == '<%=Encode.forJavaScript(String.valueOf(fileUpload))%>') {
                             // if this is the file intended for submission
-                            if (<%=Encode.forJavaScript(String.valueOf(resourceId))%> !=
+                            if (<%=resourceId%> !=
                             -2
                         )
                             {

@@ -92,7 +92,7 @@
         %>
         <tr>
             <td><a href="#" class="viewEform"
-                   onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(curForm.get("fid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormD"+i))%>'); return false;"><%=Encode.forHtml(String.valueOf(curForm.get("formName")))%>
+                   onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(curForm.get("fid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormD"+i))%>'); return false;"><%=Encode.forHtml(String.valueOf(curForm.get("formName")))%>
             </a></td>
             <td><%=Encode.forHtml(String.valueOf(curForm.get("formSubject")))%>&nbsp;</td>
             <td><%=Encode.forHtmlContent(curForm.get("formFileName") != null ? curForm.get("formFileName").toString() : "")%>

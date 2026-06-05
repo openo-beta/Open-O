@@ -101,7 +101,7 @@
             </div>
             <div style="clear: right; margin-right: 3px; float: right;">Enc
                 Type:&nbsp;<span
-                        id="encType<%=Encode.forHtmlAttribute(String.valueOf(note.getId()))%>"><%=Encode.forHtml(String.valueOf(note.getEncounter_type().equals("") ? "" : "&quot;" + note.getEncounter_type() + "&quot;"))%></span>
+                        id="encType<%=Encode.forHtmlAttribute(String.valueOf(note.getId()))%>"><%=note.getEncounter_type().equals("") ? "" : "\"" + Encode.forHtml(note.getEncounter_type()) + "\""%></span>
             </div>
 
             <%

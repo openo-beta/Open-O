@@ -161,7 +161,8 @@
 
     // get patient's detail
     String errorFlag = "";
-    String warningMsg = "", errorMsg = "";
+    List<String> warningMsgs = new ArrayList<String>();
+    List<String> errorMsgs = new ArrayList<String>();
     String r_doctor = "", r_doctor_ohip = "";
     String demoFirst = "", demoLast = "", demoHIN = "", demoVer = "", demoDOB = "", demoDOBYY = "", demoDOBMM = "", demoDOBDD = "", demoHCTYPE = "";
     String family_doctor = "";
@@ -203,15 +204,14 @@
     }
 
     if (demoHIN.equals("")) {
-        warningMsg += "<b><div class='alert alert-error'>Warning: The patient does not have a valid HIN. </div></b>";
+        warningMsgs.add("The patient does not have a valid HIN.");
     }
     if (r_doctor_ohip != null && r_doctor_ohip.length() > 0 && r_doctor_ohip.length() != 6) {
-        warningMsg += "<div class='alert alert error'>Warning: the referral doctor's no is wrong. </div>";
+        warningMsgs.add("The referral doctor's no is wrong.");
     }
     if (StringUtils.isBlank(demoDOB) || demoDOB.length() != 8) {
         errorFlag = "1";
-        errorMsg = errorMsg
-                + "<b><div class='alert alert error'>Error: The patient does not have a valid DOB. </div></b>";
+        errorMsgs.add("The patient does not have a valid DOB.");
     }
     //}
 
@@ -547,8 +547,6 @@
     }
 
 
-    // create msg
-    msg += errorMsg + warningMsg;
 %>
 
 
@@ -994,12 +992,12 @@
             var n = document.forms[0].xml_billtype.selectedIndex;
             var val = document.forms[0].xml_billtype[n].value;
             if (val.substring(0, 3) == "PAT" || val.substring(0, 3) == "OCF" || val.substring(0, 3) == "ODS" || val.substring(0, 3) == "CPP" || val.substring(0, 3) == "STD") {
-                self.location.href = "billingON.jsp?curBillForm=<%="PRI"%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("","UTF-8")))%>&appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demoname != null ? demoname : "","UTF-8")))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("appointment_date"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&start_time=<%=Encode.forJavaScript(request.getParameter("start_time"))%>&bNewForm=1";
+                self.location.href = "billingON.jsp?curBillForm=<%="PRI"%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname != null ? demoname : ""))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=1";
             } else if (val.substring(0, 3) == "BON") {
-                self.location.href = "billingON.jsp?curBillForm=<%=Encode.forJavaScript(String.valueOf(oscarVariables.getProperty("primary_care_incentive", "").trim()))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("","UTF-8")))%>&appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demoname != null ? demoname : "","UTF-8")))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("appointment_date"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&start_time=<%=Encode.forJavaScript(request.getParameter("start_time"))%>&bNewForm=1";
+                self.location.href = "billingON.jsp?curBillForm=<%=Encode.forUriComponent(String.valueOf(oscarVariables.getProperty("primary_care_incentive", "").trim()))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname != null ? demoname : ""))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=1";
             } else {
                 <% if(ctlBillForm.equals("PRI") ) {%>
-                self.location.href = "billingON.jsp?curBillForm=<%=Encode.forJavaScript(String.valueOf(oscarVariables.getProperty("default_view", "").trim()))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("","UTF-8")))%>&appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demoname != null ? demoname : "","UTF-8")))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("appointment_date"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&start_time=<%=Encode.forJavaScript(request.getParameter("start_time"))%>&bNewForm=1";
+                self.location.href = "billingON.jsp?curBillForm=<%=Encode.forUriComponent(String.valueOf(oscarVariables.getProperty("default_view", "").trim()))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname != null ? demoname : ""))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=1";
                 <% } %>
             }
         }
@@ -1018,7 +1016,7 @@
         function onHistory() {
             var dd = document.forms[0].day.value;
             //alert(dd);
-            popupPage("800", "1000", "billingONHistorySpec.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demo_no))%>&demo_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demoname != null ? demoname : "","UTF-8")))%>&orderby=appointment_date&day=" + dd);
+            popupPage("800", "1000", "billingONHistorySpec.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demo_no))%>&demo_name=<%=Encode.forUriComponent(String.valueOf(demoname != null ? demoname : ""))%>&orderby=appointment_date&day=" + dd);
         }
 
         function prepareBack() {
@@ -1323,7 +1321,14 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                         <td style="text-align: center;"
                             class="<%=Encode.forHtmlAttribute(String.valueOf(warningClass))%>"><%=Encode.forHtml(String.valueOf(billingRecomendations.toString()))%>
                         </td>
-                        <td style="text-align: center;"><%=Encode.forHtml(String.valueOf(msg))%>
+                        <td style="text-align: center;">
+                            <%=Encode.forHtmlContent(msg)%>
+                            <% for (String errorText : errorMsgs) { %>
+                                <div class="alert alert-error">Error: <%=Encode.forHtmlContent(errorText)%></div>
+                            <% } %>
+                            <% for (String warningText : warningMsgs) { %>
+                                <div class="alert alert-warning">Warning: <%=Encode.forHtmlContent(warningText)%></div>
+                            <% } %>
                         </td>
                     </tr>
                 </table>
@@ -1855,8 +1860,8 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                   ondblclick="onDblClickServiceCode(this)"><%=Encode.forHtml(String.valueOf(serviceCode))%></span>
                                         </td>
                                         <td style="<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>"
-                                                <%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? "title=\"" + serviceDesc + "\"" : ""))%>
-                                                <%=Encode.forHtml(String.valueOf(displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + displayStyle + "\""))%>>
+                                                <%=serviceDesc.length() > 30 ? "title=\"" + Encode.forHtmlAttribute(serviceDesc) + "\"" : ""%>
+                                                <%=displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + Encode.forHtmlAttribute(displayStyle) + "\""%>>
                                             <div onclick="getElementById('xml_<%=Encode.forJavaScript(String.valueOf(serviceCode))%>').click();"><%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc))%>
                                                 <!--<input type="hidden" name="desc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDesc))%>" />-->
                                             </div>
@@ -1939,8 +1944,8 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
 
                                         </td>
                                         <td style="<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>"
-                                                <%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? "title=\"" + serviceDesc + "\"" : ""))%>
-                                                <%=Encode.forHtml(String.valueOf(displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + displayStyle + "\""))%>>
+                                                <%=serviceDesc.length() > 30 ? "title=\"" + Encode.forHtmlAttribute(serviceDesc) + "\"" : ""%>
+                                                <%=displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + Encode.forHtmlAttribute(displayStyle) + "\""%>>
                                             <div onclick="getElementById('xml_<%=Encode.forJavaScript(String.valueOf(serviceCode))%>').click();">
                                                 <%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc))%>
                                             </div>
@@ -2024,8 +2029,8 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                   onDblClick="onDblClickServiceCode(this)"><%=Encode.forHtml(String.valueOf(serviceCode))%></span>
                                         </td>
                                         <td style="<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%> "
-                                                <%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? "title=\"" + serviceDesc + "\"" : ""))%>
-                                                <%=Encode.forHtml(String.valueOf(displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + displayStyle + "\""))%>>
+                                                <%=serviceDesc.length() > 30 ? "title=\"" + Encode.forHtmlAttribute(serviceDesc) + "\"" : ""%>
+                                                <%=displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + Encode.forHtmlAttribute(displayStyle) + "\""%>>
                                             <div onclick="getElementById('xml_<%=Encode.forJavaScript(String.valueOf(serviceCode))%>').click();">
                                                 <%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc))%>
                                                 <!--<input type="hidden" name="desc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDesc))%>" />-->

@@ -43,4 +43,4 @@
         ExportMeasurementType emt = new ExportMeasurementType();
         export = emt.export(measurementTypesBean);
     }
-%><%=Encode.forHtml(String.valueOf(export))%>
+%><%=export%>

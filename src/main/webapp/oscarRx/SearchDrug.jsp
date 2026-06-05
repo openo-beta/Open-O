@@ -455,7 +455,7 @@
                                                         %>
                                                     </td>
                                                     <td width="20px" align="center"><a href="#" title="Annotation"
-                                                                                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(prescriptDrug.getId()))%>&demo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>','anwin','width=400,height=500');">
+                                                                                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&table_id=<%=Encode.forUriComponent(String.valueOf(prescriptDrug.getId()))%>&demo=<%=Encode.forUriComponent(String.valueOf(bean.getDemographicNo()))%>','anwin','width=400,height=500');">
                                                         <img src="<%= request.getContextPath() %>/images/notes.gif" border="0"></a>
                                                     </td>
                                                     <%
@@ -494,7 +494,7 @@
                                                                        <input type="button" name="cmdAllergies"
                                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgViewEditAllergies"/>"
                                                                               class="ControlPushButton"
-                                                                              onclick="javascript:window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies.jsp?demographicNo=<%=Encode.forJavaScript(request.getParameter("demographicNo"))%>';"
+                                                                              onclick="javascript:window.location.href='<%= request.getContextPath() %>/oscarRx/ShowAllergies.jsp?demographicNo=<%=Encode.forUriComponent(request.getParameter("demographicNo"))%>';"
                                                                               style="width: 100px"/>
 								       <input type="button" name="cmdRePrescribe"
                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgReprescribe"/>"

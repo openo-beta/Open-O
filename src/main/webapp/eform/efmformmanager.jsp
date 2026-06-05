@@ -185,7 +185,7 @@
                         class="icon-file" title="<%=Encode.forHtmlAttribute(curForm.get("formFileName").toString())%>"></i><%}%></td>
                 <td title="<%=Encode.forHtmlAttribute(String.valueOf(curForm.get("formName")))%>">
                     <a href="#"
-                       onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(curForm.get("fid")))%>', '<%=Encode.forJavaScript(String.valueOf("Form"+i))%>'); return false;"><%=Encode.forHtml(String.valueOf(curForm.get("formName")))%>
+                       onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(curForm.get("fid")))%>', '<%=Encode.forJavaScript(String.valueOf("Form"+i))%>'); return false;"><%=Encode.forHtml(String.valueOf(curForm.get("formName")))%>
                     </a>
                 </td>
                 <td><%=Encode.forHtml(String.valueOf(curForm.get("formSubject")))%>

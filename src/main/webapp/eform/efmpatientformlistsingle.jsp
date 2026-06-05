@@ -171,7 +171,7 @@
                         <tr bgcolor="<%=((i % 2) == 1)?"#F2F2F2":"white"%>">
                             <td>
                                 <a href="#"
-                                   ONCLICK="popupPage('efmshowform_data.jsp?fdid=<%=Encode.forJavaScript(String.valueOf(curform.get("fdid")))%>&appointment=<%=Encode.forJavaScript(String.valueOf(appointment))%>', '<%=Encode.forJavaScript(String.valueOf("FormP" + i))%>'); return false;"
+                                   ONCLICK="popupPage('efmshowform_data.jsp?fdid=<%=Encode.forUriComponent(String.valueOf(curform.get("fdid")))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>', '<%=Encode.forJavaScript(String.valueOf("FormP" + i))%>'); return false;"
                                    TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgViewFrm"/>"
                                    onmouseover="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgViewFrm"/>'; return true"><%=Encode.forHtmlAttribute(String.valueOf(curform.get("formName")))%>
                                 </a>

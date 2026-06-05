@@ -146,6 +146,44 @@
 </script>
 <link rel="stylesheet" type="text/css" href="<c:out value="${ctx}"/>/library/jquery/jquery-ui-1.12.1.min.css">
 <script src="<c:out value="${ctx}"/>/share/javascript/prototype.js" type="text/javascript"></script>
+<script type="text/javascript">
+    // Lock prototype.js's `$` and `$F` so nothing on the page can
+    // overwrite them after this point.
+    //
+    // Why: third-party integrations loaded into this page (browser
+    // extensions, userscripts, or embedded toolbars) sometimes pull in
+    // their own copy of jQuery and effectively run `window.$ = jQuery`.
+    // That overwrites prototype's `$`, so when prototype's own methods
+    // later call `$(element)` internally they receive a jQuery wrapper
+    // instead of a DOM node and throw inside `Form.Element.getValue`
+    // / `_getElementsByXPath`. In the encounter window this silently
+    // kills Sign & Save and Sign Save & Bill -- the button click does
+    // nothing and the user has to refresh. It happens only when the
+    // third-party script wins the race to assign `$` before the user
+    // clicks, which is why the failure looks random in practice.
+    // The fix is to stop those overwrites at the source: lock the
+    // global so the rogue assignment is a no-op.
+    //
+    // Why `writable: false` and not a get/set accessor: prototype
+    // declares `function $()` at the top of a classic script, which
+    // in modern engines creates a non-configurable global binding.
+    // Converting a non-configurable data property into an accessor
+    // is not allowed and would throw. Tightening `writable: true ->
+    // false` IS allowed on a non-configurable property, and it is
+    // enough: subsequent `window.$ = ...` assignments silently fail
+    // in non-strict callers (or throw in strict ones), and prototype's
+    // `$` survives either way.
+    (function () {
+        if (typeof window.$ === 'function') {
+            try { Object.defineProperty(window, '$', { writable: false }); }
+            catch (e) { /* property may already be locked; safe to ignore */ }
+        }
+        if (typeof window.$F === 'function') {
+            try { Object.defineProperty(window, '$F', { writable: false }); }
+            catch (e) { /* property may already be locked; safe to ignore */ }
+        }
+    })();
+</script>
 <script src="<c:out value="${ctx}"/>/share/javascript/scriptaculous.js" type="text/javascript"></script>
 <script type="text/javascript" src="<c:out value="${ctx}/js/newCaseManagementView.js.jsp"/>"></script>
 <script type="text/javascript">
@@ -478,11 +516,11 @@
                 </security:oscarSec>
 
                 <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="r">
-                <select onchange="javascript:popupPage(700,700,'Templates',this.value);">
+                <select onchange="openTemplate(this.value);">
                     <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.Templates"/></option>
                     <option value="-1">------------------</option>
                     <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="w">
-                        <option value="<%=request.getContextPath()%>/admin/providertemplate.jsp">New / Edit Template
+                        <option value="__new__">New / Edit Template
                         </option>
                         <option value="-1">------------------</option>
                     </security:oscarSec>
@@ -491,9 +529,9 @@
                         List<EncounterTemplate> allTemplates = encounterTemplateDao.findAll();
 
                         for (EncounterTemplate encounterTemplate : allTemplates) {
-                            String templateName = Encode.forHtml(encounterTemplate.getEncounterTemplateName());
+                            String templateName = encounterTemplate.getEncounterTemplateName();
                     %>
-                    <option value="<%=request.getContextPath()+"/admin/providertemplate.jsp?dboperation=Edit&name="+templateName%>"><%=Encode.forHtml(String.valueOf(templateName))%>
+                    <option value="<%=Encode.forHtmlAttribute(templateName)%>"><%=Encode.forHtmlContent(templateName)%>
                     </option>
                     <%
                         }
@@ -705,7 +743,7 @@
                 <button type="button" onclick="toggleFullViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btneExpandLoadedNotes"/></button>
                 <button type="button" onclick="toggleCollapseViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnCollapseLoadedNotes"/></button>
                 <button type="button"
-                        onclick="popupPage(500,200,'noteBrowser<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>','casemgmt/noteBrowser.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>&FirstTime=1');">
+                        onclick="popupPage(500,200,'noteBrowser<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>','casemgmt/noteBrowser.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&FirstTime=1');">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.BrowseNotes"/></button>
             </div>
         </div>

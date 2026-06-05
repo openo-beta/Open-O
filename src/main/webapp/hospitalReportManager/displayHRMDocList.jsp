@@ -134,7 +134,7 @@
                     <tr>
 
                         <td><a href="#"
-                               ONCLICK="popupPage('<%=request.getContextPath() %>/hospitalReportManager/Display.do?id=<%=Encode.forJavaScript(String.valueOf(curhrmdoc.get("id")))%>', 'HRM Report'); return false;"
+                               ONCLICK="popupPage('<%=request.getContextPath() %>/hospitalReportManager/Display.do?id=<%=Encode.forUriComponent(String.valueOf(curhrmdoc.get("id")))%>', 'HRM Report'); return false;"
                         ><%=Encode.forHtml(String.valueOf(curhrmdoc.get("report_type")))%>
                         </a></td>
                         <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("description")))%>

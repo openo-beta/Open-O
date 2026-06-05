@@ -66,7 +66,6 @@
 <%@ page import="org.springframework.dao.DataIntegrityViolationException" %>
 <%@ page import="org.springframework.web.util.HtmlUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
-<%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
@@ -86,6 +85,7 @@
 
 <%
     String msg = "";
+    boolean msgIsError = false;
     String sql = null;
     ResultSet rs = null;
 
@@ -158,8 +158,6 @@
             String priority = request.getParameter(prefix);
             if (objectName.equals("Name1")) objectName = request.getParameter("object$Name1").trim();
 
-            String encodedRoleUserGroup = Encode.forHtmlContent(StringUtils.trimToEmpty(roleUserGroup));
-            String encodedObjectName = Encode.forHtmlContent(StringUtils.trimToEmpty(objectName));
             SecObjPrivilege sop = new SecObjPrivilege();
             sop.setId(new SecObjPrivilegePrimaryKey());
             sop.getId().setRoleUserGroup(roleUserGroup);
@@ -173,11 +171,12 @@
             } catch (DataIntegrityViolationException divEx) {
                 secExceptionMsg = divEx.getMostSpecificCause().getLocalizedMessage();
             }
-            if (secExceptionMsg.length() > 0)
+            if (secExceptionMsg.length() > 0) {
                 msg += secExceptionMsg;
-            else {
-                msg += "Role/Obj/Rights " + encodedRoleUserGroup + "/" + encodedObjectName + "/" + privilege + " is added. ";
-                LogAction.addLog(curUser_no, LogConst.ADD, LogConst.CON_PRIVILEGE, roleUserGroup + "|" + encodedObjectName + "|" + privilege, ip);
+                msgIsError = true;
+            } else {
+                msg += "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is added. ";
+                LogAction.addLog(curUser_no, LogConst.ADD, LogConst.CON_PRIVILEGE, roleUserGroup + "|" + objectName + "|" + privilege, ip);
             }
         }
     }
@@ -185,9 +184,7 @@
 // update the role list
     if (request.getParameter("buttonUpdate") != null && request.getParameter("buttonUpdate").length() > 0) {
         String roleUserGroup = request.getParameter("roleUserGroup");
-        String encodedRoleUserGroup = Encode.forHtmlContent(StringUtils.trimToEmpty(roleUserGroup));
         String objectName = request.getParameter("objectName");
-        String encodedObjectName = Encode.forHtmlContent(StringUtils.trimToEmpty(objectName));
 
         String privilege = request.getParameter("privilege");
         String priority = request.getParameter("priority");
@@ -234,7 +231,8 @@
             msg = "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is updated. ";
             LogAction.addLog(curUser_no, LogConst.UPDATE, LogConst.CON_PRIVILEGE, roleUserGroup + "|" + objectName + "|" + privilege, ip);
         } else {
-            msg = "Role/Obj/Rights " + encodedRoleUserGroup + "/" + encodedObjectName + "/" + privilege + " is <span style='color:red'>NOT</span> updated!!! ";
+            msg = "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is NOT updated!!! ";
+            msgIsError = true;
         }
 
     }
@@ -243,9 +241,7 @@
 // delete the role list
     if (request.getParameter("submit") != null && request.getParameter("submit").equals("Delete")) {
         String roleUserGroup = request.getParameter("roleUserGroup");
-        String encodedRoleUserGroup = Encode.forHtmlContent(StringUtils.trimToEmpty(roleUserGroup));
         String objectName = request.getParameter("objectName");
-        String encodedObjectName = Encode.forHtmlContent(StringUtils.trimToEmpty(objectName));
 
         String privilege = request.getParameter("privilege");
         String priority = request.getParameter("priority");
@@ -257,7 +253,7 @@
             priority = String.valueOf(sop.getPriority());
             provider_no = sop.getProviderNo();
             secObjPrivilegeDao.remove(sop.getId());
-            msg = "Role/Obj/Rights " + encodedRoleUserGroup + "/" + encodedObjectName + "/" + privilege + " is deleted. ";
+            msg = "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is deleted. ";
 
             RecycleBin recycleBin = new RecycleBin();
             recycleBin.setProviderNo(curUser_no);
@@ -271,7 +267,8 @@
             recycleBinDao.persist(recycleBin);
             LogAction.addLog(curUser_no, LogConst.DELETE, LogConst.CON_PRIVILEGE, roleUserGroup + "|" + objectName, ip);
         } else {
-            msg = "Role/Obj/Rights " + encodedRoleUserGroup + "/" + encodedObjectName + "/" + privilege + " is <span style='color:red'>NOT</span> deleted!!! ";
+            msg = "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is NOT deleted!!! ";
+            msgIsError = true;
         }
     }
 
@@ -393,8 +390,10 @@
 <form name="myform" action="providerPrivilege.jsp" method="POST">
     <table width="100%">
         <tr>
-            <th><% if (msg.length() > 1) {%>
-                <div class="alert" style="width:100%; text-align:center"><%=Encode.forHtml(String.valueOf(msg))%>
+            <th><% if (msg.length() > 1) {
+                String alertClass = msgIsError ? "alert-danger" : "alert-info";
+            %>
+                <div class="alert <%=alertClass%>" style="width:100%; text-align:center"><%=Encode.forHtml(msg)%>
                 </div>
                 <% } %></th>
             <th style="width: 600px">Object Name/Role Name: <input type="text" name="keyword"

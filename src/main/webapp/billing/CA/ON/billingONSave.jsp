@@ -173,7 +173,7 @@
         }
     }
 
-    popupPage(700, 720, 'billingON3rdInv.jsp?billingNo=<%=Encode.forJavaScript(String.valueOf(billingNo))%>');
+    popupPage(700, 720, 'billingON3rdInv.jsp?billingNo=<%=Encode.forUriComponent(String.valueOf(billingNo))%>');
     self.close();
     self.opener.refresh();
 </script>

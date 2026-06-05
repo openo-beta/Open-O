@@ -42,8 +42,8 @@
     <script language="JavaScript">
         <!--
 
-        var ox = <%=Encode.forJavaScript(String.valueOf(oox))%>;
-        var oy = <%=Encode.forJavaScript(String.valueOf(ooy))%>;
+        var ox = <%=oox%>;
+        var oy = <%=ooy%>;
 
         function ff(x, y, w, h, name) { //need escape to name for ' and "
             x = eval(ox + x);
@@ -62,7 +62,7 @@
 
 <div ID="bdiv1"
      STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(50+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(74+ooy))%>px; width:400px; height:20px;">
-    <%=Encode.forHtml(Misc.JSEscape(request.getParameter("xml_name")))%>
+    <%=Misc.JSEscape(request.getParameter("xml_name"))%>
 </div>
 
 <script language="JavaScript">

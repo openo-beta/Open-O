@@ -137,9 +137,9 @@
     }
     ///////--------
 
-    String warningMsg = "";
+    List<String> warningMsgs = new ArrayList<String>();
     String errorFlag = "";
-    String errorMsg = "";
+    List<String> errorMsgs = new ArrayList<String>();
 
     Vector vecCodeItem = prepObj.getServiceCodeReviewVec(vecServiceParam[0], vecServiceParam[1], vecServiceParam[2], billReferalDate);
     Vector vecPercCodeItem = prepObj.getPercCodeReviewVec(vecServiceParam[0], vecServiceParam[1], vecCodeItem, billReferalDate);  //LINE CAUSING ERROR
@@ -244,24 +244,18 @@
 
         if (demo.getHin() == null) {
             errorFlag = "1";
-            errorMsg = errorMsg
-                    + "<br><div class='alert alert-error'>Error: The patient does not have a HIN </div><br>";
+            errorMsgs.add("The patient does not have a HIN.");
         } else if (demo.getHin().equals("")) {
-            warningMsg += "<br><div class='alert alert-error'>Warning: The patient does not have a HIN </div><br>";
+            warningMsgs.add("The patient does not have a HIN.");
         }
         if (r_doctor_ohip != null && r_doctor_ohip.length() > 0 && r_doctor_ohip.length() != 6) {
-            warningMsg += "<br><div class='alert alert-error'>Warning: the referral doctor's no is wrong. </div><br>";
+            warningMsgs.add("The referral doctor's no is wrong.");
         }
         if (demoDOB.length() != 8) {
             errorFlag = "1";
-            errorMsg = errorMsg
-                    + "<br><div class='alert alert-error'>Error: The patient does not have a valid DOB. </div><br>";
+            errorMsgs.add("The patient does not have a valid DOB.");
         }
     }
-
-
-    // create msg
-    String wrongMsg = errorMsg + warningMsg;
 
 %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
@@ -593,7 +587,13 @@
                             &nbsp;&nbsp; <%=demoSex.equals("1") ? "Male" : "Female"%> &nbsp;&nbsp;
                             <%=Encode.forHtml(String.valueOf(" DOB: " + demoDOBYY + "/" + demoDOBMM + "/" + demoDOBDD + " &nbsp;&nbsp; HIN: " + demoHIN + "" + demoVer))%>
                         </td>
-                        <td style="text-align:center"><%=Encode.forHtml(String.valueOf(wrongMsg))%>
+                        <td style="text-align:center">
+                            <% for (String errorText : errorMsgs) { %>
+                                <div class="alert alert-error">Error: <%=Encode.forHtmlContent(errorText)%></div>
+                            <% } %>
+                            <% for (String warningText : warningMsgs) { %>
+                                <div class="alert alert-warning">Warning: <%=Encode.forHtmlContent(warningText)%></div>
+                            <% } %>
                         </td>
                     </tr>
                 </table>
@@ -606,7 +606,7 @@
                                 <tr>
                                     <!--<input type="text" name="checkFlag" id="checkFlag" value="<%=Encode.forHtmlAttribute(request.getParameter("checkFlag")) %>" />  -->
                                     <td style="white-space:nowrap; width:30%; text-align:center"><b>Service Date</b><br>
-                                        <%=Encode.forHtml(request.getParameter("service_date").replaceAll("\\n", "<br>"))%>
+                                        <%=Encode.forHtml(request.getParameter("service_date")).replaceAll("\\n", "<br>")%>
                                     </td>
                                     <td style="text-align:center; width:33%"><b>Diagnostic Code</b><br>
                                         <%=Encode.forHtml(String.valueOf(dxCode))%><br>
@@ -945,8 +945,8 @@
                                         String iCheckNo = (String)vecPercNo.get(i);
                                 %>
                                 var nSubtotal = 0.00;
-                                var nMin = <%=Encode.forJavaScript(String.valueOf(vecPercMin.get(i)))%>;
-                                var nMax = <%=Encode.forJavaScript(String.valueOf(vecPercMax.get(i)))%>;
+                                var nMin = <%=vecPercMin.get(i)%>;
+                                var nMax = <%=vecPercMax.get(i)%>;
                                 //alert(":" + document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.type);
                                 if (document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.length == undefined) {
                                     if (document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.checked) {

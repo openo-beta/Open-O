@@ -251,7 +251,7 @@
             <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddLink"/>
         </a>
         <a class="btn" href="javascript:void(0);"
-           onclick="popup1(450, 600, 'addedithtmldocument.jsp?function=<%=Encode.forJavaScript(String.valueOf(module))%>&functionid=<%=Encode.forJavaScript(String.valueOf(moduleid))%>&mode=addHtml', 'addhtml')">
+           onclick="popup1(450, 600, 'addedithtmldocument.jsp?function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(moduleid))%>&mode=addHtml', 'addhtml')">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddHTML"/>
         </a>
     </div>
@@ -355,7 +355,7 @@
                         <input type="submit" name="Submit" value="Add" class="btn btn-primary">
                         <input type="button" name="Button" class="btn btn-error"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
-                               onclick="window.location='documentReport.jsp?function=<%=Encode.forJavaScript(String.valueOf(module))%>&functionid=<%=Encode.forJavaScript(String.valueOf(moduleid))%>'">
+                               onclick="window.location='documentReport.jsp?function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(moduleid))%>'">
 
                     </div>
                 </div>
@@ -454,7 +454,7 @@
                     <input class="btn btn-primary" type="SUBMIT" name="Submit" value="Add">
                     <input class="btn" type="button" name="Button"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
-                           onclick="window.location='documentReport.jsp?function=<%=Encode.forJavaScript(String.valueOf(module))%>&functionid=<%=Encode.forJavaScript(String.valueOf(moduleid))%>'">
+                           onclick="window.location='documentReport.jsp?function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(moduleid))%>'">
                 </div>
             </div>
             </form>

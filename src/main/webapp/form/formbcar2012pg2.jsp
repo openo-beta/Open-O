@@ -806,58 +806,58 @@
 
             function setEPDSscores() {
 
-                var val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS1", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS1", "'null'")))%>;
+                var val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS1", "null").equals("") ? "null" : props.getProperty("ar2_EPDS1", "null")))%>';
                 if (val != 'null') {
                     document.forms[0].ar2_EPDS1[val].checked = true;
                 }
 
-                val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS2", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS2", "'null'")))%>;
+                val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS2", "null").equals("") ? "null" : props.getProperty("ar2_EPDS2", "null")))%>';
                 if (val != 'null') {
                     document.forms[0].ar2_EPDS2[val].checked = true;
                 }
 
-                val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS3", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS3", "'null'")))%>;
+                val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS3", "null").equals("") ? "null" : props.getProperty("ar2_EPDS3", "null")))%>';
                 if (val != 'null') {
                     val = 3 - val;
                     document.forms[0].ar2_EPDS3[val].checked = true;
                 }
 
-                val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS4", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS4", "'null'")))%>;
+                val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS4", "null").equals("") ? "null" : props.getProperty("ar2_EPDS4", "null")))%>';
                 if (val != 'null') {
                     document.forms[0].ar2_EPDS4[val].checked = true;
                 }
 
-                val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS5", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS5", "'null'")))%>;
+                val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS5", "null").equals("") ? "null" : props.getProperty("ar2_EPDS5", "null")))%>';
                 if (val != 'null') {
                     val = 3 - val;
                     document.forms[0].ar2_EPDS5[val].checked = true;
                 }
 
-                val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS6", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS6", "'null'")))%>;
+                val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS6", "null").equals("") ? "null" : props.getProperty("ar2_EPDS6", "null")))%>';
                 if (val != 'null') {
                     val = 3 - val;
                     document.forms[0].ar2_EPDS6[val].checked = true;
                 }
 
-                val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS7", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS7", "'null'")))%>;
+                val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS7", "null").equals("") ? "null" : props.getProperty("ar2_EPDS7", "null")))%>';
                 if (val != 'null') {
                     val = 3 - val;
                     document.forms[0].ar2_EPDS7[val].checked = true;
                 }
 
-                val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS8", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS8", "'null'")))%>;
+                val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS8", "null").equals("") ? "null" : props.getProperty("ar2_EPDS8", "null")))%>';
                 if (val != 'null') {
                     val = 3 - val;
                     document.forms[0].ar2_EPDS8[val].checked = true;
                 }
 
-                val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS9", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS9", "'null'")))%>;
+                val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS9", "null").equals("") ? "null" : props.getProperty("ar2_EPDS9", "null")))%>';
                 if (val != 'null') {
                     val = 3 - val;
                     document.forms[0].ar2_EPDS9[val].checked = true;
                 }
 
-                val = <%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS10", "'null'").equals("") ? "'null'" : props.getProperty("ar2_EPDS10", "'null'")))%>;
+                val = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("ar2_EPDS10", "null").equals("") ? "null" : props.getProperty("ar2_EPDS10", "null")))%>';
                 if (val != 'null') {
                     val = 3 - val;
                     document.forms[0].ar2_EPDS10[val].checked = true;
@@ -1120,7 +1120,7 @@
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="ID" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
-        <input type="hidden" name="provider_no" value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+        <input type="hidden" name="provider_no" value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
         <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
         <input type="hidden" name="DOB" id="DOB" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg1_dateOfBirth", "")))%>"/>

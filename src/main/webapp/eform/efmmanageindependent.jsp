@@ -135,7 +135,7 @@
             %>
             <tr>
                 <td><a href="#"
-                       ONCLICK="openEform('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fdid=<%=Encode.forJavaScript(String.valueOf(curform.get("fdid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormP" + i))%>'); return false;"
+                       ONCLICK="openEform('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fdid=<%=Encode.forUriComponent(String.valueOf(curform.get("fdid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormP" + i))%>'); return false;"
                        TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgViewFrm"/>"
                        onmouseover="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgViewFrm"/>'; return true"><%=Encode.forHtmlAttribute(String.valueOf(curform.get("formName")))%>
                 </a></td>

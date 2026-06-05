@@ -307,7 +307,7 @@
                 var url = '<c:out value="${ctx}"/>/oscarRx/AddRxComment.jsp';
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
-                var params = "scriptNo=<%=Encode.forJavaScript(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
+                var params = "scriptNo=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
                 new Ajax.Request(url, {method: 'post', parameters: params});
                 frames['preview'].document.getElementById('additNotes').innerHTML = document.getElementById('additionalNotes').value.replace(/\n/g, "<br>");
                 frames['preview'].document.getElementsByName('additNotes')[0].value = document.getElementById('additionalNotes').value.replace(/\n/g, "\r\n");
@@ -380,7 +380,7 @@
                     <% } %>
 
                     //we support pasting into orig encounter and new casemanagement
-                    demographicNo = <%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>;
+                    demographicNo = "<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>";
                     noteEditor = "noteEditor" + demographicNo;
                     if (window.parent.opener) {
                         if (window.parent.opener.document.forms["caseManagementEntryForm"] != undefined &&
@@ -448,7 +448,7 @@
             function openEncounter() {
                 var windowprops = "height=710,width=1024,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=20,left=20";
                 var currentDate = new Date().toISOString().substring(0, 10);
-                var url = "<%= request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.getProviderNo()))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>&curProviderNo=<%=Encode.forJavaScript(String.valueOf(bean.getProviderNo()))%>&userName=<%=Encode.forUriComponent(ProviderData.getProviderName(bean.getProviderNo()))%>&curDate=" + currentDate;
+                var url = "<%= request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forUriComponent(String.valueOf(bean.getProviderNo()))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.getDemographicNo()))%>&curProviderNo=<%=Encode.forUriComponent(String.valueOf(bean.getProviderNo()))%>&userName=<%=Encode.forUriComponent(ProviderData.getProviderName(bean.getProviderNo()))%>&curDate=" + currentDate;
 
                 if (window.parent.opener && window.parent.opener.document.forms["caseManagementEntryForm"] != undefined) {
                     // redirect if encounter window open

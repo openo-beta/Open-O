@@ -177,13 +177,13 @@
                 <td>
                     <select name="scope" id="scope" onChange="updateScope()">
                         <option value="">Select Below</option>
-                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(FlowSheetUserCreated.SCOPE_CLINIC))%>" <%=Encode.forHtml(String.valueOf("clinic".equals(scope) ? "selected=\"selected\" " : ""))%>>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(FlowSheetUserCreated.SCOPE_CLINIC))%>" <%="clinic".equals(scope) ? " selected=\"selected\" " : ""%>>
                             Clinic
                         </option>
-                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(FlowSheetUserCreated.SCOPE_PROVIDER))%>" <%=Encode.forHtml(String.valueOf("providers".equals(scope) ? "selected=\"selected\" " : ""))%>>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(FlowSheetUserCreated.SCOPE_PROVIDER))%>" <%="providers".equals(scope) ? " selected=\"selected\" " : ""%>>
                             Provider
                         </option>
-                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(FlowSheetUserCreated.SCOPE_PATIENT))%>" <%=Encode.forHtml(String.valueOf("patient".equals(scope) ? "selected=\"selected\" " : ""))%>>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(FlowSheetUserCreated.SCOPE_PATIENT))%>" <%="patient".equals(scope) ? " selected=\"selected\" " : ""%>>
                             Patient
                         </option>
                     </select>
