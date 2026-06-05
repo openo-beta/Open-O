@@ -64,11 +64,12 @@
 
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
         <script src="${ pageContext.request.contextPath }/library/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-        <script src="${ pageContext.request.contextPath }/library/DataTables-1.10.12/media/js/dataTables.bootstrap.min.js"></script>
         <script src="<%=request.getContextPath() %>/library/DataTables/datatables.min.js"></script>
+        <script src="${ pageContext.request.contextPath }/library/DataTables-1.10.12/media/js/dataTables.bootstrap.min.js"></script>
         <!-- DataTables 1.13.4 -->
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.js"></script>
-        <script> var lang = '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>';</script>
+        <script> var lang = '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>';
+                 var ctx = '<%=request.getContextPath()%>';</script>
         <script src="${ pageContext.request.contextPath }/hospitalReportManager/inbox.js?<%=(int)(Math.random()*100000)%>"></script>
 
         <script src="${ pageContext.request.contextPath }/js/jquery.ui.widget.js"></script>
@@ -153,6 +154,8 @@
                                 &nbsp;&nbsp;
                                 <input type="checkbox" id="demographicUnmatched" name="demographicUnmatched"/>Unmatched
                                 Patient &nbsp;&nbsp;
+                                <input type="checkbox" id="categoryUnmatched" name="categoryUnmatched"/>Unmatched
+                                Category &nbsp;&nbsp;
                             </td>
                         </tr>
                         <tr>
@@ -183,6 +186,7 @@
                             <th>Report Date</th>
                             <th>Received Date</th>
                             <th>Sending Facility</th>
+                            <th>Report Number</th>
                             <th>Class/Sub-class</th>
                             <th>Category</th>
                             <th>Description</th>

@@ -119,6 +119,8 @@
                         <th><fmt:setBundle basename="oscarResources"/><fmt:message key="hrm.displayHRMDocList.reportStatus"/></th>
                         <th>Report Date</th>
                         <th><fmt:setBundle basename="oscarResources"/><fmt:message key="hrm.displayHRMDocList.timeReceived"/></th>
+                        <th>Sending Facility</th>
+                        <th>Report Number</th>
                         <th>Category</th>
                         <th>Class/Subclass/Accompanying Subclass</th>
                     </tr>
@@ -143,8 +145,10 @@
                         </td>
                         <td style="text-align: center;"><%=Encode.forHtml(String.valueOf(curhrmdoc.get("time_received")))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("category") != null ? curhrmdoc.get("category")  : ""))%>
-                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("class_subclass") != null ? curhrmdoc.get("class_subclass")  : ""))%>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("sending_facility") != null ? curhrmdoc.get("sending_facility") : ""))%></td>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("report_number") != null ? curhrmdoc.get("report_number") : ""))%></td>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("category") != null ? curhrmdoc.get("category")  : ""))%></td>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("class_subclass") != null ? curhrmdoc.get("class_subclass")  : ""))%></td>
                     </tr>
                     <%
                         }
@@ -152,6 +156,10 @@
                     %>
                     <tr>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgNoData"/></td>
+                        <td></td>
+                        <!-- this empty td is here so that the number of columns matches the <th>, an important requirement when using jquery datatables-->
+                        <td></td>
+                        <!-- this empty td is here so that the number of columns matches the <th>, an important requirement when using jquery datatables-->
                         <td></td>
                         <!-- this empty td is here so that the number of columns matches the <th>, an important requirement when using jquery datatables-->
                         <td></td>

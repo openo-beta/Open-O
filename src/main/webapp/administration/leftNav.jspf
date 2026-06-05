@@ -830,9 +830,9 @@ String curProvider_no = (String)session.getAttribute("user");
 					
 					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/hospitalReportManager/hospitalReportManager.jsp">Hospital Report Manager (HRM) Status</a></li>
 					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/hospitalReportManager/configure.jsp">Hospital Report Manager (HRM) Configuration</a></li>
-					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/hospitalReportManager/hrmPreferences.jsp">Hospital Report Manager (HRM) Preferences (Legacy)</a></li>
 					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/hospitalReportManager/hrmShowMapping.jsp">Hospital Report Manager (HRM) Class Mappings</a></li>
 					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/hospitalReportManager/hrmCategories.jsp">Hospital Report Manager (HRM) Categories</a></li>
+					<li><a href='javascript:void(0);' class="xlink" rel="${ctx}/hospitalReportManager/HRMSendingFacility.do">Hospital Report Manager (HRM) Sending Facilities</a></li>
 					
 					<%
 						String olisKeystore = OscarProperties.getInstance().getProperty("olis_keystore", "");

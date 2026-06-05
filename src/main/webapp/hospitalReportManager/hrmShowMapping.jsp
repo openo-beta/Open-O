@@ -90,7 +90,7 @@
             <table id="tblMap" class="table table-striped table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th>Sending Facility Id</th>
+                    <th>Sending Facility</th>
                     <th>Class Name</th>
                     <th>SubClass Name Mnemonic</th>
                     <th>Mnemonic</th>
@@ -106,7 +106,7 @@
                         HashMap<String, ? extends Object> curmapping = hrmmappings.get(i);
                 %>
                 <tr>
-                    <td><%=Encode.forHtml(String.valueOf(curmapping.get("id")))%>&nbsp;</td>
+                    <td><%=Encode.forHtml(String.valueOf(curmapping.get("facility_display")))%>&nbsp;</td>
                     <td><%=Encode.forHtml(String.valueOf(curmapping.get("class")))%>&nbsp;</td>
                     <td><%=Encode.forHtml(String.valueOf(curmapping.get("sub_class")))%>&nbsp;</td>
                     <td><%=Encode.forHtml(String.valueOf(curmapping.get("mnemonic")))%>&nbsp;</td>

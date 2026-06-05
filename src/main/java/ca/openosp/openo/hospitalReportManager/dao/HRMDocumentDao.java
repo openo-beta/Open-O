@@ -198,7 +198,7 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
      * @return the base HQL string with named parameters
      */
     private String buildQueryHql(boolean demographicUnmatched, boolean providerUnmatched,
-                                  String providerNo, boolean noSignOff, boolean isCount) {
+                                  String providerNo, boolean noSignOff, boolean categoryUnmatched, boolean isCount) {
         String selectPart = isCount
                 ? "select count(x) from HRMDocument x"
                 : "select x from HRMDocument x";
@@ -207,6 +207,9 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
         String wherePart = " WHERE x.parentReport IS NULL";
 
         String demoFilter = demographicUnmatched ? " AND SIZE(x.matchedDemographics) = 0" : "";
+
+        // A null hrmCategoryId means the report did not match any configured category mapping at import.
+        String categoryFilter = categoryUnmatched ? " AND x.hrmCategoryId IS NULL" : "";
 
         String providerFilter;
         if (providerUnmatched) {
@@ -217,14 +220,14 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
             providerFilter = pNoFilter + signOffFilter;
         }
 
-        return selectPart + joinPart + wherePart + demoFilter + providerFilter;
+        return selectPart + joinPart + wherePart + demoFilter + categoryFilter + providerFilter;
     }
 
-    public List<HRMDocument> query(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, int start, int length, String orderColumn, String orderDirection) {
+    public List<HRMDocument> query(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, int start, int length, String orderColumn, String orderDirection) {
 
         // Build HQL using pre-built safe fragments to prevent HQL injection.
         // orderColumn and orderDirection are validated via the allowlisted ORDER_*_FRAGMENTS maps.
-        String hql = buildQueryHql(demographicUnmatched, providerUnmatched, providerNo, noSignOff, false);
+        String hql = buildQueryHql(demographicUnmatched, providerUnmatched, providerNo, noSignOff, categoryUnmatched, false);
         hql = hql + getSafeOrderByFragment(orderColumn, orderDirection);
 
         Query query = entityManager.createQuery(hql);
@@ -245,11 +248,11 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
         return documents;
     }
 
-    public long queryForCount(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, int start, int length, String orderColumn, String orderDirection) {
+    public long queryForCount(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, int start, int length, String orderColumn, String orderDirection) {
 
         // Build HQL using pre-built safe fragments to prevent HQL injection.
         // orderColumn and orderDirection are validated via the allowlisted ORDER_*_FRAGMENTS maps.
-        String hql = buildQueryHql(demographicUnmatched, providerUnmatched, providerNo, noSignOff, true);
+        String hql = buildQueryHql(demographicUnmatched, providerUnmatched, providerNo, noSignOff, categoryUnmatched, true);
         hql = hql + getSafeOrderByFragment(orderColumn, orderDirection);
 
         Query query = entityManager.createQuery(hql);

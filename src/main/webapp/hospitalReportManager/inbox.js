@@ -57,12 +57,13 @@ $(document).ready(function () {
     $('#libraryTable').DataTable({
         serverSide: true,
         ajax: {
-            "url": "../hospitalReportManager/hrm.do",
+            "url": ctx + "/hospitalReportManager/hrm.do",
             "data": function (d) {
                 d.providerNo = $("#providerNo").val();
                 d.providerUnmatched = $("#providerUnmatched").is(":checked");
                 d.noSignOff = $("#noSignOff").is(":checked");
                 d.demographicUnmatched = $("#demographicUnmatched").is(":checked");
+                d.categoryUnmatched = $("#categoryUnmatched").is(":checked");
             }
         },
         searching: false,
@@ -99,13 +100,14 @@ $(document).ready(function () {
             {"data": "report_date"},
             {"data": "received_date"},
             {"data": "sending_facility"},
+            {"data": "report_number"},
             {"data": "class_subclass"},
             {"data": "category", "visible": false},
             {"data": "description"}
         ],
         "order": [[6, "desc"]],
         "language": {
-            "url": "../library/DataTables/i18n/" + lang + ".json"
+            "url": ctx + "/library/DataTables/i18n/" + lang + ".json"
         }
 
     });
@@ -126,6 +128,9 @@ $(document).ready(function () {
     $("#demographicUnmatched").on('change', function () {
         reloadTable();
     });
+    $("#categoryUnmatched").on('change', function () {
+        reloadTable();
+    });
 
     $("#showAddlPatientInfo").on('change', function () {
         $("#libraryTable").DataTable().column(3).visible($(this).is(":checked"));
@@ -134,7 +139,7 @@ $(document).ready(function () {
     });
 
     $("#showCategoryInfo").on('change', function () {
-        $("#libraryTable").DataTable().column(10).visible($(this).is(":checked"));
+        $("#libraryTable").DataTable().column(11).visible($(this).is(":checked"));
     });
 
     $('#hrm_file').fileupload({
@@ -174,7 +179,7 @@ function reloadTable() {
 function fetchNewData() {
     $.ajax({
         type: "GET",
-        url: '../hospitalReportManager/hrm.do?method=fetch',
+        url: ctx + '/hospitalReportManager/hrm.do?method=fetch',
         dataType: 'json',
         async: true,
         success: function (data) {
@@ -190,7 +195,7 @@ function fetchNewData() {
 function getHrmStatus() {
     $.ajax({
         type: "GET",
-        url: '../hospitalReportManager/hrm.do?method=getHrmStatus',
+        url: ctx + '/hospitalReportManager/hrm.do?method=getHrmStatus',
         dataType: 'json',
         async: true,
         success: function (data) {

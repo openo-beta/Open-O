@@ -54,10 +54,13 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentSubClassDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMSubClassDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToProviderDao;
+import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
+import ca.openosp.openo.hospitalReportManager.model.HRMSubClass;
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -287,6 +290,8 @@ public class HRMReportParser {
         document.setSourceFacility(report.getSendingFacilityId());
         document.setSourceFacilityReportNo(report.getSendingFacilityReportNo());
 
+        warnIfSendingFacilityNotRegistered(loggedInInfo, report.getSendingFacilityId());
+
         String reportFileData = report.getFileData();
 
         String noMessageIdFileData = reportFileData.replaceAll("<MessageUniqueID>.*?</MessageUniqueID>", "<MessageUniqueID></MessageUniqueID>");
@@ -316,6 +321,11 @@ public class HRMReportParser {
 
         document.setClassName(report.getFirstReportClass());
         document.setSubClassName(report.getFirstReportSubClass());
+
+        // Auto-categorize at import using the (sending facility, class, sub-class) mapping (HRM02.08).
+        // Persisting it here means a null hrmCategoryId reliably identifies a report that did not match
+        // any configured category, which the inbox "unmatched category" filter relies on (HRM02.09).
+        document.setHrmCategoryId(resolveCategoryId(report));
 
         document.setRecipientId(report.getDeliverToUserId());
         document.setRecipientName(report.getDeliveryToUserIdFormattedName());
@@ -507,6 +517,43 @@ public class HRMReportParser {
                 warnings.add("Unmatched Report SubClass: '" + subClass + "' is not configured for this clinic.");
             }
         }
+    }
+
+    /**
+     * Resolves the EMR category for a report from its (sending facility, class, sub-class) using the
+     * configured HRM category mappings. Mirrors the matching used by {@link #addUnknownSubClassWarning}
+     * so the category persisted at import and the "unmatched" determination always agree.
+     *
+     * @param report HRMReport the parsed HRM report
+     * @return Integer the matched HRMCategory id, or null if no configured mapping applies
+     */
+    private static Integer resolveCategoryId(HRMReport report) {
+        String className = report.getFirstReportClass();
+        if (className == null || className.isEmpty()) return null;
+
+        HRMSubClassDao hrmSubClassDao = SpringUtils.getBean(HRMSubClassDao.class);
+        String sf = report.getSendingFacilityId();
+
+        boolean isAccompanying = className.equalsIgnoreCase("Diagnostic Imaging Report")
+                || className.equalsIgnoreCase("Cardio Respiratory Report");
+
+        HRMSubClass subClass;
+        if (isAccompanying) {
+            List<List<Object>> accompanying = report.getAccompanyingSubclassList();
+            if (accompanying == null || accompanying.isEmpty()) return null;
+            List<Object> first = accompanying.get(0);
+            if (first == null) return null;
+            String subClassName = first.size() > 0 ? (String) first.get(0) : null;
+            String subClassMnemonic = first.size() > 1 ? (String) first.get(1) : null;
+            if (subClassName == null || subClassName.isEmpty()) return null;
+            subClass = hrmSubClassDao.findApplicableSubClassMapping(className, subClassName, subClassMnemonic, sf);
+        } else {
+            String subClassName = report.getFirstReportSubClass();
+            if (subClassName == null || subClassName.isEmpty()) return null;
+            subClass = hrmSubClassDao.findApplicableSubClassMapping(className, subClassName, null, sf);
+        }
+
+        return (subClass != null && subClass.getHrmCategory() != null) ? subClass.getHrmCategory().getId() : null;
     }
 
 
@@ -889,5 +936,26 @@ public class HRMReportParser {
 
         hrmDocumentToDemographicDao.merge(demographicRouting);
 
+    }
+
+    private static void warnIfSendingFacilityNotRegistered(LoggedInInfo loggedInInfo, String sendingFacilityId) {
+        if (sendingFacilityId == null || sendingFacilityId.trim().isEmpty()) {
+            return;
+        }
+        try {
+            HRMSendingFacilityDao dao = SpringUtils.getBean(HRMSendingFacilityDao.class);
+            if (dao.findBySendingFacilityId(sendingFacilityId) == null) {
+                // Encode the facility ID (sourced from the HRM XML) before logging/notifying to prevent log injection.
+                String safeSf = Encode.forJava(sendingFacilityId);
+                logger.warn("HRM report received from unregistered Sending Facility '"
+                        + safeSf + "'. Add it via Admin → Integration → Hospital Report Manager (HRM) Sending Facilities"
+                        + " to enable facility-name display on reports.");
+                SFTPConnector.notifyHrmAdmin(loggedInInfo, "Unregistered HRM Sending Facility",
+                        "OpenO received an HRM report from an unregistered Sending Facility: " + safeSf
+                                + ".\n\nThe report was processed normally. Register this facility via Admin → Integration → Hospital Report Manager (HRM) Sending Facilities to enable name resolution on display.");
+            }
+        } catch (Exception e) {
+            logger.warn("Could not check HRMSendingFacility registry for '" + Encode.forJava(sendingFacilityId) + "'", e);
+        }
     }
 }
