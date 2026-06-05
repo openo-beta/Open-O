@@ -338,7 +338,8 @@ public class RxPrintPreview2Action extends ActionSupport {
                     .replaceAll("\\\\n", "<br>");
         }
 
-        request.setAttribute("strRx", strRx.toString().replaceAll("\\\\n", "<br>"));
+        // Separate prescription lines with newlines so the PDF servlet renders each on its own line.
+        request.setAttribute("strRx", strRx.toString().replace(";", "\n"));
         request.setAttribute("strRxNoNewLines", strRxNoNewLines.toString());
         request.setAttribute("rxFullOutLines", rxFullOutLines);
     }

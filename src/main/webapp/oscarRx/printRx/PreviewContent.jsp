@@ -121,6 +121,7 @@
                                        value="<%= Encode.forHtml((String)request.getAttribute("patientDOBStr")) %>"/>
                                 <input type="hidden" name="pharmaFax" value="${requestScope.pharmacyFax}"/>
                                 <input type="hidden" name="pharmaName" value="${requestScope.pharmacyName}"/>
+                                <input type="hidden" name="pharmacyInfo" value="<c:out value='${requestScope.prefPharmacyId}'/>"/>
                                 <input type="hidden" name="pracNo"
                                        value="<%= Encode.forHtml((String)request.getAttribute("pracNo")) %>"/>
                                 <input type="hidden" name="showPatientDOB" value="${requestScope.showPatientDOB}"/>
