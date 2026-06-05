@@ -248,7 +248,7 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
         return documents;
     }
 
-    public long queryForCount(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, int start, int length, String orderColumn, String orderDirection) {
+    public long queryForCount(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, int length, String orderColumn, String orderDirection) {
 
         // Build HQL using pre-built safe fragments to prevent HQL injection.
         // orderColumn and orderDirection are validated via the allowlisted ORDER_*_FRAGMENTS maps.
