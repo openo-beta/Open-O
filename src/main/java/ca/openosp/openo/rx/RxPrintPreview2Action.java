@@ -371,9 +371,8 @@ public class RxPrintPreview2Action extends ActionSupport {
         request.setAttribute("sessionBean", sessionBean);
         request.setAttribute("reprint", reprint);
 
-        // Encode for the JavaScript-string context (PrintPreview.jsp onClick handlers); guards against a
-        // quote in the provider name breaking the handler, same class of issue as #2451.
-        request.setAttribute("providerName", Encode.forJavaScript(ca.openosp.openo.providers.data.ProviderData.getProviderName(sessionBean.getProviderNo())));
+        // Store the raw value; encoding is applied per-context at the JSP output points (issue #2451).
+        request.setAttribute("providerName", ca.openosp.openo.providers.data.ProviderData.getProviderName(sessionBean.getProviderNo()));
         request.setAttribute("providerNo", sessionBean.getProviderNo());
 
         return sessionBean;
@@ -530,14 +529,10 @@ public class RxPrintPreview2Action extends ActionSupport {
         if (pharmacyId != null && !"null".equalsIgnoreCase(pharmacyId)) {
             pharmacy = pharmacyData.getPharmacy(pharmacyId);
             if (pharmacy != null) {
-                // Encode for the JavaScript-string context the value is rendered into (PrintPreview.jsp
-                // onClick handlers). forJavaScript escapes both ' and " (and \, /, <, >, &), which also
-                // prevents a double quote in the pharmacy name from terminating the surrounding
-                // double-quoted onClick HTML attribute (issue #2451).
-                // Guard against a null name: getName() may be null, and Encode.forJavaScript(null)
-                // would render the literal string "null" rather than an empty value.
+                // Store the raw name; encoding is applied per-context at the JSP output points (issue
+                // #2451). Guard against a null name so the attribute is never null.
                 String name = pharmacy.getName();
-                prefPharmacy = Encode.forJavaScript(name != null ? name.trim() : "");
+                prefPharmacy = name != null ? name.trim() : "";
                 prefPharmacyId = String.valueOf(pharmacy.getId()).trim();
 
                 request.setAttribute("prefPharmacy", prefPharmacy);
@@ -652,14 +647,14 @@ public class RxPrintPreview2Action extends ActionSupport {
         String timeStamp = new SimpleDateFormat("dd-MMM-yyyy hh:mm a").format(Calendar.getInstance().getTime());
         request.setAttribute("timeStamp", timeStamp);
 
-        // Guard getName() null as well as pharmacy null: Encode.forJavaScript(null) emits the literal "null".
+        // Store raw values; these attributes are consumed in two contexts -- the PrintPreview.jsp onClick
+        // (JavaScript string) and the PreviewContent.jsp hidden inputs (HTML attribute, submitted to the
+        // PDF servlet) -- so each output point applies its own context-appropriate encoding (issue #2451).
+        // Guard the null cases so the attributes are never null.
         String pharmacyName = (pharmacy != null && pharmacy.getName() != null) ? pharmacy.getName() : "";
-        request.setAttribute("pharmacyName", Encode.forJavaScript(pharmacyName));
-        // Free-text pharmacy field edited on the same form as the name; encode for the JS-string onClick
-        // context so a quote can't break the handler (same class of issue as #2451). Guard the null fax
-        // case explicitly: Encode.forJavaScript(null) would emit the literal string "null".
+        request.setAttribute("pharmacyName", pharmacyName);
         String pharmacyFax = (pharmacy != null && pharmacy.getFax() != null) ? pharmacy.getFax() : "";
-        request.setAttribute("pharmacyFax", Encode.forJavaScript(pharmacyFax));
+        request.setAttribute("pharmacyFax", pharmacyFax);
     }
 
     /**
