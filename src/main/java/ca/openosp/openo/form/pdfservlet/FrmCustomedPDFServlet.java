@@ -648,6 +648,10 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                 listElem += newline;
             }
         }
+        // flush the final prescription; without this the last line (e.g. Qty/Repeats) is dropped when it has no trailing boundary token
+        if (!listElem.isEmpty()) {
+            listRx.add(listElem);
+        }
 
         // A0-A10, LEGAL, LETTER, HALFLETTER, _11x17, LEDGER, NOTE, B0-B5, ARCH_A-ARCH_E, FLSA
         // and FLSE
