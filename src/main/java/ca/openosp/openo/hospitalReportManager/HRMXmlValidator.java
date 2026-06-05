@@ -84,6 +84,9 @@ public class HRMXmlValidator {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
         try {
+            spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             spf.newSAXParser().parse(xmlFile, new DefaultHandler() {
                 private final Deque<Boolean> hasChildrenStack = new ArrayDeque<>();
                 private final Deque<StringBuilder> textStack = new ArrayDeque<>();
@@ -164,6 +167,10 @@ public class HRMXmlValidator {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(true);
+            dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            dbf.setExpandEntityReferences(false);
             Document doc = dbf.newDocumentBuilder().parse(xmlFile);
 
             DatatypeFactory dtf = DatatypeFactory.newInstance();
