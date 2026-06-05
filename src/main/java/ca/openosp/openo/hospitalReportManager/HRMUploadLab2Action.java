@@ -112,15 +112,15 @@ public class HRMUploadLab2Action extends ActionSupport implements UploadedFilesA
                         resultsMap.put(fileName, new UploadResult(FileStatus.COMPLETED, null, warnings));
                     } catch (Exception e) {
                         MiscUtils.getLogger().error("Couldn't handle uploaded HRM report", e);
-                        resultsMap.put(fileName, new UploadResult(FileStatus.FAILED, e.getMessage()));
+                        resultsMap.put(fileName, new UploadResult(FileStatus.FAILED, "Failed to process the uploaded report. Please verify the file and try again."));
                     }
                 }
             } catch (IOException e) {
                 MiscUtils.getLogger().error("Error reading file '{}': {}", fileName, e);
-                resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, e.getMessage()));
+                resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, "Could not read the uploaded file."));
             } catch (SecurityException e) {
                 MiscUtils.getLogger().error("Security violation for file '{}': {}", fileName, e);
-                resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, e.getMessage()));
+                resultsMap.put(fileName, new UploadResult(FileStatus.INVALID, "The uploaded file was rejected for security reasons."));
             }
         }
 
