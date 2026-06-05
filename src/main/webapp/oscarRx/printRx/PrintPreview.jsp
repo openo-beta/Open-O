@@ -208,7 +208,7 @@
                                                     '${requestScope.pharmacyName}',
                                                     '${requestScope.pharmacyFax}',
                                                     '${requestScope.prescribedBy}');
-                                                        sendFax(${e:forHtml(param.scriptId)},
+                                                        sendFax(${e:forJavaScript(param.scriptId)},
                                                     '${requestScope.signatureRequestId}',
                                                     ${requestScope.useSC != null ? requestScope.useSC : false},
                                                     '${e:forJavaScript(requestScope.selectedAddress != null ? requestScope.selectedAddress : '')}',

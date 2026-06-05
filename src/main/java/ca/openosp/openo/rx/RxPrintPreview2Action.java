@@ -338,8 +338,9 @@ public class RxPrintPreview2Action extends ActionSupport {
                     .replaceAll("\\\\n", "<br>");
         }
 
-        // Separate prescription lines with newlines so the PDF servlet renders each on its own line.
-        request.setAttribute("strRx", strRx.toString().replace(";", "\n"));
+        // Separate prescription lines with the platform line separator so the PDF servlet,
+        // which splits on System.getProperty("line.separator"), renders each on its own line.
+        request.setAttribute("strRx", strRx.toString().replace(";", System.lineSeparator()));
         request.setAttribute("strRxNoNewLines", strRxNoNewLines.toString());
         request.setAttribute("rxFullOutLines", rxFullOutLines);
     }

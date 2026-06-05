@@ -121,7 +121,7 @@
                                        value="<%= Encode.forHtml((String)request.getAttribute("patientDOBStr")) %>"/>
                                 <input type="hidden" name="pharmaFax" value="${requestScope.pharmacyFax}"/>
                                 <input type="hidden" name="pharmaName" value="${requestScope.pharmacyName}"/>
-                                <input type="hidden" name="pharmacyInfo" value="<c:out value='${requestScope.prefPharmacyId}'/>"/>
+                                <input type="hidden" name="pharmacyInfo" value="<%= Encode.forHtmlAttribute(request.getAttribute("prefPharmacyId") != null ? request.getAttribute("prefPharmacyId").toString() : "") %>"/>
                                 <input type="hidden" name="pracNo"
                                        value="<%= Encode.forHtml((String)request.getAttribute("pracNo")) %>"/>
                                 <input type="hidden" name="showPatientDOB" value="${requestScope.showPatientDOB}"/>
@@ -221,7 +221,7 @@
                                 <img id="signature" style="width:260px; height:130px; object-fit: contain;"
                                      src="${requestScope.startimageUrl}" alt="digital_signature"/>
                                 <input type="hidden" name="imgFile" id="imgFile" value=""
-                                       data-temp-path="<%= Encode.forHtmlAttribute(String.valueOf(request.getAttribute("tempPath"))) %>"/>
+                                       data-temp-path="<%= Encode.forHtmlAttribute(request.getAttribute("tempPath") != null ? request.getAttribute("tempPath").toString() : "") %>"/>
 
                                 <script type="text/javascript">
                                     var POLL_TIME = 2500;

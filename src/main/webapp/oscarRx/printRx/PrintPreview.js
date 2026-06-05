@@ -276,7 +276,9 @@ function refreshImage(imgURL, signatureImg) {
     // Submit the signature's temp file path (rendered server-side as data-temp-path),
     // mirroring the working ViewScript2.jsp flow; fall back to the preview URL if absent.
     const imgFileElement = document.getElementById('imgFile');
-    imgFileElement.value = imgFileElement.dataset.tempPath || signatureImg;
+    if (imgFileElement) {
+        imgFileElement.value = imgFileElement.dataset.tempPath || signatureImg;
+    }
 }
 
 function unloadMess() {
