@@ -369,7 +369,9 @@ public class RxPrintPreview2Action extends ActionSupport {
         request.setAttribute("sessionBean", sessionBean);
         request.setAttribute("reprint", reprint);
 
-        request.setAttribute("providerName", ca.openosp.openo.providers.data.ProviderData.getProviderName(sessionBean.getProviderNo()));
+        // Encode for the JavaScript-string context (PrintPreview.jsp onClick handlers); guards against a
+        // quote in the provider name breaking the handler, same class of issue as #2451.
+        request.setAttribute("providerName", Encode.forJavaScript(ca.openosp.openo.providers.data.ProviderData.getProviderName(sessionBean.getProviderNo())));
         request.setAttribute("providerNo", sessionBean.getProviderNo());
 
         return sessionBean;
@@ -526,10 +528,12 @@ public class RxPrintPreview2Action extends ActionSupport {
         if (pharmacyId != null && !"null".equalsIgnoreCase(pharmacyId)) {
             pharmacy = pharmacyData.getPharmacy(pharmacyId);
             if (pharmacy != null) {
-                prefPharmacy = pharmacy.getName().replace("'", "\\'");
-                prefPharmacyId = String.valueOf(pharmacy.getId());
-                prefPharmacy = prefPharmacy.trim();
-                prefPharmacyId = prefPharmacyId.trim();
+                // Encode for the JavaScript-string context the value is rendered into (PrintPreview.jsp
+                // onClick handlers). forJavaScript escapes both ' and " (and \, /, <, >, &), which also
+                // prevents a double quote in the pharmacy name from terminating the surrounding
+                // double-quoted onClick HTML attribute (issue #2451).
+                prefPharmacy = Encode.forJavaScript(pharmacy.getName().trim());
+                prefPharmacyId = String.valueOf(pharmacy.getId()).trim();
 
                 request.setAttribute("prefPharmacy", prefPharmacy);
                 request.setAttribute("prefPharmacyId", prefPharmacyId);
@@ -644,7 +648,9 @@ public class RxPrintPreview2Action extends ActionSupport {
         request.setAttribute("timeStamp", timeStamp);
 
         request.setAttribute("pharmacyName", Encode.forJavaScript(pharmacy != null ? pharmacy.getName() : ""));
-        request.setAttribute("pharmacyFax", pharmacy != null ? pharmacy.getFax() : "");
+        // Free-text pharmacy field edited on the same form as the name; encode for the JS-string onClick
+        // context so a quote can't break the handler (same class of issue as #2451).
+        request.setAttribute("pharmacyFax", Encode.forJavaScript(pharmacy != null ? pharmacy.getFax() : ""));
     }
 
     /**
