@@ -75,6 +75,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1350,11 +1351,21 @@ public final class RxWriteScript2Action extends ActionSupport {
         StringBuilder auditStr = new StringBuilder();
         ArrayList<String> attrib_names = bean.getAttributeNames();
 
+        // Original drug ids that were actually re-prescribed in this save: each
+        // staged re-prescription carries the source drug's id in drugReferenceId
+        // (set by RxPrescriptionData.newPrescription(.., rePrescribe)). Only these
+        // originals should be archived below - a ReRx box ticked but never staged
+        // leaves no matching stash item and must not archive the active med (#2453).
+        Set<Integer> represcribedOriginalIds = new HashSet<>();
+
         for (int i = 0; i < bean.getStashSize(); i++) {
             try {
                 rx = bean.getStashItem(i);
                 rx.Save(scriptId);// new drug id available after this line
                 rx.setScript_no(scriptId);
+                if (rx.getDrugReferenceId() > 0) {
+                    represcribedOriginalIds.add(rx.getDrugReferenceId());
+                }
                 bean.addRandomIdDrugIdPair(rx.getRandomId(), rx.getDrugId());
                 auditStr.append(rx.getAuditString());
                 auditStr.append("\n");
@@ -1412,9 +1423,19 @@ public final class RxWriteScript2Action extends ActionSupport {
         while (i.hasNext()) {
 
             String item = i.next();
+            int originalDrugId = Integer.parseInt(item);
+
+            // Skip ReRx entries that were checked but never staged/saved: with no
+            // matching staged drug, archiving would silently delete the active med (#2453).
+            if (!represcribedOriginalIds.contains(originalDrugId)) {
+                continue;
+            }
 
             //archive drug(s)
-            Drug drug = drugDao.find(Integer.parseInt(item));
+            Drug drug = drugDao.find(originalDrugId);
+            if (drug == null) {
+                continue;
+            }
             drug.setArchived(true);
             drug.setArchivedDate(new Date());
             drug.setArchivedReason(Drug.REPRESCRIBED);
