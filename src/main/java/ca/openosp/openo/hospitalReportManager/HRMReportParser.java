@@ -209,7 +209,8 @@ public class HRMReportParser {
         document.setReportStatus(report.getResultStatus());
         document.setReportType(report.getFirstReportClass());
         document.setTimeReceived(new Date());
-        document.setSourceFacility(report.getSendingFacilityId());
+        String sfId = report.getSendingFacilityId();
+        document.setSourceFacility(sfId != null ? sfId.trim() : null);
         document.setSourceFacilityReportNo(report.getSendingFacilityReportNo());
 
         warnIfSendingFacilityNotRegistered(loggedInInfo, report.getSendingFacilityId());
