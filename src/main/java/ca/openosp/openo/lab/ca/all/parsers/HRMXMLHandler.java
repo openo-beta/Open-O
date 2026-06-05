@@ -25,16 +25,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.net.URL;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 
 import org.apache.logging.log4j.Logger;
-import org.springframework.core.io.ClassPathResource;
 import ca.openosp.openo.hospitalReportManager.xsd.DateFullOrPartial;
 import ca.openosp.openo.hospitalReportManager.xsd.HealthCard;
 import ca.openosp.openo.hospitalReportManager.xsd.OmdCds;
@@ -67,13 +62,6 @@ public class HRMXMLHandler implements MessageHandler {
 
         try {
             ByteArrayInputStream byeArrayInputStream = new ByteArrayInputStream(hl7Body.getBytes());
-
-            // Create a SchemaFactory capable of understanding WXS schemas.
-            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-            // Load a WXS schema, represented by a Schema instance.
-            URL schemaUrl = new ClassPathResource("/xsd/hrm/1.1.2/ontariomd_hrm.xsd").getURL();
-            Schema schema = factory.newSchema(schemaUrl);
 
             JAXBContext jc = JAXBContext.newInstance("ca.openosp.openo.hospitalReportManager.xsd");
             Unmarshaller u = jc.createUnmarshaller();
