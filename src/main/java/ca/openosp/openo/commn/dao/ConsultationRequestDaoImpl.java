@@ -12,6 +12,8 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import ca.openosp.openo.commn.NativeSql;
 import ca.openosp.openo.commn.model.ConsultationRequest;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Provider;
 
 @SuppressWarnings("unchecked")
 public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequest> implements ConsultationRequestDao {
@@ -114,6 +116,123 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
         query.setMaxResults(Math.min(myLimit, MAX_LIST_RETURN_SIZE));
 
         return query.getResultList();
+    }
+
+
+    public List<ConsultationRequest> getConsults(String team, boolean showCompleted, Date startDate, Date endDate, String orderby, String desc, String searchDate, Integer offset, Integer limit, Integer consultantId, String filterProviderNo) {
+
+        final String baseQuery = "SELECT cr FROM ConsultationRequest cr LEFT JOIN cr.professionalSpecialist specialist LEFT JOIN ConsultationServices service ON cr.serviceId = service.serviceId LEFT JOIN ConsultationRequestExt ext ON cr.id = ext.requestId AND ext.key = 'ereferral_service' LEFT JOIN Demographic d on cr.demographicId = d.DemographicNo LEFT JOIN Provider p on d.ProviderNo = p.ProviderNo WHERE 1=1 ";
+
+        final String condStatus = "and cr.status != 4 ";
+        final String condTeam = "and cr.sendTo = :team ";
+        final String condApptStart = "and cr.appointmentDate >= :startDate ";
+        final String condRefStart = "and cr.referralDate >= :startDate ";
+        final String condApptEnd = "and cr.appointmentDate <= :endDate ";
+        final String condRefEnd = "and cr.referralDate <= :endDate ";
+        final String condConsultant = "and specialist.id = :consultantId ";
+        final String condProviderNo = "and p.ProviderNo = :filterProviderNo ";
+
+        final String ordDefault = "order by cr.referralDate desc ";
+        final String ordStatusAsc = "order by cr.status ASC, service.serviceDesc ";
+        final String ordStatusDesc = "order by cr.status DESC, service.serviceDesc ";
+        final String ordTeamAsc = "order by cr.sendTo ASC, service.serviceDesc ";
+        final String ordTeamDesc = "order by cr.sendTo DESC, service.serviceDesc ";
+        final String ordPatientAsc = "order by d.LastName ASC, service.serviceDesc ";
+        final String ordPatientDesc = "order by d.LastName DESC, service.serviceDesc ";
+        final String ordProviderAsc = "order by p.LastName ASC, service.serviceDesc ";
+        final String ordProviderDesc = "order by p.LastName DESC, service.serviceDesc ";
+        final String ordServiceAsc = "order by service.serviceDesc ASC ";
+        final String ordServiceDesc = "order by service.serviceDesc DESC ";
+        final String ordSpecialistAsc = "order by specialist.lastName ASC, service.serviceDesc ";
+        final String ordSpecialistDesc = "order by specialist.lastName DESC, service.serviceDesc ";
+        final String ordRefAsc = "order by cr.referralDate ASC ";
+        final String ordRefDesc = "order by cr.referralDate DESC ";
+        final String ordApptAsc = "order by cr.appointmentDate ASC ";
+        final String ordApptDesc = "order by cr.appointmentDate DESC ";
+        final String ordFollowAsc = "order by cr.followUpDate ASC ";
+        final String ordFollowDesc = "order by cr.followUpDate DESC ";
+
+        boolean descOrder = desc != null && desc.equals("1");
+
+        StringBuilder sql = new StringBuilder(baseQuery);
+
+        if (!showCompleted) {
+            sql.append(condStatus);
+        }
+        if (team != null && !team.isEmpty()) {
+            sql.append(condTeam);
+        }
+        if (startDate != null) {
+            sql.append(searchDate != null && searchDate.equals("1") ? condApptStart : condRefStart);
+        }
+        if (endDate != null) {
+            sql.append(searchDate != null && searchDate.equals("1") ? condApptEnd : condRefEnd);
+        }
+        if (consultantId != null) {
+            sql.append(condConsultant);
+        }
+        if (filterProviderNo != null && !filterProviderNo.isEmpty()) {
+            sql.append(condProviderNo);
+        }
+
+        if (orderby == null) {
+            sql.append(ordDefault);
+        } else if (orderby.equals("1")) {
+            sql.append(descOrder ? ordStatusDesc : ordStatusAsc);
+        } else if (orderby.equals("2")) {
+            sql.append(descOrder ? ordTeamDesc : ordTeamAsc);
+        } else if (orderby.equals("3")) {
+            sql.append(descOrder ? ordPatientDesc : ordPatientAsc);
+        } else if (orderby.equals("4")) {
+            sql.append(descOrder ? ordProviderDesc : ordProviderAsc);
+        } else if (orderby.equals("5")) {
+            sql.append(descOrder ? ordServiceDesc : ordServiceAsc);
+        } else if (orderby.equals("6")) {
+            sql.append(descOrder ? ordSpecialistDesc : ordSpecialistAsc);
+        } else if (orderby.equals("7")) {
+            sql.append(descOrder ? ordRefDesc : ordRefAsc);
+        } else if (orderby.equals("8")) {
+            sql.append(descOrder ? ordApptDesc : ordApptAsc);
+        } else if (orderby.equals("9")) {
+            sql.append(descOrder ? ordFollowDesc : ordFollowAsc);
+        } else {
+            sql.append(ordDefault);
+        }
+
+        Query query = entityManager.createQuery(sql.toString());
+
+        if (team != null && !team.isEmpty()) {
+            query.setParameter("team", team);
+        }
+        if (startDate != null) {
+            query.setParameter("startDate", startDate);
+        }
+        if (endDate != null) {
+            query.setParameter("endDate", endDate);
+        }
+        if (consultantId != null) {
+            query.setParameter("consultantId", consultantId);
+        }
+        if (filterProviderNo != null && !filterProviderNo.isEmpty()) {
+            query.setParameter("filterProviderNo", filterProviderNo);
+        }
+
+        query.setFirstResult(offset != null ? offset : 0);
+
+        int myLimit = limit != null ? limit : DEFAULT_CONSULT_REQUEST_RESULTS_LIMIT;
+        query.setMaxResults(Math.min(myLimit, MAX_LIST_RETURN_SIZE));
+
+        return query.getResultList();
+    }
+
+
+    public List<ProfessionalSpecialist> getDistinctConsultants() {
+        return entityManager.createQuery("SELECT DISTINCT specialist FROM ConsultationRequest cr JOIN cr.professionalSpecialist specialist ORDER BY specialist.lastName, specialist.firstName", ProfessionalSpecialist.class).getResultList();
+    }
+
+
+    public List<Provider> getDistinctConsultProviders() {
+        return entityManager.createQuery("SELECT DISTINCT p FROM ConsultationRequest cr JOIN Demographic d ON cr.demographicId = d.DemographicNo JOIN Provider p ON d.ProviderNo = p.ProviderNo ORDER BY p.LastName, p.FirstName", Provider.class).getResultList();
     }
 
 

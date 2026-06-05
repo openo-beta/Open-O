@@ -79,7 +79,15 @@ public class EctViewConsultationRequestsUtil {
       return estConsultationVecByTeam(loggedInInfo,team,showCompleted,null,null,null,null,null,null,null);
    }  
             
-   public boolean estConsultationVecByTeam(LoggedInInfo loggedInInfo, String team,boolean showCompleted,Date startDate, Date endDate,String orderby,String desc,String searchDate, Integer offset, Integer limit) {       
+   public boolean estConsultationVecByTeam(LoggedInInfo loggedInInfo, String team, boolean showCompleted, Date startDate, Date endDate, String orderby, String desc, String searchDate, Integer offset, Integer limit, Integer consultantId, String filterProviderNo) {
+      return estConsultationVecByTeamInternal(loggedInInfo, team, showCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit, consultantId, filterProviderNo);
+   }
+
+   public boolean estConsultationVecByTeam(LoggedInInfo loggedInInfo, String team,boolean showCompleted,Date startDate, Date endDate,String orderby,String desc,String searchDate, Integer offset, Integer limit) {
+      return estConsultationVecByTeamInternal(loggedInInfo, team, showCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit, null, null);
+   }
+
+   private boolean estConsultationVecByTeamInternal(LoggedInInfo loggedInInfo, String team, boolean showCompleted, Date startDate, Date endDate, String orderby, String desc, String searchDate, Integer offset, Integer limit, Integer consultantId, String filterProviderNo) {
       ids = new ArrayList<>();
       status = new ArrayList<>();
       patient = new ArrayList<>();
@@ -97,7 +105,7 @@ public class EctViewConsultationRequestsUtil {
       followUpDate = new ArrayList<>();
       consultProvider = new ArrayList<>();
       eReferral = new ArrayList<>();
-      
+
       boolean verdict = true;
       try {
           ConsultationRequestDao consultReqDao = (ConsultationRequestDao) SpringUtils.getBean(ConsultationRequestDao.class);
@@ -114,7 +122,9 @@ public class EctViewConsultationRequestsUtil {
           Calendar cal = Calendar.getInstance();
           Date date1, date2;
           String providerId, providerName, specialistName;
-          List<ConsultationRequest> consultList = consultReqDao.getConsults(team, showCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit);
+          List<ConsultationRequest> consultList = (consultantId != null || (filterProviderNo != null && !filterProviderNo.isEmpty()))
+                  ? consultReqDao.getConsults(team, showCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit, consultantId, filterProviderNo)
+                  : consultReqDao.getConsults(team, showCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit);
 
           for( int idx = 0; idx < consultList.size(); ++idx ) {
               consult = (ConsultationRequest)consultList.get(idx);

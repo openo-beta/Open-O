@@ -41,6 +41,8 @@
 
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.commn.dao.ConsultationRequestDao" %>
+<%@page import="ca.openosp.openo.commn.model.ProfessionalSpecialist" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
 
 <%@ page import="ca.openosp.openo.encounter.pageUtil.*,java.text.*,java.util.*" %>
 <%@ page import="java.sql.ResultSet" %>
@@ -133,6 +135,7 @@
     }
 %>
 
+<!DOCTYPE html>
 <html>
 
     <%
@@ -178,6 +181,15 @@
             searchDate = "0";
         }
 
+        // New consultant and provider filter params
+        Integer consultantId = (Integer) request.getAttribute("consultantId");
+        String filterProviderNo = (String) request.getAttribute("filterProviderNo");
+        if (filterProviderNo == null) filterProviderNo = "";
+
+        ConsultationRequestDao consultReqDaoForFilters = SpringUtils.getBean(ConsultationRequestDao.class);
+        List<ProfessionalSpecialist> availableConsultants = consultReqDaoForFilters.getDistinctConsultants();
+        List<Provider> availableProviders = consultReqDaoForFilters.getDistinctConsultProviders();
+
         EctConsultationFormRequestUtil consultUtil;
         consultUtil = new EctConsultationFormRequestUtil();
 
@@ -191,6 +203,26 @@
 
 
         ArrayList tickerList = new ArrayList();
+
+        // Compute initial display labels for the search-ahead fields
+        String selectedConsultantLabel = "";
+        if (consultantId != null) {
+            for (ProfessionalSpecialist cons : availableConsultants) {
+                if (consultantId.equals(cons.getId())) {
+                    selectedConsultantLabel = cons.getLastName() + ", " + cons.getFirstName();
+                    break;
+                }
+            }
+        }
+        String selectedProviderLabel = "";
+        if (!filterProviderNo.isEmpty()) {
+            for (Provider pv : availableProviders) {
+                if (filterProviderNo.equals(pv.getProviderNo())) {
+                    selectedProviderLabel = pv.getFormattedName();
+                    break;
+                }
+            }
+        }
     %>
 
 
@@ -238,64 +270,135 @@ background-color:rgb(212, 212, 254);
         </style>
 
 
-    </head>
-    <script language="javascript">
+    <script type="text/javascript">
         function BackToOscar() {
             window.close();
         }
 
-        ///
-        function popupOscarRx(vheight, vwidth, varpage) { //open a new popup window
-            var page = varpage;
-            windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsReq"/>", windowprops);
-            if (popup != null) {
-                if (popup.opener == null) {
-                    popup.opener = self;
-                }
+        function popupOscarRx(vheight, vwidth, varpage) {
+            var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+            var popup = window.open(varpage, "oscarConsultationRequest", windowprops);
+            if (popup != null && popup.opener == null) {
+                popup.opener = self;
             }
-//setTimeout("window.location.reload();",5000);
         }
 
-        function popupOscarConsultationConfig(vheight, vwidth, varpage) { //open a new popup window
-            var page = varpage;
-            windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsConfig"/>", windowprops);
-            if (popup != null) {
-                if (popup.opener == null) {
-                    popup.opener = self;
-                }
+        function popupOscarConsultationConfig(vheight, vwidth, varpage) {
+            var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+            var popup = window.open(varpage, "OscarConsultationConfig", windowprops);
+            if (popup != null && popup.opener == null) {
+                popup.opener = self;
             }
         }
 
         function setOrder(val) {
-            if (document.forms[0].orderby.value == val) {
-                //alert( document.forms[0].desc.value);
-                if (document.forms[0].desc.value == '1') {
-                    document.forms[0].desc.value = '0';
-                } else {
-                    document.forms[0].desc.value = '1';
-                }
+            var frm = document.forms[0];
+            if (frm.orderby.value === val) {
+                frm.desc.value = frm.desc.value === '1' ? '0' : '1';
             } else {
-                document.forms[0].orderby.value = val;
-                document.forms[0].desc.value = '0';
+                frm.orderby.value = val;
+                frm.desc.value = '0';
             }
-            document.forms[0].submit();
+            frm.submit();
         }
 
         function gotoPage(next) {
             var frm = document.forms[0];
-
             frm.limit.value = <%=limit%>;
-            if (next) frm.offset.value = <%=Encode.forJavaScript(String.valueOf(offset+limit))%>;
-            else frm.offset.value = <%=Encode.forJavaScript(String.valueOf(offset-limit))%>;
-
+            frm.offset.value = next ? <%=limit + offset%> : <%=offset - limit%>;
             frm.submit();
         }
     </script>
 
-
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.css">
+    <script type="text/javascript" src="<%= request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript">
+        var consultantOptions = [
+            <%
+                for (ProfessionalSpecialist cons : availableConsultants) {
+                    String consLabel = cons.getLastName() + ", " + cons.getFirstName();
+                    String consIdVal = cons.getId() != null ? cons.getId().toString() : "";
+            %>
+            { label: "<%=Encode.forJavaScript(consLabel)%>", value: "<%=Encode.forJavaScript(consIdVal)%>" },
+            <%
+                }
+            %>
+        ];
+        var providerOptions = [
+            <%
+                for (Provider pv : availableProviders) {
+                    String pvLabel = pv.getFormattedName();
+                    String pvNoVal = pv.getProviderNo() != null ? pv.getProviderNo() : "";
+            %>
+            { label: "<%=Encode.forJavaScript(pvLabel)%>", value: "<%=Encode.forJavaScript(pvNoVal)%>" },
+            <%
+                }
+            %>
+        ];
+
+        jQuery(document).ready(function () {
+            jQuery("#consultantSearch").autocomplete({
+                source: consultantOptions,
+                minLength: 0,
+                delay: 0,
+                focus: function (event, ui) {
+                    event.preventDefault();
+                    jQuery("#consultantSearch").val(ui.item.label);
+                },
+                select: function (event, ui) {
+                    event.preventDefault();
+                    jQuery("#consultantSearch").val(ui.item.label);
+                    jQuery("#consultantId").val(ui.item.value);
+                },
+                change: function (event, ui) {
+                    if (!ui.item) {
+                        jQuery("#consultantSearch").val("");
+                        jQuery("#consultantId").val("");
+                    }
+                }
+            });
+            jQuery("#consultantSearch").on("focus", function () {
+                jQuery(this).autocomplete("search", jQuery(this).val());
+            });
+
+            jQuery("#providerSearch").autocomplete({
+                source: providerOptions,
+                minLength: 0,
+                delay: 0,
+                focus: function (event, ui) {
+                    event.preventDefault();
+                    jQuery("#providerSearch").val(ui.item.label);
+                },
+                select: function (event, ui) {
+                    event.preventDefault();
+                    jQuery("#providerSearch").val(ui.item.label);
+                    jQuery("#filterProviderNo").val(ui.item.value);
+                },
+                change: function (event, ui) {
+                    if (!ui.item) {
+                        jQuery("#providerSearch").val("");
+                        jQuery("#filterProviderNo").val("");
+                    }
+                }
+            });
+            jQuery("#providerSearch").on("focus", function () {
+                jQuery(this).autocomplete("search", jQuery(this).val());
+            });
+
+            // Before form submit, ensure text field / hidden field are consistent
+            jQuery("form").on("submit", function () {
+                if (jQuery("#consultantSearch").val().trim() === "") {
+                    jQuery("#consultantId").val("");
+                }
+                if (jQuery("#providerSearch").val().trim() === "") {
+                    jQuery("#filterProviderNo").val("");
+                }
+            });
+        });
+    </script>
+    </head>
     <body class="BodyStyle" vlink="#0000FF">
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
@@ -367,6 +470,16 @@ background-color:rgb(212, 212, 254);
                                         }
                                     %>
                                 </select>
+                                <input type="text" id="consultantSearch" autocomplete="off"
+                                       value="<%=Encode.forHtmlAttribute(selectedConsultantLabel)%>"
+                                       placeholder="All Consultants" size="22">
+                                <input type="hidden" name="consultantId" id="consultantId"
+                                       value="<%=Encode.forHtmlAttribute(consultantId != null ? consultantId.toString() : "")%>">
+                                <input type="text" id="providerSearch" autocomplete="off"
+                                       value="<%=Encode.forHtmlAttribute(selectedProviderLabel)%>"
+                                       placeholder="All Providers" size="22">
+                                <input type="hidden" name="filterProviderNo" id="filterProviderNo"
+                                       value="<%=Encode.forHtmlAttribute(filterProviderNo)%>">
                                 <input type="submit"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.btnConsReq"/>"/>
                                 <div style="margin: 0; padding: 0; ">
@@ -398,7 +511,7 @@ background-color:rgb(212, 212, 254);
                             <table border="0" width="90%" cellspacing="1" style="border: thin solid #C0C0C0;">
                                 <tr>
                                     <th align="left" class="VCRheads" width="10%">
-                                        <a href=# onclick="setOrder('1'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('1'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStatus"/>
                                         </a>
                                     </th>
@@ -406,48 +519,48 @@ background-color:rgb(212, 212, 254);
                                         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgUrgency"/>
                                     </th>
                                     <th align="left" class="VCRheads">
-                                        <a href=# onclick="setOrder('2'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('2'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgTeam"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads" width="75">
-                                        <a href=# onclick="setOrder('3'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('3'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPatient"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
-                                        <a href=# onclick="setOrder('4'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('4'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgProvider"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
-                                        <a href=# onclick="setOrder('5'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('5'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgService"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
-                                        <a href=# onclick="setOrder('6'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('6'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgConsultant"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
-                                        <a href=# onclick="setOrder('7'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('7'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgRefDate"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
-                                        <a href=# onclick="setOrder('8'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('8'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgAppointmentDate"/>
                                         </a>
                                     </th>
                                     <th align="left" class="VCRheads">
-                                        <a href=# onclick="setOrder('9'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('9'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgFollowUpDate"/>
                                         </a>
                                     </th>
                                     <% if (bMultisites) { %>
                                     <th align="left" class="VCRheads">
-                                        <a href=# onclick="setOrder('10'); return false;">
+                                        <a href="javascript:void(0)" onclick="setOrder('10'); return false;">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSiteName"/>
                                         </a>
                                     </th>
@@ -456,7 +569,7 @@ background-color:rgb(212, 212, 254);
                                 <%
                                     EctViewConsultationRequestsUtil theRequests;
                                     theRequests = new EctViewConsultationRequestsUtil();
-                                    theRequests.estConsultationVecByTeam(LoggedInInfo.getLoggedInInfoFromSession(request), team, includeCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit);
+                                    theRequests.estConsultationVecByTeam(LoggedInInfo.getLoggedInInfoFromSession(request), team, includeCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit, consultantId, filterProviderNo);
                                     boolean overdue;
                                     UserPropertyDAO pref = (UserPropertyDAO) WebApplicationContextUtils.getWebApplicationContext(pageContext.getServletContext()).getBean(UserPropertyDAO.class);
                                     String user = (String) session.getAttribute("user");
@@ -642,7 +755,7 @@ background-color:rgb(212, 212, 254);
             </td>
         </tr>
     </table>
-    <script language='javascript'>
+    <script type="text/javascript">
         Calendar.setup({
             inputField: "startDate",
             ifFormat: "%Y-%m-%d",

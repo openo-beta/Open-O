@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import ca.openosp.openo.commn.model.ConsultationRequest;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Provider;
 
 public interface ConsultationRequestDao extends AbstractDao<ConsultationRequest> {
 
@@ -19,6 +21,12 @@ public interface ConsultationRequestDao extends AbstractDao<ConsultationRequest>
     List<ConsultationRequest> getConsults(Integer demoNo);
 
     List<ConsultationRequest> getConsults(String team, boolean showCompleted, Date startDate, Date endDate, String orderby, String desc, String searchDate, Integer offset, Integer limit);
+
+    List<ConsultationRequest> getConsults(String team, boolean showCompleted, Date startDate, Date endDate, String orderby, String desc, String searchDate, Integer offset, Integer limit, Integer consultantId, String filterProviderNo);
+
+    List<ProfessionalSpecialist> getDistinctConsultants();
+
+    List<Provider> getDistinctConsultProviders();
 
     List<ConsultationRequest> getConsultationsByStatus(Integer demographicNo, String status);
 
