@@ -184,10 +184,11 @@
                                         <button type="button"
                                                 class="btn btn-secondary mb-2 w-100"
                                                 id="faxButton"
-                                                onClick="sendFax(${e:forJavaScript(param.scriptId)},
-                                                    ${requestScope.signatureRequestId},
+                                                onClick="sendFax('${e:forJavaScript(param.scriptId)}',
+                                                    '${requestScope.signatureRequestId}',
                                                     ${requestScope.useSC != null ? requestScope.useSC : false},
-                                                    ${requestScope.selectedAddress != null ? requestScope.selectedAddress : ''}
+                                                    '${e:forJavaScript(requestScope.selectedAddress != null ? requestScope.selectedAddress : '')}',
+                                                    '${ctx}'
                                                         );"
                                                 <c:if test="${requestScope.isFaxDisabled}">
                                                     disabled="disabled"
@@ -207,10 +208,11 @@
                                                     '${requestScope.pharmacyName}',
                                                     '${requestScope.pharmacyFax}',
                                                     '${requestScope.prescribedBy}');
-                                                        sendFax(${e:forHtml(param.scriptId)},
-                                                    ${requestScope.signatureRequestId},
+                                                        sendFax('${e:forJavaScript(param.scriptId)}',
+                                                    '${requestScope.signatureRequestId}',
                                                     ${requestScope.useSC != null ? requestScope.useSC : false},
-                                                    ${requestScope.selectedAddress != null ? requestScope.selectedAddress : ''}
+                                                    '${e:forJavaScript(requestScope.selectedAddress != null ? requestScope.selectedAddress : '')}',
+                                                    '${ctx}'
                                                         );"
                                                 <c:if test="${requestScope.isFaxDisabled}">
                                                     disabled="disabled"
@@ -233,9 +235,9 @@
                                 <div class="form-group">
                                     <label for="additionalNotes"></label>
                                     <textarea id="additionalNotes" class="form-control mb-2"
-                                              onchange="addNotes(${e:forJavaScript(param.scriptId)});"></textarea>
+                                              onchange="addNotes('${e:forJavaScript(param.scriptId)}');"></textarea>
                                     <button type="button" class="btn btn-primary"
-                                            onclick="addNotes(${e:forJavaScript(param.scriptId)});">
+                                            onclick="addNotes('${e:forJavaScript(param.scriptId)}');">
                                         Additional Rx Notes
                                     </button>
                                 </div>
