@@ -516,11 +516,11 @@
                 </security:oscarSec>
 
                 <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="r">
-                <select onchange="javascript:popupPage(700,700,'Templates',this.value);">
+                <select onchange="openTemplate(this.value);">
                     <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.Templates"/></option>
                     <option value="-1">------------------</option>
                     <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="w">
-                        <option value="<%=request.getContextPath()%>/admin/providertemplate.jsp">New / Edit Template
+                        <option value="__new__">New / Edit Template
                         </option>
                         <option value="-1">------------------</option>
                     </security:oscarSec>
@@ -531,7 +531,7 @@
                         for (EncounterTemplate encounterTemplate : allTemplates) {
                             String templateName = encounterTemplate.getEncounterTemplateName();
                     %>
-                    <option value="<%=Encode.forHtmlAttribute(request.getContextPath()+"/admin/providertemplate.jsp?dboperation=Edit&name="+Encode.forUriComponent(templateName))%>"><%=Encode.forHtml(templateName)%>
+                    <option value="<%=Encode.forHtmlAttribute(templateName)%>"><%=Encode.forHtmlContent(templateName)%>
                     </option>
                     <%
                         }

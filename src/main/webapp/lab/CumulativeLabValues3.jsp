@@ -325,9 +325,6 @@
                             String testName = (String) nameMap.get(loinc_code);
                             LinkedHashMap IdMap = (LinkedHashMap) measIdMap.get(loinc_code);
 
-                            //preserve spaces in the test names
-                            testName = testName.replaceAll("\\s", "&#160;");
-
                             // display the latest value for the test
                             if (!loinc_code.startsWith("NULL")) {
                                 String latestDate = "";
@@ -344,7 +341,8 @@
                                 }
                     %>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(testName))%>
+                        <%-- preserve leading whitespace - signals panel child tests (e.g. GLUCOSE under URINALYSIS) --%>
+                        <td><%=Encode.forHtml(String.valueOf(testName)).replaceAll("\\s", "&#160;")%>
                         </td>
                         <td class="<%=Encode.forHtmlAttribute(String.valueOf(abn))%>"><%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(latestVal, 9, 8, "...")))%>
                         </td>
