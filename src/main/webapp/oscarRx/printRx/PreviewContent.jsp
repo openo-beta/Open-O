@@ -137,7 +137,7 @@
                                        value="<%=StringEscapeUtils.escapeHtml((String)request.getAttribute("patientChartNo"))%>"/>
                                 <input type="hidden" name="bandNumber" value="${requestScope.bandNumber}"/>
                                 <input type="hidden" name="patientPhone"
-                                       value="<fmt:message key="RxPreview.msgTel"/><%=StringEscapeUtils.escapeHtml((String)request.getAttribute("patientPhone")) %>"/>
+                                       value="<fmt:message key="RxPreview.msgTel"/>: <%=StringEscapeUtils.escapeHtml((String)request.getAttribute("patientPhone")) %>"/>
                                 <input type="hidden" name="rxDate"
                                        value="<%= StringEscapeUtils.escapeHtml((String)request.getAttribute("rxDateFormatted")) %>"/>
                                 <input type="hidden" name="sigDoctorName"
