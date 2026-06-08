@@ -1062,6 +1062,9 @@
 
     .rightColumnAdjust {
       padding-left: 10px;
+      /* Table cells default to vertical-align: middle, so a long favourites column (left cell)
+         makes the row tall and drifts this content to the page middle (#2464). Pin it to top. */
+      vertical-align: top;
     }
   </style>
 
