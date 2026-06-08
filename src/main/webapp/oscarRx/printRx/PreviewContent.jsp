@@ -85,7 +85,7 @@
 <body>
     <div topmargin="0" leftmargin="0" vlink="#0000FF" id="printableContent">
 
-    <form action="/form/formname" styleId="preview2Form">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post" id="preview2Form">
         <input type="hidden" name="demographic_no" value="${sessionScope.RxSessionBean.demographicNo}"/>
         <table>
             <tr>
@@ -119,9 +119,10 @@
                                 <input type="hidden" name="patientName"
                                        value="<%= StringEscapeUtils.escapeHtml(((RxPatientData.Patient)request.getAttribute("patient")).getFirstName())+ " " +StringEscapeUtils.escapeHtml(((RxPatientData.Patient)request.getAttribute("patient")).getSurname()) %>"/>
                                 <input type="hidden" name="patientDOB"
-                                       value="<%= StringEscapeUtils.escapeHtml((String)request.getAttribute("patientDOBStr")) %>"/>
-                                <input type="hidden" name="pharmaFax" value="${requestScope.pharmacyFax}"/>
-                                <input type="hidden" name="pharmaName" value="${requestScope.pharmacyName}"/>
+                                       value="<%= Encode.forHtml((String)request.getAttribute("patientDOBStr")) %>"/>
+                                <input type="hidden" name="pharmaFax" value="<%= Encode.forHtmlAttribute(request.getAttribute("pharmacyFax") != null ? request.getAttribute("pharmacyFax").toString() : "") %>"/>
+                                <input type="hidden" name="pharmaName" value="<%= Encode.forHtmlAttribute(request.getAttribute("pharmacyName") != null ? request.getAttribute("pharmacyName").toString() : "") %>"/>
+                                <input type="hidden" name="pharmacyInfo" value="<%= Encode.forHtmlAttribute(request.getAttribute("prefPharmacyId") != null ? request.getAttribute("prefPharmacyId").toString() : "") %>"/>
                                 <input type="hidden" name="pracNo"
                                        value="<%= StringEscapeUtils.escapeHtml((String)request.getAttribute("pracNo")) %>"/>
                                 <input type="hidden" name="showPatientDOB" value="${requestScope.showPatientDOB}"/>
@@ -136,7 +137,7 @@
                                        value="<%=StringEscapeUtils.escapeHtml((String)request.getAttribute("patientChartNo"))%>"/>
                                 <input type="hidden" name="bandNumber" value="${requestScope.bandNumber}"/>
                                 <input type="hidden" name="patientPhone"
-                                       value="<fmt:message key="RxPreview.msgTel"/><%=StringEscapeUtils.escapeHtml((String)request.getAttribute("patientPhone")) %>"/>
+                                       value="<fmt:message key="RxPreview.msgTel"/>: <%=StringEscapeUtils.escapeHtml((String)request.getAttribute("patientPhone")) %>"/>
                                 <input type="hidden" name="rxDate"
                                        value="<%= StringEscapeUtils.escapeHtml((String)request.getAttribute("rxDateFormatted")) %>"/>
                                 <input type="hidden" name="sigDoctorName"
@@ -220,7 +221,8 @@
                                        value="${requestScope.signatureRequestId}"/>
                                 <img id="signature" style="width:260px; height:130px; object-fit: contain;"
                                      src="${requestScope.startimageUrl}" alt="digital_signature"/>
-                                <input type="hidden" name="imgFile" id="imgFile" value=""/>
+                                <input type="hidden" name="imgFile" id="imgFile" value=""
+                                       data-temp-path="<%= Encode.forHtmlAttribute(request.getAttribute("tempPath") != null ? request.getAttribute("tempPath").toString() : "") %>"/>
 
                                 <script type="text/javascript">
                                     var POLL_TIME = 2500;

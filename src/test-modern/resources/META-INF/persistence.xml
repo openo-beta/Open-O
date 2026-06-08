@@ -81,6 +81,13 @@
         <class>ca.openosp.openo.commn.model.WaitingList</class>
         <class>ca.openosp.openo.commn.model.OtherId</class>
         <class>ca.openosp.openo.commn.model.DemographicCustArchive</class>
+        <!-- Document attachment entities (DocumentDao integration tests) -->
+        <class>ca.openosp.openo.commn.model.Document</class>
+        <class>ca.openosp.openo.commn.model.DocumentReview</class>
+        <class>ca.openosp.openo.commn.model.CtlDocument</class>
+        <class>ca.openosp.openo.commn.model.ConsultDocs</class>
+        <class>ca.openosp.openo.commn.model.EFormDocs</class>
+        <class>ca.openosp.openo.commn.model.ConsultResponseDoc</class>
         <!-- HBM.XML mapped entities -->
         <mapping-file>ca/openosp/openo/commn/model/Provider.hbm.xml</mapping-file>
         <mapping-file>ca/openosp/openo/commn/model/Demographic.hbm.xml</mapping-file>

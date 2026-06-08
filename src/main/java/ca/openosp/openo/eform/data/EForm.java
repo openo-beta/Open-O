@@ -1023,8 +1023,11 @@ public class EForm extends EFormBase {
 	}
 
     public void addHiddenAttachments(List<String> attachedDocumentIds, List<String> attachedEFormIds, List<String> attachedHRMDocumentIds, List<String> attachedLabIds, List<EctFormData.PatientForm> attachedForms) {
+        // data-delegate-type="doc" lets the toolbar JS resolve by name+value
+        // so provider-section checkboxes (publicDocNo*, privateDocNo*) match too.
+        Map<String, String> docProps = Collections.singletonMap("data-delegate-type", "doc");
         for (String docId : attachedDocumentIds) {
-            addHiddenInputElement("delegate_docNo" + docId, "docNo", "delegateAttachment", docId, null);
+            addHiddenInputElement("delegate_docNo" + docId, "docNo", "delegateAttachment", docId, docProps);
         }
 
         for (String eformId : attachedEFormIds) {
