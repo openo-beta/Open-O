@@ -371,6 +371,7 @@ public class RxPrintPreview2Action extends ActionSupport {
         request.setAttribute("sessionBean", sessionBean);
         request.setAttribute("reprint", reprint);
 
+        // Store the raw value; encoding is applied per-context at the JSP output points (issue #2451).
         request.setAttribute("providerName", ca.openosp.openo.providers.data.ProviderData.getProviderName(sessionBean.getProviderNo()));
         request.setAttribute("providerNo", sessionBean.getProviderNo());
 
@@ -528,10 +529,11 @@ public class RxPrintPreview2Action extends ActionSupport {
         if (pharmacyId != null && !"null".equalsIgnoreCase(pharmacyId)) {
             pharmacy = pharmacyData.getPharmacy(pharmacyId);
             if (pharmacy != null) {
-                prefPharmacy = pharmacy.getName().replace("'", "\\'");
-                prefPharmacyId = String.valueOf(pharmacy.getId());
-                prefPharmacy = prefPharmacy.trim();
-                prefPharmacyId = prefPharmacyId.trim();
+                // Store the raw name; encoding is applied per-context at the JSP output points (issue
+                // #2451). Guard against a null name so the attribute is never null.
+                String name = pharmacy.getName();
+                prefPharmacy = name != null ? name.trim() : "";
+                prefPharmacyId = String.valueOf(pharmacy.getId()).trim();
 
                 request.setAttribute("prefPharmacy", prefPharmacy);
                 request.setAttribute("prefPharmacyId", prefPharmacyId);
@@ -645,8 +647,14 @@ public class RxPrintPreview2Action extends ActionSupport {
         String timeStamp = new SimpleDateFormat("dd-MMM-yyyy hh:mm a").format(Calendar.getInstance().getTime());
         request.setAttribute("timeStamp", timeStamp);
 
-        request.setAttribute("pharmacyName", Encode.forJavaScript(pharmacy != null ? pharmacy.getName() : ""));
-        request.setAttribute("pharmacyFax", pharmacy != null ? pharmacy.getFax() : "");
+        // Store raw values; these attributes are consumed in two contexts -- the PrintPreview.jsp onClick
+        // (JavaScript string) and the PreviewContent.jsp hidden inputs (HTML attribute, submitted to the
+        // PDF servlet) -- so each output point applies its own context-appropriate encoding (issue #2451).
+        // Guard the null cases so the attributes are never null.
+        String pharmacyName = (pharmacy != null && pharmacy.getName() != null) ? pharmacy.getName() : "";
+        request.setAttribute("pharmacyName", pharmacyName);
+        String pharmacyFax = (pharmacy != null && pharmacy.getFax() != null) ? pharmacy.getFax() : "";
+        request.setAttribute("pharmacyFax", pharmacyFax);
     }
 
     /**
