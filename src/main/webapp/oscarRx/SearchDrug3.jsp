@@ -1030,6 +1030,12 @@
       border: 1px solid grey;
     }
 
+    /* Bootstrap added to this page resets h1-h6 to font-weight:500,
+       which un-bolds the popup heading vs the pre-Bootstrap look. Restore bold here. */
+    #discontinueUI h3 {
+      font-weight: bold;
+    }
+
     #drugProfile {
       padding-top: 0;
     }
