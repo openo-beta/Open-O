@@ -49,8 +49,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Locale;
 
-import org.owasp.encoder.Encode;
-
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
@@ -83,7 +81,8 @@ public class RxWriteToEncounter2Action extends ActionSupport {
         CaseManagementTmpSave tmpSave = caseManagementMgr.getTmpSave(loggedInInfo.getLoggedInProviderNo(), demographicNo, programNo);
         Date today = new Date();
         if (tmpSave != null) {
-            String noteBody = generateNote(loggedInInfo, Encode.forJavaScript(request.getParameter("body")), false);
+            // Store the body raw, like the branches below; encoding it here leaked literal \n and \/ into the saved note (issue #2452).
+            String noteBody = generateNote(loggedInInfo, request.getParameter("body"), false);
 
             if (tmpSave.getNoteId() > 0) {
                 note = caseManagementMgr.getNote(String.valueOf(tmpSave.getNoteId()));
