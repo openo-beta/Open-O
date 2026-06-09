@@ -423,8 +423,8 @@ function printPaste2Parent(ctx, print, fax, pasteRx, rxPasteAsterisk, prefPharma
                 text += rxNoNewLines.value + "\n";
             }
             const additionalNotes = document.getElementById("additionalNotes");
-            if (additionalNotes && additionalNotes.value.length > 0) {
-                text += "\n" + additionalNotes.value + "\n";
+            if (additionalNotes && additionalNotes.value.trim().length > 0) {
+                text += "\n" + additionalNotes.value.trim() + "\n";
             }
         }
         if (rxPasteAsterisk) {
