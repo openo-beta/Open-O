@@ -191,7 +191,7 @@
             data-is-current="<%= prescriptDrug.isCurrent() %>"
             data-is-external="<%= prescriptDrug.isExternal() %>">
 
-        <td><a id="createDate_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=Encode.forHtml(String.valueOf(DateToString(prescriptDrug.getCreateDate())))%></a></td>
+        <td><a id="createDate_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(styleColor))%>" href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"><%=Encode.forHtml(String.valueOf(DateToString(prescriptDrug.getCreateDate())))%></a></td>
             <%-- data-order: DataTables sorts this column by the attribute value instead of the cell
                  content. When start date is unknown the cell renders empty, so we fall back to
                  createDate to maintain parity with the previous server-side sort, which used
@@ -204,7 +204,7 @@
                     String startDate = UtilDateUtilities.DateToString(prescriptDrug.getRxDate());
                     startDate = partialDateDao.getDatePartial(startDate, PartialDate.DRUGS, prescriptDrug.getId(), PartialDate.DRUGS_STARTDATE);
                 %>
-                <a id="rxDate_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>"   <%=Encode.forHtml(String.valueOf(styleColor))%>
+                <a id="rxDate_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>"   class="<%=Encode.forHtmlAttribute(String.valueOf(styleColor))%>"
                    href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>"><%=Encode.forHtml(String.valueOf(startDate))%>
                 </a>
                 <% } %>
@@ -238,7 +238,7 @@
 			}
 			
 			%>
-            <td><a id="prescrip_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" <%=styleColor%> href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"   <%=tComment%>   ><%=Encode.forHtml(String.valueOf(RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")))%></a></td>
+            <td><a id="prescrip_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(styleColor))%>" href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(prescriptDrug.getRegionalIdentifier())%>&amp;cn=<%=Encode.forUriComponent(prescriptDrug.getCustomName())%>&amp;bn=<%=Encode.forUriComponent(bn)%>&amp;atc=<%=Encode.forUriComponent(prescriptDrug.getAtc())%>"   <%=tComment%>   ><%=Encode.forHtml(String.valueOf(RxPrescriptionData.getFullOutLine(prescriptDrug.getSpecial()).replaceAll(";", " ")))%></a></td>
 			<%            			
 	           	if(securityManager.hasWriteAccess("_rx",roleName$,true)) {            		
            	%>
@@ -266,7 +266,7 @@
             <td>
 
                 <%if (prescriptDrug.getRemoteFacilityName() == null) {%>
-                <a id="del_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" name="delete" <%=Encode.forHtml(String.valueOf(styleColor))%> href="javascript:void(0);"
+                <a id="del_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" name="delete" class="<%=Encode.forHtmlAttribute(String.valueOf(styleColor))%>" href="javascript:void(0);"
                    onclick="Delete2(this);">Del</a>
                 <%}%>
             </td>
@@ -283,7 +283,7 @@
 					if(securityManager.hasWriteAccess("_rx",roleName$,true)) {            		
 				
                 %>
-                	<a id="discont_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" href="javascript:void(0);" onclick="Discontinue(event,this);" <%=Encode.forHtml(String.valueOf(styleColor))%> >Discon</a>                
+                	<a id="discont_<%=Encode.forHtmlAttribute(String.valueOf(prescriptIdInt))%>" href="javascript:void(0);" onclick="Discontinue(event,this);" class="<%=Encode.forHtmlAttribute(String.valueOf(styleColor))%>" >Discon</a>                
                 <% }
                	 }
                 }else{%>
@@ -492,7 +492,12 @@
     }
 
     String getClassColour(Drug drug, long referenceTime, long durationToSoon) {
-        StringBuilder sb = new StringBuilder("class=\"");
+        // Returns only the space-separated CSS class tokens (e.g. "currentDrug expireInReference"),
+        // or "" when none apply. Callers wrap this in class="..." and OWASP-encode it as an
+        // attribute value (Encode.forHtmlAttribute). Do NOT re-add the class="..." wrapper here:
+        // emitting a full attribute fragment and then running it through Encode.forHtml() double-
+        // encodes the quotes (class=&#34;...&#34;) and breaks the drug row styling.
+        StringBuilder sb = new StringBuilder();
 
         if (!drug.isLongTerm() && (drug.isCurrent() && drug.getEndDate() != null && (drug.getEndDate().getTime() - referenceTime <= durationToSoon))) {
             sb.append("expireInReference ");
@@ -524,20 +529,12 @@
         }
 
         if (drug.getOutsideProviderName() != null && !drug.getOutsideProviderName().equals("")) {
-            sb = new StringBuilder("class=\"");
-            sb.append("external ");
+            sb = new StringBuilder("external ");
         }
         if (drug.getRemoteFacilityName() != null) {
-            sb = new StringBuilder("class=\"");
-            sb.append("external ");
+            sb = new StringBuilder("external ");
         }
-        String retval = sb.toString();
-
-        if (retval.equals("class=\"")) {
-            return "";
-        }
-
-        return retval.substring(0, retval.length()) + "\"";
+        return sb.toString().trim();
 
     }
     
