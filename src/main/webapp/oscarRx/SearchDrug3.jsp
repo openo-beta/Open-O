@@ -3378,11 +3378,43 @@
         }
     
     
+        /**
+         * Counts the medications currently staged for this prescription.
+         *
+         * Each staged drug renders a drugName_<rand> input inside the drug form;
+         * a ReRx box that was only checked (not staged) produces no such input.
+         * This deliberately keys on the same drugName_ marker that the server
+         * uses to detect staged drugs in RxWriteScript2Action.updateSaveAllDrugs()
+         * ("ele.startsWith(\"drugName_\")"), so this gate matches exactly what the
+         * server would persist. Keep the two in sync if that marker ever changes.
+         *
+         * @returns {number} the number of staged medications
+         */
+        function countStagedMedications() {
+            const form = document.getElementById('drugForm');
+            if (!form) {
+                return 0;
+            }
+            return form.querySelectorAll('input[name^="drugName_"]').length;
+        }
+
         function updateSaveAllDrugsPrintCheckContinue() {
+            // Nothing staged: warn instead of saving an empty prescription (#2453).
+            // The ReRx selection is left intact so the user can still click
+            // Stage Medication; it is only archived once actually staged and saved
+            // (guarded in RxWriteScript2Action.saveDrug()).
+            if (countStagedMedications() === 0) {
+                alert('No medications have been added.');
+                return;
+            }
             updateSaveAllDrugsPrintContinue();
         }
-    
+
         function updateSaveAllDrugsCheckContinue() {
+            // Nothing staged: do nothing rather than save an empty prescription (#2453).
+            if (countStagedMedications() === 0) {
+                return;
+            }
             updateSaveAllDrugsContinue();
         }
     
