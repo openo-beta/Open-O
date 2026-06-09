@@ -52,7 +52,6 @@ Ontario, Canada
 
 <%@ page import="java.util.*, java.lang.*, ca.openosp.openo.appt.*" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.appt.status.service.AppointmentStatusMgr" %>
 <%@ page import="ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.decisionSupport.BillingGuidelines" %>
@@ -275,8 +274,8 @@ Ontario, Canada
             if (bMultisites) { %>
         <style>
             <% for (Site s:sites) { %>
-            .<%=s.getShortName()%> {
-                background-color: <%=s.getBgColor()%>;
+            .<%=Encode.forHtml(String.valueOf(s.getShortName()))%> {
+                background-color: <%=Encode.forHtml(String.valueOf(s.getBgColor()))%>;
             }
 
             <% } %>
@@ -284,8 +283,8 @@ Ontario, Canada
         <% } %>
         <style>
             <% for (int i = 0; i < allStatus.size(); i++) {%>
-            .<%=(allStatus.get(i)).getStatus()%> {
-                background-color: <%=(allStatus.get(i)).getColor()%>;
+            .<%=Encode.forHtml(String.valueOf((allStatus.get(i)).getStatus()))%> {
+                background-color: <%=Encode.forHtml(String.valueOf((allStatus.get(i)).getColor()))%>;
             }
 
             <% } %>
@@ -456,7 +455,7 @@ Ontario, Canada
             }
 
             function onNotBook() {
-                document.forms[0].keyword.value = "<%=DONOTBOOK%>";
+                document.forms[0].keyword.value = "<%=Encode.forJavaScript(String.valueOf(DONOTBOOK))%>";
             }
 
             function onButRepeat() {
@@ -504,10 +503,10 @@ Ontario, Canada
                 document.forms[0].resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.forms[0].type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
                 document.forms[0].location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
-                if ('<%=apptObj.getUrgency()%>' == 'critical') {
+                if ('<%=Encode.forJavaScript(String.valueOf(apptObj.getUrgency()))%>' == 'critical') {
                     document.forms[0].urgency.checked = "checked";
                 }
-                document.forms[0].reasonCode.value = "<%=apptObj.getReasonCode() %>";
+                document.forms[0].reasonCode.value = "<%=Encode.forJavaScript(String.valueOf(apptObj.getReasonCode()))%>";
 
                 <%if("true".equals(pros.getProperty("appointment.paste.status","false"))) {%>
                 var statusCode = "<%=Encode.forJavaScriptBlock(apptObj.getStatus())%>";
@@ -757,9 +756,9 @@ Ontario, Canada
                         data: {
                             method: "update",
                             page: "addappointment",
-                            pageId: "<%=curProvider_no%>|" + apptDate + "|" + startTime + "|" + endTime,
+                            pageId: "<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>|" + apptDate + "|" + startTime + "|" + endTime,
                             lock: true,
-                            timeout: <%=timeoutSeconds%>,
+                            timeout: <%=Encode.forJavaScript(String.valueOf(timeoutSeconds))%>,
                             cleanupExisting: true
                         },
                         dataType: 'json',
@@ -835,7 +834,7 @@ Ontario, Canada
                     data: {
                         method: "cancel",
                         page: "addappointment",
-                        pageId: "<%=curProvider_no%>|" + apptDate + "|" + startTime + "|" + endTime
+                        pageId: "<%=Encode.forJavaScript(String.valueOf(curProvider_no))%>|" + apptDate + "|" + startTime + "|" + endTime
                     },
                     dataType: 'json',
                     async: false,
@@ -987,7 +986,7 @@ Ontario, Canada
                 }
             }
         %>
-        <div id="tooManySameDayGroupApptWarning" style="<%=displayStyle%>">
+        <div id="tooManySameDayGroupApptWarning" style="<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%>">
             <div class="alert alert-error">
                 <h4><fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.titleMultipleGroupDayBooking'/></h4>
                 <fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.MultipleGroupDayBooking'/>
@@ -1029,9 +1028,9 @@ Ontario, Canada
                         String exp = " null-undefined\n IN-inactive ID-deceased OP-out patient\n NR-not signed\n FS-fee for service\n TE-terminated\n SP-self pay\n TP-third party";
 
         %>
-        <div class="alert alert-info" title='<%=exp%>'>
+        <div class="alert alert-info" title='<%=Encode.forHtmlAttribute(String.valueOf(exp))%>'>
             <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgPatientStatus"/>:</h4>
-            <%=patientStatus%>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgRosterStatus"/>:&nbsp;<%=rosterStatus%>
+            <%=Encode.forHtml(String.valueOf(patientStatus))%>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.msgRosterStatus"/>:&nbsp;<%=Encode.forHtml(String.valueOf(rosterStatus))%>
         </div>
         <%
 
@@ -1044,7 +1043,7 @@ Ontario, Canada
 
         %>
         <div class="alert alert-error">
-            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formAlert"/>:</h4> <%=demographicCust.getAlert()%>
+            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formAlert"/>:</h4> <%=Encode.forHtml(String.valueOf(demographicCust.getAlert()))%>
         </div>
 
         <%
@@ -1071,7 +1070,7 @@ Ontario, Canada
         <table width="100%" class="alert alert-info">
             <% for (String recommendation : billingRecommendations) { %>
             <tr>
-                <td><%=recommendation%>
+                <td><%=Encode.forHtml(String.valueOf(recommendation))%>
                 </td>
             </tr>
             <% } %>
@@ -1082,9 +1081,9 @@ Ontario, Canada
               action="<%=request.getContextPath()%>/appointment/appointmentcontrol.jsp"
               onsubmit="return(onAdd())">
             <input type="hidden" name="displaymode" value="">
-            <input type="hidden" name="year" value="<%=request.getParameter("year") %>">
-            <input type="hidden" name="month" value="<%=request.getParameter("month") %>">
-            <input type="hidden" name="day" value="<%=request.getParameter("day") %>">
+            <input type="hidden" name="year" value="<%=Encode.forHtmlAttribute(request.getParameter("year")) %>">
+            <input type="hidden" name="month" value="<%=Encode.forHtmlAttribute(request.getParameter("month")) %>">
+            <input type="hidden" name="day" value="<%=Encode.forHtmlAttribute(request.getParameter("day")) %>">
             <input type="hidden" name="fromAppt" value="1">
 
 
@@ -1092,7 +1091,7 @@ Ontario, Canada
                 <!-- We display a shortened title for the mobile version -->
                 <% if (isMobileOptimized) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabelMobile"/>
                 <% } else { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgMainLabel"/>
-                <% out.println("(" + pFirstname + " " + pLastname + ")"); %>
+                <% out.println("(" + Encode.forHtml(pFirstname) + " " + Encode.forHtml(pLastname) + ")"); %>
                 <% } %></h4>
             </div>
             <div class="well table-responsive">
@@ -1101,11 +1100,11 @@ Ontario, Canada
                         <tr>
                             <td>
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDate"/>&nbsp;<span
-                                    style="color:brown;">(<%=dateString1%>)</span>:
+                                    style="color:brown;">(<%=Encode.forHtml(String.valueOf(dateString1))%>)</span>:
                             </td>
                             <td>
                                 <input type="date" class="form-control" name="appointment_date"
-                                       value="<%=dateString2%>"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(dateString2))%>"
                                        onChange="checkDateTypeIn(this);checkPageLock()">
                             </td>
                         </tr>
@@ -1115,7 +1114,7 @@ Ontario, Canada
                             </td>
                             <td>
                                 <input type="time" name="start_time" class="form-control"
-                                       value='<%=request.getParameter("start_time")%>'
+                                       value='<%=Encode.forHtmlAttribute(request.getParameter("start_time"))%>'
                                        onChange="checkTimeTypeIn(this);updateTime();checkPageLock()">
                             </td>
                         </tr>
@@ -1125,9 +1124,9 @@ Ontario, Canada
                             </td>
                             <td>
                                 <input type="number" name="duration" id="duration" class="form-control"
-                                       value="<%=duration%>" onChange="checkPageLock()" onblur="calculateEndTime();">
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(duration))%>" onChange="checkPageLock()" onblur="calculateEndTime();">
                                 <input type="hidden" name="end_time"
-                                       value='<%=request.getParameter("end_time")%>'
+                                       value='<%=Encode.forHtmlAttribute(request.getParameter("end_time"))%>'
                                        onChange="checkTimeTypeIn(this)">
                             </td>
                         </tr>
@@ -1147,7 +1146,7 @@ Ontario, Canada
                                 %>
 			                        <span class="input-group-btn" id="demoNumber">
                                         <input type="text"  name="demographic_no" id="demographic_no" class="form-control" onfocus="onBlockFieldFocus(this)"
-                                               value='<%=(bFirstDisp && !bFromWL)?"":request.getParameter("demographic_no").equals("")?"":request.getParameter("demographic_no")%>' readonly="readonly">
+                                               value='<%=Encode.forHtmlAttribute((bFirstDisp && !bFromWL)?"":request.getParameter("demographic_no").equals("")?"":request.getParameter("demographic_no"))%>' readonly="readonly">
 						           </span>
                                     <input type="text" name="keyword" id="keyword" class="form-control"
                                         value="<%=Encode.forHtmlAttribute(name)%>"
@@ -1214,12 +1213,12 @@ Ontario, Canada
                                 <% // multisites start ==================
                                     if (bMultisites) { %>
                                 <select tabindex="4" class="form-control" name="location"
-                                        style="background-color: <%=colo%>"
+                                        style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(colo))%>"
                                         onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor'>
                                     <% for (Site s : sites) { %>
                                     <option value="<%=Encode.forHtmlAttribute(s.getName())%>"
-                                            class="<%=s.getShortName()%>"
-                                            style="background-color: <%=s.getBgColor()%>" <%=s.getName().equals(loc) ? "selected" : "" %>><%=Encode.forHtmlContent(s.getName())%>
+                                            class="<%=Encode.forHtmlAttribute(String.valueOf(s.getShortName()))%>"
+                                            style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(s.getBgColor()))%>" <%=s.getName().equals(loc) ? "selected" : "" %>><%=Encode.forHtmlContent(s.getName())%>
                                     </option>
                                     <% } %>
                                 </select>
@@ -1238,14 +1237,14 @@ Ontario, Canada
                                             for (Program program : programs) {
                                                 String description = StringUtils.isBlank(program.getLocation()) ? program.getName() : program.getLocation();
                                     %>
-                                    <option value="<%=program.getId()%>" <%=program.getId().toString().equals(sessionLocation) ? "selected='selected'" : ""%>><%=Encode.forHtmlAttribute(description)%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(program.getId()))%>" <%=program.getId().toString().equals(sessionLocation) ? "selected='selected'" : ""%>><%=Encode.forHtmlAttribute(description)%>
                                     </option>
                                     <% }
                                     }
                                     %>
                                 </select>
                                 <% } else { %>
-	            <input type="TEXT" name="location" tabindex="4" tabindex="4" value="<%=loc%>" class="form-control">
+	            <input type="TEXT" name="location" tabindex="4" tabindex="4" value="<%=Encode.forHtmlAttribute(String.valueOf(loc))%>" class="form-control">
                                 <% } %>
                                 <% } %>
                             </td>
@@ -1285,19 +1284,19 @@ Ontario, Canada
                                     if (strEditable != null && strEditable.equalsIgnoreCase("yes")) {
                                 %>
 
-	<select class="form-control" name="status" style="background-color:<%=(allStatus.get(0)).getColor()%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor' >
+	<select class="form-control" name="status" style="background-color:<%=Encode.forHtmlAttribute(String.valueOf((allStatus.get(0)).getColor()))%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor' >
                                     <% for (int i = 0; i < allStatus.size(); i++) { %>
-                                    <option class="<%=(allStatus.get(i)).getStatus()%>"
-                                            style="background-color:<%=(allStatus.get(i)).getColor()%>"
-                                            value="<%=(allStatus.get(i)).getStatus()%>"
-                                            <%=(allStatus.get(i)).getStatus().equals(request.getParameter("status")) ? "SELECTED" : ""%>><%=(allStatus.get(i)).getDescription()%>
+                                    <option class="<%=Encode.forHtmlAttribute(String.valueOf((allStatus.get(i)).getStatus()))%>"
+                                            style="background-color:<%=Encode.forHtmlAttribute(String.valueOf((allStatus.get(i)).getColor()))%>"
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf((allStatus.get(i)).getStatus()))%>"
+                                            <%=Encode.forHtml((allStatus.get(i)).getStatus().equals(request.getParameter("status")) ? "SELECTED" : "")%>><%=Encode.forHtml(String.valueOf((allStatus.get(i)).getDescription()))%>
                                     </option>
                                     <% } %>
                                 </select> <%
                                 }
                                 if (strEditable == null || !strEditable.equalsIgnoreCase("yes")) {
 	            %> <input type="text" name="status" class="form-control"
-                                      value='<%=bFirstDisp?"t":request.getParameter("status")==null?"":request.getParameter("status").equals("")?"":request.getParameter("status")%>'
+                                      value='<%=Encode.forHtmlAttribute(bFirstDisp?"t":request.getParameter("status")==null?"":request.getParameter("status").equals("")?"":request.getParameter("status"))%>'
                             > <%}%>
                             </td>
                         </tr>
@@ -1315,7 +1314,7 @@ Ontario, Canada
                                         List<AppointmentType> types = appDao.listAll();
                                         for (int j = 0; j < types.size(); j++) {
                                     %>
-                                    <option data-dur="<%= types.get(j).getDuration() %>"
+                                    <option data-dur="<%=Encode.forHtmlAttribute(String.valueOf(types.get(j).getDuration()))%>"
                                             data-reason="<%= Encode.forHtmlAttribute(types.get(j).getReason()) %>"
                                             data-loc="<%= Encode.forHtmlAttribute(types.get(j).getLocation()) %>"
                                             data-notes="<%= Encode.forHtmlAttribute(types.get(j).getNotes()) %>"
@@ -1333,7 +1332,7 @@ Ontario, Canada
                             </td>
                             <td>
                                 <input type="text" id="mrp" class="form-control"
-                                       value="<%=bFirstDisp ? "" : StringEscapeUtils.escapeHtml4(providerBean.getProperty(curDoctor_no,""))%>" readonly="readonly">
+                                       value="<%=bFirstDisp ? "" : Encode.forHtml(providerBean.getProperty(curDoctor_no,""))%>" readonly="readonly">
                             </td>
                         </tr>
                         <tr>
@@ -1343,7 +1342,7 @@ Ontario, Canada
                             <td>
                                 <textarea class="form-control" name="notes" tabindex="3" rows="2" style="resize:none;"
                                           placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formNotes"/>" cols="18"
-                                          maxlength="255"><%=bFirstDisp ? "" : "".equals(request.getParameter("notes")) ? "" : request.getParameter("notes")%></textarea>
+                                          maxlength="255"><%=Encode.forHtml(bFirstDisp ? "" : "".equals(request.getParameter("notes")) ? "" : request.getParameter("notes"))%></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -1375,9 +1374,9 @@ Ontario, Canada
                                     DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(request.getLocale()).withZone(ZoneId.systemDefault());
 
                                 %>
-                                <input type="hidden" name="createdatetime" value="<%=strDateTime%>">
-                                <%=create.format(pattern)%>
-                                <input type="hidden" name="provider_no" value="<%=curProvider_no%>">
+                                <input type="hidden" name="createdatetime" value="<%=Encode.forHtmlAttribute(String.valueOf(strDateTime))%>">
+                                <%=Encode.forHtml(String.valueOf(create.format(pattern)))%>
+                                <input type="hidden" name="provider_no" value="<%=Encode.forHtmlAttribute(String.valueOf(curProvider_no))%>">
                                 <input type="hidden" name="dboperation" value="search_titlename">
                                 <input type="hidden" name="creator"
                                        value='<%=Encode.forHtmlAttribute(userlastname)+", "+Encode.forHtmlAttribute(userfirstname)%>'>
@@ -1438,7 +1437,7 @@ Ontario, Canada
                         searchMode = OscarProperties.getInstance().getProperty("default_search_mode", "search_name");
                     }
                 %>
-                <input type="hidden" name="search_mode" id="search_mode" value="<%=searchMode%>">
+                <input type="hidden" name="search_mode" id="search_mode" value="<%=Encode.forHtmlAttribute(String.valueOf(searchMode))%>">
                 <input type="hidden" name="originalpage"
                        value="<%=request.getContextPath() %>/appointment/addappointment.jsp">
                 <input type="hidden" name="limit1" value="0">
@@ -1461,11 +1460,11 @@ Ontario, Canada
                            tabindex="6"
                            value="<% if (isMobileOptimized) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnAddAppointmentMobile"/>
                    <% } else { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnAddAppointment"/><% } %>"
-                            <%=disabled%>>
+                            <%=Encode.forHtml(String.valueOf(disabled))%>>
                     <input type="submit" id="groupButton" class="btn"
                            onclick="document.forms['ADDAPPT'].displaymode.value='Group Appt'"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnGroupAppt"/>"
-                            <%=disabled%>>
+                            <%=Encode.forHtml(String.valueOf(disabled))%>>
                     <% }
 
                         if (dateString2.equals(inform.format(inform.parse(now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH))))
@@ -1474,7 +1473,7 @@ Ontario, Canada
                     %> <input type="submit" id="addPrintPreviewButton" class="btn"
                               onclick="document.forms['ADDAPPT'].displaymode.value='Add Appt & PrintPreview'"
                               value="<fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.btnAddApptPrintPreview'/>"
-                        <%=disabled%>>
+                        <%=Encode.forHtml(String.valueOf(disabled))%>>
 
 
                     <%
@@ -1485,12 +1484,12 @@ Ontario, Canada
                     <input type="submit" id="printReceiptButton" class="btn"
                            onclick="document.forms['ADDAPPT'].displaymode.value='Add Appointment';document.forms['ADDAPPT'].printReceipt.value='1';"
                            value="<fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.btnPrintReceipt'/>"
-                            <%=disabled%>>
+                            <%=Encode.forHtml(String.valueOf(disabled))%>>
                     <input type="hidden" name="printReceipt" value="">
                     <input type="submit" id="printButton"
                            onclick="document.forms['ADDAPPT'].displaymode.value='Add Appt & PrintCard'" class="btn"
                            value="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.btnPrint'/>"
-                            <%=disabled%>>
+                            <%=Encode.forHtml(String.valueOf(disabled))%>>
 
 
                     <% } %>
@@ -1517,13 +1516,13 @@ Ontario, Canada
                             }
                     %>
                     <input type="button" id="pasteButton" value="Paste" class="btn"
-                           onclick="pasteAppt(<%=(numSameDayGroupApptsPaste > 0)%>);">
+                           onclick="pasteAppt(<%=Encode.forJavaScript(String.valueOf((numSameDayGroupApptsPaste > 0)))%>);">
                     <% }%>
 
                     <% if (!props.getProperty("allowMultipleSameDayGroupAppt", "").equalsIgnoreCase("no")) {%>
                     <input type="button" id="apptRepeatButton" class="btn"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnRepeat"/>"
-                           onclick="onButRepeat()" <%=disabled%>>
+                           onclick="onButRepeat()" <%=Encode.forHtml(String.valueOf(disabled))%>>
                     <% } %>
                     <input type="RESET" id="backButton" class="btn btn-link"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>" onClick="cancelPageLock();window.close();">
@@ -1543,37 +1542,37 @@ Ontario, Canada
                                 <th colspan="2">
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgDemgraphics"/>
                                     <a title="Master File"
-                                       onclick="popup(700,1000,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=demoNo%>&amp;displaymode=edit&amp;dboperation=search_detail','master')"
+                                       onclick="popup(700,1000,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&amp;displaymode=edit&amp;dboperation=search_detail','master')"
                                        href="javascript: function myFunction() {return false; }"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnEdit"/></a>
 
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgSex"/>: <%=sex%> &nbsp;
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgDOB"/>: <%=dob%>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgSex"/>: <%=Encode.forHtml(String.valueOf(sex))%> &nbsp;
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgDOB"/>: <%=Encode.forHtml(String.valueOf(dob))%>
                                 </th>
                             </tr>
                             <tr style="background-color:#fdfdfd">
                                 <th style="padding-right: 20px; text-align: left"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgHin"/>:
                                 </th>
-                                <td><%=hin.replace("null", "")%>
+                                <td><%=Encode.forHtml(String.valueOf(hin.replace("null", "")))%>
                                 </td>
                             </tr>
                             <tr style="background-color:#f3f6f9">
                                 <th style="padding-right: 20px; text-align: left"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgAddress"/>:
                                 </th>
-                                <td><%=StringUtils.trimToEmpty(address)%>, <%=StringUtils.trimToEmpty(city)%>
-                                    , <%=StringUtils.trimToEmpty(province)%>, <%=StringUtils.trimToEmpty(postal)%>
+                                <td><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(address)))%>, <%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(city)))%>
+                                    , <%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(province)))%>, <%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(postal)))%>
                                 </td>
                             </tr>
                             <tr style="background-color:#fdfdfd">
                                 <th style="padding-right: 20px; text-align: left"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgPhone"/>:
                                 </th>
-                                <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgH"/></b>:<%=StringUtils.trimToEmpty(phone)%>
-                                    <b><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgW"/></b>:<%=StringUtils.trimToEmpty(phone2)%>
+                                <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgH"/></b>:<%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(phone)))%>
+                                    <b><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgW"/></b>:<%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(phone2)))%>
                                 </td>
                             </tr>
                             <tr style="background-color:#f3f6f9; text-align:left">
                                 <th style="padding-right: 20px"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.msgEmail"/>:
                                 </th>
-                                <td><%=StringUtils.trimToEmpty(email)%>
+                                <td><%=Encode.forHtml(String.valueOf(StringUtils.trimToEmpty(email)))%>
                                 </td>
                             </tr>
 
@@ -1661,13 +1660,13 @@ Ontario, Canada
                                         if (iRow > iPageSize) break;
                             %>
                             <tr style="background-color:#e8e8e8">
-                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=ConversionUtils.toDateString(a.getAppointmentDate())%>
+                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(a.getAppointmentDate())))%>
                                 </td>
-                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=ConversionUtils.toTimeString(a.getStartTime())%>
+                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=Encode.forHtml(String.valueOf(ConversionUtils.toTimeString(a.getStartTime())))%>
                                 </td>
-                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=p.getFormattedName()%>
+                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                                 </td>
-                                <td style="background-color: #e8e8e8;"><%=a.getStatus() == null ? "" : (a.getStatus().startsWith("N") ? "No Show" : (a.getStatus().startsWith("C") ? "Cancelled" : ""))%>
+                                <td style="background-color: #e8e8e8;"><%=Encode.forHtml(String.valueOf(a.getStatus() == null ? "" : (a.getStatus().startsWith("N") ? "No Show" : (a.getStatus().startsWith("C") ? "Cancelled" : ""))))%>
                                 </td>
                             </tr>
                             <%
@@ -1684,13 +1683,13 @@ Ontario, Canada
                                     if (iRow > iPageSize) break;
                             %>
                             <tr style="background-color:#e8e8e8">
-                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=ConversionUtils.toDateString(a.getAppointmentDate())%>
+                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(a.getAppointmentDate())))%>
                                 </td>
-                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=ConversionUtils.toTimeString(a.getStartTime())%>
+                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=Encode.forHtml(String.valueOf(ConversionUtils.toTimeString(a.getStartTime())))%>
                                 </td>
-                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=p.getFormattedName()%>
+                                <td style="background-color: #e8e8e8; padding-right: 25px"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                                 </td>
-                                <td style="background-color: #e8e8e8;"><%=a.getStatus() == null ? "" : (a.getStatus().startsWith("N") ? "No Show" : (a.getStatus().startsWith("C") ? "Cancelled" : ""))%>
+                                <td style="background-color: #e8e8e8;"><%=Encode.forHtml(String.valueOf(a.getStatus() == null ? "" : (a.getStatus().startsWith("N") ? "No Show" : (a.getStatus().startsWith("C") ? "Cancelled" : ""))))%>
                                 </td>
                             </tr>
                             <%

@@ -106,7 +106,7 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                         pdfid = pdfid.replaceAll("[^a-zA-Z0-9_-]", "");
                     }
                     String pdfFile = "prescription_" + pdfid + ".pdf";
-                    String document_dir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+                    String document_dir = OscarProperties.getInstance().getDocumentDirectory();
                     
                     // Use PathValidationUtils for proper path validation
                     File baseDirFile = new File(document_dir);
@@ -647,6 +647,10 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                 listElem = listElem + s;
                 listElem += newline;
             }
+        }
+        // flush the final prescription; without this the last line (e.g. Qty/Repeats) is dropped when it has no trailing boundary token
+        if (!listElem.isEmpty()) {
+            listRx.add(listElem);
         }
 
         // A0-A10, LEGAL, LETTER, HALFLETTER, _11x17, LEDGER, NOTE, B0-B5, ARCH_A-ARCH_E, FLSA

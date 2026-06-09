@@ -79,6 +79,7 @@
 <%@ page import="java.util.*, org.w3c.dom.*" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.util.MsgCommxml" %>
 <%@ page import="ca.openosp.openo.util.UtilXML" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -364,8 +365,8 @@
 
             <form method="POST" action="<%= request.getContextPath() %>/messenger/AdjustAttachments.jsp"><input
                     type=hidden name="xmlDoc"
-                    value="<%= MsgCommxml.encode64(MsgCommxml.toXML(root)) %>"/> <input
-                    type=hidden name="id" value="<%= request.getAttribute("attId")%>"/>
+                    value="<%=Encode.forHtmlAttribute(String.valueOf(MsgCommxml.encode64(MsgCommxml.toXML(root))))%>"/> <input
+                    type=hidden name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("attId")))%>"/>
 
                 <% DrawDoc(root, out); %> <br>
                 <div style="font-size: 8pt; margin-top: 15px;"><input
@@ -375,11 +376,11 @@
                     java.util.Properties prop = UtilXML.getPropText(xmlDoc, "table", "sqlFrom", "name"); //
                     if (prop.getProperty("formAR") != null && prop.getProperty("formAR").equals("AR Form")) {
                 %> &nbsp;|&nbsp; <a
-                        href="<%= request.getContextPath() %>/oscarEncounter/formCommARPg1.jsp?messageid=<%=request.getAttribute("attId")%>">AR1</a>
+                        href="<%= request.getContextPath() %>/oscarEncounter/formCommARPg1.jsp?messageid=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("attId")))%>">AR1</a>
                     &nbsp;|&nbsp; <a
-                            href="<%= request.getContextPath() %>/oscarEncounter/formCommARPg2.jsp?messageid=<%=request.getAttribute("attId")%>">AR2
+                            href="<%= request.getContextPath() %>/oscarEncounter/formCommARPg2.jsp?messageid=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("attId")))%>">AR2
                         Pg1</a> &nbsp;|&nbsp; <a
-                            href="<%= request.getContextPath() %>/oscarEncounter/formCommARPg3.jsp?messageid=<%=request.getAttribute("attId")%>">AR2
+                            href="<%= request.getContextPath() %>/oscarEncounter/formCommARPg3.jsp?messageid=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("attId")))%>">AR2
                         Pg2</a> <%
                         } %>
                 </div>

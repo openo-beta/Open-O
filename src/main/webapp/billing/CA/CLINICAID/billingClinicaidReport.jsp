@@ -178,6 +178,7 @@
 <%@page import="ca.openosp.openo.commn.model.Site" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@page import="org.apache.commons.lang3.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -277,9 +278,9 @@
 
 
                     %>
-                    <option value="<%=proOHIP%>"
-                            <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=proLast%>,
-                        <%=proFirst%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"
+                            <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(proLast))%>,
+                        <%=Encode.forHtml(String.valueOf(proFirst))%>
                     </option>
                     <%
                         }
@@ -289,11 +290,11 @@
             </td>
             <td align="center" nowrap><font size="1"> From:</font> <input
                     type="text" name="xml_vdate" id="xml_vdate" size="10"
-                    value="<%=xml_vdate%>"> <font size="1"> <img
+                    value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>"> <font size="1"> <img
                     src="<%= request.getContextPath() %>/images/cal.gif" id="xml_vdate_cal"> To:</font> <input
                     type="text" name="xml_appointment_date" id="xml_appointment_date"
                     onDblClick="calToday(this)" size="10"
-                    value="<%=xml_appointment_date%>"> <img
+                    value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>"> <img
                     src="<%= request.getContextPath() %>/images/cal.gif" id="xml_appointment_date_cal"></td>
             <td align="right"><input type="submit" name="Submit"
                                      value="Create Report"> </font></td>
@@ -306,7 +307,7 @@
        bordercolorlight="#99A005" bordercolordark="#FFFFFF" bgcolor="#FFFFFF">
     <tr bgcolor=<%="#ccffcc" %>>
             <% for (int i=0; i<header_values.size(); i++) {%>
-        <th><%=header_values.get(i) %>
+        <th><%=Encode.forHtml(String.valueOf(header_values.get(i)))%>
         </th>
             <% } %>
             <% for (int i=0; i<column_values.size(); i++) {%>
@@ -315,7 +316,7 @@
         <% for (int j = 0; j < header_values.size(); j++) {
             prop = (Properties) column_values.get(i);
         %>
-        <td align="center"><%=prop.getProperty((String) header_values.get(j), "&nbsp;") %>&nbsp;</td>
+        <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty((String) header_values.get(j), "\u00A0")))%>&nbsp;</td>
         <% } %>
     </tr>
     <% } %>
@@ -323,7 +324,7 @@
     <% if (total_values.size() > 0) { %>
     <tr bgcolor="silver">
         <% for (int i = 0; i < total_values.size(); i++) {%>
-        <th><%=total_values.get(i) %>&nbsp;</th>
+        <th><%=Encode.forHtml(String.valueOf(total_values.get(i)))%>&nbsp;</th>
         <% } %>
     </tr>
     <% } %>

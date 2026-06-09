@@ -34,6 +34,7 @@
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxCodesData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     FavoritesDao favoritesDao = SpringUtils.getBean(FavoritesDao.class);
     FavoritesPrivilegeDao favoritesPrivilegeDao = SpringUtils.getBean(FavoritesPrivilegeDao.class);
@@ -90,8 +91,8 @@
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
         <form action="<%= request.getContextPath()%>/oscarRx/copyFavorite2.do">
             <input type="hidden" name="dispatch" value="refresh"/>
-            <input type="hidden" name="userProviderNo" value="<%=providerNo%>"/>
-            <input type="hidden" name="copyProviderNo" value="<%=copyProviderNo%>"/>
+            <input type="hidden" name="userProviderNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"/>
+            <input type="hidden" name="copyProviderNo" value="<%=Encode.forHtmlAttribute(String.valueOf(copyProviderNo))%>"/>
 
             <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">
                 <%@ include file="TopLinks.jsp"%>
@@ -142,9 +143,9 @@
                                                                     continue;
                                                                 }
                                                         %>
-                                                            <option value="<%=((String) allProviders.get(p))%>"
+                                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(((String) allProviders.get(p))))%>"
                                                                 <%=((String) allProviders.get(p)).equalsIgnoreCase(copyProviderNo) ? "SELECTED" : ""%>>
-                                                                <%=providerDao.getProvider((String) allProviders.get(p)).getFormattedName()%>
+                                                                <%=Encode.forHtml(String.valueOf(providerDao.getProvider((String) allProviders.get(p)).getFormattedName()))%>
                                                             </option>
                                                         <% } %>
                                                     </select>

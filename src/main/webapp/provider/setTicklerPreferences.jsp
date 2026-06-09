@@ -29,6 +29,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@page import="java.util.*" %>
 <%@ page import="java.util.ResourceBundle"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -47,7 +48,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><%=bundle.getString(providertitle)%></title>
+        <title><%=Encode.forHtml(String.valueOf(bundle.getString(providertitle)))%></title>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
 
         <style>
@@ -61,7 +62,7 @@
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
             <td class="MainTableTopRowLeftColumn" style="width:135px">
-                <%=bundle.getString(providermsgPrefs)%>
+                <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgPrefs)))%>
             </td>
             <td style="color: white" class="MainTableTopRowRightColumn"></td>
         </tr>
@@ -110,14 +111,14 @@
                         </div>
                     </div>
 
-                    <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
-                    <input type="button" value="<%=bundle.getString(providerbtnCancel)%>"
+                    <input type="submit" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getString(providerbtnSubmit)))%>"/>
+                    <input type="button" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getString(providerbtnCancel)))%>"
                            onclick="window.close();"/>
                 </form>
                 <%} else {%>
-                <h1><%=bundle.getString(providerMsg)%></h1>
+                <h1><%=Encode.forHtml(String.valueOf(bundle.getString(providerMsg)))%></h1>
                 <br/><br/>
-                <input type="button" value="<%=bundle.getString(providerbtnClose)%>" onclick="window.close();"/>
+                <input type="button" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getString(providerbtnClose)))%>" onclick="window.close();"/>
                 <%}%>
             </td>
         </tr>

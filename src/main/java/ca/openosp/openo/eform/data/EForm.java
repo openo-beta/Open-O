@@ -50,6 +50,8 @@ import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
+import ca.openosp.openo.util.PreparedSQL;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.util.StringBuilderUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -703,15 +705,16 @@ public class EForm extends EFormBase {
         String sql = ap.getApSQL();
         String output = ap.getApOutput();
         if (!StringUtils.isBlank(sql)) {
-            sql = replaceAllFields(sql);
+            PreparedSQL swp = parameterizeFields(sql);
+            sql = swp.getSql();
             log.debug("SQL----" + sql);
             ArrayList<String> names = DatabaseAP.parserGetNames(output); // a list of ${apName} --> apName
             sql = DatabaseAP.parserClean(sql); // replaces all other ${apName} expressions with 'apName'
             if (ap.isJsonOutput()) {
-                ArrayNode values = EFormUtil.getJsonValues(names, sql);
+                ArrayNode values = EFormUtil.getJsonValues(names, sql, swp.getParamsArray());
                 output = values.toString(); //in case of JsonOutput, return the whole JSONArray and let the javascript deal with it
             } else {
-                ArrayList<String> values = EFormUtil.getValues(names, sql);
+                ArrayList<String> values = EFormUtil.getValues(names, sql, swp.getParamsArray());
                 if (values.size() != names.size()) {
                     output = "";
                 } else {
@@ -741,6 +744,12 @@ public class EForm extends EFormBase {
     }
 
     public String replaceAllFields(String sql) {
+        // Validate inputs before substitution into SQL templates to prevent injection.
+        SqlUtils.validateOptionalNumericId(demographicNo, "demographicNo");
+        SqlUtils.validateOptionalNumericId(appointment_no, "appointment_no");
+        if (providerNo != null && !providerNo.matches("^[a-zA-Z0-9_]*$")) {
+            throw new SecurityException("Invalid providerNo for SQL template substitution");
+        }
         sql = DatabaseAP.parserReplace("demographic", demographicNo, sql);
         sql = DatabaseAP.parserReplace("provider", providerNo, sql);
         sql = DatabaseAP.parserReplace("providers", providerNo, sql);
@@ -756,6 +765,38 @@ public class EForm extends EFormBase {
         sql = DatabaseAP.parserReplace(TABLE_ID, getSqlParams(TABLE_ID), sql);
         sql = DatabaseAP.parserReplace(OTHER_KEY, getSqlParams(OTHER_KEY), sql);
         return sql;
+    }
+
+    /**
+     * Replaces all ${name} template placeholders in the SQL with ? parameter markers
+     * and collects the corresponding values in order for PreparedStatement binding.
+     *
+     * @param sql the SQL template containing ${name} placeholders
+     * @return a PreparedSQL containing the parameterized SQL and ordered parameter values
+     */
+    public PreparedSQL parameterizeFields(String sql) {
+        List<Object> params = new ArrayList<>();
+
+        // Replace known template variables with ? and collect values
+        sql = parameterizeToken(sql, "demographic", demographicNo, params);
+        sql = parameterizeToken(sql, "provider", providerNo, params);
+        sql = parameterizeToken(sql, "providers", providerNo, params);
+        sql = parameterizeToken(sql, "appt_no", appointment_no, params);
+        sql = parameterizeToken(sql, EFORM_DEMOGRAPHIC, getSqlParams(EFORM_DEMOGRAPHIC), params);
+        sql = parameterizeToken(sql, REF_FID, getSqlParams(REF_FID), params);
+        sql = parameterizeToken(sql, VAR_NAME, getSqlParams(VAR_NAME), params);
+        sql = parameterizeToken(sql, VAR_VALUE, getSqlParams(VAR_VALUE), params);
+        sql = parameterizeToken(sql, REF_VAR_NAME, getSqlParams(REF_VAR_NAME), params);
+        sql = parameterizeToken(sql, REF_VAR_VALUE, getSqlParams(REF_VAR_VALUE), params);
+        sql = parameterizeToken(sql, TABLE_NAME, getSqlParams(TABLE_NAME), params);
+        sql = parameterizeToken(sql, TABLE_ID, getSqlParams(TABLE_ID), params);
+        sql = parameterizeToken(sql, OTHER_KEY, getSqlParams(OTHER_KEY), params);
+
+        return new PreparedSQL(sql, params);
+    }
+
+    private static String parameterizeToken(String sql, String name, String value, List<Object> params) {
+        return SqlUtils.parameterizeToken(sql, name, value, params);
     }
 
     private String getSqlParams(String key) {

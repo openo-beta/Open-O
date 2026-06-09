@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.commn.model.BillingService" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String action = StringUtils.trimToNull(request.getParameter("action")) == null ? "search" : request.getParameter("action"); // add/edit
     String alert = "info";
@@ -58,11 +59,11 @@
             serviceCode = "A" + serviceCode;
             if (serviceCode.equals(action.substring("edit".length()))) {
                 if (jdbc.updateCodeByName(serviceCode, description, value, percentage, request.getParameter("billingservice_date"), gstFlag)) {
-                    msg = serviceCode + " is updated.<br>" + "Type in a service code and search first to see if it is available.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is updated.<br>" + "Type in a service code and search first to see if it is available.";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 } else {
-                    msg = serviceCode + " is <font color='red'>NOT</font> updated. Action failed! Try edit it again.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is <font color='red'>NOT</font> updated. Action failed! Try edit it again.";
                     action = "edit" + serviceCode;
                     prop.setProperty("service_code", serviceCode);
                     prop.setProperty("description", description);
@@ -71,7 +72,7 @@
                     prop.setProperty("gstFlag", gstFlag);
                 }
             } else {
-                msg = "You can <font color='red'>NOT</font> save the service code - " + serviceCode + ". Please search the service code first.";
+                msg = "You can <font color='red'>NOT</font> save the service code - " + Encode.forHtmlContent(serviceCode) + ". Please search the service code first.";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
             }
@@ -79,11 +80,11 @@
             serviceCode = "A" + serviceCode;
             if (serviceCode.equals(action.substring("add".length()))) {
                 if (bcds.addBillingCode(serviceCode, description, value)) {
-                    msg = serviceCode + " is added.<br>" + "Type in a service code and search first to see if it is available.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is added.<br>" + "Type in a service code and search first to see if it is available.";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 } else {
-                    msg = serviceCode + " is not added. Action failed! Try edit it again.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is not added. Action failed! Try edit it again.";
                     action = "add" + serviceCode;
                     prop.setProperty("service_code", serviceCode);
                     prop.setProperty("description", description);
@@ -93,7 +94,7 @@
                     alert = "error";
                 }
             } else {
-                msg = "You can not save the service code - " + serviceCode + ". Please search the service code first.";
+                msg = "You can not save the service code - " + Encode.forHtmlContent(serviceCode) + ". Please search the service code first.";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
                 alert = "error";
@@ -132,11 +133,11 @@
         } else {
             serviceCode = "A" + serviceCode;
             if (jdbc.deletePrivateCode(serviceCode)) {
-                msg = serviceCode + " is deleted.<br>" + "Type in a service code and search first to see if it is available.";
+                msg = Encode.forHtmlContent(serviceCode) + " is deleted.<br>" + "Type in a service code and search first to see if it is available.";
                 action = "search";
                 prop.setProperty("service_code", "A");
             } else {
-                msg = serviceCode + " could not be deleted, please try again.<br>" + "Type in a service code and search first to see if it is available.";
+                msg = Encode.forHtmlContent(serviceCode) + " could not be deleted, please try again.<br>" + "Type in a service code and search first to see if it is available.";
                 action = "search";
                 prop.setProperty("service_code", "A");
             }
@@ -174,7 +175,7 @@
                             String strDesc = StringUtils.trimToEmpty(s.getDescription());
                             strDesc = strDesc.length() > 30 ? strDesc.substring(0, 30) : strDesc;
                     %>
-                    <option value="<%=strCode%>"><%=(strCode + "| " + strDesc)%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(strCode))%>"><%=Encode.forHtml(String.valueOf((strCode + "| " + strDesc)))%>
                     </option>
                     <%}%>
                 </select>
@@ -185,7 +186,7 @@
 
         <div class="manage-code well">
             <form method="post" name="baseurl" action="billingBCEditPrivateCode.jsp">
-                <div class="alert alert-<%=alert%>">
+                <div class="alert alert-<%=Encode.forHtmlAttribute(String.valueOf(alert))%>">
                     <%=msg%>
                 </div>
 
@@ -196,7 +197,7 @@
                 <div class="input-append input-prepend">
                     <span class="add-on">A</span>
                     <input type="text" name="service_code" id="service_code"
-                           value="<%=prop.getProperty("service_code", "?").substring(1)%>" class="span2" maxlength='10'
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("service_code", "?").substring(1)))%>" class="span2" maxlength='10'
                            onblur="upCaseCtrl(this)" required/>
                     <button type="submit" name="submit" class="btn btn-primary" onclick="return onSearch();"
                             value="Search">Search
@@ -204,11 +205,11 @@
                 </div>
 
                 <label for="description">Description</label>
-                <input type="text" name="description" id="description" value="<%=prop.getProperty("description", "")%>"
+                <input type="text" name="description" id="description" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("description", "")))%>"
                        size='50'><br/>
 
                 <label for="value">Fee <small>(format: xx.xx, e.g. 18.20)</small></label>
-                <input type="text" name="value" id="value" value="<%=prop.getProperty("value", "")%>" size='8'
+                <input type="text" name="value" id="value" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("value", "")))%>" size='8'
                        maxlength='8'>
 
                 <label for="gstFlag">
@@ -221,13 +222,13 @@
                 <% String billingServiceDate = prop.getProperty("billingservice_date") != null ? prop.getProperty("billingservice_date") : today; %>
                 <div class="input-append">
                     <input style="width:90px" name="billingservice_date" id="billingservice_date" data-date="today()"
-                           data-date-format="yyyy-mm-dd" size="16" type="text" value="<%=billingServiceDate%>"
+                           data-date-format="yyyy-mm-dd" size="16" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(billingServiceDate))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" readonly>
                     <span class="btn"><i class="icon-calendar"></i></span>
                 </div>
 
                 <div>
-                    <input type="hidden" name="action" value='<%=action%>'/>
+                    <input type="hidden" name="action" value='<%=Encode.forHtmlAttribute(String.valueOf(action))%>'/>
                     <%if (action.startsWith("edit")) { %>
                     <input class="btn" type="submit" name="submit" value="Delete" onclick="return onDelete();"/>
                     <%}%>
@@ -250,7 +251,7 @@
             this.focus();
             document.forms[1].service_code.focus();
             document.forms[1].service_code.select();
-            let gstFlag = "<%=prop.getProperty("gstFlag")%>";
+            let gstFlag = "<%=Encode.forJavaScript(String.valueOf(prop.getProperty("gstFlag")))%>";
 
             if (gstFlag === "1") {
                 document.getElementById("gstFlag").setAttribute("checked", "checked");

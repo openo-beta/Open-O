@@ -27,6 +27,7 @@
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils,ca.openosp.openo.utility.OntarioMD,java.util.*" %>
 <%@page import="org.springframework.web.context.WebApplicationContext,ca.openosp.openo.commn.dao.*,ca.openosp.openo.commn.model.*" %>
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
 
@@ -58,7 +59,7 @@
                     <td>
                         <input name="username" type="text" value=""/>
                         <input type="hidden" name="method" value="exportEFormSend"/>
-                        <input type="hidden" name="fid" value="<%=request.getParameter("fid")%>"/>
+                        <input type="hidden" name="fid" value="<%=Encode.forHtmlAttribute(request.getParameter("fid"))%>"/>
                     </td>
                 </tr>
                 <tr>

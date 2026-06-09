@@ -46,8 +46,8 @@
 <%@ page import="java.util.*,java.sql.*, java.net.*" %>
 <%@ page import="ca.openosp.openo.commn.web.Contact2Action" %>
 <%@ page import="ca.openosp.openo.commn.model.ProfessionalSpecialist" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.apache.commons.text.WordUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
 
@@ -105,11 +105,11 @@
 
             function selectResult(data1, data2) {
                 opener.document
-            .<%=form%>.
-                elements['<%=elementId%>'].value = data1;
+            .<%=Encode.forJavaScript(String.valueOf(form))%>.
+                elements['<%=Encode.forJavaScript(String.valueOf(elementId))%>'].value = data1;
                 opener.document
-            .<%=form%>.
-                elements['<%=elementName%>'].value = data2;
+            .<%=Encode.forJavaScript(String.valueOf(form))%>.
+                elements['<%=Encode.forJavaScript(String.valueOf(elementName))%>'].value = data2;
                 self.close();
             }
 
@@ -140,13 +140,13 @@
         </table>
         <table width="95%" border="0">
             <tr>
-                <td align="left">Results based on keyword(s): <%=keyword == null ? "" : keyword%>
+                <td align="left">Results based on keyword(s): <%=Encode.forHtml(String.valueOf(keyword == null ? "" : keyword))%>
                 </td>
             </tr>
         </table>
-        <input type='hidden' name='form' value="<%=StringEscapeUtils.escapeHtml4(form)%>"/>
-        <input type='hidden' name='elementName' value="<%=StringEscapeUtils.escapeHtml4(elementName)%>"/>
-        <input type='hidden' name='elementId' value="<%=StringEscapeUtils.escapeHtml4(elementId)%>"/>
+        <input type='hidden' name='form' value="<%=Encode.forHtml(form)%>"/>
+        <input type='hidden' name='elementName' value="<%=Encode.forHtml(elementName)%>"/>
+        <input type='hidden' name='elementId' value="<%=Encode.forHtml(elementId)%>"/>
     </form>
 
     <center>
@@ -165,12 +165,12 @@
                     String bgColor = i.getIndex() % 2 == 0 ? "#EEEEFF" : "ivory";
 
                     String strOnClick;
-                    strOnClick = "selectResult('" + contact.getId() + "','" + StringEscapeUtils.escapeEcmaScript(contact.getLastName() + "," + contact.getFirstName()) + "')";
+                    strOnClick = "selectResult('" + contact.getId() + "','" + Encode.forJavaScript(contact.getLastName() + "," + contact.getFirstName()) + "')";
 
                 %>
-                <tr align="center" bgcolor="<%=bgColor%>" align="center"
+                <tr align="center" bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>" align="center"
                     onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
-                    onMouseout="this.style.backgroundColor='<%=bgColor%>';" onClick="<%=strOnClick%>">
+                    onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';" onClick="<%=Encode.forJavaScript(String.valueOf(strOnClick))%>">
                     <td><c:out value="${contact.lastName}"/></td>
                     <td><c:out value="${contact.firstName}"/></td>
                     <td><c:out value="${contact.phoneNumber}"/></td>
@@ -192,12 +192,12 @@
         <script language="JavaScript">
             <!--
             function last() {
-                document.nextform.action = "<%= request.getContextPath() %>/demographic/professionalSpecialistSearch.jsp?form=<%=URLEncoder.encode(form,"UTF-8")%>&elementName=<%=URLEncoder.encode(elementName,"UTF-8")%>&elementId=<%=URLEncoder.encode(elementId,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/demographic/professionalSpecialistSearch.jsp?form=<%=Encode.forUriComponent(String.valueOf(form))%>&elementName=<%=Encode.forUriComponent(String.valueOf(elementName))%>&elementId=<%=Encode.forUriComponent(String.valueOf(elementId))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>";
                 document.nextform.submit();
             }
 
             function next() {
-                document.nextform.action = "<%= request.getContextPath() %>/demographic/professionalSpecialistSearch.jsp?form=<%=URLEncoder.encode(form,"UTF-8")%>&elementName=<%=URLEncoder.encode(elementName,"UTF-8")%>&elementId=<%=URLEncoder.encode(elementId,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/demographic/professionalSpecialistSearch.jsp?form=<%=Encode.forUriComponent(String.valueOf(form))%>&elementName=<%=Encode.forUriComponent(String.valueOf(elementName))%>&elementId=<%=Encode.forUriComponent(String.valueOf(elementId))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>";
                 document.nextform.submit();
             }
 

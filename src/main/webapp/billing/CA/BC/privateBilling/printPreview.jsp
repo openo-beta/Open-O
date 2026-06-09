@@ -395,9 +395,9 @@
                     <div><%=Encode.forHtml(clinic.getClinicAddress() + ", " + clinic.getClinicCity() + ", " + clinic.getClinicProvince() + " " + clinic.getClinicPostal())%>
                     </div>
                     <div id="clinicPhone">
-                        Telephone: <%=vecPhones.size() >= 1 ? vecPhones.elementAt(0) : clinic.getClinicPhone()%>
+                        Telephone: <%=Encode.forHtml(String.valueOf(vecPhones.size() >= 1 ? vecPhones.elementAt(0) : clinic.getClinicPhone()))%>
                     </div>
-                    <div id="clinicFax"> Fax: <%=vecFaxes.size() >= 1 ? vecFaxes.elementAt(0) : clinic.getClinicFax()%>
+                    <div id="clinicFax"> Fax: <%=Encode.forHtml(String.valueOf(vecFaxes.size() >= 1 ? vecFaxes.elementAt(0) : clinic.getClinicFax()))%>
                     </div>
                     <% } else { %>
 

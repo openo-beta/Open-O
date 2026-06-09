@@ -84,7 +84,7 @@
 <body>
     <div topmargin="0" leftmargin="0" vlink="#0000FF" id="printableContent">
 
-    <form action="/form/formname" styleId="preview2Form">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post" id="preview2Form">
         <input type="hidden" name="demographic_no" value="${sessionScope.RxSessionBean.demographicNo}"/>
         <table>
             <tr>
@@ -119,8 +119,9 @@
                                        value="<%= Encode.forHtml(((RxPatientData.Patient)request.getAttribute("patient")).getFirstName())+ " " +Encode.forHtml(((RxPatientData.Patient)request.getAttribute("patient")).getSurname()) %>"/>
                                 <input type="hidden" name="patientDOB"
                                        value="<%= Encode.forHtml((String)request.getAttribute("patientDOBStr")) %>"/>
-                                <input type="hidden" name="pharmaFax" value="${requestScope.pharmacyFax}"/>
-                                <input type="hidden" name="pharmaName" value="${requestScope.pharmacyName}"/>
+                                <input type="hidden" name="pharmaFax" value="<%= Encode.forHtmlAttribute(request.getAttribute("pharmacyFax") != null ? request.getAttribute("pharmacyFax").toString() : "") %>"/>
+                                <input type="hidden" name="pharmaName" value="<%= Encode.forHtmlAttribute(request.getAttribute("pharmacyName") != null ? request.getAttribute("pharmacyName").toString() : "") %>"/>
+                                <input type="hidden" name="pharmacyInfo" value="<%= Encode.forHtmlAttribute(request.getAttribute("prefPharmacyId") != null ? request.getAttribute("prefPharmacyId").toString() : "") %>"/>
                                 <input type="hidden" name="pracNo"
                                        value="<%= Encode.forHtml((String)request.getAttribute("pracNo")) %>"/>
                                 <input type="hidden" name="showPatientDOB" value="${requestScope.showPatientDOB}"/>
@@ -135,7 +136,7 @@
                                        value="<%=Encode.forHtml((String)request.getAttribute("patientChartNo"))%>"/>
                                 <input type="hidden" name="bandNumber" value="${requestScope.bandNumber}"/>
                                 <input type="hidden" name="patientPhone"
-                                       value="<fmt:message key="RxPreview.msgTel"/><%=Encode.forHtml((String)request.getAttribute("patientPhone")) %>"/>
+                                       value="<fmt:message key="RxPreview.msgTel"/>: <%=Encode.forHtml((String)request.getAttribute("patientPhone")) %>"/>
                                 <input type="hidden" name="rxDate"
                                        value="<%= Encode.forHtml((String)request.getAttribute("rxDateFormatted")) %>"/>
                                 <input type="hidden" name="sigDoctorName"
@@ -146,12 +147,12 @@
                                 <b>${requestScope.doctorName}</b><br>
                                 <c:choose>
                                     <c:when test="${empty infirmaryView_programAddress}">
-                                        <%= ((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicName().replaceAll("\\(\\d{6}\\)", "") %>
+                                        <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicName().replaceAll("\\(\\d{6}\\)", "")))%>
                                         <br>
-                                        <%= ((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicAddress() %>
+                                        <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicAddress()))%>
                                         <br>
-                                        <%= ((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicCity() %>&nbsp;&nbsp;<%= ((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicProvince() %>&nbsp;&nbsp;
-                                        <%= ((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicPostal() %>
+                                        <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicCity()))%>&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicProvince()))%>&nbsp;&nbsp;
+                                        <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicPostal()))%>
                                         <% if (((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo() != null && !((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo().equals("")) { %>
                                         <br><fmt:message key="RxPreview.PractNo"/>:<%= Encode.forHtml(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo()) %>
                                         <% } %>
@@ -194,7 +195,7 @@
 											<% } %>
 										</b><br>
 										<% if (OscarProperties.getInstance().getProperty("showRxChartNo", "").equalsIgnoreCase("true")) { %>
-											<fmt:message key="ca.openosp.openo.rx.chartNo"/><%=(String) request.getAttribute("patientChartNo")%>
+											<fmt:message key="ca.openosp.openo.rx.chartNo"/><%=Encode.forHtml(String.valueOf((String) request.getAttribute("patientChartNo")))%>
 										<% } %>
 								</span>
                                 <span style="float:right">
@@ -215,11 +216,12 @@
                             <td height=25px width=75% style="border-bottom: 2px solid;">
                                     <%-- Digital signature is now set in the action --%>
 
-                                <input type="hidden" name="<%= DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY %>"
+                                <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY))%>"
                                        value="${requestScope.signatureRequestId}"/>
                                 <img id="signature" style="width:260px; height:130px; object-fit: contain;"
                                      src="${requestScope.startimageUrl}" alt="digital_signature"/>
-                                <input type="hidden" name="imgFile" id="imgFile" value=""/>
+                                <input type="hidden" name="imgFile" id="imgFile" value=""
+                                       data-temp-path="<%= Encode.forHtmlAttribute(request.getAttribute("tempPath") != null ? request.getAttribute("tempPath").toString() : "") %>"/>
 
                                 <script type="text/javascript">
                                     var POLL_TIME = 2500;
@@ -231,7 +233,7 @@
                                         img.src = '${requestScope.imageUrl}&rand=' + counter;
 
                                         var request = dojo.io.bind({
-                                            url: '<%=request.getContextPath()%>/PMmodule/ClientManager/check_signature_status.jsp?<%= DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY %>=${requestScope.signatureRequestId}',
+                                            url: '<%=request.getContextPath()%>/PMmodule/ClientManager/check_signature_status.jsp?<%=Encode.forJavaScript(String.valueOf(DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY))%>=${requestScope.signatureRequestId}',
                                             method: "post",
                                             mimetype: "text/html",
                                             load: function (type, data, evt) {
@@ -249,7 +251,7 @@
                                 <c:if test="${OscarProperties.getInstance().getProperty('signature_tablet', '').equals('yes')}">
                                     <input type="button" value=
                                         <fmt:message key="RxPreview.digitallySign"/> class="noprint"
-                                           onclick="setInterval('refreshImage()', POLL_TIME); document.location='<%=request.getContextPath()%>/signature_pad/topaz_signature_pad.jnlp.jsp?<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY%>=${requestScope.signatureRequestId}'"/>
+                                           onclick="setInterval('refreshImage()', POLL_TIME); document.location='<%=request.getContextPath()%>/signature_pad/topaz_signature_pad.jnlp.jsp?<%=Encode.forJavaScript(String.valueOf(DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY))%>=${requestScope.signatureRequestId}'"/>
                                 </c:if>
                             </td>
                             <td height=25px>

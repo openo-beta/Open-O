@@ -106,7 +106,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><%=  request.getAttribute("name") != null ? request.getAttribute("name") : ""%>
+                        <td><%=Encode.forHtml(String.valueOf(request.getAttribute("name") != null ? request.getAttribute("name") : ""))%>
                         </td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
@@ -163,23 +163,23 @@
                             } catch (Exception e) {
                             }
                     %>
-                    <tr style="background-color: <%=colour%>">
+                    <tr style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(colour))%>">
                         <td><a
-                                href="<%=flow.getLink(""+h.get("demographic_no"),""+h.get("ID"))%>"
-                                target="_blank"><%=h.get("workflow_type")%>
+                                href="<%=Encode.forHtmlAttribute(String.valueOf(flow.getLink(""+h.get("demographic_no"),""+h.get("ID"))))%>"
+                                target="_blank"><%=Encode.forHtml(String.valueOf(h.get("workflow_type")))%>
                         </a></td>
-                        <td><%=h.get("create_date_time")%>
+                        <td><%=Encode.forHtml(String.valueOf(h.get("create_date_time")))%>
                         </td>
                         <td><a
                                 href="javascript: function myFunction() {return false; }"
-                                onclick="popup(700,1000,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=(String) h.get("demographic_no")%>&displaymode=edit&dboperation=search_detail','master')"
+                                onclick="popup(700,1000,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf((String) h.get("demographic_no")))%>&displaymode=edit&dboperation=search_detail','master')"
 					title="Master File"> <%=Encode.forHtmlContent(demoHash.get("lastName"))%>, <%=Encode.forHtmlContent(demoHash.get("firstName"))%>
                         </a></td>
-                        <td><%=h.get("completion_date")%>
+                        <td><%=Encode.forHtml(String.valueOf(h.get("completion_date")))%>
                         </td>
-                        <td><%=flow.getState("" + h.get("current_state"))%>
+                        <td><%=Encode.forHtml(String.valueOf(flow.getState("" + h.get("current_state"))))%>
                         </td>
-                        <td><%=gestAge%>
+                        <td><%=Encode.forHtml(String.valueOf(gestAge))%>
                         </td>
                         <td><oscar:nextAppt
 					demographicNo='<%=Encode.forHtmlContent((String) h.get("demographic_no"))%>' /></td>

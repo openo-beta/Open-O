@@ -47,6 +47,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.model.Billingreferral" %>
 <%@page import="ca.openosp.openo.commn.dao.BillingreferralDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingreferralDao billingReferralDao = (BillingreferralDao) SpringUtils.getBean(BillingreferralDao.class);
 %>
@@ -81,12 +82,12 @@
                 billingReferral.setReferralNo(referral_no);
                 billingReferralDao.updateBillingreferral(billingReferral);
 
-                msg = referral_no + " is updated.<br>" + "Type in a doctor's ref. # and search first to see if it is available.";
+                msg = Encode.forHtmlContent(referral_no) + " is updated.<br>" + "Type in a doctor's ref. # and search first to see if it is available.";
                 action = "search";
                 prop.setProperty("referral_no", referral_no);
 
             } else {
-                msg = "You can <font color='red'>NOT</font> save the doctor's ref. # - " + referral_no + ". Please search the doctor's ref. # first.";
+                msg = "You can <font color='red'>NOT</font> save the doctor's ref. # - " + Encode.forHtmlContent(referral_no) + ". Please search the doctor's ref. # first.";
                 action = "search";
                 prop.setProperty("referral_no", referral_no);
             }
@@ -108,12 +109,12 @@
                 billingReferral.setReferralNo(referral_no);
                 billingReferralDao.updateBillingreferral(billingReferral);
 
-                msg = referral_no + " is added.<br>" + "Type in a doctor's ref. # and search first to see if it is available.";
+                msg = Encode.forHtmlContent(referral_no) + " is added.<br>" + "Type in a doctor's ref. # and search first to see if it is available.";
                 action = "search";
                 prop.setProperty("referral_no", referral_no);
 
             } else {
-                msg = "You can <font color='red'>NOT</font> save the ref. code - " + referral_no + ". Please search the ref. # first.";
+                msg = "You can <font color='red'>NOT</font> save the ref. code - " + Encode.forHtmlContent(referral_no) + ". Please search the ref. # first.";
                 action = "search";
                 prop.setProperty("referral_no", referral_no);
             }
@@ -258,7 +259,7 @@
             <tr bgcolor="#EEEEFF">
                 <td align="right"><b>Referral Doc. Code</b></td>
                 <td><input type="text" name="referral_no"
-                           value="<%=prop.getProperty("referral_no", "")%>" size='5'
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("referral_no", "")))%>" size='5'
                            maxlength='6'> (6 digits, e.g. 123456) <input type="submit"
                                                                          name="submit" value="Search"
                                                                          onclick="javascript:return onSearch();">
@@ -267,37 +268,37 @@
             <tr>
                 <td align="right"><b>Last Name</b></td>
                 <td><input type="text" name="last_name"
-                           value="<%=prop.getProperty("last_name", "")%>" size='30'
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("last_name", "")))%>" size='30'
                            maxlength='30'></td>
             </tr>
             <tr>
                 <td align="right"><b>First Name</b></td>
                 <td><input type="text" name="first_name"
-                           value="<%=prop.getProperty("first_name", "")%>" size='30'
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("first_name", "")))%>" size='30'
                            maxlength='30'></td>
             </tr>
             <tr>
                 <td align="right"><b>Specialty</b></td>
                 <td><input type="text" name="specialty"
-                           value="<%=prop.getProperty("specialty", "")%>" size='30'
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("specialty", "")))%>" size='30'
                            maxlength='30'></td>
             </tr>
             <tr>
                 <td align="right"><b>Address1</b></td>
                 <td><input type="text" name="address1"
-                           value="<%=prop.getProperty("address1", "")%>" size='50'
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("address1", "")))%>" size='50'
                            maxlength='50'></td>
             </tr>
             <tr>
                 <td align="right"><b>Address2</b></td>
                 <td><input type="text" name="address2"
-                           value="<%=prop.getProperty("address2", "")%>" size='50'
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("address2", "")))%>" size='50'
                            maxlength='50'></td>
             </tr>
             <tr>
                 <td align="right"><b>City</b></td>
                 <td><input type="text" name="city"
-                           value="<%=prop.getProperty("city", "")%>" size='30' maxlength='30'>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("city", "")))%>" size='30' maxlength='30'>
                 </td>
             </tr>
             <tr bgcolor="#EEEEFF">
@@ -335,21 +336,21 @@
                         resident
                     </option>
                 </select> Country <input type="text" name="country"
-                                         value="<%=prop.getProperty("country", "CA")%>" size='2' maxlength='2'>
+                                         value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("country", "CA")))%>" size='2' maxlength='2'>
                 </td>
             </tr>
             <tr>
                 <td align="right"><b>Postal</b></td>
                 <td><input type="text" name="postal"
-                           value="<%=prop.getProperty("postal", "")%>" size='30' maxlength='30'>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("postal", "")))%>" size='30' maxlength='30'>
                 </td>
             </tr>
             <tr>
                 <td align="right"><b>phone</b></td>
                 <td><input type="text" name="phone"
-                           value="<%=prop.getProperty("phone", "")%>" size='10' maxlength='12'>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("phone", "")))%>" size='10' maxlength='12'>
                     Fax <input type="text" name="fax"
-                               value="<%=prop.getProperty("fax", "")%>" size='10' maxlength='12'>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("fax", "")))%>" size='10' maxlength='12'>
                 </td>
             </tr>
             <tr>
@@ -358,7 +359,7 @@
             </tr>
             <tr>
                 <td align="center" bgcolor="#CCCCFF" colspan="2"><input
-                        type="hidden" name="action" value='<%=action%>'> <% if (!"search".equals(action)) {%>
+                        type="hidden" name="action" value='<%=Encode.forHtmlAttribute(String.valueOf(action))%>'> <% if (!"search".equals(action)) {%>
                     <input type="submit" name="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
                            onclick="javascript:return onSave();"> <% }%> <input

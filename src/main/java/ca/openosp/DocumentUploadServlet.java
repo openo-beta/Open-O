@@ -88,7 +88,7 @@ public class DocumentUploadServlet extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String foldername = "", fileheader = "", forwardTo = "";
         forwardTo = OscarProperties.getInstance().getProperty("RA_FORWORD");
-        foldername = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        foldername = OscarProperties.getInstance().getDocumentDirectory();
 
         String inboxFolder = OscarProperties.getInstance().getProperty("ONEDT_INBOX");
         String archiveFolder = OscarProperties.getInstance().getProperty("ONEDT_ARCHIVE");

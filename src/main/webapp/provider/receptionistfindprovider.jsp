@@ -95,6 +95,7 @@
 
 <%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
 <%@page import="ca.openosp.openo.web.admin.ProviderPreferencesUIBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -105,7 +106,7 @@
 
         function selectProvider(p, pn) {
             newGroupNo = p;
-            this.location.href = "providercontrol.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&default_servicetype=<%=defaultServiceType%>&mygroup_no=" + newGroupNo;
+            this.location.href = "providercontrol.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&start_hour=<%=Encode.forUriComponent(String.valueOf(startHour))%>&end_hour=<%=Encode.forUriComponent(String.valueOf(endHour))%>&every_min=<%=Encode.forUriComponent(String.valueOf(everyMin))%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&default_servicetype=<%=Encode.forUriComponent(String.valueOf(defaultServiceType))%>&mygroup_no=" + newGroupNo;
         }
 
         function selectProviderCaisi(p, pn) {
@@ -116,11 +117,11 @@
 
         function selectProviderCustom(p, pn) {
             opener.document
-        .<%=form%>.
-            elements['<%=elementName%>'].value = pn;
+        .<%=Encode.forJavaScript(String.valueOf(form))%>.
+            elements['<%=Encode.forJavaScript(String.valueOf(elementName))%>'].value = pn;
             opener.document
-        .<%=form%>.
-            elements['<%=elementId%>'].value = p;
+        .<%=Encode.forJavaScript(String.valueOf(form))%>.
+            elements['<%=Encode.forJavaScript(String.valueOf(elementId))%>'].value = p;
             self.close();
         }
     </SCRIPT>
@@ -136,7 +137,7 @@
 
 <table width="100%" border="0">
     <tr>
-        <td align="left"><i><fmt:setBundle basename="oscarResources"/><fmt:message key="receptionist.receptionistfindprovider.keywords"/></i> <%=providername%>
+        <td align="left"><i><fmt:setBundle basename="oscarResources"/><fmt:message key="receptionist.receptionistfindprovider.keywords"/></i> <%=Encode.forHtml(String.valueOf(providername))%>
         </td>
         <td align="right"><INPUT TYPE="SUBMIT" NAME="displaymode"
                                  VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="receptionist.receptionistfindprovider.btnExit"/>"
@@ -209,20 +210,20 @@
         <tr bgcolor="<%=bColor?bgcolordef:"white"%>">
             <td>
                 <%if (caisi) { %> <a href=#
-                                     onClick="selectProviderCaisi('<%=sp%>','<%=spnl+", "+spnf%>')"><%=sp%>
+                                     onClick="selectProviderCaisi('<%=Encode.forJavaScript(String.valueOf(sp))%>','<%=Encode.forJavaScript(String.valueOf(spnl+", "+spnf))%>')"><%=Encode.forHtml(String.valueOf(sp))%>
             </a></td>
             <% } else if (custom != null && custom.equals("true")) { %>
-            <a href="#" onClick="selectProviderCustom('<%=sp%>','<%=spnl+", "+spnf%>')"><%=sp%>
+            <a href="#" onClick="selectProviderCustom('<%=Encode.forJavaScript(String.valueOf(sp))%>','<%=Encode.forJavaScript(String.valueOf(spnl+", "+spnf))%>')"><%=Encode.forHtml(String.valueOf(sp))%>
             </a></td>
             <%} else { %>
             <a href=#
-               onClick="selectProvider('<%=sp%>','<%=URLEncoder.encode(spnl+", "+spnf)%>')"><%=sp%>
+               onClick="selectProvider('<%=Encode.forJavaScript(String.valueOf(sp))%>','<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(spnl+", "+spnf)))%>')"><%=Encode.forHtml(String.valueOf(sp))%>
             </a>
             </td>
             <%} %>
-            <td><%=spnl%>
+            <td><%=Encode.forHtml(String.valueOf(spnl))%>
             </td>
-            <td><%=spnf%>
+            <td><%=Encode.forHtml(String.valueOf(spnf))%>
             </td>
         </tr>
         <%
@@ -241,10 +242,10 @@
         %>
         <tr bgcolor="#CCCCFF">
             <td colspan='3'>
-                <%if (caisi) { %> <a href=# onClick="selectProviderCaisi('<%=sp%>','')"><%=sp%>
+                <%if (caisi) { %> <a href=# onClick="selectProviderCaisi('<%=Encode.forJavaScript(String.valueOf(sp))%>','')"><%=Encode.forHtml(String.valueOf(sp))%>
             </a></td>
             <%} else { %>
-            <a href=# onClick="selectProvider('<%=sp%>','')"><%=sp%>
+            <a href=# onClick="selectProvider('<%=Encode.forJavaScript(String.valueOf(sp))%>','')"><%=Encode.forHtml(String.valueOf(sp))%>
             </a>
             </td>
             <%} %>
@@ -259,16 +260,16 @@
         <script language="JavaScript">
             <!--
             <%if(caisi) {%>
-            var nodes = document.getElementsByName("<%=sp%>_name");
+            var nodes = document.getElementsByName("<%=Encode.forJavaScript(String.valueOf(sp))%>_name");
             var name = '';
             if (nodes.length == 1) {
                 name = nodes[0].value;
             }
-            selectProviderCaisi('<%=sp%>', name);
+            selectProviderCaisi('<%=Encode.forJavaScript(String.valueOf(sp))%>', name);
             <%} else if(custom != null && custom.equals("true")){%>
-            selectProviderCustom('<%=sp%>', name);
+            selectProviderCustom('<%=Encode.forJavaScript(String.valueOf(sp))%>', name);
             <%} else {%>
-            selectProvider('<%=sp%>', '');
+            selectProvider('<%=Encode.forJavaScript(String.valueOf(sp))%>', '');
             <%}%>
             //-->
         </SCRIPT>

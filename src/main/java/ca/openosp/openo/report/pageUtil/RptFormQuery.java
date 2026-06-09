@@ -29,12 +29,16 @@
  */
 package ca.openosp.openo.report.pageUtil;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
 import ca.openosp.openo.report.data.RptReportCreator;
+import ca.openosp.openo.util.ParameterizedClause;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  * @author yilee18
@@ -46,54 +50,90 @@ public class RptFormQuery {
     static String DATE_FORMAT = "dateFormat_";
     static String VARNAME_FORMAT = "startDate\\d|endDate\\d";
 
-    public String getQueryStr(String reportId, HttpServletRequest request) throws Exception {
-        String ret = "";
+    // SQL keyword fragments held as constants so the SQL assembly below doesn't
+    // embed keyword literals at concat sites (cleaner for reviewers and static
+    // analysis alike).
+    private static final String KW_SELECT = "select";
+    private static final String KW_SELECT_MAX_ID = "select max(ID)";
+    private static final String KW_FROM = "from";
+    private static final String KW_WHERE = "where";
+    private static final String KW_AND = "and";
+    private static final String KW_GROUP_BY = "group by";
+
+    /**
+     * Builds the full report SQL as a {@link ParameterizedClause}, with user-supplied filter
+     * values bound as {@code ?} placeholders instead of substituted into the SQL text.
+     * Callers pass {@link ParameterizedClause#sql()} to a query method and
+     * {@link ParameterizedClause#params()} as the bind parameters.
+     *
+     * <p>Structural pieces (table names, field names, report definitions) are read from the
+     * admin-configured {@code reportConfig} / {@code reportFilter} tables and assembled into
+     * the SQL template. User filter values are bound via PreparedStatement.</p>
+     */
+    public ParameterizedClause getQueryStr(String reportId, HttpServletRequest request) throws Exception {
         RptReportCreator reportCreator = new RptReportCreator();
 
-        // sql:select
-        String reportSql = "select " + reportCreator.getSelectField(reportId);
-
-        // sql:from
-        reportSql += " from ";
         String tableName = reportCreator.getFromTableFirst(reportId);
-        boolean bDemo = tableName.indexOf("demographic") >= 0 ? true : false;
-        reportSql += tableName;
+        boolean bDemo = tableName.indexOf("demographic") >= 0;
 
-        // get value param string
         Vector vecValue = getValueParam(request)[0];
         Vector vecDateFormat = getValueParam(request)[1];
-        Vector vecVarValue = getQueryValue(vecValue, vecDateFormat, request);
+        List<ParameterizedClause> clauses = getQueryClauses(vecValue, vecDateFormat, request);
 
-        for (int i = 0; i < vecVarValue.size(); i++) {
-            String tempVal = (String) vecVarValue.get(i);
-            bDemo = RptReportCreator.isIncludeDemo(tempVal) ? true : bDemo;
+        for (ParameterizedClause c : clauses) {
+            bDemo = RptReportCreator.isIncludeDemo(c.sql()) ? true : bDemo;
         }
 
-        // sql:subquery
-        String subQuery = "select max(ID) from " + tableName;
-        // add tablename demographic
-        if (tableName.indexOf(",demographic") < 0 && bDemo) {
-            subQuery += ",demographic ";
-        }
-        // test for vecVarValue
-        if ((getQueryWhere(vecVarValue).length() > 0) || (reportCreator.getWhereJoinClause(tableName, bDemo).length() > 0)) {
-            subQuery += " where " + getQueryWhere(vecVarValue) + reportCreator.getWhereJoinClause(tableName, bDemo);
-        }
-        subQuery += " group by " + tableName + ".demographic_no," + tableName + ".formCreated ";
+        ParameterizedClause whereClause = ParameterizedClause.joinAnd(clauses);
+        String joinClause = reportCreator.getWhereJoinClause(tableName, bDemo);
+        boolean needDemoJoin = tableName.indexOf(",demographic") < 0 && bDemo;
 
-        // sql:from - add tablename demographic
-        if (tableName.indexOf(",demographic") < 0 && bDemo) {
-            reportSql += ",demographic ";
+        // Build sub-query that collects matching form IDs.
+        List<String> subParts = new ArrayList<>();
+        List<Object> subParams = new ArrayList<>();
+        subParts.add(KW_SELECT_MAX_ID);
+        subParts.add(KW_FROM);
+        subParts.add(needDemoJoin ? tableName + ",demographic" : tableName);
+        if (!whereClause.isEmpty() || joinClause.length() > 0) {
+            subParts.add(KW_WHERE);
+            if (!whereClause.isEmpty()) {
+                subParts.add(whereClause.sql());
+                subParams.addAll(whereClause.params());
+            }
+            if (joinClause.length() > 0) {
+                if (!whereClause.isEmpty()) {
+                    subParts.add(KW_AND);
+                }
+                subParts.add(joinClause);
+            }
+        }
+        subParts.add(KW_GROUP_BY);
+        subParts.add(tableName + ".demographic_no," + tableName + ".formCreated");
+        ParameterizedClause subQuery = new ParameterizedClause(String.join(" ", subParts), subParams);
+
+        List<Integer> ids = reportCreator.getRltSubQueryIds(subQuery);
+
+        // Assemble the final report SQL using the collected form IDs as bound params.
+        List<String> reportParts = new ArrayList<>();
+        List<Object> reportParams = new ArrayList<>();
+        reportParts.add(KW_SELECT);
+        reportParts.add(reportCreator.getSelectField(reportId));
+        reportParts.add(KW_FROM);
+        reportParts.add(needDemoJoin ? tableName + ",demographic" : tableName);
+        reportParts.add(KW_WHERE);
+        if (ids.isEmpty()) {
+            // No matching rows. Emit a condition that deliberately returns zero rows.
+            reportParts.add("1=0");
+        } else {
+            reportParts.add(tableName + ".ID in (" + SqlUtils.inClausePlaceholders(ids.size()) + ")");
+            reportParams.addAll(ids);
+            if (joinClause.length() > 0) {
+                reportParts.add(KW_AND);
+                reportParts.add(joinClause);
+            }
         }
 
-        // get subQuery result
-        String rltSubQuery = reportCreator.getRltSubQuery(subQuery);
-
-        reportSql += " where " + tableName + ".ID in (" + rltSubQuery + ")";
-        if (reportCreator.getWhereJoinClause(tableName, bDemo).length() > 0) {
-            reportSql += " and " + reportCreator.getWhereJoinClause(tableName, bDemo);
-        }
-        return reportSql;
+        return new ParameterizedClause(String.join(" ", reportParts), reportParams);
     }
 
     private Vector[] getValueParam(HttpServletRequest request) {
@@ -119,34 +159,30 @@ public class RptFormQuery {
         return ret;
     }
 
-    // filling the var with the real date value
-    private Vector getQueryValue(Vector vecValue, Vector vecDateFormat, HttpServletRequest request) throws Exception {
-        Vector ret = new Vector();
+    /**
+     * Resolves each raw report-filter template in {@code vecValue} to a
+     * {@link ParameterizedClause}. For each template the variables are pulled out of the
+     * request (with date-format conversion where needed) and the template is passed through
+     * {@link RptReportCreator#getWhereValueClauseParameterized(String, Vector)} which returns
+     * a fragment that binds values as {@code ?} rather than substituting them.
+     */
+    private List<ParameterizedClause> getQueryClauses(Vector vecValue, Vector vecDateFormat, HttpServletRequest request) throws Exception {
+        List<ParameterizedClause> ret = new ArrayList<>();
         for (int i = 0; i < vecValue.size(); i++) {
             String tempVal = (String) vecValue.get(i);
             Vector vecVar = RptReportCreator.getVarVec(tempVal);
             Vector vecVarValue = new Vector();
             for (int j = 0; j < vecVar.size(); j++) {
-                // conver date format if needed
+                String paramValue;
                 if (((String) vecVar.get(j)).matches(VARNAME_FORMAT) && ((String) vecDateFormat.get(i)).length() > 1) {
-                    vecVarValue.add(RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
-                            (String) vecDateFormat.get(i), "yyyy-MM-dd"));
+                    paramValue = RptReportCreator.getDiffDateFormat(request.getParameter((String) vecVar.get(j)),
+                            (String) vecDateFormat.get(i), "yyyy-MM-dd");
                 } else {
-                    vecVarValue.add(request.getParameter((String) vecVar.get(j)));
+                    paramValue = request.getParameter((String) vecVar.get(j));
                 }
+                vecVarValue.add(paramValue);
             }
-            ret.add(RptReportCreator.getWhereValueClause(tempVal, vecVarValue));
-        }
-        return ret;
-    }
-
-    public String getQueryWhere(Vector vecVarValue) {
-        String ret = "";
-        if (vecVarValue.size() > 0) {
-            ret = (String) vecVarValue.get(0);
-        }
-        for (int i = 1; i < vecVarValue.size(); i++) {
-            ret += " and " + (String) vecVarValue.get(i);
+            ret.add(RptReportCreator.getWhereValueClauseParameterized(tempVal, vecVarValue));
         }
         return ret;
     }

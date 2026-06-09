@@ -208,8 +208,8 @@ public class OscarStatus2Action extends ActionSupport {
     private String documentStorage() {
         String output = "";
 
-        if (OscarProperties.getInstance().getProperty("DOCUMENT_DIR") != null) {
-            String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        if (OscarProperties.getInstance().getDocumentDirectory() != null) {
+            String docDir = OscarProperties.getInstance().getDocumentDirectory();
 
             output += "$ ls -R " + docDir + " | wc \n";
             String bashCmd = "ls -R " + docDir + " | wc";

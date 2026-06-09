@@ -79,7 +79,6 @@
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
 <%@ page import="ca.openosp.openo.commn.dao.AppointmentTypeDao" %>
@@ -312,8 +311,8 @@
         <% if (bMultisites) { %>
         <style>
             <% for (Site s:sites) { %>
-            .<%=s.getShortName()%> {
-                background-color: <%=s.getBgColor()%>;
+            .<%=Encode.forHtml(String.valueOf(s.getShortName()))%> {
+                background-color: <%=Encode.forHtml(String.valueOf(s.getBgColor()))%>;
             }
 
             <% } %>
@@ -325,8 +324,8 @@
                 if (((AppointmentStatus)allStatus.get(i)).getStatus().equals(statusCode)) { curSelect=i;}
 
 %>
-            .<%=((AppointmentStatus)allStatus.get(i)).getStatus()%> {
-                background-color: <%=((AppointmentStatus)allStatus.get(i)).getColor()%>;
+            .<%=Encode.forHtml(String.valueOf(((AppointmentStatus)allStatus.get(i)).getStatus()))%> {
+                background-color: <%=Encode.forHtml(String.valueOf(((AppointmentStatus)allStatus.get(i)).getColor()))%>;
             }
 
             <% } %>
@@ -403,10 +402,10 @@
                 if (aptStat.indexOf('B') === 0) {
                     var agree = confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.msgCanceledBilledConfirmation"/>");
                     if (agree) {
-                        window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=appointment_no%>';
+                        window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>';
                     }
                 } else {
-                    window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=appointment_no%>';
+                    window.location = 'appointmentcontrol.jsp?buttoncancel=Cancel Appt&displaymode=Update Appt&appointment_no=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>';
                 }
             }
 
@@ -579,7 +578,7 @@
                 document.EDITAPPT.location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
                 document.EDITAPPT.resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.EDITAPPT.type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
-                if ('<%=apptObj.getUrgency()%>' === 'critical') {
+                if ('<%=Encode.forJavaScript(String.valueOf(apptObj.getUrgency()))%>' === 'critical') {
                     document.EDITAPPT.urgency.checked = "checked";
                 }
             }
@@ -793,7 +792,7 @@
                                     String providerName = prov.getLastName() + ", " + prov.getFirstName();
                     %>
 
-                    <%=providerName == "" ? "" : "(" + providerName + ")"%>
+                    <%=Encode.forHtml(String.valueOf(providerName == "" ? "" : "(" + providerName + ")"))%>
 
                     <% }
                     }
@@ -841,7 +840,7 @@
                 displayStyle = "display:block";
             }
     %>
-    <div id="tooManySameDayGroupApptWarning" style="<%=displayStyle%>">
+    <div id="tooManySameDayGroupApptWarning" style="<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%>">
         <div class="alert alert-error">
             <h4><fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.titleMultipleGroupDayBooking'/></h4>
             <fmt:setBundle basename='oscarResources'/><fmt:message key='appointment.addappointment.MultipleGroupDayBooking'/>
@@ -882,7 +881,7 @@
                     </td>
                     <td>
                 <input type="date" class="form-control" name="appointment_date" id="date"
-                               value="<%=bFirstDisp?ConversionUtils.toDateString(appt.getAppointmentDate()):strApptDate%>"
+                               value="<%=Encode.forHtmlAttribute(bFirstDisp?ConversionUtils.toDateString(appt.getAppointmentDate()):strApptDate)%>"
                         >
                     </td>
                 </tr>
@@ -892,7 +891,7 @@
                     </td>
                     <td>
                 <input type="time" name="start_time" class="form-control"
-                               value="<%=bFirstDisp?ConversionUtils.toTimeStringNoSeconds(appt.getStartTime()):request.getParameter("start_time")%>"
+                               value="<%=Encode.forHtmlAttribute(bFirstDisp?ConversionUtils.toTimeStringNoSeconds(appt.getStartTime()):request.getParameter("start_time"))%>"
                                onChange="checkTimeTypeIn(this);updateTime();">
                     </td>
                 </tr>
@@ -924,11 +923,11 @@
                                 }
                             }
                         %> <input type="hidden" name="end_time"
-                                  value="<%=bFirstDisp?ConversionUtils.toTimeStringNoSeconds(appt.getEndTime()):request.getParameter("end_time")%>"
+                                  value="<%=Encode.forHtmlAttribute(bFirstDisp?ConversionUtils.toTimeStringNoSeconds(appt.getEndTime()):request.getParameter("end_time"))%>"
                     >
 
 				<input type="number" name="duration" id="duration" class="form-control"
-                               value="<%=request.getParameter("duration")!=null?(request.getParameter("duration").equals(" ")||request.getParameter("duration").equals("")||request.getParameter("duration").equals("null")?(""+everyMin) :request.getParameter("duration")):(""+everyMin)%>"
+                               value="<%=Encode.forHtmlAttribute(request.getParameter("duration")!=null?(request.getParameter("duration").equals(" ")||request.getParameter("duration").equals("")||request.getParameter("duration").equals("null")?(""+everyMin) :request.getParameter("duration")):(""+everyMin))%>"
                                onblur="calculateEndTime();">
                     </td>
                 </tr>
@@ -941,7 +940,7 @@
                             }
                         %>
                         <input type="hidden" name="orderby" value="last_name, first_name">
-                        <input type="hidden" name="search_mode" id="search_mode" value="<%=searchMode%>">
+                        <input type="hidden" name="search_mode" id="search_mode" value="<%=Encode.forHtmlAttribute(String.valueOf(searchMode))%>">
                         <input type="hidden" name="originalpage"
                                value="<%=request.getContextPath() %>/appointment/editappointment.jsp">
                         <input type="hidden" name="limit1" value="0">
@@ -1008,7 +1007,7 @@
                                     : bMoreAddr ? ApptUtil.getColorFromLocation(props.getProperty("scheduleSiteID", ""), props.getProperty("scheduleSiteColor", ""), loc) : "white";
 
                             if (bMultisites) { %>
-				        <select tabindex="4" name="location" class="form-control" style="background-color: <%=colo%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor'>
+				        <select tabindex="4" name="location" class="form-control" style="background-color: <%=Encode.forHtmlAttribute(String.valueOf(colo))%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor'>
                             <%
                                 StringBuilder sb = new StringBuilder();
                                 for (Site s : sites) {
@@ -1018,7 +1017,7 @@
                                 if (isSiteSelected) {
                                     out.println(sb.toString());
                                 } else {
-                                    out.println("<option value='" + loc + "'>" + loc + "</option>");
+                                    out.println("<option value='" + Encode.forHtmlAttribute(loc) + "'>" + Encode.forHtml(loc) + "</option>");
                                 }
                             %>
 
@@ -1034,7 +1033,7 @@
                                     for (Program program : programs) {
                                         String description = StringUtils.isBlank(program.getLocation()) ? program.getName() : program.getLocation();
                             %>
-                            <option value="<%=program.getId()%>" <%=(program.getId().toString().equals(location) ? "selected='selected'" : "") %>><%=Encode.forHtmlContent(description)%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(program.getId()))%>" <%=Encode.forHtml(String.valueOf((program.getId().toString().equals(location) ? "selected='selected'" : "")))%>><%=Encode.forHtmlContent(description)%>
                             </option>
 
                             <% }
@@ -1091,8 +1090,8 @@
                     <td>
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <input type="hidden" class="form-control" name="createDate" value="<%=origDate%>">
-                        <%=dateString1%>
+                        <input type="hidden" class="form-control" name="createDate" value="<%=Encode.forHtmlAttribute(String.valueOf(origDate))%>">
+                        <%=Encode.forHtml(String.valueOf(dateString1))%>
                     </div>
                 </div>
                     </td>
@@ -1121,21 +1120,21 @@
 
                             if (strEditable != null && strEditable.equalsIgnoreCase("yes")) { %>
 
-                <select name="status" class="form-control" style="background-color:<%=((AppointmentStatus)allStatus.get(curSelect)).getColor()%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor' >
+                <select name="status" class="form-control" style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(curSelect)).getColor()))%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor' >
                             <% for (int i = 0; i < allStatus.size(); i++) { %>
-                            <option class="<%=((AppointmentStatus)allStatus.get(i)).getStatus()%>"
-                                    style="background-color:<%=((AppointmentStatus)allStatus.get(i)).getColor()%>"
-                                    value="<%=((AppointmentStatus)allStatus.get(i)).getStatus()+signOrVerify%>"
-                                    <%=((AppointmentStatus) allStatus.get(i)).getStatus().equals(statusCode) ? "SELECTED" : ""%>><%=((AppointmentStatus) allStatus.get(i)).getDescription()%>
+                            <option class="<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(i)).getStatus()))%>"
+                                    style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(i)).getColor()))%>"
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(i)).getStatus()+signOrVerify))%>"
+                                    <%=((AppointmentStatus) allStatus.get(i)).getStatus().equals(statusCode) ? "SELECTED" : ""%>><%=Encode.forHtml(String.valueOf(((AppointmentStatus) allStatus.get(i)).getDescription()))%>
                             </option>
                             <% } %>
                         </select> <%
                     } else {
                         if (importedStatus == null || importedStatus.trim().equals("")) { %>
-              	<input type="text" class="form-control" name="status" value="<%=statusCode%>" > <%
+              	<input type="text" class="form-control" name="status" value="<%=Encode.forHtmlAttribute(String.valueOf(statusCode))%>" > <%
                     } else { %>
-                <input type="text" class="form-control" name="status" value="<%=statusCode%>" >
-                <input type="text"  class="form-control" TITLE="Imported Status" value="<%=importedStatus%>" readonly> <%
+                <input type="text" class="form-control" name="status" value="<%=Encode.forHtmlAttribute(String.valueOf(statusCode))%>" >
+                <input type="text"  class="form-control" TITLE="Imported Status" value="<%=Encode.forHtmlAttribute(String.valueOf(importedStatus))%>" readonly> <%
                             }
                         }
                     %>
@@ -1154,7 +1153,7 @@
                                 List<AppointmentType> types = appDao.listAll();
                 for(AppointmentType type : types) {
                             %>
-                    <option data-dur="<%= type.getDuration() %>"
+                    <option data-dur="<%=Encode.forHtmlAttribute(String.valueOf(type.getDuration()))%>"
                             data-reason="<%= Encode.forHtmlAttribute(type.getReason()) %>"
                             data-loc="<%= Encode.forHtmlAttribute(type.getLocation()) %>"
                             data-notes="<%= Encode.forHtmlAttribute(type.getNotes()) %>"
@@ -1172,7 +1171,7 @@
                     </td>
                     <td>
                 <input type="text" readonly name="doctorNo" id="mrp" class="form-control"
-                               value="<%=StringEscapeUtils.escapeHtml4(providerBean.getProperty(doctorNo,""))%>">
+                               value="<%=Encode.forHtml(providerBean.getProperty(doctorNo,""))%>">
                     </td>
                 </tr>
                 <tr>
@@ -1184,7 +1183,7 @@
                     <td>
                 <input type="text" name="demographic_no" id="demographic_no" class="form-control"
                                ONFOCUS="onBlockFieldFocus(this)" readonly
-                               value="<%=bFirstDisp?( (appt.getDemographicNo())==0?"":(""+appt.getDemographicNo()) ):request.getParameter("demographic_no")%>">
+                               value="<%=Encode.forHtmlAttribute(bFirstDisp?( (appt.getDemographicNo())==0?"":(""+appt.getDemographicNo()) ):request.getParameter("demographic_no"))%>">
                     </td>
                 </tr>
                 <tr>
@@ -1193,7 +1192,7 @@
                     </td>
                     <td>
                 <input type="text" name="chart_no" class="form-control"
-                    readonly value="<%=bFirstDisp?StringUtils.trimToEmpty(chartno):request.getParameter("chart_no")%>"
+                    readonly value="<%=Encode.forHtmlAttribute(bFirstDisp?StringUtils.trimToEmpty(chartno):request.getParameter("chart_no"))%>"
                         >
                     </td>
                 </tr>
@@ -1231,7 +1230,7 @@
                                 }
                             }
                         %>
-                <input type="text" readonly class="form-control" value="<%=lastCreatorNo%>" >
+                <input type="text" readonly class="form-control" value="<%=Encode.forHtmlAttribute(String.valueOf(lastCreatorNo))%>" >
                     </td>
                 </tr>
                 <tr>
@@ -1244,13 +1243,13 @@
                         <input type="hidden" name="lastcreatedatetime"
                                value="<%=Encode.forHtmlContent(bFirstDisp?lastDateTime:request.getParameter("lastcreatedatetime"))%>"
                         > <%=Encode.forHtmlContent(dateString2)%>
-                        <input type="hidden" name="createdatetime" value="<%=strDateTime%>">
-                        <input type="hidden" name="provider_no" value="<%=curProvider_no%>">
+                        <input type="hidden" name="createdatetime" value="<%=Encode.forHtmlAttribute(String.valueOf(strDateTime))%>">
+                        <input type="hidden" name="provider_no" value="<%=Encode.forHtmlAttribute(String.valueOf(curProvider_no))%>">
                         <input type="hidden" name="dboperation" value="">
                         <input type="hidden" name="creator"
                                value="<%=Encode.forHtmlAttribute(userlastname+", "+userfirstname)%>">
                         <input type="hidden" name="remarks" value="<%=Encode.forHtmlAttribute(remarks)%>">
-                        <input type="hidden" name="appointment_no" value="<%=appointment_no%>">
+                        <input type="hidden" name="appointment_no" value="<%=Encode.forHtmlAttribute(String.valueOf(appointment_no))%>">
                     </div>
                 </div>
                     </td>
@@ -1321,15 +1320,15 @@
                     <input type="button"
                            name="buttoncancel" id="noShowButton" class="btn"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.btnNoShow"/>"
-                           onClick="window.location='appointmentcontrol.jsp?buttoncancel=No Show&displaymode=Update Appt&appointment_no=<%=appointment_no%>'">
+                           onClick="window.location='appointmentcontrol.jsp?buttoncancel=No Show&displaymode=Update Appt&appointment_no=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>'">
                     <br>
                     <a href="javascript:void(0);" title="Annotation"
-                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=annotation_display%>&amp;table_id=<%=appointment_no%>&amp;demo='+document.EDITAPPT.demographic_no.value,'anwin','width=400,height=500');">
+                       onclick="window.open('<%=request.getContextPath()%>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&amp;table_id=<%=Encode.forUriComponent(String.valueOf(appointment_no))%>&amp;demo='+document.EDITAPPT.demographic_no.value,'anwin','width=400,height=500');">
                         <img src="<%=request.getContextPath() %>/images/notes.gif" alt="Annotation" height="16"
                              width="13">
                     </a>
                     <a class="btn"
-                       onClick="window.location='appointmentcontrol.jsp?displaymode=PrintCard&appointment_no=' + encodeURIComponent('<%=appointment_no%>')">
+                       onClick="window.location='appointmentcontrol.jsp?displaymode=PrintCard&appointment_no=' + encodeURIComponent('<%=Encode.forJavaScript(String.valueOf(appointment_no))%>')">
                         <i class="icon-print"></i>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.btnPrintCard"/></a>
                     <a class="btn"
                        onClick="window.open('<%=request.getContextPath() %>/demographic/demographiclabelprintsetting.jsp?demographic_no=' + encodeURIComponent(document.EDITAPPT.demographic_no.value), 'labelprint','height=550,width=700,location=no,scrollbars=yes,menubars=no,toolbars=no')">
@@ -1386,7 +1385,7 @@
                                 numSameDayGroupApptsPaste = aa.size() > 0 ? new Long(aa.size()) : 0;
                             }
                     %><a href=#
-                         onclick="pasteAppt(<%=(numSameDayGroupApptsPaste > 0)%>);">Paste</a>
+                         onclick="pasteAppt(<%=Encode.forJavaScript(String.valueOf((numSameDayGroupApptsPaste > 0)))%>);">Paste</a>
                     <% } %>
                 </td>
             </tr>
@@ -1410,14 +1409,14 @@
                         if (balance.compareTo(BigDecimal.ZERO) != 0) { %>
             <tr>
                 <td style="text-align: center; color:red;"><a href="javascript:void(0)"
-                                                              onclick="popupPage(600,800, '<%=request.getContextPath() %>/billing/CA/ON/billingONCorrection.jsp?billing_no=<%=cheader1s.get(i).getId()%>')">Inv
-                    #<%=cheader1s.get(i).getId() %>
+                                                              onclick="popupPage(600,800, '<%=request.getContextPath() %>/billing/CA/ON/billingONCorrection.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(cheader1s.get(i).getId()))%>')">Inv
+                    #<%=Encode.forHtml(String.valueOf(cheader1s.get(i).getId()))%>
                 </a></td>
-                <td style="text-align: center; color:red;"><%=fm.format(cheader1s.get(i).getTimestamp()) %>
+                <td style="text-align: center; color:red;"><%=Encode.forHtml(String.valueOf(fm.format(cheader1s.get(i).getTimestamp())))%>
                 </td>
-                <td style="text-align: center; color:red;">$<%=cheader1s.get(i).getTotal() %>
+                <td style="text-align: center; color:red;">$<%=Encode.forHtml(String.valueOf(cheader1s.get(i).getTotal()))%>
                 </td>
-                <td style="text-align: center; color:red;">$<%=balance %>
+                <td style="text-align: center; color:red;">$<%=Encode.forHtml(String.valueOf(balance))%>
                 </td>
             </tr>
             <%
@@ -1499,7 +1498,7 @@
         <%--        <div class="title" id="appointmentTitle">--%>
         <%--            <fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.btnView"/>--%>
         <%--        </div>--%>
-        <%--        <a href=# onclick="window.close();" id="backButton" class="leftButton top"><%= strDate%></a>--%>
+        <%--        <a href=# onclick="window.close();" id="backButton" class="leftButton top"><%=Encode.forHtml(String.valueOf(strDate))%></a>--%>
         <%--        <a href="javascript:toggleView();" id="editButton" class="rightButton top">Edit</a>--%>
         <%--    </div>--%>
         <%--    <div id="info" class="panel">--%>
@@ -1515,7 +1514,7 @@
         <%--                <%=Encode.forHtmlContent(apptName)%>--%>
         <%--            </a></li>--%>
         <%--            <li><div class="label"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDate"/>: </div>--%>
-        <%--                <div class="info"><%=formatDate%></div>--%>
+        <%--                <div class="info"><%=Encode.forHtml(String.valueOf(formatDate))%></div>--%>
         <%--            </li>--%>
         <%--            <% // Determine appointment status from code so we can access--%>
         <%--   // the description, colour, image, etc.--%>
@@ -1529,14 +1528,14 @@
         <%--      }--%>
         <%--%>--%>
         <%--            <li><div class="label"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formStatus"/>: </div>--%>
-        <%--                <div class="info" style="background-color:<%=apptStatus.getColor()%>; font-weight:bold;">--%>
-        <%--                    <img src="<%=request.getContextPath() %>/images/<%=apptStatus.getIcon()%>" alt="image">--%>
+        <%--                <div class="info" style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(apptStatus.getColor()))%>; font-weight:bold;">--%>
+        <%--                    <img src="<%=request.getContextPath() %>/images/<%=Encode.forHtmlAttribute(String.valueOf(apptStatus.getIcon()))%>" alt="image">--%>
         <%--                    <%=Encode.forHtmlContent(apptStatus.getDescription())%>--%>
         <%--                </div>--%>
         <%--            </li>--%>
         <%--            <li><div class="label"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.editappointment.msgTime"/>: </div>--%>
-        <%--                <div class="info">From <%=bFirstDisp ? ConversionUtils.toTimeStringNoSeconds(appt.getStartTime()) : request.getParameter("start_time")%>--%>
-        <%--                to <%=bFirstDisp ? ConversionUtils.toTimeStringNoSeconds(appt.getEndTime()) : request.getParameter("end_time")%></div>--%>
+        <%--                <div class="info">From <%=Encode.forHtml(bFirstDisp ? ConversionUtils.toTimeStringNoSeconds(appt.getStartTime()) : request.getParameter("start_time"))%>--%>
+        <%--                to <%=Encode.forHtml(bFirstDisp ? ConversionUtils.toTimeStringNoSeconds(appt.getEndTime()) : request.getParameter("end_time"))%></div>--%>
         <%--            </li>--%>
         <%--            <li><div class="label"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formType"/>: </div>--%>
         <%--                <div class="info"><%=Encode.forHtmlContent(bFirstDisp ? appt.getType() : request.getParameter("type"))%></div>--%>

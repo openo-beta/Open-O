@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
@@ -315,7 +316,7 @@
     <div class="row-fluid hidden-print" style="text-align:right">
         <i class=" icon-question-sign"></i>
         <%if (resourcehelpHtml == "") { %>
-        <a href="#" ONCLICK="popupPage(600,750,'<%=resourcebaseurl%>');return false;" title=""
+        <a href="#" ONCLICK="popupPage(600,750,'<%=Encode.forJavaScript(String.valueOf(resourcebaseurl))%>');return false;" title=""
            onmouseover="window.status='';return true">Help</a>
         <%} else {%>
         <div id="help-link">

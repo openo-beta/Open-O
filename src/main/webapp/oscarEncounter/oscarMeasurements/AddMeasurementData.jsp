@@ -207,7 +207,7 @@
             }
 
             function masterDateFill(v) {
-                var x =<%=measurements.length%>;
+                var x = <%=measurements.length%>;
 
 
                 for (i = 0; i <= x; i++) {
@@ -333,7 +333,7 @@
                 <table class="TopStatusBar">
                     <tr>
                         <td>
-                            <oscar:nameage demographicNo="<%=demographic_no%>"/>
+                            <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
                         </td>
                         <td>&nbsp;
 
@@ -360,7 +360,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -388,12 +388,12 @@
                 <fieldset>
                     <legend><b>Master Date/Time</b></legend>
                     <div style="float:left;margin-left:30px;">
-                        <label for="prevDate<%=iDate%>" class="fields">Obs Date/Time: </label>
+                        <label for="prevDate<%=Encode.forHtmlAttribute(String.valueOf(iDate))%>" class="fields">Obs Date/Time: </label>
 
-                        <input type="text" name="date-<%=iDate%>" id="prevDate<%=iDate%>" value="<%=prevDate%>"
+                        <input type="text" name="date-<%=Encode.forHtmlAttribute(String.valueOf(iDate))%>" id="prevDate<%=Encode.forHtmlAttribute(String.valueOf(iDate))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(prevDate))%>"
                                size="17" onchange="javascript:masterDateFill(this.value);">
                         <% if (id == null) { %>
-                        <a id="date<%=iDate%>"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar"
+                        <a id="date<%=Encode.forHtmlAttribute(String.valueOf(iDate))%>"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar"
                                                     border="0"/></a>
                         <%}%>
                         <br/><font size="1">*Use this field to change the observation date/time for all items
@@ -409,15 +409,15 @@
                 %>
                 <!-- END of Master Calendar Input -->
 
-                <form action="${pageContext.request.contextPath}/<%=saveAction%>" id="measurementForm">
+                <form action="${pageContext.request.contextPath}/<%=Encode.forHtmlAttribute(String.valueOf(saveAction))%>" id="measurementForm">
                     <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 
-                    <input type="hidden" name="numType" value="<%=measurements.length%>"/>
+                    <input type="hidden" name="numType" value="<%=Encode.forHtmlAttribute(String.valueOf(measurements.length))%>"/>
                     <input type="hidden" name="groupName" value=""/>
                     <input type="hidden" name="css" value=""/>
-                    <input type="hidden" name="demographicNo" value="<%=demographic_no%>"/>
+                    <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
                     <input type="hidden" name="inputFrom" value="AddMeasurementData"/>
-                    <input type="hidden" name="template" value="<%=temp%>"/>
+                    <input type="hidden" name="template" value="<%=Encode.forHtmlAttribute(String.valueOf(temp))%>"/>
 
                     <%
                         int ctr = 0;
@@ -446,44 +446,44 @@
                     %>
 
 
-                    <input type="hidden" name="measurement" value="<%=measurement%>"/>
+                    <input type="hidden" name="measurement" value="<%=Encode.forHtmlAttribute(String.valueOf(measurement))%>"/>
 
-                    <input type="hidden" name="<%= "inputType-" + ctr %>" value="<%=mtypeBean.getType()%>"/>
-                    <input type="hidden" name="<%= "inputTypeDisplayName-" + ctr %>"
-                           value="<%=mtypeBean.getTypeDisplayName()%>"/>
-                    <input type="hidden" name="<%= "validation-" + ctr %>"
-                           value="<%=mtypeBean.getValidation()%>"/>
+                    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf("inputType-" + ctr))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(mtypeBean.getType()))%>"/>
+                    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf("inputTypeDisplayName-" + ctr))%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(mtypeBean.getTypeDisplayName()))%>"/>
+                    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf("validation-" + ctr))%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(mtypeBean.getValidation()))%>"/>
 
                     <% if (id != null) { %>
-                    <input type="hidden" name="id" value="<%=id%>"/>
-                    <input type="hidden" name="deleteCheckbox" id="deleteCheck" value="<%=id%>"/>
+                    <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>"/>
+                    <input type="hidden" name="deleteCheckbox" id="deleteCheck" value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>"/>
                     <% } %>
 
                     <div class="prevention">
                         <fieldset>
-                            <legend>Measurement : <%=mtypeBean.getTypeDisplayName()%>
+                            <legend>Measurement : <%=Encode.forHtml(String.valueOf(mtypeBean.getTypeDisplayName()))%>
                             </legend>
                             <div style="float:left;display:none;">
-                                <input type="radio" name="<%= "inputMInstrc-" + ctr %>"
-                                       value="<%=mtypeBean.getMeasuringInstrc()%>" checked/>
+                                <input type="radio" name="<%=Encode.forHtmlAttribute(String.valueOf("inputMInstrc-" + ctr))%>"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(mtypeBean.getMeasuringInstrc()))%>" checked/>
                             </div>
                             <div style="float:left;margin-left:30px;">
-                                <label for="prevDate<%=ctr%>" class="fields">Obs Date/Time:</label>
+                                <label for="prevDate<%=Encode.forHtmlAttribute(String.valueOf(ctr))%>" class="fields">Obs Date/Time:</label>
 
-                                <input type="text" name="<%= "date-" + ctr %>" id="prevDate<%=ctr%>"
-                                       value="<%=prevDate%>" size="17">
+                                <input type="text" name="<%=Encode.forHtmlAttribute(String.valueOf("date-" + ctr))%>" id="prevDate<%=Encode.forHtmlAttribute(String.valueOf(ctr))%>"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(prevDate))%>" size="17">
 
                                 <% if (id == null) { %>
-                                <a id="date<%=ctr%>"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar"
+                                <a id="date<%=Encode.forHtmlAttribute(String.valueOf(ctr))%>"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar"
                                                           border="0"/></a>
                                 <%}%>
                                 <br/>
 
-                                <label for="<%="inputValue-"+ctr%>"
+                                <label for="<%=Encode.forHtmlAttribute(String.valueOf("inputValue-"+ctr))%>"
                                        class="fields"><%=Encode.forHtmlContent(h2.get("value_name"))%>:</label>
                                 <% if (validations != null && validations.getRegularExp() != null && (validations.getRegularExp().contains("|") || validations.getRegularExp().equals("Yes"))) { %>
-                                <select id="<%="inputValue-"+ctr%>"
-                                        name="<%= "inputValue-" + ctr %>">
+                                <select id="<%=Encode.forHtmlAttribute(String.valueOf("inputValue-"+ctr))%>"
+                                        name="<%=Encode.forHtmlAttribute(String.valueOf("inputValue-" + ctr))%>">
                                     <option value=""></option>
                                     <% String[] opts = validations.getName().contains("/") ? validations.getName().split("/") : validations.getRegularExp().split("\\|");
                                         boolean valFoundInOpts = false;
@@ -498,17 +498,17 @@
                                     <% } %>
                                 </select>
                                 <%} else if (validations != null && validations.getName().startsWith("Integer")) { %>
-                                <select id="<%= "inputValue-" + ctr %>"
-                                        name="<%= "inputValue-" + ctr %>">
+                                <select id="<%=Encode.forHtmlAttribute(String.valueOf("inputValue-" + ctr))%>"
+                                        name="<%=Encode.forHtmlAttribute(String.valueOf("inputValue-" + ctr))%>">
                                     <option value=""></option>
                                     <%for (int v = validations.getMinValue().intValue(); v <= validations.getMaxValue().intValue(); v++) { %>
-                                    <option value="<%=v%>" <%=sel("" + v, val)%>><%=v%>
+                                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(v))%>" <%=Encode.forHtml(String.valueOf(sel("" + v, val)))%>><%=Encode.forHtml(String.valueOf(v))%>
                                     </option>
                                     <%} %>
                                 </select>
                                 <%} else {%>
-                                <input type="text" id="<%= "inputValue-" + ctr %>"
-                                       name="<%= "inputValue-" + ctr %>" size="5" value="<%=val%>"/> <br/>
+                                <input type="text" id="<%=Encode.forHtmlAttribute(String.valueOf("inputValue-" + ctr))%>"
+                                       name="<%=Encode.forHtmlAttribute(String.valueOf("inputValue-" + ctr))%>" size="5" value="<%=Encode.forHtmlAttribute(String.valueOf(val))%>"/> <br/>
                                 <%}%>
                             </div>
                             <br/>
@@ -520,7 +520,7 @@
                             </div>
                             <fieldset>
                                 <legend>Comments</legend>
-                                <textarea name="<%= "comments-" + ctr %>"><%=comment%></textarea>
+                                <textarea name="<%=Encode.forHtmlAttribute(String.valueOf("comments-" + ctr))%>"><%=Encode.forHtml(String.valueOf(comment))%></textarea>
                             </fieldset>
                         </fieldset>
 

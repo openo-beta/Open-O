@@ -43,6 +43,7 @@
 <%@page import="java.util.*" %>
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -220,7 +221,7 @@
 
             <display:column sortable="true" title="Client No" sortProperty="demographicNo" defaultorder="ascending">
                 <a
-                        href="<%=request.getContextPath() %><%=request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?selectId=<c:out value="${client.demographicNo}"/>&demographicNo=<c:out value="${client.demographicNo}"/>&PEAttach=yes&appointmentNo=0&noteId=<%=noteId$%>"><c:out
+                        href="<%=request.getContextPath() %><%=request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?selectId=<c:out value="${client.demographicNo}"/>&demographicNo=<c:out value="${client.demographicNo}"/>&PEAttach=yes&appointmentNo=0&noteId=<%=Encode.forUriComponent(String.valueOf(noteId$))%>"><c:out
                         value="${client.demographicNo}"/></a>
             </display:column>
             <display:column sortable="true" title="Name" sortProperty="formattedName">
@@ -287,7 +288,7 @@
 
         <input type="hidden" name="mergeAction" value="merge"/>
         <input type="hidden" name="provider_no"
-               value="<%= session.getAttribute("user") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(session.getAttribute("user")))%>"/>
         <input type="hidden" name="caisiSearch" value="yes"/>
         <input type="submit" value="Merge Selected Records"/>
     </security:oscarSec> <br/>

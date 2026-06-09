@@ -26,6 +26,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.DiagnosticCode" %>
 <%@ page import="ca.openosp.openo.commn.dao.DiagnosticCodeDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 %>
@@ -52,7 +53,7 @@
                 if (self.opener.callChangeCodeDesc) self.opener.callChangeCodeDesc();
 
                 <%if(request.getParameter("name2")!=null) {%>
-                self.opener.<%=request.getParameter("name2")%> = File2.substring(0, 3);
+                self.opener.<%=Encode.forJavaScript(request.getParameter("name2"))%> = File2.substring(0, 3);
                 <%} else {%>
                 self.opener.document.forms[1].xml_diagnostic_detail.value = File2;
                 <%}%>
@@ -90,7 +91,7 @@
           action="billingDigSearch.jsp">
         <%if (request.getParameter("name2") != null) {%>
         <input type="hidden" name="name2"
-               value="<%=request.getParameter("name2")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("name2"))%>"/>
         <%}%>
         <p><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgRefine"/></b><br>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.msgCodeRange"/>: <select
@@ -205,13 +206,13 @@
 
             <tr>
                 <td style="width:12%"><a
-                        href="javascript:CodeAttach('<%=Dcode%>|<%=DcodeDesc%>')"><%=Dcode%>
+                        href="javascript:CodeAttach('<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>|<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>')"><%=Encode.forHtml(String.valueOf(Dcode))%>
                 </a></td>
                 <td style="width:88%"><input type="text" class="input input-xxlarge" style="margin-bottom: 0px;"
-                                             name="<%=Dcode%>"
-                                             value="<%=DcodeDesc%>">&nbsp;<input type="submit" class="btn"
+                                             name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
+                                             value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>">&nbsp;<input type="submit" class="btn"
                                                                                  name="update"
-                                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>">
+                                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Encode.forHtml(String.valueOf(Dcode))%>">
                 </td>
             </tr>
             <%
@@ -233,13 +234,13 @@
 
             <tr>
                 <td style="width:12%"><a
-                        href="javascript:CodeAttach('<%=Dcode%>|<%=DcodeDesc%>')"><%=Dcode%>
+                        href="javascript:CodeAttach('<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>|<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>')"><%=Encode.forHtml(String.valueOf(Dcode))%>
                 </a></td>
                 <td style="width:88%"><input type="text" class="input input-xxlarge" style="margin-bottom: 0px;"
-                                             name="<%=Dcode%>"
-                                             value="<%=DcodeDesc%>">&nbsp;<input type="submit" class="btn"
+                                             name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
+                                             value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>">&nbsp;<input type="submit" class="btn"
                                                                                  name="update"
-                                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode%>">
+                                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Encode.forHtml(String.valueOf(Dcode))%>">
                 </td>
             </tr>
             <%
@@ -260,13 +261,13 @@
 
             <tr>
                 <td style="width:12%"><a
-                        href="javascript:CodeAttach('<%=Dcode2%>|<%=DcodeDesc2%>')"><%=Dcode2%>
+                        href="javascript:CodeAttach('<%=Encode.forHtmlAttribute(String.valueOf(Dcode2))%>|<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc2))%>')"><%=Encode.forHtml(String.valueOf(Dcode2))%>
                 </a></td>
                 <td style="width:88%"><input type="text" class="input input-xxlarge" style="margin-bottom: 0px;"
-                                             name="<%=Dcode2%>"
-                                             value="<%=DcodeDesc2%>">&nbsp;<input type="submit" class="btn"
+                                             name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode2))%>"
+                                             value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc2))%>">&nbsp;<input type="submit" class="btn"
                                                                                   name="update"
-                                                                                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Dcode2%>">
+                                                                                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingDigSearch.btnUpdate"/> <%=Encode.forHtml(String.valueOf(Dcode2))%>">
                 </td>
             </tr>
             <%
@@ -284,7 +285,7 @@
             <% if (intCount == 1) { %>
             <script LANGUAGE="JavaScript">
                 <!--
-                CodeAttach('<%=Dcode%>|<%=DcodeDesc%>');
+                CodeAttach('<%=Encode.forJavaScript(String.valueOf(Dcode))%>|<%=Encode.forJavaScript(String.valueOf(DcodeDesc))%>');
                 -->
 
             </script>

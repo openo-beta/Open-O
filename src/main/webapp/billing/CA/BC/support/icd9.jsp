@@ -27,6 +27,7 @@
 <%@ page import="ca.openosp.openo.commn.model.DiagnosticCode" %>
 <%@ page import="ca.openosp.openo.commn.dao.DiagnosticCodeDao" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 %>
@@ -49,7 +50,7 @@
     <script language="JavaScript">
     function posttoText(index){
     self.close();
-    opener.document.<%=form%>.<%=field%>.value = index;
+    opener.document.<%=Encode.forJavaScript(String.valueOf(form))%>.<%=Encode.forJavaScript(String.valueOf(field))%>.value = index;
     opener.document.focus();
     }
     </script>
@@ -78,9 +79,9 @@
     <tr <%=((color) ? "bgcolor=\"#F6F6F6\"" : "")%> align="left"
     valign="top">
     <td class="SmallerText"><a href=#
-    onClick="posttoText('<%=dcode.getDiagnosticCode()%>');"><%=dcode.getDiagnosticCode()%></a>
+    onClick="posttoText('<%=Encode.forJavaScript(String.valueOf(dcode.getDiagnosticCode()))%>');"><%=Encode.forHtml(String.valueOf(dcode.getDiagnosticCode()))%></a>
     </td>
-    <td class="SmallerText"><%=dcode.getDescription()%></td>
+    <td class="SmallerText"><%=Encode.forHtml(String.valueOf(dcode.getDescription()))%></td>
     </tr>
     <%
             color = !(color);

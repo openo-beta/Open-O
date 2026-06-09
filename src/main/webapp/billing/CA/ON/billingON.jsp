@@ -161,7 +161,8 @@
 
     // get patient's detail
     String errorFlag = "";
-    String warningMsg = "", errorMsg = "";
+    List<String> warningMsgs = new ArrayList<String>();
+    List<String> errorMsgs = new ArrayList<String>();
     String r_doctor = "", r_doctor_ohip = "";
     String demoFirst = "", demoLast = "", demoHIN = "", demoVer = "", demoDOB = "", demoDOBYY = "", demoDOBMM = "", demoDOBDD = "", demoHCTYPE = "";
     String family_doctor = "";
@@ -203,15 +204,14 @@
     }
 
     if (demoHIN.equals("")) {
-        warningMsg += "<b><div class='alert alert-error'>Warning: The patient does not have a valid HIN. </div></b>";
+        warningMsgs.add("The patient does not have a valid HIN.");
     }
     if (r_doctor_ohip != null && r_doctor_ohip.length() > 0 && r_doctor_ohip.length() != 6) {
-        warningMsg += "<div class='alert alert error'>Warning: the referral doctor's no is wrong. </div>";
+        warningMsgs.add("The referral doctor's no is wrong.");
     }
     if (StringUtils.isBlank(demoDOB) || demoDOB.length() != 8) {
         errorFlag = "1";
-        errorMsg = errorMsg
-                + "<b><div class='alert alert error'>Error: The patient does not have a valid DOB. </div></b>";
+        errorMsgs.add("The patient does not have a valid DOB.");
     }
     //}
 
@@ -547,8 +547,6 @@
     }
 
 
-    // create msg
-    msg += errorMsg + warningMsg;
 %>
 
 
@@ -671,8 +669,8 @@
         }
 
         function onNext() {
-            var codeToAddStr = "<%=codeToAddPatientDx%>";
-            var codeToMatchStr = "<%=codeToMatchPatientDx%>";
+            var codeToAddStr = "<%=Encode.forJavaScript(String.valueOf(codeToAddPatientDx))%>";
+            var codeToMatchStr = "<%=Encode.forJavaScript(String.valueOf(codeToMatchPatientDx))%>";
 
             var codeToAdd = codeToAddStr.split(",");
             var codeToMatch = {};
@@ -689,7 +687,7 @@
             if (codeToAdd.indexOf(dxCode) >= 0 || codeMatch != null) {
                 var dxCodeMatch = codeMatch == null ? dxCode : codeMatch;
                 <%for (String pcode : patientDx) {%>
-                if (dxCodeMatch ==<%=pcode%>) dxCode = -1;
+                if (dxCodeMatch ==<%=Encode.forJavaScript(String.valueOf(pcode))%>) dxCode = -1;
                 <%}%>
                 if (dxCode != -1 && codeMatch != null) {
                     document.titlesearch.codeMatchToPatientDx.value = codeMatch;
@@ -890,9 +888,11 @@
         }
 
         function scScriptAttach(nameF) {
-            f0 = escape(nameF.value);
-            f1 = escape("document.forms[0].elements[\'" + nameF.name + "\'].value");
-            awnd = rs('att', 'billingCodeSearch.jsp?name=' + f0 + '&search=&name1=&name2=&nameF=' + f1, 600, 600, 1);
+            // Send the element name and the parent form index as separate parameters so
+            // billingCodeSearch.jsp / billingCodeUpdate.jsp can rebuild the access path
+            // from a fixed server-side template rather than eval-ing a caller-supplied string.
+            f0 = encodeURIComponent(nameF.value);
+            awnd = rs('att', 'billingCodeSearch.jsp?name=' + f0 + '&search=&name1=&name2=&formIndex=0&elementName=' + encodeURIComponent(nameF.name), 600, 600, 1);
             //awnd.focus();
         }
 
@@ -935,7 +935,7 @@
             document.forms[0].dxCode1.value = "";
             document.forms[0].dxCode2.value = "";
             var n = 0;
-            for (var i = 0; i <<%=BillingDataHlp.FIELD_SERVICE_NUM %>; ++i) {
+            for (var i = 0; i <<%=Encode.forJavaScript(String.valueOf(BillingDataHlp.FIELD_SERVICE_NUM))%>; ++i) {
                 ocode = eval("document.forms[0].serviceCode" + i);
                 ounit = eval("document.forms[0].serviceUnit" + i);
                 operc = eval("document.forms[0].serviceAt" + i);
@@ -960,9 +960,9 @@
                 }
             }
             if (document.forms[0].dxCode.value == "" && document.forms[0].dxCode1.value == "" && document.forms[0].dxCode2.value == "") {
-                document.forms[0].dxCode.value = '<%=request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode%>';
-                document.forms[0].dxCode1.value = '<%=request.getParameter("dxCode1")!=null?request.getParameter("dxCode1"):""%>';
-                document.forms[0].dxCode2.value = '<%=request.getParameter("dxCode2")!=null?request.getParameter("dxCode2"):""%>';
+                document.forms[0].dxCode.value = '<%=Encode.forJavaScript(request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode)%>';
+                document.forms[0].dxCode1.value = '<%=Encode.forJavaScript(request.getParameter("dxCode1")!=null?request.getParameter("dxCode1"):"")%>';
+                document.forms[0].dxCode2.value = '<%=Encode.forJavaScript(request.getParameter("dxCode2")!=null?request.getParameter("dxCode2"):"")%>';
             }
         }
 
@@ -982,9 +982,9 @@
                 document.forms[0].referralDocName.value = "";
                 document.forms[0].referralSpet.value = "";
             } else {
-                document.forms[0].referralCode.value = "<%=r_doctor_ohip%>";
-                document.forms[0].referralDocName.value = "<%=r_doctor%>";
-                document.forms[0].referralSpet.value = "<%=referSpet%>";
+                document.forms[0].referralCode.value = "<%=Encode.forJavaScript(String.valueOf(r_doctor_ohip))%>";
+                document.forms[0].referralDocName.value = "<%=Encode.forJavaScript(String.valueOf(r_doctor))%>";
+                document.forms[0].referralSpet.value = "<%=Encode.forJavaScript(String.valueOf(referSpet))%>";
             }
         }
 
@@ -992,12 +992,12 @@
             var n = document.forms[0].xml_billtype.selectedIndex;
             var val = document.forms[0].xml_billtype[n].value;
             if (val.substring(0, 3) == "PAT" || val.substring(0, 3) == "OCF" || val.substring(0, 3) == "ODS" || val.substring(0, 3) == "CPP" || val.substring(0, 3) == "STD") {
-                self.location.href = "billingON.jsp?curBillForm=<%="PRI"%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=request.getParameter("demographic_no")%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=1";
+                self.location.href = "billingON.jsp?curBillForm=<%="PRI"%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname != null ? demoname : ""))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=1";
             } else if (val.substring(0, 3) == "BON") {
-                self.location.href = "billingON.jsp?curBillForm=<%=oscarVariables.getProperty("primary_care_incentive", "").trim()%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=request.getParameter("demographic_no")%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=1";
+                self.location.href = "billingON.jsp?curBillForm=<%=Encode.forUriComponent(String.valueOf(oscarVariables.getProperty("primary_care_incentive", "").trim()))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname != null ? demoname : ""))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=1";
             } else {
                 <% if(ctlBillForm.equals("PRI") ) {%>
-                self.location.href = "billingON.jsp?curBillForm=<%=oscarVariables.getProperty("default_view", "").trim()%>&hotclick=<%=URLEncoder.encode("","UTF-8")%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&demographic_no=<%=request.getParameter("demographic_no")%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=1";
+                self.location.href = "billingON.jsp?curBillForm=<%=Encode.forUriComponent(String.valueOf(oscarVariables.getProperty("default_view", "").trim()))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname != null ? demoname : ""))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&xml_billtype=" + val.substring(0, 3) + "&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=1";
                 <% } %>
             }
         }
@@ -1016,18 +1016,18 @@
         function onHistory() {
             var dd = document.forms[0].day.value;
             //alert(dd);
-            popupPage("800", "1000", "billingONHistorySpec.jsp?demographic_no=<%=demo_no%>&demo_name=<%=URLEncoder.encode(demoname,"UTF-8")%>&orderby=appointment_date&day=" + dd);
+            popupPage("800", "1000", "billingONHistorySpec.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demo_no))%>&demo_name=<%=Encode.forUriComponent(String.valueOf(demoname != null ? demoname : ""))%>&orderby=appointment_date&day=" + dd);
         }
 
         function prepareBack() {
-            document.forms[0].services_checked.value = "<%=request.getParameter("services_checked")%>";
+            document.forms[0].services_checked.value = "<%=Encode.forJavaScript(String.valueOf(request.getParameter("services_checked")))%>";
             if (document.forms[0].services_checked.value == "null") document.forms[0].services_checked.value = 0;
             document.forms[0].url_back.value = location.href;
 
-            showBillFormDiv("group1_", "<%=ctlBillForm%>");
-            showBillFormDiv("group2_", "<%=ctlBillForm%>");
-            showBillFormDiv("group3_", "<%=ctlBillForm%>");
-            showBillFormDiv("dxCodeSearchDiv_", "<%=ctlBillForm%>");
+            showBillFormDiv("group1_", "<%=Encode.forJavaScript(String.valueOf(ctlBillForm))%>");
+            showBillFormDiv("group2_", "<%=Encode.forJavaScript(String.valueOf(ctlBillForm))%>");
+            showBillFormDiv("group3_", "<%=Encode.forJavaScript(String.valueOf(ctlBillForm))%>");
+            showBillFormDiv("dxCodeSearchDiv_", "<%=Encode.forJavaScript(String.valueOf(ctlBillForm))%>");
 
         }
 
@@ -1129,13 +1129,13 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                     for( int j=0; j< listServiceType.size(); j++) {
                             String st = listServiceType.get(j);
              %>
-            if (selectedBillForm != "<%=st%>") {
+            if (selectedBillForm != "<%=Encode.forJavaScript(String.valueOf(st))%>") {
 
-                hideBillFormDiv("group1_", "<%=st%>");
-                hideBillFormDiv("group2_", "<%=st%>");
-                hideBillFormDiv("group3_", "<%=st%>");
+                hideBillFormDiv("group1_", "<%=Encode.forJavaScript(String.valueOf(st))%>");
+                hideBillFormDiv("group2_", "<%=Encode.forJavaScript(String.valueOf(st))%>");
+                hideBillFormDiv("group3_", "<%=Encode.forJavaScript(String.valueOf(st))%>");
 
-                hideBillFormDiv("dxCodeSearchDiv_", "<%=st%>");
+                hideBillFormDiv("dxCodeSearchDiv_", "<%=Encode.forJavaScript(String.valueOf(st))%>");
             }
 
             <% }  %>
@@ -1193,7 +1193,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
         <tr>
             <td colspan="2" style="background-color:lightgray;"><b>
                 <a href="javascript:void(0);"
-                   onclick="toggleDiv('<%=ctlcode%>', '<%=ctlcodename %>','<%=billType%>');showHideLayers('Layer1','','hide');"><%=ctlcodename%>
+                   onclick="toggleDiv('<%=Encode.forJavaScript(String.valueOf(ctlcode))%>', '<%=Encode.forJavaScript(String.valueOf(ctlcodename))%>','<%=Encode.forJavaScript(String.valueOf(billType))%>');showHideLayers('Layer1','','hide');"><%=Encode.forHtml(String.valueOf(ctlcodename))%>
                 </a>
             </b></td>
         </tr>
@@ -1220,7 +1220,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
             ctlCount = 0;
     %>
 
-    <div id="dxCodeSearchDiv_<%=st%>" style="display: none;">
+    <div id="dxCodeSearchDiv_<%=Encode.forHtmlAttribute(String.valueOf(st))%>" style="display: none;">
 
         <%
             DiagnosticCodeDao dcDao = SpringUtils.getBean(DiagnosticCodeDao.class);
@@ -1237,13 +1237,13 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
             <tr>
                 <td style="width: 10%">
                     <a href="javascript:void(0);"
-                       onclick="document.forms[0].dxCode.value='<%=ctldiagcode%>';showHideLayers('Layer2','','hide');changeCodeDesc();return false;">
-                        <%=ctldiagcode%>
+                       onclick="document.forms[0].dxCode.value='<%=Encode.forJavaScript(String.valueOf(ctldiagcode))%>';showHideLayers('Layer2','','hide');changeCodeDesc();return false;">
+                        <%=Encode.forHtml(String.valueOf(ctldiagcode))%>
                     </a>
                 </td>
                 <td>
                     <a href="javascript:void(0);"
-                       onclick="document.forms[0].dxCode.value='<%=ctldiagcode%>';showHideLayers('Layer2','','hide');changeCodeDesc();return false;">
+                       onclick="document.forms[0].dxCode.value='<%=Encode.forJavaScript(String.valueOf(ctldiagcode))%>';showHideLayers('Layer2','','hide');changeCodeDesc();return false;">
                         <%=ctldiagcodename.length() < 56 ? Encode.forHtml(ctldiagcodename) : Encode.forHtml(ctldiagcodename.substring(0, 55))%>
                     </a>
                 </td>
@@ -1262,7 +1262,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
         if (checkFlag == null) checkFlag = "0";
     %>
     <input type="hidden" name="checkFlag" id="checkFlag"
-           value="<%=checkFlag %>"/>
+           value="<%=Encode.forHtmlAttribute(String.valueOf(checkFlag))%>"/>
     <input type="hidden" name="addToPatientDx"/>
     <input type="hidden" name="codeMatchToPatientDx"/>
 
@@ -1279,7 +1279,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                     <% //
                         List sL = tdbObj.getBillingFavouriteList();
                         for (int i = 0; i < sL.size(); i = i + 2) { %>
-                    <option value="<%=(String) sL.get(i+1)%>"><%=(String) sL.get(i)%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf((String) sL.get(i+1)))%>"><%=Encode.forHtml(String.valueOf((String) sL.get(i)))%>
                     </option>
                     <% } %>
                 </select></td>
@@ -1299,18 +1299,18 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
 					<table  style="width: 100%;">
                     <tr>
                         <td style="white-space:nowrap; width: 10%; text-align: center"><b>&nbsp;<oscar:nameage
-                                demographicNo="<%=demo_no%>"/> <%=roster_status%>
+                                demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demo_no))%>"/> <%=Encode.forHtml(String.valueOf(roster_status))%>
                         </b>
                             <%if (appt_no.compareTo("0") == 0) {%>
                             <span class="input-append">
 								<input type="text" id="service_date" name="service_date" readonly
-                                       value="<%=request.getParameter("service_date")!=null? request.getParameter("service_date"):strToday%>"
+                                       value="<%=Encode.forHtmlAttribute(request.getParameter("service_date")!=null? request.getParameter("service_date"):strToday)%>"
                                        style="width: 80px; height:14px;  vertical-align: bottom;">
                                 <img src="${ pageContext.request.contextPath }/images/cal.gif" id="service_date_cal"
                                      style="height:14px;  vertical-align: bottom;" class="add-on" alt="cal"></span>
                             <%} else {%>
                                 <input type="text" id="service_date" name="service_date" readonly
-								value="<%=request.getParameter("appointment_date")%>"
+								value="<%=Encode.forHtmlAttribute(request.getParameter("appointment_date"))%>"
                                    maxlength="10" style="width: 80px;"> <%}%></td>
                         <%
                             String warningClass = "";
@@ -1319,9 +1319,16 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                             }
                         %>
                         <td style="text-align: center;"
-                            class="<%=warningClass%>"><%=billingRecomendations.toString()%>
+                            class="<%=Encode.forHtmlAttribute(String.valueOf(warningClass))%>"><%=Encode.forHtml(String.valueOf(billingRecomendations.toString()))%>
                         </td>
-                        <td style="text-align: center;"><%=msg%>
+                        <td style="text-align: center;">
+                            <%=Encode.forHtmlContent(msg)%>
+                            <% for (String errorText : errorMsgs) { %>
+                                <div class="alert alert-error">Error: <%=Encode.forHtmlContent(errorText)%></div>
+                            <% } %>
+                            <% for (String warningText : warningMsgs) { %>
+                                <div class="alert alert-warning">Warning: <%=Encode.forHtmlContent(warningText)%></div>
+                            <% } %>
                         </td>
                     </tr>
                 </table>
@@ -1354,7 +1361,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 <td><input type="text" name="dxCode" class="input-mini"
                                                            maxlength="5" ondblClick="dxScriptAttach('dxCode')"
                                                            onchange="changeCodeDesc();"
-                                                           value="<%=request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode%>"/>
+                                                           value="<%=Encode.forHtmlAttribute(request.getParameter("dxCode")!=null?request.getParameter("dxCode"):dxCode)%>"/>
                                                     <a href="javascript:void(0);" onclick="dxScriptAttach('dxCode');">Search</a>
                                                 </td>
                                             </tr>
@@ -1362,7 +1369,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 <td>dx1</td>
                                                 <td><input type="text" name="dxCode1" class="input-mini"
                                                            maxlength="5" ondblClick="dxScriptAttach('dxCode1')"
-                                                           value="<%=request.getParameter("dxCode1")!=null?request.getParameter("dxCode1"):""%>"/>
+                                                           value="<%=Encode.forHtmlAttribute(request.getParameter("dxCode1")!=null?request.getParameter("dxCode1"):"")%>"/>
                                                     <a href="javascript:void(0);" onclick="dxScriptAttach('dxCode1')">Search</a>
                                                 </td>
                                             </tr>
@@ -1370,7 +1377,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 <td>dx2</td>
                                                 <td><input type="text" name="dxCode2" class="input-mini"
                                                            maxlength="5" ondblClick="dxScriptAttach('dxCode2')"
-                                                           value="<%=request.getParameter("dxCode2")!=null?request.getParameter("dxCode2"):""%>"/>
+                                                           value="<%=Encode.forHtmlAttribute(request.getParameter("dxCode2")!=null?request.getParameter("dxCode2"):"")%>"/>
                                                     <a href="javascript:void(0);" onclick="dxScriptAttach('dxCode2')">Search</a>
                                                 </td>
                                             </tr>
@@ -1394,17 +1401,17 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
 
 
                                     %> <input type="checkbox" name="rfcheck" value="checked"
-                                            <%=checkRefBox%> onclick="onClickRefDoc()"/><br/>
+                                            <%=Encode.forHtml(String.valueOf(checkRefBox))%> onclick="onClickRefDoc()"/><br/>
                                         <input
                                                 type="text" name="referralCode" class="input-mini" maxlength="6"
                                                 placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.config.AddSpecialist.referralNo"/>"
-                                                value="<%=refNo%>">&nbsp;
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(refNo))%>">&nbsp;
                                         <input type="text" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgType"/>"
                                                name="referralSpet" class="input-small" maxlength="2"
-                                               value="<%=referSpet==null?"":referSpet%>"><br/>
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(referSpet==null?"":referSpet))%>"><br/>
                                         <input placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formRefDoc"/>"
                                                type="text" name="referralDocName" class="input-medium" maxlength="30"
-                                               value="<%=refName%>">
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(refName))%>">
                                     </td>
                                 </tr>
                                 <tr>
@@ -1413,28 +1420,28 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                         &nbsp;%</b><br/> <% for (int i = 0; i < BillingDataHlp.FIELD_SERVICE_NUM / 2; i++) { %>
                                         <input type="text" name="serviceCode<%=i%>" class="input-mini"
 
-                                               value="<%=request.getParameter("serviceCode"+i)!=null?request.getParameter("serviceCode"+i):""%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceCode"+i)!=null?request.getParameter("serviceCode"+i):"")%>"
                                                onDblClick="scScriptAttach(this)" onBlur="upCaseCtrl(this)"/>x
                                         <input type="text" name="serviceUnit<%=i%>" size="2" maxlength="4"
                                                style="width: 20px;"
-                                               value="<%=request.getParameter("serviceUnit"+i)!=null?request.getParameter("serviceUnit"+i):""%>"/>@
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceUnit"+i)!=null?request.getParameter("serviceUnit"+i):"")%>"/>@
                                         <input type="text" name="serviceAt<%=i%>" size="3" maxlength="4"
                                                style="width: 30px"
-                                               value="<%=request.getParameter("serviceAt"+i)!=null?request.getParameter("serviceAt"+i):""%>"/><br/>
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceAt"+i)!=null?request.getParameter("serviceAt"+i):"")%>"/><br/>
                                         <% } %></td>
                                     <td style="white-space:nowrap; width: 33%; text-align: center" class="xmyPink"><b>Code
                                         &nbsp; Time
                                         &nbsp;%</b><br/> <% for (int i = BillingDataHlp.FIELD_SERVICE_NUM / 2; i < BillingDataHlp.FIELD_SERVICE_NUM; i++) { %>
                                         <input type="text" name="serviceCode<%=i%>" class="input-mini"
 
-                                               value="<%=request.getParameter("serviceCode"+i)!=null?request.getParameter("serviceCode"+i):""%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceCode"+i)!=null?request.getParameter("serviceCode"+i):"")%>"
                                                onDblClick="scScriptAttach(this)" onBlur="upCaseCtrl(this)"/>x
                                         <input type="text" name="serviceUnit<%=i%>" size="2" maxlength="2"
                                                style="width: 20px;"
-                                               value="<%=request.getParameter("serviceUnit"+i)!=null?request.getParameter("serviceUnit"+i):""%>"/>@
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceUnit"+i)!=null?request.getParameter("serviceUnit"+i):"")%>"/>@
                                         <input type="text" name="serviceAt<%=i%>" size="3" maxlength="4"
                                                style="width: 30px"
-                                               value="<%=request.getParameter("serviceAt"+i)!=null?request.getParameter("serviceAt"+i):""%>"/><br/>
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("serviceAt"+i)!=null?request.getParameter("serviceAt"+i):"")%>"/><br/>
                                         <% } %></td>
                                 </tr>
                             </table>
@@ -1460,7 +1467,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
 	while (iter.hasNext()) {
 		Provider p=iter.next();
 		if ("1".equals(p.getStatus()) && StringUtils.isNotBlank(p.getOhipNo())) {
-	%><option value='<%= p.getProviderNo() %>|<%= p.getOhipNo() %>' ><%=Encode.forHtmlAttribute(p.getLastName())%>, <%=Encode.forHtmlAttribute(p.getFirstName())%></option><%}}%>";
+	%><option value='<%=Encode.forJavaScript(String.valueOf(p.getProviderNo()))%>|<%=Encode.forJavaScript(String.valueOf(p.getOhipNo()))%>' ><%=Encode.forJavaScript(Encode.forHtml(p.getLastName()))%>, <%=Encode.forJavaScript(Encode.forHtml(p.getFirstName()))%></option><%}}%>";
                                             <%}%>
 
                                             function changeSite(sel) {
@@ -1488,8 +1495,8 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 }
                                                 for (int i = 0; i < sites.size(); i++) {
                                             %>
-                                            <option value="<%=sites.get(i).getName()%>"
-                                                    style="background-color:<%=sites.get(i).getBgColor()%>"
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(sites.get(i).getName()))%>"
+                                                    style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(sites.get(i).getBgColor()))%>"
                                                     <%=sites.get(i).getName().toString().equals(selectedSite) ? "selected" : ""%>><%=Encode.forHtmlContent(sites.get(i).getName())%>
                                             </option>
                                             <%
@@ -1499,7 +1506,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                     ></select>
                                         <script>
                                             changeSite(document.getElementById("site"));
-                                            document.getElementById("xml_provider").value = '<%=Encode.forJavaScriptBlock(request.getParameter("xml_provider")==null?xmlp:request.getParameter("xml_provider"))%>';
+                                            document.getElementById("xml_provider").value = '<%=Encode.forJavaScript(request.getParameter("xml_provider")==null?xmlp:request.getParameter("xml_provider"))%>';
                                         </script>
                                         <%
                                             // multisite end ==========================================
@@ -1511,7 +1518,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 propT = (Properties) vecProvider.get(0);
                                                 tmp = propT.getProperty("proOHIP", "").split("\\|");
                                         %>
-                                        <option value="<%=propT.getProperty("proOHIP")%>"
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(propT.getProperty("proOHIP")))%>"
                                                 <%=providerview.equals(tmp[0].trim()) ? "selected" : ""%>>
                                             <b><%=Encode.forHtmlContent(propT.getProperty("last_name") + ", " + propT.getProperty("first_name"))%>
                                             </b>
@@ -1531,7 +1538,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
 
                                         %>
 
-                                        <option value="<%=propT.getProperty("proOHIP")%>"
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(propT.getProperty("proOHIP")))%>"
                                                 <%=providerview.equalsIgnoreCase(prov) ? "selected" : ""%>>
                                             <b><%=Encode.forHtmlContent(propT.getProperty("last_name") + ", " + propT.getProperty("first_name"))%>
                                             </b>
@@ -1546,9 +1553,9 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
 
                                     </td>
                                     <td style="white-space:nowrap; width: 30%"><b>Assig. Phys.</b></td>
-                                    <td style="width: 20%"><%=providerBean.getProperty(assgProvider_no, "").length() > 15
+                                    <td style="width: 20%"><%=Encode.forHtml(String.valueOf(providerBean.getProperty(assgProvider_no, "").length() > 15
                                             ? providerBean.getProperty(assgProvider_no, "").substring(0, 14)
-                                            : providerBean.getProperty(assgProvider_no, "")%>
+                                            : providerBean.getProperty(assgProvider_no, "")))%>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1575,8 +1582,8 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                             for (ClinicNbr clinic : nbrs) {
                                                 String valueString = String.format("%s | %s", clinic.getNbrValue(), clinic.getNbrString());
                                         %>
-                                        <option value="<%=valueString%>"
-                                                <%=providerNbr.startsWith(clinic.getNbrValue()) ? "selected" : ""%>><%=valueString%>
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(valueString))%>"
+                                                <%=providerNbr.startsWith(clinic.getNbrValue()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(valueString))%>
                                         </option>
                                         <%
                                             }
@@ -1675,9 +1682,9 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 billLocation = (String) lLocation.get(i + 1);
                                                 strLocation = request.getParameter("xml_location") != null ? request.getParameter("xml_location") : last_location != null ? last_location : clinicview;
                                         %>
-                                        <option value="<%=billLocationNo + "|" + billLocation%>"
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(billLocationNo + "|" + billLocation))%>"
                                                 <%=strLocation.startsWith(billLocationNo) ? "selected" : ""%>>
-                                            <%=billLocation%>
+                                            <%=Encode.forHtml(String.valueOf(billLocation))%>
                                         </option>
                                         <%
                                             }
@@ -1688,7 +1695,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                 <tr>
                                     <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode"/></b></td>
                                     <td colspan="3"><select name="xml_slicode">
-                                        <option value="<%=clinicNo%>">
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(clinicNo))%>">
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.CA.ON.billingON.OB.SLIcode.NA"/>
                                         </option>
                                         <option value="HDS">
@@ -1743,7 +1750,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                         %>
 											<span class="input-append">
 											    <input type="text" name="xml_vdate" id="xml_vdate" onchange="getDays();"
-                                               value="<%=request.getParameter("xml_vdate")!=null? request.getParameter("xml_vdate"):admDate%>"
+                                               value="<%=Encode.forHtmlAttribute(request.getParameter("xml_vdate")!=null? request.getParameter("xml_vdate"):admDate)%>"
 											class="input-small" style="height: 14px; margin-top:4px;" readonly> <img alt="cal" class="add-on" style="height:14px;  margin-top:4px;"
 											src="${ pageContext.request.contextPath }/images/cal.gif" id="xml_vdate_cal">
 											</span>
@@ -1753,9 +1760,9 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                        onclick="showHideLayers('Layer1','','show');return false;">
                                         Billing form</a>: <input type="text" name="billFormName" class="input-large"
 											id="billFormName" readonly
-                                                                 value="<%=currentFormName.length() < 40 ? currentFormName : currentFormName.substring(0, 40)%>"/>
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(currentFormName.length() < 40 ? currentFormName : currentFormName.substring(0, 40)))%>"/>
                                         <input type="hidden" name="billForm" id="billForm"
-                                               value="<%=ctlBillForm%>"/></td>
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(ctlBillForm))%>"/></td>
                                 </tr>
                                 <%
                                     if (!IsPropertiesOn.isMultisitesEnable()) {
@@ -1774,9 +1781,9 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                         <%
                                             for (int i = 0; i < siteList.length; i++) {
                                         %>
-                                        <option value="<%=siteList[i]%>"
+                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(siteList[i]))%>"
                                                 <%=suggestSite.equals(siteList[i]) ? "selected" : ""%>>
-                                            <b><%=siteList[i]%>
+                                            <b><%=Encode.forHtml(String.valueOf(siteList[i]))%>
                                             </b>
                                         </option>
                                         <%
@@ -1806,11 +1813,11 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                     vecCodeCol1 = billingServiceCodesMap.get("group1_".concat(listServiceType.get(j)));
                                     headerTitle1 = titleMap.get("group1_".concat(listServiceType.get(j)));
                             %>
-                            <div id="group1_<%=listServiceType.get(j)%>" style="display: none;">
+                            <div id="group1_<%=Encode.forHtmlAttribute(String.valueOf(listServiceType.get(j)))%>" style="display: none;">
                                 <table style="width: 100%;" class="border1 table-striped table-hover">
                                     <tr>
                                         <th style="width: 10%; white-space:nowrap; background-color:silver">
-                                            <div class="smallFont"><%=headerTitle1%>
+                                            <div class="smallFont"><%=Encode.forHtml(String.valueOf(headerTitle1))%>
                                             </div>
                                         </th>
                                         <th style="width: 70%; background-color:silver">
@@ -1841,32 +1848,32 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 bgcolor = "background-color: #66FF66;";
                                     %>
                                     <tr>
-                                        <td style="<%=displayStyle%> text-align: left; white-space:nowrap; <%=bgcolor%>">
+                                        <td style="<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> text-align: left; white-space:nowrap; <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>">
                                             <input
-                                                    type="checkbox" id="xml_<%=serviceCode%>"
-                                                    name="xml_<%=serviceCode%>" value="checked"
+                                                    type="checkbox" id="xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                                    name="xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="checked"
                                                     onclick="refreshServicesChecked(this);"
-                                                    <%=request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : ""%>
+                                                    <%=Encode.forHtml(request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : "")%>
                                                     <%=bSingleClick ? "onClick='onClickServiceCode(this)'" : ""%> />
-                                            <span id="sc<%=(""+i).substring(0,1)+serviceCode%>"
-                                                  onclick="getElementById('xml_<%=serviceCode%>').click();"
-                                                  ondblclick="onDblClickServiceCode(this)"><%=serviceCode%></span>
+                                            <span id="sc<%=Encode.forHtmlAttribute(String.valueOf((""+i).substring(0,1)+serviceCode))%>"
+                                                  onclick="getElementById('xml_<%=Encode.forJavaScript(String.valueOf(serviceCode))%>').click();"
+                                                  ondblclick="onDblClickServiceCode(this)"><%=Encode.forHtml(String.valueOf(serviceCode))%></span>
                                         </td>
-                                        <td style="<%=displayStyle%> <%=bgcolor%>"
-                                                <%=serviceDesc.length() > 30 ? "title=\"" + serviceDesc + "\"" : ""%>
-                                                <%=displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + displayStyle + "\""%>>
-                                            <div onclick="getElementById('xml_<%=serviceCode%>').click();"><%=serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc%>
-                                                <!--<input type="hidden" name="desc_xml_<%=serviceCode%>" value="<%=serviceDesc%>" />-->
+                                        <td style="<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>"
+                                                <%=serviceDesc.length() > 30 ? "title=\"" + Encode.forHtmlAttribute(serviceDesc) + "\"" : ""%>
+                                                <%=displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + Encode.forHtmlAttribute(displayStyle) + "\""%>>
+                                            <div onclick="getElementById('xml_<%=Encode.forJavaScript(String.valueOf(serviceCode))%>').click();"><%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc))%>
+                                                <!--<input type="hidden" name="desc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDesc))%>" />-->
                                             </div>
                                         </td>
-                                        <td style="text-align: right; <%=displayStyle%> <%=bgcolor%>">
-                                            <div class="smallFont"><%=serviceDisp%>
+                                        <td style="text-align: right; <%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>">
+                                            <div class="smallFont"><%=Encode.forHtml(String.valueOf(serviceDisp))%>
                                             </div>
                                             <input
-                                                    type="hidden" name="sli_xml_<%=serviceCode%>"
-                                                    value="<%=sliFlag%>"/>
-                                            <!--<input type="hidden" name="price_xml_<%=serviceCode%>" value="<%=serviceDisp%>" />
-				    <input type="hidden" name="perc_xml_<%=serviceCode%>" value="<%=servicePercentage%>" />-->
+                                                    type="hidden" name="sli_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(sliFlag))%>"/>
+                                            <!--<input type="hidden" name="price_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDisp))%>" />
+				    <input type="hidden" name="perc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(servicePercentage))%>" />-->
                                         </td>
                                     </tr>
                                     <%
@@ -1887,14 +1894,14 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                     vecCodeCol2 = billingServiceCodesMap.get("group2_".concat(listServiceType.get(j)));
                                     headerTitle2 = titleMap.get("group2_".concat(listServiceType.get(j)));
                             %>
-                            <div id="group2_<%=listServiceType.get(j)%>"
+                            <div id="group2_<%=Encode.forHtmlAttribute(String.valueOf(listServiceType.get(j)))%>"
                                  style="display: none;">
 
 
                                 <table style="width: 100%;" class="border1 table-striped table-hover">
                                     <tr>
                                         <th style="width: 10%; white-space:nowrap; background-color:silver">
-                                            <div class="smallFont"><%=headerTitle2%>
+                                            <div class="smallFont"><%=Encode.forHtml(String.valueOf(headerTitle2))%>
                                             </div>
                                         </th>
                                         <th style="width: 70%; background-color:silver">
@@ -1924,34 +1931,34 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 bgcolor = "background-color: #66FF66;";
                                     %>
                                     <tr>
-                                        <td style="text-align: left; <%=displayStyle%> white-space:nowrap; <%=bgcolor%>">
+                                        <td style="text-align: left; <%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> white-space:nowrap; <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>">
                                             <input
-                                                    type="checkbox" id="xml_<%=serviceCode%>"
-                                                    name="xml_<%=serviceCode%>" value="checked"
+                                                    type="checkbox" id="xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                                    name="xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="checked"
                                                     onclick="refreshServicesChecked(this);"
-                                                    <%=request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : ""%>
+                                                    <%=Encode.forHtml(request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : "")%>
                                                     <%=bSingleClick ? "onClick='onClickServiceCode(this)'" : ""%> />
-                                            <span id="sc<%=(""+i).substring(0,1)+serviceCode%>"
-                                                  onclick="getElementById('xml_<%=serviceCode%>').click();"
-                                                  onDblClick="onDblClickServiceCode(this)"><%=serviceCode%></span>
+                                            <span id="sc<%=Encode.forHtmlAttribute(String.valueOf((""+i).substring(0,1)+serviceCode))%>"
+                                                  onclick="getElementById('xml_<%=Encode.forJavaScript(String.valueOf(serviceCode))%>').click();"
+                                                  onDblClick="onDblClickServiceCode(this)"><%=Encode.forHtml(String.valueOf(serviceCode))%></span>
 
                                         </td>
-                                        <td style="<%=displayStyle%> <%=bgcolor%>"
-                                                <%=serviceDesc.length() > 30 ? "title=\"" + serviceDesc + "\"" : ""%>
-                                                <%=displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + displayStyle + "\""%>>
-                                            <div onclick="getElementById('xml_<%=serviceCode%>').click();">
-                                                <%=serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc%>
+                                        <td style="<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>"
+                                                <%=serviceDesc.length() > 30 ? "title=\"" + Encode.forHtmlAttribute(serviceDesc) + "\"" : ""%>
+                                                <%=displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + Encode.forHtmlAttribute(displayStyle) + "\""%>>
+                                            <div onclick="getElementById('xml_<%=Encode.forJavaScript(String.valueOf(serviceCode))%>').click();">
+                                                <%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc))%>
                                             </div>
-                                            <!--<input type="hidden" name="desc_xml_<%=serviceCode%>" value="<%=serviceDesc%>" />-->
+                                            <!--<input type="hidden" name="desc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDesc))%>" />-->
                                         </td>
-                                        <td style="text-align: right;<%=displayStyle%>  <%=bgcolor%>">
-                                            <div class="smallFont"><%=serviceDisp%>
+                                        <td style="text-align: right;<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%>  <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>">
+                                            <div class="smallFont"><%=Encode.forHtml(String.valueOf(serviceDisp))%>
                                             </div>
                                             <input
-                                                    type="hidden" name="sli_xml_<%=serviceCode%>"
-                                                    value="<%=sliFlag%>"/>
-                                            <!--<input type="hidden" name="price_xml_<%=serviceCode%>" value="<%=serviceDisp%>" />
-					<input type="hidden" name="perc_xml_<%=serviceCode%>" value="<%=servicePercentage%>" />-->
+                                                    type="hidden" name="sli_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(sliFlag))%>"/>
+                                            <!--<input type="hidden" name="price_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDisp))%>" />
+					<input type="hidden" name="perc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(servicePercentage))%>" />-->
                                         </td>
                                     </tr>
                                     <%
@@ -1973,14 +1980,14 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                     vecCodeCol3 = billingServiceCodesMap.get("group3_".concat(listServiceType.get(j)));
                                     headerTitle3 = titleMap.get("group3_".concat(listServiceType.get(j)));
                             %>
-                            <div id="group3_<%=listServiceType.get(j)%>"
+                            <div id="group3_<%=Encode.forHtmlAttribute(String.valueOf(listServiceType.get(j)))%>"
                                  style="display: none;">
 
 
                                 <table style="width: 100%;" class="border1 table-striped table-hover">
                                     <tr>
                                         <th style="width: 10%; white-space:nowrap; background-color:silver">
-                                            <div class="smallFont"><%=headerTitle3%>
+                                            <div class="smallFont"><%=Encode.forHtml(String.valueOf(headerTitle3))%>
                                             </div>
                                         </th>
                                         <th style="width: 70%; background-color:silver">
@@ -2010,33 +2017,33 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                                 bgcolor = "background-color: #66FF66;";
                                     %>
                                     <tr>
-                                        <td style="text-align: left; <%=displayStyle%> white-space:nowrap; <%=bgcolor%>">
+                                        <td style="text-align: left; <%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> white-space:nowrap; <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>">
                                             <input
-                                                    type="checkbox" id="xml_<%=serviceCode%>"
-                                                    name="xml_<%=serviceCode%>" value="checked"
+                                                    type="checkbox" id="xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                                    name="xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="checked"
                                                     onclick="refreshServicesChecked(this);"
-                                                    <%=request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : ""%>
+                                                    <%=Encode.forHtml(request.getParameter("xml_" + serviceCode) != null ? request.getParameter("xml_" + serviceCode) : "")%>
                                                     <%=bSingleClick ? "onClick='onClickServiceCode(this)'" : ""%> />
-                                            <span id="sc<%=(""+i).substring(0,1)+serviceCode%>"
-                                                  onclick="getElementById('xml_<%=serviceCode%>').click();"
-                                                  onDblClick="onDblClickServiceCode(this)"><%=serviceCode%></span>
+                                            <span id="sc<%=Encode.forHtmlAttribute(String.valueOf((""+i).substring(0,1)+serviceCode))%>"
+                                                  onclick="getElementById('xml_<%=Encode.forJavaScript(String.valueOf(serviceCode))%>').click();"
+                                                  onDblClick="onDblClickServiceCode(this)"><%=Encode.forHtml(String.valueOf(serviceCode))%></span>
                                         </td>
-                                        <td style="<%=displayStyle%> <%=bgcolor%> "
-                                                <%=serviceDesc.length() > 30 ? "title=\"" + serviceDesc + "\"" : ""%>
-                                                <%=displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + displayStyle + "\""%>>
-                                            <div onclick="getElementById('xml_<%=serviceCode%>').click();">
-                                                <%=serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc%>
-                                                <!--<input type="hidden" name="desc_xml_<%=serviceCode%>" value="<%=serviceDesc%>" />-->
+                                        <td style="<%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%> <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%> "
+                                                <%=serviceDesc.length() > 30 ? "title=\"" + Encode.forHtmlAttribute(serviceDesc) + "\"" : ""%>
+                                                <%=displayStyle.equals("") ? "class=\"smallFont\"" : "style=\"" + Encode.forHtmlAttribute(displayStyle) + "\""%>>
+                                            <div onclick="getElementById('xml_<%=Encode.forJavaScript(String.valueOf(serviceCode))%>').click();">
+                                                <%=Encode.forHtml(String.valueOf(serviceDesc.length() > 30 ? serviceDesc.substring(0, 30) + "..." : serviceDesc))%>
+                                                <!--<input type="hidden" name="desc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDesc))%>" />-->
                                             </div>
                                         </td>
-                                        <td style="text-align: right; <%=displayStyle%>  <%=bgcolor%>">
-                                            <div class="smallFont"><%=serviceDisp%>
+                                        <td style="text-align: right; <%=Encode.forHtmlAttribute(String.valueOf(displayStyle))%>  <%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>">
+                                            <div class="smallFont"><%=Encode.forHtml(String.valueOf(serviceDisp))%>
                                             </div>
                                             <input
-                                                    type="hidden" name="sli_xml_<%=serviceCode%>"
-                                                    value="<%=sliFlag%>"/>
-                                            <!--<input type="hidden" name="price_xml_<%=serviceCode%>" value="<%=serviceDisp%>" />
-					<input type="hidden" name="perc_xml_<%=serviceCode%>" value="<%=servicePercentage%>" />-->
+                                                    type="hidden" name="sli_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(sliFlag))%>"/>
+                                            <!--<input type="hidden" name="price_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceDisp))%>" />
+					<input type="hidden" name="perc_xml_<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(servicePercentage))%>" />-->
                                         </td>
                                     </tr>
                                     <%
@@ -2054,40 +2061,40 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
             </td>
         </tr>
 
-        <input type="hidden" name="clinic_no" value="<%=clinicNo%>"/>
-        <input type="hidden" name="demographic_no" value="<%=demo_no%>"/>
-        <input type="hidden" name="appointment_no" value="<%=appt_no%>"/>
+        <input type="hidden" name="clinic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(clinicNo))%>"/>
+        <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demo_no))%>"/>
+        <input type="hidden" name="appointment_no" value="<%=Encode.forHtmlAttribute(String.valueOf(appt_no))%>"/>
 
         <input type="hidden" name="ohip_version" value="V03G"/>
-        <input type="hidden" name="hin" value="<%=demoHIN%>"/>
-        <input type="hidden" name="ver" value="<%=demoVer%>"/>
-        <input type="hidden" name="hc_type" value="<%=demoHCTYPE%>"/>
-        <input type="hidden" name="sex" value="<%=demoSex%>"/>
+        <input type="hidden" name="hin" value="<%=Encode.forHtmlAttribute(String.valueOf(demoHIN))%>"/>
+        <input type="hidden" name="ver" value="<%=Encode.forHtmlAttribute(String.valueOf(demoVer))%>"/>
+        <input type="hidden" name="hc_type" value="<%=Encode.forHtmlAttribute(String.valueOf(demoHCTYPE))%>"/>
+        <input type="hidden" name="sex" value="<%=Encode.forHtmlAttribute(String.valueOf(demoSex))%>"/>
 
         <input type="hidden" name="start_time"
-               value="<%=request.getParameter("start_time")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("start_time"))%>"/>
 
-        <input type="hidden" name="demographic_dob" value="<%=demoDOB%>"/>
+        <input type="hidden" name="demographic_dob" value="<%=Encode.forHtmlAttribute(String.valueOf(demoDOB))%>"/>
 
         <input type="hidden" name="apptProvider_no"
-               value="<%=request.getParameter("apptProvider_no")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("apptProvider_no"))%>"/>
         <input type="hidden" name="asstProvider_no"
-               value="<%=request.getParameter("asstProvider_no")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("asstProvider_no"))%>"/>
 
-        <input type="hidden" name="demographic_name" value="<%=demoname%>"/>
-        <input type="hidden" name="providerview" value="<%=providerview%>"/>
+        <input type="hidden" name="demographic_name" value="<%=Encode.forHtmlAttribute(String.valueOf(demoname))%>"/>
+        <input type="hidden" name="providerview" value="<%=Encode.forHtmlAttribute(String.valueOf(providerview))%>"/>
         <input type="hidden" name="appointment_date"
-               value="<%=request.getParameter("appointment_date")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("appointment_date"))%>"/>
         <input type="hidden" name="assgProvider_no"
-               value="<%=assgProvider_no%>"/>
-        <input type="hidden" name="billForm" value="<%=ctlBillForm%>"/>
-        <input type="hidden" name="curBillForm" value="<%=ctlBillForm%>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(assgProvider_no))%>"/>
+        <input type="hidden" name="billForm" value="<%=Encode.forHtmlAttribute(String.valueOf(ctlBillForm))%>"/>
+        <input type="hidden" name="curBillForm" value="<%=Encode.forHtmlAttribute(String.valueOf(ctlBillForm))%>"/>
         <input type="hidden" name="services_checked">
         <input type="hidden" name="url_back">
         <input type="hidden" name="billNo_old" id="billNo_old"
-               value="<%=request.getParameter("billNo_old")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("billNo_old"))%>"/>
         <input type="hidden" name="billStatus_old" id="billStatus_old"
-               value="<%=request.getParameter("billStatus_old")%>"/>
+               value="<%=Encode.forHtmlAttribute(request.getParameter("billStatus_old"))%>"/>
 
     </table>
 
@@ -2125,17 +2132,17 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                         BillingItemData iobj = (BillingItemData) aL.get(i + 1);
                 %>
                 <tr style="text-align: center">
-                    <td class="smallFont"><%=obj.getId()%>
+                    <td class="smallFont"><%=Encode.forHtml(String.valueOf(obj.getId()))%>
                     </td>
-                    <td class="smallFont"><%=obj.getBilling_date()%>
+                    <td class="smallFont"><%=Encode.forHtml(String.valueOf(obj.getBilling_date()))%>
                     </td>
-                    <td class="smallFont"><%=iobj.getService_date()%>
+                    <td class="smallFont"><%=Encode.forHtml(String.valueOf(iobj.getService_date()))%>
                     </td>
-                    <td class="smallFont"><%=iobj.getService_code()%>
+                    <td class="smallFont"><%=Encode.forHtml(String.valueOf(iobj.getService_code()))%>
                     </td>
-                    <td class="smallFont"><%=iobj.getDx()%>
+                    <td class="smallFont"><%=Encode.forHtml(String.valueOf(iobj.getDx()))%>
                     </td>
-                    <td class="smallFont"><%=obj.getUpdate_datetime().substring(0, 10)%>
+                    <td class="smallFont"><%=Encode.forHtml(String.valueOf(obj.getUpdate_datetime().substring(0, 10)))%>
                     </td>
                 </tr>
                 <%

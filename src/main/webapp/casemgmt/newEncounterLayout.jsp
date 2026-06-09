@@ -93,6 +93,44 @@
         </script>
 
         <script src="<c:out value="${ctx}"/>/share/javascript/prototype.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            // Lock prototype.js's `$` and `$F` so nothing on the page can
+            // overwrite them after this point.
+            //
+            // Why: third-party integrations loaded into this page (browser
+            // extensions, userscripts, or embedded toolbars) sometimes pull in
+            // their own copy of jQuery and effectively run `window.$ = jQuery`.
+            // That overwrites prototype's `$`, so when prototype's own methods
+            // later call `$(element)` internally they receive a jQuery wrapper
+            // instead of a DOM node and throw inside `Form.Element.getValue`
+            // / `_getElementsByXPath`. In the encounter window this silently
+            // kills Sign & Save and Sign Save & Bill -- the button click does
+            // nothing and the user has to refresh. It happens only when the
+            // third-party script wins the race to assign `$` before the user
+            // clicks, which is why the failure looks random in practice.
+            // The fix is to stop those overwrites at the source: lock the
+            // global so the rogue assignment is a no-op.
+            //
+            // Why `writable: false` and not a get/set accessor: prototype
+            // declares `function $()` at the top of a classic script, which
+            // in modern engines creates a non-configurable global binding.
+            // Converting a non-configurable data property into an accessor
+            // is not allowed and would throw. Tightening `writable: true ->
+            // false` IS allowed on a non-configurable property, and it is
+            // enough: subsequent `window.$ = ...` assignments silently fail
+            // in non-strict callers (or throw in strict ones), and prototype's
+            // `$` survives either way.
+            (function () {
+                if (typeof window.$ === 'function') {
+                    try { Object.defineProperty(window, '$', { writable: false }); }
+                    catch (e) { /* property may already be locked; safe to ignore */ }
+                }
+                if (typeof window.$F === 'function') {
+                    try { Object.defineProperty(window, '$F', { writable: false }); }
+                    catch (e) { /* property may already be locked; safe to ignore */ }
+                }
+            })();
+        </script>
         <script src="<c:out value="${ctx}"/>/share/javascript/scriptaculous.js" type="text/javascript"></script>
 
         <script type="text/javascript" src="<c:out value="${ctx}"/>/js/messenger/messenger.js"></script>
@@ -121,27 +159,27 @@
 
         <script type="text/javascript">
             var Colour = {
-                prevention: '<%=Colour.getInstance().prevention%>',
-                tickler: '<%=Colour.getInstance().tickler%>',
-                disease: '<%=Colour.getInstance().disease%>',
-                forms: '<%=Colour.getInstance().forms%>',
-                eForms: '<%=Colour.getInstance().eForms%>',
-                documents: '<%=Colour.getInstance().documents%>',
-                labs: '<%=Colour.getInstance().labs%>',
-                messages: '<%=Colour.getInstance().messages%>',
-                measurements: '<%=Colour.getInstance().measurements%>',
-                consultation: '<%=Colour.getInstance().consultation%>',
-                hrmDocuments: '<%=Colour.getInstance().hrmDocuments%>',
-                allergy: '<%=Colour.getInstance().allergy%>',
-                rx: '<%=Colour.getInstance().rx%>',
-                omed: '<%=Colour.getInstance().omed%>',
-                riskFactors: '<%=Colour.getInstance().riskFactors%>',
-                familyHistory: '<%=Colour.getInstance().familyHistory%>',
-                unresolvedIssues: '<%=Colour.getInstance().unresolvedIssues%>',
-                resolvedIssues: '<%=Colour.getInstance().resolvedIssues%>',
-                episode: '<%=Colour.getInstance().episode%>',
-                pregancies: '<%=Colour.getInstance().episode%>',
-                contacts: '<%=Colour.getInstance().contacts%>'
+                prevention: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().prevention))%>',
+                tickler: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().tickler))%>',
+                disease: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().disease))%>',
+                forms: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().forms))%>',
+                eForms: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().eForms))%>',
+                documents: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().documents))%>',
+                labs: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().labs))%>',
+                messages: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().messages))%>',
+                measurements: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().measurements))%>',
+                consultation: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().consultation))%>',
+                hrmDocuments: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().hrmDocuments))%>',
+                allergy: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().allergy))%>',
+                rx: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().rx))%>',
+                omed: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().omed))%>',
+                riskFactors: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().riskFactors))%>',
+                familyHistory: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().familyHistory))%>',
+                unresolvedIssues: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().unresolvedIssues))%>',
+                resolvedIssues: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().resolvedIssues))%>',
+                episode: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().episode))%>',
+                pregancies: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().episode))%>',
+                contacts: '<%=Encode.forJavaScript(String.valueOf(Colour.getInstance().contacts))%>'
             };
         </script>
 
@@ -212,7 +250,7 @@
                      paramValue = request.getParameter(paramName);
 
                  %>
-                params += "&<%=paramName%>=<%=Encode.forJavaScript(paramValue)%>";
+                params += "&<%=Encode.forJavaScript(String.valueOf(paramName))%>=<%=Encode.forJavaScript(paramValue)%>";
                 <%
 
                  }
@@ -337,11 +375,7 @@
             }
 
 
-            <%if(request.getParameter("appointmentNo") != null && request.getParameter("appointmentNo").length()>0) { %>
-            var appointmentNo = <%=request.getParameter("appointmentNo")%>;
-            <% } else { %>
-            var appointmentNo = 0;
-            <%}%>
+            var appointmentNo = <%=(request.getParameter("appointmentNo") != null && request.getParameter("appointmentNo").matches("\\d+")) ? request.getParameter("appointmentNo") : "0"%>;
 
             var savedNoteId = 0;
         </script>
@@ -362,7 +396,7 @@
             String width = widthP.getValue();
             String height = heightP.getValue();%>
         <script> jQuery(window).load(function () {
-            window.resizeTo(<%=width%>, <%=height%>)
+            window.resizeTo(<%=Encode.forJavaScript(String.valueOf(width))%>, <%=Encode.forJavaScript(String.valueOf(height))%>)
         }) </script>
         <% } %>
 
@@ -370,8 +404,8 @@
         <% if ("ocean".equals(OscarProperties.getInstance().get("cme_js"))) {
             int randomNo = new Random().nextInt();%>
         <script id="mainScript"
-                src="${ pageContext.request.contextPath }/js/custom/ocean/cme.js?no-cache=<%=randomNo%>&autoRefresh=true"
-                ocean-host=<%=Encode.forUriComponent(OscarProperties.getInstance().getProperty("ocean_host"))%>></script>
+                src="${ pageContext.request.contextPath }/js/custom/ocean/cme.js?no-cache=<%=Encode.forJavaScript(String.valueOf(randomNo))%>&autoRefresh=true"
+                ocean-host="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("ocean_host"))%>"></script>
         <% } %>
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
@@ -404,7 +438,7 @@
             assignObservationDateError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignObservationDateError.msg"/>";
 
             encTimeMandatoryMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTimeMandatory.msg"/>";
-            encTimeMandatory = <%=encTimeMandatoryValue%>;
+            encTimeMandatory = <%="true".equalsIgnoreCase(encTimeMandatoryValue)%>;
 
             assignEncTypeError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignEncTypeError.msg"/>";
             savingNoteError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.savingNoteError.msg"/>";
@@ -949,7 +983,7 @@
                                 <%
                                     for (ProviderData p : providerList) {
                                 %>
-                                <option value="<%=p.getId()%>"><%=p.getLastName() + ", " + p.getFirstName()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getId()))%>"><%=Encode.forHtml(String.valueOf(p.getLastName() + ", " + p.getFirstName()))%>
                                 </option>
                                 <%
                                     }
@@ -967,7 +1001,7 @@
                                 <%
                                     for (ProviderData p : providerList) {
                                 %>
-                                <option value="<%=p.getId()%>"><%=p.getLastName() + ", " + p.getFirstName()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getId()))%>"><%=Encode.forHtml(String.valueOf(p.getLastName() + ", " + p.getFirstName()))%>
                                 </option>
                                 <%
                                     }

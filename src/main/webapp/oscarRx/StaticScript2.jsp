@@ -148,7 +148,7 @@
                     var data = "drugId=" + encodeURIComponent(drugId) + "&favoriteName=" + favoriteName;
                     new Ajax.Request(url, {
                         method: 'get', parameters: data, onSuccess: function (transport) {
-                            window.location.href = "<c:out value="${ctx}"/>" + "/oscarRx/StaticScript2.jsp?regionalIdentifier=" + '<%=regionalIdentifier%>' + "&cn=" + '<%=cn%>';
+                            window.location.href = "<c:out value="${ctx}"/>" + "/oscarRx/StaticScript2.jsp?regionalIdentifier=" + '<%=Encode.forJavaScript(String.valueOf(regionalIdentifier))%>' + "&cn=" + '<%=Encode.forJavaScript(String.valueOf(cn))%>';
                         }
                     });
                 }
@@ -194,7 +194,7 @@
                     <tr>
                         <td style="font-size: small;"><br/>
                             <br/>
-                            <b>Patient Name:</b> <%=patient.getFirstName()%> <%=patient.getSurname()%> <br/>
+                            <b>Patient Name:</b> <%=Encode.forHtml(String.valueOf(patient.getFirstName()))%> <%=Encode.forHtml(String.valueOf(patient.getSurname()))%> <br/>
                             <br/>
                         </td>
                     </tr>
@@ -219,12 +219,12 @@
 									arch="text-decoration: line-through;";
 								}
 					%>
-                                <tr style="height:20px;<%=arch%>">
-                                    <td><%=drug.providerName%>
+                                <tr style="height:20px;<%=Encode.forHtmlAttribute(String.valueOf(arch))%>">
+                                    <td><%=Encode.forHtml(String.valueOf(drug.providerName))%>
                                     </td>
                                     <td><%
                                         if (!drug.startDate.equals("0001/01/01")) {
-                                            out.print(partialDateDao.getDatePartial(drug.startDate, PartialDate.DRUGS, drug.localDrugId, PartialDate.DRUGS_STARTDATE));
+                                            out.print(Encode.forHtml(partialDateDao.getDatePartial(drug.startDate, PartialDate.DRUGS, drug.localDrugId, PartialDate.DRUGS_STARTDATE)));
 							/*
 							String startDate = drug.startDate;
 		            		PartialDate pd = partialDateDao.getPartialDate(PartialDate.DRUGS , drug.localDrugId, PartialDate.DRUGS_STARTDATE);
@@ -238,20 +238,20 @@
                                     %></td>
                                     <td><%
                                         if (!drug.startDate.equals("0001/01/01")) {
-                                            out.print(drug.endDate);
+                                            out.print(Encode.forHtml(drug.endDate));
                                         }
                                     %></td>
                                     <td><%
                                         if (!drug.writtenDate.equals("0001/01/01")) {
-                                            out.print(partialDateDao.getDatePartial(drug.writtenDate, PartialDate.DRUGS, drug.localDrugId, PartialDate.DRUGS_WRITTENDATE));
+                                            out.print(Encode.forHtml(partialDateDao.getDatePartial(drug.writtenDate, PartialDate.DRUGS, drug.localDrugId, PartialDate.DRUGS_WRITTENDATE)));
                                         }
                                     %></td>
                                     <td>
                                         <%if (drug.localDrugId != null) { %>
                                         <a href="javascript:void(0);"
-                                           onclick="popup(600, 425,'<%= request.getContextPath() %>/oscarRx/DisplayRxRecord.jsp?id=<%=drug.localDrugId%>','displayRxWindow')">
+                                           onclick="popup(600, 425,'<%= request.getContextPath() %>/oscarRx/DisplayRxRecord.jsp?id=<%=Encode.forUriComponent(String.valueOf(drug.localDrugId))%>','displayRxWindow')">
                                             <%}%>
-                                            <%=drug.prescriptionDetails%>
+                                            <%=Encode.forHtml(String.valueOf(drug.prescriptionDetails))%>
                                             <%if (drug.localDrugId != null) { %>
                                         </a>
                                         <%}%>
@@ -264,10 +264,10 @@
                                         <%
                                             if (drug.pickupDate != null && !drug.pickupDate.equals("") && !drug.pickupDate.equals("0000-00-00")) {
                                         %><br/><fmt:message
-                                            key="WriteScript.msgPickUpDate"/>&nbsp;<%=drug.pickupDate%>&nbsp;
+                                            key="WriteScript.msgPickUpDate"/>&nbsp;<%=Encode.forHtml(String.valueOf(drug.pickupDate))%>&nbsp;
                                         <%
                                             if (!((drug.pickupTime).equals("")) && !((drug.pickupTime).equals("12:00 AM"))) {
-                                        %> &nbsp;<%=drug.pickupTime%>&nbsp;
+                                        %> &nbsp;<%=Encode.forHtml(String.valueOf(drug.pickupTime))%>&nbsp;
                                         <% }
                                         } %>
                                         <%if (drug.eTreatmentType != null && !drug.eTreatmentType.equals("null")) { %>
@@ -288,14 +288,14 @@
                                             }
                                         %>
                                         <%if (drug.rxStatus != null && !drug.rxStatus.equals("null")) { %>
-                                        &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgRxStatus"/>: <%=drug.rxStatus%>
+                                        &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgRxStatus"/>: <%=Encode.forHtml(String.valueOf(drug.rxStatus))%>
                                         <%}%>
 
                                     </td>
                                             <%
 							if (drug.customName==null)
 									{
-						%> <a href="javascript:ShowDrugInfo('<%=drug.genericName%>');">Info</a> <%
+						%> <a href="javascript:ShowDrugInfo('<%=Encode.forHtmlAttribute(String.valueOf(drug.genericName))%>');">Info</a> <%
 							}
 						%>
                         </td>
@@ -305,7 +305,7 @@
                                 if (drug.isLocal) {
                             %>
                             <input type="button" value="Annotation" title="Annotation" class="ControlPushButton"
-                                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=drug.localDrugId%>&demo=<%=currentDemographicNo%>','anwin','width=400,height=500');">
+                                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&table_id=<%=Encode.forUriComponent(String.valueOf(drug.localDrugId))%>&demo=<%=Encode.forUriComponent(String.valueOf(currentDemographicNo))%>','anwin','width=400,height=500');">
                             <%
                                 }
                             %>
@@ -315,30 +315,30 @@
                                 if (drug.isLocal) {
                             %>
                                 <%--  <form action="">
-      <input type="hidden" name="drugList" value="<%=drug.localDrugId.toString()%>" />
+      <input type="hidden" name="drugList" value="<%=Encode.forHtmlAttribute(String.valueOf(drug.localDrugId.toString()))%>" />
       <input type="hidden" name="method" value="represcribe">
-                                                  <input type="submit" name="submit" style="width:100px" class="ControlPushButton"  onclick="javascript:reRxDrugSearch3('<%=drug.localDrugId%>');" value="Re-prescribe" />
+                                                  <input type="submit" name="submit" style="width:100px" class="ControlPushButton"  onclick="javascript:reRxDrugSearch3('<%=Encode.forJavaScript(String.valueOf(drug.localDrugId))%>');" value="Re-prescribe" />
   </form> --%>
                             <input type="button" align="top" value="Represcribe" style="width: 100px"
                                    class="ControlPushButton"
-                                   onclick="javascript:reRxDrugSearch3('<%=drug.localDrugId%>');"/>
+                                   onclick="javascript:reRxDrugSearch3('<%=Encode.forJavaScript(String.valueOf(drug.localDrugId))%>');"/>
                             <input type="button" align="top" value="Add to Favorites" style="width: 100px"
                                    class="ControlPushButton"
-                                   onclick="javascript:addFavorite2(<%=drug.localDrugId%>, '<%=Encode.forJavaScript((drug.customName!=null&&(!drug.customName.equalsIgnoreCase("null")))?drug.customName:drug.brandName)%>');"/>
+                                   onclick="javascript:addFavorite2(<%=Encode.forJavaScript(String.valueOf(drug.localDrugId))%>, '<%=Encode.forJavaScript((drug.customName!=null&&(!drug.customName.equalsIgnoreCase("null")))?drug.customName:drug.brandName)%>');"/>
 
 
                             <%
                             } else {
                             %>
                             <form action="<%=request.getContextPath()%>/oscarRx/searchDrug.do" method="post">
-                                <input type="hidden" name="demographicNo" value="<%=currentDemographicNo%>"/>
+                                <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(currentDemographicNo))%>"/>
                                 <%
                                     String searchString = drug.brandName;
                                     if (searchString == null) searchString = drug.customName;
                                     if (searchString == null) searchString = drug.genericName;
                                     if (searchString == null) searchString = drug.prescriptionDetails;
                                 %>
-                                <input type="hidden" name="searchString" value="<%=searchString%>"/>
+                                <input type="hidden" name="searchString" value="<%=Encode.forHtmlAttribute(String.valueOf(searchString))%>"/>
                                 <input type="submit" class="ControlPushButton" value="Search to Re-prescribe"/>
                             </form>
                             <%

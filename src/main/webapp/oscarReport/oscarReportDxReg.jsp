@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
 <%@ page import="ca.openosp.openo.commn.model.MyGroup" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -184,7 +185,7 @@
             <strong>Search all patients with disease codes:</strong>
         </div>
 
-        <form action="<%=formAction%>" method="post" class="form-inline" accept-charset="UTF-8">
+        <form action="<%=Encode.forHtmlAttribute(String.valueOf(formAction))%>" method="post" class="form-inline" accept-charset="UTF-8">
 
             <div class="row-fluid">
                 <display:table name="codeSearch" id="codeSearch" class="table table-condensed table-striped">
@@ -231,8 +232,8 @@
                         <%
                             for (Provider p : providerDao.getActiveProviders()) {
                         %>
-                        <option value="<%=p.getProviderNo()%>" <%=mygroupno.equals(p.getProviderNo()) ? "selected" : ""%>>
-                            <%=p.getFormattedName()%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=mygroupno.equals(p.getProviderNo()) ? "selected" : ""%>>
+                            <%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                         </option>
                         <%
                             }
@@ -245,14 +246,14 @@
                             for (MyGroup g : myGroupDao.searchmygroupno()) {
 
                         %>
-                        <option value="<%="_grp_"+g.getId().getMyGroupNo()%>" <%=mygroupno.equals(g.getId().getMyGroupNo()) ? "selected" : ""%>><%=g.getId().getMyGroupNo()%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf("_grp_"+g.getId().getMyGroupNo()))%>" <%=mygroupno.equals(g.getId().getMyGroupNo()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(g.getId().getMyGroupNo()))%>
                         </option>
                         <%
                             }
 
                             for (Provider p : providerDao.getActiveProviders()) {
                         %>
-                        <option value="<%=p.getProviderNo()%>" <%=mygroupno.equals(p.getProviderNo()) ? "selected" : ""%>><%=p.getFormattedName()%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=mygroupno.equals(p.getProviderNo()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                         </option>
                         <%
                             }

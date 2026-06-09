@@ -955,7 +955,7 @@ public final class EDocUtil {
 
     public static void refileDocument(String documentNo, String queueId) throws Exception {
 
-        String sourceDocDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String sourceDocDir = OscarProperties.getInstance().getDocumentDirectory();
         Document d = documentDao.find(ConversionUtils.fromIntString(documentNo));
         File sourceFile = new File(sourceDocDir, d.getDocfilename());
 
@@ -1330,7 +1330,7 @@ public final class EDocUtil {
      * @throws IOException IOException is thrown in case of any save errors
      */
     public static void writeDocContent(String fileName, byte[] content) throws IOException {
-        String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docDir = OscarProperties.getInstance().getDocumentDirectory();
         File file = new File(docDir, fileName);
         writeContent(file.getAbsolutePath(), content);
     }
@@ -1348,7 +1348,7 @@ public final class EDocUtil {
         }
 
         try {
-            String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+            String docDir = OscarProperties.getInstance().getDocumentDirectory();
             File documentDir = new File(docDir);
 
             // Determine the input file - if relative, resolve against document directory
@@ -1384,7 +1384,7 @@ public final class EDocUtil {
     }
 
     private static void writeContent(String fileName, byte[] content) throws IOException {
-        String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docDir = OscarProperties.getInstance().getDocumentDirectory();
         File docDirFile = new File(docDir);
 
         // Use PathValidationUtils to validate and get safe file path

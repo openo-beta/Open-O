@@ -69,7 +69,7 @@ public class CombinePDF2Action extends ActionSupport {
         if (files != null) {
             MiscUtils.getLogger().debug("size = " + files.length);
             EDocUtil docData = new EDocUtil();
-            String path = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+            String path = OscarProperties.getInstance().getDocumentDirectory();
             Path filePath;
             for (int i = 0; i < files.length; i++) {
                 String filename = docData.getDocumentName(files[i]);

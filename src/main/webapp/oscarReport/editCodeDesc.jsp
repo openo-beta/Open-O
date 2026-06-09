@@ -19,6 +19,7 @@
 --%>
 <!DOCTYPE html>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -64,8 +65,8 @@
 
     <form action="<%= request.getContextPath() %>/report/DxresearchReport.do?method=editDesc">
 
-        <input type="hidden" name="editingCodeType" value=<%=editingCodeType%>/>
-        <input type="hidden" name="editingCodeCode" value=<%=editingCodeCode%>/>
+        <input type="hidden" name="editingCodeType" value="<%=editingCodeType%>"/>
+        <input type="hidden" name="editingCodeCode" value="<%=editingCodeCode%>"/>
 
         <table class="table">
             <tr>
@@ -75,11 +76,11 @@
                 <th>Action</th>
             </tr>
             <tr>
-                <td><%=editingCodeType%>
+                <td><%=Encode.forHtml(String.valueOf(editingCodeType))%>
                 </td>
-                <td><%=editingCodeCode%>
+                <td><%=Encode.forHtml(String.valueOf(editingCodeCode))%>
                 </td>
-                <td><input name="editingCodeDesc" value=<%=editingCodeDesc%> class="span4"></td>
+                <td><input name="editingCodeDesc" value="<%=Encode.forHtml(String.valueOf(editingCodeDesc))%>" class="span4"></td>
                 <td><input type="submit" name="submit" class="btn btn-primary" value="Modify"></td>
             </tr>
         </table>

@@ -141,7 +141,7 @@
 <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.simulateSubFile2"/></h3>
 <div class="container-fluid well noprint">
 
-    <h4>Simulate Teleplan Report - <%=thisyear%>
+    <h4>Simulate Teleplan Report - <%=Encode.forHtml(String.valueOf(thisyear))%>
     </h4>
     <c:if test="${!empty error}"><c:out value="${error}"/></c:if>
 
@@ -157,7 +157,7 @@
                     String provNo = (String) list.get(i);
                     ProviderData provider = new ProviderData(provNo);
             %>
-            <option value="<%=provider.getOhip_no()%>">
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getOhip_no()))%>">
                 <%=Encode.forHtmlContent(provider.getLast_name())%>,<%=Encode.forHtmlContent(provider.getFirst_name())%>
             </option>
             <%}%>

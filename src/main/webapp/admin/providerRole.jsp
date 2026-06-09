@@ -52,6 +52,7 @@
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     ProgramDao programDao = SpringUtils.getBean(ProgramDao.class);
     SecRoleDao secRoleDao = SpringUtils.getBean(SecRoleDao.class);
@@ -107,6 +108,8 @@
 
     String ip = request.getRemoteAddr();
     String msg = "";
+    boolean msgIsError = false;
+    List<String> missingPrimaryRoleProviders = new ArrayList<String>();
     String caisiProgram = null;
 
 //get caisi programid for oscar
@@ -157,18 +160,17 @@
 
 // update the role
     if (request.getParameter("buttonUpdate") != null && request.getParameter("buttonUpdate").length() > 0) {
-    String number = Encode.forHtmlAttribute(request.getParameter("providerId"));
+        String number = request.getParameter("providerId");
         String roleId = request.getParameter("roleId");
         String roleOld = request.getParameter("roleOld");
         String roleNew = request.getParameter("roleNew");
-        String encodedRoleNew = Encode.forHtmlContent(roleNew);
 
         if (!"-".equals(roleNew)) {
             Secuserrole secUserRole = secUserRoleDao.findById(Integer.parseInt(roleId));
             if (secUserRole != null) {
                 secUserRole.setRoleName(roleNew);
                 secUserRoleDao.updateRoleName(Integer.parseInt(roleId), roleNew);
-                msg = "Role " + encodedRoleNew + " is updated. (" + number + ")";
+                msg = "Role " + roleNew + " is updated. (" + number + ")";
 
                 RecycleBin recycleBin = new RecycleBin();
                 recycleBin.setProviderNo(curUser_no);
@@ -193,7 +195,8 @@
                 }
 
             } else {
-                msg = "Role " + encodedRoleNew + " is <span style='text-color: red;'>NOT</span> updated!!! (" + number + ")";
+                msg = "Role " + roleNew + " is NOT updated!!! (" + number + ")";
+                msgIsError = true;
             }
         }
 
@@ -204,14 +207,13 @@
     if (request.getParameter("submit") != null && request.getParameter("submit").equals(add)) {
         String number = request.getParameter("providerId");
         String roleNew = request.getParameter("roleNew");
-        String encodedRoleNew = Encode.forHtmlContent(roleNew);
         if (!"-".equals(roleNew)) {
             Secuserrole secUserRole = new Secuserrole();
             secUserRole.setProviderNo(number);
             secUserRole.setRoleName(roleNew);
             secUserRole.setActiveyn(1);
             secUserRoleDao.save(secUserRole);
-            msg = "Role " + encodedRoleNew + " is added. (" + number + ")";
+            msg = "Role " + roleNew + " is added. (" + number + ")";
             LogAction.addLog(curUser_no, LogConst.ADD, LogConst.CON_ROLE, number + "|" + roleNew, ip);
 	    if( newCaseManagement && caisiProgram != null) {
                 ProgramProvider programProvider = programProviderDao.getProgramProvider(number, Long.valueOf(caisiProgram));
@@ -224,7 +226,8 @@
                 programProviderDao.saveProgramProvider(programProvider);
             }
         } else {
-            msg = "Role " + encodedRoleNew + " is <span style='text-color: red;'>NOT</span> added!!! (" + number + ")";
+            msg = "Role " + roleNew + " is NOT added!!! (" + number + ")";
+            msgIsError = true;
         }
 
     }
@@ -232,11 +235,10 @@
 // delete the role
     String delete = oscarRec.getString("global.btnDelete");
     if (request.getParameter("submit") != null && request.getParameter("submit").equals(delete)) {
-    String number = Encode.forHtmlAttribute(request.getParameter("providerId"));
+        String number = request.getParameter("providerId");
         String roleId = request.getParameter("roleId");
         String roleOld = request.getParameter("roleOld");
         String roleNew = request.getParameter("roleNew");
-        String encodedRoleOld = Encode.forHtmlContent(roleOld);
 
 	List secUserRoles = secUserRoleDao.findByProviderNo(number);
 
@@ -247,7 +249,7 @@
             if(secUserRole.getId() == Integer.parseInt(roleId)) {
 
             secUserRoleDao.deleteById(secUserRole.getId());
-            msg = "Role " + encodedRoleOld + " is deleted. (" + number + ")";
+            msg = "Role " + roleOld + " is deleted. (" + number + ")";
                 listIterator.remove();
 
             RecycleBin recycleBin = new RecycleBin();
@@ -296,7 +298,8 @@
         }
 
         } else {
-            msg = "Role " + encodedRoleOld + " is <span style='text-color: red;'>NOT</span> deleted!!! (" + number + ")";
+            msg = "Role " + roleOld + " is NOT deleted!!! (" + number + ")";
+            msgIsError = true;
         }
 
     }
@@ -362,7 +365,7 @@
 				if(programProvider == null || programProvider.isEmpty()) {
                     ProviderData provider = providerDao.findByProviderNo(user);
                     if (provider != null) {
-                        msg += String.format("</br><span style='color:red;'>WARNING: Provider %s requires a primary role assignment.</span>", provider.getFirstName() + " " + provider.getLastName());
+                        missingPrimaryRoleProviders.add(provider.getFirstName() + " " + provider.getLastName());
                     }
                 }
             }
@@ -402,7 +405,7 @@
         function setfocus() {
             this.focus();
             document.forms[0].keyword.select();
-	    window.scrollTo( 0,  '${param.scrollPosition}');
+	    window.scrollTo( 0,  '${e:forJavaScript(param.scrollPosition)}');
         }
 
         function submit(form) {
@@ -415,9 +418,12 @@
                 for(Properties prop:vec) {
                         %>
         item = {
-            providerNo: "<%=prop.get("provider_no")%>",
-            role_id: "<%=prop.get("role_id")%>",
-            roleName: "<%=Encode.forHtmlAttribute((String)prop.get("role_name"))%>"
+            providerNo: "<%=Encode.forJavaScript(String.valueOf(prop.get("provider_no")))%>",
+            role_id: "<%=Encode.forJavaScript(String.valueOf(prop.get("role_id")))%>",
+            // roleName is later spliced into HTML via $.append('<option ...>'+roleName+'</option>'),
+            // so JS-only encoding is insufficient. HTML-encode first (neutralises < > & in the
+            // markup context), then JS-encode the result so it's safe as a JS string literal too.
+            roleName: "<%=Encode.forJavaScript(Encode.forHtml(String.valueOf(prop.get("role_name"))))%>"
         };
         items.push(item);
         <%
@@ -481,9 +487,20 @@
 
 <form name="myform" action="providerRole.jsp" method="POST">
 
-    <% if (msg.length() > 1) {%>
-    <div class="alert alert-info">
-        <%=msg%>
+    <% if (msg.length() > 1) {
+        String alertClass = msgIsError ? "alert-danger" : "alert-info";
+    %>
+    <div class="alert <%=alertClass%>">
+        <%=Encode.forHtml(msg)%>
+    </div>
+    <% } %>
+    <% if (!missingPrimaryRoleProviders.isEmpty()) {%>
+    <div class="alert alert-warning">
+        <ul>
+            <% for (String providerName : missingPrimaryRoleProviders) { %>
+            <li>WARNING: Provider <%=Encode.forHtml(providerName)%> requires a primary role assignment.</li>
+            <% } %>
+        </ul>
     </div>
     <% } %>
     <div class="well">
@@ -527,14 +544,14 @@
             Properties item = vec.get(i);
             String providerNo = item.getProperty("provider_no", "");
     %>
-      <form name="myform" class="myform myform-<%= providerNo %>" action="providerRole.jsp" method="POST" onSubmit="this.scrollPosition.value=window.scrollY">
+      <form name="myform" class="myform myform-<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>" action="providerRole.jsp" method="POST" onSubmit="this.scrollPosition.value=window.scrollY">
         <tr>
 
               <td><%= Encode.forHtmlContent(providerNo) %></td>
               <td><%= Encode.forHtmlContent(item.getProperty("first_name", "")) %></td>
               <td><%= Encode.forHtmlContent(item.getProperty("last_name", "")) %></td>
             <td>
-              <select name="roleNew" onchange="enableAddRoleButton(this)" data-org="<%= item.getProperty("role_name", "") %>">
+              <select name="roleNew" onchange="enableAddRoleButton(this)" data-org="<%=Encode.forHtmlAttribute(String.valueOf(item.getProperty("role_name", "")))%>">
                     <option value="-">-</option>
                     <%
                         for (int j = 0; j < vecRoleName.size(); j++) {
@@ -550,7 +567,7 @@
             </td>
             <% if (newCaseManagement) { %>
             <td>
-                <%=(primaries.get(i) != null && (primaries.get(i)).booleanValue() == true) ? oscarRec.getString("global.yes") : "" %>
+                <%=Encode.forHtml(String.valueOf((primaries.get(i) != null && (primaries.get(i)).booleanValue() == true) ? oscarRec.getString("global.yes") : ""))%>
             </td>
             <% } %>
 
@@ -564,7 +581,7 @@
                 <input type="hidden" name="scrollPosition" class="scrollPosition" />
                 <input type="hidden" name="keyword" value="<%=Encode.forHtmlAttribute(keyword)%>"/>
               <input type="hidden" name="providerId" value="<%=Encode.forHtmlAttribute(providerNo)%>">
-                <input type="hidden" name="roleId" value="<%= item.getProperty("role_id", "")%>">
+                <input type="hidden" name="roleId" value="<%=Encode.forHtmlAttribute(String.valueOf(item.getProperty("role_id", "")))%>">
                 <input type="hidden" name="roleOld"
                        value="<%= Encode.forHtmlAttribute(item.getProperty("role_name", ""))%>">
                 <div class="button-group">
@@ -603,7 +620,7 @@
                                 String providerNo = prop.getProperty("provider_no");
                                 if (!temp1.contains(providerNo)) {
                         %>
-                        <option value="<%=providerNo%>"><%=Encode.forHtmlContent(prop.getProperty("last_name") + "," + prop.getProperty("first_name")) %>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"><%=Encode.forHtmlContent(prop.getProperty("last_name") + "," + prop.getProperty("first_name")) %>
                         </option>
                         <%
                                     temp1.add(providerNo);

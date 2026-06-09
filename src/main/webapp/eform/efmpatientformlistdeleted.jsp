@@ -97,7 +97,7 @@
 			}
 
 			function updateAjax() {
-				let parentAjaxId = "<%=parentAjaxId%>";
+				let parentAjaxId = "<%=Encode.forJavaScript(String.valueOf(parentAjaxId))%>";
 				if( parentAjaxId !== "null" ) {
 					window.opener.document.forms['encForm'].elements['reloadDiv'].value = parentAjaxId;
 					window.opener.updateNeeded = true;
@@ -169,14 +169,14 @@
 		<div class="menu-columns">
 			<div class="left-column">
 
-				<a href="${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&displaymode=edit&dboperation=search_detail"><fmt:message key="demographic.demographiceditdemographic.btnMasterFile" /></a>
+				<a href="${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>&displaymode=edit&dboperation=search_detail"><fmt:message key="demographic.demographiceditdemographic.btnMasterFile" /></a>
 
 				
-				<a href="efmformslistadd.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&parentAjaxId=<%=parentAjaxId%>" class="current"> 
+				<a href="efmformslistadd.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>" class="current"> 
                     <fmt:message key="eform.showmyform.btnAddEForm"/></a>
-				<a href="efmpatientformlist.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&parentAjaxId=<%=parentAjaxId%>">
+				<a href="efmpatientformlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>">
                     <fmt:message key="eform.calldeletedformdata.btnGoToForm"/></a>
-<%--			<a href="efmpatientformlistdeleted.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&parentAjaxId=<%=parentAjaxId%>">
+<%--			<a href="efmpatientformlistdeleted.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>">
                     <fmt:message key="eform.showmyform.btnDeleted"/></a>--%>
 				<security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.eform" rights="r" reverse="<%=false%>" >
 					<a href="#" onclick="javascript: return popup(600, 1200, '${pageContext.request.contextPath}/administration/?show=Forms', 'manageeforms');" style="color: #835921;">
@@ -211,13 +211,13 @@
 					%>
 					<tr>
 						<td><a href="#"
-						       ONCLICK="popupPage('efmshowform_data.jsp?fdid=<%= curform.get("fdid")%>', '<%="FormPD" + i%>'); return false;"
+						       ONCLICK="popupPage('efmshowform_data.jsp?fdid=<%=Encode.forUriComponent(String.valueOf(curform.get("fdid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormPD" + i))%>'); return false;"
 						       TITLE="View Form"
 						       onmouseover="window.status='View This Form'; return true"><%=Encode.forHtmlContent((String)curform.get("formName"))%></a></td>
 						<td><%=Encode.forHtmlContent((String)curform.get("formSubject"))%></td>
-						<td ><%=curform.get("formDate")%></td>
+						<td ><%=Encode.forHtml(String.valueOf(curform.get("formDate")))%></td>
 						<td ><a
-								href="${pageContext.request.contextPath}/eform/unRemoveEForm.do?fdid=<%=curform.get("fdid")%>&demographic_no=<%=demographic_no%>&parentAjaxId=<%=parentAjaxId%>" onClick="javascript: return confirm('Are you sure you want to restore this eform?');">
+								href="${pageContext.request.contextPath}/eform/unRemoveEForm.do?fdid=<%=Encode.forUriComponent(String.valueOf(curform.get("fdid")))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>" onClick="javascript: return confirm('Are you sure you want to restore this eform?');">
                                     <fmt:message key="global.btnRestore" /></a></td>
 					</tr>
 					<%

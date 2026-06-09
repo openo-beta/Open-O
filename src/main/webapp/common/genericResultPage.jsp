@@ -26,6 +26,7 @@
 
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@include file="/layouts/html_top.jspf" %>
 

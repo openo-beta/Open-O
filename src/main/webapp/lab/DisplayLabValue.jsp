@@ -44,6 +44,7 @@
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabTestValues" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 
 
@@ -57,13 +58,13 @@
     ArrayList<Map<String, Serializable>> list = CommonLabTestValues.findValuesForTest(labType, Integer.valueOf(demoNo), testName, identCode);
 
 %>
-<div class="preventionSection" id="preventionSection<%=ran%>">
-    <div class="headPrevention" id="headPrevention<%=ran%>">
-        <p><a id="ahead<%=ran%>"
-              title="fade=[on] header=[<%=testName%>] body=[]"
+<div class="preventionSection" id="preventionSection<%=Encode.forHtmlAttribute(String.valueOf(ran))%>">
+    <div class="headPrevention" id="headPrevention<%=Encode.forHtmlAttribute(String.valueOf(ran))%>">
+        <p><a id="ahead<%=Encode.forHtmlAttribute(String.valueOf(ran))%>"
+              title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(testName))%>] body=[]"
               href="javascript: function myFunction() {return false; }"> <span
-                title="<%=""%>" style="font-weight: bold;"> <%=StringUtils.maxLenString(testName, 10, 8, "...")%>
-<%=""/*testName*/%> </span> </a> <!--&nbsp;
+                title="<%=""%>" style="font-weight: bold;"> <%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(testName, 10, 8, "...")))%>
+<%=Encode.forHtml(String.valueOf(""/*testName*/))%> </span> </a> <!--&nbsp;
                <a href="">#</a--> <br/>
         </p>
     </div>
@@ -83,11 +84,11 @@
 
     %>
     <div style="text-align: justify;"
-         title="fade=[on] header=[<%=hMap.get("result")%>] body=[<%=hMap.get("units")%> <%=hMap.get("range")%>]"
-         class="preventionProcedure" id="preventionProcedure<%=""+k+""+ran%>"
-         onclick="javascript:popup(660,960,'<%= labDisplayLink %>','labReport')">
-        <p <%=r(hMap.get("abn"))%>><%=hMap.get("result")%>
-            &nbsp;&nbsp;&nbsp; <%=hMap.get("collDate")%>
+         title="fade=[on] header=[<%=Encode.forHtmlAttribute(String.valueOf(hMap.get("result")))%>] body=[<%=Encode.forHtmlAttribute(String.valueOf(hMap.get("units")))%> <%=Encode.forHtmlAttribute(String.valueOf(hMap.get("range")))%>]"
+         class="preventionProcedure" id="preventionProcedure<%=Encode.forHtmlAttribute(String.valueOf(""+k+""+ran))%>"
+         onclick="javascript:popup(660,960,'<%=Encode.forJavaScript(String.valueOf(labDisplayLink))%>','labReport')">
+        <p <%=Encode.forHtml(String.valueOf(r(hMap.get("abn"))))%>><%=Encode.forHtml(String.valueOf(hMap.get("result")))%>
+            &nbsp;&nbsp;&nbsp; <%=Encode.forHtml(String.valueOf(hMap.get("collDate")))%>
         </p>
     </div>
     <%}%>
@@ -96,15 +97,15 @@
 
 <script type="text/javascript">
     ///alert("HI");
-    //var ele = document.getElementById("preventionSection<%=ran%>");
+    //var ele = document.getElementById("preventionSection<%=Encode.forJavaScript(String.valueOf(ran))%>");
     //alert(ele);
     <%for (int k =0; k < list.size(); k++){ %>
-    Rounded("div#preventionProcedure<%=""+k+""+ran%>", "all", "#CCF", "#efeadc", "small border blue");
-    scanDOM(document.getElementById("preventionProcedure<%=""+k+""+ran%>"));
+    Rounded("div#preventionProcedure<%=Encode.forJavaScript(String.valueOf(""+k+""+ran))%>", "all", "#CCF", "#efeadc", "small border blue");
+    scanDOM(document.getElementById("preventionProcedure<%=Encode.forJavaScript(String.valueOf(""+k+""+ran))%>"));
     <%}%>
-    Rounded("div#headPrevention<%=ran%>", "all", "transparent", "#F0F0E7", "small border #999");
+    Rounded("div#headPrevention<%=Encode.forJavaScript(String.valueOf(ran))%>", "all", "transparent", "#F0F0E7", "small border #999");
 
-    scanDOM(document.getElementById("ahead<%=ran%>"));
+    scanDOM(document.getElementById("ahead<%=Encode.forJavaScript(String.valueOf(ran))%>"));
 </script>
 
 

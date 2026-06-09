@@ -26,6 +26,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingPaymentType" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -54,7 +55,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title><%=titleStr%>
+    <title><%=Encode.forHtml(String.valueOf(titleStr))%>
     </title>
     <script type="text/javascript"
             src="<%=request.getContextPath()%>/js/jquery-1.7.1.min.js"></script>
@@ -76,7 +77,7 @@
                 type: "GET",
                 async: true,
                 data: {paymentType: document.getElementById("paymentType").value},
-                url: "<%=request.getContextPath()%>/billing/CA/ON/managePaymentType.do?method=<%=method%>",
+                url: "<%=request.getContextPath()%>/billing/CA/ON/managePaymentType.do?method=<%=Encode.forUriComponent(String.valueOf(method))%>",
                 dataType: "json",
                 success: function (ret) {
                     if (!ret) {
@@ -108,11 +109,11 @@
                 type: "GET",
                 async: true,
                 data: {
-                    id: "<%=id%>",
-                    oldPaymentType: "<%=type%>",
+                    id: "<%=Encode.forJavaScript(String.valueOf(id))%>",
+                    oldPaymentType: "<%=Encode.forJavaScript(String.valueOf(type))%>",
                     paymentType: document.getElementById("paymentType").value
                 },
-                url: "<%=request.getContextPath()%>/billing/CA/ON/managePaymentType.do?method=<%=method%>",
+                url: "<%=request.getContextPath()%>/billing/CA/ON/managePaymentType.do?method=<%=Encode.forUriComponent(String.valueOf(method))%>",
                 dataType: "json",
                 success: function (ret) {
                     if (!ret) {
@@ -143,7 +144,7 @@
 <table width="100%">
     <tbody>
     <tr bgcolor="#CCCCFF">
-        <th><%=titleStr%>
+        <th><%=Encode.forHtml(String.valueOf(titleStr))%>
         </th>
     </tr>
     </tbody>
@@ -153,7 +154,7 @@
 
 <center>
     <input id="paymentType" name="paymentType" type="text"
-           value="<%=type%>" placeholder="Please input a new payment type"
+           value="<%=Encode.forHtmlAttribute(String.valueOf(type))%>" placeholder="Please input a new payment type"
            size="38"/>
     <%
         if (isModify) {

@@ -33,6 +33,7 @@
 <%@ taglib uri="http://www.oscar-emr.com/tags/integration" prefix="i" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.*,ca.openosp.openo.integration.mcedt.mailbox.ActionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -53,7 +54,7 @@
     <script type="text/javascript" charset="utf-8">
         $(function () {
             var tabContainers = $('div.tabs > div');
-            var tab = '<%=tab %>';
+            var tab = '<%=Encode.forJavaScript(String.valueOf(tab))%>';
             //if (tab == 'download') tabContainers.hide().filter('#download').show();
             //else if (tab == 'upload') tabContainers.hide().filter('#upload').show();
             //else if (tab == 'sent') tabContainers.hide().filter('#sent').show();
@@ -84,9 +85,9 @@
             });
 
             // setting the service Id:
-            var tabChange = '<%=tabChange%>';
+            var tabChange = '<%=Encode.forJavaScript(String.valueOf(tabChange))%>';
             if (tabChange == "true") {
-                var val = "<%=defaultId%>";
+                var val = "<%=Encode.forJavaScript(String.valueOf(defaultId))%>";
                 var sel = document.getElementById('serviceIdSent');
                 var opts = sel.options;
                 for (var opt, j = 0; opt = opts[j]; j++) {
@@ -186,7 +187,7 @@
         <img class="logo" src="www/img/kai.png"/>
     </div> -->
     <div id="first"
-         class="greyBox" <%=((tab == null || tab.equals("first")) ? "style='display:block;'" : "style='display:none;'") %> >
+         class="greyBox" <%=((tab == null || tab.equals("first")) ? "style='display:block;'" : "style='display:none;'")%> >
         <div class="center">
             <form action="${pageContext.request.contextPath}/mcedt/kaimcedt.do" method="post" id="form">
                 <table>
@@ -237,7 +238,7 @@
         </div>
     </div>
     <div id="upload"
-         class="greyBox" <%=((tab.equals("upload")) ? "style='display:block;'" : "style='display:none;'") %> >
+         class="greyBox" <%=((tab.equals("upload")) ? "style='display:block;'" : "style='display:none;'")%> >
         <div class="center">
             <h1>Upload</h1>
             <p>
@@ -254,7 +255,7 @@
         </div>
     </div>
     <div id="download"
-         class="greyBox" <%=((tab.equals("download")) ? "style='display:block;'" : "style='display:none;'") %> >
+         class="greyBox" <%=((tab.equals("download")) ? "style='display:block;'" : "style='display:none;'")%> >
         <div class="center">
             <h1>Download</h1>
             <p>

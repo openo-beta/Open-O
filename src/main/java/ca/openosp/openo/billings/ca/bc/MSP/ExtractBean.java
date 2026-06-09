@@ -27,6 +27,7 @@
 package ca.openosp.openo.billings.ca.bc.MSP;
 
 import org.apache.logging.log4j.Logger;
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.billing.CA.BC.dao.LogTeleplanTxDao;
 import ca.openosp.openo.billing.CA.BC.model.LogTeleplanTx;
 import ca.openosp.openo.billing.CA.BC.model.Wcb;
@@ -35,6 +36,7 @@ import ca.openosp.openo.commn.dao.BillingServiceDao;
 import ca.openosp.openo.commn.model.Billing;
 import ca.openosp.openo.utility.DateRange;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.Misc;
 import ca.openosp.OscarProperties;
@@ -42,6 +44,7 @@ import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 import ca.openosp.openo.util.ConversionUtils;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
@@ -257,7 +260,7 @@ public class ExtractBean extends Object implements Serializable {
             pCount = pCount + patientCount;
             rCount = rCount + recordCount;
 
-            htmlFooter = "<tr>    <td colspan='11' class='bodytext'>&nbsp;</td>  </tr>  <tr>    <td colspan='5' class='bodytext'>Billing No: " + providerNo + ": " + pCount + " RECORDS PROCESSED</td>    <td colspan='6' class='bodytext'>TOTAL: " + BigTotal + "</td>  </tr></table></body></html>";
+            htmlFooter = "<tr>    <td colspan='11' class='bodytext'>&nbsp;</td>  </tr>  <tr>    <td colspan='5' class='bodytext'>Billing No: " + Encode.forHtmlContent(String.valueOf(providerNo)) + ": " + Encode.forHtmlContent(String.valueOf(pCount)) + " RECORDS PROCESSED</td>    <td colspan='6' class='bodytext'>TOTAL: " + Encode.forHtmlContent(String.valueOf(BigTotal)) + "</td>  </tr></table></body></html>";
             htmlCode = htmlContentHeader + htmlContent + htmlFooter;
 
             writeHtml(htmlCode);
@@ -323,8 +326,9 @@ public class ExtractBean extends Object implements Serializable {
     public void writeFile(String value1) {
         try {
             String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
-
-            FileOutputStream out = new FileOutputStream(home_dir + ohipFilename);
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(ohipFilename, homeDir);
+            FileOutputStream out = new FileOutputStream(validatedFile);
             PrintStream p = new PrintStream(out);
             p.println(value1);
             p.close();
@@ -337,7 +341,9 @@ public class ExtractBean extends Object implements Serializable {
         if (eFlag.equals("1")) {
             try {
                 String home_dir = OscarProperties.getInstance().getProperty("HOME_DIR");
-                FileOutputStream out = new FileOutputStream(home_dir + htmlFilename);
+                File homeDir = new File(home_dir);
+                File validatedFile = PathValidationUtils.validatePath(htmlFilename, homeDir);
+                FileOutputStream out = new FileOutputStream(validatedFile);
                 PrintStream p = new PrintStream(out);
                 p.println(htmlvalue1);
                 p.close();
@@ -523,8 +529,8 @@ public class ExtractBean extends Object implements Serializable {
         htmlContentHeader = "<html><body><style type='text/css'><!-- .bodytext{  font-family: Tahoma, Arial, Helvetica, sans-serif;  font-size: 12px; font-style: normal;  line-height: normal;  font-weight: normal;  font-variant: normal;  text-transform: none;  color: #003366;  text-decoration: none; --></style>";
         htmlContentHeader += "<table width='100%' border='0' cellspacing='0' cellpadding='0'>";
         htmlContentHeader += "<tr>";
-        htmlContentHeader += "<td colspan='4' class='bodytext'>Billing Invoice for Billing No." + providerNo + "</td>";
-        htmlContentHeader += "<td colspan='7' class='bodytext'>Payment date of " + output + "</td>";
+        htmlContentHeader += "<td colspan='4' class='bodytext'>Billing Invoice for Billing No." + Encode.forHtmlContent(String.valueOf(providerNo)) + "</td>";
+        htmlContentHeader += "<td colspan='7' class='bodytext'>Payment date of " + Encode.forHtmlContent(String.valueOf(output)) + "</td>";
         htmlContentHeader += "</tr>";
         htmlContentHeader += "<tr>";
         htmlContentHeader += "<td width='9%' class='bodytext'>INVOICE</td>";
@@ -544,24 +550,25 @@ public class ExtractBean extends Object implements Serializable {
     }
 
     public String htmlLine(String billingMasterNo, String invNo, String demoName, String phn, String serviceDate, String billingCode, String billAmount, String dx1, String dx2, String dx3) {
+        String paddedBillingMasterNo = Misc.forwardZero(billingMasterNo, 7);
         String htmlContent =
                 "<tr>" +
                         "<td class='bodytext'>" +
                         "<a href='#' onClick=\"openBrWindow('adjustBill.jsp?billingmaster_no=" +
-                        Misc.forwardZero(billingMasterNo, 7) +
+                        Encode.forUriComponent(String.valueOf(paddedBillingMasterNo)) +
                         "','','resizable=yes,scrollbars=yes,top=0,left=0,width=900,height=600'); return false;\">" +
-                        invNo +
+                        Encode.forHtmlContent(String.valueOf(invNo)) +
                         "</a>" +
                         "</td>" +
-                        "<td class='bodytext'>" + demoName + "</td>" +
-                        "<td class='bodytext'>" + phn + "</td>" +
-                        "<td class='bodytext'>" + serviceDate + "</td>" +
-                        "<td class='bodytext'>" + billingCode + "</td>" +
-                        "<td align='right' class='bodytext'>" + billAmount + "</td>" +
-                        "<td align='right' class='bodytext'>" + Misc.backwardSpace(dx1, 5) + "</td>" +
-                        "<td align='right' class='bodytext'>" + Misc.backwardSpace(dx2, 5) + "</td>" +
-                        "<td align='right' class='bodytext'>" + Misc.backwardSpace(dx3, 5) + "</td>" +
-                        "<td class='bodytext'>" + Misc.forwardZero(billingMasterNo, 7) + "</td>" +
+                        "<td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(demoName)) + "</td>" +
+                        "<td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(phn)) + "</td>" +
+                        "<td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(serviceDate)) + "</td>" +
+                        "<td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(billingCode)) + "</td>" +
+                        "<td align='right' class='bodytext'>" + Encode.forHtmlContent(String.valueOf(billAmount)) + "</td>" +
+                        "<td align='right' class='bodytext'>" + Encode.forHtmlContent(String.valueOf(Misc.backwardSpace(dx1, 5))) + "</td>" +
+                        "<td align='right' class='bodytext'>" + Encode.forHtmlContent(String.valueOf(Misc.backwardSpace(dx2, 5))) + "</td>" +
+                        "<td align='right' class='bodytext'>" + Encode.forHtmlContent(String.valueOf(Misc.backwardSpace(dx3, 5))) + "</td>" +
+                        "<td class='bodytext'>" + Encode.forHtmlContent(String.valueOf(paddedBillingMasterNo)) + "</td>" +
                         "<td class='bodytext'>&nbsp;</td>" +
                         "</tr>";
         return htmlContent;

@@ -200,7 +200,7 @@
         }
 
         function gotoPrintReceipt() {
-            document.location.href = "<%=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=bean.getBillingNo()%>&receipt=yes";
+            document.location.href = "<%=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forUriComponent(String.valueOf(bean.getBillingNo()))%>&receipt=yes";
         }
 
         //-->
@@ -245,13 +245,13 @@
                 </tr>
                 <tr>
                     <td height="16">Patient DoB:</td>
-                    <td><%=bean.getPatientDoB()%>
+                    <td><%=Encode.forHtml(String.valueOf(bean.getPatientDoB()))%>
                     </td>
                     <td>Patient Age:</td>
-                    <td><%=bean.getPatientAge()%>
+                    <td><%=Encode.forHtml(String.valueOf(bean.getPatientAge()))%>
                     </td>
                     <td>Patient Sex:</td>
-                    <td><%=bean.getPatientSex()%>
+                    <td><%=Encode.forHtml(String.valueOf(bean.getPatientSex()))%>
                     </td>
                 </tr>
                 <tr>
@@ -281,25 +281,25 @@
                 </tr>
                 <tr>
                     <td width="12%" height="16">Billing Type:</td>
-                    <td width="12%"><%=bean.getBillingType()%>
+                    <td width="12%"><%=Encode.forHtml(String.valueOf(bean.getBillingType()))%>
                     </td>
                     <td width="16%">Visit Type:</td>
-                    <td width="17%"><%=bean.getVisitType()%>
+                    <td width="17%"><%=Encode.forHtml(String.valueOf(bean.getVisitType()))%>
                     </td>
                     <td width="19%">Visit Location:</td>
-                    <td width="24%"><%=bean.getVisitLocation()%>
+                    <td width="24%"><%=Encode.forHtml(String.valueOf(bean.getVisitLocation()))%>
                     </td>
                 </tr>
                 <tr>
                     <td height="16">Service Date:</td>
-                    <td><%=bean.getServiceDate()%>
+                    <td><%=Encode.forHtml(String.valueOf(bean.getServiceDate()))%>
                     </td>
-                    <td>StartTime: <%=bean.getStartTime()%>
+                    <td>StartTime: <%=Encode.forHtml(String.valueOf(bean.getStartTime()))%>
                     </td>
-                    <td>EndTime: <%=bean.getEndTime()%>
+                    <td>EndTime: <%=Encode.forHtml(String.valueOf(bean.getEndTime()))%>
                     </td>
                     <td>Admission Date:</td>
-                    <td><%=bean.getAdmissionDate()%>
+                    <td><%=Encode.forHtml(String.valueOf(bean.getAdmissionDate()))%>
                     </td>
                 </tr>
                 <tr>
@@ -315,14 +315,14 @@
                 </tr>
                 <tr>
                     <td height="16">Referral Doctor1:</td>
-                    <td><%=bean.getReferral1()%>
+                    <td><%=Encode.forHtml(String.valueOf(bean.getReferral1()))%>
                     </td>
-                    <td>Referral Type1: <%=bean.getReferType1()%>
+                    <td>Referral Type1: <%=Encode.forHtml(String.valueOf(bean.getReferType1()))%>
                     </td>
                     <td>Referral Doctor 2:</td>
-                    <td><%=bean.getReferral2()%>
+                    <td><%=Encode.forHtml(String.valueOf(bean.getReferral2()))%>
                     </td>
-                    <td>Referral Type2:<%=bean.getReferType2()%>
+                    <td>Referral Type2:<%=Encode.forHtml(String.valueOf(bean.getReferType2()))%>
                     </td>
                 </tr>
             </table>
@@ -342,15 +342,15 @@
                             </tr>
                             <% for (int i = 0; i < billItem.size(); i++) { %>
                             <tr>
-                                <td><%=((BillingBillingManager.BillingItem) billItem.get(i)).getServiceCode()%>
+                                <td><%=Encode.forHtml(String.valueOf(((BillingBillingManager.BillingItem) billItem.get(i)).getServiceCode()))%>
                                 </td>
-                                <td><%=((BillingBillingManager.BillingItem) billItem.get(i)).getDescription()%>
+                                <td><%=Encode.forHtml(String.valueOf(((BillingBillingManager.BillingItem) billItem.get(i)).getDescription()))%>
                                 </td>
-                                <td><%=((BillingBillingManager.BillingItem) billItem.get(i)).getUnit()%>
+                                <td><%=Encode.forHtml(String.valueOf(((BillingBillingManager.BillingItem) billItem.get(i)).getUnit()))%>
                                 </td>
-                                <td><%=((BillingBillingManager.BillingItem) billItem.get(i)).getDispPrice()%>
+                                <td><%=Encode.forHtml(String.valueOf(((BillingBillingManager.BillingItem) billItem.get(i)).getDispPrice()))%>
                                 </td>
-                                <td><%=((BillingBillingManager.BillingItem) billItem.get(i)).getDispLineTotal()%>
+                                <td><%=Encode.forHtml(String.valueOf(((BillingBillingManager.BillingItem) billItem.get(i)).getDispLineTotal()))%>
                                 </td>
                             </tr>
                             <% } %>
@@ -359,7 +359,7 @@
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><%=bean.getGrandtotal()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getGrandtotal()))%>
                                 </td>
                             </tr>
                             <tr>
@@ -378,25 +378,25 @@
                                 <td width="14%">&nbsp;</td>
                             </tr>
                             <tr>
-                                <td><%=bean.getDx1()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getDx1()))%>
                                 </td>
-                                <td><%=billform.getDiagDesc(bean.getDx1(), bean.getBillRegion())%>
-                                </td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td><%=bean.getDx2()%>
-                                </td>
-                                <td><%=billform.getDiagDesc(bean.getDx2(), bean.getBillRegion())%>
+                                <td><%=Encode.forHtml(String.valueOf(billform.getDiagDesc(bean.getDx1(), bean.getBillRegion())))%>
                                 </td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                             </tr>
                             <tr>
-                                <td><%=bean.getDx3()%>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getDx2()))%>
                                 </td>
-                                <td><%=billform.getDiagDesc(bean.getDx3(), bean.getBillRegion())%>
+                                <td><%=Encode.forHtml(String.valueOf(billform.getDiagDesc(bean.getDx2(), bean.getBillRegion())))%>
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td><%=Encode.forHtml(String.valueOf(bean.getDx3()))%>
+                                </td>
+                                <td><%=Encode.forHtml(String.valueOf(billform.getDiagDesc(bean.getDx3(), bean.getBillRegion())))%>
                                 </td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>

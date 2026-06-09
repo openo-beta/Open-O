@@ -31,6 +31,7 @@
 <%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <% //
     int serviceCodeLen = 5;
     String msg = "Type in a name and search first to see if it is available.";
@@ -66,12 +67,12 @@
 
                 boolean ni = dbObj.updateBillingFavouriteList(name, list, user_no);
                 if (ni) {
-                    msg = name + " is updated.<br>"
+                    msg = Encode.forHtmlContent(name) + " is updated.<br>"
                             + "Type in a name and search first to see if it is available.";
                     action = "search";
                     prop.setProperty("name", name);
                 } else {
-                    msg = name + " is <font color='red'>NOT</font> updated. Action failed! Try edit it again.";
+                    msg = Encode.forHtmlContent(name) + " is <font color='red'>NOT</font> updated. Action failed! Try edit it again.";
                     action = "edit" + name;
                     prop.setProperty("name", name);
                     for (int i = 0; i < BillingDataHlp.FIELD_SERVICE_NUM; i++) {
@@ -84,7 +85,7 @@
                     prop.setProperty("dx2", request.getParameter("dx2"));
                 }
             } else {
-                msg = "You can <font color='red'>NOT</font> save the name - " + name
+                msg = "You can <font color='red'>NOT</font> save the name - " + Encode.forHtmlContent(name)
                         + ". Please search the name first.";
                 action = "search";
                 prop.setProperty("name", name);
@@ -123,12 +124,12 @@
 
                 int ni = dbObj.addBillingFavouriteList(name, list, user_no);
                 if (ni > 0) {
-                    msg = name + " is added.<br>"
+                    msg = Encode.forHtmlContent(name) + " is added.<br>"
                             + "Type in a name and search first to see if it is available.";
                     action = "search";
                     prop.setProperty("name", name);
                 } else {
-                    msg = name + " is <font color='red'>NOT</font> added. Action failed! Try edit it again.";
+                    msg = Encode.forHtmlContent(name) + " is <font color='red'>NOT</font> added. Action failed! Try edit it again.";
                     action = "add" + name;
                     prop.setProperty("name", name);
                     for (int i = 0; i < BillingDataHlp.FIELD_SERVICE_NUM; i++) {
@@ -141,7 +142,7 @@
                     prop.setProperty("dx2", request.getParameter("dx2"));
                 }
             } else {
-                msg = "You can <font color='red'>NOT</font> save the name - " + name
+                msg = "You can <font color='red'>NOT</font> save the name - " + Encode.forHtmlContent(name)
                         + ". Please search the name first.";
                 action = "search";
                 prop.setProperty("name", name);
@@ -160,12 +161,12 @@
             } else {
                 boolean ni = dbObj.delBillingFavouriteList(name, user_no);
                 if (ni) {
-                    msg = name + " is deleted.<br>"
+                    msg = Encode.forHtmlContent(name) + " is deleted.<br>"
                             + "Type in a name and search first to see if it is available.";
                     action = "search";
                     prop.setProperty("name", name);
                 } else {
-                    msg = name + " is <font color='red'>NOT</font> deleted. Action failed! Try edit it again.";
+                    msg = Encode.forHtmlContent(name) + " is <font color='red'>NOT</font> deleted. Action failed! Try edit it again.";
                     action = "edit" + name;
                     prop.setProperty("name", name);
                 }
@@ -356,7 +357,7 @@
                         List sL = dbObj.getBillingFavouriteList();
                         for (int i = 0; i < sL.size(); i = i + 2) {
                     %>
-                    <option value="<%=(String) sL.get(i)%>"><%=(String) sL.get(i)%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf((String) sL.get(i)))%>"><%=Encode.forHtml(String.valueOf((String) sL.get(i)))%>
                     </option>
                     <%
                         }
@@ -379,7 +380,7 @@
             <tr class="myGreen">
                 <td style="text-align:right"><b>Name</b></td>
                 <td><input class="input" type="text" name="name"
-                           value="<%=prop.getProperty("name", "")%>" maxlength='50'/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("name", "")))%>" maxlength='50'/>
                     (e.g. Flu shot) <input class="btn" type="submit" name="submit" value="Search"
                                            onclick="javascript:return onSearch();"></td>
             </tr>
@@ -389,18 +390,18 @@
 
             %>
             <tr>
-                <td style="text-align:right"><b>Service Code <%=i + 1%>
+                <td style="text-align:right"><b>Service Code <%=Encode.forHtml(String.valueOf(i + 1))%>
                 </b></td>
                 <td><input class="input-mini" type="text" name="serviceCode<%=i%>"
-                           value="<%=prop.getProperty("serviceCode"+i, "")%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("serviceCode"+i, "")))%>"
                            maxlength='50' onblur="upCaseCtrl(this)"/> (e.g. A001A) <b>Unit</b><input class="input-mini"
                                                                                                      type="text"
                                                                                                      name="serviceUnit<%=i%>"
-                                                                                                     value="<%=prop.getProperty("serviceUnit"+i, "")%>"
+                                                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("serviceUnit"+i, "")))%>"
                                                                                                      maxlength='2'/>
                     (e.g. 1, 12) <b>@</b><input class="input-mini" type="text"
                                                 name="serviceAt<%=i%>"
-                                                value="<%=prop.getProperty("serviceAt"+i, "")%>"
+                                                value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("serviceAt"+i, "")))%>"
                                                 maxlength='4'/> (e.g. 0.85)
                 </td>
             </tr>
@@ -412,15 +413,15 @@
             <tr>
                 <td style="text-align:right"><b>Dx</b></td>
                 <td><input class="input-mini" type="text" name="dx"
-                           value="<%=prop.getProperty("dx", "")%>" maxlength='4'/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("dx", "")))%>" maxlength='4'/>
                     (e.g. 012) <b>Dx1</b> <input class="input-mini" type="text" name="dx1"
-                                                 value="<%=prop.getProperty("dx1", "")%>" maxlength='4'/> <b>Dx2</b>
-                    <input class="input-mini" type="text" name="dx2" value="<%=prop.getProperty("dx2", "")%>"
+                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("dx1", "")))%>" maxlength='4'/> <b>Dx2</b>
+                    <input class="input-mini" type="text" name="dx2" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("dx2", "")))%>"
                            maxlength='4'/></td>
             </tr>
             <tr>
                 <td style="text-align:center" class="myGreen" colspan="2"><input
-                        type="hidden" name="action" value='<%=action%>'> <input
+                        type="hidden" name="action" value='<%=Encode.forHtmlAttribute(String.valueOf(action))%>'> <input
                         type="submit" name="submit" class="btn btn-primary"
                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
                         onclick="javascript:return onSave();"> <input class="btn" type="button"

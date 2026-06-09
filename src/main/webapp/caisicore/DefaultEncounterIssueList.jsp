@@ -48,6 +48,7 @@
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
 <head>
@@ -63,10 +64,10 @@
 <table border="0" cellspacing="0" cellpadding="1" width="100%"
        bgcolor="#CCCCFF">
     <tr class="subject">
-        <th colspan="<%=colNum %>">CAISI</th>
+        <th colspan="<%=Encode.forHtmlAttribute(String.valueOf(colNum))%>">CAISI</th>
     </tr>
     <tr>
-        <td class="searchTitle" colspan="<%=colNum %>">Please assign default encounter issues</td>
+        <td class="searchTitle" colspan="<%=Encode.forHtmlAttribute(String.valueOf(colNum))%>">Please assign default encounter issues</td>
     </tr>
 </table>
 

@@ -231,6 +231,7 @@
 <%@page import="ca.openosp.openo.appt.ApptUtil" %>
 <%@page import="ca.openosp.openo.commn.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -285,8 +286,8 @@
 
                 </td>
                 <td><br>
-                    <b><%=provider_name%>
-                    </b> &nbsp; &nbsp; <font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgEffective"/>&nbsp;<b>(<%=scheduleRscheduleBean.sdate + " - " + scheduleRscheduleBean.edate%>
+                    <b><%=Encode.forHtml(String.valueOf(provider_name))%>
+                    </b> &nbsp; &nbsp; <font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.msgEffective"/>&nbsp;<b>(<%=Encode.forHtml(String.valueOf(scheduleRscheduleBean.sdate + " - " + scheduleRscheduleBean.edate))%>
                         )</b></font>
                     <center>
                         <%
@@ -307,13 +308,13 @@
                             %>
                             <tr>
                                 <td BGCOLOR="#CCFFCC" width="50%" align="center"><a
-                                        href="schedulecreatedate.jsp?provider_no=<%=provider_no%>&provider_name=<%=URLEncoder.encode(provider_name, StandardCharsets.UTF_8)%>&year=<%=year%>&month=<%=month%>&day=<%=day%>&delta=-1&bFirstDisp=0">
+                                        href="schedulecreatedate.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&provider_name=<%=Encode.forUriComponent(String.valueOf(provider_name))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(day))%>&delta=-1&bFirstDisp=0">
                                     &nbsp;&nbsp;<img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10" HEIGHT="9"
                                                      BORDER="0"
                                                      ALT='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnLastMonthTip"/>'
                                                      vspace="2"> <fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnLastMonth"/>&nbsp;&nbsp; </a> <b><span
-                                        CLASS=title><%=year%>-<%=month%></span></b> <a
-                                        href="schedulecreatedate.jsp?provider_no=<%=provider_no%>&provider_name=<%=URLEncoder.encode(provider_name, StandardCharsets.UTF_8)%>&year=<%=year%>&month=<%=month%>&day=<%=day%>&delta=1&bFirstDisp=0">
+                                        CLASS=title><%=Encode.forHtml(String.valueOf(year))%>-<%=Encode.forHtml(String.valueOf(month))%></span></b> <a
+                                        href="schedulecreatedate.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&provider_name=<%=Encode.forUriComponent(String.valueOf(provider_name))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(day))%>&delta=1&bFirstDisp=0">
                                     &nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnNextMonth"/><img
                                         src="<%= request.getContextPath() %>/images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                                         ALT='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnNextMonthTip"/>'
@@ -373,13 +374,13 @@
                                             }
 
                             %>
-                            <td bgcolor='<%=bgcolor.toString()%>'><a href="#"
-                                                                     onclick="popupPage(260,720,'scheduledatepopup.jsp?provider_no=<%=provider_no%>&year=<%=year%>&month=<%=month%>&day=<%=dateGrid[i][j]%>&bFistDisp=1')">
-                                <font color="red"><%= dateGrid[i][j] %>
+                            <td bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(bgcolor.toString()))%>'><a href="#"
+                                                                     onclick="popupPage(260,720,'scheduledatepopup.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(dateGrid[i][j]))%>&bFistDisp=1')">
+                                <font color="red"><%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
                                 </font> <font size="-3"
-                                              color="blue"><%=strHolidayName.toString()%>
+                                              color="blue"><%=Encode.forHtml(String.valueOf(strHolidayName.toString()))%>
                             </font> <br>
-                                <font size="-2">&nbsp;<%=strHour.toString()%> <br>
+                                <font size="-2">&nbsp;<%=Encode.forHtml(String.valueOf(strHour.toString()))%> <br>
                                     &nbsp;<%=bMultisites ? getSiteHTML(strReason.toString(), sites) : strReason.toString()%>
                                 </font></a></td>
                             <%
@@ -397,7 +398,7 @@
                             <tr>
                                 <td bgcolor="#CCFFCC">
                                     <div align="right"><!--input type="hidden" name="available" value="0"-->
-                                        <input type="hidden" name="provider_no" value="<%=provider_no%>">
+                                        <input type="hidden" name="provider_no" value="<%=Encode.forHtmlAttribute(String.valueOf(provider_no))%>">
                                         <input type="hidden" name="Submit" value=" Next "> <input
                                                 type="submit"
                                                 value='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.schedulecreatedate.btnNext"/>'>
