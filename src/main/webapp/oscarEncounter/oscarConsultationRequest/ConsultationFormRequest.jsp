@@ -3254,19 +3254,20 @@ if (userAgent != null) {
                             var column = jQuery("<td>");
                             var target = "#attachedDocumentsTable";
 
-                            if ("lab_check".indexOf(element.attr("class")) !== -1) {
+                            // Route each item to its section by type class (boxes carry multiple classes, e.g. "lab_check attachable_check").
+                            if (element.hasClass("lab_check")) {
                                 target = "#attachedLabsTable";
                             }
 
-                            if ("form_check".indexOf(element.attr("class")) !== -1) {
+                            if (element.hasClass("form_check")) {
                                 target = "#attachedFormsTable";
                             }
 
-                            if ("eForm_check".indexOf(element.attr("class")) != -1) {
+                            if (element.hasClass("eForm_check")) {
                                 target = "#attachedEFormsTable";
                             }
 
-                            if ("hrm_check".indexOf(element.attr("class")) != -1) {
+                            if (element.hasClass("hrm_check")) {
                                 target = "#attachedHRMDocumentsTable";
                             }
                             column.text(element.attr("title"));
