@@ -207,13 +207,14 @@
                                                     '${requestScope.providerNo}',
                                                     '${e:forJavaScript(requestScope.pharmacyName)}',
                                                     '${e:forJavaScript(requestScope.pharmacyFax)}',
-                                                    '${requestScope.prescribedBy}');
+                                                    '${requestScope.prescribedBy}').then(function() {
                                                         sendFax('${e:forJavaScript(param.scriptId)}',
                                                     '${requestScope.signatureRequestId}',
                                                     ${requestScope.useSC != null ? requestScope.useSC : false},
                                                     '${e:forJavaScript(requestScope.selectedAddress != null ? requestScope.selectedAddress : '')}',
                                                     '${ctx}'
-                                                        );"
+                                                        );
+                                                    });"
                                                 <c:if test="${requestScope.isFaxDisabled}">
                                                     disabled="disabled"
                                                 </c:if>>
