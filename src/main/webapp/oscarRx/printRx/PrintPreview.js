@@ -422,6 +422,10 @@ function printPaste2Parent(ctx, print, fax, pasteRx, rxPasteAsterisk, prefPharma
             if (rxNoNewLines && rxNoNewLines.value.length > 0) {
                 text += rxNoNewLines.value + "\n";
             }
+            const additionalNotes = document.getElementById("additionalNotes");
+            if (additionalNotes && additionalNotes.value.trim().length > 0) {
+                text += "\n" + additionalNotes.value.trim() + "\n";
+            }
         }
         if (rxPasteAsterisk) {
             if (prefPharmacy != null && prefPharmacy.trim() !== "") {
