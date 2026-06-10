@@ -399,8 +399,7 @@ function printPaste2Parent(ctx, print, fax, pasteRx, rxPasteAsterisk, prefPharma
             year: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
-            hour12: true,
-            timeZone: 'UTC'
+            hour12: true
         });
         if (rxPasteAsterisk) {
             text += "**********************************************************************************\n";
