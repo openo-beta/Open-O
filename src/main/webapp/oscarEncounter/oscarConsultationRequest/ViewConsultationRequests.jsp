@@ -398,21 +398,24 @@ background-color:rgb(212, 212, 254);
 
             // Before form submit, ensure text field / hidden field are consistent.
             jQuery("form").on("submit", function () {
+                jQuery("#offset").val(0);
                 var consultText = jQuery("#consultantSearch").val().trim();
+                var consultId = jQuery("#consultantId").val();
                 if (consultText === "") {
                     jQuery("#consultantId").val("");
                 } else {
-                    var consultMatched = consultantOptions.some(function(o) { return o.label === consultText; });
+                    var consultMatched = consultantOptions.some(function(o) { return o.label === consultText && o.value === consultId; });
                     if (!consultMatched) {
                         jQuery("#consultantSearch").val("");
                         jQuery("#consultantId").val("");
                     }
                 }
                 var provText = jQuery("#providerSearch").val().trim();
+                var provId = jQuery("#filterProviderNo").val();
                 if (provText === "") {
                     jQuery("#filterProviderNo").val("");
                 } else {
-                    var provMatched = providerOptions.some(function(o) { return o.label === provText; });
+                    var provMatched = providerOptions.some(function(o) { return o.label === provText && o.value === provId; });
                     if (!provMatched) {
                         jQuery("#providerSearch").val("");
                         jQuery("#filterProviderNo").val("");
