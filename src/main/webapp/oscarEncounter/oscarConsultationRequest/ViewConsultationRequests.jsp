@@ -189,6 +189,15 @@
         ConsultationRequestDao consultReqDaoForFilters = SpringUtils.getBean(ConsultationRequestDao.class);
         List<ProfessionalSpecialist> availableConsultants = consultReqDaoForFilters.getDistinctConsultants();
         List<Provider> availableProviders = consultReqDaoForFilters.getDistinctConsultProviders();
+        if (isSiteAccessPrivacy || isTeamAccessPrivacy) {
+            List<Provider> filteredProviders = new ArrayList<>();
+            for (Provider pv : availableProviders) {
+                if (providerMap.containsKey(pv.getProviderNo())) {
+                    filteredProviders.add(pv);
+                }
+            }
+            availableProviders = filteredProviders;
+        }
 
         EctConsultationFormRequestUtil consultUtil;
         consultUtil = new EctConsultationFormRequestUtil();
@@ -387,13 +396,27 @@ background-color:rgb(212, 212, 254);
                 jQuery(this).autocomplete("search", jQuery(this).val());
             });
 
-            // Before form submit, ensure text field / hidden field are consistent
+            // Before form submit, ensure text field / hidden field are consistent.
             jQuery("form").on("submit", function () {
-                if (jQuery("#consultantSearch").val().trim() === "") {
+                var consultText = jQuery("#consultantSearch").val().trim();
+                if (consultText === "") {
                     jQuery("#consultantId").val("");
+                } else {
+                    var consultMatched = consultantOptions.some(function(o) { return o.label === consultText; });
+                    if (!consultMatched) {
+                        jQuery("#consultantSearch").val("");
+                        jQuery("#consultantId").val("");
+                    }
                 }
-                if (jQuery("#providerSearch").val().trim() === "") {
+                var provText = jQuery("#providerSearch").val().trim();
+                if (provText === "") {
                     jQuery("#filterProviderNo").val("");
+                } else {
+                    var provMatched = providerOptions.some(function(o) { return o.label === provText; });
+                    if (!provMatched) {
+                        jQuery("#providerSearch").val("");
+                        jQuery("#filterProviderNo").val("");
+                    }
                 }
             });
         });

@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import ca.openosp.openo.commn.NativeSql;
 import ca.openosp.openo.commn.model.ConsultationRequest;
 import ca.openosp.openo.commn.model.ProfessionalSpecialist;
@@ -48,74 +47,7 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
 
 
     public List<ConsultationRequest> getConsults(String team, boolean showCompleted, Date startDate, Date endDate, String orderby, String desc, String searchDate, Integer offset, Integer limit) {
-
-        	StringBuilder sql = new StringBuilder("SELECT cr " +
-					"FROM ConsultationRequest cr " +
-                    "LEFT JOIN cr.professionalSpecialist specialist " +
-                    "LEFT JOIN ConsultationServices service ON cr.serviceId = service.serviceId " +
-                    "LEFT JOIN ConsultationRequestExt ext ON cr.id = ext.requestId AND ext.key = 'ereferral_service' " +
-					"LEFT JOIN Demographic d on cr.demographicId = d.DemographicNo " +
-					"LEFT JOIN Provider p on d.ProviderNo = p.ProviderNo WHERE 1=1 ");
-
-        if (!showCompleted) {
-            sql.append("and cr.status != 4 ");
-        }
-
-        if (!team.isEmpty()) {
-            sql.append("and cr.sendTo = '" + team + "' ");
-        }
-
-        if (startDate != null) {
-            if (searchDate != null && searchDate.equals("1")) {
-                sql.append("and cr.appointmentDate >= '" + DateFormatUtils.ISO_DATETIME_FORMAT.format(startDate) + "' ");
-            } else {
-                sql.append("and cr.referralDate >= '" + DateFormatUtils.ISO_DATETIME_FORMAT.format(startDate) + "' ");
-            }
-        }
-
-        if (endDate != null) {
-            if (searchDate != null && searchDate.equals("1")) {
-                sql.append("and cr.appointmentDate <= '" + DateFormatUtils.ISO_DATETIME_FORMAT.format(endDate) + "' ");
-            } else {
-                sql.append("and cr.referralDate <= '" + DateFormatUtils.ISO_DATETIME_FORMAT.format(endDate) + "' ");
-            }
-        }
-
-        String orderDesc = desc != null && desc.equals("1") ? "DESC" : "";
-        String service = ", service.serviceDesc";
-        if (orderby == null) {
-            sql.append("order by cr.referralDate desc ");
-        } else if (orderby.equals("1")) {               //1 = msgStatus
-            sql.append("order by cr.status " + orderDesc + service);
-        } else if (orderby.equals("2")) {               //2 = msgTeam
-            sql.append("order by cr.sendTo " + orderDesc + service);
-        } else if (orderby.equals("3")) {               //3 = msgPatient
-            sql.append("order by d.LastName " + orderDesc + service);
-        } else if (orderby.equals("4")) {               //4 = msgProvider
-            sql.append("order by p.LastName " + orderDesc + service);
-        } else if (orderby.equals("5")) {               //5 = msgService Desc
-            sql.append("order by service.serviceDesc " + orderDesc);
-        } else if (orderby.equals("6")) {               //6 = msgSpecialist Name
-            sql.append("order by specialist.lastName " + orderDesc + service);
-        } else if (orderby.equals("7")) {               //7 = msgRefDate
-            sql.append("order by cr.referralDate " + orderDesc);
-        } else if (orderby.equals("8")) {               //8 = Appointment Date
-            sql.append("order by cr.appointmentDate " + orderDesc);
-        } else if (orderby.equals("9")) {               //9 = FollowUp Date
-            sql.append("order by cr.followUpDate " + orderDesc);
-        } else {
-            sql.append("order by cr.referralDate desc");
-        }
-
-
-        Query query = entityManager.createQuery(sql.toString());
-        query.setFirstResult(offset != null ? offset : 0);
-
-        //need to never send more than MAX_LIST_RETURN_SIZE
-        int myLimit = limit != null ? limit : DEFAULT_CONSULT_REQUEST_RESULTS_LIMIT;
-        query.setMaxResults(Math.min(myLimit, MAX_LIST_RETURN_SIZE));
-
-        return query.getResultList();
+        return getConsults(team, showCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit, null, null);
     }
 
 
