@@ -116,6 +116,8 @@ public class DocumentPreview2Action extends ActionSupport {
             }
             else if (method.equalsIgnoreCase("fetchConsultDocuments"))
                 return fetchConsultDocuments();
+            else if (method.equalsIgnoreCase("fetchTicklerDocuments"))
+                return fetchTicklerDocuments();
         }
 
         return fetchConsultDocuments();
@@ -370,6 +372,31 @@ public class DocumentPreview2Action extends ActionSupport {
 
         populateCommonDocs(loggedInInfo, demographicNo);
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
+        request.setAttribute("allEForms", allEForms);
+
+        return "fetchDocuments";
+    }
+
+    /**
+     * Fetches the documents available for attaching to a tickler.
+     *
+     * <p>Tickler counterpart of {@link #fetchConsultDocuments()}. Populates the patient's documents,
+     * HRM reports, labs and encounter forms (via {@link #populateCommonDocs}) plus the full list of
+     * current eForms, then forwards to the shared attachment picker ({@code attachDocument.jsp}). Unlike
+     * {@link #fetchEFormDocuments()} there is no self-exclusion, since a tickler is not itself an eForm.</p>
+     *
+     * Request parameters:
+     * - demographicNo: String the patient's demographic number (defaults to "0" if not provided)
+     *
+     * @return String "fetchDocuments" result name for Struts2 result mapping
+     */
+    public String fetchTicklerDocuments() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
+
+        populateCommonDocs(loggedInInfo, demographicNo);
+        List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         request.setAttribute("allEForms", allEForms);
 
         return "fetchDocuments";

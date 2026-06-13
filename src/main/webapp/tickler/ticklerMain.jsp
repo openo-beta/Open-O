@@ -41,7 +41,6 @@
 <%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="ca.openosp.openo.tickler.dto.TicklerListDTO" %>
 <%@ page import="ca.openosp.openo.tickler.dto.TicklerCommentDTO" %>
-<%@ page import="ca.openosp.openo.tickler.dto.TicklerLinkDTO" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -72,6 +71,8 @@
 <%!
     TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
     ViewDao viewDao = SpringUtils.getBean(ViewDao.class);
+    ca.openosp.openo.commn.dao.TicklerDocsDao ticklerDocsDao = SpringUtils.getBean(ca.openosp.openo.commn.dao.TicklerDocsDao.class);
+    ca.openosp.openo.commn.dao.PatientLabRoutingDao patientLabRoutingDao = SpringUtils.getBean(ca.openosp.openo.commn.dao.PatientLabRoutingDao.class);
 %>
 
 <%
@@ -902,51 +903,60 @@
                             style="white-space:pre-wrap"><%=Encode.forHtmlContent(tickler.getMessage())%></span>
 
                         <%
-                            List<TicklerLinkDTO> linkList = tickler.getLinks();
-                            if (linkList != null) {
-                                for (TicklerLinkDTO tl : linkList) {
-                                    String type = tl.getTableName();
-                        %>
-
-                        <%
-                            if (LabResultData.isMDS(type)) {
+                            // Render the tickler's attachments from the modern attachment store (ticklerdocs).
+                            // Lab sub-type (MDS/CML/HL7/BC) is recovered from patient_lab_routing so the correct
+                            // viewer is opened, mirroring the routing that the legacy tickler_link display used.
+                            List<ca.openosp.openo.commn.model.TicklerDocs> ticklerDocsList =
+                                    ticklerDocsDao.findByTicklerId(tickler.getId());
+                            for (ca.openosp.openo.commn.model.TicklerDocs td : ticklerDocsList) {
+                                String dtype = td.getDocType();
+                                String docNoStr = String.valueOf(td.getDocumentNo());
+                                String href;
+                                if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_DOC.equals(dtype)) {
+                                    href = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&doc_no="
+                                            + Encode.forUriComponent(docNoStr) + "&providerNo=" + Encode.forUriComponent(String.valueOf(user_no))
+                                            + "&searchProviderNo=" + Encode.forUriComponent(String.valueOf(user_no)) + "&status=";
+                                } else if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_HRM.equals(dtype)) {
+                                    href = request.getContextPath() + "/hospitalReportManager/Display.do?id="
+                                            + Encode.forUriComponent(docNoStr) + "&segmentID=" + Encode.forUriComponent(docNoStr);
+                                } else if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_EFORM.equals(dtype)) {
+                                    href = request.getContextPath() + "/eform/efmshowform_data.jsp?fdid=" + Encode.forUriComponent(docNoStr);
+                                } else if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_FORM.equals(dtype)) {
+                                    // Encounter forms cannot be reliably opened from a form id alone; show an
+                                    // indicator only (the attachment is fully viewable from the edit dialog).
+                                    href = null;
+                                } else {
+                                    // Lab: recover the source lab type to pick the correct viewer.
+                                    ca.openosp.openo.commn.model.PatientLabRouting plr =
+                                            patientLabRoutingDao.findByLabNo(td.getDocumentNo());
+                                    String labType = (plr != null) ? plr.getLabType() : null;
+                                    if (LabResultData.MDS.equals(labType)) {
+                                        href = "SegmentDisplay.jsp?segmentID=" + Encode.forUriComponent(docNoStr)
+                                                + "&providerNo=" + Encode.forUriComponent(String.valueOf(user_no))
+                                                + "&searchProviderNo=" + Encode.forUriComponent(String.valueOf(user_no)) + "&status=";
+                                    } else if (LabResultData.CML.equals(labType)) {
+                                        href = request.getContextPath() + "/lab/CA/ON/CMLDisplay.jsp?segmentID=" + Encode.forUriComponent(docNoStr)
+                                                + "&providerNo=" + Encode.forUriComponent(String.valueOf(user_no))
+                                                + "&searchProviderNo=" + Encode.forUriComponent(String.valueOf(user_no)) + "&status=";
+                                    } else if (LabResultData.HL7TEXT.equals(labType)) {
+                                        href = request.getContextPath() + "/lab/CA/ALL/labDisplay.jsp?segmentID=" + Encode.forUriComponent(docNoStr)
+                                                + "&providerNo=" + Encode.forUriComponent(String.valueOf(user_no))
+                                                + "&searchProviderNo=" + Encode.forUriComponent(String.valueOf(user_no)) + "&status=";
+                                    } else {
+                                        href = request.getContextPath() + "/lab/CA/BC/labDisplay.jsp?segmentID=" + Encode.forUriComponent(docNoStr)
+                                                + "&providerNo=" + Encode.forUriComponent(String.valueOf(user_no))
+                                                + "&searchProviderNo=" + Encode.forUriComponent(String.valueOf(user_no)) + "&status=";
+                                    }
+                                }
+                                if (href != null) {
                         %>
                         <a title="View attachment"
-                           href="javascript:reportWindow('SegmentDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
+                           href="javascript:reportWindow('<%=Encode.forJavaScript(href)%>')"><i
                                 class="glyphicon glyphicon-paperclip"></i></a>
                         <%
-                        } else if (LabResultData.isCML(type)) {
+                                } else {
                         %>
-                        <a title="View attachment"
-                           href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ON/CMLDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
-                                class="glyphicon glyphicon-paperclip"></i></a>
-                        <%
-                        } else if (LabResultData.isHL7TEXT(type)) {
-                        %>
-                        <a title="View attachment"
-                           href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
-                                class="glyphicon glyphicon-paperclip"></i></a>
-                        <%
-                        } else if (LabResultData.isDocument(type)) {
-                        %>
-                        <a title="View attachment"
-                           href="javascript:reportWindow('<%=request.getContextPath()%>/documentManager/ManageDocument.do?method=display&doc_no=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
-                                class="glyphicon glyphicon-paperclip"></i></a>
-                        <%
-                        } else if (LabResultData.isHRM(type)) {
-                        %>
-                        <a title="View attachment"
-                           href="javascript:reportWindow('<%=request.getContextPath()%>/hospitalReportManager/Display.do?id=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>')"><i
-                                class="glyphicon glyphicon-paperclip"></i></a>
-                        <%
-                        } else {
-                        %>
-                        <a title="View attachment"
-                           href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/BC/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(tl.getTableId()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&searchProviderNo=<%=Encode.forUriComponent(String.valueOf(user_no))%>&status=')"><i
-                                class="glyphicon glyphicon-paperclip"></i></a>
-                        <%
-                            }
-                        %>
+                        <i class="glyphicon glyphicon-paperclip" title="Attached form"></i>
                         <%
                                 }
                             }

@@ -6,6 +6,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import ca.openosp.openo.commn.dao.ConsultDocsDao;
 import ca.openosp.openo.commn.dao.EFormDocsDao;
+import ca.openosp.openo.commn.dao.TicklerDocsDao;
+import ca.openosp.openo.commn.model.TicklerDocs;
 import ca.openosp.openo.commn.model.ConsultDocs;
 import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.commn.model.EFormDocs;
@@ -69,6 +71,8 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
     private ConsultDocsDao consultDocsDao;
     @Autowired
     private EFormDocsDao eFormDocsDao;
+    @Autowired
+    private TicklerDocsDao ticklerDocsDao;
 
     @Autowired
     private ConsultationManager consultationManager;
@@ -363,6 +367,56 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
         DocumentAttach documentAttach = new DocumentAttach();
         documentAttach.attachToEForm(attachments, documentType, providerNo, fdid);
+    }
+
+    /**
+     * Retrieves a list of document IDs attached to a specific tickler.
+     *
+     * Tickler counterpart of {@link #getConsultAttachments} and {@link #getEFormAttachments}. Security
+     * checks ensure the user has read access to tickler data for the specified patient.
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param ticklerId Integer the unique identifier of the tickler
+     * @param documentType DocumentType the type of documents to retrieve (e.g., DOC, LAB, EFORM, HRM, FORM)
+     * @param demographicNo Integer the patient's demographic number for security validation
+     * @return List&lt;String&gt; a list of document IDs as strings attached to the tickler
+     * @throws RuntimeException if the user lacks the required "_tickler" read privilege
+     */
+    public List<String> getTicklerAttachments(LoggedInInfo loggedInInfo, Integer ticklerId, DocumentType documentType, Integer demographicNo) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.READ, demographicNo)) {
+            throw new RuntimeException("missing required sec object (_tickler)");
+        }
+
+        List<String> ticklerAttachments = new ArrayList<>();
+        List<TicklerDocs> ticklerDocs = ticklerDocsDao.findByTicklerIdDocType(ticklerId, documentType.getType());
+        for (TicklerDocs ticklerDocs1 : ticklerDocs) {
+            ticklerAttachments.add(String.valueOf(ticklerDocs1.getDocumentNo()));
+        }
+        return ticklerAttachments;
+    }
+
+    /**
+     * Attaches documents to a tickler.
+     *
+     * Tickler counterpart of {@link #attachToConsult} and {@link #attachToEForm}. Synchronises the supplied
+     * set of document IDs with the tickler's existing attachments of the given type, persisting new
+     * attachments and soft-deleting those no longer present.
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param documentType DocumentType the type of documents being attached
+     * @param attachments String[] an array of document IDs to attach to the tickler
+     * @param providerNo String the provider number performing the attachment operation
+     * @param ticklerId Integer the unique identifier of the tickler
+     * @param demographicNo Integer the patient's demographic number for security validation
+     * @throws RuntimeException if the user lacks the required "_tickler" write privilege
+     */
+    public void attachToTickler(LoggedInInfo loggedInInfo, DocumentType documentType, String[] attachments, String providerNo, Integer ticklerId, Integer demographicNo) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.WRITE, demographicNo)) {
+            throw new RuntimeException("missing required sec object (_tickler)");
+        }
+
+        DocumentAttach documentAttach = new DocumentAttach();
+        documentAttach.attachToTickler(attachments, documentType, providerNo, ticklerId);
     }
 
     /**

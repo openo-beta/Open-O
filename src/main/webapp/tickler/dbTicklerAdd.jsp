@@ -30,8 +30,8 @@
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Tickler" %>
-<%@ page import="ca.openosp.openo.commn.model.TicklerLink" %>
-<%@ page import="ca.openosp.openo.commn.dao.TicklerLinkDao" %>
+<%@ page import="ca.openosp.openo.commn.model.enumerator.DocumentType" %>
+<%@ page import="ca.openosp.openo.documentManager.DocumentAttachmentManager" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
@@ -99,12 +99,19 @@
     if (docType != null && docId != null && !docType.trim().equals("") && !docId.trim().equals("") && !docId.equalsIgnoreCase("null")) {
         if (ticklerNo > 0) {
             try {
-                TicklerLink tLink = new TicklerLink();
-                tLink.setTableId(Long.parseLong(docId));
-                tLink.setTableName(docType);
-                tLink.setTicklerNo(new Long(ticklerNo).intValue());
-                TicklerLinkDao ticklerLinkDao = (TicklerLinkDao) SpringUtils.getBean(TicklerLinkDao.class);
-                ticklerLinkDao.save(tLink);
+                // Attach the source document to the tickler using the modern attachment store (ticklerdocs).
+                // The legacy docType is a table_name code (DOC / HRM / HL7 / MDS / CML / ...); anything that
+                // is not a document or HRM report is treated as a lab.
+                DocumentType attachmentType;
+                if ("DOC".equalsIgnoreCase(docType)) {
+                    attachmentType = DocumentType.DOC;
+                } else if ("HRM".equalsIgnoreCase(docType)) {
+                    attachmentType = DocumentType.HRM;
+                } else {
+                    attachmentType = DocumentType.LAB;
+                }
+                DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
+                documentAttachmentManager.attachToTickler(loggedInInfo, attachmentType, new String[]{docId}, doccreator, ticklerNo, tickler.getDemographicNo());
             } catch (Exception e) {
                 MiscUtils.getLogger().error("No link with this tickler", e);
             }
