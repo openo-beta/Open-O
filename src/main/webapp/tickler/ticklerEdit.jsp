@@ -44,10 +44,13 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@page import="ca.openosp.openo.managers.DemographicManager" %>
+<%@page import="ca.openosp.openo.documentManager.DocumentAttachmentManager" %>
+<%@page import="ca.openosp.openo.commn.model.enumerator.DocumentType" %>
 <%@page import="ca.openosp.OscarProperties" %>
 <%
     TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
     DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
+    DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -294,11 +297,17 @@
         <link href="<%= request.getContextPath() %>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet"
               type="text/css">
 
+        <script type="text/javascript" src="<%=request.getContextPath()%>/library/jquery/jquery-3.6.4.min.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/library/jquery/jquery-ui-1.12.1.min.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery_oscar_defaults.js"></script>
+        <link href="<%=request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.css" rel="stylesheet"
+              type="text/css">
+
     </head>
 
     <body>
     <div class="container">
-        <form name="serviceform" action="${pageContext.request.contextPath}/tickler/EditTickler.do" method="post">
+        <form id="ticklerEditForm" name="serviceform" action="${pageContext.request.contextPath}/tickler/EditTickler.do" method="post">
             <input type="hidden" name="method" value="editTickler"/>
             <input type="hidden" name="ticklerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(ticklerNo))%>"/>
             <input type="hidden" name="parentAjaxId" value="<e:forHtml value='${param.parentAjaxId}' />"/>
@@ -508,6 +517,43 @@
                         </div>
                     </td>
                 </tr>
+                <%
+                    // Build the hidden "delegate" inputs representing the tickler's current attachments.
+                    // These mirror the attachment picker's checkbox names (docNo/labNo/eFormNo/hrmNo/formNo)
+                    // so the dialog can pre-check them and EditTickler2Action can re-read the full selection.
+                    java.util.LinkedHashMap<DocumentType, String> ticklerAttachTypes = new java.util.LinkedHashMap<DocumentType, String>();
+                    ticklerAttachTypes.put(DocumentType.DOC, "docNo");
+                    ticklerAttachTypes.put(DocumentType.LAB, "labNo");
+                    ticklerAttachTypes.put(DocumentType.EFORM, "eFormNo");
+                    ticklerAttachTypes.put(DocumentType.HRM, "hrmNo");
+                    ticklerAttachTypes.put(DocumentType.FORM, "formNo");
+
+                    StringBuilder delegateInputs = new StringBuilder();
+                    int attachmentCount = 0;
+                    for (java.util.Map.Entry<DocumentType, String> attachEntry : ticklerAttachTypes.entrySet()) {
+                        String paramName = attachEntry.getValue();
+                        for (String docId : documentAttachmentManager.getTicklerAttachments(loggedInInfo, ticklerNo, attachEntry.getKey(), t.getDemographicNo())) {
+                            attachmentCount++;
+                            delegateInputs.append("<input type=\"hidden\" class=\"delegateAttachment\" name=\"")
+                                    .append(paramName)
+                                    .append("\" value=\"").append(Encode.forHtmlAttribute(docId))
+                                    .append("\" id=\"delegate_").append(Encode.forHtmlAttribute(paramName + docId))
+                                    .append("\">");
+                        }
+                    }
+                %>
+                <tr>
+                    <th colspan="2" style="background-color: #666699;color:white;">Attachments</th>
+                    <td colspan="2">
+                        <button type="button" class="btn" id="manageAttachmentsBtn"
+                                title="Manage Attachments"
+                                data-poload="${pageContext.request.contextPath}/previewDocs.do?method=fetchTicklerDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(d.getDemographicNo()))%>&amp;ticklerId=<%=Encode.forHtmlAttribute(String.valueOf(ticklerNo))%>">
+                            <i class="glyphicon glyphicon-paperclip"></i> Manage Attachments
+                        </button>
+                        <span id="attachmentCount" class="badge"><%=attachmentCount%></span>
+                        <%=delegateInputs.toString()%>
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="2" style="vertical-align: bottom;text-align:right; padding-top:15px; border:none;">
                         <oscar:oscarPropertiesCheck property="tickler_email_enabled" value="true">
@@ -522,8 +568,71 @@
                     </td>
                 </tr>
             </table>
+            <div id="attachDocumentDisplay" style="display:none;"></div>
         </form>
     </div>
+
+    <jsp:include page="/images/spinner.jsp" flush="true"/>
+
+    <script type="text/javascript">
+        /**
+         * Tickler document attachment dialog.
+         *
+         * Loads the shared attachment picker (attachDocument.jsp) into a jQuery UI dialog. Existing
+         * attachments are pre-checked from the hidden ".delegateAttachment" inputs rendered in the
+         * tickler form. On "Save and Close" the full set of checked items is written back as
+         * ".delegateAttachment" hidden inputs, which EditTickler2Action reads to synchronise the
+         * tickler's attachments (the manager soft-deletes any that were removed).
+         */
+        jQuery(document).on('click', '#manageAttachmentsBtn', function () {
+            var $form = jQuery('#ticklerEditForm');
+            var trigger = jQuery(this);
+            var title = trigger.attr("title");
+
+            jQuery("#attachDocumentDisplay").load(trigger.data('poload'), function (response, status, xhr) {
+                if (status === "success") {
+                    // Pre-check the picker boxes for attachments already on this tickler.
+                    $form.find(".delegateAttachment").each(function () {
+                        var checkboxId = this.name + this.value;
+                        jQuery('#attachDocumentsForm').find('#' + jQuery.escapeSelector(checkboxId)).prop('checked', true);
+                    });
+                }
+            }).dialog({
+                title: title,
+                modal: true,
+                closeText: "Save and Close",
+                height: 'auto',
+                width: 'auto',
+                resizable: true,
+                open: function (event, ui) {
+                    jQuery(this).parent().css({top: 0, left: 0});
+                    var closeBtn = jQuery(this).parent().find(".ui-dialog-titlebar-close");
+                    closeBtn.removeClass("ui-button-icon-only");
+                    closeBtn.addClass("save-and-close-button");
+                    closeBtn.html("Save and Close");
+                },
+                beforeClose: function (event, ui) {
+                    // Rebuild the tickler form's attachment set from the picker's checked boxes.
+                    // attachToTickler() diffs this against the stored set, so submitting the full
+                    // current selection per type is sufficient for both adds and removals.
+                    $form.find(".delegateAttachment").remove();
+                    jQuery('#attachDocumentsForm')
+                        .find(".document_check:checked, .lab_check:checked, .form_check:checked, .eForm_check:checked, .hrm_check:checked")
+                        .each(function () {
+                            var element = jQuery(this);
+                            jQuery("<input />", {
+                                type: 'hidden',
+                                name: element.attr('name'),
+                                value: element.val(),
+                                id: "delegate_" + element.attr('name') + element.val(),
+                                "class": 'delegateAttachment'
+                            }).appendTo($form);
+                        });
+                    jQuery('#attachmentCount').text($form.find(".delegateAttachment").length);
+                }
+            });
+        });
+    </script>
 
     </body>
 </html>
