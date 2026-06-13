@@ -185,6 +185,7 @@
     <bean id="ticklerDao" class="ca.openosp.openo.commn.dao.TicklerDaoImpl" autowire="byName" />
     <bean id="ticklerCommentDao" class="ca.openosp.openo.commn.dao.TicklerCommentDaoImpl" autowire="byName" />
     <bean id="ticklerLinkDao" class="ca.openosp.openo.commn.dao.TicklerLinkDaoImpl" autowire="byName" />
+    <bean id="ticklerDocsDao" class="ca.openosp.openo.commn.dao.TicklerDocsDaoImpl" autowire="byName" />
     <bean id="ticklerUpdateDao" class="ca.openosp.openo.commn.dao.TicklerUpdateDaoImpl" autowire="byName" />
     <bean id="ticklerTextSuggestDao" class="ca.openosp.openo.commn.dao.TicklerTextSuggestDaoImpl" autowire="byName" />
     <bean id="ticklerCategoryDao" class="ca.openosp.openo.commn.dao.TicklerCategoryDaoImpl" autowire="byName" />
