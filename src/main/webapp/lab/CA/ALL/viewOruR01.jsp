@@ -112,7 +112,7 @@
             <input type="button" value="download file"
                    onclick="document.location='<%=Encode.forJavaScript(String.valueOf(viewOruR01UIBean.getContentRenderingUrl(request, true)))%>'"/>
             <hr/>
-            <%=Encode.forHtml(String.valueOf(viewOruR01UIBean.getPreviewFileHtml(request)))%>
+            <%=viewOruR01UIBean.getPreviewFileHtml(request)%>
             <%
             } else {
             %>

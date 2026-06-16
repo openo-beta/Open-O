@@ -90,4 +90,6 @@ public interface DocumentDao extends AbstractDao<Document> {
     public List<Document> findByDemographicAndDoctype(int demographicId, DocumentType documentType);
 
     public Document findByDemographicAndFilename(int demographicId, String fileName);
+
+    public List<Integer> findDocumentNosForDemographic(Integer demographicNo, List<Integer> docNos);
 }

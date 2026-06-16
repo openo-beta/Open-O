@@ -109,7 +109,7 @@
             function changeGroup(s) {
                 var newGroupNo = s.options[s.selectedIndex].value;
                 newGroupNo = s.options[s.selectedIndex].value;
-                self.location.href = "scheduleedittemplate.jsp?providerid=<%=Encode.forJavaScript(request.getParameter("providerid"))%>&providername=<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("providername") != null ? request.getParameter("providername") : "", StandardCharsets.UTF_8))%>&step=" + newGroupNo;
+                self.location.href = "scheduleedittemplate.jsp?providerid=<%=Encode.forUriComponent(request.getParameter("providerid"))%>&providername=<%=Encode.forUriComponent(request.getParameter("providername") != null ? request.getParameter("providername") : "")%>&step=" + newGroupNo;
 
             }
 

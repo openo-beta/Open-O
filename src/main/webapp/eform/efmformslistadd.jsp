@@ -237,7 +237,7 @@ Ontario, Canada
                     <tr>
                         <td>
                             <a HREF="#"
-                               ONCLICK="popupPage('efmformadd_data.jsp?fid=<%=Encode.forJavaScript(String.valueOf(curForm.get("fid")))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&appointment=<%=Encode.forJavaScript(String.valueOf(appointment))%>','<%=Encode.forJavaScript(String.valueOf(curForm.get("fid") + "_" + demographic_no))%>'); return true;"
+                               ONCLICK="popupPage('efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(curForm.get("fid")))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&appointment=<%=Encode.forUriComponent(String.valueOf(appointment))%>','<%=Encode.forJavaScript(String.valueOf(curForm.get("fid") + "_" + demographic_no))%>'); return true;"
                                TITLE='Add This eForm' OnMouseOver="window.status='Add This eForm' ; return true">
                                 <%= Encode.forHtmlContent((String) curForm.get("formName")) %>
                             </a></td>

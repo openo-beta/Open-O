@@ -41,6 +41,7 @@
 
 <!-- Classes needed for signature injection -->
 <%@page import="ca.openosp.openo.commn.model.*" %>
+<%@page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
 <%@page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
@@ -644,7 +645,7 @@
 
                             for (i = 0; i < bean.getStashSize(); i++) {
                                 rx = bean.getStashItem(i);
-                                String fullOutLine = rx.getFullOutLine().replaceAll(";", "<br />");
+                                String fullOutLine = HtmlEncodingUtils.encodeForHtmlWithSemicolonBreaks(rx.getFullOutLine());
 
                                 if (fullOutLine == null || fullOutLine.length() <= 6) {
                                     ca.openosp.openo.utility.MiscUtils.getLogger();
@@ -653,7 +654,7 @@
                         %>
                         <tr style="page-break-inside: avoid;">
                             <td colspan=2>
-                              <%=Encode.forHtml(String.valueOf(fullOutLine))%>
+                              <%=fullOutLine%>
                             </td>
                         </tr>
                         <%

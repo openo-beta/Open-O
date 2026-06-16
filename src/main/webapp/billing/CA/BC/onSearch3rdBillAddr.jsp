@@ -278,12 +278,12 @@
         <script language="JavaScript">
             <!--
             function last() {
-                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/BC/onSearch3rdBillAddr.jsp?param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(param,"UTF-8")))%>&param2=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(param2,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
+                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/BC/onSearch3rdBillAddr.jsp?param=<%=Encode.forUriComponent(String.valueOf(param))%>&param2=<%=Encode.forUriComponent(String.valueOf(param2))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>";
                 document.nextform.submit();
             }
 
             function next() {
-                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/BC/onSearch3rdBillAddr.jsp?param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(param,"UTF-8")))%>&param2=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(param2,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
+                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/BC/onSearch3rdBillAddr.jsp?param=<%=Encode.forUriComponent(String.valueOf(param))%>&param2=<%=Encode.forUriComponent(String.valueOf(param2))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>";
                 document.nextform.submit();
             }
 

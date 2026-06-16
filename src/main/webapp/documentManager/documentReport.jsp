@@ -578,7 +578,7 @@
                                         } else { // curdoc get status
                                         %>
                                         <a style="color:red; padding:0;"
-                                           href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=Encode.forJavaScript(Encode.forUriComponent(String.valueOf(curdoc.getDocId())))%>&function=<%=Encode.forJavaScript(Encode.forUriComponent(module))%>&functionid=<%=Encode.forJavaScript(Encode.forUriComponent(moduleid))%>&viewstatus=<%=Encode.forJavaScript(Encode.forUriComponent(viewstatus))%>','<%=Encode.forJavaScript(curdoc.getDescription())%>')"
+                                           href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=Encode.forUriComponent(String.valueOf(curdoc.getDocId()))%>&function=<%=Encode.forUriComponent(module)%>&functionid=<%=Encode.forUriComponent(moduleid)%>&viewstatus=<%=Encode.forUriComponent(viewstatus)%>','<%=Encode.forJavaScript(curdoc.getDescription())%>')"
                                            class="btn btn-link" title="Delete">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -605,7 +605,7 @@
                                             </a>
                                             <% } else { // curdoc get status %>
                                             <a style="color:red;padding:0;"
-                                                href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=Encode.forJavaScript(Encode.forUriComponent(String.valueOf(curdoc.getDocId())))%>&function=<%=Encode.forJavaScript(Encode.forUriComponent(module))%>&functionid=<%=Encode.forJavaScript(Encode.forUriComponent(moduleid))%>&viewstatus=<%=Encode.forJavaScript(Encode.forUriComponent(viewstatus))%>','<%=Encode.forJavaScript(curdoc.getDescription())%>')"
+                                                href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=Encode.forUriComponent(String.valueOf(curdoc.getDocId()))%>&function=<%=Encode.forUriComponent(module)%>&functionid=<%=Encode.forUriComponent(moduleid)%>&viewstatus=<%=Encode.forUriComponent(viewstatus)%>','<%=Encode.forJavaScript(curdoc.getDescription())%>')"
                                                 class="btn btn-link" title="Delete">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -634,7 +634,7 @@
                                         </a>
                                         <%} else {%>
                                         <a href="javascript:void(0)"
-                                           onclick="popup1(350, 500, 'editDocument.jsp?editDocumentNo=<%=Encode.forJavaScript(String.valueOf(curdoc.getDocId()))%>&function=<%=Encode.forUriComponent(module)%>&functionid=<%=Encode.forUriComponent(moduleid)%>', 'EditDoc')"
+                                           onclick="popup1(350, 500, 'editDocument.jsp?editDocumentNo=<%=Encode.forUriComponent(String.valueOf(curdoc.getDocId()))%>&function=<%=Encode.forUriComponent(module)%>&functionid=<%=Encode.forUriComponent(moduleid)%>', 'EditDoc')"
                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.btnEdit"/>"
                                            class="btn btn-link" style="padding:0;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

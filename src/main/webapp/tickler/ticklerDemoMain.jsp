@@ -374,7 +374,7 @@
 
 
             function generateRenalLabReq(demographicNo) {
-                var url = '<%=request.getContextPath()%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>&fromSession=true';
+                var url = '<%=request.getContextPath()%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographicNo + '&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(session.getAttribute("user")))%>&fromSession=true';
                 jQuery.ajax({
                     url: '<%=request.getContextPath()%>/renal/Renal.do?method=createLabReq&demographicNo=' + demographicNo,
                     async: false,
@@ -769,13 +769,13 @@
                                                value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>"> <font size="1"
                                                                              face="Arial, Helvetica, sans-serif"> <a
                             href="#"
-                            onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnBegin"/>:</a></font></div>
+                            onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=admission&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnBegin"/>:</a></font></div>
                 </td>
                 <td width="30%"><input type="text" name="xml_appointment_date"
                                        value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>"> <font size="1"
                                                                                 face="Arial, Helvetica, sans-serif"><a
                         href="#"
-                        onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnEnd"/>:</a></font></td>
+                        onClick="openBrWindow('<%= request.getContextPath() %>/billing/billingCalendarPopup.jsp?type=end&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnEnd"/>:</a></font></td>
                 <td width="20%">
                     <div align="right"><input type="hidden" name="demoview"
                                               value="<%=Encode.forHtmlAttribute(String.valueOf(demoview))%>"> <input type="hidden" name="Submit"
@@ -901,12 +901,12 @@
                             <TD ROWSPAN="1" class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>">
                                 <%if (Boolean.parseBoolean(OscarProperties.getInstance().getProperty("tickler_edit_enabled"))) {%>
                                 <a href=#
-                                   onClick="popupPage(600,800, '<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forJavaScript(String.valueOf(t.getId()))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.editTickler"/></a>
+                                   onClick="popupPage(600,800, '<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forUriComponent(String.valueOf(t.getId()))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.editTickler"/></a>
                                 <% } %>
                             </TD>
                             <TD ROWSPAN="1" class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><a
                                     href=#
-                                    onClick="popupPage(600,800,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(t.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(d.getLastName()))%>
+                                    onClick="popupPage(600,800,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(t.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(d.getLastName()))%>
                                 ,<%=Encode.forHtml(String.valueOf(d.getFirstName()))%>
                             </a></TD>
                             <TD ROWSPAN="1" class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><%=Encode.forHtml(String.valueOf(provider))%>
@@ -1030,14 +1030,14 @@
                                     href="javascript:ClearAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnClearAll"/></a> &nbsp; &nbsp; &nbsp;
                                 &nbsp; &nbsp; <input type="button" name="button"
                                                      value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnAddTickler"/>"
-                                                     onClick="popupPage('400','600', 'ticklerAdd.jsp?updateParent=true&parentAjaxId=<%=Encode.forJavaScript(String.valueOf(parentAjaxId))%>&bFirstDisp=false&messageID=null&demographic_no=<%=Encode.forJavaScript(String.valueOf(d.getDemographicNo()))%>&chart_no=<%=Encode.forJavaScript(String.valueOf(d.getChartNo()))%>&name=<%=Encode.forJavaScript(String.valueOf(d.getDisplayName()))%>')"
+                                                     onClick="popupPage('400','600', 'ticklerAdd.jsp?updateParent=true&parentAjaxId=<%=Encode.forUriComponent(String.valueOf(parentAjaxId))%>&bFirstDisp=false&messageID=null&demographic_no=<%=Encode.forUriComponent(String.valueOf(d.getDemographicNo()))%>&chart_no=<%=Encode.forUriComponent(String.valueOf(d.getChartNo()))%>&name=<%=Encode.forUriComponent(String.valueOf(d.getDisplayName()))%>')"
                                                      class="sbttn"> <input type="hidden" name="submit_form"
                                                                            value=""> <% if (ticklerview.compareTo("D") == 0) {%>
                                 <input
                                         type="button"
-                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnErase"/>"
+                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnRestore"/>"
                                         class="sbttn"
-                                        onclick="document.forms['ticklerform'].submit_form.value='Erase Completely'; document.forms['ticklerform'].submit();">
+                                        onclick="document.forms['ticklerform'].submit_form.value='Activate'; document.forms['ticklerform'].submit();">
                                 <%} else {%> <input type="button"
                                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerDemoMain.btnComplete"/>"
                                                     class="sbttn"

@@ -31,6 +31,7 @@
 <%@page import="ca.openosp.openo.commn.model.Appointment" %>
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
@@ -169,6 +170,12 @@
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
 
+        <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls and iframes --%>
+        <script type="text/javascript">
+            var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(bean.getDemographicNo())) %>';
+        </script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/oscarRx/js/rxSessionInterceptor.js"></script>
+
         <script type="text/javascript">
 
             function setComment() {
@@ -190,7 +197,7 @@
                 var url = "<%= request.getContextPath() %>/oscarRx/AddRxComment.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
-                var params = "scriptNo=<%=Encode.forJavaScript(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
+                var params = "scriptNo=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
                 new Ajax.Request(url, {method: 'post', parameters: params});
                 frames['preview'].document.getElementById('additNotes').innerHTML = document.getElementById('additionalNotes').value;
             }
@@ -309,13 +316,14 @@
                                 <td width=440px>
                                     <div class="DivContentPadding">
                                         <iframe id=preview name=preview width=440px height=580px
-                                                src="oscarRx/Preview.jsp?rePrint=<%=Encode.forUriComponent(String.valueOf(reprint))%>"
+                                                src="oscarRx/Preview.jsp?rePrint=<%=Encode.forUriComponent(String.valueOf(reprint))%>&demographicNo=<%=Encode.forUriComponent(Integer.toString(bean.getDemographicNo()))%>"
                                                 align=center border=0 frameborder=0></iframe>
                                     </div>
                                 </td>
 
-                                <td valign=top><form action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
+                                <td valign=top><form name="RxClearPendingForm" action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
                                     <input type="hidden" name="action" id="action" value=""/>
+                                    <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(bean.getDemographicNo()))%>"/>
                                 </form>
                                     <script language=javascript>
                                         function clearPending(action) {
@@ -382,7 +390,7 @@
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 200px"
-                                                             onClick="javascript:clearPending('close');"/></span></td>
+                                                             onClick="clearPending('close');"/></span></td>
                                         </tr>
 
                                         <%if (request.getAttribute("rePrint") == null) {%>

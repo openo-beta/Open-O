@@ -51,4 +51,6 @@ public interface PatientLabRoutingDao extends AbstractDao<PatientLabRouting> {
 
     public List<Integer> findDemographicIdsSince(Date date);
 
+    public List<Integer> findLabNosForDemographic(Integer demographicNo, List<Integer> labNos);
+
 }

@@ -3,6 +3,7 @@
 
 package ca.openosp.openo.commn.dao;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -342,6 +343,18 @@ public class PatientLabRoutingDaoImpl extends AbstractDaoImpl<PatientLabRouting>
         List<Integer> results = q.getResultList();
 
         return results;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Integer> findLabNosForDemographic(Integer demographicNo, List<Integer> labNos) {
+        if (labNos == null || labNos.isEmpty()) return Collections.emptyList();
+        Query query = entityManager.createQuery(
+                "SELECT r.labNo FROM PatientLabRouting r " +
+                "WHERE r.demographicNo = :demographicNo AND r.labNo IN :labNos");
+        query.setParameter("demographicNo", demographicNo);
+        query.setParameter("labNos", labNos);
+        return query.getResultList();
     }
 
 }

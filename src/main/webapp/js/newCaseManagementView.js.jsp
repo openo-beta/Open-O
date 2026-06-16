@@ -133,6 +133,14 @@
 
     }
 
+    function openTemplate(value) {
+        if (value === "-1") return;
+        var url = (value === "__new__")
+            ? ctx + "/admin/providertemplate.jsp"
+            : ctx + "/admin/providertemplate.jsp?dboperation=Edit&name=" + encodeURIComponent(value);
+        popupPage(700, 700, "Templates", url);
+    }
+
     function urlencode(str) {
         var ns = (navigator.appName == "Netscape") ? 1 : 0;
         if (ns) {

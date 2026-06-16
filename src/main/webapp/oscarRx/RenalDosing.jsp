@@ -236,9 +236,9 @@ Clcr = {(140 - <%=Encode.forHtml(String.valueOf(age))%> ) X <%=Encode.forHtml(St
       -->
         <table class="equation">
             <tr>
-                <th rowspan=2 valign="middle">Clcr <%=Encode.forHtml(String.valueOf(setNA(equate, Clcr)))%> =</th>
+                <th rowspan=2 valign="middle">Clcr <%=setNA(equate, Clcr)%> =</th>
                 <td align="center">
-                    (140 - <%=Encode.forHtml(String.valueOf(setNA(ageb, age)))%>[age] ) X <%=Encode.forHtml(String.valueOf(setNA(weightb, weight)))%>
+                    (140 - <%=setNA(ageb, age)%>[age] ) X <%=setNA(weightb, weight)%>
                     <a href="javascript: function myFunction() {return false; }"
                        onclick="popup(500,1000,'<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Renal Dosing&amp;demographic_no=<%=Encode.forUriComponent(demographicNo)%>','dddsfds'); return false;">
                         [kg <%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(wtDate, "yyyy-MMM-dd")))%>]
@@ -250,9 +250,9 @@ Clcr = {(140 - <%=Encode.forHtml(String.valueOf(age))%> ) X <%=Encode.forHtml(St
                 <%}%>
             </tr>
             <tr>
-                <td align="center" style="border-top: 2px black solid;"><%=Encode.forHtml(String.valueOf(setNA(sCrb, sCr)))%> sCr
+                <td align="center" style="border-top: 2px black solid;"><%=setNA(sCrb, sCr)%> sCr
                     <a href="javascript: function myFunction() {return false; }"
-                       onclick="popup(500,1000,'<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Renal Dosing&amp;demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicNo))%>','dddsfds'); return false;">
+                       onclick="popup(500,1000,'<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=Renal Dosing&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>','dddsfds'); return false;">
                         [umol/L <%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(sCrDate, "yyyy-MMM-dd")))%>]
                     </a>
                 </td>

@@ -101,7 +101,7 @@
             }
 
             function goCaption() {
-                //self.location.href = "reportFormCaption.jsp?id=<%=Encode.forJavaScript(String.valueOf(reportId))%>&tableName=<%=Encode.forJavaScript(String.valueOf(tableName))%>";
+                //self.location.href = "reportFormCaption.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>&tableName=<%=Encode.forUriComponent(String.valueOf(tableName))%>";
             }
 
             function goPage(id) {
@@ -139,7 +139,7 @@
                                 String color = i % 2 == 0 ? "#EEEEFF" : "";
                                 String captionName = (String) vecTableField.get(i);
                                 if (captionName.matches(strMatchConfig)) continue;
-                                captionName = Encode.forHtml(captionName);
+                                
                         %>
                         <option value="<%=Encode.forHtmlAttribute(String.valueOf(captionName))%>"><%=Encode.forHtml(String.valueOf(captionName))%>
                         </option>
@@ -165,7 +165,7 @@
                                                        ondblclick="javascript:onSelField();">
                     <% for (int i = 0; i < vecConfigField.size(); i++) {
                         String captionName = (String) vecConfigField.get(i);
-                        captionName = Encode.forHtml(captionName);
+                        
                     %>
                     <option value="<%=Encode.forHtmlAttribute(String.valueOf(captionName))%>"><%=Encode.forHtml(String.valueOf(captionName))%>
                     </option>

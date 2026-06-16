@@ -40,6 +40,9 @@ __pycache__/
 .editorconfig
 .claude
 CLAUDE.md
+.classpath
+.factorypath
+.project
 
 # Docusaurus
 /website/node_modules/

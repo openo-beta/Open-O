@@ -302,7 +302,7 @@
                                     <td>
                                         <input type="submit" name="submit" value="Add Allergy" class="ControlPushButton" onclick="return doSubmit()"/>
                                         <input type=button class="ControlPushButton" id="cancelAddReactionButton"
-                                               onclick="window.location='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>'"
+                                               onclick="window.location='<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp?demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.getDemographicNo()))%>'"
                                                value="Cancel"/>
                                     </td>
                                 </tr>

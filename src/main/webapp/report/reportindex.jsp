@@ -291,13 +291,13 @@
                                                                            ONCLICK="ogo2()">05</a> <% } %>
                 </td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('startDate')[0].value", StandardCharsets.UTF_8)))%>')">
+                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forUriComponent(String.valueOf("&formdatebox=document.getElementsByName('startDate')[0].value"))%>')">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formFrom"/></a>
                         <%-- any early default start date should suffice for reporting all --%>
                     <INPUT TYPE="text" NAME="startDate" VALUE="<%=Encode.forHtmlAttribute(String.valueOf(today))%>" size='10'>
                 </td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('endDate')[0].value", StandardCharsets.UTF_8)))%>')">
+                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forUriComponent(String.valueOf("&formdatebox=document.getElementsByName('endDate')[0].value"))%>')">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formTo"/></a> <INPUT TYPE="text"
                                                                                NAME="endDate" VALUE="<%=Encode.forHtmlAttribute(String.valueOf(today))%>"
                                                                                size='10'></td>
@@ -366,10 +366,10 @@
                     <sup>*</sup><a HREF="#" ONCLICK="go('all')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnAllAppt"/></a><br>&nbsp;&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.chkRostered"/> <input type="checkbox" id="rosteredOnly" value="true">
                 </td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('asdate')[0].value", StandardCharsets.UTF_8)))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formFrom"/></a> <input type='text' name="asdate"
+                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forUriComponent(String.valueOf("&formdatebox=document.getElementsByName('asdate')[0].value"))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formFrom"/></a> <input type='text' name="asdate"
                                                                        VALUE="<%=Encode.forHtmlAttribute(String.valueOf(today))%>" size=10></td>
                 <td><a HREF="#"
-                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('aedate')[0].value", StandardCharsets.UTF_8)))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formTo"/> </a> <input type='text' name="aedate"
+                       onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forUriComponent(String.valueOf("&formdatebox=document.getElementsByName('aedate')[0].value"))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formTo"/> </a> <input type='text' name="aedate"
                                                                       VALUE="<%=Encode.forHtmlAttribute(String.valueOf(today))%>" size=10></td>
                 <td><select name="sTime">
                     <%
@@ -643,7 +643,7 @@
                     %> <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.msgStart"/>: <input name="nsdate" type="input" size="8"
                                                                                  id="NoShowDate" value="<%=Encode.forHtmlAttribute(String.valueOf(NoShowEDate))%>"> <a
                         HREF="#"
-                        onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forJavaScript(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&formdatebox=document.getElementsByName('nsdate')[0].value", StandardCharsets.UTF_8)))%>')"><img
+                        onClick="popupPage(310,430,'<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/report/reportindex.jsp&year=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.YEAR)))%>&month=<%=Encode.forUriComponent(String.valueOf(now.get(Calendar.MONTH)+1))%>&param=<%=Encode.forUriComponent(String.valueOf("&formdatebox=document.getElementsByName('nsdate')[0].value"))%>')"><img
                         title=Calendar " src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"><a>
 
 

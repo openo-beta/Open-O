@@ -153,14 +153,12 @@
                                         <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicCity()))%>&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicProvince()))%>&nbsp;&nbsp;
                                         <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicPostal()))%>
                                         <% if (((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo() != null && !((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo().equals("")) { %>
-                                        <br><bean:message
-                                            key="RxPreview.PractNo"/>:<%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo()))%>
+                                        <br><fmt:message key="RxPreview.PractNo"/>:<%= Encode.forHtml(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo()) %>
                                         <% } %>
                                         <br>
                                         <fmt:message key="RxPreview.msgTel"/>: ${requestScope.phone}<br>
                                         <oscar:oscarPropertiesCheck property="RXFAX" value="yes">
-                                            <bean:message
-                                                    key="RxPreview.msgFax"/>: <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicFax()))%>
+                                            <fmt:message key="RxPreview.msgFax"/>: <%= Encode.forHtml(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicFax()) %>
                                             <br>
                                         </oscar:oscarPropertiesCheck>
                                     </c:when>

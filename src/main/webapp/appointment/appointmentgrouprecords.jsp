@@ -559,8 +559,8 @@
                         <%=bEdit ? (otherAppt.getProperty(provider.getProviderNo()+"two")
 		!= null ? otherAppt.getProperty(provider.getProviderNo()+"two") : "") : ""%>
                                                  onclick="onCheck(this)"></td>
-                <td nowrap><%=Encode.forHtml(String.valueOf(otherAppt.getProperty(provider.getProviderNo() + "appt")
-                        != null ? otherAppt.getProperty(provider.getProviderNo() + "appt") : ""))%>
+                <td nowrap><%=otherAppt.getProperty(provider.getProviderNo() + "appt")
+                        != null ? otherAppt.getProperty(provider.getProviderNo() + "appt") : ""%>
                         <%--
                     // <input type="text" name="orig<%=i%>" value="<%=Encode.forHtmlAttribute(bDefProvider? request.getParameter("reason"):"")%>" style="width:100%">
                 --%> &nbsp;

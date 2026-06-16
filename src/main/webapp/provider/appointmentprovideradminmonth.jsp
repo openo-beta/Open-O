@@ -377,7 +377,7 @@
             function selectprovider(s) {
                 if (s.options[s.selectedIndex].value.indexOf("_grp_") != -1) {
                     var newGroupNo = s.options[s.selectedIndex].value.substring(5);
-                    popupOscarRx(10, 10, "providercontrol.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&start_hour=<%=Encode.forJavaScript(String.valueOf(startHour))%>&end_hour=<%=Encode.forJavaScript(String.valueOf(endHour))%>&every_min=<%=Encode.forJavaScript(String.valueOf(everyMin))%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "<%=Encode.forJavaScript(String.valueOf(eformIds.toString()))%><%=Encode.forJavaScript(String.valueOf(ectFormNames.toString()))%>");
+                    popupOscarRx(10, 10, "providercontrol.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&start_hour=<%=Encode.forUriComponent(String.valueOf(startHour))%>&end_hour=<%=Encode.forUriComponent(String.valueOf(endHour))%>&every_min=<%=Encode.forUriComponent(String.valueOf(everyMin))%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "<%=Encode.forJavaScript(String.valueOf(eformIds.toString()))%><%=Encode.forJavaScript(String.valueOf(ectFormNames.toString()))%>");
                 } else {
                     if (self.location.href.lastIndexOf("&providerview=") > 0)
                         a = self.location.href.substring(0, self.location.href.lastIndexOf("&providerview="));
@@ -514,9 +514,9 @@
                         var providerview = "<%=Encode.forJavaScript(String.valueOf(providerview))%>";
                         if (providerview.indexOf("_grp_") != -1) {
 
-                            window.open("providercontrol.jsp?year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=1&view=<%=Encode.forJavaScript(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=month&dboperation=searchappointmentmonth" + "&site=" + siteName + "&mygroup_no=" + newGroupNo, "_self");
+                            window.open("providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=1&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=month&dboperation=searchappointmentmonth" + "&site=" + siteName + "&mygroup_no=" + newGroupNo, "_self");
                         } else {
-                            window.open("providercontrol.jsp?year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=1&view=<%=Encode.forJavaScript(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=month&dboperation=searchappointmentmonth" + "&site=" + siteName + "&providerview=" + providerview, "_self");
+                            window.open("providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=1&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=month&dboperation=searchappointmentmonth" + "&site=" + siteName + "&providerview=" + providerview, "_self");
                         }
                     }
                 </script>
@@ -951,13 +951,13 @@
                         popupOscarRx(700, 687, '<%= request.getContextPath() %>/admin/admin.jsp');
                         return false;  //run code for 'A'dmin
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.billingShortcut"/> :
-                        popupOscarRx(600, 1024, '<%= request.getContextPath() %>/billing/CA/<%=Encode.forJavaScript(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>');
+                        popupOscarRx(600, 1024, '<%= request.getContextPath() %>/billing/CA/<%=Encode.forUriComponent(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>');
                         return false;  //code for 'B'illing
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.calendarShortcut"/> :
-                        popupOscarRx(425, 430, '<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/provider/providercontrol.jsp&year=<%=Encode.forJavaScript(String.valueOf(strYear))%>&month=<%=Encode.forJavaScript(String.valueOf(strMonth))%>&param=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday","UTF-8")))%>');
+                        popupOscarRx(425, 430, '<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/provider/providercontrol.jsp&year=<%=Encode.forUriComponent(String.valueOf(strYear))%>&month=<%=Encode.forUriComponent(String.valueOf(strMonth))%>&param=<%=Encode.forUriComponent(String.valueOf("&view=0&displaymode=day&dboperation=searchappointmentday"))%>');
                         return false;  //run code for 'C'alendar
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.edocShortcut"/> :
-                        popupOscarRx('700', '1024', '<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&curUser=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>', 'edocView');
+                        popupOscarRx('700', '1024', '<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&curUser=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>', 'edocView');
                         return false;  //run code for e'D'oc
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.resourcesShortcut"/> :
                         popupOscarRx(550, 687, '<%=Encode.forJavaScript(String.valueOf(resourcebaseurl))%>');
@@ -970,29 +970,29 @@
                         return false;
                     }
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.labShortcut"/> :
-                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>', '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.lab"/>');
+                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>', '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.lab"/>');
                         return false;  //run code for 'L'ab
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.msgShortcut"/> :
-                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname, StandardCharsets.UTF_8)))%>');
+                        popupOscarRx(600, 1024, '<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&userName=<%=Encode.forUriComponent(String.valueOf(userfirstname+" "+userlastname))%>');
                         return false;  //run code for 'M'essage
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.monthShortcut"/> :
-                        window.open("providercontrol.jsp?year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=1&view=<%=Encode.forJavaScript(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=month&dboperation=searchappointmentmonth", "_self");
+                        window.open("providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=1&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=month&dboperation=searchappointmentmonth", "_self");
                         return false;  //run code for Mo'n'th
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.conShortcut"/> :
-                        popupOscarRx(625, 1024, '<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname, StandardCharsets.UTF_8)))%>');
+                        popupOscarRx(625, 1024, '<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&userName=<%=Encode.forUriComponent(String.valueOf(userfirstname+" "+userlastname))%>');
                         return false;  //run code for c'O'nsultation
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.reportShortcut"/> :
                         popupOscarRx(650, 1024, '<%= request.getContextPath() %>/report/reportindex.jsp', 'reportPage');
                         return false;  //run code for 'R'eports
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.prefShortcut"/> : {
-                        popupOscarRx(715, 680, 'providerpreference.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&start_hour=<%=Encode.forJavaScript(String.valueOf(startHour))%>&end_hour=<%=Encode.forJavaScript(String.valueOf(endHour))%>&every_min=<%=Encode.forJavaScript(String.valueOf(everyMin))%>&mygroup_no=<%=Encode.forJavaScript(String.valueOf(mygroupno))%>'); //run code for 'P'references
+                        popupOscarRx(715, 680, 'providerpreference.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&start_hour=<%=Encode.forUriComponent(String.valueOf(startHour))%>&end_hour=<%=Encode.forUriComponent(String.valueOf(endHour))%>&every_min=<%=Encode.forUriComponent(String.valueOf(everyMin))%>&mygroup_no=<%=Encode.forUriComponent(String.valueOf(mygroupno))%>'); //run code for 'P'references
                         return false;
                     }
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.searchShortcut"/> :
                         popupOscarRx(550, 687, '<%= request.getContextPath() %>/demographic/search.jsp');
                         return false;  //run code for 'S'earch
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.dayShortcut"/> :
-                        window.open("providercontrol.jsp?year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&day=<%=Encode.forJavaScript(String.valueOf(curDay))%>&view=<%=Encode.forJavaScript(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=day&dboperation=searchappointmentday", "_self");
+                        window.open("providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(curDay))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=day&dboperation=searchappointmentday", "_self");
                         return false;  //run code for 'T'oday
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.viewShortcut"/> : {
                         <% if(request.getParameter("viewall")!=null && request.getParameter("viewall").equals("1") ) { %>

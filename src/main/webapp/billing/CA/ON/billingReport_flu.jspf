@@ -104,7 +104,7 @@ if(bs.size() == 0) {
 	<tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">
 		<TD align="left" width="20%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif"><a href=#
-			onClick='popupPage(700,720, "billingOB2.jsp?billing_no=<%=Encode.forJavaScript(String.valueOf(bId))%>&dboperation=search_bill&hotclick=0")'
+			onClick='popupPage(700,720, "billingOB2.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(bId))%>&dboperation=search_bill&hotclick=0")'
 			title="<%=Encode.forHtmlAttribute(String.valueOf(reason))%>"> <%=Encode.forHtml(String.valueOf(bId))%></a></font></b></TD>
 		<TD align="left" width="20%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(demoName))%></font></b></TD>
@@ -131,7 +131,7 @@ if(bs.size() == 0) {
 	<tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">
 		<TD align="left" width="20%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif"><a href=#
-			onClick='popupPage(700,720, "<%= request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forJavaScript(String.valueOf(bId))%>&dboperation=search_bill&hotclick=0")'
+			onClick='popupPage(700,720, "<%= request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forUriComponent(String.valueOf(bId))%>&dboperation=search_bill&hotclick=0")'
 			title="<%=Encode.forHtmlAttribute(String.valueOf(reason))%>"> <%=Encode.forHtml(String.valueOf(bId))%></a></font></b></TD>
 		<TD align="left" width="20%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(demoName))%></font></b></TD>

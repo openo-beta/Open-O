@@ -262,7 +262,7 @@
             function validate(form, writeToEncounter) {
                 if (validateDate(form) <%=caisiEnabled?"&& validateSelectedProgram()":""%>) {
                     if (writeToEncounter) {
-                        window.open('<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(d.getDemographicNo()))%>&providerNo=<%=Encode.forJavaScript(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&curDate=<%=Encode.forJavaScript(String.valueOf(curYear))%>-<%=Encode.forJavaScript(String.valueOf(curMonth))%>-<%=Encode.forJavaScript(String.valueOf(curDay))%>&encType=&status=', '', 'height=700,width=960');
+                        window.open('<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(d.getDemographicNo()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&curDate=<%=Encode.forUriComponent(String.valueOf(curYear))%>-<%=Encode.forUriComponent(String.valueOf(curMonth))%>-<%=Encode.forUriComponent(String.valueOf(curDay))%>&encType=&status=', '', 'height=700,width=960');
                     }
                     form.submit();
                     return true;
@@ -276,9 +276,10 @@
             }
 
             function validateDate(form) {
+                let errorDiv = document.getElementById("error");
                 if (form.xml_appointment_date.value === "" || !IsDate(form.xml_appointment_date.value)) {
-                    document.getElementById("error").insertAdjacentText("beforeend", "<fmt:message key="tickler.ticklerAdd.msgMissingDate"/>");
-                    document.getElementById("error").style.display = 'block';
+                    errorDiv.textContent = "<fmt:message key="tickler.ticklerAdd.msgMissingDate"/>";
+                    errorDiv.style.display = 'block';
                     return false;
                 } else {
                     return true;
@@ -308,14 +309,14 @@
               </svg>
               <fmt:message key="tickler.ticklerEdit.title"/>
             </h2>
-            <div id="error" class="alert alert-error" style="display:none;"></div>
+            <div id="error" class="alert alert-danger" style="display:none;"></div>
 
             <table class="table table-condensed">
 
                 <tr>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.demographicName"/></th>
                     <td><a href="javascript:void(0)"
-                           onClick="popupPage(600,800,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(d.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')">
+                           onClick="popupPage(600,800,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(d.getDemographicNo()))%>&displaymode=edit&dboperation=search_detail')">
                         <%=Encode.forHtmlContent(d.getLastName())%>,<%=Encode.forHtmlContent(d.getFirstName())%>
                     </a></td>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.phoneNumbers"/></th>
