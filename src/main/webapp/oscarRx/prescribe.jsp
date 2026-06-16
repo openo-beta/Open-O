@@ -232,14 +232,12 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
                     String prnStr="";
                     if(prn) { prnStr="prn"; }
 
-                drugName=drugName.replace("'", "\\'");
-                drugName=drugName.replace("\"","\\\"");
                 byte[] drugNameBytes = drugName.getBytes("ISO-8859-1");
                 drugName= new String(drugNameBytes, "UTF-8");
                 String fieldSetId = "set_" + rand;
 %>
 
-<fieldset style="margin-top:2px;" id="<%=Encode.forHtmlAttribute(String.valueOf(fieldSetId))%>">
+<fieldset style="margin-top:2px;" id="<%=Encode.forHtmlAttribute(String.valueOf(fieldSetId))%>" data-drug-ref-id="<%=Encode.forHtmlAttribute(String.valueOf(DrugReferenceId))%>">
     <a tabindex="-1" href="javascript:void(0);"  style="float:right;margin-left:5px;margin-top:0px;padding-top:0px;" onclick="removePrescribingDrug(<%=Encode.forJavaScript(String.valueOf(fieldSetId))%>, <%=Encode.forJavaScript(String.valueOf(DrugReferenceId))%>);"><img src='<c:out value="${ctx}/images/close.png"/>' border="0"></a>
     <a tabindex="-1" href="javascript:void(0);"  style="float:right;;margin-left:5px;margin-top:0px;padding-top:0px;" title="Add to Favorites" onclick="addFav('<%=Encode.forJavaScript(String.valueOf(rand))%>','<%=Encode.forJavaScript(String.valueOf(drugName))%>')">F</a>
     <a tabindex="-1" href="javascript:void(0);" style="float:right;margin-top:0px;padding-top:0px;" onclick="$('rx_more_<%=Encode.forJavaScript(String.valueOf(rand))%>').toggle();">  <span id="moreLessWord_<%=Encode.forJavaScript(String.valueOf(rand))%>" onclick="updateMoreLess(id)" >more</span> </a>
@@ -750,7 +748,7 @@ List<RxPrescriptionData.Prescription> listRxDrugs=(List)request.getAttribute("li
 
 
         <script type="text/javascript">
-            $('drugName_'+'<%=Encode.forJavaScript(String.valueOf(rand))%>').value=decodeURIComponent(encodeURIComponent('<%=Encode.forJavaScript(String.valueOf(drugName))%>'));
+            $('drugName_'+'<%=Encode.forJavaScript(String.valueOf(rand))%>').value='<%=Encode.forJavaScript(String.valueOf(drugName))%>';
             calculateRxData('<%=Encode.forJavaScript(String.valueOf(rand))%>');
             handleEnter=function handleEnter(inField, ev){
                 var charCode;

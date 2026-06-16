@@ -553,7 +553,11 @@ public class RxPrintPreview2Action extends ActionSupport {
         addressJoiner.add(pharmacy.getName());
         addressJoiner.add(pharmacy.getAddress());
         addressJoiner.add(pharmacy.getCity() + ", " + pharmacy.getProvince() + " " + pharmacy.getPostalCode());
-        addressJoiner.add("Tel: " + pharmacy.getPhone1() + " " + pharmacy.getPhone2());
+        String tel = "Tel: " + pharmacy.getPhone1();
+        if (pharmacy.getPhone2() != null && !pharmacy.getPhone2().isEmpty()) {
+            tel += " " + pharmacy.getPhone2();
+        }
+        addressJoiner.add(tel);
         addressJoiner.add("Fax: " + pharmacy.getFax());
         if (pharmacy.getEmail() != null && !pharmacy.getEmail().isEmpty()) {
             addressJoiner.add("Email: " + pharmacy.getEmail());
