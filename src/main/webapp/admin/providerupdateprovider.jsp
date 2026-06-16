@@ -555,7 +555,7 @@
                                     billCode = (String) keys.nextElement();
                                     codeDesc = billCenter.getAllBillCenter().getProperty(billCode);
                             %>
-                            <option value="<%= billCode %>"
+                            <option value="<%= Encode.forHtmlAttribute(billCode) %>"
                                     <%=currentBillCode.compareTo(billCode) == 0 ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(codeDesc))%>
                             </option>
                             <%

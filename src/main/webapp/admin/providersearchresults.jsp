@@ -168,7 +168,7 @@
     <table>
         <tr>
             <td style="text-align:left"><i><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.search.keywords"/></i>
-                : <%=Encode.forHtml(keyword)%>
+                : <%=Encode.forHtmlContent(keyword)%>
             </td>
         </tr>
     </table>

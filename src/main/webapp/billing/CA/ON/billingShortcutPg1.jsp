@@ -120,7 +120,8 @@
     if (request.getParameter("xml_provider") != null) providerview = request.getParameter("xml_provider");
     // get patient's detail
     String errorFlag = "";
-    String warningMsg = "", errorMsg = "";
+    List<String> warningMsgs = new ArrayList<String>();
+    List<String> errorMsgs = new ArrayList<String>();
     String r_doctor = "", r_doctor_ohip = "";
     String demoFirst = "", demoLast = "", demoHIN = "", demoDOB = "", demoDOBYY = "", demoDOBMM = "", demoDOBDD = "", demoHCTYPE = "";
 
@@ -160,14 +161,14 @@
         demoDOB = demoDOBYY + demoDOBMM + demoDOBDD;
 
         if (demo.getHin() == null || demo.getHin().equals("")) {
-            warningMsg += "<br><b><font color='orange'>Warning: The patient does not have a valid HIN. </font></b><br>";
+            warningMsgs.add("The patient does not have a valid HIN.");
         }
         if (r_doctor_ohip != null && r_doctor_ohip.length() > 0 && r_doctor_ohip.length() != 6) {
-            warningMsg += "<br><font color='orange'>Warning: the referral doctor's no is wrong. </font><br>";
+            warningMsgs.add("The referral doctor's no is wrong.");
         }
         if (demoDOB.length() != 8) {
             errorFlag = "1";
-            errorMsg = errorMsg + "<br><b><font color='red'>Error: The patient does not have a valid DOB. </font></b><br>";
+            errorMsgs.add("The patient does not have a valid DOB.");
         }
     }
 
@@ -396,9 +397,6 @@
             propPremium.setProperty(pr.getServiceCode(), "A");
         }
     }
-    // create msg
-    msg += errorMsg + warningMsg;
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -771,8 +769,14 @@
                     <tr bgcolor="#33CCCC">
                         <td nowrap bgcolor="#FFCC99" width="10%" align="center"><%=Encode.forHtml(String.valueOf(demoname))%>
                         </td>
-                        <td bgcolor="#99CCCC" align="center"><font color="black"><%=msg%>
-                        </font>
+                        <td bgcolor="#99CCCC" align="center">
+                            <font color="black"><%=Encode.forHtmlContent(msg)%></font>
+                            <% for (String errorText : errorMsgs) { %>
+                                <br/><span style="color: red;">Error: <%=Encode.forHtmlContent(errorText)%></span><br/>
+                            <% } %>
+                            <% for (String warningText : warningMsgs) { %>
+                                <br/><span style="color: orange;">Warning: <%=Encode.forHtmlContent(warningText)%></span><br/>
+                            <% } %>
                         </td>
                     </tr>
                 </table>
@@ -1320,17 +1324,17 @@
                         Properties propD = (Properties) vecHistD.get(i);
                 %>
                 <tr bgcolor="<%=i%2==0?"ivory":"#EEEEFF"%>" align="center">
-                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_no", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_no", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_date", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("billing_date", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("visitdate", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("visitdate", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("service_code", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("service_code", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("diagnostic_code", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(propD.getProperty("diagnostic_code", "\u00A0")))%>
                     </td>
-                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("update_date", "&nbsp;")))%>
+                    <td><%=Encode.forHtml(String.valueOf(prop.getProperty("update_date", "\u00A0")))%>
                     </td>
                 </tr>
                 <%

@@ -577,11 +577,11 @@
                 payer = "";
             } else {
                 htmlPaid = "Paid<br><input type='text' id='payment' name='payment' size=5 value='"
-                        + tProp.getProperty("payment", "0.00") + "' /><input type='hidden' id='oldPayment' name='oldPayment' value='"
-                        + tProp.getProperty("payment", "0.00") + "' /><input type='hidden' id='payDate' name='payDate' value='"
+                        + Encode.forHtmlAttribute(String.valueOf(tProp.getProperty("payment", "0.00"))) + "' /><input type='hidden' id='oldPayment' name='oldPayment' value='"
+                        + Encode.forHtmlAttribute(String.valueOf(tProp.getProperty("payment", "0.00"))) + "' /><input type='hidden' id='payDate' name='payDate' value='"
                         + UtilDateUtilities.getToday("yyyy-MM-dd HH:mm:ss") + "'/><br>";
                 htmlPaid += "Refund<br><input type='text' id='refund' name='refund' size=5 value='"
-                        + tProp.getProperty("refund") + "' /><br>";
+                        + Encode.forHtmlAttribute(String.valueOf(tProp.getProperty("refund"))) + "' /><br>";
                 payer = tProp.getProperty("billTo");
                 if (payer == null) {
                     payer = "";
@@ -640,9 +640,9 @@
                 payment = payment.subtract(credit);
 
                 htmlPaid = "<br/>&nbsp;&nbsp;<span style='font-size:large;font-weight:bold'>Paid:</span>&nbsp;&nbsp;&nbsp;<span id='payment' style='font-size:large;font-weight:bold'>"
-                        + ((payment.compareTo(BigDecimal.ZERO) == -1) ? "-" : "") + currency.format(payment) + "</span>";
+                        + ((payment.compareTo(BigDecimal.ZERO) == -1) ? "-" : "") + Encode.forHtmlContent(currency.format(payment)) + "</span>";
                 htmlPaid += "&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size:large;font-weight:bold'>Balance:</span>&nbsp;&nbsp;&nbsp;<span id='balance' style='font-size:large;font-weight:bold'>"
-                        + ((balance.compareTo(BigDecimal.ZERO) == -1) ? "-" : "") + currency.format(balance) + "</span>";
+                        + ((balance.compareTo(BigDecimal.ZERO) == -1) ? "-" : "") + Encode.forHtmlContent(currency.format(balance)) + "</span>";
                 htmlPaid += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:display3rdPartyPayments()'>Payments List</a>";
             }
             payer = tProp.getProperty("billTo");

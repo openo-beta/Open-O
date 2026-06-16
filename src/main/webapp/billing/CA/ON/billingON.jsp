@@ -161,7 +161,8 @@
 
     // get patient's detail
     String errorFlag = "";
-    String warningMsg = "", errorMsg = "";
+    List<String> warningMsgs = new ArrayList<String>();
+    List<String> errorMsgs = new ArrayList<String>();
     String r_doctor = "", r_doctor_ohip = "";
     String demoFirst = "", demoLast = "", demoHIN = "", demoVer = "", demoDOB = "", demoDOBYY = "", demoDOBMM = "", demoDOBDD = "", demoHCTYPE = "";
     String family_doctor = "";
@@ -203,15 +204,14 @@
     }
 
     if (demoHIN.equals("")) {
-        warningMsg += "<b><div class='alert alert-error'>Warning: The patient does not have a valid HIN. </div></b>";
+        warningMsgs.add("The patient does not have a valid HIN.");
     }
     if (r_doctor_ohip != null && r_doctor_ohip.length() > 0 && r_doctor_ohip.length() != 6) {
-        warningMsg += "<div class='alert alert error'>Warning: the referral doctor's no is wrong. </div>";
+        warningMsgs.add("The referral doctor's no is wrong.");
     }
     if (StringUtils.isBlank(demoDOB) || demoDOB.length() != 8) {
         errorFlag = "1";
-        errorMsg = errorMsg
-                + "<b><div class='alert alert error'>Error: The patient does not have a valid DOB. </div></b>";
+        errorMsgs.add("The patient does not have a valid DOB.");
     }
     //}
 
@@ -547,8 +547,6 @@
     }
 
 
-    // create msg
-    msg += errorMsg + warningMsg;
 %>
 
 
@@ -1323,7 +1321,14 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                         <td style="text-align: center;"
                             class="<%=Encode.forHtmlAttribute(String.valueOf(warningClass))%>"><%=Encode.forHtml(String.valueOf(billingRecomendations.toString()))%>
                         </td>
-                        <td style="text-align: center;"><%=msg%>
+                        <td style="text-align: center;">
+                            <%=Encode.forHtmlContent(msg)%>
+                            <% for (String errorText : errorMsgs) { %>
+                                <div class="alert alert-error">Error: <%=Encode.forHtmlContent(errorText)%></div>
+                            <% } %>
+                            <% for (String warningText : warningMsgs) { %>
+                                <div class="alert alert-warning">Warning: <%=Encode.forHtmlContent(warningText)%></div>
+                            <% } %>
                         </td>
                     </tr>
                 </table>
