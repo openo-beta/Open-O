@@ -316,7 +316,7 @@
         <% for (int j = 0; j < header_values.size(); j++) {
             prop = (Properties) column_values.get(i);
         %>
-        <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty((String) header_values.get(j), "&nbsp;")))%>&nbsp;</td>
+        <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty((String) header_values.get(j), "\u00A0")))%>&nbsp;</td>
         <% } %>
     </tr>
     <% } %>

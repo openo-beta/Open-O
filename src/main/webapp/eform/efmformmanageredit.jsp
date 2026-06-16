@@ -24,7 +24,7 @@
 
 --%>
 <%@ page
-        import="ca.openosp.openo.eform.data.*, ca.openosp.openo.eform.*, java.util.*, ca.openosp.openo.util.*, org.apache.commons.text.StringEscapeUtils" %>
+        import="ca.openosp.openo.eform.data.*, ca.openosp.openo.eform.*, java.util.*, ca.openosp.openo.util.*" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -50,7 +50,7 @@
 
     if (request.getParameter("formHtmlG") != null) {
         //load html from hidden form from eformGenerator.jsp,the html is then injected into edit-eform
-        curform.put("formHtml", StringEscapeUtils.unescapeHtml4(request.getParameter("formHtmlG")));
+        curform.put("formHtml", request.getParameter("formHtmlG"));
     }
     if (curform.get("formDate") == null) curform.put("formDate", "--");
     if (curform.get("formTime") == null) curform.put("formTime", "--");

@@ -249,30 +249,30 @@
         <b><fmt:setBundle basename="oscarResources"/><fmt:message key="casemanagementEntry.clientname"/>
             <I>
                 <c:if test="${not empty requestScope.demoName}">
-                    <c:out value="${requestScope.demoName}"/>
+                    <%=request.getAttribute("demoName") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoName")))%>
                 </c:if>
                 <c:if test="${empty requestScope.demoName}">
-                    <c:out value="${e:forHtmlAttribute(param.demoName)}"/>
+                    <%=request.getParameter("demoName") == null ? "" : Encode.forHtml(request.getParameter("demoName"))%>
                 </c:if>
             </I>
             <br>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Age:
             <I>
                 <c:if test="${not empty requestScope.demoName}">
-                    <c:out value="${requestScope.demoAge}"/>
+                    <%=request.getAttribute("demoAge") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoAge")))%>
                 </c:if>
                 <c:if test="${empty requestScope.demoName}">
-                    <c:out value="${e:forHtmlAttribute(param.demoAge)}"/>
+                    <%=request.getParameter("demoAge") == null ? "" : Encode.forHtml(request.getParameter("demoAge"))%>
                 </c:if>
             </I>
             <br>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DOB:
             <I>
                 <c:if test="${not empty requestScope.demoName}">
-                    <c:out value="${requestScope.demoDOB}"/>
+                    <%=request.getAttribute("demoDOB") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoDOB")))%>
                 </c:if>
                 <c:if test="${empty requestScope.demoName}">
-                    <c:out value="${e:forHtmlAttribute(param.demoDOB)}"/>
+                    <%=request.getParameter("demoDOB") == null ? "" : Encode.forHtml(request.getParameter("demoDOB"))%>
                 </c:if>
             </I></b>
         <br><br>
