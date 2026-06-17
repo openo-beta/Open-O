@@ -376,11 +376,11 @@ public class OLISAddToInbox2Action extends ActionSupport {
 
     /**
      * Bulk remove endpoint. Reads a comma-separated {@code uuids} request parameter
-     * and marks each matching OLISResults row as removed, writing a simple OSCAR
-     * audit log entry per uuid. Returns a JSON {@code {successIds}} payload to the
-     * caller. Mirrors the original Struts 1 {@code bulkRemove} which used the
-     * lightweight {@link LogAction#addLog} call rather than the rich
-     * {@link #logOLISRemoval} variant.
+     * and marks each matching OLISResults row as removed, writing the rich
+     * {@link #logOLISRemoval} OLIS06.03 audit row per uuid (consistent with the
+     * "Process Changes" / {@link #bulkProcess} path). Falls back to the lightweight
+     * {@link LogAction#addLog} only when no OLISResults row exists for the uuid.
+     * Returns a JSON {@code {successIds}} payload to the caller.
      */
     public String bulkRemove() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -401,8 +401,11 @@ public class OLISAddToInbox2Action extends ActionSupport {
             if (result != null) {
                 result.setStatus("removed");
                 olisResultsDao.merge(result);
+                OLISQueryLog olisQueryLog = olisQueryLogDao.findByUUID(result.getQueryUuid());
+                logOLISRemoval(loggedInInfo, olisQueryLog, result.getResults(), uuid);
+            } else {
+                LogAction.addLog(loggedInInfo, "OLIS", "rejected", uuid, "", "");
             }
-            LogAction.addLog(loggedInInfo, "OLIS", "rejected", uuid, "", "");
             successful.add(uuid);
         }
 
@@ -420,7 +423,9 @@ public class OLISAddToInbox2Action extends ActionSupport {
 
     /**
      * Single-result remove endpoint, exposed at {@code ?method=remove}. Marks the
-     * matching OLISResults row as removed and writes a simple audit log entry. The
+     * matching OLISResults row as removed and writes the rich {@link #logOLISRemoval}
+     * OLIS06.03 audit row (falling back to the lightweight {@link LogAction#addLog}
+     * only when no OLISResults row exists for the uuid). The
      * JS caller injects the {@code "Successfully removed item"} string into
      * {@code #action_result} on success, so we route through {@code ajaxResponse.jsp}
      * via the {@code "ajax"} result name.
@@ -447,9 +452,11 @@ public class OLISAddToInbox2Action extends ActionSupport {
         if (result != null) {
             result.setStatus("removed");
             olisResultsDao.merge(result);
+            OLISQueryLog olisQueryLog = olisQueryLogDao.findByUUID(result.getQueryUuid());
+            logOLISRemoval(loggedInInfo, olisQueryLog, result.getResults(), uuid);
+        } else {
+            LogAction.addLog(loggedInInfo, "OLIS", "rejected", uuid, "", "");
         }
-
-        LogAction.addLog(loggedInInfo, "OLIS", "rejected", uuid, "", "");
 
         request.setAttribute("result", "Successfully removed item");
         return "ajax";
@@ -665,16 +672,23 @@ public class OLISAddToInbox2Action extends ActionSupport {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         StringBuilder data = new StringBuilder();
-        data.append("Query Date:").append(formatter.format(queryLog.getQueryExecutionDate())).append("\n");
-        data.append("Query Type:").append(queryLog.getQueryType()).append("\n");
+        // queryLog may be null when the result's originating query log can't be resolved;
+        // the removal is still audited, just without the query-derived fields.
+        if (queryLog != null) {
+            data.append("Query Date:").append(formatter.format(queryLog.getQueryExecutionDate())).append("\n");
+            data.append("Query Type:").append(queryLog.getQueryType()).append("\n");
 
-        if (!StringUtils.isEmpty(queryLog.getRequestingHIC())) {
-            Provider reqHic = providerDao.getProviderByPractitionerNo(queryLog.getRequestingHIC());
-            if (reqHic != null) {
-                data.append("Requesting HIC:").append(reqHic.getFormattedName()).append("\n");
+            if (!StringUtils.isEmpty(queryLog.getRequestingHIC())) {
+                Provider reqHic = providerDao.getProviderByPractitionerNo(queryLog.getRequestingHIC());
+                if (reqHic != null) {
+                    data.append("Requesting HIC:").append(reqHic.getFormattedName()).append("\n");
+                }
+            }
+            Provider initiating = providerDao.getProvider(queryLog.getInitiatingProviderNo());
+            if (initiating != null) {
+                data.append("Initiating Provider: ").append(initiating.getFormattedName()).append("\n");
             }
         }
-        data.append("Initiating Provider: ").append(providerDao.getProvider(queryLog.getInitiatingProviderNo()).getFormattedName()).append("\n");
         data.append("Removing User:").append(providerDao.getProvider(loggedInInfo.getLoggedInProviderNo()).getFormattedName()).append("\n");
         data.append("Removing Date: ").append(formatter.format(new Date())).append("\n");
         data.append("Removing Reason: Worklist Management\n");
@@ -700,7 +714,7 @@ public class OLISAddToInbox2Action extends ActionSupport {
         oscarLog.setProviderNo(loggedInInfo.getLoggedInProviderNo());
         oscarLog.setData(data.toString());
 
-        if ("Z01".equals(queryLog.getQueryType()) && queryLog.getDemographicNo() != null) {
+        if (queryLog != null && "Z01".equals(queryLog.getQueryType()) && queryLog.getDemographicNo() != null) {
             oscarLog.setDemographicId(queryLog.getDemographicNo());
         }
 
