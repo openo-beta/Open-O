@@ -383,7 +383,6 @@ opener.refreshView();</script>
                         </th>
                         <td width="30%">Quantity<br><input type="text" id="quantityLimit" name="quantityLimit"></td>
                     </tr>
-                    <!--
                     <tr>
                         <th width="20%">Consent to View Blocked Information?</th>
                         <td width="30%"><select id="blockedInformationConsent" name="blockedInformationConsent"><option value="">(none)</option>
@@ -397,7 +396,6 @@ opener.refreshView();</script>
                     <tr>
                         <td width="20%" colspan=4><span><input class="checkbox" type="checkbox" name="consentBlockAllIndicator" id="consentBlockAllIndicator"> Enable Patient Consent Block-All Indicator?</span></td>
                     </tr>
-                    -->
                     <tr>
                         <th width="20%">Specimen Collector</th>
                         <td width="30%">
