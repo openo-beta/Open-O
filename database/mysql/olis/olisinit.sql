@@ -108,3 +108,14 @@ CREATE TABLE OLISFacility (
   UNIQUE KEY uk_OLISFacility_class_licence (facilityClass, licenceNumber),
   INDEX idx_OLISFacility_class_status_name (facilityClass, status, name)
 );
+
+
+-- Data file generated from the eHealth Ontario Lab and SCC Extract
+-- Source: https://ehealthontario.on.ca/en/support/lab-results/olis-whats-new/olis-client-support
+-- When a new extract is released, admins should run Admin → "OLIS — Import Lab/SCC"
+LOAD DATA LOCAL INFILE 'OLISFacility.csv'
+INTO TABLE OLISFacility
+FIELDS TERMINATED BY '\t'
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(licenceNumber, facilityClass, name, addressLine1, addressLine2, city, postalCode, oid, status);
