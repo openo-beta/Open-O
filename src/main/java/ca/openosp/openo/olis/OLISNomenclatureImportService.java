@@ -122,6 +122,7 @@ public class OLISNomenclatureImportService {
             entity.setNameId(nameId);
         }
         entity.setName(StringUtils.defaultString(row.get("Result Alternate Name 1")).trim());
+        entity.setSortKey(trimToNull(row.get("Sort Key")));
         entity.setEffectiveDate(parseDateCell(row.get("Effective Date")));
         entity.setEndDate(parseDateCell(row.get("End Date")));
         String newStatus = deriveStatus(row);
@@ -153,6 +154,7 @@ public class OLISNomenclatureImportService {
             entity.setNameId(nameId);
         }
         entity.setName(StringUtils.defaultString(row.get("Request Alternate Name 1")).trim());
+        entity.setSortKey(trimToNull(row.get("Sort Key")));
         entity.setCategory(trimToNull(row.get("Test Request Category")));
         entity.setEffectiveDate(parseDateCell(row.get("Effective Date")));
         entity.setEndDate(parseDateCell(row.get("End Date")));

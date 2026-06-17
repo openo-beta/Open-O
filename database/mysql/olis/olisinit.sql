@@ -7,6 +7,7 @@ CREATE TABLE OLISResultNomenclature (
   status VARCHAR(16) NOT NULL DEFAULT 'ACTIVE',
   externalCodeVersion VARCHAR(8) NULL,
   successorCode VARCHAR(10) NULL,
+  sortKey VARCHAR(32) NULL,
   PRIMARY KEY(id),  
   INDEX idx_OLISResultNomenclature_status_endDate (status, endDate),
   INDEX idx_OLISResultNomenclature_nameId (nameId)
@@ -20,7 +21,7 @@ INTO TABLE OLISResultNomenclature
 FIELDS TERMINATED BY '\t'
 OPTIONALLY ENCLOSED BY '\"' 
 LINES TERMINATED BY '\n'
-(nameId, name, status, effectiveDate, endDate, externalCodeVersion);
+(nameId, name, status, effectiveDate, endDate, externalCodeVersion, sortKey);
 
 CREATE TABLE OLISRequestNomenclature (
   id INT NOT NULL AUTO_INCREMENT,
@@ -32,6 +33,7 @@ CREATE TABLE OLISRequestNomenclature (
   status VARCHAR(16) NOT NULL DEFAULT 'ACTIVE',
   externalCodeVersion VARCHAR(8) NULL,
   successorCode VARCHAR(10) NULL,
+  sortKey VARCHAR(32) NULL,
   PRIMARY KEY(id),  
   INDEX idx_OLISRequestNomenclature_status_endDate (status, endDate),
   INDEX idx_OLISRequestNomenclature_nameId (nameId)
@@ -44,7 +46,7 @@ INTO TABLE OLISRequestNomenclature
 FIELDS TERMINATED BY '\t'
 OPTIONALLY ENCLOSED BY '\"' 
 LINES TERMINATED BY '\n'
-(nameId, name, category, status, effectiveDate, endDate, externalCodeVersion);
+(nameId, name, category, status, effectiveDate, endDate, externalCodeVersion, sortKey);
 
 CREATE TABLE OLISProviderPreferences (
   providerId  VARCHAR(10),

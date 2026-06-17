@@ -40,6 +40,7 @@ public class OLISResultNomenclature extends AbstractModel<String> {
 
     private String externalCodeVersion;
     private String successorCode;
+    private String sortKey;
 
     public String getNameId() {
         return nameId;
@@ -140,6 +141,24 @@ public class OLISResultNomenclature extends AbstractModel<String> {
      */
     public void setSuccessorCode(String successorCode) {
         this.successorCode = successorCode;
+    }
+
+    /**
+     * @return String the OLIS catalog result sort key (from the "Sort Key" column),
+     *         used as a fallback ordering key when a result carries no ZBX.2 sort
+     *         key; {@code null} if the catalog row predates the sort-key column
+     * @since 2026-06-17
+     */
+    public String getSortKey() {
+        return sortKey;
+    }
+
+    /**
+     * @param sortKey String the OLIS catalog result sort key
+     * @since 2026-06-17
+     */
+    public void setSortKey(String sortKey) {
+        this.sortKey = sortKey;
     }
 
     public OLISResultNomenclature() {

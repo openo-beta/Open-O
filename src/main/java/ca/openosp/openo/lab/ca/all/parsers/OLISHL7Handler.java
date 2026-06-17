@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,6 +39,8 @@ import ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISResultNomenclatureDao;
 import ca.openosp.openo.olis.model.OLISRequestNomenclature;
 import ca.openosp.openo.olis.model.OLISResultNomenclature;
+import ca.openosp.openo.olis.model.OlisLabRequestSortable;
+import ca.openosp.openo.olis.model.OlisLabResultSortable;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
@@ -989,33 +992,37 @@ public class OLISHL7Handler implements MessageHandler {
         return "";
     }
 
+    /**
+     * Maps a sorted request position to its original OBR index in the message.
+     * {@code obrSortMap} is keyed by sorted position (0-based) after the OLIS
+     * request display-sequence sort (CV04/05/06/15); the value's {@code obrIndex}
+     * is the request's position in the raw message.
+     */
     public int getMappedOBR(int obr) {
         try {
-            String[] keys = obrSortMap.keySet().toArray(new String[0]);
-            Arrays.sort(keys);
-            if (obr > keys.length - 1) {
-                return obr;
+            OlisLabRequestSortable sortable = obrSortMap.get(obr);
+            if (sortable != null) {
+                return sortable.getObrIndex();
             }
-            return obrSortMap.get(keys[obr]);
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
         }
         return obr;
     }
 
+    /**
+     * Maps a sorted result position (within a request) to its original 0-based OBX
+     * index. {@code obxSortMap} holds the results sorted by the OLIS result
+     * display-sequence rules; each sortable's {@code setId} carries the 1-based
+     * original OBX position, so {@code setId - 1} is the index the {@code getOBX*}
+     * accessors expect.
+     */
     public int getMappedOBX(int obr, int obx) {
         try {
-            HashMap<String, Integer> innerMap = obxSortMap.get(obr);
-            // An OBR with no OBXs in the sort map
-            // (innerMap empty) provoked ArrayIndexOutOfBoundsException on keys[obx]; caught +
-            // logged as ERROR on every render. Now silently returns the original obx position
-            // for the expected empty case; real errors still log.
-            if (innerMap == null || obx < 0 || obx >= innerMap.size()) {
-                return obx;
+            List<OlisLabResultSortable> obxResults = obxSortMap.get(obr);
+            if (obxResults != null && obx >= 0 && obx < obxResults.size()) {
+                return obxResults.get(obx).getSetId() - 1;
             }
-            String[] keys = innerMap.keySet().toArray(new String[0]);
-            Arrays.sort(keys);
-            return innerMap.get(keys[obx]);
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
         }
@@ -1187,8 +1194,8 @@ public class OLISHL7Handler implements MessageHandler {
             }
             obrGroups.add(obxSegs);
         }
-        obxSortMap = new HashMap<Integer, HashMap<String, Integer>>();
-        obrSortMap = new HashMap<String, Integer>();
+        obxSortMap = new HashMap<Integer, List<OlisLabResultSortable>>();
+        obrSortMap = new HashMap<Integer, OlisLabRequestSortable>();
         mapOBRSortKeys();
 
         disciplines = new ArrayList<String>();
@@ -1381,28 +1388,43 @@ public class OLISHL7Handler implements MessageHandler {
         }
     }
 
-    HashMap<String, Integer> obrSortMap;
+    HashMap<Integer, OlisLabRequestSortable> obrSortMap;
 
+    /**
+     * Builds the OLIS request (OBR) display order. Each request becomes an
+     * {@link OlisLabRequestSortable} carrying the keys the OLIS sequence rules use
+     * (collection date/time, group placer, ZBR.11 sort key, catalog nomenclature
+     * sort key + alternate name, OBR set ID); the list is sorted with
+     * {@link OlisLabRequestSortable#OLIS_REQUEST_COMPARATOR} and re-indexed so
+     * {@code obrSortMap} maps sorted position to the request's data.
+     *
+     * <p>Per-request OBX results are sorted as a side effect (each OBR calls
+     * {@link #mapOBXSortKey(int)}). Derived from oscarpro's OLISHL7Handler.</p>
+     */
     private void mapOBRSortKeys() {
-
         int obrCount = getOBRCount();
-        Segment zbr;
-        String tempKey;
+        List<OlisLabRequestSortable> requestSortables = new ArrayList<OlisLabRequestSortable>();
+        OLISRequestNomenclatureDao requestDao = SpringUtils.getBean(OLISRequestNomenclatureDao.class);
         try {
             for (int i = 0; i < obrCount; i++) {
+                // Sort this request's OBX results first.
                 mapOBXSortKey(i);
-                if (i == 0) {
-                    zbr = terser.getSegment("/.ZBR");
-                } else {
-                    zbr = (Segment) terser.getFinder().getRoot().get("ZBR" + (i + 1));
-                }
                 try {
-                    tempKey = getString(Terser.get(zbr, 11, 0, 1, 1));
-                    tempKey = tempKey.equals("") ? String.valueOf(i) : tempKey;
-                    if (obrSortMap.containsKey(tempKey)) {
-                        tempKey = tempKey + i;
+                    String name = StringUtils.trimToEmpty(getOBRName(i));
+                    Date collectionDateTime = getObrCollectionDate(i);
+                    String groupPlacerNo = StringUtils.trimToEmpty(getAccessionNum());
+                    String sortKey = StringUtils.trimToEmpty(getZBR11(i));
+                    String requestCode = getNomenclatureRequestCode(i);
+                    OLISRequestNomenclature nomenclature =
+                            StringUtils.isEmpty(requestCode) ? null : requestDao.findByNameId(requestCode);
+                    if (nomenclature == null) {
+                        // OLIS_REQUEST_COMPARATOR dereferences the nomenclature; substitute a
+                        // blank one on a catalog miss so a missing/unknown code can't NPE the sort.
+                        nomenclature = new OLISRequestNomenclature();
                     }
-                    obrSortMap.put(tempKey, i);
+                    String setId = StringUtils.trimToEmpty(getObrSetId(i));
+                    requestSortables.add(new OlisLabRequestSortable(
+                            name, i, collectionDateTime, groupPlacerNo, sortKey, nomenclature, setId));
                 } catch (Exception e) {
                     MiscUtils.getLogger().error("OLIS HL7 Error", e);
                 }
@@ -1410,33 +1432,177 @@ public class OLISHL7Handler implements MessageHandler {
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
         }
+        Collections.sort(requestSortables, OlisLabRequestSortable.OLIS_REQUEST_COMPARATOR);
+        int index = 0;
+        for (OlisLabRequestSortable request : requestSortables) {
+            obrSortMap.put(index++, request);
+        }
     }
 
-    HashMap<Integer, HashMap<String, Integer>> obxSortMap;
+    HashMap<Integer, List<OlisLabResultSortable>> obxSortMap;
 
+    /**
+     * Builds the OLIS result (OBX) display order within a single request. Each OBX
+     * becomes an {@link OlisLabResultSortable} carrying the keys the OLIS 9-step
+     * result rule uses (ancillary flag from OBX.11=Z, ZBX.2 sort key, catalog
+     * nomenclature sort key + alternate name, OBX.4 sub-ID, ZBX.1 release date);
+     * the list is sorted with {@link OlisLabResultSortable#OLIS_RESULT_COMPARATOR}.
+     * Every OBX is included (results without a ZBX segment get empty/null keys) so
+     * the sorted list always covers the full result set. Derived from oscarpro.
+     */
     private void mapOBXSortKey(int obr) {
-        HashMap<String, Integer> obxMap = null;
-        int k;
-        String tempKey;
-        obxMap = new HashMap<String, Integer>();
-        for (int i = 0; i < getOBXCount(obr); i++) {
-
+        List<OlisLabResultSortable> resultList = new ArrayList<OlisLabResultSortable>();
+        OLISResultNomenclatureDao resultDao = SpringUtils.getBean(OLISResultNomenclatureDao.class);
+        String[] segments = terser.getFinder().getRoot().getNames();
+        int obxCount = getOBXCount(obr);
+        for (int i = 0; i < obxCount; i++) {
             try {
-                k = getZBXLocation(obr, i);
-                String[] segments = terser.getFinder().getRoot().getNames();
-                if (!segments[k].startsWith("ZBX")) {
-                    continue;
+                String subId = StringUtils.trimToEmpty(getOBXField(obr, i, 4, 0, 1));
+                String resultStatus = StringUtils.trimToEmpty(getOBXResultStatus(obr, i));
+                String loincCode = StringUtils.trimToEmpty(getOBXField(obr, i, 3, 0, 1));
+                OLISResultNomenclature nomenclature =
+                        loincCode.isEmpty() ? null : resultDao.findByNameId(loincCode);
+                String nomenclatureSortKey = "";
+                String alternateName = "";
+                if (nomenclature != null) {
+                    nomenclatureSortKey = StringUtils.trimToEmpty(nomenclature.getSortKey());
+                    alternateName = StringUtils.trimToEmpty(nomenclature.getName());
                 }
-                Structure[] zbxSegs = terser.getFinder().getRoot().getAll(segments[k]);
-                Segment zbxSeg = (Segment) zbxSegs[0];
-                tempKey = getString(Terser.get(zbxSeg, 2, 0, 1, 1));
-                obxMap.put(tempKey.equals("") ? String.valueOf(i) : tempKey, i);
 
+                String zbxSortKey = "";
+                Date releaseDate = null;
+                int k = getZBXLocation(obr, i);
+                if (k >= 0 && k < segments.length && segments[k].startsWith("ZBX")) {
+                    Structure[] zbxSegs = terser.getFinder().getRoot().getAll(segments[k]);
+                    Segment zbxSeg = (Segment) zbxSegs[0];
+                    zbxSortKey = getString(Terser.get(zbxSeg, 2, 0, 1, 1));
+                    releaseDate = parseHl7Timestamp(getString(Terser.get(zbxSeg, 1, 0, 1, 1)));
+                }
+                // setId carries the 1-based original OBX position so getMappedOBX can map a
+                // sorted slot back to the 0-based index used by the getOBX* accessors. A null
+                // release date is normalized to the epoch so the release-date tiebreak (only
+                // reached by results otherwise equal on every key) cannot NPE.
+                resultList.add(new OlisLabResultSortable(
+                        i + 1, subId, nomenclatureSortKey, alternateName,
+                        "Z".equals(resultStatus),
+                        releaseDate != null ? releaseDate : new Date(0L),
+                        zbxSortKey));
             } catch (Exception e) {
                 MiscUtils.getLogger().error("OLIS HL7 Error", e);
             }
         }
-        obxSortMap.put(obr, obxMap);
+        Collections.sort(resultList, OlisLabResultSortable.OLIS_RESULT_COMPARATOR);
+        obxSortMap.put(obr, resultList);
+    }
+
+    /**
+     * @param obrIndex int 0-based OBR index
+     * @return String the request sort key from ZBR.11 (empty string if absent)
+     */
+    private String getZBR11(int obrIndex) {
+        try {
+            Segment zbr = (obrIndex == 0)
+                    ? terser.getSegment("/.ZBR")
+                    : (Segment) terser.getFinder().getRoot().get("ZBR" + (obrIndex + 1));
+            return getString(Terser.get(zbr, 11, 0, 1, 1));
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("OLIS HL7 Error", e);
+        }
+        return "";
+    }
+
+    /**
+     * @param obr int 0-based OBR index
+     * @return String the OLIS request code from OBR.4.1 (empty string if absent),
+     *         used to look up the request nomenclature
+     */
+    private String getNomenclatureRequestCode(int obr) {
+        try {
+            Segment obrSeg = (obr == 0)
+                    ? terser.getSegment("/.OBR")
+                    : (Segment) terser.getFinder().getRoot().get("OBR" + (obr + 1));
+            return getString(Terser.get(obrSeg, 4, 0, 1, 1));
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("OLIS HL7 Error", e);
+        }
+        return "";
+    }
+
+    /**
+     * @param obr int 0-based OBR index
+     * @return String the OBR set ID from OBR.1 (empty string if absent)
+     */
+    private String getObrSetId(int obr) {
+        try {
+            Segment obrSeg = (obr == 0)
+                    ? terser.getSegment("/.OBR")
+                    : (Segment) terser.getFinder().getRoot().get("OBR" + (obr + 1));
+            return getString(Terser.get(obrSeg, 1, 0, 1, 1));
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("OLIS HL7 Error", e);
+        }
+        return "";
+    }
+
+    /**
+     * @param obr int 0-based OBR index
+     * @return Date the request collection date/time parsed from OBR.7, or
+     *         {@code null} if absent/unparseable (the comparator sorts nulls last)
+     */
+    private Date getObrCollectionDate(int obr) {
+        try {
+            Segment obrSeg = (obr == 0)
+                    ? terser.getSegment("/.OBR")
+                    : (Segment) terser.getFinder().getRoot().get("OBR" + (obr + 1));
+            return parseHl7Timestamp(getString(Terser.get(obrSeg, 7, 0, 1, 1)));
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("OLIS HL7 Error", e);
+        }
+        return null;
+    }
+
+    /**
+     * Parses an HL7 timestamp (DTM/TS) to a {@link Date}, tolerating a timezone
+     * offset and fractional seconds by reading only the leading
+     * {@code YYYYMMDD[HHMMSS]} digits.
+     *
+     * @param ts String the raw HL7 timestamp (e.g. {@code 20130713180000-0400})
+     * @return Date the parsed instant, or {@code null} if blank/unparseable
+     */
+    private Date parseHl7Timestamp(String ts) {
+        if (ts == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ts.length(); i++) {
+            char c = ts.charAt(i);
+            if (c >= '0' && c <= '9') {
+                sb.append(c);
+            } else {
+                break;
+            }
+        }
+        String d = sb.toString();
+        String pattern;
+        if (d.length() >= 14) {
+            d = d.substring(0, 14);
+            pattern = "yyyyMMddHHmmss";
+        } else if (d.length() >= 12) {
+            d = d.substring(0, 12);
+            pattern = "yyyyMMddHHmm";
+        } else if (d.length() >= 8) {
+            d = d.substring(0, 8);
+            pattern = "yyyyMMdd";
+        } else {
+            return null;
+        }
+        try {
+            SimpleDateFormat fmt = new SimpleDateFormat(pattern);
+            fmt.setLenient(false);
+            return fmt.parse(d);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private int getZBXLocation(int i, int j) {

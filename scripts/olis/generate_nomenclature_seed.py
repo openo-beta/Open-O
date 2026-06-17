@@ -19,6 +19,7 @@ Admin importer would produce from the same file:
     effectiveDate        <- "Effective Date"        (date or \\N)
     endDate              <- "End Date"              (date or \\N)
     externalCodeVersion  <- "External Code Version" (\\N if blank)
+    sortKey              <- "Sort Key"              (\\N if blank)
 
   Request sheet "Test Request Nomenclature":
     nameId               <- "OLIS Test Request Code"     (row skipped if blank)
@@ -26,13 +27,18 @@ Admin importer would produce from the same file:
     category             <- "Test Request Category"      (\\N if blank)
     status               <- deriveStatus(row)
     effectiveDate, endDate, externalCodeVersion          (as above)
+    sortKey              <- "Sort Key"              (\\N if blank)
+
+The OLIS catalog sort key feeds the CV04/05/06/15 display ordering as the fallback
+sort key when a result/request carries no in-message sort key (ZBX.2 / ZBR.11).
 
 deriveStatus: INACTIVE if "Validation Status Indicator" == INACTIVE, or if
 "Workflow Status Indicator" is present and != RELEASED; otherwise ACTIVE.
 
-Output column order matches the ``LOAD DATA`` field lists in olisinit.sql:
-  result:  nameId, name, status, effectiveDate, endDate, externalCodeVersion
-  request: nameId, name, category, status, effectiveDate, endDate, externalCodeVersion
+Output column order matches the ``LOAD DATA`` field lists in olisinit.sql
+(sortKey appended last):
+  result:  nameId, name, status, effectiveDate, endDate, externalCodeVersion, sortKey
+  request: nameId, name, category, status, effectiveDate, endDate, externalCodeVersion, sortKey
 
 Tab-delimited, '\\n' line terminator, NULL written as the MySQL ``\\N`` marker,
 fields optionally double-quoted (matching ``OPTIONALLY ENCLOSED BY '"'``).
@@ -140,6 +146,7 @@ def build_result_records(xlsx_path):
             fmt_date(row.get("Effective Date")),
             fmt_date(row.get("End Date")),
             trim_to_null(row.get("External Code Version")) or NULL,
+            trim_to_null(row.get("Sort Key")) or NULL,
         ]
         # upsert semantics: last occurrence of a nameId wins (as the importer merges)
         if name_id in seen:
@@ -164,6 +171,7 @@ def build_request_records(xlsx_path):
             fmt_date(row.get("Effective Date")),
             fmt_date(row.get("End Date")),
             trim_to_null(row.get("External Code Version")) or NULL,
+            trim_to_null(row.get("Sort Key")) or NULL,
         ]
         if name_id in seen:
             records[seen[name_id]] = rec

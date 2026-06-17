@@ -41,6 +41,7 @@ public class OLISRequestNomenclature extends AbstractModel<Integer> {
 
     private String externalCodeVersion;
     private String successorCode;
+    private String sortKey;
 
     public OLISRequestNomenclature() {
         super();
@@ -153,6 +154,24 @@ public class OLISRequestNomenclature extends AbstractModel<Integer> {
      */
     public void setSuccessorCode(String successorCode) {
         this.successorCode = successorCode;
+    }
+
+    /**
+     * @return String the OLIS catalog request sort key (from the "Sort Key" column),
+     *         used as a fallback ordering key when a request carries no ZBR.11 sort
+     *         key; {@code null} if the catalog row predates the sort-key column
+     * @since 2026-06-17
+     */
+    public String getSortKey() {
+        return sortKey;
+    }
+
+    /**
+     * @param sortKey String the OLIS catalog request sort key
+     * @since 2026-06-17
+     */
+    public void setSortKey(String sortKey) {
+        this.sortKey = sortKey;
     }
 
 }
