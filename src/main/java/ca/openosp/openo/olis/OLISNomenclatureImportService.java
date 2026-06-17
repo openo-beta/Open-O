@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.openosp.openo.olis.OLISNomenclatureImport2Action.ImportReport;
+import ca.openosp.openo.olis.dao.OLISMicroorganismNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISResultNomenclatureDao;
+import ca.openosp.openo.olis.model.OLISMicroorganismNomenclature;
 import ca.openosp.openo.olis.model.OLISRequestNomenclature;
 import ca.openosp.openo.olis.model.OLISResultNomenclature;
 
@@ -55,15 +57,18 @@ public class OLISNomenclatureImportService {
 
     private final OLISResultNomenclatureDao resultDao;
     private final OLISRequestNomenclatureDao requestDao;
+    private final OLISMicroorganismNomenclatureDao microDao;
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
     @Autowired
     public OLISNomenclatureImportService(OLISResultNomenclatureDao resultDao,
-                                         OLISRequestNomenclatureDao requestDao) {
+                                         OLISRequestNomenclatureDao requestDao,
+                                         OLISMicroorganismNomenclatureDao microDao) {
         this.resultDao = resultDao;
         this.requestDao = requestDao;
+        this.microDao = microDao;
     }
 
     /**
@@ -73,14 +78,19 @@ public class OLISNomenclatureImportService {
      *
      * @param resultRows    List&lt;Map&lt;String,String&gt;&gt; parsed Test Result Nomenclatures rows
      * @param requestRows   List&lt;Map&lt;String,String&gt;&gt; parsed Test Request Nomenclature rows
+     * @param microRows     List&lt;Map&lt;String,String&gt;&gt; parsed OLIS List of Microorganisms rows
+     *                      (may be empty if the distribution lacks the sheet)
      * @param resultReport  ImportReport tally mutated in place for the Result sheet
      * @param requestReport ImportReport tally mutated in place for the Request sheet
+     * @param microReport   ImportReport tally mutated in place for the Microorganism sheet
      * @since 2026-06-02
      */
     @Transactional
     public void importNomenclatures(List<Map<String, String>> resultRows,
                                     List<Map<String, String>> requestRows,
-                                    ImportReport resultReport, ImportReport requestReport) {
+                                    List<Map<String, String>> microRows,
+                                    ImportReport resultReport, ImportReport requestReport,
+                                    ImportReport microReport) {
         int processed = 0;
         for (Map<String, String> row : resultRows) {
             importResultRow(row, resultReport);
@@ -90,6 +100,12 @@ public class OLISNomenclatureImportService {
         }
         for (Map<String, String> row : requestRows) {
             importRequestRow(row, requestReport);
+            if (++processed % BATCH_SIZE == 0) {
+                flushAndClear();
+            }
+        }
+        for (Map<String, String> row : microRows) {
+            importMicroRow(row, microReport);
             if (++processed % BATCH_SIZE == 0) {
                 flushAndClear();
             }
@@ -172,6 +188,40 @@ public class OLISNomenclatureImportService {
             } else {
                 rep.updated++;
             }
+        }
+    }
+
+    private void importMicroRow(Map<String, String> row, ImportReport rep) {
+        String code = trimToNull(row.get("OLIS Microorganism code"));
+        if (code == null) {
+            return;
+        }
+        OLISMicroorganismNomenclature existing = microDao.findByMicroorganismCode(code);
+        boolean isNew = (existing == null);
+        OLISMicroorganismNomenclature entity = isNew ? new OLISMicroorganismNomenclature() : existing;
+        if (isNew) {
+            entity.setMicroorganismCode(code);
+        }
+        entity.setMicroorganismType(trimToNull(row.get("Microorganism Type")));
+        entity.setTaxonomicLevel(trimToNull(row.get("Taxonomic level")));
+        entity.setMicroorganismName(trimToNull(row.get("Microorganism Name")));
+        entity.setAlternateName1(trimToNull(row.get("Alternative Name 1")));
+        entity.setAlternateName2(trimToNull(row.get("Alternative Name 2")));
+        entity.setShortName(trimToNull(row.get("Short Name")));
+        entity.setSource(trimToNull(row.get("Source")));
+        entity.setExternalLink(trimToNull(row.get("External Link")));
+        entity.setReportable(trimToNull(row.get("Reportable")));
+        entity.setReportableContext(trimToNull(row.get("Reportable Context")));
+        entity.setEffectiveStartDate(trimToNull(row.get("Effective Start Date")));
+        entity.setEffectiveEndDate(trimToNull(row.get("Effective End Date")));
+        entity.setChangeNote(trimToNull(row.get("Change Note")));
+        entity.setComments(trimToNull(row.get("Comments")));
+        if (isNew) {
+            microDao.persist(entity);
+            rep.added++;
+        } else {
+            microDao.merge(entity);
+            rep.updated++;
         }
     }
 

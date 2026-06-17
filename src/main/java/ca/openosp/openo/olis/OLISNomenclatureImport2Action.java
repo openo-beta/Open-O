@@ -63,6 +63,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
 
     private ImportReport resultReport;
     private ImportReport requestReport;
+    private ImportReport microReport;
     private String errorMessage;
 
     @Override
@@ -86,12 +87,16 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
 
         List<Map<String, String>> resultRows = new ArrayList<>();
         List<Map<String, String>> requestRows = new ArrayList<>();
+        List<Map<String, String>> microRows = new ArrayList<>();
         try (ZipFile zip = new ZipFile(xlsxOnDisk)) {
             List<String> sharedStrings = OlisXlsxSheetReader.readSharedStrings(zip);
             Map<String, String> sheetNameToPath = OlisXlsxSheetReader.workbookSheetMap(zip);
 
             String resultSheetPath = sheetNameToPath.get("Test Result Nomenclatures");
             String requestSheetPath = sheetNameToPath.get("Test Request Nomenclature");
+            // The microorganism sheet is optional — older distributions may lack it; ingest it
+            // when present so coded micro results (CV06) can resolve to organism names.
+            String microSheetPath = sheetNameToPath.get("OLIS List of Microorganisms");
 
             if (resultSheetPath == null || requestSheetPath == null) {
                 errorMessage = "Uploaded file does not look like an OLIS Nomenclatures distribution "
@@ -99,13 +104,17 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
                 return "form";
             }
 
-            // Parse both sheets into memory first so a malformed file fails before any DB
+            // Parse the sheets into memory first so a malformed file fails before any DB
             // mutation. streamRows reuses a single mutable Map per row, so each row must be
             // copied to be retained.
             OlisXlsxSheetReader.streamRows(zip, resultSheetPath, sharedStrings,
                     row -> resultRows.add(new HashMap<>(row)));
             OlisXlsxSheetReader.streamRows(zip, requestSheetPath, sharedStrings,
                     row -> requestRows.add(new HashMap<>(row)));
+            if (microSheetPath != null) {
+                OlisXlsxSheetReader.streamRows(zip, microSheetPath, sharedStrings,
+                        row -> microRows.add(new HashMap<>(row)));
+            }
         } catch (Exception e) {
             LOG.error("OLIS nomenclature import failed", e);
             // Detail is logged above; the user gets a generic message so internal
@@ -118,14 +127,18 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
         try {
             resultReport = new ImportReport();
             requestReport = new ImportReport();
-            // Both sheets are one logical refresh; delegate to the transactional service so a
-            // mid-import failure rolls back and both tables keep their prior consistent state.
+            microReport = new ImportReport();
+            // All sheets are one logical refresh; delegate to the transactional service so a
+            // mid-import failure rolls back and the tables keep their prior consistent state.
             OLISNomenclatureImportService importService = SpringUtils.getBean(OLISNomenclatureImportService.class);
-            importService.importNomenclatures(resultRows, requestRows, resultReport, requestReport);
+            importService.importNomenclatures(resultRows, requestRows, microRows,
+                    resultReport, requestReport, microReport);
             LOG.info("OLIS nomenclature import — results: " + resultReport
-                    + "; requests: " + requestReport);
+                    + "; requests: " + requestReport
+                    + "; microorganisms: " + microReport);
             request.setAttribute("resultReport", resultReport);
             request.setAttribute("requestReport", requestReport);
+            request.setAttribute("microReport", microReport);
             request.setAttribute("xlsxFileName", xlsxFileName);
             return "report";
         } catch (Exception e) {
@@ -146,6 +159,10 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
 
     public ImportReport getRequestReport() {
         return requestReport;
+    }
+
+    public ImportReport getMicroReport() {
+        return microReport;
     }
 
     public String getErrorMessage() {

@@ -2,9 +2,10 @@
 """Generate the OpenO OLIS nomenclature seed CSVs from an official eHealth Ontario
 OLIS Nomenclatures XLSX distribution.
 
-The two seed files (``OLISTestResultNomenclature.csv`` and
-``OLISTestRequestNomenclature.csv`` under ``database/mysql/olis/``) are the
-install-time floor loaded by ``olisinit.sql`` via ``LOAD DATA LOCAL INFILE``.
+The three seed files (``OLISTestResultNomenclature.csv``,
+``OLISTestRequestNomenclature.csv`` and ``OLISMicroorganismNomenclature.csv``
+under ``database/mysql/olis/``) are the install-time floor loaded by
+``olisinit.sql`` via ``LOAD DATA LOCAL INFILE``.
 At runtime the catalog is refreshed through Admin -> "OLIS - Import Nomenclature";
 this script keeps the *seed* current so a fresh install starts close to the
 live catalog instead of an older pinned version.
@@ -31,6 +32,14 @@ Admin importer would produce from the same file:
 
 The OLIS catalog sort key feeds the CV04/05/06/15 display ordering as the fallback
 sort key when a result/request carries no in-message sort key (ZBX.2 / ZBR.11).
+
+  Micro sheet  "OLIS List of Microorganisms":
+    microorganismCode    <- "OLIS Microorganism code"   (row skipped if blank)
+    + microorganismType, taxonomicLevel, microorganismName, alternateName1/2,
+      shortName, source, externalLink, reportable(+context), effectiveStart/End,
+      changeNote, comments  (free-text cells have internal tabs/newlines collapsed)
+    The display path resolves microorganismCode -> alternateName1 for coded
+    micro results (CV06). No status column in this sheet.
 
 deriveStatus: INACTIVE if "Validation Status Indicator" == INACTIVE, or if
 "Workflow Status Indicator" is present and != RELEASED; otherwise ACTIVE.
@@ -64,6 +73,7 @@ except ImportError:
 
 RESULT_SHEET = "Test Result Nomenclatures"
 REQUEST_SHEET = "Test Request Nomenclature"
+MICRO_SHEET = "OLIS List of Microorganisms"
 NULL = r"\N"
 
 
@@ -73,6 +83,15 @@ def trim_to_null(value):
         return None
     s = str(value).strip()
     return s if s else None
+
+
+def micro_cell(value):
+    """Trim + collapse internal tabs/newlines to a space so free-text micro fields
+    (comments/change note) stay on one tab-delimited LOAD DATA line. Blank -> \\N."""
+    if value is None:
+        return NULL
+    s = str(value).replace("\t", " ").replace("\r", " ").replace("\n", " ").strip()
+    return s if s else NULL
 
 
 def derive_status(row):
@@ -181,6 +200,39 @@ def build_request_records(xlsx_path):
     return records
 
 
+def build_micro_records(xlsx_path):
+    """Mirror OLISNomenclatureImportService.importMicroRow. Upsert key =
+    OLIS Microorganism code (row skipped if blank); last occurrence wins."""
+    seen, records = {}, []
+    for row in read_rows(xlsx_path, MICRO_SHEET):
+        code = trim_to_null(row.get("OLIS Microorganism code"))
+        if code is None:
+            continue
+        rec = [
+            code,
+            micro_cell(row.get("Microorganism Type")),
+            micro_cell(row.get("Taxonomic level")),
+            micro_cell(row.get("Microorganism Name")),
+            micro_cell(row.get("Alternative Name 1")),
+            micro_cell(row.get("Alternative Name 2")),
+            micro_cell(row.get("Short Name")),
+            micro_cell(row.get("Source")),
+            micro_cell(row.get("External Link")),
+            micro_cell(row.get("Reportable")),
+            micro_cell(row.get("Reportable Context")),
+            micro_cell(row.get("Effective Start Date")),
+            micro_cell(row.get("Effective End Date")),
+            micro_cell(row.get("Change Note")),
+            micro_cell(row.get("Comments")),
+        ]
+        if code in seen:
+            records[seen[code]] = rec
+        else:
+            seen[code] = len(records)
+            records.append(rec)
+    return records
+
+
 def write_csv(path, records):
     with open(path, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh, delimiter="\t", quotechar='"',
@@ -210,17 +262,22 @@ def main():
     print("Reading %s" % args.xlsx)
     results = build_result_records(args.xlsx)
     requests = build_request_records(args.xlsx)
+    micro = build_micro_records(args.xlsx)
 
     result_path = os.path.join(args.out, "OLISTestResultNomenclature.csv")
     request_path = os.path.join(args.out, "OLISTestRequestNomenclature.csv")
+    micro_path = os.path.join(args.out, "OLISMicroorganismNomenclature.csv")
     write_csv(result_path, results)
     write_csv(request_path, requests)
+    write_csv(micro_path, micro)
 
     print("Wrote:")
     summarize("result", results, 2)   # status at index 2
     summarize("request", requests, 3)  # status at index 3
+    print("  micro    %d rows" % len(micro))
     print("  -> %s" % result_path)
     print("  -> %s" % request_path)
+    print("  -> %s" % micro_path)
     print("\nRemember to update the version/date/source comments in olisinit.sql.")
 
 

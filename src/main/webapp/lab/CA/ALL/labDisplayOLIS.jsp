@@ -2060,13 +2060,14 @@
 
                                     int childOBR = handler.getChildOBR(parentId) - 1;
                                     if (childOBR != -1) {
-                                        int childLength = handler.getOBXCount(childOBR);
-                                        for (int ceIndex = 0; ceIndex < childLength; ceIndex++) {
-                                            String ceStatus = handler.getOBXResultStatus(childOBR, ceIndex).trim();
-                                            boolean ceStrikeout = ceStatus != null && ceStatus.startsWith("W");
-                                            String ceName = handler.getOBXName(childOBR, ceIndex);
+                                        // Iterate the child results in the OLIS-mandated sort order (CV06)
+                                        // rather than raw message order.
+                                        for (ca.openosp.openo.olis.model.OlisLabChildResultSortable child : handler.getChildObrResults(childOBR)) {
+                                            String ceStatus = child.getStatus() != null ? child.getStatus().trim() : "";
+                                            boolean ceStrikeout = ceStatus.startsWith("W");
+                                            String ceName = child.getName();
                                             ceName = ceStrikeout ? "<s>" + ceName + "</s>" : ceName;
-                                            String ceSense = handler.getOBXCESensitivity(childOBR, ceIndex);
+                                            String ceSense = child.getSensitivity();
                                             ceSense = ceStrikeout ? "<s>" + ceSense + "</s>" : ceSense;
                                 %>
                                 <tr>
