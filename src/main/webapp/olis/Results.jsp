@@ -510,10 +510,19 @@
                 <input type="hidden" name="force" value="true"/>
                 <input type="submit" value="Submit Override Consent"/>
                 Authorized by:
-                <select id="blockedInformationIndividual" name="blockedInformationIndividual">
+                <select id="blockedInformationIndividual" name="blockedInformationIndividual"
+                        onchange="document.getElementById('sdmFields').style.display = (this.value === 'substitute') ? 'inline' : 'none';">
                     <option value="patient">Patient</option>
                     <option value="substitute">Substitute Decision Maker</option>
                 </select>
+                <%-- Substitute Decision Maker identity (ZSD). Shown only when the override
+                     is authorized by an SDM; transmitted so OLIS records who authorized
+                     viewing the blocked information (CV11.2b / CV12.2b). --%>
+                <span id="sdmFields" style="display:none;">
+                    First Name: <input type="text" name="sdmFirstName" size="12"/>
+                    Last Name: <input type="text" name="sdmLastName" size="12"/>
+                    Relationship: <input type="text" name="sdmRelationship" size="12"/>
+                </span>
             </form>
             <%
                 }

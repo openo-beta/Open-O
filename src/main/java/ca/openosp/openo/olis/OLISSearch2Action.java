@@ -59,6 +59,7 @@ import ca.openosp.openo.olis1.parameters.ZBR6;
 import ca.openosp.openo.olis1.parameters.ZBR8;
 import ca.openosp.openo.olis1.parameters.ZBX1;
 import ca.openosp.openo.olis1.parameters.ZPD1;
+import ca.openosp.openo.olis1.parameters.ZSD;
 import ca.openosp.openo.olis1.parameters.ZPD3;
 import ca.openosp.openo.olis1.parameters.ZRP1;
 import ca.openosp.openo.olis1.queries.Query;
@@ -197,6 +198,17 @@ public class OLISSearch2Action extends ActionSupport {
                 q.setConsentToViewBlockedInformation(new ZPD1("Z"));
 
                 String blockedInfoIndividual = request.getParameter("blockedInformationIndividual");
+                String sdmFirstName = request.getParameter("sdmFirstName");
+                String sdmLastName = request.getParameter("sdmLastName");
+                String sdmRelationship = request.getParameter("sdmRelationship");
+
+                // When the override is authorized by a Substitute Decision Maker, attach
+                // the SDM identity (ZSD) so OLIS records who authorized viewing the blocked
+                // information (CV11.2b / CV12.2b). Without this the SDM name/relationship is
+                // never transmitted. Derived from oscarpro.
+                if ("substitute".equalsIgnoreCase(blockedInfoIndividual)) {
+                    q.setSubstituteDecisionMaker(new ZSD(sdmFirstName, sdmLastName, sdmRelationship));
+                }
 
                 // Build the consent-override audit row up front and persist it in a
                 // finally block so the override is always audited (OLIS03.06: a
@@ -232,6 +244,11 @@ public class OLISSearch2Action extends ActionSupport {
                             .append("\n");
                     data.append("Requesting HIC: ").append(providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo())).append("\n");
                     data.append("Authorized by:").append(blockedInfoIndividual).append("\n");
+                    if ("substitute".equalsIgnoreCase(blockedInfoIndividual)) {
+                        data.append("Substitute Decision Maker: ")
+                                .append(sdmLastName).append(", ").append(sdmFirstName)
+                                .append(" (").append(sdmRelationship).append(")\n");
+                    }
 
                     Object olisTransactionId = request.getAttribute("olisTransactionId");
                     if (olisTransactionId != null) {

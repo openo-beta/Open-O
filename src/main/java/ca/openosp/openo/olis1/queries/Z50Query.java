@@ -15,6 +15,7 @@ import ca.openosp.openo.olis1.parameters.PID52;
 import ca.openosp.openo.olis1.parameters.PID7;
 import ca.openosp.openo.olis1.parameters.PID8;
 import ca.openosp.openo.olis1.parameters.ZPD1;
+import ca.openosp.openo.olis1.parameters.ZSD;
 
 /**
  * Z50 - Identify Patient by Name, Sex, and Date of Birth
@@ -74,6 +75,11 @@ public class Z50Query extends Query {
 
     @Override
     public void setConsentToViewBlockedInformation(ZPD1 consentToViewBlockedInformation) {
+        throw new RuntimeException("Not valid for this type of query.");
+    }
+
+    @Override
+    public void setSubstituteDecisionMaker(ZSD substituteDecisionMaker) {
         throw new RuntimeException("Not valid for this type of query.");
     }
 

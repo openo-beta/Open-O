@@ -13,6 +13,7 @@ package ca.openosp.openo.olis1.queries;
 import java.util.Date;
 
 import ca.openosp.openo.olis1.parameters.ZPD1;
+import ca.openosp.openo.olis1.parameters.ZSD;
 
 public abstract class Query implements Cloneable {
 
@@ -35,6 +36,8 @@ public abstract class Query implements Cloneable {
     public abstract QueryType getQueryType();
 
     public abstract void setConsentToViewBlockedInformation(ZPD1 consentToViewBlockedInformation);
+
+    public abstract void setSubstituteDecisionMaker(ZSD substituteDecisionMaker);
 
     public Object clone() {
         try {

@@ -19,6 +19,7 @@ import ca.openosp.openo.olis1.parameters.OBX3;
 import ca.openosp.openo.olis1.parameters.QRD7;
 import ca.openosp.openo.olis1.parameters.ZPD1;
 import ca.openosp.openo.olis1.parameters.ZRP1;
+import ca.openosp.openo.olis1.parameters.ZSD;
 
 /**
  * Z04 - Retrieve Laboratory Information Updates for Practitioner
@@ -97,6 +98,11 @@ public class Z04Query extends Query {
 
     @Override
     public void setConsentToViewBlockedInformation(ZPD1 consentToViewBlockedInformation) {
+        throw new RuntimeException("Not valid for this type of query.");
+    }
+
+    @Override
+    public void setSubstituteDecisionMaker(ZSD substituteDecisionMaker) {
         throw new RuntimeException("Not valid for this type of query.");
     }
 }
