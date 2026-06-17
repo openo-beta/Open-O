@@ -644,11 +644,11 @@ public class OLISHL7Handler implements MessageHandler {
 
     public String getPerformingFacilityName() {
         try {
-            String key = "", value = "", ident = "";
+            String key = "", value = "", ident = "", rawOid = "";
             key = getString(terser.get("/.ZBR-6-6-2"));
             if (key != null && key.indexOf(":") > 0) {
-                ident = key.substring(0, key.indexOf(":"));
-                ident = getOrganizationType(ident);
+                rawOid = key.substring(0, key.indexOf(":"));
+                ident = getOrganizationType(rawOid);
                 key = key.substring(key.indexOf(":") + 1);
             } else {
                 key = "";
@@ -660,7 +660,7 @@ public class OLISHL7Handler implements MessageHandler {
             // message carries only the licence (a bare id like "5552"); fall back to the
             // raw ZBR name. Informed by oscarpro's reporting-facility enrichment, applied
             // symmetrically to performing + reporting.
-            value = catalogFacilityName(key, getString(terser.get("/.ZBR-6-1")));
+            value = catalogFacilityName(rawOid, key, getString(terser.get("/.ZBR-6-1")));
 
             return String.format("%s (%s %s)", value, ident, key);
         } catch (Exception e) {
@@ -678,11 +678,16 @@ public class OLISHL7Handler implements MessageHandler {
      * @param rawName String the facility name from the HL7 (fallback)
      * @return String the catalog name if matched + non-empty, else {@code rawName}
      */
-    private String catalogFacilityName(String licence, String rawName) {
+    private String catalogFacilityName(String oid, String licence, String rawName) {
         if (licence != null && !licence.trim().isEmpty()) {
             try {
                 OLISFacilityDao facilityDao = SpringUtils.getBean(OLISFacilityDao.class);
-                OLISFacility matched = facilityDao.findByLicenceNumber(licence.trim());
+                // Prefer the OID+licence match (disambiguates LAB/SCC/HOS, which share the
+                // licence space); fall back to licence-only when the OID is absent/unmatched.
+                OLISFacility matched = facilityDao.findByOidAndLicence(oid, licence.trim());
+                if (matched == null) {
+                    matched = facilityDao.findByLicenceNumber(licence.trim());
+                }
                 if (matched != null && stringIsNotNullOrEmpty(matched.getName())) {
                     return matched.getName();
                 }
@@ -736,11 +741,11 @@ public class OLISHL7Handler implements MessageHandler {
 
     public String getReportingFacilityName() {
         try {
-            String key = "", value = "", ident = "";
+            String key = "", value = "", ident = "", rawOid = "";
             key = getString(terser.get("/.ZBR-4-6-2"));
             if (key != null && key.indexOf(":") > 0) {
-                ident = key.substring(0, key.indexOf(":"));
-                ident = getOrganizationType(ident);
+                rawOid = key.substring(0, key.indexOf(":"));
+                ident = getOrganizationType(rawOid);
                 key = key.substring(key.indexOf(":") + 1);
             } else {
                 key = "";
@@ -750,7 +755,7 @@ public class OLISHL7Handler implements MessageHandler {
             }
             // Catalog-enrich the reporting facility name (licence-only messages); see
             // catalogFacilityName / getPerformingFacilityName.
-            value = catalogFacilityName(key, getString(terser.get("/.ZBR-4-1")));
+            value = catalogFacilityName(rawOid, key, getString(terser.get("/.ZBR-4-1")));
             return String.format("%s (%s %s)", value, ident, key);
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);

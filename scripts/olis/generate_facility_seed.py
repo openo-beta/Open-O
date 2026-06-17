@@ -55,6 +55,7 @@ except ImportError:
 NULL = r"\N"
 OID_LAB = "2.16.840.1.113883.3.59.1"
 OID_SCC = "2.16.840.1.113883.3.59.2"
+OID_HOSP = "2.16.840.1.113883.3.59.3"
 
 
 def trim_to_null(value):
@@ -69,7 +70,61 @@ def class_from_oid(oid):
         return "LAB"
     if oid == OID_SCC:
         return "SCC"
+    if oid == OID_HOSP:
+        return "HOS"
     return None
+
+
+def build_hospital_records(xlsx_path):
+    """Build HOS rows from an eHealth "Extract - Hospitals" XLSX (OID .59.3). The
+    hospital extract uses a different header set than the Lab/SCC extract:
+
+        licence       <- "Alternate Code"   (row skipped if blank)
+        name          <- "OrgName"          (row skipped if blank)
+        oid           <- "OID"              (must be the hospital OID .59.3)
+        addressLine1  <- "Address Line 1"
+        addressLine2  <- "Address Line 2"
+        city          <- "City"
+        postalCode    <- "Postal Code"
+        status        <- "Status Code": OPEN -> ACTIVE, CLOSED -> INACTIVE
+
+    Province is present in the extract but OLISFacility has no province column, so
+    it is not loaded (facility addresses are otherwise sourced from the HL7 ZBR).
+    Upsert key (facilityClass, licence); last occurrence wins.
+    """
+    seen, records = {}, []
+    skipped = 0
+    for row in read_rows(xlsx_path):
+        licence = trim_to_null(row.get("Alternate Code"))
+        oid = trim_to_null(row.get("OID"))
+        name = trim_to_null(row.get("OrgName"))
+        if licence is None or oid is None or name is None:
+            skipped += 1
+            continue
+        facility_class = class_from_oid(oid)
+        if facility_class != "HOS":
+            skipped += 1
+            continue
+        status_code = (trim_to_null(row.get("Status Code")) or "").upper()
+        status = "INACTIVE" if status_code == "CLOSED" else "ACTIVE"
+        rec = [
+            licence,
+            facility_class,
+            name,
+            trim_to_null(row.get("Address Line 1")) or NULL,
+            trim_to_null(row.get("Address Line 2")) or NULL,
+            trim_to_null(row.get("City")) or NULL,
+            trim_to_null(row.get("Postal Code")) or NULL,
+            oid,
+            status,
+        ]
+        key = (facility_class, licence)
+        if key in seen:
+            records[seen[key]] = rec
+        else:
+            seen[key] = len(records)
+            records.append(rec)
+    return records, skipped
 
 
 def read_rows(xlsx_path):
@@ -138,6 +193,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--xlsx", required=True, help="Official eHealth Lab and SCC Extract XLSX")
+    ap.add_argument("--hospital-xlsx", default=None,
+                    help="Optional eHealth 'Extract - Hospitals' XLSX (OID .59.3); appends HOS rows")
     ap.add_argument("--out", default="database/mysql/olis",
                     help="Output directory (default: database/mysql/olis)")
     args = ap.parse_args()
@@ -148,14 +205,26 @@ def main():
 
     print("Reading %s" % args.xlsx)
     records, skipped = build_records(args.xlsx)
+
+    hosp_count = 0
+    if args.hospital_xlsx:
+        if not os.path.isfile(args.hospital_xlsx):
+            sys.exit("Hospital XLSX not found: %s" % args.hospital_xlsx)
+        print("Reading %s" % args.hospital_xlsx)
+        hosp_records, hosp_skipped = build_hospital_records(args.hospital_xlsx)
+        records.extend(hosp_records)
+        hosp_count = len(hosp_records)
+        skipped += hosp_skipped
+
     labs = sum(1 for r in records if r[1] == "LAB")
     sccs = sum(1 for r in records if r[1] == "SCC")
+    hos = sum(1 for r in records if r[1] == "HOS")
 
     out_path = os.path.join(args.out, "OLISFacility.csv")
     write_csv(out_path, records)
 
-    print("Wrote %d rows (LAB %d, SCC %d); skipped %d (missing licence/oid/name or unknown OID)"
-          % (len(records), labs, sccs, skipped))
+    print("Wrote %d rows (LAB %d, SCC %d, HOS %d); skipped %d (missing licence/oid/name or unknown OID)"
+          % (len(records), labs, sccs, hos, skipped))
     print("  -> %s" % out_path)
     print("\nAdd a LOAD DATA stanza for OLISFacility to olisinit.sql (see field order above).")
 

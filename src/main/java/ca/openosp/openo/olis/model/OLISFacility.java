@@ -30,9 +30,11 @@ public class OLISFacility extends AbstractModel<Integer> {
 
     public static final String CLASS_LAB = "LAB";
     public static final String CLASS_SCC = "SCC";
+    public static final String CLASS_HOS = "HOS";
 
     public static final String OID_LAB = "2.16.840.1.113883.3.59.1";
     public static final String OID_SCC = "2.16.840.1.113883.3.59.2";
+    public static final String OID_HOSP = "2.16.840.1.113883.3.59.3";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

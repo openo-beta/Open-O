@@ -59,6 +59,32 @@ public class OLISFacilityDao extends AbstractDaoImpl<OLISFacility> {
     }
 
     /**
+     * Lookup a facility by OID + licence number — the disambiguated form, since a
+     * licence is unique only within an org type (LAB/SCC/HOS). Preferred over
+     * {@link #findByLicenceNumber(String)} when the HL7 identifier carries the OID.
+     * ACTIVE row preferred. Returns null if no row matches.
+     *
+     * @param oid           String the org-type OID from the HL7 identifier
+     * @param licenceNumber String the facility licence
+     * @return OLISFacility the matching catalog row (ACTIVE preferred), or null
+     */
+    @SuppressWarnings("unchecked")
+    public OLISFacility findByOidAndLicence(String oid, String licenceNumber) {
+        if (oid == null || oid.trim().isEmpty() || licenceNumber == null || licenceNumber.trim().isEmpty()) {
+            return null;
+        }
+        String sql = "select x from " + this.modelClass.getName() + " x"
+                + " where x.oid = :oid and x.licenceNumber = :licenceNumber"
+                + " order by case when x.status = 'ACTIVE' then 0 else 1 end";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("oid", oid.trim());
+        query.setParameter("licenceNumber", licenceNumber.trim());
+        query.setMaxResults(1);
+        List<OLISFacility> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    /**
      * Active rows for one class, used by the AJAX picker to provide name+address
      * +city+licence suggestions. Splits the user query on whitespace and requires
      * EVERY token to appear (in any order) within the haystack
