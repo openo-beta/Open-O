@@ -131,6 +131,9 @@ def read_rows(xlsx_path):
     """Yield each data row as a {header: value} dict; row 1 is the header
     (mirrors OlisXlsxSheetReader: only non-blank header columns are kept)."""
     wb = openpyxl.load_workbook(xlsx_path, read_only=True, data_only=True)
+    if not wb.sheetnames:
+        wb.close()
+        sys.exit("XLSX has no worksheets: %s" % xlsx_path)
     ws = wb[wb.sheetnames[0]]  # importer uses firstSheetPath
     headers = None
     for cells in ws.iter_rows(values_only=True):
@@ -206,14 +209,12 @@ def main():
     print("Reading %s" % args.xlsx)
     records, skipped = build_records(args.xlsx)
 
-    hosp_count = 0
     if args.hospital_xlsx:
         if not os.path.isfile(args.hospital_xlsx):
             sys.exit("Hospital XLSX not found: %s" % args.hospital_xlsx)
         print("Reading %s" % args.hospital_xlsx)
         hosp_records, hosp_skipped = build_hospital_records(args.hospital_xlsx)
         records.extend(hosp_records)
-        hosp_count = len(hosp_records)
         skipped += hosp_skipped
 
     labs = sum(1 for r in records if r[1] == "LAB")

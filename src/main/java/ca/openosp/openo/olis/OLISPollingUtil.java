@@ -127,6 +127,20 @@ public class OLISPollingUtil {
         pollZ04Query(loggedInInfo, providerNo, defaultStartTime, defaultEndTime);
     }
 
+    /**
+     * Builds a {@link LoggedInInfo} that polls <em>as</em> the given provider. The
+     * scheduler has no HTTP session, so each poll asserts a per-provider identity
+     * rather than the (possibly null) inbound one. Shared by the Z04/Z06 poll loops.
+     *
+     * @param provider Provider the provider to poll on behalf of
+     * @return LoggedInInfo a session-less identity carrying that provider
+     */
+    private static LoggedInInfo pollerIdentity(Provider provider) {
+        LoggedInInfo pollerLoggedInInfo = new LoggedInInfo();
+        pollerLoggedInInfo.setLoggedInProvider(provider);
+        return pollerLoggedInInfo;
+    }
+
     private static void pollZ04Query(LoggedInInfo loggedInInfo, String providerNo, String defaultStartTime, String defaultEndTime) {
         OLISProviderPreferences olisProviderPreferences = olisProviderPreferencesDao.findById(providerNo);
         Provider provider = providerDao.getProvider(providerNo);
@@ -171,8 +185,7 @@ public class OLISPollingUtil {
             providerQuery.setRequestingHic(zrp1);
 
             // Poll as this provider rather than the (possibly null) inbound identity.
-            LoggedInInfo pollerLoggedInInfo = new LoggedInInfo();
-            pollerLoggedInInfo.setLoggedInProvider(provider);
+            LoggedInInfo pollerLoggedInInfo = pollerIdentity(provider);
 
             String response = Driver.submitOLISQuery(pollerLoggedInInfo, null, providerQuery);
 
@@ -243,8 +256,7 @@ public class OLISPollingUtil {
                 providerQuery.setRequestingHic(zrp1);
 
                 // Poll as this provider: the scheduler has no session, so build a per-provider identity.
-                LoggedInInfo pollerLoggedInInfo = new LoggedInInfo();
-                pollerLoggedInInfo.setLoggedInProvider(provider);
+                LoggedInInfo pollerLoggedInInfo = pollerIdentity(provider);
 
                 String response = Driver.submitOLISQuery(pollerLoggedInInfo, null, providerQuery);
 
@@ -279,8 +291,7 @@ public class OLISPollingUtil {
             logger.warn("Z06 facility poll skipped: no valid 'olis_polling_provider' configured for the initiating identity.");
             return;
         }
-        LoggedInInfo pollerLoggedInInfo = new LoggedInInfo();
-        pollerLoggedInInfo.setLoggedInProvider(pollProvider);
+        LoggedInInfo pollerLoggedInInfo = pollerIdentity(pollProvider);
 
         try {
             Z06Query facilityQuery = new Z06Query();

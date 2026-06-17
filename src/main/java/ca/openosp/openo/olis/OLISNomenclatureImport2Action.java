@@ -75,6 +75,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
         }
     }
 
+    @Override
     public String execute() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
             throw new SecurityException("missing required sec object");

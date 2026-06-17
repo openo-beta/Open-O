@@ -673,7 +673,7 @@ public final class MessageUploader {
                 try {
                     c = DbConnectionFilter.getThreadLocalDbConnection();
                     pstmt = c.prepareStatement(sql);
-                    pstmt.setString(1, (result != null && result.getDemographicNo() != null) ? result.getDemographicNo().toString() : "0");
+                    pstmt.setString(1, (result.getDemographicNo() != null) ? result.getDemographicNo().toString() : "0");
                     pstmt.setInt(2, labId);
                     pstmt.executeUpdate();
 

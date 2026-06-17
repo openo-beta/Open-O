@@ -146,10 +146,10 @@ public class OlisLabRequestSortable {
                                         compared = -1;
                                     } else {
                                         // Parses both ids to integers
-                                        Integer o1SetId = Integer.parseInt(o1.getSetId());
-                                        Integer o2SetId = Integer.parseInt(o2.getSetId());
+                                        int o1SetId = Integer.parseInt(o1.getSetId());
+                                        int o2SetId = Integer.parseInt(o2.getSetId());
                                         // Compares the set ids to determine order
-                                        compared = o1SetId.compareTo(o2SetId);
+                                        compared = Integer.compare(o1SetId, o2SetId);
                                     }
                                 }
                             }
