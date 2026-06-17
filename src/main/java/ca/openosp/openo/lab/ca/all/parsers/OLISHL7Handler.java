@@ -38,7 +38,9 @@ import org.apache.logging.log4j.Logger;
 import org.bouncycastle.util.encoders.Base64;
 import ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISResultNomenclatureDao;
+import ca.openosp.openo.olis.dao.OLISFacilityDao;
 import ca.openosp.openo.olis.dao.OLISMicroorganismNomenclatureDao;
+import ca.openosp.openo.olis.model.OLISFacility;
 import ca.openosp.openo.olis.model.OLISMicroorganismNomenclature;
 import ca.openosp.openo.olis.model.OLISRequestNomenclature;
 import ca.openosp.openo.olis.model.OLISResultNomenclature;
@@ -654,13 +656,41 @@ public class OLISHL7Handler implements MessageHandler {
             if (key == null || key.trim().equals("")) {
                 return "";
             }
-            value = getString(terser.get("/.ZBR-6-1"));
+            // Enrich the facility name from the local OLIS facility catalog when the
+            // message carries only the licence (a bare id like "5552"); fall back to the
+            // raw ZBR name. Informed by oscarpro's reporting-facility enrichment, applied
+            // symmetrically to performing + reporting.
+            value = catalogFacilityName(key, getString(terser.get("/.ZBR-6-1")));
 
             return String.format("%s (%s %s)", value, ident, key);
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
         }
         return "";
+    }
+
+    /**
+     * Returns the OLIS facility catalog name for a licence when a seeded
+     * {@link OLISFacility} matches, otherwise the supplied raw name. Used to
+     * resolve a performing/reporting facility that the HL7 carries by licence only.
+     *
+     * @param licence String the facility licence parsed from the ZBR identifier
+     * @param rawName String the facility name from the HL7 (fallback)
+     * @return String the catalog name if matched + non-empty, else {@code rawName}
+     */
+    private String catalogFacilityName(String licence, String rawName) {
+        if (licence != null && !licence.trim().isEmpty()) {
+            try {
+                OLISFacilityDao facilityDao = SpringUtils.getBean(OLISFacilityDao.class);
+                OLISFacility matched = facilityDao.findByLicenceNumber(licence.trim());
+                if (matched != null && stringIsNotNullOrEmpty(matched.getName())) {
+                    return matched.getName();
+                }
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("OLIS HL7 Error", e);
+            }
+        }
+        return rawName;
     }
 
     public HashMap<String, String> getPerformingFacilityAddress() {
@@ -718,7 +748,9 @@ public class OLISHL7Handler implements MessageHandler {
             if (key == null || key.trim().equals("")) {
                 return "";
             }
-            value = getString(terser.get("/.ZBR-4-1"));
+            // Catalog-enrich the reporting facility name (licence-only messages); see
+            // catalogFacilityName / getPerformingFacilityName.
+            value = catalogFacilityName(key, getString(terser.get("/.ZBR-4-1")));
             return String.format("%s (%s %s)", value, ident, key);
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);

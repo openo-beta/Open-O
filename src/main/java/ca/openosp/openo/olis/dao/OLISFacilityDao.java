@@ -35,6 +35,30 @@ public class OLISFacilityDao extends AbstractDaoImpl<OLISFacility> {
     }
 
     /**
+     * Lookup a facility by licence number alone (class-agnostic), preferring an
+     * ACTIVE row. Used to enrich a performing/reporting facility name from the
+     * catalog when an OLIS lab message carries only the facility licence (no name)
+     * — e.g. a ZBR that yields a bare {@code 5552}. Returns null if no row matches.
+     *
+     * @param licenceNumber String the facility licence parsed from the HL7 ZBR identifier
+     * @return OLISFacility the matching catalog row (ACTIVE preferred), or null
+     */
+    @SuppressWarnings("unchecked")
+    public OLISFacility findByLicenceNumber(String licenceNumber) {
+        if (licenceNumber == null || licenceNumber.trim().isEmpty()) {
+            return null;
+        }
+        String sql = "select x from " + this.modelClass.getName() + " x"
+                + " where x.licenceNumber = :licenceNumber"
+                + " order by case when x.status = 'ACTIVE' then 0 else 1 end";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("licenceNumber", licenceNumber.trim());
+        query.setMaxResults(1);
+        List<OLISFacility> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    /**
      * Active rows for one class, used by the AJAX picker to provide name+address
      * +city+licence suggestions. Splits the user query on whitespace and requires
      * EVERY token to appear (in any order) within the haystack
