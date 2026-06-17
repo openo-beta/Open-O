@@ -688,7 +688,9 @@ public final class MessageUploader {
 
             }
         } catch (SQLException sqlE) {
-            logger.info("NO MATCHING PATIENT FOR LAB id =" + labId);
+            // Patient already matched above; a failure here is the head-record lookup,
+            // measurement population, or routing insert — not "no matching patient".
+            logger.error("Error routing matched lab to its patient (lab id = " + labId + ")", sqlE);
             throw sqlE;
         }
 
