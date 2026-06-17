@@ -123,7 +123,8 @@ opener.refreshView();</script>
         }
 
         function checkBlockedConsent(form) {
-            value = document.forms[form + "_form"].blockedInformationConsent;
+            const field = document.forms[form + "_form"].blockedInformationConsent;
+            const value = field ? field.value : null;
             if (value != null && value == "Z") {
                 return confirm("You have chosen to view blocked information.  This action is recorded in the audit log.  Are you sure?")
             }
@@ -354,7 +355,7 @@ opener.refreshView();</script>
             </select>
 
             <form action="<%=request.getContextPath() %>/olis/Search.do" method="POST"
-                  onSubmit="checkBlockedConsent('Z01')" name="Z01_form">
+                  onSubmit="return checkBlockedConsent('Z01')" name="Z01_form">
                 <input type="hidden" name="queryType" value="Z01"/>
                 <table id="Z01_query">
                     <tbody>
@@ -732,7 +733,7 @@ opener.refreshView();</script>
 
 
             <form action="<%=request.getContextPath() %>/olis/Search.do" method="POST"
-                  onSubmit="checkBlockedConsent('Z02')" name="Z02_form">
+                  onSubmit="return checkBlockedConsent('Z02')" name="Z02_form">
                 <input type="hidden" name="queryType" value="Z02"/>
                 <table id="Z02_query" style="display: none;">
                     <tbody>
