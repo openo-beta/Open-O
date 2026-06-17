@@ -75,7 +75,7 @@ public class OLISUtils {
         DocumentBuilderFactory.newInstance().newDocumentBuilder();
         SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
 
-        InputStream is = OLISPoller.class.getResourceAsStream("/org/oscarehr/olis/response.xsd");
+        InputStream is = OLISUtils.class.getResourceAsStream("/org/oscarehr/olis/response.xsd");
 
         Source schemaFile = new StreamSource(is);
 

@@ -170,13 +170,17 @@ public class OLISPollingUtil {
             ZRP1 zrp1 = new ZRP1(provider.getPractitionerNo(), StringUtils.trimToEmpty(officialIdType), "ON", "HL70347", StringUtils.trimToEmpty(officialLastName), StringUtils.trimToEmpty(officialfirstName), StringUtils.trimToEmpty(officialSecondName));
             providerQuery.setRequestingHic(zrp1);
 
-            String response = Driver.submitOLISQuery(loggedInInfo, null, providerQuery);
+            // Poll as this provider rather than the (possibly null) inbound identity.
+            LoggedInInfo pollerLoggedInInfo = new LoggedInInfo();
+            pollerLoggedInInfo.setLoggedInProvider(provider);
+
+            String response = Driver.submitOLISQuery(pollerLoggedInInfo, null, providerQuery);
 
             if (!response.startsWith("<Response")) {
                 logger.error("response does not match, aborting " + response);
                 return;
             }
-            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response, providerNo);
+            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(pollerLoggedInInfo, response, providerNo);
             logger.info("timeSlot " + timeStampForNextStartDate);
 
             if (timeStampForNextStartDate != null) {
@@ -237,13 +241,18 @@ public class OLISPollingUtil {
                 // Setting HIC for Z04 Request
                 ZRP1 zrp1 = new ZRP1(provider.getPractitionerNo(), userPropertyDAO.getStringValue(provider.getProviderNo(), UserProperty.OFFICIAL_OLIS_IDTYPE), "ON", "HL70347", officialLastName, officialfirstName, officialSecondName);
                 providerQuery.setRequestingHic(zrp1);
-                String response = Driver.submitOLISQuery(loggedInInfo, null, providerQuery);
+
+                // Poll as this provider: the scheduler has no session, so build a per-provider identity.
+                LoggedInInfo pollerLoggedInInfo = new LoggedInInfo();
+                pollerLoggedInInfo.setLoggedInProvider(provider);
+
+                String response = Driver.submitOLISQuery(pollerLoggedInInfo, null, providerQuery);
 
                 if (!response.startsWith("<Response")) {
                     logger.error("response does not match, aborting " + response);
                     continue;
                 }
-                String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response, provider.getProviderNo());
+                String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(pollerLoggedInInfo, response, provider.getProviderNo());
                 logger.info("timeSlot " + timeStampForNextStartDate);
 
                 if (timeStampForNextStartDate != null) {
@@ -262,6 +271,17 @@ public class OLISPollingUtil {
     }
 
     private static void pollZ06Query(LoggedInInfo loggedInInfo, String defaultStartTime, String defaultEndTime, String facilityId) {
+        // A facility poll has no per-provider context; use the configured polling provider as
+        // the initiating identity. Skip if none is set.
+        String pollProviderNo = OscarProperties.getInstance().getProperty("olis_polling_provider");
+        Provider pollProvider = (pollProviderNo != null) ? providerDao.getProvider(pollProviderNo.trim()) : null;
+        if (pollProvider == null) {
+            logger.warn("Z06 facility poll skipped: no valid 'olis_polling_provider' configured for the initiating identity.");
+            return;
+        }
+        LoggedInInfo pollerLoggedInInfo = new LoggedInInfo();
+        pollerLoggedInInfo.setLoggedInProvider(pollProvider);
+
         try {
             Z06Query facilityQuery = new Z06Query();
             OLISProviderPreferences olisProviderPreferences = olisProviderPreferencesDao.findById("-1");
@@ -291,7 +311,7 @@ public class OLISPollingUtil {
             orc21.setValue(6, 3, "^ISO");
             facilityQuery.setOrderingFacilityId(orc21);
 
-            String response = Driver.submitOLISQuery(loggedInInfo, null, facilityQuery);
+            String response = Driver.submitOLISQuery(pollerLoggedInInfo, null, facilityQuery);
 
             if (!response.startsWith("<Response")) {
                 logger.debug("Didn't equal response.  Returning " + response);
@@ -300,7 +320,7 @@ public class OLISPollingUtil {
 
             // Z06 facility poll — no single provider context, so no per-provider
             // unmatched-routing override applies (falls back to the system-level setting).
-            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response, null);
+            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(pollerLoggedInInfo, response, null);
 
             if (timeStampForNextStartDate != null) {
                 olisProviderPreferences.setStartTime(timeStampForNextStartDate);

@@ -98,11 +98,20 @@ public class Driver {
 
     public static String submitOLISQuery(LoggedInInfo loggedInInfo, HttpServletRequest request, Query query) {
 
+        // A real initiating provider is required (drives the ZSH segment and audit rows).
+        // Interactive queries get it from the session; polling supplies a per-provider one.
+        Provider initiatingProvider = (loggedInInfo != null) ? loggedInInfo.getLoggedInProvider() : null;
+        if (initiatingProvider == null) {
+            logger.error("OLIS query aborted: no initiating provider available. Automated polling must supply a per-provider identity.");
+            return "";
+        }
+        String initiatingProviderNo = initiatingProvider.getProviderNo();
+
         try {
             query.setQueryExecutionDate(new Date());
-            query.setInitiatingProviderNo(loggedInInfo.getLoggedInProviderNo());
+            query.setInitiatingProviderNo(initiatingProviderNo);
 
-            OLISMessage message = new OLISMessage(loggedInInfo.getLoggedInProvider(), query);
+            OLISMessage message = new OLISMessage(initiatingProvider, query);
 
             if (OscarProperties.getInstance().getProperty("olis_truststore") != null) {
                 System.setProperty("javax.net.ssl.trustStore", OscarProperties.getInstance().getProperty("olis_truststore").trim());
@@ -145,12 +154,12 @@ public class Driver {
                 logItem.setContent("query");
                 logItem.setData(olisHL7String);
 
-                logItem.setProviderNo(loggedInInfo.getLoggedInProviderNo());
+                logItem.setProviderNo(initiatingProviderNo);
 
                 logDao.persist(logItem);
 
                 olisQueryLog = new OLISQueryLog();
-                olisQueryLog.setInitiatingProviderNo(loggedInInfo.getLoggedInProviderNo());
+                olisQueryLog.setInitiatingProviderNo(initiatingProviderNo);
                 olisQueryLog.setQueryExecutionDate(new Date());
                 olisQueryLog.setQueryType(query.getQueryType().toString());
                 olisQueryLog.setUuid(query.getUuid());
@@ -218,7 +227,7 @@ public class Driver {
                 request.setAttribute("searchException", e);
             }
 
-            notifyOlisError(loggedInInfo.getLoggedInProvider(), e.getMessage());
+            notifyOlisError(initiatingProvider, e.getMessage());
             return "";
         }
     }
