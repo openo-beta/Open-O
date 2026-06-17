@@ -704,7 +704,7 @@ TR10702-9	Fungal Susceptibility	Micro	ACTIVE	2011-07-01	\N	\N
 TR10703-7	Streptococcus Group B Screen	Micro	ACTIVE	2022-12-15	\N	\N
 TR10704-5	Haemophilus ducreyi	Micro	ACTIVE	2011-07-01	\N	\N
 TR10705-2	Herpes Detection	Micro	ACTIVE	\N	\N	\N
-TR10706-0	Herpes Detection by Electron Microscopy	Micro	ACTIVE	\N	\N	\N
+TR10706-0	Herpes Detection by Electron Microscopy	Micro	INACTIVE	2011-12-12	2026-05-31	\N
 TR10707-8	Human Papilloma Virus Detection	Micro	ACTIVE	\N	\N	\N
 TR10708-6	Legionella Detection	Micro	ACTIVE	\N	\N	\N
 TR10709-4	Leishmania Detection	Micro	ACTIVE	\N	\N	\N
@@ -2575,7 +2575,7 @@ TR12663-1	Complement Split Product Bb	Immuno	ACTIVE	2015-02-06	\N	\N
 TR12664-9	Complement, Alternate Pathway (AH50),	Immuno	ACTIVE	2015-02-06	\N	\N
 TR12665-6	Iron Overload Screen	Chem	ACTIVE	2015-02-06	\N	\N
 TR12666-4	14-3-3 eta Protein	Serology	ACTIVE	2015-02-06	\N	\N
-TR12667-2	BSCL2 DNA Sequencing	Chem	ACTIVE	2015-02-20	\N	\N
+TR12667-2	BSCL2 DNA Sequencing	Pathology	ACTIVE	2015-02-20	\N	\N
 TR12668-0	CHRNA4 DNA Sequencing	Chem	ACTIVE	2015-02-20	\N	\N
 TR12669-8	Early Onset Alzheimer's Evaluation	Chem	ACTIVE	2015-02-20	\N	\N
 TR12670-6	Ganglionic nAChR Antibody	Chem	ACTIVE	2015-02-20	\N	\N
@@ -2639,7 +2639,7 @@ TR12730-8	Factor IX Antigen	Hem	ACTIVE	2016-01-22	\N	\N
 TR12731-6	Galactokinase	Chem	ACTIVE	2016-01-22	\N	\N
 TR12732-4	Ganciclovir	Chem	ACTIVE	2016-01-22	\N	\N
 TR12733-2	Ceramide trihexoside	Chem	ACTIVE	2016-01-22	\N	\N
-TR12734-0	Histoplasma Antigen	Chem	ACTIVE	2016-01-22	\N	\N
+TR12734-0	Histoplasma Antigen	Micro	ACTIVE	2016-01-22	\N	\N
 TR12735-7	Nucleated Erythrocytes	Hem	ACTIVE	2016-01-22	\N	\N
 TR12736-5	Arenavirus Investigation; New World	Micro	ACTIVE	2016-01-22	\N	\N
 TR12737-3	Respiratory Panel	Micro	ACTIVE	2016-01-22	\N	\N
@@ -2991,7 +2991,7 @@ TR13086-4	BCR/ABL Follow-up Molecular Oncology	Pathology	ACTIVE	2025-08-28	\N	\N
 TR13087-2	Pre-Bone Marrow Transplant Molecular Oncology	Pathology	ACTIVE	2025-08-28	\N	\N
 TR13088-0	Guanidinoacetate Methyltransferase Deficiency	Chem	ACTIVE	2022-10-14	\N	\N
 TR13089-8	DNA Fragmentation Index	Pathology	ACTIVE	2022-10-14	\N	\N
-TR13090-6	MBTA Panel	Micro	ACTIVE	2022-10-14	\N	\N
+TR13090-6	MBTA Panel	Micro	INACTIVE	2022-10-14	2026-05-31	\N
 TR13091-4	Myeloid NGS Molecular Oncology	Pathology	ACTIVE	2025-08-28	\N	\N
 TR13092-2	BCR/ABL PCR Molecular Oncology	Pathology	ACTIVE	2025-08-28	\N	\N
 TR13093-0	Constitutional Chromosome FISH Analysis	Pathology	ACTIVE	2025-08-28	\N	\N
@@ -3443,7 +3443,7 @@ TR13543-4	Hepatitis C Virus Antibody - Prenatal Screen	Micro	ACTIVE	2026-03-26	\
 TR13544-2	Mumps Virus RNA, Multiplex	Micro	ACTIVE	2026-03-26	\N	\N
 TR13545-9	Low Pass Genome Sequence Analysis	Pathology	ACTIVE	2026-04-23	\N	\N
 TR13546-7	Familial Adenomatous Polyposis (FAP)+MUTYH Molecular Analysis	Pathology	ACTIVE	2026-04-23	\N	\N
-TR13547-5	BRAF - Colorectal Cancer Molecular Analysis	Pathology	ACTIVE	2026-04-23	\N	\N
+TR13547-5	Molecular BRAF Testing	Pathology	ACTIVE	2026-04-23	\N	\N
 TR13548-3	Hereditary NGS	Pathology	ACTIVE	2026-04-23	\N	\N
 TR13549-1	ABL1 Kinase Domain Mutation Molecular Analysis	Pathology	ACTIVE	2026-04-23	\N	\N
 TR13550-9	RUNX1, RUNX1T1 Fusion Molecular Analysis	Pathology	ACTIVE	2026-04-23	\N	\N
@@ -3460,4 +3460,39 @@ TR13560-8	Specimen Matching - Identity Testing	Pathology	ACTIVE	2026-04-23	\N	\N
 TR13561-6	NGS - Somatic Malignant Hematology Molecular Analysis	Pathology	ACTIVE	2026-04-23	\N	\N
 TR13562-4	Mantle Cell Molecular Analysis	Pathology	ACTIVE	2026-04-23	\N	\N
 TR13563-2	Molecular Referred-Out	Pathology	ACTIVE	2026-04-23	\N	\N
+TR13564-0	Cytogenetics Banked	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13565-7	Cytogenetics FISH	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13566-5	Cytogenetics Optical Genome Mapping (OGM)	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13567-3	Cytogenetics Karyotype	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13568-1	Cytogenetics Referred-Out	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13569-9	AGATE Circulating Tumor DNA (ctDNA) NGS	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13570-7	Molecular Bank	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13571-5	Molecular Epidermal Growth Factor Receptor (EGFR) Circulating Tumor DNA (ctDNA)	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13572-3	Molecular Epidermal Growth Factor Receptor (EGFR)	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13573-1	Molecular O6-methylguanine-DNA methyltransferase (MGMT)	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13574-9	Molecular Microsatellite Instability (MSI)	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13575-6	Molecular Sequencing Confirmation	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13576-4	Solid Tumour NGS	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13577-2	AGATE Solid Tumour NGS	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13578-0	Hereditary Cancer Core Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13579-8	Hereditary Cancer - MBD4 Tumour Predisposition Syndrome Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13580-6	Hereditary Cancer - Multiple Osteochondromas Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13581-4	Hereditary Chronic Kidney Disease (CKD) - Amyloidosis	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13582-2	Hereditary Chronic Kidney Disease (CKD) - Bartter and Gitelman Syndrome Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13583-0	Hereditary Chronic Kidney Disease (CKD) - Congenital Anomalies of the Kidneys and Urinary Tracts (CAKUT) panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13584-8	Hereditary Chronic Kidney Disease (CKD) - Complement Mediated Kidney Disease (KD) and Atypical Hemolytic Uremic Syndrome (aHUS) panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13585-5	Hereditary Chronic Kidney Disease (CKD) - Comprehensive Kidney Disease Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13586-3	Hereditary Chronic Kidney Disease (CKD) - Cystic Kidney Disease Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13587-1	Hereditary Chronic Kidney Disease (CKD) - Dent Disease Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13588-9	Hereditary Chronic Kidney Disease (CKD) - Diabetes Insipidus Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13589-7	Hereditary Chronic Kidney Disease (CKD) - Hypomagnesemia Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13590-5	Hereditary Chronic Kidney Disease (CKD) - Hypophosphatemia (HPP) and Inherited Hypophosphatemic Rickets Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13591-3	Hereditary Chronic Kidney Disease (CKD) - Nephrolithiasis and Nephrocalcinosis Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13592-1	Hereditary Chronic Kidney Disease (CKD) - Proteinuric Kidney Disease (KD) Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13593-9	Hereditary Chronic Kidney Disease (CKD) - Pseudohypoaldosteronism Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13594-7	Hereditary Chronic Kidney Disease (CKD) - Renal Tubular Acidosis Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13595-4	Hereditary Chronic Kidney Disease (CKD) - Tubulopathies Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13596-2	Cytogenetics Fibroblast Culture	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13597-0	Circulating Tumour DNA (ctDNA) NGS Panel	Pathology	ACTIVE	2026-05-28	\N	\N
+TR13598-8	Helicobacter pylori Serology	Micro	ACTIVE	2026-05-28	\N	\N
 TR99999-9	Do Not Transmit	Clinical	ACTIVE	\N	\N	\N

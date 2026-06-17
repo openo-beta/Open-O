@@ -12,8 +12,8 @@ CREATE TABLE OLISResultNomenclature (
   INDEX idx_OLISResultNomenclature_nameId (nameId)
 );
 
--- Data file generated from OLIS Nomenclatures V3.03_PROD, released April 23, 2026
--- Source: https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v3.03
+-- Data file generated from OLIS Nomenclatures V3.04_PROD, released April 28, 2026
+-- Source: https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v3.04
 -- When a new version is released, admins should run Admin → "OLIS — Import Nomenclature"
 LOAD DATA LOCAL INFILE 'OLISTestResultNomenclature.csv'
 INTO TABLE OLISResultNomenclature
@@ -37,8 +37,8 @@ CREATE TABLE OLISRequestNomenclature (
   INDEX idx_OLISRequestNomenclature_nameId (nameId)
 );
 
--- Data file generated from OLIS Nomenclatures V3.03_PROD, released April 23, 2026
--- Source: https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v3.03
+-- Data file generated from OLIS Nomenclatures V3.04_PROD, released April 28, 2026
+-- Source: https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v3.04
 LOAD DATA LOCAL INFILE 'OLISTestRequestNomenclature.csv'
 INTO TABLE OLISRequestNomenclature
 FIELDS TERMINATED BY '\t'

@@ -219,6 +219,8 @@
 10153-5	T wave amplitude.lead V6	ACTIVE	\N	\N	\N
 101557-7	Clostridioides difficile DNA; Stool; PCR/NAAT	ACTIVE	2025-11-26	\N	\N
 1015-7	E(w) Ag	ACTIVE	2025-02-13	\N	\N
+101588-2	Histoplasma capsulatum+Blastomyces dermatitidis Antigen; IA	ACTIVE	2026-05-28	\N	\N
+101589-0	Histoplasma capsulatum+Blastomyces dermatitidis Antigen; IA	ACTIVE	2026-05-28	\N	\N
 101-6	Cefoperazone, KB	ACTIVE	\N	\N	\N
 10160-0	History of medication use	ACTIVE	\N	\N	\N
 10162-6	History of Pregnancies	ACTIVE	\N	\N	\N
@@ -1096,6 +1098,7 @@
 11147-6	Myoglobin/Creatinine Ratio; Urine	ACTIVE	\N	\N	\N
 11148-4	Potassium/Creatinine Ratio; Urine	ACTIVE	\N	\N	\N
 11149-2	Sodium/Creatinine Ratio; Urine	ACTIVE	\N	\N	\N
+111492-5	Gamma Globuline; 24H Urine	ACTIVE	2026-05-28	\N	\N
 111-5	Cefotetan, MLC	ACTIVE	\N	\N	\N
 11150-0	Blasts/100 Cells; Bone Marrow	ACTIVE	\N	\N	\N
 11151-8	Hematocrit; BloodCo	ACTIVE	\N	\N	\N
@@ -3317,8 +3320,8 @@
 13589-7	Factor V (five) Leiden	ACTIVE	\N	\N	\N
 13590-5	Activated Protein C Resistance	ACTIVE	\N	\N	\N
 13591-3	Factor Inhibitor XXX	ACTIVE	\N	\N	\N
-13592-1	Platelet aggregation.XXX induced	ACTIVE	\N	\N	\N
-13593-9	Platelet aggregation.prostaglandin induced	ACTIVE	\N	\N	\N
+13592-1	Platelet Aggregation Induced	ACTIVE	2010-08-11	\N	\N
+13593-9	Platelet Aggregation Prostaglandin Induced	ACTIVE	2010-08-11	\N	\N
 13594-7	Prekallikrein	ACTIVE	\N	\N	\N
 13595-4	Basophils/100 Leukocytes; Nasal	ACTIVE	\N	\N	\N
 13596-2	Histiocytes; Nasal	ACTIVE	\N	\N	\N
@@ -7624,7 +7627,7 @@
 17777-4	Yersinia species antibody IgM	ACTIVE	\N	\N	\N
 17778-2	Zinc; WBC	ACTIVE	\N	\N	\N
 1778-0	Alkaline Phosphatase Intestinal	ACTIVE	\N	\N	\N
-17780-8	Helicobacter pylori antigen	ACTIVE	\N	\N	\N
+17780-8	Helicobacter Pylori Antigen; Stool; IA	ACTIVE	2009-01-25	\N	\N
 17781-6	21-Hydroxylase antibody	ACTIVE	\N	\N	\N
 17782-4	Lipoprotein Beta Subparticle	ACTIVE	\N	\N	\N
 17783-2	Hemosiderin; Urine	ACTIVE	\N	\N	\N
@@ -8069,7 +8072,7 @@
 18381-4	Uroporphyrinogen Decarboxylase; Blood	ACTIVE	\N	\N	\N
 1838-2	Alpha-N-Acetylglucosaminidase; Tissue Unspecified	ACTIVE	\N	\N	\N
 18382-2	Specimen Dry Weight	ACTIVE	\N	\N	\N
-18383-0	Alfentanil; Urine	ACTIVE	\N	\N	\N
+18383-0	Alfentanil; Urine	ACTIVE	2019-05-26	\N	\N
 18384-8	Butabarbital	ACTIVE	\N	\N	\N
 18385-5	Butalbital; Urine	ACTIVE	\N	\N	\N
 18386-3	Chlorothiazide	ACTIVE	\N	\N	\N
@@ -8126,7 +8129,7 @@
 1843-2	Ammonia Nitrogen; 24h Urine	ACTIVE	\N	\N	\N
 18432-5	Tetrahydrocannabinol; Stool	ACTIVE	\N	\N	\N
 18434-1	1,2-Dichlorobenzene; Blood	ACTIVE	\N	\N	\N
-18435-8	Sufentanil; Urine	ACTIVE	\N	\N	\N
+18435-8	Sufentanil; Urine	ACTIVE	2019-05-26	\N	\N
 18436-6	Acetylcarnitine	ACTIVE	\N	\N	\N
 18437-4	Propenoylcarnitine	ACTIVE	\N	\N	\N
 18438-2	Propionylcarnitine	ACTIVE	\N	\N	\N
@@ -9544,7 +9547,7 @@
 20603-7	Cells.CD38/100 cells	ACTIVE	\N	\N	\N
 20604-5	Cells.CD3-CD16+CD56+	ACTIVE	\N	\N	\N
 20605-2	Cells.CD4	INACTIVE	2014-07-27	\N	\N
-20606-0	Cells.CD4/100 cells	INACTIVE	2014-07-27	\N	\N
+20606-0	Cells.CD4/100 cells	ACTIVE	2014-07-27	\N	\N
 20607-8	Cells.CD4/Cells.CD8	ACTIVE	\N	\N	\N
 20608-6	Cells.CD41/100 cells	ACTIVE	\N	\N	\N
 20609-4	Cells.CD42/100 cells	ACTIVE	\N	\N	\N
@@ -9553,7 +9556,7 @@
 20611-0	Cells.CD5/100 cells	ACTIVE	\N	\N	\N
 20612-8	Cells.CD7/100 cells	ACTIVE	\N	\N	\N
 20613-6	Cells.CD8	INACTIVE	2014-07-27	\N	\N
-20614-4	Cells.CD8/100 cells	INACTIVE	2014-07-27	\N	\N
+20614-4	Cells.CD8/100 cells	ACTIVE	2014-07-27	\N	\N
 20615-1	Lymphocytes IgD/100 lymphocytes	ACTIVE	\N	\N	\N
 20616-9	Lymphocytes IgM/100 lymphocytes	ACTIVE	\N	\N	\N
 20617-7	Lymphocytes.kappa/100 lymphocytes	ACTIVE	\N	\N	\N
@@ -13231,11 +13234,11 @@
 24374-1	Platelet Associated antibody; Blood	ACTIVE	\N	\N	\N
 24375-8	Platelet antibody	ACTIVE	\N	\N	\N
 24376-6	von Willebrand Factor Multimers	ACTIVE	\N	\N	\N
-24377-4	Platelet aggregation.adenosine diphosphate induced	ACTIVE	\N	\N	\N
-24378-2	Platelet aggregation.epinephrine induced	ACTIVE	\N	\N	\N
-24379-0	Platelet Aggregation Study; Collagen	ACTIVE	\N	\N	\N
-24380-8	Platelet aggregation.ristocetin induced	ACTIVE	\N	\N	\N
-24381-6	Platelet aggregation.arachidonate induced	ACTIVE	\N	\N	\N
+24377-4	Platelet Aggregation Adenosine Diphosphate Induced	ACTIVE	2010-08-11	\N	\N
+24378-2	Platelet Aggregation EPINEPHrine Induced	ACTIVE	2010-08-11	\N	\N
+24379-0	Platelet Aggregation Collagen Induced	ACTIVE	2012-08-31	\N	\N
+24380-8	Platelet Aggregation Ristocetin Induced	ACTIVE	2010-08-11	\N	\N
+24381-6	Platelet Aggregation Arachidonate Induced	ACTIVE	2010-08-11	\N	\N
 24382-4	Neutrophil Associated antibody	ACTIVE	\N	\N	\N
 24383-2	Intrinsic Factor antibody	ACTIVE	\N	\N	\N
 24384-0	Anti-c	ACTIVE	\N	\N	\N
@@ -13520,7 +13523,7 @@
 25150-4	Calcium Sulfate Crystals	ACTIVE	\N	\N	\N
 25153-8	Cholesterol Crystals	ACTIVE	\N	\N	\N
 25154-6	Crystals; Unidentified	ACTIVE	\N	\N	\N
-2515-5	Kynurenate; Urine	ACTIVE	\N	\N	\N
+2515-5	Kynurenate; Urine	INACTIVE	2009-01-25	2026-05-31	\N
 25155-3	Cystine Crystals	ACTIVE	\N	\N	\N
 25156-1	Eosinophils	ACTIVE	\N	\N	\N
 25157-9	Epithelial Casts	ACTIVE	\N	\N	\N
@@ -20075,24 +20078,24 @@
 33515-8	Clarity	ACTIVE	\N	\N	\N
 33516-6	Reticulocytes Immature/Total Reticulocytes; RBC	ACTIVE	\N	\N	\N
 33517-4	Hemoglobin; Fluid	ACTIVE	\N	\N	\N
-33518-2	Platelet aggregation.adenosine diphosphate induced^high dose	ACTIVE	\N	\N	\N
-33519-0	Platelet aggregation.adenosine diphosphate induced^low dose	ACTIVE	\N	\N	\N
-33520-8	Platelet aggregation.collagen induced^high dose	ACTIVE	\N	\N	\N
-33521-6	Platelet aggregation.collagen induced^low dose	ACTIVE	\N	\N	\N
+33518-2	Platelet Aggregation Adenosine Diphosphate Induced High Dose	ACTIVE	2010-08-11	\N	\N
+33519-0	Platelet Aggregation Adenosine Diphosphate Induced Low Dose	ACTIVE	2010-08-11	\N	\N
+33520-8	Platelet Aggregation Collagen Induced High Dose	ACTIVE	2010-08-11	\N	\N
+33521-6	Platelet Aggregation Collagen Induced Low Dose	ACTIVE	2010-08-11	\N	\N
 3352-2	Amphetaminil; 24h Urine	ACTIVE	\N	\N	\N
-33522-4	Platelet aggregation.ristocetin induced^high dose	ACTIVE	\N	\N	\N
-33523-2	Platelet aggregation.ristocetin induced^low dose	ACTIVE	\N	\N	\N
+33522-4	Platelet Aggregation Ristocetin Induced High Dose	ACTIVE	2010-08-11	\N	\N
+33523-2	Platelet Aggregation Ristocetin Induced Low Dose	ACTIVE	2010-08-11	\N	\N
 33524-0	Euglobulin Clot Lysis; Platelet Poor Plasma and Control	ACTIVE	\N	\N	\N
 33525-7	Thrombin Time Correction	ACTIVE	\N	\N	\N
 33526-5	Reptilase Time Factor Substitution After Addition Of Normal Plasma	ACTIVE	\N	\N	\N
 33527-3	Methadone Long Acting Metabolite; Urine	ACTIVE	\N	\N	\N
-33528-1	Platelet Aggregation Adenosine Diphosphate Induced High Dose Control	ACTIVE	\N	\N	\N
-33529-9	Platelet Aggregation Adenosine Diphosphate Induced Low Dose Control	ACTIVE	\N	\N	\N
+33528-1	Platelet Aggregation Adenosine Diphosphate Induced High Dose; Control	ACTIVE	2010-08-11	\N	\N
+33529-9	Platelet Aggregation Adenosine Diphosphate Induced Low Dose; Control	ACTIVE	2010-08-11	\N	\N
 3353-0	Amphotericin B; CSF	ACTIVE	\N	\N	\N
-33530-7	Platelet Aggregation Epinephrine Induced Control	ACTIVE	\N	\N	\N
-33531-5	Platelet Aggregation Arachidonate Induced Control	ACTIVE	\N	\N	\N
-33532-3	Platelet Aggregation Ristocetin Induced High Dose Control	ACTIVE	\N	\N	\N
-33533-1	Platelet Aggregation Ristocetin Induced Low Dose Control	ACTIVE	\N	\N	\N
+33530-7	Platelet Aggregation EPINEPHrine Induced; Control	ACTIVE	2010-08-11	\N	\N
+33531-5	Platelet Aggregation Arachidonate Induced; Control	ACTIVE	2010-08-11	\N	\N
+33532-3	Platelet Aggregation Ristocetin Induced High Dose; Control	ACTIVE	2010-08-11	\N	\N
+33533-1	Platelet Aggregation Ristocetin Induced Low Dose; Control	ACTIVE	2010-08-11	\N	\N
 33534-9	Coccidioides immitis antibody IgM	ACTIVE	\N	\N	\N
 33535-6	Influenza virus A+B antigen	ACTIVE	\N	\N	\N
 33536-4	Miscellaneous Allergen IgE RAST	ACTIVE	\N	\N	\N
@@ -20110,11 +20113,11 @@
 3354-8	Amphotericin B	ACTIVE	\N	\N	\N
 33548-9	Lymphocytes Abnormal/100 Leukocytes; Fluid	ACTIVE	\N	\N	\N
 33549-7	Hantavirus sin nombre antibody	ACTIVE	\N	\N	\N
-33550-5	Platelet Aggregation Ristocetin Induced 1500 ug/mL	ACTIVE	2021-04-05	\N	\N
-33551-3	Platelet Aggregation Ristocetin Induced 1200 ug/mL; Platelet Rich Plasma	ACTIVE	2022-01-14	\N	\N
-33552-1	Platelet aggregation.ristocetin induced^900 ug/mL	ACTIVE	\N	\N	\N
-33553-9	Platelet aggregation.ristocetin induced^600 ug/mL	ACTIVE	\N	\N	\N
-33554-7	Platelet aggregation.ristocetin induced^300 ug/mL	ACTIVE	\N	\N	\N
+33550-5	Platelet Aggregation Ristocetin Induced 1500 mg/L	ACTIVE	2021-04-05	\N	\N
+33551-3	Platelet Aggregation Ristocetin Induced 1200 mg/L	ACTIVE	2022-01-14	\N	\N
+33552-1	Platelet Aggregation Ristocetin Induced 900 mg/L	ACTIVE	2010-08-11	\N	\N
+33553-9	Platelet Aggregation Ristocetin Induced 600 mg/L	ACTIVE	2010-08-11	\N	\N
+33554-7	Platelet Aggregation Ristocetin Induced 300 mg/L	ACTIVE	2010-08-11	\N	\N
 3355-5	Ampicillin	ACTIVE	\N	\N	\N
 33556-2	Diameter Biparietal Outer To Inner	ACTIVE	\N	\N	\N
 33557-0	Completion Status	ACTIVE	\N	\N	\N
@@ -20235,11 +20238,11 @@
 33668-5	Erythrocytes; Stool	ACTIVE	\N	\N	\N
 33669-3	Trypsin; Stool	ACTIVE	\N	\N	\N
 3367-0	Atropine	ACTIVE	\N	\N	\N
-33670-1	Platelet aggregation.collagen induced lag^high dose	ACTIVE	\N	\N	\N
-33671-9	Platelet Aggregation Collagen Induced Lag High Dose Control	ACTIVE	\N	\N	\N
-33672-7	Platelet Aggregation Study	ACTIVE	\N	\N	\N
+33670-1	Platelet Aggregation Collagen Induced Lag High Dose	ACTIVE	2010-08-11	\N	\N
+33671-9	Platelet Aggregation Collagen Induced Lag High Dose; Control	ACTIVE	2010-08-11	\N	\N
+33672-7	Platelet Aggregation Ristocetin+PPP Control	ACTIVE	2011-09-30	\N	\N
 33673-5	Thrombin Time Factor Substitution After Addition Of Protamine Sulfate	ACTIVE	\N	\N	\N
-33674-3	Platelet Aggregation Ristocetin + PRP Control	ACTIVE	\N	\N	\N
+33674-3	Platelet Aggregation Ristocetin+PRP Control	ACTIVE	2010-08-11	\N	\N
 33675-0	Microscopic Examination	ACTIVE	\N	\N	\N
 33676-8	Francisella tularensis	ACTIVE	\N	\N	\N
 33677-6	Francisella tularensis	ACTIVE	\N	\N	\N
@@ -20434,7 +20437,7 @@
 33854-1	Progesterone 4th Specimen Post XXX Challenge	ACTIVE	\N	\N	\N
 33855-8	Promonocytes; Blood	ACTIVE	\N	\N	\N
 33856-6	Sezary Cells; Blood	ACTIVE	\N	\N	\N
-33857-4	Sezary Cells/100 Leukocytes; Blood	ACTIVE	\N	\N	\N
+33857-4	Sezary Cells/Leukocytes; Manual	ACTIVE	2007-01-31	\N	\N
 33858-2	Growth Hormone [GH]	ACTIVE	\N	\N	\N
 33859-0	Somatotropin/Creatinine Ratio; 12h Urine	ACTIVE	\N	\N	\N
 33860-8	Somatotropin/Creatinine Ratio; 24h Urine	ACTIVE	\N	\N	\N
@@ -21771,7 +21774,7 @@
 35370-6	GBA Gene g.S84GG; Molgen	INACTIVE	2009-01-25	2025-07-24	\N
 35371-4	GBA Gene g.N370S; Molgen	INACTIVE	2009-01-25	2025-07-24	\N
 35372-2	GBA Gene p.Leu444Pro; Molgen	ACTIVE	2025-07-24	\N	\N
-35373-0	Platelet aggregation XXX induced	ACTIVE	\N	\N	\N
+35373-0	Platelet Aggregation Induced; Donor	ACTIVE	2009-06-30	\N	\N
 35374-8	DMPK Gene Allele 2, CTG Repeats; Molgen	ACTIVE	2025-07-24	\N	\N
 35375-5	DMPK Gene Allele 1, CTG Repeats; Molgen	ACTIVE	2025-07-24	\N	\N
 35376-3	MJD Gene Allele 2.CAG Repeats; Molgen	ACTIVE	2025-07-24	\N	\N
@@ -24104,8 +24107,8 @@
 40587-8	Heart beat post exercise	ACTIVE	\N	\N	\N
 40588-6	Inulin	ACTIVE	\N	\N	\N
 4059-2	Tobramycin Trough	ACTIVE	\N	\N	\N
-40593-6	Platelet aggregation.epinephrine induced^50 um	ACTIVE	\N	\N	\N
-40594-4	Platelet aggregation.epinephrine induced^100 um	ACTIVE	\N	\N	\N
+40593-6	Platelet Aggregation EPINEPHrine Induced 50 umol/L	ACTIVE	2010-08-11	\N	\N
+40594-4	Platelet Aggregation EPINEPHrine Induced 100 umol/L	ACTIVE	2010-08-11	\N	\N
 40595-1	Prothrombin antibody IgG	ACTIVE	\N	\N	\N
 40596-9	Prothrombin antibody IgM	ACTIVE	\N	\N	\N
 40597-7	7-Dehydrocholesterol; Amniotic Fluid	ACTIVE	\N	\N	\N
@@ -24373,7 +24376,7 @@
 40836-9	Sulfonamide Crystals	ACTIVE	\N	\N	\N
 40837-7	Alternaria species antibody IgG	ACTIVE	\N	\N	\N
 40838-5	Argininosuccinate; CSF	ACTIVE	\N	\N	\N
-40839-3	Fentanyl; Urine	ACTIVE	\N	\N	\N
+40839-3	fentaNYL; Urine; Confirm	ACTIVE	2009-01-25	\N	\N
 4084-0	Trimipramine; Urine	ACTIVE	2021-03-12	\N	\N
 40840-1	Legionella pneumophila 1 antibody	ACTIVE	\N	\N	\N
 40841-9	Tomato IgE	ACTIVE	\N	\N	\N
@@ -24802,7 +24805,7 @@
 41228-8	Xanthine	ACTIVE	\N	\N	\N
 41229-6	Yellow Jacket IgG	ACTIVE	\N	\N	\N
 41230-4	Xanthine	ACTIVE	\N	\N	\N
-41231-2	Xanthurenate + Kynurenate; 24h Urine	ACTIVE	\N	\N	\N
+41231-2	Xanthurenate + Kynurenate; 24h Urine	ACTIVE	2009-01-25	\N	\N
 41232-0	West Nile virus antibody	ACTIVE	\N	\N	\N
 41235-3	Paper Wasp IgE	ACTIVE	\N	\N	\N
 4123-6	Amoxicillin; Dose	ACTIVE	\N	\N	\N
@@ -26153,7 +26156,7 @@
 43197-3	Gamma Hydroxybutyrate; Urine	ACTIVE	\N	\N	\N
 43198-1	Gamma Hydroxybutyrate; Urine	ACTIVE	\N	\N	\N
 43199-9	Norfentanyl; Urine	ACTIVE	2024-05-16	\N	\N
-43200-5	Norfentanyl; Urine	ACTIVE	2014-08-01	\N	\N
+43200-5	Norfentanyl; Urine; Confirm	ACTIVE	2014-08-01	\N	\N
 43201-3	BK virus DNA	ACTIVE	\N	\N	\N
 43202-1	Liver Kidney Microsomal 1 antibody IgG	ACTIVE	\N	\N	\N
 43203-9	Parainfluenza virus 1 antibody	ACTIVE	\N	\N	\N
@@ -30456,8 +30459,8 @@
 49007-8	Magnesium; Peritoneal Dialysis Fld	ACTIVE	2015-07-17	\N	\N
 49008-6	Clot Retraction; Blood	ACTIVE	\N	\N	\N
 49009-4	Norepinephrine 7th Specimen Post XXX Challenge	ACTIVE	\N	\N	\N
-49010-2	Platelet aggregation.adenosine diphosphate induced	ACTIVE	\N	\N	\N
-49011-0	Platelet aggregation.arachidonate induced	ACTIVE	\N	\N	\N
+49010-2	Platelet Aggregation Adenosine Diphosphate Induced	ACTIVE	2010-08-11	\N	\N
+49011-0	Platelet Aggregation Arachidonate Induced	ACTIVE	2010-08-11	\N	\N
 49012-8	Influenza virus A+B	ACTIVE	\N	\N	\N
 49013-6	Pancreastatin	ACTIVE	\N	\N	\N
 49014-4	PAH Gene Targeted Mutation Analysis; Molgen	ACTIVE	2025-07-24	\N	\N
@@ -30970,7 +30973,7 @@
 49482-3	Vascular Endothelial Growth Factor Antigen	ACTIVE	\N	\N	\N
 49483-1	HIV 1	ACTIVE	\N	\N	\N
 49484-9	Phenylalanine; Blood	ACTIVE	\N	\N	\N
-49485-6	Platelet aggregation.ristocetin induced^1800 ug/mL	ACTIVE	2010-08-11	\N	\N
+49485-6	Platelet Aggregation Ristocetin Induced 1800 mg/L	ACTIVE	2010-08-11	\N	\N
 4948-6	HLA-DQ w9(w3); Blood Donor	ACTIVE	\N	\N	\N
 49486-4	Alpha Pinene; Blood	ACTIVE	\N	\N	\N
 49487-2	Nateglinide	ACTIVE	2010-08-11	\N	\N
@@ -31514,7 +31517,7 @@
 49997-0	Borrelia burgdorferi 83_93kD antibody IgM	ACTIVE	\N	\N	\N
 49998-8	Borrelia burgdorferi 83_93kD antibody IgM	ACTIVE	\N	\N	\N
 4999-9	Cytomegalovirus DNA	ACTIVE	\N	\N	\N
-49999-6	Platelet aggregation.collagen induced	ACTIVE	\N	\N	\N
+49999-6	Platelet Aggregation Collagen Induced	ACTIVE	2012-05-31	\N	\N
 50000-9	Hydrogen/Expired Gas 30m Post XXX Challenge	ACTIVE	\N	\N	\N
 50001-7	Hydrogen/Expired Gas 1h Post XXX Challenge	ACTIVE	\N	\N	\N
 50002-5	Hydrogen/Expired Gas 1.5h Post XXX Challenge	ACTIVE	\N	\N	\N
@@ -32485,10 +32488,10 @@
 50939-8	Zinc; Hair	ACTIVE	\N	\N	\N
 50940-6	Zinc/Creatinine; 24h Urine	ACTIVE	2025-01-16	\N	\N
 50941-4	Mycobacterium species	ACTIVE	\N	\N	\N
-50944-8	Platelet Aggregation Study	ACTIVE	\N	\N	\N
-50945-5	Platelet aggregation.adenosine diphosphate induced^2 um	ACTIVE	\N	\N	\N
-50946-3	Platelet aggregation.adenosine diphosphate induced^4 um	ACTIVE	\N	\N	\N
-50947-1	Platelet aggregation.collagen induced^190 ug/mL	ACTIVE	\N	\N	\N
+50944-8	Platelet Aggregation Adenosine Diphosphate Induced 20 umol/L	ACTIVE	2011-09-30	\N	\N
+50945-5	Platelet Aggregation Adenosine Diphosphate Induced 2 umol/L	ACTIVE	2012-03-31	\N	\N
+50946-3	Platelet Aggregation Adenosine Diphosphate Induced 4 umol/L	ACTIVE	2012-03-31	\N	\N
+50947-1	Platelet Aggregation Collagen Induced 190 mg/L	ACTIVE	2012-03-31	\N	\N
 5094-8	Coccidioides immitis antibody	ACTIVE	\N	\N	\N
 50948-9	Vanillylmandelate + Creatinine; 24h Urine	ACTIVE	\N	\N	\N
 50949-7	Albumin; Urine	ACTIVE	\N	\N	\N
@@ -33340,7 +33343,7 @@
 51722-7	Reticulin Ab	ACTIVE	\N	\N	\N
 51723-5	Culture	ACTIVE	\N	\N	\N
 51724-3	Cefuroxime	ACTIVE	\N	\N	\N
-51728-4	Platelet Aggregation Study	ACTIVE	\N	\N	\N
+51728-4	Platelet Aggregation Adenosine Diphosphate Induced 10 umol/L	ACTIVE	2011-09-30	\N	\N
 51729-2	Ganglioside GM1 Ab IgG	ACTIVE	\N	\N	\N
 517-3	Trimethoprim + Sulfamethoxazole, KB	ACTIVE	\N	\N	\N
 5173-0	Streptococcus pyogenes Enzyme antibody	ACTIVE	\N	\N	\N
@@ -34386,7 +34389,7 @@
 53504-7	Decanoylcarnitine (C10)/Creatinine; Urine	ACTIVE	\N	\N	\N
 53505-4	Asparagine/Total Amino Acids	ACTIVE	2024-09-26	\N	\N
 53506-2	Citrulline/total Amino Acids	ACTIVE	2024-09-26	\N	\N
-53507-0	Kynurenin/Creatinine; Urine	ACTIVE	\N	\N	\N
+53507-0	Kynurenin/Creatinine; Urine	ACTIVE	2009-06-30	\N	\N
 53508-8	Decadienoylcarnitine (C10:2); Urine	ACTIVE	\N	\N	\N
 53509-6	Sebacylcarnitine (C10-DC)/Creatinine; Urine	ACTIVE	\N	\N	\N
 53510-4	Dodecanoylcarnitine (C12)/Creatinine; Urine	ACTIVE	\N	\N	\N
@@ -34448,13 +34451,13 @@
 5356-1	Smith Extractable Nuclear antibody	ACTIVE	\N	\N	\N
 53561-7	Lactate dehydrogenase/Creatinine; Urine	ACTIVE	\N	\N	\N
 53562-5	Rheumatoid factor; Pleural Fluid	ACTIVE	\N	\N	\N
-53563-3	Platelet aggregation.adenosine diphosphate induced 20 umol/mL	ACTIVE	\N	\N	\N
-53564-1	Platelet aggregation.adenosine diphosphate induced 50 umol/mL	ACTIVE	\N	\N	\N
-53565-8	Platelet aggregation.adenosine diphosphate induced 100 umol/mL	ACTIVE	\N	\N	\N
-53566-6	Platelet aggregation.collagen induced 8.0 ug/mL	ACTIVE	\N	\N	\N
-53567-4	Platelet Aggregation EPINEPHrine Induced 0.1 ug/m	ACTIVE	2024-12-12	\N	\N
-53568-2	Platelet Aggregation.Arachidonate Induced 500 ug/mL	ACTIVE	2024-12-12	\N	\N
-53569-0	Platelet aggregation.ristocetin induced 800 ug/mL	ACTIVE	\N	\N	\N
+53563-3	Platelet Aggregation Adenosine Diphosphate Induced 20 mmol/L	ACTIVE	2009-06-30	\N	\N
+53564-1	Platelet Aggregation Adenosine Diphosphate Induced 50 mmol/L	ACTIVE	2009-06-30	\N	\N
+53565-8	Platelet Aggregation Adenosine Diphosphate Induced 100 mmol/L	ACTIVE	2009-06-30	\N	\N
+53566-6	Platelet Aggregation Collagen Induced 8.0 mg/L	ACTIVE	2009-06-30	\N	\N
+53567-4	Platelet Aggregation EPINEPHrine Induced 0.1 mg/L	ACTIVE	2024-12-12	\N	\N
+53568-2	Platelet Aggregation Arachidonate Induced 500 mg/L	ACTIVE	2024-12-12	\N	\N
+53569-0	Platelet Aggregation Ristocetin Induced 800 mg/L	ACTIVE	2009-06-30	\N	\N
 53570-8	Coagulation surface induced lupus insensitive	ACTIVE	\N	\N	\N
 53571-6	Culture	ACTIVE	\N	\N	\N
 53572-4	Staphylococcus aureus methicillin resistant	ACTIVE	\N	\N	\N
@@ -34581,7 +34584,7 @@
 53731-6	Posaconazole	ACTIVE	\N	\N	\N
 53732-4	GCK Gene Targeted Mutation Analysis; Molgen	ACTIVE	2025-07-24	\N	\N
 53733-2	Color; Fluid spun	ACTIVE	\N	\N	\N
-53734-0	Kynurenine	ACTIVE	\N	\N	\N
+53734-0	Kynurenine	INACTIVE	2009-06-30	2026-05-31	\N
 53735-7	Barbiturates Other; Urine	ACTIVE	\N	\N	\N
 5373-6	Strongyloides species Ab; HA	ACTIVE	2015-04-17	\N	\N
 53736-5	Benzodiazepines Other; Urine	ACTIVE	\N	\N	\N
@@ -34646,8 +34649,8 @@
 53810-8	Lymphocyte proliferation; Blood	ACTIVE	\N	\N	\N
 53811-6	Magnesium ammonium phosphate; 24h Urine	ACTIVE	\N	\N	\N
 53812-4	Micafungin, MIC	ACTIVE	\N	\N	\N
-53813-2	Platelet aggregation.adenosine diphosphate induced	ACTIVE	\N	\N	\N
-53814-0	Platelet aggregation.arachidonate induced	ACTIVE	\N	\N	\N
+53813-2	Platelet Aggregation Adenosine Diphosphate Induced; Blood	ACTIVE	2009-06-30	\N	\N
+53814-0	Platelet Aggregation Arachidonate Induced; Blood	ACTIVE	2009-06-30	\N	\N
 53815-7	Platelet glycoprotein IIb-IIIa antibody; Blood	ACTIVE	\N	\N	\N
 53816-5	Alpha hydroxytriazolam	ACTIVE	\N	\N	\N
 53817-3	Carnosine; CSF	ACTIVE	\N	\N	\N
@@ -35419,7 +35422,7 @@
 55341-2	Xg(a) Ab; Titre	ACTIVE	2025-01-16	\N	\N
 55342-0	Sd(a) antigen	ACTIVE	\N	\N	\N
 55343-8	Anidulafungin, MIC	ACTIVE	\N	\N	\N
-55344-6	Platelet aggregation ristocetin induced 1000 ug/mL	ACTIVE	\N	\N	\N
+55344-6	Platelet Aggregation Ristocetin Induced 1000 mg/L	ACTIVE	2012-03-31	\N	\N
 55345-3	VIM gene methylation; Stool	ACTIVE	\N	\N	\N
 55346-1	Clobazam+Norclobazam	ACTIVE	\N	\N	\N
 55347-9	Coagulation ecarin induced; Blood	ACTIVE	\N	\N	\N
@@ -35794,12 +35797,12 @@
 55794-2	Other cells; CSF	ACTIVE	\N	\N	\N
 55795-9	Phosphatidylserine IgG	ACTIVE	\N	\N	\N
 55796-7	Phosphatidylserine IgM	ACTIVE	\N	\N	\N
-55797-5	Platelet Aggregation ADP Induced 2.5 umol/L; Platelet Rich Plasma	ACTIVE	2022-01-14	\N	\N
+55797-5	Platelet Aggregation Adenosine Diphosphate Induced 2.5 umol/L	ACTIVE	2022-01-14	\N	\N
 5579-8	Antimony; Hair	ACTIVE	\N	\N	\N
-55798-3	Platelet Aggregation ADP Induced 5 umol/L; Platelet Rich Plasma	ACTIVE	2022-01-14	\N	\N
-55799-1	Platelet aggregation ristocetin induced 1125 mg/L	ACTIVE	\N	\N	\N
-55800-7	Platelet aggregation ristocetin induced 1000 mg/L	ACTIVE	\N	\N	\N
-55801-5	Platelet aggregation ristocetin induced 500 mg/L	ACTIVE	\N	\N	\N
+55798-3	Platelet Aggregation Adenosine Diphosphate Induced 5 umol/L; Blood	ACTIVE	2022-01-14	\N	\N
+55799-1	Platelet Aggregation Ristocetin Induced 1125 mg/L	ACTIVE	2012-03-31	\N	\N
+55800-7	Platelet Aggregation Ristocetin Induced 1000 mg/L	ACTIVE	2012-03-31	\N	\N
+55801-5	Platelet Aggregation Ristocetin Induced 500 mg/L	ACTIVE	2012-03-31	\N	\N
 55802-3	Platelets; Blood cord	ACTIVE	\N	\N	\N
 55803-1	Promyelocytes; CSF	ACTIVE	\N	\N	\N
 55804-9	Phosphatase leukocyte; WBC	ACTIVE	\N	\N	\N
@@ -35996,23 +35999,23 @@
 5598-8	Bismuth; Urine	ACTIVE	\N	\N	\N
 5599-6	Boldenone; Urine	ACTIVE	\N	\N	\N
 5600-2	Boldenone; Urine	ACTIVE	\N	\N	\N
-56002-9	Platelet aggregation adenosine diphosphate induced ATP secretion 5 um; Blood	ACTIVE	\N	\N	\N
-56003-7	Platelet aggregation adenosine diphosphate induced ATP secretion 10 um; Blood	ACTIVE	\N	\N	\N
-56004-5	Platelet aggregation adenosine diphosphate induced ATP secretion 5 um; Blood	ACTIVE	\N	\N	\N
-56005-2	Platelet aggregation adenosine diphosphate induced 5 um; Blood	ACTIVE	\N	\N	\N
-56006-0	Platelet Aggregation ADP Induced 10 umol/L	ACTIVE	2021-05-07	\N	\N
-56007-8	Platelet Aggregation Arachidonate induced 500 umol/L; Blood	ACTIVE	2023-01-26	\N	\N
-56008-6	Platelet aggregation collagen induced 1 ug/mL; Blood	ACTIVE	\N	\N	\N
-56009-4	Platelet aggregation collagen induced 5 ug/mL; Blood	ACTIVE	\N	\N	\N
+56002-9	Platelet Aggregation Adenosine Diphosphate Induced ATP Secretion 5 umol/L; Blood	ACTIVE	2010-03-01	\N	\N
+56003-7	Platelet Aggregation Adenosine Diphosphate Induced ATP Secretion 10 umol/L; Blood	ACTIVE	2010-03-01	\N	\N
+56004-5	Platelet Aggregation Adenosine Diphosphate Induced ATP Secretion 5 umol/L; Blood	ACTIVE	2010-03-01	\N	\N
+56005-2	Platelet Aggregation Adenosine Diphosphate Induced 5 umol/L; Blood	ACTIVE	2010-03-01	\N	\N
+56006-0	Platelet Aggregation Adenosine Diphosphate Induced 10 umol/L; Blood	ACTIVE	2021-05-07	\N	\N
+56007-8	Platelet Aggregation Arachidonate Induced 500 umol/L; Blood	ACTIVE	2023-01-26	\N	\N
+56008-6	Platelet Aggregation Collagen Induced 1 mg/L; Blood	ACTIVE	2010-03-01	\N	\N
+56009-4	Platelet Aggregation Collagen Induced 5 mg/L; Blood	ACTIVE	2010-03-01	\N	\N
 5601-0	Boldenone; 24h Urine	ACTIVE	\N	\N	\N
-56010-2	Platelet aggregation ristocetin induced 250 ug/mL; Blood	ACTIVE	\N	\N	\N
-56011-0	Platelet aggregation adenosine diphosphate induced ATP secretion 10 um; Blood	ACTIVE	\N	\N	\N
+56010-2	Platelet Aggregation Ristocetin Induced 250 mg/L; Blood	ACTIVE	2010-03-01	\N	\N
+56011-0	Platelet Aggregation Adenosine Diphosphate Induced ATP Secretion 10 umol/L; Blood	ACTIVE	2010-03-01	\N	\N
 56012-8	Platelet Aggregation Arachidonate Induced ATP Secretion 500 umol/L; Blood	ACTIVE	2023-01-26	\N	\N
 56013-6	Platelet Aggregation Arachidonate Induced ATP Secretion 500 umol/L; Blood	ACTIVE	2023-01-26	\N	\N
 56014-4	Platelet Aggregation Collagen Induced ATP Secretion 5 ug/mL; Blood	ACTIVE	2022-01-14	\N	\N
-56015-1	Platelet Aggregation Collagen Induced ATP Secretion 1 ug/mL, Blood	ACTIVE	2022-01-14	\N	\N
-56016-9	Platelet aggregation collagen induced ATP secretion 1 ug/mL; Blood	ACTIVE	\N	\N	\N
-56017-7	Platelet aggregation collagen induced ATP secretion 5 ug/mL; Blood	ACTIVE	\N	\N	\N
+56015-1	Platelet Aggregation Collagen Induced ATP Secretion 1 ug/mL; Blood	ACTIVE	2022-01-14	\N	\N
+56016-9	Platelet Aggregation Collagen Induced ATP Secretion 1 ug/mL; Blood	ACTIVE	2010-03-01	\N	\N
+56017-7	Platelet Aggregation Collagen Induced ATP Secretion 5 ug/mL; Blood	ACTIVE	2010-03-01	\N	\N
 56018-5	Platelet Aggregation Thrombin Induced ATP Secretion 5 U/mL; Blood	ACTIVE	2023-01-26	\N	\N
 56019-3	Platelet Aggregation Thrombin Induced ATP Secretion 1 U/mL; Blood	ACTIVE	2023-01-26	\N	\N
 56020-1	Platelet Aggregation Thrombin Induced ATP Secretion 5 U/mL; Blood	ACTIVE	2023-01-26	\N	\N
@@ -36022,7 +36025,7 @@
 56024-3	Influenza virus A N1 RNA	ACTIVE	\N	\N	\N
 56025-0	Ethambutol 8.0 ug/mL	ACTIVE	\N	\N	\N
 56026-8	Pyrazinamide 300.0 ug/mL	ACTIVE	\N	\N	\N
-56027-6	Platelet aggregation ristocetin induced 1.0 mg/mL; Blood	ACTIVE	\N	\N	\N
+56027-6	Platelet Aggregation Ristocetin Induced 1.0 g/L; Blood	ACTIVE	2010-03-01	\N	\N
 5602-8	Borate	ACTIVE	\N	\N	\N
 56028-4	Cells CD3-CD56+/100 cells; Bone marrow	ACTIVE	\N	\N	\N
 56029-2	Cells CD3-CD56+/100 cells; Body Fluid	ACTIVE	\N	\N	\N
@@ -37866,7 +37869,7 @@
 58376-5	Ethyl glucuronide/Creatinine Ratio; Urine	ACTIVE	\N	\N	\N
 58377-3	Ethyl glucuronide; Urine	ACTIVE	\N	\N	\N
 58378-1	Ethyl glucuronide; Urine	ACTIVE	\N	\N	\N
-58379-9	Fentanyl + Norfentanyl; Urine	ACTIVE	2014-08-01	\N	\N
+58379-9	Fentanyl+Norfentanyl; Urine; Screen	ACTIVE	2014-08-01	\N	\N
 58380-7	Fentanyl/Creatinine Ratio; Urine	ACTIVE	\N	\N	\N
 58381-5	Fentanyl; Urine	ACTIVE	\N	\N	\N
 58382-3	Norfentanyl/Creatinine Ratio; Urine Ratio; Urine	ACTIVE	\N	\N	\N
@@ -39013,7 +39016,7 @@
 59670-0	Estazolam; Tissue Unspecified	ACTIVE	\N	\N	\N
 59671-8	Estazolam; Tissue Unspecified	ACTIVE	\N	\N	\N
 59672-6	Estazolam; Urine	ACTIVE	\N	\N	\N
-59673-4	Fentanyl; Urine	ACTIVE	\N	\N	\N
+59673-4	fentaNYL; Urine; Screen	ACTIVE	2010-11-11	\N	\N
 59674-2	Flurazepam; Blood	ACTIVE	\N	\N	\N
 5967-5	Plasmin inhibitor Ag	ACTIVE	\N	\N	\N
 59675-9	Flurazepam; Blood	ACTIVE	\N	\N	\N
@@ -39254,7 +39257,7 @@
 59920-9	Lamotrigine; Gastric Fluid	ACTIVE	\N	\N	\N
 59921-7	Mefenamate	ACTIVE	\N	\N	\N
 59922-5	Mefenamate; Urine	ACTIVE	\N	\N	\N
-5992-3	Platelet aggregation.adenosine diphosphate induced	ACTIVE	\N	\N	\N
+5992-3	Platelet Aggregation Adenosine Diphosphate Induced	ACTIVE	2012-03-31	\N	\N
 59923-3	Mefenamate; Gastric Fluid	ACTIVE	\N	\N	\N
 59924-1	Meperidine	ACTIVE	\N	\N	\N
 59925-8	Mesoridazine; Urine	ACTIVE	\N	\N	\N
@@ -39263,7 +39266,7 @@
 59928-2	Methaqualone; Urine	ACTIVE	\N	\N	\N
 59929-0	Methaqualone; Gastric Fluid	ACTIVE	\N	\N	\N
 59930-8	Methotrimeprazine; Urine	ACTIVE	\N	\N	\N
-5993-1	Platelet Aggregation Arachidonate Induced; Platelet Rich Plasma	ACTIVE	2022-01-14	\N	\N
+5993-1	Platelet Aggregation Arachidonate Induced	ACTIVE	2022-01-14	\N	\N
 59931-6	Methotrimeprazine; Gastric Fluid	ACTIVE	\N	\N	\N
 59932-4	Mexiletine; Urine	ACTIVE	\N	\N	\N
 59933-2	Mexiletine; Gastric Fluid	ACTIVE	\N	\N	\N
@@ -39282,7 +39285,7 @@
 59946-4	Olanzapine; Gastric Fluid	ACTIVE	\N	\N	\N
 59947-2	Oxcarbazepine; Urine	ACTIVE	\N	\N	\N
 59948-0	Oxcarbazepine; Gastric Fluid	ACTIVE	\N	\N	\N
-5994-9	Platelet aggregation.calcium ionophore induced	ACTIVE	\N	\N	\N
+5994-9	Platelet Aggregation Calcium Ionophore Induced	ACTIVE	2012-03-31	\N	\N
 59949-8	Paroxetine; Urine	ACTIVE	\N	\N	\N
 59950-6	Paroxetine; Gastric Fluid	ACTIVE	\N	\N	\N
 59951-4	Pentazocine; Urine	ACTIVE	\N	\N	\N
@@ -39290,7 +39293,7 @@
 59953-0	Perphenazine	ACTIVE	\N	\N	\N
 59954-8	Perphenazine; Urine	ACTIVE	\N	\N	\N
 59955-5	Perphenazine; Gastric Fluid	ACTIVE	\N	\N	\N
-5995-6	Platelet aggregation.collagen induced	ACTIVE	\N	\N	\N
+5995-6	Platelet Aggregation Collagen Induced	ACTIVE	2012-03-31	\N	\N
 59956-3	Phencyclidine	ACTIVE	\N	\N	\N
 59957-1	Promazine	ACTIVE	\N	\N	\N
 59958-9	Promazine; Urine	ACTIVE	\N	\N	\N
@@ -39299,7 +39302,7 @@
 59961-3	Propoxyphene; Gastric Fluid	ACTIVE	\N	\N	\N
 59962-1	Propranolol; Gastric Fluid	ACTIVE	\N	\N	\N
 59963-9	Quetiapine; Urine	ACTIVE	\N	\N	\N
-5996-4	Platelet aggregation.epinephrine induced	ACTIVE	\N	\N	\N
+5996-4	Platelet Aggregation EPINEPHrine Induced	ACTIVE	2012-03-31	\N	\N
 59964-7	Quetiapine; Gastric Fluid	ACTIVE	\N	\N	\N
 59965-4	Quinine	ACTIVE	\N	\N	\N
 59966-2	Quinine; Urine	ACTIVE	\N	\N	\N
@@ -39308,7 +39311,7 @@
 59969-6	Strychnine; Urine	ACTIVE	\N	\N	\N
 59970-4	Strychnine; Gastric Fluid	ACTIVE	\N	\N	\N
 59971-2	Sulfamethoxazole; Urine	ACTIVE	\N	\N	\N
-5997-2	Platelet aggregation.norepinephrine induced	ACTIVE	\N	\N	\N
+5997-2	Platelet Aggregation Norepinephrine Induced	ACTIVE	2012-03-31	\N	\N
 59972-0	Sulfamethoxazole; Gastric Fluid	ACTIVE	\N	\N	\N
 59973-8	Thiocyanate; Urine	ACTIVE	\N	\N	\N
 59974-6	Thiocyanate; Gastric Fluid	ACTIVE	\N	\N	\N
@@ -39317,7 +39320,7 @@
 59977-9	Venlafaxine; Urine	ACTIVE	\N	\N	\N
 59978-7	Venlafaxine; Gastric Fluid	ACTIVE	\N	\N	\N
 59979-5	Warfarin; Urine	ACTIVE	\N	\N	\N
-5998-0	Platelet aggregation.ristocetin induced	ACTIVE	\N	\N	\N
+5998-0	Platelet Aggregation Ristocetin Induced	ACTIVE	2012-03-31	\N	\N
 59980-3	Warfarin; Gastric Fluid	ACTIVE	\N	\N	\N
 59981-1	Zopiclone; Urine	ACTIVE	\N	\N	\N
 59982-9	Zopiclone; Gastric Fluid	ACTIVE	\N	\N	\N
@@ -39336,14 +39339,14 @@
 59995-1	Testosterone 1st specimen Post XXX challenge	ACTIVE	\N	\N	\N
 59996-9	Insulin-like growth factor binding protein 3 8th specimen Post XXX challenge	ACTIVE	\N	\N	\N
 59997-7	Insulin-like growth factor binding protein 3 7th specimen Post XXX challenge	ACTIVE	\N	\N	\N
-5999-8	Platelet aggregation.serotonin induced	ACTIVE	\N	\N	\N
+5999-8	Platelet Aggregation Serotonin Induced	ACTIVE	2012-03-31	\N	\N
 59998-5	Insulin-like growth factor binding protein 3 6th specimen Post XXX challenge	ACTIVE	\N	\N	\N
 59999-3	Insulin-like growth factor binding protein 3 5th specimen Post XXX challenge	ACTIVE	\N	\N	\N
 60000-7	Insulin-like growth factor binding protein 3 4th specimen Post XXX challenge	ACTIVE	\N	\N	\N
 60001-5	Insulin-like growth factor binding protein 3 3rd specimen Post XXX challenge	ACTIVE	\N	\N	\N
 60002-3	Insulin-like growth factor binding protein 3 2nd specimen Post XXX challenge	ACTIVE	\N	\N	\N
 60003-1	Insulin-like growth factor binding protein 3 baseline	ACTIVE	\N	\N	\N
-6000-4	Platelet aggregation.thrombin induced	ACTIVE	\N	\N	\N
+6000-4	Platelet Aggregation Thrombin Induced	ACTIVE	2012-03-31	\N	\N
 60004-9	Insulin-like growth factor binding protein 3 1st specimen Post XXX challenge	ACTIVE	\N	\N	\N
 60005-6	Insulin-like growth factor-I 8th specimen Post XXX challenge	ACTIVE	\N	\N	\N
 60006-4	Insulin-like growth factor-I 7th specimen Post XXX challenge	ACTIVE	\N	\N	\N
@@ -39986,7 +39989,7 @@
 61039-4	Clonazepam	ACTIVE	\N	\N	\N
 61040-2	N-desalkylflurazepam; Urine	ACTIVE	\N	\N	\N
 61041-0	N-desalkylflurazepam	ACTIVE	\N	\N	\N
-61042-8	Fentanyl	ACTIVE	\N	\N	\N
+61042-8	Fentanyl	ACTIVE	2011-03-31	\N	\N
 61043-6	Ketamine	ACTIVE	2014-08-01	\N	\N
 61044-4	Lorazepam	ACTIVE	\N	\N	\N
 61045-1	Methylenedioxyamphetamine	ACTIVE	\N	\N	\N
@@ -40023,7 +40026,7 @@
 61075-8	Diphenhydramine; Gastric Fluid	ACTIVE	\N	\N	\N
 61076-6	2-Ethylidene-1,5-Dimethyl-3,3-Diphenylpyrrolidine; Gastric Fluid	ACTIVE	\N	\N	\N
 6107-7	Egg Yolk IgE	ACTIVE	\N	\N	\N
-61077-4	Fentanyl; Gastric Fluid	ACTIVE	\N	\N	\N
+61077-4	Fentanyl; Gastric Fluid	ACTIVE	2011-03-31	\N	\N
 61078-2	Flunitrazepam; Gastric Fluid	ACTIVE	\N	\N	\N
 61079-0	Flunitrazepam	ACTIVE	\N	\N	\N
 61080-8	Flurazepam	ACTIVE	\N	\N	\N
@@ -42427,6 +42430,7 @@
 71633-2	Monocytes/Leukocytes; Periton Fld; Manual	ACTIVE	2020-04-24	\N	\N
 71634-0	Lymphocytes/Leukocytes; Periton Fld; Manual	ACTIVE	2020-04-24	\N	\N
 71635-7	Neutrophils/Leukocytes;Periton fld; Manual	ACTIVE	2020-04-24	\N	\N
+71637-3	Unspecified cells/Leukocytes; Fluid; Manual	ACTIVE	2026-05-28	\N	\N
 71638-1	Unidentified cells/Leukocytes; Body Fld; Manual	ACTIVE	2020-04-24	\N	\N
 71639-9	Monocytes+Macrophages/Leukocytes; Body Fld; Manual	ACTIVE	2020-04-24	\N	\N
 71640-7	Mesothelial cells/Leukocytes, Manual count; Body fld	ACTIVE	2021-12-06	\N	\N
@@ -43254,6 +43258,7 @@
 75882-1	Lupus Anticoagulant Three Screening Tests W Reflex Interpretation	ACTIVE	2023-11-03	\N	\N
 75884-7	aPTT.Lupus Sensitive Screen to Confirm Ratio	ACTIVE	2023-03-09	\N	\N
 7588-7	Black Pepper IgG	ACTIVE	\N	\N	\N
+75892-0	t(9;22)(q34.1;q11)(ABL1,BCR) Fusion Transcript Break Points	ACTIVE	2026-05-21	\N	\N
 7589-5	Black Pepper Basophil Bound antibody; Blood	ACTIVE	\N	\N	\N
 7590-3	Cayenne IgG	ACTIVE	\N	\N	\N
 759-1	Neutrophils; Peritoneal Fluid	ACTIVE	\N	\N	\N
@@ -43629,11 +43634,11 @@
 78517-0	Renin 2 Hr Post XXX Challenge	ACTIVE	2022-06-27	\N	\N
 78518-8	Cholesterol; Pericardial Fluid	ACTIVE	2025-06-16	\N	\N
 7851-9	Cytomegalovirus antibody	ACTIVE	\N	\N	\N
-78520-4	Platelet Aggregation ADP Induced 2.5 umol/L	ACTIVE	2021-04-05	\N	\N
-78521-2	Platelet Aggregation ADP Induced 4 umol/L	ACTIVE	2021-04-05	\N	\N
+78520-4	Platelet Aggregation Adenosine Diphosphate Induced 2.5 umol/L	ACTIVE	2021-04-05	\N	\N
+78521-2	Platelet Aggregation Adenosine Diphosphate Induced 4 umol/L	ACTIVE	2021-04-05	\N	\N
 78525-3	Platelet Aggregation Arachidonate Induced 1.6 mmol/L	ACTIVE	2017-05-19	\N	\N
 7852-7	Cytomegalovirus antibody IgG	ACTIVE	\N	\N	\N
-78528-7	Platelet Aggregation Ristocetin Induced 1.25 mg/ml	ACTIVE	2023-03-09	\N	\N
+78528-7	Platelet Aggregation Ristocetin Induced 1.25 g/L	ACTIVE	2023-03-09	\N	\N
 7853-5	Cytomegalovirus antibody IgM	ACTIVE	\N	\N	\N
 7854-3	Dengue virus 1 antibody	ACTIVE	\N	\N	\N
 7855-0	Dengue virus 1+2+3+4 RNA	ACTIVE	\N	\N	\N
@@ -43711,7 +43716,7 @@
 7910-3	Herpes simplex virus 1 antibody IgM	ACTIVE	\N	\N	\N
 7911-1	Herpes simplex virus 2 antibody	ACTIVE	\N	\N	\N
 7912-9	Herpes simplex virus 2 antibody IgG	ACTIVE	\N	\N	\N
-79130-1	Platelet Aggregation Ristocetin Induced 500 ug/mL	ACTIVE	2021-04-05	\N	\N
+79130-1	Platelet Aggregation Ristocetin Induced 500 mg/L	ACTIVE	2021-04-05	\N	\N
 7913-7	Herpes simplex virus 2 antibody IgM	ACTIVE	\N	\N	\N
 791-4	Erythrocytes; CSF	ACTIVE	\N	\N	\N
 79141-8	Cathinone; Urine; Screen	ACTIVE	2024-09-26	\N	\N
@@ -43784,9 +43789,11 @@
 7957-4	Legionella species antibody	ACTIVE	\N	\N	\N
 7958-2	Leishmania species antibody	ACTIVE	\N	\N	\N
 7959-0	Leptospira species antibody	ACTIVE	\N	\N	\N
+79594-8	Glycylproline/Creatinine	ACTIVE	2026-05-21	\N	\N
 79607-8	Saccharopine	ACTIVE	2016-09-16	\N	\N
 7960-8	Leptospira interrogans antibody	ACTIVE	\N	\N	\N
 7961-6	Measles virus antibody	ACTIVE	\N	\N	\N
+79617-7	Glycylproline	ACTIVE	2026-05-21	\N	\N
 7962-4	Measles virus antibody IgG	ACTIVE	\N	\N	\N
 796-3	Erythrocytes; Synovial Fluid	ACTIVE	\N	\N	\N
 7963-2	Measles virus antibody IgM	ACTIVE	\N	\N	\N
@@ -44424,7 +44431,7 @@
 87380-2	Escherichia coli Stx2e Toxin Stx2e Gene; NAA+probe	ACTIVE	2023-03-09	\N	\N
 8738-7	Cardiac output	ACTIVE	\N	\N	\N
 8739-5	Cardiac output	ACTIVE	\N	\N	\N
-87403-2	Platelet Aggregation Ristocetin Induced 750 ug/mL	ACTIVE	2023-03-09	\N	\N
+87403-2	Platelet Aggregation Ristocetin Induced 750 mg/L	ACTIVE	2023-03-09	\N	\N
 87408-1	Ustekinumab	ACTIVE	2023-04-21	\N	\N
 8742-9	Cardiac output ventricle right/Ventricle left	ACTIVE	\N	\N	\N
 8743-7	Cardiac output ventricle right/Ventricle left	ACTIVE	\N	\N	\N
@@ -44836,7 +44843,7 @@
 9338-5	Rheumatoid Factor IgM	ACTIVE	\N	\N	\N
 9339-3	Insulin 6h Post 75 g Glucose PO	ACTIVE	\N	\N	\N
 9340-1	Apolipoprotein B/Apolipoprotein A-I Ratio	ACTIVE	\N	\N	\N
-93410-9	Platelet Aggregation Ristocetin Induced 5 ug/mL	ACTIVE	2023-03-09	\N	\N
+93410-9	Platelet Aggregation Ristocetin Induced 5 mg/L	ACTIVE	2023-03-09	\N	\N
 9341-9	Arylsulfatase; 24h Urine	ACTIVE	2014-02-07	\N	\N
 9342-7	Cholesterol	ACTIVE	\N	\N	\N
 9343-5	Coproporphyrin 1; Urine	ACTIVE	\N	\N	\N
@@ -44879,7 +44886,7 @@
 9367-4	Borate	ACTIVE	\N	\N	\N
 9368-2	Boron	ACTIVE	\N	\N	\N
 9369-0	Camphor; Blood	ACTIVE	\N	\N	\N
-93702-9	Platelet Aggregation Ristocetin Induced 15 ug/mL	ACTIVE	2023-03-09	\N	\N
+93702-9	Platelet Aggregation Ristocetin Induced 15 mg/L	ACTIVE	2023-03-09	\N	\N
 9371-6	Chlorpyrifos; Blood	ACTIVE	\N	\N	\N
 93719-3	traMADol; Meconium; Screen	ACTIVE	2023-03-09	\N	\N
 93720-1	traMADol; Meconium; Confirm	ACTIVE	2023-03-09	\N	\N
@@ -45133,7 +45140,7 @@
 9523-2	Entamoeba histolytica antibody IgM	ACTIVE	\N	\N	\N
 95233-3	Albumin/Creatinine; Test Strip Detection Limit <= 20 mg/L; Urine	ACTIVE	2022-05-19	\N	\N
 9524-0	Giardia lamblia antibody	ACTIVE	\N	\N	\N
-95245-7	Platelet Aggregation Ristocetin Induced 375 ug/mL	ACTIVE	2023-03-09	\N	\N
+95245-7	Platelet Aggregation Ristocetin Induced 375 mg/L	ACTIVE	2023-03-09	\N	\N
 9525-7	Hepatitis D virus antibody IgM	ACTIVE	\N	\N	\N
 95272-1	Aquaporin 4 Water Channel IgG Ab; CBA IFA	ACTIVE	2023-03-09	\N	\N
 9527-3	Hexacarboxylporphyrin; 24h Urine	ACTIVE	\N	\N	\N
@@ -45460,6 +45467,8 @@
 9759-2	Coxsackievirus B1 antibody	ACTIVE	\N	\N	\N
 97-6	Cefonicid, KB	ACTIVE	\N	\N	\N
 9760-0	Coxsackievirus B2 antibody	ACTIVE	\N	\N	\N
+97606-8	Phosphatidylethanol 16:0-18:2; Blood	ACTIVE	2026-05-28	\N	\N
+97607-6	Phosphatidylethanol 16:0-18:1; Blood	ACTIVE	2026-05-28	\N	\N
 9761-8	Coxsackievirus B3 antibody	ACTIVE	\N	\N	\N
 9762-6	Coxsackievirus B4 antibody	ACTIVE	\N	\N	\N
 9763-4	Coxsackievirus B5 antibody	ACTIVE	\N	\N	\N
@@ -46663,8 +46672,8 @@ XON12207-7	Drugs identified,Body fld	ACTIVE	\N	\N	\N
 XON12208-5	Drugs identified,Body fld	ACTIVE	\N	\N	\N
 XON12209-3	pH calculated, Blood Cord Arterial	INACTIVE	2013-05-28	2025-01-16	\N
 XON12210-1	pH calculated, Blood Cord Venous	INACTIVE	2013-05-28	2025-01-16	\N
-XON12211-9	C3 breakdown products	ACTIVE	\N	\N	\N
-XON12212-7	Factor B Split product	ACTIVE	\N	\N	\N
+XON12211-9	C3 breakdown products	INACTIVE	2012-07-31	2026-05-31	\N
+XON12212-7	Factor B Split product	INACTIVE	2012-07-31	2026-05-31	\N
 XON12215-0	Very Long Chain Acyl Dehydrogenase Deficiency, Blood	ACTIVE	\N	\N	\N
 XON12217-6	Acetoacetate, Blood	ACTIVE	\N	\N	\N
 XON12218-4	Beta-Hydroxybutyrate	ACTIVE	\N	\N	\N
@@ -46693,8 +46702,8 @@ XON12240-8	Niobium, Urine	ACTIVE	\N	\N	\N
 XON12241-6	Niobium, Tissue	ACTIVE	\N	\N	\N
 XON12242-4	Niobium, Tissue	ACTIVE	\N	\N	\N
 XON12244-0	Synovial Lining cells	INACTIVE	2013-07-14	\N	\N
-XON12245-7	ADP 20	ACTIVE	\N	\N	\N
-XON12246-5	Ristocetin 0.5	ACTIVE	\N	\N	\N
+XON12245-7	Platelet Aggregation Adenosine Diphosphate Induced 20 mmol/L	INACTIVE	2012-07-31	2026-05-31	\N
+XON12246-5	Platelet Aggregation Ristocetin Induced 0.5 g/L	INACTIVE	2012-07-31	\N	\N
 XON12247-3	Kanamycin 2.5 ug/mL	INACTIVE	2024-12-12	\N	\N
 XON12248-1	Capreomycin 2.5 ug/mL	ACTIVE	\N	\N	\N
 XON12250-7	Linezolid 1.0 ug/mL	INACTIVE	2024-12-12	\N	\N
@@ -46722,7 +46731,7 @@ XON12274-7	Marrow Fragment, Bone marrow	ACTIVE	\N	\N	\N
 XON12275-4	Granulocytes, Bone Marrow	ACTIVE	\N	\N	\N
 XON12276-2	Human leukocyte antigen (HLA) Typing	ACTIVE	\N	\N	\N
 XON12277-0	FIP1L1-PDGRFRA gene rearrangement	ACTIVE	\N	\N	\N
-XON12278-8	Fluorescence in situ hydridization (FISH) 5Q Deletion	ACTIVE	\N	\N	\N
+XON12278-8	Fluorescence in situ hydridization (FISH) 5Q Deletion	INACTIVE	2012-07-31	2026-05-31	\N
 XON12280-4	Fluorescence in situ hydridization (FISH) Myeloma	ACTIVE	\N	\N	\N
 XON12281-2	CD59 Cells, Blood	ACTIVE	\N	\N	\N
 XON12282-0	PML-RAR Alpha Fusion Gene, Blood	ACTIVE	\N	\N	\N
@@ -46771,7 +46780,7 @@ XON12326-5	Zirconium, Tissue	ACTIVE	\N	\N	\N
 XON12327-3	Specific Gravity, Urine	INACTIVE	2012-07-31	\N	\N
 XON12328-1	pH, Urine	INACTIVE	2012-07-31	\N	\N
 XON12329-9	Eosinophil, Body fld	INACTIVE	2013-04-07	\N	\N
-XON12330-7	Gamma Globuline, Urine 24	ACTIVE	\N	\N	\N
+XON12330-7	Gamma Globuline, Urine 24	INACTIVE	2012-07-31	\N	\N
 XON12331-5	Coagulation	ACTIVE	\N	\N	\N
 XON12332-3	PTT Correction	ACTIVE	\N	\N	\N
 XON12335-6	Beryllium, Hair	ACTIVE	\N	\N	\N
@@ -46891,9 +46900,9 @@ XON12455-2	Strontium; Hair	ACTIVE	\N	\N	\N
 XON12456-0	Penicillin Meningitis	ACTIVE	2014-03-30	\N	\N
 XON12457-8	Penicillin Non Meningitis	ACTIVE	2014-03-30	\N	\N
 XON12458-6	Penicillin Non Meningitis, MIC	ACTIVE	2014-03-30	\N	\N
-XON12459-4	ADP 20	ACTIVE	\N	\N	\N
-XON12460-2	C3 Breakdown Products	ACTIVE	\N	\N	\N
-XON12461-0	Factor B Split Product	ACTIVE	\N	\N	\N
+XON12459-4	Platelet Aggregation Adenosine Diphosphate Induced 20 umol	ACTIVE	2012-10-31	\N	\N
+XON12460-2	C3 Breakdown Products	INACTIVE	2012-10-31	2026-05-31	\N
+XON12461-0	Factor B Split Product	INACTIVE	2012-10-31	2026-05-31	\N
 XON12462-8	Cryofibrinogen	INACTIVE	2013-07-14	\N	\N
 XON12463-6	Benzodiazepines	ACTIVE	\N	\N	\N
 XON12464-4	Drugs Identified	ACTIVE	\N	\N	\N
@@ -47571,7 +47580,7 @@ XON13171-4	Niobium; RBC	ACTIVE	2015-06-05	\N	\N
 XON13172-2	Niobium; RBC	ACTIVE	2015-06-05	\N	\N
 XON13173-0	Aluminum; Fluid	ACTIVE	2015-06-05	\N	\N
 XON13174-8	Antimony; Fluid	ACTIVE	2015-06-05	\N	\N
-XON13175-5	Platelet aggregation.Thrombin induced ATP secretion	ACTIVE	2015-06-05	\N	\N
+XON13175-5	Platelet Aggregation Thrombin Induced ATP Secretion	ACTIVE	2015-06-05	\N	\N
 XON13176-3	Malus sylvestris recombinant (rMal d) 3 IgE	ACTIVE	2015-06-05	\N	\N
 XON13177-1	Platelet Aggregation Thromboxane Induced	ACTIVE	2015-06-05	\N	\N
 XON13178-9	Cardiolipin Ab IgM; PPP	ACTIVE	2015-06-19	\N	\N
@@ -47767,10 +47776,10 @@ XON13368-6	Dengue Virus;Titre; PRNT	ACTIVE	2017-05-19	\N	\N
 XON13371-0	Zirconium; Bld	ACTIVE	2017-05-19	\N	\N
 XON13372-8	PNMA2 Ab; IF	ACTIVE	2017-05-19	\N	\N
 XON13373-6	Platelet Aggregation Collagen Induced 2 mg/L	ACTIVE	2017-05-19	\N	\N
-XON13374-4	Platelet Aggregation Collagen Induced 105 mg/L	ACTIVE	2017-05-19	\N	\N
-XON13375-1	Platelet Aggregation Epinephrine Induced 5 umol/L	ACTIVE	2017-05-19	\N	\N
-XON13376-9	Platelet Aggregation Thromboxane A2 Induced 1umol/L	ACTIVE	2017-05-19	\N	\N
-XON13377-7	Platelet Aggregation Thromboxane A2 Induced 2umol/L	ACTIVE	2017-05-19	\N	\N
+XON13374-4	Platelet Aggregation Collagen Induced 10 mg/L	ACTIVE	2017-05-19	\N	\N
+XON13375-1	Platelet Aggregation EPINEPHrine Induced 5 umol/L	ACTIVE	2017-05-19	\N	\N
+XON13376-9	Platelet Aggregation Thromboxane A2 Induced 1 umol/L	ACTIVE	2017-05-19	\N	\N
+XON13377-7	Platelet Aggregation Thromboxane A2 Induced 2 umol/L	ACTIVE	2017-05-19	\N	\N
 XON13378-5	Glucose 8h Post Dose Glucose	ACTIVE	2017-05-19	\N	\N
 XON13379-3	Meningitis+Encephalitis Pathogens	ACTIVE	2017-05-19	\N	\N
 XON13380-1	Glucose 7h Post Dose Glucose	ACTIVE	2017-05-19	\N	\N
@@ -47784,7 +47793,7 @@ XON13387-6	Voltage-Gated Potassium Channel Ab	ACTIVE	2017-07-21	\N	\N
 XON13388-4	Autoimmune Myositis Profile	ACTIVE	2017-07-21	\N	\N
 XON13389-2	Beryllium	ACTIVE	2017-07-21	\N	\N
 XON13390-0	Bismuth; Urine; 24h	ACTIVE	2017-07-21	\N	\N
-XON13391-8	Carfentanyl; Urine	ACTIVE	2017-07-21	\N	\N
+XON13391-8	Carfentanyl; Urine; Screen	ACTIVE	2017-07-21	\N	\N
 XON13392-6	Pantoprazole; Urine	ACTIVE	2017-07-21	\N	\N
 XON13393-4	Clopenthixol; Urine	ACTIVE	2017-07-21	\N	\N
 XON13394-2	Myositis Interpretation	ACTIVE	2017-07-21	\N	\N
@@ -48026,7 +48035,7 @@ XON13633-3	Zolpidem	INACTIVE	2021-03-12	2026-03-31	\N
 XON13634-1	Zopiclone	ACTIVE	2021-03-12	\N	\N
 XON13635-8	Amorphous Crystals; Urine Sediment	ACTIVE	2021-03-12	\N	\N
 XON13636-6	Hemoglobin Casts: Urine Sed	ACTIVE	2021-03-12	\N	\N
-XON13637-4	Norcarfentanil; Urine	ACTIVE	2021-03-12	\N	\N
+XON13637-4	Norcarfentanil; Urine; Screen	ACTIVE	2021-03-12	\N	\N
 XON13638-2	Oligoclonal Bands Matched; Ser+CSF	ACTIVE	2021-03-12	\N	\N
 XON13639-0	SARS-CoV-2 E484K S Gene Mutation; NAA+probe	ACTIVE	2021-03-12	\N	\N
 XON13640-8	Hematogones/cells; Bone marrow	ACTIVE	2021-04-05	\N	\N
@@ -48037,10 +48046,10 @@ XON13644-0	Slide Assessment; Bone marrow	ACTIVE	2021-04-05	\N	\N
 XON13645-7	Hemoglobin D/Total Hemoglobin; Blood	ACTIVE	2021-04-05	\N	\N
 XON13646-5	Hemoglobin E/Total Hemoglobin; Blood	ACTIVE	2021-04-05	\N	\N
 XON13647-3	RBC.Plasmodium. sp Infected/100 RBC	ACTIVE	2021-04-05	\N	\N
-XON13648-1	Platelet Aggregation Collagen Induced 10.0 ug/mL	ACTIVE	2021-04-05	\N	\N
-XON13649-9	Platelet Aggregation Collagen Induced 2.0 ug/mL	ACTIVE	2021-05-07	\N	\N
-XON13650-7	Platelet Aggregation Thrombin Receptor Activating Peptide-6 Induced 3.3 umol/L	ACTIVE	2021-04-05	\N	\N
-XON13651-5	Platelet Aggregation Thrombin Receptor Activating Peptide-6 Induced 6.0 umol/L	ACTIVE	2021-04-05	\N	\N
+XON13648-1	Platelet Aggregation Collagen Induced 10.0 ug/mL	INACTIVE	2021-04-05	\N	\N
+XON13649-9	Platelet Aggregation Collagen Induced 2.0 ug/mL	INACTIVE	2021-05-07	\N	\N
+XON13650-7	Platelet Aggregation Thrombin Receptor Activating Peptide-6 (TRAP-6) Induced 3.3 umol/L	ACTIVE	2021-04-05	\N	\N
+XON13651-5	Platelet Aggregation Thrombin Receptor Activating Peptide-6 (TRAP-6) Induced 6 umol/L	ACTIVE	2021-04-05	\N	\N
 XON13652-3	Platelet Aggregation U46619 Induced 2.0 umol/L	ACTIVE	2021-04-05	\N	\N
 XON13653-1	Platelet Aggregation Thrombin Induced 1.0 U/mL	ACTIVE	2021-04-05	\N	\N
 XON13654-9	Eosinophils Wright Giemsa Stain; Stool	ACTIVE	2021-04-05	\N	\N
@@ -49264,7 +49273,7 @@ XON14876-7	Cells.CD73 Cells/Cells	ACTIVE	2026-02-23	\N	\N
 XON14877-5	Specimen Volume Peritoneal Dialysis Fld; 24h	ACTIVE	2026-02-23	\N	\N
 XON14878-3	Fondaparinux	ACTIVE	2026-02-23	\N	\N
 XON14879-1	Ethyl glucuronide/Creatinine; Urine	ACTIVE	2026-02-23	\N	\N
-XON14880-9	Isocitrate Dehydrogenase 1	ACTIVE	2026-03-23	\N	\N
+XON14880-9	IDH1 Gene Exon 2 (Isocitrate Dehydrogenase) Targeted Mutation Analysis; Molgen	ACTIVE	2026-03-23	\N	\N
 XON14881-7	Silica Clotting Time	ACTIVE	2026-03-23	\N	\N
 XON14882-5	Silica Clotting Time Excess Phospholipid	ACTIVE	2026-03-23	\N	\N
 XON14883-3	Direct Antiglobulin Test, Polyspecific; Gel	ACTIVE	2026-03-26	\N	\N
@@ -49322,4 +49331,16 @@ XON14934-4	Gene and Stereotype, Clone 3	ACTIVE	2026-04-23	\N	\N
 XON14935-1	Gene Rearrangement Homology	ACTIVE	2026-04-23	\N	\N
 XON14936-9	IGHV Mutation Status	ACTIVE	2026-04-23	\N	\N
 XON14937-7	Karyotype Quality	ACTIVE	2026-04-23	\N	\N
+XON14938-5	Total Cells Analyzed	ACTIVE	2026-05-21	\N	\N
+XON14939-3	Partial Cells Analyzed	ACTIVE	2026-05-21	\N	\N
+XON14940-1	Metaphase Cells Analyzed	ACTIVE	2026-05-21	\N	\N
+XON14941-9	Interphase Nuclei Counted	ACTIVE	2026-05-21	\N	\N
+XON14942-7	Copy Number Variants (CNV) Above Expected 6 Megabases	ACTIVE	2026-05-28	\N	\N
+XON14943-5	Copy Number Variants (CNV) Above Expected 2 Megabases	ACTIVE	2026-05-28	\N	\N
+XON14944-3	Informatic Report (IR) Correlation with Label Density	ACTIVE	2026-05-28	\N	\N
+XON14945-0	Informatic Report (IR) Effective Coverage of the Reference	ACTIVE	2026-05-28	\N	\N
+XON14946-8	Informatic Report (IR) Overall Quality Assessment	ACTIVE	2026-05-28	\N	\N
+XON14947-6	Molecular Quality Report (MQR) N50>150 KBP	ACTIVE	2026-05-28	\N	\N
+XON14948-4	Molecular Quality Report (MQR) Map Rate	ACTIVE	2026-05-28	\N	\N
+XON14949-2	NPM1 mutations copies/10E4 ABL1	ACTIVE	2026-05-28	\N	\N
 XON99999-9	Do Not Transmit	ACTIVE	\N	\N	\N
