@@ -431,6 +431,7 @@ public final class MessageUploader {
             for (int i = 0; i < docNums.size(); i++) {
 
                 if (docNums.get(i) != null && !((String) docNums.get(i)).trim().equals("")) {
+                    String searchValue;
                     if ("ON".equals(OscarProperties.getInstance().getProperty("billregion", "ON"))) {
                         StringBuilder practitionerNum = new StringBuilder(((String) docNums.get(i)).trim());
                         if (sqlSearchOn.equalsIgnoreCase("ohip_no")) {
@@ -438,11 +439,14 @@ public final class MessageUploader {
                                 practitionerNum.insert(0, "0");
                             }
                         }
-                        sql = "select provider_no from provider where " + sqlSearchOn + " = '" + practitionerNum.toString() + "'" + sqlOrderByLength + sqlLimit;
+                        searchValue = practitionerNum.toString();
+                        sql = "select provider_no from provider where " + sqlSearchOn + " = ?" + sqlOrderByLength + sqlLimit;
                     } else {
-                        sql = "select provider_no from provider where " + sqlSearchOn + " LIKE '" + ((String) docNums.get(i)) + "'" + sqlOrderByLength + sqlLimit;
+                        searchValue = (String) docNums.get(i);
+                        sql = "select provider_no from provider where " + sqlSearchOn + " LIKE ?" + sqlOrderByLength + sqlLimit;
                     }
                     pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, searchValue);
                     ResultSet rs = pstmt.executeQuery();
                     while (rs.next()) {
                         providerNums.add(Misc.getString(rs, "provider_no"));
@@ -523,10 +527,16 @@ public final class MessageUploader {
                 return null;
             }
 
-            sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name = '" + lastName + "' and " + " year_of_birth = '" + dobYear + "' and " + " month_of_birth = '" + dobMonth + "' and " + " date_of_birth = '" + dobDay + "' and " + " sex = '" + sex + "' ";
+            sql = "select demographic_no, provider_no from demographic where hin=? and last_name = ? and year_of_birth = ? and month_of_birth = ? and date_of_birth = ? and sex = ?";
 
             logger.debug(sql);
             PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, hinMod);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, dobYear);
+            pstmt.setString(4, dobMonth);
+            pstmt.setString(5, dobDay);
+            pstmt.setString(6, sex);
             ResultSet rs = pstmt.executeQuery();
             int count = 0;
 
@@ -599,10 +609,16 @@ public final class MessageUploader {
                 return null;
             }
 
-            sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name = '" + lastName + "' and " + " year_of_birth = '" + dobYear + "' and " + " month_of_birth = '" + dobMonth + "' and " + " date_of_birth = '" + dobDay + "' and " + " sex = '" + sex + "' ";
+            sql = "select demographic_no, provider_no from demographic where hin=? and last_name = ? and year_of_birth = ? and month_of_birth = ? and date_of_birth = ? and sex = ?";
 
             logger.debug(sql);
             PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, hinMod);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, dobYear);
+            pstmt.setString(4, dobMonth);
+            pstmt.setString(5, dobDay);
+            pstmt.setString(6, sex);
             ResultSet rs = pstmt.executeQuery();
             int count = 0;
 
@@ -651,12 +667,14 @@ public final class MessageUploader {
             }
 
             if (result != null) {
-                sql = "insert into patientLabRouting (demographic_no, lab_no,lab_type,dateModified,created) values ('" + ((result != null && result.getDemographicNo() != null) ? result.getDemographicNo().toString() : "0") + "', '" + labId + "','HL7',now(),now())";
+                sql = "insert into patientLabRouting (demographic_no, lab_no,lab_type,dateModified,created) values (?, ?,'HL7',now(),now())";
                 Connection c = null;
                 PreparedStatement pstmt = null;
                 try {
                     c = DbConnectionFilter.getThreadLocalDbConnection();
                     pstmt = c.prepareStatement(sql);
+                    pstmt.setString(1, (result != null && result.getDemographicNo() != null) ? result.getDemographicNo().toString() : "0");
+                    pstmt.setInt(2, labId);
                     pstmt.executeUpdate();
 
                 } finally {
@@ -720,15 +738,30 @@ public final class MessageUploader {
 				// HIN is ALWAYS required for lab matching. Please do not revert this code. Previous iterations have caused fatal patient miss-matches.
 				if(hinMod != null && !hinMod.trim().isEmpty()) {
 					if (OscarProperties.getInstance().getBooleanProperty("LAB_NOMATCH_NAMES", "yes")) {
-						sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " year_of_birth like '" + dobYear + "' and " + " month_of_birth like '" + dobMonth + "' and " + " date_of_birth like '" + dobDay + "' and " + " sex like '" + sex + "%' ";
+						sql = "select demographic_no, provider_no from demographic where hin=? and year_of_birth like ? and month_of_birth like ? and date_of_birth like ? and sex like ?";
 					} else {
-						sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name like '" + lastName + "%' and " + " first_name like '" + firstName + "%' and " + " year_of_birth like '" + dobYear + "' and " + " month_of_birth like '" + dobMonth + "' and " + " date_of_birth like '" + dobDay + "' and " + " sex like '" + sex + "%' ";
+						sql = "select demographic_no, provider_no from demographic where hin=? and last_name like ? and first_name like ? and year_of_birth like ? and month_of_birth like ? and date_of_birth like ? and sex like ?";
 					}
 				}
 
 				if( sql != null ) {
 					logger.debug(sql);
 					PreparedStatement pstmt = conn.prepareStatement(sql);
+					if (OscarProperties.getInstance().getBooleanProperty("LAB_NOMATCH_NAMES", "yes")) {
+						pstmt.setString(1, hinMod);
+						pstmt.setString(2, dobYear);
+						pstmt.setString(3, dobMonth);
+						pstmt.setString(4, dobDay);
+						pstmt.setString(5, sex + "%");
+					} else {
+						pstmt.setString(1, hinMod);
+						pstmt.setString(2, lastName + "%");
+						pstmt.setString(3, firstName + "%");
+						pstmt.setString(4, dobYear);
+						pstmt.setString(5, dobMonth);
+						pstmt.setString(6, dobDay);
+						pstmt.setString(7, sex + "%");
+					}
 					ResultSet rs = pstmt.executeQuery();
 					int count = 0;
 
