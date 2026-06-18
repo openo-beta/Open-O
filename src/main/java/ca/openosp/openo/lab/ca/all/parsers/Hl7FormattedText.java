@@ -98,6 +98,18 @@ public final class Hl7FormattedText {
             // Adjacent delimiters "\\" denote a single literal backslash.
             return "\\";
         }
+        // Hexadecimal escape \Xdd..\ — each pair of hex digits is one ISO-8859-1
+        // byte/char (e.g. \X0D\ = CR, \X61\ = "a"). HL7 v2 Ch.2 / CT 13.3 special chars.
+        if ((op.charAt(0) == 'X' || op.charAt(0) == 'x') && op.length() > 1) {
+            String hex = op.substring(1);
+            if (hex.length() % 2 == 0 && hex.matches("[0-9A-Fa-f]+")) {
+                StringBuilder out = new StringBuilder(hex.length() / 2);
+                for (int k = 0; k < hex.length(); k += 2) {
+                    out.append((char) Integer.parseInt(hex.substring(k, k + 2), 16));
+                }
+                return out.toString();
+            }
+        }
         switch (op.toUpperCase()) {
             // Vertical movement -> newline. Centring cannot survive in plain
             // text, so it is flattened to a line break.

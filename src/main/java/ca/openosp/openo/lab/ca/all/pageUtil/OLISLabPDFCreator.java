@@ -82,6 +82,9 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
     private int versionNum;
     private String[] multiID;
     private String id;
+    // CT 20.2/20.3: who generated the printed report and when, stamped per page in onEndPage.
+    private java.util.Date generationDate = new java.util.Date();
+    private String generatedByUser = "";
 
     private Document document;
     private BaseFont bf;
@@ -201,6 +204,21 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
     public OLISLabPDFCreator(OutputStream os, HttpServletRequest request, String segmentId, OLISHL7Handler injected) {
         this.os = os;
         this.id = segmentId;
+
+        // CT 20.2/20.3: capture the generating user for the per-page "Generated from OLIS
+        // on <timestamp> by user <name>" stamp. Best-effort — never block PDF generation.
+        if (request != null) {
+            try {
+                LoggedInInfo lii = LoggedInInfo.getLoggedInInfoFromSession(request);
+                if (lii != null && lii.getLoggedInProvider() != null) {
+                    String fn = lii.getLoggedInProvider().getFirstName();
+                    String ln = lii.getLoggedInProvider().getLastName();
+                    this.generatedByUser = ((fn == null ? "" : fn) + " " + (ln == null ? "" : ln)).trim();
+                }
+            } catch (Exception ignore) {
+                // leave generatedByUser blank
+            }
+        }
 
         // determine lab version
         String multiLabId = Hl7textResultsData.getMatchingLabs(id);
@@ -375,11 +393,18 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         categoryPhrase.setFont(boldFont);
         //Replaces
         categoryPhrase.add(HtmlTextCleaner.toPlainText(header));
+        // CT 10.2.x: red parenthetical status adjacent to the test request name,
+        // e.g. "(test was cancelled)" / "(amended)".
+        String obrRedText = handler.getObrStatusRedText(obr);
+        if (!stringIsNullOrEmpty(obrRedText)) {
+            categoryPhrase.setFont(new Font(bf, 9, Font.NORMAL, BaseColor.RED));
+            categoryPhrase.add(" " + obrRedText);
+        }
         //Gets the point of care and outputs message if it exists
         String poc = handler.getPointOfCare(obr);
         if (!stringIsNullOrEmpty(poc)) {
             categoryPhrase.setFont(subscriptFont);
-            categoryPhrase.add("\n\nTest perofrmed at patient location");
+            categoryPhrase.add("\n\n(test performed at point of care)");
         }
 
         //Checks if the OBR is blocked
@@ -397,9 +422,18 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         PdfPTable specimenTable = new PdfPTable(specimenTableWidths);
         //If there is a specimen source
         if (!stringIsNullOrEmpty(handler.getObrSpecimenSource(obr))) {
-            cell.setPhrase(new Phrase("Specimen Source: ", boldFont));
+            cell.setPhrase(new Phrase("Specimen Type: ", boldFont));
             specimenTable.addCell(cell);
             cell.setPhrase(new Phrase(handler.getObrSpecimenSource(obr), font));
+            specimenTable.addCell(cell);
+            cell.setBorder(0);
+        }
+
+        // CT 9.5: site modifier under its own label
+        if (!stringIsNullOrEmpty(handler.getSiteModifier(obr))) {
+            cell.setPhrase(new Phrase("Site Modifier: ", boldFont));
+            specimenTable.addCell(cell);
+            cell.setPhrase(new Phrase(handler.getSiteModifier(obr), font));
             specimenTable.addCell(cell);
             cell.setBorder(0);
         }
@@ -458,11 +492,11 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         cell.setBorder(15);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setBackgroundColor(new BaseColor(210, 212, 255));
-        cell.setPhrase(new Phrase("Test Name(s)", boldFont));
+        cell.setPhrase(new Phrase("Name", boldFont));
         table.addCell(cell);
         cell.setPhrase(new Phrase("Result", boldFont));
         table.addCell(cell);
-        cell.setPhrase(new Phrase("Abn", boldFont));
+        cell.setPhrase(new Phrase("Flag", boldFont));
         table.addCell(cell);
         cell.setPhrase(new Phrase("Reference Range", boldFont));
         table.addCell(cell);
@@ -484,7 +518,10 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             cell.setColspan(7);
             Phrase collectorsCommentPhrase = new Phrase();
             collectorsCommentPhrase.setFont(font);
-            collectorsCommentPhrase.add("Comments: " + Hl7FormattedText.toPlainText(collectorsComment));
+            collectorsCommentPhrase.add("Collector's Comment: ");
+            // CT 9.9.2: collector's comment in fixed-width font
+            collectorsCommentPhrase.setFont(commentFont);
+            collectorsCommentPhrase.add(Hl7FormattedText.toPlainText(collectorsComment));
 
             collectorsCommentPhrase.setFont(subscriptFont);
             collectorsCommentPhrase.add("\t\t" + handler.getCollectorsCommentSourceOrganization(obr));
@@ -809,7 +846,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
                             if (category.toUpperCase().trim().equals("MICROBIOLOGY")) {
                                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                cell.setPhrase(new Phrase("S=Sensitive R=Resistant I=Intermediate MS=Moderately Sensitive VS=Very Sensitive", font));
+                                cell.setPhrase(new Phrase("S=Susceptible  R=Resistant  I=Intermediate  MS=Moderately Susceptible  NI=No Interpretation  NS=Non Susceptible  S-DD=Susceptible Dose Dependent  VS=Very Susceptible", font));
                                 table.addCell(cell);
                             }
                             cell.setColspan(1);
@@ -904,7 +941,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         PdfPTable pInfoTable = new PdfPTable(pInfoWidths);
         cell.setPhrase(new Phrase("Health #: ", boldFont));
         pInfoTable.addCell(cell);
-        cell.setPhrase(new Phrase(handler.getHealthNum(), font));
+        cell.setPhrase(new Phrase(handler.getFormattedHealthNum(), font));
         pInfoTable.addCell(cell);
 
         cell.setPhrase(new Phrase("Patient Name: ", boldFont));
@@ -980,7 +1017,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         cell.setPhrase(new Phrase(handler.getOrderStatus() == FINAL_CODE ? REPORT_FINAL : REPORT_PARTIAL, font));
         rInfoTable.addCell(cell);
 
-        cell.setPhrase(new Phrase("Order Id: ", boldFont));
+        cell.setPhrase(new Phrase("Order ID: ", boldFont));
         rInfoTable.addCell(cell);
         Phrase orderIdPhrase = new Phrase();
         orderIdPhrase.setFont(font);
@@ -991,7 +1028,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         cell.setPhrase(orderIdPhrase);
         rInfoTable.addCell(cell);
 
-        cell.setPhrase(new Phrase("Order Date: ", boldFont));
+        cell.setPhrase(new Phrase("Order Received Date: ", boldFont));
         rInfoTable.addCell(cell);
         cell.setPhrase(new Phrase(handler.getOrderDate(), font));
         rInfoTable.addCell(cell);
@@ -1122,13 +1159,14 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         commentTable.setWidthPercentage(100);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         cell.setColspan(1);
-        cell.setPhrase(new Phrase("Report Comments: ", boldFont));
+        cell.setPhrase(new Phrase("Comments: ", boldFont));
         commentTable.addCell(cell);
         for (int comment = 0; comment < handler.getReportCommentCount(); comment++) {
             commentPhrase.clear();
 
             cell.setPaddingLeft(10);
-            commentPhrase.setFont(font);
+            // CT 5.5.2: order/report-level notes in fixed-width font
+            commentPhrase.setFont(commentFont);
             commentPhrase.add(handler.getReportComment(comment));
             commentPhrase.setFont(subscriptFont);
             commentPhrase.add("\t\t" + handler.getReportSourceOrganization(comment));
@@ -1206,6 +1244,17 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             cb.setFontAndSize(bfBold, 9);
             cb.showTextAligned(PdfContentByte.ALIGN_LEFT, "Ministry of Health and Long-Term Care", 36, height - 30, 0);
             cb.showTextAligned(PdfContentByte.ALIGN_LEFT, "Ontario Laboratories Information System (OLIS)", 36, height - 41, 0);
+            cb.endText();
+
+            // CT 20.2/20.3: who generated the report and when, bottom-left of every page.
+            String genStamp = "Generated from OLIS on "
+                    + new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(generationDate);
+            if (!generatedByUser.isEmpty()) {
+                genStamp += " by user " + generatedByUser;
+            }
+            cb.beginText();
+            cb.setFontAndSize(bf, 7);
+            cb.showTextAligned(PdfContentByte.ALIGN_LEFT, genStamp, 36, 30, 0);
             cb.endText();
 
             //add footer for every page

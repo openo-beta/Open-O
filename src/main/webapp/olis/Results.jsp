@@ -482,6 +482,8 @@
 			-->
             <%
                 boolean hasBlockedContent = false;
+                boolean patientLevelBlocked = false;
+                boolean requestLevelBlocked = false;
                 try {
                     if (resp != null && resp.length() > 0) {
                         OLISHL7Handler reportHandler = (OLISHL7Handler) Factory.getHandler("OLIS_HL7", resp);
@@ -495,7 +497,13 @@
             <%
                                 }
                             }
-                            hasBlockedContent = reportHandler.isReportBlocked();
+                            // Patient-level block (ZPD.3=Y, CT 6.1.1) vs test-request-level
+                            // block (ZBR.1=Y, CT 6.2.1) — each carries a distinct pre-override warning.
+                            patientLevelBlocked = reportHandler.isReportBlocked();
+                            for (int b = 0; b < reportHandler.getOBRCount(); b++) {
+                                if (reportHandler.isOBRBlocked(b)) { requestLevelBlocked = true; break; }
+                            }
+                            hasBlockedContent = patientLevelBlocked || requestLevelBlocked;
                         }
                     }
                 } catch (Exception e) {
@@ -503,6 +511,12 @@
                 }
                 if (hasBlockedContent) {
             %>
+            <% if (patientLevelBlocked) { %>
+            <div style="color:#CC0000; font-weight:bold;">Warning: At the time the query was submitted to OLIS, a patient-level block consent directive was in effect.</div>
+            <% } %>
+            <% if (requestLevelBlocked) { %>
+            <div style="color:#CC0000; font-weight:bold;">Warning: Some or all of the requested laboratory information was not returned due to a patient consent directive. If appropriate, the query may be resubmitted with an override.</div>
+            <% } %>
             <form action="<%=request.getContextPath()%>/olis/Search.do"
                   onsubmit="return confirm('Are you sure you want to resubmit this query with a patient consent override?')">
                 <input type="hidden" name="redo" value="true"/>

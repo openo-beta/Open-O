@@ -99,10 +99,20 @@ public class OLISHL7Handler implements MessageHandler {
         public final String licenseType;
         // XCN-1: "109753"
         public final String licenseNumber;
+        // XCN-22-2: licensing jurisdiction (CT 4.4/16.4/17.4/18.4) — only set for a
+        // non-Ontario Canadian jurisdiction, e.g. "MB"; empty otherwise.
+        public final String jurisdiction;
 
         public DoctorName(String prefix, String givenName, String middleName,
                           String familyName, String suffix, String degree,
                           String licenseType, String licenseNumber) {
+            this(prefix, givenName, middleName, familyName, suffix, degree,
+                    licenseType, licenseNumber, "");
+        }
+
+        public DoctorName(String prefix, String givenName, String middleName,
+                          String familyName, String suffix, String degree,
+                          String licenseType, String licenseNumber, String jurisdiction) {
             this.prefix = nullToEmpty(prefix);
             this.givenName = nullToEmpty(givenName);
             this.middleName = nullToEmpty(middleName);
@@ -111,13 +121,14 @@ public class OLISHL7Handler implements MessageHandler {
             this.degree = nullToEmpty(degree);
             this.licenseType = nullToEmpty(licenseType);
             this.licenseNumber = nullToEmpty(licenseNumber);
+            this.jurisdiction = nullToEmpty(jurisdiction);
         }
 
         /** True when every parsed field is empty — caller can short-circuit rendering. */
         public boolean isEmpty() {
             return prefix.isEmpty() && givenName.isEmpty() && middleName.isEmpty()
                     && familyName.isEmpty() && suffix.isEmpty() && degree.isEmpty()
-                    && licenseType.isEmpty() && licenseNumber.isEmpty();
+                    && licenseType.isEmpty() && licenseNumber.isEmpty() && jurisdiction.isEmpty();
         }
 
         /**
@@ -141,10 +152,16 @@ public class OLISHL7Handler implements MessageHandler {
          * subscript / small-grey font.
          */
         public String getLicensePart() {
-            if (licenseType.isEmpty() && licenseNumber.isEmpty()) return "";
+            if (licenseType.isEmpty() && licenseNumber.isEmpty() && jurisdiction.isEmpty()) return "";
             StringBuilder sb = new StringBuilder();
             appendWithSpace(sb, licenseType);
             appendWithSpace(sb, licenseNumber);
+            // CT 4.4/16.4/17.4/18.4: show the licensing jurisdiction for a non-Ontario
+            // Canadian jurisdiction (already filtered to that case at parse time).
+            if (!jurisdiction.isEmpty()) {
+                if (sb.length() > 0) sb.append(' ');
+                sb.append('(').append(jurisdiction).append(')');
+            }
             return sb.toString();
         }
 
@@ -202,7 +219,9 @@ public class OLISHL7Handler implements MessageHandler {
     private List<String> microorganismCodes = new ArrayList<String>();
     private Map<String, OLISMicroorganismNomenclature> olisMicroorganismNomenclatureMap = new HashMap<String, OLISMicroorganismNomenclature>();
     private ArrayList<String> obrSpecimenSource;
+    private ArrayList<String> obrSiteModifier;
     private ArrayList<String> obrStatus;
+    private ArrayList<Character> obrStatusCode;
     private HashMap<String, String> sourceOrganizations;
 
     private HashMap<String, String> defaultSourceOrganizations;
@@ -230,9 +249,23 @@ public class OLISHL7Handler implements MessageHandler {
         return obrStatus.get(index);
     }
 
+    /** Red parenthetical to show adjacent to the test request name for this OBR's
+     *  status (CT 10.2.x), e.g. "(test was cancelled)"; "" when none applies. */
+    public String getObrStatusRedText(int index) {
+        if (obrStatusCode == null || index < 0 || index >= obrStatusCode.size()) return "";
+        return getTestRequestStatusRedText(obrStatusCode.get(index));
+    }
+
     public String getObrSpecimenSource(int index) {
         if (obrSpecimenSource == null || index < 0 || index >= obrSpecimenSource.size()) return "";
         return obrSpecimenSource.get(index);
+    }
+
+    /** Site modifier (OBR-15-5-2) for the test request, displayed under its own
+     *  "Site Modifier" label (CT 9.5); empty when not provided. */
+    public String getSiteModifier(int index) {
+        if (obrSiteModifier == null || index < 0 || index >= obrSiteModifier.size()) return "";
+        return obrSiteModifier.get(index);
     }
 
     private ArrayList<String> headers = null;
@@ -1129,7 +1162,9 @@ public class OLISHL7Handler implements MessageHandler {
 
         sourceOrganizations = new HashMap<String, String>();
         obrSpecimenSource = new ArrayList<String>();
+        obrSiteModifier = new ArrayList<String>();
         obrStatus = new ArrayList<String>();
+        obrStatusCode = new ArrayList<Character>();
         Parser p = new PipeParser(FLAT_MODEL_FACTORY);
 
         p.setValidationContext(new NoValidation());
@@ -1227,12 +1262,18 @@ public class OLISHL7Handler implements MessageHandler {
                             s1 = weirdFixToGetObr1512;
                         }
                         String s2 = getString(Terser.get(obr, 15, 0, 5, 2)); // getString(terser.get("/.OBR-15-5-2"));
-                        String specimen = String.format("%s%s%s", s1, s1.equals("") || s2.equals("") ? "" : " ", s2);
-                        obrSpecimenSource.add(specimen);
+                        // CT 9.4/9.5: specimen type (OBR-15-1-2) and site modifier (OBR-15-5-2)
+                        // are distinct labelled fields — keep them separate rather than concatenated.
+                        obrSpecimenSource.add(s1);
+                        obrSiteModifier.add(s2);
                         char status = getString(Terser.get(obr, 25, 0, 1, 1)).charAt(0);
                         isFinal &= isStatusFinal(status);
                         isCorrected |= status == 'C';
-                        obrStatus.add(getTestRequestStatusMessage(status));
+                        // CT 10.2.x: display the short status token (e.g. "Final"/"Partial")
+                        // rather than the long descriptive sentence; keep the raw code so the
+                        // renderer can show the red parenthetical (getObrStatusRedText).
+                        obrStatus.add(getTestRequestStatusMessageShort(status));
+                        obrStatusCode.add(status);
 
                         String parent = getString(Terser.get(obr, 26, 0, 2, 1));
                         if (!"".equals(parent)) {
@@ -1730,13 +1771,13 @@ public class OLISHL7Handler implements MessageHandler {
             case 'P':
                 return "Preliminary";
             case 'X':
-                return "Could not obtain results";
+                return "Could not obtain result";
             case 'W':
                 return "Invalid";
             case 'Z':
                 return "Ancillary information";
             case 'N':
-                return "Not performed";
+                return "Test not performed";
             default:
                 return "";
         }
@@ -1765,24 +1806,53 @@ public class OLISHL7Handler implements MessageHandler {
         }
     }
 
+    /**
+     * Short test-request status token shown in context to the test request name
+     * (CT 10.2.x). Codes map to the spec labels: O=Ordered, I=Collected, P=Preliminary,
+     * A=Partial, F=Final, C=Amended, X=Cancelled (E=Expired is OLIS-specific).
+     */
     public static String getTestRequestStatusMessageShort(char status) {
         switch (status) {
             case 'A':
                 return "Partial";
             case 'C':
-                return "Correction";
+                return "Amended";
             case 'E':
                 return "Expired";
             case 'F':
                 return "Final";
             case 'I':
-                return "Not Available";
+                return "Collected";
             case 'O':
-                return "Order received";
+                return "Ordered";
             case 'P':
                 return "Preliminary";
             case 'X':
-                return "No results";
+                return "Cancelled";
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * Red parenthetical text displayed adjacent to the test request name for a
+     * non-final test request status (CT 10.2.x [R,P]), e.g. {@code "(test was cancelled)"}.
+     * Returns "" for Final and any status without a mandated red annotation.
+     */
+    public static String getTestRequestStatusRedText(char status) {
+        switch (status) {
+            case 'O':
+                return "(specimen not yet collected)";
+            case 'I':
+                return "(pending)";
+            case 'P':
+                return "(preliminary)";
+            case 'A':
+                return "(partial)";
+            case 'C':
+                return "(amended)";
+            case 'X':
+                return "(test was cancelled)";
             default:
                 return "";
         }
@@ -1926,10 +1996,13 @@ public class OLISHL7Handler implements MessageHandler {
                 ident = getString(Terser.get(zbrSeg, 3, 0, 1, 1));
                 id = getString(Terser.get(zbrSeg, 3, 0, 6, 2));
             }
-            if (id != null && id.trim().length() > 0) {
+            String orgType = "";
+            if (id != null && id.indexOf(":") > 0) {
+                orgType = getString(getOrganizationType(id.substring(0, id.indexOf(":"))));
                 id = id.substring(id.indexOf(":") + 1);
             }
-            return ident + " (" + id + ")";
+            // Match the "Name (Type ID)" form used by the other source-org getters.
+            return ident + " (" + (orgType.isEmpty() ? "" : orgType + " ") + id + ")";
 
         } catch (Exception e) {
             return ("");
@@ -2304,8 +2377,11 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     public boolean isAncillary(int i, int j) {
-        String obxIdent = getOBXField(i, j, 3, 0, 3);
-        return obxIdent != null && (obxIdent.toUpperCase().startsWith("LN"));
+        // CT category 11 scopes ancillary order information by OBX-11 (result status) = "Z",
+        // not by the OBX-3-3 coding system. This matches the ancillary-first sort rule (7.2.1),
+        // which the OLIS result comparator already keys off OBX-11 = Z.
+        String status = getOBXField(i, j, 11, 0, 1);
+        return status != null && status.trim().toUpperCase().startsWith("Z");
     }
 
     public String getOBXCESensitivity(int i, int j) {
@@ -2333,7 +2409,21 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     public String getOBXSNResult(int i, int j) {
-        return getOBXField(i, j, 5, 0, 1) + getOBXField(i, j, 5, 0, 2);
+        // SN (Structured Numeric) = <comparator>^<num1>^<separator>^<num2>^<suffix>
+        // (CT 13.2). Strip the component delimiters into a readable value, e.g.
+        // "<"+"100" -> "<100", or "100"+"-"+"200" -> "100-200".
+        String comparator = StringUtils.trimToEmpty(getOBXField(i, j, 5, 0, 1));
+        String num1 = StringUtils.trimToEmpty(getOBXField(i, j, 5, 0, 2));
+        String separator = StringUtils.trimToEmpty(getOBXField(i, j, 5, 0, 3));
+        String num2 = StringUtils.trimToEmpty(getOBXField(i, j, 5, 0, 4));
+        String suffix = StringUtils.trimToEmpty(getOBXField(i, j, 5, 0, 5));
+        StringBuilder sb = new StringBuilder();
+        sb.append(comparator).append(num1);
+        if (!separator.isEmpty()) {
+            sb.append(separator).append(num2);
+        }
+        sb.append(suffix);
+        return sb.toString();
     }
 
     @Override
@@ -2891,6 +2981,22 @@ public class OLISHL7Handler implements MessageHandler {
         return ("");
     }
 
+    /**
+     * The health number formatted for display: a 10-digit Ontario health number is
+     * spaced after the 4th and 7th digits (e.g. {@code 2000 010 534}) per CT 3.1.1.
+     * Non-ON / non-standard numbers are returned unchanged. Use {@link #getHealthNum()}
+     * (the raw value) for patient matching — only the displayed value is spaced.
+     *
+     * @return String the display-formatted health number
+     */
+    public String getFormattedHealthNum() {
+        String hn = getHealthNum();
+        if (hn != null && hn.length() == 10 && hn.matches("\\d{10}")) {
+            return hn.substring(0, 4) + " " + hn.substring(4, 7) + " " + hn.substring(7);
+        }
+        return hn;
+    }
+
     @Override
     public String getHomePhone() {
         try {
@@ -3247,8 +3353,15 @@ public class OLISHL7Handler implements MessageHandler {
             else if (licenseType.equals("DDSL")) licenseType = "DDS";
         }
 
+        // XCN-22-2 = licensing jurisdiction (state/province). CT 4.4/16.4/17.4/18.4 only
+        // require it for a Canadian jurisdiction *other than* Ontario, so blank "ON" out.
+        String jurisdiction = terser.get(docSeg + "22-2");
+        if (jurisdiction != null && jurisdiction.trim().equalsIgnoreCase("ON")) {
+            jurisdiction = "";
+        }
+
         return new DoctorName(prefix, givenName, middleName, familyName,
-                suffix, degree, licenseType, licenseNumber);
+                suffix, degree, licenseType, licenseNumber, jurisdiction);
     }
 
     /**

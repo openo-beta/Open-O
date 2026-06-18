@@ -145,7 +145,12 @@
 %>
 <%!
     public String strikeOutInvalidContent(String content, String status) {
-        return status != null && status.startsWith("W") ? "<s>" + content + "</s>" : content;
+        // CT 12.8.3: strike out result data for an invalidated (W) result. The content is
+        // HTML-encoded HERE and the markup returned is written raw by callers, so the <s>
+        // tags actually render instead of being escaped (the historical bug where callers
+        // wrapped this in Encode.forHtml and the strikeout showed as literal "<s>" text).
+        String safe = Encode.forHtml(content == null ? "" : content);
+        return status != null && status.startsWith("W") ? "<s>" + safe + "</s>" : safe;
     }
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -711,7 +716,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="FieldData">
-                                                                    <%=Encode.forHtml(String.valueOf(handler.getHealthNum()))%>
+                                                                    <%=Encode.forHtml(String.valueOf(handler.getFormattedHealthNum()))%>
                                                                 </div>
                                                             </td>
 
@@ -1103,7 +1108,7 @@
                                 <tr>
                                     <td valign="top">
                                         <div class="FieldData">
-                                            <strong>Order Id:</strong>
+                                            <strong>Order ID:</strong>
                                         </div>
                                     </td>
                                     <td>
@@ -1118,7 +1123,7 @@
                                 <tr>
                                     <td valign="top">
                                         <div class="FieldData">
-                                            <strong>Order Date:</strong>
+                                            <strong>Order Received Date:</strong>
                                         </div>
                                     </td>
                                     <td>
@@ -1516,7 +1521,7 @@
                                             <% }
                                             } %>
 
-                                            <strong>Report Comments: </strong>
+                                            <strong>Comments: </strong>
                                         </div>
                                     </td>
                                 </tr>
@@ -1590,13 +1595,13 @@
                     <tr>
                         <td bgcolor="#FFCC00" width="300" valign="top">
                             <div class="Title2">
-                                <%=Encode.forHtml(String.valueOf(headers.get(obr)))%>
+                                <%=Encode.forHtml(String.valueOf(headers.get(obr)))%><% if (!handler.getObrStatusRedText(obr).equals("")) { %><span style="color:#CC0000;">&nbsp;<%=Encode.forHtml(String.valueOf(handler.getObrStatusRedText(obr)))%></span><% } %>
                                 <%
                                     String poc = handler.getPointOfCare(obr);
                                     if (!stringIsNullOrEmpty(poc)) {
                                 %>
                                 <br/>
-                                <span style="font-size:8px; color:#333333;">Test performed at patient location</span>
+                                <span style="font-size:8px; color:#333333;">(test performed at point of care)</span>
                                 <% } %>
                                 <%
                                     boolean blocked = handler.isOBRBlocked(obr);
@@ -1612,8 +1617,15 @@
                                 <table>
                                     <% if (!handler.getObrSpecimenSource(obr).equals("")) { %>
                                     <tr>
-                                        <td> Specimen Source:</td>
+                                        <td> Specimen Type:</td>
                                         <td><%=Encode.forHtml(String.valueOf(handler.getObrSpecimenSource(obr)))%>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                    <% if (!handler.getSiteModifier(obr).equals("")) { %>
+                                    <tr>
+                                        <td> Site Modifier:</td>
+                                        <td><%=Encode.forHtml(String.valueOf(handler.getSiteModifier(obr)))%>
                                         </td>
                                     </tr>
                                     <% } %>
@@ -1786,7 +1798,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7">
                             <div style="margin-left:15px; width:700px">
-                                <strong>Comments:</strong> <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(Hl7FormattedText.toPlainText(collectorsComment))%></span>
+                                <strong>Collector's Comment:</strong> <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(Hl7FormattedText.toPlainText(collectorsComment))%></span>
                                 <span style="margin-left:15px;font-size:8px; color:#333333;"><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr)))%></span>
                             </div>
                         </td>
@@ -1868,9 +1880,18 @@
                         }
 
                         String status = handler.getOBXResultStatus(obr, obx).trim();
+                        // statusMsg is built as a pre-encoded HTML fragment: non-final result
+                        // statuses (invalid/amended/preliminary/could-not-obtain/not-performed)
+                        // display in red per CT 12.8.x. Final ('F') and ancillary ('Z') stay plain.
                         String statusMsg = "";
                         try {
-                            statusMsg = handler.getTestResultStatusMessage(handler.getOBXResultStatus(obr, obx).charAt(0));
+                            char st = handler.getOBXResultStatus(obr, obx).charAt(0);
+                            String statusText = handler.getTestResultStatusMessage(st);
+                            if (!statusText.isEmpty() && st != 'F' && st != 'Z') {
+                                statusMsg = "<span style=\"color:#CC0000\">" + Encode.forHtml(statusText) + "</span>";
+                            } else {
+                                statusMsg = Encode.forHtml(statusText);
+                            }
                         } catch (Exception e) {
                             statusMsg = "";
                         }
@@ -1912,19 +1933,19 @@
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
                                 href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)%>
                         </td>
                         <td align="center">
-                            <%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)))%>
+                            <%=strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)), status)%>
                         </td>
                         <td align="center">
-                            <%--<%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --))%>
+                            <%--<%=strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --))%>
                         </td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1934,17 +1955,17 @@
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
                                 href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXSNResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXSNResult(obr, obx), status)%>
                         </td>
                         <td align="center">
-                            <%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)))%>
+                            <%=strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)%>
                         </td>
                         <td align="center"><%-- strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --%></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1956,10 +1977,12 @@
                         </b></td>
                     </tr>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
-                        <td align="left" colspan="6">
-                            <b><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXResult(obr, obx)), status)))%>
-                            </b></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <%-- CT 13.3.3: full-width text rendered in a fixed-width font with
+                             whitespace preserved so the lab's interpretive layout survives. --%>
+                        <td align="left" colspan="6" style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;">
+                            <%=strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXResult(obr, obx)), status)%>
+                            </td>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1970,10 +1993,10 @@
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
                                 href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXTMResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXTMResult(obr, obx), status)%>
                         </td>
                         <td align="center" colspan="4"></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1983,10 +2006,10 @@
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
                                 href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXDTResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXDTResult(obr, obx), status)%>
                         </td>
                         <td align="center" colspan="4"></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1996,10 +2019,10 @@
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
                                 href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXTSResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXTSResult(obr, obx), status)%>
                         </td>
                         <td align="center" colspan="4"></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -2023,9 +2046,9 @@
                             <% } %>
                         </td>
                         <td align="left"
-                            colspan="2"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)))%>
+                            colspan="2"><%=strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)%>
                         </td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -2041,7 +2064,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td colspan="6" valign="left"><span
                                 style="margin-left:15px;"><%=Encode.forHtml(String.valueOf(handler.getOBXCEName(obr, obx)))%></span></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -2086,7 +2109,7 @@
                     <% if (category.toUpperCase().trim().equals("MICROBIOLOGY")) {%>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td align="center" colspan="7">
-                            S=Sensitive R=Resistant I=Intermediate MS=Moderately Sensitive VS=Very Sensitive
+                            S=Susceptible &nbsp; R=Resistant &nbsp; I=Intermediate &nbsp; MS=Moderately Susceptible &nbsp; NI=No Interpretation &nbsp; NS=Non Susceptible &nbsp; S-DD=Susceptible Dose Dependent &nbsp; VS=Very Susceptible
 
                         </td>
                     </tr>
@@ -2100,17 +2123,17 @@
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
                                 href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)%>
                         </td>
                         <td align="center">
-                            <%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)))%>
+                            <%=strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)%>
                         </td>
                         <td align="center"><%-- strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --%></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                         <%--
                         <td align="center"><%=Encode.forHtml(String.valueOf(handler.getOBXValueType(j, k)))%></td>

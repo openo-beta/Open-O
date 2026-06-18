@@ -112,6 +112,19 @@ class Hl7FormattedTextTest {
     }
 
     @Test
+    @DisplayName("decodes \\Xdd\\ hexadecimal escapes to ISO-8859-1 characters")
+    void shouldDecodeHexEscapes() {
+        assertThat(Hl7FormattedText.toPlainText("\\X61\\")).isEqualTo("a");
+        // E9 = é in ISO-8859-1
+        assertThat(Hl7FormattedText.toPlainText("caf\\XE9\\")).isEqualTo("café");
+        // multi-byte: CR LF
+        assertThat(Hl7FormattedText.toPlainText("a\\X0D0A\\b")).isEqualTo("a\r\nb");
+        // invalid/odd hex is dropped (spec-robust), like other unknown escapes
+        assertThat(Hl7FormattedText.toPlainText("a\\Xizz\\b")).isEqualTo("ab");
+        assertThat(Hl7FormattedText.toPlainText("a\\X6\\b")).isEqualTo("ab");
+    }
+
+    @Test
     @DisplayName("treats adjacent delimiters \\\\ as a single literal backslash")
     void shouldHandleAdjacentDelimiters() {
         assertThat(Hl7FormattedText.toPlainText("a\\\\b")).isEqualTo("a\\b");
