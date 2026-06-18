@@ -54,28 +54,8 @@ public class ZSD implements Parameter {
 
     @Override
     public String getQueryCode() {
-        return "@ZSD.1^" + escapeHl7(firstName)
-                + "~@ZSD.2^" + escapeHl7(lastName)
-                + "~@ZSD.3^" + escapeHl7(relationship);
-    }
-
-    /**
-     * Escapes the HL7 v2 delimiter characters in a free-text SDM field so a value
-     * containing {@code ~ ^ \ &} cannot corrupt the {@code @ZSD.n^value~...} query
-     * segment structure. The escape character must be substituted first so the
-     * escape sequences introduced for the other delimiters are not re-escaped.
-     *
-     * @param value String the raw SDM field (first/last name or relationship); may be null
-     * @return String the delimiter-escaped value, or an empty string when {@code value} is null
-     */
-    private static String escapeHl7(String value) {
-        if (value == null) {
-            return "";
-        }
-        return value
-                .replace("\\", "\\E\\")
-                .replace("~", "\\R\\")
-                .replace("^", "\\S\\")
-                .replace("&", "\\T\\");
+        return "@ZSD.1^" + Parameter.escapeHl7(firstName)
+                + "~@ZSD.2^" + Parameter.escapeHl7(lastName)
+                + "~@ZSD.3^" + Parameter.escapeHl7(relationship);
     }
 }

@@ -658,7 +658,10 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                 }
 
                 // CT 12.8.x [R,P]: red parenthetical (e.g. "(preliminary)") adjacent to the result name.
-                String obxStatusRedText = OLISHL7Handler.getTestResultStatusRedText(status.isEmpty() ? ' ' : status.charAt(0));
+                // status is non-null here (getOBXResultStatus returns "" worst case), but stay
+                // null-safe for consistency with the status != null guard above.
+                char statusCode = (status == null || status.isEmpty()) ? ' ' : status.charAt(0);
+                String obxStatusRedText = OLISHL7Handler.getTestResultStatusRedText(statusCode);
                 if (!obxStatusRedText.isEmpty()) {
                     obxDisplayName.setFont(new Font(bf, 9, Font.NORMAL, STATUS_RED));
                     obxDisplayName.add(" " + obxStatusRedText);

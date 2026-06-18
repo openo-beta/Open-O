@@ -341,7 +341,10 @@ public class Driver {
             }
         } catch (Exception e) {
             MiscUtils.getLogger().error("Couldn't read XML from OLIS response.", e);
-            notifyOlisError(loggedInInfo.getLoggedInProvider(), "Couldn't read XML from OLIS response." + "\n" + e);
+            // Null-guard loggedInInfo on this error path so it cannot mask the parse
+            // failure with an NPE (mirrors the guard in submitOLISQuery).
+            Provider initiatingProvider = (loggedInInfo != null) ? loggedInInfo.getLoggedInProvider() : null;
+            notifyOlisError(initiatingProvider, String.format("Couldn't read XML from OLIS response.%n%s", e));
         }
     }
 

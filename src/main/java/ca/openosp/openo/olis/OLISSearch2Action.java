@@ -194,7 +194,16 @@ public class OLISSearch2Action extends ActionSupport {
             String uuid = request.getParameter("uuid");
             request.setAttribute("searchUuid", uuid);
             boolean force = "true".equals(request.getParameter("force"));
-            Query q = (Query) searchQueryMap.get(uuid).clone();
+            Query original = searchQueryMap.get(uuid);
+            if (original == null) {
+                // The stored query is gone — server restart, expiry, or an unknown/forged
+                // uuid. Fail cleanly with a message instead of NPE-ing on clone(). The uuid
+                // is intentionally kept out of the log.
+                MiscUtils.getLogger().warn("OLIS redo requested for an unknown or expired search uuid");
+                request.setAttribute("olisError", "This search is no longer available (it may have expired). Please run the search again.");
+                return "results";
+            }
+            Query q = (Query) original.clone();
             if (force) {
                 q.setConsentToViewBlockedInformation(new ZPD1("Z"));
 
@@ -225,7 +234,10 @@ public class OLISSearch2Action extends ActionSupport {
 
                 if (q.getQueryType() == QueryType.Z01) {
                     String demographicNo = ((Z01Query) q).getDemographicNo();
-                    if (!StringUtils.isEmpty(demographicNo)) {
+                    // Only a numeric demographicNo sets the audit demographic id. A malformed
+                    // value must not throw here — that would crash the override before it is
+                    // submitted or audited (this runs ahead of the try/finally audit block).
+                    if (StringUtils.isNumeric(demographicNo)) {
                         logItem.setDemographicId(Integer.parseInt(demographicNo));
                     }
                 }
@@ -524,7 +536,7 @@ public class OLISSearch2Action extends ActionSupport {
                     OscarLog logItem = new OscarLog();
                     logItem.setAction("OLIS search");
                     logItem.setContent("consent override");
-                    logItem.setContentId("demographicNo=" + demographicNo + ",givenby=" + blockedInfoIndividual);
+                    logItem.setContentId("demographicNo=" + Encode.forJava(demographicNo) + ",givenby=" + Encode.forJava(blockedInfoIndividual));
                     if (loggedInInfo.getLoggedInProvider() != null)
                         logItem.setProviderNo(loggedInInfo.getLoggedInProviderNo());
                     else
@@ -614,7 +626,7 @@ public class OLISSearch2Action extends ActionSupport {
                     OscarLog logItem = new OscarLog();
                     logItem.setAction("OLIS search");
                     logItem.setContent("consent override");
-                    logItem.setContentId("demographicNo=" + demographicNo + ",givenby=" + blockedInfoIndividual);
+                    logItem.setContentId("demographicNo=" + Encode.forJava(demographicNo) + ",givenby=" + Encode.forJava(blockedInfoIndividual));
                     if (loggedInInfo.getLoggedInProvider() != null)
                         logItem.setProviderNo(loggedInInfo.getLoggedInProviderNo());
                     else
