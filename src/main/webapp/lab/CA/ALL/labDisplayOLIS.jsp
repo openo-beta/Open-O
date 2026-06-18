@@ -1321,8 +1321,8 @@
 
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <strong>Performing <%=Encode.forHtml(String.valueOf((primaryFacility.equals(reportingFacility) ? "and Reporting" : "")))%>
-                                                Facility:</strong>
+                                            <strong>Primary <%=Encode.forHtml(String.valueOf((primaryFacility.equals(reportingFacility) ? "Reporting and " : "")))%>Performing
+                                                Lab:</strong>
                                         </div>
                                     </td>
                                 </tr>
@@ -1361,7 +1361,7 @@
 
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <strong>Reporting Facility:</strong>
+                                            <strong>Primary Reporting Lab:</strong>
                                         </div>
                                     </td>
                                 </tr>
@@ -1525,7 +1525,7 @@
                                         <div class="FieldData" style="width:700px;">
 
                                             <% for (int i = 0, j = handler.getReportCommentCount(); i < j; i++) { %>
-                                            <span style="margin-left:15px; width: 700px; word-wrap: break-word;">
+                                            <span style="margin-left:15px; width: 700px; word-wrap: break-word; font-family:'Courier New',Courier,monospace; white-space:pre-wrap;">
                                                     <%=i > 0 ? "<br/>" : ""%><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(handler.getReportComment(i))%>
                                                     </span>
                                             <span style="margin-left:15px; font-size:8px; color:#333333;">
@@ -1707,7 +1707,7 @@
                     <tr>
                         <td bgcolor="#FFCC00">
                             <div class="FieldData">
-                                <strong>Performing Facility:</strong>
+                                <strong>Performing Lab:</strong>
                             </div>
                         </td>
                         <td bgcolor="#FFCC00">
@@ -1786,7 +1786,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7">
                             <div style="margin-left:15px; width:700px">
-                                <strong>Comments:</strong> <%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(Hl7FormattedText.toPlainText(collectorsComment))%>
+                                <strong>Comments:</strong> <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(Hl7FormattedText.toPlainText(collectorsComment))%></span>
                                 <span style="margin-left:15px;font-size:8px; color:#333333;"><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr)))%></span>
                             </div>
                         </td>
@@ -1819,7 +1819,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7">
                             <div style="margin-left:15px;width: 700px;">
-                                <%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(String.valueOf(obrComment))%>
+                                <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(String.valueOf(obrComment))%></span>
                                 <span style="margin-left:15px;font-size:8px; color:#333333;"><%=Encode.forHtml(String.valueOf(sourceOrg))%></span>
                             </div>
                         </td>
@@ -2054,7 +2054,7 @@
                             <table style="border: 1px solid black; margin-left 30px;">
                                 <tr>
                                     <th>Agent</th>
-                                    <th>Sensitivity</th>
+                                    <th>Susceptibility</th>
                                 </tr>
                                 <%
 
@@ -2140,7 +2140,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7" style="font-family:courier;">
                             <div style="width:700px">
-                                <%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(handler.getOBXComment(obr, obx, l))%><span
+                                <span style="white-space:pre-wrap;"><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(handler.getOBXComment(obr, obx, l))%></span><span
                                     style="margin-left:15px;font-size:8px; color:#333333;word-break:normal;"><%=Encode.forHtml(String.valueOf(handler.getOBXSourceOrganization(obr, obx, l)))%></span>
                             </div>
                         </td>
@@ -2189,6 +2189,11 @@
             </td>
         </tr>
     </table>
+
+    <%-- OLIS lab report footer (CT Tracker req 15.1): confidentiality notice at the bottom of the report. --%>
+    <div style="text-align:center; margin-top:8px;">
+        <span class="Field2"><i>CONFIDENTIAL - report contains Personal Health Information</i></span>
+    </div>
 
 </form>
 </body>

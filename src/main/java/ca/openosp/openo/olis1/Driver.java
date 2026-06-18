@@ -207,6 +207,33 @@ public class Driver {
                     request.setAttribute("unsignedResponse", unsignedData);
                 }
 
+                // Quantity-limited queries return at most a page of orders plus a
+                // continuation pointer in DSC-1 (Interface Spec §10.2.5.17). Resubmit the
+                // same query with the pointer until OLIS stops returning one, merging each
+                // page's orders into the first response so all downstream consumers
+                // (preview/import + display) see the full result set.
+                // (CT Tracker req 1.1.3; CV16 patient-query / CV34 practitioner-query paging.)
+                String continuationPointer = getContinuationPointer(unsignedData);
+                if (continuationPointer != null && !continuationPointer.isEmpty()) {
+                    List<String> continuationPages = new ArrayList<String>();
+                    int page = 1;
+                    while (continuationPointer != null && !continuationPointer.isEmpty()
+                            && page < MAX_CONTINUATION_PAGES) {
+                        OLISMessage continuationMessage = new OLISMessage(initiatingProvider, query, continuationPointer);
+                        String nextUnsigned = sendOlisMessage(continuationMessage, request);
+                        continuationPages.add(extractHl7Content(nextUnsigned));
+                        continuationPointer = getContinuationPointer(nextUnsigned);
+                        page++;
+                    }
+                    if (continuationPointer != null && !continuationPointer.isEmpty()) {
+                        logger.warn(String.format("OLIS continuation halted at %d pages; result set may be"
+                                + " incomplete for query uuid %s", MAX_CONTINUATION_PAGES, query.getUuid()));
+                    }
+                    if (!continuationPages.isEmpty()) {
+                        unsignedData = mergeOlisContinuationPages(unsignedData, continuationPages);
+                    }
+                }
+
                 writeToFile(unsignedData);    //not sure the point of this, other than debugging maybe
                 readResponseFromXML(loggedInInfo, request, unsignedData);
 
@@ -342,15 +369,8 @@ public class Driver {
         }
         try {
             // Unwrap the HL7 payload from the <Content>...</Content> envelope element if present.
-            String hl7 = response;
-            int contentStart = response.indexOf("<Content");
-            int contentEnd = response.indexOf("</Content>");
-            if (contentStart >= 0 && contentEnd > contentStart) {
-                int payloadStart = response.indexOf('>', contentStart) + 1;
-                hl7 = response.substring(payloadStart, contentEnd);
-            }
-            hl7 = hl7.replace("<![CDATA[", "").replace("]]>", "").trim();
-            if (hl7.isEmpty()) {
+            String hl7 = extractHl7Content(response);
+            if (hl7 == null) {
                 return null;
             }
 
@@ -367,6 +387,192 @@ public class Driver {
             MiscUtils.getLogger().error("Couldn't extract OLIS Transaction ID from response", e);
         }
         return null;
+    }
+
+    /**
+     * Upper bound on continuation-query round-trips for a single OLIS query. OLIS pages
+     * quantity-limited result sets behind continuation pointers; this guards against an
+     * unbounded loop if a pointer were ever echoed back unchanged.
+     */
+    private static final int MAX_CONTINUATION_PAGES = 50;
+
+    /**
+     * Unwraps the HL7 payload from an OLIS response. The argument may be the unsigned XML
+     * envelope ({@code <Response>...<Content>...HL7...</Content></Response>}) or a bare HL7
+     * string; any {@code <![CDATA[ ]]>} wrapper is stripped.
+     *
+     * @param response String the OLIS response (XML envelope or raw HL7)
+     * @return String the HL7 payload, or {@code null} if none can be unwrapped
+     */
+    static String extractHl7Content(String response) {
+        if (response == null) {
+            return null;
+        }
+        String hl7 = response;
+        int contentStart = response.indexOf("<Content");
+        int contentEnd = response.indexOf("</Content>");
+        if (contentStart >= 0 && contentEnd > contentStart) {
+            int payloadStart = response.indexOf('>', contentStart) + 1;
+            hl7 = response.substring(payloadStart, contentEnd);
+        }
+        hl7 = hl7.replace("<![CDATA[", "").replace("]]>", "").trim();
+        return hl7.isEmpty() ? null : hl7;
+    }
+
+    /**
+     * Reads the continuation pointer (DSC-1) from an OLIS query response. OLIS includes a
+     * DSC segment only when more orders remain for a quantity-limited query (Interface Spec
+     * §10.2.5.17); its absence means the result set is complete.
+     *
+     * @param response String the OLIS response (XML envelope or raw HL7)
+     * @return String the continuation pointer, or {@code null} if there is none
+     */
+    static String getContinuationPointer(String response) {
+        String hl7 = extractHl7Content(response);
+        if (hl7 == null) {
+            return null;
+        }
+        for (String segment : hl7.split("[\\r\\n]+")) {
+            if (segment.startsWith("DSC")) {
+                String[] fields = segment.split("\\|", -1);
+                if (fields.length > 1) {
+                    String pointer = fields[1].trim();
+                    return pointer.isEmpty() ? null : pointer;
+                }
+                return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Merges the order content of continuation pages into the first response envelope so
+     * the full result set is presented to downstream consumers as a single message. The
+     * first page is kept verbatim (minus its trailing DSC continuation segment); from each
+     * subsequent page only the order segments (everything from the first {@code ORC} onward,
+     * minus DSC) are appended — the repeated MSH/MSA/PID header of later pages is dropped so
+     * the merged message keeps a single, valid header. Same-patient (Z01) paging is the
+     * conformance-relevant case; multi-patient Z04 paging beyond the first patient is a CST
+     * follow-up.
+     *
+     * @param firstEnvelope    String the first page's unsigned XML response envelope
+     * @param continuationPages List the HL7 payloads of the subsequent pages, in order
+     * @return String the first envelope with all pages' orders merged into its Content
+     */
+    static String mergeOlisContinuationPages(String firstEnvelope, List<String> continuationPages) {
+        String firstHl7 = extractHl7Content(firstEnvelope);
+        if (firstHl7 == null) {
+            return firstEnvelope;
+        }
+        StringBuilder merged = new StringBuilder(stripContinuationSegments(firstHl7));
+        for (String page : continuationPages) {
+            String orders = extractOrderSegments(page);
+            if (!orders.isEmpty()) {
+                merged.append("\r").append(orders);
+            }
+        }
+        return replaceEnvelopeContent(firstEnvelope, merged.toString());
+    }
+
+    /** Returns {@code hl7} with any DSC continuation segment removed. */
+    private static String stripContinuationSegments(String hl7) {
+        StringBuilder sb = new StringBuilder();
+        for (String segment : hl7.split("[\\r\\n]+")) {
+            if (segment.startsWith("DSC")) {
+                continue;
+            }
+            if (sb.length() > 0) {
+                sb.append("\r");
+            }
+            sb.append(segment);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Extracts the order segments of a continuation page: everything from the first
+     * {@code ORC} segment onward, excluding any DSC continuation segment. Returns an empty
+     * string if the page carries no orders.
+     */
+    private static String extractOrderSegments(String hl7) {
+        if (hl7 == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean inOrders = false;
+        for (String segment : hl7.split("[\\r\\n]+")) {
+            if (!inOrders) {
+                if (segment.startsWith("ORC")) {
+                    inOrders = true;
+                } else {
+                    continue;
+                }
+            }
+            if (segment.startsWith("DSC")) {
+                continue;
+            }
+            if (sb.length() > 0) {
+                sb.append("\r");
+            }
+            sb.append(segment);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Replaces the inner text of the {@code <Content>} element of an OLIS response envelope
+     * with {@code newHl7}, preserving a {@code <![CDATA[ ]]>} wrapper if the original used
+     * one. Returns the envelope unchanged when no {@code <Content>} element is present.
+     */
+    private static String replaceEnvelopeContent(String envelope, String newHl7) {
+        int contentStart = envelope.indexOf("<Content");
+        int contentEnd = envelope.indexOf("</Content>");
+        if (contentStart < 0 || contentEnd < contentStart) {
+            return envelope;
+        }
+        int openTagEnd = envelope.indexOf('>', contentStart) + 1;
+        String inner = envelope.substring(openTagEnd, contentEnd);
+        String wrapped = inner.contains("<![CDATA[") ? "<![CDATA[" + newHl7 + "]]>" : newHl7;
+        return envelope.substring(0, openTagEnd) + wrapped + envelope.substring(contentEnd);
+    }
+
+    /**
+     * Builds, signs and transmits a single OLIS request message and returns the unsigned
+     * response. Mirrors the first-page send in {@link #submitOLISQuery} and is used for
+     * continuation-query round-trips; the truststore system properties and audit logging
+     * are handled once by the caller.
+     *
+     * @param message OLISMessage the (continuation) message to send
+     * @param request HttpServletRequest the current request for debug attributes, may be {@code null}
+     * @return String the unsigned OLIS response envelope
+     * @throws Exception if signing or transmission fails
+     */
+    private static String sendOlisMessage(OLISMessage message, HttpServletRequest request) throws Exception {
+        OLISRequest olisRequest = new OLISRequest();
+        olisRequest.setHIALRequest(new HIALRequest());
+        olisRequest.getHIALRequest().setClientTransactionID(message.getTransactionId());
+        olisRequest.getHIALRequest().setSignedRequest(new HIALRequestSignedRequest());
+
+        String olisHL7String = message.getOlisHL7String().replaceAll("\n", "\r");
+        String msgInXML = String.format("<Request xmlns=\"http://www.ssha.ca/2005/HIAL\"><Content><![CDATA[%s]]></Content></Request>", olisHL7String);
+
+        String signedRequest = (OscarProperties.getInstance().getProperty("olis_returned_cert") != null)
+                ? Driver.signData2(msgInXML) : Driver.signData(msgInXML);
+        olisRequest.getHIALRequest().getSignedRequest().setSignedData(signedRequest);
+
+        String olisRequestURL = OscarProperties.getInstance().getProperty("olis_request_url", "https://olis.ssha.ca/ssha.olis.webservices.ER7/OLIS.asmx");
+        OLISStub olis = new OLISStub(olisRequestURL);
+        OLISRequestResponse olisResponse = olis.oLISRequest(olisRequest);
+        String signedData = olisResponse.getHIALResponse().getSignedResponse().getSignedData();
+        String unsignedData = Driver.unsignData(signedData);
+
+        if (request != null) {
+            request.setAttribute("msgInXML", msgInXML);
+            request.setAttribute("signedRequest", signedRequest);
+            request.setAttribute("signedData", signedData);
+            request.setAttribute("unsignedResponse", unsignedData);
+        }
+        return unsignedData;
     }
 
     /**

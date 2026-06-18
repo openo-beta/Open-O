@@ -45,7 +45,7 @@ public final class Hl7FormattedText {
      * {@code \.sk 5\}. Matched against the upper-cased operator token.
      */
     private static final Pattern PARAM_OP =
-            Pattern.compile("\\.(SP|SK|IN|TI)\\s*(\\d*)\\s*");
+            Pattern.compile("\\.(SP|SK|IN|TI)\\s*([+-]?)\\s*(\\d*)\\s*");
 
     /**
      * Upper bound on a single {@code \.sp\}/{@code \.sk\} repeat operand. The
@@ -139,10 +139,11 @@ public final class Hl7FormattedText {
             return "";
         }
         String cmd = m.group(1);
+        boolean negative = "-".equals(m.group(2));
         int count = 1;
-        if (!m.group(2).isEmpty()) {
+        if (!m.group(3).isEmpty()) {
             try {
-                count = Math.min(Integer.parseInt(m.group(2)), MAX_REPEAT);
+                count = Math.min(Integer.parseInt(m.group(3)), MAX_REPEAT);
             } catch (NumberFormatException e) {
                 // Operand exceeds int range — treat as the (clamped) maximum
                 // rather than letting parsing fail on a single bad message.
@@ -150,12 +151,18 @@ public final class Hl7FormattedText {
             }
         }
         if ("SP".equals(cmd)) {
-            return "\n".repeat(count);   // vertical skip
+            return "\n".repeat(Math.max(0, count));   // vertical skip -> blank lines
         }
-        if ("SK".equals(cmd)) {
-            return " ".repeat(count);    // horizontal skip
+        // SK (horizontal skip) and IN/TI (indent) all render as leading spaces in
+        // the fixed-width font OLIS reports use, so the indented layout survives
+        // (CT Tracker reqs 5.5.x/9.9.x/10.3.x/11.10.x/12.10.x/13.3.x; CV05). A
+        // negative indent (\.in-N\) cannot remove already-emitted characters in this
+        // single-pass decoder, so it clamps to no indent; persistent \.in\ across
+        // following lines is approximated as a per-tag indent, matching the OLIS
+        // sample reports where each wrapped line carries its own tag.
+        if (negative) {
+            return "";
         }
-        // IN (indent) / TI (temporary indent) carry no content in plain text.
-        return "";
+        return " ".repeat(Math.max(0, count));
     }
 }

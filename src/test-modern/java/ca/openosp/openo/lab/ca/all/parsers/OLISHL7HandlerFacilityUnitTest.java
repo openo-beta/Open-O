@@ -106,4 +106,16 @@ public class OLISHL7HandlerFacilityUnitTest extends OpenOUnitTestBase {
 
         assertThat(handler.getReportingFacilityName()).isEqualTo("Grace Hospital (Hospital 0153)");
     }
+
+    @Test
+    @DisplayName("should enrich the per-test-request performing facility, not just the report header")
+    void shouldEnrichPerObrPerformingFacility() throws Exception {
+        OLISHL7Handler handler = new OLISHL7Handler();
+        handler.init(message(LAB_OID + ":9999", "RawRep", LAB_OID + ":5552", "RawPerf"));
+
+        // getOBRPerformingFacilityName must resolve the catalog name like the header
+        // getter; otherwise the per-OBR value stays the bare licence and spuriously
+        // fires the "Performing Lab" exception row even for the primary performing lab.
+        assertThat(handler.getOBRPerformingFacilityName(0)).isEqualTo("Gamma-Dynacare (Lab 5552)");
+    }
 }

@@ -119,9 +119,21 @@ class Hl7FormattedTextTest {
     }
 
     @Test
-    @DisplayName("ignores indent escapes (no plain-text content)")
-    void shouldIgnoreIndentEscapes() {
-        assertThat(Hl7FormattedText.toPlainText("a\\.in3\\b\\.ti2\\c")).isEqualTo("abc");
+    @DisplayName("renders indent escapes as leading spaces (fixed-width layout)")
+    void shouldRenderIndentAsSpaces() {
+        // \.in3\ and \.ti2\ emit their operand count of spaces so the indented
+        // layout the OLIS reference reports rely on survives in a fixed-width font.
+        assertThat(Hl7FormattedText.toPlainText("a\\.in3\\b\\.ti2\\c")).isEqualTo("a   b  c");
+    }
+
+    @Test
+    @DisplayName("handles absolute, signed and spaced indent operands (.in4 / .in+4 / .in 4 / .in-4)")
+    void shouldHandleSignedIndentOperands() {
+        assertThat(Hl7FormattedText.toPlainText("x\\.in4\\y")).isEqualTo("x    y");
+        assertThat(Hl7FormattedText.toPlainText("x\\.in+4\\y")).isEqualTo("x    y");
+        assertThat(Hl7FormattedText.toPlainText("x\\.in 4\\y")).isEqualTo("x    y");
+        // A negative indent cannot remove already-emitted characters in one pass.
+        assertThat(Hl7FormattedText.toPlainText("x\\.in-4\\y")).isEqualTo("xy");
     }
 
     @ParameterizedTest

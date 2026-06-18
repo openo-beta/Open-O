@@ -434,7 +434,7 @@ public class OLISHL7Handler implements MessageHandler {
     public String getOBRPerformingFacilityName(int obr) {
         obr++;
         try {
-            String key = "", value = "", ident = "";
+            String key = "", value = "", ident = "", rawOid = "";
             Segment zbr = null;
             if (obr == 1) {
                 zbr = terser.getSegment("/.ZBR");
@@ -443,14 +443,19 @@ public class OLISHL7Handler implements MessageHandler {
             }
             key = getString(Terser.get(zbr, 6, 0, 6, 2));
             if (key != null && key.indexOf(":") > 0) {
-                ident = key.substring(0, key.indexOf(":"));
-                ident = getOrganizationType(ident);
+                rawOid = key.substring(0, key.indexOf(":"));
+                ident = getOrganizationType(rawOid);
                 key = key.substring(key.indexOf(":") + 1);
             }
             if (key == null || "".equals(key.trim())) {
                 return "";
             }
-            value = getString(Terser.get(zbr, 6, 0, 1, 1));
+            // Enrich the per-test-request performing facility from the local OLIS facility
+            // catalog, symmetrically with the report-header getter getPerformingFacilityName.
+            // Without this the per-OBR value stays the bare licence and also spuriously
+            // differs from the enriched header value, firing the "Performing Lab" exception
+            // row (CT Tracker req 5.8.2) even when it is the report's primary performing lab.
+            value = catalogFacilityName(rawOid, key, getString(Terser.get(zbr, 6, 0, 1, 1)));
             return String.format("%s (%s %s)", value, ident, key);
 
         } catch (Exception e) {

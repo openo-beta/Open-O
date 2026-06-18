@@ -272,6 +272,10 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         writer.setPageEvent(this);
 
         document.setPageSize(PageSize.LETTER);
+        // Leave room in the top margin for the OLIS static header and in the bottom
+        // margin for the confidentiality footer added per page in onEndPage
+        // (CT Tracker reqs 2.3 and 15.1).
+        document.setMargins(36, 36, 56, 48);
         document.addTitle("Title of the Document");
         document.addCreator("OSCAR");
         document.open();
@@ -431,7 +435,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         String primaryFacility = handler.getPerformingFacilityName();
         String performingFacility = handler.getOBRPerformingFacilityName(obr);
         if (!primaryFacility.equals(performingFacility) && !stringIsNullOrEmpty(performingFacility)) {
-            cell.setPhrase(new Phrase("Performing Facility: ", boldFont));
+            cell.setPhrase(new Phrase("Performing Lab: ", boldFont));
             categoryTable.addCell(cell);
             cell.setPhrase(new Phrase(performingFacility, font));
             categoryTable.addCell(cell);
@@ -1067,7 +1071,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
         if (!stringIsNullOrEmpty(primaryFacility)) {
             //Determines if the performing facility is also the reporting facility and adds it and the name
-            String facilityRole = "Performing " + (primaryFacility.equals(reportingFacility) ? "and Reporting " : "") + "Facility: ";
+            String facilityRole = "Primary " + (primaryFacility.equals(reportingFacility) ? "Reporting and " : "") + "Performing Lab: ";
             cell.setPhrase(new Phrase(facilityRole, boldFont));
             rInfoTable.addCell(cell);
             cell.setPhrase(new Phrase(primaryFacility, font));
@@ -1085,7 +1089,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
         if (!stringIsNullOrEmpty(reportingFacility) && !reportingFacility.equals(primaryFacility)) {
             //Adds reporting facility name
-            cell.setPhrase(new Phrase("Reporting Facility: ", boldFont));
+            cell.setPhrase(new Phrase("Primary Reporting Lab: ", boldFont));
             rInfoTable.addCell(cell);
             cell.setPhrase(new Phrase(reportingFacility, font));
             rInfoTable.addCell(cell);
@@ -1196,10 +1200,25 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
             }
 
+            // OLIS-mandated static report header (CT Tracker req 2.3): bold, top-left, every page.
+            BaseFont bfBold = BaseFont.createFont(BaseFont.TIMES_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            cb.beginText();
+            cb.setFontAndSize(bfBold, 9);
+            cb.showTextAligned(PdfContentByte.ALIGN_LEFT, "Ministry of Health and Long-Term Care", 36, height - 30, 0);
+            cb.showTextAligned(PdfContentByte.ALIGN_LEFT, "Ontario Laboratories Information System (OLIS)", 36, height - 41, 0);
+            cb.endText();
+
             //add footer for every page
             cb.beginText();
             cb.setFontAndSize(bf, 8);
             cb.showTextAligned(PdfContentByte.ALIGN_CENTER, "-" + pageNum + "-", width / 2, 30, 0);
+            cb.endText();
+
+            // OLIS-mandated confidentiality footer (CT Tracker req 15.1): italic, centred, every page.
+            BaseFont bfItalic = BaseFont.createFont(BaseFont.TIMES_ITALIC, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            cb.beginText();
+            cb.setFontAndSize(bfItalic, 8);
+            cb.showTextAligned(PdfContentByte.ALIGN_CENTER, "CONFIDENTIAL - report contains Personal Health Information", width / 2, 42, 0);
             cb.endText();
 
 
