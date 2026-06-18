@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS OLISMicroorganismNomenclature (
   changeNote VARCHAR(512),
   comments VARCHAR(512),
   PRIMARY KEY(id),
-  INDEX idx_OLISMicroorganismNomenclature_code (microorganismCode)
+  UNIQUE KEY uk_OLISMicroorganismNomenclature_code (microorganismCode)
 );
 
 

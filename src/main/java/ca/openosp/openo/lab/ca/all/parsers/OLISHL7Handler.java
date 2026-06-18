@@ -2549,7 +2549,7 @@ public class OLISHL7Handler implements MessageHandler {
             int count = 0;
 
             // make sure to count all the nte segments in the group
-            if (k < segments.length && segments[k].substring(0, 3).equals("NTE")) {
+            if (k >= 0 && k < segments.length && segments[k].substring(0, 3).equals("NTE")) {
                 count++;
                 ++k;
                 while ((k = indexOfNextNTE(segments, k)) != -1) {
@@ -2734,7 +2734,7 @@ public class OLISHL7Handler implements MessageHandler {
             int count = 0;
 
             // make sure to count all the nte segments in the group
-            if (k < segments.length && segments[k].substring(0, 3).equals("NTE")) {
+            if (k >= 0 && k < segments.length && segments[k].substring(0, 3).equals("NTE")) {
                 count++;
                 ++k;
                 while ((k = indexOfNextNTE(segments, k)) != -1) {
@@ -2839,7 +2839,7 @@ public class OLISHL7Handler implements MessageHandler {
             int k = getNTELocation(i, j);
 
             int count = 0;
-            if (k < segments.length && segments[k].substring(0, 3).equals("NTE")) {
+            if (k >= 0 && k < segments.length && segments[k].substring(0, 3).equals("NTE")) {
                 count++;
                 ++k;
                 while ((k = indexOfNextNTE(segments, k)) != -1) {
@@ -3449,7 +3449,11 @@ public class OLISHL7Handler implements MessageHandler {
                 return k;
             }
         }
-        return segments.length - 1;
+        // No NTE exists for the requested OBR/OBX. Return -1 (not a fallback index):
+        // the comment-count guards check k >= 0, so returning the last segment index
+        // would let a trailing NTE belonging to a different OBR/OBX be counted and
+        // surfaced as a comment under the wrong result. Mirrors getZBXLocation.
+        return -1;
     }
 
 

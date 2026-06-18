@@ -145,11 +145,18 @@ public class OlisLabRequestSortable {
                                     } else if (o2.getSetId().isEmpty()) {
                                         compared = -1;
                                     } else {
-                                        // Parses both ids to integers
-                                        int o1SetId = Integer.parseInt(o1.getSetId());
-                                        int o2SetId = Integer.parseInt(o2.getSetId());
-                                        // Compares the set ids to determine order
-                                        compared = Integer.compare(o1SetId, o2SetId);
+                                        try {
+                                            // Parses both ids to integers
+                                            int o1SetId = Integer.parseInt(o1.getSetId());
+                                            int o2SetId = Integer.parseInt(o2.getSetId());
+                                            // Compares the set ids to determine order
+                                            compared = Integer.compare(o1SetId, o2SetId);
+                                        } catch (NumberFormatException e) {
+                                            // Malformed (non-numeric) set id from the HL7 message:
+                                            // fall back to a stable string comparison rather than
+                                            // letting the sort throw and abort result ordering.
+                                            compared = o1.getSetId().compareTo(o2.getSetId());
+                                        }
                                     }
                                 }
                             }

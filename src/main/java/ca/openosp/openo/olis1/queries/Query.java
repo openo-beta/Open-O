@@ -37,6 +37,20 @@ public abstract class Query implements Cloneable {
 
     public abstract void setConsentToViewBlockedInformation(ZPD1 consentToViewBlockedInformation);
 
+    /**
+     * Attaches the Substitute Decision Maker (SDM) identity to a consent-override
+     * query so OLIS records who authorized viewing blocked information
+     * (CV11.2b / CV12.2b). Only the patient/order queries that carry a patient
+     * consent directive (Z01/Z02) support an SDM; query types that cannot carry
+     * consent reject it.
+     *
+     * @param substituteDecisionMaker ZSD the substitute decision maker descriptor;
+     *                                emitted immediately after the {@link ZPD1}
+     *                                consent directive it accompanies
+     * @throws UnsupportedOperationException when the concrete query type does not
+     *                                       support a substitute decision maker
+     * @since 2026-06-17
+     */
     public abstract void setSubstituteDecisionMaker(ZSD substituteDecisionMaker);
 
     public Object clone() {

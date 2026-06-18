@@ -24,10 +24,21 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class OLISMicroorganismNomenclatureDao extends AbstractDaoImpl<OLISMicroorganismNomenclature> {
 
+    /**
+     * Constructs the DAO bound to the {@link OLISMicroorganismNomenclature} entity.
+     */
     public OLISMicroorganismNomenclatureDao() {
         super(OLISMicroorganismNomenclature.class);
     }
 
+    /**
+     * Resolves a single OLIS microorganism code to its catalog entry.
+     *
+     * @param code String the microorganism code (OBX-5.1, coding system HL79905)
+     * @return OLISMicroorganismNomenclature the matching catalog entry, or {@code null}
+     *         when no entry exists for the code
+     * @since 2026-06-17
+     */
     public OLISMicroorganismNomenclature findByMicroorganismCode(String code) {
         String sql = "select x from " + this.modelClass.getName() + " x where x.microorganismCode=?1";
         Query query = entityManager.createQuery(sql);

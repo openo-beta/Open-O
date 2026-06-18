@@ -41,6 +41,7 @@ import com.itextpdf.text.DocumentException;
 import com.sun.xml.messaging.saaj.util.ByteOutputStream;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.model.ConsultDocs;
 import ca.openosp.openo.commn.model.EFormData;
@@ -354,6 +355,12 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         //      to eforms and ticklers
 
         String hrmId = request.getParameter("hrmId");
+        // Reject a missing/non-numeric id with a 400 rather than letting parseInt throw
+        // (which would surface as a 500), mirroring how getLabPDF validates segmentID.
+        if (!StringUtils.isNumeric(hrmId)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         try (ByteOutputStream byteOutputStream = new ByteOutputStream()) {
             HRMPDFCreator hrmPdf = new HRMPDFCreator(byteOutputStream, Integer.parseInt(hrmId), loggedInInfo);
             hrmPdf.printPdf();
