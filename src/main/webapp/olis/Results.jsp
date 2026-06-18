@@ -525,19 +525,38 @@
                 <input type="submit" value="Submit Override Consent"/>
                 Authorized by:
                 <select id="blockedInformationIndividual" name="blockedInformationIndividual"
-                        onchange="document.getElementById('sdmFields').style.display = (this.value === 'substitute') ? 'inline' : 'none';">
+                        onchange="toggleSdmFields(this.value);">
                     <option value="patient">Patient</option>
                     <option value="substitute">Substitute Decision Maker</option>
                 </select>
                 <%-- Substitute Decision Maker identity (ZSD). Shown only when the override
                      is authorized by an SDM; transmitted so OLIS records who authorized
-                     viewing the blocked information (CV11.2b / CV12.2b). --%>
+                     viewing the blocked information (CV11.2b / CV12.2b). The inputs start
+                     disabled so that — unless an SDM is explicitly chosen — no SDM identity
+                     (PHI) is submitted with the override (PHI minimization). --%>
                 <span id="sdmFields" style="display:none;">
-                    First Name: <input type="text" name="sdmFirstName" size="12"/>
-                    Last Name: <input type="text" name="sdmLastName" size="12"/>
-                    Relationship: <input type="text" name="sdmRelationship" size="12"/>
+                    First Name: <input type="text" name="sdmFirstName" size="12" disabled="disabled"/>
+                    Last Name: <input type="text" name="sdmLastName" size="12" disabled="disabled"/>
+                    Relationship: <input type="text" name="sdmRelationship" size="12" disabled="disabled"/>
                 </span>
             </form>
+            <script type="text/javascript">
+                // Show the SDM identity inputs only for a substitute-decision-maker
+                // override. Disabling (not just hiding) keeps the browser from submitting
+                // the fields, and clearing them on switch-back prevents stale SDM PHI from
+                // lingering in the form after the user reverts to "Patient".
+                function toggleSdmFields(value) {
+                    var isSubstitute = (value === "substitute");
+                    document.getElementById("sdmFields").style.display = isSubstitute ? "inline" : "none";
+                    var inputs = document.querySelectorAll("#sdmFields input");
+                    for (var i = 0; i < inputs.length; i++) {
+                        inputs[i].disabled = !isSubstitute;
+                        if (!isSubstitute) {
+                            inputs[i].value = "";
+                        }
+                    }
+                }
+            </script>
             <%
                 }
                 List<String> resultList = (List<String>) request.getAttribute("resultList");

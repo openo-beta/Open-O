@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DisplayName("Substitute Decision Maker (ZSD) query serialization")
 @Tag("unit")
 @Tag("fast")
+@Tag("read")
 public class SubstituteDecisionMakerQueryUnitTest extends OpenOUnitTestBase {
 
     @Test
@@ -38,6 +39,27 @@ public class SubstituteDecisionMakerQueryUnitTest extends OpenOUnitTestBase {
 
         assertThat(zsd.toOlisString())
                 .isEqualTo("@ZSD.1^John~@ZSD.2^Doe~@ZSD.3^Spouse");
+    }
+
+    @Test
+    @DisplayName("should escape HL7 delimiters in SDM fields so they cannot corrupt the query segment")
+    void shouldEscapeHl7DelimitersInSdmFields() {
+        // A relationship value carrying every HL7 delimiter (~ ^ & \) must be
+        // escaped so the @ZSD.n^value~... structure is preserved. The escape char
+        // is substituted first, hence the doubled \E\ on the backslash.
+        ZSD zsd = new ZSD("Jo^hn", "Do~e", "Spouse&\\");
+
+        assertThat(zsd.toOlisString())
+                .isEqualTo("@ZSD.1^Jo\\S\\hn~@ZSD.2^Do\\R\\e~@ZSD.3^Spouse\\T\\\\E\\");
+    }
+
+    @Test
+    @DisplayName("should treat null SDM fields as empty when serializing")
+    void shouldTreatNullSdmFieldsAsEmpty() {
+        ZSD zsd = new ZSD(null, null, null);
+
+        assertThat(zsd.toOlisString())
+                .isEqualTo("@ZSD.1^~@ZSD.2^~@ZSD.3^");
     }
 
     @Test

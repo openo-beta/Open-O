@@ -1771,7 +1771,11 @@ public class OLISHL7Handler implements MessageHandler {
                 return k;
             }
         }
-        return segments.length - 1;
+        // No ZBX exists for the requested OBR/OBX. Return -1 (not a fallback index):
+        // callers guard with k >= 0, so returning the last segment index would let a
+        // trailing ZBX belonging to a *different* OBX bind the wrong sort key/release
+        // date and corrupt result display ordering (CT 7.2).
+        return -1;
     }
 
     private String finalStatus = "CFEX";
@@ -2369,7 +2373,13 @@ public class OLISHL7Handler implements MessageHandler {
         }
         try {
             OLISMicroorganismNomenclatureDao microDao = SpringUtils.getBean(OLISMicroorganismNomenclatureDao.class);
-            this.olisMicroorganismNomenclatureMap = microDao.findByMicroorganismCodes(microorganismCodes);
+            // Preserve the field's non-null invariant: only overwrite when the lookup
+            // yields a map. The current DAO never returns null, but a future change or a
+            // test mock could — and result rendering dereferences this map unconditionally.
+            Map<String, OLISMicroorganismNomenclature> resolved = microDao.findByMicroorganismCodes(microorganismCodes);
+            if (resolved != null) {
+                this.olisMicroorganismNomenclatureMap = resolved;
+            }
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
         }

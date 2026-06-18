@@ -375,6 +375,13 @@ public class CaseManagementPrint {
                     String segmentId = result.segmentID;
                     // Parse the lab once and reuse the handler in the chosen creator.
                     MessageHandler handler = Factory.getHandler(segmentId);
+                    if (handler == null) {
+                        // A bad/stale segment id yields no handler; skip it rather than
+                        // NPE on getPatientName()/getMsgDate() and abort printing every
+                        // other lab in the batch.
+                        logger.warn("Skipping lab PDF: no handler for segmentId " + segmentId);
+                        continue;
+                    }
                     boolean isOlis = handler instanceof OLISHL7Handler;
                     String fileName2 = OscarProperties.getInstance().getDocumentDirectory() + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.pdf";
                     file2 = new File(fileName2);

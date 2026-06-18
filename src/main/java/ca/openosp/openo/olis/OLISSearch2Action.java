@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.dao.OscarLogDao;
@@ -243,11 +244,15 @@ public class OLISSearch2Action extends ActionSupport {
                             .append(initiatingProvider != null ? initiatingProvider.getFormattedName() : loggedInInfo.getLoggedInProviderNo())
                             .append("\n");
                     data.append("Requesting HIC: ").append(providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo())).append("\n");
-                    data.append("Authorized by:").append(blockedInfoIndividual).append("\n");
+                    // The selector and SDM identity fields come straight from request
+                    // parameters. Encode them for a Java/string context before they enter
+                    // the audit record so embedded newlines or control characters cannot
+                    // forge or split audit-log lines (OLIS03.06 is a security-sensitive event).
+                    data.append("Authorized by:").append(Encode.forJava(blockedInfoIndividual)).append("\n");
                     if ("substitute".equalsIgnoreCase(blockedInfoIndividual)) {
                         data.append("Substitute Decision Maker: ")
-                                .append(sdmLastName).append(", ").append(sdmFirstName)
-                                .append(" (").append(sdmRelationship).append(")\n");
+                                .append(Encode.forJava(sdmLastName)).append(", ").append(Encode.forJava(sdmFirstName))
+                                .append(" (").append(Encode.forJava(sdmRelationship)).append(")\n");
                     }
 
                     Object olisTransactionId = request.getAttribute("olisTransactionId");
