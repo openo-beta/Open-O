@@ -210,7 +210,9 @@ function printDivContent(divId) {
 function writeToEncounter(ctx, print, text, prefPharmacy, providerNo, demographicNo, curDate, userName) {
     try {
         const url = ctx + "/oscarRx/WriteToEncounter.do";
-        fetch(url, {
+        // Return the chain so callers (e.g. Fax & Add) can sequence after the note write
+        // completes; the trailing .catch resolves it on failure too, so faxing still proceeds.
+        return fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -230,6 +232,7 @@ function writeToEncounter(ctx, print, text, prefPharmacy, providerNo, demographi
             });
     } catch (e) {
         alert("ERROR: could not paste to EMR" + e);
+        return Promise.resolve();
     }
 }
 
@@ -379,13 +382,13 @@ function sendFax(scriptId, signatureRequestId, useSC, scAddress, ctx) {
 
 function printPasteToParent(ctx, rxPasteAsterisk, prefPharmacy, demographicNo, providerName, providerNo, pharmacyName,
                             pharmacyFax, prescribedBy) {
-    printPaste2Parent(ctx, true, false, true, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,
+    return printPaste2Parent(ctx, true, false, true, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,
         providerNo, pharmacyName, pharmacyFax, prescribedBy)
 }
 
 function faxPasteToParent(ctx, rxPasteAsterisk, prefPharmacy, demographicNo, providerName, providerNo, pharmacyName,
                             pharmacyFax, prescribedBy) {
-    printPaste2Parent(ctx, false, true, true, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,
+    return printPaste2Parent(ctx, false, true, true, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,
         providerNo, pharmacyName, pharmacyFax, prescribedBy)
 }
 
@@ -460,19 +463,24 @@ function printPaste2Parent(ctx, print, fax, pasteRx, rxPasteAsterisk, prefPharma
                     printIframe();
                 }
             } else if (pasteRx) {
-                writeToEncounter(ctx, print, text, prefPharmacy, providerNo, demographicNo,
+                // Standalone path: return the async write so the caller can wait for it.
+                return writeToEncounter(ctx, print, text, prefPharmacy, providerNo, demographicNo,
                     new Date().toISOString().substring(0, 10), providerName);
             }
         } else {
-            writeToEncounter(ctx, print, text, prefPharmacy, providerNo, demographicNo,
+            // Standalone path: return the async write so the caller can wait for it.
+            return writeToEncounter(ctx, print, text, prefPharmacy, providerNo, demographicNo,
                 new Date().toISOString().substring(0, 10), providerName);
         }
 
+        // Opener paths above mutate the note synchronously; resolve immediately.
+        return Promise.resolve();
     } catch (e) {
         alert("ERROR: could not paste to EMR" + e);
         if (print) {
             printIframe();
         }
+        return Promise.resolve();
     }
 
 }
