@@ -1467,6 +1467,22 @@
     "optional" : false,
     "integrity" : "sha512:CHkxxvJUx+VP91tulJg9BititoNWqYil7SdoGby0+vutLwu8Nj4WyNqgntgYkkHwjv9ujl9fPdx3C1QdlvyOLQ=="
   }, {
+    "groupId" : "net.minidev",
+    "artifactId" : "accessors-smart",
+    "version" : "2.5.2",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:O70pdhYicUrGHb4CuDURiFc/gZvav7QCUZaj8VYb/lLMMIr5IIGE9zOcZpiOf4rTI8XNew+oRjMhtrsD5KkYHg=="
+  }, {
+    "groupId" : "net.minidev",
+    "artifactId" : "json-smart",
+    "version" : "2.5.2",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:CHkxxvJUx+VP91tulJg9BititoNWqYil7SdoGby0+vutLwu8Nj4WyNqgntgYkkHwjv9ujl9fPdx3C1QdlvyOLQ=="
+  }, {
     "groupId" : "net.sf.ehcache",
     "artifactId" : "ehcache",
     "version" : "2.10.9.2",
