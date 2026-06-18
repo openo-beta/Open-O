@@ -525,12 +525,12 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 }
 
                 if (rx != null) {
-                    String url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/oscarRx/StaticScript2.jsp?demographicNo=" + rx.getDemographicNo() + "&regionalIdentifier=" + rx.getRegionalIdentifier() + "&cn=" + response.encodeURL(rx.getCustomName()) + "');";
+                    String url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/oscarRx/StaticScript2.jsp?demographicNo=" + Encode.forUriComponent(String.valueOf(rx.getDemographicNo())) + "&regionalIdentifier=" + Encode.forUriComponent(String.valueOf(rx.getRegionalIdentifier())) + "&cn=" + Encode.forUriComponent(String.valueOf(rx.getCustomName())) + "');";
             %>
             <div class="view-links"
                  style="<%=Encode.forHtmlAttribute(String.valueOf((note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""))%>">
                 <a class="links" title="<%=Encode.forHtmlAttribute(String.valueOf(rx.getSpecial()))%>" id="view<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>" href="javascript:void(0);"
-                   onclick="<%=Encode.forJavaScript(String.valueOf(url))%>" style="float: right; margin-right: 5px; "> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.rxView"/> </a>
+                   onclick="<%=url%>" style="float: right; margin-right: 5px; "> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.rxView"/> </a>
             </div>
             <%
                 }
@@ -544,17 +544,18 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 int hash = Math.abs(winName.hashCode());
 
                 String encodedDispDocNo = Encode.forUriComponent(dispDocNo);
+                String encodedDemographicNo = Encode.forUriComponent(String.valueOf(demographicNo));
                 url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/showDocument.jsp?inWindow=true&segmentID=" + encodedDispDocNo +"');";
                 url = url + "return false;";
 
-							String editUrl = "window.open('/oscar/annotation/annotation.jsp?display=Documents&amp;table_id=" + encodedDispDocNo + "&amp;demo=" + demographicNo + "','anwin','width=400,height=500');";
+							String editUrl = "window.open('/oscar/annotation/annotation.jsp?display=Documents&amp;table_id=" + encodedDispDocNo + "&amp;demo=" + encodedDemographicNo + "','anwin','width=400,height=500');";
 
                 if (note.getRemoteFacilityId() == null) // only allow editing for local notes
                 {
                     if (!note.isReadOnly()) {
             %>
                 <a title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"
-                   href="javascript:void(0);" onclick="<%=Encode.forJavaScript(String.valueOf(editUrl))%> return false;" style="<%=Encode.forHtmlAttribute(String.valueOf(bgColour))%> order: 1; padding: 2px 5px;">
+                   href="javascript:void(0);" onclick="<%=editUrl%> return false;" style="<%=Encode.forHtmlAttribute(String.valueOf(bgColour))%> order: 1; padding: 2px 5px;">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>
                 </a>
             <%
@@ -564,7 +565,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
             <div class="view-links"
                  style="<%=Encode.forHtmlAttribute(String.valueOf((note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""))%>">
                 <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.docView"/>" id="view<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"
-                   href="javascript:void(0)" onclick="<%=Encode.forJavaScript(String.valueOf(url))%>" style="float: right; "> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
+                   href="javascript:void(0)" onclick="<%=url%>" style="float: right; "> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
             </div>
             <%
             } else { //document note
@@ -581,7 +582,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
             <div class="view-links"
                  style="<%=Encode.forHtmlAttribute(String.valueOf((note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""))%>">
                 <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.docView"/>" id="view<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"
-                   href="javascript:void(0);" onclick="<%=Encode.forJavaScript(String.valueOf(url))%>">
+                   href="javascript:void(0);" onclick="<%=url%>">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/>
                 </a>
             </div>
@@ -594,26 +595,26 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                     String url = "popupPage(700,800,'" + hash + "','" + request.getContextPath() + "/eform/efmshowform_data.jsp?appointment=' + appointmentNo + '&fdid=";
 
                     CaseManagementNoteLink noteLink = note.getNoteLink();
-                    if (noteLink != null) url += noteLink.getTableId();
-                    else url += note.getNoteId();
+                    if (noteLink != null) url += Encode.forUriComponent(String.valueOf(noteLink.getTableId()));
+                    else url += Encode.forUriComponent(String.valueOf(note.getNoteId()));
 
                     url += "'); return false;";
             %>
             <div class="view-links"
                  style="<%=Encode.forHtmlAttribute(String.valueOf((note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""))%>">
                 <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.eformView"/>" id="view<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"
-                   href="javascript:void(0)" onclick="<%=Encode.forJavaScript(String.valueOf(url))%>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
+                   href="javascript:void(0)" onclick="<%=url%>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
             </div>
             <%
             } else if (note.isInvoice()) {
                 String winName = "invoice" + demographicNo;
                 int hash = Math.abs(winName.hashCode());
-                String url = "popupPage(700,800,'" + hash + "','" + request.getContextPath() + ((NoteDisplayNonNote) note).getLinkInfo() + "'); return false;";
+                String url = "popupPage(700,800,'" + hash + "','" + request.getContextPath() + Encode.forJavaScript(((NoteDisplayNonNote) note).getLinkInfo()) + "'); return false;";
             %>
             <div class="view-links"
                  style="<%=Encode.forHtmlAttribute(String.valueOf((note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""))%>">
                 <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.eformView"/>" id="view<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"
-                   href="javascript:void(0)" onclick="<%=Encode.forJavaScript(String.valueOf(url))%>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
+                   href="javascript:void(0)" onclick="<%=url%>"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
             </div>
             <%
             } else if (note.isEncounterForm()) {
@@ -628,19 +629,19 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 String url = "popupPage(700,800,'"
                         + hash + "started" + "','"
                         + request.getContextPath()
-                        + Encode.forHtml("/form/forwardshortcutname.do?formname=" + formEntry.getNote())
-                        + "&demographic_no=" + demographicNo
-                        + "&formId=" + formEntry.getNoteId()
+                        + "/form/forwardshortcutname.do?formname=" + Encode.forUriComponent(String.valueOf(formEntry.getNote()))
+                        + "&demographic_no=" + Encode.forUriComponent(String.valueOf(demographicNo))
+                        + "&formId=" + Encode.forUriComponent(String.valueOf(formEntry.getNoteId()))
                         + "'); return false;";
             %>
             <div class="view-links"
                  style="<%=Encode.forHtmlAttribute(String.valueOf((note.isDocument()||note.isCpp()||note.isEformData()||note.isEncounterForm()||note.isInvoice())?(bgColour):""))%>">
                 <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.eformView"/>" id="view<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"
-                   href="javascript:void(0)" onclick="<%=Encode.forJavaScript(String.valueOf(url))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/></a>
+                   href="javascript:void(0)" onclick="<%=url%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/></a>
             </div>
             <%
             } else if (note.isEmailNote()) {
-                String url = "viewEmailByLogId(1100,1000,'" + request.getContextPath() + "/admin/ManageEmails.do?method=resendEmail&logId=" + dispDocNo + "');" + "return false;";
+                String url = "viewEmailByLogId(1100,1000,'" + request.getContextPath() + "/admin/ManageEmails.do?method=resendEmail&logId=" + Encode.forUriComponent(String.valueOf(dispDocNo)) + "');" + "return false;";
 							if (fulltxt) {
 								%>
 									<img title='Minimize Display' id='quitImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>' style='float: right;' alt='Minimize Display' onclick='minNonEditableNoteView(<%=Encode.forJavaScript(String.valueOf(globalNoteId))%>)' src='<%=Encode.forHtmlAttribute(String.valueOf(ctx))%>/oscarEncounter/graphics/triangle_up.gif'>
@@ -655,7 +656,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                             %>
             <div class="view-links" style="<%=Encode.forHtmlAttribute(String.valueOf((isMagicNote)?(bgColour):""))%>">
                 <a class="links" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view.docView"/>" id="view<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"
-                   href="javascript:void(0);" onclick="<%=Encode.forJavaScript(String.valueOf(url))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
+                   href="javascript:void(0);" onclick="<%=url%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.view"/> </a>
             </div>
             <%
                 }
@@ -810,7 +811,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
 									<%if (!note.isEmailNote()) {%>
                     <div style="clear: right; margin-right: 3px; float: right;">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encType.title"/>:&nbsp;
-                        <span id="encType<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"><%=Encode.forHtml(String.valueOf(note.getEncounterType().equals("") ? "" : "&quot;" + note.getEncounterType() + "&quot;"))%></span>
+                        <span id="encType<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>"><%=note.getEncounterType().equals("") ? "" : "\"" + Encode.forHtml(note.getEncounterType()) + "\""%></span>
                     </div>
 
                     <div>
@@ -1123,7 +1124,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
             encounterText = "\n[" + apptDate + " .: " + reason + "]\n";
         }
 
-        encounterText = Encode.forJavaScript(encounterText);
+        // Return raw; the sole caller JS-encodes at the output point.
         return encounterText;
     }
 

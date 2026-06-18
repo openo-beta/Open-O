@@ -1023,12 +1023,17 @@
 
     #discontinueUI {
       position: absolute;
-      display: none;
       width: 500px;
       height: 200px;
       background-color: white;
       padding: 20px;
       border: 1px solid grey;
+    }
+
+    /* Bootstrap added to this page resets h1-h6 to font-weight:500,
+       which un-bolds the popup heading vs the pre-Bootstrap look. Restore bold here. */
+    #discontinueUI h3 {
+      font-weight: bold;
     }
 
     #drugProfile {
@@ -1062,6 +1067,9 @@
 
     .rightColumnAdjust {
       padding-left: 10px;
+      /* Table cells default to vertical-align: middle, so a long favourites column (left cell)
+         makes the row tall and drifts this content to the page middle (#2464). Pin it to top. */
+      vertical-align: top;
     }
   </style>
 
@@ -1491,7 +1499,8 @@
 
 
 <div id="dragifm"></div>
-<div id="discontinueUI">
+<%-- hidden attribute is toggled by JS (hidden = true/false) — do not move to CSS as display:none or the discontinue popup will not open (Prototype show() cannot override a stylesheet rule) --%>
+<div id="discontinueUI" hidden>
   <h3>Discontinue :<span id="disDrug"></span></h3>
   <input type="hidden" name="disDrugId" id="disDrugId"/>
   <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.discontinuedReason.msgReason"/>
@@ -1535,7 +1544,7 @@
   <br/>
   <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.discontinuedReason.msgComment"/><br/>
   <textarea id="disComment" rows="3" cols="45"></textarea><br/>
-  <input type="button" onclick="$('discontinueUI').hide();" value="Cancel"/>
+  <input type="button" onclick="document.getElementById('discontinueUI').hidden = true;" value="Cancel"/>
   <input type="button"
          onclick="Discontinue2($('disDrugId').value,$('disReason').value,$('disComment').value,$('disDrug').innerHTML);"
          value="Discontinue"/>
@@ -2112,7 +2121,7 @@
     let drugName = prescripElement ? prescripElement.textContent : '';
     $('discontinueUI').setStyle(styleStr);
     safeSetText('disDrug', drugName);
-    $('discontinueUI').show();
+    document.getElementById('discontinueUI').hidden = false;
     $('disDrugId').value = id;
   }
 
@@ -2125,7 +2134,7 @@
       onSuccess: function (transport) {
         try {
           let json = JSON.parse(transport.responseText);
-          $('discontinueUI').hide();
+          document.getElementById('discontinueUI').hidden = true;
           $('rxDate_' + json.id).style.textDecoration = 'line-through';
           $('reRx_' + json.id).style.textDecoration = 'line-through';
           $('del_' + json.id).style.textDecoration = 'line-through';
@@ -2137,7 +2146,7 @@
       },
       onFailure: function (transport) {
         console.error('Discontinue request failed with status: ' + (transport.status || 'unknown'));
-        $('discontinueUI').hide();
+        document.getElementById('discontinueUI').hidden = true;
       }
     });
   }
@@ -3369,11 +3378,43 @@
         }
     
     
+        /**
+         * Counts the medications currently staged for this prescription.
+         *
+         * Each staged drug renders a drugName_<rand> input inside the drug form;
+         * a ReRx box that was only checked (not staged) produces no such input.
+         * This deliberately keys on the same drugName_ marker that the server
+         * uses to detect staged drugs in RxWriteScript2Action.updateSaveAllDrugs()
+         * ("ele.startsWith(\"drugName_\")"), so this gate matches exactly what the
+         * server would persist. Keep the two in sync if that marker ever changes.
+         *
+         * @returns {number} the number of staged medications
+         */
+        function countStagedMedications() {
+            const form = document.getElementById('drugForm');
+            if (!form) {
+                return 0;
+            }
+            return form.querySelectorAll('input[name^="drugName_"]').length;
+        }
+
         function updateSaveAllDrugsPrintCheckContinue() {
+            // Nothing staged: warn instead of saving an empty prescription (#2453).
+            // The ReRx selection is left intact so the user can still click
+            // Stage Medication; it is only archived once actually staged and saved
+            // (guarded in RxWriteScript2Action.saveDrug()).
+            if (countStagedMedications() === 0) {
+                alert('No medications have been added.');
+                return;
+            }
             updateSaveAllDrugsPrintContinue();
         }
-    
+
         function updateSaveAllDrugsCheckContinue() {
+            // Nothing staged: do nothing rather than save an empty prescription (#2453).
+            if (countStagedMedications() === 0) {
+                return;
+            }
             updateSaveAllDrugsContinue();
         }
     
