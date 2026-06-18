@@ -1493,27 +1493,11 @@
   }, {
     "groupId" : "net.java.dev.jna",
     "artifactId" : "jna",
-    "version" : "5.19.0",
+    "version" : "5.19.1",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:39wcr9Gn/7RBOMYsO3PSpIyW71rpXFEnWplfp31kueAGhvrLltpWXdRFH95prpe+2UHhjr5YzN2bXpC6V2iKDQ=="
-  }, {
-    "groupId" : "net.minidev",
-    "artifactId" : "accessors-smart",
-    "version" : "2.5.2",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:O70pdhYicUrGHb4CuDURiFc/gZvav7QCUZaj8VYb/lLMMIr5IIGE9zOcZpiOf4rTI8XNew+oRjMhtrsD5KkYHg=="
-  }, {
-    "groupId" : "net.minidev",
-    "artifactId" : "json-smart",
-    "version" : "2.5.2",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:CHkxxvJUx+VP91tulJg9BititoNWqYil7SdoGby0+vutLwu8Nj4WyNqgntgYkkHwjv9ujl9fPdx3C1QdlvyOLQ=="
+    "integrity" : "sha512:DmqWCs/W+sd0htp7bRjrnZjgogW994GJVImX+29gk+cT5XDpgp7MbX3sgTJ26vXTr1bTDGJ/67OgsyT6kDXojw=="
   }, {
     "groupId" : "net.minidev",
     "artifactId" : "accessors-smart",
