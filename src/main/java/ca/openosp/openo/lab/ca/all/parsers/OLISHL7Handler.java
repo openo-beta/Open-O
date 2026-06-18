@@ -40,6 +40,8 @@ import ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISResultNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISFacilityDao;
 import ca.openosp.openo.olis.dao.OLISMicroorganismNomenclatureDao;
+import ca.openosp.openo.olis.dao.OLISSourceNomenclatureDao;
+import ca.openosp.openo.olis.model.OLISSourceNomenclature;
 import ca.openosp.openo.olis.model.OLISFacility;
 import ca.openosp.openo.olis.model.OLISMicroorganismNomenclature;
 import ca.openosp.openo.olis.model.OLISRequestNomenclature;
@@ -259,6 +261,39 @@ public class OLISHL7Handler implements MessageHandler {
     public String getObrSpecimenSource(int index) {
         if (obrSpecimenSource == null || index < 0 || index >= obrSpecimenSource.size()) return "";
         return obrSpecimenSource.get(index);
+    }
+
+    /**
+     * Resolve the displayable specimen type for a test request (CT 9.4). Prefers
+     * the OLIS Source-nomenclature description looked up by the specimen source
+     * code (OBR-15-1-1); falls back to the lab-supplied text (OBR-15-1-2), then to
+     * the raw code. The catalog lookup is best-effort: if the Source catalog table
+     * is not present (the seed/migration is human-applied), the lookup is skipped
+     * and the lab text is used, so this never regresses existing display.
+     *
+     * @param code String the specimen source code (OBR-15-1-1), may be empty
+     * @param text String the lab-supplied specimen text (OBR-15-1-2), may be empty
+     * @return String the specimen type to display, never {@code null}
+     */
+    private String resolveSpecimenType(String code, String text) {
+        String c = StringUtils.trimToEmpty(code);
+        if (!c.isEmpty()) {
+            try {
+                OLISSourceNomenclatureDao sourceDao = SpringUtils.getBean(OLISSourceNomenclatureDao.class);
+                OLISSourceNomenclature entry = sourceDao.findByValue(c);
+                if (entry != null) {
+                    String description = StringUtils.trimToEmpty(entry.getDescription());
+                    if (!description.isEmpty()) {
+                        return description;
+                    }
+                }
+            } catch (Exception e) {
+                // Source catalog absent (table not yet loaded) — fall back to lab text.
+                logger.debug("OLIS Source nomenclature lookup unavailable; using lab specimen text");
+            }
+        }
+        String t = StringUtils.trimToEmpty(text);
+        return !t.isEmpty() ? t : c;
     }
 
     /** Site modifier (OBR-15-5-2) for the test request, displayed under its own
@@ -1261,10 +1296,13 @@ public class OLISHL7Handler implements MessageHandler {
                         if (Terser.get(obr, 15, 0, 1, 2) == null && weirdFixToGetObr1512 != null) {
                             s1 = weirdFixToGetObr1512;
                         }
+                        String s1code = getString(Terser.get(obr, 15, 0, 1, 1)); // OBR-15-1-1: specimen source code
                         String s2 = getString(Terser.get(obr, 15, 0, 5, 2)); // getString(terser.get("/.OBR-15-5-2"));
-                        // CT 9.4/9.5: specimen type (OBR-15-1-2) and site modifier (OBR-15-5-2)
+                        // CT 9.4/9.5: specimen type (OBR-15) and site modifier (OBR-15-5-2)
                         // are distinct labelled fields — keep them separate rather than concatenated.
-                        obrSpecimenSource.add(s1);
+                        // CT 9.4: prefer the OLIS Source-nomenclature display name (looked up by the
+                        // source code OBR-15-1-1); fall back to the lab-supplied text (OBR-15-1-2).
+                        obrSpecimenSource.add(resolveSpecimenType(s1code, s1));
                         obrSiteModifier.add(s2);
                         char status = getString(Terser.get(obr, 25, 0, 1, 1)).charAt(0);
                         isFinal &= isStatusFinal(status);
@@ -1853,6 +1891,30 @@ public class OLISHL7Handler implements MessageHandler {
                 return "(amended)";
             case 'X':
                 return "(test was cancelled)";
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * Red parenthetical text displayed adjacent to the test result name for a non-final
+     * test result status (CT 12.8.x [R,P]): W &rarr; "(invalid result)", P &rarr;
+     * "(preliminary)", C &rarr; "(amended)", X &rarr; "(could not obtain result)",
+     * N &rarr; "(test not performed)". Returns "" for Final (12.8.1, where the adjacent
+     * annotation is optional and may be omitted).
+     */
+    public static String getTestResultStatusRedText(char status) {
+        switch (status) {
+            case 'W':
+                return "(invalid result)";
+            case 'P':
+                return "(preliminary)";
+            case 'C':
+                return "(amended)";
+            case 'X':
+                return "(could not obtain result)";
+            case 'N':
+                return "(test not performed)";
             default:
                 return "";
         }
@@ -2523,6 +2585,12 @@ public class OLISHL7Handler implements MessageHandler {
                 k = indexOfNextNTE(segments, k + 1, j);
             }
             k++;
+            // The note's source organization is in the ZNT segment that immediately follows
+            // the NTE. When the note has no trailing ZNT (or the NTE is the last segment),
+            // there is no source org — return "" rather than indexing past the segment array.
+            if (k < 0 || k >= segments.length || !segments[k].startsWith("ZNT")) {
+                return "";
+            }
             Structure[] ZNTSegs = terser.getFinder().getRoot().getAll(segments[k]);
             Segment ZNTSeg = (Segment) ZNTSegs[0];
             String key = Terser.get(ZNTSeg, 1, 0, 2, 1);
@@ -2701,6 +2769,10 @@ public class OLISHL7Handler implements MessageHandler {
                 k = indexOfNextNTE(segments, k + 1, j);
             }
             k++;
+            // No trailing ZNT means no source organization — guard the array index.
+            if (k < 0 || k >= segments.length || !segments[k].startsWith("ZNT")) {
+                return "";
+            }
             Structure[] ZNTSegs = terser.getFinder().getRoot().getAll(segments[k]);
             Segment ZNTSeg = (Segment) ZNTSegs[0];
             String key = Terser.get(ZNTSeg, 1, 0, 2, 1);
@@ -2802,6 +2874,10 @@ public class OLISHL7Handler implements MessageHandler {
                 k = indexOfNextNTE(segments, k, nteNum + 1);
             }
             k++;
+            // No trailing ZNT means no source organization — guard the array index.
+            if (k < 0 || k >= segments.length || !segments[k].startsWith("ZNT")) {
+                return "";
+            }
             Structure[] ZNTSegs = terser.getFinder().getRoot().getAll(segments[k]);
             Segment ZNTSeg = (Segment) ZNTSegs[0];
             String key = Terser.get(ZNTSeg, 1, 0, 2, 1);
@@ -3051,6 +3127,51 @@ public class OLISHL7Handler implements MessageHandler {
         return isCorrected ? "C" : isFinal ? "F" : "P";
     }
 
+    /**
+     * Report-level amendment banner text per CT 5.1, or "" if the report carries no
+     * amendment. "(Amended/Invalidation report)" when any test result is invalidated
+     * (OBX.11='W'); otherwise "(Amended report)" when any test request (OBR.25='C'),
+     * test result (OBX.11='C'), or test-request replacement (ZBR.14='Y') is amended.
+     * ZBR.13 full-replacement is exempt (a known OLIS defect prevents it being returned).
+     *
+     * @return String the red banner text, or "" when the report is not amended
+     */
+    public String getAmendedReportStatusText() {
+        boolean invalidation = false;
+        boolean amended = isCorrected; // any OBR.25='C', captured at parse time
+        for (int obr = 0; obr < getOBRCount(); obr++) {
+            for (int obx = 0; obx < getOBXCount(obr); obx++) {
+                String st = StringUtils.trimToEmpty(getOBXResultStatus(obr, obx));
+                if (st.startsWith("W")) {
+                    invalidation = true;
+                } else if (st.startsWith("C")) {
+                    amended = true;
+                }
+            }
+            if (isTestRequestReplaced(obr)) {
+                amended = true;
+            }
+        }
+        if (invalidation) {
+            return "(Amended/Invalidation report)";
+        }
+        return amended ? "(Amended report)" : "";
+    }
+
+    /** CT 5.1: whether this test request is a replacement of previously reported
+     *  results (ZBR.14 Test Request Replacement Flag = 'Y'). */
+    public boolean isTestRequestReplaced(int obr) {
+        obr++;
+        try {
+            Segment zbr = (obr == 1)
+                    ? terser.getSegment("/.ZBR")
+                    : (Segment) terser.getFinder().getRoot().get("ZBR" + obr);
+            return "Y".equals(Terser.get(zbr, 14, 0, 1, 1));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @Override
     public String getClientRef() {
         try {
@@ -3071,22 +3192,33 @@ public class OLISHL7Handler implements MessageHandler {
 
     public String getAccessionNumSourceOrganization() {
         try {
-            String key = getString(terser.get("/.ORC-4-3"));
-            String ident = "";
-            if (key != null && key.indexOf(":") > 0) {
-                ident = key.substring(0, key.indexOf(":"));
-                ident = getOrganizationType(ident);
-                key = key.substring(key.indexOf(":") + 1);
-            } else {
-                key = "";
-            }
-            if (key == null || "".equals(key.trim())) {
+            String raw = getString(terser.get("/.ORC-4-3"));
+            if (raw == null || raw.indexOf(":") <= 0) {
                 return "";
             }
-            String sourceOrg = sourceOrganizations.get(key);
-            if (sourceOrg == null)
-                sourceOrg = defaultSourceOrganizations.get(key);
-            return String.format("%s (%s %s)", sourceOrg, ident, key);
+            String oid = raw.substring(0, raw.indexOf(":"));
+            String orgType = getOrganizationType(oid);
+            String licence = raw.substring(raw.indexOf(":") + 1);
+            if (licence == null || licence.trim().isEmpty()) {
+                return "";
+            }
+            licence = licence.trim();
+            String sourceOrg = sourceOrganizations.get(licence);
+            if (sourceOrg == null) {
+                sourceOrg = defaultSourceOrganizations.get(licence);
+            }
+            // CT 5.2: look up and display the placer group's org name. When the message
+            // didn't carry it, resolve from the OLIS Lab/SCC facility catalog (the same
+            // enrichment as the performing/reporting labs) instead of printing "null".
+            if (sourceOrg == null || sourceOrg.trim().isEmpty()) {
+                sourceOrg = catalogFacilityName(oid, licence, null);
+            }
+            String orgIdPart = (orgType + " " + licence).trim();
+            if (sourceOrg == null || sourceOrg.trim().isEmpty()) {
+                // Org name still unknown — show only the type/id, never the literal "null".
+                return "(" + orgIdPart + ")";
+            }
+            return sourceOrg + " (" + orgIdPart + ")";
         } catch (Exception e) {
             MiscUtils.getLogger().error("OLIS HL7 Error", e);
         }

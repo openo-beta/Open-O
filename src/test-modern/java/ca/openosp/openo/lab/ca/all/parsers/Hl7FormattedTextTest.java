@@ -215,4 +215,155 @@ class Hl7FormattedTextTest {
         assertThat(Hl7FormattedText.toPlainText("\\.sk99999999999999999999\\"))
                 .hasSize(cap);
     }
+
+    // ------------------------------------------------------------------
+    // toHtml(): the safe-HTML sibling that preserves highlight (\H\/\N\) and
+    // centre (\.ce\) presentation the plain-text decode necessarily drops.
+    // ------------------------------------------------------------------
+
+    @Test
+    @DisplayName("toHtml: null and empty decode to empty string")
+    void shouldReturnEmptyHtmlForNullAndEmpty() {
+        assertThat(Hl7FormattedText.toHtml(null)).isEmpty();
+        assertThat(Hl7FormattedText.toHtml("")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("toHtml: HTML-escapes literal text so content cannot inject markup")
+    void shouldHtmlEscapeLiteralText() {
+        assertThat(Hl7FormattedText.toHtml("a < b & <script>alert(1)</script>"))
+                .isEqualTo("a &lt; b &amp; &lt;script&gt;alert(1)&lt;/script&gt;");
+    }
+
+    @Test
+    @DisplayName("toHtml: \\H\\..\\N\\ wraps the enclosed text in a bold span")
+    void shouldWrapHighlightInBoldSpan() {
+        assertThat(Hl7FormattedText.toHtml("normal \\H\\bold\\N\\ normal"))
+                .isEqualTo("normal <span style=\"font-weight:bold\">bold</span> normal");
+    }
+
+    @Test
+    @DisplayName("toHtml: highlighted text is itself HTML-escaped")
+    void shouldEscapeHighlightedContent() {
+        assertThat(Hl7FormattedText.toHtml("\\H\\<b>x</b>\\N\\"))
+                .isEqualTo("<span style=\"font-weight:bold\">&lt;b&gt;x&lt;/b&gt;</span>");
+    }
+
+    @Test
+    @DisplayName("toHtml: an unterminated \\H\\ auto-closes at end of input")
+    void shouldAutoCloseUnterminatedHighlight() {
+        assertThat(Hl7FormattedText.toHtml("\\H\\still bold"))
+                .isEqualTo("<span style=\"font-weight:bold\">still bold</span>");
+    }
+
+    @Test
+    @DisplayName("toHtml: the dotted \\.H\\/\\.N\\ form is accepted too")
+    void shouldAcceptDottedHighlightForm() {
+        assertThat(Hl7FormattedText.toHtml("\\.H\\x\\.N\\"))
+                .isEqualTo("<span style=\"font-weight:bold\">x</span>");
+    }
+
+    @Test
+    @DisplayName("toHtml: highlight spanning a line break is balanced on each line")
+    void shouldBalanceHighlightAcrossLineBreak() {
+        assertThat(Hl7FormattedText.toHtml("\\H\\one\\.br\\two\\N\\"))
+                .isEqualTo("<span style=\"font-weight:bold\">one</span>"
+                        + "<br/><span style=\"font-weight:bold\">two</span>");
+    }
+
+    @Test
+    @DisplayName("toHtml: \\.br\\ becomes a line break")
+    void shouldRenderBreakAsBr() {
+        assertThat(Hl7FormattedText.toHtml("line1\\.br\\line2"))
+                .isEqualTo("line1<br/>line2");
+    }
+
+    @Test
+    @DisplayName("toHtml: \\.sp2\\ becomes two line breaks")
+    void shouldRenderVerticalSkipAsBreaks() {
+        assertThat(Hl7FormattedText.toHtml("a\\.sp2\\b"))
+                .isEqualTo("a<br/><br/>b");
+    }
+
+    @Test
+    @DisplayName("toHtml: \\.ce\\ ends the current line and centres the next")
+    void shouldCentreNextLine() {
+        assertThat(Hl7FormattedText.toHtml("header\\.ce\\centred\\.br\\after"))
+                .isEqualTo("header"
+                        + "<div style=\"text-align:center\">centred</div>"
+                        + "after");
+    }
+
+    @Test
+    @DisplayName("toHtml: \\.in\\/\\.sk\\ indent becomes leading &nbsp; runs")
+    void shouldRenderIndentAsNbsp() {
+        assertThat(Hl7FormattedText.toHtml("\\.in3\\x"))
+                .isEqualTo("&nbsp;&nbsp;&nbsp;x");
+    }
+
+    @Test
+    @DisplayName("toHtml: delimiter and hex escapes decode then get HTML-escaped")
+    void shouldDecodeThenEscapeDelimiterAndHexEscapes() {
+        // \S\ -> '^', \T\ -> '&' (which must then be escaped to &amp;)
+        assertThat(Hl7FormattedText.toHtml("a\\S\\b\\T\\c")).isEqualTo("a^b&amp;c");
+        // \X3C\ -> '<' (0x3C), which must be escaped to &lt; not emitted raw
+        assertThat(Hl7FormattedText.toHtml("\\X3C\\b")).isEqualTo("&lt;b");
+    }
+
+    // ------------------------------------------------------------------
+    // toLines(): the neutral structured model the PDF renderer consumes. Shares
+    // the same tokenizer as toHtml, so highlight/centre/break stay in lockstep.
+    // ------------------------------------------------------------------
+
+    @Test
+    @DisplayName("toLines: a plain run is one non-bold, non-centred line")
+    void shouldReturnSinglePlainLine() {
+        var lines = Hl7FormattedText.toLines("hello world");
+        assertThat(lines).hasSize(1);
+        assertThat(lines.get(0).isCentered()).isFalse();
+        assertThat(lines.get(0).getRuns()).singleElement()
+                .satisfies(r -> {
+                    assertThat(r.getText()).isEqualTo("hello world");
+                    assertThat(r.isBold()).isFalse();
+                });
+    }
+
+    @Test
+    @DisplayName("toLines: \\.H\\..\\.N\\ splits into normal/bold/normal runs")
+    void shouldSplitHighlightIntoRuns() {
+        var runs = Hl7FormattedText.toLines("a \\.H\\b\\.N\\ c").get(0).getRuns();
+        assertThat(runs).hasSize(3);
+        assertThat(runs.get(0).getText()).isEqualTo("a ");
+        assertThat(runs.get(0).isBold()).isFalse();
+        assertThat(runs.get(1).getText()).isEqualTo("b");
+        assertThat(runs.get(1).isBold()).isTrue();
+        assertThat(runs.get(2).getText()).isEqualTo(" c");
+        assertThat(runs.get(2).isBold()).isFalse();
+    }
+
+    @Test
+    @DisplayName("toLines: \\.ce\\ marks the next line centred; \\.br\\ does not")
+    void shouldMarkCentredLine() {
+        var lines = Hl7FormattedText.toLines("title\\.ce\\middle\\.br\\foot");
+        assertThat(lines).hasSize(3);
+        assertThat(lines.get(0).isCentered()).isFalse(); // "title"
+        assertThat(lines.get(1).isCentered()).isTrue();  // "middle"
+        assertThat(lines.get(2).isCentered()).isFalse(); // "foot"
+        assertThat(lines.get(1).getRuns().get(0).getText()).isEqualTo("middle");
+    }
+
+    @Test
+    @DisplayName("toLines: indent escapes become literal spaces in the run text")
+    void shouldRenderIndentAsLiteralSpaces() {
+        var runs = Hl7FormattedText.toLines("\\.in3\\x").get(0).getRuns();
+        assertThat(runs.get(0).getText()).isEqualTo("   x");
+    }
+
+    @Test
+    @DisplayName("toLines: delimiter/hex escapes decode to raw characters (no HTML-escaping)")
+    void shouldDecodeRawCharactersForLines() {
+        // unlike toHtml, the neutral model keeps '<'/'&' raw for the consumer to handle
+        var runs = Hl7FormattedText.toLines("a\\T\\b\\X3C\\c").get(0).getRuns();
+        assertThat(runs.get(0).getText()).isEqualTo("a&b<c");
+    }
 }

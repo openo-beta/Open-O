@@ -152,6 +152,15 @@
         String safe = Encode.forHtml(content == null ? "" : content);
         return status != null && status.startsWith("W") ? "<s>" + safe + "</s>" : safe;
     }
+
+    public String strikeOutInvalidHtml(String safeHtml, String status) {
+        // CT 12.8.3 variant for content that is ALREADY safe HTML (e.g. from
+        // Hl7FormattedText.toHtml, which carries highlight/centre markup). The
+        // argument must not be re-encoded or its markup would show as literal
+        // text; only the strikeout wrapper is added for an invalidated (W) result.
+        String safe = safeHtml == null ? "" : safeHtml;
+        return status != null && status.startsWith("W") ? "<s>" + safe + "</s>" : safe;
+    }
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -197,24 +206,24 @@
         .AbnormalRollRes {
             font-weight: 700;
             font-size: 8pt;
-            color: red;
+            color: #CC0000;
             font-family: Verdana, Arial, Helvetica
         }
 
         .AbnormalRollRes a:link {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRollRes a:hover {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRollRes a:visited {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRollRes a:active {
-            color: red
+            color: #CC0000
         }
 
         .CorrectedRollRes {
@@ -243,24 +252,24 @@
         .AbnormalRes {
             font-weight: bold;
             font-size: 8pt;
-            color: red;
+            color: #CC0000;
             font-family: Verdana, Arial, Helvetica
         }
 
         .AbnormalRes a:link {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRes a:hover {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRes a:visited {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRes a:active {
-            color: red
+            color: #CC0000
         }
 
         .NormalRes {
@@ -526,7 +535,7 @@
         }
 
         .red {
-            color: red
+            color: #CC0000
         }
 
         .text2 {
@@ -685,15 +694,13 @@
                         }
                     %>
                     <tr>
+                        <%-- CT 1.2 [R,P]: PATIENT heading above all patient information,
+                             REPORT DETAILS above all order/report information. --%>
                         <td align="middle" class="Cell">
-                            <div class="Field2">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDetailResults"/>
-                            </div>
+                            <div class="Field2">PATIENT</div>
                         </td>
                         <td align="middle" class="Cell">
-                            <div class="Field2">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formResultsInfo"/>
-                            </div>
+                            <div class="Field2">REPORT DETAILS</div>
                         </td>
                     </tr>
                     <tr>
@@ -1075,6 +1082,7 @@
                                     <td>
                                         <div class="FieldData">
                                             <%=Encode.forHtml(String.valueOf(((String) (handler.getOrderStatus().equals("F") ? "Final" : handler.getOrderStatus().equals("C") ? "Corrected" : "Partial"))))%>
+                                            <% if (!handler.getAmendedReportStatusText().equals("")) { %><span style="color:#CC0000; font-weight:bold;">&nbsp;<%=Encode.forHtml(String.valueOf(handler.getAmendedReportStatusText()))%></span><% } %>
                                         </div>
                                     </td>
                                 </tr>
@@ -1097,7 +1105,7 @@
                                                     }
                                                 }
                                             %>
-                                            <%=abnormalD ? "<span style='color:red'>Yes</span>" : "No" %>
+                                            <%=abnormalD ? "<span style='color:#CC0000'>Yes</span>" : "No" %>
                                         </div>
                                     </td>
                                 </tr>
@@ -1201,6 +1209,12 @@
                                     </td>
                                 </tr>
                                 <% } %>
+                                <%-- CT 1.2 [R,P]: PROVIDER heading above all ordering practitioner information. --%>
+                                <tr>
+                                    <td colspan="2" align="middle" class="Cell">
+                                        <div class="Field2">PROVIDER</div>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td bgcolor="white" colspan="2">
                                         <div class="FieldData">
@@ -1595,7 +1609,7 @@
                     <tr>
                         <td bgcolor="#FFCC00" width="300" valign="top">
                             <div class="Title2">
-                                <%=Encode.forHtml(String.valueOf(headers.get(obr)))%><% if (!handler.getObrStatusRedText(obr).equals("")) { %><span style="color:#CC0000;">&nbsp;<%=Encode.forHtml(String.valueOf(handler.getObrStatusRedText(obr)))%></span><% } %>
+                                <%=Encode.forHtml(String.valueOf(headers.get(obr)))%><% if (!handler.getObrStatusRedText(obr).equals("")) { %><span style="color:#CC0000;">&nbsp;<%=Encode.forHtml(String.valueOf(handler.getObrStatusRedText(obr)))%></span><% } %><% if (handler.isTestRequestReplaced(obr)) { %><span style="color:#CC0000;">&nbsp;(amended)</span><br/><span style="color:#CC0000; font-size:8px;">This test request and associated results are a replacement of previously reported results.</span><% } %>
                                 <%
                                     String poc = handler.getPointOfCare(obr);
                                     if (!stringIsNullOrEmpty(poc)) {
@@ -1798,7 +1812,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7">
                             <div style="margin-left:15px; width:700px">
-                                <strong>Collector's Comment:</strong> <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(Hl7FormattedText.toPlainText(collectorsComment))%></span>
+                                <strong>Collector's Comment:</strong> <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=Hl7FormattedText.toHtml(collectorsComment)%></span>
                                 <span style="margin-left:15px;font-size:8px; color:#333333;"><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr)))%></span>
                             </div>
                         </td>
@@ -1903,6 +1917,13 @@
                         // Render sites emit it raw with no Encode wrap.
                         String abnormalNatureRaw = handler.getNatureOfAbnormalTest(obr, obx);
                         String obxDisplayHtml = buildObxDisplayHtml(strikeout, obxName, abnormalNatureRaw);
+                        // CT 12.8.x [R,P]: red parenthetical (e.g. "(preliminary)") adjacent to the
+                        // result name for non-final statuses. obxDisplayHtml flows to every value-type
+                        // render branch, so appending here covers them all.
+                        String obxStatusRedText = handler.getTestResultStatusRedText(status.isEmpty() ? ' ' : status.charAt(0));
+                        if (!obxStatusRedText.isEmpty()) {
+                            obxDisplayHtml = obxDisplayHtml + " <span style=\"color:#CC0000\">" + Encode.forHtml(obxStatusRedText) + "</span>";
+                        }
 
                         String lineClass = "NormalRes";
                         String abnormal = handler.getOBXAbnormalFlag(obr, obx);
@@ -1925,10 +1946,19 @@
                                 || obxValueType.equals("ST")) { // String Data
                             if (handler.isAncillary(obr, obx)) {
                     %>
+                    <%-- CT 11.5-11.9: ancillary order information (OBX.11="Z") rendered as
+                         labelled fields rather than in the tabular result columns. --%>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
-                        <td colspan="7">Patient Observation</td>
+                        <td colspan="7" style="padding-left:15px;">
+                            <strong>Patient Observation:</strong> <%=obxDisplayHtml%><br/>
+                            <strong>Result:</strong> <%=strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)%>
+                            <% if (!handler.getOBXAbnormalFlag(obr, obx).trim().isEmpty()) { %> &nbsp; <strong>Flag:</strong> <%=strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)%><% } %>
+                            <% if (!handler.getOBXReferenceRange(obr, obx).trim().isEmpty()) { %> &nbsp; <strong>Reference Range:</strong> <%=strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)%><% } %>
+                            <% if (!Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)).trim().isEmpty()) { %> &nbsp; <strong>Units:</strong> <%=strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)), status)%><% } %>
+                            &nbsp; <%=statusMsg%>
+                        </td>
                     </tr>
-                    <% } %>
+                    <% } else { %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
                                 href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
@@ -1943,11 +1973,12 @@
                         <td align="left"><%=strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)), status)%>
                         </td>
                         <td align="center">
-                            <%--<%=strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --))%>
+                            <%-- strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --%>
                         </td>
                         <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
+                    <% } %>
                     <%
                     } else if (obxValueType.equals("SN")) { // or Structured Numeric
                     %>
@@ -1980,7 +2011,9 @@
                         <%-- CT 13.3.3: full-width text rendered in a fixed-width font with
                              whitespace preserved so the lab's interpretive layout survives. --%>
                         <td align="left" colspan="6" style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;">
-                            <%=strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXResult(obr, obx)), status)%>
+                            <%-- CT 13.3.x: interpret FT/TX formatting tags (highlight \H\, centre \.ce\)
+                                 as safe HTML rather than flattening them to plain text. --%>
+                            <%=strikeOutInvalidHtml(Hl7FormattedText.toHtml(handler.getOBXResult(obr, obx)), status)%>
                             </td>
                         <td align="center"><%=statusMsg%>
                         </td>

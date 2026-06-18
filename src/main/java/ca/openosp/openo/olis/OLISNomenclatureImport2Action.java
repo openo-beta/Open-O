@@ -64,6 +64,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
     private ImportReport resultReport;
     private ImportReport requestReport;
     private ImportReport microReport;
+    private ImportReport sourceReport;
     private String errorMessage;
 
     @Override
@@ -89,6 +90,7 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
         List<Map<String, String>> resultRows = new ArrayList<>();
         List<Map<String, String>> requestRows = new ArrayList<>();
         List<Map<String, String>> microRows = new ArrayList<>();
+        List<Map<String, String>> sourceRows = new ArrayList<>();
         try (ZipFile zip = new ZipFile(xlsxOnDisk)) {
             List<String> sharedStrings = OlisXlsxSheetReader.readSharedStrings(zip);
             Map<String, String> sheetNameToPath = OlisXlsxSheetReader.workbookSheetMap(zip);
@@ -98,6 +100,9 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
             // The microorganism sheet is optional — older distributions may lack it; ingest it
             // when present so coded micro results (CV06) can resolve to organism names.
             String microSheetPath = sheetNameToPath.get("OLIS List of Microorganisms");
+            // The Source sheet is optional too; ingest it when present so a test request's
+            // specimen type (CT 9.4) can resolve OBR-15-1-1 to a display name.
+            String sourceSheetPath = sheetNameToPath.get("Source");
 
             if (resultSheetPath == null || requestSheetPath == null) {
                 errorMessage = "Uploaded file does not look like an OLIS Nomenclatures distribution "
@@ -116,6 +121,10 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
                 OlisXlsxSheetReader.streamRows(zip, microSheetPath, sharedStrings,
                         row -> microRows.add(new HashMap<>(row)));
             }
+            if (sourceSheetPath != null) {
+                OlisXlsxSheetReader.streamRows(zip, sourceSheetPath, sharedStrings,
+                        row -> sourceRows.add(new HashMap<>(row)));
+            }
         } catch (Exception e) {
             LOG.error("OLIS nomenclature import failed", e);
             // Detail is logged above; the user gets a generic message so internal
@@ -129,17 +138,20 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
             resultReport = new ImportReport();
             requestReport = new ImportReport();
             microReport = new ImportReport();
+            sourceReport = new ImportReport();
             // All sheets are one logical refresh; delegate to the transactional service so a
             // mid-import failure rolls back and the tables keep their prior consistent state.
             OLISNomenclatureImportService importService = SpringUtils.getBean(OLISNomenclatureImportService.class);
-            importService.importNomenclatures(resultRows, requestRows, microRows,
-                    resultReport, requestReport, microReport);
+            importService.importNomenclatures(resultRows, requestRows, microRows, sourceRows,
+                    resultReport, requestReport, microReport, sourceReport);
             LOG.info("OLIS nomenclature import — results: " + resultReport
                     + "; requests: " + requestReport
-                    + "; microorganisms: " + microReport);
+                    + "; microorganisms: " + microReport
+                    + "; sources: " + sourceReport);
             request.setAttribute("resultReport", resultReport);
             request.setAttribute("requestReport", requestReport);
             request.setAttribute("microReport", microReport);
+            request.setAttribute("sourceReport", sourceReport);
             request.setAttribute("xlsxFileName", xlsxFileName);
             return "report";
         } catch (Exception e) {
@@ -164,6 +176,10 @@ public class OLISNomenclatureImport2Action extends ActionSupport implements Uplo
 
     public ImportReport getMicroReport() {
         return microReport;
+    }
+
+    public ImportReport getSourceReport() {
+        return sourceReport;
     }
 
     public String getErrorMessage() {

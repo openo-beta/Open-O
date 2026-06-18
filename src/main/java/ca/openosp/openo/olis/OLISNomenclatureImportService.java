@@ -20,9 +20,11 @@ import ca.openosp.openo.olis.OLISNomenclatureImport2Action.ImportReport;
 import ca.openosp.openo.olis.dao.OLISMicroorganismNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao;
 import ca.openosp.openo.olis.dao.OLISResultNomenclatureDao;
+import ca.openosp.openo.olis.dao.OLISSourceNomenclatureDao;
 import ca.openosp.openo.olis.model.OLISMicroorganismNomenclature;
 import ca.openosp.openo.olis.model.OLISRequestNomenclature;
 import ca.openosp.openo.olis.model.OLISResultNomenclature;
+import ca.openosp.openo.olis.model.OLISSourceNomenclature;
 
 /**
  * Transactional service that applies a parsed eHealth Ontario OLIS Nomenclatures
@@ -58,6 +60,7 @@ public class OLISNomenclatureImportService {
     private final OLISResultNomenclatureDao resultDao;
     private final OLISRequestNomenclatureDao requestDao;
     private final OLISMicroorganismNomenclatureDao microDao;
+    private final OLISSourceNomenclatureDao sourceDao;
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
@@ -65,10 +68,12 @@ public class OLISNomenclatureImportService {
     @Autowired
     public OLISNomenclatureImportService(OLISResultNomenclatureDao resultDao,
                                          OLISRequestNomenclatureDao requestDao,
-                                         OLISMicroorganismNomenclatureDao microDao) {
+                                         OLISMicroorganismNomenclatureDao microDao,
+                                         OLISSourceNomenclatureDao sourceDao) {
         this.resultDao = resultDao;
         this.requestDao = requestDao;
         this.microDao = microDao;
+        this.sourceDao = sourceDao;
     }
 
     /**
@@ -89,8 +94,9 @@ public class OLISNomenclatureImportService {
     public void importNomenclatures(List<Map<String, String>> resultRows,
                                     List<Map<String, String>> requestRows,
                                     List<Map<String, String>> microRows,
+                                    List<Map<String, String>> sourceRows,
                                     ImportReport resultReport, ImportReport requestReport,
-                                    ImportReport microReport) {
+                                    ImportReport microReport, ImportReport sourceReport) {
         int processed = 0;
         for (Map<String, String> row : resultRows) {
             importResultRow(row, resultReport);
@@ -106,6 +112,12 @@ public class OLISNomenclatureImportService {
         }
         for (Map<String, String> row : microRows) {
             importMicroRow(row, microReport);
+            if (++processed % BATCH_SIZE == 0) {
+                flushAndClear();
+            }
+        }
+        for (Map<String, String> row : sourceRows) {
+            importSourceRow(row, sourceReport);
             if (++processed % BATCH_SIZE == 0) {
                 flushAndClear();
             }
@@ -221,6 +233,32 @@ public class OLISNomenclatureImportService {
             rep.added++;
         } else {
             microDao.merge(entity);
+            rep.updated++;
+        }
+    }
+
+    /**
+     * Upserts one row of the "Source" sheet — a two-column {@code Value} (specimen
+     * source code) / {@code Description} (display name) lookup used for CT 9.4
+     * specimen type. Keyed by {@code Value}.
+     */
+    private void importSourceRow(Map<String, String> row, ImportReport rep) {
+        String value = trimToNull(row.get("Value"));
+        if (value == null) {
+            return;
+        }
+        OLISSourceNomenclature existing = sourceDao.findByValue(value);
+        boolean isNew = (existing == null);
+        OLISSourceNomenclature entity = isNew ? new OLISSourceNomenclature() : existing;
+        if (isNew) {
+            entity.setValue(value);
+        }
+        entity.setDescription(trimToNull(row.get("Description")));
+        if (isNew) {
+            sourceDao.persist(entity);
+            rep.added++;
+        } else {
+            sourceDao.merge(entity);
             rep.updated++;
         }
     }

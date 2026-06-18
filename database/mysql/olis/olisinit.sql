@@ -48,6 +48,53 @@ OPTIONALLY ENCLOSED BY '\"'
 LINES TERMINATED BY '\n'
 (nameId, name, category, status, effectiveDate, endDate, externalCodeVersion, sortKey);
 
+CREATE TABLE IF NOT EXISTS OLISMicroorganismNomenclature (
+  id INT NOT NULL AUTO_INCREMENT,
+  microorganismCode VARCHAR(32),
+  microorganismType VARCHAR(64),
+  taxonomicLevel VARCHAR(64),
+  microorganismName VARCHAR(512),
+  alternateName1 VARCHAR(512),
+  alternateName2 VARCHAR(512),
+  shortName VARCHAR(255),
+  source VARCHAR(128),
+  externalLink VARCHAR(512),
+  reportable VARCHAR(16),
+  reportableContext VARCHAR(128),
+  effectiveStartDate VARCHAR(20),
+  effectiveEndDate VARCHAR(20),
+  changeNote VARCHAR(512),
+  comments VARCHAR(512),
+  PRIMARY KEY(id),
+  INDEX idx_OLISMicroorganismNomenclature_code (microorganismCode)
+);
+
+
+LOAD DATA LOCAL INFILE 'OLISMicroorganismNomenclature.csv'
+INTO TABLE OLISMicroorganismNomenclature
+FIELDS TERMINATED BY '\t'
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(microorganismCode, microorganismType, taxonomicLevel, microorganismName,
+ alternateName1, alternateName2, shortName, source, externalLink, reportable,
+ reportableContext, effectiveStartDate, effectiveEndDate, changeNote, comments);
+
+CREATE TABLE IF NOT EXISTS OLISSourceNomenclature (
+  id INT NOT NULL AUTO_INCREMENT,
+  value VARCHAR(64),
+  description VARCHAR(512),
+  PRIMARY KEY(id),
+  INDEX idx_OLISSourceNomenclature_value (value)
+);
+
+LOAD DATA LOCAL INFILE 'OLISSourceNomenclature.csv'
+INTO TABLE OLISSourceNomenclature
+FIELDS TERMINATED BY '\t'
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(value, @description)
+SET description = NULLIF(@description, '\\N');
+
 CREATE TABLE OLISProviderPreferences (
   providerId  VARCHAR(10),
   startTime VARCHAR(20),
@@ -121,36 +168,3 @@ FIELDS TERMINATED BY '\t'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 (licenceNumber, facilityClass, name, addressLine1, addressLine2, city, postalCode, oid, status);
-
-
-
-CREATE TABLE IF NOT EXISTS OLISMicroorganismNomenclature (
-  id INT NOT NULL AUTO_INCREMENT,
-  microorganismCode VARCHAR(32),
-  microorganismType VARCHAR(64),
-  taxonomicLevel VARCHAR(64),
-  microorganismName VARCHAR(512),
-  alternateName1 VARCHAR(512),
-  alternateName2 VARCHAR(512),
-  shortName VARCHAR(255),
-  source VARCHAR(128),
-  externalLink VARCHAR(512),
-  reportable VARCHAR(16),
-  reportableContext VARCHAR(128),
-  effectiveStartDate VARCHAR(20),
-  effectiveEndDate VARCHAR(20),
-  changeNote VARCHAR(512),
-  comments VARCHAR(512),
-  PRIMARY KEY(id),
-  INDEX idx_OLISMicroorganismNomenclature_code (microorganismCode)
-);
-
-
-LOAD DATA LOCAL INFILE 'OLISMicroorganismNomenclature.csv'
-INTO TABLE OLISMicroorganismNomenclature
-FIELDS TERMINATED BY '\t'
-OPTIONALLY ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-(microorganismCode, microorganismType, taxonomicLevel, microorganismName,
- alternateName1, alternateName2, shortName, source, externalLink, reportable,
- reportableContext, effectiveStartDate, effectiveEndDate, changeNote, comments);

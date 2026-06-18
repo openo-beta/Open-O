@@ -54,4 +54,16 @@ public class OLISHL7HandlerStatusUnitTest {
         assertThat(OLISHL7Handler.getTestResultStatusMessage('X')).isEqualTo("Could not obtain result");
         assertThat(OLISHL7Handler.getTestResultStatusMessage('N')).isEqualTo("Test not performed");
     }
+
+    @Test
+    @DisplayName("test-result red parenthetical (adjacent to result name) matches the spec (12.8.x [R,P])")
+    void shouldMapResultRedText() {
+        assertThat(OLISHL7Handler.getTestResultStatusRedText('W')).isEqualTo("(invalid result)");
+        assertThat(OLISHL7Handler.getTestResultStatusRedText('P')).isEqualTo("(preliminary)");
+        assertThat(OLISHL7Handler.getTestResultStatusRedText('C')).isEqualTo("(amended)");
+        assertThat(OLISHL7Handler.getTestResultStatusRedText('X')).isEqualTo("(could not obtain result)");
+        assertThat(OLISHL7Handler.getTestResultStatusRedText('N')).isEqualTo("(test not performed)");
+        // Final's adjacent annotation is optional (12.8.1) — omitted here.
+        assertThat(OLISHL7Handler.getTestResultStatusRedText('F')).isEmpty();
+    }
 }

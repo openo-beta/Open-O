@@ -1,7 +1,11 @@
 package ca.openosp.openo.lab.ca.all.parsers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.owasp.encoder.Encode;
 
 /**
  * Decoder for HL7 v2 "Formatted Text" (FT) data-type escape sequences,
@@ -176,5 +180,371 @@ public final class Hl7FormattedText {
             return "";
         }
         return " ".repeat(Math.max(0, count));
+    }
+
+    /**
+     * HTML fragment emitted for {@code \H\} (start highlighting). Rendered as
+     * bold rather than a background colour so it stays legible against the lab
+     * table's alternating row striping and in printed/greyscale output, and so
+     * it mirrors cleanly to a bold font in the PDF renderer. Contains no message
+     * data, so it is safe to emit verbatim around HTML-escaped content.
+     */
+    private static final String HIGHLIGHT_OPEN = "<span style=\"font-weight:bold\">";
+
+    /** Closing tag for {@link #HIGHLIGHT_OPEN}. */
+    private static final String HIGHLIGHT_CLOSE = "</span>";
+
+    /**
+     * A neutral run of decoded text carrying the highlight (bold) flag and no
+     * presentation markup. Building block of {@link FtLine}, for renderers that
+     * cannot consume HTML — e.g. the PDF creator turns each run into a bold-or-
+     * normal iText chunk.
+     */
+    public static final class FtRun {
+        private final String text;
+        private final boolean bold;
+        FtRun(String text, boolean bold) {
+            this.text = text;
+            this.bold = bold;
+        }
+        /** @return String the run's decoded text, markup-free, never {@code null}. */
+        public String getText() { return text; }
+        /** @return boolean whether this run is highlighted (rendered bold). */
+        public boolean isBold() { return bold; }
+    }
+
+    /**
+     * A neutral output line from {@link #toLines(String)}: the ordered
+     * {@link FtRun}s plus whether the line is centre-aligned ({@code \.ce\}).
+     */
+    public static final class FtLine {
+        private final List<FtRun> runs;
+        private final boolean centered;
+        FtLine(List<FtRun> runs, boolean centered) {
+            this.runs = runs;
+            this.centered = centered;
+        }
+        /** @return List&lt;FtRun&gt; the runs composing this line, in order, never {@code null}. */
+        public List<FtRun> getRuns() { return runs; }
+        /** @return boolean whether the line is centre-aligned. */
+        public boolean isCentered() { return centered; }
+    }
+
+    /**
+     * Decode an HL7 Formatted-Text string to a <em>safe HTML</em> fragment that
+     * preserves the highlight ({@code \H\}/{@code \N\}) and centre
+     * ({@code \.ce\}) presentation that {@link #toPlainText(String)} necessarily
+     * drops, while remaining injection-proof.
+     *
+     * <p>Every run of literal message text is {@link Encode#forHtml(String)
+     * HTML-escaped} <em>before</em> any markup is emitted, and the only tags in
+     * the output come from a fixed internal whitelist ({@code <br/>}, a bold
+     * {@code <span>}, a centred {@code <div>}, {@code &nbsp;}) that never carries
+     * message data in a tag or attribute — so hostile FT content cannot inject
+     * markup. This is the HTML counterpart to {@link #toPlainText(String)}: use
+     * it for on-screen rendering of comment/notes and FT-typed result values
+     * (CT&nbsp;Tracker 5.5.4 / 9.9.4 / 10.3.4 / 11.10.4 / 12.10.4 / 13.3.x), and
+     * keep {@link #toPlainText(String)} for every non-HTML consumer.
+     *
+     * <p>Mapping: {@code \H\}/{@code \.H\} open and {@code \N\}/{@code \.N\}
+     * close a bold span (an unterminated highlight auto-closes at end of input,
+     * and each line is independently balanced); {@code \.ce\} ends the current
+     * line and centres the next (centring is line-scoped, ending at the next
+     * line break, per the OLIS interface spec); {@code \.br\} is a line break,
+     * {@code \.sp n\} is {@code n} breaks, and {@code \.sk\}/{@code \.in\}/{@code
+     * \.ti\} become leading {@code &nbsp;} runs (mirroring the spacing
+     * {@link #toPlainText(String)} preserves). Delimiter ({@code \F\ \S\ \T\ \R\
+     * \E\}) and {@code \Xdd\} hex escapes decode to their characters and are then
+     * HTML-escaped like any other text.
+     *
+     * @param ft String the FT-encoded field value, may contain HL7 escape
+     *           sequences; {@code null} is treated as empty.
+     * @return String a safe HTML fragment, never {@code null}.
+     */
+    public static String toHtml(String ft) {
+        HtmlSink sink = new HtmlSink();
+        feed(ft, sink);
+        return sink.build();
+    }
+
+    /**
+     * Decode an HL7 Formatted-Text string to a neutral list of {@link FtLine}s —
+     * the structured counterpart to {@link #toHtml(String)} for consumers that
+     * render without HTML (the PDF creator turns each {@link FtRun} into a
+     * bold-or-normal iText chunk and centres a line via paragraph alignment).
+     * Both methods share one tokenizer ({@link #feed}), so highlight, centre, and
+     * line-break handling stay identical between the on-screen and printed report.
+     *
+     * @param ft String the FT-encoded field value; {@code null} is treated as empty.
+     * @return List&lt;FtLine&gt; the decoded lines, never {@code null}.
+     */
+    public static List<FtLine> toLines(String ft) {
+        LineSink sink = new LineSink();
+        feed(ft, sink);
+        return sink.build();
+    }
+
+    /**
+     * Tokenize an FT string, driving a {@link FtSink}. Literal text between
+     * escapes (with any raw newlines split into line breaks) and each {@code \..\}
+     * operator are pushed to the sink in order; the sink decides how to render.
+     *
+     * @param ft   String the FT-encoded value, may be {@code null}/empty
+     * @param sink FtSink the render target receiving the decoded stream
+     */
+    private static void feed(String ft, FtSink sink) {
+        if (ft == null || ft.isEmpty()) {
+            return;
+        }
+        Matcher m = ESCAPE.matcher(ft);
+        int last = 0;
+        while (m.find()) {
+            if (m.start() > last) {
+                feedText(ft.substring(last, m.start()), sink);
+            }
+            dispatchOperator(m.group(1), sink);
+            last = m.end();
+        }
+        if (last < ft.length()) {
+            feedText(ft.substring(last), sink);
+        }
+    }
+
+    /**
+     * Push literal text to the sink, splitting on raw newlines. Raw CR/LF should
+     * not occur in FT (the spec mandates {@code \.br\}), but if a lab sends them
+     * they become line breaks rather than silently collapsing.
+     */
+    private static void feedText(String s, FtSink sink) {
+        String norm = s.replace("\r\n", "\n").replace('\r', '\n');
+        int start = 0;
+        for (int i = 0; i < norm.length(); i++) {
+            if (norm.charAt(i) == '\n') {
+                sink.text(norm.substring(start, i));
+                sink.lineBreak(false);
+                start = i + 1;
+            }
+        }
+        sink.text(norm.substring(start));
+    }
+
+    /** Dispatch one FT operator token (the text between two {@code \}) to the sink. */
+    private static void dispatchOperator(String op, FtSink sink) {
+        if (op.isEmpty()) {
+            sink.text("\\");
+            return;
+        }
+        if ((op.charAt(0) == 'X' || op.charAt(0) == 'x') && op.length() > 1) {
+            String hex = op.substring(1);
+            if (hex.length() % 2 == 0 && hex.matches("[0-9A-Fa-f]+")) {
+                StringBuilder out = new StringBuilder(hex.length() / 2);
+                for (int k = 0; k < hex.length(); k += 2) {
+                    out.append((char) Integer.parseInt(hex.substring(k, k + 2), 16));
+                }
+                sink.text(out.toString());
+                return;
+            }
+        }
+        switch (op.toUpperCase()) {
+            case ".BR": sink.lineBreak(false); return;
+            case ".CE": sink.lineBreak(true); return; // end line, centre the next
+            case ".H": case "H": sink.highlightOn(); return;
+            case ".N": case "N": sink.highlightOff(); return;
+            case ".FE": case ".NF": return; // fill-mode toggles: no textual content
+            case "F": sink.text("|"); return;
+            case "S": sink.text("^"); return;
+            case "T": sink.text("&"); return;
+            case "R": sink.text("~"); return;
+            case "E": sink.text("\\"); return;
+            case "SLASHHACK": sink.text("\\"); return;
+            case "MUHACK": sink.text("µ"); return;
+            default: dispatchParamOperator(op.toUpperCase(), sink);
+        }
+    }
+
+    /** Dispatch the operand-bearing escapes ({@code \.sp\}, {@code \.sk\}, etc.) to the sink. */
+    private static void dispatchParamOperator(String key, FtSink sink) {
+        Matcher m = PARAM_OP.matcher(key);
+        if (!m.matches()) {
+            return; // unknown escape: dropped, matching toPlainText
+        }
+        String cmd = m.group(1);
+        boolean negative = "-".equals(m.group(2));
+        int count = 1;
+        if (!m.group(3).isEmpty()) {
+            try {
+                count = Math.min(Integer.parseInt(m.group(3)), MAX_REPEAT);
+            } catch (NumberFormatException e) {
+                count = MAX_REPEAT;
+            }
+        }
+        if ("SP".equals(cmd)) {
+            for (int i = 0; i < Math.max(0, count); i++) {
+                sink.lineBreak(false); // vertical skip -> blank lines
+            }
+            return;
+        }
+        if (negative) {
+            return; // negative indent cannot un-emit characters in one pass
+        }
+        sink.indent(Math.max(0, count)); // SK/IN/TI -> horizontal indent
+    }
+
+    /**
+     * Render target driven by {@link #feed}. One implementation per output format
+     * keeps a single FT tokenizer behind both {@link #toHtml} and {@link #toLines}.
+     */
+    private interface FtSink {
+        /** Append literal decoded text (the sink escapes/stores as appropriate). */
+        void text(String s);
+        /** Append {@code spaces} of horizontal indent ({@code \.sk\}/{@code \.in\}/{@code \.ti\}). */
+        void indent(int spaces);
+        /** End the current line; {@code centerNext} centres the line that follows. */
+        void lineBreak(boolean centerNext);
+        /** Start highlighting (bold). */
+        void highlightOn();
+        /** Stop highlighting (normal text). */
+        void highlightOff();
+    }
+
+    /**
+     * {@link FtSink} that assembles the safe-HTML fragment for {@link #toHtml}.
+     * Accumulates the current line (with inline highlight spans), flushing on each
+     * line break so every emitted line is independently HTML-balanced, then joins
+     * the lines — centred lines as block {@code <div>}s, the rest separated by
+     * {@code <br/>}.
+     */
+    private static final class HtmlSink implements FtSink {
+        private final List<String> lines = new ArrayList<>();
+        private final List<Boolean> centeredFlags = new ArrayList<>();
+        private final StringBuilder line = new StringBuilder();
+        private boolean highlightOpen = false;
+        /** Whether the line currently being accumulated is centre-aligned. */
+        private boolean currentCentered = false;
+
+        @Override
+        public void text(String s) {
+            line.append(Encode.forHtml(s));
+        }
+
+        @Override
+        public void indent(int spaces) {
+            // &nbsp; survives HTML whitespace collapse, guaranteeing the indent.
+            line.append("&nbsp;".repeat(spaces));
+        }
+
+        @Override
+        public void highlightOn() {
+            if (!highlightOpen) {
+                line.append(HIGHLIGHT_OPEN);
+                highlightOpen = true;
+            }
+        }
+
+        @Override
+        public void highlightOff() {
+            if (highlightOpen) {
+                line.append(HIGHLIGHT_CLOSE);
+                highlightOpen = false;
+            }
+        }
+
+        @Override
+        public void lineBreak(boolean centerNext) {
+            // A highlight open across the break is closed on this line and re-opened
+            // on the next so each line's markup is self-balanced.
+            if (highlightOpen) {
+                line.append(HIGHLIGHT_CLOSE);
+            }
+            lines.add(line.toString());
+            centeredFlags.add(currentCentered);
+            line.setLength(0);
+            currentCentered = centerNext;
+            if (highlightOpen) {
+                line.append(HIGHLIGHT_OPEN);
+            }
+        }
+
+        /** Assemble the flushed lines into the final HTML fragment. */
+        String build() {
+            lineBreak(false); // flush the trailing line
+            StringBuilder out = new StringBuilder();
+            boolean first = true;
+            boolean prevBlock = false;
+            for (int i = 0; i < lines.size(); i++) {
+                boolean block = centeredFlags.get(i);
+                if (!first && !block && !prevBlock) {
+                    out.append("<br/>");
+                }
+                if (block) {
+                    out.append("<div style=\"text-align:center\">").append(lines.get(i)).append("</div>");
+                } else {
+                    out.append(lines.get(i));
+                }
+                first = false;
+                prevBlock = block;
+            }
+            return out.toString();
+        }
+    }
+
+    /**
+     * {@link FtSink} that assembles the neutral {@link FtLine} list for
+     * {@link #toLines}. Accumulates a run until the highlight state changes or the
+     * line breaks, so each {@link FtRun} is uniformly bold or normal.
+     */
+    private static final class LineSink implements FtSink {
+        private final List<FtLine> lines = new ArrayList<>();
+        private List<FtRun> runs = new ArrayList<>();
+        private final StringBuilder run = new StringBuilder();
+        private boolean bold = false;
+        private boolean currentCentered = false;
+
+        @Override
+        public void text(String s) {
+            run.append(s);
+        }
+
+        @Override
+        public void indent(int spaces) {
+            // Fixed-width consumers (PDF Courier) preserve literal spaces verbatim.
+            run.append(" ".repeat(spaces));
+        }
+
+        @Override
+        public void highlightOn() {
+            if (!bold) {
+                flushRun();
+                bold = true;
+            }
+        }
+
+        @Override
+        public void highlightOff() {
+            if (bold) {
+                flushRun();
+                bold = false;
+            }
+        }
+
+        @Override
+        public void lineBreak(boolean centerNext) {
+            flushRun();
+            lines.add(new FtLine(runs, currentCentered));
+            runs = new ArrayList<>();
+            currentCentered = centerNext;
+        }
+
+        private void flushRun() {
+            if (run.length() > 0) {
+                runs.add(new FtRun(run.toString(), bold));
+                run.setLength(0);
+            }
+        }
+
+        List<FtLine> build() {
+            lineBreak(false); // flush the trailing line
+            return lines;
+        }
     }
 }
