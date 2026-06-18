@@ -1726,6 +1726,22 @@
                         <td width="*">&nbsp;</td>
                     </tr>
                     <%
+                        // CT "Sequence of Data Display" 2.0: the collector's comment is the last
+                        // item of the specimen block — render it here (in the specimen header
+                        // table) rather than at the top of the results table below.
+                        String collectorsComment = handler.getCollectorsComment(obr);
+                        if (collectorsComment != null && !collectorsComment.equals("")) {
+                    %>
+                    <tr>
+                        <td bgcolor="#FFCC00" colspan="2">
+                            <div class="FieldData">
+                                <strong>Collector's Comment:</strong> <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=Hl7FormattedText.toHtml(collectorsComment)%></span>
+                                <span style="margin-left:15px;font-size:8px; color:#333333;"><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr)))%></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <%
+                        }
                         String performingFacility = handler.getOBRPerformingFacilityName(obr);
                         if (!primaryFacility.equals(performingFacility) && !performingFacility.equals("")) {
 
@@ -1806,19 +1822,6 @@
 
                         boolean obrFlag = false;
                         int obxCount = handler.getOBXCount(obr);
-                        String collectorsComment = handler.getCollectorsComment(obr); // TODO: get collector attribution
-                        if (collectorsComment != null && !collectorsComment.equals("")) {
-                    %>
-                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
-                        <td valign="top" align="left" colspan="7">
-                            <div style="margin-left:15px; width:700px">
-                                <strong>Collector's Comment:</strong> <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=Hl7FormattedText.toHtml(collectorsComment)%></span>
-                                <span style="margin-left:15px;font-size:8px; color:#333333;"><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr)))%></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <%
-                        }
 
                         if (handler.getObservationHeader(obr, 0).equals(headers.get(obr))) {
                             int cc = handler.getOBRCommentCount(obr);
@@ -2188,7 +2191,7 @@
                     %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7"><span
-                                style="margin-left:15px;">Observation Date: <%=Encode.forHtml(String.valueOf(obsDate))%></span></td>
+                                style="margin-left:15px;">Observation Date/Time: <%=Encode.forHtml(String.valueOf(obsDate))%></span></td>
                     </tr>
                     <%
                         }

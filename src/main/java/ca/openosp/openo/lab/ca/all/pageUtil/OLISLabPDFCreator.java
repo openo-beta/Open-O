@@ -490,6 +490,26 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
         cell.setColspan(2);
         categoryTable.addCell(cell);
 
+        // CT "Sequence of Data Display" 2.0: collector's comment is the last item of the
+        // specimen block — render it with the specimen/header info, ahead of the
+        // performing-lab / diagnosis blocks and the results table below.
+        String collectorsComment = handler.getCollectorsComment(obr);
+        if (!stringIsNullOrEmpty(collectorsComment)) {
+            PdfPCell ccCell = new PdfPCell();
+            ccCell.setBorder(0);
+            ccCell.setColspan(2);
+            Phrase collectorsCommentPhrase = new Phrase();
+            collectorsCommentPhrase.setFont(font);
+            collectorsCommentPhrase.add("Collector's Comment: ");
+            collectorsCommentPhrase.setFont(commentFont);  // CT 9.9.2: fixed-width
+            collectorsCommentPhrase.add(Hl7FormattedText.toPlainText(collectorsComment));
+            collectorsCommentPhrase.setFont(subscriptFont);
+            collectorsCommentPhrase.add("\t\t");
+            collectorsCommentPhrase.add(handler.getCollectorsCommentSourceOrganization(obr));
+            ccCell.setPhrase(collectorsCommentPhrase);
+            categoryTable.addCell(ccCell);
+        }
+
         cell = new PdfPCell();
         cell.setBorder(0);
         String primaryFacility = handler.getPerformingFacilityName();
@@ -537,26 +557,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
 
         boolean obrFlag = false;
         int obxCount = handler.getOBXCount(obr);
-        String collectorsComment = handler.getCollectorsComment(obr);
         int obx = 0;
-
-        if (!stringIsNullOrEmpty(collectorsComment)) {
-            cell.setColspan(7);
-            Phrase collectorsCommentPhrase = new Phrase();
-            collectorsCommentPhrase.setFont(font);
-            collectorsCommentPhrase.add("Collector's Comment: ");
-            // CT 9.9.2: collector's comment in fixed-width font
-            collectorsCommentPhrase.setFont(commentFont);
-            collectorsCommentPhrase.add(Hl7FormattedText.toPlainText(collectorsComment));
-
-            collectorsCommentPhrase.setFont(subscriptFont);
-            collectorsCommentPhrase.add("\t\t" + handler.getCollectorsCommentSourceOrganization(obr));
-            cell.setPhrase(collectorsCommentPhrase);
-            table.addCell(cell);
-
-            cell.setColspan(1);
-        }
-
 
         if (handler.getObservationHeader(obr, 0).equals(header)) {
             int commentCount = handler.getOBRCommentCount(obr);
@@ -983,7 +984,7 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                 String obsDate = handler.getOBXObservationDate(obr, obx);
                 if (!stringIsNullOrEmpty(obsDate)) {
                     cell.setColspan(6);
-                    cell.setPhrase(new Phrase("Observation Date: " + obsDate, font));
+                    cell.setPhrase(new Phrase("Observation Date/Time: " + obsDate, font));
                     table.addCell(cell);
                     cell.setColspan(0);
                 }

@@ -1036,7 +1036,10 @@ public class OLISHL7Handler implements MessageHandler {
     public String getSpecimenReceivedDateTime() {
         try {
             String date = getString(terser.get("/.OBR-14-1"));
-            if (date.length() > 13) {
+            // Format any value carrying at least a full HL7 date (yyyyMMdd). The old
+            // ">13" gate dropped date-only / minute-precision specimen times entirely;
+            // formatDateTime already renders each DTM length (8/12/14/19) correctly.
+            if (date.length() >= 8) {
                 return formatDateTime(date);
             }
         } catch (HL7Exception e) {
@@ -2630,11 +2633,13 @@ public class OLISHL7Handler implements MessageHandler {
                 obr = (Segment) terser.getFinder().getRoot().get("OBR" + obrIndex);
             }
             String from = getString(Terser.get(obr, 7, 0, 1, 1));
-            if (from.length() > 13) {
+            // Format any value carrying at least a full HL7 date (yyyyMMdd); the old ">13"
+            // gate left date-only / minute-precision collection times rendered raw.
+            if (from.length() >= 8) {
                 from = formatDateTime(from);
             }
             String to = getString(Terser.get(obr, 8, 0, 1, 1));
-            if (to.length() > 13) {
+            if (to.length() >= 8) {
                 to = formatDateTime(to);
             }
             boolean hasBoth = stringIsNotNullOrEmpty(from) && stringIsNotNullOrEmpty(to);
