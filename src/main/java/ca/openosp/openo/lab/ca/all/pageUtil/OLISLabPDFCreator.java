@@ -510,27 +510,8 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             categoryTable.addCell(ccCell);
         }
 
-        cell = new PdfPCell();
-        cell.setBorder(0);
-        String primaryFacility = handler.getPerformingFacilityName();
-        String performingFacility = handler.getOBRPerformingFacilityName(obr);
-        if (!primaryFacility.equals(performingFacility) && !stringIsNullOrEmpty(performingFacility)) {
-            cell.setPhrase(new Phrase("Performing Lab: ", boldFont));
-            categoryTable.addCell(cell);
-            cell.setPhrase(new Phrase(performingFacility, font));
-            categoryTable.addCell(cell);
-            cell.setPhrase(new Phrase("Address: ", boldFont));
-            categoryTable.addCell(cell);
-            cell.setPhrase(new Phrase(getFullAddress(handler.getPerformingFacilityAddress(obr)), font));
-            categoryTable.addCell(cell);
-        }
-        String diagnosis = handler.getDiagnosis(obr);
-        if (!stringIsNullOrEmpty(diagnosis)) {
-            cell.setPhrase(new Phrase("Diagnosis: ", font));
-            categoryTable.addCell(cell);
-            cell.setPhrase(new Phrase(diagnosis, font));
-            categoryTable.addCell(cell);
-        }
+        // Diagnosis (CT seq 5.0) and the Performing Lab exception (8.0) now render in the
+        // results table immediately before the result rows, to follow the spec sequence.
 
         cell = new PdfPCell();
         //Column Headers
@@ -586,6 +567,43 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                 cell.setPhrase(obrCommentPhrase);
                 table.addCell(cell);
             }
+        }
+
+        // CT "Sequence of Data Display": Diagnosis (5.0) then the Performing Lab exception (8.0)
+        // render here — after the test-request name/notes, immediately before the result rows.
+        String seqDiagnosis = handler.getDiagnosis(obr);
+        if (!stringIsNullOrEmpty(seqDiagnosis)) {
+            PdfPCell seqDxCell = new PdfPCell();
+            seqDxCell.setColspan(7);
+            seqDxCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            Phrase seqDxPhrase = new Phrase();
+            seqDxPhrase.setFont(boldFont);
+            seqDxPhrase.add("Diagnosis: ");
+            seqDxPhrase.setFont(font);
+            seqDxPhrase.add(seqDiagnosis);
+            seqDxCell.setPhrase(seqDxPhrase);
+            table.addCell(seqDxCell);
+        }
+        String seqPrimaryFacility = handler.getPerformingFacilityName();
+        String seqPerformingFacility = handler.getOBRPerformingFacilityName(obr);
+        if (!seqPrimaryFacility.equals(seqPerformingFacility) && !stringIsNullOrEmpty(seqPerformingFacility)) {
+            PdfPCell seqPlCell = new PdfPCell();
+            seqPlCell.setColspan(7);
+            seqPlCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            Phrase seqPlPhrase = new Phrase();
+            seqPlPhrase.setFont(boldFont);
+            seqPlPhrase.add("Performing Lab: ");
+            seqPlPhrase.setFont(font);
+            seqPlPhrase.add(seqPerformingFacility);
+            String seqPlAddr = getFullAddress(handler.getPerformingFacilityAddress(obr));
+            if (!stringIsNullOrEmpty(seqPlAddr)) {
+                seqPlPhrase.setFont(boldFont);
+                seqPlPhrase.add("    Address: ");
+                seqPlPhrase.setFont(font);
+                seqPlPhrase.add(seqPlAddr);
+            }
+            seqPlCell.setPhrase(seqPlPhrase);
+            table.addCell(seqPlCell);
         }
 
         for (int count = 0; count < obxCount; count++) {

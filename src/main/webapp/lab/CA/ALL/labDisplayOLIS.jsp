@@ -1742,63 +1742,10 @@
                     </tr>
                     <%
                         }
-                        String performingFacility = handler.getOBRPerformingFacilityName(obr);
-                        if (!primaryFacility.equals(performingFacility) && !performingFacility.equals("")) {
-
+                        // Diagnosis (CT seq 5.0) and the Performing Lab exception (8.0) used to
+                        // render here in the specimen header table; they now render in the results
+                        // table immediately before the result rows, to follow the spec sequence.
                     %>
-                    <tr>
-                        <td bgcolor="#FFCC00">
-                            <div class="FieldData">
-                                <strong>Performing Lab:</strong>
-                            </div>
-                        </td>
-                        <td bgcolor="#FFCC00">
-                            <div class="FieldData">
-                                <strong>Address:</strong><br/>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td bgcolor="#FFCC00" valign="top">
-                            <div class="FieldData">
-                                <%=Encode.forHtml(String.valueOf(performingFacility))%>
-                            </div>
-                        </td>
-                        <td bgcolor="#FFCC00" valign="top">
-                            <div class="FieldData">
-                                <%
-                                    address = handler.getPerformingFacilityAddress(obr);
-                                    if (address != null && address.size() > 0) {
-                                        String streetAddress = getAddressField(address, "Street Address");
-                                        String otherDesignation = getAddressField(address, "Other Designation");
-                                        String postalCode = getAddressField(address, "Postal Code");
-                                        String city = getAddressField(address, "City");
-                                        String province = getAddressField(address, "Province");
-                                        String country = getAddressField(address, "Country");
-                                %>
-                                <%=Encode.forHtml(streetAddress)%><%=streetAddress.isEmpty() ? "" : "<br/>"%>
-                                <%=Encode.forHtml(otherDesignation)%><%=otherDesignation.isEmpty() ? "" : "<br/>"%>
-                                <%=Encode.forHtml(postalCode)%><%=postalCode.isEmpty() ? "" : "<br/>"%>
-                                <%=Encode.forHtml(city)%><%=city.isEmpty() || province.isEmpty() ? "" : ", "%><%=Encode.forHtml(province)%><%=city.isEmpty() && province.isEmpty() ? "" : "<br/>"%>
-                                <%=Encode.forHtml(country)%>
-                                <% } %>
-                            </div>
-                        </td>
-                    </tr>
-                    <% } %>
-                    <%
-                        String diagnosis = handler.getDiagnosis(obr);
-                        if (!stringIsNullOrEmpty(diagnosis)) {
-                    %>
-                    <tr>
-                        <td bgcolor="#FFCC00" colspan="2">
-                            <div class="FieldData">
-                                <strong>Diagnosis:</strong><br/>
-                                <%=Encode.forHtml(String.valueOf(diagnosis))%>
-                            </div>
-                        </td>
-                    </tr>
-                    <% } %>
                 </table>
 
                 <table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#CCCCFF" bordercolor="#9966FF"
@@ -1858,6 +1805,47 @@
                             }//end for k=0
                         }//end if handler.getObservation..
 
+                        // CT "Sequence of Data Display": Diagnosis (5.0) then the Performing Lab
+                        // exception (8.0) render here — after the test-request name/notes and
+                        // immediately before the result rows — to follow the spec display sequence.
+                        String seqDiagnosis = handler.getDiagnosis(obr);
+                        if (!stringIsNullOrEmpty(seqDiagnosis)) {
+                    %>
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
+                        <td colspan="7">
+                            <div class="FieldData"><strong>Diagnosis:</strong><br/><%=Encode.forHtml(String.valueOf(seqDiagnosis))%></div>
+                        </td>
+                    </tr>
+                    <%
+                        }
+                        String seqPerformingFacility = handler.getOBRPerformingFacilityName(obr);
+                        if (!primaryFacility.equals(seqPerformingFacility) && !stringIsNullOrEmpty(seqPerformingFacility)) {
+                            HashMap<String, String> seqPlAddress = handler.getPerformingFacilityAddress(obr);
+                            StringBuilder seqPlAddr = new StringBuilder();
+                            if (seqPlAddress != null && seqPlAddress.size() > 0) {
+                                String[] seqParts = {
+                                        getAddressField(seqPlAddress, "Street Address"),
+                                        getAddressField(seqPlAddress, "Other Designation"),
+                                        getAddressField(seqPlAddress, "City"),
+                                        getAddressField(seqPlAddress, "Province"),
+                                        getAddressField(seqPlAddress, "Postal Code"),
+                                        getAddressField(seqPlAddress, "Country")
+                                };
+                                for (String seqP : seqParts) {
+                                    if (!seqP.isEmpty()) {
+                                        if (seqPlAddr.length() > 0) seqPlAddr.append(", ");
+                                        seqPlAddr.append(seqP);
+                                    }
+                                }
+                            }
+                    %>
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
+                        <td colspan="7">
+                            <div class="FieldData"><strong>Performing Lab:</strong> <%=Encode.forHtml(String.valueOf(seqPerformingFacility))%><%=seqPlAddr.length() == 0 ? "" : " - "%><%=Encode.forHtml(seqPlAddr.toString())%></div>
+                        </td>
+                    </tr>
+                    <%
+                        }
                         for (int k = 0; k < obxCount; k++) {
                             obx = handler.getMappedOBX(obr, k);
                             String obxName = handler.getOBXName(obr, obx);
