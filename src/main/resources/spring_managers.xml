@@ -30,7 +30,8 @@
     <context:component-scan base-package="ca.openosp.openo.consultations"/>
     <context:component-scan base-package="ca.openosp.openo.prevention"/>
     <context:component-scan base-package="ca.openosp.openo.billing.CA.filters"/>
-    <context:component-scan base-package="ca.openosp.openo.integration.fhir.manager"/>
+    <context:component-scan base-package="ca.openosp.openo.integration.fhir.dstu3.manager"/>
+    <context:component-scan base-package="ca.openosp.openo.integration.fhir.r4.manager"/>
     <!-- ca.openosp.openo namespace components -->
     <context:component-scan base-package="ca.openosp.openo">
         <!-- Exclude all commn.dao implementations that have manual bean definitions -->
