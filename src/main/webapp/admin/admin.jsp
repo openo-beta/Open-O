@@ -44,6 +44,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<fmt:setBundle basename="oscarResources"/>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 
 <%
@@ -838,9 +839,12 @@
 
                     <%
                         String olisKeystore = OscarProperties.getInstance().getProperty("olis_keystore", "");
-                        if (olisKeystore.length() > 0) {
+                        boolean olisSimulate = "yes".equals(OscarProperties.getInstance().getProperty("olis_simulate"));
+                        if (olisKeystore.length() > 0 || olisSimulate) {
                     %>
                     <li><a href="#" onclick='popupPage(400, 400, "${pageContext.request.contextPath}/olis/Preferences.jsp");return false;'>OLIS Preferences</a></li>
+                    <li><a href="#" onclick='popupPage(600, 900, "${pageContext.request.contextPath}/olis/NomenclatureImport.do");return false;'><fmt:message key="admin.admin.olisImportNomenclature"/></a></li>
+                    <li><a href="#" onclick='popupPage(600, 900, "${pageContext.request.contextPath}/olis/FacilityImport.do");return false;'><fmt:message key="admin.admin.olisImportFacilityRoster"/></a></li>
                     <% } %>
 
                     <li><a href="javascript:void(0);" onclick="popupPage(550,800, '${pageContext.request.contextPath}/admin/updateDrugref.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.UpdateDrugref"/></a></li>

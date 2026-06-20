@@ -48,11 +48,16 @@ public class PrintOLISLab2Action extends ActionSupport {
             String segmentId = request.getParameter("segmentID");
             String resultUuid = request.getParameter("uuid");
             MessageHandler handler = null;
-            if (segmentId == null && segmentId.equals("0")) {
-                // if viewing in preview from OLIS search, use uuid
+            // segmentID "0" = preview from OLIS search before add-to-inbox; load via in-memory cache by uuid.
+            if ("0".equals(segmentId)) {
                 handler = OLISResults2Action.searchResultsMap.get(resultUuid);
             } else {
                 handler = Factory.getHandler(segmentId);
+            }
+            if (handler == null) {
+                response.setContentType("text/html; charset=UTF-8");
+                response.getWriter().write("Lab not available for printing. Re-run the OLIS search or add the lab to your inbox before printing.");
+                return null;
             }
             response.setContentType("application/pdf");  //octet-stream
             response.setHeader("Content-Disposition", "attachment; filename=\"" + handler.getPatientName().replaceAll("\\s", "_") + "_OLISLabReport.pdf\"");
@@ -69,8 +74,11 @@ public class PrintOLISLab2Action extends ActionSupport {
             return "error";
         }
 
-
-        return SUCCESS;
+        // The PDF is streamed straight to the response; there is no success result to
+        // forward to. Returning null (not SUCCESS) avoids Struts' "No result defined
+        // for action ... success" error, which for a small PDF (response not yet
+        // committed) would otherwise replace the PDF with a 500 error page.
+        return null;
     }
 
 

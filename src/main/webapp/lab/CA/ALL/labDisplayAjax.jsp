@@ -59,6 +59,21 @@
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%!
+    /*
+     * OLIS comment getters return plain text (the HL7 Formatted-Text escapes are
+     * decoded by Hl7FormattedText), so a straight HTML-encode is correct: these
+     * comments render inside <pre>, where the real \n line breaks display as-is.
+     * Every other handler emits clean text plus real <br> tags, where
+     * encodeForHtmlAllowingBreaks is the correct choice.
+     */
+    private static String encodeLabComment(MessageHandler labHandler, Object value) {
+        if (labHandler instanceof ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler) {
+            return Encode.forHtml(value == null ? "" : value.toString());
+        }
+        return HtmlEncodingUtils.encodeForHtmlAllowingBreaks(value);
+    }
+%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProperties" %>
@@ -950,7 +965,7 @@
             </tr>
             <tr class="TDISRes">
                 <td valign="top" align="left" colspan="8">
-                    <pre style="margin:0px 0px 0px 100px;"><b><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(1, 1, 1))%></b></pre>
+                    <pre style="margin:0px 0px 0px 100px;"><b><%=encodeLabComment(handler, handler.getOBXComment(1, 1, 1))%></b></pre>
                 </td>
                 </td>
             </tr>
@@ -1148,7 +1163,7 @@
                     for (l = 0; l < handler.getOBXCommentCount(j, k); l++) {%>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=encodeLabComment(handler, handler.getOBXComment(j, k, l))%></pre>
                     </td>
                 </tr>
                 <%
@@ -1255,7 +1270,7 @@
                 <%for (l = 0; l < handler.getOBXCommentCount(j, k); l++) {%>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=encodeLabComment(handler, handler.getOBXComment(j, k, l))%></pre>
                     </td>
                 </tr>
                 <%
@@ -1265,7 +1280,7 @@
                 <%for (l = 0; l < handler.getOBXCommentCount(j, k); l++) {%>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="TDISRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(j, k, l))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=encodeLabComment(handler, handler.getOBXComment(j, k, l))%></pre>
                     </td>
                 </tr>
                 <%
@@ -1297,7 +1312,7 @@
                 %>
                 <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                     <td valign="top" align="left" colspan="8">
-                        <pre style="margin:0px 0px 0px 100px;"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBRComment(j, k))%></pre>
+                        <pre style="margin:0px 0px 0px 100px;"><%=encodeLabComment(handler, handler.getOBRComment(j, k))%></pre>
                     </td>
                 </tr>
                 <% if (!handler.getMsgType().equals("HHSEMR")) {

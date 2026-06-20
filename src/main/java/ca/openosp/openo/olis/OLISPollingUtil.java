@@ -36,6 +36,7 @@ import java.util.UUID;
 import ca.openosp.Misc;
 import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
 import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.upload.handlers.OLISHL7Handler;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.cookie.DateUtils;
 import org.apache.logging.log4j.Logger;
@@ -126,6 +127,20 @@ public class OLISPollingUtil {
         pollZ04Query(loggedInInfo, providerNo, defaultStartTime, defaultEndTime);
     }
 
+    /**
+     * Builds a {@link LoggedInInfo} that polls <em>as</em> the given provider. The
+     * scheduler has no HTTP session, so each poll asserts a per-provider identity
+     * rather than the (possibly null) inbound one. Shared by the Z04/Z06 poll loops.
+     *
+     * @param provider Provider the provider to poll on behalf of
+     * @return LoggedInInfo a session-less identity carrying that provider
+     */
+    private static LoggedInInfo pollerIdentity(Provider provider) {
+        LoggedInInfo pollerLoggedInInfo = new LoggedInInfo();
+        pollerLoggedInInfo.setLoggedInProvider(provider);
+        return pollerLoggedInInfo;
+    }
+
     private static void pollZ04Query(LoggedInInfo loggedInInfo, String providerNo, String defaultStartTime, String defaultEndTime) {
         OLISProviderPreferences olisProviderPreferences = olisProviderPreferencesDao.findById(providerNo);
         Provider provider = providerDao.getProvider(providerNo);
@@ -169,13 +184,16 @@ public class OLISPollingUtil {
             ZRP1 zrp1 = new ZRP1(provider.getPractitionerNo(), StringUtils.trimToEmpty(officialIdType), "ON", "HL70347", StringUtils.trimToEmpty(officialLastName), StringUtils.trimToEmpty(officialfirstName), StringUtils.trimToEmpty(officialSecondName));
             providerQuery.setRequestingHic(zrp1);
 
-            String response = Driver.submitOLISQuery(loggedInInfo, null, providerQuery);
+            // Poll as this provider rather than the (possibly null) inbound identity.
+            LoggedInInfo pollerLoggedInInfo = pollerIdentity(provider);
+
+            String response = Driver.submitOLISQuery(pollerLoggedInInfo, null, providerQuery);
 
             if (!response.startsWith("<Response")) {
                 logger.error("response does not match, aborting " + response);
                 return;
             }
-            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response);
+            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(pollerLoggedInInfo, response, providerNo);
             logger.info("timeSlot " + timeStampForNextStartDate);
 
             if (timeStampForNextStartDate != null) {
@@ -236,13 +254,17 @@ public class OLISPollingUtil {
                 // Setting HIC for Z04 Request
                 ZRP1 zrp1 = new ZRP1(provider.getPractitionerNo(), userPropertyDAO.getStringValue(provider.getProviderNo(), UserProperty.OFFICIAL_OLIS_IDTYPE), "ON", "HL70347", officialLastName, officialfirstName, officialSecondName);
                 providerQuery.setRequestingHic(zrp1);
-                String response = Driver.submitOLISQuery(loggedInInfo, null, providerQuery);
+
+                // Poll as this provider: the scheduler has no session, so build a per-provider identity.
+                LoggedInInfo pollerLoggedInInfo = pollerIdentity(provider);
+
+                String response = Driver.submitOLISQuery(pollerLoggedInInfo, null, providerQuery);
 
                 if (!response.startsWith("<Response")) {
                     logger.error("response does not match, aborting " + response);
                     continue;
                 }
-                String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response);
+                String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(pollerLoggedInInfo, response, provider.getProviderNo());
                 logger.info("timeSlot " + timeStampForNextStartDate);
 
                 if (timeStampForNextStartDate != null) {
@@ -261,6 +283,16 @@ public class OLISPollingUtil {
     }
 
     private static void pollZ06Query(LoggedInInfo loggedInInfo, String defaultStartTime, String defaultEndTime, String facilityId) {
+        // A facility poll has no per-provider context; use the configured polling provider as
+        // the initiating identity. Skip if none is set.
+        String pollProviderNo = OscarProperties.getInstance().getProperty("olis_polling_provider");
+        Provider pollProvider = (pollProviderNo != null) ? providerDao.getProvider(pollProviderNo.trim()) : null;
+        if (pollProvider == null) {
+            logger.warn("Z06 facility poll skipped: no valid 'olis_polling_provider' configured for the initiating identity.");
+            return;
+        }
+        LoggedInInfo pollerLoggedInInfo = pollerIdentity(pollProvider);
+
         try {
             Z06Query facilityQuery = new Z06Query();
             OLISProviderPreferences olisProviderPreferences = olisProviderPreferencesDao.findById("-1");
@@ -290,14 +322,16 @@ public class OLISPollingUtil {
             orc21.setValue(6, 3, "^ISO");
             facilityQuery.setOrderingFacilityId(orc21);
 
-            String response = Driver.submitOLISQuery(loggedInInfo, null, facilityQuery);
+            String response = Driver.submitOLISQuery(pollerLoggedInInfo, null, facilityQuery);
 
             if (!response.startsWith("<Response")) {
                 logger.debug("Didn't equal response.  Returning " + response);
                 return;
             }
 
-            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(loggedInInfo, response);
+            // Z06 facility poll — no single provider context, so no per-provider
+            // unmatched-routing override applies (falls back to the system-level setting).
+            String timeStampForNextStartDate = OLISPollingUtil.parseAndImportResponse(pollerLoggedInInfo, response, null);
 
             if (timeStampForNextStartDate != null) {
                 olisProviderPreferences.setStartTime(timeStampForNextStartDate);
@@ -313,7 +347,14 @@ public class OLISPollingUtil {
         }
     }
 
-    public static String parseAndImportResponse(LoggedInInfo loggedInInfo, String response) throws Exception {
+    /**
+     * @param olisPollingProviderNo the provider a Z04 poll ran on behalf of, threaded through
+     *                              to {@code MessageUploader} so unmatched-result routing can
+     *                              honour that provider's {@code OLISProviderPreferences}
+     *                              override (OLIS02.03); {@code null} for facility (Z06) polls
+     *                              or any caller without a single provider context
+     */
+    public static String parseAndImportResponse(LoggedInInfo loggedInInfo, String response, String olisPollingProviderNo) throws Exception {
         String timeStampForNextStartDate = null;
         UUID uuid = UUID.randomUUID();
         String originalFile = "olis_" + uuid.toString() + ".response";
@@ -328,12 +369,23 @@ public class OLISPollingUtil {
         String fileLocation = Utilities.saveFile(new ByteArrayInputStream(responseContent.getBytes("UTF-8")), hl7Filename);
         logger.debug(fileLocation);
         File file = new File(fileLocation);
-        MessageHandler msgHandler = HandlerClassFactory.getHandler("OLIS_HL7");
+        // HandlerClassFactory falls back to a DefaultHandler when "OLIS_HL7" is
+        // unconfigured or its class cannot be instantiated. Guard the downcast so a
+        // broken deployment fails with a clear, actionable log line instead of an
+        // opaque ClassCastException.
+        MessageHandler rawHandler = HandlerClassFactory.getHandler("OLIS_HL7");
+        if (!(rawHandler instanceof OLISHL7Handler)) {
+            logger.error("OLIS poll: expected an OLISHL7Handler for type \"OLIS_HL7\" but got "
+                    + (rawHandler == null ? "null" : rawHandler.getClass().getName())
+                    + " — check the lab upload message_config.xml mapping; skipping import of this response.");
+            return null;
+        }
+        OLISHL7Handler msgHandler = (OLISHL7Handler) rawHandler;
         try {
             InputStream is = new FileInputStream(fileLocation);
             int check = FileUploadCheck.addFile(file.getName(), is, "0");
             if (check != FileUploadCheck.UNSUCCESSFUL_SAVE) {
-                timeStampForNextStartDate = msgHandler.parse(loggedInInfo, "OLIS_HL7", fileLocation, check, null);
+                timeStampForNextStartDate = msgHandler.parse(loggedInInfo, "OLIS_HL7", fileLocation, check, false, olisPollingProviderNo);
 
                 if (timeStampForNextStartDate != null) {
                     logger.info("Lab successfully added.");

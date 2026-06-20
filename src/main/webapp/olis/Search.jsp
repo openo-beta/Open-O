@@ -15,15 +15,12 @@
                 ca.openosp.openo.commn.model.Demographic,
                 ca.openosp.openo.PMmodule.dao.ProviderDao,
                 ca.openosp.openo.commn.model.Provider,
-                ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao,
-                ca.openosp.openo.olis.dao.OLISResultNomenclatureDao,
-                ca.openosp.openo.olis.model.OLISRequestNomenclature,
-                ca.openosp.openo.olis.model.OLISResultNomenclature,
+                ca.openosp.openo.olis.dao.OLISFacilityDao,
+                ca.openosp.openo.olis.model.OLISFacility,
                 ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
-<%@ page import="ca.openosp.Misc" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -94,6 +91,10 @@ opener.refreshView();</script>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/fonts-min.css"/>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/share/yui/css/autocomplete.css"/>
 
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.css"/>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/library/jquery/jquery-ui-1.12.1.min.js"></script>
+
 
     <script type="text/javascript">
         function selectOther() {
@@ -122,7 +123,8 @@ opener.refreshView();</script>
         }
 
         function checkBlockedConsent(form) {
-            value = document.forms[form + "_form"].blockedInformationConsent;
+            const field = document.forms[form + "_form"].blockedInformationConsent;
+            const value = field ? field.value : null;
             if (value != null && value == "Z") {
                 return confirm("You have chosen to view blocked information.  This action is recorded in the audit log.  Are you sure?")
             }
@@ -253,6 +255,40 @@ opener.refreshView();</script>
             color: #FFF;
         }
 
+        .nomenclature-chips {
+            margin-top: 6px;
+            max-width: 300px;
+        }
+
+        .nomenclature-chip {
+            display: inline-block;
+            padding: 2px 6px;
+            margin: 2px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .nomenclature-chip-remove {
+            color: #666;
+            text-decoration: none;
+            margin-left: 4px;
+            font-weight: bold;
+        }
+
+        .nomenclature-chip-remove:hover {
+            color: #000;
+        }
+
+        /* Scrollable autocomplete dropdown — without max-height jQuery UI just
+           keeps growing the suggestion list off-screen. 400px is ~16 rows tall;
+           browse-by-scroll for large result sets, type-to-narrow for precision. */
+        .ui-autocomplete {
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
     </style>
 
 </head>
@@ -300,16 +336,6 @@ opener.refreshView();</script>
             <%
                 ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
                 List<Provider> allProvidersList = providerDao.getActiveProviders(true);
-
-//DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-//List allDemographics = demographicDao.getDemographics();
-
-                OLISResultNomenclatureDao resultDao = (OLISResultNomenclatureDao) SpringUtils.getBean(OLISResultNomenclatureDao.class);
-                List<OLISResultNomenclature> resultNomenclatureList = resultDao.findAll();
-
-                OLISRequestNomenclatureDao requestDao = (OLISRequestNomenclatureDao) SpringUtils.getBean(OLISRequestNomenclatureDao.class);
-                List<OLISRequestNomenclature> requestNomenclatureList = requestDao.findAll();
-
             %>
 
 
@@ -329,7 +355,7 @@ opener.refreshView();</script>
             </select>
 
             <form action="<%=request.getContextPath() %>/olis/Search.do" method="POST"
-                  onSubmit="checkBlockedConsent('Z01')" name="Z01_form">
+                  onSubmit="return checkBlockedConsent('Z01')" name="Z01_form">
                 <input type="hidden" name="queryType" value="Z01"/>
                 <table id="Z01_query">
                     <tbody>
@@ -358,49 +384,44 @@ opener.refreshView();</script>
                         </th>
                         <td width="30%">Quantity<br><input type="text" id="quantityLimit" name="quantityLimit"></td>
                     </tr>
-                    <!--
                     <tr>
                         <th width="20%">Consent to View Blocked Information?</th>
-                        <td width="30%"><select id="blockedInformationConsent" name="blockedInformationConsent"><option value="">(none)</option>
+                        <td width="30%"><select id="blockedInformationConsent_Z01" name="blockedInformationConsent"><option value="">(none)</option>
                         <option value="Z">Temporary </option>
                         </select>
-                        &nbsp;&nbsp;Authorized by: <select name="blockedInformationIndividual" id="blockedInformationIndividual">
+                        &nbsp;&nbsp;Authorized by: <select name="blockedInformationIndividual" id="blockedInformationIndividual_Z01">
                         <option value="patient">Patient</option><option value="substitute">Substitute Decision Maker</option><option value="">Neither</option>
                         </select>
                         </td>
                     </tr>
                     <tr>
-                        <td width="20%" colspan=4><span><input class="checkbox" type="checkbox" name="consentBlockAllIndicator" id="consentBlockAllIndicator"> Enable Patient Consent Block-All Indicator?</span></td>
+                        <td width="20%" colspan=4><span><input class="checkbox" type="checkbox" name="consentBlockAllIndicator" id="consentBlockAllIndicator_Z01"> Enable Patient Consent Block-All Indicator?</span></td>
                     </tr>
-                    -->
                     <tr>
                         <th width="20%">Specimen Collector</th>
-                        <td width="30%"><select id="specimenCollector" name="specimenCollector">
-                            <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="specimenCollectorAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="specimenCollectorAC_hidden" name="specimenCollector"/>
+                            <div id="specimenCollectorAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Performing Laboratory</th>
-                        <td width="30%"><select id="performingLaboratory" name="performingLaboratory">
-                            <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="performingLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="performingLaboratoryAC_hidden" name="performingLaboratory"/>
+                            <div id="performingLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Exclude Performing Laboratory</th>
-                        <td width="30%"><select id="excludePerformingLaboratory" name="excludePerformingLaboratory">
-                            <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="excludePerformingLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="excludePerformingLaboratoryAC_hidden" name="excludePerformingLaboratory"/>
+                            <div id="excludePerformingLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <%
@@ -412,37 +433,38 @@ opener.refreshView();</script>
                         String reportingLabVal = (repLabProp != null) ? repLabProp.getValue() : "";
                         String exReportingLabVal = (exRepLabProp != null) ? exRepLabProp.getValue() : "";
 
+                        OLISFacilityDao facilityDao = SpringUtils.getBean(OLISFacilityDao.class);
+                        String reportingLabLabel = "";
+                        if (!reportingLabVal.isEmpty()) {
+                            OLISFacility f = facilityDao.findByClassAndLicence(OLISFacility.CLASS_LAB, reportingLabVal);
+                            if (f != null) reportingLabLabel = f.getName() + " [" + f.getLicenceNumber() + "]";
+                        }
+                        String exReportingLabLabel = "";
+                        if (!exReportingLabVal.isEmpty()) {
+                            OLISFacility f = facilityDao.findByClassAndLicence(OLISFacility.CLASS_LAB, exReportingLabVal);
+                            if (f != null) exReportingLabLabel = f.getName() + " [" + f.getLicenceNumber() + "]";
+                        }
                     %>
                     <tr>
                         <th width="20%">Reporting Laboratory</th>
-                        <td colspan="3"><select id="reportingLaboratory" name="reportingLaboratory">
-                            <option value="" <%=(reportingLabVal.equals("") ? "selected=\"selected\"" : "") %>></option>
-                            <option value="5552" <%=(reportingLabVal.equals("5552") ? "selected=\"selected\"" : "") %>>
-                                Gamma-Dynacare
-                            </option>
-                            <option value="5407" <%=(reportingLabVal.equals("5407") ? "selected=\"selected\"" : "") %>>
-                                CML
-                            </option>
-                            <option value="5687" <%=(reportingLabVal.equals("5687") ? "selected=\"selected\"" : "") %>>
-                                LifeLabs
-                            </option>
-                        </select>
+                        <td colspan="3">
+                            <input type="text" id="reportingLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"
+                                   data-preload-label="<%=Encode.forHtmlAttribute(reportingLabLabel)%>"/>
+                            <input type="hidden" id="reportingLaboratoryAC_hidden" name="reportingLaboratory"
+                                   value="<%=Encode.forHtmlAttribute(reportingLabVal)%>"/>
+                            <div id="reportingLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Exclude Reporting Laboratory</th>
-                        <td width="30%"><select id="excludeReportingLaboratory" name="excludeReportingLaboratory">
-                            <option value="" <%=(exReportingLabVal.equals("") ? "selected=\"selected\"" : "") %>></option>
-                            <option value="5552" <%=(exReportingLabVal.equals("5552") ? "selected=\"selected\"" : "") %>>
-                                Gamma-Dynacare
-                            </option>
-                            <option value="5407" <%=(exReportingLabVal.equals("5407") ? "selected=\"selected\"" : "") %>>
-                                CML
-                            </option>
-                            <option value="5687" <%=(exReportingLabVal.equals("5687") ? "selected=\"selected\"" : "") %>>
-                                LifeLabs
-                            </option>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="excludeReportingLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"
+                                   data-preload-label="<%=Encode.forHtmlAttribute(exReportingLabLabel)%>"/>
+                            <input type="hidden" id="excludeReportingLaboratoryAC_hidden" name="excludeReportingLaboratory"
+                                   value="<%=Encode.forHtmlAttribute(exReportingLabVal)%>"/>
+                            <div id="excludeReportingLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
@@ -600,12 +622,12 @@ opener.refreshView();</script>
                     </tr>
                     <tr>
                         <th width="20%">Test Request Placer</th>
-                        <td><select>
-                            <option></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
-                        </select></td>
+                        <td>
+                            <input type="text" id="testRequestPlacerAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="testRequestPlacerAC_hidden" name="testRequestPlacer"/>
+                            <div id="testRequestPlacerAC_chip" class="nomenclature-chips"></div>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="4">
@@ -625,31 +647,77 @@ opener.refreshView();</script>
                                         <option value="E"> Expired</option>
                                     </select></td>
                                     <th width="20%">Test Result Code (max. 200)</th>
-                                    <td><select multiple="multiple" style="width:300px;" name="testResultCode"
-                                                id="testResultCode">
-                                        <%
-
-                                            for (OLISResultNomenclature nomenclature : resultNomenclatureList) {
-                                        %>
-                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(nomenclature.getId()))%>"><%=Encode.forHtml(String.valueOf(Misc.getStr(nomenclature.getName(), "").trim()))%>
-                                        </option>
-                                        <%
-                                            }
-                                        %>
-                                    </select></td>
+                                    <td>
+                                        <input type="text" id="testResultCodeAC" autocomplete="off"
+                                               placeholder="Type 2+ characters to search..."
+                                               style="width: 290px;"/>
+                                        <div id="testResultCodeChips" class="nomenclature-chips"></div>
+                                    </td>
                                     <th width="20%">Test Request Code (max. 100)</th>
-                                    <td><select multiple="multiple" style="width:300px;" name="testRequestCode"
-                                                id="testRequestCode">
-                                        <%
+                                    <td>
+                                        <input type="text" id="testRequestCodeAC" autocomplete="off"
+                                               placeholder="Type 2+ characters to search..."
+                                               style="width: 290px;"/>
+                                        <div id="testRequestCodeChips" class="nomenclature-chips"></div>
+                                        <script type="text/javascript">
+                                            (function ($) {
+                                                var ctxPath = '<%=Encode.forJavaScript(request.getContextPath())%>';
+                                                var endpoint = ctxPath + '/olis/NomenclatureSearch.do';
 
-                                            for (OLISRequestNomenclature nomenclature : requestNomenclatureList) {
-                                        %>
-                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(nomenclature.getId()))%>"><%=Encode.forHtml(String.valueOf(Misc.getStr(nomenclature.getName(), "").trim()))%>
-                                        </option>
-                                        <%
-                                            }
-                                        %>
-                                    </select></td>
+                                                function addChip(chipsId, fieldName, code, label) {
+                                                    var container = document.getElementById(chipsId);
+                                                    if (!container) return;
+                                                    var existing = container.querySelectorAll('input[name="' + fieldName + '"]');
+                                                    for (var i = 0; i < existing.length; i++) {
+                                                        if (existing[i].value === code) return;
+                                                    }
+                                                    var chip = document.createElement('span');
+                                                    chip.className = 'nomenclature-chip';
+                                                    chip.appendChild(document.createTextNode(label + ' '));
+                                                    var remove = document.createElement('a');
+                                                    remove.href = '#';
+                                                    remove.className = 'nomenclature-chip-remove';
+                                                    remove.appendChild(document.createTextNode('×'));
+                                                    remove.onclick = function (e) {
+                                                        e.preventDefault();
+                                                        container.removeChild(chip);
+                                                        return false;
+                                                    };
+                                                    chip.appendChild(remove);
+                                                    var hidden = document.createElement('input');
+                                                    hidden.type = 'hidden';
+                                                    hidden.name = fieldName;
+                                                    hidden.value = code;
+                                                    chip.appendChild(hidden);
+                                                    container.appendChild(chip);
+                                                }
+
+                                                function makeAC(inputSelector, chipsId, fieldName, type) {
+                                                    $(inputSelector).autocomplete({
+                                                        minLength: 2,
+                                                        source: function (request, response) {
+                                                            $.getJSON(endpoint, {query: request.term, type: type}, function (data) {
+                                                                response($.map(data.results || [], function (item) {
+                                                                    return {label: item.name, value: item.name, code: item.code};
+                                                                }));
+                                                            });
+                                                        },
+                                                        select: function (event, ui) {
+                                                            addChip(chipsId, fieldName, ui.item.code, ui.item.label);
+                                                            $(this).val('');
+                                                            return false;
+                                                        },
+                                                        focus: function () {
+                                                            return false;
+                                                        }
+                                                    });
+                                                }
+
+                                                makeAC('#testResultCodeAC', 'testResultCodeChips', 'testResultCode', 'result');
+                                                makeAC('#testRequestCodeAC', 'testRequestCodeChips', 'testRequestCode', 'request');
+                                            })(jQuery);
+                                        </script>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -665,7 +733,7 @@ opener.refreshView();</script>
 
 
             <form action="<%=request.getContextPath() %>/olis/Search.do" method="POST"
-                  onSubmit="checkBlockedConsent('Z02')" name="Z02_form">
+                  onSubmit="return checkBlockedConsent('Z02')" name="Z02_form">
                 <input type="hidden" name="queryType" value="Z02"/>
                 <table id="Z02_query" style="display: none;">
                     <tbody>
@@ -853,12 +921,11 @@ opener.refreshView();</script>
                     </tr>
                     <tr>
                         <th width="20%">Destination Laboratory</th>
-                        <td width="30%"><select id="destinationLaboratory" name="destinationLaboratory">
-                            <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="destinationLaboratoryAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="destinationLaboratoryAC_hidden" name="destinationLaboratory"/>
+                            <div id="destinationLaboratoryAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
@@ -889,12 +956,11 @@ opener.refreshView();</script>
                     </tr>
                     <tr>
                         <th width="20%">Ordering Facility</th>
-                        <td width="30%"><select id="orderingFacility" name="orderingFacility">
-                            <option value=""></option>
-                            <option value="5552">Gamma-Dynacare</option>
-                            <option value="5407">CML</option>
-                            <option value="5687">LifeLabs</option>
-                        </select>
+                        <td width="30%">
+                            <input type="text" id="orderingFacilityAC" autocomplete="off"
+                                   placeholder="Type 2+ characters to search..." style="width: 250px;"/>
+                            <input type="hidden" id="orderingFacilityAC_hidden" name="orderingFacility"/>
+                            <div id="orderingFacilityAC_chip" class="nomenclature-chips"></div>
                         </td>
                     </tr>
                     <tr>
@@ -997,5 +1063,85 @@ opener.refreshView();</script>
     </tr>
     </tbody>
 </table>
+
+<script type="text/javascript">
+    (function ($) {
+        var ctxPath = '<%=Encode.forJavaScript(request.getContextPath())%>';
+        var endpoint = ctxPath + '/olis/FacilitySearch.do';
+
+        function clearChildren(node) {
+            while (node.firstChild) node.removeChild(node.firstChild);
+        }
+
+        function makeFacilityPicker(inputId, facilityClass) {
+            var $input = $('#' + inputId);
+            var hiddenInput = document.getElementById(inputId + '_hidden');
+            var chipDiv = document.getElementById(inputId + '_chip');
+            if (!hiddenInput || !chipDiv) return;
+
+            function showChip(licence, label) {
+                clearChildren(chipDiv);
+                hiddenInput.value = licence || '';
+                if (!licence) {
+                    $input.show();
+                    return;
+                }
+                var chip = document.createElement('span');
+                chip.className = 'nomenclature-chip';
+                chip.appendChild(document.createTextNode(label + ' '));
+                var remove = document.createElement('a');
+                remove.href = '#';
+                remove.className = 'nomenclature-chip-remove';
+                remove.appendChild(document.createTextNode('×'));
+                remove.onclick = function (e) {
+                    e.preventDefault();
+                    showChip('', '');
+                    $input.val('').focus();
+                    return false;
+                };
+                chip.appendChild(remove);
+                chipDiv.appendChild(chip);
+                $input.hide();
+            }
+
+            $input.autocomplete({
+                minLength: 2,
+                source: function (req, response) {
+                    $.getJSON(endpoint, {query: req.term, 'class': facilityClass}, function (data) {
+                        response($.map(data.results || [], function (item) {
+                            var label = item.name;
+                            if (item.addressLine1) label = label + ', ' + item.addressLine1;
+                            if (item.city) label = label + ', ' + item.city;
+                            label = label + ' [' + item.licence + ']';
+                            return {label: label, value: label, item: item};
+                        }));
+                    });
+                },
+                select: function (event, ui) {
+                    showChip(ui.item.item.licence, ui.item.label);
+                    $(this).val('');
+                    return false;
+                },
+                focus: function () { return false; }
+            });
+
+            var preloadLicence = hiddenInput.value;
+            var preloadAttr = $input.attr('data-preload-label');
+            if (preloadLicence) {
+                showChip(preloadLicence, preloadAttr || preloadLicence);
+            }
+        }
+
+        makeFacilityPicker('specimenCollectorAC', 'SCC');
+        makeFacilityPicker('performingLaboratoryAC', 'LAB');
+        makeFacilityPicker('excludePerformingLaboratoryAC', 'LAB');
+        makeFacilityPicker('reportingLaboratoryAC', 'LAB');
+        makeFacilityPicker('excludeReportingLaboratoryAC', 'LAB');
+        makeFacilityPicker('testRequestPlacerAC', 'LAB');
+        makeFacilityPicker('destinationLaboratoryAC', 'LAB');
+        makeFacilityPicker('orderingFacilityAC', 'ANY');
+    })(jQuery);
+</script>
+
 </body>
 </html>

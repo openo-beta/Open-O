@@ -58,6 +58,7 @@ import ca.openosp.openo.commn.model.MeasurementType;
 import ca.openosp.openo.commn.model.MeasurementsDeleted;
 import ca.openosp.openo.commn.model.MeasurementsExt;
 import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.HtmlTextCleaner;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
@@ -244,7 +245,10 @@ public class Hl7textResultsData {
                     m.setAppointmentNo(0);
 
                     /*
-                     * Remove HTML
+                     * Remove HTML before persisting the comment: handlers emit
+                     * <br> for line breaks in NTE text, so strip it. OLIS now
+                     * returns plain text (decoded via Hl7FormattedText), so this
+                     * is a no-op for OLIS and leaves its \n line breaks intact.
                      */
                     comments = comments.replaceAll("\\<br\\s?/?\\>", "");
                     m.setComments(comments);
@@ -594,7 +598,7 @@ public class Hl7textResultsData {
             lbData.priority = "----";
         }
 
-        lbData.requestingClient = info.getRequestingProvider();
+        lbData.requestingClient = HtmlTextCleaner.toPlainText(info.getRequestingProvider());
         lbData.reportStatus = info.getReportStatus();
 
         // the "C" is for corrected excelleris labs
@@ -723,7 +727,9 @@ public class Hl7textResultsData {
                 lbData.priority = "----";
             }
 
-            lbData.requestingClient = hl7.getRequestingProvider();
+            // hl7 is a persisted Hl7TextInfo row, so requestingProvider can carry
+            // legacy markup; strip it like the sibling result-list methods do (~598, ~847).
+            lbData.requestingClient = HtmlTextCleaner.toPlainText(hl7.getRequestingProvider());
             lbData.reportStatus = hl7.getReportStatus();
 
             // the "C" is for corrected excelleris labs
@@ -840,7 +846,7 @@ public class Hl7textResultsData {
                 lbData.priority = "----";
             }
 
-            lbData.requestingClient = requesting_client;
+            lbData.requestingClient = HtmlTextCleaner.toPlainText(requesting_client);
             lbData.reportStatus = report_status;
 
             // the "C" is for corrected excelleris labs

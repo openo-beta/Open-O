@@ -23,6 +23,15 @@ public interface OscarLogDao extends AbstractDao<OscarLog> {
 
     public List<OscarLog> findByAction(String action, int start, int length, String orderBy, String orderByDirection);
 
+    /**
+     * Counts all log rows for the given action, for total-record paging.
+     *
+     * @param action String the log action to count (e.g. {@code "OLIS"})
+     * @return long the number of matching {@code OscarLog} rows
+     * @since 2026-05-29
+     */
+    public long countByAction(String action);
+
     public List<OscarLog> findByActionContentAndDemographicId(String action, String content, Integer demographicId);
 
     public List<Integer> getDemographicIdsOpenedSinceTime(Date value);

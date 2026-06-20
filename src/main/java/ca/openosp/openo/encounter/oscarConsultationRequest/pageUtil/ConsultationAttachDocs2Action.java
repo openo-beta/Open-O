@@ -41,6 +41,7 @@ import com.itextpdf.text.DocumentException;
 import com.sun.xml.messaging.saaj.util.ByteOutputStream;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.model.ConsultDocs;
 import ca.openosp.openo.commn.model.EFormData;
@@ -49,6 +50,7 @@ import ca.openosp.openo.hospitalReportManager.HRMPDFCreator;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.FormsManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
@@ -60,6 +62,10 @@ import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 
@@ -73,6 +79,7 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
 
     private final Logger logger = MiscUtils.getLogger();
     FaxManager faxManager = SpringUtils.getBean(FaxManager.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -168,6 +175,14 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
     }
 
     public void getDocumentPDF() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
+            logger.warn("Security violation: provider "
+                    + (loggedInInfo != null ? loggedInInfo.getLoggedInProviderNo() : "unknown")
+                    + " denied document-PDF access (_con)");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         //TODO: refactor this function, and similar code in EctConsultationFormRequestPrincAction2.java
         //      and EctConsultationFormFax2Action.java as part of extending this attach item functionality
         //      to eforms and ticklers
@@ -207,7 +222,8 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
             try (ByteOutputStream byteOutputStream = new ByteOutputStream()) {
                 ImagePDFCreator imagePDFCreator = new ImagePDFCreator(request, byteOutputStream);
                 imagePDFCreator.printPdf();
-                generateResponse(response, getBase64(byteOutputStream.getBytes()));
+                // getBytes() returns the oversized backing buffer; trim to getCount().
+                generateResponse(response, getBase64(java.util.Arrays.copyOf(byteOutputStream.getBytes(), byteOutputStream.getCount())));
             } catch (DocumentException | IOException e) {
                 logger.error("An error occurred while creating the pdf of the image: " + e.getMessage(), e);
             }
@@ -217,6 +233,14 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
     }
 
     public void getLabPDF() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
+            logger.warn("Security violation: provider "
+                    + (loggedInInfo != null ? loggedInInfo.getLoggedInProviderNo() : "unknown")
+                    + " denied lab-PDF access (_con)");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         //TODO: refactor this function, and similar code in EctConsultationFormRequestPrincAction2.java
         //      and EctConsultationFormFax2Action.java as part of extending this attach item functionality
         //      to eforms and ticklers
@@ -227,20 +251,41 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
             return;
         }
         request.setAttribute("segmentID", segmentID);
+        File tempLabPDF = null;
         try {
-            File tempLabPDF = File.createTempFile("lab" + segmentID, "pdf");
+            // Fixed prefix only — createTempFile already guarantees a unique randomized name, so
+            // the validated numeric segmentID is not needed here and is kept out of the path to
+            // avoid any user-derived data flowing into a file-path expression.
+            tempLabPDF = File.createTempFile("olisLab", ".pdf");
             try (
                     FileOutputStream fileOutputStream = new FileOutputStream(tempLabPDF);
                     ByteOutputStream byteOutputStream = new ByteOutputStream();
             ) {
-                LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);
-                labPDFCreator.printPdf();
-                labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
-                generateResponse(response, getBase64(byteOutputStream.getBytes()));
+                // Parse the lab once and reuse the handler in the chosen creator.
+                MessageHandler handler = Factory.getHandler(segmentID);
+                boolean isOlis = handler instanceof OLISHL7Handler;
+                if (isOlis) {
+                    new OLISLabPDFCreator(fileOutputStream, request, segmentID, (OLISHL7Handler) handler).printPdf();
+                    generateResponse(response, getBase64(java.nio.file.Files.readAllBytes(tempLabPDF.toPath())));
+                } else {
+                    LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream, handler);
+                    labPDFCreator.printPdf();
+                    labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
+                    // getBytes() returns the oversized backing buffer; trim to getCount().
+                    generateResponse(response, getBase64(java.util.Arrays.copyOf(byteOutputStream.getBytes(), byteOutputStream.getCount())));
+                }
             }
-            tempLabPDF.delete();
         } catch (DocumentException | IOException e) {
             logger.error("An error occurred: " + e.getMessage(), e);
+        } finally {
+            // Always remove the temp PDF, even if rendering threw, to avoid leaking files.
+            if (tempLabPDF != null) {
+                try {
+                    Files.deleteIfExists(tempLabPDF.toPath());
+                } catch (IOException e) {
+                    logger.warn("Failed to delete temp lab PDF {}", tempLabPDF, e);
+                }
+            }
         }
     }
 
@@ -297,16 +342,30 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
     }
 
     public void getHRMPDF() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
+            logger.warn("Security violation: provider "
+                    + (loggedInInfo != null ? loggedInInfo.getLoggedInProviderNo() : "unknown")
+                    + " denied HRM-PDF access (_con)");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         //TODO: refactor this function, and similar code in EctConsultationFormRequestPrincAction2.java
         //      and EctConsultationFormFax2Action.java as part of extending this attach item functionality
         //      to eforms and ticklers
 
         String hrmId = request.getParameter("hrmId");
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        // Reject a missing/non-numeric id with a 400 rather than letting parseInt throw
+        // (which would surface as a 500), mirroring how getLabPDF validates segmentID.
+        if (!StringUtils.isNumeric(hrmId)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         try (ByteOutputStream byteOutputStream = new ByteOutputStream()) {
             HRMPDFCreator hrmPdf = new HRMPDFCreator(byteOutputStream, Integer.parseInt(hrmId), loggedInInfo);
             hrmPdf.printPdf();
-            generateResponse(response, getBase64(byteOutputStream.getBytes()));
+            // getBytes() returns the oversized backing buffer; trim to getCount().
+            generateResponse(response, getBase64(java.util.Arrays.copyOf(byteOutputStream.getBytes(), byteOutputStream.getCount())));
         }
     }
 

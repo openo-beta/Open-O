@@ -110,6 +110,7 @@ public class SearchPatient2Action extends ActionSupport {
         String labNo = request.getParameter("segmentID");
         String name = request.getParameter("name");
         String labType = request.getParameter("labType");
+        String from = request.getParameter("from");
         String contextPath = request.getContextPath();
 
         // Validate required parameters (name is optional, only used for keyword search)
@@ -145,6 +146,9 @@ public class SearchPatient2Action extends ActionSupport {
         newURL = newURL + "labNo=" + Encode.forUriComponent(labNo)
                 + "&labType=" + Encode.forUriComponent(labType)
                 + "&keyword=" + Encode.forUriComponent(name != null ? name : "");
+        if (from != null && !from.isEmpty()) {
+            newURL = newURL + "&from=" + Encode.forUriComponent(from);
+        }
 
         response.sendRedirect(newURL);
         return NONE;

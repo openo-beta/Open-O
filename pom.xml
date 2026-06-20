@@ -900,12 +900,12 @@
             <version>0.2.19</version>
         </dependency>
 
-        <!-- OLIS -->
-        <dependency>
-            <groupId>ca.ssha.www</groupId>
-            <artifactId>olis-service</artifactId>
-            <version>20111111</version>
-        </dependency>
+        <!--
+            OLIS SOAP stub source lives in src/main/java/ca/ssha/www/_2005/hial/OLISStub.java
+            (regenerated from archive/olis.wsdl against axis2 1.8.2). Replaced the
+            pre-compiled jar previously consumed via ca.ssha.www:olis-service:20111111.
+            To regenerate after an axis2 bump, see the regen-olis-stub profile below.
+        -->
 
         <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on -->
         <dependency>
@@ -956,6 +956,22 @@
         <dependency>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2-adb</artifactId>
+            <version>1.8.2</version>
+        </dependency>
+
+        <!--
+            Required at runtime by Axis2's bundled axis2_default.xml (inside
+            axis2-kernel.jar) which registers org.apache.axis2.transport.local.LocalTransportSender
+            as a transport sender. Without this artifact, every OLIS query throws
+            ClassNotFoundException from AxisConfigBuilder.processTransportSenders
+            during OLISStub construction, even when only HTTPS is used.
+
+            Looks unused to static analysis (no direct Java imports) but is
+            required at ServiceClient init.
+        -->
+        <dependency>
+            <groupId>org.apache.axis2</groupId>
+            <artifactId>axis2-transport-local</artifactId>
             <version>1.8.2</version>
         </dependency>
 
@@ -2062,6 +2078,56 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
+            One-shot regeneration of the OLIS SOAP stub from archive/olis.wsdl.
+
+            Why this is opt-in (not bound to a normal build phase):
+            The stub only needs regeneration when axis2 bumps to a major-version
+            API break (last time: 1.5.4 → 1.8.x triggered NoSuchMethodError on
+            TransportOutDescription.getSender). Running it on every build adds
+            ~5s of cost for zero value in steady state.
+
+            Invoke with the fully-qualified plugin coords (the short prefix
+            "axis2-wsdl2code" isn't auto-resolvable because the plugin lives in
+            org.apache.axis2, not the default org.apache.maven.plugins or
+            org.codehaus.mojo groups):
+
+                mvn org.apache.axis2:axis2-wsdl2code-maven-plugin:1.8.2:wsdl2code -Pregen-olis-stub
+
+            Output lands in target/generated-sources/axis2/wsdl2code/src/ca/ssha/www/_2005/hial/OLISStub.java.
+            After inspecting, copy that file over src/main/java/ca/ssha/www/_2005/hial/OLISStub.java
+            and delete both the local_repo/ca/ssha/www/olis-service/ tree and the
+            corresponding <dependency> on ca.ssha.www:olis-service in this pom.
+
+            Note: the 2011 pre-compiled jar also shipped an OLISCallbackHandler
+            class, but OpenO never referenced it (WS-Security signing is done
+            manually in Driver.signData/unsignData). The regen does not produce
+            one and we do not need to recreate it.
+        -->
+        <profile>
+            <id>regen-olis-stub</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.axis2</groupId>
+                        <artifactId>axis2-wsdl2code-maven-plugin</artifactId>
+                        <version>1.8.2</version>
+                        <configuration>
+                            <wsdlFile>archive/olis.wsdl</wsdlFile>
+                            <packageName>ca.ssha.www._2005.hial</packageName>
+                            <databindingName>adb</databindingName>
+                            <syncMode>sync</syncMode>
+                            <generateServerSide>false</generateServerSide>
+                            <generateAllClasses>false</generateAllClasses>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

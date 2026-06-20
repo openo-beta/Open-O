@@ -12,6 +12,7 @@
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
+<%@page import="ca.openosp.openo.lab.ca.all.parsers.Hl7FormattedText" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.lab.ca.all.upload.MessageUploader" %>
 <%@ page language="java" errorPage="/errorpage.jsp" %>
@@ -78,6 +79,8 @@
     Factory f;
     MessageHandler handlerMain;
     String hl7 = "";
+    // OLIS preview uuid (only set on the segmentID=0 preview path); forwarded to the print form below.
+    String resultUuid = Misc.getStr(request.getParameter("uuid"), "");
 
     if (!preview) {
 
@@ -94,7 +97,6 @@
         hl7 = Factory.getHL7Body(segmentID);
 
     } else {
-        String resultUuid = Misc.getStr(request.getParameter("uuid"), "");
         handlerMain = OLISResults2Action.searchResultsMap.get(resultUuid);
     }
 
@@ -143,7 +145,21 @@
 %>
 <%!
     public String strikeOutInvalidContent(String content, String status) {
-        return status != null && status.startsWith("W") ? "<s>" + content + "</s>" : content;
+        // CT 12.8.3: strike out result data for an invalidated (W) result. The content is
+        // HTML-encoded HERE and the markup returned is written raw by callers, so the <s>
+        // tags actually render instead of being escaped (the historical bug where callers
+        // wrapped this in Encode.forHtml and the strikeout showed as literal "<s>" text).
+        String safe = Encode.forHtml(content == null ? "" : content);
+        return status != null && status.startsWith("W") ? "<s>" + safe + "</s>" : safe;
+    }
+
+    public String strikeOutInvalidHtml(String safeHtml, String status) {
+        // CT 12.8.3 variant for content that is ALREADY safe HTML (e.g. from
+        // Hl7FormattedText.toHtml, which carries highlight/centre markup). The
+        // argument must not be re-encoded or its markup would show as literal
+        // text; only the strikeout wrapper is added for an invalidated (W) result.
+        String safe = safeHtml == null ? "" : safeHtml;
+        return status != null && status.startsWith("W") ? "<s>" + safe + "</s>" : safe;
     }
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -190,24 +206,24 @@
         .AbnormalRollRes {
             font-weight: 700;
             font-size: 8pt;
-            color: red;
+            color: #CC0000;
             font-family: Verdana, Arial, Helvetica
         }
 
         .AbnormalRollRes a:link {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRollRes a:hover {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRollRes a:visited {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRollRes a:active {
-            color: red
+            color: #CC0000
         }
 
         .CorrectedRollRes {
@@ -236,24 +252,24 @@
         .AbnormalRes {
             font-weight: bold;
             font-size: 8pt;
-            color: red;
+            color: #CC0000;
             font-family: Verdana, Arial, Helvetica
         }
 
         .AbnormalRes a:link {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRes a:hover {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRes a:visited {
-            color: red
+            color: #CC0000
         }
 
         .AbnormalRes a:active {
-            color: red
+            color: #CC0000
         }
 
         .NormalRes {
@@ -519,7 +535,7 @@
         }
 
         .red {
-            color: red
+            color: #CC0000
         }
 
         .text2 {
@@ -547,9 +563,20 @@
 
         -->
     </style>
-    <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui-1.12.1.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.structure-1.12.1.min.css"/>
+    <script type="text/javascript"
+            src="${pageContext.servletContext.contextPath}/library/jquery/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui-1.12.1.min.js"></script>
     <script type="text/javascript">
         jQuery.noConflict();
+        var contextpath = "${pageContext.servletContext.contextPath}";
+        const ctx = contextpath;
     </script>
 
     <script type="text/javascript" src="<%= request.getContextPath() %>/share/jquery/jquery.form.js"></script>
@@ -574,7 +601,7 @@
         }
 
         function printPDF() {
-            document.acknowledgeForm.action = "PrintOLISLab.do";
+            document.acknowledgeForm.action = "<%=request.getContextPath()%>/lab/CA/ALL/PrintOLISLab.do";
             document.acknowledgeForm.submit();
         }
 
@@ -582,32 +609,14 @@
             var link = "<%= request.getContextPath() %>/lab/LinkReq.jsp?table=hl7TextMessage&rptid=" + rptId + "&reqid=" + reqId + "<%=Encode.forJavaScript(String.valueOf(demographicID != null ? "&demographicNo=" + demographicID : ""))%>";
             window.open(link, "linkwin", "width=500, height=200");
         }
-
-        window.ForwardSelectedRows = function () {
-            var query = jQuery(document.reassignForm).formSerialize();
-            jQuery.ajax({
-                type: "POST",
-                url: "<%=request.getContextPath()%>/oscarMDS/ReportReassign.do",
-                data: query,
-                success: function (data) {
-                    self.close();
-                }
-            });
-        }
-
     </script>
+
+    <script type="text/javascript"
+            src="${pageContext.servletContext.contextPath}/share/javascript/oscarMDSIndex.js"></script>
 
 </head>
 
 <body style="width:800px">
-<!-- form forwarding of the lab -->
-<form name="reassignForm" method="post" action="<%= request.getContextPath() %>/lab/CA/ALL/Forward.do">
-    <input type="hidden" name="flaggedLabs" value="<%=Encode.forHtmlAttribute(String.valueOf(segmentID))%>"/>
-    <input type="hidden" name="selectedProviders" value=""/>
-    <input type="hidden" name="labType" value="HL7"/>
-    <input type="hidden" name="labType<%=Encode.forHtmlAttribute(String.valueOf(segmentID))%>HL7" value="imNotNull"/>
-    <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"/>
-</form>
 <form name="acknowledgeForm" method="post" action="<%=request.getContextPath()%>/oscarMDS/UpdateStatus.do">
     <input type="hidden" name="originalSegmentID" value="<%=Encode.forHtmlAttribute(String.valueOf(originalSegmentID))%>"/>
     <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
@@ -618,6 +627,8 @@
                         <td align="left" class="MainTableTopRowRightColumn" width="100%">
                             <input type="hidden" name="labName" value="<%=Encode.forHtmlAttribute(String.valueOf(handler.getAccessionNum()))%>"/>
                             <input type="hidden" name="segmentID" value="<%=Encode.forHtmlAttribute(String.valueOf(segmentID))%>"/>
+                            <%-- Forward the OLIS uuid so PrintOLISLab can resolve the cached handler when printing a not-yet-saved preview (segmentID=0). --%>
+                            <input type="hidden" name="uuid" value="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"/>
                             <input type="hidden" name="multiID" value="<%=Encode.forHtmlAttribute(String.valueOf(multiLabId))%>"/>
                             <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>"/>
                             <input type="hidden" name="status" value="A"/>
@@ -629,7 +640,7 @@
                             <% } %>
                             <input type="button" class="smallButton"
                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                                   onClick="popupStart(300, 400, '<%= request.getContextPath() %>/oscarMDS/SelectProvider.jsp', 'providerselect')">
+                                   onClick="ForwardSelectedRows('<%=Encode.forJavaScript(String.valueOf(segmentID))%>:HL7', '', '')">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                    onClick="window.close()">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> " onClick="printPDF()">
@@ -683,15 +694,13 @@
                         }
                     %>
                     <tr>
+                        <%-- CT 1.2 [R,P]: PATIENT heading above all patient information,
+                             REPORT DETAILS above all order/report information. --%>
                         <td align="middle" class="Cell">
-                            <div class="Field2">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formDetailResults"/>
-                            </div>
+                            <div class="Field2">PATIENT</div>
                         </td>
                         <td align="middle" class="Cell">
-                            <div class="Field2">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formResultsInfo"/>
-                            </div>
+                            <div class="Field2">REPORT DETAILS</div>
                         </td>
                     </tr>
                     <tr>
@@ -714,7 +723,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="FieldData">
-                                                                    <%=Encode.forHtml(String.valueOf(handler.getHealthNum()))%>
+                                                                    <%=Encode.forHtml(String.valueOf(handler.getFormattedHealthNum()))%>
                                                                 </div>
                                                             </td>
 
@@ -833,24 +842,48 @@
                                                                 return s == null || s.trim().length() == 0;
                                                             }
 
-                                                            public String displayAddressFieldIfNotNullOrEmpty(HashMap<String, String> address, String key) {
-                                                                return displayAddressFieldIfNotNullOrEmpty(address, key, true);
+                                                            // Returns the raw address field value (or "" if missing). Previously appended a
+                                                            // literal "<br />" for the default newLine=true branch, which the template then
+                                                            // HTML-escaped at the render site so it rendered as the literal text "<br />"
+                                                            // The helper now stays in the data layer; the template emits its own
+                                                            // <br/> tags below where line breaks are wanted.
+                                                            public String getAddressField(HashMap<String, String> address, String key) {
+                                                                String value = address.get(key);
+                                                                return stringIsNullOrEmpty(value) ? "" : value;
                                                             }
 
-                                                            public String displayAddressFieldIfNotNullOrEmpty(HashMap<String, String> address, String key, boolean newLine) {
-                                                                String value = address.get(key);
-                                                                if (stringIsNullOrEmpty(value)) {
-                                                                    return "";
+                                                            // Returns a safe HTML fragment for the OBX test-name cell: the obxName is
+                                                            // wrapped in <u>...</u>, optionally wrapped in <s>...</s> for strikeout/
+                                                            // deleted results, and optionally followed by the abnormal-nature styled
+                                                            // span. Previously these styling tags were synthesized into a String that
+                                                            // each render site then ran through Encode.forHtmlAttribute, escaping the
+                                                            // tags so they rendered as literal text. Now the tags are static
+                                                            // template HTML; only obxName and abnormalNatureRaw are encoded as data.
+                                                            // Render sites consume the return value raw (no Encode wrap).
+                                                            public String buildObxDisplayHtml(boolean strikeout, String obxName, String abnormalNatureRaw) {
+                                                                StringBuilder sb = new StringBuilder();
+                                                                if (strikeout) sb.append("<s>");
+                                                                sb.append("<u>");
+                                                                sb.append(org.owasp.encoder.Encode.forHtml(obxName == null ? "" : obxName));
+                                                                sb.append("</u>");
+                                                                if (strikeout) sb.append("</s>");
+                                                                if (!stringIsNullOrEmpty(abnormalNatureRaw)) {
+                                                                    sb.append(" <span style=\"font-size:8px; color:#333333;\">");
+                                                                    sb.append(org.owasp.encoder.Encode.forHtml(abnormalNatureRaw));
+                                                                    sb.append("</span>");
                                                                 }
-                                                                String result = value + (newLine ? "<br />" : "");
-                                                                return result;
+                                                                return sb.toString();
                                                             }
                                                         %>
                                                         <%
                                                             ArrayList<HashMap<String, String>> addresses = handler.getPatientAddresses();
                                                             for (HashMap<String, String> address : addresses) {
-                                                                String city = displayAddressFieldIfNotNullOrEmpty(address, "City", false);
-                                                                String province = displayAddressFieldIfNotNullOrEmpty(address, "Province", false);
+                                                                String streetAddress = getAddressField(address, "Street Address");
+                                                                String otherDesignation = getAddressField(address, "Other Designation");
+                                                                String postalCode = getAddressField(address, "Postal Code");
+                                                                String city = getAddressField(address, "City");
+                                                                String province = getAddressField(address, "Province");
+                                                                String country = getAddressField(address, "Country");
                                                         %>
                                                         <tr>
                                                             <td valign="top">
@@ -861,11 +894,11 @@
                                                             </td>
                                                             <td>
                                                                 <div align="left" class="FieldData">
-                                                                    <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
-                                                                    <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
-                                                                    <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                                                    <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
-                                                                    <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
+                                                                    <%=Encode.forHtml(streetAddress)%><%=streetAddress.isEmpty() ? "" : "<br/>"%>
+                                                                    <%=Encode.forHtml(otherDesignation)%><%=otherDesignation.isEmpty() ? "" : "<br/>"%>
+                                                                    <%=Encode.forHtml(postalCode)%><%=postalCode.isEmpty() ? "" : "<br/>"%>
+                                                                    <%=Encode.forHtml(city)%><%=city.isEmpty() || province.isEmpty() ? "" : ", "%><%=Encode.forHtml(province)%><%=city.isEmpty() && province.isEmpty() ? "" : "<br/>"%>
+                                                                    <%=Encode.forHtml(country)%>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -1049,6 +1082,7 @@
                                     <td>
                                         <div class="FieldData">
                                             <%=Encode.forHtml(String.valueOf(((String) (handler.getOrderStatus().equals("F") ? "Final" : handler.getOrderStatus().equals("C") ? "Corrected" : "Partial"))))%>
+                                            <% if (!handler.getAmendedReportStatusText().equals("")) { %><span style="color:#CC0000; font-weight:bold;">&nbsp;<%=Encode.forHtml(String.valueOf(handler.getAmendedReportStatusText()))%></span><% } %>
                                         </div>
                                     </td>
                                 </tr>
@@ -1071,7 +1105,7 @@
                                                     }
                                                 }
                                             %>
-                                            <%=abnormalD ? "<span style='color:red'>Yes</span>" : "No" %>
+                                            <%=abnormalD ? "<span style='color:#CC0000'>Yes</span>" : "No" %>
                                         </div>
                                     </td>
                                 </tr>
@@ -1082,7 +1116,7 @@
                                 <tr>
                                     <td valign="top">
                                         <div class="FieldData">
-                                            <strong>Order Id:</strong>
+                                            <strong>Order ID:</strong>
                                         </div>
                                     </td>
                                     <td>
@@ -1097,7 +1131,7 @@
                                 <tr>
                                     <td valign="top">
                                         <div class="FieldData">
-                                            <strong>Order Date:</strong>
+                                            <strong>Order Received Date:</strong>
                                         </div>
                                     </td>
                                     <td>
@@ -1156,21 +1190,31 @@
                                             <%
                                                 HashMap<String, String> address = handler.getOrderingFacilityAddress();
                                                 if (address != null && address.size() > 0) {
-                                                    String city = displayAddressFieldIfNotNullOrEmpty(address, "City", false);
-                                                    String province = displayAddressFieldIfNotNullOrEmpty(address, "Province", false);
+                                                    String streetAddress = getAddressField(address, "Street Address");
+                                                    String otherDesignation = getAddressField(address, "Other Designation");
+                                                    String postalCode = getAddressField(address, "Postal Code");
+                                                    String city = getAddressField(address, "City");
+                                                    String province = getAddressField(address, "Province");
+                                                    String country = getAddressField(address, "Country");
                                             %>
                                             <br/>
                                             <strong>Address:</strong><br/>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                            <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
+                                            <%=Encode.forHtml(streetAddress)%><%=streetAddress.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(otherDesignation)%><%=otherDesignation.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(postalCode)%><%=postalCode.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(city)%><%=city.isEmpty() || province.isEmpty() ? "" : ", "%><%=Encode.forHtml(province)%><%=city.isEmpty() && province.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(country)%>
                                             <% } %>
                                         </div>
                                     </td>
                                 </tr>
                                 <% } %>
+                                <%-- CT 1.2 [R,P]: PROVIDER heading above all ordering practitioner information. --%>
+                                <tr>
+                                    <td colspan="2" align="middle" class="Cell">
+                                        <div class="Field2">PROVIDER</div>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td bgcolor="white" colspan="2">
                                         <div class="FieldData">
@@ -1182,20 +1226,24 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <%=Encode.forHtml(String.valueOf(handler.getDocName()))%>
+                                            <%=Encode.forHtml(handler.getDocName())%>
                                             <%
                                                 HashMap<String, String> address = handler.getOrderingProviderAddress();
                                                 if (address != null && address.size() > 0) {
-                                                    String city = displayAddressFieldIfNotNullOrEmpty(address, "City", false);
-                                                    String province = displayAddressFieldIfNotNullOrEmpty(address, "Province", false);
+                                                    String streetAddress = getAddressField(address, "Street Address");
+                                                    String otherDesignation = getAddressField(address, "Other Designation");
+                                                    String postalCode = getAddressField(address, "Postal Code");
+                                                    String city = getAddressField(address, "City");
+                                                    String province = getAddressField(address, "Province");
+                                                    String country = getAddressField(address, "Country");
                                             %>
                                             <br/>
                                             <strong>Address:</strong><br/>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                            <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country", false)))%>
+                                            <%=Encode.forHtml(streetAddress)%><%=streetAddress.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(otherDesignation)%><%=otherDesignation.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(postalCode)%><%=postalCode.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(city)%><%=city.isEmpty() || province.isEmpty() ? "" : ", "%><%=Encode.forHtml(province)%><%=city.isEmpty() && province.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(country)%>
                                             <% } %>
                                             <%
                                                 ArrayList<HashMap<String, String>> phones = handler.getOrderingProviderPhones();
@@ -1261,7 +1309,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <%=Encode.forHtml(String.valueOf(handler.getAttendingProviderName()))%>
+                                            <%=Encode.forHtml(handler.getAttendingProviderName())%>
                                         </div>
                                     </td>
                                 </tr>
@@ -1278,7 +1326,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <%=Encode.forHtml(String.valueOf(handler.getAdmittingProviderName()))%>
+                                            <%=Encode.forHtml(handler.getAdmittingProviderName())%>
                                         </div>
                                     </td>
                                 </tr>
@@ -1292,8 +1340,8 @@
 
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <strong>Performing <%=Encode.forHtml(String.valueOf((primaryFacility.equals(reportingFacility) ? "and Reporting" : "")))%>
-                                                Facility:</strong>
+                                            <strong>Primary <%=Encode.forHtml(String.valueOf((primaryFacility.equals(reportingFacility) ? "Reporting and " : "")))%>Performing
+                                                Lab:</strong>
                                         </div>
                                     </td>
                                 </tr>
@@ -1304,16 +1352,20 @@
                                             <%
                                                 address = handler.getPerformingFacilityAddress();
                                                 if (address != null && address.size() > 0) {
-                                                    String city = displayAddressFieldIfNotNullOrEmpty(address, "City", false);
-                                                    String province = displayAddressFieldIfNotNullOrEmpty(address, "Province", false);
+                                                    String streetAddress = getAddressField(address, "Street Address");
+                                                    String otherDesignation = getAddressField(address, "Other Designation");
+                                                    String postalCode = getAddressField(address, "Postal Code");
+                                                    String city = getAddressField(address, "City");
+                                                    String province = getAddressField(address, "Province");
+                                                    String country = getAddressField(address, "Country");
                                             %>
                                             <br/>
                                             <strong>Address:</strong><br/>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                            <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
+                                            <%=Encode.forHtml(streetAddress)%><%=streetAddress.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(otherDesignation)%><%=otherDesignation.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(postalCode)%><%=postalCode.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(city)%><%=city.isEmpty() || province.isEmpty() ? "" : ", "%><%=Encode.forHtml(province)%><%=city.isEmpty() && province.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(country)%>
                                             <% } %>
                                         </div>
                                     </td>
@@ -1328,7 +1380,7 @@
 
                                     <td colspan="2">
                                         <div class="FieldData">
-                                            <strong>Reporting Facility:</strong>
+                                            <strong>Primary Reporting Lab:</strong>
                                         </div>
                                     </td>
                                 </tr>
@@ -1339,16 +1391,20 @@
                                             <%
                                                 address = handler.getReportingFacilityAddress();
                                                 if (address != null && address.size() > 0) {
-                                                    String city = displayAddressFieldIfNotNullOrEmpty(address, "City", false);
-                                                    String province = displayAddressFieldIfNotNullOrEmpty(address, "Province", false);
+                                                    String streetAddress = getAddressField(address, "Street Address");
+                                                    String otherDesignation = getAddressField(address, "Other Designation");
+                                                    String postalCode = getAddressField(address, "Postal Code");
+                                                    String city = getAddressField(address, "City");
+                                                    String province = getAddressField(address, "Province");
+                                                    String country = getAddressField(address, "Country");
                                             %>
                                             <br/>
                                             <strong>Address:</strong><br/>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                            <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
-                                            <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
+                                            <%=Encode.forHtml(streetAddress)%><%=streetAddress.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(otherDesignation)%><%=otherDesignation.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(postalCode)%><%=postalCode.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(city)%><%=city.isEmpty() || province.isEmpty() ? "" : ", "%><%=Encode.forHtml(province)%><%=city.isEmpty() && province.isEmpty() ? "" : "<br/>"%>
+                                            <%=Encode.forHtml(country)%>
                                             <% } %>
                                         </div>
                                     </td>
@@ -1371,7 +1427,7 @@
                                     <td bgcolor="white" align="right" colspan="2">
                                         <div class="FieldData">
                                             <strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formCCClient"/>: </strong>
-                                            <%=Encode.forHtml(String.valueOf(handler.getCCDocs()))%>
+                                            <%=Encode.forHtml(handler.getCCDocs())%>
 
                                         </div>
                                     </td>
@@ -1428,7 +1484,7 @@
                                                 if (report.getComment().equals("")) {
                                                     out.print("no comment");
                                                 } else {
-                                                    out.print("comment : " + Encode.forHtml(report.getComment()));
+                                                    out.print("comment : " + HtmlEncodingUtils.encodeCleanTextWithBreaks(report.getComment()));
                                                 }
                                             } else {
                                                 out.print("no comment");
@@ -1479,7 +1535,7 @@
                                             <% }
                                             } %>
 
-                                            <strong>Report Comments: </strong>
+                                            <strong>Comments: </strong>
                                         </div>
                                     </td>
                                 </tr>
@@ -1488,8 +1544,8 @@
                                         <div class="FieldData" style="width:700px;">
 
                                             <% for (int i = 0, j = handler.getReportCommentCount(); i < j; i++) { %>
-                                            <span style="margin-left:15px; width: 700px; word-wrap: break-word;">
-                                                    <%=i > 0 ? "<br/>" : ""%><%=Encode.forHtml(handler.getReportComment(i))%>
+                                            <span style="margin-left:15px; width: 700px; word-wrap: break-word; font-family:'Courier New',Courier,monospace; white-space:pre-wrap;">
+                                                    <%=i > 0 ? "<br/>" : ""%><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(handler.getReportComment(i))%>
                                                     </span>
                                             <span style="margin-left:15px; font-size:8px; color:#333333;">
                                                     <%=Encode.forHtml(String.valueOf(handler.getReportSourceOrganization(i)))%>
@@ -1553,13 +1609,13 @@
                     <tr>
                         <td bgcolor="#FFCC00" width="300" valign="top">
                             <div class="Title2">
-                                <%=Encode.forHtml(String.valueOf(headers.get(obr)))%>
+                                <%=Encode.forHtml(String.valueOf(headers.get(obr)))%><% if (!handler.getObrStatusRedText(obr).equals("")) { %><span style="color:#CC0000;">&nbsp;<%=Encode.forHtml(String.valueOf(handler.getObrStatusRedText(obr)))%></span><% } %><% if (handler.isTestRequestReplaced(obr)) { %><span style="color:#CC0000;">&nbsp;(amended)</span><br/><span style="color:#CC0000; font-size:8px;">This test request and associated results are a replacement of previously reported results.</span><% } %>
                                 <%
                                     String poc = handler.getPointOfCare(obr);
                                     if (!stringIsNullOrEmpty(poc)) {
                                 %>
                                 <br/>
-                                <span style="font-size:8px; color:#333333;">Test performed at patient location</span>
+                                <span style="font-size:8px; color:#333333;">(test performed at point of care)</span>
                                 <% } %>
                                 <%
                                     boolean blocked = handler.isOBRBlocked(obr);
@@ -1575,8 +1631,15 @@
                                 <table>
                                     <% if (!handler.getObrSpecimenSource(obr).equals("")) { %>
                                     <tr>
-                                        <td> Specimen Source:</td>
+                                        <td> Specimen Type:</td>
                                         <td><%=Encode.forHtml(String.valueOf(handler.getObrSpecimenSource(obr)))%>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                    <% if (!handler.getSiteModifier(obr).equals("")) { %>
+                                    <tr>
+                                        <td> Site Modifier:</td>
+                                        <td><%=Encode.forHtml(String.valueOf(handler.getSiteModifier(obr)))%>
                                         </td>
                                     </tr>
                                     <% } %>
@@ -1663,59 +1726,26 @@
                         <td width="*">&nbsp;</td>
                     </tr>
                     <%
-                        String performingFacility = handler.getOBRPerformingFacilityName(obr);
-                        if (!primaryFacility.equals(performingFacility) && !performingFacility.equals("")) {
-
-                    %>
-                    <tr>
-                        <td bgcolor="#FFCC00">
-                            <div class="FieldData">
-                                <strong>Performing Facility:</strong>
-                            </div>
-                        </td>
-                        <td bgcolor="#FFCC00">
-                            <div class="FieldData">
-                                <strong>Address:</strong><br/>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td bgcolor="#FFCC00" valign="top">
-                            <div class="FieldData">
-                                <%=Encode.forHtml(String.valueOf(performingFacility))%>
-                            </div>
-                        </td>
-                        <td bgcolor="#FFCC00" valign="top">
-                            <div class="FieldData">
-                                <%
-                                    address = handler.getPerformingFacilityAddress(obr);
-                                    if (address != null && address.size() > 0) {
-                                        String city = displayAddressFieldIfNotNullOrEmpty(address, "City", false);
-                                        String province = displayAddressFieldIfNotNullOrEmpty(address, "Province", false);
-                                %>
-                                <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Street Address")))%>
-                                <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Other Designation")))%>
-                                <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Postal Code")))%>
-                                <%=Encode.forHtml(city)%><%="".equals(city) || "".equals(province) ? "" : ", "%><%=Encode.forHtml(province)%><%="".equals(city) && "".equals(province) ? "" : "<br/>"%>
-                                <%=Encode.forHtml(String.valueOf(displayAddressFieldIfNotNullOrEmpty(address, "Country")))%>
-                                <% } %>
-                            </div>
-                        </td>
-                    </tr>
-                    <% } %>
-                    <%
-                        String diagnosis = handler.getDiagnosis(obr);
-                        if (!stringIsNullOrEmpty(diagnosis)) {
+                        // CT "Sequence of Data Display" 2.0: the collector's comment is the last
+                        // item of the specimen block — render it here (in the specimen header
+                        // table) rather than at the top of the results table below.
+                        String collectorsComment = handler.getCollectorsComment(obr);
+                        if (collectorsComment != null && !collectorsComment.equals("")) {
                     %>
                     <tr>
                         <td bgcolor="#FFCC00" colspan="2">
                             <div class="FieldData">
-                                <strong>Diagnosis:</strong><br/>
-                                <%=Encode.forHtml(String.valueOf(diagnosis))%>
+                                <strong>Collector's Comment:</strong> <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=Hl7FormattedText.toHtml(collectorsComment)%></span>
+                                <span style="margin-left:15px;font-size:8px; color:#333333;"><%=HtmlEncodingUtils.encodeCleanTextWithBreaks(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr)))%></span>
                             </div>
                         </td>
                     </tr>
-                    <% } %>
+                    <%
+                        }
+                        // Diagnosis (CT seq 5.0) and the Performing Lab exception (8.0) used to
+                        // render here in the specimen header table; they now render in the results
+                        // table immediately before the result rows, to follow the spec sequence.
+                    %>
                 </table>
 
                 <table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#CCCCFF" bordercolor="#9966FF"
@@ -1739,19 +1769,6 @@
 
                         boolean obrFlag = false;
                         int obxCount = handler.getOBXCount(obr);
-                        String collectorsComment = handler.getCollectorsComment(obr); // TODO: get collector attribution
-                        if (collectorsComment != null && !collectorsComment.equals("")) {
-                    %>
-                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
-                        <td valign="top" align="left" colspan="7">
-                            <div style="margin-left:15px; width:700px">
-                                <strong>Comments:</strong> <%=Encode.forHtml(String.valueOf(handler.formatString(collectorsComment)))%>
-                                <span style="margin-left:15px;font-size:8px; color:#333333;"><%=Encode.forHtml(String.valueOf(handler.getCollectorsCommentSourceOrganization(obr)))%></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <%
-                        }
 
                         if (handler.getObservationHeader(obr, 0).equals(headers.get(obr))) {
                             int cc = handler.getOBRCommentCount(obr);
@@ -1778,7 +1795,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7">
                             <div style="margin-left:15px;width: 700px;">
-                                <%=Encode.forHtml(String.valueOf(obrComment))%>
+                                <span style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;"><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(String.valueOf(obrComment))%></span>
                                 <span style="margin-left:15px;font-size:8px; color:#333333;"><%=Encode.forHtml(String.valueOf(sourceOrg))%></span>
                             </div>
                         </td>
@@ -1788,6 +1805,47 @@
                             }//end for k=0
                         }//end if handler.getObservation..
 
+                        // CT "Sequence of Data Display": Diagnosis (5.0) then the Performing Lab
+                        // exception (8.0) render here — after the test-request name/notes and
+                        // immediately before the result rows — to follow the spec display sequence.
+                        String seqDiagnosis = handler.getDiagnosis(obr);
+                        if (!stringIsNullOrEmpty(seqDiagnosis)) {
+                    %>
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
+                        <td colspan="7">
+                            <div class="FieldData"><strong>Diagnosis:</strong><br/><%=Encode.forHtml(String.valueOf(seqDiagnosis))%></div>
+                        </td>
+                    </tr>
+                    <%
+                        }
+                        String seqPerformingFacility = handler.getOBRPerformingFacilityName(obr);
+                        if (!primaryFacility.equals(seqPerformingFacility) && !stringIsNullOrEmpty(seqPerformingFacility)) {
+                            HashMap<String, String> seqPlAddress = handler.getPerformingFacilityAddress(obr);
+                            StringBuilder seqPlAddr = new StringBuilder();
+                            if (seqPlAddress != null && seqPlAddress.size() > 0) {
+                                String[] seqParts = {
+                                        getAddressField(seqPlAddress, "Street Address"),
+                                        getAddressField(seqPlAddress, "Other Designation"),
+                                        getAddressField(seqPlAddress, "City"),
+                                        getAddressField(seqPlAddress, "Province"),
+                                        getAddressField(seqPlAddress, "Postal Code"),
+                                        getAddressField(seqPlAddress, "Country")
+                                };
+                                for (String seqP : seqParts) {
+                                    if (!seqP.isEmpty()) {
+                                        if (seqPlAddr.length() > 0) seqPlAddr.append(", ");
+                                        seqPlAddr.append(seqP);
+                                    }
+                                }
+                            }
+                    %>
+                    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
+                        <td colspan="7">
+                            <div class="FieldData"><strong>Performing Lab:</strong> <%=Encode.forHtml(String.valueOf(seqPerformingFacility))%><%=seqPlAddr.length() == 0 ? "" : " - "%><%=Encode.forHtml(seqPlAddr.toString())%></div>
+                        </td>
+                    </tr>
+                    <%
+                        }
                         for (int k = 0; k < obxCount; k++) {
                             obx = handler.getMappedOBX(obr, k);
                             String obxName = handler.getOBXName(obr, obx);
@@ -1827,25 +1885,36 @@
                         }
 
                         String status = handler.getOBXResultStatus(obr, obx).trim();
+                        // statusMsg is built as a pre-encoded HTML fragment: non-final result
+                        // statuses (invalid/amended/preliminary/could-not-obtain/not-performed)
+                        // display in red per CT 12.8.x. Final ('F') and ancillary ('Z') stay plain.
                         String statusMsg = "";
                         try {
-                            statusMsg = handler.getTestResultStatusMessage(handler.getOBXResultStatus(obr, obx).charAt(0));
+                            char st = handler.getOBXResultStatus(obr, obx).charAt(0);
+                            String statusText = handler.getTestResultStatusMessage(st);
+                            if (!statusText.isEmpty() && st != 'F' && st != 'Z') {
+                                statusMsg = "<span style=\"color:#CC0000\">" + Encode.forHtml(statusText) + "</span>";
+                            } else {
+                                statusMsg = Encode.forHtml(statusText);
+                            }
                         } catch (Exception e) {
                             statusMsg = "";
                         }
                         boolean strikeout = status != null && status.startsWith("W");
-                        String pre = "<u>";
-                        String post = "</u>";
-                        String obxDisplayName = "";
-                        if (strikeout) {
-                            pre = "<s>" + pre;
-                            post = post + "</s>";
+                        // obxDisplayHtml is a pre-encoded safe HTML
+                        // fragment from buildObxDisplayHtml. The u/s styling tags are
+                        // template literals (browser interprets them); the obxName and
+                        // abnormalNature values are HTML-encoded inside the helper.
+                        // Render sites emit it raw with no Encode wrap.
+                        String abnormalNatureRaw = handler.getNatureOfAbnormalTest(obr, obx);
+                        String obxDisplayHtml = buildObxDisplayHtml(strikeout, obxName, abnormalNatureRaw);
+                        // CT 12.8.x [R,P]: red parenthetical (e.g. "(preliminary)") adjacent to the
+                        // result name for non-final statuses. obxDisplayHtml flows to every value-type
+                        // render branch, so appending here covers them all.
+                        String obxStatusRedText = handler.getTestResultStatusRedText(status.isEmpty() ? ' ' : status.charAt(0));
+                        if (!obxStatusRedText.isEmpty()) {
+                            obxDisplayHtml = obxDisplayHtml + " <span style=\"color:#CC0000\">" + Encode.forHtml(obxStatusRedText) + "</span>";
                         }
-                        String abnormalNature = handler.getNatureOfAbnormalTest(obr, obx);
-                        if (!stringIsNullOrEmpty(abnormalNature)) {
-                            abnormalNature = " <span style=\"font-size:8px; color:#333333;\">" + abnormalNature + "</span>";
-                        }
-                        obxDisplayName = pre + obxName + post + abnormalNature;
 
                         String lineClass = "NormalRes";
                         String abnormal = handler.getOBXAbnormalFlag(obr, obx);
@@ -1868,47 +1937,57 @@
                                 || obxValueType.equals("ST")) { // String Data
                             if (handler.isAncillary(obr, obx)) {
                     %>
+                    <%-- CT 11.5-11.9: ancillary order information (OBX.11="Z") rendered as
+                         labelled fields rather than in the tabular result columns. --%>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
-                        <td colspan="7">Patient Observation</td>
+                        <td colspan="7" style="padding-left:15px;">
+                            <strong>Patient Observation:</strong> <%=obxDisplayHtml%><br/>
+                            <strong>Result:</strong> <%=strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)%>
+                            <% if (!handler.getOBXAbnormalFlag(obr, obx).trim().isEmpty()) { %> &nbsp; <strong>Flag:</strong> <%=strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)%><% } %>
+                            <% if (!handler.getOBXReferenceRange(obr, obx).trim().isEmpty()) { %> &nbsp; <strong>Reference Range:</strong> <%=strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)%><% } %>
+                            <% if (!Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)).trim().isEmpty()) { %> &nbsp; <strong>Units:</strong> <%=strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)), status)%><% } %>
+                            &nbsp; <%=statusMsg%>
+                        </td>
                     </tr>
-                    <% } %>
+                    <% } else { %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
-                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxDisplayName))%>
+                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)%>
                         </td>
                         <td align="center">
-                            <%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)))%>
+                            <%=strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.formatString(handler.getOBXUnits(obr, obx)), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(Hl7FormattedText.toPlainText(handler.getOBXUnits(obr, obx)), status)%>
                         </td>
                         <td align="center">
-                            <%--<%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --))%>
+                            <%-- strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --%>
                         </td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
+                    <% } %>
                     <%
                     } else if (obxValueType.equals("SN")) { // or Structured Numeric
                     %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
-                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxDisplayName))%>
+                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXSNResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXSNResult(obr, obx), status)%>
                         </td>
                         <td align="center">
-                            <%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)))%>
+                            <%=strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)%>
                         </td>
                         <td align="center"><%-- strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --%></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1916,14 +1995,18 @@
                             || obxValueType.equals("FT")) {  // Formatted Text (Display)
                     %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
-                        <td align="left" colspan="7"><b><%=Encode.forHtml(String.valueOf(obxDisplayName))%>
+                        <td align="left" colspan="7"><b><%=obxDisplayHtml%>
                         </b></td>
                     </tr>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
-                        <td align="left" colspan="6">
-                            <b><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.formatString(handler.getOBXResult(obr, obx)), status)))%>
-                            </b></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <%-- CT 13.3.3: full-width text rendered in a fixed-width font with
+                             whitespace preserved so the lab's interpretive layout survives. --%>
+                        <td align="left" colspan="6" style="font-family:'Courier New',Courier,monospace; white-space:pre-wrap;">
+                            <%-- CT 13.3.x: interpret FT/TX formatting tags (highlight \H\, centre \.ce\)
+                                 as safe HTML rather than flattening them to plain text. --%>
+                            <%=strikeOutInvalidHtml(Hl7FormattedText.toHtml(handler.getOBXResult(obr, obx)), status)%>
+                            </td>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1932,12 +2015,12 @@
                     %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
-                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxDisplayName))%>
+                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXTMResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXTMResult(obr, obx), status)%>
                         </td>
                         <td align="center" colspan="4"></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1945,12 +2028,12 @@
                     %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
-                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxDisplayName))%>
+                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXDTResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXDTResult(obr, obx), status)%>
                         </td>
                         <td align="center" colspan="4"></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1958,12 +2041,12 @@
                     %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
-                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxDisplayName))%>
+                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXTSResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXTSResult(obr, obx), status)%>
                         </td>
                         <td align="center" colspan="4"></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1972,7 +2055,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td colspan="7" valign="top"
                             align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
-                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxDisplayName))%>
+                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
                     </tr>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
@@ -1987,9 +2070,9 @@
                             <% } %>
                         </td>
                         <td align="left"
-                            colspan="2"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)))%>
+                            colspan="2"><%=strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)%>
                         </td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -1999,13 +2082,13 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td colspan="7" valign="top"
                             align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
-                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxDisplayName))%>
+                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
                     </tr>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td colspan="6" valign="left"><span
                                 style="margin-left:15px;"><%=Encode.forHtml(String.valueOf(handler.getOBXCEName(obr, obx)))%></span></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                     </tr>
                     <%
@@ -2018,19 +2101,20 @@
                             <table style="border: 1px solid black; margin-left 30px;">
                                 <tr>
                                     <th>Agent</th>
-                                    <th>Sensitivity</th>
+                                    <th>Susceptibility</th>
                                 </tr>
                                 <%
 
                                     int childOBR = handler.getChildOBR(parentId) - 1;
                                     if (childOBR != -1) {
-                                        int childLength = handler.getOBXCount(childOBR);
-                                        for (int ceIndex = 0; ceIndex < childLength; ceIndex++) {
-                                            String ceStatus = handler.getOBXResultStatus(childOBR, ceIndex).trim();
-                                            boolean ceStrikeout = ceStatus != null && ceStatus.startsWith("W");
-                                            String ceName = handler.getOBXName(childOBR, ceIndex);
+                                        // Iterate the child results in the OLIS-mandated sort order (CV06)
+                                        // rather than raw message order.
+                                        for (ca.openosp.openo.olis.model.OlisLabChildResultSortable child : handler.getChildObrResults(childOBR)) {
+                                            String ceStatus = child.getStatus() != null ? child.getStatus().trim() : "";
+                                            boolean ceStrikeout = ceStatus.startsWith("W");
+                                            String ceName = child.getName();
                                             ceName = ceStrikeout ? "<s>" + ceName + "</s>" : ceName;
-                                            String ceSense = handler.getOBXCESensitivity(childOBR, ceIndex);
+                                            String ceSense = child.getSensitivity();
                                             ceSense = ceStrikeout ? "<s>" + ceSense + "</s>" : ceSense;
                                 %>
                                 <tr>
@@ -2049,7 +2133,7 @@
                     <% if (category.toUpperCase().trim().equals("MICROBIOLOGY")) {%>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td align="center" colspan="7">
-                            S=Sensitive R=Resistant I=Intermediate MS=Moderately Sensitive VS=Very Sensitive
+                            S=Susceptible &nbsp; R=Resistant &nbsp; I=Intermediate &nbsp; MS=Moderately Susceptible &nbsp; NI=No Interpretation &nbsp; NS=Non Susceptible &nbsp; S-DD=Susceptible Dose Dependent &nbsp; VS=Very Susceptible
 
                         </td>
                     </tr>
@@ -2061,19 +2145,19 @@
                     %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="<%=Encode.forHtmlAttribute(String.valueOf(lineClass))%>">
                         <td valign="top" align="leftZOR"><%= obrFlag ? "&nbsp; &nbsp; &nbsp;" : "&nbsp;" %><a
-                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier='+encodeURIComponent('<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>'))"><%=Encode.forHtmlAttribute(String.valueOf(obxDisplayName))%>
+                                href="javascript:popupStart('660','900','${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=Encode.forUriComponent(String.valueOf(obxName))%>&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>&labType=HL7&identifier=<%=Encode.forUriComponent(String.valueOf(handler.getOBXIdentifier(obr, obx)))%>')"><%=obxDisplayHtml%>
                         </a></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)))%>
+                        <td align="right"><%=strikeOutInvalidContent(handler.getOBXResult(obr, obx), status)%>
                         </td>
                         <td align="center">
-                            <%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)))%>
+                            <%=strikeOutInvalidContent(handler.getOBXAbnormalFlag(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXReferenceRange(obr, obx), status)%>
                         </td>
-                        <td align="left"><%=Encode.forHtml(String.valueOf(strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)))%>
+                        <td align="left"><%=strikeOutInvalidContent(handler.getOBXUnits(obr, obx), status)%>
                         </td>
                         <td align="center"><%-- strikeOutInvalidContent(handler.getTimeStamp(obr, obx), status) --%></td>
-                        <td align="center"><%=Encode.forHtml(String.valueOf(statusMsg))%>
+                        <td align="center"><%=statusMsg%>
                         </td>
                         <%--
                         <td align="center"><%=Encode.forHtml(String.valueOf(handler.getOBXValueType(j, k)))%></td>
@@ -2095,7 +2179,7 @@
                     %>
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7"><span
-                                style="margin-left:15px;">Observation Date: <%=Encode.forHtml(String.valueOf(obsDate))%></span></td>
+                                style="margin-left:15px;">Observation Date/Time: <%=Encode.forHtml(String.valueOf(obsDate))%></span></td>
                     </tr>
                     <%
                         }
@@ -2103,7 +2187,7 @@
                     <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf((linenum % 2 == 1 ? highlight : "")))%>" class="NormalRes">
                         <td valign="top" align="left" colspan="7" style="font-family:courier;">
                             <div style="width:700px">
-                                <%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(handler.getOBXComment(obr, obx, l))%><span
+                                <span style="white-space:pre-wrap;"><%=HtmlEncodingUtils.encodeTextWithNewlineBreaks(handler.getOBXComment(obr, obx, l))%></span><span
                                     style="margin-left:15px;font-size:8px; color:#333333;word-break:normal;"><%=Encode.forHtml(String.valueOf(handler.getOBXSourceOrganization(obr, obx, l)))%></span>
                             </div>
                         </td>
@@ -2135,7 +2219,7 @@
                             <% } %>
                             <input type="button" class="smallButton"
                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                                   onClick="popupStart(300, 400, '<%= request.getContextPath() %>/oscarMDS/SelectProvider.jsp', 'providerselect')">
+                                   onClick="ForwardSelectedRows('<%=Encode.forJavaScript(String.valueOf(segmentID))%>:HL7', '', '')">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> "
                                    onClick="window.close()">
                             <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> " onClick="printPDF()">
@@ -2152,6 +2236,11 @@
             </td>
         </tr>
     </table>
+
+    <%-- OLIS lab report footer (CT Tracker req 15.1): confidentiality notice at the bottom of the report. --%>
+    <div style="text-align:center; margin-top:8px;">
+        <span class="Field2"><i>CONFIDENTIAL - report contains Personal Health Information</i></span>
+    </div>
 
 </form>
 </body>

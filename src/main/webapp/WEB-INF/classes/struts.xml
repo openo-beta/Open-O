@@ -73,7 +73,7 @@
                 <interceptor-ref name="coop">
                     <param name="disabled">true</param>
                     <param name="exemptedPaths"/>
-                    <param name="mode">same-origin</param>
+                    <param name="mode">same-origin-allow-popups</param>
                 </interceptor-ref>
                 <interceptor-ref name="fetchMetadata">
                     <param name="disabled">false</param>
@@ -450,6 +450,18 @@
         </action>
         <action name="olis/Search" class="ca.openosp.openo.olis.OLISSearch2Action">
             <result name="results">/olis/Results.do</result>
+        </action>
+        <action name="olis/NomenclatureSearch" class="ca.openosp.openo.olis.OLISNomenclatureSearch2Action"/>
+        <action name="olis/NomenclatureImport" class="ca.openosp.openo.olis.OLISNomenclatureImport2Action">
+            <interceptor-ref name="defaultStack"/>
+            <result name="form">/olis/NomenclatureImport.jsp</result>
+            <result name="report">/olis/NomenclatureImport.jsp</result>
+        </action>
+        <action name="olis/FacilitySearch" class="ca.openosp.openo.olis.OLISFacilitySearch2Action"/>
+        <action name="olis/FacilityImport" class="ca.openosp.openo.olis.OLISFacilityImport2Action">
+            <interceptor-ref name="defaultStack"/>
+            <result name="form">/olis/FacilityImport.jsp</result>
+            <result name="report">/olis/FacilityImport.jsp</result>
         </action>
         <action name="olis/Results" class="ca.openosp.openo.olis.OLISResults2Action">
             <result name="results">/olis/Results.jsp</result>

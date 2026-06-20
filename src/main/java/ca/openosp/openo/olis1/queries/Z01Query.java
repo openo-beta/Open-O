@@ -34,6 +34,7 @@ import ca.openosp.openo.olis1.parameters.ZBR6;
 import ca.openosp.openo.olis1.parameters.ZPD1;
 import ca.openosp.openo.olis1.parameters.ZPD3;
 import ca.openosp.openo.olis1.parameters.ZRP1;
+import ca.openosp.openo.olis1.parameters.ZSD;
 
 /**
  * Z01 - Retrieve Laboratory Information for Patient
@@ -48,6 +49,7 @@ public class Z01Query extends Query {
     private ZRP1 requestingHic = new ZRP1(); // mandatory
     private ZPD1 consentToViewBlockedInformation = null;
     private ZPD3 patientConsentBlockAllIndicator = null;
+    private ZSD substituteDecisionMaker = null;
     private ZBR3 specimenCollector = null;
     private ZBR6 performingLaboratory = null;
     private ZBE6 excludePerformingLaboratory = null;
@@ -85,6 +87,9 @@ public class Z01Query extends Query {
 
         if (patientConsentBlockAllIndicator != null)
             query += patientConsentBlockAllIndicator.toOlisString() + "~";
+
+        if (substituteDecisionMaker != null)
+            query += substituteDecisionMaker.toOlisString() + "~";
 
         if (specimenCollector != null)
             query += specimenCollector.toOlisString() + "~";
@@ -164,6 +169,11 @@ public class Z01Query extends Query {
 
     public void setPatientConsentBlockAllIndicator(ZPD3 patientConsentBlockAllIndicator) {
         this.patientConsentBlockAllIndicator = patientConsentBlockAllIndicator;
+    }
+
+    @Override
+    public void setSubstituteDecisionMaker(ZSD substituteDecisionMaker) {
+        this.substituteDecisionMaker = substituteDecisionMaker;
     }
 
     public void setSpecimenCollector(ZBR3 specimenCollector) {

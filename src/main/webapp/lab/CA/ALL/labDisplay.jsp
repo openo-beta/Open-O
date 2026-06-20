@@ -197,11 +197,37 @@ Map<String, ExcellerisOntarioHandler.OrderStatus> missingTests = new HashMap<>()
 
         if (showAll) {
             multiLabId = request.getParameter("multiID");
-            segmentIDs = multiLabId.split(",");
-            for (int i = 0; i < segmentIDs.length; ++i) {
-                handlers.add(Factory.getHandler(segmentIDs[i]));
+            String[] requestedIDs = (multiLabId == null) ? new String[0] : multiLabId.split(",");
+            List<String> resolvedIDs = new ArrayList<String>();
+            for (int i = 0; i < requestedIDs.length; ++i) {
+                MessageHandler resolved = Factory.getHandler(requestedIDs[i]);
+                if (resolved != null) {
+                    handlers.add(resolved);
+                    resolvedIDs.add(requestedIDs[i]);
+                }
+                // A null handler is a dangling sibling lab (hl7TextInfo row with
+                // no hl7TextMessage). Skip it so the surviving versions still
+                // render, mirroring the single-lab guard below, otherwise
+                // the render loop's handlers.get(idx) would NPE.
             }
-
+            segmentIDs = resolvedIDs.toArray(new String[resolvedIDs.size()]);
+            if (handlers.isEmpty()) {
+                // Nothing in the requested version list resolved to stored HL7;
+                // show the same friendly notice as the single-lab path (A25).
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+%>
+<!DOCTYPE html>
+<html>
+<head><title>Lab data not available</title></head>
+<body style="font-family: sans-serif; padding: 20px;">
+    <h3 style="color: #c33;">Lab data not available</h3>
+    <p>The lab listing for this entry exists but the underlying HL7 message has been removed from storage.</p>
+    <p>Lab ID: <%=Encode.forHtml(multiLabId == null ? segmentID : multiLabId)%></p>
+</body>
+</html>
+<%
+                return;
+            }
             handler = handlers.get(0);
         } else {
             multiLabId = Hl7textResultsData.getMatchingLabs(segmentID);
@@ -214,6 +240,25 @@ Map<String, ExcellerisOntarioHandler.OrderStatus> missingTests = new HashMap<>()
 
             List<String> segmentIdList = new ArrayList<String>();
             handler = Factory.getHandler(segmentID);
+            if (handler == null) {
+                // hl7TextInfo has a row for this lab_no but hl7TextMessage doesn't
+                // (no FK enforced). Partial deletes / data cleanup leave dangling
+                // refs that the rest of this JSP would NPE on. Render a friendly
+                // notice instead of crashing the inbox link. See A25.
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+%>
+<!DOCTYPE html>
+<html>
+<head><title>Lab data not available</title></head>
+<body style="font-family: sans-serif; padding: 20px;">
+    <h3 style="color: #c33;">Lab data not available</h3>
+    <p>The lab listing for this entry exists but the underlying HL7 message has been removed from storage.</p>
+    <p>Lab ID: <%=Encode.forHtml(segmentID)%></p>
+</body>
+</html>
+<%
+                return;
+            }
             handlers.add(handler);
 
         if ("ExcellerisON".equals(handler.getMsgType()) && segmentIDs.length > 1) {
@@ -1694,7 +1739,7 @@ request.setAttribute("missingTests", missingTests);
                                         <td bgcolor="white">
                                             <div class="FieldData">
                                                 <strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formRequestingClient"/>: </strong>
-                                                <%=Encode.forHtml(String.valueOf(handler.getDocName()))%>
+                                                <%=Encode.forHtml(handler.getDocName())%>
                                             </div>
                                         </td>
                                         <%-- <td bgcolor="white">
@@ -1706,7 +1751,7 @@ request.setAttribute("missingTests", missingTests);
                                         <td bgcolor="white" align="right">
                                             <div class="FieldData">
                                                 <strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.formCCClient"/>: </strong>
-                                                <%=Encode.forHtml(String.valueOf(handler.getCCDocs()))%>
+                                                <%=Encode.forHtml(handler.getCCDocs())%>
 
                                             </div>
                                         </td>
