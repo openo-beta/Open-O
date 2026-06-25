@@ -46,6 +46,7 @@
 
 
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 
     <head>
@@ -63,9 +64,9 @@
         function finishPage(secs) {
 
             // Print consultatin request form
-            const consultPDFName = '<%=request.getAttribute("consultPDFName")%>';
-            const consultPDF = '<%=request.getAttribute("consultPDF")%>';
-            const isPreviewReady = '<%=request.getAttribute("isPreviewReady")%>';
+            const consultPDFName = '<%=Encode.forJavaScript(String.valueOf(request.getAttribute("consultPDFName")))%>';
+            const consultPDF = '<%=Encode.forJavaScript(String.valueOf(request.getAttribute("consultPDF")))%>';
+            const isPreviewReady = '<%=Encode.forJavaScript(String.valueOf(request.getAttribute("isPreviewReady")))%>';
             if (consultPDF !== 'null' && consultPDFName !== 'null' && isPreviewReady === 'true') {
                 downloadConsultForm(consultPDFName, consultPDF, function () {
                     setTimeout("window.close()", secs * 1000);
