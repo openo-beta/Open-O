@@ -34,6 +34,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil;
+import ca.openosp.openo.consultation.dto.ConsultationListDTO;
 import ca.openosp.openo.commn.dao.UserPropertyDAO;
 import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -135,9 +136,25 @@ public class EctDisplayConsult2Action extends EctDisplayAction {
                 }
                 url = "popupPage(700,960,'" + winName + "','" + request.getContextPath() + "/oscarEncounter/ViewRequest.do?de=" + bean.demographicNo + "&requestId=" + theRequests.ids.get(idx) + "'); return false;";
                 
-                item.setLinkTitle(service + "(" + specialist + ") " + serviceDateStr);
-                service = StringUtils.maxLenString(service, MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES);
-                item.setTitle(service);
+                //build the referral label as "Service - Specialist" so referrals can be identified
+                //without hovering; omit whichever part is missing so we never render a stray
+                //separator or the "N/A" placeholder when no specialist is set
+                boolean hasService = service != null && !service.trim().isEmpty();
+                boolean hasSpecialist = specialist != null && !specialist.trim().isEmpty()
+                        && !ConsultationListDTO.NOT_APPLICABLE.equals(specialist);
+                String referralLabel;
+                if (hasService && hasSpecialist) {
+                    referralLabel = service + " - " + specialist;
+                } else if (hasSpecialist) {
+                    referralLabel = specialist;
+                } else {
+                    referralLabel = hasService ? service : "";
+                }
+
+                //tooltip shows the full untruncated label plus the referral date; the visible row
+                //text uses the same format but is length-capped to fit the navbar (matching siblings)
+                item.setLinkTitle(referralLabel + " " + serviceDateStr);
+                item.setTitle(StringUtils.maxLenString(referralLabel, MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES));
                 item.setURL(url);
                 item.setDate(date);
                 Dao.addItem(item);
