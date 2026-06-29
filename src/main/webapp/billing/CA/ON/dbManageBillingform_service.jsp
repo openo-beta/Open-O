@@ -47,10 +47,15 @@
             serviceCode = (serviceCode == null) ? "" : serviceCode.trim();
 
             if (!serviceCode.isEmpty()) {
-                // Blank or non-numeric order falls back to the row position so it can't crash the page.
+                // Any invalid order (blank, non-numeric, or out of int range) falls back to the row position so it can't crash the page.
                 String orderParam = request.getParameter(field + "_order");
                 orderParam = (orderParam == null) ? "" : orderParam.trim();
-                int serviceOrder = orderParam.matches("\\d+") ? Integer.parseInt(orderParam) : i;
+                int serviceOrder;
+                try {
+                    serviceOrder = Integer.parseInt(orderParam);
+                } catch (NumberFormatException e) {
+                    serviceOrder = i;
+                }
 
                 CtlBillingService cbs = new CtlBillingService();
                 cbs.setServiceTypeName(type);
