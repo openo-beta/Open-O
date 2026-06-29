@@ -99,14 +99,14 @@ int rCount = 0;
 			<% for(int k=0; k<20;k++){ %>
 			<tr>
 				<td><input type="text" name="group<%=i%>_service<%=k%>"
-					value="<%=Encode.forHtmlAttribute(String.valueOf(service_code[k]))%>"
+					value="<%= service_code[k] == null ? "" : Encode.forHtmlAttribute(service_code[k]) %>"
 					placeholder="Billing code"
 					oninput="toggleOrderRequired(this);"
 					style="width: 120px;"></td>
 				<td style="padding-left: 4px;"><input type="number" min="0" name="group<%=i%>_service<%=k%>_order"
 					value="<%=Encode.forHtmlAttribute(String.valueOf(service_order[k]))%>"
 					placeholder="Order"
-					<%= service_code[k].isEmpty() ? "" : "required" %>
+					<%= (service_code[k] == null || service_code[k].isEmpty()) ? "" : "required" %>
 					style="width: 75px;"></td>
 			</tr>
 			<% } %>
