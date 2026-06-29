@@ -88,7 +88,7 @@ int rCount = 0;
 			</tr>
 			<tr>
 				<td colspan="2"><input type="text" name="group<%=i%>"
-					value="<%=Encode.forHtmlAttribute(String.valueOf(servicetype_name))%>"
+					value="<%= servicetype_name == null ? "" : Encode.forHtmlAttribute(servicetype_name) %>"
 					placeholder="Group name"
 					style="width: 213px;"></td>
 			</tr>
