@@ -144,9 +144,9 @@ public class EctDisplayConsult2Action extends EctDisplayAction {
                         && !ConsultationListDTO.NOT_APPLICABLE.equals(trimmedSpecialist);
                 String referralLabel = "";
                 if (hasService && hasSpecialist) {
-                    referralLabel = service + " - " + specialist;
+                    referralLabel = service + " - " + trimmedSpecialist;
                 } else if (hasSpecialist) {
-                    referralLabel = specialist;
+                    referralLabel = trimmedSpecialist;
                 } else if (hasService) {
                     referralLabel = service;
                 }
