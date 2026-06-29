@@ -139,8 +139,9 @@ public class EctDisplayConsult2Action extends EctDisplayAction {
                 
                 //label as "Service - Specialist", omitting any missing part or the "N/A" placeholder
                 boolean hasService = service != null && !service.trim().isEmpty();
-                boolean hasSpecialist = specialist != null && !specialist.trim().isEmpty()
-                        && !ConsultationListDTO.NOT_APPLICABLE.equals(specialist);
+                String trimmedSpecialist = specialist == null ? "" : specialist.trim();
+                boolean hasSpecialist = !trimmedSpecialist.isEmpty()
+                        && !ConsultationListDTO.NOT_APPLICABLE.equals(trimmedSpecialist);
                 String referralLabel = "";
                 if (hasService && hasSpecialist) {
                     referralLabel = service + " - " + specialist;
@@ -152,7 +153,8 @@ public class EctDisplayConsult2Action extends EctDisplayAction {
 
                 //date alone when no label, to avoid a leading space in the tooltip
                 String linkTitle = referralLabel.isEmpty() ? serviceDateStr : referralLabel + " " + serviceDateStr;
-                //encode both sinks (JSP writes them unescaped); truncate before encoding
+                //encode both sinks (the JSP writes them unescaped). the tooltip stays full length;
+                //only the visible title is capped, before encoding so the cap can't split an entity
                 item.setLinkTitle(Encode.forHtmlAttribute(linkTitle));
                 item.setTitle(Encode.forHtml(StringUtils.maxLenString(referralLabel, MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES)));
                 item.setURL(url);
