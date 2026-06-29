@@ -47,12 +47,15 @@
             serviceCode = (serviceCode == null) ? "" : serviceCode.trim();
 
             if (!serviceCode.isEmpty()) {
-                // Any invalid order (blank, non-numeric, or out of int range) falls back to the row position so it can't crash the page.
+                // Any invalid order (blank, non-numeric, negative, or out of int range) falls back to the row position so it can't crash the page.
                 String orderParam = request.getParameter(field + "_order");
                 orderParam = (orderParam == null) ? "" : orderParam.trim();
                 int serviceOrder;
                 try {
                     serviceOrder = Integer.parseInt(orderParam);
+                    if (serviceOrder < 0) {
+                        serviceOrder = i;
+                    }
                 } catch (NumberFormatException e) {
                     serviceOrder = i;
                 }
