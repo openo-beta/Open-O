@@ -257,11 +257,26 @@ public class OmdGateway {
 
 			WebClient wc = WebClient.create(fullURL);
 			WebClient.getConfig(wc).getHttpConduit().setTlsClientParameters(getTLSClientParameters(loggedInInfo));
-			WebClient.getConfig(wc).getHttpConduit().getClient().setConnectionTimeout((Long.parseLong(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.timeout).getValue())*1000));
-			WebClient.getConfig(wc).getHttpConduit().getClient().setReceiveTimeout((Long.parseLong(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.timeout).getValue())*1000));
+			long timeoutMillis = getTimeoutMillis();
+			WebClient.getConfig(wc).getHttpConduit().getClient().setConnectionTimeout(timeoutMillis);
+			WebClient.getConfig(wc).getHttpConduit().getClient().setReceiveTimeout(timeoutMillis);
 
 			return wc;
 		}
+
+	/** Gateway connection/receive timeout in milliseconds, from the configurable timeout preference (in seconds). */
+	protected long getTimeoutMillis() {
+		long seconds = 30;
+		SystemPreferences pref = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.timeout);
+		if (pref != null && !pref.getValue().trim().isEmpty()) {
+			try {
+				seconds = Long.parseLong(pref.getValue().trim());
+			} catch (NumberFormatException e) {
+				logger.warn("Invalid ONE ID gateway timeout '" + pref.getValue() + "'; using " + seconds + "s");
+			}
+		}
+		return seconds * 1000;
+	}
 
 	protected TLSClientParameters getTLSClientParameters(LoggedInInfo loggedInInfo) throws Exception {
 			hasGatewayPropertiesSet(loggedInInfo);
