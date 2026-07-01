@@ -1,0 +1,116 @@
+-- =====================================================================
+-- OpenO EMR - OntarioMD EHR Connectivity - schema, config, permissions
+-- =====================================================================
+
+-- One audit row per gateway, context and viewlet call
+
+CREATE TABLE IF NOT EXISTS `OMDGatewayTransactionLog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `ended` timestamp NULL DEFAULT NULL,
+  `initiatingProviderNo` varchar(25) DEFAULT NULL,
+  `transactionType` varchar(50) DEFAULT NULL,
+  `externalSystem` varchar(50) DEFAULT NULL,
+  `demographicNo` int(10) DEFAULT NULL,
+  `resultCode` int(10) DEFAULT NULL,
+  `success` tinyint(1) DEFAULT NULL,
+  `error` longtext,
+  `headers` longtext,
+  `uao` varchar(50) DEFAULT NULL,
+  `oscarSessionId` varchar(50) DEFAULT NULL,
+  `contextSessionId` varchar(50) DEFAULT NULL,
+  `secondsLeft` int(10) DEFAULT NULL,
+  `dataSent` longtext,
+  `uniqueSessionId` varchar(50) DEFAULT NULL,
+  `dataRecieved` longtext,
+  `xRequestId` varchar(50) DEFAULT NULL,
+  `xLobTxId` varchar(50) DEFAULT NULL,
+  `xCorrelationId` varchar(50) DEFAULT NULL,
+  `xGtwyClientId` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `OMDGatewayTransactionLog_uniqueSessionId_idx` (`uniqueSessionId`(40)),
+  KEY `OMDGatewayTransactionLog_provider_idx` (`initiatingProviderNo`)
+);
+
+-- Persisted ONE ID session (tokens/toolbar/UAO/hubTopic per provider)
+CREATE TABLE IF NOT EXISTS `OneIdSession` (
+  `providerNo` varchar(25) NOT NULL,          -- provider number (session owner)
+  `refreshToken` varchar(2048) DEFAULT NULL,
+  `idToken` varchar(8192) DEFAULT NULL,
+  `accessToken` blob,
+  `subject` varchar(128) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `uaoName` varchar(255) DEFAULT NULL,
+  `uaoUpi` varchar(64) DEFAULT NULL,
+  `serviceEntitlements` text,
+  `authorizationId` varchar(1024) DEFAULT NULL,
+  `hubTopic` varchar(255) DEFAULT NULL,
+  `timestamp` bigint(20) NOT NULL DEFAULT 0,
+  `lastKeptActive` datetime DEFAULT NULL,
+  `sso` tinyint(1) DEFAULT 0,
+  `toolbar` blob DEFAULT NULL,
+  PRIMARY KEY (`providerNo`)
+);
+
+-- Configurable list of viewlets
+CREATE TABLE IF NOT EXISTS `OneIdViewlet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `keyValue` varchar(50) NOT NULL,
+  `updatedBy` varchar(10) DEFAULT NULL,
+  `updateTime` datetime DEFAULT NULL,
+  `showInEchart` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  `displayMode` varchar(20) NOT NULL DEFAULT 'non-modal',   -- 'modal' or 'non-modal' interface per viewlet
+  PRIMARY KEY (`id`)
+);
+
+
+-- "Under Authority Of" values (one row per provider/UAO assignment)
+CREATE TABLE IF NOT EXISTS `UAO` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `providerNo` varchar(25) DEFAULT NULL,
+  `friendlyName` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `defaultUAO` tinyint(1) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  `addedBy` varchar(25) DEFAULT NULL,
+  `dateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `UAO_provider_name_idx` (`providerNo`,`name`)
+);
+
+
+-- Gateway configuration (entered on the admin settings screen; secrets left blank)
+INSERT INTO `SystemPreferences` (`name`,`value`,`updateDate`) VALUES
+  ('oag_client_id','',NOW()),
+  ('oag_client_secret','',NOW()),
+  ('oag_public_key','',NOW()),                 -- OAG public key from enrollment
+  ('keystore_path','',NOW()),
+  ('keystore_alias','',NOW()),
+  ('keystore_password','',NOW()),
+  ('endpoint_authorize','',NOW()),
+  ('endpoint_access_token','',NOW()),
+  ('endpoint_callback','',NOW()),
+  ('endpoint_audience','',NOW()),
+  ('endpoint_jwks','',NOW()),                  -- JWKS URI for id-token signature validation
+  ('oneid_issuer','',NOW()),                   -- expected id-token issuer
+  ('endpoint_end_session','',NOW()),           -- OIDC end-session endpoint
+  ('endpoint_revocation','',NOW()),            -- token revocation endpoint
+  ('pcoi_key','',NOW()),
+  ('timeout','30000',NOW()),                   -- gateway connection/read timeout (ms)
+  ('oneid.sso.enabled','false',NOW());         -- toggles the ONE ID login button
+
+
+-- Security objects
+--   _admin.ehrConnectivity -> admin gateway / viewlet / UAO screens
+--   _ehr.connectivity      -> provider-facing use (login / launch / UAO / logout)
+INSERT INTO `secObjectName` (`objectName`) VALUES ('_admin.ehrConnectivity');
+INSERT INTO `secObjectName` (`objectName`) VALUES ('_ehr.connectivity');
+
+-- 'x' grants full access
+INSERT INTO `secObjPrivilege` VALUES ('admin','_admin.ehrConnectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('admin','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('doctor','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('nurse','_ehr.connectivity','x',0,999998);

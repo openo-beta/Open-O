@@ -36,19 +36,34 @@ public class OneIdFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession(false);
-        String loggedInUser = null;
+        String loggedInUser =
+            (session != null) ? (String) session.getAttribute("user") : null;
 
-        if (httpRequest.getSession().getAttribute("user") != null) {
-            loggedInUser = (String) httpRequest.getSession().getAttribute("user");
+        if (loggedInUser != null) {
+            try {
+                rehydrateOneIdSession(session, loggedInUser);
+            } catch (Exception e) {
+                // A failure restoring the ONE ID session must never break the request chain;
+                // local (non-ONE ID) login has to keep working regardless.
+                logger.warn("OneIdFilter: skipping ONE ID session rehydration - " + e.getMessage());
+            }
         }
-        if (loggedInUser == null) {
-            chain.doFilter(request, response);
-            return;
-        }
+        // If no ONE ID session exists, the user is accessing the EMR locally with no intent of
+        // authenticating with ONE ID; the request proceeds unchanged.
+        chain.doFilter(request, response);
+    }
+
+    /**
+     * Restores the ONE ID gateway data onto the HTTP session for a logged-in provider that has a
+     * persisted {@link OneIdSession}. No-op when the provider has no ONE ID session.
+     *
+     * @param session      HttpSession the current session (non-null for a logged-in provider)
+     * @param loggedInUser String the logged-in provider number
+     */
+    private void rehydrateOneIdSession(HttpSession session, String loggedInUser) {
         OneIdSession oneIdSession = oneIdSessionDao.find(loggedInUser);
         if (oneIdSession == null) {
             session.removeAttribute(LoggedInInfo.OH_GATEWAY_DATA);
-            chain.doFilter(request, response);
             return;
         }
         OneIdGatewayData gatewayData = (OneIdGatewayData) session.getAttribute(LoggedInInfo.OH_GATEWAY_DATA);
@@ -85,9 +100,6 @@ public class OneIdFilter implements Filter {
             loggedInInfo.setOneIdGatewayData(oneIdGatewayData);
             LoggedInInfo.setLoggedInInfoIntoSession(session, loggedInInfo);
         }
-        // If a session does not exist at all, we have not attempted to log into ONE ID through OSCAR Pro and
-        // can assume the user is accessing the EMR locally with no intent of authenticating with ONE ID
-        chain.doFilter(request, response);
     }
 
     private String getPcoiKey() {
