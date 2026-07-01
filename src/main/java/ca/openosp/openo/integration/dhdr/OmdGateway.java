@@ -167,11 +167,11 @@ public class OmdGateway {
 	}
 	
 	public boolean hasGatewayPropertiesSet(LoggedInInfo loggedInInfo) throws Exception{
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getName();
+		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
 		String clientSecret =
-				systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret).getName();
-		Path keystorePath = Paths.get(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getName());
-		String keystorePassword = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getName();
+				systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret).getValue();
+		Path keystorePath = Paths.get(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getValue());
+		String keystorePassword = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue();
 		OneIdSession oneIdSession = oneIdSessionDao.find(loggedInInfo.getLoggedInProviderNo());
 		String endPoint = oneIdSession == null ? "" : oneIdSession.getUrlFromToolbar(ToolbarKeys.FHIR_ISS.key);
 
@@ -257,8 +257,8 @@ public class OmdGateway {
 
 			WebClient wc = WebClient.create(fullURL);
 			WebClient.getConfig(wc).getHttpConduit().setTlsClientParameters(getTLSClientParameters(loggedInInfo));
-			WebClient.getConfig(wc).getHttpConduit().getClient().setConnectionTimeout((Long.parseLong(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.timeout).getName())*1000));
-			WebClient.getConfig(wc).getHttpConduit().getClient().setReceiveTimeout((Long.parseLong(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.timeout).getName())*1000));
+			WebClient.getConfig(wc).getHttpConduit().getClient().setConnectionTimeout((Long.parseLong(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.timeout).getValue())*1000));
+			WebClient.getConfig(wc).getHttpConduit().getClient().setReceiveTimeout((Long.parseLong(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.timeout).getValue())*1000));
 
 			return wc;
 		}
@@ -267,17 +267,20 @@ public class OmdGateway {
 			hasGatewayPropertiesSet(loggedInInfo);
 			KeyStore ks = KeyStore.getInstance("JKS");
 			ks.load( new FileInputStream(
-                    Paths.get(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getName()).toFile()
+                    Paths.get(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getValue()).toFile()
                 ),
-                systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getName().toCharArray()
+                systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue().toCharArray()
                 );
-			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(ks, systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getName().toCharArray()).build();
+			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(ks, systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue().toCharArray()).build();
 			sslcontext.getDefaultSSLParameters().setNeedClientAuth(true);
 			sslcontext.getDefaultSSLParameters().setWantClientAuth(true);
 
 			TLSClientParameters tlsParams = new TLSClientParameters();
 			tlsParams.setSSLSocketFactory(sslcontext.getSocketFactory());
-			tlsParams.setDisableCNCheck(true);
+			// Hostname (CN) verification stays on; disable it only for local development.
+			if ("true".equalsIgnoreCase(OscarProperties.getInstance().getProperty("oneid.disable_tls_cn_check"))) {
+				tlsParams.setDisableCNCheck(true);
+			}
 
 			return tlsParams;
 		}
@@ -304,13 +307,12 @@ public class OmdGateway {
 	}
 	
 	public Response doGet(LoggedInInfo loggedInInfo, WebClient wc, AuditInfo auditInfo) throws TokenExpiredException {
-		OneIdSession oneIdSession = oneIdSessionDao.find(loggedInInfo.getLoggedInProviderNo());
+		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
+		// Refresh the access token if it has expired (throws when the refresh token is dead too).
+		OneIDTokenUtils.verifyAccessTokenIsValid(loggedInInfo, oneIdGatewayData);
 		String consumerKey = getConsumerKey();
 		String consumerSecret = getConsumerSecret();
-		if(oneIdSession.isExpired()) {
-			throw new TokenExpiredException();
-		}
-		String accessToken = oneIdSession.getAccessToken();
+		String accessToken = oneIdGatewayData.getAccessToken();
 
 		Integer demographicNo = null;
 		String externalSystem = null;
@@ -352,11 +354,10 @@ public class OmdGateway {
 	}
 	
 	public Response doPost(LoggedInInfo loggedInInfo, WebClient wc, Event fhirCastEvent) throws Exception {
-		String consumerKey = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getName();
-		String consumerSecret =systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret).getName();
-		if(loggedInInfo.getOneIdGatewayData().isAccessTokenExpired()) {
-			throw new TokenExpiredException();
-		}
+		String consumerKey = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
+		String consumerSecret =systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret).getValue();
+		// Refresh the access token if it has expired (throws when the refresh token is dead too).
+		OneIDTokenUtils.verifyAccessTokenIsValid(loggedInInfo, loggedInInfo.getOneIdGatewayData());
 		String accessToken = loggedInInfo.getOneIdGatewayData().getAccessToken();
 		Integer demographicNo = null;
 		String externalSystem = null;
@@ -448,12 +449,12 @@ public class OmdGateway {
 	    logger.debug("challenge = "+challenge);
 
 
-		String authorizeUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_authorize).getName();
+		String authorizeUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_authorize).getValue();
 		String callbackUrl = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url"))
-				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getName();
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getName();
+				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getValue();
+		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
 
-		String aud = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getName();
+		String aud = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getValue();
 
 		WebClient wc = WebClient.create(authorizeUrl);
 
@@ -500,13 +501,13 @@ public class OmdGateway {
 		cal.add(Calendar.MINUTE, 10);
 		Date expiryDate = cal.getTime();
 
-		String tokenUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_access_token).getName();
-		String audURL = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getName();
+		String tokenUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_access_token).getValue();
+		String audURL = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getValue();
 
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getName();
-		String alias = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_alias).getName();
-		String keystoreLocation = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getName();
-		String keystorePassword= systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getName();
+		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
+		String alias = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_alias).getValue();
+		String keystoreLocation = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getValue();
+		String keystorePassword= systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue();
 
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("grant_type", "refresh_token");
