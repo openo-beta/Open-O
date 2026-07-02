@@ -93,7 +93,8 @@ public class UaoAdminAction extends ActionSupport {
             if (makeDefault) {
                 ehrConnectivityManager.setDefaultUao(loggedInInfo, uao, providerNo);
             }
-            audit(loggedInInfo, LogConst.ADD, providerNo, name);
+            audit(loggedInInfo, LogConst.ADD, providerNo,
+                    "after={name=" + name + ", friendly=" + friendlyName + ", default=" + makeDefault + "}");
         }
         redirectToList(providerNo);
         return NONE;
@@ -105,11 +106,14 @@ public class UaoAdminAction extends ActionSupport {
         String providerNo = trimToNull(request.getParameter("providerNo"));
         UAO uao = findOwned(loggedInInfo, request.getParameter("id"), providerNo);
         if (uao != null) {
+            String uaoName = uao.getName();
+            boolean wasDefault = Boolean.TRUE.equals(uao.getDefaultUAO());
             uao.setActive(false);
             uao.setDefaultUAO(false);
             uao.setDateUpdated(new Date());
             ehrConnectivityManager.updateUao(loggedInInfo, uao);
-            audit(loggedInInfo, LogConst.DELETE, providerNo, uao.getName());
+            audit(loggedInInfo, LogConst.DELETE, providerNo,
+                    "before={name=" + uaoName + ", default=" + wasDefault + "} after={removed}");
         }
         redirectToList(providerNo);
         return NONE;
@@ -121,8 +125,10 @@ public class UaoAdminAction extends ActionSupport {
         String providerNo = trimToNull(request.getParameter("providerNo"));
         UAO uao = findOwned(loggedInInfo, request.getParameter("id"), providerNo);
         if (uao != null) {
+            String previousDefault = currentDefaultName(loggedInInfo, providerNo);
             ehrConnectivityManager.setDefaultUao(loggedInInfo, uao, providerNo);
-            audit(loggedInInfo, LogConst.UPDATE, providerNo, "default=" + uao.getName());
+            audit(loggedInInfo, LogConst.UPDATE, providerNo,
+                    "before={default=" + previousDefault + "} after={default=" + uao.getName() + "}");
         }
         redirectToList(providerNo);
         return NONE;
@@ -140,9 +146,21 @@ public class UaoAdminAction extends ActionSupport {
         return null;
     }
 
-    private void audit(LoggedInInfo loggedInInfo, String action, String providerNo, String uaoName) {
-        LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), action, "UAO",
-                providerNo + ":" + uaoName, request.getRemoteAddr());
+    private void audit(LoggedInInfo loggedInInfo, String action, String targetProviderNo, String beforeAfter) {
+        LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), action, "uao-assignment",
+                targetProviderNo, request.getRemoteAddr(), null, beforeAfter);
+    }
+
+    private String currentDefaultName(LoggedInInfo loggedInInfo, String providerNo) {
+        List<UAO> list = ehrConnectivityManager.findUaosByProvider(loggedInInfo, providerNo);
+        if (list != null) {
+            for (UAO current : list) {
+                if (Boolean.TRUE.equals(current.getDefaultUAO())) {
+                    return current.getName();
+                }
+            }
+        }
+        return "none";
     }
 
     private void redirectToList(String providerNo) {

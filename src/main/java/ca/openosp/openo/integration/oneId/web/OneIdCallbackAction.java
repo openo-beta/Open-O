@@ -176,6 +176,7 @@ public class OneIdCallbackAction extends ActionSupport {
     }
 
     private String redirectToLoginFailed(String message) {
+        LogAction.addLog("", LogConst.LOGIN, "failed", message, request.getRemoteAddr());
         try {
             response.sendRedirect(request.getContextPath() + "/loginfailed.jsp?errormsg="
                     + URLEncoder.encode(message, "UTF-8"));

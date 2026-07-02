@@ -25,6 +25,8 @@ package ca.openosp.openo.integration.oneId.web;
 
 import ca.openosp.openo.integration.dhdr.OmdGateway;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ActionSupport;
@@ -77,6 +79,7 @@ public class OneIdLoginAction extends ActionSupport {
         } catch (Exception e) {
             logger.error("Failed to start ONE ID login", e);
             ConnectivityErrorHelper.ConnectivityError error = ConnectivityErrorHelper.map(e);
+            LogAction.addLog("", LogConst.LOGIN, "failed", error.getUserMessage(), request.getRemoteAddr());
             try {
                 response.sendRedirect(request.getContextPath() + "/loginfailed.jsp?errormsg="
                         + URLEncoder.encode(error.getUserMessage() + " " + error.getNextStep(), "UTF-8"));
