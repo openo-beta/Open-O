@@ -637,7 +637,7 @@ public class OmdGateway {
 		return response2;
 	}
 	
-	public void refreshToken(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData) {
+	public void refreshToken(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData) throws TokenExpiredException {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, 10);
 		Date expiryDate = cal.getTime();
@@ -689,10 +689,16 @@ public class OmdGateway {
 				String accessToken = respObj.getString("access_token");
 				oneIdGatewayData.processAccessToken(accessToken);
 
+			} else {
+				logger.error("ONE ID token refresh failed (HTTP " + response2.getStatus() + ")");
+				throw new TokenExpiredException();
 			}
 
+		}catch(TokenExpiredException e) {
+			throw e;
 		}catch(Exception e) {
-			logger.error("Error",e);
+			logger.error("ONE ID token refresh failed", e);
+			throw new TokenExpiredException();
 		}
 	}
 }
