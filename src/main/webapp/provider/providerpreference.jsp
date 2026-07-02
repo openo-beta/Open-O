@@ -607,6 +607,14 @@
                     <td align="center"><a href=#
                                           onClick="popupPage(500,860,'providerPrinter.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDefaultPrinter"/></a></td>
                 </tr>
+                <security:oscarSec roleName="<%=roleName$%>" objectName="_ehr.connectivity" rights="w">
+                    <% if (loggedInInfo.hasOneIdKey()) { %>
+                    <tr>
+                        <td align="center"><a href=#
+                                              onClick="if(confirm('Unlink your ONE ID account from OpenO?')){document.location='<%=request.getContextPath()%>/oneIdUnlink.do';}return false;">Unlink ONE ID</a></td>
+                    </tr>
+                    <% } %>
+                </security:oscarSec>
                 <tr>
                     <td align="center"><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewRxPageSize');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetRxPageSize"/></a></td>

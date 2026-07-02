@@ -144,6 +144,14 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
         }
     }
 
+    @Override
+    public void removeOneIdSession(String providerNo) {
+        OneIdSession existing = oneIdSessionDao.find(providerNo);
+        if (existing != null) {
+            oneIdSessionDao.remove(existing);
+        }
+    }
+
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)) {
             throw new RuntimeException("missing required sec object (_admin.ehrConnectivity)");

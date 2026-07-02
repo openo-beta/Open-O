@@ -128,4 +128,12 @@ public interface EhrConnectivityManager {
      * @param oneIdSession OneIdSession the session row to store, keyed by provider number
      */
     void saveOneIdSession(OneIdSession oneIdSession);
+
+    /**
+     * Removes the persisted ONE ID session for a provider so it is no longer rehydrated on later
+     * requests. No-op when no session exists.
+     *
+     * @param providerNo String the provider number
+     */
+    void removeOneIdSession(String providerNo);
 }

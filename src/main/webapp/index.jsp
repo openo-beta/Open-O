@@ -638,6 +638,12 @@
                     </div>
                 </c:if>
 
+                <c:if test="${not empty oneIdSubject}">
+                    <div class="alert">
+                        Sign in once with your OpenO username and password to link your ONE ID account.
+                    </div>
+                </c:if>
+
                 <div class="panel-body">
                     <div class="leftinput">
                         <%--
@@ -702,7 +708,7 @@
                         </form>
 
                         <oscar:oscarPropertiesCheck property="oneid.enabled" value="true" defaultVal="false">
-                            <div class="oneid-or-divider"><span>or</span></div>
+                            <!-- <div class="oneid-or-divider"><span>or</span></div> -->
                             <a href="${pageContext.request.contextPath}/oneIdLogin.do"
                                id="oneIdLogin" class="btn btn-primary btn-block oneIDLogin">
                                 <span class="oneIDLogo"></span>
