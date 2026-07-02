@@ -23,8 +23,6 @@
  */
 package ca.openosp.openo.integration.oneId.web;
 
-import ca.openosp.openo.commn.dao.SecurityDao;
-import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.EhrConnectivityManager;
@@ -55,7 +53,6 @@ public class OneIdUnlinkAction extends ActionSupport {
     private final HttpServletResponse response = ServletActionContext.getResponse();
 
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    private final SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
     private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
 
     public String execute() {
@@ -65,15 +62,11 @@ public class OneIdUnlinkAction extends ActionSupport {
         }
 
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-        Security securityRecord = securityDao.getByProviderNo(providerNo);
-        if (securityRecord != null) {
-            securityRecord.setOneIdKey(null);
-            securityRecord.setOneIdEmail(null);
-            securityDao.updateOneIdKey(securityRecord);
+        if (ehrConnectivityManager.clearOneIdBinding(loggedInInfo, providerNo)) {
             LogAction.addLog(providerNo, LogConst.UNLINK, "ONE ID", "", request.getRemoteAddr());
         }
 
-        ehrConnectivityManager.removeOneIdSession(providerNo);
+        ehrConnectivityManager.removeOneIdSession(loggedInInfo, providerNo);
         if (loggedInInfo.getOneIdGatewayData() != null) {
             loggedInInfo.getOneIdGatewayData().clearGatewayData();
         }

@@ -26,9 +26,11 @@ package ca.openosp.openo.managers;
 import ca.openosp.openo.commn.dao.OMDGatewayTransactionLogDao;
 import ca.openosp.openo.commn.dao.SecurityDao;
 import ca.openosp.openo.commn.dao.SystemPreferencesDao;
+import ca.openosp.openo.commn.dao.UAODao;
 import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
 import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.commn.model.SystemPreferences;
+import ca.openosp.openo.commn.model.UAO;
 import ca.openosp.openo.integration.oneId.OneIdSession;
 import ca.openosp.openo.integration.oneId.OneIdSessionDao;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -59,6 +61,9 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
 
     @Autowired
     private OneIdSessionDao oneIdSessionDao;
+
+    @Autowired
+    private UAODao uaoDao;
 
     @Autowired
     private SecurityInfoManager securityInfoManager;
@@ -145,16 +150,78 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     }
 
     @Override
-    public void removeOneIdSession(String providerNo) {
+    public void removeOneIdSession(LoggedInInfo loggedInInfo, String providerNo) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
         OneIdSession existing = oneIdSessionDao.find(providerNo);
         if (existing != null) {
             oneIdSessionDao.remove(existing);
         }
     }
 
+    @Override
+    public boolean clearOneIdBinding(LoggedInInfo loggedInInfo, String providerNo) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
+        Security securityRecord = securityDao.getByProviderNo(providerNo);
+        if (securityRecord == null) {
+            return false;
+        }
+        securityRecord.setOneIdKey(null);
+        securityRecord.setOneIdEmail(null);
+        securityDao.updateOneIdKey(securityRecord);
+        return true;
+    }
+
+    @Override
+    public List<UAO> findUaosByProvider(LoggedInInfo loggedInInfo, String providerNo) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.READ);
+        return uaoDao.findByProvider(providerNo);
+    }
+
+    @Override
+    public UAO findUao(LoggedInInfo loggedInInfo, Integer id) {
+        UAO uao = uaoDao.find(id);
+        if (uao == null) {
+            return null;
+        }
+        checkProviderAccess(loggedInInfo, uao.getProviderNo(), SecurityInfoManager.READ);
+        return uao;
+    }
+
+    @Override
+    public void createUao(LoggedInInfo loggedInInfo, UAO uao) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
+        uaoDao.persist(uao);
+    }
+
+    @Override
+    public void updateUao(LoggedInInfo loggedInInfo, UAO uao) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
+        uaoDao.merge(uao);
+    }
+
+    @Override
+    public void setDefaultUao(LoggedInInfo loggedInInfo, UAO uao, String providerNo) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
+        uaoDao.setAsDefault(uao, providerNo);
+    }
+
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)) {
             throw new RuntimeException("missing required sec object (_admin.ehrConnectivity)");
         }
+    }
+
+    private void checkProviderAccess(LoggedInInfo loggedInInfo, String targetProviderNo, String privilege) {
+        if (securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)) {
+            return;
+        }
+        String actingProviderNo = (loggedInInfo == null) ? null : loggedInInfo.getLoggedInProviderNo();
+        if (actingProviderNo != null
+                && actingProviderNo.equals(targetProviderNo)
+                && securityInfoManager.hasPrivilege(loggedInInfo, "_ehr.connectivity", privilege, null)) {
+            return;
+        }
+        throw new RuntimeException(
+                "missing required sec object (_admin.ehrConnectivity, or _ehr.connectivity on own provider)");
     }
 }

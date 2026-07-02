@@ -1,0 +1,188 @@
+/**
+ * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
+ * This software is published under the GPL GNU General Public License.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * <p>
+ * This software was written for the
+ * Department of Family Medicine
+ * McMaster University
+ * Hamilton
+ * Ontario, Canada
+ */
+package ca.openosp.openo.integration.oneId.web;
+
+import ca.openosp.openo.commn.model.UAO;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
+import ca.openosp.openo.managers.EhrConnectivityManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.struts2.ActionSupport;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Administrative screen for managing the "Under Authority Of" (UAO) values assigned to a provider.
+ * Lists a provider's active values and supports adding, removing, and choosing the default.
+ * Restricted to administrators.
+ *
+ * @since 2026-07-02
+ */
+public class UaoAdminAction extends ActionSupport {
+
+    private static final Logger logger = MiscUtils.getLogger();
+    private static final String SEC_OBJECT = "_admin.ehrConnectivity";
+
+    private final HttpServletRequest request = ServletActionContext.getRequest();
+    private final HttpServletResponse response = ServletActionContext.getResponse();
+
+    private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
+
+    public String execute() {
+        LoggedInInfo loggedInInfo = loggedInInfo();
+        checkPrivilege(loggedInInfo, "r");
+        String providerNo = trimToNull(request.getParameter("providerNo"));
+        if (providerNo != null) {
+            List<UAO> uaoList = ehrConnectivityManager.findUaosByProvider(loggedInInfo, providerNo);
+            request.setAttribute("uaoList", uaoList);
+        }
+        request.setAttribute("providerNo", providerNo);
+        return "success";
+    }
+
+    public String add() {
+        LoggedInInfo loggedInInfo = loggedInInfo();
+        checkPrivilege(loggedInInfo, "w");
+        String providerNo = trimToNull(request.getParameter("providerNo"));
+        String name = trimToNull(request.getParameter("name"));
+        String friendlyName = trimToNull(request.getParameter("friendlyName"));
+        boolean makeDefault = "true".equals(request.getParameter("defaultUAO"));
+
+        if (providerNo != null && name != null) {
+            UAO uao = new UAO();
+            uao.setProviderNo(providerNo);
+            uao.setName(name);
+            uao.setFriendlyName(friendlyName);
+            uao.setActive(true);
+            uao.setDefaultUAO(makeDefault);
+            uao.setAddedBy(loggedInInfo.getLoggedInProviderNo());
+            uao.setDateCreated(new Date());
+            uao.setDateUpdated(new Date());
+            ehrConnectivityManager.createUao(loggedInInfo, uao);
+            if (makeDefault) {
+                ehrConnectivityManager.setDefaultUao(loggedInInfo, uao, providerNo);
+            }
+            audit(loggedInInfo, LogConst.ADD, providerNo, name);
+        }
+        redirectToList(providerNo);
+        return NONE;
+    }
+
+    public String delete() {
+        LoggedInInfo loggedInInfo = loggedInInfo();
+        checkPrivilege(loggedInInfo, "w");
+        String providerNo = trimToNull(request.getParameter("providerNo"));
+        UAO uao = findOwned(loggedInInfo, request.getParameter("id"), providerNo);
+        if (uao != null) {
+            uao.setActive(false);
+            uao.setDefaultUAO(false);
+            uao.setDateUpdated(new Date());
+            ehrConnectivityManager.updateUao(loggedInInfo, uao);
+            audit(loggedInInfo, LogConst.DELETE, providerNo, uao.getName());
+        }
+        redirectToList(providerNo);
+        return NONE;
+    }
+
+    public String setDefault() {
+        LoggedInInfo loggedInInfo = loggedInInfo();
+        checkPrivilege(loggedInInfo, "w");
+        String providerNo = trimToNull(request.getParameter("providerNo"));
+        UAO uao = findOwned(loggedInInfo, request.getParameter("id"), providerNo);
+        if (uao != null) {
+            ehrConnectivityManager.setDefaultUao(loggedInInfo, uao, providerNo);
+            audit(loggedInInfo, LogConst.UPDATE, providerNo, "default=" + uao.getName());
+        }
+        redirectToList(providerNo);
+        return NONE;
+    }
+
+    private UAO findOwned(LoggedInInfo loggedInInfo, String idValue, String providerNo) {
+        Integer id = parseId(idValue);
+        if (id == null || providerNo == null) {
+            return null;
+        }
+        UAO uao = ehrConnectivityManager.findUao(loggedInInfo, id);
+        if (uao != null && providerNo.equals(uao.getProviderNo())) {
+            return uao;
+        }
+        return null;
+    }
+
+    private void audit(LoggedInInfo loggedInInfo, String action, String providerNo, String uaoName) {
+        LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), action, "UAO",
+                providerNo + ":" + uaoName, request.getRemoteAddr());
+    }
+
+    private void redirectToList(String providerNo) {
+        try {
+            String url = request.getContextPath() + "/admin/uaoAdmin.do";
+            if (providerNo != null) {
+                url += "?providerNo=" + URLEncoder.encode(providerNo, "UTF-8");
+            }
+            response.sendRedirect(url);
+        } catch (Exception e) {
+            logger.error("Failed to redirect to the UAO admin list", e);
+        }
+    }
+
+    private LoggedInInfo loggedInInfo() {
+        return LoggedInInfo.getLoggedInInfoFromSession(request);
+    }
+
+    private void checkPrivilege(LoggedInInfo loggedInInfo, String right) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, SEC_OBJECT, right, null)) {
+            throw new SecurityException("missing required sec object (" + SEC_OBJECT + ")");
+        }
+    }
+
+    private static Integer parseId(String value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            return Integer.valueOf(value.trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private static String trimToNull(String value) {
+        if (value == null) {
+            return null;
+        }
+        value = value.trim();
+        return value.isEmpty() ? null : value;
+    }
+}

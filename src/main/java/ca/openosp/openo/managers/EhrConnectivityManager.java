@@ -26,6 +26,7 @@ package ca.openosp.openo.managers;
 import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
 import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.commn.model.SystemPreferences;
+import ca.openosp.openo.commn.model.UAO;
 import ca.openosp.openo.integration.oneId.OneIdSession;
 import ca.openosp.openo.utility.LoggedInInfo;
 
@@ -115,7 +116,9 @@ public interface EhrConnectivityManager {
     List<OMDGatewayTransactionLog> findLogsByExternalSystem(LoggedInInfo loggedInInfo, String externalSystem);
 
     /**
-     * Returns the provider security records linked to a ONE ID subject.
+     * Returns the provider security records linked to a ONE ID subject. Called only from the ONE ID
+     * callback before a session exists, so it carries no privilege check; the trust boundary is the
+     * OAuth state and nonce plus the id-token signature that produced the subject.
      *
      * @param subject String the ONE ID subject (sub), stored as the provider's oneIdKey
      * @return List&lt;Security&gt; the matching security records, empty when none are linked
@@ -123,7 +126,9 @@ public interface EhrConnectivityManager {
     List<Security> findProvidersByOneId(String subject);
 
     /**
-     * Creates or updates the persisted ONE ID session for a provider.
+     * Creates or updates the persisted ONE ID session for a provider. Called only from the ONE ID
+     * callback while it establishes the session, so it carries no privilege check; the trust boundary
+     * is the OAuth handshake that just authenticated the provider.
      *
      * @param oneIdSession OneIdSession the session row to store, keyed by provider number
      */
@@ -133,7 +138,60 @@ public interface EhrConnectivityManager {
      * Removes the persisted ONE ID session for a provider so it is no longer rehydrated on later
      * requests. No-op when no session exists.
      *
+     * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
      * @param providerNo String the provider number
      */
-    void removeOneIdSession(String providerNo);
+    void removeOneIdSession(LoggedInInfo loggedInInfo, String providerNo);
+
+    /**
+     * Clears the ONE ID association (key and email) from a provider's security record.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
+     * @param providerNo String the provider number
+     * @return boolean true when a security record was found and cleared
+     */
+    boolean clearOneIdBinding(LoggedInInfo loggedInInfo, String providerNo);
+
+    /**
+     * Returns a provider's active UAO values, the default first.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
+     * @param providerNo String the provider number
+     * @return List&lt;UAO&gt; the active UAO values, default-first
+     */
+    List<UAO> findUaosByProvider(LoggedInInfo loggedInInfo, String providerNo);
+
+    /**
+     * Returns a single UAO value by id, or null when none exists.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the value's owning provider
+     * @param id Integer the UAO id
+     * @return UAO the value, or null
+     */
+    UAO findUao(LoggedInInfo loggedInInfo, Integer id);
+
+    /**
+     * Persists a new UAO value.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
+     * @param uao UAO the value to create
+     */
+    void createUao(LoggedInInfo loggedInInfo, UAO uao);
+
+    /**
+     * Updates an existing UAO value.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
+     * @param uao UAO the value to update
+     */
+    void updateUao(LoggedInInfo loggedInInfo, UAO uao);
+
+    /**
+     * Makes one of a provider's UAO values the default and clears the flag on the others.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
+     * @param uao UAO the value to make default
+     * @param providerNo String the provider number
+     */
+    void setDefaultUao(LoggedInInfo loggedInInfo, UAO uao, String providerNo);
 }
