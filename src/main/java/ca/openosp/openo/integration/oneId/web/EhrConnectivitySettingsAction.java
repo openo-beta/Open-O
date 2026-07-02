@@ -115,7 +115,7 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
                 continue;
             }
 
-            ehrConnectivityManager.saveConfig(key, submitted);
+            ehrConnectivityManager.saveConfig(loggedInInfo, key, submitted);
             auditChange(providerNo, ip, name, previous, submitted, secret);
         }
 

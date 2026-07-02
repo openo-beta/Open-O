@@ -24,9 +24,14 @@
 package ca.openosp.openo.managers;
 
 import ca.openosp.openo.commn.dao.OMDGatewayTransactionLogDao;
+import ca.openosp.openo.commn.dao.SecurityDao;
 import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
+import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.commn.model.SystemPreferences;
+import ca.openosp.openo.integration.oneId.OneIdSession;
+import ca.openosp.openo.integration.oneId.OneIdSessionDao;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +53,15 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
 
     @Autowired
     private OMDGatewayTransactionLogDao transactionLogDao;
+
+    @Autowired
+    private SecurityDao securityDao;
+
+    @Autowired
+    private OneIdSessionDao oneIdSessionDao;
+
+    @Autowired
+    private SecurityInfoManager securityInfoManager;
 
     @Override
     public SystemPreferences getConfig(Enum<?> key) {
@@ -73,7 +87,8 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     }
 
     @Override
-    public SystemPreferences saveConfig(Enum<?> key, String value) {
+    public SystemPreferences saveConfig(LoggedInInfo loggedInInfo, Enum<?> key, String value) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
         SystemPreferences pref = systemPreferencesDao.findPreferenceByName(key);
         if (pref == null) {
             pref = new SystemPreferences(key.name(), value);
@@ -87,7 +102,8 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     }
 
     @Override
-    public List<OMDGatewayTransactionLog> getRecentLogs(String providerNo, String externalSystem, int maxRows) {
+    public List<OMDGatewayTransactionLog> getRecentLogs(LoggedInInfo loggedInInfo, String providerNo, String externalSystem, int maxRows) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
         List<OMDGatewayTransactionLog> logs;
         if (providerNo != null) {
             logs = transactionLogDao.findByProviderNo(providerNo);
@@ -103,12 +119,34 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     }
 
     @Override
-    public List<OMDGatewayTransactionLog> findLogsByProviderNo(String providerNo) {
+    public List<OMDGatewayTransactionLog> findLogsByProviderNo(LoggedInInfo loggedInInfo, String providerNo) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
         return transactionLogDao.findByProviderNo(providerNo);
     }
 
     @Override
-    public List<OMDGatewayTransactionLog> findLogsByExternalSystem(String externalSystem) {
+    public List<OMDGatewayTransactionLog> findLogsByExternalSystem(LoggedInInfo loggedInInfo, String externalSystem) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
         return transactionLogDao.findByExternalSystem(externalSystem);
+    }
+
+    @Override
+    public List<Security> findProvidersByOneId(String subject) {
+        return securityDao.findByOneIdKey(subject);
+    }
+
+    @Override
+    public void saveOneIdSession(OneIdSession oneIdSession) {
+        if (oneIdSessionDao.find(oneIdSession.getProviderNo()) == null) {
+            oneIdSessionDao.persist(oneIdSession);
+        } else {
+            oneIdSessionDao.merge(oneIdSession);
+        }
+    }
+
+    private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)) {
+            throw new RuntimeException("missing required sec object (_admin.ehrConnectivity)");
+        }
     }
 }

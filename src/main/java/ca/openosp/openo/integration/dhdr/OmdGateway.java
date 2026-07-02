@@ -59,6 +59,7 @@ import org.hl7.fhir.r4.model.ResourceType;
 
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -472,6 +473,92 @@ public class OmdGateway {
 			throw(e);
 		}
 		return response2;
+	}
+
+	/**
+	 * Builds the private_key_jwt client assertion used to authenticate to the token endpoint,
+	 * signed with the configured keystore key.
+	 *
+	 * @param loggedInInfo LoggedInInfo the current session context
+	 * @return String the signed client-assertion JWT
+	 * @throws Exception when the keystore cannot be read or holds no usable private key
+	 */
+	protected String buildClientAssertion(LoggedInInfo loggedInInfo) throws Exception {
+		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
+		String audURL = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getValue();
+		String alias = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_alias).getValue();
+		String keystoreLocation = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getValue();
+		String keystorePassword = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue();
+
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, 10);
+		Date expiryDate = cal.getTime();
+
+		try (FileInputStream is = new FileInputStream(keystoreLocation)) {
+			KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+			keystore.load(is, keystorePassword.toCharArray());
+			Key key = keystore.getKey(alias, keystorePassword.toCharArray());
+			if (!(key instanceof PrivateKey)) {
+				throw new IllegalStateException("Keystore alias does not hold a private key");
+			}
+			Certificate cert = keystore.getCertificate(alias);
+			return JWT.create().withSubject(clientId).withAudience(audURL).withExpiresAt(expiryDate).withIssuer(clientId)
+					.sign(Algorithm.RSA256((RSAPublicKey) cert.getPublicKey(), (RSAPrivateKey) key));
+		}
+	}
+
+	/**
+	 * Exchanges an authorization code for tokens using PKCE and a private_key_jwt client assertion.
+	 *
+	 * @param loggedInInfo LoggedInInfo the current session context
+	 * @param code String the authorization code returned to the callback
+	 * @param codeVerifier String the PKCE code verifier generated at login
+	 * @return Response the raw token-endpoint response
+	 * @throws Exception when the client assertion cannot be built or the call fails
+	 */
+	public Response exchangeCodeForTokens(LoggedInInfo loggedInInfo, String code, String codeVerifier) throws Exception {
+		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
+		return getTokens(loggedInInfo, code, clientId, codeVerifier, buildClientAssertion(loggedInInfo));
+	}
+
+	/**
+	 * Builds the OAuth2 authorize URL to redirect the browser to, including the requested scope,
+	 * the PKCE code challenge, the state, and the nonce.
+	 *
+	 * @param oneIdGatewayData OneIdGatewayData carries the requested scope and profile
+	 * @param state String the anti-forgery state stored in the session
+	 * @param nonce String the nonce stored in the session for id-token validation
+	 * @param verifier String the PKCE code verifier stored in the session
+	 * @return String the fully-built authorize URL
+	 * @throws Exception when the PKCE challenge cannot be generated
+	 */
+	public String buildAuthorizeUrl(OneIdGatewayData oneIdGatewayData, String state, String nonce, String verifier) throws Exception {
+		String authorizeUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_authorize).getValue();
+		String callbackUrl = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url"))
+				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getValue();
+		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
+		String aud = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getValue();
+		String challenge = PKCEUtils.generateChallengeS256(verifier);
+
+		UriBuilder uriBuilder = UriBuilder.fromUri(authorizeUrl)
+				.queryParam("response_type", "code")
+				.queryParam("scope", oneIdGatewayData.getScope())
+				.queryParam("code_challenge_method", "S256")
+				.queryParam("code_challenge", challenge)
+				.queryParam("redirect_uri", callbackUrl)
+				.queryParam("client_id", clientId)
+				.queryParam("state", state)
+				.queryParam("nonce", nonce);
+		if (oneIdGatewayData.get_profile() != null && !oneIdGatewayData.get_profile().isEmpty()) {
+			uriBuilder.queryParam("_profile", oneIdGatewayData.get_profile());
+		}
+		if (aud != null && !aud.isEmpty()) {
+			uriBuilder.queryParam("aud", aud);
+		}
+		if (oneIdGatewayData.getUao() != null) {
+			uriBuilder.queryParam("uao", oneIdGatewayData.getUao());
+		}
+		return uriBuilder.build().toString();
 	}
 
 	public String generateVerifier() {

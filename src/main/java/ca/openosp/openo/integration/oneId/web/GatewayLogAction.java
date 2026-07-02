@@ -52,14 +52,15 @@ public class GatewayLogAction extends ActionSupport {
     private static final int MAX_ROWS = 500;
 
     public String execute() {
-        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), SEC_OBJECT, "r", null)) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, SEC_OBJECT, "r", null)) {
             throw new SecurityException("missing required sec object (" + SEC_OBJECT + ")");
         }
 
         String providerNo = trimToNull(request.getParameter("providerNo"));
         String externalSystem = trimToNull(request.getParameter("externalSystem"));
 
-        List<OMDGatewayTransactionLog> logs = ehrConnectivityManager.getRecentLogs(providerNo, externalSystem, MAX_ROWS);
+        List<OMDGatewayTransactionLog> logs = ehrConnectivityManager.getRecentLogs(loggedInInfo, providerNo, externalSystem, MAX_ROWS);
 
         request.setAttribute("logs", logs);
         request.setAttribute("providerNo", providerNo);

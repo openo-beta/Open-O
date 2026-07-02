@@ -71,12 +71,30 @@ public class OneIdSession extends AbstractModel<Object> {
   }
 
   /**
+   * Sets the provider number.
+   *
+   * @param providerNo String the provider number
+   */
+  public void setProviderNo(String providerNo) {
+    this.providerNo = providerNo;
+  }
+
+  /**
    * Gets the access token.
    *
    * @return String the OAuth 2.0 access token
    */
   public String getAccessToken() {
     return accessToken;
+  }
+
+  /**
+   * Sets the access token.
+   *
+   * @param accessToken String the OAuth 2.0 access token
+   */
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
   }
 
   /**

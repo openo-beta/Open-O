@@ -24,7 +24,10 @@
 package ca.openosp.openo.managers;
 
 import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
+import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.commn.model.SystemPreferences;
+import ca.openosp.openo.integration.oneId.OneIdSession;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import java.util.List;
 
@@ -74,36 +77,55 @@ public interface EhrConnectivityManager {
     /**
      * Creates or updates the stored value for a gateway setting.
      *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
      * @param key Enum the configuration key
      * @param value String the value to store
      * @return SystemPreferences the saved row
      */
-    SystemPreferences saveConfig(Enum<?> key, String value);
+    SystemPreferences saveConfig(LoggedInInfo loggedInInfo, Enum<?> key, String value);
 
     /**
      * Returns the most recent gateway transaction log rows, optionally filtered by provider or,
      * when no provider is given, by external system.
      *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
      * @param providerNo String restrict to one provider, or null
      * @param externalSystem String restrict to one external system when providerNo is null, or null
      * @param maxRows int the maximum number of rows to return
      * @return List&lt;OMDGatewayTransactionLog&gt; the matching rows, newest first, capped at maxRows
      */
-    List<OMDGatewayTransactionLog> getRecentLogs(String providerNo, String externalSystem, int maxRows);
+    List<OMDGatewayTransactionLog> getRecentLogs(LoggedInInfo loggedInInfo, String providerNo, String externalSystem, int maxRows);
 
     /**
      * Returns the gateway transaction log rows for one provider, newest first.
      *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
      * @param providerNo String the provider number
      * @return List&lt;OMDGatewayTransactionLog&gt; the matching rows
      */
-    List<OMDGatewayTransactionLog> findLogsByProviderNo(String providerNo);
+    List<OMDGatewayTransactionLog> findLogsByProviderNo(LoggedInInfo loggedInInfo, String providerNo);
 
     /**
      * Returns the gateway transaction log rows for one external system, newest first.
      *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
      * @param externalSystem String the external system identifier
      * @return List&lt;OMDGatewayTransactionLog&gt; the matching rows
      */
-    List<OMDGatewayTransactionLog> findLogsByExternalSystem(String externalSystem);
+    List<OMDGatewayTransactionLog> findLogsByExternalSystem(LoggedInInfo loggedInInfo, String externalSystem);
+
+    /**
+     * Returns the provider security records linked to a ONE ID subject.
+     *
+     * @param subject String the ONE ID subject (sub), stored as the provider's oneIdKey
+     * @return List&lt;Security&gt; the matching security records, empty when none are linked
+     */
+    List<Security> findProvidersByOneId(String subject);
+
+    /**
+     * Creates or updates the persisted ONE ID session for a provider.
+     *
+     * @param oneIdSession OneIdSession the session row to store, keyed by provider number
+     */
+    void saveOneIdSession(OneIdSession oneIdSession);
 }

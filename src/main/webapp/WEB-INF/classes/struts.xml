@@ -104,6 +104,8 @@
         <action name="admin/ehrConnectivityLog" class="ca.openosp.openo.integration.oneId.web.GatewayLogAction">
             <result name="success">/admin/ehrConnectivityLog.jsp</result>
         </action>
+        <action name="oneIdLogin" class="ca.openosp.openo.integration.oneId.web.OneIdLoginAction"/>
+        <action name="oneIdCallback" class="ca.openosp.openo.integration.oneId.web.OneIdCallbackAction"/>
         <action name="providerLinkingRules" class="ca.openosp.openo.dashboard.admin.ProviderLinkingRulesAction" />
         <action name="web/dashboard/display/DashboardDisplay" class="ca.openosp.openo.dashboard.display.DisplayDashboard2Action">
             <result name="success">/web/dashboard/display/DashboardDisplay.jsp</result>
