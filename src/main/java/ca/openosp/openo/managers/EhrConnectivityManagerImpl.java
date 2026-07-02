@@ -205,6 +205,17 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
         uaoDao.setAsDefault(uao, providerNo);
     }
 
+    @Override
+    public void setSessionUao(LoggedInInfo loggedInInfo, String providerNo, String uaoValue, String uaoFriendlyName) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
+        OneIdSession session = oneIdSessionDao.find(providerNo);
+        if (session != null) {
+            session.setUaoUpi(uaoValue);
+            session.setUaoName(uaoFriendlyName);
+            oneIdSessionDao.merge(session);
+        }
+    }
+
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)) {
             throw new RuntimeException("missing required sec object (_admin.ehrConnectivity)");

@@ -140,7 +140,7 @@ public class OneIdCallbackAction extends ActionSupport {
             LogAction.addLog(providerNo, LogConst.LOGIN, LogConst.CON_LOGIN, "", request.getRemoteAddr());
             ehrConnectivityManager.saveOneIdSession(buildOneIdSession(providerNo, subject, tokens));
 
-            response.sendRedirect(request.getContextPath() + "/provider/providercontrol.jsp");
+            response.sendRedirect(request.getContextPath() + "/uaoSelect.do");
             return NONE;
         } catch (IdTokenValidationException e) {
             logger.warn("ONE ID id-token validation failed");

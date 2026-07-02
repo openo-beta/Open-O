@@ -113,6 +113,10 @@
         <action name="admin/uaoAdminAdd" class="ca.openosp.openo.integration.oneId.web.UaoAdminAction" method="add"/>
         <action name="admin/uaoAdminDelete" class="ca.openosp.openo.integration.oneId.web.UaoAdminAction" method="delete"/>
         <action name="admin/uaoAdminSetDefault" class="ca.openosp.openo.integration.oneId.web.UaoAdminAction" method="setDefault"/>
+        <action name="uaoSelect" class="ca.openosp.openo.integration.oneId.web.UaoSelectAction">
+            <result name="success">/provider/uaoSelect.jsp</result>
+        </action>
+        <action name="uaoSelectApply" class="ca.openosp.openo.integration.oneId.web.UaoSelectAction" method="select"/>
         <action name="providerLinkingRules" class="ca.openosp.openo.dashboard.admin.ProviderLinkingRulesAction" />
         <action name="web/dashboard/display/DashboardDisplay" class="ca.openosp.openo.dashboard.display.DisplayDashboard2Action">
             <result name="success">/web/dashboard/display/DashboardDisplay.jsp</result>

@@ -194,4 +194,15 @@ public interface EhrConnectivityManager {
      * @param providerNo String the provider number
      */
     void setDefaultUao(LoggedInInfo loggedInInfo, UAO uao, String providerNo);
+
+    /**
+     * Attaches a UAO to the provider's persisted ONE ID session so it survives across requests and
+     * every gateway call carries it. No-op when the provider has no ONE ID session.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
+     * @param providerNo String the provider number
+     * @param uaoValue String the UAO value sent to the gateway
+     * @param uaoFriendlyName String the human-readable UAO label
+     */
+    void setSessionUao(LoggedInInfo loggedInInfo, String providerNo, String uaoValue, String uaoFriendlyName);
 }
