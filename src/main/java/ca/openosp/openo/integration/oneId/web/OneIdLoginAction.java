@@ -33,6 +33,7 @@ import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 /**
@@ -75,8 +76,10 @@ public class OneIdLoginAction extends ActionSupport {
             return NONE;
         } catch (Exception e) {
             logger.error("Failed to start ONE ID login", e);
+            ConnectivityErrorHelper.ConnectivityError error = ConnectivityErrorHelper.map(e);
             try {
-                response.sendRedirect(request.getContextPath() + "/loginfailed.jsp");
+                response.sendRedirect(request.getContextPath() + "/loginfailed.jsp?errormsg="
+                        + URLEncoder.encode(error.getUserMessage() + " " + error.getNextStep(), "UTF-8"));
             } catch (Exception ignored) {
                 // response already committed
             }
