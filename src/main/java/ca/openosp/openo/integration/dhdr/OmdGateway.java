@@ -77,6 +77,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.UUID;
 
 public class OmdGateway {
 
@@ -122,35 +123,62 @@ public class OmdGateway {
 	}
 
 	protected static void completeLog(OMDGatewayTransactionLog log, Response response2) {
-		log.setResultCode(response2.getStatus());
-		log.setSuccess(true);
+		completeLog(log, response2, true);
+	}
 
+	/**
+	 * Records the outcome of a gateway call on its transaction log row.
+	 *
+	 * @param storeResponseBody when false the response body is not stored (used for token
+	 *                          endpoints, whose body carries access/refresh tokens)
+	 */
+	protected static void completeLog(OMDGatewayTransactionLog log, Response response2, boolean storeResponseBody) {
+		log.setResultCode(response2.getStatus());
 		log.setEnded(new Date());
+
+		// Buffer the entity so the body can be read here and again by the caller
+		// (a CXF response stream is otherwise consumable only once).
+		String body = "";
+		try {
+			response2.bufferEntity();
+			body = response2.readEntity(String.class);
+		} catch (Exception e) {
+			logger.warn("Could not read gateway response body: " + e.getMessage());
+		}
+
 		String xRequestId = response2.getHeaderString("X-Request-Id");
 		if (xRequestId != null) {
 			log.setxRequestId(xRequestId);
-			String xLobTxId = response2.getHeaderString("X-LobTxId");
-			if (xLobTxId != null) {
-				log.setxLobTxId(xLobTxId);
-			}
-			String xCorrelationId = response2.getHeaderString("X-Correlation-Id");
-			if (xCorrelationId != null) {
-				log.setxCorrelationId(xCorrelationId);
-			}
-			if (response2.getStatus() >= 300) {
-				log.setError(response2.readEntity(String.class));
-				log.setSuccess(false);
-			} else {
-				logger.info("DATA RECIEVED " + response2.readEntity(String.class));
-				log.setDataRecieved(response2.readEntity(String.class));
-			}
-			logger.error("DATA RECIEVED set to " + log.getDataRecieved());
-			StringBuilder headers = new StringBuilder();
-			for (String headerName : response2.getHeaders().keySet()) {
-				headers.append(headerName + ":" + response2.getHeaderString(headerName) + "\n");
-			}
-			log.setHeaders(headers.toString());
 		}
+		String xLobTxId = response2.getHeaderString("X-LobTxId");
+		if (xLobTxId != null) {
+			log.setxLobTxId(xLobTxId);
+		}
+		String xCorrelationId = response2.getHeaderString("X-Correlation-Id");
+		if (xCorrelationId != null) {
+			log.setxCorrelationId(xCorrelationId);
+		}
+
+		if (response2.getStatus() >= 300) {
+			log.setSuccess(false);
+			log.setError(body);
+		} else {
+			log.setSuccess(true);
+			if (storeResponseBody) {
+				log.setDataRecieved(body);
+			}
+		}
+
+		StringBuilder headers = new StringBuilder();
+		for (String headerName : response2.getHeaders().keySet()) {
+			headers.append(headerName).append(":").append(response2.getHeaderString(headerName)).append("\n");
+		}
+		log.setHeaders(headers.toString());
+	}
+
+	/** Generates a unique X-Request-Id for a single gateway transaction. */
+	protected static String newRequestId() {
+		return UUID.randomUUID().toString();
 	}
 
 	protected List<OperationOutcome> hasOperationOutcome(Bundle bundle)  {
@@ -338,14 +366,16 @@ public class OmdGateway {
 			transactionType = auditInfo.getTransactionType();
 		}
 
+		String requestId = newRequestId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, externalSystem, transactionType);
 		omdGatewayTransactionLog.setDataSent(wc.getCurrentURI().toASCIIString());
 		omdGatewayTransactionLog.setxGtwyClientId(consumerKey);
+		omdGatewayTransactionLog.setxRequestId(requestId);
 		transactionLogDao.persist(omdGatewayTransactionLog);
 
 		Response response2;
 		try {
-			response2 = wc.header("Authorization", "Bearer " + accessToken).header("X-Gtwy-Client-Id", consumerKey).header("X-Gtwy-Client-Secret", consumerSecret).get();
+			response2 = wc.header("Authorization", "Bearer " + accessToken).header("X-Gtwy-Client-Id", consumerKey).header("X-Gtwy-Client-Secret", consumerSecret).header("X-Request-Id", requestId).get();
 			completeLog(omdGatewayTransactionLog,response2);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
@@ -381,14 +411,16 @@ public class OmdGateway {
 			externalSystem = "CMS";
 			transactionType = fhirCastEvent.getHubEvent();
 		}
+		String requestId = newRequestId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, externalSystem, transactionType);
 		omdGatewayTransactionLog.setDataSent(fhirCastEvent.getFhirCastEvent());
 		omdGatewayTransactionLog.setxGtwyClientId(consumerKey);
+		omdGatewayTransactionLog.setxRequestId(requestId);
 		transactionLogDao.persist(omdGatewayTransactionLog);
 		Response response2 = null;
 		try {
 			response2 = wc.header("Authorization", "Bearer " + accessToken).header("X-Gtwy-Client-Id", consumerKey)
-				.header("X-Gtwy-Client-Secret", consumerSecret).header("X-Request-Id", fhirCastEvent.getId())
+				.header("X-Gtwy-Client-Secret", consumerSecret).header("X-Request-Id", requestId)
 				.header("X-Correlation-Id", fhirCastEvent.getId()).header("X-LobTxId", fhirCastEvent.getId())
 				.header("Content-Type", "application/json").post(fhirCastEvent.getFhirCastEvent());
 		completeLog(omdGatewayTransactionLog,response2);
@@ -409,8 +441,10 @@ public class OmdGateway {
 		String callbackUrl = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url"))
 				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getValue();
 
+		String requestId = newRequestId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, externalSystem, transactionType);
 		omdGatewayTransactionLog.setDataSent(null);
+		omdGatewayTransactionLog.setxRequestId(requestId);
 		transactionLogDao.persist(omdGatewayTransactionLog);
 		Response response2 = null;
 		try {
@@ -426,10 +460,10 @@ public class OmdGateway {
 			wc.query("client_assertion", jwt);
 
 
-			response2 = wc.header("Content-Type", "application/x-www-form-urlencoded").post(null);
+			response2 = wc.header("X-Request-Id", requestId).header("Content-Type", "application/x-www-form-urlencoded").post(null);
 
 
-		completeLog(omdGatewayTransactionLog,response2);
+		completeLog(omdGatewayTransactionLog,response2,false);
 		transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
 			e.getMessage();
@@ -549,15 +583,16 @@ public class OmdGateway {
 			for (Entry<String, String> entry : params.entrySet()) {
 				wc.query(entry.getKey(), entry.getValue());
 			}
+			String requestId = newRequestId();
 			OMDGatewayTransactionLog omdGatewayTransactionLog = OmdGateway.getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "REFRESH");
+			omdGatewayTransactionLog.setxRequestId(requestId);
 			transactionLogDao.persist(omdGatewayTransactionLog);
-			Response response2 = wc.header("Content-Type", "application/x-www-form-urlencoded").post(null);
-			completeLog(omdGatewayTransactionLog,response2);
+			Response response2 = wc.header("X-Request-Id", requestId).header("Content-Type", "application/x-www-form-urlencoded").post(null);
+			completeLog(omdGatewayTransactionLog,response2,false);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 
 			if(response2.getStatus() == 200) {
 				String body = response2.readEntity(String.class);
-				logger.debug("BODY FROM REFRESH "+body);
 				JSONObject respObj = new JSONObject(body);
 				String accessToken = respObj.getString("access_token");
 				oneIdGatewayData.processAccessToken(accessToken);

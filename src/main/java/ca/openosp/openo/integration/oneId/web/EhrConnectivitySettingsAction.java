@@ -23,11 +23,11 @@
  */
 package ca.openosp.openo.integration.oneId.web;
 
-import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.commn.model.SystemPreferences.ONEID_KEYS;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
+import ca.openosp.openo.managers.EhrConnectivityManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +55,7 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
     private final HttpServletRequest request = ServletActionContext.getRequest();
 
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    private final SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(SystemPreferencesDao.class);
+    private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
 
     private static final String SEC_OBJECT = "_admin.ehrConnectivity";
 
@@ -110,19 +109,13 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
                 validateKeystorePath(submitted);
             }
 
-            SystemPreferences pref = systemPreferencesDao.findPreferenceByName(key);
+            SystemPreferences pref = ehrConnectivityManager.getConfig(key);
             String previous = pref == null ? "" : pref.getValue();
             if (previous.equals(submitted)) {
                 continue;
             }
 
-            if (pref == null) {
-                systemPreferencesDao.persist(new SystemPreferences(name, submitted));
-            } else {
-                pref.setValue(submitted);
-                pref.setUpdateDate(new Date());
-                systemPreferencesDao.merge(pref);
-            }
+            ehrConnectivityManager.saveConfig(key, submitted);
             auditChange(providerNo, ip, name, previous, submitted, secret);
         }
 
@@ -135,7 +128,7 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
         List<Map<String, String>> settings = new ArrayList<>();
         for (ONEID_KEYS key : EDITABLE_KEYS) {
             boolean secret = SECRET_KEYS.contains(key.name());
-            SystemPreferences pref = systemPreferencesDao.findPreferenceByName(key);
+            SystemPreferences pref = ehrConnectivityManager.getConfig(key);
             Map<String, String> setting = new LinkedHashMap<>();
             setting.put("key", key.name());
             setting.put("label", labelFor(key));
