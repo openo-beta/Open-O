@@ -400,6 +400,11 @@ public class OmdGateway {
 	}
 	
 	public Response doPost(LoggedInInfo loggedInInfo, WebClient wc, Event fhirCastEvent) throws Exception {
+		// Context submission must carry the acting authority; block it when no UAO is selected.
+		OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
+		if (gatewayData == null || gatewayData.getUao() == null || gatewayData.getUao().trim().isEmpty()) {
+			throw new IllegalStateException("A ONE ID Under Authority Of (UAO) value must be selected before submitting context to the gateway.");
+		}
 		String consumerKey = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
 		String consumerSecret =systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret).getValue();
 		// Refresh the access token if it has expired (throws when the refresh token is dead too).

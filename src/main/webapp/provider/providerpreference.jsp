@@ -610,6 +610,10 @@
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_ehr.connectivity" rights="w">
                     <% if (loggedInInfo.hasOneIdKey()) { %>
                     <tr>
+                        <td align="center"><a href="#"
+                                              onClick="document.location='<%=request.getContextPath()%>/uaoSelect.do';return false;">Switch ONE ID authority (UAO)</a></td>
+                    </tr>
+                    <tr>
                         <td align="center"><a href=#
                                               onClick="if(confirm('Unlink your ONE ID account from OpenO?')){document.location='<%=request.getContextPath()%>/oneIdUnlink.do';}return false;">Unlink ONE ID</a></td>
                     </tr>
