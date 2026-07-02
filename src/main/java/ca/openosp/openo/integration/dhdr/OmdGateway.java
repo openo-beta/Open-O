@@ -701,4 +701,52 @@ public class OmdGateway {
 			throw new TokenExpiredException();
 		}
 	}
+
+	/**
+	 * Revokes the ONE ID tokens for the acting provider at the revocation endpoint. Revoking one
+	 * token revokes the whole grant.
+	 *
+	 * @param loggedInInfo LoggedInInfo the current session context
+	 * @param oneIdGatewayData OneIdGatewayData the gateway data holding the access token
+	 * @throws Exception when the client assertion cannot be built or the call fails
+	 */
+	public void revokeToken(LoggedInInfo loggedInInfo, OneIdGatewayData oneIdGatewayData) throws Exception {
+		String revokeUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_revocation).getValue();
+		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
+		String jwt = buildClientAssertion(loggedInInfo);
+		String requestId = newRequestId();
+		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "REVOKE");
+		omdGatewayTransactionLog.setxRequestId(requestId);
+		transactionLogDao.persist(omdGatewayTransactionLog);
+		try {
+			WebClient wc = WebClient.create(revokeUrl);
+			wc.query("token", oneIdGatewayData.getAccessTokenStr());
+			wc.query("client_id", clientId);
+			wc.query("client_assertion_type", "urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer");
+			wc.query("client_assertion", jwt);
+			Response response2 = wc.header("X-Request-Id", requestId).header("Content-Type", "application/x-www-form-urlencoded").post(null);
+			completeLog(omdGatewayTransactionLog, response2, false);
+			transactionLogDao.merge(omdGatewayTransactionLog);
+		} catch (Exception e) {
+			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
+			transactionLogDao.merge(omdGatewayTransactionLog);
+			throw e;
+		}
+	}
+
+	/**
+	 * Builds the OpenID Connect End Session URL to redirect the browser to at logout.
+	 *
+	 * @param idTokenHint String the id token that hints the session being ended, or null
+	 * @return String the End Session URL
+	 */
+	public String buildEndSessionUrl(String idTokenHint) {
+		String endSessionUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_end_session).getValue();
+		String postLogout = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url")) + "oneIdLoggedOut.jsp";
+		UriBuilder uriBuilder = UriBuilder.fromUri(endSessionUrl).queryParam("post_logout_redirect_uri", postLogout);
+		if (idTokenHint != null && !idTokenHint.isEmpty()) {
+			uriBuilder.queryParam("id_token_hint", idTokenHint);
+		}
+		return uriBuilder.build().toString();
+	}
 }

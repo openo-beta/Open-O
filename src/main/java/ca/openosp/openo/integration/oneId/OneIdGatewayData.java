@@ -310,6 +310,10 @@ public class OneIdGatewayData implements Serializable {
     this.idTokenStr = idTokenStr;
   }
 
+  public String getIdTokenStr() {
+    return idTokenStr;
+  }
+
   public void setHubTopic(String hubTopicResponseBody) {
     this.hubTopic = hubTopicResponseBody;
   }

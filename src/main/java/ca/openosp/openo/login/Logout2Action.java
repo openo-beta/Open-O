@@ -25,20 +25,30 @@
 
 package ca.openosp.openo.login;
 
+import ca.openosp.openo.integration.dhdr.OmdGateway;
+import ca.openosp.openo.integration.oneId.OneIdGatewayData;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
+import ca.openosp.openo.managers.EhrConnectivityManager;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 public class Logout2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
+
+    private static final Logger logger = MiscUtils.getLogger();
+    private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
 
 
     public String execute() {
@@ -76,6 +86,9 @@ public class Logout2Action extends ActionSupport {
         String errorMessage = request.getParameter("errorMessage");
         String nameId = request.getParameter("nameId");
 
+        // End the ONE ID session (revoke + remove) while the tokens are still readable.
+        String oneIdEndSessionUrl = endOneIdSession(session);
+
         if (session != null) {
             String user = (String) session.getAttribute("user");
             session.invalidate();
@@ -95,6 +108,45 @@ public class Logout2Action extends ActionSupport {
                 response.addCookie(expiredCookie);
             }
         }
+
+        if (oneIdEndSessionUrl != null) {
+            try {
+                response.sendRedirect(oneIdEndSessionUrl);
+            } catch (Exception e) {
+                logger.error("Failed to redirect to the ONE ID End Session endpoint", e);
+            }
+            return NONE;
+        }
         return SUCCESS;
+    }
+
+    private String endOneIdSession(HttpSession session) {
+        if (session == null) {
+            return null;
+        }
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(session);
+        OneIdGatewayData gatewayData = (loggedInInfo == null) ? null : loggedInInfo.getOneIdGatewayData();
+        if (gatewayData == null) {
+            return null;
+        }
+        String idTokenHint = gatewayData.getIdTokenStr();
+        OmdGateway omdGateway = new OmdGateway();
+        try {
+            omdGateway.revokeToken(loggedInInfo, gatewayData);
+        } catch (Exception e) {
+            logger.error("ONE ID token revoke failed", e);
+        }
+        try {
+            ehrConnectivityManager.removeOneIdSession(loggedInInfo, loggedInInfo.getLoggedInProviderNo());
+        } catch (Exception e) {
+            logger.error("ONE ID session removal failed", e);
+        }
+        gatewayData.clearGatewayData();
+        try {
+            return omdGateway.buildEndSessionUrl(idTokenHint);
+        } catch (Exception e) {
+            logger.error("Failed to build the ONE ID End Session URL", e);
+            return null;
+        }
     }
 }

@@ -62,6 +62,7 @@ public class LoginFilter extends OscarBaseFilter {
             "/ssoLogin.do",
             "/econsultSSOLogin.do",
             "/logout.jsp",
+            "/oneIdLoggedOut.jsp",
             "/index.jsp",
             "/forcepasswordreset.jsp",
             "/loginfailed.jsp",
