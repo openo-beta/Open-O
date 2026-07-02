@@ -40,7 +40,16 @@ public class DHDRManager extends OmdGateway {
   public String search2(LoggedInInfo loggedInInfo, Demographic demographic, Date startDate,
                         Date endDate, String searchId, Integer pageId) throws Exception {
 
-    String dhdrEndpoint = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.dhdr_endpoint).getName();
+    // Mirror oscarPro's getPreferenceValueByName("oneid.dhdr.endpoint", "/MedicationDispense"):
+    // read the configured value, falling back to the default path when the preference is unset.
+    // The path is appended to the FHIR_iss base in getWebClient(). (DHDR01.02 follow-up: compose
+    // the endpoint from FHIR_iss + path rather than a single preference.)
+    SystemPreferences dhdrEndpointPref =
+        systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.dhdr_endpoint);
+    String dhdrEndpoint = (dhdrEndpointPref != null
+        && dhdrEndpointPref.getValue() != null && !dhdrEndpointPref.getValue().trim().isEmpty())
+        ? dhdrEndpointPref.getValue()
+        : "/MedicationDispense";
     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
     WebClient wc = getWebClient(loggedInInfo, dhdrEndpoint);
 
