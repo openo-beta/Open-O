@@ -1834,15 +1834,26 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			}
 			console.log("dleete me ",this.med);
 			if(angular.isDefined(this.med.resource.category) && angular.isDefined(this.med.resource.category.coding)){
-				console.log("CATEGORY FOIND !!!!!",this.med.resource.category);
 				for(coding of this.med.resource.category.coding) {
-					
-					if("http://ehealthontario.ca/fhir/NamingSystem/ca-on-medication-dispense-category" === coding.system) {
+
+					// DHDR-02 (B2 #1): route on the OH dispense-category code. The normative code set
+					// (device/drug/product/service) is stable, but the v4.0.3 IG emits this category
+					// under three different eHealth Ontario system URLs across its own search examples:
+					//   .../NamingSystem/ca-on-medication-dispense-category   (legacy)
+					//   .../CodeSystem/medication-dispense-category           (transitional)
+					//   .../CodeSystem/dispense-category                      (canonical)
+					// Accept the code from any of them (tolerant to OH's URL churn and to future code
+					// additions), but ignore codings from other categorization systems - e.g. the HL7
+					// base medicationdispense-category, whose tokens (inpatient/outpatient/...) differ -
+					// so a foreign system's code is never read as ours and mis-routes an event.
+					if(angular.isDefined(coding.system)
+							&& coding.system.startsWith("http://ehealthontario.ca/fhir/")
+							&& coding.system.endsWith("dispense-category")) {
 						this.categoryCode = coding.code;
 						this.categoryDisplay = coding.display
-					}	
-				}				
-		
+					}
+				}
+
 			}
 
 			if (angular.isDefined(this.med.resource.dosageInstruction)) {
