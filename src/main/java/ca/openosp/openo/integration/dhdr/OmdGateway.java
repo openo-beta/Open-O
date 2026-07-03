@@ -277,6 +277,9 @@ public class OmdGateway {
 		hasGatewayPropertiesSet(loggedInInfo);
 		WebClient wc = WebClient.create(url);
 		WebClient.getConfig(wc).getHttpConduit().setTlsClientParameters(getTLSClientParameters(loggedInInfo));
+		long timeoutMillis = getTimeoutMillis();
+		WebClient.getConfig(wc).getHttpConduit().getClient().setConnectionTimeout(timeoutMillis);
+		WebClient.getConfig(wc).getHttpConduit().getClient().setReceiveTimeout(timeoutMillis);
 		return wc;
 	}
 	

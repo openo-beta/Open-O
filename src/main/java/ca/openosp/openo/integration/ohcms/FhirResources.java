@@ -122,6 +122,10 @@ public class FhirResources {
     Patient patient = new Patient();
     patient.getMeta().addProfile(
         "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-cms-profile-Patient|1.0.0");
+    if (demographic.getHin() == null || demographic.getHin().trim().isEmpty()) {
+      throw new CMSException(
+          "Patient's Health Card Number can not be blank. Verify Patient's details in the demographic record.");
+    }
     patient.addIdentifier()
         .setSystem("https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn")
         .setValue(demographic.getHin());
@@ -132,7 +136,17 @@ public class FhirResources {
       throw new CMSException(
           "Error processing birthdate of patient.  Verify birthdate in patient's demographic record.");
     }
-    Gender gender = Gender.valueOf(demographic.getSex().toUpperCase());
+    if (demographic.getSex() == null || demographic.getSex().trim().isEmpty()) {
+      throw new CMSException(
+          "Patient's gender can not be blank. Verify Patient's details in the demographic record.");
+    }
+    Gender gender;
+    try {
+      gender = Gender.valueOf(demographic.getSex().toUpperCase());
+    } catch (IllegalArgumentException e) {
+      throw new CMSException(
+          "Patient's gender is not a recognized value. Verify Patient's details in the demographic record.");
+    }
     patient.setGender(EnumMappingUtil.genderToAdministrativeGender(gender));
     if (demographic.getAddress() != null && demographic.getCity() != null
         && demographic.getProvince() != null && demographic.getPostal() != null) {
