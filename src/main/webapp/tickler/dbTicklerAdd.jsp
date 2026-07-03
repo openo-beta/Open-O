@@ -96,25 +96,57 @@
     ticklerManager.addTickler(loggedInInfo, tickler);
 
     int ticklerNo = tickler.getId();
-    if (docType != null && docId != null && !docType.trim().equals("") && !docId.trim().equals("") && !docId.equalsIgnoreCase("null")) {
-        if (ticklerNo > 0) {
-            try {
-                // Attach the source document to the tickler using the modern attachment store (ticklerdocs).
-                // The legacy docType is a table_name code (DOC / HRM / HL7 / MDS / CML / ...); anything that
-                // is not a document or HRM report is treated as a lab.
-                DocumentType attachmentType;
+    if (ticklerNo > 0) {
+        try {
+            DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
+
+            // Map the legacy forward-from-document docType (a table_name code: DOC / HRM / HL7 / MDS /
+            // CML / ...) to a DocumentType so it can be merged into the matching picker selection.
+            // Anything that is not a document or HRM report is treated as a lab.
+            DocumentType forwardedType = null;
+            if (docType != null && docId != null && !docType.trim().isEmpty()
+                    && !docId.trim().isEmpty() && !docId.equalsIgnoreCase("null")) {
                 if ("DOC".equalsIgnoreCase(docType)) {
-                    attachmentType = DocumentType.DOC;
+                    forwardedType = DocumentType.DOC;
                 } else if ("HRM".equalsIgnoreCase(docType)) {
-                    attachmentType = DocumentType.HRM;
+                    forwardedType = DocumentType.HRM;
                 } else {
-                    attachmentType = DocumentType.LAB;
+                    forwardedType = DocumentType.LAB;
                 }
-                DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
-                documentAttachmentManager.attachToTickler(loggedInInfo, attachmentType, new String[]{docId}, doccreator, ticklerNo, tickler.getDemographicNo());
-            } catch (Exception e) {
-                MiscUtils.getLogger().error("No link with this tickler", e);
             }
+
+            // The interactive attachment picker (ticklerAdd.jsp) submits one parameter per document
+            // type. attachToTickler performs a full per-type sync (it soft-deletes any stored doc of
+            // that type not in the submitted array), so each type is synced exactly once and the
+            // forwarded document is unioned into its type's list rather than attached separately.
+            java.util.LinkedHashMap<DocumentType, String> attachParams = new java.util.LinkedHashMap<DocumentType, String>();
+            attachParams.put(DocumentType.DOC, "docNo");
+            attachParams.put(DocumentType.LAB, "labNo");
+            attachParams.put(DocumentType.EFORM, "eFormNo");
+            attachParams.put(DocumentType.HRM, "hrmNo");
+            attachParams.put(DocumentType.FORM, "formNo");
+
+            for (java.util.Map.Entry<DocumentType, String> entry : attachParams.entrySet()) {
+                DocumentType attachmentType = entry.getKey();
+                String[] picked = request.getParameterValues(entry.getValue());
+
+                java.util.LinkedHashSet<String> ids = new java.util.LinkedHashSet<String>();
+                if (picked != null) {
+                    for (String id : picked) {
+                        if (id != null && !id.trim().isEmpty()) {
+                            ids.add(id.trim());
+                        }
+                    }
+                }
+                if (forwardedType == attachmentType) {
+                    ids.add(docId.trim());
+                }
+
+                documentAttachmentManager.attachToTickler(loggedInInfo, attachmentType,
+                        ids.toArray(new String[0]), doccreator, ticklerNo, tickler.getDemographicNo());
+            }
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Unable to attach documents to tickler " + ticklerNo, e);
         }
     }
 

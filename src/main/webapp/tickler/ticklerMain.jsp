@@ -879,7 +879,7 @@
                                                        class="noprint"></td>
                     <td class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>">
                         <a href="javascript:void(0)" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.editTickler"/>"
-                           onClick="window.open('<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forJavaScript(String.valueOf(tickler.getId()))%>', 'edit_tickler', 'width=800, height=650')">
+                           onClick="window.open('<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forJavaScript(String.valueOf(tickler.getId()))%>', 'edit_tickler', 'width=960, height=650')">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
                     </td>
