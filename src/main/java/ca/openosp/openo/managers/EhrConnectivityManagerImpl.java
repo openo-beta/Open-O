@@ -216,6 +216,16 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
         }
     }
 
+    @Override
+    public void setSessionHubTopic(LoggedInInfo loggedInInfo, String providerNo, String hubTopic) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
+        OneIdSession session = oneIdSessionDao.find(providerNo);
+        if (session != null) {
+            session.setHubTopic(hubTopic);
+            oneIdSessionDao.merge(session);
+        }
+    }
+
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)) {
             throw new RuntimeException("missing required sec object (_admin.ehrConnectivity)");

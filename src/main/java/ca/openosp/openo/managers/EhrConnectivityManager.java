@@ -205,4 +205,15 @@ public interface EhrConnectivityManager {
      * @param uaoFriendlyName String the human-readable UAO label
      */
     void setSessionUao(LoggedInInfo loggedInInfo, String providerNo, String uaoValue, String uaoFriendlyName);
+
+    /**
+     * Persists the CMS-generated context topic onto the provider's ONE ID session so it survives
+     * across requests and every context call is made against the same topic. No-op when the provider
+     * has no ONE ID session.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
+     * @param providerNo String the provider number
+     * @param hubTopic String the CMS context topic (hub.topic)
+     */
+    void setSessionHubTopic(LoggedInInfo loggedInInfo, String providerNo, String hubTopic);
 }

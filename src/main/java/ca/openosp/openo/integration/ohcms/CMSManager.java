@@ -24,6 +24,7 @@ import ca.openosp.openo.integration.dhdr.OmdGateway;
 import ca.openosp.openo.integration.fhircast.Event;
 import ca.openosp.openo.integration.fhircast.UserLogin;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
+import ca.openosp.openo.managers.EhrConnectivityManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -49,7 +50,10 @@ public class CMSManager {
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
     JSONObject responseB = new JSONObject(hubTopicResponseBody);
     logger.debug("hubTopicResponse: " + hubTopicResponseBody);
-    oneIdGatewayData.setHubTopic(responseB.getString("hub.topic"));
+    String hubTopic = responseB.getString("hub.topic");
+    oneIdGatewayData.setHubTopic(hubTopic);
+    EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
+    ehrConnectivityManager.setSessionHubTopic(loggedInInfo, loggedInInfo.getLoggedInProviderNo(), hubTopic);
     return null;
   }
 
