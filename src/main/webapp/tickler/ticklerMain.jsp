@@ -228,7 +228,7 @@
             function renderEditIcon(data, type, row) {
                 return '<a href="javascript:void(0)" title="Edit Tickler" ' +
                     'onClick="window.open(\'' + ctx + '/tickler/ticklerEdit.jsp?tickler_no=' + row.id +
-                    '\', \'edit_tickler\', \'width=800, height=650\')">' +
+                    '\', \'edit_tickler\', \'width=960, height=650\')">' +
                     '<span class="glyphicon glyphicon-pencil"></span></a>';
             }
 
