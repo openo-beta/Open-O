@@ -20,12 +20,16 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opensymphony.xwork2.ActionSupport;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.dao.TicklerDocsDao;
 import ca.openosp.openo.commn.model.CustomFilter;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.commn.model.TicklerDocs;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.managers.TicklerManager;
 import ca.openosp.openo.tickler.dto.TicklerCommentDTO;
-import ca.openosp.openo.tickler.dto.TicklerLinkDTO;
 import ca.openosp.openo.tickler.dto.TicklerListDTO;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
@@ -44,6 +48,8 @@ public class TicklerList2Action extends ActionSupport {
 
     private TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private TicklerDocsDao ticklerDocsDao = SpringUtils.getBean(TicklerDocsDao.class);
+    private PatientLabRoutingDao patientLabRoutingDao = SpringUtils.getBean(PatientLabRoutingDao.class);
 
     /**
      * Handles DataTables server-side processing requests. Accepts standard
@@ -175,18 +181,52 @@ public class TicklerList2Action extends ActionSupport {
         row.put("warning", warning);
 
         ArrayNode linksArray = objectMapper.createArrayNode();
-        List<TicklerLinkDTO> linkList = tickler.getLinks();
-        if (linkList != null) {
-            for (TicklerLinkDTO tl : linkList) {
-                ObjectNode linkNode = objectMapper.createObjectNode();
-                linkNode.put("tableName", tl.getTableName());
-                linkNode.put("tableId", tl.getTableId());
-                linksArray.add(linkNode);
-            }
+        List<TicklerDocs> ticklerDocsList = ticklerDocsDao.findByTicklerId(tickler.getId());
+        for (TicklerDocs td : ticklerDocsList) {
+            ObjectNode linkNode = objectMapper.createObjectNode();
+            linkNode.put("tableName", resolveAttachmentType(td));
+            linkNode.put("tableId", td.getDocumentNo());
+            linksArray.add(linkNode);
         }
         row.set("links", linksArray);
 
         return row;
+    }
+
+    /**
+     * Resolves the attachment type string used by the client-side link renderer for a
+     * tickler document attachment. Lab attachments are resolved to their originating lab
+     * sub-type (MDS/CML/HL7/BC) via {@link PatientLabRoutingDao}.
+     *
+     * @param ticklerDoc TicklerDocs the attachment to resolve
+     * @return String the attachment type understood by buildAttachmentLink() in ticklerMain.jsp
+     */
+    private String resolveAttachmentType(TicklerDocs ticklerDoc) {
+        String docType = ticklerDoc.getDocType();
+        if (TicklerDocs.DOCTYPE_DOC.equals(docType)) {
+            return "DOC";
+        }
+        if (TicklerDocs.DOCTYPE_HRM.equals(docType)) {
+            return "HRM";
+        }
+        if (TicklerDocs.DOCTYPE_EFORM.equals(docType)) {
+            return "EFORM";
+        }
+        if (TicklerDocs.DOCTYPE_FORM.equals(docType)) {
+            return "FORM";
+        }
+        PatientLabRouting plr = patientLabRoutingDao.findByLabNo(ticklerDoc.getDocumentNo());
+        String labType = (plr != null) ? plr.getLabType() : null;
+        if (LabResultData.MDS.equals(labType)) {
+            return "MDS";
+        }
+        if (LabResultData.CML.equals(labType)) {
+            return "CML";
+        }
+        if (LabResultData.HL7TEXT.equals(labType)) {
+            return "HL7";
+        }
+        return "BC";
     }
 
     /**
