@@ -900,7 +900,7 @@
                             <TD ROWSPAN="1" class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>">
                                 <%if (Boolean.parseBoolean(OscarProperties.getInstance().getProperty("tickler_edit_enabled"))) {%>
                                 <a href=#
-                                   onClick="popupPage(600,800, '<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forUriComponent(String.valueOf(t.getId()))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.editTickler"/></a>
+                                   onClick="popupPage(600,960, '<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=Encode.forJavaScript(String.valueOf(t.getId()))%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.editTickler"/></a>
                                 <% } %>
                             </TD>
                             <TD ROWSPAN="1" class="<%=Encode.forHtmlAttribute(String.valueOf(cellColour))%>"><a

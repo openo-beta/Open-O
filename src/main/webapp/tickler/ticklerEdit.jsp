@@ -130,6 +130,27 @@
               font-size: 12px !important;
             }
 
+            /* Give the edit popup a little more room so the attachment count badge
+               stays beside the "Manage Attachments" button instead of wrapping under it. */
+            .container {
+                width: auto;
+                max-width: 940px;
+            }
+
+            /* Keep the "Manage Attachments" button and its count badge on one line. */
+            .attachments-cell {
+                white-space: nowrap;
+            }
+
+            /* jQuery UI renders the dialog close control as a fixed ~20px square, which
+               crushes the "Save and Close" label onto multiple overflowing lines. Let it
+               grow to fit the text (matches the Consult/eForm attachment dialog). */
+            .save-and-close-button {
+                width: auto !important;
+                white-space: nowrap;
+                padding: 0 8px !important;
+            }
+
             /*.grid {*/
             /*    display: grid;*/
             /*    grid-template-columns: repeat(10, 1fr);*/
@@ -544,7 +565,7 @@
                 %>
                 <tr>
                     <th colspan="2" style="background-color: #666699;color:white;">Attachments</th>
-                    <td colspan="2">
+                    <td colspan="2" class="attachments-cell">
                         <button type="button" class="btn" id="manageAttachmentsBtn"
                                 title="Manage Attachments"
                                 data-poload="${pageContext.request.contextPath}/previewDocs.do?method=fetchTicklerDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(d.getDemographicNo()))%>&amp;ticklerId=<%=Encode.forHtmlAttribute(String.valueOf(ticklerNo))%>">
