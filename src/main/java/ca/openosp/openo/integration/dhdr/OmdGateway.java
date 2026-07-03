@@ -30,6 +30,7 @@ import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
 import ca.openosp.openo.commn.model.SystemPreferences;
 
 import ca.openosp.openo.integration.fhircast.Event;
+import ca.openosp.openo.integration.ohcms.CMSException;
 import ca.openosp.openo.integration.ohcms.CMSManager;
 import ca.openosp.openo.integration.oneId.OneIDTokenUtils;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
@@ -389,7 +390,7 @@ public class OmdGateway {
 	}
 
 	public String getConsentViewletURL(LoggedInInfo loggedInInfo, int demographicNo, String target,String uniqueToken) throws Exception {
-		CMSManager.consentTargetChange(loggedInInfo, demographicNo,target);
+		setConsentContextWithRetry(loggedInInfo, demographicNo, target);
 		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
 		String url = oneIdGatewayData.getPcoiUrl()+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, "PCOI", "consentViewletLaunch");
@@ -397,6 +398,33 @@ public class OmdGateway {
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
 		transactionLogDao.persist(omdGatewayTransactionLog);
 		return url;
+	}
+
+	private static final int MAX_SET_CONTEXT_ATTEMPTS = 3;
+
+	/**
+	 * Sets the consent-target context on the CMS, retrying a bounded number of times when the CMS
+	 * does not acknowledge it (a {@link CMSException}). Once the attempts are exhausted the last
+	 * failure is propagated so the caller can surface it and leave a re-attempt available. Only a
+	 * non-acknowledgement is retried; a missing UAO or a transport error propagates immediately.
+	 *
+	 * @param loggedInInfo  LoggedInInfo the acting provider session
+	 * @param demographicNo int the patient the context is set for
+	 * @param target        String the consent target
+	 * @throws Exception CMSException when the context is not acknowledged after the bounded attempts
+	 */
+	private void setConsentContextWithRetry(LoggedInInfo loggedInInfo, int demographicNo, String target) throws Exception {
+		CMSException lastFailure = null;
+		for (int attempt = 1; attempt <= MAX_SET_CONTEXT_ATTEMPTS; attempt++) {
+			try {
+				CMSManager.consentTargetChange(loggedInInfo, demographicNo, target);
+				return;
+			} catch (CMSException e) {
+				lastFailure = e;
+				logger.warn("CMS set-context not acknowledged (attempt {} of {})", attempt, MAX_SET_CONTEXT_ATTEMPTS);
+			}
+		}
+		throw lastFailure;
 	}
 	
 	public Response doPost(LoggedInInfo loggedInInfo, WebClient wc, Event fhirCastEvent) throws Exception {

@@ -217,8 +217,14 @@ public class CMSManager {
             param)));
     Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, event);
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
-    logger.debug("userLoginResponse: " + hubTopicResponseBody);
-    return null;
+    logger.debug("consentTargetChange: " + hubTopicResponseBody);
+    if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
+      return null;
+    } else if (hubTopicResponse.getStatus() >= 400 && hubTopicResponseBody != null) {
+      throw new CMSException(hubTopicResponseBody);
+    } else {
+      throw new CMSException();
+    }
   }
 
   @Nullable
@@ -251,7 +257,13 @@ public class CMSManager {
     Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, event);
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
     logger.debug("legacyLaunch: " + hubTopicResponseBody);
-    return null;
+    if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
+      return null;
+    } else if (hubTopicResponse.getStatus() >= 400 && hubTopicResponseBody != null) {
+      throw new CMSException(hubTopicResponseBody);
+    } else {
+      throw new CMSException();
+    }
   }
 
 
