@@ -388,6 +388,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
      * @return List&lt;String&gt; a list of document IDs as strings attached to the tickler
      * @throws RuntimeException if the user lacks the required "_tickler" read privilege
      */
+    @Override
     public List<String> getTicklerAttachments(LoggedInInfo loggedInInfo, Integer ticklerId, DocumentType documentType, Integer demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.READ, demographicNo)) {
             throw new RuntimeException("missing required sec object (_tickler)");
@@ -416,6 +417,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
      * @param demographicNo Integer the patient's demographic number for security validation
      * @throws RuntimeException if the user lacks the required "_tickler" write privilege
      */
+    @Override
     public void attachToTickler(LoggedInInfo loggedInInfo, DocumentType documentType, String[] attachments, String providerNo, Integer ticklerId, Integer demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.WRITE, demographicNo)) {
             throw new RuntimeException("missing required sec object (_tickler)");

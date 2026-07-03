@@ -91,6 +91,7 @@ public class TicklerDocs extends AbstractModel<Integer> {
         setAttachDate(new Date());
     }
 
+    @Override
     public Integer getId() {
         return id;
     }

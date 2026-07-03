@@ -145,7 +145,7 @@ public class DocumentAttach {
             }
             List<TicklerDocs> detachList = ticklerDocsDao.findByTicklerIdDocNoDocType(ticklerId, Integer.valueOf(docId), documentType.getType());
             for (TicklerDocs ticklerDoc : detachList) {
-                ticklerDoc.setDeleted("Y");
+                ticklerDoc.setDeleted(TicklerDocs.DELETED);
                 ticklerDocsDao.merge(ticklerDoc);
             }
         }

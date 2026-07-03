@@ -24,6 +24,7 @@ public class TicklerDocsDaoImpl extends AbstractDaoImpl<TicklerDocs> implements 
         super(TicklerDocs.class);
     }
 
+    @Override
     public List<TicklerDocs> findByTicklerIdDocNoDocType(Integer ticklerId, Integer documentNo, String docType) {
         String sql = "select x from TicklerDocs x where x.ticklerId=?1 and x.documentNo=?2 and x.docType=?3 and x.deleted is NULL";
         Query query = entityManager.createQuery(sql);
@@ -35,6 +36,7 @@ public class TicklerDocsDaoImpl extends AbstractDaoImpl<TicklerDocs> implements 
         return results;
     }
 
+    @Override
     public List<TicklerDocs> findByTicklerIdDocType(Integer ticklerId, String docType) {
         String sql = "select x from TicklerDocs x where x.ticklerId=?1 and x.docType=?2 and x.deleted is NULL";
         Query query = entityManager.createQuery(sql);
@@ -48,6 +50,7 @@ public class TicklerDocsDaoImpl extends AbstractDaoImpl<TicklerDocs> implements 
         return results;
     }
 
+    @Override
     public List<TicklerDocs> findByTicklerId(Integer ticklerId) {
         String sql = "select x from TicklerDocs x where x.ticklerId=?1 and x.deleted is NULL";
         Query query = entityManager.createQuery(sql);
