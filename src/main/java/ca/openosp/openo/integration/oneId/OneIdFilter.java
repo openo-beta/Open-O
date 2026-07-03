@@ -89,7 +89,7 @@ public class OneIdFilter implements Filter {
             oneIdGatewayData.setHubTopic(oneIdSession.getHubTopic());
             oneIdGatewayData.setUao(oneIdSession.getUaoUpi());
             oneIdGatewayData.setUaoFriendlyName(oneIdSession.getUaoName());
-            oneIdGatewayData.setCmsUrl(oneIdSession.getUrlFromToolbar(OmdGateway.ToolbarKeys.CMS_URL.key));
+            oneIdGatewayData.setCmsUrl(resolveCmsEndpoint(oneIdSession));
             oneIdGatewayData.setPcoiUrl(oneIdSession.getUrlFromToolbar(pcoiKey));
             oneIdGatewayData.setFhirIss(oneIdSession.getUrlFromToolbar(OmdGateway.ToolbarKeys.FHIR_ISS.key));
             oneIdGatewayData.setLastKeptActive(oneIdSession.getLastKeptActive());
@@ -100,6 +100,27 @@ public class OneIdFilter implements Filter {
             loggedInInfo.setOneIdGatewayData(oneIdGatewayData);
             LoggedInInfo.setLoggedInInfoIntoSession(session, loggedInInfo);
         }
+    }
+
+    /**
+     * Resolves the CMS server endpoint from the ONE ID toolbar, preferring the "hub.url" key and
+     * falling back to "cms_url". When neither key is present the endpoint is empty and the toolbar
+     * keys that are present are logged.
+     *
+     * @param oneIdSession OneIdSession the persisted ONE ID session carrying the toolbar
+     * @return String the CMS endpoint URL, or an empty string when the toolbar carries neither key
+     */
+    private String resolveCmsEndpoint(OneIdSession oneIdSession) {
+        String endpoint = oneIdSession.getUrlFromToolbar(OmdGateway.ToolbarKeys.HUB_URL.key);
+        if (endpoint == null || endpoint.isEmpty()) {
+            endpoint = oneIdSession.getUrlFromToolbar(OmdGateway.ToolbarKeys.CMS_URL.key);
+        }
+        if (endpoint == null || endpoint.isEmpty()) {
+            logger.warn("ONE ID toolbar carried no CMS endpoint under '"
+                + OmdGateway.ToolbarKeys.HUB_URL.key + "' or '" + OmdGateway.ToolbarKeys.CMS_URL.key
+                + "'; toolbar keys present: " + oneIdSession.getToolbarKeys());
+        }
+        return endpoint;
     }
 
     private String getPcoiKey() {

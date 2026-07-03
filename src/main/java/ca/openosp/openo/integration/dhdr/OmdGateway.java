@@ -92,7 +92,7 @@ public class OmdGateway {
 
 	public enum ToolbarKeys {
 		FHIR_ISS("FHIR_iss"),
-		HUB_URL("hub_url"),
+		HUB_URL("hub.url"),
 		CMS_URL("cms_url");
 
 		public final String key;
