@@ -22,10 +22,8 @@ import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.utility.LoggedInInfo;
-import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
@@ -33,7 +31,6 @@ import java.util.Date;
 
 public class DHDRManager extends OmdGateway {
 
-  private static final Logger logger = MiscUtils.getLogger();
   private final SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(
       SystemPreferencesDao.class);
 
@@ -59,22 +56,19 @@ public class DHDRManager extends OmdGateway {
 
     wc.query("patient.birthdate", demographic.getBirthDayAsString());
 
-    if ("M".equalsIgnoreCase(demographic.getSex())) {
-      wc.query("patient.gender", "male");
-    } else if ("F".equalsIgnoreCase(demographic.getSex())) {
-      wc.query("patient.gender", "female");
-    } else if ("O".equalsIgnoreCase(demographic.getSex())) {
-      wc.query("patient.gender", "other");
-    } else if ("U".equalsIgnoreCase(demographic.getSex())) {
-      wc.query("patient.gender", "unknown");
-    }
+    // DHDR02.02 (B2 #16): the DHDR search is keyed on HCN (+ optional DOB); patient.gender is an
+    // optional param that must not be sent - the EMR's recorded sex can diverge from the provincial
+    // registry and would then wrongly narrow the result set.
 
     wc.query("_count", "1000");
 
+    // DHDR02.03: cap the "whenprepared" upper bound at the supplied endDate, or today when none is
+    // given. (The ported branches were inverted - the null case formatted a null endDate (NPE) and
+    // the non-null case ignored endDate and used new Date().)
     if (endDate == null) {
-      wc.query("whenprepared", "lt" + fmt.format(endDate));
-    } else {
       wc.query("whenprepared", "lt" + fmt.format(new Date()));
+    } else {
+      wc.query("whenprepared", "lt" + fmt.format(endDate));
     }
     if (startDate != null) {
       wc.query("whenprepared", "gt" + fmt.format(startDate));
@@ -94,7 +88,8 @@ public class DHDRManager extends OmdGateway {
     Response response2 = doGet(loggedInInfo, wc, auditInfo);
     String body = response2.readEntity(String.class);
 
-    logger.debug("body:" + body);
+    // The FHIR response body carries dispense PHI - it must not be written to the application log
+    // (DHDR-07 PHI/audit boundary). Access is recorded via AuditInfo above.
 
     return body;
   }

@@ -126,7 +126,10 @@
 		 </div>
 		 <div class="row" style="margin-bottom:2px;">
 		 	<div class="col-xs-12" >
-		 	<i>DHDR is being searched with HIN: {{demographic.hin}}  Sex: {{demographic.sex}}   DOB: {{demographic.dobYear}}-{{demographic.dobMonth}}-{{demographic.dobDay}}</i>
+		 	<i>DHDR is being searched with HIN: {{demographic.hin}}  DOB: {{demographic.dobYear}}-{{demographic.dobMonth}}-{{demographic.dobDay}}</i>
+	 	<br/>
+	 	<!-- DHDR02.05 (B2 #6): display the search period used alongside the results. -->
+	 	<i>Search period: {{searchConfig.startDate | date:'yyyy-MM-dd'}} to {{searchConfig.endDate | date:'yyyy-MM-dd'}}</i>
 		 	</div>
 		 </div>
 		 
@@ -156,6 +159,12 @@
 		 			</div>
 		 		</div>
 				
+				<!-- DHDR02.04: a valid search returning zero events must inform the user. Distinct from the
+			     PCR patient-not-found / consent-suppressed cases (B2 #15), which surface via outcomes above. -->
+			<div class="alert alert-warning" role="alert" ng-show="searchComplete && !searching && outcomes.length === 0 && meds.length === 0 && services.length === 0">
+				No records found for the specified search date period.
+			</div>
+
 				<ul class="nav nav-pills nav-justified">
 				  <li role="presentation" ng-class="currentView('summary')"><a ng-click="showSummary()">Summary</a></li>
 				  <li role="presentation" ng-class="currentView('comp')"><a href="#" ng-click="showComp()">Comparative</a></li>  
@@ -1032,6 +1041,7 @@
 			};
 			$scope.dhdrPatientData = "";
 			$scope.patientDataUnmatched = false;
+			$scope.searchComplete = false;
 			$scope.buttonDisabled = false;
 
 			$scope.hideShowDhirData = function(){
@@ -1490,9 +1500,18 @@
 						}
 					}
 						
-					processEntries(response.entry);
+					// A valid search with zero results may omit the entry array; guard so the empty-state
+					// (DHDR02.04) renders instead of throwing on an undefined entry list.
+					if (response.entry) {
+						processEntries(response.entry);
+					}
 
-					if ($scope.dhdrPatient) {
+					$scope.searchComplete = true;
+
+					// Only run the EMR<->DHDR patient-match comparison once processEntries has populated
+					// dhdrPatient from a returned record; on a zero-result search its fields are still the
+					// placeholder String constructor and .toUpperCase() would throw (breaks DHDR02.04).
+					if ($scope.dhdrPatient && typeof $scope.dhdrPatient.firstName === "string") {
 						let demographicDob = $scope.demographic.dobYear
 								+ "-" + $scope.demographic.dobMonth + "-"
 								+ $scope.demographic.dobDay;
@@ -1514,7 +1533,7 @@
 								|| $scope.dhdrPatient.genderUnmatched);
 					}
 
-					if(response.link.length > 1){
+					if(response.link && response.link.length > 1){
 						$scope.searchConfig.searchId = response.id;
 						console.log("$scope.searchConfig.",$scope.searchConfig);
 						if($scope.searchConfig.pageId == null){
