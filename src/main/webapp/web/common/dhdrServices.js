@@ -82,34 +82,6 @@ angular.module("dhdrServices", [])
                     deferred.reject("An error occured check log for additional details");
                 });
                 return deferred.promise;
-            },
-            muteDisclaimer: function (dType) {
-                var deferred = $q.defer();
-                $http({
-                    url: this.apiPath + '/dhdr/muteDisclaimer/' + dType,
-                    method: "GET",
-                    headers: this.configHeaders,
-                }).then(function (response) {
-                    deferred.resolve(response);
-                }, function (data, status, headers) {
-                    console.log("data error ", data);
-                    deferred.reject("An error occured check log for additional details");
-                });
-                return deferred.promise;
-            },
-            showDisclaimer: function (dType) {
-                var deferred = $q.defer();
-                $http({
-                    url: this.apiPath + '/dhdr/showDisclaimer/' + dType,
-                    method: "GET",
-                    headers: this.configHeaders,
-                }).then(function (response) {
-                    deferred.resolve(response);
-                }, function (data, status, headers) {
-                    console.log("data error ", data);
-                    deferred.reject("An error occured check log for additional details");
-                });
-                return deferred.promise;
             }
         };
     });

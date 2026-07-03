@@ -135,8 +135,8 @@
 		 
 		 <div class="row" style="margin-bottom:10px;">
 		 	<div class="col-xs-12" >
-		 		<div class="alert alert-info" role="alert" ng-show="showDHDRDisclaimer">
-		 				<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="closeWarning()"><span aria-hidden="true">&times;</span></button>
+		 		<!-- DHDR03.03: non-intrusive disclaimer - always rendered, no dismiss control (v3.0 retired the DHDR15.03 suppress path). -->
+		 		<div class="alert alert-info" role="alert">
 		 				<i>Warning: Limited to Drug and Pharmacy Service Information available in the Digital Health Drug Repository (DHDR) EHR Service. 
 		 					To ensure a Best Possible Medication History, please review this information with the patient/family and use other available sources of medication 
 		 					information in addition to the DHDR EHR Service. For more details on the information available in the DHDR EHR Service, 
@@ -1022,7 +1022,6 @@
 			$scope.searchConfig.startDate = new Date($scope.searchConfig.endDate);
 			$scope.searchConfig.startDate.setDate($scope.searchConfig.endDate.getDate() - defaultDaysToSearch);
 			$scope.searching = false;
-			$scope.showDHDRDisclaimer = true;
 			$scope.hideShowDhirDataVal = true;
 			$scope.showSummaryProductFilter = false;
 			$scope.showSummaryServiceFilter = false;
@@ -1096,31 +1095,6 @@
 			
 			
 			
-			$scope.closeWarning = function(){
-				$scope.showDHDRDisclaimer = false;
-				dhdrService.muteDisclaimer("DHDR").then(function(data) {
-					console.log("set to hidden",data);
-				}, function(errorMessage) {
-					alert("Error saving ")
-					//rxComp.error = errorMessage;
-				});	
-			
-			}
-			
-			$scope.getShowDisclaimerStatus = function(){
-				dhdrService.showDisclaimer("DHDR").then(function(data) {
-					console.log("set to hidden",data);
-					if(data.status == 268){
-						$scope.showDHDRDisclaimer = false;
-					}else{
-						$scope.showDHDRDisclaimer = true;
-					}
-				}, function(errorMessage) {
-					alert("Error saving ")
-					//rxComp.error = errorMessage;
-				});	
-			}
-			$scope.getShowDisclaimerStatus();
 			
 			getAllActiveProviders = function(){
 	    			providerService.getAllActiveProviders().then(function(data){

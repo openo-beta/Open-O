@@ -39,7 +39,6 @@ import ca.openosp.openo.integration.dhdr.DHDRManager;
 import ca.openosp.openo.integration.dhdr.DHDRPrint;
 import ca.openosp.openo.integration.dhdr.OmdGateway;
 import ca.openosp.openo.integration.ohcms.CMSException;
-import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -243,54 +242,6 @@ public class DHDRService extends AbstractServiceImpl {
     omdGateway.logDataReceived(loggedInInfo, "PCOI", status, message,
         demographicNo, uniqueToken);
     return Response.ok(true).build();
-  }
-
-  /**
-   * Suppresses the DHDR disclaimer for the remainder of the provider's session.
-   *
-   * @param disclaimerType String the disclaimer to mute; only {@code DHDR} is recognized
-   * @return Response indicating the disclaimer is now muted, or no-content for an unknown type
-   */
-  @GET
-  @Path("/muteDisclaimer/{disclaimerType}")
-  @Produces("application/json")
-  public Response muteDisclaimer(@PathParam("disclaimerType") String disclaimerType) {
-    LoggedInInfo loggedInInfo = getLoggedInInfo();
-    if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "r", (String) null)) {
-      throw new AccessDeniedException(SECURITY_OBJECT, "r");
-    }
-    if ("DHDR".equals(disclaimerType)) {
-      loggedInInfo.getSession().setAttribute("MUTE.gateway.DHDR", Boolean.TRUE);
-      String contentId = null;
-      String demographicNo = null;
-      String data = null;
-      LogAction.addLog(loggedInInfo, "HIDE", "DHDR Disclaimer", contentId, demographicNo, data);
-      return Response.ok("{\"DHDR\":\"false\"}").build();
-    }
-    return Response.noContent().build();
-  }
-
-  /**
-   * Reports whether the DHDR disclaimer is currently muted for the provider's session.
-   *
-   * @param disclaimerType String the disclaimer to check; only {@code DHDR} is recognized
-   * @return Response with status 268 and {@code {"DHDR":"true"}} when muted, otherwise
-   *     {@code {"DHDR":"false"}}
-   */
-  @GET
-  @Path("/showDisclaimer/{disclaimerType}")
-  @Produces("application/json")
-  public Response showDisclaimer(@PathParam("disclaimerType") String disclaimerType) {
-    LoggedInInfo loggedInInfo = getLoggedInInfo();
-    if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "r", (String) null)) {
-      throw new AccessDeniedException(SECURITY_OBJECT, "r");
-    }
-    if ("DHDR".equals(disclaimerType)) {
-      if (loggedInInfo.getSession().getAttribute("MUTE.gateway.DHDR") != null) {
-        return Response.status(268).entity("{\"DHDR\":\"true\"}").build();
-      }
-    }
-    return Response.ok("{\"DHDR\":\"false\"}").build();
   }
 
   /**
