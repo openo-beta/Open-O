@@ -26,6 +26,7 @@
 package ca.openosp.openo.login;
 
 import ca.openosp.openo.integration.dhdr.OmdGateway;
+import ca.openosp.openo.integration.ohcms.CMSManager;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
@@ -131,6 +132,11 @@ public class Logout2Action extends ActionSupport {
         }
         String idTokenHint = gatewayData.getIdTokenStr();
         OmdGateway omdGateway = new OmdGateway();
+        try {
+            CMSManager.userLogout(loggedInInfo);
+        } catch (Exception e) {
+            logger.error("ONE ID CMS context clear on logout failed", e);
+        }
         try {
             omdGateway.revokeToken(loggedInInfo, gatewayData);
         } catch (Exception e) {
