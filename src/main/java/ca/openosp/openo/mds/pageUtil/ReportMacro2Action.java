@@ -139,7 +139,10 @@ public class ReportMacro2Action extends ActionSupport {
                 ticklerDao.persist(t);
 
                 // Attach the lab to the tickler using the modern attachment store (ticklerdocs).
-                TicklerDocs ticklerDocs = new TicklerDocs(t.getId(), Integer.parseInt(segmentID), TicklerDocs.DOCTYPE_LAB, providerNo);
+                // Use the authenticated provider (not the raw request param) for the audit trail,
+                // matching the tickler creator above.
+                String loggedInProviderNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
+                TicklerDocs ticklerDocs = new TicklerDocs(t.getId(), Integer.parseInt(segmentID), TicklerDocs.DOCTYPE_LAB, loggedInProviderNo);
                 ticklerDocsDao.persist(ticklerDocs);
             } else {
                 logger.info("Cannot sent tickler. Not enough information in macro definition. providers taskAssignedTo and message");

@@ -73,6 +73,8 @@ class TicklerDocsDaoIntegrationTest extends OpenOTestBase {
 
     @Test
     @DisplayName("should persist and find tickler attachment by id")
+    @Tag("create")
+    @Tag("read")
     void shouldPersistAndFindAttachment_whenAttachmentSaved() {
         TicklerDocs saved = persistAttachment(TICKLER_ID, 11, TicklerDocs.DOCTYPE_DOC);
 
