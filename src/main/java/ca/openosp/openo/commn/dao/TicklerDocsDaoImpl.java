@@ -44,9 +44,6 @@ public class TicklerDocsDaoImpl extends AbstractDaoImpl<TicklerDocs> implements 
         query.setParameter(2, docType);
 
         List<TicklerDocs> results = query.getResultList();
-        if (results == null) {
-            return Collections.emptyList();
-        }
         return results;
     }
 
@@ -55,6 +52,19 @@ public class TicklerDocsDaoImpl extends AbstractDaoImpl<TicklerDocs> implements 
         String sql = "select x from TicklerDocs x where x.ticklerId=?1 and x.deleted is NULL";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, ticklerId);
+
+        List<TicklerDocs> results = query.getResultList();
+        return results;
+    }
+
+    @Override
+    public List<TicklerDocs> findByTicklerIds(List<Integer> ticklerIds) {
+        if (ticklerIds == null || ticklerIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        String sql = "select x from TicklerDocs x where x.ticklerId in (:ticklerIds) and x.deleted is NULL";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("ticklerIds", ticklerIds);
 
         List<TicklerDocs> results = query.getResultList();
         return results;

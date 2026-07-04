@@ -959,7 +959,7 @@
                                                     patientLabRoutingDao.findByLabNo(td.getDocumentNo());
                                             String labType = (plr != null) ? plr.getLabType() : null;
                                             if (LabResultData.MDS.equals(labType)) {
-                                                href = "SegmentDisplay.jsp?segmentID=" + Encode.forUriComponent(docNoStr)
+                                                href = request.getContextPath() + "/oscarMDS/SegmentDisplay.jsp?segmentID=" + Encode.forUriComponent(docNoStr)
                                                         + "&providerNo=" + Encode.forUriComponent(String.valueOf(user_no))
                                                         + "&searchProviderNo=" + Encode.forUriComponent(String.valueOf(user_no)) + "&status=";
                                             } else if (LabResultData.CML.equals(labType)) {

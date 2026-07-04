@@ -6,8 +6,11 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -106,12 +109,16 @@ public class TicklerList2Action extends ActionSupport {
         DateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", locale);
         DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss", locale);
 
+        Map<Integer, List<TicklerDocs>> ticklerDocsByTicklerId = loadTicklerDocsByTicklerId(ticklers);
+        Map<Integer, String> labTypeByDocumentNo = loadLabTypesByDocumentNo(ticklerDocsByTicklerId);
+
         ArrayNode dataArray = objectMapper.createArrayNode();
         ObjectNode commentsMap = objectMapper.createObjectNode();
 
         for (TicklerListDTO tickler : ticklers) {
             boolean warning = isWarning(tickler.getServiceDate(), ticklerWarnDays);
-            dataArray.add(buildTicklerRow(tickler, warning, datetimeFormat, dateOnlyFormat, locale));
+            List<TicklerDocs> ticklerDocs = ticklerDocsByTicklerId.getOrDefault(tickler.getId(), Collections.emptyList());
+            dataArray.add(buildTicklerRow(tickler, warning, datetimeFormat, dateOnlyFormat, locale, ticklerDocs, labTypeByDocumentNo));
 
             List<TicklerCommentDTO> tcomments = tickler.getComments();
             if (tcomments != null && !tcomments.isEmpty()) {
@@ -159,11 +166,16 @@ public class TicklerList2Action extends ActionSupport {
      * @param datetimeFormat DateFormat for full datetime display
      * @param dateOnlyFormat DateFormat for date-only display
      * @param locale Locale for localized status text
+     * @param ticklerDocs List&lt;TicklerDocs&gt; this tickler's attachments, pre-fetched in bulk by
+     *        {@link #loadTicklerDocsByTicklerId}
+     * @param labTypeByDocumentNo Map&lt;Integer, String&gt; lab document number to lab sub-type,
+     *        pre-fetched in bulk by {@link #loadLabTypesByDocumentNo}
      * @return ObjectNode the JSON row
      */
     private ObjectNode buildTicklerRow(TicklerListDTO tickler, boolean warning,
                                        DateFormat datetimeFormat, DateFormat dateOnlyFormat,
-                                       Locale locale) {
+                                       Locale locale, List<TicklerDocs> ticklerDocs,
+                                       Map<Integer, String> labTypeByDocumentNo) {
         ObjectNode row = objectMapper.createObjectNode();
         row.put("id", tickler.getId());
         row.put("demoNo", tickler.getDemographicNo());
@@ -181,10 +193,9 @@ public class TicklerList2Action extends ActionSupport {
         row.put("warning", warning);
 
         ArrayNode linksArray = objectMapper.createArrayNode();
-        List<TicklerDocs> ticklerDocsList = ticklerDocsDao.findByTicklerId(tickler.getId());
-        for (TicklerDocs td : ticklerDocsList) {
+        for (TicklerDocs td : ticklerDocs) {
             ObjectNode linkNode = objectMapper.createObjectNode();
-            linkNode.put("tableName", resolveAttachmentType(td));
+            linkNode.put("tableName", resolveAttachmentType(td, labTypeByDocumentNo));
             linkNode.put("tableId", td.getDocumentNo());
             linksArray.add(linkNode);
         }
@@ -194,14 +205,64 @@ public class TicklerList2Action extends ActionSupport {
     }
 
     /**
+     * Batch-loads {@link TicklerDocs} attachments for a page of tickler results in a single query,
+     * grouped by tickler id, to avoid an N+1 query pattern when rendering the list.
+     *
+     * @param ticklers List&lt;TicklerListDTO&gt; the page of ticklers being rendered
+     * @return Map&lt;Integer, List&lt;TicklerDocs&gt;&gt; attachments grouped by tickler id
+     */
+    private Map<Integer, List<TicklerDocs>> loadTicklerDocsByTicklerId(List<TicklerListDTO> ticklers) {
+        List<Integer> ticklerIds = ticklers.stream()
+                .map(TicklerListDTO::getId)
+                .collect(Collectors.toList());
+        List<TicklerDocs> ticklerDocs = ticklerDocsDao.findByTicklerIds(ticklerIds);
+        return ticklerDocs.stream().collect(Collectors.groupingBy(TicklerDocs::getTicklerId));
+    }
+
+    /**
+     * Batch-loads lab sub-types (MDS/CML/HL7/BC) for every lab attachment across a page of tickler
+     * results in a single query, to avoid an N+1 query pattern when resolving attachment link types.
+     *
+     * @param ticklerDocsByTicklerId Map&lt;Integer, List&lt;TicklerDocs&gt;&gt; attachments grouped by
+     *        tickler id, as returned by {@link #loadTicklerDocsByTicklerId}
+     * @return Map&lt;Integer, String&gt; lab document number to lab sub-type
+     */
+    private Map<Integer, String> loadLabTypesByDocumentNo(Map<Integer, List<TicklerDocs>> ticklerDocsByTicklerId) {
+        List<Integer> labDocumentNos = ticklerDocsByTicklerId.values().stream()
+                .flatMap(List::stream)
+                .filter(td -> isLabDocType(td.getDocType()))
+                .map(TicklerDocs::getDocumentNo)
+                .collect(Collectors.toList());
+        List<PatientLabRouting> routings = patientLabRoutingDao.findByLabNos(labDocumentNos);
+        return routings.stream().collect(Collectors.toMap(
+                PatientLabRouting::getLabNo, PatientLabRouting::getLabType, (first, second) -> first));
+    }
+
+    /**
+     * Checks whether a {@link TicklerDocs} doctype represents a lab attachment (as opposed to a
+     * document, HRM report, eForm, or encounter form).
+     *
+     * @param docType String the doctype to check (see {@link TicklerDocs} DOCTYPE_* constants)
+     * @return boolean true if the doctype is a lab attachment
+     */
+    private boolean isLabDocType(String docType) {
+        return !TicklerDocs.DOCTYPE_DOC.equals(docType)
+                && !TicklerDocs.DOCTYPE_HRM.equals(docType)
+                && !TicklerDocs.DOCTYPE_EFORM.equals(docType)
+                && !TicklerDocs.DOCTYPE_FORM.equals(docType);
+    }
+
+    /**
      * Resolves the attachment type string used by the client-side link renderer for a
      * tickler document attachment. Lab attachments are resolved to their originating lab
-     * sub-type (MDS/CML/HL7/BC) via {@link PatientLabRoutingDao}.
+     * sub-type (MDS/CML/HL7/BC) via a pre-fetched batch lookup.
      *
      * @param ticklerDoc TicklerDocs the attachment to resolve
+     * @param labTypeByDocumentNo Map&lt;Integer, String&gt; lab document number to lab sub-type,
+     *        pre-fetched in bulk by {@link #loadLabTypesByDocumentNo}
      * @return String the attachment type understood by buildAttachmentLink() in ticklerMain.jsp
      */
-    private String resolveAttachmentType(TicklerDocs ticklerDoc) {
+    private String resolveAttachmentType(TicklerDocs ticklerDoc, Map<Integer, String> labTypeByDocumentNo) {
         String docType = ticklerDoc.getDocType();
         if (TicklerDocs.DOCTYPE_DOC.equals(docType)) {
             return "DOC";
@@ -215,8 +276,7 @@ public class TicklerList2Action extends ActionSupport {
         if (TicklerDocs.DOCTYPE_FORM.equals(docType)) {
             return "FORM";
         }
-        PatientLabRouting plr = patientLabRoutingDao.findByLabNo(ticklerDoc.getDocumentNo());
-        String labType = (plr != null) ? plr.getLabType() : null;
+        String labType = labTypeByDocumentNo.get(ticklerDoc.getDocumentNo());
         if (LabResultData.MDS.equals(labType)) {
             return "MDS";
         }
