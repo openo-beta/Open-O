@@ -219,6 +219,12 @@ public class DrugConverterImpl extends AbstractConverter<Drug, DrugTo1> implemen
             t.setQuantity(Integer.parseInt(d.getQuantity()));
         }
 
+        // DHDR05.02(i): surface refill duration/quantity on the outbound TO so the DHDR
+        // Comparative view can display the EMR prescription's refill details beside the
+        // dispense events. Previously only the inbound (TO->Drug) direction set these.
+        t.setRefillDuration(d.getRefillDuration());
+        t.setRefillQuantity(d.getRefillQuantity());
+
         this.populateStrengthFromDosage(d, t);
 
         return t;

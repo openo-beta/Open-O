@@ -584,6 +584,8 @@
 			 					<th>Medication</th>
 			 					<th>Prescriber</th>
 			 					<th>DIN</th>
+			 					<th>Qty / Duration</th>
+			 					<th>Refills</th>
 			 					 
 							</tr> 
 						</thead> 
@@ -594,6 +596,8 @@
 			 					<td>{{med.instructions}}</td>
 			 					<td>{{med.providerName}}</td>
 			 					<td>{{med.regionalIdentifier}}</td>
+			 					<td>{{med.quantity}}<span ng-if="med.duration"> / {{med.duration}} {{med.durationUnit}}</span></td>
+			 					<td>{{med.repeats}}<span ng-if="med.refillQuantity"> ({{med.refillQuantity}}<span ng-if="med.refillDuration"> / {{med.refillDuration}}</span>)</span></td>
 			 				</tr>
 			 			</tbody> 
 		 			</table>
@@ -763,11 +767,11 @@
  						</tr>
 						<tr>
 		 					<th>Therapeutic Class</th>
-							<td>{{med.ahfsClass.display}}</td>
+							<td>{{med.ahfsClass}}</td>
  						</tr>
 						<tr>
 		 					<th>Therapeutic Sub-Class</th>
-							<td>{{med.ahfsSubClass.display}}</td>
+							<td>{{med.ahfsSubClass}}</td>
  						</tr>
 						<tr>
 		 					<th>Rx Number</th>
