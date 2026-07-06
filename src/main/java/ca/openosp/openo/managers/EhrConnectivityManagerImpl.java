@@ -33,6 +33,8 @@ import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.commn.model.UAO;
 import ca.openosp.openo.integration.oneId.OneIdSession;
 import ca.openosp.openo.integration.oneId.OneIdSessionDao;
+import ca.openosp.openo.integration.oneId.OneIdViewlet;
+import ca.openosp.openo.integration.oneId.OneIdViewletDao;
 import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +66,9 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
 
     @Autowired
     private UAODao uaoDao;
+
+    @Autowired
+    private OneIdViewletDao oneIdViewletDao;
 
     @Autowired
     private SecurityInfoManager securityInfoManager;
@@ -224,6 +229,30 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
             session.setHubTopic(hubTopic);
             oneIdSessionDao.merge(session);
         }
+    }
+
+    @Override
+    public List<OneIdViewlet> findAllViewlets(LoggedInInfo loggedInInfo) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
+        return oneIdViewletDao.findAllOrderByName();
+    }
+
+    @Override
+    public OneIdViewlet findViewlet(LoggedInInfo loggedInInfo, Integer id) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
+        return oneIdViewletDao.find(id);
+    }
+
+    @Override
+    public void createViewlet(LoggedInInfo loggedInInfo, OneIdViewlet viewlet) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
+        oneIdViewletDao.persist(viewlet);
+    }
+
+    @Override
+    public void updateViewlet(LoggedInInfo loggedInInfo, OneIdViewlet viewlet) {
+        checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
+        oneIdViewletDao.merge(viewlet);
     }
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {

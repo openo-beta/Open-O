@@ -30,7 +30,7 @@ import java.util.Date;
 public class OMDGatewayTransactionLog extends AbstractModel<Integer> {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   @Temporal(TemporalType.TIMESTAMP)
   private Date started;

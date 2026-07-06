@@ -28,6 +28,7 @@ import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.commn.model.UAO;
 import ca.openosp.openo.integration.oneId.OneIdSession;
+import ca.openosp.openo.integration.oneId.OneIdViewlet;
 import ca.openosp.openo.utility.LoggedInInfo;
 
 import java.util.List;
@@ -216,4 +217,37 @@ public interface EhrConnectivityManager {
      * @param hubTopic String the CMS context topic (hub.topic)
      */
     void setSessionHubTopic(LoggedInInfo loggedInInfo, String providerNo, String hubTopic);
+
+    /**
+     * Returns every Viewlet registry entry, including disabled ones, ordered by name.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
+     * @return List&lt;OneIdViewlet&gt; the registry entries
+     */
+    List<OneIdViewlet> findAllViewlets(LoggedInInfo loggedInInfo);
+
+    /**
+     * Returns a single Viewlet registry entry by id, or null when none exists.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
+     * @param id Integer the Viewlet id
+     * @return OneIdViewlet the entry, or null
+     */
+    OneIdViewlet findViewlet(LoggedInInfo loggedInInfo, Integer id);
+
+    /**
+     * Persists a new Viewlet registry entry.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
+     * @param viewlet OneIdViewlet the entry to create
+     */
+    void createViewlet(LoggedInInfo loggedInInfo, OneIdViewlet viewlet);
+
+    /**
+     * Updates an existing Viewlet registry entry.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
+     * @param viewlet OneIdViewlet the entry to update
+     */
+    void updateViewlet(LoggedInInfo loggedInInfo, OneIdViewlet viewlet);
 }

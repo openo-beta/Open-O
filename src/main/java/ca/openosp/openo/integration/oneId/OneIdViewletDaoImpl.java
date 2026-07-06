@@ -31,6 +31,12 @@ public class OneIdViewletDaoImpl extends AbstractDaoImpl<OneIdViewlet>  implemen
     }
 
     @SuppressWarnings("unchecked")
+    public List<OneIdViewlet> findAllOrderByName() {
+        Query query = entityManager.createQuery("SELECT o FROM OneIdViewlet o ORDER BY o.name");
+        return query.getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
     public List<OneIdViewlet> findAllActiveAndShowInEchartTrue() {
         Query query = entityManager.createQuery(
                 "SELECT o FROM OneIdViewlet o WHERE o.deleted = false AND o.showInEchart = true");
