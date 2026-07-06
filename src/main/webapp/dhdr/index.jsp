@@ -211,12 +211,6 @@
 							  <input ng-model="searchtxt.prescriberLastname" type="text" placeholder="type to filter" class="form-control" />
 							</div>
 						  </div>
-						  <div class="form-group">
-							<label class="col-sm-2 control-label">Therapeutic Class</label>
-							<div class="col-sm-10">
-							  <input ng-model="searchtxt.ahfsClass.display" type="text" placeholder="type to filter" class="form-control"/>
-							</div>
-						  </div>
 
 						</form>
 					</div>
@@ -345,6 +339,12 @@
 							</div>
 						  </div>
 						  <div class="form-group">
+							<label class="col-sm-2 control-label">Therapeutic Class</label>
+							<div class="col-sm-10">
+							  <input ng-model="searchServicetxt.ahfsClass" type="text" placeholder="type to filter" class="form-control" />
+							</div>
+						  </div>
+						  <div class="form-group">
 							<label class="col-sm-2 control-label">Last Service Date</label>
 							<div class="col-sm-10">
 							  <input ng-model="searchServicetxt.whenPrepared" type="text" placeholder="type to filter" class="form-control" />
@@ -377,8 +377,8 @@
 					<table class="table table-condensed table-striped table-bordered" ng-show="services.length > 0">
 						<thead>
 							<tr>
-								<td colspan="8">
-									{{services.length}} results returned  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
+								<td colspan="10">
+									{{services.length}} results returned  <button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAllServices()">{{expandAllServices ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
 								</td>
 							</tr>
 							<tr>
@@ -394,6 +394,7 @@
 								<th>
 									<a ng-click="serviceOrderByField='genericName'; serviceReverseSort = !serviceReverseSort">Pharmacy Service Description<span ng-show="serviceOrderByField == 'genericName'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
 								</th>
+								<th>Rx Number</th>
 								<th>Therapeutic Class/Sub-class</th>
 								<th>
 									<a ng-click="serviceOrderByField='dispensingPharmacy'; serviceReverseSort = !serviceReverseSort">Pharmacy Name<span ng-show="serviceOrderByField == 'dispensingPharmacy'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
@@ -409,11 +410,12 @@
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="med in uniqServices | filter : searchServicetxt | orderBy:serviceOrderByField:serviceReverseSort" ng-hide="med.hide" ng-class="getRowClass(med)">
+							<tr ng-repeat="med in (expandAllServices ? services : uniqServices) | filter : searchServicetxt | orderBy:serviceOrderByField:serviceReverseSort" ng-hide="!expandAllServices && med.hide" ng-class="getRowClass(med)">
 								<th scope="row">{{med.whenPrepared | date}}</th>
 								<td scope="row">{{med.whenHandedOver | date}}</td>
 								<td>{{med.brandName.display}}</td>
 								<td>{{med.genericName}} </td>
+								<td>{{med.rxNumber}}</td>
 								<td scope="row">{{med.ahfsClass}}/{{med.ahfsSubClass}}</td>
 								<td>{{med.dispensingPharmacy}}</td>
 								<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} </td>
@@ -464,12 +466,6 @@
 									<label class="col-sm-2 control-label">Prescriber Name</label>
 									<div class="col-sm-10">
 										<input ng-model="searchtxt.prescriberLastname" type="text" placeholder="type to filter" class="form-control" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label">Therapeutic Class</label>
-									<div class="col-sm-10">
-										<input ng-model="searchtxt.ahfsClass.display" type="text" placeholder="type to filter" class="form-control"/>
 									</div>
 								</div>
 
@@ -622,6 +618,12 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<label class="col-sm-2 control-label">Therapeutic Class</label>
+									<div class="col-sm-10">
+										<input ng-model="searchServicetxt.ahfsClass" type="text" placeholder="type to filter" class="form-control" />
+									</div>
+								</div>
+								<div class="form-group">
 									<label class="col-sm-2 control-label">Last Service Date</label>
 									<div class="col-sm-10">
 										<input ng-model="searchServicetxt.whenPrepared" type="text" placeholder="type to filter" class="form-control" />
@@ -685,6 +687,7 @@
 											 </span>
 									</a>
 								</th>
+								<th>Rx Number</th>
 								<th>Therapeutic Class/Sub-class</th>
 								<th>
 									<a ng-click="serviceOrderByField='dispensingPharmacy'; serviceReverseSort = !serviceReverseSort">
@@ -711,6 +714,7 @@
 								<td scope="row">{{med.whenHandedOver | date}}</td>
 								<td>{{med.brandName.display}}</td>
 								<td>{{med.genericName}} </td>
+								<td>{{med.rxNumber}}</td>
 								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
 								<td>{{med.dispensingPharmacy}} - Tel:{{med.dispensingPharmacyPhoneNumber}}</td>
 								<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} </td>
@@ -1229,6 +1233,17 @@
 				$scope.expandAll = !$scope.expandAll;
 			}
 
+			// DHDR07.03: pharmacy service groups collapse by default (only the group head
+			// shows via uniqServices). This single-action toggle expands every pharmacy
+			// group at once by switching the service table to the full flat event list
+			// (services), then collapses back to the grouped heads. Mirrors the drug
+			// expand-all; per-group expand stays on the service-count modal
+			// (showGroupedServices2).
+			$scope.expandAllServices = false;
+			$scope.toggleExpandAllServices = function(){
+				$scope.expandAllServices = !$scope.expandAllServices;
+			}
+
 
 			$scope.issueClass = function(issue){
 				if(issue.severity === "warning"){
@@ -1458,6 +1473,7 @@
 				$scope.uniqMeds = [];
 				$scope.uniqServices = [];
 				$scope.expandAll = false;
+				$scope.expandAllServices = false;
 
 				$scope.medsWithGroupedDups = [];
 				$scope.servicesWithGroupedDups = [];
