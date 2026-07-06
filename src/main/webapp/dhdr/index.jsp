@@ -228,7 +228,7 @@
 						<thead>
 							<tr>
 								<td colspan="12">
-									{{meds.length}} results returned  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
+									{{meds.length}} results returned  <button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAll()">{{expandAll ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
 								</td>
 							</tr>
 							<tr>
@@ -295,7 +295,7 @@
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="med in uniqMeds | filter : searchtxt | orderBy:orderByField:reverseSort" ng-hide="med.hide" ng-class="getRowClass(med)">
+							<tr ng-repeat="med in (expandAll ? meds : uniqMeds) | filter : searchtxt | orderBy:orderByField:reverseSort" ng-hide="!expandAll && med.hide" ng-class="getRowClass(med)">
 								<th scope="row">{{med.whenPrepared | date}}</th>
 								<th>{{med.pickUpDate | date}}</th>
 								<td ng-click="getDetailView(med);">
@@ -1218,8 +1218,18 @@
 			}
 			
 			$scope.medsWithGroupedDups = [];
-			
-			
+
+			// DHDR04.03: groups are collapsed by default (only the most-recent event per
+			// group shows via uniqMeds). This single-action toggle expands every group at
+			// once by switching the drug table to the full flat event list (meds), then
+			// collapses back to the grouped heads. Per-group expand stays on the Rx Count
+			// modal (showGroupedMeds2).
+			$scope.expandAll = false;
+			$scope.toggleExpandAll = function(){
+				$scope.expandAll = !$scope.expandAll;
+			}
+
+
 			$scope.issueClass = function(issue){
 				if(issue.severity === "warning"){
 					return "alert-danger";
@@ -1447,7 +1457,8 @@
 				$scope.outcomes = [];
 				$scope.uniqMeds = [];
 				$scope.uniqServices = [];
-				
+				$scope.expandAll = false;
+
 				$scope.medsWithGroupedDups = [];
 				$scope.servicesWithGroupedDups = [];
 				$scope.searchConfig.searchId = null;
