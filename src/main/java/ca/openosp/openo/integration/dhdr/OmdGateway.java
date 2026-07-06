@@ -198,8 +198,6 @@ public class OmdGateway {
 	
 	public boolean hasGatewayPropertiesSet(LoggedInInfo loggedInInfo) throws Exception{
 		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
-		String clientSecret =
-				systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret).getValue();
 		Path keystorePath = Paths.get(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getValue());
 		String keystorePassword = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue();
 		OneIdSession oneIdSession = oneIdSessionDao.find(loggedInInfo.getLoggedInProviderNo());
@@ -207,8 +205,7 @@ public class OmdGateway {
 
 		StringBuilder sb = new StringBuilder();
 
-		logger.debug("clientId" + clientId + " clientSecret " + clientSecret + " publicKeyStore " + keystorePath
-				+ " keystorePassword " + keystorePassword + " endPoint " + endPoint);
+		logger.debug("clientId " + clientId + " publicKeyStore " + keystorePath + " endPoint " + endPoint);
 
 		if(clientId == null || clientId.trim().isEmpty()) {
 			sb.append("Client Id has not been configured. Use OSCAR property 'oneid.consumerKey' to configure.\n");
