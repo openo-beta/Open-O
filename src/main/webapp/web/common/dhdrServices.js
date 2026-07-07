@@ -32,7 +32,6 @@ angular.module("dhdrServices", [])
     .service("dhdrService", function ($http, $q, $log) {
         return {
             apiPath: '../ws/rs',
-            proApiPath: '/kaiemr',
             configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
             configHeadersWithCache: {headers: {"Content-Type": "application/json", "Accept": "application/json"}, cache: true},
 
@@ -50,14 +49,13 @@ angular.module("dhdrServices", [])
                 });
                 return deferred.promise;
             },
-            // DHDR-04 replaces this /kaiemr viewlet launch with a call to the ported
-            // /dhdr/getConsentOveride endpoint (which returns the PCOI viewlet URL).
+            // Calls the ported /dhdr/getConsentOveride endpoint, which returns the PCOI viewlet URL
+            // (in referenceURL) plus a correlation token (uuid). Replaces oscarPro's closed /kaiemr
+            // viewlet launch; the override target is fixed server-side, so key is no longer sent.
             getConsentOveride: function (demographicNo, key) {
                 var deferred = $q.defer();
                 $http({
-                    url: this.proApiPath + '/api/v1/open-viewlet/launch/'
-                        + demographicNo
-                        + '?key=' + key,
+                    url: this.apiPath + '/dhdr/getConsentOveride?demographicNo=' + demographicNo,
                     method: "GET",
                     headers: this.configHeaders,
                 }).then(function (response) {

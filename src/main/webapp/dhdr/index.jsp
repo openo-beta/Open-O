@@ -25,6 +25,9 @@
 --%>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.SystemPreferencesDao" %>
+<%@page import="ca.openosp.openo.commn.model.SystemPreferences" %>
 <fmt:setBundle basename="oscarResources"/>
 <%
     String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -41,6 +44,19 @@
 	// (ODB / Enhanced Access Program links). Rendered as empty until that ticket lands.
 	String odbUrl = "";
 	String eapUrl = "";
+
+	// DHDR-04: PCOI viewlet "not responding" timeout in milliseconds, configurable via the
+	// oneid_viewlet_timeout system preference; default 300000 (5 minutes) when unset or invalid.
+	int viewletTimeout = 300000;
+	SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(SystemPreferencesDao.class);
+	SystemPreferences viewletTimeoutPref = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oneid_viewlet_timeout);
+	if (viewletTimeoutPref != null && viewletTimeoutPref.getValue() != null && !viewletTimeoutPref.getValue().trim().isEmpty()) {
+		try {
+			viewletTimeout = Integer.parseInt(viewletTimeoutPref.getValue().trim());
+		} catch (NumberFormatException e) {
+			// keep the 300000 default
+		}
+	}
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -151,7 +167,9 @@
 		 		<div ng-repeat="outs in outcomes" >
 		 			<div ng-repeat="issue in outs.issues"  class="alert" ng-class="issueClass(issue)" role="alert">
 		 				{{issue.details.text}}
-		 				<span ng-if="issue.code === 'suppressed'"> 
+		 				<span ng-if="issue.code === 'suppressed'">
+		 					<!-- DHDR09.03: the EMR renders the mandated consent-block message itself (not reliant on the OperationOutcome text). -->
+		 					<div>Access to Drug and Pharmacy Service information has been blocked by the patient.</div>
 		 					<button type="button" class="btn btn-danger" ng-click="callConsentBlock();" ng-disabled="buttonDisabled">Temporary Consent Unblock</button>
 		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(null, null, 'Cancelled');">Cancel</button>
 		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(null, null, 'Refused');">Refused</button>
@@ -159,6 +177,9 @@
 		 			</div>
 		 		</div>
 				
+				<!-- DHDR09.05: refuse/cancel outcome message - shown briefly, then the viewer closes automatically. -->
+				<div class="alert alert-warning" role="alert" ng-show="overrideResultMessage">{{overrideResultMessage}}</div>
+
 				<!-- DHDR02.04: a valid search returning zero events must inform the user. Distinct from the
 			     PCR patient-not-found / consent-suppressed cases (B2 #15), which surface via outcomes above. -->
 			<div class="alert alert-warning" role="alert" ng-show="searchComplete && !searching && outcomes.length === 0 && meds.length === 0 && services.length === 0">
@@ -1008,7 +1029,7 @@
 		//	$locationProvider.html5Mode(true);
 		//});
 		
-		app.controller("dhdrView", function($scope,demographicService,providerService,dhdrService,rxService,$location,$window,$modal,$http,$filter) {
+		app.controller("dhdrView", function($scope,demographicService,providerService,dhdrService,rxService,$location,$window,$modal,$http,$filter,$timeout) {
 
 			console.log("$location.search()",$location);
 			$scope.demographicNo = $location.search().demographic_no;
@@ -1474,6 +1495,7 @@
 				$scope.uniqServices = [];
 				$scope.expandAll = false;
 				$scope.expandAllServices = false;
+				$scope.overrideResultMessage = '';
 
 				$scope.medsWithGroupedDups = [];
 				$scope.servicesWithGroupedDups = [];
@@ -1661,7 +1683,7 @@
 			  $scope.logOverrideStatus = function(uuid, data, status) {
 				  let reason = {};
 				  if (status === 'Refused' || status === 'Cancelled') {
-					  let reasonPrompt = prompt("Access to Drug and Pharmacy Service Information has been refused by the patient. \nReason:");
+					  let reasonPrompt = prompt("Please provide a reason (optional):");
 					  if (reasonPrompt != null) {
 						  reason.name = "Reason";
 						  reason.value = reasonPrompt;
@@ -1671,10 +1693,14 @@
 
 				  dhdrService.logConsentOverride($scope.demographicNo, uuid, data, status)
 						  .then(function(response) {
-							  if (status === "Refused" || status === "Cancelled") {
-								  window.close();
-							  }
 							  console.log("logConsentOverride", response);
+							  if (status === "Refused" || status === "Cancelled") {
+								  // DHDR09.05: display the mandated message, keep it visible briefly, then close automatically.
+								  $scope.overrideResultMessage = (status === "Refused")
+										  ? "Access to Drug and Pharmacy Service Information has been refused."
+										  : "Access to Drug and Pharmacy Service Information has been cancelled.";
+								  $timeout(function() { window.close(); }, 4000);
+							  }
 				  });
 			  }
 			
@@ -1692,7 +1718,7 @@
     					
     					var med = response.data;
 
-							if (!med || !med.viewletUrl) {
+							if (!med || !med.referenceURL) {
 								alert("Error retrieving Temporary Consent Override: Viewlet URL is null");
 								return;
 							}
@@ -1718,11 +1744,52 @@
     					//pcoi message back 
     					//message { target: Window, isTrusted: true, data: "{\"status\":\"completed\"}", origin: "https://pcoi-pst.apps.dev.ehealthontario.ca", lastEventId: "", source: Restricted https://pcoi-pst.apps.dev.ehealthontario.ca/main, ports: Restricted, srcElement: Window, currentTarget: Window, eventPhase: 2,  }
     					modalInstance.result.then(function (selectedItem) {
-    						console.log("result from pcoi ",selectedItem.data);
-							$scope.logOverrideStatus(med.uuid, selectedItem.data, 'Overwrite');
+    						// DHDR11.01: process the PCOI viewlet response per the ONE Access Viewlet Framework
+    						// Appendix A format - errors[] / successes[] / utility.code arrays (multi-LOB), not a
+    						// flat status field. Each success/error entry names the microService (LOB) it is for.
+    						var pcoiResult = {};
+    						try {
+    							pcoiResult = (selectedItem && typeof selectedItem.data === 'string')
+    								? JSON.parse(selectedItem.data)
+    								: ((selectedItem && selectedItem.data) || {});
+    						} catch (err) {
+    							pcoiResult = {};
+    						}
+    						var successes = angular.isArray(pcoiResult.successes) ? pcoiResult.successes : [];
+    						var errors = angular.isArray(pcoiResult.errors) ? pcoiResult.errors : [];
+    						var utilityCodes = (pcoiResult.utility && angular.isArray(pcoiResult.utility.code))
+    							? pcoiResult.utility.code : [];
+
+    						// DHDR override confirmed = a successes[] entry for the DHDR LOB (PCOI_CONSENT_SUCCESS_02
+    						// / 201). PCOI_CONSENT_SUCCESS_01 alone only confirms the PCOI call, not the DHDR override.
+    						var dhdrOverridden = successes.some(function (s) {
+    							return s && (s.microService === 'DHDR'
+    								|| (angular.isArray(s.code) && s.code.indexOf('PCOI_CONSENT_SUCCESS_02') !== -1));
+    						});
+    						var cancelled = utilityCodes.indexOf('PCOI_CONSENT_CANCELLED') !== -1;
+    						var failed = !dhdrOverridden && errors.length > 0;
+
+    						// DHDR11.01.a/b, DHDR15.02: audit the actual outcome, not a blanket successful override.
+    						var auditStatus = dhdrOverridden ? 'Overwrite' : (failed ? 'Failed' : (cancelled ? 'Cancelled' : 'Overwrite'));
+    						dhdrService.logConsentOverride($scope.demographicNo, med.uuid, selectedItem.data, auditStatus);
+
+    						if (failed) {
+    							// DHDR11.01.b: the override did not complete - leave the existing block shown and inform the user.
+    							$scope.overrideResultMessage = "The temporary consent unblock did not complete. "
+    								+ "Access to Drug and Pharmacy Service Information remains blocked.";
+    							return;
+    						}
+    						if (cancelled) {
+    							// User cancelled inside the PCOI viewlet (OAVF utility PCOI_CONSENT_CANCELLED); the existing block remains shown.
+    							return;
+    						}
+    						// DHDR11.02 + OAVF B.4.2.5 / B.5: on success (or an ambiguous / no-code response) re-load the
+    						// DHDR query - it is the source of truth, returning data with the CONSENT_TEMP_UNBLOCK notice.
     						$scope.callSearch();
     		    		    }, function () {
-    		    		      console.log('Modal dismissed at: ' + new Date());
+    		    		      // No resolving message (backdrop / esc close): per OAVF B.4.2.5, re-load in case the override succeeded.
+    		    		      console.log('PCOI viewlet dismissed without a response; re-loading DHDR query.');
+    		    		      $scope.callSearch();
     		    		    });
     					
     				},function(reason){
@@ -2096,7 +2163,7 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 		
 		app.controller('PcoiInstanceCtrl', function ModalInstanceCtrl($scope, $modal, $modalInstance,med,$sce,$window,$http,$timeout){
 			// Gets URL without parameters
-			const PCOI_ORIGIN_URL = med.viewletUrl.split('?')[0];
+			const PCOI_ORIGIN_URL = med.referenceURL.split('?')[0];
 
 			$window.addEventListener('message', function(e) {
 				if (e.origin === PCOI_ORIGIN_URL) {
@@ -2111,17 +2178,17 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 
 			$timeout(function() {
 				$scope.viewletNotResponding = true;
-			}, 300000); <%-- DHDR-04 wires this to the oneid.viewlet.timeout system preference --%>
+			}, <%= viewletTimeout %>); <%-- DHDR-04: PCOI viewlet not-responding timeout, oneid_viewlet_timeout pref (default 300000) --%>
 			
 			
 			
 			$scope.med = med;
-			$scope.pcoiUrl = $sce.trustAsResourceUrl(med.viewletUrl);
+			$scope.pcoiUrl = $sce.trustAsResourceUrl(med.referenceURL);
 		
 			$scope.reload = function(){
 				
 				console.log("setting pcoiUrl");
-				$scope.pcoiUrl = $sce.trustAsResourceUrl(med.viewletUrl);
+				$scope.pcoiUrl = $sce.trustAsResourceUrl(med.referenceURL);
 			}
 		
 			$scope.loadingResult = function(e){

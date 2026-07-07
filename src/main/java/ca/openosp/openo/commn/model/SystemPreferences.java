@@ -42,7 +42,7 @@ public class SystemPreferences extends AbstractModel<Integer> {
         endpoint_access_token, endpoint_callback, endpoint_audience,
         keystore_alias, keystore_path, timeout,endpoint_authorize, pcoi_key, dhdr_endpoint,
         dhir_submissionUrl, dhir_endpoint,
-        oneid_enabled, dhdr_enabled
+        oneid_enabled, dhdr_enabled, oneid_viewlet_timeout
     }
 
     public enum SCHEDULE_PREFERENCE_KEYS {schedule_display_type, schedule_display_custom_roster_status}
