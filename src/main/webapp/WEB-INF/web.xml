@@ -14,6 +14,30 @@
     </param-value>
   </context-param>
 
+    <!-- characterEncoding: forces UTF-8 on request AND response for every request, including
+         Struts ".do" actions. Must be mapped BEFORE the struts2 filter, which short-circuits
+         the chain for matched actions (so filters after it, e.g. ResponseDefaultsFilter, never
+         run for ".do"). Struts 2.5.x sets the encoding on the request only, leaving ".do"
+         responses at the servlet default ISO-8859-1; browsers then submit forms in ISO-8859-1
+         and non-ASCII input is corrupted to U+FFFD on save. Reuses ResponseDefaultsFilter with
+         caching/ETag disabled so it only sets the encoding. -->
+    <filter>
+        <filter-name>characterEncoding</filter-name>
+        <filter-class>ca.openosp.openo.utility.ResponseDefaultsFilter</filter-class>
+        <init-param>
+            <param-name>setNoCache</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceStrongETag</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
         <filter>
 		   <filter-name>monitoring</filter-name>
 		   <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
