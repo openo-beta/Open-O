@@ -124,6 +124,8 @@
             <result name="success">/provider/uaoSelect.jsp</result>
         </action>
         <action name="uaoSelectApply" class="ca.openosp.openo.integration.oneId.web.UaoSelectAction" method="select"/>
+        <action name="viewletLaunch" class="ca.openosp.openo.integration.oneId.web.ViewletLaunchAction" method="launch"/>
+        <action name="viewletPatientClose" class="ca.openosp.openo.integration.oneId.web.ViewletLaunchAction" method="patientClose"/>
         <action name="providerLinkingRules" class="ca.openosp.openo.dashboard.admin.ProviderLinkingRulesAction" />
         <action name="web/dashboard/display/DashboardDisplay" class="ca.openosp.openo.dashboard.display.DisplayDashboard2Action">
             <result name="success">/web/dashboard/display/DashboardDisplay.jsp</result>

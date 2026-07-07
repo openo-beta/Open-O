@@ -390,7 +390,7 @@ public class OmdGateway {
 	}
 
 	public String getConsentViewletURL(LoggedInInfo loggedInInfo, int demographicNo, String target,String uniqueToken) throws Exception {
-		setConsentContextWithRetry(loggedInInfo, demographicNo, target);
+		setContextWithRetry(() -> CMSManager.consentTargetChange(loggedInInfo, demographicNo, target));
 		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
 		String url = oneIdGatewayData.getPcoiUrl()+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, "PCOI", "consentViewletLaunch");
@@ -400,24 +400,56 @@ public class OmdGateway {
 		return url;
 	}
 
-	private static final int MAX_SET_CONTEXT_ATTEMPTS = 3;
-
 	/**
-	 * Sets the consent-target context on the CMS, retrying a bounded number of times when the CMS
-	 * does not acknowledge it (a {@link CMSException}). Once the attempts are exhausted the last
-	 * failure is propagated so the caller can surface it and leave a re-attempt available. Only a
-	 * non-acknowledgement is retried; a missing UAO or a transport error propagates immediately.
+	 * Builds the launch URL for a configured Viewlet: puts the patient in CMS context (with the
+	 * bounded retry), resolves the Viewlet's service address from the ONE ID toolbar by its key,
+	 * and appends the launch topic, FHIR issuer and authorization reference. One transaction-log
+	 * row is written per launch.
 	 *
 	 * @param loggedInInfo  LoggedInInfo the acting provider session
-	 * @param demographicNo int the patient the context is set for
-	 * @param target        String the consent target
+	 * @param demographicNo int the patient the Viewlet is launched for
+	 * @param viewletKey    String the Viewlet's toolbar key
+	 * @param uniqueToken   String correlation token recorded on the transaction-log row
+	 * @return String the Viewlet launch URL
+	 * @throws Exception CMSException when the context is not acknowledged or the toolbar carries no
+	 *                   address for the key
+	 */
+	public String getViewletLaunchURL(LoggedInInfo loggedInInfo, int demographicNo, String viewletKey, String uniqueToken) throws Exception {
+		setContextWithRetry(() -> CMSManager.patientChange(loggedInInfo, demographicNo));
+		OneIdSession oneIdSession = oneIdSessionDao.find(loggedInInfo.getLoggedInProviderNo());
+		String serviceUrl = oneIdSession == null ? null : oneIdSession.getUrlFromToolbar(viewletKey);
+		if (serviceUrl == null || serviceUrl.trim().isEmpty()) {
+			throw new CMSException("No service address was found in the ONE ID toolbar for key " + viewletKey + ".");
+		}
+		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
+		String url = serviceUrl+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
+		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, viewletKey, "viewletLaunch");
+		omdGatewayTransactionLog.setDataSent(url);
+		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
+		transactionLogDao.persist(omdGatewayTransactionLog);
+		return url;
+	}
+
+	private static final int MAX_SET_CONTEXT_ATTEMPTS = 3;
+
+	private interface ContextCall {
+		void run() throws Exception;
+	}
+
+	/**
+	 * Runs a CMS set-context call, retrying a bounded number of times when the CMS does not
+	 * acknowledge it (a {@link CMSException}). Once the attempts are exhausted the last failure is
+	 * propagated so the caller can surface it and leave a re-attempt available. Only a
+	 * non-acknowledgement is retried; a missing UAO or a transport error propagates immediately.
+	 *
+	 * @param contextCall ContextCall the set-context call to run
 	 * @throws Exception CMSException when the context is not acknowledged after the bounded attempts
 	 */
-	private void setConsentContextWithRetry(LoggedInInfo loggedInInfo, int demographicNo, String target) throws Exception {
+	private void setContextWithRetry(ContextCall contextCall) throws Exception {
 		CMSException lastFailure = null;
 		for (int attempt = 1; attempt <= MAX_SET_CONTEXT_ATTEMPTS; attempt++) {
 			try {
-				CMSManager.consentTargetChange(loggedInInfo, demographicNo, target);
+				contextCall.run();
 				return;
 			} catch (CMSException e) {
 				lastFailure = e;

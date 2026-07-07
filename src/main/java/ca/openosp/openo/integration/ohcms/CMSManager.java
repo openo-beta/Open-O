@@ -75,13 +75,12 @@ public class CMSManager {
       userLogin.addContext("practitioner",
           fhirResources.getString(fhirResources.getPractitioner(loggedInInfo)));
       String language = loggedInInfo.getLocale().getLanguage();
-      if ("en".equals(language) || "fr".equals(language)) {
-        logger.debug("Language selected was " + language);//all good
-      } else {
-        logger.info("unknown Language selected: " + language + " changing to en");//all good
+      if (!"en".equals(language) && !"fr".equals(language)) {
+        logger.info("unsupported CMS language " + language + ", defaulting to en");
+        language = "en";
       }
       userLogin.addContext("parameters", fhirResources.getString(
-          fhirResources.getLanguageParameter(UUID.randomUUID().toString(), "en")));
+          fhirResources.getLanguageParameter(UUID.randomUUID().toString(), language)));
 
     } catch (CMSException cme) {
       omdGateway.logError(loggedInInfo, "CMS", "userLogin configuration error",
@@ -191,12 +190,15 @@ public class CMSManager {
     return null;
   }
 
-  @Nullable
-  public static String consentTargetChange(
-      LoggedInInfo loggedInInfo,
-      int demographicNo,
-      String param
-  ) throws Exception {
+  /**
+   * Makes the given patient the one in CMS context: opens it when no patient is in context, or
+   * closes the current patient and opens the new one when a different patient is in context.
+   *
+   * @param loggedInInfo LoggedInInfo the acting provider session
+   * @param demographicNo int the patient to put in context
+   * @throws Exception CMSException when the CMS does not acknowledge the context change
+   */
+  public static void patientChange(LoggedInInfo loggedInInfo, int demographicNo) throws Exception {
     OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
     String patientInContext = oneIdGatewayData.getCmsPatientInContext();
     if (patientInContext == null) {
@@ -205,6 +207,16 @@ public class CMSManager {
       patientClose(loggedInInfo, Integer.parseInt(patientInContext));
       patientOpen(loggedInInfo, demographicNo);
     }
+  }
+
+  @Nullable
+  public static String consentTargetChange(
+      LoggedInInfo loggedInInfo,
+      int demographicNo,
+      String param
+  ) throws Exception {
+    OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
+    patientChange(loggedInInfo, demographicNo);
     OmdGateway omdGateway = new OmdGateway();
     FhirResources fhirResources = new FhirResources();
     WebClient createHubTopic = omdGateway.getWebClientWholeURL(loggedInInfo,
@@ -235,16 +247,7 @@ public class CMSManager {
   )
       throws Exception {
     OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
-    String patientInContext = oneIdGatewayData.getCmsPatientInContext();
-    logger.debug("is legacy for same patient ? current patientInContext " + patientInContext
-        + " request demogrpahic " + demographicNo);
-    if (patientInContext == null) {
-      patientOpen(loggedInInfo, demographicNo);
-    } else if (Integer.parseInt(patientInContext)
-        != demographicNo) {
-      patientClose(loggedInInfo, Integer.parseInt(patientInContext));
-      patientOpen(loggedInInfo, demographicNo);
-    }
+    patientChange(loggedInInfo, demographicNo);
     OmdGateway omdGateway = new OmdGateway();
     FhirResources fhirResources = new FhirResources();
     WebClient createHubTopic = omdGateway.getWebClientWholeURL(loggedInInfo,

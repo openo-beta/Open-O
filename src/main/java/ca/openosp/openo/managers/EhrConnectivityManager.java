@@ -250,4 +250,22 @@ public interface EhrConnectivityManager {
      * @param viewlet OneIdViewlet the entry to update
      */
     void updateViewlet(LoggedInInfo loggedInInfo, OneIdViewlet viewlet);
+
+    /**
+     * Returns the active Viewlets shown in the eChart launch list.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the provider or admin privilege
+     * @return List&lt;OneIdViewlet&gt; the active eChart Viewlets, empty when none are configured
+     */
+    List<OneIdViewlet> findEchartViewlets(LoggedInInfo loggedInInfo);
+
+    /**
+     * Returns the active Viewlet registered under a toolbar key, or null when the key is unknown
+     * or the Viewlet is disabled.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, checked for the provider or admin privilege
+     * @param key String the Viewlet's toolbar key
+     * @return OneIdViewlet the active entry, or null
+     */
+    OneIdViewlet findActiveViewletByKey(LoggedInInfo loggedInInfo, String key);
 }

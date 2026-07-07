@@ -39,6 +39,7 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -253,6 +254,31 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     public void updateViewlet(LoggedInInfo loggedInInfo, OneIdViewlet viewlet) {
         checkPrivilege(loggedInInfo, SecurityInfoManager.WRITE);
         oneIdViewletDao.merge(viewlet);
+    }
+
+    @Override
+    public List<OneIdViewlet> findEchartViewlets(LoggedInInfo loggedInInfo) {
+        checkEhrAccess(loggedInInfo, SecurityInfoManager.READ);
+        List<OneIdViewlet> viewlets = oneIdViewletDao.findAllActiveAndShowInEchartTrue();
+        return viewlets == null ? new ArrayList<>() : viewlets;
+    }
+
+    @Override
+    public OneIdViewlet findActiveViewletByKey(LoggedInInfo loggedInInfo, String key) {
+        checkEhrAccess(loggedInInfo, SecurityInfoManager.READ);
+        OneIdViewlet viewlet = oneIdViewletDao.queryOneIdViewletForKey(key);
+        if (viewlet == null || viewlet.isDeleted()) {
+            return null;
+        }
+        return viewlet;
+    }
+
+    private void checkEhrAccess(LoggedInInfo loggedInInfo, String privilege) {
+        if (securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)
+                || securityInfoManager.hasPrivilege(loggedInInfo, "_ehr.connectivity", privilege, null)) {
+            return;
+        }
+        throw new RuntimeException("missing required sec object (_ehr.connectivity or _admin.ehrConnectivity)");
     }
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
