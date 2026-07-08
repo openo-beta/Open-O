@@ -92,6 +92,7 @@ public class CMSManager {
     logger.debug("userLoginResponse: " + hubTopicResponseBody);
     if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
       oneIdGatewayData.setCmsLoggedIn(hubTopicResponseBody);
+      oneIdGatewayData.setUpdateUAOInCMS(false);
     } else if (hubTopicResponse.getStatus() >= 400 && hubTopicResponseBody != null) {
       throw new CMSException(hubTopicResponseBody);
     } else {
@@ -192,7 +193,9 @@ public class CMSManager {
 
   /**
    * Makes the given patient the one in CMS context: opens it when no patient is in context, or
-   * closes the current patient and opens the new one when a different patient is in context.
+   * closes the current patient and opens the new one when a different patient is in context. When
+   * the acting provider's UAO has changed since the CMS login, the organization context is
+   * refreshed first so the CMS reflects the current authority.
    *
    * @param loggedInInfo LoggedInInfo the acting provider session
    * @param demographicNo int the patient to put in context
@@ -200,6 +203,9 @@ public class CMSManager {
    */
   public static void patientChange(LoggedInInfo loggedInInfo, int demographicNo) throws Exception {
     OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
+    if (oneIdGatewayData.getCmsLoggedIn() != null && oneIdGatewayData.isUpdateUAOInCMS()) {
+      organizationChange(loggedInInfo);
+    }
     String patientInContext = oneIdGatewayData.getCmsPatientInContext();
     if (patientInContext == null) {
       patientOpen(loggedInInfo, demographicNo);
