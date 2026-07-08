@@ -58,6 +58,7 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
 
 import javax.net.ssl.SSLContext;
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.io.FileInputStream;
@@ -436,26 +437,27 @@ public class OmdGateway {
 	}
 
 	/**
-	 * Runs a CMS set-context call, retrying a bounded number of times when the CMS does not
-	 * acknowledge it (a {@link CMSException}). Once the attempts are exhausted the last failure is
-	 * propagated so the caller can surface it and leave a re-attempt available. Only a
-	 * non-acknowledgement is retried; a missing UAO or a transport error propagates immediately.
+	 * Runs a CMS set-context call, retrying a bounded number of times when the context is not
+	 * acknowledged: either the CMS returns a non-2xx ({@link CMSException}) or no response comes
+	 * back at all ({@link ProcessingException}, e.g. a connection or read timeout). Once the
+	 * attempts are exhausted the last failure is propagated so the caller can surface it and leave a
+	 * re-attempt available. A missing UAO or any other error propagates immediately.
 	 *
 	 * @param contextCall ContextCall the set-context call to run
-	 * @throws Exception CMSException when the context is not acknowledged after the bounded attempts
+	 * @throws Exception the last failure when the context is not acknowledged after the bounded attempts
 	 */
 	private void setContextWithRetry(ContextCall contextCall) throws Exception {
-		CMSException lastFailure = null;
 		for (int attempt = 1; attempt <= MAX_SET_CONTEXT_ATTEMPTS; attempt++) {
 			try {
 				contextCall.run();
 				return;
-			} catch (CMSException e) {
-				lastFailure = e;
+			} catch (CMSException | ProcessingException e) {
 				logger.warn("CMS set-context not acknowledged (attempt {} of {})", attempt, MAX_SET_CONTEXT_ATTEMPTS);
+				if (attempt == MAX_SET_CONTEXT_ATTEMPTS) {
+					throw e;
+				}
 			}
 		}
-		throw lastFailure;
 	}
 	
 	public Response doPost(LoggedInInfo loggedInInfo, WebClient wc, Event fhirCastEvent) throws Exception {
