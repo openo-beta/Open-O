@@ -89,7 +89,7 @@ public class CMSManager {
     }
     Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, userLogin);
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
-    logger.error("userLoginResponse: " + hubTopicResponseBody);
+    logger.debug("userLoginResponse: " + hubTopicResponseBody);
     if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
       oneIdGatewayData.setCmsLoggedIn(hubTopicResponseBody);
     } else if (hubTopicResponse.getStatus() >= 400 && hubTopicResponseBody != null) {

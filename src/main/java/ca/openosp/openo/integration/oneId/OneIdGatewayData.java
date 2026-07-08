@@ -122,7 +122,7 @@ public class OneIdGatewayData implements Serializable {
           hubTopic = tokens.getString("hub.topic");
         }
       } catch (Exception e) {
-        logger.error("Error with parsing tokens " + oneIdString, e);
+        logger.error("Error parsing ONE ID token response", e);
       }
     }
   }
