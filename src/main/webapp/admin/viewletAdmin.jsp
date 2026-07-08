@@ -48,12 +48,17 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>EHR Connectivity - Viewlets</title>
+    <script src="${pageContext.request.contextPath}/csrfguard" type="text/javascript"></script>
     <link href="${pageContext.request.contextPath}/library/bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container-fluid my-4">
     <h4 class="mb-1">Viewlets</h4>
     <p class="text-muted">Configure the EHR services available to launch: each Viewlet's name, its toolbar key, whether it shows in the eChart, and its interface type.</p>
+
+    <c:if test="${not empty viewletAdminError}">
+        <div class="alert alert-warning">${e:forHtmlContent(viewletAdminError)}</div>
+    </c:if>
 
     <div class="card mb-4">
         <div class="card-header">Add a Viewlet</div>

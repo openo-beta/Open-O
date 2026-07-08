@@ -19,15 +19,14 @@ public class OneIdViewletDaoImpl extends AbstractDaoImpl<OneIdViewlet>  implemen
         super(OneIdViewlet.class);
     }
 
+    @SuppressWarnings("unchecked")
     public OneIdViewlet queryOneIdViewletForKey(final String key) {
-        Query query = entityManager.createQuery("SELECT o from OneIdViewlet o where o.keyValue = ?1");
+        Query query = entityManager.createQuery(
+                "SELECT o FROM OneIdViewlet o WHERE o.keyValue = ?1 ORDER BY o.deleted ASC, o.id ASC");
         query.setParameter(1, key);
-        try {
-            return (OneIdViewlet) query.getSingleResult();
-        } catch (NoResultException nre) {
-            log.debug("Cannot find OneIdViewlet of key '" + key + "' | " + nre);
-            return null;
-        }
+        query.setMaxResults(1);
+        List<OneIdViewlet> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
     }
 
     @SuppressWarnings("unchecked")

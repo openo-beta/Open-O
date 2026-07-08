@@ -71,6 +71,11 @@ public class ViewletAdminAction extends ActionSupport {
         List<OneIdViewlet> viewletList = ehrConnectivityManager.findAllViewlets(loggedInInfo);
         request.setAttribute("viewletList", viewletList);
         request.setAttribute("updatedByNames", resolveProviderNames(viewletList));
+        Object flash = request.getSession().getAttribute("viewletAdminError");
+        if (flash != null) {
+            request.setAttribute("viewletAdminError", flash);
+            request.getSession().removeAttribute("viewletAdminError");
+        }
         return "success";
     }
 
@@ -95,6 +100,11 @@ public class ViewletAdminAction extends ActionSupport {
         String displayMode = normalizeDisplayMode(request.getParameter("displayMode"));
 
         if (name != null && keyValue != null) {
+            if (keyInUse(loggedInInfo, keyValue, null)) {
+                flashKeyInUse();
+                redirectToList();
+                return NONE;
+            }
             OneIdViewlet viewlet = new OneIdViewlet();
             viewlet.setName(name);
             viewlet.setKeyValue(keyValue);
@@ -118,6 +128,11 @@ public class ViewletAdminAction extends ActionSupport {
         String keyValue = trimToNull(request.getParameter("keyValue"));
 
         if (viewlet != null && name != null && keyValue != null) {
+            if (keyInUse(loggedInInfo, keyValue, viewlet.getId())) {
+                flashKeyInUse();
+                redirectToList();
+                return NONE;
+            }
             String before = describe(viewlet);
             viewlet.setName(name);
             viewlet.setKeyValue(keyValue);
@@ -161,6 +176,21 @@ public class ViewletAdminAction extends ActionSupport {
         }
         redirectToList();
         return NONE;
+    }
+
+    private boolean keyInUse(LoggedInInfo loggedInInfo, String keyValue, Integer excludeId) {
+        for (OneIdViewlet existing : ehrConnectivityManager.findAllViewlets(loggedInInfo)) {
+            if (!existing.isDeleted() && keyValue.equals(existing.getKeyValue())
+                    && !existing.getId().equals(excludeId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void flashKeyInUse() {
+        request.getSession().setAttribute("viewletAdminError",
+                "A Viewlet with that toolbar key already exists.");
     }
 
     private OneIdViewlet findViewlet(LoggedInInfo loggedInInfo, String idValue) {
