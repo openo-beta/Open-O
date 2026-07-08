@@ -40,6 +40,7 @@
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 
 <%long start = System.currentTimeMillis();%>
 
@@ -1356,6 +1357,15 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                                                         <a target="_new"
                                                            href="https://www.healthinfo.moh.gov.on.ca/formulary/SearchServlet?searchType=drugID&keywords=<%=Encode.forUriComponent(String.valueOf(regionalIdentifier))%>">ODB
                                                             lookup</a>
+                                                        &nbsp;|&nbsp;
+                                                        <%-- DHDR12.02: the Exceptional Access Program link, made available on the
+                                                             prescribing screen. EAP requests are submitted through the SADIE portal, so
+                                                             the link targets SADIE. The URL is admin-configurable in oscar_mcmaster.properties
+                                                             (dhdr.eap_url, shared with the DHDR viewer); the OMD-published SADIE address is
+                                                             used when unset. --%>
+                                                        <a target="_new"
+                                                           href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.eap_url", "http://www.health.gov.on.ca/en/pro/programs/sadie/"))%>">EAP
+                                                            (SADIE)</a>
                                                         <%
                                                             ArrayList<LimitedUseCode> luList = LimitedUseLookup.getLUInfoForDin(regionalIdentifier);
                                                             if (luList != null) { %>

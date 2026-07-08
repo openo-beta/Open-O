@@ -18,6 +18,7 @@ package ca.openosp.openo.integration.dhdr;
  * Ontario, Canada
  */
 
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.printing.FontSettings;
 import ca.openosp.openo.commn.printing.PdfWriterFactory;
@@ -35,9 +36,12 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.ColumnText;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfPageEventHelper;
+import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -46,9 +50,20 @@ import org.codehaus.jettison.json.JSONObject;
 import java.awt.*;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DHDRPrint {
+
+  /** The DHDR disclaimer (DHDR03.03), printed on each page per DHDR13.01.g. */
+  private static final String DHDR_DISCLAIMER =
+      "Warning: Limited to Drug and Pharmacy Service Information available in the Digital Health Drug"
+          + " Repository (DHDR) EHR Service. To ensure a Best Possible Medication History (BPMH),"
+          + " please review this information with the patient/family and use other available sources"
+          + " of medication information in addition to the DHDR EHR Service.";
 
   DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
   SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  'at' HH:mm:ss z");
@@ -68,22 +83,18 @@ public class DHDRPrint {
 
     document = new Document();
     document.setPageSize(PageSize.LETTER);
+    document.setMargins(36, 36, 90, 140);
 
     PdfWriter writer = PdfWriterFactory.newInstance(document, outputStream,
         FontSettings.HELVETICA_10PT);
+    writer.setPageEvent(new DhdrFooterEvent(DHDR_DISCLAIMER, resolveConfidentialityStatement(), buildPrintedInfo(loggedInInfo)));
 
-    HeaderFooter header = getHeaderFooter(demo, "DHDR Detailed");
+    String dhdrDemoLine = buildDhdrDemoLine(jsonOb.optJSONObject("dhdrPatient"));
+    HeaderFooter header = getHeaderFooter(demo, "DHDR Detailed", dhdrDemoLine);
     document.setHeader(header);
 
     document.open();
     contentByte = writer.getDirectContent();
-
-    Paragraph dhrDisclaimerParagraph =
-        new Paragraph(
-            "Warning: Limited to Drug and Pharmacy Service Information available in the Digital Health Drug Repository (DHDR) EHR Service. To ensure a Best Possible Medication History (BPMH), please review this information with the patient/family and use other available sources of medication information in addition to the DHDR EHR Service.",
-            FontFactory.getFont(FontFactory.HELVETICA, 9, Font.ITALIC, Color.BLACK));
-    dhrDisclaimerParagraph.add(Chunk.NEWLINE);
-    document.add(dhrDisclaimerParagraph);
 
     Paragraph emrHeaderParagraph =
         new Paragraph(
@@ -223,7 +234,7 @@ public class DHDRPrint {
       document.add(noResults);
     }
 
-    addDocumentFooter(loggedInInfo, document);
+    document.close();
   }
 
   public void printSummary(
@@ -242,21 +253,17 @@ public class DHDRPrint {
 
     document = new Document();
     document.setPageSize(PageSize.LETTER.rotate());
+    document.setMargins(36, 36, 90, 140);
 
     PdfWriter writer = PdfWriterFactory.newInstance(document, outputStream, FontSettings.HELVETICA_10PT);
+    writer.setPageEvent(new DhdrFooterEvent(DHDR_DISCLAIMER, resolveConfidentialityStatement(), buildPrintedInfo(loggedInInfo)));
 
-    HeaderFooter header = getHeaderFooter(demo, "DHDR Summary");
+    String dhdrDemoLine = buildDhdrDemoLine(jsonOb.optJSONObject("dhdrPatient"));
+    HeaderFooter header = getHeaderFooter(demo, "DHDR Summary", dhdrDemoLine);
     document.setHeader(header);
 
     document.open();
     contentByte = writer.getDirectContent();
-
-    Paragraph dhrDisclaimerParagraph =
-        new Paragraph(
-            "Warning: Limited to Drug and Pharmacy Service Information available in the Digital Health Drug Repository (DHDR) EHR Service. To ensure a Best Possible Medication History (BPMH), please review this information with the patient/family and use other available sources of medication information in addition to the DHDR EHR Service.",
-            FontFactory.getFont(FontFactory.HELVETICA, 9, Font.ITALIC, Color.BLACK));
-    dhrDisclaimerParagraph.add(Chunk.NEWLINE);
-    document.add(dhrDisclaimerParagraph);
 
     Paragraph emrHeaderParagraph =
         new Paragraph(
@@ -279,7 +286,7 @@ public class DHDRPrint {
 
     document.add(Chunk.NEWLINE);
 
-    JSONArray arr = jsonOb.getJSONArray("meds");
+    JSONArray arr = sortByWhenPreparedDesc(jsonOb.getJSONArray("meds"));
     Paragraph drugProductParagraph =
         new Paragraph(
             "Drug Product", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
@@ -313,7 +320,7 @@ public class DHDRPrint {
       document.add(noResults);
     }
     if (jsonOb.has("services")) {
-      JSONArray serviceArr = jsonOb.getJSONArray("services");
+      JSONArray serviceArr = sortByWhenPreparedDesc(jsonOb.getJSONArray("services"));
 
       document.add(Chunk.NEWLINE);
 
@@ -329,7 +336,7 @@ public class DHDRPrint {
       servicesProductParagraph.setSpacingAfter(5f);
       document.add(servicesProductParagraph);
 
-      PdfPTable serviceTable = new PdfPTable(8);
+      PdfPTable serviceTable = new PdfPTable(9);
       serviceTable.setWidthPercentage(100.0f);
 
       if (serviceArr.length() > 0) {
@@ -338,6 +345,7 @@ public class DHDRPrint {
         serviceTable.addCell(getHeaderCell("Pickup Date"));
         serviceTable.addCell(getHeaderCell("Pharmacy Service Type"));
         serviceTable.addCell(getHeaderCell("Pharmacy Service Description"));
+        serviceTable.addCell(getHeaderCell("Rx Number"));
         serviceTable.addCell(getHeaderCell("Therapeutic Class/Sub-class"));
         serviceTable.addCell(getHeaderCell("Pharmacy Name"));
         serviceTable.addCell(getHeaderCell("Pharmacist"));
@@ -352,6 +360,7 @@ public class DHDRPrint {
           JSONObject brandObj = med.getJSONObject("brandName");
           serviceTable.addCell(getItemCell(brandObj.optString("display"))); // Brand
           serviceTable.addCell(getItemCell(med.optString("genericName")));
+          serviceTable.addCell(getItemCell(med.optString("rxNumber")));
           serviceTable.addCell(
               getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
           serviceTable.addCell(getItemCell(med.optString("dispensingPharmacy")));
@@ -379,7 +388,7 @@ public class DHDRPrint {
       }
     }
 
-    addDocumentFooter(loggedInInfo, document);
+    document.close();
   }
 
   private PdfPCell populateSummaryDrugMetaData(PdfPTable table, JSONObject med) throws JSONException {
@@ -552,7 +561,7 @@ public class DHDRPrint {
     return demoInfo.toString();
   }
 
-  private Phrase getTitlePhrase(Demographic demo, String title) {
+  private Phrase getTitlePhrase(Demographic demo, String title, String dhdrDemoLine) {
     Phrase titlePhrase =
         new Phrase(
             16, title, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, Font.BOLD, Color.BLACK));
@@ -562,16 +571,25 @@ public class DHDRPrint {
             demo.getFormattedName(),
             FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, Color.BLACK)));
     titlePhrase.add(Chunk.NEWLINE);
+    // The EMR-side demographic (DHDR13.01.a).
     titlePhrase.add(
         new Chunk(
             getDemoInfo(demo),
             FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, Color.BLACK)));
 
+    // The DHDR-side demographic (DHDR13.01.b); omitted when no DHDR patient was resolved.
+    if (dhdrDemoLine != null && !dhdrDemoLine.isEmpty()) {
+      titlePhrase.add(Chunk.NEWLINE);
+      titlePhrase.add(
+          new Chunk(
+              dhdrDemoLine, FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL, Color.BLACK)));
+    }
+
     return titlePhrase;
   }
 
-  private HeaderFooter getHeaderFooter(Demographic demo, String title) {
-    HeaderFooter header = new HeaderFooter(getTitlePhrase(demo, title), false);
+  private HeaderFooter getHeaderFooter(Demographic demo, String title, String dhdrDemoLine) {
+    HeaderFooter header = new HeaderFooter(getTitlePhrase(demo, title, dhdrDemoLine), false);
     header.setAlignment(HeaderFooter.ALIGN_RIGHT);
     header.setBorder(Rectangle.BOTTOM);
 
@@ -593,23 +611,17 @@ public class DHDRPrint {
 
     document = new Document();
     document.setPageSize(PageSize.LETTER.rotate());
+    document.setMargins(36, 36, 90, 140);
 
     PdfWriter writer =
         PdfWriterFactory.newInstance(document, outputStream, FontSettings.HELVETICA_10PT);
+    writer.setPageEvent(new DhdrFooterEvent(DHDR_DISCLAIMER, resolveConfidentialityStatement(), buildPrintedInfo(loggedInInfo)));
 
-    HeaderFooter header = getHeaderFooter(demo, "DHDR Comparative");
+    String dhdrDemoLine = buildDhdrDemoLine(jsonOb.optJSONObject("dhdrPatient"));
+    HeaderFooter header = getHeaderFooter(demo, "DHDR Comparative", dhdrDemoLine);
     document.setHeader(header);
 
     document.open();
-
-    Paragraph dhrDisclaimerParagraph =
-        new Paragraph(
-            "Warning: Limited to Drug and Pharmacy Service Information available in the Digital Health Drug Repository (DHDR) EHR Service. To ensure a Best Possible Medication History (BPMH), please review this information with the patient/family and use other available sources of medication information in addition to the DHDR EHR Service.",
-            FontFactory.getFont(FontFactory.HELVETICA, 9, Font.ITALIC, Color.BLACK));
-    dhrDisclaimerParagraph.add(Chunk.NEWLINE);
-    document.add(dhrDisclaimerParagraph);
-
-    ///
 
     Paragraph emrHeaderParagraph =
         new Paragraph(
@@ -632,7 +644,7 @@ public class DHDRPrint {
 
     document.add(Chunk.NEWLINE);
 
-    JSONArray arr = jsonOb.getJSONArray("meds");
+    JSONArray arr = sortByWhenPreparedDesc(jsonOb.getJSONArray("meds"));
     Paragraph drugProductParagraph =
         new Paragraph(
             "DHDR Drugs", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
@@ -667,7 +679,7 @@ public class DHDRPrint {
     }
 
     if (jsonOb.has("services")) {
-      JSONArray serviceArr = jsonOb.getJSONArray("services");
+      JSONArray serviceArr = sortByWhenPreparedDesc(jsonOb.getJSONArray("services"));
 
       document.add(Chunk.NEWLINE);
 
@@ -683,7 +695,7 @@ public class DHDRPrint {
       servicesProductParagraph.setSpacingAfter(5f);
       document.add(servicesProductParagraph);
 
-      PdfPTable serviceTable = new PdfPTable(8);
+      PdfPTable serviceTable = new PdfPTable(9);
       serviceTable.setWidthPercentage(100.0f);
 
       if (serviceArr.length() > 0) {
@@ -692,6 +704,7 @@ public class DHDRPrint {
         serviceTable.addCell(getHeaderCell("Pickup Date"));
         serviceTable.addCell(getHeaderCell("Pharmacy Service Type"));
         serviceTable.addCell(getHeaderCell("Pharmacy Service Description"));
+        serviceTable.addCell(getHeaderCell("Rx Number"));
         serviceTable.addCell(getHeaderCell("Therapeutic Class/Sub-class"));
         serviceTable.addCell(getHeaderCell("Pharmacy Name"));
         serviceTable.addCell(getHeaderCell("Pharmacist"));
@@ -706,6 +719,7 @@ public class DHDRPrint {
           JSONObject brandObj = med.getJSONObject("brandName");
           serviceTable.addCell(getItemCell(brandObj.optString("display")));
           serviceTable.addCell(getItemCell(med.optString("genericName")));
+          serviceTable.addCell(getItemCell(med.optString("rxNumber")));
           serviceTable.addCell(
               getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
           serviceTable.addCell(getItemCell(med.optString("dispensingPharmacy")));
@@ -781,27 +795,191 @@ public class DHDRPrint {
       }
     }
 
-    addDocumentFooter(loggedInInfo, document);
+    document.close();
   }
 
-  private void addDocumentFooter(LoggedInInfo loggedInInfo, Document document)
-      throws DocumentException {
+  /**
+   * Builds the "Printed on &lt;date&gt; by &lt;name&gt;" line rendered in the per-page footer
+   * (DHDR13.01.c).
+   *
+   * @param loggedInInfo LoggedInInfo the current session, used for the printing provider's name
+   * @return String the printed-on/by footer line
+   */
+  private String buildPrintedInfo(LoggedInInfo loggedInInfo) {
     String printedByName =
         loggedInInfo.getLoggedInProvider().getLastName()
             + ", "
             + loggedInInfo.getLoggedInProvider().getFirstName();
+    return "Printed on " + formatter.format(new Date()) + " by " + printedByName;
+  }
 
-    Paragraph datePrinted =
-        new Paragraph(
-            "Printed on " + formatter.format(new Date()),
-            FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK));
-    Paragraph printedBy =
-        new Paragraph(
-            "Printed by " + printedByName,
-            FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK));
-    datePrinted.add(Chunk.NEWLINE);
-    document.add(datePrinted);
-    document.add(printedBy);
-    document.close();
+  /**
+   * Resolves the EMR confidentiality statement printed on each page (DHDR13.01.h). Uses the
+   * clinic-configured statement (oscar_mcmaster.properties {@code confidentiality_statement.vN})
+   * when set, otherwise a generic personal-health-information confidentiality notice.
+   *
+   * @return String the confidentiality statement to print
+   */
+  private String resolveConfidentialityStatement() {
+    String configured = OscarProperties.getConfidentialityStatement();
+    if (configured != null && !configured.trim().isEmpty()) {
+      return configured.trim();
+    }
+    return "CONFIDENTIALITY NOTICE: This document contains personal health information intended only"
+        + " for the authorized recipient. Any unauthorized review, use, disclosure, or distribution"
+        + " is prohibited.";
+  }
+
+  /**
+   * Builds the DHDR-side patient demographic line (DHDR13.01.b) from the front-end {@code
+   * dhdrPatient} object (first/last name, gender, DOB, HIN as maintained by the DHDR EHR Service).
+   *
+   * @param dhdrPatient JSONObject the DHDR-side patient, or null when none was resolved
+   * @return String the demographic line, or an empty string when no DHDR patient is available
+   */
+  private String buildDhdrDemoLine(JSONObject dhdrPatient) {
+    if (dhdrPatient == null) {
+      return "";
+    }
+    String first = dhdrPatient.optString("firstName", "").trim();
+    String last = dhdrPatient.optString("lastName", "").trim();
+    String gender = dhdrPatient.optString("gender", "").trim();
+    String dob = dhdrPatient.optString("dob", "").trim();
+    String hin = dhdrPatient.optString("hin", "").trim();
+    if (first.isEmpty() && last.isEmpty() && dob.isEmpty() && hin.isEmpty()) {
+      return "";
+    }
+    StringBuilder sb = new StringBuilder("DHDR EHR Service - ");
+    sb.append(last);
+    if (!first.isEmpty()) {
+      sb.append(", ").append(first);
+    }
+    if (!gender.isEmpty()) {
+      sb.append("   Gender: ").append(gender);
+    }
+    if (!dob.isEmpty()) {
+      sb.append("   DOB: ").append(dob);
+      String age = computeAge(dob);
+      if (!age.isEmpty()) {
+        sb.append("   Age: ").append(age);
+      }
+    }
+    if (!hin.isEmpty()) {
+      sb.append("   HIN: ").append(hin);
+    }
+    return sb.toString();
+  }
+
+  /**
+   * Computes the age in whole years from a FHIR birthDate string (yyyy, yyyy-MM, or yyyy-MM-dd).
+   *
+   * @param dob String the FHIR birthDate value
+   * @return String the age in years, or an empty string when the value cannot be parsed
+   */
+  private String computeAge(String dob) {
+    try {
+      String[] parts = dob.split("-");
+      int year = Integer.parseInt(parts[0]);
+      int month = parts.length > 1 ? Integer.parseInt(parts[1]) : 1;
+      int day = parts.length > 2 ? Integer.parseInt(parts[2]) : 1;
+      LocalDate birth = LocalDate.of(year, month, day);
+      return String.valueOf(Period.between(birth, LocalDate.now()).getYears());
+    } catch (Exception e) {
+      return "";
+    }
+  }
+
+  /**
+   * Returns a copy of the given events ordered by dispense date ({@code whenPrepared}) descending -
+   * most recent first - as the printed history requires (DHDR13.01). Events with no whenPrepared
+   * value sort last. The source array is left unmodified.
+   *
+   * @param arr JSONArray the DHDR dispense / pharmacy-service events
+   * @return JSONArray the events ordered by whenPrepared descending
+   */
+  private JSONArray sortByWhenPreparedDesc(JSONArray arr) throws JSONException {
+    List<JSONObject> list = new ArrayList<>();
+    for (int i = 0; i < arr.length(); i++) {
+      list.add(arr.getJSONObject(i));
+    }
+    list.sort((a, b) -> b.optString("whenPrepared", "").compareTo(a.optString("whenPrepared", "")));
+    JSONArray sorted = new JSONArray();
+    for (JSONObject event : list) {
+      sorted.put(event);
+    }
+    return sorted;
+  }
+
+  /**
+   * Page event that stamps the DHDR disclaimer (DHDR13.01.g), the EMR confidentiality statement
+   * (DHDR13.01.h), the printed-on/by line (DHDR13.01.c) and the "Page X of Y" counter (DHDR13.01.e)
+   * into the bottom margin of every page.
+   */
+  private static class DhdrFooterEvent extends PdfPageEventHelper {
+    private final String disclaimer;
+    private final String confidentiality;
+    private final String printedInfo;
+    private PdfTemplate totalPages;
+    private final Font footerFont =
+        FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, Color.BLACK);
+    private final Font legalFont =
+        FontFactory.getFont(FontFactory.HELVETICA, 7, Font.ITALIC, new Color(80, 80, 80));
+
+    DhdrFooterEvent(String disclaimer, String confidentiality, String printedInfo) {
+      this.disclaimer = disclaimer;
+      this.confidentiality = confidentiality;
+      this.printedInfo = printedInfo;
+    }
+
+    @Override
+    public void onOpenDocument(PdfWriter writer, Document document) {
+      totalPages = writer.getDirectContent().createTemplate(40, 12);
+    }
+
+    @Override
+    public void onEndPage(PdfWriter writer, Document document) {
+      PdfContentByte cb = writer.getDirectContent();
+      float left = document.left();
+      float right = document.right();
+      float bottom = document.bottom();
+
+      // DHDR disclaimer (13.01.g) then the EMR confidentiality statement (13.01.h), wrapped in one
+      // legal band that fills downward from just below the content area to above the page line.
+      ColumnText ct = new ColumnText(cb);
+      ct.setLeading(8f);
+      ct.setSimpleColumn(left, bottom - 100, right, bottom - 6);
+      ct.addText(new Phrase(disclaimer, legalFont));
+      ct.addText(new Phrase(Chunk.NEWLINE));
+      ct.addText(new Phrase(confidentiality, legalFont));
+      try {
+        ct.go();
+      } catch (DocumentException e) {
+        // The footer is best-effort chrome; never let it abort the print.
+      }
+
+      // Printed-on/by (left) and Page X of Y (right) share the lowest baseline.
+      float lineY = bottom - 118;
+      ColumnText.showTextAligned(
+          cb, Element.ALIGN_LEFT, new Phrase(printedInfo, footerFont), left, lineY, 0);
+      ColumnText.showTextAligned(
+          cb,
+          Element.ALIGN_RIGHT,
+          new Phrase("Page " + writer.getPageNumber() + " of ", footerFont),
+          right - 40,
+          lineY,
+          0);
+      cb.addTemplate(totalPages, right - 38, lineY);
+    }
+
+    @Override
+    public void onCloseDocument(PdfWriter writer, Document document) {
+      ColumnText.showTextAligned(
+          totalPages,
+          Element.ALIGN_LEFT,
+          new Phrase(String.valueOf(writer.getPageNumber() - 1), footerFont),
+          0,
+          2,
+          0);
+    }
   }
 }

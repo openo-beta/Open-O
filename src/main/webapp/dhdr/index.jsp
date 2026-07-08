@@ -28,6 +28,8 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.SystemPreferencesDao" %>
 <%@page import="ca.openosp.openo.commn.model.SystemPreferences" %>
+<%@page import="ca.openosp.OscarProperties" %>
+<%@page import="org.owasp.encoder.Encode" %>
 <fmt:setBundle basename="oscarResources"/>
 <%
     String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -40,10 +42,12 @@
 		return;
 	}
 
-	// DHDR-05 wires these to the oneid.odb.endpoint / oneid.eap.endpoint system preferences
-	// (ODB / Enhanced Access Program links). Rendered as empty until that ticket lands.
-	String odbUrl = "";
-	String eapUrl = "";
+	// DHDR12.01-12.02: the ODB Formulary ("Check Medication Coverage - Drug Formulary") and EAP
+	// links. EAP requests are submitted through the SADIE portal, so the EAP link targets SADIE.
+	// Both URLs are admin-configurable in oscar_mcmaster.properties (dhdr.odb_formulary_url /
+	// dhdr.eap_url); the OMD-published addresses are used when the properties are unset.
+	String odbUrl = OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/");
+	String eapUrl = OscarProperties.getInstance().getProperty("dhdr.eap_url", "http://www.health.gov.on.ca/en/pro/programs/sadie/");
 
 	// DHDR-04: PCOI viewlet "not responding" timeout in milliseconds, configurable via the
 	// oneid_viewlet_timeout system preference; default 300000 (5 minutes) when unset or invalid.
@@ -117,8 +121,8 @@
 	</div>
 	<div class="container">
 		<h4>More Information:</h4>
-		<input type="button" class="btn btn-default" value="Ontario Drug Benefit" ng-click="openWindow('<%=odbUrl%>')"/>
-		<input type="button" class="btn btn-default" value="Enhanced Access Program" ng-click="openWindow('<%=eapUrl%>')"/>
+		<input type="button" class="btn btn-default" value="Ontario Drug Benefit" ng-click="openWindow('<%=Encode.forJavaScript(odbUrl)%>')"/>
+		<input type="button" class="btn btn-default" value="Enhanced Access Program" ng-click="openWindow('<%=Encode.forJavaScript(eapUrl)%>')"/>
 	</div>
 	<hr/>
 	<div class="container">
@@ -1162,9 +1166,11 @@
 				var toPrint = {};
 				toPrint.meds = $scope.meds;
 				toPrint.services = $scope.services;
+				// DHDR13.01.b: the DHDR-side patient demographic printed on each page
+				toPrint.dhdrPatient = $scope.dhdrPatient;
 				toPrint.startDate = $filter('date')($scope.searchConfig.startDate, "yyyy-MM-dd");
 				toPrint.endDate   = $filter('date')($scope.searchConfig.endDate, "yyyy-MM-dd");
-				
+
 				$http.post('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 					
 					console.log("respone",response);
@@ -1183,6 +1189,8 @@
 				toPrint.meds = $scope.meds;
 				toPrint.services = $scope.services;
 				toPrint.localData = $scope.compLocalMeds;
+				// DHDR13.01.b: the DHDR-side patient demographic printed on each page
+				toPrint.dhdrPatient = $scope.dhdrPatient;
 				toPrint.startDate = $filter('date')($scope.searchConfig.startDate, "yyyy-MM-dd");
 				toPrint.endDate   = $filter('date')($scope.searchConfig.endDate, "yyyy-MM-dd");
 				
@@ -2113,7 +2121,9 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 					console.log("trying to print");
 					var toPrint = {};
 					toPrint.med = $scope.med;
-					
+					// DHDR13.01.b: the DHDR-side patient demographic printed on each page
+					toPrint.dhdrPatient = $scope.dhdrPatient;
+
 					$http.post('../ws/rs/dhdr/'+demoNo+'/print/detail',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 						
 						console.log("respone for detail print",response);
