@@ -45,7 +45,6 @@ import ca.openosp.openo.utility.SpringUtils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.WebClient;
@@ -69,6 +68,7 @@ import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.security.SecureRandom;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -78,7 +78,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.UUID;
 
 public class OmdGateway {
@@ -627,13 +626,9 @@ public class OmdGateway {
 	}
 
 	public String generateVerifier() {
-	    byte[] array = new byte[50];
-	    new Random().nextBytes(array);
-	    String generatedString = RandomStringUtils.randomAlphabetic(50);
-
-	    String verifier = PKCEUtils.encodeBase64NoPadding(generatedString);
-	    logger.debug("verifier = "+verifier);
-	    return verifier;
+	    byte[] randomBytes = new byte[32];
+	    new SecureRandom().nextBytes(randomBytes);
+	    return PKCEUtils.encodeBase64NoPadding(randomBytes);
 	}
 	
 	public Response callAuthorize(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData,String state,String verifier) {
