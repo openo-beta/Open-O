@@ -96,10 +96,46 @@ public class ViewletLaunchAction extends ActionSupport {
             node.put("timeoutMillis", viewletTimeoutMillis());
             writeJson(HttpServletResponse.SC_OK, node);
         } catch (CMSException | IllegalStateException e) {
+            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", e.getMessage(), demographicNo, null);
             writeFailure(e.getMessage());
         } catch (Exception e) {
             logger.error("Viewlet launch failed", e);
+            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", "The EHR service could not be launched.", demographicNo, null);
             writeFailure("The EHR service could not be launched. Please try again.");
+        }
+        return NONE;
+    }
+
+    public String result() {
+        LoggedInInfo loggedInInfo = loggedInInfo();
+        checkPrivilege(loggedInInfo);
+        Integer demographicNo = parseId(request.getParameter("demographicNo"));
+        String key = request.getParameter("key");
+        if (demographicNo == null || key == null || key.trim().isEmpty()) {
+            writeFailure("The patient and EHR service for the result were not provided.");
+            return NONE;
+        }
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", "r", String.valueOf(demographicNo))) {
+            throw new SecurityException("missing required sec object (_demographic)");
+        }
+        String uniqueToken = emptyToNull(request.getParameter("uuid"));
+        String message = bounded(request.getParameter("message"));
+        boolean success = "success".equalsIgnoreCase(request.getParameter("status"));
+        try {
+            OmdGateway omdGateway = new OmdGateway();
+            if (success) {
+                omdGateway.logDataReceived(loggedInInfo, key.trim(), "viewletResult", message, demographicNo, uniqueToken);
+            } else {
+                omdGateway.logError(loggedInInfo, key.trim(), "viewletResult",
+                        message == null ? "The EHR service did not return a successful response." : message,
+                        demographicNo, uniqueToken);
+            }
+            ObjectNode node = objectMapper.createObjectNode();
+            node.put("status", "ok");
+            writeJson(HttpServletResponse.SC_OK, node);
+        } catch (Exception e) {
+            logger.error("Failed to record the viewlet result", e);
+            writeFailure("The EHR service result could not be recorded.");
         }
         return NONE;
     }
@@ -172,5 +208,17 @@ public class ViewletLaunchAction extends ActionSupport {
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    private static String emptyToNull(String value) {
+        return (value == null || value.trim().isEmpty()) ? null : value.trim();
+    }
+
+    private static String bounded(String value) {
+        String trimmed = emptyToNull(value);
+        if (trimmed == null) {
+            return null;
+        }
+        return trimmed.length() > 2000 ? trimmed.substring(0, 2000) : trimmed;
     }
 }

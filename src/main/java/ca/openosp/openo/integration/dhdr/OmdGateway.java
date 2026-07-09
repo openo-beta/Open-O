@@ -245,10 +245,20 @@ public class OmdGateway {
 	}
 	
 	public void logError(LoggedInInfo loggedInInfo,String externalSystem, String transactionType,String error) {
+		logError(loggedInInfo, externalSystem, transactionType, error, null, null);
+	}
+
+	public void logError(LoggedInInfo loggedInInfo,String externalSystem, String transactionType,String error,Integer demographicNo,String uniqueToken) {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, externalSystem, transactionType);
 		omdGatewayTransactionLog.setStarted(new Date());
 		omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 		omdGatewayTransactionLog.setError(error);
+		if(demographicNo != null) {
+			omdGatewayTransactionLog.setDemographicNo(demographicNo);
+		}
+		if(uniqueToken != null) {
+			omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
+		}
 		transactionLogDao.persist(omdGatewayTransactionLog);
 	}
 	
@@ -426,6 +436,7 @@ public class OmdGateway {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, viewletKey, "viewletLaunch");
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
+		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
 		transactionLogDao.persist(omdGatewayTransactionLog);
 		return url;
 	}

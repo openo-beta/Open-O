@@ -3,9 +3,9 @@
  * launchViewlet fetches the launch URL for a patient and opens it in the Viewlet's
  * configured interface: a shared named window, or an in-page modal dialog. It then
  * waits for the Viewlet to respond within the configured wait time, confirms the
- * content rendered, allows a bounded number of reloads, and informs the user if the
- * Viewlet does not respond. Closing either the window or the dialog clears the patient
- * from the EHR context.
+ * content rendered, allows a bounded number of reloads, records the outcome, and
+ * informs the user if the Viewlet does not respond. Closing either the window or the
+ * dialog clears the patient from the EHR context.
  */
 
 var VIEWLET_DEFAULT_TIMEOUT_MS = 300000;
@@ -40,10 +40,11 @@ function launchViewlet(ctx, demographicNo, key, displayMode) {
                 return;
             }
             var timeout = viewletTimeout(result.data.timeoutMillis);
+            var uuid = result.data.uuid;
             if (displayMode === 'modal') {
-                openViewletModal(result.data.viewletUrl, demographicNo, ctx, timeout);
+                openViewletModal(result.data.viewletUrl, demographicNo, ctx, timeout, key, uuid);
             } else {
-                popupEHRService(result.data.viewletUrl, demographicNo, ctx, timeout);
+                popupEHRService(result.data.viewletUrl, demographicNo, ctx, timeout, key, uuid);
             }
         })
         .catch(function () {
@@ -64,7 +65,34 @@ function viewletOrigin(url) {
     }
 }
 
-function popupEHRService(url, demographicNo, ctx, timeout) {
+function viewletMessagePayload(data) {
+    try {
+        if (data === null || data === undefined) {
+            return '';
+        }
+        var text = (typeof data === 'string') ? data : JSON.stringify(data);
+        return text.slice(0, 500);
+    } catch (e) {
+        return '';
+    }
+}
+
+// Records the outcome of a launch (success or failure) in the gateway log. Best-effort:
+// a logging failure never disrupts the clinician.
+function reportViewletResult(ctx, demographicNo, key, uuid, status, message) {
+    if (!demographicNo || !key) {
+        return;
+    }
+    var url = ctx + '/viewletResult.do?demographicNo=' + encodeURIComponent(demographicNo)
+        + '&key=' + encodeURIComponent(key)
+        + '&uuid=' + encodeURIComponent(uuid || '')
+        + '&status=' + encodeURIComponent(status)
+        + '&message=' + encodeURIComponent(message || '');
+    fetch(url, {credentials: 'same-origin'}).catch(function () {
+    });
+}
+
+function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
     var windowProperties = 'height=800,width=1300,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0';
     var popup = window.open(url, 'EHR Service', windowProperties);
     if (!popup) {
@@ -73,11 +101,22 @@ function popupEHRService(url, demographicNo, ctx, timeout) {
     }
     var expectedOrigin = viewletOrigin(url);
     var responded = false;
+    var reported = false;
+
+    // Record the outcome once; the first of a response or the window closing wins.
+    function reportOnce(status, message) {
+        if (reported) {
+            return;
+        }
+        reported = true;
+        reportViewletResult(ctx, demographicNo, key, uuid, status, message);
+    }
 
     // A message from the Viewlet's own origin marks its response as received.
     function onMessage(event) {
         if (expectedOrigin && event.origin === expectedOrigin) {
             responded = true;
+            reportOnce('success', viewletMessagePayload(event.data));
         }
     }
     window.addEventListener('message', onMessage);
@@ -96,6 +135,7 @@ function popupEHRService(url, demographicNo, ctx, timeout) {
                 clearInterval(poll);
                 clearTimeout(waitTimer);
                 window.removeEventListener('message', onMessage);
+                reportOnce('failure', 'The EHR service window was closed without a response.');
                 closeViewletPatientContext(ctx, demographicNo);
             }
         }, 1000);
@@ -103,7 +143,7 @@ function popupEHRService(url, demographicNo, ctx, timeout) {
     popup.focus();
 }
 
-function openViewletModal(url, demographicNo, ctx, timeout) {
+function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
     // Only one modal viewlet is shown at a time; replace any that is already open.
     var existingOverlay = document.getElementById('viewletModalOverlay');
     if (existingOverlay) {
@@ -113,7 +153,18 @@ function openViewletModal(url, demographicNo, ctx, timeout) {
     var reloadAttempts = 0;
     var loaded = false;
     var closed = false;
+    var reported = false;
     var waitTimer = null;
+
+    // Record the outcome once; rendering or a response is a success, closing before
+    // either is a failure.
+    function reportOnce(status, message) {
+        if (reported) {
+            return;
+        }
+        reported = true;
+        reportViewletResult(ctx, demographicNo, key, uuid, status, message);
+    }
 
     var overlay = document.createElement('div');
     overlay.id = 'viewletModalOverlay';
@@ -155,6 +206,7 @@ function openViewletModal(url, demographicNo, ctx, timeout) {
         closed = true;
         clearTimeout(waitTimer);
         window.removeEventListener('message', onMessage);
+        reportOnce('failure', 'The EHR service was closed without a response.');
         if (overlay.parentNode) {
             document.body.removeChild(overlay);
         }
@@ -166,6 +218,7 @@ function openViewletModal(url, demographicNo, ctx, timeout) {
     // A message from the Viewlet's own origin means it has finished; close the dialog.
     function onMessage(event) {
         if (expectedOrigin && event.origin === expectedOrigin) {
+            reportOnce('success', viewletMessagePayload(event.data));
             closeModal();
         }
     }
@@ -176,6 +229,7 @@ function openViewletModal(url, demographicNo, ctx, timeout) {
         loaded = true;
         status.textContent = '';
         reloadButton.style.display = 'none';
+        reportOnce('success', 'The EHR service rendered.');
     });
 
     reloadButton.onclick = function () {
