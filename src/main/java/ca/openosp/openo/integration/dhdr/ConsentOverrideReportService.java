@@ -1,0 +1,225 @@
+package ca.openosp.openo.integration.dhdr;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.OMDGatewayTransactionLogDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.managers.ProviderManager2;
+import ca.openosp.openo.utility.DateUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+
+/**
+ * Builds the rows of the DHDR Temporary Consent Unblock report (DHDR13.02).
+ *
+ * <p>Consent-override decisions are logged against the gateway as keys, not display values: the
+ * initiating provider and the patient are recorded as a provider number and a demographic number.
+ * This service selects the decision records over a date range, resolves those keys into the fields
+ * DHDR13.02 requires (EMR user's name; patient Unique ID, name and Health Card Number), and applies
+ * the report's patient last-name and Unique-ID search.
+ *
+ * <p><strong>The report is deliberately cross-patient.</strong> Unlike the per-patient DHDR viewer,
+ * it lists every override in the date range regardless of the viewer's per-demographic privileges,
+ * so that consent overrides remain reviewable as a whole. Patient records are therefore read
+ * straight from {@link DemographicDao} rather than through {@code DemographicManager}: the manager
+ * enforces a per-demographic {@code _demographic} check that would abort the entire report on the
+ * first restricted patient, and a patient-scoped no-rights entry there also flags the session as
+ * locked. Neither is a sensible outcome for a report whose row set the user did not choose. The
+ * caller is responsible for guarding access to the report as a whole.
+ *
+ * @since 2026-07-09
+ */
+@Service
+public class ConsentOverrideReportService {
+
+  /**
+   * The {@code externalSystem} discriminator the consent-override path writes. The same system also
+   * writes a {@code consentViewletLaunch} record, which the decision whitelist excludes.
+   */
+  static final String EXTERNAL_SYSTEM = "PCOI";
+
+  private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm";
+
+  private final OMDGatewayTransactionLogDao transactionLogDao;
+  private final DemographicDao demographicDao;
+  private final ProviderManager2 providerManager;
+
+  @Autowired
+  public ConsentOverrideReportService(OMDGatewayTransactionLogDao transactionLogDao,
+      DemographicDao demographicDao, ProviderManager2 providerManager) {
+    this.transactionLogDao = transactionLogDao;
+    this.demographicDao = demographicDao;
+    this.providerManager = providerManager;
+  }
+
+  /**
+   * Selects the consent-override decisions in the date range, resolves them for display, and
+   * applies the DHDR13.02 search.
+   *
+   * @param loggedInInfo LoggedInInfo the current session, used for the provider lookup
+   * @param searchLastName String the patient last-name filter, or {@code null} for no filter
+   * @param searchUniqueId String the patient Unique-ID filter, or {@code null} for no filter
+   * @param from Date the inclusive lower bound on the decision timestamp
+   * @param to Date the inclusive upper bound on the decision timestamp
+   * @return List&lt;Row&gt; the matching rows, newest first (never {@code null})
+   */
+  public List<Row> findRows(LoggedInInfo loggedInInfo, String searchLastName, String searchUniqueId,
+      Date from, Date to) {
+    List<OMDGatewayTransactionLog> logs = transactionLogDao.findByExternalSystemAndTransactionTypes(
+        EXTERNAL_SYSTEM, ConsentOverrideChoice.storedValues(), from, to);
+
+    // One provider typically raises many overrides; resolve each provider's name at most once.
+    Map<String, String> providerNames = new HashMap<String, String>();
+    List<Row> rows = new ArrayList<Row>();
+    for (OMDGatewayTransactionLog log : logs) {
+      Row row = toRow(loggedInInfo, log, providerNames);
+      if (matchesSearch(row, searchLastName, searchUniqueId)) {
+        rows.add(row);
+      }
+    }
+    return rows;
+  }
+
+  /**
+   * Resolves one gateway log record into a display row, looking up the provider and demographic.
+   *
+   * @param loggedInInfo LoggedInInfo the current session, used for the provider lookup
+   * @param log OMDGatewayTransactionLog the consent-override decision record
+   * @param providerNames Map&lt;String, String&gt; a per-report providerNo to display-name cache,
+   *     read and populated by this method
+   * @return Row the resolved display row (never {@code null})
+   */
+  private Row toRow(LoggedInInfo loggedInInfo, OMDGatewayTransactionLog log,
+      Map<String, String> providerNames) {
+    Row row = new Row();
+    // DateUtils.format renders null as the empty string, which is what an unstamped record shows.
+    row.setDateTime(DateUtils.format(TIMESTAMP_FORMAT, log.getStarted(), null));
+    row.setChoice(ConsentOverrideChoice.labelFor(log.getTransactionType()));
+
+    String providerNo = log.getInitiatingProviderNo();
+    if (StringUtils.isNotBlank(providerNo)) {
+      String name = providerNames.get(providerNo);
+      if (name == null) {
+        Provider provider = providerManager.getProvider(loggedInInfo, providerNo);
+        name = provider == null ? providerNo : provider.getFormattedName();
+        providerNames.put(providerNo, name);
+      }
+      row.setEmrUser(name);
+    }
+
+    Integer demographicNo = log.getDemographicNo();
+    if (demographicNo != null) {
+      row.setUniqueId(String.valueOf(demographicNo));
+      Demographic demographic = demographicDao.getDemographicById(demographicNo);
+      if (demographic != null) {
+        row.setLastName(demographic.getLastName());
+        row.setPatientName(demographic.getFullName());
+        row.setHcn(demographic.getHin());
+      }
+    }
+    return row;
+  }
+
+  /**
+   * Applies the report's DHDR13.02 search filters: patient Unique ID (exact) and patient last name
+   * (case-insensitive substring of the surname alone, so a first-name match cannot satisfy it).
+   *
+   * @param row Row the resolved row under test
+   * @param lastName String the last-name filter, or {@code null} for no filter
+   * @param uniqueId String the Unique-ID filter, or {@code null} for no filter
+   * @return boolean {@code true} if the row satisfies both supplied filters
+   */
+  static boolean matchesSearch(Row row, String lastName, String uniqueId) {
+    if (uniqueId != null && !uniqueId.equals(row.getUniqueId())) {
+      return false;
+    }
+    if (lastName != null) {
+      String surname = row.getLastName() == null ? "" : row.getLastName().toLowerCase();
+      if (!surname.contains(lastName.toLowerCase())) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * A single resolved report row. Getters expose raw (unencoded) display values; the view is
+   * responsible for output encoding. {@code lastName} backs the surname search and is not displayed
+   * on its own - {@code patientName} carries the rendered "Last, First".
+   */
+  public static class Row {
+    private String dateTime = "";
+    private String emrUser = "";
+    private String uniqueId = "";
+    private String lastName = "";
+    private String patientName = "";
+    private String hcn = "";
+    private String choice = "";
+
+    public String getDateTime() {
+      return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+      this.dateTime = dateTime;
+    }
+
+    public String getEmrUser() {
+      return emrUser;
+    }
+
+    public void setEmrUser(String emrUser) {
+      this.emrUser = emrUser;
+    }
+
+    public String getUniqueId() {
+      return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+      this.uniqueId = uniqueId;
+    }
+
+    public String getLastName() {
+      return lastName;
+    }
+
+    public void setLastName(String lastName) {
+      this.lastName = lastName;
+    }
+
+    public String getPatientName() {
+      return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+      this.patientName = patientName;
+    }
+
+    public String getHcn() {
+      return hcn;
+    }
+
+    public void setHcn(String hcn) {
+      this.hcn = hcn;
+    }
+
+    public String getChoice() {
+      return choice;
+    }
+
+    public void setChoice(String choice) {
+      this.choice = choice;
+    }
+  }
+}

@@ -22,6 +22,8 @@ import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -67,6 +69,34 @@ public class OMDGatewayTransactionLogDao extends AbstractDaoImpl<OMDGatewayTrans
     Query query = entityManager.createQuery(
         "select x from OMDGatewayTransactionLog x  where x.externalSystem=? ORDER BY x.started desc");
     query.setParameter(1, systemType);
+    return (List<OMDGatewayTransactionLog>) query.getResultList();
+  }
+
+  /**
+   * Finds the log records for one external system whose transaction type is in the given set,
+   * within an inclusive date range, most recent first.
+   *
+   * <p>The transaction-type whitelist is supplied by the caller rather than fixed here, because the
+   * meaning of a transaction type belongs to the integration that writes it. The DHDR consent
+   * unblock report, for example, passes {@code "PCOI"} with the four override decisions, which
+   * excludes the {@code "consentViewletLaunch"} row that the same external system also writes.
+   *
+   * @param externalSystem String the {@code externalSystem} discriminator to match exactly
+   * @param transactionTypes Collection&lt;String&gt; the transaction types to include; must not be
+   *     empty
+   * @param from Date the inclusive lower bound on the event timestamp ({@code started})
+   * @param to Date the inclusive upper bound on the event timestamp ({@code started})
+   * @return List&lt;OMDGatewayTransactionLog&gt; the matching records, newest first
+   */
+  @SuppressWarnings("unchecked")
+  public List<OMDGatewayTransactionLog> findByExternalSystemAndTransactionTypes(
+      String externalSystem, Collection<String> transactionTypes, Date from, Date to) {
+    Query query = entityManager.createQuery(
+        "select x from OMDGatewayTransactionLog x where x.externalSystem = ?1 and x.transactionType in (?2) and x.started between ?3 and ?4 order by x.started desc");
+    query.setParameter(1, externalSystem);
+    query.setParameter(2, transactionTypes);
+    query.setParameter(3, from);
+    query.setParameter(4, to);
     return (List<OMDGatewayTransactionLog>) query.getResultList();
   }
 }

@@ -95,6 +95,9 @@
             <result name="success">/admin/lookUpLists/</result>
         </action>
         <action name="admin/oncallClinic" class="ca.openosp.openo.admin.reports.SaveOnCallClinic2Action"/>
+        <action name="dhdr/consentOverrideReport" class="ca.openosp.openo.integration.dhdr.ConsentOverrideReport2Action">
+            <result name="success">/dhdr/consentOverrideReport.jsp</result>
+        </action>
         <action name="providerLinkingRules" class="ca.openosp.openo.dashboard.admin.ProviderLinkingRulesAction" />
         <action name="web/dashboard/display/DashboardDisplay" class="ca.openosp.openo.dashboard.display.DisplayDashboard2Action">
             <result name="success">/web/dashboard/display/DashboardDisplay.jsp</result>

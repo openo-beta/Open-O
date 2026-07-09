@@ -123,6 +123,8 @@
 		<h4>More Information:</h4>
 		<input type="button" class="btn btn-default" value="Ontario Drug Benefit" ng-click="openWindow('<%=Encode.forJavaScript(odbUrl)%>')"/>
 		<input type="button" class="btn btn-default" value="Enhanced Access Program" ng-click="openWindow('<%=Encode.forJavaScript(eapUrl)%>')"/>
+		<%-- DHDR13.02: entry point to the cross-patient Temporary Consent Unblock report (opens in a new window). --%>
+		<input type="button" class="btn btn-default" value="Consent Override Report" ng-click="openWindow('<%=Encode.forJavaScript(request.getContextPath() + "/dhdr/consentOverrideReport.do")%>')"/>
 	</div>
 	<hr/>
 	<div class="container">
