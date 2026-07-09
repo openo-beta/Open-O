@@ -23,6 +23,7 @@
  */
 package ca.openosp.openo.integration.oneId.web;
 
+import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.integration.dhdr.OmdGateway;
 import ca.openosp.openo.integration.ohcms.CMSException;
 import ca.openosp.openo.integration.ohcms.CMSManager;
@@ -92,6 +93,7 @@ public class ViewletLaunchAction extends ActionSupport {
             ObjectNode node = objectMapper.createObjectNode();
             node.put("viewletUrl", url);
             node.put("uuid", uniqueToken);
+            node.put("timeoutMillis", viewletTimeoutMillis());
             writeJson(HttpServletResponse.SC_OK, node);
         } catch (CMSException | IllegalStateException e) {
             writeFailure(e.getMessage());
@@ -146,6 +148,18 @@ public class ViewletLaunchAction extends ActionSupport {
     private void checkPrivilege(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, SEC_OBJECT, "r", null)) {
             throw new SecurityException("missing required sec object (" + SEC_OBJECT + ")");
+        }
+    }
+
+    private long viewletTimeoutMillis() {
+        String value = ehrConnectivityManager.getConfigValue(SystemPreferences.ONEID_KEYS.viewlet_timeout, "300000");
+        if (value == null) {
+            return 300000L;
+        }
+        try {
+            return Long.parseLong(value.trim());
+        } catch (NumberFormatException e) {
+            return 300000L;
         }
     }
 
