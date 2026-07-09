@@ -792,14 +792,17 @@ public class OmdGateway {
 	}
 
 	/**
-	 * Builds the OpenID Connect End Session URL to redirect the browser to at logout.
+	 * Builds the OpenID Connect End Session URL to redirect the browser to at logout. Users with EHR
+	 * service access land on the residual-PHI notice page; others land on the login page.
 	 *
-	 * @param idTokenHint String the id token that hints the session being ended, or null
+	 * @param idTokenHint       String the id token that hints the session being ended, or null
+	 * @param showPrivacyNotice boolean whether to land on the residual-PHI notice page
 	 * @return String the End Session URL
 	 */
-	public String buildEndSessionUrl(String idTokenHint) {
+	public String buildEndSessionUrl(String idTokenHint, boolean showPrivacyNotice) {
 		String endSessionUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_end_session).getValue();
-		String postLogout = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url")) + "oneIdLoggedOut.jsp";
+		String landingPage = showPrivacyNotice ? "oneIdLoggedOut.jsp" : "index.jsp";
+		String postLogout = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url")) + landingPage;
 		UriBuilder uriBuilder = UriBuilder.fromUri(endSessionUrl).queryParam("post_logout_redirect_uri", postLogout);
 		if (idTokenHint != null && !idTokenHint.isEmpty()) {
 			uriBuilder.queryParam("id_token_hint", idTokenHint);

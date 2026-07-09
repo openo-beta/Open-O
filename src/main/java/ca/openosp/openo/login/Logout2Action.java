@@ -31,6 +31,7 @@ import ca.openosp.openo.integration.oneId.OneIdGatewayData;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.EhrConnectivityManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -50,6 +51,7 @@ public class Logout2Action extends ActionSupport {
 
     private static final Logger logger = MiscUtils.getLogger();
     private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
+    private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
 
     public String execute() {
@@ -126,11 +128,15 @@ public class Logout2Action extends ActionSupport {
             return null;
         }
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(session);
-        OneIdGatewayData gatewayData = (loggedInInfo == null) ? null : loggedInInfo.getOneIdGatewayData();
+        if (loggedInInfo == null) {
+            return null;
+        }
+        OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
         if (gatewayData == null) {
             return null;
         }
         String idTokenHint = gatewayData.getIdTokenStr();
+        boolean hasEhrServiceAccess = securityInfoManager.hasPrivilege(loggedInInfo, "_ehr.connectivity", SecurityInfoManager.READ, null);
         OmdGateway omdGateway = new OmdGateway();
         try {
             CMSManager.userLogout(loggedInInfo);
@@ -149,7 +155,7 @@ public class Logout2Action extends ActionSupport {
         }
         gatewayData.clearGatewayData();
         try {
-            return omdGateway.buildEndSessionUrl(idTokenHint);
+            return omdGateway.buildEndSessionUrl(idTokenHint, hasEhrServiceAccess);
         } catch (Exception e) {
             logger.error("Failed to build the ONE ID End Session URL", e);
             return null;

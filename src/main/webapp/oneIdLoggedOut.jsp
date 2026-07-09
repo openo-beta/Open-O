@@ -24,9 +24,10 @@
 
 --%>
 <%--
-    Landing page after a ONE ID sign-out completes at the identity provider. Reached only by the
-    End Session redirect, so it shows the residual-PHI reminder to every ONE ID user without needing
-    a session. Styles are inline because static assets are not served to logged-out users.
+    Landing page after a ONE ID sign-out completes at the identity provider. The End Session redirect
+    targets this page only for users with EHR service access, so it shows the residual-PHI reminder to
+    exactly those users without needing a session. Styles are inline because static assets are not
+    served to logged-out users.
 
     @since 2026-07-02
 --%>
