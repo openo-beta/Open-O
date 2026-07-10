@@ -104,7 +104,7 @@ public class OmdGateway {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = new OMDGatewayTransactionLog();
 		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
 		if(oneIdGatewayData != null) {
-			logger.error("oneIdGatewayData.howLongUntilAccessTokenIsExpired() "+oneIdGatewayData.howLongUntilAccessTokenIsExpired());
+			logger.debug("oneIdGatewayData.howLongUntilAccessTokenIsExpired() "+oneIdGatewayData.howLongUntilAccessTokenIsExpired());
 			omdGatewayTransactionLog.setSecondsLeft(oneIdGatewayData.howLongUntilAccessTokenIsExpired());
 			omdGatewayTransactionLog.setUao(oneIdGatewayData.getUao());
 			omdGatewayTransactionLog.setContextSessionId(oneIdGatewayData.getCtxSessionId());
@@ -122,35 +122,75 @@ public class OmdGateway {
 	}
 
 	protected static void completeLog(OMDGatewayTransactionLog log, Response response2) {
-		log.setResultCode(response2.getStatus());
-		log.setSuccess(true);
+		completeLog(log, response2, false);
+	}
 
+	/**
+	 * Records the outcome of a gateway call on its audit row (DHDR15.01: transaction status, return
+	 * code, service-generated transaction identifiers, and the service's message on failure).
+	 *
+	 * <p>The response headers and body are only captured when {@code capturePayload} is set. Callers
+	 * that exchange credentials must leave it unset: the OAuth token endpoints return access and
+	 * refresh tokens in the body, and may set a session cookie in the headers. Neither belongs in the
+	 * audit table. The outcome fields above are always recorded, for every caller.
+	 *
+	 * @param log OMDGatewayTransactionLog the row opened before the call was made
+	 * @param response2 Response the response returned by the gateway
+	 * @param capturePayload boolean whether the response headers and body belong in the audit row
+	 */
+	protected static void completeLog(OMDGatewayTransactionLog log, Response response2, boolean capturePayload) {
+		log.setResultCode(response2.getStatus());
 		log.setEnded(new Date());
+
+		// The correlation identifiers are recorded whenever the service supplies them, but their
+		// absence must not suppress the outcome: a failure that omits X-Request-Id is still a failure.
 		String xRequestId = response2.getHeaderString("X-Request-Id");
 		if (xRequestId != null) {
 			log.setxRequestId(xRequestId);
-			String xLobTxId = response2.getHeaderString("X-LobTxId");
-			if (xLobTxId != null) {
-				log.setxLobTxId(xLobTxId);
-			}
-			String xCorrelationId = response2.getHeaderString("X-Correlation-Id");
-			if (xCorrelationId != null) {
-				log.setxCorrelationId(xCorrelationId);
-			}
-			if (response2.getStatus() >= 300) {
-				log.setError(response2.readEntity(String.class));
-				log.setSuccess(false);
-			} else {
-				logger.info("DATA RECIEVED " + response2.readEntity(String.class));
-				log.setDataRecieved(response2.readEntity(String.class));
-			}
-			logger.error("DATA RECIEVED set to " + log.getDataRecieved());
+		}
+		String xLobTxId = response2.getHeaderString("X-LobTxId");
+		if (xLobTxId != null) {
+			log.setxLobTxId(xLobTxId);
+		}
+		String xCorrelationId = response2.getHeaderString("X-Correlation-Id");
+		if (xCorrelationId != null) {
+			log.setxCorrelationId(xCorrelationId);
+		}
+
+		boolean failed = response2.getStatus() >= 300;
+		log.setSuccess(!failed);
+		if (failed) {
+			log.setError(response2.readEntity(String.class));
+		}
+
+		if (capturePayload) {
 			StringBuilder headers = new StringBuilder();
 			for (String headerName : response2.getHeaders().keySet()) {
 				headers.append(headerName + ":" + response2.getHeaderString(headerName) + "\n");
 			}
 			log.setHeaders(headers.toString());
+			if (!failed) {
+				// The body is PHI (DHDR) or clinical payload; the access-controlled audit table is its
+				// only sanctioned destination. It must not be echoed to the application log.
+				log.setDataRecieved(response2.readEntity(String.class));
+			}
 		}
+	}
+
+	/**
+	 * Records an interaction that does not itself call an EHR service - a user viewing or printing
+	 * data already retrieved from one (DHDR15.01).
+	 *
+	 * @param loggedInInfo LoggedInInfo the current session, supplying the initiating EMR user
+	 * @param externalSystem String the EHR service the data originated from, e.g. {@link AuditInfo#DHDR}
+	 * @param transactionType String the interaction, e.g. {@link AuditInfo#VIEW} or {@link AuditInfo#PRINT}
+	 * @param demographicNo Integer the patient the interaction concerns, or {@code null} when the
+	 *     interaction is not scoped to a single patient
+	 */
+	public void logInteraction(LoggedInInfo loggedInInfo, String externalSystem, String transactionType, Integer demographicNo) {
+		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, externalSystem, transactionType);
+		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
+		transactionLogDao.persist(omdGatewayTransactionLog);
 	}
 
 	protected List<OperationOutcome> hasOperationOutcome(Bundle bundle)  {
@@ -329,10 +369,13 @@ public class OmdGateway {
 		Response response2;
 		try {
 			response2 = wc.header("Authorization", "Bearer " + accessToken).header("X-Gtwy-Client-Id", consumerKey).header("X-Gtwy-Client-Secret", consumerSecret).get();
-			completeLog(omdGatewayTransactionLog,response2);
+			completeLog(omdGatewayTransactionLog,response2,true);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
 			logger.error("ERROR OMD Gateway GET",e);
+			// An unreachable or unresponsive service is a failed transaction (DHDR15.01).
+			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
+			omdGatewayTransactionLog.setEnded(new Date());
 			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
@@ -375,10 +418,12 @@ public class OmdGateway {
 				.header("X-Gtwy-Client-Secret", consumerSecret).header("X-Request-Id", fhirCastEvent.getId())
 				.header("X-Correlation-Id", fhirCastEvent.getId()).header("X-LobTxId", fhirCastEvent.getId())
 				.header("Content-Type", "application/json").post(fhirCastEvent.getFhirCastEvent());
-		completeLog(omdGatewayTransactionLog,response2);
+		completeLog(omdGatewayTransactionLog,response2,true);
 		transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
 			e.getMessage();
+			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
+			omdGatewayTransactionLog.setEnded(new Date());
 			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);

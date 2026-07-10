@@ -26,10 +26,12 @@ import ca.openosp.openo.utility.SpringUtils;
  * off to {@link ConsentOverrideReportService}, which builds the rows; see that class for the
  * report's data source and its deliberately cross-patient scope.
  *
- * <p>This is a read-only query with lookups; it writes nothing. Access rides the {@code _rx}
- * security object (DHDR medication data), consistent with the DHDR viewer and REST endpoints.
- * Access policy for this surface (the {@code _rx} reuse versus a dedicated object or an admin role)
- * is the open question tracked in the implementation plan, not something this class decides.
+ * <p>The report itself is a read-only query; the only write is the {@link AuditInfo#VIEW} row this
+ * action records, because the report is the one DHDR surface that discloses PHI for patients the
+ * user did not select (DHDR15.01). Access rides the {@code _rx} security object (DHDR medication
+ * data), consistent with the DHDR viewer and REST endpoints. Access policy for this surface (the
+ * {@code _rx} reuse versus a dedicated object or an admin role) is the open question tracked in the
+ * implementation plan, not something this class decides.
  *
  * @since 2026-07-08
  */
@@ -85,6 +87,10 @@ public class ConsentOverrideReport2Action extends ActionSupport {
     }
 
     List<Row> rows = reportService.findRows(loggedInInfo, searchLastName, searchUniqueId, from, to);
+
+    // The report discloses names and Health Card Numbers across patients, so the read is audited.
+    // demographicNo is null: the row records the report as a whole, not one patient (DHDR15.01).
+    new OmdGateway().logInteraction(loggedInInfo, AuditInfo.DHDR, AuditInfo.VIEW, null);
 
     request.setAttribute("rows", rows);
     if (!invalidDates.isEmpty()) {

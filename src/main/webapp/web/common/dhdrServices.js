@@ -44,8 +44,21 @@ angular.module("dhdrServices", [])
                     headers: this.configHeaders,
                 }).then(function (response) {
                     deferred.resolve(response.data);
-                }, function (data, status, headers) {
-                    deferred.reject("An error occured while getting phr content");
+                }, function (response) {
+                    // DHDR14.01: reject with the notice the viewer renders, never a bare string. The
+                    // server reports a reachable-but-failing DHDR EHR Service on the resolve path;
+                    // landing here means the EMR's own endpoint failed. Angular reports no response
+                    // at all (network failure, timeout) as status <= 0.
+                    var noResponse = !response || response.status <= 0;
+                    deferred.reject({
+                        httpCode: noResponse ? 503 : response.status,
+                        httpMessage: noResponse
+                            ? "The DHDR EHR Service did not respond."
+                            : "Drug and pharmacy service information could not be retrieved.",
+                        severity: "error",
+                        dateTime: new Date().toLocaleString(),
+                        moreInformation: "Retry the search; if the problem persists, contact your EMR support desk."
+                    });
                 });
                 return deferred.promise;
             },

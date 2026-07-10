@@ -91,6 +91,26 @@ public class DHDRManager extends OmdGateway {
     // The FHIR response body carries dispense PHI - it must not be written to the application log
     // (DHDR-07 PHI/audit boundary). Access is recorded via AuditInfo above.
 
+    // DHDR14.01: a failure the service described with an OperationOutcome is handed to the viewer,
+    // which renders its issues. A failure it described some other way must not reach the viewer as a
+    // bundle - with no entries it would be indistinguishable from a search that found nothing.
+    if (response2.getStatus() >= 300 && !describesOperationOutcome(body)) {
+      throw new DHDRServiceException(response2.getStatus());
+    }
+
     return body;
+  }
+
+  /**
+   * Reports whether a response body is, or contains, a FHIR {@code OperationOutcome}.
+   *
+   * <p>Matched on the resource-type name rather than by parsing: the outcome may be the whole body
+   * or an entry inside a returned bundle, and either way the viewer knows how to render it.
+   *
+   * @param body String the raw response body, possibly {@code null}
+   * @return boolean {@code true} if the viewer can render the failure from the body itself
+   */
+  static boolean describesOperationOutcome(String body) {
+    return body != null && body.contains("OperationOutcome");
   }
 }

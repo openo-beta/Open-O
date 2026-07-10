@@ -35,14 +35,19 @@ import org.springframework.stereotype.Component;
 import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.exception.AccessDeniedException;
 import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.integration.dhdr.AuditInfo;
 import ca.openosp.openo.integration.dhdr.DHDRManager;
 import ca.openosp.openo.integration.dhdr.DHDRPrint;
+import ca.openosp.openo.integration.dhdr.DHDRServiceException;
 import ca.openosp.openo.integration.dhdr.OmdGateway;
 import ca.openosp.openo.integration.ohcms.CMSException;
+import ca.openosp.openo.integration.oneId.TokenExpiredException;
 import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.utility.DateUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.webserv.rest.to.DHDRSearchConfig;
+import ca.openosp.openo.webserv.rest.to.model.DHDRErrorTo1;
 import ca.openosp.openo.webserv.rest.to.model.MedicationDispenseTo1;
 import ca.openosp.openo.webserv.rest.to.model.NotificationTo1;
 
@@ -70,6 +75,12 @@ public class DHDRService extends AbstractServiceImpl {
 
   private static final String SECURITY_OBJECT = "_rx";
 
+  private static final String ERROR_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm";
+
+  /** DHDR14.01: a warning must direct the user to resolve the issue or receive support. */
+  private static final String RETRY_GUIDANCE = "No drug or pharmacy service information was "
+      + "retrieved. Retry the search; if the problem persists, contact your EMR support desk.";
+
   @Autowired
   DemographicDao demographicDao;
 
@@ -84,8 +95,8 @@ public class DHDRService extends AbstractServiceImpl {
    *     API compatibility)
    * @param limit int the result limit (see {@code offset})
    * @param searchConfig DHDRSearchConfig optional date bounds and pagination cursor
-   * @return Response containing the FHIR bundle JSON returned by the DHDR EHR Service
-   * @throws Exception if the gateway call fails
+   * @return Response containing the FHIR bundle JSON returned by the DHDR EHR Service, or a
+   *     {@link DHDRErrorTo1} notice when the service cannot be reached (DHDR14.01)
    */
   @POST
   @Path("/searchByDemographicNo2")
@@ -93,7 +104,7 @@ public class DHDRService extends AbstractServiceImpl {
   @Consumes("application/json")
   public Response searchByDemographicNo2(@QueryParam("demographicNo") int demographicNo,
       @QueryParam("offset") int offset, @QueryParam("limit") int limit,
-      DHDRSearchConfig searchConfig) throws Exception {
+      DHDRSearchConfig searchConfig) {
     LoggedInInfo loggedInInfo = getLoggedInInfo();
     if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "r", demographicNo)) {
       throw new AccessDeniedException(SECURITY_OBJECT, "r", demographicNo);
@@ -113,9 +124,48 @@ public class DHDRService extends AbstractServiceImpl {
       }
     }
     Demographic demographic = demographicDao.getDemographicById(demographicNo);
-    String bundle = dhdrManager.search2(loggedInInfo, demographic, startDate, endDate, searchId,
-        pageId);
-    return Response.ok().entity(bundle).build();
+    try {
+      String bundle = dhdrManager.search2(loggedInInfo, demographic, startDate, endDate, searchId,
+          pageId);
+      return Response.ok().entity(bundle).build();
+    } catch (TokenExpiredException e) {
+      return Response.ok().entity(notice(Response.Status.UNAUTHORIZED.getStatusCode(),
+          "Your ONE ID session has expired.",
+          "Sign in to ONE ID again, then retry the search.")).build();
+    } catch (DHDRServiceException e) {
+      // The service answered, but not with an OperationOutcome the viewer could render. Its status
+      // code is the DHDR14.01 error code, so it is passed through rather than flattened to a 503.
+      logger.error("DHDR search failed for demographic " + demographicNo, e);
+      return Response.ok().entity(notice(e.getHttpCode(),
+          "The DHDR EHR Service reported an error.",
+          RETRY_GUIDANCE)).build();
+    } catch (Exception e) {
+      // Landing here means the service was never reached: the gateway is misconfigured, the network
+      // failed, or the service did not respond (DHDR14.01, v3.0 change note (q)). The exception
+      // detail is already on the gateway audit row; the user gets a PHI-free notice.
+      logger.error("DHDR search failed for demographic " + demographicNo, e);
+      return Response.ok().entity(notice(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(),
+          "The DHDR EHR Service could not be reached.", RETRY_GUIDANCE)).build();
+    }
+  }
+
+  /**
+   * Builds the PHI-free notice DHDR14.01 requires: an error code, a description, a severity, and the
+   * date and time of the incident.
+   *
+   * @param httpCode int the error code to show the user
+   * @param description String a user-friendly description of what went wrong
+   * @param moreInformation String direction on how to resolve the issue or get support
+   * @return DHDRErrorTo1 the notice, ready to serialize to the viewer
+   */
+  private DHDRErrorTo1 notice(int httpCode, String description, String moreInformation) {
+    DHDRErrorTo1 error = new DHDRErrorTo1();
+    error.setHttpCode(httpCode);
+    error.setHttpMessage(description);
+    error.setSeverity("error");
+    error.setDateTime(DateUtils.format(ERROR_TIMESTAMP_FORMAT, new Date(), null));
+    error.setMoreInformation(moreInformation);
+    return error;
   }
 
   /**
@@ -270,6 +320,9 @@ public class DHDRService extends AbstractServiceImpl {
     } catch (JSONException e) {
       throw new WebApplicationException(e, Response.Status.BAD_REQUEST);
     }
+    // DHDR15.01: printing takes retrieved DHDR data out of the EMR, so the release is audited here,
+    // where the request is authorized - not inside the stream, which may fail after the fact.
+    new OmdGateway().logInteraction(loggedInInfo, AuditInfo.DHDR, AuditInfo.PRINT, demographicNo);
     final String printViewType = view;
     return new StreamingOutput() {
       @Override

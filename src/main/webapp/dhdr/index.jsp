@@ -167,12 +167,27 @@
 		 		</div>
 		 		
 		 		<div ng-show="searching">
-					Searching...  
+					Searching...
 				</div>
-		 		
+
+		 		<%-- DHDR14.01: a PHI-free notice for every error/warning the EMR could not obtain an
+		 		     OperationOutcome for - including a DHDR EHR Service that does not respond. Shows the
+		 		     error code, description, severity and the date/time of the incident. No admin role is
+		 		     required to see it, and no technical detail is exposed: that stays in the audit log. --%>
+		 		<div ng-repeat="serviceError in serviceErrors" class="alert" ng-class="serviceErrorClass(serviceError)" role="alert">
+		 			<strong>{{serviceError.httpMessage}}</strong>
+		 			<div>Error code: {{serviceError.httpCode}} &middot; Severity: {{serviceError.severity}} &middot; {{serviceError.dateTime}}</div>
+		 			<div ng-if="serviceError.moreInformation">{{serviceError.moreInformation}}</div>
+		 		</div>
+
 		 		<div ng-repeat="outs in outcomes" >
 		 			<div ng-repeat="issue in outs.issues"  class="alert" ng-class="issueClass(issue)" role="alert">
 		 				{{issue.details.text}}
+		 				<%-- DHDR14.01: an error received from the DHDR EHR Service must present its code,
+		 				     description, severity and the date/time of the incident. The 'suppressed' issue is
+		 				     the normal consent-block workflow (handled just below), not an error, so it is
+		 				     excluded from the error line. --%>
+		 				<div class="small" ng-if="issue.code !== 'suppressed'">Error code: {{issue.code}} &middot; Severity: {{issue.severity}} &middot; {{outs.receivedAt}}</div>
 		 				<span ng-if="issue.code === 'suppressed'">
 		 					<!-- DHDR09.03: the EMR renders the mandated consent-block message itself (not reliant on the OperationOutcome text). -->
 		 					<div>Access to Drug and Pharmacy Service information has been blocked by the patient.</div>
@@ -1051,6 +1066,9 @@
 			$scope.uniqServices = [];
 			$scope.services = [];
 			$scope.outcomes = [];
+			// DHDR14.01: notices about the DHDR EHR Service itself (unreachable, unresponsive,
+			// expired session). Distinct from outcomes, which are the issues the service reported.
+			$scope.serviceErrors = [];
 			defaultDaysToSearch = 120;
 			$scope.searchConfig = {};
 			$scope.searchConfig.endDate = new Date();
@@ -1282,6 +1300,11 @@
 				}
 				return "alert-warning";
 			}
+
+			// DHDR14.01 severity: only a warning is styled as one; errors and fatals are errors.
+			$scope.serviceErrorClass = function(serviceError){
+				return serviceError.severity === "warning" ? "alert-warning" : "alert-danger";
+			}
 			
 			
 			$scope.compDhirMeds = [];
@@ -1501,6 +1524,7 @@
 				$scope.meds = [];
 				$scope.services = [];
 				$scope.outcomes = [];
+				$scope.serviceErrors = [];
 				$scope.uniqMeds = [];
 				$scope.uniqServices = [];
 				$scope.expandAll = false;
@@ -1531,9 +1555,12 @@
 							console.log("$scope.outcomes",$scope.outcomes);
 							return;
 						} else if (angular.isDefined(response.httpCode)) {
-							alert('There has been an error while attempting to retrieve results from DHDR. ' +
-							'\n\nHTTP ' + response.httpCode + ': ' + response.httpMessage + '\n'
-									+ response.moreInformation);
+							// DHDR14.01: the service could not be reached. Render the notice rather
+							// than alert()ing it, and stop - there is no bundle to process, and the
+							// empty-state message (DHDR02.04) would misreport the failure as "no
+							// records found".
+							$scope.serviceErrors.push(response);
+							return;
 						}
 					}
 						
@@ -1587,10 +1614,10 @@
 				},function(reason){
 					$scope.searching = false;
 					$scope.buttonDisabled = false;
-					alert(reason);
+					$scope.serviceErrors.push(reason);
 				});
 			}
-		
+
 			getDemo = function(){
 				demographicService.getDemographic($scope.demographicNo).then(function(response){
 					$scope.demographic = response;
@@ -1815,10 +1842,13 @@
 		});
 		
 		function OperationOutcome(operationOutcome){
-			
+
 			this.outcomme = operationOutcome;
 			this.issues = [];
-			
+			// DHDR14.01 requires the date and time of the incident. An OperationOutcome carries no
+			// timestamp of its own, so the moment the EMR received it is what gets displayed.
+			this.receivedAt = new Date().toLocaleString();
+
 			if(angular.isDefined(this.outcomme.resource) && angular.isDefined(this.outcomme.resource.issue)){
 				this.issues = this.outcomme.resource.issue;
 			}else if(angular.isDefined(this.outcomme.issue)){
