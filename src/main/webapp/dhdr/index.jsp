@@ -1052,7 +1052,6 @@
 		
 		app.controller("dhdrView", function($scope,demographicService,providerService,dhdrService,rxService,$location,$window,$modal,$http,$filter,$timeout) {
 
-			console.log("$location.search()",$location);
 			$scope.demographicNo = $location.search().demographic_no;
 			
 			//if($scope.demographicNo == undefined){
@@ -1152,11 +1151,9 @@
 			getAllActiveProviders = function(){
 	    			providerService.getAllActiveProviders().then(function(data){
 		    			$scope.activeProviders = data;
-		    			console.log("$scope.activeProviders",data);
 		    			angular.forEach($scope.activeProviders, function(provider) {
 		    				activeProvidersHash[provider.providerNo] = provider;
 		    			});
-		    			console.log("getAllActiveProviders", activeProvidersHash); //data);
 				});
 	    		};
 	    		
@@ -1193,7 +1190,6 @@
 
 				$http.post('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 					
-					console.log("respone",response);
 				       var file = new Blob([response.data], {type: 'application/pdf'});
 				       var fileURL = URL.createObjectURL(file);
 				       window.open(fileURL);
@@ -1216,7 +1212,6 @@
 				
 				$http.post('../ws/rs/dhdr/'+$scope.demographicNo+'/print/comparative',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 					
-					console.log("respone",response);
 				       var file = new Blob([response.data], {type: 'application/pdf'});
 				       var fileURL = URL.createObjectURL(file);
 				       window.open(fileURL);
@@ -1230,7 +1225,6 @@
 			$scope.showComp = function() {
 				currentViewValue = 'comp';	
 					rxService.getMedications($scope.demographicNo, "").then(function(data) {
-						console.log("getMedications--", data);
 						$scope.compLocalMeds = data.data.content;
 						
 						angular.forEach($scope.compLocalMeds,function(med){
@@ -1238,7 +1232,6 @@
 						});
 						
 					}, function(errorMessage) {
-						console.log("getMedications++" + errorMessage);
 						//rxComp.error = errorMessage;
 					});	
 				
@@ -1263,7 +1256,6 @@
 			
 			$scope.setSearchDateToAll = function(){
 
-				console.log("$scope.demographic",$scope.demographic.dobYear+"-"+$scope.demographic.dobMonth+"-"+$scope.demographic.dobDay);
 				
 				$scope.searchConfig.startDate = new Date($scope.demographic.dobYear+"-"+$scope.demographic.dobMonth+"-"+$scope.demographic.dobDay);
 				$scope.searchConfig.endDate = new Date();
@@ -1316,19 +1308,15 @@
 				compsearchConfig.endDate = new Date();
 			
 				dhdrService.searchByDemographicNo2($scope.demographicNo,compsearchConfig).then(function(response){
-					console.log("response.entry",response.entry);
 					$scope.searching = false;
 					$scope.compDhirMeds = [];
 					$scope.outcomes = [];
 					for (x of  response.entry) {
-						console.log("x",x);
 						if(x.resource.resourceType === "OperationOutcome"){
 							var o = new OperationOutcome(x);
 							$scope.outcomes.push(o);
-							console.log("$scope.outcomes",$scope.outcomes);
 						}else if(x.resource.resourceType === "MedicationDispense"){
 							var d = new MedicationDispense(x);
-							console.log("d",d,d.getUniqVal());
 							$scope.compDhirMeds.push(d);
 						}
 					}
@@ -1339,10 +1327,8 @@
 				
 				
 				rxService.getMedications($scope.demographicNo, "").then(function(data) {
-					console.log("getMedications--", data);
 					$scope.compLocalMeds = data.data.content;
 				}, function(errorMessage) {
-					console.log("getMedications++" + errorMessage);
 					//rxComp.error = errorMessage;
 				});
 				
@@ -1352,7 +1338,6 @@
 			
 			/*
 			$scope.$watch('location.search()', function() {
-				console.log("Watch called",$location.search());
 		        $scope.demographicNo = ($location.search()).demographicNo;
 		        getDemo();
 		    }, true);
@@ -1361,11 +1346,9 @@
 			
 			$scope.showGroupedMeds = function(med) {
 				hiddenGroup = $scope.medsWithGroupedDups[med.getUniqVal()];
-				//console.log("hiddenGroup",hiddenGroup);
 				//for (x of  hiddenGroup) {
 				//	x.hide = false;
 				//}
-				//console.log("hiddenGroup2",hiddenGroup);
 				
 				var currentlyHasHiddenItems = false; 
 				for (x of  hiddenGroup) {
@@ -1390,7 +1373,6 @@
 			
 			$scope.showGroupedService = function(med){
 				hiddenGroup = $scope.servicesWithGroupedDups[med.brandName.display];
-				//console.log("hiddenGroup",hiddenGroup);
 				var currentlyHasHiddenItems = false; 
 				for (x of  hiddenGroup) {
 					if(x.hide){
@@ -1408,7 +1390,6 @@
 						}
 					}
 				}
-				//console.log("hiddenGroup2",hiddenGroup);
 			}
 			
 			$scope.getRowClass = function(med){
@@ -1419,11 +1400,9 @@
 			
 			processEntries = function(entries){
 				for (x of entries) {
-					console.log("x",x);
 					if(x.resource.resourceType === "OperationOutcome"){
 						var o = new OperationOutcome(x);
 						$scope.outcomes.push(o);
-						console.log("$scope.outcomes",$scope.outcomes);
 					}else if(x.resource.resourceType === "MedicationDispense"){
 						var d = new MedicationDispense(x);
 						if (d.patient) {
@@ -1457,9 +1436,7 @@
 						}
 
 						if(d.categoryCode === "service"){
-							console.log("d",d,d.brandName.display);
 							$scope.services.push(d);
-							console.log("d.brandName.display",d.brandName.display,$scope.servicesWithGroupedDups[d.brandName.display]);
 
 							//if ($scope.medsWithGroupedDups.indexOf(d.getUniqVal()) === -1) {
 							if($scope.servicesWithGroupedDups[d.brandName.display] === undefined){
@@ -1469,7 +1446,6 @@
 
 								$scope.servicesWithGroupedDups[d.brandName.display].push(d);
 							}else{
-								console.log("found ",d.getUniqVal(),$scope.servicesWithGroupedDups[d.brandName.display]);
 								d.hide = true;
 								d.hiddenRecord = true;
 								$scope.servicesWithGroupedDups[d.brandName.display].push(d);
@@ -1478,9 +1454,7 @@
 						}else{
 
 							///
-							console.log("d",d,d.getUniqVal());
 							$scope.meds.push(d);
-							console.log("d.getUniqVal()",d.getUniqVal(),$scope.medsWithGroupedDups[d.getUniqVal()]);
 
 							//if ($scope.medsWithGroupedDups.indexOf(d.getUniqVal()) === -1) {
 							if($scope.medsWithGroupedDups[d.getUniqVal()] === undefined){
@@ -1489,7 +1463,6 @@
 								$scope.uniqMeds.push(d);
 								$scope.medsWithGroupedDups[d.getUniqVal()].push(d);
 							}else{
-								console.log("found ",d.getUniqVal(),$scope.medsWithGroupedDups[d.getUniqVal()]);
 								d.hide = true;
 								d.hiddenRecord = true;
 								$scope.medsWithGroupedDups[d.getUniqVal()].push(d);
@@ -1544,15 +1517,12 @@
 				dhdrService.searchByDemographicNo2(demographicNo,searchConfig).then(function(response){
 
 					$scope.buttonDisabled = false;
-				    console.log("resonse",response);
-					console.log("response.entry",response.entry);
 					$scope.searching = false;
 
 					if(angular.isUndefined(response.entry)){
 						if(angular.isDefined(response.resourceType) && response.resourceType === "OperationOutcome"){
 							var o = new OperationOutcome(response);
 							$scope.outcomes.push(o);
-							console.log("$scope.outcomes",$scope.outcomes);
 							return;
 						} else if (angular.isDefined(response.httpCode)) {
 							// DHDR14.01: the service could not be reached. Render the notice rather
@@ -1599,7 +1569,6 @@
 
 					if(response.link && response.link.length > 1){
 						$scope.searchConfig.searchId = response.id;
-						console.log("$scope.searchConfig.",$scope.searchConfig);
 						if($scope.searchConfig.pageId == null){
 							$scope.searchConfig.pageId = 2;
 						
@@ -1657,7 +1626,8 @@
 	    		    modalInstance.result.then(function (selectedItem) {
 	    		      selected = selectedItem;
 	    		    }, function () {
-	    		      console.log('Modal dismissed at: ' + new Date());
+	    		      // Dismissal is not an error; the empty handler keeps AngularJS from
+	    		      // reporting the dismissed modal as an unhandled rejection.
 	    		    });
     		  };
 	    	
@@ -1685,7 +1655,8 @@
 	    		    modalInstance.result.then(function (selectedItem) {
 	    		      selected = selectedItem;
 	    		    }, function () {
-	    		      console.log('Modal dismissed at: ' + new Date());
+	    		      // Dismissal is not an error; the empty handler keeps AngularJS from
+	    		      // reporting the dismissed modal as an unhandled rejection.
 	    		    });
     		  };
     		  
@@ -1713,7 +1684,8 @@
   	    		    modalInstance.result.then(function (selectedItem) {
   	    		      selected = selectedItem;
   	    		    }, function () {
-  	    		      console.log('Modal dismissed at: ' + new Date());
+  	    		      // Dismissal is not an error; the empty handler keeps AngularJS from
+  	    		      // reporting the dismissed modal as an unhandled rejection.
   	    		    });
       		  };
 
@@ -1730,7 +1702,6 @@
 
 				  dhdrService.logConsentOverride($scope.demographicNo, uuid, data, status)
 						  .then(function(response) {
-							  console.log("logConsentOverride", response);
 							  if (status === "Refused" || status === "Cancelled") {
 								  // DHDR09.05: display the mandated message, keep it visible briefly, then close automatically.
 								  $scope.overrideResultMessage = (status === "Refused")
@@ -1743,12 +1714,9 @@
 			
     		  $scope.callConsentBlock = function($event){
 				  	$scope.buttonDisabled = true;
-    				console.log("callConsentBlock");
     				dhdrService.getConsentOveride($scope.demographicNo, "PCOI").then(function(response){
 						$scope.buttonDisabled = false;
-    					console.log("response.referenceURL",response);
     					if(response.status == 268){
-    						console.log("error ",response.data);
     						alert("Error check the log for more details :\n"+response.data.summary);// response.data);
     						return;
     					}
@@ -1825,7 +1793,6 @@
     						$scope.callSearch();
     		    		    }, function () {
     		    		      // No resolving message (backdrop / esc close): per OAVF B.4.2.5, re-load in case the override succeeded.
-    		    		      console.log('PCOI viewlet dismissed without a response; re-loading DHDR query.');
     		    		      $scope.callSearch();
     		    		    });
     					
@@ -1916,18 +1883,14 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			
 			if(angular.isDefined(this.med.resource.extension)){
 				
-			    console.log("this.med.resource.extension",this.med.resource.extension);
 				for (ext of  this.med.resource.extension) {
 					if(angular.isDefined(ext.url) && ext.url === "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-medications-ext-refills-remaining"){
 						
-					   console.log("ext.valueInteger",ext.valueInteger);
 						this.refillsRemaining = ext.valueInteger;
 					}else if(angular.isDefined(ext.url) && ext.url === "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-medications-ext-quantity-remaining"){
 						this.quantityRemaining = ext.valueQuantity.value+" "+ext.valueQuantity.unit;
-					} 
-				}				
-			} else {
-				console.log("extension not present");
+					}
+				}
 			}
         
 			this.whenPrepared = this.med.resource.whenPrepared;
@@ -1944,7 +1907,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			if(angular.isDefined(this.med.resource.reasonCode)){
 				this.reasonCode = this.med.resource.reasonCode;
 			}
-			console.log("dleete me ",this.med);
 			if(angular.isDefined(this.med.resource.category) && angular.isDefined(this.med.resource.category.coding)){
 				for(coding of this.med.resource.category.coding) {
 
@@ -2042,7 +2004,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 					}
 				}else if(res.resourceType ===  "MedicationRequest") {
 					this.reasonCode = [];
-					console.log("reasonCode",res.reasonCode);
 					if(angular.isDefined(res.reasonCode)){
 						for(code of res.reasonCode){	
 							this.reasonCode = code;
@@ -2063,7 +2024,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 								this.prescriberLicenceNumber = identifier;
 								if(angular.isDefined(res.name)){
 									for( humanName of res.name) {
-										console.log("humanName",humanName);
 										this.prescriberLastname = humanName.family;
 										if(angular.isDefined(humanName.given)){
 											this.prescriberFirstname = humanName.given[0];
@@ -2079,13 +2039,11 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 									}
 								}
 
-								console.log("res for telecom ",res);
 								//this.prescriberPhoneNumber = res.telecom[0].value);
 							}else if("https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist" === identifier.system) {
 								this.pharmacistLicenceNumber = identifier;
 								if(angular.isDefined(res.name)){
 									for( humanName of res.name) {
-										console.log("humanName",humanName);
 										this.pharmacistLastname = humanName.family;
 										if(angular.isDefined(humanName.given)){
 											this.pharmacistFirstname = humanName.given[0];
@@ -2093,8 +2051,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 									}
 								}
 
-							}else{
-								console.log(" not processing "+identifier,res);
 							}
 
 						}
@@ -2102,7 +2058,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 				} else if (res.resourceType === "Patient") {
 					this.patient = res;
 				} else {
-					console.log("resource.getResourceType()",res.resourceType);
 				}
 				
 			}
@@ -2113,7 +2068,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 																	   dhdrPatient, $http){
 			$scope.med = med;
 			$scope.dhdrPatient = dhdrPatient;
-			console.log("ModalInstanceCtrl",med);
 			
 			$scope.cancel = function(){
 				
@@ -2150,7 +2104,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			}
 			
 			$scope.printDetail = function(){
-					console.log("trying to print");
 					var toPrint = {};
 					toPrint.med = $scope.med;
 					// DHDR13.01.b: the DHDR-side patient demographic printed on each page
@@ -2158,7 +2111,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 
 					$http.post('../ws/rs/dhdr/'+demoNo+'/print/detail',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 						
-						console.log("respone for detail print",response);
 					       var file = new Blob([response.data], {type: 'application/pdf'});
 					       var fileURL = URL.createObjectURL(file);
 					       window.open(fileURL);
@@ -2175,7 +2127,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 		app.controller('DrugDupsInstanceCtrl', function ModalInstanceCtrl($scope, $modal, $modalInstance,meds,getDetailView,$http){
 			$scope.meds = meds;
 			$scope.getDetailView = getDetailView;
-			console.log("DrugDupsInstanceCtrl",meds);
 			
 			$scope.cancel = function(){
 				
@@ -2189,7 +2140,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 		app.controller('PharmaDupsInstanceCtrl', function ModalInstanceCtrl($scope, $modal, $modalInstance,services,getDetailView,$http){
 			$scope.services = services;
 			$scope.getDetailView = getDetailView;
-			console.log("PharmaDupsInstanceCtrl",services);
 			
 			$scope.cancel = function(){
 				
@@ -2209,7 +2159,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 
 			$window.addEventListener('message', function(e) {
 				if (e.origin === PCOI_ORIGIN_URL) {
-					console.log("Response from PCOI: ", e);
 					$modalInstance.close(e);
 				}
 			});
@@ -2229,7 +2178,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 		
 			$scope.reload = function(){
 				
-				console.log("setting pcoiUrl");
 				$scope.pcoiUrl = $sce.trustAsResourceUrl(med.referenceURL);
 			}
 		
@@ -2237,7 +2185,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 				$scope.showUntilLoaded = false;
 				$scope.$apply();
 			}
-			console.log("PcoiInstanceCtrl",med);
 			
 			$scope.cancel = function(){
 				
@@ -2255,9 +2202,7 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 	                // hooking up the onload event - calling the callback on load event
 	                element.one("load", function (state,message) {
 	                	
-	                	console.log("state ",state,message);
 	                    var contentLocation = element.length > 0 && element[0].contentWindow ? element[0].contentWindow.location : undefined;
-			console.log("onload", element,scope);
 	                    scope.callback({
 	                        contentLocation: contentLocation
 	                    });

@@ -73,9 +73,10 @@ angular.module("dhdrServices", [])
                     headers: this.configHeaders,
                 }).then(function (response) {
                     deferred.resolve(response);
-                }, function (data, status, headers) {
-                    console.log("data error ", data);
-                    deferred.reject("An error occured check log for additional details");
+                }, function () {
+                    // The response may carry PHI, so it is not written to the browser console; the
+                    // server records the failure in the gateway audit log.
+                    deferred.reject("The consent override request could not be completed.");
                 });
                 return deferred.promise;
             },
@@ -88,9 +89,10 @@ angular.module("dhdrServices", [])
                     headers: this.configHeaders,
                 }).then(function (response) {
                     deferred.resolve(response);
-                }, function (data, status, headers) {
-                    console.log("data error ", data);
-                    deferred.reject("An error occured check log for additional details");
+                }, function () {
+                    // The response may carry PHI, so it is not written to the browser console; the
+                    // server records the failure in the gateway audit log.
+                    deferred.reject("The consent override could not be logged.");
                 });
                 return deferred.promise;
             }
