@@ -188,15 +188,16 @@ public class ViewletLaunchAction extends ActionSupport {
     }
 
     private long viewletTimeoutMillis() {
-        String value = ehrConnectivityManager.getConfigValue(SystemPreferences.ONEID_KEYS.viewlet_timeout, "300000");
-        if (value == null) {
-            return 300000L;
+        long seconds = 65;
+        String value = ehrConnectivityManager.getConfigValue(SystemPreferences.ONEID_KEYS.viewlet_timeout, "65");
+        if (value != null && !value.trim().isEmpty()) {
+            try {
+                seconds = Long.parseLong(value.trim());
+            } catch (NumberFormatException e) {
+                seconds = 65;
+            }
         }
-        try {
-            return Long.parseLong(value.trim());
-        } catch (NumberFormatException e) {
-            return 300000L;
-        }
+        return seconds * 1000L;
     }
 
     private static Integer parseId(String value) {

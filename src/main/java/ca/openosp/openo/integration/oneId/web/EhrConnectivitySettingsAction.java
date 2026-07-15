@@ -72,7 +72,7 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
             ONEID_KEYS.endpoint_callback, ONEID_KEYS.endpoint_audience,
             ONEID_KEYS.endpoint_jwks, ONEID_KEYS.oneid_issuer,
             ONEID_KEYS.endpoint_end_session, ONEID_KEYS.endpoint_revocation,
-            ONEID_KEYS.pcoi_key, ONEID_KEYS.timeout
+            ONEID_KEYS.pcoi_key, ONEID_KEYS.timeout, ONEID_KEYS.viewlet_timeout
     };
 
     public String execute() {
@@ -157,6 +157,7 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
             case endpoint_revocation: return "Revocation Endpoint";
             case pcoi_key: return "Consent Viewlet Key";
             case timeout: return "Gateway Timeout (seconds)";
+            case viewlet_timeout: return "Viewlet Response Timeout (seconds)";
             default: return key.name();
         }
     }

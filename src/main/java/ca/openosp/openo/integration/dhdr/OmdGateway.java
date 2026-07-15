@@ -306,7 +306,7 @@ public class OmdGateway {
 
 	/** Gateway connection/receive timeout in milliseconds, from the configurable timeout preference (in seconds). */
 	protected long getTimeoutMillis() {
-		long seconds = 30;
+		long seconds = 65;
 		SystemPreferences pref = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.timeout);
 		if (pref != null && !pref.getValue().trim().isEmpty()) {
 			try {

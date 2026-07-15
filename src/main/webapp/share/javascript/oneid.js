@@ -8,7 +8,7 @@
  * dialog clears the patient from the EHR context.
  */
 
-var VIEWLET_DEFAULT_TIMEOUT_MS = 300000;
+var VIEWLET_DEFAULT_TIMEOUT_MS = 65000;
 var VIEWLET_MAX_RELOAD_ATTEMPTS = 3;
 
 function launchViewlet(ctx, demographicNo, key, displayMode) {

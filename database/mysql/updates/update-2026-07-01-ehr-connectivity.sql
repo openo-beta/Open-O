@@ -99,8 +99,8 @@ INSERT INTO `SystemPreferences` (`name`,`value`,`updateDate`) VALUES
   ('endpoint_end_session','',NOW()),           -- OIDC end-session endpoint
   ('endpoint_revocation','',NOW()),            -- token revocation endpoint
   ('pcoi_key','',NOW()),
-  ('timeout','30',NOW()),                      -- gateway connection/read timeout (seconds)
-  ('viewlet_timeout','300000',NOW()),          -- viewlet response wait time (milliseconds)
+  ('timeout','65',NOW()),                      -- gateway connection/read timeout (seconds)
+  ('viewlet_timeout','65',NOW()),              -- viewlet response wait time (seconds)
   ('oneid.sso.enabled','false',NOW());         -- toggles the ONE ID login button
 
 
