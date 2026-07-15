@@ -50,4 +50,11 @@ public class CasemgmtNoteLockDaoImpl extends AbstractDaoImpl<CasemgmtNoteLock> i
 
         return results;
     }
+
+    @Override
+    public int deleteAll() {
+        Query query = entityManager.createQuery("delete from CasemgmtNoteLock");
+
+        return query.executeUpdate();
+    }
 }

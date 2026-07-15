@@ -23,6 +23,7 @@
 
 package ca.openosp.openo.utility;
 
+import ca.openosp.openo.commn.dao.CasemgmtNoteLockDao;
 import ca.openosp.openo.commn.dao.ProviderSiteDao;
 import ca.openosp.openo.commn.dao.SiteDao;
 import ca.openosp.openo.commn.model.ProviderSite;
@@ -79,6 +80,7 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
 
             createOscarProgramIfNecessary();
             createDefaultSiteIfNecessary();
+            clearOrphanedNoteLocks();
 
             if (oscarProperties.getBooleanProperty("INTEGRATOR_ENABLED", "true")) {
                 CaisiIntegratorUpdateTask.startTask();
@@ -107,6 +109,24 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
         } catch (Exception e) {
             logger.error("Unexpected error.", e);
             throw (new RuntimeException(e));
+        }
+    }
+
+    /**
+     * Removes note-edit locks left over from the previous run. A note lock is held for the
+     * lifetime of the session that acquired it, but a reboot ends every session without firing
+     * the listener that releases the lock, so the rows are stranded in the database. On startup
+     * no session from before the restart exists, so every remaining lock is orphaned and safe to
+     * clear. 
+     *
+     */
+    private void clearOrphanedNoteLocks() {
+        try {
+            CasemgmtNoteLockDao casemgmtNoteLockDao = SpringUtils.getBean(CasemgmtNoteLockDao.class);
+            int removed = casemgmtNoteLockDao.deleteAll();
+            logger.info("Cleared " + removed + " orphaned note lock(s) on startup.");
+        } catch (Exception e) {
+            logger.warn("Failed to clear orphaned note locks on startup.", e);
         }
     }
 

@@ -12,4 +12,11 @@ public interface CasemgmtNoteLockDao extends AbstractDao<CasemgmtNoteLock> {
     void remove(String providerNo, Integer demographicNo, Long note_id);
 
     List<CasemgmtNoteLock> findBySession(String sessionId);
+
+    /**
+     * Removes every note lock in the table.
+     *
+     * @return int the number of note lock rows removed
+     */
+    int deleteAll();
 }
