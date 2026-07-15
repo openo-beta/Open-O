@@ -65,11 +65,16 @@ public class FhirResources {
         .setValue(oneIdGatewayData.getProviderUPI());
     organization.addIdentifier(identifier);
     Clinic clinic = clinicDao.getClinic();
-    if (clinic.getOrganizationName() == null || clinic.getOrganizationName().trim().isEmpty()) {
-      throw new CMSException(
-          "Organization name can not be blank. Edit Clinic details in the administration section.");
+    // name the organization by the selected authority, falling back to the clinic
+    String organizationName = oneIdGatewayData.getUaoFriendlyName();
+    if (organizationName == null || organizationName.trim().isEmpty()) {
+      organizationName = clinic.getOrganizationName();
     }
-    organization.setName(clinic.getOrganizationName());
+    if (organizationName == null || organizationName.trim().isEmpty()) {
+      throw new CMSException(
+          "Organization name can not be blank. Select an authority (UAO) or edit Clinic details in the administration section.");
+    }
+    organization.setName(organizationName);
     if (clinic.getAddress2() != null && clinic.getCity() != null && clinic.getProvince() != null
         && clinic.getPostal() != null) {
       organization.addAddress()
