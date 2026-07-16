@@ -110,7 +110,7 @@ public class DHDRPrint {
     PdfPTable table = new PdfPTable(2);
     table.setWidthPercentage(100.0f);
 
-    JSONObject med = jsonOb.getJSONObject("med");
+    JSONObject med = jsonOb.optJSONObject("med");
 
     if (med != null) {
 
@@ -122,29 +122,25 @@ public class DHDRPrint {
       table.addCell(getHeaderCell("Generic"));
       table.addCell(getItemCell(med.optString("genericName"))); // Generic
 
-      JSONObject brandObj = med.getJSONObject("brandName");
+      JSONObject brandObj = med.optJSONObject("brandName");
       table.addCell(getHeaderCell("Brand"));
-      table.addCell(getItemCell(brandObj.optString("display"))); // Brand
+      table.addCell(getItemCell(brandObj != null ? brandObj.optString("display") : "")); // Brand
 
       table.addCell(getHeaderCell("DIN/PIN"));
-      table.addCell(getItemCell(brandObj.optString("code"))); // Brand
+      table.addCell(getItemCell(brandObj != null ? brandObj.optString("code") : "")); // DIN/PIN
 
-      try {
-        JSONObject ahfsClassObj = med.getJSONObject("ahfsClass");
-        if (ahfsClassObj.length() > 0) {
-          table.addCell(getHeaderCell("Therapeutic Class"));
-          table.addCell(getItemCell(ahfsClassObj.optString("display"))); // Brand
-        }
-      } catch (JSONException ignored) {
+      // The parse stores these as plain display strings, not objects - read them as strings, as
+      // populateSummaryDrugData does.
+      String ahfsClass = med.optString("ahfsClass");
+      if (!ahfsClass.isEmpty()) {
+        table.addCell(getHeaderCell("Therapeutic Class"));
+        table.addCell(getItemCell(ahfsClass));
       }
 
-      try {
-        JSONObject ahfsSubClassObj = med.getJSONObject("ahfsSubClass");
-        if (ahfsSubClassObj.length() > 0) {
-          table.addCell(getHeaderCell("Therapeutic Sub-Class"));
-          table.addCell(getItemCell(ahfsSubClassObj.optString("display"))); // Brand
-        }
-      } catch (JSONException ignored) {
+      String ahfsSubClass = med.optString("ahfsSubClass");
+      if (!ahfsSubClass.isEmpty()) {
+        table.addCell(getHeaderCell("Therapeutic Sub-Class"));
+        table.addCell(getItemCell(ahfsSubClass));
       }
 
       table.addCell(getHeaderCell("Rx Number"));
@@ -153,11 +149,18 @@ public class DHDRPrint {
       table.addCell(getHeaderCell("Medical Condition/Reason for Use"));
 
       StringBuilder reasonCodesStr = new StringBuilder();
-      JSONArray reasonCodes = med.getJSONArray("reasonCode");
-      for (int i = 0; i < reasonCodes.length(); i++) {
-        JSONObject jsonObject = reasonCodes.getJSONObject(i);
-
-        reasonCodesStr.append(jsonObject.opt("code") + " -- " + jsonObject.opt("display"));
+      JSONArray reasonCodes = med.optJSONArray("reasonCode");
+      if (reasonCodes != null) {
+        for (int i = 0; i < reasonCodes.length(); i++) {
+          JSONObject jsonObject = reasonCodes.optJSONObject(i);
+          if (jsonObject == null) {
+            continue;
+          }
+          if (reasonCodesStr.length() > 0) {
+            reasonCodesStr.append("; ");
+          }
+          reasonCodesStr.append(jsonObject.opt("code") + " -- " + jsonObject.opt("display"));
+        }
       }
       table.addCell(getItemCell(reasonCodesStr.toString()));
 
@@ -170,7 +173,9 @@ public class DHDRPrint {
       table.addCell(getHeaderCell("Frequency"));
       table.addCell(getItemCell(med.optString("frequency")));
       table.addCell(getHeaderCell("Quantity"));
-      table.addCell(getItemCell(med.optString("dispensedQuantity")));
+      table.addCell(
+          getItemCell(
+              med.optString("dispensedQuantity") + " " + med.optString("dispensedQuantityUnit")));
       table.addCell(getHeaderCell("Est Days Supply"));
       table.addCell(getItemCell(med.optString("estimatedDaysSupply")));
 
@@ -179,26 +184,22 @@ public class DHDRPrint {
       table.addCell(getHeaderCell("Quantity Remaining"));
       table.addCell(getItemCell(med.optString("quantityRemaining")));
 
-      JSONObject prescriberLicenceNumberObj = med.getJSONObject("prescriberLicenceNumber");
+      JSONObject prescriberLicenceNumberObj = med.optJSONObject("prescriberLicenceNumber");
       table.addCell(getHeaderCell("Prescriber"));
       table.addCell(
           getItemCell(
               med.optString("prescriberLastname")
                   + ", "
-                  + med.optString("prescriberFirstname")
-                  + (prescriberLicenceNumberObj.length() > 0
-                      ? ""
-                      : (" ("
-                          + prescriberLicenceNumberObj.optString("value")
-                          + ")"))));
+                  + med.optString("prescriberFirstname")));
 
-      if (prescriberLicenceNumberObj.length() > 0) {
+      if (prescriberLicenceNumberObj != null && prescriberLicenceNumberObj.length() > 0) {
+        // Licensing body by name, not the raw identifier system URI. The body is empty for an
+        // unrecognised system, so join conditionally rather than leaving a leading space.
+        String licenceBody = licenceBody(prescriberLicenceNumberObj.optString("system"));
+        String licenceValue = prescriberLicenceNumberObj.optString("value");
         table.addCell(getHeaderCell("Prescriber ID"));
         table.addCell(
-            getItemCell(
-                prescriberLicenceNumberObj.optString("system")
-                    + " "
-                    + prescriberLicenceNumberObj.optString("value")));
+            getItemCell(licenceBody.isEmpty() ? licenceValue : (licenceBody + " " + licenceValue)));
       }
 
       table.addCell(getHeaderCell("Prescriber #"));
@@ -212,17 +213,17 @@ public class DHDRPrint {
       table.addCell(getItemCell(med.optString("dispensingPharmacyPhoneNumber")));
 
       table.addCell(getHeaderCell("Pharmacist"));
-      JSONObject pharmacistLicenceNumber = med.getJSONObject("pharmacistLicenceNumber");
+      JSONObject pharmacistLicenceNumber = med.optJSONObject("pharmacistLicenceNumber");
+      String pharmacistLicenceValue =
+          pharmacistLicenceNumber != null ? pharmacistLicenceNumber.optString("value") : "";
+      // Show the licence when there is one; the test was inverted, so it printed " ()" for a
+      // missing licence and hid a real one.
       table.addCell(
           getItemCell(
               med.optString("pharmacistLastname")
                   + ", "
                   + med.optString("pharmacistFirstname")
-                  + (pharmacistLicenceNumber.length() > 0
-                      ? ""
-                      : (" ("
-                          + pharmacistLicenceNumber.optString("value")
-                          + ")"))));
+                  + (pharmacistLicenceValue.isEmpty() ? "" : (" (" + pharmacistLicenceValue + ")"))));
 
       document.add(table);
     } else {
@@ -355,23 +356,27 @@ public class DHDRPrint {
         for (int i = 0; i < serviceArr.length(); i++) {
           JSONObject med = serviceArr.getJSONObject(i);
 
-          serviceTable.addCell(getItemCell(med.optString("whenPrepared"))); // Dispense Date
-          serviceTable.addCell(getItemCell(med.optString("whenHandedOver"))); // Generic
-          JSONObject brandObj = med.getJSONObject("brandName");
-          serviceTable.addCell(getItemCell(brandObj.optString("display"))); // Brand
+          serviceTable.addCell(getItemCell(med.optString("whenPrepared"))); // Last Service Date
+          serviceTable.addCell(getItemCell(med.optString("whenHandedOver"))); // Pickup Date
+          JSONObject brandObj = med.optJSONObject("brandName");
+          serviceTable.addCell(getItemCell(serviceTypeWithPin(brandObj))); // Service Type (+ PIN)
           serviceTable.addCell(getItemCell(med.optString("genericName")));
           serviceTable.addCell(getItemCell(med.optString("rxNumber")));
           serviceTable.addCell(
               getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
           serviceTable.addCell(getItemCell(med.optString("dispensingPharmacy")));
-          JSONObject pharmacistLicenceNumberObj = med.getJSONObject("pharmacistLicenceNumber");
+          JSONObject pharmacistLicenceNumberObj = med.optJSONObject("pharmacistLicenceNumber");
+          String pharmacistLicenceValue =
+              pharmacistLicenceNumberObj != null
+                  ? pharmacistLicenceNumberObj.optString("value")
+                  : "";
           serviceTable.addCell(
               getItemCell(
                   med.optString("pharmacistLastname")
                       + ", "
                       + med.optString("pharmacistFirstname")
                       + " ("
-                      + pharmacistLicenceNumberObj.optString("value")
+                      + pharmacistLicenceValue
                       + ")"));
           serviceTable.addCell(
               getItemCell(med.optString("dispensingPharmacyFaxNumber")));
@@ -399,18 +404,19 @@ public class DHDRPrint {
 
     String dispenseDate = med.optString("whenPrepared");
     String pickupDate = med.optString("pickUpDate");
-    JSONObject patient = med.getJSONObject("patient");
-    String patientDob = patient.optString("birthDate");
-    String patientGender = patient.optString("gender");
+    JSONObject patient = med.optJSONObject("patient");
+    String patientDob = patient != null ? patient.optString("birthDate") : "N/A";
+    String patientGender = patient != null ? patient.optString("gender") : "N/A";
     String patientHcn = "N/A";
-    if (patient.has("identifier")
+    if (patient != null
+        && patient.has("identifier")
         && patient.getJSONArray("identifier").length() > 0
         && patient.getJSONArray("identifier").getJSONObject(0).has("value")) {
       patientHcn = patient.getJSONArray("identifier").getJSONObject(0).getString("value");
     }
     String patientFirstName = "N/A";
     String patientLastName = "N/A";
-    if (patient.has("name") && patient.getJSONArray("name").length() > 0) {
+    if (patient != null && patient.has("name") && patient.getJSONArray("name").length() > 0) {
       JSONObject name = patient.getJSONArray("name").getJSONObject(0);
       if (name.has("given") && name.getJSONArray("given").length() > 0) {
         patientFirstName = name.getJSONArray("given").getString(0);
@@ -418,18 +424,21 @@ public class DHDRPrint {
       patientLastName = name.optString("family");
     }
 
-    JSONObject prescriberLicenceNumberObj = med.getJSONObject("prescriberLicenceNumber");
+    JSONObject prescriberLicenceNumberObj = med.optJSONObject("prescriberLicenceNumber");
+    String prescriberLicenceValue =
+        prescriberLicenceNumberObj != null ? prescriberLicenceNumberObj.optString("value") : "";
+    // Show the licence when there is one; the test was inverted, so it printed " ()" for a
+    // missing licence and hid a real one.
     String prescriberLicenseNumber =
-        prescriberLicenceNumberObj == null || prescriberLicenceNumberObj.length() > 0
-            ? ""
-            : " (" + prescriberLicenceNumberObj.optString("value") + ")";
+        prescriberLicenceValue.isEmpty() ? "" : " (" + prescriberLicenceValue + ")";
 
     String prescriberName =
         med.optString("prescriberLastname")
             + (med.optString("prescriberLastname").length() > 0 ? ", " : "")
             + med.optString("prescriberFirstname")
             + prescriberLicenseNumber;
-    if (!prescriberName.trim().isEmpty()) {
+    // Only when no prescriber name resolved at all - this guard must not be inverted.
+    if (prescriberName.trim().isEmpty()) {
       prescriberName = "N/A";
     }
 
@@ -470,15 +479,16 @@ public class DHDRPrint {
     table.addCell(getHeaderCell("Frequency"));
     table.addCell(getHeaderCell("Quantity"));
     table.addCell(
-        getHeaderCell("Status"));
+        getHeaderCell("Supply / Refills / Qty Remaining"));
   }
 
   private void populateSummaryDrugData(JSONObject med, PdfPTable table) throws JSONException {
     table.addCell(getItemCell(med.optString("genericName")));
-    JSONObject brandObj = med.getJSONObject("brandName");
+    JSONObject brandObj = med.optJSONObject("brandName");
+    String brandDisplay = brandObj != null ? brandObj.optString("display") : "";
     table.addCell(
         getItemCell(
-            brandObj.optString("display")
+            brandDisplay
                 + " "
                 + med.optString("drugDosageForm")
                 + " "
@@ -542,6 +552,51 @@ public class DHDRPrint {
     PdfPCell cell = new PdfPCell(new Phrase(name, font));
 
     return cell;
+  }
+
+  /**
+   * Maps a prescriber/pharmacist licence identifier {@code system} URI to the full licensing-body
+   * name, mirroring the viewer's {@code getLicence} mapping.
+   *
+   * @param system String the FHIR identifier system URI, or null/empty
+   * @return String the licensing-body name, or an empty string when the system is unknown/absent
+   */
+  private String licenceBody(String system) {
+    if (system == null || system.isEmpty()) {
+      return "";
+    }
+    if (system.endsWith("ca-on-license-physician"))
+      return "College of Physicians and Surgeons of Ontario";
+    if (system.endsWith("ca-on-license-dental-surgeon"))
+      return "Royal College of Dental Surgeons of Ontario";
+    if (system.endsWith("ca-out-of-province -prescriber")) return "Out-of-Province Prescriber";
+    if (system.endsWith("ca-on-license-chiropodist")) return "College of Chiropodists of Ontario";
+    if (system.endsWith("ca-on-license-midwife")) return "College of Midwives of Ontario";
+    if (system.endsWith("ca-on-license-pharmacist")) return "Ontario College of Pharmacists";
+    if (system.endsWith("ca-on-license-optometrist")) return "College of Optometrists of Ontario";
+    if (system.endsWith("ca-on-license-nurse")) return "College of Nurses of Ontario";
+    if (system.endsWith("ca-on-license-naturopath")) return "College of Naturopaths of Ontario";
+    if (system.endsWith("ca-on-unknown-prescriber")) return "Unknown Prescriber";
+    return "";
+  }
+
+  /**
+   * Renders a pharmacy-service type cell, appending the product identifier (PIN) when present.
+   * Null-safe on an absent {@code brandName}.
+   *
+   * @param brandObj JSONObject the parsed brandName object, or null
+   * @return String the service-type display with the PIN appended when available
+   */
+  private String serviceTypeWithPin(JSONObject brandObj) {
+    if (brandObj == null) {
+      return "";
+    }
+    String display = brandObj.optString("display");
+    String pin = brandObj.optString("code");
+    if (pin.isEmpty()) {
+      return display;
+    }
+    return display.isEmpty() ? ("PIN: " + pin) : (display + " (PIN: " + pin + ")");
   }
 
   private String getDemoInfo(Demographic demo) {
@@ -716,21 +771,25 @@ public class DHDRPrint {
 
           serviceTable.addCell(getItemCell(med.optString("whenPrepared")));
           serviceTable.addCell(getItemCell(med.optString("whenHandedOver")));
-          JSONObject brandObj = med.getJSONObject("brandName");
-          serviceTable.addCell(getItemCell(brandObj.optString("display")));
+          JSONObject brandObj = med.optJSONObject("brandName");
+          serviceTable.addCell(getItemCell(serviceTypeWithPin(brandObj)));
           serviceTable.addCell(getItemCell(med.optString("genericName")));
           serviceTable.addCell(getItemCell(med.optString("rxNumber")));
           serviceTable.addCell(
               getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
           serviceTable.addCell(getItemCell(med.optString("dispensingPharmacy")));
-          JSONObject pharmacistLicenceNumberObj = med.getJSONObject("pharmacistLicenceNumber");
+          JSONObject pharmacistLicenceNumberObj = med.optJSONObject("pharmacistLicenceNumber");
+          String pharmacistLicenceValue =
+              pharmacistLicenceNumberObj != null
+                  ? pharmacistLicenceNumberObj.optString("value")
+                  : "";
           serviceTable.addCell(
               getItemCell(
                   med.optString("pharmacistLastname")
                       + ", "
                       + med.optString("pharmacistFirstname")
                       + " ("
-                      + pharmacistLicenceNumberObj.optString("value")
+                      + pharmacistLicenceValue
                       + ")"));
           serviceTable.addCell(
               getItemCell(med.optString("dispensingPharmacyPhoneNumber")));
