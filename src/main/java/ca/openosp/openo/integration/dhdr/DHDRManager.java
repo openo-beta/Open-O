@@ -24,6 +24,9 @@ import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
@@ -62,16 +65,18 @@ public class DHDRManager extends OmdGateway {
 
     wc.query("_count", "1000");
 
-    // DHDR02.03: cap the "whenprepared" upper bound at the supplied endDate, or today when none is
-    // given. (The ported branches were inverted - the null case formatted a null endDate (NPE) and
-    // the non-null case ignored endDate and used new Date().)
+    // DHDR04.02/07.02: most-recent-first, so the first entry of each group is the group head.
+    wc.query("_sort", "-whenprepared");
+
+    // DHDR02.05: ge/le, not gt/lt - the search period the viewer advertises is inclusive of both
+    // boundary dates. Upper bound defaults to today when no endDate is given.
     if (endDate == null) {
-      wc.query("whenprepared", "lt" + fmt.format(new Date()));
+      wc.query("whenprepared", "le" + fmt.format(new Date()));
     } else {
-      wc.query("whenprepared", "lt" + fmt.format(endDate));
+      wc.query("whenprepared", "le" + fmt.format(endDate));
     }
     if (startDate != null) {
-      wc.query("whenprepared", "gt" + fmt.format(startDate));
+      wc.query("whenprepared", "ge" + fmt.format(startDate));
     }
     wc.query("_format", "application/fhir+json");
 
@@ -102,15 +107,42 @@ public class DHDRManager extends OmdGateway {
   }
 
   /**
-   * Reports whether a response body is, or contains, a FHIR {@code OperationOutcome}.
+   * Reports whether a response body is, or contains, a FHIR {@code OperationOutcome} the viewer can
+   * render.
    *
-   * <p>Matched on the resource-type name rather than by parsing: the outcome may be the whole body
-   * or an entry inside a returned bundle, and either way the viewer knows how to render it.
+   * <p>The outcome may be the whole body, or an entry inside a returned searchset {@code Bundle}.
+   * Parsed rather than substring-matched, so a body that merely mentions the type (an HTML error
+   * page, say) is not handed to the viewer as issues it cannot render.
    *
    * @param body String the raw response body, possibly {@code null}
    * @return boolean {@code true} if the viewer can render the failure from the body itself
    */
   static boolean describesOperationOutcome(String body) {
-    return body != null && body.contains("OperationOutcome");
+    if (body == null || body.trim().isEmpty()) {
+      return false;
+    }
+    try {
+      JSONObject root = new JSONObject(body);
+      if ("OperationOutcome".equals(root.optString("resourceType"))) {
+        return true;
+      }
+      if ("Bundle".equals(root.optString("resourceType"))) {
+        JSONArray entries = root.optJSONArray("entry");
+        if (entries != null) {
+          for (int i = 0; i < entries.length(); i++) {
+            JSONObject entry = entries.optJSONObject(i);
+            JSONObject resource = entry != null ? entry.optJSONObject("resource") : null;
+            if (resource != null
+                && "OperationOutcome".equals(resource.optString("resourceType"))) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    } catch (JSONException notJson) {
+      // A body that will not parse as JSON is not a renderable FHIR OperationOutcome.
+      return false;
+    }
   }
 }
