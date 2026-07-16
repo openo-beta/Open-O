@@ -119,6 +119,18 @@
 			</div>
 		</div>
 	</div>
+	<div class="container" ng-show="dhdrPatientResolved" ng-cloak>
+		<%-- DHDR03.02: identify the DHDR-side patient whenever events are shown, flagging
+		     fields that do not match the EMR demographic. --%>
+		<div class="alert" ng-class="dhdrPatientDataUnmatched ? 'alert-warning' : 'alert-info'" role="alert" style="margin-bottom: 8px;">
+			<strong>DHDR EHR Service patient:</strong>
+			{{dhdrPatient.lastName}}, {{dhdrPatient.firstName}}<span ng-show="dhdrPatient.nameUnmatched"> (UNMATCHED)</span>
+			&nbsp;&middot;&nbsp; HIN: {{dhdrPatient.hin}}<span ng-show="dhdrPatient.hinUnmatched"> (UNMATCHED)</span>
+			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob}}<span ng-show="dhdrPatient.dobUnmatched"> (UNMATCHED)</span>
+			&nbsp;&middot;&nbsp; Sex: {{dhdrPatient.gender}}<span ng-show="dhdrPatient.genderUnmatched"> (UNMATCHED)</span>
+			<div ng-show="dhdrPatientDataUnmatched"><em>Some DHDR patient details do not match the EMR record.</em></div>
+		</div>
+	</div>
 	<div class="container">
 		<h4>More Information:</h4>
 		<input type="button" class="btn btn-default" value="Ontario Drug Benefit" ng-click="openWindow('<%=Encode.forJavaScript(odbUrl)%>')"/>
@@ -163,7 +175,6 @@
 		 					To ensure a Best Possible Medication History, please review this information with the patient/family and use other available sources of medication 
 		 					information in addition to the DHDR EHR Service. For more details on the information available in the DHDR EHR Service, 
 		 					please  <a class="alert-link" href="http://www.forms.ssb.gov.on.ca/mbs/ssb/forms/ssbforms.nsf/FormDetail?OpenForm&ACT=RDR&TAB=PROFILE&SRCH=&ENV=WWE&TIT=5056-87E&NO=014-5056-87E" target="_blank">click here</a></i>
-		 				<button ng-if="issue.code === 'suppressed'" type="button" class="btn btn-danger" ng-click="callConsentBlock();" ng-disabled="buttonDisabled">Temporary Consent Unblock</button>
 		 		</div>
 		 		
 		 		<div ng-show="searching">
@@ -187,13 +198,13 @@
 		 				     description, severity and the date/time of the incident. The 'suppressed' issue is
 		 				     the normal consent-block workflow (handled just below), not an error, so it is
 		 				     excluded from the error line. --%>
-		 				<div class="small" ng-if="issue.code !== 'suppressed'">Error code: {{issue.code}} &middot; Severity: {{issue.severity}} &middot; {{outs.receivedAt}}</div>
+		 				<div class="small" ng-if="issue.code !== 'suppressed'">Error code: {{dhdrCode(issue)}} &middot; Severity: {{issue.severity}} &middot; {{outs.receivedAt | date:'medium'}}</div>
 		 				<span ng-if="issue.code === 'suppressed'">
 		 					<!-- DHDR09.03: the EMR renders the mandated consent-block message itself (not reliant on the OperationOutcome text). -->
 		 					<div>Access to Drug and Pharmacy Service information has been blocked by the patient.</div>
 		 					<button type="button" class="btn btn-danger" ng-click="callConsentBlock();" ng-disabled="buttonDisabled">Temporary Consent Unblock</button>
-		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(null, null, 'Cancelled');">Cancel</button>
-		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(null, null, 'Refused');">Refused</button>
+		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(outs.id, null, 'Cancelled');">Cancel</button>
+		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(outs.id, null, 'Refused');">Refused</button>
 		 				</span>
 		 			</div>
 		 		</div>
@@ -203,7 +214,7 @@
 
 				<!-- DHDR02.04: a valid search returning zero events must inform the user. Distinct from the
 			     PCR patient-not-found / consent-suppressed cases (B2 #15), which surface via outcomes above. -->
-			<div class="alert alert-warning" role="alert" ng-show="searchComplete && !searching && outcomes.length === 0 && meds.length === 0 && services.length === 0">
+			<div class="alert alert-warning" role="alert" ng-show="searchComplete && !searching && meds.length === 0 && services.length === 0 && serviceErrors.length === 0 && !hasBlockingOutcome()">
 				No records found for the specified search date period.
 			</div>
 
@@ -307,7 +318,7 @@
 								<th>Dosage</th>
 								<th>Frequency</th>
 								<th>Quantity</th>
-								<th>Status</th>
+								<th>Supply / Refills / Qty Remaining</th>
 								<th>
 									<a ng-click="orderByField='prescriberLastname'; reverseSort = !reverseSort">
 										Prescriber
@@ -462,7 +473,7 @@
 								<td>{{med.dispensingPharmacy}}</td>
 								<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} </td>
 								<td>{{med.dispensingPharmacyFaxNumber}}</td>
-								<td ng-click="showGroupedServices2(servicesWithGroupedDups[med.brandName.display])"><span ng-if="med.headRecord"><a>{{servicesWithGroupedDups[med.brandName.display].length}}</a></span><!-- {{med | json}}  --></td>
+								<td ng-click="showGroupedServices2(servicesWithGroupedDups[med.serviceGroupKey])"><span ng-if="med.headRecord"><a>{{servicesWithGroupedDups[med.serviceGroupKey].length}}</a></span><!-- {{med | json}}  --></td>
 
 							</tr>
 						</tbody>
@@ -490,6 +501,12 @@
 									<label class="col-sm-2 control-label">Brand name</label>
 									<div class="col-sm-10">
 										<input ng-model="searchtxt.brandName.display" type="text" placeholder="type to filter" class="form-control"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">Generic name</label>
+									<div class="col-sm-10">
+										<input ng-model="searchtxt.genericName" type="text" placeholder="type to filter" class="form-control"/>
 									</div>
 								</div>
 								<div class="form-group">
@@ -556,12 +573,20 @@
 												<span ng-show="reverseSort">v</span>
 											</span>
 										</a>
+										/
+										<a ng-click="orderByField='genericName'; reverseSort = !reverseSort">
+											Generic
+											<span ng-show="orderByField == 'genericName'">
+												<span ng-show="!reverseSort">^</span>
+												<span ng-show="reverseSort">v</span>
+											</span>
+										</a>
 									</th>
 									<th>Therapeutic Class/Sub-class</th>
 									<th>Quantity</th>
 									<th>Dosage</th>
 									<th>Frequency</th>
-				 					<th>Status</th>
+				 					<th>Supply / Refills / Qty Remaining</th>
 									<th>
 										<a ng-click="orderByField='prescriberLastname'; reverseSort = !reverseSort">
 											Prescriber
@@ -610,39 +635,11 @@
 			 		</div>
 		 		</div>
 		 		<div class="col-xs-6 table-overflow-x " >
-		 			<table class="table table-condensed table-striped table-bordered" ng-show="compLocalMeds.length > 0"> 
-		 			   	<thead>
-							<tr>
-								<td colspan="12">
-									{{compLocalMeds.length}} results returned
-								</td>
-							</tr>
-			 				<tr> 
-			 					<th>Start Date</th> 
-			 					<th>Medication</th>
-			 					<th>Prescriber</th>
-			 					<th>DIN</th>
-			 					<th>Qty / Duration</th>
-			 					<th>Refills</th>
-			 					 
-							</tr> 
-						</thead> 
-		 				<tbody> 
-			 				<tr ng-repeat="med in compLocalMeds | orderBy: 'rxDate': true">
-			 					<th scope="row" class="startDate">{{med.rxDate | date}}</th>
-			 					<%-- td ng-click="getDetailView(med);">{{med.genericName}}</td> --%>
-			 					<td>{{med.instructions}}</td>
-			 					<td>{{med.providerName}}</td>
-			 					<td>{{med.regionalIdentifier}}</td>
-			 					<td>{{med.quantity}}<span ng-if="med.duration"> / {{med.duration}} {{med.durationUnit}}</span></td>
-			 					<td>{{med.repeats}}<span ng-if="med.refillQuantity"> ({{med.refillQuantity}}<span ng-if="med.refillDuration"> / {{med.refillDuration}}</span>)</span></td>
-			 				</tr>
-			 			</tbody> 
-		 			</table>
+		 			<div ng-include="'emrMedsTable.html'"></div>
 		 		</div>
 		 	</div>
 			<div class="row">
-				<div class="col-xs-12">
+				<div class="col-xs-6 table-overflow-x ">
 					<div ng-if="hideShowDhirPharmaVal">
 						<h6>DHDR Pharmacy Service <small><a ng-click="showHideServiceFilter()">Filter</a></small></h6>
 						<div ng-show="showServiceFilter()" >
@@ -758,7 +755,7 @@
 								<td>{{med.genericName}} </td>
 								<td>{{med.rxNumber}}</td>
 								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
-								<td>{{med.dispensingPharmacy}} - Tel:{{med.dispensingPharmacyPhoneNumber}}</td>
+								<td>{{med.dispensingPharmacy}} - Fax:{{med.dispensingPharmacyFaxNumber}}</td>
 								<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} </td>
 
 							</tr>
@@ -766,9 +763,52 @@
 						</table>
 					</div>
 				</div>
+				<div class="col-xs-6 table-overflow-x ">
+					<h4>EMR Local Data</h4>
+					<%-- DHDR08.01(a): the EMR side carries the EMR's medication records (per DHDR05.02),
+					     the same table the drug Comparative shows. --%>
+					<div ng-include="'emrMedsTable.html'"></div>
+				</div>
 			</div>
 	 	</div> <!-- comparitive view end -->
 	</div>
+	<%-- DHDR05.02: the EMR medication records. Rendered in both the drug Comparative and
+	     the Pharmacy Service Comparative (DHDR08.01a), so it lives in one template. --%>
+	<script type="text/ng-template" id="emrMedsTable.html">
+		 			<table class="table table-condensed table-striped table-bordered" ng-show="compLocalMeds.length > 0"> 
+		 			   	<thead>
+							<tr>
+								<td colspan="12">
+									{{compLocalMeds.length}} results returned
+								</td>
+							</tr>
+			 				<tr> 
+			 					<th>Start Date</th> 
+			 					<th>Medication</th>
+			 					<th>Strength</th>
+			 					<th>Dosage</th>
+			 					<th>Frequency</th>
+			 					<th>Prescriber</th>
+			 					<th>DIN</th>
+			 					<th>Qty / Duration</th>
+			 					<th>Refills</th>
+							</tr> 
+						</thead> 
+		 				<tbody> 
+			 				<tr ng-repeat="med in compLocalMeds | orderBy: 'rxDate': true">
+			 					<th scope="row" class="startDate">{{med.rxDate | date}}</th>
+			 					<td>{{med.genericName || med.brandName || med.customName}}</td>
+			 					<td>{{med.strength}} {{med.strengthUnit}}</td>
+			 					<td><span ng-if="med.takeMin">{{med.takeMin}}<span ng-if="med.takeMax && med.takeMax !== med.takeMin"> - {{med.takeMax}}</span></span></td>
+			 					<td>{{med.frequency}}</td>
+			 					<td>{{med.providerName}}</td>
+			 					<td>{{med.regionalIdentifier}}</td>
+			 					<td>{{med.quantity}}<span ng-if="med.duration"> / {{med.duration}} {{med.durationUnit}}</span></td>
+			 					<td>{{med.repeats}}<span ng-if="med.refillQuantity"> ({{med.refillQuantity}}<span ng-if="med.refillDuration"> / {{med.refillDuration}}</span>)</span></td>
+			 				</tr>
+			 			</tbody> 
+		 			</table>
+	</script>
 	<script type="text/ng-template" id="myModalContent.html">
         <div class="modal-header">
 			<div class="row">
@@ -851,7 +891,7 @@
 						<tr>
 
 							<th>Quantity</th>
-							<td>{{med.dispensedQuantity}}</td>
+							<td>{{med.dispensedQuantity}} {{med.dispensedQuantityUnit}}</td>
 						</tr>
 						<tr>
 		 					<th>Est Days Supply</th>
@@ -901,7 +941,7 @@
 						<tr>
 						<tr>
 		 					<th>Prescriber ID</th>
-							<td> {{getLicence(med.prescriberLicenceNumber.system)}} ({{med.prescriberLicenceNumber.value}})</td>
+							<td title="{{getLicence(med.prescriberLicenceNumber.system)}}">{{getLicenceMnemonic(med.prescriberLicenceNumber.system)}} ({{med.prescriberLicenceNumber.value}})</td>
 						</tr>
 						<tr>
 		 					<th>Prescriber Phone</th>
@@ -984,7 +1024,7 @@
 		 					<td>{{med.drugDosageForm}}</td>
 							<td>{{med.dose}} {{med.doseUnit}}</td>
 							<td>{{med.frequency}}</td>
-		 					<td>{{med.dispensedQuantity}}</td>
+		 					<td>{{med.dispensedQuantity}} {{med.dispensedQuantityUnit}}</td>
 		 					<td>{{med.estimatedDaysSupply}}</td>
 		 					<td>{{med.refillsRemaining}}</td>
 							<td>{{med.quantityRemaining}}</td>
@@ -1090,8 +1130,10 @@
 				dobUnmatched: false,
 				hinUnmatched: false
 			};
+			$scope.dhdrPatientResolved = false;
 			$scope.dhdrPatientData = "";
 			$scope.patientDataUnmatched = false;
+			$scope.dhdrPatientDataUnmatched = false;
 			$scope.searchComplete = false;
 			$scope.buttonDisabled = false;
 
@@ -1287,10 +1329,31 @@
 
 
 			$scope.issueClass = function(issue){
-				if(issue.severity === "warning"){
-					return "alert-danger";
+				// Only a warning styles as a warning; error and fatal style as danger.
+				return issue.severity === "warning" ? "alert-warning" : "alert-danger";
+			}
+
+			// DHDR14.01: the actionable code is in issue.details.coding.code or issue.diagnostics;
+			// issue.code is only the FHIR issue-type token.
+			$scope.dhdrCode = function(issue){
+				if(issue.details && issue.details.coding && issue.details.coding.length > 0 && issue.details.coding[0].code){
+					return issue.details.coding[0].code;
 				}
-				return "alert-warning";
+				return issue.diagnostics ? issue.diagnostics : issue.code;
+			}
+
+			// DHDR02.04: error/fatal and consent-block issues suppress the empty-state; an
+			// informational outcome (e.g. COVaxON down) must not.
+			$scope.hasBlockingOutcome = function(){
+				for(var oi = 0; oi < $scope.outcomes.length; oi++){
+					var iss = $scope.outcomes[oi].issues || [];
+					for(var ii = 0; ii < iss.length; ii++){
+						if(iss[ii].severity === "error" || iss[ii].severity === "fatal" || iss[ii].code === "suppressed"){
+							return true;
+						}
+					}
+				}
+				return false;
 			}
 
 			// DHDR14.01 severity: only a warning is styled as one; errors and fatals are errors.
@@ -1372,7 +1435,7 @@
 			}
 			
 			$scope.showGroupedService = function(med){
-				hiddenGroup = $scope.servicesWithGroupedDups[med.brandName.display];
+				hiddenGroup = $scope.servicesWithGroupedDups[med.serviceGroupKey];
 				var currentlyHasHiddenItems = false; 
 				for (x of  hiddenGroup) {
 					if(x.hide){
@@ -1393,7 +1456,8 @@
 			}
 			
 			$scope.getRowClass = function(med){
-				if($scope.patientDataUnmatched){
+				// Highlight rows when the DHDR patient does not match the EMR demographic.
+				if($scope.dhdrPatientDataUnmatched){
 					return "warning";
 				}
 			}
@@ -1411,6 +1475,7 @@
 							$scope.dhdrPatient.gender = d.patient.gender || "";
 							$scope.dhdrPatient.dob = d.patient.birthDate || "";
 							$scope.dhdrPatient.hin = getPatientIdentifier(d.patient.identifier);
+							$scope.dhdrPatientResolved = true;
 						}
 
 						function getFirstName(nameArray) {
@@ -1439,16 +1504,20 @@
 							$scope.services.push(d);
 
 							//if ($scope.medsWithGroupedDups.indexOf(d.getUniqVal()) === -1) {
-							if($scope.servicesWithGroupedDups[d.brandName.display] === undefined){
-								$scope.servicesWithGroupedDups[d.brandName.display] = [];
+							// Fall back when the event carries no brand identifier, so the deref cannot throw
+							// and abort the loop. Key is stored so the badge and expand handler agree.
+							var svcKey = (d.brandName && d.brandName.display) ? d.brandName.display : (d.genericName || 'Unknown Product');
+							d.serviceGroupKey = svcKey;
+							if($scope.servicesWithGroupedDups[svcKey] === undefined){
+								$scope.servicesWithGroupedDups[svcKey] = [];
 								d.headRecord= true;
 								$scope.uniqServices.push(d);
 
-								$scope.servicesWithGroupedDups[d.brandName.display].push(d);
+								$scope.servicesWithGroupedDups[svcKey].push(d);
 							}else{
 								d.hide = true;
 								d.hiddenRecord = true;
-								$scope.servicesWithGroupedDups[d.brandName.display].push(d);
+								$scope.servicesWithGroupedDups[svcKey].push(d);
 							}
 
 						}else{
@@ -1508,6 +1577,24 @@
 				$scope.servicesWithGroupedDups = [];
 				$scope.searchConfig.searchId = null;
 				$scope.searchConfig.pageId = null;
+				$scope.searchComplete = false;
+				$scope.dhdrPatientResolved = false;
+
+				// DHDR02.02: the HCN is mandatory in the request and must not be sent absent. The
+				// viewer auto-fires on load, so refuse to dispatch rather than send an empty hcn| query.
+				if(!$scope.demographic || !$scope.demographic.hin || !((''+$scope.demographic.hin).trim())){
+					$scope.buttonDisabled = false;
+					$scope.searching = false;
+					$scope.serviceErrors.push({
+						httpMessage: "Cannot search the DHDR: this patient has no Health Card Number on file.",
+						httpCode: "DHDR02.02",
+						severity: "error",
+						dateTime: new Date().toLocaleString(),
+						moreInformation: "A Health Card Number is required to query the DHDR EHR Service. Add the HCN to the patient record and try again."
+					});
+					return;
+				}
+
 				search($scope.demographicNo,$scope.searchConfig);
 			
 			}
@@ -1567,7 +1654,7 @@
 								|| $scope.dhdrPatient.genderUnmatched);
 					}
 
-					if(response.link && response.link.length > 1){
+					if(response.link && response.link.some(function(l){ return l.relation === "next"; })){
 						$scope.searchConfig.searchId = response.id;
 						if($scope.searchConfig.pageId == null){
 							$scope.searchConfig.pageId = 2;
@@ -1700,16 +1787,17 @@
 					  }
 				  }
 
+				  // DHDR09.05: the message reflects the user decision, not the audit-log POST result.
+				  var showOverrideResult = function() {
+					  if (status === "Refused" || status === "Cancelled") {
+						  $scope.overrideResultMessage = (status === "Refused")
+								  ? "Access to Drug and Pharmacy Service Information has been refused."
+								  : "Access to Drug and Pharmacy Service Information has been cancelled.";
+						  $timeout(function() { window.close(); }, 4000);
+					  }
+				  };
 				  dhdrService.logConsentOverride($scope.demographicNo, uuid, data, status)
-						  .then(function(response) {
-							  if (status === "Refused" || status === "Cancelled") {
-								  // DHDR09.05: display the mandated message, keep it visible briefly, then close automatically.
-								  $scope.overrideResultMessage = (status === "Refused")
-										  ? "Access to Drug and Pharmacy Service Information has been refused."
-										  : "Access to Drug and Pharmacy Service Information has been cancelled.";
-								  $timeout(function() { window.close(); }, 4000);
-							  }
-				  });
+						  .then(showOverrideResult, showOverrideResult);
 			  }
 			
     		  $scope.callConsentBlock = function($event){
@@ -1812,15 +1900,15 @@
 
 			this.outcomme = operationOutcome;
 			this.issues = [];
-			// DHDR14.01 requires the date and time of the incident. An OperationOutcome carries no
-			// timestamp of its own, so the moment the EMR received it is what gets displayed.
-			this.receivedAt = new Date().toLocaleString();
-
-			if(angular.isDefined(this.outcomme.resource) && angular.isDefined(this.outcomme.resource.issue)){
-				this.issues = this.outcomme.resource.issue;
-			}else if(angular.isDefined(this.outcomme.issue)){
-				this.issues = this.outcomme.issue;
+			var resource = angular.isDefined(this.outcomme.resource) ? this.outcomme.resource : this.outcomme;
+			if(angular.isDefined(resource.issue)){
+				this.issues = resource.issue;
 			}
+			// DHDR15.02: correlation id for a consent override logged from this notice.
+			this.id = angular.isDefined(resource.id) ? resource.id : null;
+			// DHDR14.01 incident time: the service's own timestamp when it supplied one.
+			this.receivedAt = (resource.meta && resource.meta.lastUpdated)
+				? new Date(resource.meta.lastUpdated) : new Date();
 				
 			
 			
@@ -1895,7 +1983,9 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
         
 			this.whenPrepared = this.med.resource.whenPrepared;
 			if (angular.isDefined(this.med.resource.whenHandedOver)) {
+				// Drug tables bind pickUpDate, pharmacy tables bind whenHandedOver; same source.
 				this.pickUpDate = this.med.resource.whenHandedOver;
+				this.whenHandedOver = this.med.resource.whenHandedOver;
 			}
 			if(angular.isDefined(this.med.resource.quantity) && angular.isDefined(this.med.resource.quantity.value)){
 				this.dispensedQuantity = this.med.resource.quantity.value;
@@ -1934,7 +2024,8 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 				let dosageInstruction = this.med.resource.dosageInstruction[0];
 				if (angular.isDefined(dosageInstruction.doseAndRate)) {
 					this.dose = angular.isDefined(dosageInstruction.doseAndRate[0]) ? dosageInstruction.doseAndRate[0].doseQuantity.value : "";
-					this.doseUnit = " " + angular.isDefined(dosageInstruction.doseAndRate[0]) ? dosageInstruction.doseAndRate[0].doseQuantity.unit : "";
+					// Guard first, then prepend the space inside the value: + binds tighter than ?:.
+					this.doseUnit = angular.isDefined(dosageInstruction.doseAndRate[0]) ? (" " + dosageInstruction.doseAndRate[0].doseQuantity.unit) : "";
 				}
 				if (angular.isDefined(dosageInstruction.timing)) {
 					this.frequency = dosageInstruction.timing.repeat.frequency;
@@ -1966,27 +2057,31 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 						
 						if (angular.isDefined(res.code.coding)) {
 							for(coding of res.code.coding) {
-								//{"system": "http://hl7.org/fhir/NamingSystem/ca-hc-din","code": "01916580","display": "Hycodan"
-								if("http://hl7.org/fhir/NamingSystem/ca-hc-din" === coding.system) {
-									this.brandName = coding;
+								if(!angular.isDefined(coding.system)) {
+									continue;
 								}
-								//"system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name","display": "HYDROCODONE BITARTRATE"
-								if("http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name" === coding.system) {
+								// Match on the trailing NamingSystem id, not the full URL: the consumer profile
+								// fixes these to https:// while the IG examples use http://.
+								if(coding.system.endsWith("ca-drug-gen-name")) {
 									this.genericName = coding.display;
-								}
-								//"system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-class-ahfs","code": "480000000","display": "COUGH PREPARATIONS"
-								if("http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-class-ahfs" === coding.system) {
+								}else if(coding.system.endsWith("ca-on-drug-class-ahfs")) {
 									this.ahfsClass = coding.display;
-								}
-								//"system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-subclass-ahfs","code": "480400000","display": "ANTITUSSIVES"\
-								if("http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-subclass-ahfs" === coding.system) {
+								}else if(coding.system.endsWith("ca-on-drug-subclass-ahfs")) {
 									this.ahfsSubClass = coding.display;
+								}else if(coding.system.endsWith("ca-hc-din")) {
+									// Health Canada DIN - the preferred brand identifier.
+									this.brandName = coding;
+								}else if(angular.isDefined(coding.code) && !angular.isDefined(this.brandName)) {
+									// A non-DIN identifier (PIN, or a CCDD product code such as a COVaxON
+									// immunization). Only when no DIN was captured, so a DIN always wins.
+									this.brandName = coding;
 								}
 
 							}
 						}
 					}else {
-						logger.error("was null "+medication);
+						// Never interpolate the resource here - it carries PHI.
+						console.warn("DHDR: contained Medication resource has no code element");
 					}
 				
 				}else if(res.resourceType ===  "Organization") {
@@ -2006,7 +2101,8 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 					this.reasonCode = [];
 					if(angular.isDefined(res.reasonCode)){
 						for(code of res.reasonCode){	
-							this.reasonCode = code;
+							// Push, so reasonCode stays an array - the print reads it with getJSONArray.
+							this.reasonCode.push(code);
 						}
 					}	
 					
@@ -2014,13 +2110,22 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 					
 					if (angular.isDefined(res.identifier)) {
 						for(identifier of res.identifier) {
-							if("https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician" === identifier.system) {
-								/* Does this have a different system value if it's a CPSO value?
-                                Prescriber Information
-                                g) Prescriber ID (e.g., practitioner license or CPSO number) [Practitioner.identifier.value]
-                    h) ID Reference [Practitioner.identifier.system]
-
-                                */
+							if(!angular.isDefined(identifier.system)) {
+								continue;
+							}
+							if(identifier.system.endsWith("ca-on-license-pharmacist")) {
+								this.pharmacistLicenceNumber = identifier;
+								if(angular.isDefined(res.name)){
+									for( humanName of res.name) {
+										this.pharmacistLastname = humanName.family;
+										if(angular.isDefined(humanName.given)){
+											this.pharmacistFirstname = humanName.given[0];
+										}
+									}
+								}
+							}else if(identifier.system.indexOf("ca-on-license") !== -1
+									|| identifier.system.indexOf("prescriber") !== -1) {
+								// Any prescriber licensing college, not physicians only. Pharmacist handled above.
 								this.prescriberLicenceNumber = identifier;
 								if(angular.isDefined(res.name)){
 									for( humanName of res.name) {
@@ -2038,19 +2143,6 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 										}
 									}
 								}
-
-								//this.prescriberPhoneNumber = res.telecom[0].value);
-							}else if("https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist" === identifier.system) {
-								this.pharmacistLicenceNumber = identifier;
-								if(angular.isDefined(res.name)){
-									for( humanName of res.name) {
-										this.pharmacistLastname = humanName.family;
-										if(angular.isDefined(humanName.given)){
-											this.pharmacistFirstname = humanName.given[0];
-										}
-									}
-								}
-
 							}
 
 						}
@@ -2103,6 +2195,21 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 				return "N/A";
 			}
 			
+			// Licensing-body mnemonic for the GUI, with the full name on hover. Only well-established
+			// abbreviations; anything else falls back to the full body name.
+			$scope.getLicenceMnemonic = function(val){
+				if(val == null){ return "N/A"; }
+				if(val.endsWith("ca-on-license-physician")){ return "CPSO"; }
+				if(val.endsWith("ca-on-license-dental-surgeon")){ return "RCDSO"; }
+				if(val.endsWith("ca-on-license-pharmacist")){ return "OCP"; }
+				if(val.endsWith("ca-on-license-nurse")){ return "CNO"; }
+				if(val.endsWith("ca-on-license-midwife")){ return "CMO"; }
+				if(val.endsWith("ca-on-license-optometrist")){ return "COO"; }
+				if(val.endsWith("ca-on-license-naturopath")){ return "CONO"; }
+				// No widely-used abbreviation - show the full body name instead.
+				return $scope.getLicence(val);
+			}
+
 			$scope.printDetail = function(){
 					var toPrint = {};
 					toPrint.med = $scope.med;
