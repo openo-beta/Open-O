@@ -29,6 +29,7 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page import="ca.openosp.openo.rx.util.*" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.prescript.util.LimitedUseCode" %>
 <%@ page import="ca.openosp.openo.prescript.util.RxUtil" %>
@@ -1069,9 +1070,10 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                                         <b title="<%=Encode.forHtmlAttribute(String.valueOf(thisForm.getRegionalIdentifier()))%>"><%=Encode.forHtml(String.valueOf(thisForm.getBrandName()))%>
                                         </b>
                                         <oscar:oscarPropertiesCheck property="SHOW_ODB_LINK" value="yes">
-                                            <!--a href="javascript: function myFunction() {return false; }" onclick="javascript:popup(700,630,'http://216.176.50.202/formulary/SearchServlet?searchType=singleQuery&phrase=exact&keywords=<%=Encode.forUriComponent(String.valueOf(regionalIdentifier))%>','ODBInfo')">ODB info</a-->
-                                            <a href="javascript: function myFunction() {return false; }"
-                                               onclick="javascript:popup(725,690,'http://216.176.50.202/formulary/SearchServlet?sort=genericName&section=1&pcg=%25&manufacturerID=%25&keywords=<%=Encode.forUriComponent(String.valueOf(regionalIdentifier))%>&searchType=drugID&Search=Search&phrase=exact','ODBInfo')">ODB
+                                            <%-- DHDR12.01: link to the OMD "Check Medication Coverage" formulary the DHDR
+                                                 viewer uses (dhdr.odb_formulary_url), not the dead raw-IP MOH SearchServlet. --%>
+                                            <a target="_new"
+                                               href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/"))%>">ODB
                                                 info</a>
                                         </oscar:oscarPropertiesCheck>
                                     </td>
@@ -1354,8 +1356,9 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                                                         </ul>
                                                     </div>
                                                     <oscar:oscarPropertiesCheck property="billregion" value="ON">
+                                                        <%-- DHDR12.01: OMD "Check Medication Coverage" formulary the DHDR viewer uses. --%>
                                                         <a target="_new"
-                                                           href="https://www.healthinfo.moh.gov.on.ca/formulary/SearchServlet?searchType=drugID&keywords=<%=Encode.forUriComponent(String.valueOf(regionalIdentifier))%>">ODB
+                                                           href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/"))%>">ODB
                                                             lookup</a>
                                                         &nbsp;|&nbsp;
                                                         <%-- DHDR12.02: the Exceptional Access Program link, made available on the
