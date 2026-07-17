@@ -2036,7 +2036,9 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			}
 
 			
-			for (res of  this.med.resource.contained) {
+			// contained is optional: a dispense can carry no Medication/Practitioner/Patient at all.
+			var contained = angular.isDefined(this.med.resource.contained) ? this.med.resource.contained : [];
+			for (res of contained) {
 				
 				if(res.resourceType === "Medication") {
 					
