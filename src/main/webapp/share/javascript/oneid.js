@@ -5,7 +5,9 @@
  * waits for the Viewlet to respond within the configured wait time, confirms the
  * content rendered, allows a bounded number of reloads, records the outcome, and
  * informs the user if the Viewlet does not respond. Closing either the window or the
- * dialog clears the patient from the EHR context.
+ * dialog clears the patient from the EHR context. A launch refused only for want of
+ * a ONE ID sign-in starts the mid-session ONE ID step-up and resumes the launch when
+ * the clinician returns to the page.
  */
 
 var VIEWLET_DEFAULT_TIMEOUT_MS = 65000;
@@ -32,7 +34,12 @@ function launchViewlet(ctx, demographicNo, key, displayMode) {
                 return;
             }
             if (result.status === 268) {
-                alert(result.data && result.data.summary ? result.data.summary : 'The EHR service could not be launched.');
+                var summary = result.data && result.data.summary ? result.data.summary : 'The EHR service could not be launched.';
+                if (result.data && result.data.stepUp) {
+                    startOneIdStepUp(ctx, demographicNo, key, displayMode, summary);
+                } else {
+                    alert(summary);
+                }
                 return;
             }
             if (!result.data || !result.data.viewletUrl) {
@@ -275,3 +282,58 @@ function closeViewletPatientContext(ctx, demographicNo) {
             alert('There was an error removing the patient from the context. Please try again.');
         });
 }
+
+// Sends a signed-in clinician to the ONE ID sign-in without ending their session, remembering
+// the launch so it resumes when they come back to this page.
+function startOneIdStepUp(ctx, demographicNo, key, displayMode, summary) {
+    if (!confirm(summary + ' You will be taken to the Ontario Health sign-in and brought back to this page.')) {
+        return;
+    }
+    try {
+        sessionStorage.setItem('oneIdPendingViewlet', JSON.stringify({
+            ctx: ctx, demographicNo: demographicNo, key: key, displayMode: displayMode, at: Date.now()
+        }));
+    } catch (e) {
+    }
+    window.location.href = ctx + '/oneIdLogin.do?returnUrl='
+        + encodeURIComponent(window.location.pathname + window.location.search);
+}
+
+var ONEID_STEP_UP_MESSAGES = {
+    notLinked: 'Your ONE ID is not linked to this account. Log out and sign in with ONE ID once to link it, or contact your administrator.',
+    differentAccount: 'This ONE ID is linked to a different account. Use the ONE ID linked to your user.',
+    verifyFailed: 'Your ONE ID sign-in could not be verified. Please try again.'
+};
+
+// On page load: explain a step-up failure sent back on the URL, or resume the launch that the
+// step-up sign-in interrupted.
+(function () {
+    function run() {
+        var pending = null;
+        try {
+            var raw = sessionStorage.getItem('oneIdPendingViewlet');
+            if (raw) {
+                sessionStorage.removeItem('oneIdPendingViewlet');
+                pending = JSON.parse(raw);
+            }
+        } catch (e) {
+        }
+        var params = new URLSearchParams(window.location.search);
+        var errorCode = params.get('oneIdStepUpError');
+        if (errorCode) {
+            params.delete('oneIdStepUpError');
+            var query = params.toString();
+            history.replaceState(null, '', window.location.pathname + (query ? '?' + query : ''));
+            alert(ONEID_STEP_UP_MESSAGES[errorCode] || 'The ONE ID sign-in could not be completed. Please try again.');
+            return;
+        }
+        if (pending && pending.key && pending.at && (Date.now() - pending.at) < 600000) {
+            launchViewlet(pending.ctx, pending.demographicNo, pending.key, pending.displayMode);
+        }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+})();

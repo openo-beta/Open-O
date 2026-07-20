@@ -51,11 +51,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Pre-authentication callback for the ONE ID OAuth2/OIDC login. It verifies the anti-forgery state,
- * exchanges the authorization code for tokens, validates the id_token signature and claims, resolves
- * the linked provider, establishes a fully authenticated session, and persists the ONE ID session.
- * An unlinked identity is sent to the login page to bind once. There is no privilege check because
- * this is what establishes the session; trust comes from the state, nonce, and id-token validation.
+ * Callback for the ONE ID OAuth2/OIDC login. It verifies the anti-forgery state, exchanges the
+ * authorization code for tokens, validates the id_token signature and claims, resolves the linked
+ * provider, establishes a fully authenticated session, and persists the ONE ID session. An
+ * unlinked identity is sent to the login page to bind once. When the callback arrives on a session
+ * that is already authenticated it is a mid-session step-up: the existing login is kept, the
+ * verified identity must belong to the same provider, and only the ONE ID session is attached
+ * before returning to the page that started the step-up. There is no privilege check because this
+ * can be what establishes the session; trust comes from the state, nonce, and id-token validation.
  *
  * @since 2026-07-02
  */
@@ -72,6 +75,10 @@ public class OneIdCallbackAction extends ActionSupport {
 
     public String execute() {
         HttpSession session = request.getSession(false);
+        // A live authenticated session means this callback is a mid-session step-up, not a login.
+        String stepUpProviderNo = (session == null) ? null : (String) session.getAttribute("user");
+        String returnUrl = (session == null) ? null
+                : OneIdLoginAction.safeLocalPath((String) session.getAttribute(OneIdLoginAction.SESSION_RETURN_URL));
         try {
             if (session == null) {
                 return fail("Your sign-in session could not be found.", "Please try signing in again.");
@@ -88,9 +95,15 @@ public class OneIdCallbackAction extends ActionSupport {
             String code = request.getParameter("code");
 
             if (expectedState == null || returnedState == null || !expectedState.equals(returnedState)) {
+                if (stepUpProviderNo != null) {
+                    return stepUpError(session, returnUrl, "verifyFailed");
+                }
                 return fail("Your sign-in could not be verified.", "Please try signing in again.");
             }
             if (code == null || code.isEmpty()) {
+                if (stepUpProviderNo != null) {
+                    return stepUpError(session, returnUrl, "error");
+                }
                 return fail("Ontario Health did not return an authorization code.", "Please try signing in again.");
             }
 
@@ -100,18 +113,29 @@ public class OneIdCallbackAction extends ActionSupport {
             OmdGateway omdGateway = new OmdGateway();
             Response tokenResponse = omdGateway.exchangeCodeForTokens(loggedInInfo, code, verifier);
             if (tokenResponse.getStatus() != 200) {
+                if (stepUpProviderNo != null) {
+                    return stepUpError(session, returnUrl, "error");
+                }
                 return failWith(ConnectivityErrorHelper.mapStatus(tokenResponse.getStatus()));
             }
 
             JSONObject tokens = new JSONObject(tokenResponse.readEntity(String.class));
             String idToken = tokens.optString("id_token", null);
             if (idToken == null) {
+                if (stepUpProviderNo != null) {
+                    return stepUpError(session, returnUrl, "error");
+                }
                 return fail("Ontario Health did not return an identity token.", "Please try signing in again.");
             }
 
             String subject = oneIdJwksProvider.verifyIdToken(idToken, nonce);
 
             List<Security> matches = ehrConnectivityManager.findProvidersByOneId(subject);
+
+            if (stepUpProviderNo != null) {
+                return completeStepUp(session, stepUpProviderNo, returnUrl, subject, matches, tokens);
+            }
+
             if (matches == null || matches.isEmpty()) {
                 // Not linked yet: keep the verified subject and send the provider to log in once to bind.
                 session.setAttribute("oneIdSubject", subject);
@@ -144,10 +168,89 @@ public class OneIdCallbackAction extends ActionSupport {
             return NONE;
         } catch (IdTokenValidationException e) {
             logger.warn("ONE ID id-token validation failed");
+            if (stepUpProviderNo != null) {
+                return stepUpError(session, returnUrl, "verifyFailed");
+            }
             return fail("Your sign-in could not be verified.", "Please try signing in again.");
         } catch (Exception e) {
             logger.error("ONE ID callback failed (" + e.getClass().getSimpleName() + ")");
+            if (stepUpProviderNo != null) {
+                return stepUpError(session, returnUrl, "error");
+            }
             return failWith(ConnectivityErrorHelper.map(e));
+        }
+    }
+
+    /**
+     * Finishes a mid-session step-up: the verified ONE ID identity must be the one linked to the
+     * provider who is already signed in, and on a match only the ONE ID session is attached - the
+     * existing login is never rebuilt or invalidated. The session filter restores the gateway data
+     * from the saved row on the next request.
+     *
+     * @param session HttpSession the live authenticated session
+     * @param providerNo String the signed-in provider number
+     * @param returnUrl String the local path that started the step-up, or null
+     * @param subject String the verified id-token subject
+     * @param matches List&lt;Security&gt; the accounts linked to the subject
+     * @param tokens JSONObject the token-endpoint response
+     * @return String the Struts result (always NONE; the response is a redirect)
+     * @throws Exception when the redirect cannot be written
+     */
+    private String completeStepUp(HttpSession session, String providerNo, String returnUrl, String subject,
+                                  List<Security> matches, JSONObject tokens) throws Exception {
+        if (matches == null || matches.isEmpty()) {
+            return stepUpError(session, returnUrl, "notLinked");
+        }
+        if (matches.size() > 1) {
+            return stepUpError(session, returnUrl, "error");
+        }
+        if (!providerNo.equals(matches.get(0).getProviderNo())) {
+            return stepUpError(session, returnUrl, "differentAccount");
+        }
+        ehrConnectivityManager.saveOneIdSession(buildOneIdSession(providerNo, subject, tokens));
+        LogAction.addLog(providerNo, LogConst.LOGIN, LogConst.CON_LOGIN, "ONE ID step-up", request.getRemoteAddr());
+        response.sendRedirect(request.getContextPath() + "/uaoSelect.do");
+        return NONE;
+    }
+
+    /**
+     * Ends a failed step-up without touching the existing login: the failure is audited and the
+     * provider is sent back to the page that started the step-up with an error code the page can
+     * explain, or to the login-failed page when no return path is known.
+     *
+     * @param session HttpSession the live authenticated session
+     * @param returnUrl String the local path that started the step-up, or null
+     * @param code String the machine-readable failure code for the return page
+     * @return String the Struts result (always NONE; the response is a redirect)
+     */
+    private String stepUpError(HttpSession session, String returnUrl, String code) {
+        session.removeAttribute(OneIdLoginAction.SESSION_RETURN_URL);
+        String message = stepUpMessage(code);
+        LogAction.addLog("", LogConst.LOGIN, "failed", "ONE ID step-up: " + message, request.getRemoteAddr());
+        try {
+            if (returnUrl != null) {
+                String separator = returnUrl.contains("?") ? "&" : "?";
+                response.sendRedirect(returnUrl + separator + "oneIdStepUpError=" + code);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/loginfailed.jsp?errormsg="
+                        + URLEncoder.encode(message, "UTF-8"));
+            }
+        } catch (Exception e) {
+            logger.error("Failed to redirect after a ONE ID step-up failure", e);
+        }
+        return NONE;
+    }
+
+    private static String stepUpMessage(String code) {
+        switch (code) {
+            case "notLinked":
+                return "Your ONE ID is not linked to this account. Log out and sign in with ONE ID once to link it, or contact your administrator.";
+            case "differentAccount":
+                return "This ONE ID is linked to a different account. Use the ONE ID linked to your user.";
+            case "verifyFailed":
+                return "Your ONE ID sign-in could not be verified. Please try again.";
+            default:
+                return "The ONE ID sign-in could not be completed. Please try again.";
         }
     }
 

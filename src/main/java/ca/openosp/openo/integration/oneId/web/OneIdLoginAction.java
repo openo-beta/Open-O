@@ -39,11 +39,14 @@ import java.net.URLEncoder;
 import java.util.UUID;
 
 /**
- * Pre-authentication entry point that starts the ONE ID OAuth2/OIDC login. It generates the
- * anti-forgery state, the id-token nonce, and a PKCE code verifier, keeps them server-side in the
- * session, and redirects the browser to the Ontario Health authorize endpoint. No privilege check
- * runs here because there is no logged-in session yet; the handshake's own state, nonce, and
- * id-token signature checks establish trust on the callback.
+ * Entry point that starts the ONE ID OAuth2/OIDC login. It generates the anti-forgery state, the
+ * id-token nonce, and a PKCE code verifier, keeps them server-side in the session, and redirects
+ * the browser to the Ontario Health authorize endpoint. It serves both the pre-authentication
+ * login from the login page and the mid-session step-up for an already signed-in provider; an
+ * optional local return URL is kept in the session so the callback can send the provider back to
+ * the page that started the step-up. No privilege check runs here because there may be no
+ * logged-in session yet; the handshake's own state, nonce, and id-token signature checks
+ * establish trust on the callback.
  *
  * @since 2026-07-02
  */
@@ -54,6 +57,7 @@ public class OneIdLoginAction extends ActionSupport {
     static final String SESSION_STATE = "oneIdState";
     static final String SESSION_NONCE = "oneIdNonce";
     static final String SESSION_VERIFIER = "oneIdVerifier";
+    static final String SESSION_RETURN_URL = "oneIdReturnUrl";
 
     private final HttpServletRequest request = ServletActionContext.getRequest();
     private final HttpServletResponse response = ServletActionContext.getResponse();
@@ -69,6 +73,13 @@ public class OneIdLoginAction extends ActionSupport {
             session.setAttribute(SESSION_STATE, state);
             session.setAttribute(SESSION_NONCE, nonce);
             session.setAttribute(SESSION_VERIFIER, verifier);
+
+            String returnUrl = safeLocalPath(request.getParameter("returnUrl"));
+            if (returnUrl != null) {
+                session.setAttribute(SESSION_RETURN_URL, returnUrl);
+            } else {
+                session.removeAttribute(SESSION_RETURN_URL);
+            }
 
             OneIdGatewayData gatewayData = new OneIdGatewayData();
             gatewayData.hasScope(OneIdGatewayData.fullScope);
@@ -88,5 +99,25 @@ public class OneIdLoginAction extends ActionSupport {
             }
             return NONE;
         }
+    }
+
+    /**
+     * Accepts only an application-local path for the post-login return redirect, so a crafted
+     * link cannot turn the login flow into an open redirect.
+     *
+     * @param value String the candidate return path
+     * @return String the path when it is a plain local path, otherwise null
+     */
+    static String safeLocalPath(String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        if (!value.startsWith("/") || value.startsWith("//")) {
+            return null;
+        }
+        if (value.contains("\\") || value.contains(":") || value.contains("\r") || value.contains("\n")) {
+            return null;
+        }
+        return value;
     }
 }

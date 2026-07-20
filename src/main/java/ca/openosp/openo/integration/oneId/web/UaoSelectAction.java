@@ -38,6 +38,7 @@ import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -113,6 +114,18 @@ public class UaoSelectAction extends ActionSupport {
 
     private void redirectHome() {
         try {
+            // A step-up sign-in leaves the page that started it in the session; return there,
+            // otherwise land on the provider home page.
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                String returnUrl = OneIdLoginAction.safeLocalPath(
+                        (String) session.getAttribute(OneIdLoginAction.SESSION_RETURN_URL));
+                session.removeAttribute(OneIdLoginAction.SESSION_RETURN_URL);
+                if (returnUrl != null) {
+                    response.sendRedirect(returnUrl);
+                    return;
+                }
+            }
             response.sendRedirect(request.getContextPath() + "/provider/providercontrol.jsp");
         } catch (Exception e) {
             logger.error("Failed to redirect after UAO selection", e);

@@ -79,7 +79,12 @@ public class ViewletLaunchAction extends ActionSupport {
             throw new SecurityException("missing required sec object (_demographic)");
         }
         if (loggedInInfo.getOneIdGatewayData() == null) {
-            writeFailure("Sign in with ONE ID to use EHR services.");
+            // Only a missing ONE ID sign-in is recoverable in place; the step-up flag lets the
+            // page offer the mid-session sign-in instead of a dead-end message.
+            ObjectNode node = objectMapper.createObjectNode();
+            node.put("summary", "Sign in with ONE ID to use EHR services.");
+            node.put("stepUp", true);
+            writeJson(STATUS_LAUNCH_FAILED, node);
             return NONE;
         }
         OneIdViewlet viewlet = ehrConnectivityManager.findActiveViewletByKey(loggedInInfo, key.trim());
