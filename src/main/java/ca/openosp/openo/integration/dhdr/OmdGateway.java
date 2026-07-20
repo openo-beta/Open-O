@@ -756,6 +756,16 @@ public class OmdGateway {
 				JSONObject respObj = new JSONObject(body);
 				String accessToken = respObj.getString("access_token");
 				oneIdGatewayData.processAccessToken(accessToken);
+				String rotatedRefreshToken = respObj.optString("refresh_token", null);
+				if (rotatedRefreshToken != null && !rotatedRefreshToken.isEmpty()) {
+					oneIdGatewayData.setRefreshTokenStr(rotatedRefreshToken);
+					try {
+						oneIdGatewayData.processRefreshToken(rotatedRefreshToken);
+					} catch (Exception e) {
+						logger.warn("Could not decode the rotated refresh token; keeping the raw value");
+					}
+				}
+				persistRefreshedTokens(loggedInInfo, accessToken, rotatedRefreshToken);
 
 			} else {
 				logger.error("ONE ID token refresh failed (HTTP " + response2.getStatus() + ")");
@@ -767,6 +777,36 @@ public class OmdGateway {
 		}catch(Exception e) {
 			logger.error("ONE ID token refresh failed", e);
 			throw new TokenExpiredException();
+		}
+	}
+
+	/**
+	 * Writes freshly refreshed tokens onto the provider's persisted ONE ID session. Without this
+	 * the session filter restores the replaced tokens from the row on the next request, forcing a
+	 * refresh on every call and losing a rotated refresh token entirely. Best-effort: the tokens
+	 * already refreshed in memory must keep serving the current request even when the row cannot
+	 * be written.
+	 *
+	 * @param loggedInInfo LoggedInInfo the current session context
+	 * @param accessToken String the new access token
+	 * @param refreshToken String the rotated refresh token, or null when the broker kept the old one
+	 */
+	private void persistRefreshedTokens(LoggedInInfo loggedInInfo, String accessToken, String refreshToken) {
+		try {
+			if (loggedInInfo == null || loggedInInfo.getLoggedInProviderNo() == null) {
+				return;
+			}
+			OneIdSession oneIdSession = oneIdSessionDao.find(loggedInInfo.getLoggedInProviderNo());
+			if (oneIdSession == null) {
+				return;
+			}
+			oneIdSession.setAccessToken(accessToken);
+			if (refreshToken != null && !refreshToken.isEmpty()) {
+				oneIdSession.setRefreshToken(refreshToken);
+			}
+			oneIdSessionDao.merge(oneIdSession);
+		} catch (Exception e) {
+			logger.warn("Could not persist the refreshed ONE ID tokens (" + e.getClass().getSimpleName() + ")");
 		}
 	}
 
