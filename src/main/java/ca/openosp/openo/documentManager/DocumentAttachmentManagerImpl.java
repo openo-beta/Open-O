@@ -7,6 +7,7 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import ca.openosp.openo.commn.dao.ConsultDocsDao;
 import ca.openosp.openo.commn.dao.EFormDocsDao;
 import ca.openosp.openo.commn.dao.TicklerDocsDao;
+import ca.openosp.openo.commn.model.Document;
 import ca.openosp.openo.commn.model.TicklerDocs;
 import ca.openosp.openo.commn.model.ConsultDocs;
 import ca.openosp.openo.commn.model.EFormData;
@@ -14,6 +15,7 @@ import ca.openosp.openo.commn.model.EFormDocs;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
 import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
+import ca.openosp.openo.documentManager.data.TicklerAttachmentData;
 import ca.openosp.openo.utility.DateUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.PDFGenerationException;
@@ -400,6 +402,104 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
             ticklerAttachments.add(String.valueOf(ticklerDocs1.getDocumentNo()));
         }
         return ticklerAttachments;
+    }
+
+    /**
+     * Retrieves every attachment on a tickler with its display name resolved. Patient-wide
+     * lookups (labs, HRM, forms) are loaded lazily, only when that type is attached.
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param ticklerId Integer the unique identifier of the tickler
+     * @param demographicNo Integer the patient's demographic number for security validation
+     * @return List&lt;TicklerAttachmentData&gt; all attachments with display names (empty if none)
+     * @throws RuntimeException if the user lacks the required "_tickler" read privilege
+     */
+    @Override
+    public List<TicklerAttachmentData> getTicklerAttachmentDetails(LoggedInInfo loggedInInfo, Integer ticklerId, Integer demographicNo) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.READ, demographicNo)) {
+            throw new RuntimeException("missing required sec object (_tickler)");
+        }
+
+        List<TicklerAttachmentData> attachmentDetails = new ArrayList<>();
+        Map<String, String> labNamesBySegmentId = null;
+        ArrayList<HashMap<String, ? extends Object>> allHrmDocuments = null;
+        List<EctFormData.PatientForm> allForms = null;
+
+        for (TicklerDocs ticklerDoc : ticklerDocsDao.findByTicklerId(ticklerId)) {
+            DocumentType documentType = DocumentType.fromType(ticklerDoc.getDocType());
+            if (documentType == null) {
+                continue;
+            }
+            String documentId = String.valueOf(ticklerDoc.getDocumentNo());
+            String displayName = null;
+
+            switch (documentType) {
+                case DOC:
+                    Document document = documentDao.getDocument(documentId);
+                    if (document != null) {
+                        displayName = document.getDocdesc();
+                    }
+                    break;
+                case LAB:
+                    if (labNamesBySegmentId == null) {
+                        labNamesBySegmentId = buildLabNamesBySegmentId(loggedInInfo, demographicNo);
+                    }
+                    displayName = labNamesBySegmentId.get(documentId);
+                    break;
+                case EFORM:
+                    EFormData eForm = eFormDataDao.find(ticklerDoc.getDocumentNo());
+                    if (eForm != null) {
+                        displayName = eForm.getFormName();
+                    }
+                    break;
+                case HRM:
+                    if (allHrmDocuments == null) {
+                        allHrmDocuments = HRMUtil.listHRMDocuments(loggedInInfo, "report_date", false, String.valueOf(demographicNo), false);
+                    }
+                    for (HashMap<String, ? extends Object> hrmDocument : allHrmDocuments) {
+                        if (documentId.equals(String.valueOf(hrmDocument.get("id")))) {
+                            displayName = String.valueOf(hrmDocument.get("name"));
+                            break;
+                        }
+                    }
+                    break;
+                case FORM:
+                    if (allForms == null) {
+                        allForms = formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, demographicNo, false, true);
+                    }
+                    for (EctFormData.PatientForm form : allForms) {
+                        if (documentId.equals(form.getFormId())) {
+                            displayName = form.getFormName();
+                            break;
+                        }
+                    }
+                    break;
+            }
+
+            if (StringUtils.isNullOrEmpty(displayName)) {
+                displayName = documentType.getName() + " #" + documentId;
+            }
+            attachmentDetails.add(new TicklerAttachmentData(documentType, documentId, displayName));
+        }
+        return attachmentDetails;
+    }
+
+    /**
+     * Maps every lab segment id to its display name; older versions are prefixed "vN"
+     * to match the attachment picker's labels.
+     */
+    private Map<String, String> buildLabNamesBySegmentId(LoggedInInfo loggedInInfo, Integer demographicNo) {
+        Map<String, String> labNames = new HashMap<>();
+        for (AttachmentLabResultData lab : getAllLabsSortedByVersions(loggedInInfo, String.valueOf(demographicNo))) {
+            labNames.put(lab.getSegmentID(), lab.getLabName());
+            int totalVersions = lab.getLabVersionIds().size();
+            int index = 0;
+            for (String versionSegmentId : lab.getLabVersionIds().keySet()) {
+                labNames.put(versionSegmentId, "v" + (totalVersions - index) + " " + lab.getLabName());
+                index++;
+            }
+        }
+        return labNames;
     }
 
     /**

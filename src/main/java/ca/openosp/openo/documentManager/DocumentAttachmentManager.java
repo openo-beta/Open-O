@@ -3,6 +3,7 @@ package ca.openosp.openo.documentManager;
 
 import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
+import ca.openosp.openo.documentManager.data.TicklerAttachmentData;
 import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.PDFGenerationException;
@@ -177,6 +178,17 @@ public interface DocumentAttachmentManager {
      * @return List&lt;String&gt; list of document identifiers attached to the tickler
      */
     public List<String> getTicklerAttachments(LoggedInInfo loggedInInfo, Integer ticklerId, DocumentType documentType, Integer demographicNo);
+
+    /**
+     * Retrieves every attachment on a tickler, of all types, with display names resolved.
+     * Used to render the named attachment lists in the Add/Edit Tickler windows.
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param ticklerId Integer the unique identifier of the tickler
+     * @param demographicNo Integer the patient's unique demographic identifier
+     * @return List&lt;TicklerAttachmentData&gt; all attachments with display names (empty if none)
+     */
+    public List<TicklerAttachmentData> getTicklerAttachmentDetails(LoggedInInfo loggedInInfo, Integer ticklerId, Integer demographicNo);
 
     /**
      * Attaches documents to a tickler.

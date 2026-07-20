@@ -179,7 +179,8 @@
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.title"/></title>
 
       <style>
-        *:not(h2):not(.btn) {
+        /* Don't compress the attachment picker dialog — it styles itself. */
+        *:not(h2):not(.btn):not(.ui-dialog):not(.ui-dialog *) {
           line-height: 1 !important;
           font-size: 12px !important;
         }
@@ -190,6 +191,27 @@
         /* Keep the "Manage Attachments" button and its count badge on one line. */
         .attachments-cell {
             white-space: nowrap;
+        }
+
+        /* Visible list of attachment names below the "Manage Attachments" button. */
+        #attachmentNames {
+            white-space: normal;
+            margin-top: 6px;
+        }
+
+        #attachmentNames .attachment-group-heading {
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        #attachmentNames ul {
+            list-style: none;
+            margin: 2px 0 4px;
+            padding-left: 1.5em;
+        }
+
+        #attachmentNames li {
+            padding: 2px 0;
         }
 
         /* jQuery UI renders the dialog close control as a fixed ~20px square, which
@@ -751,6 +773,29 @@
                             <i class="glyphicon glyphicon-paperclip"></i> Manage Attachments
                         </button>
                         <span id="attachmentCount" class="badge">0</span>
+                        <%-- Staged attachment names by type; filled by the picker dialog's beforeClose handler. --%>
+                        <div id="attachmentNames">
+                            <div class="attachment-group" id="attachmentGroup_eFormNo" style="display:none;">
+                                <div class="attachment-group-heading">eForms</div>
+                                <ul id="attachmentNames_eFormNo"></ul>
+                            </div>
+                            <div class="attachment-group" id="attachmentGroup_docNo" style="display:none;">
+                                <div class="attachment-group-heading">Documents</div>
+                                <ul id="attachmentNames_docNo"></ul>
+                            </div>
+                            <div class="attachment-group" id="attachmentGroup_labNo" style="display:none;">
+                                <div class="attachment-group-heading">Labs</div>
+                                <ul id="attachmentNames_labNo"></ul>
+                            </div>
+                            <div class="attachment-group" id="attachmentGroup_hrmNo" style="display:none;">
+                                <div class="attachment-group-heading">HRM</div>
+                                <ul id="attachmentNames_hrmNo"></ul>
+                            </div>
+                            <div class="attachment-group" id="attachmentGroup_formNo" style="display:none;">
+                                <div class="attachment-group-heading">Forms</div>
+                                <ul id="attachmentNames_formNo"></ul>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -822,6 +867,7 @@
                 beforeClose: function (event, ui) {
                     // Rebuild the add form's staged attachment set from the picker's checked boxes.
                     $form.find(".delegateAttachment").remove();
+                    jQuery('#attachmentNames ul').empty();
                     jQuery('#attachDocumentsForm')
                         .find(".document_check:checked, .lab_check:checked, .form_check:checked, .eForm_check:checked, .hrm_check:checked")
                         .each(function () {
@@ -833,7 +879,11 @@
                                 id: "delegate_" + element.attr('name') + element.val(),
                                 "class": 'delegateAttachment'
                             }).appendTo($form);
+                            jQuery("<li>").text(element.attr('title')).appendTo('#attachmentNames_' + element.attr('name'));
                         });
+                    jQuery('#attachmentNames .attachment-group').each(function () {
+                        jQuery(this).toggle(jQuery(this).find('li').length > 0);
+                    });
                     jQuery('#attachmentCount').text($form.find(".delegateAttachment").length);
                 }
             });
