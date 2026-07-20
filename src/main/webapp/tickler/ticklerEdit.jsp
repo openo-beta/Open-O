@@ -45,6 +45,7 @@
 <%@page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@page import="ca.openosp.openo.documentManager.DocumentAttachmentManager" %>
+<%@page import="ca.openosp.openo.documentManager.data.TicklerAttachmentData" %>
 <%@page import="ca.openosp.openo.commn.model.enumerator.DocumentType" %>
 <%@page import="ca.openosp.OscarProperties" %>
 <%
@@ -125,7 +126,8 @@
                 background-color: white;
             }
 
-            *:not(h2):not(.btn) {
+            /* Don't compress the attachment picker dialog — it styles itself. */
+            *:not(h2):not(.btn):not(.ui-dialog):not(.ui-dialog *) {
               line-height: 1 !important;
               font-size: 12px !important;
             }
@@ -140,6 +142,27 @@
             /* Keep the "Manage Attachments" button and its count badge on one line. */
             .attachments-cell {
                 white-space: nowrap;
+            }
+
+            /* Visible list of attachment names below the "Manage Attachments" button. */
+            #attachmentNames {
+                white-space: normal;
+                margin-top: 6px;
+            }
+
+            #attachmentNames .attachment-group-heading {
+                font-weight: bold;
+                margin-top: 4px;
+            }
+
+            #attachmentNames ul {
+                list-style: none;
+                margin: 2px 0 4px;
+                padding-left: 1.5em;
+            }
+
+            #attachmentNames li {
+                padding: 2px 0;
             }
 
             /* jQuery UI renders the dialog close control as a fixed ~20px square, which
@@ -446,7 +469,7 @@
                 </tr>
 
                 <tr>
-                    <td colspan="2" rowspan="7" style="border: none;">
+                    <td colspan="2" rowspan="6" style="border: none;">
                         <textarea class="form-control" rows="23" style="width:100%;" id="newMessage"
                                   name="newMessage"></textarea>
                         <input type="button" class="btn" name="pasteMessage" onclick="pasteMessageText()"
@@ -539,39 +562,60 @@
                     </td>
                 </tr>
                 <%
-                    // Build the hidden "delegate" inputs representing the tickler's current attachments.
-                    // These mirror the attachment picker's checkbox names (docNo/labNo/eFormNo/hrmNo/formNo)
-                    // so the dialog can pre-check them and EditTickler2Action can re-read the full selection.
-                    java.util.LinkedHashMap<DocumentType, String> ticklerAttachTypes = new java.util.LinkedHashMap<DocumentType, String>();
-                    ticklerAttachTypes.put(DocumentType.DOC, "docNo");
-                    ticklerAttachTypes.put(DocumentType.LAB, "labNo");
-                    ticklerAttachTypes.put(DocumentType.EFORM, "eFormNo");
-                    ticklerAttachTypes.put(DocumentType.HRM, "hrmNo");
-                    ticklerAttachTypes.put(DocumentType.FORM, "formNo");
+                    // Ids build hidden "delegate" inputs mirroring the picker's checkbox names so the
+                    // dialog can pre-check them; names build the visible attachment list.
+                    java.util.LinkedHashMap<DocumentType, String[]> ticklerAttachTypes = new java.util.LinkedHashMap<DocumentType, String[]>();
+                    ticklerAttachTypes.put(DocumentType.EFORM, new String[]{"eFormNo", "eForms"});
+                    ticklerAttachTypes.put(DocumentType.DOC, new String[]{"docNo", "Documents"});
+                    ticklerAttachTypes.put(DocumentType.LAB, new String[]{"labNo", "Labs"});
+                    ticklerAttachTypes.put(DocumentType.HRM, new String[]{"hrmNo", "HRM"});
+                    ticklerAttachTypes.put(DocumentType.FORM, new String[]{"formNo", "Forms"});
+
+                    List<TicklerAttachmentData> ticklerAttachments = documentAttachmentManager.getTicklerAttachmentDetails(loggedInInfo, ticklerNo, t.getDemographicNo());
 
                     StringBuilder delegateInputs = new StringBuilder();
-                    int attachmentCount = 0;
-                    for (java.util.Map.Entry<DocumentType, String> attachEntry : ticklerAttachTypes.entrySet()) {
-                        String paramName = attachEntry.getValue();
-                        for (String docId : documentAttachmentManager.getTicklerAttachments(loggedInInfo, ticklerNo, attachEntry.getKey(), t.getDemographicNo())) {
-                            attachmentCount++;
-                            delegateInputs.append("<input type=\"hidden\" class=\"delegateAttachment\" name=\"")
-                                    .append(paramName)
-                                    .append("\" value=\"").append(Encode.forHtmlAttribute(docId))
-                                    .append("\" id=\"delegate_").append(Encode.forHtmlAttribute(paramName + docId))
-                                    .append("\">");
-                        }
+                    for (TicklerAttachmentData ticklerAttachment : ticklerAttachments) {
+                        String paramName = ticklerAttachTypes.get(ticklerAttachment.getDocumentType())[0];
+                        delegateInputs.append("<input type=\"hidden\" class=\"delegateAttachment\" name=\"")
+                                .append(paramName)
+                                .append("\" value=\"").append(Encode.forHtmlAttribute(ticklerAttachment.getDocumentId()))
+                                .append("\" id=\"delegate_").append(Encode.forHtmlAttribute(paramName + ticklerAttachment.getDocumentId()))
+                                .append("\">");
                     }
+                    int attachmentCount = ticklerAttachments.size();
                 %>
                 <tr>
-                    <th colspan="2" style="background-color: #666699;color:white;">Attachments</th>
-                    <td colspan="2" class="attachments-cell">
-                        <button type="button" class="btn" id="manageAttachmentsBtn"
-                                title="Manage Attachments"
-                                data-poload="${pageContext.request.contextPath}/previewDocs.do?method=fetchTicklerDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(d.getDemographicNo()))%>&amp;ticklerId=<%=Encode.forHtmlAttribute(String.valueOf(ticklerNo))%>">
-                            <i class="glyphicon glyphicon-paperclip"></i> Manage Attachments
-                        </button>
-                        <span id="attachmentCount" class="badge"><%=attachmentCount%></span>
+                    <th colspan="4" style="background-color: #666699;color:white;">Attachments</th>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <span class="attachments-cell">
+                            <button type="button" class="btn" id="manageAttachmentsBtn"
+                                    title="Manage Attachments"
+                                    data-poload="${pageContext.request.contextPath}/previewDocs.do?method=fetchTicklerDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(d.getDemographicNo()))%>&amp;ticklerId=<%=Encode.forHtmlAttribute(String.valueOf(ticklerNo))%>">
+                                <i class="glyphicon glyphicon-paperclip"></i> Manage Attachments
+                            </button>
+                            <span id="attachmentCount" class="badge"><%=attachmentCount%></span>
+                        </span>
+                        <div id="attachmentNames">
+                            <%
+                                for (java.util.Map.Entry<DocumentType, String[]> attachEntry : ticklerAttachTypes.entrySet()) {
+                                    String paramName = attachEntry.getValue()[0];
+                                    String groupLabel = attachEntry.getValue()[1];
+                                    StringBuilder groupItems = new StringBuilder();
+                                    for (TicklerAttachmentData ticklerAttachment : ticklerAttachments) {
+                                        if (ticklerAttachment.getDocumentType() != attachEntry.getKey()) {
+                                            continue;
+                                        }
+                                        groupItems.append("<li>").append(Encode.forHtmlContent(ticklerAttachment.getDisplayName())).append("</li>");
+                                    }
+                            %>
+                            <div class="attachment-group" id="attachmentGroup_<%=paramName%>" <%=groupItems.length() == 0 ? "style=\"display:none;\"" : ""%>>
+                                <div class="attachment-group-heading"><%=groupLabel%></div>
+                                <ul id="attachmentNames_<%=paramName%>"><%=groupItems.toString()%></ul>
+                            </div>
+                            <% } %>
+                        </div>
                         <%=delegateInputs.toString()%>
                     </td>
                 </tr>
@@ -637,6 +681,7 @@
                     // attachToTickler() diffs this against the stored set, so submitting the full
                     // current selection per type is sufficient for both adds and removals.
                     $form.find(".delegateAttachment").remove();
+                    jQuery('#attachmentNames ul').empty();
                     jQuery('#attachDocumentsForm')
                         .find(".document_check:checked, .lab_check:checked, .form_check:checked, .eForm_check:checked, .hrm_check:checked")
                         .each(function () {
@@ -648,7 +693,11 @@
                                 id: "delegate_" + element.attr('name') + element.val(),
                                 "class": 'delegateAttachment'
                             }).appendTo($form);
+                            jQuery("<li>").text(element.attr('title')).appendTo('#attachmentNames_' + element.attr('name'));
                         });
+                    jQuery('#attachmentNames .attachment-group').each(function () {
+                        jQuery(this).toggle(jQuery(this).find('li').length > 0);
+                    });
                     jQuery('#attachmentCount').text($form.find(".delegateAttachment").length);
                 }
             });
