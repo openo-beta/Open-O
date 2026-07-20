@@ -128,9 +128,7 @@ function showMultiWindowNotice(ctx, proceed) {
     cancelButton.onclick = closeNotice;
     continueButton.onclick = function () {
         if (checkbox.checked) {
-            fetch(ctx + '/viewletNoticeToggle.do?enabled=false', {method: 'POST', credentials: 'same-origin'})
-                .catch(function () {
-                });
+            postViewletRequest(ctx + '/viewletNoticeToggle.do?enabled=false', null, null);
         }
         closeNotice();
         proceed();
@@ -169,50 +167,69 @@ function launchViewlet(ctx, demographicNo, key, displayMode) {
         });
 }
 
+// State-changing calls go out as POST XMLHttpRequests: the CsrfGuard page script wraps
+// XMLHttpRequest and attaches the session's CSRF token header to each one, which a
+// fetch() call would not carry.
+function postViewletRequest(url, onDone, onFail) {
+    try {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url);
+        xhr.onload = function () {
+            if (onDone) {
+                var data = null;
+                try {
+                    data = JSON.parse(xhr.responseText);
+                } catch (e) {
+                }
+                onDone(xhr.status, data, xhr.getResponseHeader('content-type') || '');
+            }
+        };
+        xhr.onerror = function () {
+            if (onFail) {
+                onFail();
+            }
+        };
+        xhr.send();
+    } catch (e) {
+        if (onFail) {
+            onFail();
+        }
+    }
+}
+
 function doLaunchViewlet(ctx, demographicNo, key, displayMode) {
     var url = ctx + '/viewletLaunch.do?demographicNo=' + encodeURIComponent(demographicNo)
         + '&key=' + encodeURIComponent(key);
-    fetch(url, {credentials: 'same-origin'})
-        .then(function (response) {
-            var contentType = response.headers.get('content-type') || '';
-            if (contentType.indexOf('application/json') === -1) {
-                // A non-JSON reply means the request never reached the launch endpoint,
-                // usually an expired ONE ID session or a missing EHR service permission.
-                alert('The EHR service could not be launched. Your ONE ID session or EHR service access may have expired. Sign in again and retry.');
-                return null;
-            }
-            return response.json().then(function (data) {
-                return {status: response.status, data: data};
-            });
-        })
-        .then(function (result) {
-            if (!result) {
-                return;
-            }
-            if (result.status === 268) {
-                var summary = result.data && result.data.summary ? result.data.summary : 'The EHR service could not be launched.';
-                if (result.data && result.data.stepUp) {
-                    startOneIdStepUp(ctx, demographicNo, key, displayMode, summary);
-                } else {
-                    alert(summary);
-                }
-                return;
-            }
-            if (!result.data || !result.data.viewletUrl) {
-                alert('The EHR service returned no address to open.');
-                return;
-            }
-            var timeout = viewletTimeout(result.data.timeoutMillis);
-            var uuid = result.data.uuid;
-            if (displayMode === 'modal') {
-                openViewletModal(result.data.viewletUrl, demographicNo, ctx, timeout, key, uuid);
+    postViewletRequest(url, function (status, data, contentType) {
+        if (contentType.indexOf('application/json') === -1 || !data) {
+            // A non-JSON reply means the request never reached the launch endpoint,
+            // usually an expired ONE ID session or a missing EHR service permission.
+            alert('The EHR service could not be launched. Your ONE ID session or EHR service access may have expired. Sign in again and retry.');
+            return;
+        }
+        if (status === 268) {
+            var summary = data.summary ? data.summary : 'The EHR service could not be launched.';
+            if (data.stepUp) {
+                startOneIdStepUp(ctx, demographicNo, key, displayMode, summary);
             } else {
-                popupEHRService(result.data.viewletUrl, demographicNo, ctx, timeout, key, uuid);
+                alert(summary);
             }
-        })
-        .catch(function () {
-            alert('The EHR service could not be launched. Please try again.');
-        });
+            return;
+        }
+        if (!data.viewletUrl) {
+            alert('The EHR service returned no address to open.');
+            return;
+        }
+        var timeout = viewletTimeout(data.timeoutMillis);
+        var uuid = data.uuid;
+        if (displayMode === 'modal') {
+            openViewletModal(data.viewletUrl, demographicNo, ctx, timeout, key, uuid);
+        } else {
+            popupEHRService(data.viewletUrl, demographicNo, ctx, timeout, key, uuid);
+        }
+    }, function () {
+        alert('The EHR service could not be launched. Please try again.');
+    });
 }
 
 function viewletTimeout(value) {
@@ -300,8 +317,7 @@ function reportViewletResult(ctx, demographicNo, key, uuid, status, message) {
         + '&uuid=' + encodeURIComponent(uuid || '')
         + '&status=' + encodeURIComponent(status)
         + '&message=' + encodeURIComponent(message || '');
-    fetch(url, {credentials: 'same-origin'}).catch(function () {
-    });
+    postViewletRequest(url, null, null);
 }
 
 function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
@@ -512,13 +528,13 @@ function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
 }
 
 function closeViewletPatientContext(ctx, demographicNo) {
-    fetch(ctx + '/viewletPatientClose.do?demographicNo=' + encodeURIComponent(demographicNo), {credentials: 'same-origin'})
-        .then(function (response) {
-            if (response.status !== 200) {
+    postViewletRequest(ctx + '/viewletPatientClose.do?demographicNo=' + encodeURIComponent(demographicNo),
+        function (status) {
+            if (status !== 200) {
                 alert('There was an error removing the patient from the context. Please try again.');
             }
-        })
-        .catch(function () {
+        },
+        function () {
             alert('There was an error removing the patient from the context. Please try again.');
         });
 }

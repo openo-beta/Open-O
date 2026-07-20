@@ -71,6 +71,9 @@ public class ViewletLaunchAction extends ActionSupport {
     public String launch() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo);
+        if (rejectNonPost()) {
+            return NONE;
+        }
         Integer demographicNo = parseId(request.getParameter("demographicNo"));
         String key = request.getParameter("key");
         if (demographicNo == null || key == null || key.trim().isEmpty()) {
@@ -116,6 +119,9 @@ public class ViewletLaunchAction extends ActionSupport {
     public String result() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo);
+        if (rejectNonPost()) {
+            return NONE;
+        }
         Integer demographicNo = parseId(request.getParameter("demographicNo"));
         String key = request.getParameter("key");
         if (demographicNo == null || key == null || key.trim().isEmpty()) {
@@ -160,8 +166,7 @@ public class ViewletLaunchAction extends ActionSupport {
     public String noticeToggle() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
-        if (!"POST".equalsIgnoreCase(request.getMethod())) {
-            writeFailure("The warning setting can only be changed with a POST request.");
+        if (rejectNonPost()) {
             return NONE;
         }
         String value = request.getParameter("enabled");
@@ -184,6 +189,9 @@ public class ViewletLaunchAction extends ActionSupport {
     public String patientClose() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo);
+        if (rejectNonPost()) {
+            return NONE;
+        }
         Integer demographicNo = parseId(request.getParameter("demographicNo"));
         try {
             if (demographicNo != null
@@ -224,6 +232,20 @@ public class ViewletLaunchAction extends ActionSupport {
 
     private void checkPrivilege(LoggedInInfo loggedInInfo) {
         checkPrivilege(loggedInInfo, "r");
+    }
+
+    /**
+     * Rejects any non-POST request to a state-changing method, so these endpoints stay inside
+     * the CSRF filter's protected-method set and cannot be driven by a crafted link or image.
+     *
+     * @return boolean true when the request was rejected and a failure reply written
+     */
+    private boolean rejectNonPost() {
+        if ("POST".equalsIgnoreCase(request.getMethod())) {
+            return false;
+        }
+        writeFailure("This EHR service endpoint only accepts POST requests.");
+        return true;
     }
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String right) {

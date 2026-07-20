@@ -48,6 +48,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>EHR Connectivity - Under Authority Of</title>
     <link href="${pageContext.request.contextPath}/library/bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="${pageContext.request.contextPath}/csrfguard" type="text/javascript"></script>
 </head>
 <body>
 <div class="container-fluid my-4">

@@ -61,6 +61,17 @@ public class OneIdUnlinkAction extends ActionSupport {
             throw new SecurityException("missing required sec object (" + SEC_OBJECT + ")");
         }
 
+        // Unlinking only runs on a POST, so a crafted link or image cannot sever the binding;
+        // a plain GET just returns to the preference page untouched.
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            try {
+                response.sendRedirect(request.getContextPath() + "/provider/providerpreference.jsp");
+            } catch (Exception e) {
+                logger.error("Failed to redirect a non-POST unlink request", e);
+            }
+            return NONE;
+        }
+
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         if (ehrConnectivityManager.clearOneIdBinding(loggedInInfo, providerNo)) {
             LogAction.addLog(providerNo, LogConst.UNLINK, "ONE ID", "", request.getRemoteAddr());

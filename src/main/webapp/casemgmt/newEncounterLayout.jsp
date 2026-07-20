@@ -188,6 +188,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/validateTextInputs.js"></script>
 <!--js code for newCaseManagementView.jsp -->
 <script type="text/javascript" src="<c:out value="${ctx}/js/newCaseManagementView.js.jsp"/>"></script>
+<script type="text/javascript" src="<c:out value="${ctx}"/>/csrfguard"></script>
 <script type="text/javascript" src="<c:out value="${ctx}"/>/share/javascript/oneid.js"></script>
 
             <%-- Javascripts for the BC Care Connect Button --%>
