@@ -24,7 +24,9 @@ import ca.openosp.openo.commn.printing.FontSettings;
 import ca.openosp.openo.commn.printing.PdfWriterFactory;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
+import org.apache.logging.log4j.Logger;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -64,6 +66,17 @@ public class DHDRPrint {
           + " Repository (DHDR) EHR Service. To ensure a Best Possible Medication History (BPMH),"
           + " please review this information with the patient/family and use other available sources"
           + " of medication information in addition to the DHDR EHR Service.";
+
+  private static final Logger logger = MiscUtils.getLogger();
+
+  /**
+   * DHDR consumer-profile min>=1 dispense fields that come from the MedicationDispense itself (not the
+   * contained Medication, so their absence is a real upstream-conformance gap rather than the external-
+   * reference case in the viewer). Absence is logged for audit; the cell still renders as-is.
+   */
+  private static final String[] MANDATORY_DISPENSE_FIELDS = {
+    "whenPrepared", "dose", "frequency", "dispensedQuantity", "estimatedDaysSupply"
+  };
 
   DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
   SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  'at' HH:mm:ss z");
@@ -113,6 +126,7 @@ public class DHDRPrint {
     JSONObject med = jsonOb.optJSONObject("med");
 
     if (med != null) {
+      auditMandatoryDispenseFields(med, 0);
 
       table.addCell(getHeaderCell("Dispense Date"));
       table.addCell(getHeaderCell(med.optString("whenPrepared"))); // Dispense Date
@@ -303,14 +317,23 @@ public class DHDRPrint {
     if (arr.length() > 0) {
 
       for (var i = 0; i < arr.length(); i++) {
-        JSONObject med = arr.getJSONObject(i);
-        PdfPTable table = new PdfPTable(new float[] {3, 3, 3, 1.5f, 1.5f, 1, 1});
-        table.setSpacingAfter(10f);
-        table.setWidthPercentage(100.0f);
-        populateSummaryDrugMetaData(table, med);
-        populateSummaryDrugHeader(table);
-        populateSummaryDrugData(med, table);
-        document.add(table);
+        try {
+          JSONObject med = arr.getJSONObject(i);
+          auditMandatoryDispenseFields(med, i);
+          PdfPTable table = new PdfPTable(new float[] {3, 3, 3, 1.5f, 1.5f, 1, 1});
+          table.setSpacingAfter(10f);
+          table.setWidthPercentage(100.0f);
+          populateSummaryDrugMetaData(table, med);
+          populateSummaryDrugHeader(table);
+          populateSummaryDrugData(med, table);
+          document.add(table);
+        } catch (Exception e) {
+          // One malformed dispense must not blank the whole PDF (print-side analogue of the DHDR
+          // viewer's contained-guard fix). Log the structural fault - index + message only, never
+          // PHI - and render a placeholder so the reader knows a record was present but not shown.
+          logger.error("DHDR print: skipped drug entry " + i + " - " + e.getMessage());
+          document.add(incompleteEntryTable());
+        }
       }
     } else {
       Paragraph noResults =
@@ -354,7 +377,12 @@ public class DHDRPrint {
         serviceTable.setHeaderRows(1);
 
         for (int i = 0; i < serviceArr.length(); i++) {
-          JSONObject med = serviceArr.getJSONObject(i);
+          JSONObject med = serviceArr.optJSONObject(i);
+          if (med == null) {
+            logger.error(
+                "DHDR print: skipped service entry " + i + " - entry is not a JSON object");
+            continue;
+          }
 
           serviceTable.addCell(getItemCell(med.optString("whenPrepared"))); // Last Service Date
           serviceTable.addCell(getItemCell(med.optString("whenHandedOver"))); // Pickup Date
@@ -555,6 +583,37 @@ public class DHDRPrint {
   }
 
   /**
+   * A standalone one-cell table marking a dispense that was present in the response but could not be
+   * rendered. Used by the per-entry isolation so one malformed record never blanks the whole PDF.
+   *
+   * @return PdfPTable a full-width placeholder table
+   */
+  private PdfPTable incompleteEntryTable() {
+    PdfPTable table = new PdfPTable(1);
+    table.setWidthPercentage(100.0f);
+    table.setSpacingAfter(10f);
+    table.addCell(getItemCell("A record could not be displayed (data incomplete)."));
+    return table;
+  }
+
+  /**
+   * Log any DHDR-mandatory dispense field that is absent from this entry. The cell is still rendered
+   * as-is (no substitution) - this only surfaces an upstream-conformance gap for audit. Logs the field
+   * name and entry index only; never any field value, so no PHI is written.
+   *
+   * @param med JSONObject the flattened dispense payload
+   * @param index int the entry's position in its result list (for correlation in the log)
+   */
+  private void auditMandatoryDispenseFields(JSONObject med, int index) {
+    for (String field : MANDATORY_DISPENSE_FIELDS) {
+      if (med.optString(field, "").isEmpty()) {
+        logger.warn(
+            "DHDR print: entry " + index + " missing mandatory field '" + field + "'");
+      }
+    }
+  }
+
+  /**
    * Maps a prescriber/pharmacist licence identifier {@code system} URI to the full licensing-body
    * name, mirroring the viewer's {@code getLicence} mapping.
    *
@@ -714,14 +773,23 @@ public class DHDRPrint {
     if (arr.length() > 0) {
 
       for (var i = 0; i < arr.length(); i++) {
-        JSONObject med = arr.getJSONObject(i);
-        PdfPTable table = new PdfPTable(new float[] {3, 3, 3, 1.5f, 1.5f, 1, 1});
-        table.setSpacingAfter(10f);
-        table.setWidthPercentage(100.0f);
-        populateSummaryDrugMetaData(table, med);
-        populateSummaryDrugHeader(table);
-        populateSummaryDrugData(med, table);
-        document.add(table);
+        try {
+          JSONObject med = arr.getJSONObject(i);
+          auditMandatoryDispenseFields(med, i);
+          PdfPTable table = new PdfPTable(new float[] {3, 3, 3, 1.5f, 1.5f, 1, 1});
+          table.setSpacingAfter(10f);
+          table.setWidthPercentage(100.0f);
+          populateSummaryDrugMetaData(table, med);
+          populateSummaryDrugHeader(table);
+          populateSummaryDrugData(med, table);
+          document.add(table);
+        } catch (Exception e) {
+          // One malformed dispense must not blank the whole PDF (print-side analogue of the DHDR
+          // viewer's contained-guard fix). Log the structural fault - index + message only, never
+          // PHI - and render a placeholder so the reader knows a record was present but not shown.
+          logger.error("DHDR print: skipped drug entry " + i + " - " + e.getMessage());
+          document.add(incompleteEntryTable());
+        }
       }
 
     } else {
@@ -767,7 +835,12 @@ public class DHDRPrint {
         serviceTable.setHeaderRows(1);
 
         for (int i = 0; i < serviceArr.length(); i++) {
-          JSONObject med = serviceArr.getJSONObject(i);
+          JSONObject med = serviceArr.optJSONObject(i);
+          if (med == null) {
+            logger.error(
+                "DHDR print: skipped service entry " + i + " - entry is not a JSON object");
+            continue;
+          }
 
           serviceTable.addCell(getItemCell(med.optString("whenPrepared")));
           serviceTable.addCell(getItemCell(med.optString("whenHandedOver")));
@@ -835,7 +908,12 @@ public class DHDRPrint {
         localTable.setHeaderRows(1);
 
         for (int i = 0; i < localArr.length(); i++) {
-          JSONObject med = localArr.getJSONObject(i);
+          JSONObject med = localArr.optJSONObject(i);
+          if (med == null) {
+            logger.error(
+                "DHDR print: skipped local-history entry " + i + " - entry is not a JSON object");
+            continue;
+          }
           localTable.addCell(getItemCell(med.optString("rxDate")));
           localTable.addCell(getItemCell(med.optString("instructions")));
           localTable.addCell(getItemCell(med.optString("providerName")));
