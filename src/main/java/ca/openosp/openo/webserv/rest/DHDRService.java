@@ -73,6 +73,9 @@ public class DHDRService extends AbstractServiceImpl {
 
   private static final Logger logger = MiscUtils.getLogger();
 
+  /** Bounds the cause chain walked when logging a throwable, in case a cause cycle exists. */
+  private static final int MAX_CAUSE_DEPTH = 10;
+
   private static final String SECURITY_OBJECT = "_rx";
 
   private static final String ERROR_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm";
@@ -135,6 +138,8 @@ public class DHDRService extends AbstractServiceImpl {
     } catch (DHDRServiceException e) {
       // The service answered, but not with an OperationOutcome the viewer could render. Its status
       // code is the DHDR14.01 error code, so it is passed through rather than flattened to a 503.
+      // Logged whole: DHDRServiceException carries only the status code in a message we build, and
+      // takes no cause, so nothing from the request or response reaches the log through it.
       logger.error("DHDR search failed for demographic " + demographicNo, e);
       return Response.ok().entity(notice(e.getHttpCode(),
           "The DHDR EHR Service reported an error.",
@@ -143,10 +148,47 @@ public class DHDRService extends AbstractServiceImpl {
       // Landing here means the service was never reached: the gateway is misconfigured, the network
       // failed, or the service did not respond (DHDR14.01, v3.0 change note (q)). The exception
       // detail is already on the gateway audit row; the user gets a PHI-free notice.
-      logger.error("DHDR search failed for demographic " + demographicNo, e);
+      logger.error("DHDR search failed for demographic " + demographicNo + " - "
+          + stackTraceWithoutMessages(e));
       return Response.ok().entity(notice(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(),
           "The DHDR EHR Service could not be reached.", RETRY_GUIDANCE)).build();
     }
+  }
+
+  /**
+   * Renders a throwable as its chain of exception types and stack frames, with every message
+   * omitted.
+   *
+   * <p>The DHDR search sends the patient's health card number and date of birth as query
+   * parameters, and CXF copies the whole request URI into the message of any transport exception it
+   * raises, so logging such an exception in the ordinary way writes PHI to the application log.
+   * Messages are therefore never included. Rather than removing identifiers from the message - which
+   * would leak anything the removal did not anticipate - only values that cannot carry request data
+   * are emitted: exception class names, and stack frames, which hold class, method, file and line.
+   * The endpoint is known from configuration and the request id is on the gateway audit row, so what
+   * is lost is the failure's own wording.
+   *
+   * @param throwable Throwable the throwable to render, may be {@code null}
+   * @return String the type-and-frame rendering, or {@code "(none)"} if given null
+   */
+  private static String stackTraceWithoutMessages(Throwable throwable) {
+    if (throwable == null) {
+      return "(none)";
+    }
+    StringBuilder rendered = new StringBuilder();
+    Throwable current = throwable;
+    for (int depth = 0; current != null && depth < MAX_CAUSE_DEPTH; depth++) {
+      if (depth > 0) {
+        rendered.append("Caused by: ");
+      }
+      rendered.append(current.getClass().getName()).append('\n');
+      for (StackTraceElement frame : current.getStackTrace()) {
+        rendered.append("\tat ").append(frame).append('\n');
+      }
+      // A throwable may report itself as its own cause; stop rather than loop.
+      current = current.getCause() == current ? null : current.getCause();
+    }
+    return rendered.toString();
   }
 
   /**
