@@ -342,6 +342,10 @@ public class OneIdGatewayData implements Serializable {
     return ctxSessionId;
   }
 
+  public void setCtxSessionId(String ctxSessionId) {
+    this.ctxSessionId = ctxSessionId;
+  }
+
   public String getUao() {
     return uao;
   }

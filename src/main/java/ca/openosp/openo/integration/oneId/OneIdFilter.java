@@ -87,6 +87,7 @@ public class OneIdFilter implements Filter {
             oneIdGatewayData.processIdToken(oneIdSession.getIdToken());
             oneIdGatewayData.setAuthorizationId(oneIdSession.getAuthorizationId());
             oneIdGatewayData.setHubTopic(oneIdSession.getHubTopic());
+            oneIdGatewayData.setCtxSessionId(oneIdSession.getHubTopic());
             oneIdGatewayData.setUao(oneIdSession.getUaoUpi());
             oneIdGatewayData.setUaoFriendlyName(oneIdSession.getUaoName());
             oneIdGatewayData.setCmsUrl(resolveCmsEndpoint(oneIdSession));

@@ -100,6 +100,23 @@ public class OneIdCallbackAction extends ActionSupport {
                 }
                 return fail("Your sign-in could not be verified.", "Please try signing in again.");
             }
+
+            // The broker reports a refusal by redirecting back with error/error_description
+            // instead of a code; the code (e.g. CSV-nnn) is what the OH help desk asks for,
+            // so it is audited and shown.
+            String brokerError = request.getParameter("error");
+            if (brokerError != null && !brokerError.isEmpty()) {
+                String brokerCode = safeBrokerText(brokerError, 40);
+                String brokerDescription = safeBrokerText(request.getParameter("error_description"), 200);
+                String auditDetail = "ONE ID broker error " + brokerCode
+                        + (brokerDescription.isEmpty() ? "" : ": " + brokerDescription);
+                if (stepUpProviderNo != null) {
+                    return stepUpError(session, returnUrl, "error", auditDetail);
+                }
+                return redirectToLoginFailed("Ontario Health could not complete the sign-in ("
+                        + brokerCode + "). Please try again or contact your administrator.", auditDetail);
+            }
+
             if (code == null || code.isEmpty()) {
                 if (stepUpProviderNo != null) {
                     return stepUpError(session, returnUrl, "error");
@@ -224,9 +241,14 @@ public class OneIdCallbackAction extends ActionSupport {
      * @return String the Struts result (always NONE; the response is a redirect)
      */
     private String stepUpError(HttpSession session, String returnUrl, String code) {
+        return stepUpError(session, returnUrl, code, null);
+    }
+
+    private String stepUpError(HttpSession session, String returnUrl, String code, String auditDetail) {
         session.removeAttribute(OneIdLoginAction.SESSION_RETURN_URL);
         String message = stepUpMessage(code);
-        LogAction.addLog("", LogConst.LOGIN, "failed", "ONE ID step-up: " + message, request.getRemoteAddr());
+        LogAction.addLog("", LogConst.LOGIN, "failed",
+                auditDetail != null ? auditDetail : "ONE ID step-up: " + message, request.getRemoteAddr());
         try {
             if (returnUrl != null) {
                 String separator = returnUrl.contains("?") ? "&" : "?";
@@ -279,7 +301,11 @@ public class OneIdCallbackAction extends ActionSupport {
     }
 
     private String redirectToLoginFailed(String message) {
-        LogAction.addLog("", LogConst.LOGIN, "failed", message, request.getRemoteAddr());
+        return redirectToLoginFailed(message, message);
+    }
+
+    private String redirectToLoginFailed(String message, String auditDetail) {
+        LogAction.addLog("", LogConst.LOGIN, "failed", auditDetail, request.getRemoteAddr());
         try {
             response.sendRedirect(request.getContextPath() + "/loginfailed.jsp?errormsg="
                     + URLEncoder.encode(message, "UTF-8"));
@@ -287,5 +313,22 @@ public class OneIdCallbackAction extends ActionSupport {
             logger.error("Failed to redirect to the login-failed page", e);
         }
         return NONE;
+    }
+
+    /**
+     * Reduces broker-supplied error text to a safe, bounded token for logs and messages: only
+     * plain identifier characters survive, so response text can never smuggle markup or control
+     * characters into a page or an audit row.
+     *
+     * @param value String the raw broker parameter
+     * @param maxLength int the maximum length to keep
+     * @return String the sanitized text, empty when the input is null
+     */
+    private static String safeBrokerText(String value, int maxLength) {
+        if (value == null) {
+            return "";
+        }
+        String cleaned = value.replaceAll("[^A-Za-z0-9 _.:/-]", "");
+        return cleaned.length() > maxLength ? cleaned.substring(0, maxLength) : cleaned;
     }
 }
