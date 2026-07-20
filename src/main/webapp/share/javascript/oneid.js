@@ -2,10 +2,11 @@
  * Launch and window control for the provincial EHR services (ONE ID Viewlets).
  * launchViewlet fetches the launch URL for a patient and opens it in the Viewlet's
  * configured interface: a shared named window, or an in-page modal dialog. It then
- * waits for the Viewlet to respond within the configured wait time, confirms the
- * content rendered, allows a bounded number of reloads, records the outcome, and
- * informs the user if the Viewlet does not respond. Closing either the window or the
- * dialog clears the patient from the EHR context. A launch refused only for want of
+ * waits for the Viewlet's completion message within the configured wait time, reads
+ * the message for the real success or failure outcome, allows a bounded number of
+ * reloads, records the outcome, and informs the user if the Viewlet does not
+ * respond. Closing either the window or the dialog without a completion message is
+ * recorded as a failure and clears the patient from the EHR context. A launch refused only for want of
  * a ONE ID sign-in starts the mid-session ONE ID step-up and resumes the launch when
  * the clinician returns to the page.
  */
@@ -84,6 +85,55 @@ function viewletMessagePayload(data) {
     }
 }
 
+// Reads a Viewlet completion message. The Viewlet Framework response is a JSON object
+// with optional errors[] and successes[] (each entry carrying code[]/microService/reason)
+// and utility.code[] instructions for the launching page, such as a user cancellation.
+// Returns the outcome and a loggable summary, or null when the message is not a
+// completion message.
+function parseViewletCompletion(data) {
+    var body = data;
+    if (typeof body === 'string') {
+        try {
+            body = JSON.parse(body);
+        } catch (e) {
+            return null;
+        }
+    }
+    if (!body || typeof body !== 'object') {
+        return null;
+    }
+    var errors = Array.isArray(body.errors) ? body.errors : [];
+    var successes = Array.isArray(body.successes) ? body.successes : [];
+    var utilityCodes = (body.utility && Array.isArray(body.utility.code)) ? body.utility.code : [];
+    if (errors.length === 0 && successes.length === 0 && utilityCodes.length === 0) {
+        return null;
+    }
+    var codes = [];
+    function collectCodes(entries) {
+        for (var i = 0; i < entries.length; i++) {
+            var entry = entries[i] || {};
+            var entryCodes = Array.isArray(entry.code) ? entry.code
+                : (entry.code === null || entry.code === undefined ? [] : [entry.code]);
+            for (var j = 0; j < entryCodes.length; j++) {
+                codes.push(String(entryCodes[j]));
+            }
+        }
+    }
+    collectCodes(errors);
+    collectCodes(successes);
+    var cancelled = false;
+    for (var k = 0; k < utilityCodes.length; k++) {
+        var utilityCode = String(utilityCodes[k]);
+        codes.push(utilityCode);
+        if (utilityCode.toUpperCase().indexOf('CANCELLED') !== -1) {
+            cancelled = true;
+        }
+    }
+    var status = (errors.length > 0 || cancelled) ? 'failure' : 'success';
+    var summary = codes.length ? ('codes: ' + codes.slice(0, 10).join(', ') + ' | ') : '';
+    return {status: status, message: summary + viewletMessagePayload(data)};
+}
+
 // Records the outcome of a launch (success or failure) in the gateway log. Best-effort:
 // a logging failure never disrupts the clinician.
 function reportViewletResult(ctx, demographicNo, key, uuid, status, message) {
@@ -119,11 +169,16 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
         reportViewletResult(ctx, demographicNo, key, uuid, status, message);
     }
 
-    // A message from the Viewlet's own origin marks its response as received.
+    // A message from the Viewlet's own origin marks it as alive; only a completion
+    // message decides the outcome. A window closed without one is recorded as a
+    // failure by the close poller.
     function onMessage(event) {
         if (expectedOrigin && event.origin === expectedOrigin) {
             responded = true;
-            reportOnce('success', viewletMessagePayload(event.data));
+            var completion = parseViewletCompletion(event.data);
+            if (completion) {
+                reportOnce(completion.status, completion.message);
+            }
         }
     }
     window.addEventListener('message', onMessage);
@@ -222,21 +277,26 @@ function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
         }
     }
 
-    // A message from the Viewlet's own origin means it has finished; close the dialog.
+    // A completion message from the Viewlet's own origin decides the outcome and closes
+    // the dialog; other messages are ignored. A dialog closed without a completion
+    // message is recorded as a failure.
     function onMessage(event) {
         if (expectedOrigin && event.origin === expectedOrigin) {
-            reportOnce('success', viewletMessagePayload(event.data));
-            closeModal();
+            var completion = parseViewletCompletion(event.data);
+            if (completion) {
+                reportOnce(completion.status, completion.message);
+                closeModal();
+            }
         }
     }
     window.addEventListener('message', onMessage);
 
-    // The content has rendered once the frame loads.
+    // The frame loading only clears the waiting notice; the outcome comes from the
+    // Viewlet's completion message, not from the frame rendering.
     frame.addEventListener('load', function () {
         loaded = true;
         status.textContent = '';
         reloadButton.style.display = 'none';
-        reportOnce('success', 'The EHR service rendered.');
     });
 
     reloadButton.onclick = function () {
