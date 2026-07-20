@@ -355,18 +355,36 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
     }
     window.addEventListener('message', onMessage);
 
-    // If the Viewlet has not responded within the wait time and its window is still
-    // open, tell the user it may not have loaded.
-    var waitTimer = setTimeout(function () {
-        if (!responded && !popup.closed) {
-            alert('The EHR service has not responded. If its window is blank, close it and try again.');
-        }
-    }, timeout);
+    // A window with no acknowledgment from the Viewlet within the wait time is offered
+    // a bounded number of reloads; when the attempts run out, or the clinician declines,
+    // the user is informed and the launch is cancelled by closing the window (the close
+    // poller records the failure and clears the patient context). Any message from the
+    // Viewlet counts as its acknowledgment and ends the watch.
+    var reloadAttempts = 0;
+    var waitTimer = null;
+    function armWaitTimer() {
+        waitTimer = setTimeout(function () {
+            if (responded || !popup || popup.closed) {
+                return;
+            }
+            if (reloadAttempts < VIEWLET_MAX_RELOAD_ATTEMPTS
+                && confirm('The EHR service has not responded. Reload it now? Choosing Cancel closes it.')) {
+                reloadAttempts++;
+                popup = window.open(url, 'EHR Service', windowProperties);
+                openPopupViewlet = popup;
+                armWaitTimer();
+            } else {
+                alert('The EHR service failed to launch and will be closed.');
+                popup.close();
+            }
+        }, timeout);
+    }
+    armWaitTimer();
 
     if (demographicNo) {
         viewletWindowOpened();
         var poll = setInterval(function () {
-            if (popup.closed) {
+            if (!popup || popup.closed) {
                 clearInterval(poll);
                 clearTimeout(waitTimer);
                 window.removeEventListener('message', onMessage);
@@ -493,27 +511,46 @@ function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
         reloadButton.style.display = 'none';
     });
 
+    function reloadFrame() {
+        reloadAttempts++;
+        loaded = false;
+        status.textContent = 'Loading the EHR service…';
+        frame.src = url;
+        clearTimeout(waitTimer);
+        armWaitTimer();
+    }
+
     reloadButton.onclick = function () {
         if (reloadAttempts >= VIEWLET_MAX_RELOAD_ATTEMPTS) {
             status.textContent = 'The EHR service did not load. Please close and try again later.';
             reloadButton.style.display = 'none';
             return;
         }
-        reloadAttempts++;
-        loaded = false;
-        status.textContent = 'Loading the EHR service…';
-        frame.src = url;
+        reloadFrame();
     };
 
     closeButton.onclick = closeModal;
 
-    // If the Viewlet neither renders nor responds within the wait time, tell the user
-    // so they can reload or cancel.
-    waitTimer = setTimeout(function () {
-        if (!loaded && !closed) {
-            status.textContent = 'The EHR service is not responding.';
-        }
-    }, timeout);
+    // A dialog whose frame never rendered within the wait time is offered a bounded
+    // number of reloads; when the attempts run out, or the clinician declines, the user
+    // is informed and the launch is cancelled with the failure recorded. A rendered
+    // frame is left alone - the clinician may be working in it, and its outcome comes
+    // from the completion message or the close.
+    function armWaitTimer() {
+        waitTimer = setTimeout(function () {
+            if (loaded || closed) {
+                return;
+            }
+            if (reloadAttempts < VIEWLET_MAX_RELOAD_ATTEMPTS
+                && confirm('The EHR service is not loading. Reload it? Choosing Cancel closes it.')) {
+                reloadFrame();
+            } else {
+                alert('The EHR service failed to launch and will be closed.');
+                finalizeModal('failure', 'The EHR service did not load within the wait time.', false);
+            }
+        }, timeout);
+    }
+    armWaitTimer();
 
     actions.appendChild(reloadButton);
     actions.appendChild(closeButton);
