@@ -28,6 +28,8 @@ import ca.openosp.openo.integration.dhdr.OmdGateway;
 import ca.openosp.openo.integration.ohcms.CMSException;
 import ca.openosp.openo.integration.ohcms.CMSManager;
 import ca.openosp.openo.integration.oneId.OneIdViewlet;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.EhrConnectivityManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -145,6 +147,40 @@ public class ViewletLaunchAction extends ActionSupport {
         return NONE;
     }
 
+    public String noticeSetting() {
+        LoggedInInfo loggedInInfo = loggedInInfo();
+        checkPrivilege(loggedInInfo, "r");
+        ObjectNode node = objectMapper.createObjectNode();
+        node.put("enabled", ehrConnectivityManager.isMultiWindowNoticeEnabled(
+                loggedInInfo, loggedInInfo.getLoggedInProviderNo()));
+        writeJson(HttpServletResponse.SC_OK, node);
+        return NONE;
+    }
+
+    public String noticeToggle() {
+        LoggedInInfo loggedInInfo = loggedInInfo();
+        checkPrivilege(loggedInInfo, "w");
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            writeFailure("The warning setting can only be changed with a POST request.");
+            return NONE;
+        }
+        String value = request.getParameter("enabled");
+        if (!"true".equalsIgnoreCase(value) && !"false".equalsIgnoreCase(value)) {
+            writeFailure("The warning setting to apply was not provided.");
+            return NONE;
+        }
+        boolean enabled = Boolean.parseBoolean(value);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        boolean previous = ehrConnectivityManager.setMultiWindowNoticeEnabled(loggedInInfo, providerNo, enabled);
+        LogAction.addLog(providerNo, LogConst.UPDATE, "viewlet-multi-window-notice", providerNo,
+                request.getRemoteAddr(), null, "enabled: " + previous + " -> " + enabled);
+        ObjectNode node = objectMapper.createObjectNode();
+        node.put("status", "ok");
+        node.put("enabled", enabled);
+        writeJson(HttpServletResponse.SC_OK, node);
+        return NONE;
+    }
+
     public String patientClose() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo);
@@ -187,7 +223,11 @@ public class ViewletLaunchAction extends ActionSupport {
     }
 
     private void checkPrivilege(LoggedInInfo loggedInInfo) {
-        if (!securityInfoManager.hasPrivilege(loggedInInfo, SEC_OBJECT, "r", null)) {
+        checkPrivilege(loggedInInfo, "r");
+    }
+
+    private void checkPrivilege(LoggedInInfo loggedInInfo, String right) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, SEC_OBJECT, right, null)) {
             throw new SecurityException("missing required sec object (" + SEC_OBJECT + ")");
         }
     }

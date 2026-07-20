@@ -268,4 +268,24 @@ public interface EhrConnectivityManager {
      * @return OneIdViewlet the active entry, or null
      */
     OneIdViewlet findActiveViewletByKey(LoggedInInfo loggedInInfo, String key);
+
+    /**
+     * Reads whether the provider is warned before a launch that may open a second simultaneous
+     * EHR-service window. A provider with no stored choice is warned; admin-or-owner guarded.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     * @param providerNo String the provider whose setting is read
+     * @return boolean true when the warning is enabled
+     */
+    boolean isMultiWindowNoticeEnabled(LoggedInInfo loggedInInfo, String providerNo);
+
+    /**
+     * Turns the multi-window warning on or off for the provider; admin-or-owner guarded.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     * @param providerNo String the provider whose setting is changed
+     * @param enabled boolean the new state
+     * @return boolean the previous state, for the caller's audit record
+     */
+    boolean setMultiWindowNoticeEnabled(LoggedInInfo loggedInInfo, String providerNo, boolean enabled);
 }

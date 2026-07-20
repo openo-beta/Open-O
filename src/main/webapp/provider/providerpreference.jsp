@@ -617,6 +617,14 @@
                         <td align="center"><a href=#
                                               onClick="if(confirm('Unlink your ONE ID account from OpenO?')){document.location='<%=request.getContextPath()%>/oneIdUnlink.do';}return false;">Unlink ONE ID</a></td>
                     </tr>
+                    <% ca.openosp.openo.managers.EhrConnectivityManager ehrConnectivityManager =
+                            ca.openosp.openo.utility.SpringUtils.getBean(ca.openosp.openo.managers.EhrConnectivityManager.class);
+                       boolean multiWindowNotice = ehrConnectivityManager.isMultiWindowNoticeEnabled(
+                            loggedInInfo, loggedInInfo.getLoggedInProviderNo()); %>
+                    <tr>
+                        <td align="center"><a href=#
+                                              onClick="if(confirm('Turn the multiple EHR service window warning <%=multiWindowNotice ? "off" : "on"%>?')){fetch('<%=request.getContextPath()%>/viewletNoticeToggle.do?enabled=<%=!multiWindowNotice%>',{method:'POST',credentials:'same-origin'}).then(function(){document.location.reload();});}return false;">EHR service multi-window warning: <%=multiWindowNotice ? "On" : "Off"%></a></td>
+                    </tr>
                     <% } %>
                 </security:oscarSec>
                 <tr>

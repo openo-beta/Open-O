@@ -27,10 +27,12 @@ import ca.openosp.openo.commn.dao.OMDGatewayTransactionLogDao;
 import ca.openosp.openo.commn.dao.SecurityDao;
 import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.dao.UAODao;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
 import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
 import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.commn.model.UAO;
+import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.integration.oneId.OneIdSession;
 import ca.openosp.openo.integration.oneId.OneIdSessionDao;
 import ca.openosp.openo.integration.oneId.OneIdViewlet;
@@ -72,7 +74,12 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     private OneIdViewletDao oneIdViewletDao;
 
     @Autowired
+    private UserPropertyDAO userPropertyDAO;
+
+    @Autowired
     private SecurityInfoManager securityInfoManager;
+
+    private static final String MULTI_WINDOW_NOTICE_PROPERTY = "oneid.multiwindow.notice";
 
     @Override
     public SystemPreferences getConfig(Enum<?> key) {
@@ -285,6 +292,25 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)) {
             throw new RuntimeException("missing required sec object (_admin.ehrConnectivity)");
         }
+    }
+
+    @Override
+    public boolean isMultiWindowNoticeEnabled(LoggedInInfo loggedInInfo, String providerNo) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.READ);
+        return readMultiWindowNotice(providerNo);
+    }
+
+    @Override
+    public boolean setMultiWindowNoticeEnabled(LoggedInInfo loggedInInfo, String providerNo, boolean enabled) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
+        boolean previous = readMultiWindowNotice(providerNo);
+        userPropertyDAO.saveProp(providerNo, MULTI_WINDOW_NOTICE_PROPERTY, String.valueOf(enabled));
+        return previous;
+    }
+
+    private boolean readMultiWindowNotice(String providerNo) {
+        UserProperty property = userPropertyDAO.getProp(providerNo, MULTI_WINDOW_NOTICE_PROPERTY);
+        return property == null || !"false".equalsIgnoreCase(property.getValue());
     }
 
     private void checkProviderAccess(LoggedInInfo loggedInInfo, String targetProviderNo, String privilege) {

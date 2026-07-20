@@ -6,15 +6,170 @@
  * the message for the real success or failure outcome, allows a bounded number of
  * reloads, records the outcome, and informs the user if the Viewlet does not
  * respond. Closing either the window or the dialog without a completion message is
- * recorded as a failure and clears the patient from the EHR context. A launch refused only for want of
- * a ONE ID sign-in starts the mid-session ONE ID step-up and resumes the launch when
- * the clinician returns to the page.
+ * recorded as a failure and clears the patient from the EHR context. A launch that
+ * may put a second EHR service window on screen warns the clinician first; the
+ * warning can be turned off and back on per user from the provider preferences. A
+ * launch refused only for want of a ONE ID sign-in starts the mid-session ONE ID
+ * step-up and resumes the launch when the clinician returns to the page.
  */
 
 var VIEWLET_DEFAULT_TIMEOUT_MS = 65000;
 var VIEWLET_MAX_RELOAD_ATTEMPTS = 3;
 
+// A tab-scoped id and a shared localStorage marker let a launch in one tab see EHR
+// service windows opened from other tabs; a heartbeat keeps the marker fresh while
+// any viewlet opened from this tab is alive.
+var ONEID_VIEWLET_WINDOW_KEY = 'oneIdViewletWindow';
+var ONEID_VIEWLET_HEARTBEAT_MS = 15000;
+var ONEID_VIEWLET_STALE_MS = 45000;
+var oneIdTabId = Math.random().toString(36).slice(2) + '-' + Date.now().toString(36);
+var openPopupViewlet = null;
+var openViewletCount = 0;
+var viewletHeartbeatTimer = null;
+var currentModalDispose = null;
+
+function writeViewletWindowMarker() {
+    try {
+        localStorage.setItem(ONEID_VIEWLET_WINDOW_KEY, JSON.stringify({tab: oneIdTabId, at: Date.now()}));
+    } catch (e) {
+    }
+}
+
+function viewletWindowOpened() {
+    openViewletCount++;
+    writeViewletWindowMarker();
+    if (!viewletHeartbeatTimer) {
+        viewletHeartbeatTimer = setInterval(writeViewletWindowMarker, ONEID_VIEWLET_HEARTBEAT_MS);
+    }
+}
+
+function viewletWindowClosed() {
+    openViewletCount = Math.max(0, openViewletCount - 1);
+    if (openViewletCount === 0) {
+        if (viewletHeartbeatTimer) {
+            clearInterval(viewletHeartbeatTimer);
+            viewletHeartbeatTimer = null;
+        }
+        try {
+            var raw = localStorage.getItem(ONEID_VIEWLET_WINDOW_KEY);
+            if (raw && JSON.parse(raw).tab === oneIdTabId) {
+                localStorage.removeItem(ONEID_VIEWLET_WINDOW_KEY);
+            }
+        } catch (e) {
+        }
+    }
+}
+
+// True when this launch could put a second EHR service window on screen: the other
+// display mode is open in this tab, or another tab reports an open viewlet. A
+// same-mode launch in this tab reuses the named window or replaces the dialog, so
+// it is never simultaneous.
+function anotherViewletMayBeOpen(displayMode) {
+    var popupAlive = openPopupViewlet && !openPopupViewlet.closed;
+    var modalOpen = !!document.getElementById('viewletModalOverlay');
+    if (displayMode === 'modal' && popupAlive) {
+        return true;
+    }
+    if (displayMode !== 'modal' && modalOpen) {
+        return true;
+    }
+    try {
+        var raw = localStorage.getItem(ONEID_VIEWLET_WINDOW_KEY);
+        if (raw) {
+            var marker = JSON.parse(raw);
+            if (marker && marker.tab !== oneIdTabId && marker.at
+                && (Date.now() - marker.at) < ONEID_VIEWLET_STALE_MS) {
+                return true;
+            }
+        }
+    } catch (e) {
+    }
+    return false;
+}
+
+// The warning shown before a launch that may open a second EHR service window:
+// multiple windows can end up showing unintended patient information. The clinician
+// can continue, cancel, or turn the warning off; turning it off is recorded and it
+// can be turned back on from the provider preferences.
+function showMultiWindowNotice(ctx, proceed) {
+    var existing = document.getElementById('viewletNoticeOverlay');
+    if (existing) {
+        document.body.removeChild(existing);
+    }
+    var overlay = document.createElement('div');
+    overlay.id = 'viewletNoticeOverlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10001;display:flex;align-items:center;justify-content:center;';
+    var dialog = document.createElement('div');
+    dialog.style.cssText = 'background:#fff;border-radius:4px;padding:16px;max-width:440px;box-shadow:0 4px 24px rgba(0,0,0,0.4);font-size:13px;';
+    var text = document.createElement('p');
+    text.textContent = 'Another EHR service window may already be open. Working with multiple EHR service windows can result in inadvertently referencing unintended patient information.';
+    text.style.cssText = 'margin:0 0 12px 0;';
+    var label = document.createElement('label');
+    label.style.cssText = 'display:block;margin:0 0 12px 0;';
+    var checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.style.cssText = 'margin-right:6px;';
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode('Do not warn me again (can be turned back on in your preferences)'));
+    var actions = document.createElement('div');
+    actions.style.cssText = 'text-align:right;';
+    var cancelButton = document.createElement('button');
+    cancelButton.type = 'button';
+    cancelButton.textContent = 'Cancel';
+    cancelButton.style.cssText = 'margin-right:6px;';
+    var continueButton = document.createElement('button');
+    continueButton.type = 'button';
+    continueButton.textContent = 'Continue';
+    function closeNotice() {
+        if (overlay.parentNode) {
+            document.body.removeChild(overlay);
+        }
+    }
+    cancelButton.onclick = closeNotice;
+    continueButton.onclick = function () {
+        if (checkbox.checked) {
+            fetch(ctx + '/viewletNoticeToggle.do?enabled=false', {method: 'POST', credentials: 'same-origin'})
+                .catch(function () {
+                });
+        }
+        closeNotice();
+        proceed();
+    };
+    actions.appendChild(cancelButton);
+    actions.appendChild(continueButton);
+    dialog.appendChild(text);
+    dialog.appendChild(label);
+    dialog.appendChild(actions);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+}
+
 function launchViewlet(ctx, demographicNo, key, displayMode) {
+    if (!anotherViewletMayBeOpen(displayMode)) {
+        doLaunchViewlet(ctx, demographicNo, key, displayMode);
+        return;
+    }
+    fetch(ctx + '/viewletNoticeSetting.do', {credentials: 'same-origin'})
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (setting) {
+            if (setting && setting.enabled === false) {
+                doLaunchViewlet(ctx, demographicNo, key, displayMode);
+            } else {
+                showMultiWindowNotice(ctx, function () {
+                    doLaunchViewlet(ctx, demographicNo, key, displayMode);
+                });
+            }
+        })
+        .catch(function () {
+            showMultiWindowNotice(ctx, function () {
+                doLaunchViewlet(ctx, demographicNo, key, displayMode);
+            });
+        });
+}
+
+function doLaunchViewlet(ctx, demographicNo, key, displayMode) {
     var url = ctx + '/viewletLaunch.do?demographicNo=' + encodeURIComponent(demographicNo)
         + '&key=' + encodeURIComponent(key);
     fetch(url, {credentials: 'same-origin'})
@@ -156,6 +311,7 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
         alert('The EHR service window was blocked. Allow pop-ups for this site and try again.');
         return;
     }
+    openPopupViewlet = popup;
     var expectedOrigin = viewletOrigin(url);
     var responded = false;
     var reported = false;
@@ -192,12 +348,17 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
     }, timeout);
 
     if (demographicNo) {
+        viewletWindowOpened();
         var poll = setInterval(function () {
             if (popup.closed) {
                 clearInterval(poll);
                 clearTimeout(waitTimer);
                 window.removeEventListener('message', onMessage);
                 reportOnce('failure', 'The EHR service window was closed without a response.');
+                if (openPopupViewlet === popup) {
+                    openPopupViewlet = null;
+                }
+                viewletWindowClosed();
                 closeViewletPatientContext(ctx, demographicNo);
             }
         }, 1000);
@@ -206,7 +367,12 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
 }
 
 function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
-    // Only one modal viewlet is shown at a time; replace any that is already open.
+    // Only one modal viewlet is shown at a time; a dialog already open is finalized
+    // and replaced. Its patient context is not cleared here because the incoming
+    // launch has already moved the context on the server.
+    if (currentModalDispose) {
+        currentModalDispose();
+    }
     var existingOverlay = document.getElementById('viewletModalOverlay');
     if (existingOverlay) {
         document.body.removeChild(existingOverlay);
@@ -261,21 +427,33 @@ function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
     frame.style.border = 'none';
     frame.setAttribute('sandbox', 'allow-forms allow-scripts allow-same-origin allow-modals');
 
-    function closeModal() {
+    function finalizeModal(reportStatus, reportMessage, skipPatientClose) {
         if (closed) {
             return;
         }
         closed = true;
         clearTimeout(waitTimer);
         window.removeEventListener('message', onMessage);
-        reportOnce('failure', 'The EHR service was closed without a response.');
+        reportOnce(reportStatus, reportMessage);
         if (overlay.parentNode) {
             document.body.removeChild(overlay);
         }
-        if (demographicNo) {
+        if (currentModalDispose === dispose) {
+            currentModalDispose = null;
+        }
+        viewletWindowClosed();
+        if (!skipPatientClose && demographicNo) {
             closeViewletPatientContext(ctx, demographicNo);
         }
     }
+
+    function closeModal() {
+        finalizeModal('failure', 'The EHR service was closed without a response.', false);
+    }
+
+    var dispose = function () {
+        finalizeModal('failure', 'The EHR service was replaced by another EHR service launch.', true);
+    };
 
     // A completion message from the Viewlet's own origin decides the outcome and closes
     // the dialog; other messages are ignored. A dialog closed without a completion
@@ -329,6 +507,8 @@ function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
     dialog.appendChild(frame);
     overlay.appendChild(dialog);
     document.body.appendChild(overlay);
+    currentModalDispose = dispose;
+    viewletWindowOpened();
 }
 
 function closeViewletPatientContext(ctx, demographicNo) {
