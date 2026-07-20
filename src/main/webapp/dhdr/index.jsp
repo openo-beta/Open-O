@@ -1463,7 +1463,9 @@
 			}
 			
 			processEntries = function(entries){
+				var skipped = 0;
 				for (x of entries) {
+				  try {
 					if(x.resource.resourceType === "OperationOutcome"){
 						var o = new OperationOutcome(x);
 						$scope.outcomes.push(o);
@@ -1538,8 +1540,31 @@
 							}
 						}
 					}
+				  } catch (e) {
+					// One malformed entry must not truncate the whole list. Without this the loop aborts and
+					// every later entry is silently lost, leaving a result set that still looks complete - so
+					// count the record and surface it below rather than dropping it quietly. Structural detail
+					// only, never the record's contents, so no PHI reaches the console.
+					skipped++;
+					console.error("DHDR: skipped unreadable entry - " + e.message);
+				  }
 				}
-						
+
+				// Reported through the same notice list as the consent and search errors, so a record the
+				// viewer could not read is raised where the reader already looks for service problems.
+				if (skipped > 0) {
+					$scope.serviceErrors.push({
+						httpMessage: skipped + (skipped === 1 ? " record was" : " records were")
+							+ " returned by DHDR but could not be displayed.",
+						httpCode: "DHDR02.01",
+						severity: "error",
+						dateTime: new Date().toLocaleString(),
+						moreInformation: "The data for these records was incomplete or in an unexpected format."
+							+ " The remaining records are shown. Use other available sources of medication"
+							+ " information to confirm this patient's history."
+					});
+				}
+
 				//If a block record is found the other warnings are dumped.  Probably a bad idea but OMD's requirement.
 				for(outcome of $scope.outcomes) {
 					var replaceIssue = null;
