@@ -61,6 +61,21 @@
 			// keep the 300000 default
 		}
 	}
+
+	// DHDR02.03: the clinic-level default for the "last N days" search, configurable in
+	// oscar_mcmaster.properties (dhdr.default_search_days); the requirement's suggested 120 is used
+	// when unset or invalid. Read once here so a user editing the range on screen cannot write back
+	// into the default, which DHDR02.03 forbids.
+	int defaultSearchDays = 120;
+	try {
+		int configured = Integer.parseInt(OscarProperties.getInstance()
+			.getProperty("dhdr.default_search_days", String.valueOf(defaultSearchDays)).trim());
+		if (configured > 0) {
+			defaultSearchDays = configured;
+		}
+	} catch (NumberFormatException e) {
+		// keep the default above
+	}
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -145,13 +160,21 @@
 		 		<form class="form-inline">
 				  <div class="form-group">
 				    <label for="exampleInputName2">Start Date</label>
-				    <input type="date" class="form-control" id="exampleInputName2" placeholder="2020-01-01" ng-model="searchConfig.startDate">
+				    <input type="date" class="form-control" id="exampleInputName2" placeholder="2020-01-01" ng-model="searchConfig.startDate" ng-change="clearSearchDays();">
 				  </div>
 				  <div class="form-group">
 				    <label for="exampleInputEmail2">End Date</label>
-				    <input type="date" class="form-control" id="exampleInputEmail2" placeholder="2020-03-31" ng-model="searchConfig.endDate" >
+				    <input type="date" class="form-control" id="exampleInputEmail2" placeholder="2020-03-31" ng-model="searchConfig.endDate" ng-change="clearSearchDays();">
 				  </div>
-				 
+				  <%-- DHDR02.03(a): search by number of days before today. Fills the two date fields
+				       above, so the range stays visible and hand-editable afterwards. --%>
+				  <div class="form-group">
+				    <label for="dhdrSearchDays">Last</label>
+				    <input type="number" min="1" class="form-control" id="dhdrSearchDays" style="width:6em;"
+				           ng-model="searchDays" ng-change="applySearchDays();">
+				    <label for="dhdrSearchDays">days</label>
+				  </div>
+
 				  <button type="submit" class="btn btn-default" ng-click="callSearch();" ng-disabled="buttonDisabled" style="vertical-align: bottom;">Search</button>
 				  <button type="submit" class="btn btn-default" ng-click="setSearchDateToAll();" ng-disabled="buttonDisabled" style="vertical-align: bottom;">Search All</button>
 				</form>
@@ -163,8 +186,10 @@
 		 	<i>DHDR is being searched with HIN: {{demographic.hin}}  DOB: {{demographic.dobYear}}-{{demographic.dobMonth}}-{{demographic.dobDay}}</i>
 	 	<br/>
 	 	<!-- DHDR02.05 (B2 #6): display the search period used alongside the results. -->
-	 	<%-- No date filter: already yyyy-MM-dd, and re-parsing it could show the day before. --%>
-	 	<i>Search period: {{searchConfig.startDate}} to {{searchConfig.endDate}}</i>
+	 	<%-- No date filter: already yyyy-MM-dd, and re-parsing it could show the day before. A
+	 	     cleared start date sends no lower bound, so describe that rather than render a
+	 	     dangling "  to <end>" range the search never actually used (BP6). --%>
+	 	<i>Search period: {{searchPeriodText()}}</i>
 		 	</div>
 		 </div>
 		 
@@ -1109,7 +1134,8 @@
 			// DHDR14.01: notices about the DHDR EHR Service itself (unreachable, unresponsive,
 			// expired session). Distinct from outcomes, which are the issues the service reported.
 			$scope.serviceErrors = [];
-			defaultDaysToSearch = 120;
+			// DHDR02.03: clinic-level default, from the dhdr.default_search_days property.
+			defaultDaysToSearch = <%= defaultSearchDays %>;
 			// The bounds are yyyy-MM-dd strings, never Dates: a Date is an instant, and converting a
 			// zone-less calendar date to one shifts it a day behind UTC. Convert once, here.
 			asSearchDate = function(d){ return $filter('date')(d, "yyyy-MM-dd"); };
@@ -1119,11 +1145,36 @@
 				return y + "-" + pad(m) + "-" + pad(d);
 			};
 			$scope.searchConfig = {};
-			let defaultEnd = new Date();
-			let defaultStart = new Date(defaultEnd);
-			defaultStart.setDate(defaultEnd.getDate() - defaultDaysToSearch);
-			$scope.searchConfig.endDate = asSearchDate(defaultEnd);
-			$scope.searchConfig.startDate = asSearchDate(defaultStart);
+			// UI-only, deliberately NOT on searchConfig: that object is posted verbatim to
+			// searchByDemographicNo2, and an unknown field there fails Jackson deserialization.
+			$scope.searchDays = defaultDaysToSearch;
+			// DHDR02.03(a): fill the range from a number of days before today. Writes only into the
+			// two date fields, never back into defaultDaysToSearch - DHDR02.03 requires that editing
+			// the range while searching must not change the configured default.
+			$scope.applySearchDays = function(){
+				let days = parseInt($scope.searchDays, 10);
+				if (isNaN(days) || days < 1) { return; }
+				let end = new Date();
+				let start = new Date(end);
+				start.setDate(end.getDate() - days);
+				$scope.searchConfig.endDate = asSearchDate(end);
+				$scope.searchConfig.startDate = asSearchDate(start);
+			};
+			// Hand-editing a date, or searching all events, means the range is no longer the one the
+			// days box describes, so clear it rather than leave a number that misstates the period.
+			$scope.clearSearchDays = function(){ $scope.searchDays = null; };
+			$scope.applySearchDays();
+
+			// DHDR02.05: state the period actually searched. With no start date the query carries no
+			// lower bound, so saying "<blank> to <end>" would advertise a period we never asked for.
+			$scope.searchPeriodText = function(){
+				let start = $scope.searchConfig.startDate;
+				let end = $scope.searchConfig.endDate;
+				if (!start && !end) { return "all available events"; }
+				if (!start) { return "all events up to " + end; }
+				if (!end) { return start + " onwards"; }
+				return start + " to " + end;
+			};
 			$scope.searching = false;
 			$scope.hideShowDhirDataVal = true;
 			$scope.showSummaryProductFilter = false;
@@ -1316,6 +1367,7 @@
 			$scope.setSearchDateToAll = function(){
 
 				
+				$scope.clearSearchDays();
 				$scope.searchConfig.startDate = partsAsSearchDate($scope.demographic.dobYear,
 					$scope.demographic.dobMonth, $scope.demographic.dobDay);
 				$scope.searchConfig.endDate = asSearchDate(new Date());
