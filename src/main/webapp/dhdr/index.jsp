@@ -1267,8 +1267,12 @@
 			$scope.showComp = function() {
 				currentViewValue = 'comp';	
 					rxService.getMedications($scope.demographicNo, "").then(function(data) {
-						$scope.compLocalMeds = data.data.content;
-						
+						// The drug list arrives as `drug`, not `content`: DrugSearchResponse annotates
+						// getContent() with @XmlElement(name="drug") inside @XmlElementWrapper("content"),
+						// and the wrapper only survives in XML - the JSON this endpoint returns is
+						// {"drug":[...]}. Reading `content` left the EMR side of the comparison empty.
+						$scope.compLocalMeds = data.data.drug;
+
 						angular.forEach($scope.compLocalMeds,function(med){
 							med.providerName = $scope.getProviderName(med.providerNo);
 						});
@@ -1390,7 +1394,8 @@
 				
 				
 				rxService.getMedications($scope.demographicNo, "").then(function(data) {
-					$scope.compLocalMeds = data.data.content;
+					// See showComp: the endpoint returns the list as `drug`, not `content`.
+					$scope.compLocalMeds = data.data.drug;
 				}, function(errorMessage) {
 					//rxComp.error = errorMessage;
 				});
