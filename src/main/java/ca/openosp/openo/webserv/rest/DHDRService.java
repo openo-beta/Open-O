@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -312,7 +313,8 @@ public class DHDRService extends AbstractServiceImpl {
    * Records a PCOI consent-override event against the patient in the gateway transaction log.
    *
    * @param demographicNo Integer the patient's demographic number
-   * @param uniqueToken String the correlation token issued by {@link #getConsentOveride(int)}
+   * @param uniqueToken String the correlation token issued by {@link #getConsentOveride(int)};
+   *     a caller with none sends a placeholder, which {@link #correlationId(String)} maps back to null
    * @param status String the consent-override outcome status
    * @param message String the raw JSON payload describing the consent-override event
    * @return Response indicating the event was logged
@@ -332,8 +334,28 @@ public class DHDRService extends AbstractServiceImpl {
     }
     OmdGateway omdGateway = new OmdGateway();
     omdGateway.logDataReceived(loggedInInfo, "PCOI", status, message,
-        demographicNo, uniqueToken);
+        demographicNo, correlationId(uniqueToken));
     return Response.ok(true).build();
+  }
+
+  /**
+   * Normalises the correlation token from the request path into a value fit for the audit row.
+   *
+   * <p>The token is a path segment, so a caller with no id to send cannot omit it - the absent value
+   * arrives as the text {@code "null"} or {@code "undefined"}. Stored verbatim that produces an audit
+   * row which looks correlated but is not, which is worse than an empty column: a missing DHDR15.02
+   * correlation then reads as a present one. Mapping those back to {@code null} keeps the column
+   * honestly empty.
+   *
+   * @param uniqueToken String the raw path segment, possibly absent, blank or a stringified null
+   * @return String the correlation id, or null when the caller had none
+   */
+  static String correlationId(String uniqueToken) {
+    String trimmed = StringUtils.trimToNull(uniqueToken);
+    if ("null".equalsIgnoreCase(trimmed) || "undefined".equalsIgnoreCase(trimmed)) {
+      return null;
+    }
+    return trimmed;
   }
 
   /**
