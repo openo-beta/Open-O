@@ -1,7 +1,5 @@
 package ca.openosp.openo.webserv.rest.to;
 
-import java.util.Date;
-
 /**
  * Search configuration payload for a DHDR (Digital Health Drug Repository) dispense query.
  *
@@ -10,27 +8,40 @@ import java.util.Date;
  * date bound means "unbounded" on that side and a {@code null} {@code searchId}/{@code pageId}
  * requests the first page of a fresh search.</p>
  *
+ * <p>The bounds are {@code yyyy-MM-dd} strings rather than {@link java.util.Date}. They are
+ * calendar dates a clinician chose, not instants: they carry no time and belong to no time zone.
+ * Binding them to {@code Date} made Jackson read a date-only string as UTC midnight, which the
+ * outbound formatter then rendered in the server's own zone - moving both bounds a day earlier in
+ * any negative-offset zone and dropping the dispenses on the end date the clinician asked for.
+ * Keeping them as strings means the value the viewer sends is the value DHDR is queried with.</p>
+ *
  * @since 2026-07-02
  */
 public class DHDRSearchConfig {
-  private Date startDate = null;
-  private Date endDate = null;
+  private String startDate = null;
+  private String endDate = null;
   private String searchId = null;
   private String pageId = null;
 
-  public Date getStartDate() {
+  /**
+   * @return String the inclusive lower bound as {@code yyyy-MM-dd}, or null for unbounded
+   */
+  public String getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(String startDate) {
     this.startDate = startDate;
   }
 
-  public Date getEndDate() {
+  /**
+   * @return String the inclusive upper bound as {@code yyyy-MM-dd}, or null to default to today
+   */
+  public String getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Date endDate) {
+  public void setEndDate(String endDate) {
     this.endDate = endDate;
   }
 

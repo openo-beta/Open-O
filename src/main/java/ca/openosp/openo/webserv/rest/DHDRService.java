@@ -113,8 +113,8 @@ public class DHDRService extends AbstractServiceImpl {
       throw new AccessDeniedException(SECURITY_OBJECT, "r", demographicNo);
     }
     DHDRManager dhdrManager = new DHDRManager();
-    Date startDate = null;
-    Date endDate = null;
+    String startDate = null;
+    String endDate = null;
     String searchId = null;
     Integer pageId = null;
     if (searchConfig != null) {

@@ -37,8 +37,20 @@ public class DHDRManager extends OmdGateway {
   private final SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(
       SystemPreferencesDao.class);
 
-  public String search2(LoggedInInfo loggedInInfo, Demographic demographic, Date startDate,
-                        Date endDate, String searchId, Integer pageId) throws Exception {
+  /**
+   * Runs a DHDR dispense search for one patient.
+   *
+   * <p>The bounds are {@code yyyy-MM-dd} calendar dates, passed through to the query untouched. They
+   * are deliberately not {@link Date}: converting a zone-less calendar date to an instant and back
+   * shifts it by a day in any zone behind UTC, which silently drops the dispenses on the end date
+   * the clinician asked for.</p>
+   *
+   * @param startDate String inclusive lower bound as {@code yyyy-MM-dd}, or null for unbounded
+   * @param endDate String inclusive upper bound as {@code yyyy-MM-dd}, or null to default to today
+   * @return String the FHIR bundle JSON the DHDR EHR Service returned
+   */
+  public String search2(LoggedInInfo loggedInInfo, Demographic demographic, String startDate,
+                        String endDate, String searchId, Integer pageId) throws Exception {
 
     // Mirror oscarPro's getPreferenceValueByName("oneid.dhdr.endpoint", "/MedicationDispense"):
     // read the configured value, falling back to the default path when the preference is unset.
@@ -50,7 +62,6 @@ public class DHDRManager extends OmdGateway {
         && dhdrEndpointPref.getValue() != null && !dhdrEndpointPref.getValue().trim().isEmpty())
         ? dhdrEndpointPref.getValue()
         : "/MedicationDispense";
-    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
     WebClient wc = getWebClient(loggedInInfo, dhdrEndpoint);
 
     wc.query("patient.identifier",
@@ -69,14 +80,15 @@ public class DHDRManager extends OmdGateway {
     wc.query("_sort", "-whenprepared");
 
     // DHDR02.05: ge/le, not gt/lt - the search period the viewer advertises is inclusive of both
-    // boundary dates. Upper bound defaults to today when no endDate is given.
-    if (endDate == null) {
-      wc.query("whenprepared", "le" + fmt.format(new Date()));
+    // boundary dates. Upper bound defaults to today when no endDate is given; that default is a
+    // real "now", so it is the one date here that is formatted rather than passed through.
+    if (endDate == null || endDate.trim().isEmpty()) {
+      wc.query("whenprepared", "le" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
     } else {
-      wc.query("whenprepared", "le" + fmt.format(endDate));
+      wc.query("whenprepared", "le" + endDate);
     }
-    if (startDate != null) {
-      wc.query("whenprepared", "ge" + fmt.format(startDate));
+    if (startDate != null && !startDate.trim().isEmpty()) {
+      wc.query("whenprepared", "ge" + startDate);
     }
     wc.query("_format", "application/fhir+json");
 

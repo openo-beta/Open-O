@@ -163,7 +163,8 @@
 		 	<i>DHDR is being searched with HIN: {{demographic.hin}}  DOB: {{demographic.dobYear}}-{{demographic.dobMonth}}-{{demographic.dobDay}}</i>
 	 	<br/>
 	 	<!-- DHDR02.05 (B2 #6): display the search period used alongside the results. -->
-	 	<i>Search period: {{searchConfig.startDate | date:'yyyy-MM-dd'}} to {{searchConfig.endDate | date:'yyyy-MM-dd'}}</i>
+	 	<%-- No date filter: already yyyy-MM-dd, and re-parsing it could show the day before. --%>
+	 	<i>Search period: {{searchConfig.startDate}} to {{searchConfig.endDate}}</i>
 		 	</div>
 		 </div>
 		 
@@ -1109,10 +1110,20 @@
 			// expired session). Distinct from outcomes, which are the issues the service reported.
 			$scope.serviceErrors = [];
 			defaultDaysToSearch = 120;
+			// The bounds are yyyy-MM-dd strings, never Dates: a Date is an instant, and converting a
+			// zone-less calendar date to one shifts it a day behind UTC. Convert once, here.
+			asSearchDate = function(d){ return $filter('date')(d, "yyyy-MM-dd"); };
+			// Joins the parts directly - new Date(y+"-"+m+"-"+d) reads as ISO, so UTC midnight.
+			partsAsSearchDate = function(y, m, d){
+				let pad = function(v){ return (String(v).length < 2 ? "0" : "") + v; };
+				return y + "-" + pad(m) + "-" + pad(d);
+			};
 			$scope.searchConfig = {};
-			$scope.searchConfig.endDate = new Date();
-			$scope.searchConfig.startDate = new Date($scope.searchConfig.endDate);
-			$scope.searchConfig.startDate.setDate($scope.searchConfig.endDate.getDate() - defaultDaysToSearch);
+			let defaultEnd = new Date();
+			let defaultStart = new Date(defaultEnd);
+			defaultStart.setDate(defaultEnd.getDate() - defaultDaysToSearch);
+			$scope.searchConfig.endDate = asSearchDate(defaultEnd);
+			$scope.searchConfig.startDate = asSearchDate(defaultStart);
 			$scope.searching = false;
 			$scope.hideShowDhirDataVal = true;
 			$scope.showSummaryProductFilter = false;
@@ -1227,8 +1238,9 @@
 				toPrint.services = $scope.services;
 				// DHDR13.01.b: the DHDR-side patient demographic printed on each page
 				toPrint.dhdrPatient = $scope.dhdrPatient;
-				toPrint.startDate = $filter('date')($scope.searchConfig.startDate, "yyyy-MM-dd");
-				toPrint.endDate   = $filter('date')($scope.searchConfig.endDate, "yyyy-MM-dd");
+				// Already yyyy-MM-dd; re-filtering could shift the day.
+				toPrint.startDate = $scope.searchConfig.startDate;
+				toPrint.endDate   = $scope.searchConfig.endDate;
 
 				$http.post('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 					
@@ -1249,9 +1261,10 @@
 				toPrint.localData = $scope.compLocalMeds;
 				// DHDR13.01.b: the DHDR-side patient demographic printed on each page
 				toPrint.dhdrPatient = $scope.dhdrPatient;
-				toPrint.startDate = $filter('date')($scope.searchConfig.startDate, "yyyy-MM-dd");
-				toPrint.endDate   = $filter('date')($scope.searchConfig.endDate, "yyyy-MM-dd");
-				
+				// Already yyyy-MM-dd; re-filtering could shift the day.
+				toPrint.startDate = $scope.searchConfig.startDate;
+				toPrint.endDate   = $scope.searchConfig.endDate;
+
 				$http.post('../ws/rs/dhdr/'+$scope.demographicNo+'/print/comparative',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 					
 				       var file = new Blob([response.data], {type: 'application/pdf'});
@@ -1303,8 +1316,9 @@
 			$scope.setSearchDateToAll = function(){
 
 				
-				$scope.searchConfig.startDate = new Date($scope.demographic.dobYear+"-"+$scope.demographic.dobMonth+"-"+$scope.demographic.dobDay);
-				$scope.searchConfig.endDate = new Date();
+				$scope.searchConfig.startDate = partsAsSearchDate($scope.demographic.dobYear,
+					$scope.demographic.dobMonth, $scope.demographic.dobDay);
+				$scope.searchConfig.endDate = asSearchDate(new Date());
 				$scope.callSearch();
 			}
 			
