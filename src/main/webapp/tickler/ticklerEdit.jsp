@@ -132,11 +132,14 @@
               font-size: 12px !important;
             }
 
-            /* Give the edit popup a little more room so the attachment count badge
-               stays beside the "Manage Attachments" button instead of wrapping under it. */
-            .container {
-                width: auto;
-                max-width: 940px;
+            /* Shrink the quick-pick date grid so all 10 columns fit the edit window's width. */
+            #quickPickDateOptions {
+                grid-gap: 1px;
+                width: 400px;
+            }
+            #quickPickDateOptions a {
+                padding: 2px 4px;
+                min-width: 0;
             }
 
             /* Keep the "Manage Attachments" button and its count badge on one line. */
