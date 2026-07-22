@@ -139,11 +139,11 @@
 		     fields that do not match the EMR demographic. --%>
 		<div class="alert" ng-class="dhdrPatientDataUnmatched ? 'alert-warning' : 'alert-info'" role="alert" style="margin-bottom: 8px;">
 			<strong>DHDR EHR Service patient:</strong>
-			{{dhdrPatient.lastName}}, {{dhdrPatient.firstName}}<span ng-show="dhdrPatient.nameUnmatched"> (UNMATCHED)</span>
-			&nbsp;&middot;&nbsp; HIN: {{dhdrPatient.hin}}<span ng-show="dhdrPatient.hinUnmatched"> (UNMATCHED)</span>
-			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob}}<span ng-show="dhdrPatient.dobUnmatched"> (UNMATCHED)</span>
-			&nbsp;&middot;&nbsp; Sex: {{dhdrPatient.gender}}<span ng-show="dhdrPatient.genderUnmatched"> (UNMATCHED)</span>
-			<div ng-show="dhdrPatientDataUnmatched"><em>Some DHDR patient details do not match the EMR record.</em></div>
+			{{dhdrPatient.lastName}}, {{dhdrPatient.firstName}}{{matchNote(dhdrPatient.nameUnmatched, dhdrPatient.nameMissing)}}
+			&nbsp;&middot;&nbsp; HIN: {{dhdrPatient.hin}}{{matchNote(dhdrPatient.hinUnmatched, dhdrPatient.hinMissing)}}
+			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob}}{{matchNote(dhdrPatient.dobUnmatched, dhdrPatient.dobMissing)}}
+			&nbsp;&middot;&nbsp; Sex: {{dhdrPatient.gender}}{{matchNote(dhdrPatient.genderUnmatched, dhdrPatient.genderMissing)}}
+			<div ng-show="dhdrPatientDataUnmatched"><em>Some DHDR patient details differ from the EMR record, or are not recorded in it.</em></div>
 		</div>
 	</div>
 	<div class="container">
@@ -1143,10 +1143,23 @@
 			// zone-less calendar date to one shifts it a day behind UTC. Convert once, here.
 			asSearchDate = function(d){ return $filter('date')(d, "yyyy-MM-dd"); };
 			// Joins the parts directly - new Date(y+"-"+m+"-"+d) reads as ISO, so UTC midnight.
+			// Null when a part is missing, so callers cannot build a "null-null-null" bound.
 			partsAsSearchDate = function(y, m, d){
+				if (!y || !m || !d) { return null; }
 				let pad = function(v){ return (String(v).length < 2 ? "0" : "") + v; };
 				return y + "-" + pad(m) + "-" + pad(d);
 			};
+			// DHDR03.02: how a differing field reads in the patient banner. Absent from the EMR and
+			// disagreeing with the EMR are both flagged, but they call for different action.
+			$scope.matchNote = function(unmatched, missing){
+				if (!unmatched) { return ""; }
+				return missing ? " (NOT IN EMR)" : " (UNMATCHED)";
+			};
+			// DHDR02.03(c) searches all available events, normally from the patient's birth. Where
+			// there is no date of birth to start from, this floor stands in: dropping the lower
+			// bound is not equivalent, because the service then applies its own 120-day default
+			// (BP5) and "Search All" would quietly become a 120-day search.
+			let earliestSearchDate = "1900-01-01";
 			$scope.searchConfig = {};
 			// UI-only, deliberately NOT on searchConfig: that object is posted verbatim to
 			// searchByDemographicNo2, and an unknown field there fails Jackson deserialization.
@@ -1390,7 +1403,7 @@
 				
 				$scope.clearSearchDays();
 				$scope.searchConfig.startDate = partsAsSearchDate($scope.demographic.dobYear,
-					$scope.demographic.dobMonth, $scope.demographic.dobDay);
+					$scope.demographic.dobMonth, $scope.demographic.dobDay) || earliestSearchDate;
 				$scope.searchConfig.endDate = asSearchDate(new Date());
 				$scope.callSearch();
 			}
@@ -1750,20 +1763,33 @@
 					// dhdrPatient from a returned record; on a zero-result search its fields are still the
 					// placeholder String constructor and .toUpperCase() would throw (breaks DHDR02.04).
 					if ($scope.dhdrPatient && typeof $scope.dhdrPatient.firstName === "string") {
-						let demographicDob = $scope.demographic.dobYear
-								+ "-" + $scope.demographic.dobMonth + "-"
-								+ $scope.demographic.dobDay;
+						// Built the same way as a search bound, so the parts are zero-padded before
+						// being compared with the DHDR record's yyyy-MM-dd birthDate.
+						let demographicDob = partsAsSearchDate($scope.demographic.dobYear,
+								$scope.demographic.dobMonth, $scope.demographic.dobDay);
 						let dhdrGenderInitial = angular.isDefined($scope.dhdrPatient.gender)
 								? $scope.dhdrPatient.gender.charAt(0).toUpperCase() : "";
+						// DHDR03.02 asks that anything not matching be identified, so every difference
+						// is flagged - including a field the EMR simply does not hold. That case reads
+						// differently in the banner: a missing value needs filling in, a disagreeing
+						// one needs reconciling, and they are not the same instruction to the reader.
+						let blank = function(v){
+							return v === null || v === undefined || String(v).trim() === "";
+						};
 
+						$scope.dhdrPatient.nameMissing = blank($scope.demographic.firstName)
+								|| blank($scope.demographic.lastName);
 						$scope.dhdrPatient.nameUnmatched = ($scope.demographic.firstName !==
 								$scope.dhdrPatient.firstName.toUpperCase() || $scope.demographic.lastName !==
 								$scope.dhdrPatient.lastName.toUpperCase());
 
+						$scope.dhdrPatient.genderMissing = blank($scope.demographic.sex);
 						$scope.dhdrPatient.genderUnmatched = ($scope.demographic.sex !== dhdrGenderInitial);
 
+						$scope.dhdrPatient.dobMissing = blank(demographicDob);
 						$scope.dhdrPatient.dobUnmatched = (demographicDob !== $scope.dhdrPatient.dob);
 
+						$scope.dhdrPatient.hinMissing = blank($scope.demographic.hin);
 						$scope.dhdrPatient.hinUnmatched = ($scope.demographic.hin !== $scope.dhdrPatient.hin);
 
 						$scope.dhdrPatientDataUnmatched = ($scope.dhdrPatient.nameUnmatched
