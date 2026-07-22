@@ -23,6 +23,7 @@ import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -30,6 +31,8 @@ import org.codehaus.jettison.json.JSONObject;
 
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class DHDRManager extends OmdGateway {
@@ -68,7 +71,13 @@ public class DHDRManager extends OmdGateway {
         "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn|"
             + demographic.getHin());//"5365837912");
 
-    wc.query("patient.birthdate", demographic.getBirthDayAsString());
+    // DHDR02.02: date of birth is an optional search parameter, so send it only when it can be
+    // rendered as a valid FHIR date. Sending a malformed one invites the service to reject the
+    // whole search over a parameter we did not have to supply.
+    String birthDate = fhirBirthDate(demographic);
+    if (birthDate != null) {
+      wc.query("patient.birthdate", birthDate);
+    }
 
     // DHDR02.02 (B2 #16): the DHDR search is keyed on HCN (+ optional DOB); patient.gender is an
     // optional param that must not be sent - the EMR's recorded sex can diverge from the provincial
@@ -116,6 +125,42 @@ public class DHDRManager extends OmdGateway {
     }
 
     return body;
+  }
+
+  /**
+   * Renders a demographic's date of birth as a FHIR {@code date}, or null when it cannot be.
+   *
+   * <p>{@link Demographic#getBirthDayAsString()} joins the three birth columns with no padding and
+   * no null handling, so it can yield {@code 1985-4-05} or {@code null-06-15}. FHIR R4 requires
+   * {@code YYYY-MM-DD} with a padded month and day. That method is left alone because its other
+   * callers may rely on its current shape; the padding and validation belong here instead.</p>
+   *
+   * <p>{@link LocalDate} does nearly all of it: it rejects an out-of-range month or day and an
+   * impossible calendar date such as {@code 1985-02-30}, and its {@code toString()} is already
+   * {@code yyyy-MM-dd} with both parts padded. The one thing it does not constrain is the year,
+   * so that is bounded to FHIR's own range of 1-9999. Outside it {@code toString()} renders
+   * {@code 0000-...}, a negative year, or the sign-prefixed {@code +12345-...}, none of which is
+   * a FHIR date.</p>
+   *
+   * @param demographic Demographic the patient whose date of birth is being rendered
+   * @return String the date as {@code yyyy-MM-dd}, or null if any part is missing or invalid
+   */
+  static String fhirBirthDate(Demographic demographic) {
+    if (demographic == null) {
+      return null;
+    }
+    try {
+      int year = Integer.parseInt(StringUtils.trimToEmpty(demographic.getYearOfBirth()));
+      if (year < 1 || year > 9999) {
+        return null;
+      }
+      return LocalDate.of(year,
+          Integer.parseInt(StringUtils.trimToEmpty(demographic.getMonthOfBirth())),
+          Integer.parseInt(StringUtils.trimToEmpty(demographic.getDateOfBirth()))).toString();
+    } catch (NumberFormatException | DateTimeException e) {
+      // A missing, non-numeric or impossible part; the caller omits the parameter.
+      return null;
+    }
   }
 
   /**

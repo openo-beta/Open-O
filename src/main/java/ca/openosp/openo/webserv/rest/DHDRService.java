@@ -128,6 +128,20 @@ public class DHDRService extends AbstractServiceImpl {
       }
     }
     Demographic demographic = demographicDao.getDemographicById(demographicNo);
+    if (demographic == null) {
+      return Response.ok().entity(notice(Response.Status.NOT_FOUND.getStatusCode(),
+          "That patient record could not be found.",
+          "Reopen the patient chart and try the search again.")).build();
+    }
+    // DHDR02.02: the HCN is mandatory in the request and must not be sent absent. The viewer
+    // refuses to dispatch without one, but this endpoint is reachable on its own, and the service
+    // boundary is where the requirement is actually enforceable.
+    if (demographic.getHin() == null || demographic.getHin().trim().isEmpty()) {
+      return Response.ok().entity(notice(Response.Status.BAD_REQUEST.getStatusCode(),
+          "Cannot search the DHDR: this patient has no Health Card Number on file.",
+          "A Health Card Number is required to query the DHDR EHR Service. Add the HCN to the "
+              + "patient record and try again.")).build();
+    }
     try {
       String bundle = dhdrManager.search2(loggedInInfo, demographic, startDate, endDate, searchId,
           pageId);
