@@ -202,6 +202,8 @@ public class DrugConverterImpl extends AbstractConverter<Drug, DrugTo1> implemen
         t.setDurationUnit(d.getDurUnit());
         t.setRoute(d.getRoute());
         t.setForm(d.getDrugForm());
+        // DHDR05.02(e): outbound only, so the dose unit can be shown beside the dose.
+        t.setUnit(d.getUnit());
         t.setPrn(d.isPrn());
         t.setMethod(d.getMethod());
         t.setRepeats(d.getRepeat());

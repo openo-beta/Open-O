@@ -825,12 +825,15 @@
 			 					<th scope="row" class="startDate">{{med.rxDate | date}}</th>
 			 					<td>{{med.genericName || med.brandName || med.customName}}</td>
 			 					<td>{{med.strength}} {{med.strengthUnit}}</td>
-			 					<td><span ng-if="med.takeMin">{{med.takeMin}}<span ng-if="med.takeMax && med.takeMax !== med.takeMin"> - {{med.takeMax}}</span></span></td>
+			 					<%-- DHDR05.02(e) value + unit of measure; see emrDoseUnit(). --%>
+			 					<td><span ng-if="med.takeMin">{{med.takeMin}}<span ng-if="med.takeMax && med.takeMax !== med.takeMin"> - {{med.takeMax}}</span><span ng-if="emrDoseUnit(med)"> {{emrDoseUnit(med)}}</span></span></td>
 			 					<td>{{med.frequency}}</td>
 			 					<td>{{med.providerName}}</td>
 			 					<td>{{med.regionalIdentifier}}</td>
 			 					<td>{{med.quantity}}<span ng-if="med.duration"> / {{med.duration}} {{med.durationUnit}}</span></td>
-			 					<td>{{med.repeats}}<span ng-if="med.refillQuantity"> ({{med.refillQuantity}}<span ng-if="med.refillDuration"> / {{med.refillDuration}}</span>)</span></td>
+			 					<%-- DHDR05.02(i): refill duration is always days, per the Rx screen's
+			 					     own validation, so the unit is a fixed label. --%>
+			 					<td>{{med.repeats}}<span ng-if="med.refillQuantity"> ({{med.refillQuantity}}<span ng-if="med.refillDuration"> / {{med.refillDuration}} days</span>)</span></td>
 			 				</tr>
 			 			</tbody> 
 		 			</table>
@@ -1268,7 +1271,25 @@
 	    			if(provider == null){ return providerNumber+" N/A inactive"}
 	    			return provider.lastName+", "+provider.firstName;
 	    		}
-			
+
+			// DHDR05.02(e): dose unit for an EMR med. Not med.doseUnit - that is the DHDR
+			// side's, off doseQuantity.unit, and can be a mass. Prefer drugs.unit, but it
+			// often just repeats the strength unit, so fall back to the drug form where the
+			// form names a countable unit (DemographicExportHelper's list). Anything else
+			// has no unit to show, and DHDR05.02 asks for these "if available".
+			let emrDoseUnitForms = ["capsule","drop","dosing","grobule","granule","patch","pellet","pill","tablet"];
+			$scope.emrDoseUnit = function(med){
+				if (!med) { return ""; }
+				let unit = med.unit ? med.unit.toLowerCase() : "";
+				let strengthUnit = med.strengthUnit ? med.strengthUnit.toLowerCase() : "";
+				if (unit && unit !== strengthUnit) { return unit; }
+				let form = med.form ? med.form.toLowerCase() : "";
+				for (let i = 0; i < emrDoseUnitForms.length; i++) {
+					if (form.indexOf(emrDoseUnitForms[i]) !== -1) { return emrDoseUnitForms[i]; }
+				}
+				return "";
+			}
+
 			$scope.orderByField = 'whenPrepared';
 			$scope.reverseSort = true;
 			
