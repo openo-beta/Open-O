@@ -213,7 +213,7 @@
 		 		     required to see it, and no technical detail is exposed: that stays in the audit log. --%>
 		 		<div ng-repeat="serviceError in serviceErrors" class="alert" ng-class="serviceErrorClass(serviceError)" role="alert">
 		 			<strong>{{serviceError.httpMessage}}</strong>
-		 			<div>Error code: {{serviceError.httpCode}} &middot; Severity: {{serviceError.severity}} &middot; {{serviceError.dateTime}}</div>
+		 			<div>{{noticeCodeLabel(serviceError.severity)}} {{serviceError.httpCode}} &middot; Severity: {{serviceError.severity}} &middot; {{serviceError.dateTime}}</div>
 		 			<div ng-if="serviceError.moreInformation">{{serviceError.moreInformation}}</div>
 		 		</div>
 
@@ -224,7 +224,7 @@
 		 				     description, severity and the date/time of the incident. The 'suppressed' issue is
 		 				     the normal consent-block workflow (handled just below), not an error, so it is
 		 				     excluded from the error line. --%>
-		 				<div class="small" ng-if="issue.code !== 'suppressed'">Error code: {{dhdrCode(issue)}} &middot; Severity: {{issue.severity}} &middot; {{outs.receivedAt | date:'medium'}}</div>
+		 				<div class="small" ng-if="issue.code !== 'suppressed'">{{noticeCodeLabel(issue.severity)}} {{dhdrCode(issue)}} &middot; Severity: {{issue.severity}} &middot; {{outs.receivedAt | date:'medium'}}</div>
 		 				<span ng-if="issue.code === 'suppressed'">
 		 					<!-- DHDR09.03: the EMR renders the mandated consent-block message itself (not reliant on the OperationOutcome text). -->
 		 					<div>Access to Drug and Pharmacy Service information has been blocked by the patient.</div>
@@ -1473,9 +1473,23 @@
 			}
 
 
+			// DHDR14.01: one severity-to-style map for every notice. An informational outcome - a
+			// successful temporary unblock (CONSENT_TEMP_UNBLOCK) or COVaxON being unavailable - is
+			// not an error and must not read as a red one; only error/fatal are danger.
+			$scope.noticeClass = function(severity){
+				if(severity === "warning"){ return "alert-warning"; }
+				if(severity === "information" || severity === "informational"){ return "alert-info"; }
+				return "alert-danger";
+			}
+			// The leading label on the code line, so an informational notice does not announce an
+			// "Error code" for an event that is not an error.
+			$scope.noticeCodeLabel = function(severity){
+				if(severity === "warning"){ return "Warning code:"; }
+				if(severity === "information" || severity === "informational"){ return "Notice code:"; }
+				return "Error code:";
+			}
 			$scope.issueClass = function(issue){
-				// Only a warning styles as a warning; error and fatal style as danger.
-				return issue.severity === "warning" ? "alert-warning" : "alert-danger";
+				return $scope.noticeClass(issue.severity);
 			}
 
 			// DHDR14.01: the actionable code is in issue.details.coding.code or issue.diagnostics;
@@ -1501,9 +1515,8 @@
 				return false;
 			}
 
-			// DHDR14.01 severity: only a warning is styled as one; errors and fatals are errors.
 			$scope.serviceErrorClass = function(serviceError){
-				return serviceError.severity === "warning" ? "alert-warning" : "alert-danger";
+				return $scope.noticeClass(serviceError.severity);
 			}
 			
 			
