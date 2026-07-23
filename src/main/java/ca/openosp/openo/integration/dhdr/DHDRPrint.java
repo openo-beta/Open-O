@@ -610,6 +610,29 @@ public class DHDRPrint {
     return cell;
   }
 
+  private final SimpleDateFormat dateOnly = new SimpleDateFormat("yyyy-MM-dd");
+
+  /**
+   * Renders an EMR medication's start date. The EMR list carries {@code rxDate} as an epoch
+   * millisecond value (the viewer formats it with Angular's date filter), so printing it as a raw
+   * string would emit the millisecond number. Formats a numeric value as {@code yyyy-MM-dd} to match
+   * the DHDR side; anything non-numeric (already a date string, or absent) is returned unchanged.
+   *
+   * @param med JSONObject one EMR medication from the comparative payload
+   * @return String the start date as yyyy-MM-dd, or the original value when it is not epoch millis
+   */
+  private String emrStartDate(JSONObject med) {
+    String raw = med.optString("rxDate");
+    if (raw == null || raw.isEmpty()) {
+      return "";
+    }
+    try {
+      return dateOnly.format(new Date(Long.parseLong(raw)));
+    } catch (NumberFormatException e) {
+      return raw;
+    }
+  }
+
   /**
    * A standalone one-cell table marking a dispense that was present in the response but could not be
    * rendered. Used by the per-entry isolation so one malformed record never blanks the whole PDF.
@@ -942,7 +965,7 @@ public class DHDRPrint {
                 "DHDR print: skipped local-history entry " + i + " - entry is not a JSON object");
             continue;
           }
-          localTable.addCell(getItemCell(med.optString("rxDate")));
+          localTable.addCell(getItemCell(emrStartDate(med)));
           localTable.addCell(getItemCell(med.optString("instructions")));
           localTable.addCell(getItemCell(med.optString("providerName")));
           localTable.addCell(getItemCell(med.optString("regionalIdentifier")));
