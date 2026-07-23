@@ -170,10 +170,27 @@ public class DHDRPrint {
           if (jsonObject == null) {
             continue;
           }
-          if (reasonCodesStr.length() > 0) {
-            reasonCodesStr.append("; ");
+          // DHDR06.01(c): reasonCode is a CodeableConcept, so the code and display sit on its
+          // codings rather than on the concept. Falls back to the concept's plain text where it
+          // carries no coding, so a reason that is only written out still prints.
+          JSONArray codings = jsonObject.optJSONArray("coding");
+          for (int c = 0; codings != null && c < codings.length(); c++) {
+            JSONObject coding = codings.optJSONObject(c);
+            if (coding == null) {
+              continue;
+            }
+            if (reasonCodesStr.length() > 0) {
+              reasonCodesStr.append("; ");
+            }
+            reasonCodesStr.append(coding.opt("code") + " -- " + coding.opt("display"));
           }
-          reasonCodesStr.append(jsonObject.opt("code") + " -- " + jsonObject.opt("display"));
+          String text = jsonObject.optString("text", "");
+          if ((codings == null || codings.length() == 0) && !text.isEmpty()) {
+            if (reasonCodesStr.length() > 0) {
+              reasonCodesStr.append("; ");
+            }
+            reasonCodesStr.append(text);
+          }
         }
       }
       table.addCell(getItemCell(reasonCodesStr.toString()));
@@ -182,10 +199,21 @@ public class DHDRPrint {
       table.addCell(getItemCell(med.optString("dispensedDrugStrength")));
       table.addCell(getHeaderCell("Dosage Form"));
       table.addCell(getItemCell(med.optString("drugDosageForm")));
+      // The viewer splits dose into a value and a separate unit, and holds frequency as a bare
+      // count alongside its period - so printing either primitive on its own drops the unit of
+      // measure. Composed as the summary print and the screen already do.
       table.addCell(getHeaderCell("Dosage"));
-      table.addCell(getItemCell(med.optString("dose")));
+      table.addCell(getItemCell(med.optString("dose") + " " + med.optString("doseUnit")));
       table.addCell(getHeaderCell("Frequency"));
-      table.addCell(getItemCell(med.optString("frequency")));
+      table.addCell(
+          getItemCell(
+              med.optString("frequency")
+                  + " every "
+                  + med.optString("period")
+                  + " - "
+                  + med.optString("periodMax")
+                  + " "
+                  + med.optString("periodUnit")));
       table.addCell(getHeaderCell("Quantity"));
       table.addCell(
           getItemCell(

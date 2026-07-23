@@ -912,8 +912,13 @@
 						<tr>
 							<th>Medical Condition/Reason for Use</th>
 							<td>
+								<%-- DHDR06.01(c): each reasonCode is a CodeableConcept, so the code and display
+							     live on its codings - iterating the concept itself walks its properties
+							     instead and yields nothing. Falls back to the concept's plain text when it
+							     carries no coding. --%>
 								<div ng-repeat="rcode in med.reasonCode">
-									<div ng-repeat="reason in rcode">({{reason.code}}) -- {{reason.display}}</div>
+									<div ng-repeat="reason in rcode.coding">({{reason.code}}) -- {{reason.display}}</div>
+									<div ng-if="!rcode.coding.length && rcode.text">{{rcode.text}}</div>
 								</div>
 							</td>
 						</tr>
