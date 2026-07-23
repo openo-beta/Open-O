@@ -126,7 +126,7 @@
 
 				<small class="patientHeaderExt pull-right">
 					<i><fmt:message key="demographic.patient.context.born"/>: </i>
-					<b>{{demographic.dobYear}}-{{demographic.dobMonth}}-{{demographic.dobDay}}</b> (<b>{{demographic.age | age}}</b>) &nbsp;&nbsp; <i><fmt:message key="demographic.patient.context.sex"/>:</i> <b>{{demographic.sex}}</b>
+					<b>{{demographicDobText()}}</b> (<b>{{demographic.age | age}}</b>) &nbsp;&nbsp; <i><fmt:message key="demographic.patient.context.sex"/>:</i> <b>{{demographic.sex}}</b>
 					<i> &nbsp;&nbsp; <fmt:message key="Appointment.msgTelephone"/>:</i> <b>{{demographic.phone}}</b>
 					<!-- <span class="glyphicon glyphicon-new-window"></span>-->
 				</small>
@@ -141,7 +141,7 @@
 			<strong>DHDR EHR Service patient:</strong>
 			{{dhdrPatient.lastName}}, {{dhdrPatient.firstName}}{{matchNote(dhdrPatient.nameUnmatched, dhdrPatient.nameMissing)}}
 			&nbsp;&middot;&nbsp; HIN: {{dhdrPatient.hin}}{{matchNote(dhdrPatient.hinUnmatched, dhdrPatient.hinMissing)}}
-			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob}}{{matchNote(dhdrPatient.dobUnmatched, dhdrPatient.dobMissing)}}
+			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob | date}}{{matchNote(dhdrPatient.dobUnmatched, dhdrPatient.dobMissing)}}
 			&nbsp;&middot;&nbsp; Sex: {{dhdrPatient.gender}}{{matchNote(dhdrPatient.genderUnmatched, dhdrPatient.genderMissing)}}
 			<div ng-show="dhdrPatientDataUnmatched"><em>Some DHDR patient details differ from the EMR record, or are not recorded in it.</em></div>
 		</div>
@@ -183,12 +183,12 @@
 		 </div>
 		 <div class="row" style="margin-bottom:2px;">
 		 	<div class="col-xs-12" >
-		 	<i>DHDR is being searched with HIN: {{demographic.hin}}  DOB: {{demographic.dobYear}}-{{demographic.dobMonth}}-{{demographic.dobDay}}</i>
+		 	<i>DHDR is being searched with HIN: {{demographic.hin}}  DOB: {{demographicDobText()}}</i>
 	 	<br/>
 	 	<!-- DHDR02.05 (B2 #6): display the search period used alongside the results. -->
-	 	<%-- No date filter: already yyyy-MM-dd, and re-parsing it could show the day before. A
-	 	     cleared start date sends no lower bound, so describe that rather than render a
-	 	     dangling "  to <end>" range the search never actually used (BP6). --%>
+	 	<%-- Formatted in searchPeriodText() so the period reads in the same format as the tables
+	 	     (DHDR03.06). A cleared start date sends no lower bound, so describe that rather than
+	 	     render a dangling "  to <end>" range the search never actually used (BP6). --%>
 	 	<i>Search period: {{searchPeriodText()}}</i>
 		 	</div>
 		 </div>
@@ -386,8 +386,8 @@
 									Refills Remaining:{{med.refillsRemaining}}
 									Quantity Remaining:{{med.quantityRemaining}}
 								</td>
-								<td>{{med.prescriberLastname}}, {{med.prescriberFirstname}} {{med.prescriberPhoneNumber}}</td>
-								<td>{{med.dispensingPharmacy}} {{med.dispensingPharmacyFaxNumber}}</td>
+								<td>{{med.prescriberLastname}}, {{med.prescriberFirstname}} <span ng-if="med.prescriberPhoneNumber">Tel:{{med.prescriberPhoneNumber}}</span></td>
+								<td>{{med.dispensingPharmacy}} <span ng-if="med.dispensingPharmacyFaxNumber">Fax:{{med.dispensingPharmacyFaxNumber}}</span></td>
 								<td ng-click="showGroupedMeds2(medsWithGroupedDups[med.getUniqVal()])"><span ng-if="med.headRecord"><a>{{medsWithGroupedDups[med.getUniqVal()].length}}</a></span><!-- {{med | json}}  --></td>
 
 							</tr>
@@ -444,7 +444,7 @@
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Pharmacy Fax</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchServicetxt.dispensingPharmacyPhoneNumber" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchServicetxt.dispensingPharmacyFaxNumber" type="text" placeholder="type to filter" class="form-control" />
 							</div>
 						  </div>
 						</form>
@@ -482,7 +482,7 @@
 									<a ng-click="serviceOrderByField='pharmacistLastname'; serviceReverseSort = !serviceReverseSort">Pharmacist<span ng-show="serviceOrderByField == 'pharmacistLastname'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
 								</th>
 								<th>
-									<a ng-click="serviceOrderByField='dispensingPharmacyFaxNumber'; serviceReverseSort = !serviceReverseSort">Pharmacy Fax<span ng-show="serviceOrderByField == 'dispensingPharmacyPhoneNumber'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
+									<a ng-click="serviceOrderByField='dispensingPharmacyFaxNumber'; serviceReverseSort = !serviceReverseSort">Pharmacy Fax<span ng-show="serviceOrderByField == 'dispensingPharmacyFaxNumber'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
 								</th>
 								<th>Service Count</th>
 							</tr>
@@ -510,14 +510,13 @@
 		<div ng-show="viewWhen('comp')">	<!-- comparative view start -->
 	 		<div class="row">
 		 		<div class="col-xs-12" >
-		 			<button type="button" class="btn btn-default btn-xs" ng-click="hideShowDhirData()"><span ng-if="hideShowDhirDataVal">Hide</span><span ng-if="!hideShowDhirDataVal">Show</span> DHDR DATA</button>
 		 			<button type="button" class="btn btn-default btn-xs" ng-click="hideShowDhirPharma()"><span ng-if="hideShowDhirPharmaVal">Hide</span><span ng-if="!hideShowDhirPharmaVal">Show</span> DHDR PharmaServices</button>
 		 			<button type="button" class="btn btn-default btn-xs" ng-click="hideShowDhirDrug()"><span ng-if="hideShowDhirDrugVal">Hide</span><span ng-if="!hideShowDhirDrugVal">Show</span> DHDR Drugs</button>
 		 			<button type="button" class="btn btn-default btn-xs" ng-click="printComparative()">Print</button>
 		 		</div>
 		 	</div>
 			<div class="row">
-				<div class="col-xs-6" ng-if="hideShowDhirDataVal">
+				<div class="col-xs-6">
 					<div ng-if="hideShowDhirDrugVal">
 						<h4>DHDR Drugs <small><a ng-click="showHideFilter()">Filter</a></small></h4>
 						<h6>Medication Dispense</h6>
@@ -563,7 +562,7 @@
 				</div>
 			</div>
 	 		<div class="row">
-		 		<div class="col-xs-6 table-overflow-x " ng-if="hideShowDhirDataVal">
+		 		<div class="col-xs-6 table-overflow-x ">
 			 		<div ng-if="hideShowDhirDrugVal">
 						<table class="table table-condensed table-striped table-bordered" >
 				 			<thead>
@@ -651,8 +650,8 @@
 				 						Refills Remaining:{{med.refillsRemaining}}
 										Quantity Remaining:{{med.quantityRemaining}}
 				 					</td>
-				 					<td>{{med.prescriberLastname}}, {{med.prescriberFirstname}} Tel:{{med.prescriberPhoneNumber}}</td>
-				 					<td>{{med.dispensingPharmacy}} {{med.dispensingPharmacyFaxNumber}}</td>
+				 					<td>{{med.prescriberLastname}}, {{med.prescriberFirstname}} <span ng-if="med.prescriberPhoneNumber">Tel:{{med.prescriberPhoneNumber}}</span></td>
+				 					<td>{{med.dispensingPharmacy}} <span ng-if="med.dispensingPharmacyFaxNumber">Fax:{{med.dispensingPharmacyFaxNumber}}</span></td>
 				 					
 				 					
 				 				</tr>
@@ -808,9 +807,27 @@
 									{{compLocalMeds.length}} results returned
 								</td>
 							</tr>
-			 				<tr> 
-			 					<th>Start Date</th> 
-			 					<th>Medication</th>
+			 				<tr>
+			 					<%-- DHDR03.05: sortable by dispensed date and generic name, with the
+			 					     active element indicated, as on the DHDR tables. --%>
+			 					<th>
+			 						<a ng-click="emrSort.field='rxDate'; emrSort.reverse = !emrSort.reverse">
+			 							Start Date
+			 							<span ng-show="emrSort.field == 'rxDate'">
+			 								<span ng-show="!emrSort.reverse">^</span>
+			 								<span ng-show="emrSort.reverse">v</span>
+			 							</span>
+			 						</a>
+			 					</th>
+			 					<th>
+			 						<a ng-click="emrSort.field='medication'; emrSort.reverse = !emrSort.reverse">
+			 							Medication
+			 							<span ng-show="emrSort.field == 'medication'">
+			 								<span ng-show="!emrSort.reverse">^</span>
+			 								<span ng-show="emrSort.reverse">v</span>
+			 							</span>
+			 						</a>
+			 					</th>
 			 					<th>Strength</th>
 			 					<th>Dosage</th>
 			 					<th>Frequency</th>
@@ -821,7 +838,7 @@
 							</tr> 
 						</thead> 
 		 				<tbody> 
-			 				<tr ng-repeat="med in compLocalMeds | orderBy: 'rxDate': true">
+			 				<tr ng-repeat="med in compLocalMeds | orderBy: emrSortValue : emrSort.reverse">
 			 					<th scope="row" class="startDate">{{med.rxDate | date}}</th>
 			 					<td>{{med.genericName || med.brandName || med.customName}}</td>
 			 					<td>{{med.strength}} {{med.strengthUnit}}</td>
@@ -952,7 +969,7 @@
 						<tr>
 							<th>Patient DOB</th>
 							<td>
-								{{dhdrPatient.dob}}
+								{{dhdrPatient.dob | date}}
 								<span ng-show="dhdrPatient.dobUnmatched"> (UNMATCHED)</span>
 							</td>
 						</tr>
@@ -1057,8 +1074,8 @@
 		 					<td>{{med.estimatedDaysSupply}}</td>
 		 					<td>{{med.refillsRemaining}}</td>
 							<td>{{med.quantityRemaining}}</td>
-		 					<td>{{med.prescriberLastname}}, {{med.prescriberFirstname}} {{med.prescriberPhoneNumber}}</td>
-		 					<td>{{med.dispensingPharmacy}} {{med.dispensingPharmacyFaxNumber}}</td>
+		 					<td>{{med.prescriberLastname}}, {{med.prescriberFirstname}} <span ng-if="med.prescriberPhoneNumber">Tel:{{med.prescriberPhoneNumber}}</span></td>
+		 					<td>{{med.dispensingPharmacy}} <span ng-if="med.dispensingPharmacyFaxNumber">Fax:{{med.dispensingPharmacyFaxNumber}}</span></td>
 		 				</tr> 
 		 			</tbody> 
 		 		</table>
@@ -1088,7 +1105,7 @@
 		 					<th>Pharmacy Service Description</th> 
 							<th>Pharmacy Name</th>
 		 					<th>Pharmacist</th>
-		 					<th>Pharmacy Tel</th>
+		 					<th>Pharmacy Fax</th>
 						</tr> 
 					</thead> 
 					 
@@ -1100,7 +1117,7 @@
 		 					<td>{{med.genericName}} </td>
 		 					<td>{{med.dispensingPharmacy}}</td>
 		 					<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} </td>
-		 					<td>{{med.dispensingPharmacyPhoneNumber}}</td> 
+		 					<td>{{med.dispensingPharmacyFaxNumber}}</td>
 		 				</tr> 
 		 			</tbody> 
 		 		</table>
@@ -1149,6 +1166,15 @@
 				let pad = function(v){ return (String(v).length < 2 ? "0" : "") + v; };
 				return y + "-" + pad(m) + "-" + pad(d);
 			};
+			// DHDR03.06: dates must read the same across every DHDR view, so the patient header and
+			// the "searched with" line render through the same default medium format the tables use
+			// rather than the raw yyyy-MM-dd parts. Keeps the placeholder when no date of birth is
+			// recorded, so the gap stays visible instead of collapsing to nothing.
+			$scope.demographicDobText = function(){
+				let iso = partsAsSearchDate($scope.demographic.dobYear,
+						$scope.demographic.dobMonth, $scope.demographic.dobDay);
+				return iso ? $filter('date')(iso) : "--";
+			};
 			// DHDR03.02: how a differing field reads in the patient banner. Absent from the EMR and
 			// disagreeing with the EMR are both flagged, but they call for different action.
 			$scope.matchNote = function(unmatched, missing){
@@ -1184,15 +1210,17 @@
 			// DHDR02.05: state the period actually searched. With no start date the query carries no
 			// lower bound, so saying "<blank> to <end>" would advertise a period we never asked for.
 			$scope.searchPeriodText = function(){
-				let start = $scope.searchConfig.startDate;
-				let end = $scope.searchConfig.endDate;
+				// DHDR03.06: shown in the tables' format. Safe on a yyyy-MM-dd string - the date
+				// filter reads it as local, unlike new Date(), which would land a day earlier.
+				let shown = function(d){ return d ? $filter('date')(d) : d; };
+				let start = shown($scope.searchConfig.startDate);
+				let end = shown($scope.searchConfig.endDate);
 				if (!start && !end) { return "all available events"; }
 				if (!start) { return "all events up to " + end; }
 				if (!end) { return start + " onwards"; }
 				return start + " to " + end;
 			};
 			$scope.searching = false;
-			$scope.hideShowDhirDataVal = true;
 			$scope.showSummaryProductFilter = false;
 			$scope.showSummaryServiceFilter = false;
 			$scope.hideShowDhirPharmaVal = true;
@@ -1215,13 +1243,6 @@
 			$scope.searchComplete = false;
 			$scope.buttonDisabled = false;
 
-			$scope.hideShowDhirData = function(){
-				if($scope.hideShowDhirDataVal){
-					$scope.hideShowDhirDataVal = false;
-				}else{
-					$scope.hideShowDhirDataVal = true;
-				}
-			}
 			
 			$scope.hideShowDhirPharma = function(){
 				if($scope.hideShowDhirPharmaVal){
@@ -1302,6 +1323,21 @@
 				}
 				return "";
 			}
+
+			// DHDR03.05: the EMR side must sort by the same two elements as the DHDR side - generic
+			// name and dispensed date - and show which one is active. Held on an object because the
+			// EMR table is ng-included twice, and a primitive assigned from either include would
+			// shadow the parent scope instead of writing through to it. Defaults to date descending,
+			// which is what DHDR03.01 asks the view to open on.
+			$scope.emrSort = { field: "rxDate", reverse: true };
+			// Sorts on the value the Medication column actually displays, which falls back through
+			// brand and custom name when the EMR holds no generic name.
+			$scope.emrSortValue = function(med){
+				if ($scope.emrSort.field === "medication") {
+					return (med.genericName || med.brandName || med.customName || "").toUpperCase();
+				}
+				return med.rxDate;
+			};
 
 			$scope.orderByField = 'whenPrepared';
 			$scope.reverseSort = true;
@@ -1776,15 +1812,23 @@
 						let blank = function(v){
 							return v === null || v === undefined || String(v).trim() === "";
 						};
+						// The EMR holds a name as the clinic typed it and the DHDR record as the ministry
+						// holds it, so compare them folded: a difference in case or padding is not a
+						// difference in identity, and flagging one sends the reader to reconcile two
+						// records that already agree.
+						let differs = function(emr, dhdr){
+							return String(blank(emr) ? "" : emr).trim().toUpperCase()
+									!== String(blank(dhdr) ? "" : dhdr).trim().toUpperCase();
+						};
 
 						$scope.dhdrPatient.nameMissing = blank($scope.demographic.firstName)
 								|| blank($scope.demographic.lastName);
-						$scope.dhdrPatient.nameUnmatched = ($scope.demographic.firstName !==
-								$scope.dhdrPatient.firstName.toUpperCase() || $scope.demographic.lastName !==
-								$scope.dhdrPatient.lastName.toUpperCase());
+						$scope.dhdrPatient.nameUnmatched =
+								differs($scope.demographic.firstName, $scope.dhdrPatient.firstName)
+								|| differs($scope.demographic.lastName, $scope.dhdrPatient.lastName);
 
 						$scope.dhdrPatient.genderMissing = blank($scope.demographic.sex);
-						$scope.dhdrPatient.genderUnmatched = ($scope.demographic.sex !== dhdrGenderInitial);
+						$scope.dhdrPatient.genderUnmatched = differs($scope.demographic.sex, dhdrGenderInitial);
 
 						$scope.dhdrPatient.dobMissing = blank(demographicDob);
 						$scope.dhdrPatient.dobUnmatched = (demographicDob !== $scope.dhdrPatient.dob);
