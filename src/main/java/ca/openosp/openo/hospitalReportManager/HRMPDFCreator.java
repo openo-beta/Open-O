@@ -34,6 +34,7 @@ import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
+import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
 
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -281,11 +282,12 @@ public class HRMPDFCreator extends PdfPageEventHelper {
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         metaDataBox.addCell(cell);
 
-        cell.setPhrase(new Phrase("Sending Facility ID: ", boldFont));
+        cell.setPhrase(new Phrase("Sending Facility: ", boldFont));
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         metaDataBox.addCell(cell);
 
-        cell.setPhrase(new Phrase(hrmReport.getSendingFacilityId(), font));
+        HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
+        cell.setPhrase(new Phrase(hrmSendingFacilityDao.getDisplayName(hrmReport.getSendingFacilityId()), font));
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         metaDataBox.addCell(cell);
 

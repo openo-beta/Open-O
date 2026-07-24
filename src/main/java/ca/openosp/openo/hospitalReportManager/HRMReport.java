@@ -42,6 +42,10 @@ public class HRMReport {
     private Integer hrmDocumentId;
     private Integer hrmParentDocumentId;
 
+    // Non-fatal warnings raised while parsing this report (e.g. an invalid placeholder date that was
+    // substituted with today's date). Merged into the upload warnings list by addReportToInbox.
+    private final List<String> uploadWarnings = new ArrayList<String>();
+
     public HRMReport(OmdCds hrmReport) {
         this.hrmReport = hrmReport;
         this.demographics = hrmReport.getPatientRecord().getDemographics();
@@ -68,6 +72,16 @@ public class HRMReport {
 
     public void setFileLocation(String fileLocation) {
         this.fileLocation = fileLocation;
+    }
+
+    public List<String> getUploadWarnings() {
+        return uploadWarnings;
+    }
+
+    public void addUploadWarnings(List<String> warnings) {
+        if (warnings != null) {
+            this.uploadWarnings.addAll(warnings);
+        }
     }
 
     public String getLegalName() {

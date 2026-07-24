@@ -27,6 +27,7 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
 import ca.openosp.openo.hospitalReportManager.model.HRMSubClass;
+import ca.openosp.openo.hospitalReportManager.model.HRMSendingFacility;
 import ca.openosp.openo.managers.NioFileManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -51,6 +52,7 @@ public class HRMUtil {
     private static HRMSubClassDao hrmSubClassDao = (HRMSubClassDao) SpringUtils.getBean(HRMSubClassDao.class);
     private static HRMDocumentSubClassDao hrmDocumentSubClassDao = (HRMDocumentSubClassDao) SpringUtils.getBean(HRMDocumentSubClassDao.class);
     private static HRMCategoryDao hrmCategoryDao = SpringUtils.getBean(HRMCategoryDao.class);
+    private static HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
     private static IncomingLabRulesDao incomingLabRulesDao = SpringUtils.getBean(IncomingLabRulesDao.class);
     private static final NioFileManager nioFileManager = SpringUtils.getBean(NioFileManager.class);
     private static final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
@@ -89,6 +91,10 @@ public class HRMUtil {
         } else {
             docsToDisplay = noFilterDuplicates(loggedInInfo, hrmDocResultsDemographic);
         }
+
+        // Prefetch the (small) sending-facility registry once so the per-row display-name
+        // resolution below is a map lookup rather than a query (avoids N+1).
+        Map<String, HRMSendingFacility> sfRegistry = hrmSendingFacilityDao.getRegistryById();
 
         //iterate over this set to generate a hashmap of summary information for each HRM document
         //(e.g. id, time received, type, status, etc...)
@@ -147,6 +153,8 @@ public class HRMUtil {
             curht.put("description", hrmDocument.getDescription());
             curht.put("class_subclass", dispSubClass);
             curht.put("name", displayHRMDocumentName);
+            curht.put("sending_facility", hrmSendingFacilityDao.getDisplayName(hrmReport.getSendingFacilityId(), sfRegistry));
+            curht.put("report_number", hrmReport.getSendingFacilityReportNo() != null ? hrmReport.getSendingFacilityReportNo() : "");
 
             if (filterDuplicates) {
                 StringBuilder duplicateLabIdQueryString = new StringBuilder();
@@ -276,10 +284,15 @@ public class HRMUtil {
 
         List<HRMSubClass> hrmSubClasses = hrmSubClassDao.listAll();
 
+        // Prefetch the (small) sending-facility registry once to resolve display names
+        // without a per-row query (avoids N+1 across the mapping list).
+        Map<String, HRMSendingFacility> sfRegistry = hrmSendingFacilityDao.getRegistryById();
+
         for (HRMSubClass hrmSubClass : hrmSubClasses) {
 
             HashMap<String, Object> curht = new HashMap<String, Object>();
             curht.put("id", hrmSubClass.getSendingFacilityId());
+            curht.put("facility_display", hrmSendingFacilityDao.getDisplayName(hrmSubClass.getSendingFacilityId(), sfRegistry));
             curht.put("sub_class", hrmSubClass.getSubClassName());
             curht.put("class", hrmSubClass.getClassName());
             curht.put("category", hrmSubClass.getHrmCategory());

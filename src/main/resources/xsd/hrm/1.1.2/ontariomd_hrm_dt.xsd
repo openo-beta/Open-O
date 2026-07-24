@@ -158,7 +158,7 @@
 	<xs:simpleType name="emailAddress">
 		<xs:restriction base="xs:token">
 			<xs:maxLength value="50"/>
-			<xs:pattern value="([\.a-zA-Z0-9_\-])+@([a-zA-Z0-9_\-])+(([a-zA-Z0-9_\-])*\.([a-zA-Z0-9_\-])+)+"/>
+			<xs:pattern value="([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(([a-zA-Z0-9_-])*\.([a-zA-Z0-9_-])+)+"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="enrollmentInfo">
@@ -570,7 +570,7 @@
 	<xs:simpleType name="postalCode">
 		<xs:restriction base="xs:string">
 			<xs:maxLength value="10"/>
-			<xs:pattern value="([a-zA-Z0-9\-])*"/>
+			<xs:pattern value="([a-zA-Z0-9-])*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="postalZipCode">
@@ -786,7 +786,7 @@
 	<xs:simpleType name="zipCode">
 		<xs:restriction base="xs:token">
 			<xs:maxLength value="10"/>
-			<xs:pattern value="([0-9\-])*"/>
+			<xs:pattern value="([0-9-])*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="smokingStatus">

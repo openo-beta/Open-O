@@ -73,7 +73,7 @@
         <div class="col-sm-12">
             <h4>HRM Categories</h4>
 
-            <form method="post" action="hrm_categories_action.jsp">
+            <form method="post" action="<%=request.getContextPath()%>/hospitalReportManager/hrm_categories_action.jsp">
                 <input type="hidden" name="action" value="add"/>
                 <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(existingCategory != null ? existingCategory.getId() : ""))%>"/>
                 <fieldset>
@@ -114,9 +114,9 @@
                     for (HRMCategory category : hrmCategoryDao.findAll()) {
                 %>
                 <tr>
-                    <td><a href="hrm_categories_action.jsp?action=delete&id=<%=Encode.forHtmlAttribute(String.valueOf(category.getId()))%>"><img
+                    <td><a href="<%=request.getContextPath()%>/hospitalReportManager/hrm_categories_action.jsp?action=delete&id=<%=Encode.forHtmlAttribute(String.valueOf(category.getId()))%>"><img
                             src="<%=request.getContextPath()%>/images/icons/101.png" alt="alert"></a></td>
-                    <td><a href="hrmCategories.jsp?id=<%=Encode.forUriComponent(String.valueOf(category.getId()))%>"><%=Encode.forHtml(String.valueOf(category.getId()))%>
+                    <td><a href="<%=request.getContextPath()%>/hospitalReportManager/hrmCategories.jsp?id=<%=Encode.forUriComponent(String.valueOf(category.getId()))%>"><%=Encode.forHtml(String.valueOf(category.getId()))%>
                     </a></td>
                     <td><%=Encode.forHtml(category.getCategoryName())%>&nbsp;</td>
                     <td><%=Encode.forHtml(category.getSubClassNameMnemonic())%>&nbsp;</td>

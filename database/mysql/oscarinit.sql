@@ -9555,6 +9555,14 @@ CREATE TABLE IF NOT EXISTS `HRMSubClass` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `HRMSendingFacility` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sendingFacilityId` varchar(50) NOT NULL,
+  `facilityName` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_HRMSendingFacility_sfId` (`sendingFacilityId`)
+);
+
 CREATE TABLE IF NOT EXISTS `HRMDocumentComment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `providerNo` varchar(20) DEFAULT NULL,

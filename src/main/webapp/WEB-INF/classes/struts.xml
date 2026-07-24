@@ -2103,9 +2103,6 @@
         <action name="hospitalReportManager/Display" class="ca.openosp.openo.hospitalReportManager.HRMDisplayReport2Action">
             <result name="display" type="dispatcher">/hospitalReportManager/displayHRMReport.jsp</result>
         </action>
-        <action name="hospitalReportManager/hrmKeyUploader" class="ca.openosp.openo.hospitalReportManager.HRMUploadKey2Action">
-            <result name="success">/hospitalReportManager/hrmPreferences.jsp</result>
-        </action>
         <action name="hospitalReportManager/UploadLab" class="ca.openosp.openo.hospitalReportManager.HRMUploadLab2Action">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/hospitalReportManager/hospitalReportManager.jsp</result>
@@ -2119,8 +2116,8 @@
         <action name="hospitalReportManager/Mapping" class="ca.openosp.openo.hospitalReportManager.HRMMapping2Action">
             <result name="success">/hospitalReportManager/hrmShowMapping.jsp</result>
         </action>
-        <action name="hospitalReportManager/HRMPreferences" class="ca.openosp.openo.hospitalReportManager.HRMPreferences2Action">
-            <result name="success">/hospitalReportManager/hrmPreferences.jsp</result>
+        <action name="hospitalReportManager/HRMSendingFacility" class="ca.openosp.openo.hospitalReportManager.HRMSendingFacility2Action">
+            <result name="success">/hospitalReportManager/hrmSendingFacilities.jsp</result>
         </action>
         <action name="hospitalReportManager/HRMDownloadFile" class="ca.openosp.openo.hospitalReportManager.HRMDownloadFile2Action"/>
         <action name="hospitalReportManager/hrm" class="ca.openosp.openo.hospitalReportManager.v2018.HRM2Action"/>

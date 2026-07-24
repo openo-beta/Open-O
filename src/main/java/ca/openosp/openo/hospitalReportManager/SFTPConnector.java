@@ -33,12 +33,14 @@ import ca.openosp.openo.PMmodule.model.SecUserRole;
 import ca.openosp.openo.commn.dao.HrmLogDao;
 import ca.openosp.openo.commn.dao.HrmLogEntryDao;
 import ca.openosp.openo.commn.dao.SecObjPrivilegeDao;
+import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
 import ca.openosp.openo.commn.model.HrmLog;
 import ca.openosp.openo.commn.model.HrmLogEntry;
 import ca.openosp.openo.commn.model.OscarMsgType;
 import ca.openosp.openo.commn.model.SecObjPrivilege;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import com.jcraft.jsch.Channel;
@@ -89,6 +91,7 @@ public class SFTPConnector {
 
     private HrmLogDao hrmLogDao = SpringUtils.getBean(HrmLogDao.class);
     private HrmLogEntryDao hrmLogEntryDao = SpringUtils.getBean(HrmLogEntryDao.class);
+    private HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
 
     /**
      * String is the providerNo of people who don't want to see anymore messages.
@@ -544,7 +547,7 @@ public class SFTPConnector {
     }
 
     /*
-     * This gets called by "SchedulerJob"
+     * Called by HRMDownloadJob (the scheduled auto-poll) and by the manual fetch on hospitalReportManager.jsp.
      */
     public synchronized boolean startAutoFetch(LoggedInInfo loggedInInfo, String remoteDir) {
         String[] localFilePaths = null;
@@ -617,6 +620,11 @@ public class SFTPConnector {
                                 HRMReportParser.addReportToInbox(loggedInInfo, report);
 
                                 hrmLogEntry.setDistributed(true);
+                                String sfId = report.getSendingFacilityId();
+                                if (sfId != null && !sfId.trim().isEmpty()
+                                        && hrmSendingFacilityDao.findBySendingFacilityId(sfId) == null) {
+                                    hrmLogEntry.setError("WARNING: Unregistered Sending Facility: " + sfId);
+                                }
                                 hrmLogEntryDao.merge(hrmLogEntry);
 
                             } else {
@@ -702,7 +710,40 @@ public class SFTPConnector {
         return results.toArray(new String[results.size()]);
     }
 
-    protected static void notifyHrmError(LoggedInInfo loggedInInfo, String errorMsg) {
+    public static int parsePort(String port) {
+        if (port == null || port.trim().isEmpty()) {
+            throw new IllegalStateException("HRM port is not configured. Set it on the HRM Configuration page.");
+        }
+        try {
+            return Integer.parseInt(port.trim());
+        } catch (NumberFormatException nfe) {
+            throw new IllegalStateException("HRM port '" + port + "' is not a valid number.");
+        }
+    }
+
+    public static String requirePrivateKeyPath(String privateKeyDirectory, String privateKeyFile) {
+        if (privateKeyFile == null || privateKeyFile.trim().isEmpty()) {
+            throw new IllegalStateException("HRM private key file is not configured. Upload one on the HRM Configuration page.");
+        }
+        if (privateKeyDirectory == null || privateKeyDirectory.trim().isEmpty()) {
+            throw new IllegalStateException("HRM private key directory is not configured.");
+        }
+        File dir = new File(privateKeyDirectory);
+        File keyFile = new File(dir, privateKeyFile);
+        PathValidationUtils.validateExistingPath(keyFile, dir);
+        return keyFile.getAbsolutePath();
+    }
+
+    public static void notifyHrmError(LoggedInInfo loggedInInfo, String errorMsg) {
+        String errorDetails = (errorMsg == null || errorMsg.trim().isEmpty())
+                ? "No additional error details were provided. See the HRM log for more information."
+                : errorMsg;
+        String message = "OpenO attempted to perform a fetch of HRM data at " + new Date() + " but there was an error during the task.\n\nSee below and HRM log for further details:\n" + errorDetails
+                + "\n\nTo stop receiving these notifications for the current outage, open the \"Hospital Report Manager (HRM) Status\" page under Administration and click \"I don't want to receive any more HRM outage messages for this outage instance\". Notifications resume automatically after the next successful fetch.";
+        notifyHrmAdmin(loggedInInfo, "HRM Retrieval Error", message);
+    }
+
+    public static void notifyHrmAdmin(LoggedInInfo loggedInInfo, String subject, String message) {
         HashSet<String> sendToProviderList = new HashSet<String>();
 
         if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() != null) {
@@ -741,8 +782,6 @@ public class SFTPConnector {
         }
 
 
-        String message = "OSCAR attempted to perform a fetch of HRM data at " + new Date() + " but there was an error during the task.\n\nSee below and HRM log for further details:\n" + errorMsg;
-
         MsgMessageData messageData = new MsgMessageData();
 
         ArrayList<MsgProviderData> sendToProviderListData = new ArrayList<MsgProviderData>();
@@ -751,11 +790,11 @@ public class SFTPConnector {
             mpd.getId().setContactId(providerNo);
             mpd.getId().setClinicLocationNo(145);
             sendToProviderListData.add(mpd);
-            logger.info("HRM retrieval error: notifying " + providerNo);
+            logger.info("HRM admin notify [" + subject + "]: " + providerNo);
         }
 
         String sentToString = messageData.createSentToString(sendToProviderListData);
-        messageData.sendMessage2(message, "HRM Retrieval Error", "System", sentToString, "-1", sendToProviderListData, null, null, OscarMsgType.GENERAL_TYPE);
+        messageData.sendMessage2(message, subject, "System", sentToString, "-1", sendToProviderListData, null, null, OscarMsgType.GENERAL_TYPE);
     }
 
     /**
@@ -763,7 +802,12 @@ public class SFTPConnector {
      */
     public static void addMeToDoNotSendList(LoggedInInfo loggedInInfo) {
         if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() != null) {
-            doNotSentMsgForOuttage.add(loggedInInfo.getLoggedInProviderNo());
+            String providerNo = loggedInInfo.getLoggedInProviderNo();
+            boolean alreadyPresent = doNotSentMsgForOuttage.contains(providerNo);
+            doNotSentMsgForOuttage.add(providerNo);
+            logger.info("HRM do-not-send list: provider " + providerNo + (alreadyPresent ? " was already suppressed" : " added") + " (current size: " + doNotSentMsgForOuttage.size() + ")");
+        } else {
+            logger.warn("HRM do-not-send list: dismiss requested but no logged-in provider in session; nothing suppressed");
         }
     }
 

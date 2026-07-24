@@ -60,6 +60,7 @@ import ca.openosp.openo.commn.model.OscarJob;
 import ca.openosp.openo.commn.model.OscarJobType;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.hospitalReportManager.HRMReport;
 import ca.openosp.openo.hospitalReportManager.HRMReportParser;
 import ca.openosp.openo.hospitalReportManager.SFTPConnector;
@@ -67,6 +68,8 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMCategoryDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
+import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
+import ca.openosp.openo.hospitalReportManager.model.HRMSendingFacility;
 import ca.openosp.openo.hospitalReportManager.model.HRMCategory;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
@@ -130,6 +133,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
     private ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private HRMDocumentToDemographicDao hrmDocumentToDemographicDao = SpringUtils.getBean(HRMDocumentToDemographicDao.class);
+    private HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
 
     // Struts 2 file upload properties for HRM report upload
     private List<UploadedFile> hrm_file;
@@ -300,6 +304,10 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                     // Update user property with the private key filename
                     saveUserProperty("hrm_private_key_file", safeFileName);
 
+                    // Audit the SSH private key change (field name only - never the filename or key contents)
+                    LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), "hrm.config.update", "HRM configuration",
+                            null, loggedInInfo.getIp(), null, "Changed fields: hrm_private_key_file");
+
                     obj.put("message", safeFileName + " successfully saved");
                 }
             } else {
@@ -349,13 +357,17 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                 privateKeyDirectory = OscarProperties.getInstance().getDocumentDirectory() + ".." + File.separator + "hrm" + File.separator + "OMD" + File.separator;
             }
 
+            int portNum = SFTPConnector.parsePort(port);
+            String privateKeyPath = SFTPConnector.requirePrivateKeyPath(privateKeyDirectory, privateKeyFile);
 
-            connector = new SFTPConnector(LoggedInInfo.getLoggedInInfoFromSession(request), hostname, Integer.parseInt(port), username, privateKeyDirectory + privateKeyFile, "Manual");
+            connector = new SFTPConnector(LoggedInInfo.getLoggedInInfoFromSession(request), hostname, portNum, username, privateKeyPath, "Manual");
             SFTPConnector.setDecryptionKey(decryptionKey);
             connector.startAutoFetch(LoggedInInfo.getLoggedInInfoFromSession(request), remoteDir);
             connector.close();
         } catch (Exception e) {
             error = e.getMessage();
+            logger.error("HRM manual fetch failed", e);
+            SFTPConnector.notifyHrmError(LoggedInInfo.getLoggedInInfoFromSession(request), error);
         }
 
         JSONObject obj = new JSONObject();
@@ -383,11 +395,27 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         String pollingEnabled = request.getParameter("polling_enabled");
         String pollingInterval = request.getParameter("polling_interval");
 
+        // Detect which sFTP connection fields actually changed, for the audit trail.
+        // Only the field NAMES are recorded - never the values, since these are
+        // credentials (username, decryption key, etc.).
+        List<String> changedFields = new ArrayList<String>();
+        if (isConfigValueChanged("hrm_hostname", hostname)) changedFields.add("hrm_hostname");
+        if (isConfigValueChanged("hrm_port", port)) changedFields.add("hrm_port");
+        if (isConfigValueChanged("hrm_username", username)) changedFields.add("hrm_username");
+        if (isConfigValueChanged("hrm_location", location)) changedFields.add("hrm_location");
+        if (isConfigValueChanged("hrm_decryption_key", key)) changedFields.add("hrm_decryption_key");
+
         saveUserProperty("hrm_hostname", hostname);
         saveUserProperty("hrm_port", port);
         saveUserProperty("hrm_username", username);
         saveUserProperty("hrm_location", location);
         saveUserProperty("hrm_decryption_key", key);
+
+        if (!changedFields.isEmpty()) {
+            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+            LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), "hrm.config.update", "HRM configuration",
+                    null, loggedInInfo.getIp(), null, "Changed fields: " + String.join(", ", changedFields));
+        }
 
         int pInterval = 30;
 
@@ -529,6 +557,19 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
             return up.getValue();
         }
         return "";
+    }
+
+    /**
+     * Compares the currently stored value of an HRM configuration property against an incoming
+     * value to determine whether it is being changed. Used to drive the configuration audit log
+     * without ever exposing the values themselves.
+     *
+     * @param propName String the UserProperty name (e.g. "hrm_port")
+     * @param newValue String the incoming value from the request (may be null)
+     * @return boolean true if the stored value differs from the incoming value
+     */
+    private boolean isConfigValueChanged(String propName, String newValue) {
+        return !getUserPropertyValueOrEmpty(propName).equals(newValue == null ? "" : newValue);
     }
 
     private Integer saveUserProperty(String name, String value) {
@@ -837,6 +878,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
         String noSignOff = StringUtils.trimToEmpty(request.getParameter("noSignOff"));
         String demographicUnmatched = StringUtils.trimToEmpty(request.getParameter("demographicUnmatched"));
+        String categoryUnmatched = StringUtils.trimToEmpty(request.getParameter("categoryUnmatched"));
 
         if (isHrmAdmin && "ALL".equals(providerNo)) {
             providerNo = null;
@@ -879,12 +921,16 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
 
         if (isHrm) {
-            List<HRMDocument> docs = hrmDocumentDao.query(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
+            List<HRMDocument> docs = hrmDocumentDao.query(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
 
-            total = hrmDocumentDao.queryForCount(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
+            total = hrmDocumentDao.queryForCount(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), orderBy, orderingColumnDirection);
 
 
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+            // Prefetch the (small) sending-facility registry once to resolve display names
+            // without a per-row query (avoids N+1 across the inbox page).
+            Map<String, HRMSendingFacility> sfRegistry = hrmSendingFacilityDao.getRegistryById();
 
             for (HRMDocument d : docs) {
                 HRMCategory category = null;
@@ -892,8 +938,8 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                     category = hrmCategoryDao.find(d.getHrmCategoryId());
                 }
 
-                List<HRMDocumentToDemographic> ptList = hrmDocumentToDemographicDao.findByHrmDocumentId(d.getId().toString());
-                Integer demographicNo = ptList.get(0).getDemographicNo();
+                List<HRMDocumentToDemographic> ptList = hrmDocumentToDemographicDao.findByHrmDocumentId(d.getId());
+                Integer demographicNo = ptList.isEmpty() ? null : ptList.get(0).getDemographicNo();
                 JSONObject data1 = new JSONObject();
                 data1.put("id", d.getId() + "");
                 data1.put("provider_no", d.getRecipientProviderNo() != null ? d.getRecipientProviderNo() : "");
@@ -918,7 +964,8 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                 data1.put("report_date", reportDate != null ? reportDate : "");
 
 
-                data1.put("sending_facility", d.getSourceFacility() != null ? d.getSourceFacility() : "");
+                data1.put("sending_facility", hrmSendingFacilityDao.getDisplayName(d.getSourceFacility(), sfRegistry));
+                data1.put("report_number", d.getSourceFacilityReportNo() != null ? d.getSourceFacilityReportNo() : "");
                 if (!StringUtils.isEmpty(d.getClassName()) && !StringUtils.isEmpty(d.getSubClassName())) {
                     String className = d.getClassName();
                     String subClassName = d.getSubClassName();

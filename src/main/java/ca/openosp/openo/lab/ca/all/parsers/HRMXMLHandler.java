@@ -17,7 +17,6 @@
 package ca.openosp.openo.lab.ca.all.parsers;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,17 +25,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 
 import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.hospitalReportManager.SFTPConnector;
 import ca.openosp.openo.hospitalReportManager.xsd.DateFullOrPartial;
 import ca.openosp.openo.hospitalReportManager.xsd.HealthCard;
 import ca.openosp.openo.hospitalReportManager.xsd.OmdCds;
@@ -69,13 +62,6 @@ public class HRMXMLHandler implements MessageHandler {
 
         try {
             ByteArrayInputStream byeArrayInputStream = new ByteArrayInputStream(hl7Body.getBytes());
-
-            // Create a SchemaFactory capable of understanding WXS schemas.
-            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-            // Load a WXS schema, represented by a Schema instance.
-            Source schemaFile = new StreamSource(new File(SFTPConnector.OMD_directory + "report_manager_cds.xsd"));
-            Schema schema = factory.newSchema(schemaFile); //new File(SFTPConnector.OMD_directory + "report_manager_cds.xsd"));
 
             JAXBContext jc = JAXBContext.newInstance("ca.openosp.openo.hospitalReportManager.xsd");
             Unmarshaller u = jc.createUnmarshaller();

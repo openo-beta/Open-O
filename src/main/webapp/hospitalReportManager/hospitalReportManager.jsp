@@ -56,23 +56,21 @@
                 padding: 7px;
                 margin-bottom: 3px;
                 font-size: 14px;
-                word-wrap: break-word;
                 max-width: 100%;
-                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
             }
 
             .upload-text {
-                position: absolute;
-                top: 50%;
-                right: 10px;
-                transform: translateY(-50%);
                 font-weight: bold;
+                flex-shrink: 0;
             }
 
             .file-name {
-                max-width: calc(100% - 170px);
-                display: inline-block;
-                vertical-align: middle;
+                flex: 1;
+                margin-right: 10px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -118,9 +116,47 @@
             .failed {
                 color: #FFD700;
             }
+
+            .warning {
+                color: #b8860b;
+            }
+
+            .warning-line {
+                margin-top: 4px;
+            }
+            .warning-line:first-child {
+                margin-top: 0;
+            }
+
+            .error-detail {
+                flex-basis: 100%;
+                margin-top: 6px;
+                padding: 8px 10px;
+                background: #fff3cd;
+                border: 1px solid #ffc107;
+                border-radius: 3px;
+                font-size: 12px;
+                font-family: monospace;
+            }
+
+            .error-toggle {
+                padding: 0 4px;
+                font-size: 15px;
+                vertical-align: middle;
+                color: inherit;
+                border: none;
+                background: none;
+                cursor: pointer;
+                display: inline-block;
+                transition: transform 0.2s;
+            }
+            .error-toggle.expanded {
+                transform: rotate(90deg);
+            }
         </style>
 
         <script src="<%= request.getContextPath() %>/js/global.js"></script>
+        <script src="<%= request.getContextPath() %>/js/jquery-1.9.1.min.js"></script>
 
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css"
@@ -148,10 +184,19 @@
                 const fileList = document.getElementById('file-list');
                 const files = event.target.files;
                 fileList.innerHTML = '';
+                const results = document.getElementById('upload-results-section');
+                if (results) results.style.display = 'none';
 
                 for (let i = 0; i < files.length; i++) {
                     addFileNameWithStatus(files[i].name, "PENDING");
                 }
+            }
+
+            function toggleError(id, button) {
+                const detail = jQuery('#' + id);
+                detail.slideToggle(200, function() {
+                    jQuery(button).toggleClass('expanded', detail.is(':visible'));
+                });
             }
 
             function addFileNameWithStatus(name, status) {
@@ -196,6 +241,11 @@
     <body>
     <div class="container">
         <h4>Hospital Report Manager</h4>
+        <% if ("true".equals(request.getParameter("outageDismissed"))) { %>
+        <div class="alert alert-success" style="margin-top:10px;">
+            You will no longer receive HRM outage notifications for the current outage. Notifications resume automatically after the next successful fetch.
+        </div>
+        <% } %>
         <div class="loading-screen">
             <div class="loading-bar progress progress-striped active">
                 <div class="bar" style="width: 100%;"></div>
@@ -237,12 +287,36 @@
             <div id="file-list">
             </div>
 
-            <c:forEach var="file" items="${filesStatusMap}">
-                <script>
-                    addFileNameWithStatus("<c:out value="${file.key}" />", "<c:out value="${file.value}" />");
-                </script>
-            </c:forEach>
         </form>
+
+        <c:if test="${not empty uploadResults}">
+            <div id="upload-results-section" style="margin-top: 15px;">
+                <h5>Upload Results</h5>
+                <c:forEach var="entry" items="${uploadResults}" varStatus="loop">
+                    <div class="file-item">
+                        <span class="file-name"><c:out value="${entry.key}"/></span>
+                        <span class="upload-text ${entry.value.cssClass}">
+                            <c:out value="${entry.value.statusText}"/>
+                            <c:if test="${not empty entry.value.errorMessage or entry.value.hasWarnings}">
+                                <button class="error-toggle"
+                                        onclick="toggleError('err-${loop.index}', this)"
+                                        title="Show details">&#x276F;</button>
+                            </c:if>
+                        </span>
+                        <c:if test="${not empty entry.value.errorMessage or entry.value.hasWarnings}">
+                            <div id="err-${loop.index}" class="error-detail" style="display:none">
+                                <c:if test="${not empty entry.value.errorMessage}">
+                                    <c:out value="${entry.value.errorMessage}"/>
+                                </c:if>
+                                <c:forEach var="w" items="${entry.value.warnings}">
+                                    <div class="warning-line"><c:out value="${w}"/></div>
+                                </c:forEach>
+                            </div>
+                        </c:if>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:if>
         <%
             HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = (HRMProviderConfidentialityStatementDao) SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
             String statement = hrmProviderConfidentialityStatementDao.getConfidentialityStatementForProvider(loggedInInfo.getLoggedInProviderNo());

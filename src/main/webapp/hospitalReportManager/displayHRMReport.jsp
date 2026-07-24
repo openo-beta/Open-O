@@ -37,6 +37,7 @@
     HRMCategoryDao hrmCategoryDao = (HRMCategoryDao) SpringUtils.getBean(HRMCategoryDao.class);
     HRMDocumentCommentDao hrmDocumentCommentDao = (HRMDocumentCommentDao) SpringUtils.getBean(HRMDocumentCommentDao.class);
     HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = (HRMProviderConfidentialityStatementDao) SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
+    HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
 %>
 
 <%@page import="ca.openosp.openo.hospitalReportManager.*, ca.openosp.openo.hospitalReportManager.model.*, ca.openosp.openo.utility.SpringUtils, ca.openosp.openo.PMmodule.dao.ProviderDao" %>
@@ -193,7 +194,7 @@
             }
         }
     }
-    String csrfTokenJs = "{'" + CsrfGuard.getInstance().getTokenName() + "': '" + CsrfGuard.getInstance().getTokenValue(request) + "'}";
+    String csrfTokenJs = "{'" + Encode.forJavaScript(CsrfGuard.getInstance().getTokenName()) + "': '" + Encode.forJavaScript(CsrfGuard.getInstance().getTokenValue(request)) + "'}";
 
 %>
 
@@ -624,7 +625,7 @@
                         <div id="demostatus<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>">
                             <% if (demographicLink != null) { %>
                             <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographicLink.getDemographicNo().toString()))%>"/> <br/>
-                            <a href="#" onclick="removeDemoFromHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(csrfTokenJs))%>)">(remove)</a>
+                            <a href="#" onclick="removeDemoFromHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=csrfTokenJs%>)">(remove)</a>
                             <% } else { %>
                             <i>Not currently linked</i>
                             <% } %>
@@ -633,7 +634,7 @@
                         <input type="hidden" id="demofind<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" value=""/>
                         <input type="hidden" id="routetodemo<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" value=""/>
                         <input type="checkbox" id="activeOnly<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm" name="activeOnly" checked="checked"
-                               value="true" onclick="setupHrmDemoAutoCompletion('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(csrfTokenJs))%>)">Active
+                               value="true" onclick="setupHrmDemoAutoCompletion('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=csrfTokenJs%>)">Active
                         Only<br>
                         <input type="text" id="autocompletedemo<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>hrm"
                                onchange="checkSave('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>hrm')" name="demographicKeyword"
@@ -771,7 +772,7 @@
                             } else {
                             %>
                             <input type="button" id="signoff<%=Encode.forHtmlAttribute(String.valueOf(hrmReportId))%>" value="Sign-Off"
-                                   onClick="signOffHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(isListView))%>)"/>
+                                   onClick="signOffHrm('<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>', <%=Encode.forJavaScript(String.valueOf(isListView))%>)" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>/>
                             <%
                                 }
                             %>
@@ -880,9 +881,26 @@
                 </td>
             </tr>
             <tr>
-                <th>Sending Facility ID</th>
+                <th>Sending Facility</th>
 
-                <td><%=Encode.forHtml(String.valueOf(hrmReport.getSendingFacilityId()))%>
+                <td>
+                    <%
+                        String sfId = hrmReport.getSendingFacilityId();
+                        HRMSendingFacility sf = (sfId != null && !sfId.isEmpty())
+                                ? hrmSendingFacilityDao.findBySendingFacilityId(sfId) : null;
+                        if (sf != null) {
+                    %>
+                        <%=Encode.forHtml(sf.getFacilityName())%>
+                        (<%=Encode.forHtml(sf.getSendingFacilityId())%>)
+                    <% } else if (sfId != null && !sfId.isEmpty()) { %>
+                        <%=Encode.forHtml(sfId)%>
+                        <span style="background-color: #f0ad4e; color: #fff; padding: 2px 6px;
+                                     border-radius: 3px; font-size: 0.85em; margin-left: 6px;
+                                     font-weight: bold;"
+                              title="This Sending Facility is not in the HRM Sending Facilities registry. Add it via Admin → Integration → Hospital Report Manager (HRM) Sending Facilities to display a facility name.">
+                            Unregistered
+                        </span>
+                    <% } %>
                 </td>
             </tr>
             <tr>
@@ -907,7 +925,7 @@
 
 
     <script type="text/javascript">
-        jQuery(setupHrmDemoAutoCompletion(<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>, <%=Encode.forJavaScript(String.valueOf(csrfTokenJs))%>));
+        jQuery(function () { setupHrmDemoAutoCompletion(<%=Encode.forJavaScript(String.valueOf(hrmReportId))%>, <%=csrfTokenJs%>); });
 
         YAHOO.example.BasicRemote = function () {
             var url = "<%= request.getContextPath() %>/provider/SearchProvider.do";
