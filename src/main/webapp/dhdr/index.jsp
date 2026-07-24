@@ -379,7 +379,7 @@
 								<td>{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}}</td>
 								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
 								<td>{{med.dose}} {{med.doseUnit}}</td>
-								<td>{{med.frequency}} every {{med.period}} - {{med.periodMax}} {{med.periodUnit}}</td>
+								<td>{{med | dhdrFrequency}}</td>
 								<td>{{med.dispensedQuantity}} {{med.dispensedQuantityUnit}}</td>
 								<td>
 									Est Days Supply:{{med.estimatedDaysSupply}}
@@ -644,7 +644,7 @@
 									<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
 				 					<td>{{med.dispensedQuantity}} {{med.dispensedQuantityUnit}}</td>
 									<td>{{med.dose}}  {{med.doseUnit}}</td>
-									<td>{{med.frequency}} every {{med.period}} - {{med.periodMax}} {{med.periodUnit}}</td>
+									<td>{{med | dhdrFrequency}}</td>
 				 					<td>
 				 						Est Days Supply:{{med.estimatedDaysSupply}}
 				 						Refills Remaining:{{med.refillsRemaining}}
@@ -937,7 +937,7 @@
 						</tr>
 						<tr>
 							<th>Frequency</th>
-							<td>{{med.frequency}} every {{med.period}} - {{med.periodMax}} {{med.periodUnit}}</td>
+							<td>{{med | dhdrFrequency}}</td>
 						</tr>
 						<tr>
 
@@ -1148,7 +1148,30 @@
 		//app.config(['$locationProvider'],function($locationProvider ) {
 		//	$locationProvider.html5Mode(true);
 		//});
-		
+
+		// DHDR04.01: the frequency cell is built from four parts, none of which the DHDR service
+		// is obliged to send - dosageInstruction is optional under the consumer profile, and the
+		// IG's own pharmacy-service example carries none. Interpolating the parts directly left a
+		// record with no dosage instruction reading "every  -", which looks like a frequency
+		// rather than like the absence of one. Composed only when there is something to compose.
+		// A filter rather than a scope method because the detail view renders in its own modal
+		// scope, where a helper hung off the main controller would silently resolve to nothing.
+		app.filter('dhdrFrequency', function(){
+			return function(med){
+				if(!med){ return ""; }
+				var parts = [med.frequency, med.period, med.periodMax, med.periodUnit];
+				var present = parts.some(function(p){
+					return p !== undefined && p !== null && String(p).trim() !== "";
+				});
+				if(!present){ return ""; }
+				// Same shape as before for a record that does carry the parts, so nothing that
+				// already printed changes.
+				return (med.frequency || "") + " every " + (med.period || "")
+						+ " - " + (med.periodMax || "") + " " + (med.periodUnit || "");
+			};
+		});
+
+
 		app.controller("dhdrView", function($scope,demographicService,providerService,dhdrService,rxService,$location,$window,$modal,$http,$filter,$timeout) {
 
 			$scope.demographicNo = $location.search().demographic_no;

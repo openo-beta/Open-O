@@ -205,15 +205,7 @@ public class DHDRPrint {
       table.addCell(getHeaderCell("Dosage"));
       table.addCell(getItemCell(med.optString("dose") + " " + med.optString("doseUnit")));
       table.addCell(getHeaderCell("Frequency"));
-      table.addCell(
-          getItemCell(
-              med.optString("frequency")
-                  + " every "
-                  + med.optString("period")
-                  + " - "
-                  + med.optString("periodMax")
-                  + " "
-                  + med.optString("periodUnit")));
+      table.addCell(getItemCell(frequencyText(med)));
       table.addCell(getHeaderCell("Quantity"));
       table.addCell(
           getItemCell(
@@ -551,15 +543,7 @@ public class DHDRPrint {
                 + med.optString("dispensedDrugStrength")));
     table.addCell(getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
     table.addCell(getItemCell(med.optString("dose") + " " + med.optString("doseUnit")));
-    table.addCell(
-        getItemCell(
-            med.optString("frequency")
-                + " every "
-                + med.optString("period")
-                + " - "
-                + med.optString("periodMax")
-                + " "
-                + med.optString("periodUnit")));
+    table.addCell(getItemCell(frequencyText(med)));
     table.addCell(
         getItemCell(
             med.optString("dispensedQuantity")
@@ -631,6 +615,28 @@ public class DHDRPrint {
     } catch (NumberFormatException e) {
       return raw;
     }
+  }
+
+  /**
+   * Renders a dispense's frequency from the four parts the viewer model splits it into.
+   *
+   * <p>None of the parts is guaranteed: {@code dosageInstruction} is optional under the DHDR
+   * consumer profile, and the IG's own pharmacy-service example carries none. Concatenating them
+   * unconditionally printed {@code " every  - "} for such a record, which reads as a frequency
+   * rather than as the absence of one. A record that does carry the parts prints exactly as before.
+   *
+   * @param med JSONObject one dispense from the print payload
+   * @return String the composed frequency, or an empty string when no part was supplied
+   */
+  private String frequencyText(JSONObject med) {
+    String frequency = med.optString("frequency");
+    String period = med.optString("period");
+    String periodMax = med.optString("periodMax");
+    String periodUnit = med.optString("periodUnit");
+    if (frequency.isEmpty() && period.isEmpty() && periodMax.isEmpty() && periodUnit.isEmpty()) {
+      return "";
+    }
+    return frequency + " every " + period + " - " + periodMax + " " + periodUnit;
   }
 
   /**
