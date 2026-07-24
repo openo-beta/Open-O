@@ -1031,6 +1031,9 @@
 <div class="modal-body" id="modal-body">
 		<a ng-if="showUntilLoaded" ng-click="reload()"> Failed to load? click here</a>	
 		<a ng-if="viewletNotResponding" ng-click="cancel()"> Viewlet not responding? click here</a>	
+		<%-- allow-modals is load-bearing, not incidental: window.print() is gated by the sandbox's
+		     modals flag, so dropping it would stop the viewlet printing to a local printer and
+		     break DHDR10.04. --%>
 		<iframe id="pcoi-frame" class="pcoi-frame" src="{{pcoiUrl}}" sandbox="allow-forms allow-scripts allow-same-origin allow-modals"
 				width="540" height="600" ng-onload="loadingResult(state,message)"></iframe>
 		
@@ -1066,7 +1069,11 @@
 					</thead> 
 					
 		 			<tbody> 
-		 				<tr ng-repeat="med in meds | filter : searchtxt | orderBy:whenPrepared:reverseSort"> 
+		 				<%-- Order comes from the group itself, which is sorted most-recent-first when the
+		 				     search finishes (DHDR04.02). An orderBy here cannot do it: this modal runs on its
+		 				     own scope, so a sort field named from the main controller reads as undefined and
+		 				     AngularJS then returns the list untouched. --%>
+		 				<tr ng-repeat="med in meds | filter : searchtxt">
 		 					<th scope="row">{{med.whenPrepared | date}}</th>
 							<th>{{med.pickUpDate | date}}</th>
 		 					<td ng-click="getDetailView(med);">{{med.genericName}} </td>
@@ -1115,7 +1122,8 @@
 					</thead> 
 					 
 		 			<tbody> 
-		 				<tr ng-repeat="med in services | filter : searchServicetxt | orderBy:serviceOrderByField:serviceReverseSort" > 
+		 				<%-- Ordered by the group, as in the drug modal above (DHDR07.02). --%>
+		 				<tr ng-repeat="med in services | filter : searchServicetxt" >
 		 					<th scope="row">{{med.whenPrepared | date}}</th> 
 		 					<td scope="row">{{med.whenHandedOver | date}}</td>
 		 					<td>{{med.brandName.display}}</td> 
@@ -1669,17 +1677,13 @@
 							// and abort the loop. Key is stored so the badge and expand handler agree.
 							var svcKey = (d.brandName && d.brandName.display) ? d.brandName.display : (d.genericName || 'Unknown Product');
 							d.serviceGroupKey = svcKey;
+							// Only collect here. Which member heads the group, and which are hidden behind
+							// it, is decided once by regroupByMostRecent below - deciding it here too
+							// would mean picking whichever event happened to arrive first.
 							if($scope.servicesWithGroupedDups[svcKey] === undefined){
 								$scope.servicesWithGroupedDups[svcKey] = [];
-								d.headRecord= true;
-								$scope.uniqServices.push(d);
-
-								$scope.servicesWithGroupedDups[svcKey].push(d);
-							}else{
-								d.hide = true;
-								d.hiddenRecord = true;
-								$scope.servicesWithGroupedDups[svcKey].push(d);
 							}
+							$scope.servicesWithGroupedDups[svcKey].push(d);
 
 						}else{
 
@@ -1689,14 +1693,8 @@
 							//if ($scope.medsWithGroupedDups.indexOf(d.getUniqVal()) === -1) {
 							if($scope.medsWithGroupedDups[d.getUniqVal()] === undefined){
 								$scope.medsWithGroupedDups[d.getUniqVal()] = [];
-								d.headRecord= true;
-								$scope.uniqMeds.push(d);
-								$scope.medsWithGroupedDups[d.getUniqVal()].push(d);
-							}else{
-								d.hide = true;
-								d.hiddenRecord = true;
-								$scope.medsWithGroupedDups[d.getUniqVal()].push(d);
 							}
+							$scope.medsWithGroupedDups[d.getUniqVal()].push(d);
 						}
 					}
 				  } catch (e) {
@@ -1724,6 +1722,11 @@
 					});
 				}
 
+				// Groups are only complete once this page's entries are in, and a later page can carry
+				// an event newer than the head chosen so far, so re-derive rather than patch.
+				regroupByMostRecent($scope.medsWithGroupedDups, $scope.uniqMeds);
+				regroupByMostRecent($scope.servicesWithGroupedDups, $scope.uniqServices);
+
 				//If a block record is found the other warnings are dumped.  Probably a bad idea but OMD's requirement.
 				for(outcome of $scope.outcomes) {
 					var replaceIssue = null;
@@ -1738,6 +1741,33 @@
 					}
 				}
 				
+			};
+
+			// DHDR04.02 / DHDR07.02: a group is represented by its most recent event, and the events
+			// inside it are listed most recent first. Both are settled here rather than by the order
+			// entries arrived in, because that order belongs to the service: `_sort=-whenprepared` is
+			// a hint a FHIR server MAY ignore, and pages arrive one at a time, so a group's newest
+			// event can land after its head was already chosen. Sorts through the same orderBy the
+			// tables use, so the view has one ordering rule rather than two that could drift.
+			// Rewrites uniq in place - the tables bind to that array, so it must keep its identity.
+			regroupByMostRecent = function(groups, uniq){
+				uniq.length = 0;
+				for(var key in groups){
+					var members = $filter('orderBy')(groups[key], 'whenPrepared', true);
+					if(!members.length){ continue; }
+					groups[key] = members;
+					for(var i = 0; i < members.length; i++){
+						// The head is the row the Summary view shows; the rest stay hidden behind it.
+						// hiddenRecord marks a member as non-head for good. Only showGroupedMeds and
+						// showGroupedService read it, and no template calls either any more, so it is
+						// carried rather than relied on - dropping it would leave those two silently
+						// wrong about which rows to re-hide if they are ever wired back up.
+						members[i].headRecord = (i === 0);
+						members[i].hide = (i > 0);
+						members[i].hiddenRecord = (i > 0);
+					}
+					uniq.push(members[0]);
+				}
 			};
 
 			$scope.openWindow = function(url) {
