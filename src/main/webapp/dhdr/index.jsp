@@ -210,7 +210,7 @@
 		 				<i>Warning: Limited to Drug and Pharmacy Service Information available in the Digital Health Drug Repository (DHDR) EHR Service. 
 		 					To ensure a Best Possible Medication History, please review this information with the patient/family and use other available sources of medication 
 		 					information in addition to the DHDR EHR Service. For more details on the information available in the DHDR EHR Service, 
-		 					please  <a class="alert-link" href="http://www.forms.ssb.gov.on.ca/mbs/ssb/forms/ssbforms.nsf/FormDetail?OpenForm&ACT=RDR&TAB=PROFILE&SRCH=&ENV=WWE&TIT=5056-87E&NO=014-5056-87E" target="_blank">click here</a></i>
+		 					please click <a class="alert-link" href="https://forms.mgcs.gov.on.ca/en/dataset/014-5056-87" target="_blank">https://forms.mgcs.gov.on.ca/en/dataset/014-5056-87</a>.</i>
 		 		</div>
 		 		
 		 		<div ng-show="searching">

@@ -60,12 +60,18 @@ import java.util.List;
 
 public class DHDRPrint {
 
-  /** The DHDR disclaimer (DHDR03.03), printed on each page per DHDR13.01.g. */
+  /**
+   * The DHDR disclaimer, printed on each page per DHDR13.01.g, which refers to DHDR03.03 for the
+   * message. Quoted verbatim from DHDR03.03 with its [URL] placeholder resolved, so it must stay
+   * identical to the copy rendered in dhdr/index.jsp.
+   */
   private static final String DHDR_DISCLAIMER =
       "Warning: Limited to Drug and Pharmacy Service Information available in the Digital Health Drug"
-          + " Repository (DHDR) EHR Service. To ensure a Best Possible Medication History (BPMH),"
+          + " Repository (DHDR) EHR Service. To ensure a Best Possible Medication History,"
           + " please review this information with the patient/family and use other available sources"
-          + " of medication information in addition to the DHDR EHR Service.";
+          + " of medication information in addition to the DHDR EHR Service. For more details on the"
+          + " information available in the DHDR EHR Service, please click"
+          + " https://forms.mgcs.gov.on.ca/en/dataset/014-5056-87.";
 
   private static final Logger logger = MiscUtils.getLogger();
 
