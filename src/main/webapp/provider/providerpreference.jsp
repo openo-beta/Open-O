@@ -42,6 +42,8 @@
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.commn.model.SystemPreferences" %>
+<%@ page import="ca.openosp.openo.commn.dao.SystemPreferencesDao" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 
 <%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
@@ -673,6 +675,22 @@
                 <td align="center"><a href=#
                                       onClick="popupPage(400,860,'<%=request.getContextPath()%>/provider/OlisPreferences.do');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.olisPrefs"/></a></td>
             </tr>
+            <%
+                // Offered only where the DHDR viewer itself is, so the link cannot lead to a
+                // preference that has nothing to act on. Same two flags SearchDrug3.jsp gates on.
+                SystemPreferencesDao dhdrPreferencesDao = SpringUtils.getBean(SystemPreferencesDao.class);
+                boolean dhdrConfigured =
+                        dhdrPreferencesDao.isReadBooleanPreference(SystemPreferences.ONEID_KEYS.oneid_enabled)
+                        && dhdrPreferencesDao.isReadBooleanPreference(SystemPreferences.ONEID_KEYS.dhdr_enabled);
+                if (dhdrConfigured) {
+            %>
+            <tr>
+                <td align="center"><a href=#
+                                      onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewDhdrSearchDays');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.dhdrPrefs"/></a></td>
+            </tr>
+            <%
+                }
+            %>
             <tr>
                 <td align="center"><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewCommentLab');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnDisableAckCommentLab"/></a></td>

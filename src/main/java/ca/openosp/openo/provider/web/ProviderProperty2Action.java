@@ -28,6 +28,7 @@ import java.util.Comparator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.CtlBillingServiceDao;
 import ca.openosp.openo.commn.dao.QueueDao;
@@ -745,6 +746,86 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("providermsgSuccess", "provider.setRxDefaultQuantity.msgSuccess"); //=Rx Default Quantity saved
         request.setAttribute("method", "saveDefaultQuantity");
         return "genRxDefaultQuantity";
+    }
+
+    /**
+     * Opens this provider's default search window for the DHDR medication viewer (DHDR02.03).
+     * An unset preference shows an empty field, with the instance-wide fallback offered as the
+     * placeholder so the field states what leaving it blank means.
+     *
+     * @return String the Struts result name resolving to /provider/setDhdrSearchDays.jsp
+     */
+    public String viewDhdrSearchDays() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+
+        UserProperty searchDays = this.userPropertyDAO.getProp(providerNo, UserProperty.DHDR_DEFAULT_SEARCH_DAYS);
+        if (searchDays == null) {
+            searchDays = new UserProperty();
+        }
+
+        request.setAttribute("dhdrSearchDays", searchDays);
+        this.setDhdrSearchDaysProperty(searchDays);
+        setDhdrSearchDaysLabels();
+
+        return "genDhdrSearchDays";
+    }
+
+    /**
+     * Stores this provider's default search window for the DHDR medication viewer (DHDR02.03).
+     * Only a positive whole number is kept; anything else, including an empty field, clears the
+     * preference so the instance-wide dhdr.default_search_days property applies again.
+     *
+     * @return String the Struts result name resolving to /provider/setDhdrSearchDays.jsp
+     */
+    public String saveDhdrSearchDays() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+
+        UserProperty submitted = this.getDhdrSearchDaysProperty();
+        String searchDays = StringUtils.trimToNull(submitted != null ? submitted.getValue() : null);
+        if (searchDays != null && !isPositiveInteger(searchDays)) {
+            searchDays = null;
+        }
+
+        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DHDR_DEFAULT_SEARCH_DAYS);
+        if (prop == null) {
+            prop = new UserProperty();
+            prop.setName(UserProperty.DHDR_DEFAULT_SEARCH_DAYS);
+            prop.setProviderNo(providerNo);
+        }
+        prop.setValue(searchDays == null ? "" : searchDays);
+        this.userPropertyDAO.saveProp(prop);
+
+        request.setAttribute("status", "success");
+        request.setAttribute("dhdrSearchDays", prop);
+        setDhdrSearchDaysLabels();
+
+        return "genDhdrSearchDays";
+    }
+
+    /**
+     * Sets the labels and the instance-wide fallback that /provider/setDhdrSearchDays.jsp renders,
+     * shared by the view and save paths so both show the same page.
+     */
+    private void setDhdrSearchDaysLabels() {
+        request.setAttribute("dhdrClinicDefault", OscarProperties.getInstance()
+                .getProperty("dhdr.default_search_days", "120").trim());
+        request.setAttribute("providertitle", "provider.setDhdrSearchDays.title");
+        request.setAttribute("providermsgPrefs", "provider.setDhdrSearchDays.msgPrefs");
+        request.setAttribute("providermsgProvider", "provider.setDhdrSearchDays.msgSearchDays");
+        request.setAttribute("providermsgEdit", "provider.setDhdrSearchDays.msgEdit");
+        request.setAttribute("providerbtnSubmit", "provider.setDhdrSearchDays.btnSubmit");
+        request.setAttribute("providermsgSuccess", "provider.setDhdrSearchDays.msgSuccess");
+        request.setAttribute("method", "saveDhdrSearchDays");
+    }
+
+    private static boolean isPositiveInteger(String value) {
+        try {
+            return Integer.parseInt(value) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /////
@@ -2650,6 +2731,8 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("saveUseRx3", this::saveUseRx3);
         methodMap.put("viewDefaultQuantity", this::viewDefaultQuantity);
         methodMap.put("saveDefaultQuantity", this::saveDefaultQuantity);
+        methodMap.put("viewDhdrSearchDays", this::viewDhdrSearchDays);
+        methodMap.put("saveDhdrSearchDays", this::saveDhdrSearchDays);
         methodMap.put("viewOntarioMDId", this::viewOntarioMDId);
         methodMap.put("saveOntarioMDId", this::saveOntarioMDId);
         methodMap.put("viewConsultationRequestCuffOffDate", this::viewConsultationRequestCuffOffDate);
@@ -2708,6 +2791,7 @@ public class ProviderProperty2Action extends ActionSupport {
     private UserProperty rxShowPatientDOBProperty;
     private UserProperty rxUseRx3Property;
     private UserProperty rxDefaultQuantityProperty;
+    private UserProperty dhdrSearchDaysProperty;
     private UserProperty dateProperty2;
     private UserProperty cppSingleLineProperty;
     private UserProperty eDocBrowserInDocumentReportProperty;
@@ -2806,6 +2890,14 @@ public class ProviderProperty2Action extends ActionSupport {
 
     public void setRxDefaultQuantityProperty(UserProperty rxDefaultQuantityProperty) {
         this.rxDefaultQuantityProperty = rxDefaultQuantityProperty;
+    }
+
+    public UserProperty getDhdrSearchDaysProperty() {
+        return dhdrSearchDaysProperty;
+    }
+
+    public void setDhdrSearchDaysProperty(UserProperty dhdrSearchDaysProperty) {
+        this.dhdrSearchDaysProperty = dhdrSearchDaysProperty;
     }
 
     public UserProperty getDateProperty2() {

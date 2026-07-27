@@ -29,6 +29,8 @@
 <%@page import="ca.openosp.openo.commn.dao.SystemPreferencesDao" %>
 <%@page import="ca.openosp.openo.commn.model.SystemPreferences" %>
 <%@page import="ca.openosp.OscarProperties" %>
+<%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="org.owasp.encoder.Encode" %>
 <fmt:setBundle basename="oscarResources"/>
 <%
@@ -62,14 +64,22 @@
 		}
 	}
 
-	// DHDR02.03: the clinic-level default for the "last N days" search, configurable in
-	// oscar_mcmaster.properties (dhdr.default_search_days); the requirement's suggested 120 is used
-	// when unset or invalid. Read once here so a user editing the range on screen cannot write back
-	// into the default, which DHDR02.03 forbids.
+	// DHDR02.03: the default "last N days" search window. A provider sets their own on the provider
+	// Preferences screen (dhdr_default_search_days); when they have not, the instance-wide
+	// oscar_mcmaster.properties key dhdr.default_search_days applies, and the requirement's suggested
+	// 120 when neither is set or either is invalid. Read once here, and only ever read — nothing on
+	// this page writes back into the default, which DHDR02.03 forbids.
 	int defaultSearchDays = 120;
+	String configuredSearchDays = OscarProperties.getInstance()
+		.getProperty("dhdr.default_search_days", String.valueOf(defaultSearchDays));
+	UserPropertyDAO userPropertyDao = SpringUtils.getBean(UserPropertyDAO.class);
+	String providerSearchDays = userPropertyDao.getStringValue((String) session.getAttribute("user"),
+		UserProperty.DHDR_DEFAULT_SEARCH_DAYS);
+	if (providerSearchDays != null && !providerSearchDays.trim().isEmpty()) {
+		configuredSearchDays = providerSearchDays;
+	}
 	try {
-		int configured = Integer.parseInt(OscarProperties.getInstance()
-			.getProperty("dhdr.default_search_days", String.valueOf(defaultSearchDays)).trim());
+		int configured = Integer.parseInt(configuredSearchDays.trim());
 		if (configured > 0) {
 			defaultSearchDays = configured;
 		}
@@ -1190,7 +1200,8 @@
 			// DHDR14.01: notices about the DHDR EHR Service itself (unreachable, unresponsive,
 			// expired session). Distinct from outcomes, which are the issues the service reported.
 			$scope.serviceErrors = [];
-			// DHDR02.03: clinic-level default, from the dhdr.default_search_days property.
+			// DHDR02.03: the provider's default search window, resolved server-side. Read-only here:
+			// editing the range on screen must never write back into the default.
 			defaultDaysToSearch = <%= defaultSearchDays %>;
 			// The bounds are yyyy-MM-dd strings, never Dates: a Date is an instant, and converting a
 			// zone-less calendar date to one shifts it a day behind UTC. Convert once, here.

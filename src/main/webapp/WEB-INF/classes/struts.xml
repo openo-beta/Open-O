@@ -1404,6 +1404,7 @@
             <result name="genRxPageSize">/provider/setGenRxPageSizeProperty.jsp</result>
             <result name="genHl7LabResultPrefs">/provider/setHl7LabResultPrefs.jsp</result>
             <result name="genRxDefaultQuantity">/provider/setGenRxDefaultQuantityProperty.jsp</result>
+            <result name="genDhdrSearchDays">/provider/setDhdrSearchDays.jsp</result>
             <result name="genRxProfileView">/provider/setGenRxProfileViewProperty.jsp</result>
             <result name="genRxUseRx3">/provider/setToUseRx3.jsp</result>
             <result name="genDefaultDocQueue">/provider/setDocDefaultQueue.jsp</result>
