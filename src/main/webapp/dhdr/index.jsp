@@ -273,31 +273,36 @@
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Generic name</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchtxt.genericName" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchtxt.genericName" type="text" placeholder="type to filter" class="form-control" list="sumDrugGenericName" />
+							  <datalist id="sumDrugGenericName"><option ng-repeat="v in drugFilterValues.genericName" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Brand name</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchtxt.brandName.display" type="text" placeholder="type to filter" class="form-control"/>
+							  <input ng-model="searchtxt.brandNameDisplay" type="text" placeholder="type to filter" class="form-control" list="sumDrugBrandName"/>
+							  <datalist id="sumDrugBrandName"><option ng-repeat="v in drugFilterValues.brandName" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Dispensed date</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchtxt.whenPrepared" type="text" placeholder="type to filter" class="form-control"/>
+							  <input ng-model="searchtxt.whenPreparedDisplay" type="text" placeholder="type to filter" class="form-control" list="sumDrugDate"/>
+							  <datalist id="sumDrugDate"><option ng-repeat="v in drugFilterValues.whenPrepared" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Pharmacy Name</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchtxt.dispensingPharmacy" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchtxt.dispensingPharmacy" type="text" placeholder="type to filter" class="form-control" list="sumDrugPharmacy" />
+							  <datalist id="sumDrugPharmacy"><option ng-repeat="v in drugFilterValues.dispensingPharmacy" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Prescriber Name</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchtxt.prescriberLastname" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchtxt.prescriberName" type="text" placeholder="type to filter" class="form-control" list="sumDrugPrescriber" />
+							  <datalist id="sumDrugPrescriber"><option ng-repeat="v in drugFilterValues.prescriberName" value="{{v}}"></datalist>
 							</div>
 						  </div>
 
@@ -378,7 +383,13 @@
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="med in (expandAll ? meds : uniqMeds) | filter : searchtxt | orderBy:orderByField:reverseSort" ng-hide="!expandAll && med.hide" ng-class="getRowClass(med)">
+							<%-- DHDR03.04: while a filter is active the grouped heads give way to the full event
+							     list, so a filter value the datalist offered always finds its events. The
+							     offered values are the distinct ones the service returned, which includes
+							     events sitting inside a collapsed group; matching only heads would let the
+							     filter return nothing for a value the user had just picked from the list.
+							     Grouping is unchanged as the default presentation (DHDR04.03). --%>
+							<tr ng-repeat="med in ((expandAll || drugFilterActive()) ? meds : uniqMeds) | filter : searchtxt | orderBy:orderByField:reverseSort" ng-hide="!expandAll && !drugFilterActive() && med.hide" ng-class="getRowClass(med)">
 								<th scope="row">{{med.whenPrepared | date}}</th>
 								<th>{{med.pickUpDate | date}}</th>
 								<td ng-click="getDetailView(med);">
@@ -418,43 +429,50 @@
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Pharmacy Service Description</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchServicetxt.genericName" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchServicetxt.genericName" type="text" placeholder="type to filter" class="form-control" list="sumSvcDescription" />
+							  <datalist id="sumSvcDescription"><option ng-repeat="v in serviceFilterValues.genericName" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Pharmacy Service Type</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchServicetxt.brandName.display" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchServicetxt.brandNameDisplay" type="text" placeholder="type to filter" class="form-control" list="sumSvcType" />
+							  <datalist id="sumSvcType"><option ng-repeat="v in serviceFilterValues.brandName" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Therapeutic Class</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchServicetxt.ahfsClass" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchServicetxt.ahfsClass" type="text" placeholder="type to filter" class="form-control" list="sumSvcAhfs" />
+							  <datalist id="sumSvcAhfs"><option ng-repeat="v in serviceFilterValues.ahfsClass" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Last Service Date</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchServicetxt.whenPrepared" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchServicetxt.whenPreparedDisplay" type="text" placeholder="type to filter" class="form-control" list="sumSvcDate" />
+							  <datalist id="sumSvcDate"><option ng-repeat="v in serviceFilterValues.whenPrepared" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Pharmacy Name</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchServicetxt.dispensingPharmacy" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchServicetxt.dispensingPharmacy" type="text" placeholder="type to filter" class="form-control" list="sumSvcPharmacy" />
+							  <datalist id="sumSvcPharmacy"><option ng-repeat="v in serviceFilterValues.dispensingPharmacy" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Pharmacist Name</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchServicetxt.pharmacistLastname" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchServicetxt.pharmacistName" type="text" placeholder="type to filter" class="form-control" list="sumSvcPharmacist" />
+							  <datalist id="sumSvcPharmacist"><option ng-repeat="v in serviceFilterValues.pharmacistName" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						  <div class="form-group">
 							<label class="col-sm-2 control-label">Pharmacy Fax</label>
 							<div class="col-sm-10">
-							  <input ng-model="searchServicetxt.dispensingPharmacyFaxNumber" type="text" placeholder="type to filter" class="form-control" />
+							  <input ng-model="searchServicetxt.dispensingPharmacyFaxNumber" type="text" placeholder="type to filter" class="form-control" list="sumSvcFax" />
+							  <datalist id="sumSvcFax"><option ng-repeat="v in serviceFilterValues.fax" value="{{v}}"></datalist>
 							</div>
 						  </div>
 						</form>
@@ -499,7 +517,9 @@
 						</thead>
 
 						<tbody>
-							<tr ng-repeat="med in (expandAllServices ? services : uniqServices) | filter : searchServicetxt | orderBy:serviceOrderByField:serviceReverseSort" ng-hide="!expandAllServices && med.hide" ng-class="getRowClass(med)">
+							<%-- DHDR03.04: see the drug table above - an active filter searches every returned
+							     event, not just the group heads. --%>
+							<tr ng-repeat="med in ((expandAllServices || serviceFilterActive()) ? services : uniqServices) | filter : searchServicetxt | orderBy:serviceOrderByField:serviceReverseSort" ng-hide="!expandAllServices && !serviceFilterActive() && med.hide" ng-class="getRowClass(med)">
 								<th scope="row">{{med.whenPrepared | date}}</th>
 								<td scope="row">{{med.whenHandedOver | date}}</td>
 								<td>{{med.brandName.display}}</td>
@@ -535,31 +555,36 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Brand name</label>
 									<div class="col-sm-10">
-										<input ng-model="searchtxt.brandName.display" type="text" placeholder="type to filter" class="form-control"/>
+										<input ng-model="searchtxt.brandNameDisplay" type="text" placeholder="type to filter" class="form-control" list="compDrugBrandName"/>
+										<datalist id="compDrugBrandName"><option ng-repeat="v in drugFilterValues.brandName" value="{{v}}"></datalist>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Generic name</label>
 									<div class="col-sm-10">
-										<input ng-model="searchtxt.genericName" type="text" placeholder="type to filter" class="form-control"/>
+										<input ng-model="searchtxt.genericName" type="text" placeholder="type to filter" class="form-control" list="compDrugGenericName"/>
+										<datalist id="compDrugGenericName"><option ng-repeat="v in drugFilterValues.genericName" value="{{v}}"></datalist>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Dispensed date</label>
 									<div class="col-sm-10">
-										<input ng-model="searchtxt.whenPrepared" type="text" placeholder="type to filter" class="form-control"/>
+										<input ng-model="searchtxt.whenPreparedDisplay" type="text" placeholder="type to filter" class="form-control" list="compDrugDate"/>
+										<datalist id="compDrugDate"><option ng-repeat="v in drugFilterValues.whenPrepared" value="{{v}}"></datalist>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Pharmacy Name</label>
 									<div class="col-sm-10">
-										<input ng-model="searchtxt.dispensingPharmacy" type="text" placeholder="type to filter" class="form-control" />
+										<input ng-model="searchtxt.dispensingPharmacy" type="text" placeholder="type to filter" class="form-control" list="compDrugPharmacy" />
+										<datalist id="compDrugPharmacy"><option ng-repeat="v in drugFilterValues.dispensingPharmacy" value="{{v}}"></datalist>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Prescriber Name</label>
 									<div class="col-sm-10">
-										<input ng-model="searchtxt.prescriberLastname" type="text" placeholder="type to filter" class="form-control" />
+										<input ng-model="searchtxt.prescriberName" type="text" placeholder="type to filter" class="form-control" list="compDrugPrescriber" />
+										<datalist id="compDrugPrescriber"><option ng-repeat="v in drugFilterValues.prescriberName" value="{{v}}"></datalist>
 									</div>
 								</div>
 
@@ -682,37 +707,43 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Pharmacy Service Description</label>
 									<div class="col-sm-10">
-										<input ng-model="searchServicetxt.genericName" type="text" placeholder="type to filter" class="form-control" />
+										<input ng-model="searchServicetxt.genericName" type="text" placeholder="type to filter" class="form-control" list="compSvcDescription" />
+										<datalist id="compSvcDescription"><option ng-repeat="v in serviceFilterValues.genericName" value="{{v}}"></datalist>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Pharmacy Service Type</label>
 									<div class="col-sm-10">
-										<input ng-model="searchServicetxt.brandName.display" type="text" placeholder="type to filter" class="form-control" />
+										<input ng-model="searchServicetxt.brandNameDisplay" type="text" placeholder="type to filter" class="form-control" list="compSvcType" />
+										<datalist id="compSvcType"><option ng-repeat="v in serviceFilterValues.brandName" value="{{v}}"></datalist>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Therapeutic Class</label>
 									<div class="col-sm-10">
-										<input ng-model="searchServicetxt.ahfsClass" type="text" placeholder="type to filter" class="form-control" />
+										<input ng-model="searchServicetxt.ahfsClass" type="text" placeholder="type to filter" class="form-control" list="compSvcAhfs" />
+										<datalist id="compSvcAhfs"><option ng-repeat="v in serviceFilterValues.ahfsClass" value="{{v}}"></datalist>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Last Service Date</label>
 									<div class="col-sm-10">
-										<input ng-model="searchServicetxt.whenPrepared" type="text" placeholder="type to filter" class="form-control" />
+										<input ng-model="searchServicetxt.whenPreparedDisplay" type="text" placeholder="type to filter" class="form-control" list="compSvcDate" />
+										<datalist id="compSvcDate"><option ng-repeat="v in serviceFilterValues.whenPrepared" value="{{v}}"></datalist>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Pharmacy Name</label>
 									<div class="col-sm-10">
-										<input ng-model="searchServicetxt.dispensingPharmacy" type="text" placeholder="type to filter" class="form-control" />
+										<input ng-model="searchServicetxt.dispensingPharmacy" type="text" placeholder="type to filter" class="form-control" list="compSvcPharmacy" />
+										<datalist id="compSvcPharmacy"><option ng-repeat="v in serviceFilterValues.dispensingPharmacy" value="{{v}}"></datalist>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Pharmacist Name</label>
 									<div class="col-sm-10">
-										<input ng-model="searchServicetxt.pharmacistLastname" type="text" placeholder="type to filter" class="form-control" />
+										<input ng-model="searchServicetxt.pharmacistName" type="text" placeholder="type to filter" class="form-control" list="compSvcPharmacist" />
+										<datalist id="compSvcPharmacist"><option ng-repeat="v in serviceFilterValues.pharmacistName" value="{{v}}"></datalist>
 									</div>
 								</div>
 							</form>
@@ -810,7 +841,11 @@
 	<%-- DHDR05.02: the EMR medication records. Rendered in both the drug Comparative and
 	     the Pharmacy Service Comparative (DHDR08.01a), so it lives in one template. --%>
 	<script type="text/ng-template" id="emrMedsTable.html">
-		 			<table class="table table-condensed table-striped table-bordered" ng-show="compLocalMeds.length > 0"> 
+		 			<%-- Rendered even when the patient has no EMR medications: the Comparative view is a
+		 			     side-by-side (DHDR05.01 / DHDR08.01a), and hiding this table outright left an empty
+		 			     column that reads as a failure to load rather than as "nothing on file". Keeping the
+		 			     header also keeps the result count visible, which is 0 rather than absent. --%>
+		 			<table class="table table-condensed table-striped table-bordered">
 		 			   	<thead>
 							<tr>
 								<td colspan="12">
@@ -862,7 +897,10 @@
 			 					     own validation, so the unit is a fixed label. --%>
 			 					<td>{{med.repeats}}<span ng-if="med.refillQuantity"> ({{med.refillQuantity}}<span ng-if="med.refillDuration"> / {{med.refillDuration}} days</span>)</span></td>
 			 				</tr>
-			 			</tbody> 
+			 				<tr ng-if="compLocalMeds.length === 0">
+			 					<td colspan="12">No medications are recorded in the EMR for this patient.</td>
+			 				</tr>
+			 			</tbody>
 		 			</table>
 	</script>
 	<script type="text/ng-template" id="myModalContent.html">
@@ -1196,6 +1234,9 @@
 			$scope.uniqMeds = [];
 			$scope.uniqServices = [];
 			$scope.services = [];
+			// DHDR03.04: distinct values offered by the filter datalists. Empty until a search lands.
+			$scope.drugFilterValues = {};
+			$scope.serviceFilterValues = {};
 			$scope.outcomes = [];
 			// DHDR14.01: notices about the DHDR EHR Service itself (unreachable, unresponsive,
 			// expired session). Distinct from outcomes, which are the issues the service reported.
@@ -1761,6 +1802,16 @@
 				regroupByMostRecent($scope.medsWithGroupedDups, $scope.uniqMeds);
 				regroupByMostRecent($scope.servicesWithGroupedDups, $scope.uniqServices);
 
+				// DHDR03.04: filterable copies of the two columns that render a composed value, so the
+				// filter matches the text on screen rather than the underlying model. Without these the
+				// date filter only answered to the raw yyyy-MM-dd the user never sees, and the prescriber
+				// filter only to the family name, leaving 03.04(d)'s given name unreachable.
+				decorateForFilters($scope.meds, 'prescriber');
+				decorateForFilters($scope.services, 'pharmacist');
+				// Rebuilt from the full event lists, not the grouped heads, so values that only occur
+				// inside a collapsed group are still offered. Paging calls this again as pages land.
+				buildDistinctFilterValues();
+
 				//If a block record is found the other warnings are dumped.  Probably a bad idea but OMD's requirement.
 				for(outcome of $scope.outcomes) {
 					var replaceIssue = null;
@@ -1775,6 +1826,96 @@
 					}
 				}
 				
+			};
+
+			// DHDR03.04: true when any filter box holds a value. The filter models are plain objects
+			// whose keys appear as the user types, and brandName is nested one level, so test the leaf
+			// values rather than the key count - an empty box leaves an empty string behind.
+			anyFilterSet = function(model){
+				if(!model) { return false; }
+				for(var k in model){
+					var v = model[k];
+					if(v && typeof v === 'object'){
+						if(anyFilterSet(v)) { return true; }
+					} else if(v !== null && v !== undefined && ('' + v).trim() !== ''){
+						return true;
+					}
+				}
+				return false;
+			};
+			$scope.drugFilterActive = function(){ return anyFilterSet($scope.searchtxt); };
+			$scope.serviceFilterActive = function(){ return anyFilterSet($scope.searchServicetxt); };
+
+			// DHDR03.04: mirror the two composed columns onto the event so they can be filtered as
+			// displayed. The date uses the same $filter('date') default the tables use, so the two can
+			// only ever agree; the name uses the same "Last, First" the column renders, which makes one
+			// substring test cover both [Practitioner.name.family] and [Practitioner.name.given].
+			decorateForFilters = function(list, namePrefix){
+				for(var i = 0; i < list.length; i++){
+					var item = list[i];
+					item.whenPreparedDisplay = item.whenPrepared ? $filter('date')(item.whenPrepared) : '';
+					// Flattened because a nested filter expression - {brandName:{display:'x'}}, which is
+					// what binding straight through to the nested property would build - does not filter
+					// in this Angular version: it silently matches every row rather than none. Verified
+					// against $filter('filter') directly.
+					item.brandNameDisplay = (item.brandName && item.brandName.display) ? item.brandName.display : '';
+					var last = item[namePrefix + 'Lastname'] || '';
+					var first = item[namePrefix + 'Firstname'] || '';
+					item[namePrefix + 'Name'] = (last || first) ? (last + ', ' + first) : '';
+				}
+			};
+
+			// DHDR03.04: "MUST pre-populate the filters with distinct values received from the DHDR EHR
+			// Service." Each list holds the distinct non-empty values actually present in this result set,
+			// in the same form the column displays, so a chosen value always matches something.
+			distinctValues = function(list, path){
+				var seen = {};
+				var out = [];
+				for(var i = 0; i < list.length; i++){
+					var v = path.split('.').reduce(function(o, k){ return (o === null || o === undefined) ? o : o[k]; }, list[i]);
+					if(v === null || v === undefined) { continue; }
+					v = ('' + v).trim();
+					if(!v || seen[v]) { continue; }
+					seen[v] = true;
+					out.push(v);
+				}
+				out.sort();
+				return out;
+			};
+
+			// Dates are offered most recent first, matching the tables' default order. Sorting the
+			// display strings would order them alphabetically - "Feb, Jan, Mar" - so pair each with its
+			// raw value, sort on that, and emit the display form.
+			distinctDates = function(list){
+				var seen = {};
+				var pairs = [];
+				for(var i = 0; i < list.length; i++){
+					var shown = list[i].whenPreparedDisplay;
+					if(!shown || seen[shown]) { continue; }
+					seen[shown] = true;
+					pairs.push({ shown: shown, raw: list[i].whenPrepared });
+				}
+				pairs.sort(function(a, b){ return (a.raw < b.raw) ? 1 : (a.raw > b.raw) ? -1 : 0; });
+				return pairs.map(function(p){ return p.shown; });
+			};
+
+			buildDistinctFilterValues = function(){
+				$scope.drugFilterValues = {
+					genericName:      distinctValues($scope.meds, 'genericName'),
+					brandName:        distinctValues($scope.meds, 'brandName.display'),
+					whenPrepared:     distinctDates($scope.meds),
+					dispensingPharmacy: distinctValues($scope.meds, 'dispensingPharmacy'),
+					prescriberName:   distinctValues($scope.meds, 'prescriberName')
+				};
+				$scope.serviceFilterValues = {
+					genericName:      distinctValues($scope.services, 'genericName'),
+					brandName:        distinctValues($scope.services, 'brandName.display'),
+					ahfsClass:        distinctValues($scope.services, 'ahfsClass'),
+					whenPrepared:     distinctDates($scope.services),
+					dispensingPharmacy: distinctValues($scope.services, 'dispensingPharmacy'),
+					pharmacistName:   distinctValues($scope.services, 'pharmacistName'),
+					fax:              distinctValues($scope.services, 'dispensingPharmacyFaxNumber')
+				};
 			};
 
 			// DHDR04.02 / DHDR07.02: a group is represented by its most recent event, and the events
@@ -1813,6 +1954,9 @@
 				$scope.buttonDisabled = true;
 				$scope.meds = [];
 				$scope.services = [];
+				// Cleared with the results they describe, so a new search never offers stale values.
+				$scope.drugFilterValues = {};
+				$scope.serviceFilterValues = {};
 				$scope.outcomes = [];
 				$scope.serviceErrors = [];
 				$scope.uniqMeds = [];
