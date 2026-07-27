@@ -103,7 +103,9 @@ public class OneIdLoginAction extends ActionSupport {
 
     /**
      * Accepts only an application-local path for the post-login return redirect, so a crafted
-     * link cannot turn the login flow into an open redirect.
+     * link cannot turn the login flow into an open redirect. Control characters are refused
+     * because a browser drops them from a URL before resolving it, which would let a path such
+     * as "/&lt;tab&gt;/example.com" reach another host.
      *
      * @param value String the candidate return path
      * @return String the path when it is a plain local path, otherwise null
@@ -115,8 +117,14 @@ public class OneIdLoginAction extends ActionSupport {
         if (!value.startsWith("/") || value.startsWith("//")) {
             return null;
         }
-        if (value.contains("\\") || value.contains(":") || value.contains("\r") || value.contains("\n")) {
+        if (value.contains("\\") || value.contains(":")) {
             return null;
+        }
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if (c < 0x20 || c == 0x7f) {
+                return null;
+            }
         }
         return value;
     }
